@@ -3,6 +3,25 @@
 // real source at build time; this only types the showcase usage.
 export type EditorTheme = Partial<Record<`--cascivo-editor-${string}`, string>>
 
+export interface CodeEditorHandle {
+  applyEdit(range: { from: number; to: number }, text: string): void
+  getSelection(): { start: number; end: number }
+  focus(): void
+  undo(): void
+  redo(): void
+  openFind(): void
+  openCommandMenu(): void
+}
+
+export interface SlashCommand {
+  id: string
+  label: string
+  hint?: string
+  keywords?: readonly string[]
+  insert?: string
+  run?: (editor: CodeEditorHandle) => void
+}
+
 export declare function CodeEditor(props: {
   value?: string
   defaultValue?: string
@@ -20,6 +39,7 @@ export declare function CodeEditor(props: {
   onSave?: (value: string) => void
   theme?: EditorTheme
   bracketMatching?: boolean
+  commands?: readonly SlashCommand[]
   [key: string]: unknown
 }): JSX.Element
 

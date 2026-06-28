@@ -1,5 +1,5 @@
 import { useSignal, useSignals } from '@cascivo/core'
-import { CodeEditor, Highlight, type EditorTheme } from '@cascivo/editor'
+import { CodeEditor, Highlight, type EditorTheme, type SlashCommand } from '@cascivo/editor'
 // Reuse the shared benchmark/test fixture so the demo matches the measured doc shape.
 import { makeMarkdownDoc } from '../../../../packages/editor/src/engine/large-doc.fixture.ts'
 
@@ -97,6 +97,13 @@ const GALLERY: Array<{ language: string; label: string; value: string }> = [
   { language: 'bash', label: 'Bash', value: bashSample },
 ]
 
+const slashCommands: SlashCommand[] = [
+  { id: 'fence', label: 'Code block', hint: '```', keywords: ['code'], insert: '```\n\n```' },
+  { id: 'todo', label: 'TODO comment', keywords: ['task'], insert: '// TODO: ' },
+  { id: 'divider', label: 'Divider', keywords: ['hr', 'rule'], insert: '---\n' },
+  { id: 'date', label: 'Insert date', keywords: ['now', 'time'], insert: '2026-06-28' },
+]
+
 export function EditorPage() {
   useSignals()
   const saved = useSignal(false)
@@ -130,6 +137,22 @@ export function EditorPage() {
           replace. Matches are highlighted in place; replacements are undoable.
         </p>
         <CodeEditor language="markdown" defaultValue={notesSample} style={{ blockSize: '18rem' }} />
+      </section>
+
+      <section class="doc-section">
+        <h2>Slash commands</h2>
+        <p>
+          Pass a <code>commands</code> list and type <kbd>/</kbd> at a word boundary to open a
+          filtered menu. <kbd>↑</kbd>/<kbd>↓</kbd> + <kbd>Enter</kbd>/<kbd>Tab</kbd> insert;{' '}
+          <kbd>Esc</kbd> dismisses. Each entry can <code>insert</code> text or <code>run</code> an
+          action; insertions are undoable.
+        </p>
+        <CodeEditor
+          language="markdown"
+          defaultValue={'Type "/" on a new line…\n\n'}
+          commands={slashCommands}
+          style={{ blockSize: '16rem' }}
+        />
       </section>
 
       <section class="doc-section">

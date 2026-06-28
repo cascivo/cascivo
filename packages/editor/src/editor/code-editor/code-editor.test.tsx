@@ -431,6 +431,7 @@ describe('CodeEditor', () => {
   it('uses no banned React hooks', () => {
     const files = [
       join(__dirname, 'code-editor.tsx'),
+      join(__dirname, 'slash-menu.tsx'),
       join(__dirname, '..', 'highlight', 'highlight.tsx'),
       join(__dirname, '..', 'view.tsx'),
     ]
@@ -446,5 +447,97 @@ describe('CodeEditor', () => {
         expect(src, `${file} should not import ${banned}`).not.toContain(banned)
       }
     }
+  })
+})
+
+describe('CodeEditor slash commands', () => {
+  const commands = [
+    { id: 'fence', label: 'Code block', keywords: ['fence'], insert: '```\n\n```' },
+    { id: 'todo', label: 'TODO', insert: '// TODO: ' },
+    { id: 'hr', label: 'Divider', insert: '---' },
+  ]
+
+  // Type `text`, place the caret at its end, and fire keyup so the editor's caret
+  // sync (and thus reactive trigger detection) runs.
+  function typeAll(ta: HTMLTextAreaElement, text: string): void {
+    fireEvent.change(ta, { target: { value: text } })
+    ta.setSelectionRange(text.length, text.length)
+    fireEvent.keyUp(ta)
+  }
+
+  // jsdom lacks CSS anchor positioning, so useAnchorPosition's fallback marks the
+  // freshly-mounted menu visibility:hidden until it computes a position (same as
+  // menu-button/popover). The element is fully present, so role queries use
+  // { hidden: true }. Real Chrome uses the CSS-anchor path and shows it immediately.
+  it('opens a filtered menu when typing a slash at a word boundary', () => {
+    render(<CodeEditor defaultValue="" commands={commands} />)
+    const ta = getTextarea()
+    typeAll(ta, '/co')
+    expect(screen.getByRole('listbox', { hidden: true })).toBeTruthy()
+    const options = screen.getAllByRole('option', { hidden: true })
+    expect(options.map((o) => o.textContent)).toEqual(['Code block'])
+    expect(ta.getAttribute('aria-expanded')).toBe('true')
+  })
+
+  it('does not open without a commands prop', () => {
+    render(<CodeEditor defaultValue="" />)
+    typeAll(getTextarea(), '/co')
+    expect(screen.queryByRole('listbox')).toBeNull()
+  })
+
+  it('does not open for a slash mid-word', () => {
+    render(<CodeEditor defaultValue="" commands={commands} />)
+    typeAll(getTextarea(), 'http://x')
+    expect(screen.queryByRole('listbox')).toBeNull()
+  })
+
+  it('navigates with arrows and inserts the active command on Enter (undoable)', () => {
+    render(<CodeEditor defaultValue="" commands={commands} />)
+    const ta = getTextarea()
+    typeAll(ta, '/') // all three commands
+    expect(screen.getAllByRole('option', { hidden: true })).toHaveLength(3)
+    fireEvent.keyDown(ta, { key: 'ArrowDown' }) // → TODO
+    expect(ta.getAttribute('aria-activedescendant')).toMatch(/-opt-1$/)
+    fireEvent.keyDown(ta, { key: 'Enter' })
+    expect(ta.value).toBe('// TODO: ')
+    expect(screen.queryByRole('listbox')).toBeNull()
+
+    // A single undo restores the pre-select text (one transaction).
+    fireEvent.keyDown(ta, { key: 'z', ctrlKey: true })
+    expect(ta.value).toBe('/')
+  })
+
+  it('selects with Tab without inserting a tab', () => {
+    render(<CodeEditor defaultValue="" commands={commands} />)
+    const ta = getTextarea()
+    typeAll(ta, '/div')
+    fireEvent.keyDown(ta, { key: 'Tab' })
+    expect(ta.value).toBe('---')
+  })
+
+  it('Escape closes the menu and leaves the literal query, without reopening', () => {
+    render(<CodeEditor defaultValue="" commands={commands} />)
+    const ta = getTextarea()
+    typeAll(ta, '/co')
+    fireEvent.keyDown(ta, { key: 'Escape' })
+    expect(screen.queryByRole('listbox')).toBeNull()
+    expect(ta.value).toBe('/co')
+    // A further caret sync must not reopen the dismissed trigger.
+    fireEvent.keyUp(ta)
+    expect(screen.queryByRole('listbox')).toBeNull()
+  })
+
+  it('runs a command action and opens via the imperative handle', () => {
+    const run = vi.fn()
+    const ref = createRef<CodeEditorHandle>()
+    render(<CodeEditor ref={ref} defaultValue="" commands={[{ id: 'act', label: 'Act', run }]} />)
+    const ta = getTextarea()
+    act(() => ref.current?.openCommandMenu())
+    expect(ta.value).toBe('/')
+    fireEvent.keyUp(ta)
+    expect(screen.getByRole('listbox', { hidden: true })).toBeTruthy()
+    fireEvent.keyDown(ta, { key: 'Enter' })
+    expect(run).toHaveBeenCalledTimes(1)
+    expect(ta.value).toBe('') // the `/` trigger removed, no insert text
   })
 })

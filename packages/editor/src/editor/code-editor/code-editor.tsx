@@ -1,5 +1,13 @@
 'use client'
-import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  cn,
+  useAnchorPosition,
+  useControllableSignal,
+  useId,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import {
   forwardRef,
@@ -22,6 +30,9 @@ import { matchBracket, toBracketDecorations } from './brackets.ts'
 import { createHistory, type History, type Snapshot } from './history.ts'
 import { createIndentCommands, dispatch, mergeKeymap, type KeyMap } from './keymap.ts'
 import { diff, rebaseSelection } from './sync.ts'
+import { caretCoords, caretRectFromPre, measureCharWidth } from './caret.ts'
+import { detectTrigger, filterCommands } from './slash-trigger.ts'
+import { SlashMenu, type SlashMenuItem } from './slash-menu.tsx'
 
 /**
  * Per-instance theme overrides — a partial map of `--cascivo-editor-*` custom
@@ -29,6 +40,26 @@ import { diff, rebaseSelection } from './sync.ts'
  * while global `data-theme` remains the default.
  */
 export type EditorTheme = Partial<Record<`--cascivo-editor-${string}`, string>>
+
+/**
+ * A slash-command entry. Typing `/` at a word boundary opens a filtered menu of
+ * these; choosing one replaces the `/query` span with `insert` (undoable) and/or
+ * runs `run`. At least one of `insert` / `run` must be provided.
+ */
+export interface SlashCommand {
+  /** Stable id (menu key). */
+  id: string
+  /** Shown in the menu and matched against the query. */
+  label: string
+  /** Optional right-aligned hint (e.g. a shortcut or category). */
+  hint?: string
+  /** Extra match terms beyond the label. */
+  keywords?: readonly string[]
+  /** Text inserted in place of the `/query` (an undoable edit). */
+  insert?: string
+  /** Side effect run after the `/query` is removed (receives the editor handle). */
+  run?: (editor: CodeEditorHandle) => void
+}
 
 /**
  * Imperative handle (via `ref`) for callers that drive their own transactions —
@@ -47,6 +78,8 @@ export interface CodeEditorHandle {
   redo(): void
   /** Open the find panel. */
   openFind(): void
+  /** Open the slash-command menu at the current caret (no-op without `commands`). */
+  openCommandMenu(): void
 }
 
 /** Auto-enable windowing above this line count (unless `wrap` makes rows variable-height). */
@@ -91,6 +124,8 @@ export interface CodeEditorProps extends Omit<
   theme?: EditorTheme
   /** Highlight the bracket matching the one adjacent to the caret (default false). */
   bracketMatching?: boolean
+  /** Slash-command entries; typing `/` opens a filtered menu. Omit to disable. */
+  commands?: readonly SlashCommand[]
 }
 
 /**
@@ -122,6 +157,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     decorations,
     theme,
     bracketMatching = false,
+    commands,
     className,
     style,
     onKeyDown,
@@ -235,6 +271,20 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   // Live caret offset (reactive, drives bracket matching).
   const caretOffset = useSignal(0)
 
+  // ── Slash commands ───────────────────────────────────────────────────────────
+  // Menu state lives in signals (the signal IS the state — no FSM, since the open
+  // state is driven by reactive trigger detection, not internal transitions).
+  const slashOpen = useSignal(false)
+  const slashStart = useSignal(0) // offset of the `/` that opened the menu
+  const slashQuery = useSignal('')
+  const slashIndex = useSignal(0)
+  const slashDismissed = useSignal(-1) // a `/` offset the user dismissed (Escape)
+  // Measured once (monospace advance) for the arithmetic caret position.
+  const charWidth = useSignal(0)
+  const caretProxyRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLUListElement>(null)
+  const menuId = useId('slash-menu')
+
   useSignalEffect(() => {
     const next = text.value
     if (typeof requestAnimationFrame !== 'function') {
@@ -284,6 +334,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       const lh = Number.parseFloat(getComputedStyle(ta).lineHeight)
       lineHeight.value = Number.isFinite(lh) && lh > 0 ? lh : 0
       viewport.value = ta.clientHeight
+      if (charWidth.value === 0) charWidth.value = measureCharWidth(ta)
     }
     const syncScroll = (): void => {
       scrollTop.value = ta.scrollTop
@@ -321,6 +372,67 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       ta.removeEventListener('input', syncCaret)
       document.removeEventListener('selectionchange', syncCaretIfActive)
     }
+  })
+
+  // Slash-command trigger detection: reactively (after input) inspect the text
+  // around the caret. The `/` types into the textarea normally and is detected
+  // here — it is never a keymap binding (that would swallow the slash). Inert
+  // without `commands`, and in read-only/disabled.
+  useSignalEffect(() => {
+    const caret = caretOffset.value
+    const value = text.value
+    if (!commands || commands.length === 0 || readOnly || disabled) {
+      if (slashOpen.value) slashOpen.value = false
+      return
+    }
+    const trigger = detectTrigger(value, caret)
+    if (!trigger) {
+      slashDismissed.value = -1 // moved off any trigger; allow reopening later
+      if (slashOpen.value) slashOpen.value = false
+      return
+    }
+    if (trigger.start === slashDismissed.value) {
+      if (slashOpen.value) slashOpen.value = false
+      return // this trigger was dismissed; stay closed until it changes
+    }
+    if (!slashOpen.value) slashIndex.value = 0
+    slashOpen.value = true
+    slashStart.value = trigger.start
+    slashQuery.value = trigger.query
+  })
+
+  // Position the caret-proxy (the anchor for the menu) at the `/` while open.
+  useSignalEffect(() => {
+    if (!slashOpen.value) return
+    const proxy = caretProxyRef.current
+    const ta = taRef.current
+    if (!proxy || !ta) return
+    const offset = slashStart.value
+    const codeArea = proxy.offsetParent as HTMLElement | null
+    let top: number
+    let left: number
+    const pre = preRef.current
+    const rect = (wrap || text.value.includes('\t')) && pre ? caretRectFromPre(pre, offset) : null
+    if (rect && codeArea) {
+      const origin = codeArea.getBoundingClientRect()
+      top = rect.bottom - origin.top
+      left = rect.left - origin.left
+    } else {
+      const cs = getComputedStyle(ta)
+      const coords = caretCoords(text.value, offset, {
+        charWidth: charWidth.value,
+        lineHeight: lineHeight.value,
+        scrollTop: ta.scrollTop,
+        scrollLeft: ta.scrollLeft,
+        padTop: Number.parseFloat(cs.paddingTop) || 0,
+        padLeft: Number.parseFloat(cs.paddingLeft) || 0,
+        tabSize,
+      })
+      top = coords.top + lineHeight.value // below the caret line
+      left = coords.left
+    }
+    proxy.style.top = `${top}px`
+    proxy.style.left = `${left}px`
   })
 
   // Seed/recreate the line-state index when the grammar changes (mutable infra,
@@ -452,9 +564,29 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     taRef.current?.focus()
   }
 
+  // ── Slash menu derived view ──────────────────────────────────────────────────
+  // Filter only while open; clamp the active index into range (like find's match).
+  const slashFiltered = slashOpen.value ? filterCommands(commands ?? [], slashQuery.value) : []
+  if (slashIndex.value >= slashFiltered.length) {
+    slashIndex.value = Math.max(0, slashFiltered.length - 1)
+  }
+  const slashItems: SlashMenuItem[] = slashFiltered.map((c) => ({
+    id: c.id,
+    label: c.label,
+    ...(c.hint !== undefined && { hint: c.hint }),
+  }))
+
+  // Anchor the menu to the caret-proxy (positioned at the `/` in the effect above).
+  const { anchorStyle, floatingStyle } = useAnchorPosition({
+    anchorRef: caretProxyRef,
+    floatingRef: menuRef,
+    placement: 'bottom-start',
+    enabled: slashOpen,
+  })
+
   // Imperative handle for callers driving their own transactions. Edits go through
   // `commit`, so they record undo steps like keyboard edits.
-  useImperativeHandle(ref, () => ({
+  const handle: CodeEditorHandle = {
     applyEdit: ({ from, to }, insert) => {
       const ta = taRef.current
       if (!ta) return
@@ -469,7 +601,39 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     undo: doUndo,
     redo: doRedo,
     openFind: () => openFind(false),
-  }))
+    openCommandMenu: () => {
+      const ta = taRef.current
+      if (!ta || !commands || commands.length === 0 || readOnly || disabled) return
+      // Insert a `/` so the reactive detector owns the open state uniformly, then
+      // sync the caret (setRangeText fires no input event) so it opens at once.
+      ta.focus()
+      ta.setRangeText('/', ta.selectionStart, ta.selectionEnd, 'end')
+      commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
+      caretOffset.value = ta.selectionStart
+      selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
+    },
+  }
+  useImperativeHandle(ref, () => handle)
+
+  // Apply the active command: replace the `/query` span (undoable) then run its
+  // action. One transaction; focus returns to the textarea.
+  const selectCommand = (index: number): void => {
+    const cmd = slashFiltered[index]
+    const ta = taRef.current
+    if (!cmd || !ta || readOnly || disabled) return
+    const from = slashStart.value
+    const to = ta.selectionStart
+    ta.setRangeText(cmd.insert ?? '', from, to, 'end')
+    commit(ta.value, { start: ta.selectionStart, end: ta.selectionEnd }, false)
+    // Sync the caret so reactive detection sees the post-insert position (an insert
+    // may itself contain a `/`, which a stale caret would mis-read as a new trigger).
+    caretOffset.value = ta.selectionStart
+    selRef.current = { start: ta.selectionStart, end: ta.selectionEnd }
+    slashOpen.value = false
+    slashIndex.value = 0
+    ta.focus()
+    cmd.run?.(handle)
+  }
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
     const ta = event.currentTarget
@@ -507,6 +671,30 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     if (findOpen.value) {
       bindings['Escape'] = () => {
         closeFind()
+        return true
+      }
+    }
+    // Slash menu nav — added after the editable bindings so it overrides `Tab`
+    // (select, not indent) and `Enter` (select, not newline) while open.
+    if (slashOpen.value) {
+      const move =
+        (delta: number): (() => boolean) =>
+        () => {
+          const n = slashFiltered.length
+          if (n > 0) slashIndex.value = (slashIndex.value + delta + n) % n
+          return true
+        }
+      bindings['ArrowDown'] = move(1)
+      bindings['ArrowUp'] = move(-1)
+      const choose = (): boolean => {
+        if (slashFiltered.length > 0) selectCommand(slashIndex.value)
+        return true // swallow even when empty (no stray newline/tab)
+      }
+      bindings['Enter'] = choose
+      bindings['Tab'] = choose
+      bindings['Escape'] = () => {
+        slashDismissed.value = slashStart.value
+        slashOpen.value = false
         return true
       }
     }
@@ -564,12 +752,32 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
           disabled={disabled}
           spellCheck={spellCheck}
           aria-label={label ?? t(builtin.editor.label)}
+          aria-expanded={slashOpen.value}
+          aria-controls={slashOpen.value ? menuId : undefined}
+          aria-activedescendant={slashOpen.value ? `${menuId}-opt-${slashIndex.value}` : undefined}
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete="off"
           wrap={wrap ? 'soft' : 'off'}
           {...rest}
         />
+        {/* 0×0 caret-proxy: the anchor the menu positions against (placed at the `/`). */}
+        <div
+          ref={caretProxyRef}
+          aria-hidden="true"
+          style={{ position: 'absolute', inlineSize: 0, blockSize: 0, ...anchorStyle }}
+        />
+        {slashOpen.value && (
+          <SlashMenu
+            ref={menuRef}
+            id={menuId}
+            items={slashItems}
+            activeIndex={slashIndex.value}
+            onSelect={selectCommand}
+            onHover={(i) => (slashIndex.value = i)}
+            style={floatingStyle}
+          />
+        )}
         {findOpen.value && (
           <FindPanel
             query={findQuery.value}

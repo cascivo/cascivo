@@ -21057,10 +21057,16 @@
             "description": "Extra offset-range → CSS class decorations"
           },
           {
+            "name": "commands",
+            "type": "SlashCommand[]",
+            "required": false,
+            "description": "Slash-command entries; typing \"/\" opens a filtered menu. Omit to disable."
+          },
+          {
             "name": "ref",
             "type": "Ref<CodeEditorHandle>",
             "required": false,
-            "description": "Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind"
+            "description": "Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu"
           },
           {
             "name": "className",
@@ -21091,6 +21097,8 @@
             "Mod+F (find)",
             "Mod+Alt+F (replace)",
             "Mod+S (save)",
+            "/ (open slash-command menu when commands are provided)",
+            "Up/Down + Enter/Tab (navigate + insert a command), Escape (dismiss)",
             "Standard textarea editing"
           ],
           "reducedMotion": true,
@@ -21108,6 +21116,11 @@
           {
             "title": "Notes editing — find, save, brackets",
             "code": "<CodeEditor\n  language=\"markdown\"\n  value={doc}\n  onValueChange={setDoc}\n  onSave={save} // Mod-S\n  bracketMatching\n/> // Mod-F to search"
+          },
+          {
+            "title": "Slash commands",
+            "description": "Type \"/\" to open a filtered command menu; arrows + Enter insert.",
+            "code": "const commands = [\n  { id: 'fence', label: 'Code block', keywords: ['code'], insert: '\\u0060\\u0060\\u0060\\n\\n\\u0060\\u0060\\u0060' },\n  { id: 'todo', label: 'TODO', insert: '// TODO: ' },\n  { id: 'date', label: 'Date', run: (e) => e.applyEdit(e.getSelection(), new Date().toISOString()) },\n]\n\n<CodeEditor language=\"markdown\" commands={commands} />"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],

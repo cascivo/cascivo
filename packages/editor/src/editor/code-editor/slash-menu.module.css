@@ -1,0 +1,64 @@
+@layer cascivo.component {
+  .menu {
+    /* The caret anchor (useAnchorPosition) overrides position/inset; these are the
+       fallback box when no anchor styles have resolved yet. */
+    position: absolute;
+    z-index: 3;
+    margin-block: var(--cascivo-space-1);
+    margin-inline: 0;
+    padding-block: var(--cascivo-space-1);
+    padding-inline: 0;
+    min-inline-size: 12rem;
+    max-block-size: 16rem;
+    overflow-y: auto;
+    list-style: none;
+    background: var(--cascivo-editor-bg);
+    border: 1px solid var(--cascivo-editor-border);
+    border-radius: var(--cascivo-radius-field);
+    box-shadow: var(--cascivo-shadow-md, 0 4px 12px rgb(0 0 0 / 0.2));
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-editor-fg);
+  }
+
+  .option {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--cascivo-space-3);
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-3);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .active {
+    background: var(--cascivo-editor-current-line);
+  }
+
+  .label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hint {
+    flex: 0 0 auto;
+    color: var(--cascivo-editor-gutter-fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .empty {
+    padding-block: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-3);
+    color: var(--cascivo-editor-gutter-fg);
+  }
+
+  /* Coarse pointers: keep options comfortably tappable. */
+  @media (pointer: coarse) {
+    .option,
+    .empty {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+      align-items: center;
+    }
+  }
+}
