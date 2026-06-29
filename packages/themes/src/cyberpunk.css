@@ -34,9 +34,14 @@
     --cascivo-color-text: var(--cascivo-color-foreground);
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
     --cascivo-color-text-muted: oklch(0.55 0.05 300);
-    --cascivo-color-text-on-accent: oklch(0.16 0.03 285);
-    --cascivo-color-text-on-destructive: oklch(0.16 0.03 285);
-
+    --cascivo-color-text-on-accent: oklch(0.16 0.03 285); /* static fallback */
+    --cascivo-color-text-on-accent: contrast-color(
+      var(--cascivo-color-accent)
+    ); /* auto-contrast (WCAG) */
+    --cascivo-color-text-on-destructive: oklch(0.16 0.03 285); /* static fallback */
+    --cascivo-color-text-on-destructive: contrast-color(
+      var(--cascivo-color-destructive)
+    ); /* auto-contrast (WCAG) */
     /* ── Accent — neon magenta ───────────────────────── */
     --cascivo-color-accent: oklch(0.7 0.25 330);
     --cascivo-color-accent-foreground: oklch(0.16 0.03 285);

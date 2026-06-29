@@ -35,9 +35,14 @@
     --cascivo-color-text: var(--cascivo-color-foreground);
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
     --cascivo-color-text-muted: oklch(0.554 0.018 264);
-    --cascivo-color-text-on-accent: oklch(0.145 0.005 250);
-    --cascivo-color-text-on-destructive: oklch(1 0 0);
-
+    --cascivo-color-text-on-accent: oklch(0.145 0.005 250); /* static fallback */
+    --cascivo-color-text-on-accent: contrast-color(
+      var(--cascivo-color-accent)
+    ); /* auto-contrast (WCAG) */
+    --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
+    --cascivo-color-text-on-destructive: contrast-color(
+      var(--cascivo-color-destructive)
+    ); /* auto-contrast (WCAG) */
     /* ── Accent ───────────────────────────────────────── */
     --cascivo-color-accent: oklch(0.65 0.2 250);
     --cascivo-color-accent-foreground: oklch(0.145 0.005 250);

@@ -24,7 +24,7 @@
     "bench": "pnpm --filter bench-runner bench all",
     "audit:stories": "node scripts/quality/story-check.ts",
     "audit:signals": "bash scripts/checks/use-signals-gate.sh",
-    "fallback:check": "node scripts/checks/css-fallback.ts packages/components/src packages/tokens/src packages/flow/src",
+    "fallback:check": "node scripts/checks/css-fallback.ts packages/components/src packages/tokens/src packages/flow/src packages/themes/src",
     "apg:check": "node --experimental-strip-types --test scripts/checks/apg.test.ts",
     "screens:check": "node --experimental-strip-types --test packages/tokens/src/screens.test.ts",
     "breakpoint:check": "node --experimental-strip-types --test scripts/checks/breakpoint.test.ts",

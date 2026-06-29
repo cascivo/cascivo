@@ -36,9 +36,14 @@
     --cascivo-color-text: var(--cascivo-color-foreground);
     --cascivo-color-text-subtle: var(--cascivo-gray-600);
     --cascivo-color-text-muted: var(--cascivo-gray-400);
-    --cascivo-color-text-on-accent: oklch(1 0 0);
-    --cascivo-color-text-on-destructive: oklch(1 0 0);
-
+    --cascivo-color-text-on-accent: oklch(1 0 0); /* static fallback */
+    --cascivo-color-text-on-accent: contrast-color(
+      var(--cascivo-color-accent)
+    ); /* auto-contrast (WCAG) */
+    --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
+    --cascivo-color-text-on-destructive: contrast-color(
+      var(--cascivo-color-destructive)
+    ); /* auto-contrast (WCAG) */
     /* ── Accent (links, focus, info, active tint) ───────── */
     /* L lowered 0.623→0.52 so accent-as-link-text clears WCAG 2.2 AA 4.5:1 on
        white (was 3.55:1). Hover darkened to stay below the new base. */
