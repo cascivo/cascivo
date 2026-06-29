@@ -8,10 +8,21 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'label', type: 'string', required: false },
-    { name: 'value', type: 'string', required: true },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
-    { name: 'name', type: 'string', required: false },
+    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    { name: 'value', description: 'The controlled value.', type: 'string', required: true },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'name',
+      description: 'Form field name shared by the radio group.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

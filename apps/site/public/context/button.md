@@ -32,14 +32,14 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 
 ## Props
 
-| Name       | Type                                         | Required    | Default | Description    |
-| ---------- | -------------------------------------------- | ----------- | ------- | -------------- | --- | ------- | --- |
-| `variant`  | `'primary'                                   | 'secondary' | 'ghost' | 'destructive'` | No  | primary | —   |
-| `size`     | `'sm'                                        | 'md'        | 'lg'`   | No             | md  | —       |
-| `loading`  | `boolean`                                    | No          | false   | —              |
-| `disabled` | `boolean`                                    | No          | false   | —              |
-| `asChild`  | `boolean`                                    | No          | false   | —              |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No          | —       | —              |
+| Name       | Type                                         | Required    | Default | Description                                                                                       |
+| ---------- | -------------------------------------------- | ----------- | ------- | ------------------------------------------------------------------------------------------------- | --- | ----------------------------------------------------- | --------------------------------- |
+| `variant`  | `'primary'                                   | 'secondary' | 'ghost' | 'destructive'`                                                                                    | No  | primary                                               | Selects the visual style variant. |
+| `size`     | `'sm'                                        | 'md'        | 'lg'`   | No                                                                                                | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `loading`  | `boolean`                                    | No          | false   | When true, shows a loading state.                                                                 |
+| `disabled` | `boolean`                                    | No          | false   | When true, disables the control and removes it from the tab order.                                |
+| `asChild`  | `boolean`                                    | No          | false   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No          | —       | Called when the element is clicked.                                                               |
 
 ## Tokens
 

@@ -37,12 +37,12 @@ import { Avatar } from '@cascivo/react'
 ## Props
 
 | Prop       | Type      | Required  | Default | Description                               |
-| ---------- | --------- | --------- | ------- | ----------------------------------------- | ----- | --- | ---- | --- |
-| `src`      | `string`  | no        | —       | —                                         |
-| `alt`      | `string`  | no        | —       | —                                         |
+| ---------- | --------- | --------- | ------- | ----------------------------------------- | ----- | ------------- | ---- | ----------------------------------------------------- |
+| `src`      | `string`  | no        | —       | Image source URL.                         |
+| `alt`      | `string`  | no        | —       | Alternative text describing the image.    |
 | `fallback` | `string`  | no        | —       | Initials shown when no image is available |
-| `size`     | `'xs'     | 'sm'      | 'md'    | 'lg'                                      | 'xl'` | no  | `md` | —   |
-| `status`   | `'online' | 'offline' | 'busy'` | no                                        | —     | —   |
+| `size`     | `'xs'     | 'sm'      | 'md'    | 'lg'                                      | 'xl'` | no            | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `status`   | `'online' | 'offline' | 'busy'` | no                                        | —     | Status state. |
 
 ## Examples
 

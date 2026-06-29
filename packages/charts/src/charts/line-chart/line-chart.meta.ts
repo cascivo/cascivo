@@ -76,7 +76,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Custom tooltip formatter',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'plain',
       type: 'boolean',

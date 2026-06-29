@@ -25,6 +25,7 @@
     "props": [
       {
         "name": "variant",
+        "description": "Selects the visual style variant.",
         "type": "'text' | 'circle' | 'rect'",
         "required": false,
         "default": "text"

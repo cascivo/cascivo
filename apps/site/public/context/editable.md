@@ -33,14 +33,14 @@ The preview renders as a real <button> so it is keyboard-focusable and announces
 
 ## Props
 
-| Name            | Type                  | Required | Default | Description |
-| --------------- | --------------------- | -------- | ------- | ----------- |
-| `value`         | `string`              | Yes      | —       | —           |
-| `onValueChange` | `(v: string) => void` | Yes      | —       | —           |
-| `placeholder`   | `string`              | No       | —       | —           |
-| `disabled`      | `boolean`             | No       | false   | —           |
-| `submitOnBlur`  | `boolean`             | No       | true    | —           |
-| `onCancel`      | `() => void`          | No       | —       | —           |
+| Name            | Type                  | Required | Default | Description                                                        |
+| --------------- | --------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `value`         | `string`              | Yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: string) => void` | Yes      | —       | Called with the new value when it changes.                         |
+| `placeholder`   | `string`              | No       | —       | Placeholder text shown when the field is empty.                    |
+| `disabled`      | `boolean`             | No       | false   | When true, disables the control and removes it from the tab order. |
+| `submitOnBlur`  | `boolean`             | No       | true    | When true, commits the edit when the field loses focus.            |
+| `onCancel`      | `() => void`          | No       | —       | Called when the edit is cancelled.                                 |
 
 ## Tokens
 

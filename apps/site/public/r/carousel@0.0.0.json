@@ -43,17 +43,20 @@
       },
       {
         "name": "defaultIndex",
+        "description": "The initial slide index when uncontrolled.",
         "type": "number",
         "required": false,
         "default": "0"
       },
       {
         "name": "onIndexChange",
+        "description": "Called with the new slide index when it changes.",
         "type": "(index: number) => void",
         "required": false
       },
       {
         "name": "loop",
+        "description": "When true, navigation wraps around from end to start.",
         "type": "boolean",
         "required": false,
         "default": "false"

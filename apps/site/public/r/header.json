@@ -43,12 +43,14 @@
       },
       {
         "name": "sticky",
+        "description": "When true, the header sticks to the top on scroll.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

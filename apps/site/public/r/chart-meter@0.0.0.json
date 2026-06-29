@@ -25,23 +25,27 @@
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": true
       },
       {
         "name": "min",
+        "description": "Minimum allowed value.",
         "type": "number",
         "required": false,
         "default": "0"
       },
       {
         "name": "max",
+        "description": "Maximum allowed value.",
         "type": "number",
         "required": false,
         "default": "100"
       },
       {
         "name": "variant",
+        "description": "Selects the visual style variant.",
         "type": "'bar' | 'gauge'",
         "required": false,
         "default": "bar"
@@ -54,11 +58,13 @@
       },
       {
         "name": "width",
+        "description": "Width of the component.",
         "type": "number",
         "required": false
       },
       {
         "name": "height",
+        "description": "Height of the component.",
         "type": "number",
         "required": false
       }

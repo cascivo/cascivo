@@ -32,7 +32,12 @@ export const meta: ComponentMeta = {
     { name: 'panOnDrag', type: 'boolean', required: false, default: 'true' },
     { name: 'zoomOnScroll', type: 'boolean', required: false, default: 'true' },
     { name: 'fitView', type: 'boolean', required: false, default: 'false' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-color-bg', '--cascivo-radius-surface'],
   accessibility: {

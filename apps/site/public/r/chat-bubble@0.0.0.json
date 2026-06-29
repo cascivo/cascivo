@@ -25,32 +25,38 @@
     "props": [
       {
         "name": "children",
+        "description": "Content rendered inside the component.",
         "type": "React.ReactNode",
         "required": true
       },
       {
         "name": "side",
+        "description": "Edge the component is anchored to.",
         "type": "'start' | 'end'",
         "required": false,
         "default": "start"
       },
       {
         "name": "avatar",
+        "description": "Avatar element shown beside the message.",
         "type": "React.ReactNode",
         "required": false
       },
       {
         "name": "name",
+        "description": "Display name of the message sender.",
         "type": "string",
         "required": false
       },
       {
         "name": "time",
+        "description": "Timestamp text shown with the message.",
         "type": "string",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

@@ -8,7 +8,13 @@ export const meta: ComponentMeta = {
   variants: ['text', 'circle', 'rect'],
   sizes: [],
   props: [
-    { name: 'variant', type: "'text' | 'circle' | 'rect'", required: false, default: 'text' },
+    {
+      name: 'variant',
+      description: 'Selects the visual style variant.',
+      type: "'text' | 'circle' | 'rect'",
+      required: false,
+      default: 'text',
+    },
     {
       name: 'width',
       type: 'string',

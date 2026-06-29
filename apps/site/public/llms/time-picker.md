@@ -34,20 +34,20 @@ import { TimePicker } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                      | Required | Default | Description              |
-| -------------- | ------------------------- | -------- | ------- | ------------------------ | ------ | --- |
-| `value`        | `string`                  | no       | —       | Controlled value (HH:mm) |
-| `defaultValue` | `string`                  | no       | —       | —                        |
-| `onChange`     | `(value: string) => void` | no       | —       | —                        |
-| `min`          | `string`                  | no       | —       | —                        |
-| `max`          | `string`                  | no       | —       | —                        |
-| `step`         | `number`                  | no       | —       | —                        |
-| `label`        | `string`                  | no       | —       | —                        |
-| `hint`         | `string`                  | no       | —       | —                        |
-| `error`        | `string`                  | no       | —       | —                        |
-| `size`         | `'sm'                     | 'md'     | 'lg'`   | no                       | `'md'` | —   |
-| `disabled`     | `boolean`                 | no       | —       | —                        |
-| `className`    | `string`                  | no       | —       | —                        |
+| Prop           | Type                      | Required | Default | Description                                                        |
+| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ | ------ | ----------------------------------------------------- |
+| `value`        | `string`                  | no       | —       | Controlled value (HH:mm)                                           |
+| `defaultValue` | `string`                  | no       | —       | The initial value when uncontrolled.                               |
+| `onChange`     | `(value: string) => void` | no       | —       | Called when the value changes.                                     |
+| `min`          | `string`                  | no       | —       | Minimum allowed value.                                             |
+| `max`          | `string`                  | no       | —       | Maximum allowed value.                                             |
+| `step`         | `number`                  | no       | —       | Increment between allowed values.                                  |
+| `label`        | `string`                  | no       | —       | Text label for the control.                                        |
+| `hint`         | `string`                  | no       | —       | Supplementary hint text shown with the control.                    |
+| `error`        | `string`                  | no       | —       | Error message shown when the value is invalid.                     |
+| `size`         | `'sm'                     | 'md'     | 'lg'`   | no                                                                 | `'md'` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled`     | `boolean`                 | no       | —       | When true, disables the control and removes it from the tab order. |
+| `className`    | `string`                  | no       | —       | Additional CSS class names merged onto the root element.           |
 
 ## Examples
 

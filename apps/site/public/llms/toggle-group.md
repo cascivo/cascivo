@@ -38,16 +38,16 @@ import { ToggleGroup } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                                                                              | Required           | Default | Description  |
-| --------------- | --------------------------------------------------------------------------------- | ------------------ | ------- | ------------ | ---- | --- |
-| `type`          | `'single'                                                                         | 'multiple'`        | yes     | —            | —    |
-| `value`         | `string                                                                           | string[]`          | no      | —            | —    |
-| `defaultValue`  | `string                                                                           | string[]`          | no      | —            | —    |
-| `onValueChange` | `(value: string                                                                   | string[]) => void` | no      | —            | —    |
-| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | yes                | —       | —            |
-| `orientation`   | `'horizontal'                                                                     | 'vertical'`        | no      | `horizontal` | —    |
-| `size`          | `'sm'                                                                             | 'md'               | 'lg'`   | no           | `md` | —   |
-| `disabled`      | `boolean`                                                                         | no                 | `false` | —            |
+| Prop            | Type                                                                              | Required           | Default | Description                                                        |
+| --------------- | --------------------------------------------------------------------------------- | ------------------ | ------- | ------------------------------------------------------------------ | -------------------------------------------------------------- | ----------------------------------------------------- |
+| `type`          | `'single'                                                                         | 'multiple'`        | yes     | —                                                                  | Whether one or multiple items can be pressed at once ('single' | 'multiple').                                          |
+| `value`         | `string                                                                           | string[]`          | no      | —                                                                  | The controlled value.                                          |
+| `defaultValue`  | `string                                                                           | string[]`          | no      | —                                                                  | The initial value when uncontrolled.                           |
+| `onValueChange` | `(value: string                                                                   | string[]) => void` | no      | —                                                                  | Called with the new value when it changes.                     |
+| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | yes                | —       | The items to render.                                               |
+| `orientation`   | `'horizontal'                                                                     | 'vertical'`        | no      | `horizontal`                                                       | Layout orientation of the component.                           |
+| `size`          | `'sm'                                                                             | 'md'               | 'lg'`   | no                                                                 | `md`                                                           | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled`      | `boolean`                                                                         | no                 | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 

@@ -8,7 +8,12 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'items', type: '{ label: string; href?: string }[]', required: true },
+    {
+      name: 'items',
+      description: 'The items to render.',
+      type: '{ label: string; href?: string }[]',
+      required: true,
+    },
     {
       name: 'maxVisible',
       type: 'number',
@@ -16,8 +21,19 @@ export const meta: ComponentMeta = {
       description:
         'When items exceed this count, collapse to the first item, an ellipsis, and the trailing items',
     },
-    { name: 'className', type: 'string', required: false },
-    { name: 'ariaLabel', type: 'string', required: false, default: 'Breadcrumb' },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'ariaLabel',
+      description: 'Accessible label for the component.',
+      type: 'string',
+      required: false,
+      default: 'Breadcrumb',
+    },
   ],
   tokens: [
     '--cascivo-color-text',

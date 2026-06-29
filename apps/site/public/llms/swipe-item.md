@@ -33,7 +33,7 @@ import { SwipeItem } from '@cascivo/react'
 | `children`        | `React.ReactNode` | yes      | —       | The row content                                                            |
 | `leadingActions`  | `SwipeAction[]`   | no       | —       | Actions revealed by dragging toward the end edge (shown on the start edge) |
 | `trailingActions` | `SwipeAction[]`   | no       | —       | Actions revealed by dragging toward the start edge (shown on the end edge) |
-| `className`       | `string`          | no       | —       | —                                                                          |
+| `className`       | `string`          | no       | —       | Additional CSS class names merged onto the root element.                   |
 
 ## Design tokens
 

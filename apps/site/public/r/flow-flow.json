@@ -31,16 +31,19 @@
       },
       {
         "name": "onNodesChange",
+        "description": "Called with the next nodes when they change (drag, add, remove).",
         "type": "(nodes: FlowNode[]) => void",
         "required": false
       },
       {
         "name": "onEdgesChange",
+        "description": "Called with the next edges when they change.",
         "type": "(edges: FlowEdge[]) => void",
         "required": false
       },
       {
         "name": "onConnect",
+        "description": "Called when two handles are connected to form a new edge.",
         "type": "(connection: Connection) => void",
         "required": false
       },
@@ -52,24 +55,28 @@
       },
       {
         "name": "fitView",
+        "description": "When true, fits the graph to the viewport on mount.",
         "type": "boolean",
         "required": false,
         "default": "true"
       },
       {
         "name": "background",
+        "description": "Background pattern — true for the default dots, or a config object.",
         "type": "boolean | FlowBackgroundProps",
         "required": false,
         "default": "false"
       },
       {
         "name": "controls",
+        "description": "Whether to show the controls.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "minimap",
+        "description": "When true, shows the minimap overlay.",
         "type": "boolean",
         "required": false,
         "default": "false"
@@ -89,6 +96,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

@@ -10,12 +10,23 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'position',
+      description: 'Position of the component.',
       type: "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
       required: false,
       default: 'top-right',
     },
-    { name: 'children', type: 'ReactNode', required: false },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-space-3'],
   accessibility: {

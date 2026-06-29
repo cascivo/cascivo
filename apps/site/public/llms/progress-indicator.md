@@ -33,12 +33,12 @@ import { ProgressIndicator } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                                        | Required | Default | Description                         |
-| -------------- | ------------------------------------------- | -------- | ------- | ----------------------------------- |
-| `steps`        | `{ label: string; description?: string }[]` | yes      | —       | Ordered list of steps               |
-| `currentIndex` | `number`                                    | yes      | —       | Index of the current step (0-based) |
-| `vertical`     | `boolean`                                   | no       | `false` | —                                   |
-| `className`    | `string`                                    | no       | —       | —                                   |
+| Prop           | Type                                        | Required | Default | Description                                              |
+| -------------- | ------------------------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `steps`        | `{ label: string; description?: string }[]` | yes      | —       | Ordered list of steps                                    |
+| `currentIndex` | `number`                                    | yes      | —       | Index of the current step (0-based)                      |
+| `vertical`     | `boolean`                                   | no       | `false` | When true, lays the steps out vertically.                |
+| `className`    | `string`                                    | no       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

@@ -27,11 +27,11 @@ import { Tabs } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default | Description |
-| --------------- | ------------------------- | -------- | ------- | ----------- |
-| `defaultValue`  | `string`                  | no       | —       | —           |
-| `value`         | `string`                  | no       | —       | —           |
-| `onValueChange` | `(value: string) => void` | no       | —       | —           |
+| Prop            | Type                      | Required | Default | Description                                |
+| --------------- | ------------------------- | -------- | ------- | ------------------------------------------ |
+| `defaultValue`  | `string`                  | no       | —       | The initial value when uncontrolled.       |
+| `value`         | `string`                  | no       | —       | The controlled value.                      |
+| `onValueChange` | `(value: string) => void` | no       | —       | Called with the new value when it changes. |
 
 ## Examples
 

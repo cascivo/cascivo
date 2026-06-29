@@ -8,10 +8,30 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'items', type: 'NavigationMenuItem[]', required: true },
-    { name: 'aria-label', type: 'string', required: false },
-    { name: 'orientation', type: "'horizontal' | 'vertical' | 'both'", required: false },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'items',
+      description: 'The items to render.',
+      type: 'NavigationMenuItem[]',
+      required: true,
+    },
+    {
+      name: 'aria-label',
+      description: 'Accessible label used when no visible label is present.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'orientation',
+      description: 'Layout orientation of the component.',
+      type: "'horizontal' | 'vertical' | 'both'",
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

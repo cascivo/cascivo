@@ -25,11 +25,13 @@
     "props": [
       {
         "name": "name",
+        "description": "The user’s display name.",
         "type": "ReactNode",
         "required": true
       },
       {
         "name": "description",
+        "description": "Supporting description text.",
         "type": "ReactNode",
         "required": false
       },

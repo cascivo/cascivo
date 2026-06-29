@@ -33,14 +33,14 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Props
 
-| Name            | Type                       | Required | Default | Description |
-| --------------- | -------------------------- | -------- | ------- | ----------- |
-| `value`         | `string[]`                 | Yes      | —       | —           |
-| `onValueChange` | `(v: string[]) => void`    | Yes      | —       | —           |
-| `placeholder`   | `string`                   | No       | —       | —           |
-| `validate`      | `(tag: string) => boolean` | No       | —       | —           |
-| `max`           | `number`                   | No       | —       | —           |
-| `disabled`      | `boolean`                  | No       | false   | —           |
+| Name            | Type                       | Required | Default | Description                                                        |
+| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `value`         | `string[]`                 | Yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: string[]) => void`    | Yes      | —       | Called with the new value when it changes.                         |
+| `placeholder`   | `string`                   | No       | —       | Placeholder text shown when the field is empty.                    |
+| `validate`      | `(tag: string) => boolean` | No       | —       | Returns whether a candidate tag is allowed.                        |
+| `max`           | `number`                   | No       | —       | Maximum allowed value.                                             |
+| `disabled`      | `boolean`                  | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 

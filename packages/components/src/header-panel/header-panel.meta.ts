@@ -22,9 +22,19 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Accessible label for the region (shown as header title)',
     },
-    { name: 'children', type: 'ReactNode', required: true },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'ReactNode',
+      required: true,
+    },
     { name: 'labels', type: 'HeaderPanelLabels', required: false, description: 'i18n overrides' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-shell-header-block-size',

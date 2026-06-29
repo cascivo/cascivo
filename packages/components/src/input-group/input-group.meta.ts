@@ -9,9 +9,24 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'prefix', type: 'ReactNode', required: false },
-    { name: 'suffix', type: 'ReactNode', required: false },
-    { name: 'children', type: 'ReactNode', required: true },
+    {
+      name: 'prefix',
+      description: 'Content rendered before the input (leading adornment).',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'suffix',
+      description: 'Content rendered after the input (trailing adornment).',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'ReactNode',
+      required: true,
+    },
   ],
   tokens: [
     '--cascivo-color-bg-subtle',

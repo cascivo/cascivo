@@ -26,7 +26,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 | `wrap`        | `boolean` | no       | `false`     | Soft-wrap long lines                                                       |
 | `tabSize`     | `number`  | no       | `2`         | Spaces per tab stop                                                        |
 | `label`       | `string`  | no       | —           | Accessible label for the code block                                        |
-| `className`   | `string`  | no       | —           | —                                                                          |
+| `className`   | `string`  | no       | —           | Additional CSS class names merged onto the root element.                   |
 
 ## Examples
 

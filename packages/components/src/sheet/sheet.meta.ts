@@ -8,10 +8,31 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'open', type: 'boolean', required: true },
-    { name: 'onClose', type: '() => void', required: true },
-    { name: 'title', type: 'React.ReactNode', required: false },
-    { name: 'side', type: "'start' | 'end' | 'top' | 'bottom'", required: false, default: 'end' },
+    {
+      name: 'open',
+      description: 'Whether the component is open (controlled).',
+      type: 'boolean',
+      required: true,
+    },
+    {
+      name: 'onClose',
+      description: 'Called when the component is closed.',
+      type: '() => void',
+      required: true,
+    },
+    {
+      name: 'title',
+      description: 'Title text for the component.',
+      type: 'React.ReactNode',
+      required: false,
+    },
+    {
+      name: 'side',
+      description: 'Edge the component is anchored to.',
+      type: "'start' | 'end' | 'top' | 'bottom'",
+      required: false,
+      default: 'end',
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

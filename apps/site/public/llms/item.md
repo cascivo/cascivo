@@ -32,11 +32,11 @@ import { Item } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type       | Required | Default | Description |
-| --------- | ---------- | -------- | ------- | ----------- | --- |
-| `asChild` | `boolean`  | no       | `false` | —           |
-| `variant` | `'default' | 'muted'` | no      | `default`   | —   |
-| `size`    | `'sm'      | 'md'`    | no      | `md`        | —   |
+| Prop      | Type       | Required | Default | Description                                                                                       |
+| --------- | ---------- | -------- | ------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `asChild` | `boolean`  | no       | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `variant` | `'default' | 'muted'` | no      | `default`                                                                                         | Selects the visual style variant.                     |
+| `size`    | `'sm'      | 'md'`    | no      | `md`                                                                                              | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 

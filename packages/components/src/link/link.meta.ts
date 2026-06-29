@@ -10,13 +10,26 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'standalone' | 'inline'",
       required: false,
       default: 'standalone',
     },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
-    { name: 'external', type: 'boolean', required: false, default: 'false' },
-    { name: 'href', type: 'string', required: false },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
+    {
+      name: 'external',
+      description: 'When true, treats the link as external (opens in a new tab with rel safety).',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    { name: 'href', description: 'The destination URL.', type: 'string', required: false },
   ],
   tokens: [
     '--cascivo-color-accent',

@@ -32,12 +32,12 @@ role="list" structures the steps in order; the current step is conveyed as text/
 
 ## Props
 
-| Name           | Type                                        | Required | Default | Description                         |
-| -------------- | ------------------------------------------- | -------- | ------- | ----------------------------------- |
-| `steps`        | `{ label: string; description?: string }[]` | Yes      | —       | Ordered list of steps               |
-| `currentIndex` | `number`                                    | Yes      | —       | Index of the current step (0-based) |
-| `vertical`     | `boolean`                                   | No       | false   | —                                   |
-| `className`    | `string`                                    | No       | —       | —                                   |
+| Name           | Type                                        | Required | Default | Description                                              |
+| -------------- | ------------------------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `steps`        | `{ label: string; description?: string }[]` | Yes      | —       | Ordered list of steps                                    |
+| `currentIndex` | `number`                                    | Yes      | —       | Index of the current step (0-based)                      |
+| `vertical`     | `boolean`                                   | No       | false   | When true, lays the steps out vertically.                |
+| `className`    | `string`                                    | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 

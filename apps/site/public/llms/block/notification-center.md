@@ -41,7 +41,6 @@ Notification center
 ## Dependencies
 
 - `@cascivo/react`
-- `layout/stack`
 
 ## Tags
 

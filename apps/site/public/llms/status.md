@@ -31,8 +31,8 @@ import { Status } from '@cascivo/react'
 ## Props
 
 | Prop     | Type       | Required  | Default | Description                                                         |
-| -------- | ---------- | --------- | ------- | ------------------------------------------------------------------- | ---------- | --- | --------- | --- |
-| `status` | `'success' | 'warning' | 'error' | 'info'                                                              | 'neutral'` | no  | `neutral` | —   |
+| -------- | ---------- | --------- | ------- | ------------------------------------------------------------------- | ---------- | --- | --------- | ------------- |
+| `status` | `'success' | 'warning' | 'error' | 'info'                                                              | 'neutral'` | no  | `neutral` | Status state. |
 | `pulse`  | `boolean`  | no        | `false` | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
 
 ## Examples

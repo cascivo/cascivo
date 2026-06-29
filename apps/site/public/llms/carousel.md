@@ -22,14 +22,14 @@ import { Carousel } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default | Description             |
-| --------------- | ------------------------- | -------- | ------- | ----------------------- |
-| `children`      | `ReactNode`               | no       | —       | Slides as children      |
-| `slides`        | `ReactNode[]`             | no       | —       | Slides as an array      |
-| `index`         | `number`                  | no       | —       | Controlled active index |
-| `defaultIndex`  | `number`                  | no       | `0`     | —                       |
-| `onIndexChange` | `(index: number) => void` | no       | —       | —                       |
-| `loop`          | `boolean`                 | no       | `false` | —                       |
+| Prop            | Type                      | Required | Default | Description                                           |
+| --------------- | ------------------------- | -------- | ------- | ----------------------------------------------------- |
+| `children`      | `ReactNode`               | no       | —       | Slides as children                                    |
+| `slides`        | `ReactNode[]`             | no       | —       | Slides as an array                                    |
+| `index`         | `number`                  | no       | —       | Controlled active index                               |
+| `defaultIndex`  | `number`                  | no       | `0`     | The initial slide index when uncontrolled.            |
+| `onIndexChange` | `(index: number) => void` | no       | —       | Called with the new slide index when it changes.      |
+| `loop`          | `boolean`                 | no       | `false` | When true, navigation wraps around from end to start. |
 
 ## Examples
 

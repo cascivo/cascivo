@@ -26,13 +26,13 @@ import { AvatarGroup } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                | Required | Default | Description                                   |
-| --------- | ------------------- | -------- | ------- | --------------------------------------------- | ---- | --- |
-| `max`     | `number`            | no       | —       | Cap the number of visible avatars             |
-| `total`   | `number`            | no       | —       | Override the total count used for the +N chip |
-| `spacing` | `'sm'               | 'md'     | 'lg'`   | no                                            | `md` | —   |
-| `isGrid`  | `boolean`           | no       | `false` | —                                             |
-| `labels`  | `AvatarGroupLabels` | no       | —       | —                                             |
+| Prop      | Type                | Required | Default | Description                                                                |
+| --------- | ------------------- | -------- | ------- | -------------------------------------------------------------------------- | ---- | ---------------------- |
+| `max`     | `number`            | no       | —       | Cap the number of visible avatars                                          |
+| `total`   | `number`            | no       | —       | Override the total count used for the +N chip                              |
+| `spacing` | `'sm'               | 'md'     | 'lg'`   | no                                                                         | `md` | Spacing between items. |
+| `isGrid`  | `boolean`           | no       | `false` | When true, lays the avatars out in a grid instead of an overlapping stack. |
+| `labels`  | `AvatarGroupLabels` | no       | —       | Overrides for the component’s user-visible strings (i18n).                 |
 
 ## Examples
 

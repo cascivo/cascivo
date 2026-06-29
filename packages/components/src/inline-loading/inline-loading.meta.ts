@@ -11,12 +11,19 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'status',
+      description: 'Status state.',
       type: "'inactive' | 'active' | 'finished' | 'error'",
       required: true,
     },
-    { name: 'label', type: 'ReactNode', required: false },
+    {
+      name: 'label',
+      description: 'Text label for the control.',
+      type: 'ReactNode',
+      required: false,
+    },
     {
       name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
       type: '{ active?: string; finished?: string; error?: string }',
       required: false,
     },

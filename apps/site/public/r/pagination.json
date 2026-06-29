@@ -43,11 +43,13 @@
       },
       {
         "name": "onPageChange",
+        "description": "Called with the new page number when it changes.",
         "type": "(page: number) => void",
         "required": true
       },
       {
         "name": "onPageSizeChange",
+        "description": "Called with the new page size when it changes.",
         "type": "(size: number) => void",
         "required": false
       },
@@ -66,6 +68,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

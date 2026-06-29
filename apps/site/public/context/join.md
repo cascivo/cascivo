@@ -24,11 +24,11 @@ Join is a layout-only container (role="none"). Accessibility semantics belong on
 
 ## Props
 
-| Name          | Type              | Required    | Default | Description |
-| ------------- | ----------------- | ----------- | ------- | ----------- | --- |
-| `children`    | `React.ReactNode` | Yes         | —       | —           |
-| `orientation` | `'horizontal'     | 'vertical'` | No      | horizontal  | —   |
-| `className`   | `string`          | No          | —       | —           |
+| Name          | Type              | Required    | Default | Description                                              |
+| ------------- | ----------------- | ----------- | ------- | -------------------------------------------------------- | ------------------------------------ |
+| `children`    | `React.ReactNode` | Yes         | —       | Content rendered inside the component.                   |
+| `orientation` | `'horizontal'     | 'vertical'` | No      | horizontal                                               | Layout orientation of the component. |
+| `className`   | `string`          | No          | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

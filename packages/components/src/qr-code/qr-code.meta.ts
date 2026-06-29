@@ -9,7 +9,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     { name: 'value', type: 'string', required: true, description: 'Text or URL to encode' },
-    { name: 'size', type: 'number', required: false, default: '128' },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: 'number',
+      required: false,
+      default: '128',
+    },
     {
       name: 'errorCorrection',
       type: "'L' | 'M' | 'Q' | 'H'",
@@ -23,9 +29,21 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'CSS length rounding the corners',
     },
-    { name: 'fill', type: 'string', required: false, default: 'currentColor' },
-    { name: 'background', type: 'string', required: false, default: 'transparent' },
-    { name: 'label', type: 'string', required: false },
+    {
+      name: 'fill',
+      description: 'Foreground color of the QR modules.',
+      type: 'string',
+      required: false,
+      default: 'currentColor',
+    },
+    {
+      name: 'background',
+      description: 'Background color behind the QR code.',
+      type: 'string',
+      required: false,
+      default: 'transparent',
+    },
+    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
   ],
   tokens: ['--cascivo-color-text'],
   accessibility: {

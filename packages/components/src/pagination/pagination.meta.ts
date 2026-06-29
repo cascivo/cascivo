@@ -11,8 +11,18 @@ export const meta: ComponentMeta = {
     { name: 'page', type: 'number', required: true, description: 'Current page (1-based)' },
     { name: 'pageSize', type: 'number', required: true, description: 'Items per page' },
     { name: 'totalItems', type: 'number', required: true, description: 'Total number of items' },
-    { name: 'onPageChange', type: '(page: number) => void', required: true },
-    { name: 'onPageSizeChange', type: '(size: number) => void', required: false },
+    {
+      name: 'onPageChange',
+      description: 'Called with the new page number when it changes.',
+      type: '(page: number) => void',
+      required: true,
+    },
+    {
+      name: 'onPageSizeChange',
+      description: 'Called with the new page size when it changes.',
+      type: '(size: number) => void',
+      required: false,
+    },
     {
       name: 'pageSizeOptions',
       type: 'number[]',
@@ -26,7 +36,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Overridable English strings for all visible and accessible text',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-text',

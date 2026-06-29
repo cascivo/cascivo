@@ -25,39 +25,46 @@
     "props": [
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": false
       },
       {
         "name": "min",
+        "description": "Minimum allowed value.",
         "type": "number",
         "required": false,
         "default": "0"
       },
       {
         "name": "max",
+        "description": "Maximum allowed value.",
         "type": "number",
         "required": false,
         "default": "100"
       },
       {
         "name": "step",
+        "description": "Increment between allowed values.",
         "type": "number",
         "required": false,
         "default": "1"
       },
       {
         "name": "value",
+        "description": "The controlled value.",
         "type": "number",
         "required": false
       },
       {
         "name": "defaultValue",
+        "description": "The initial value when uncontrolled.",
         "type": "number",
         "required": false
       },
       {
         "name": "disabled",
+        "description": "When true, disables the control and removes it from the tab order.",
         "type": "boolean",
         "required": false,
         "default": "false"

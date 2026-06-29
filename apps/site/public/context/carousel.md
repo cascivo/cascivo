@@ -32,14 +32,14 @@ The container is a labelled region with aria-roledescription="carousel"; each sl
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description             |
-| --------------- | ------------------------- | -------- | ------- | ----------------------- |
-| `children`      | `ReactNode`               | No       | —       | Slides as children      |
-| `slides`        | `ReactNode[]`             | No       | —       | Slides as an array      |
-| `index`         | `number`                  | No       | —       | Controlled active index |
-| `defaultIndex`  | `number`                  | No       | 0       | —                       |
-| `onIndexChange` | `(index: number) => void` | No       | —       | —                       |
-| `loop`          | `boolean`                 | No       | false   | —                       |
+| Name            | Type                      | Required | Default | Description                                           |
+| --------------- | ------------------------- | -------- | ------- | ----------------------------------------------------- |
+| `children`      | `ReactNode`               | No       | —       | Slides as children                                    |
+| `slides`        | `ReactNode[]`             | No       | —       | Slides as an array                                    |
+| `index`         | `number`                  | No       | —       | Controlled active index                               |
+| `defaultIndex`  | `number`                  | No       | 0       | The initial slide index when uncontrolled.            |
+| `onIndexChange` | `(index: number) => void` | No       | —       | Called with the new slide index when it changes.      |
+| `loop`          | `boolean`                 | No       | false   | When true, navigation wraps around from end to start. |
 
 ## Tokens
 

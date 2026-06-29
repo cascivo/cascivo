@@ -37,12 +37,14 @@
       },
       {
         "name": "vertical",
+        "description": "When true, lays the steps out vertically.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

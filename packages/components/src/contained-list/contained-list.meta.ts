@@ -8,9 +8,25 @@ export const meta: ComponentMeta = {
   variants: ['on-page', 'disclosed'],
   sizes: [],
   props: [
-    { name: 'label', type: 'ReactNode', required: true },
-    { name: 'kind', type: "'on-page' | 'disclosed'", required: false, default: 'on-page' },
-    { name: 'action', type: 'ReactNode', required: false },
+    {
+      name: 'label',
+      description: 'Text label for the control.',
+      type: 'ReactNode',
+      required: true,
+    },
+    {
+      name: 'kind',
+      description: "Visual treatment — 'on-page' or 'disclosed'.",
+      type: "'on-page' | 'disclosed'",
+      required: false,
+      default: 'on-page',
+    },
+    {
+      name: 'action',
+      description: 'Primary action shown in the component.',
+      type: 'ReactNode',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

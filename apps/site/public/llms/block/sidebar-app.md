@@ -38,7 +38,6 @@ App with sidebar navigation
 ## Dependencies
 
 - `@cascivo/react`
-- `layout/app-shell`
 
 ## Tags
 

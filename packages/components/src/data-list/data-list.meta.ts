@@ -10,17 +10,31 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'items',
+      description: 'The items to render.',
       type: '{ id?: string; label: ReactNode; value: ReactNode }[]',
       required: true,
     },
     {
       name: 'orientation',
+      description: 'Layout orientation of the component.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',
     },
-    { name: 'dividers', type: 'boolean', required: false, default: 'false' },
-    { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
+    {
+      name: 'dividers',
+      description: 'When true, shows dividers between items.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md'",
+      required: false,
+      default: 'md',
+    },
   ],
   tokens: [
     '--cascivo-color-text',

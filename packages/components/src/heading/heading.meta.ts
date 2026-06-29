@@ -8,9 +8,16 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['sm', 'md', 'lg', 'xl', '2xl'],
   props: [
-    { name: 'level', type: '1 | 2 | 3 | 4 | 5 | 6', required: false, default: '2' },
+    {
+      name: 'level',
+      description: 'Heading level (1–6) mapping to h1–h6.',
+      type: '1 | 2 | 3 | 4 | 5 | 6',
+      required: false,
+      default: '2',
+    },
     {
       name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
       type: "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
       required: false,
       default: 'derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)',

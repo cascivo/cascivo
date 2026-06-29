@@ -8,14 +8,25 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'content', type: 'ReactNode', required: true },
+    {
+      name: 'content',
+      description: 'The tooltip content shown on hover/focus.',
+      type: 'ReactNode',
+      required: true,
+    },
     {
       name: 'placement',
+      description: 'Placement relative to the trigger.',
       type: "'top' | 'right' | 'bottom' | 'left'",
       required: false,
       default: 'top',
     },
-    { name: 'children', type: 'ReactElement', required: true },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'ReactElement',
+      required: true,
+    },
     {
       name: 'delay',
       type: 'number',

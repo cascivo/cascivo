@@ -33,12 +33,12 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 
 ## Props
 
-| Name          | Type                   | Required   | Default | Description |
-| ------------- | ---------------------- | ---------- | ------- | ----------- | --- | --- |
-| `items`       | `NavigationMenuItem[]` | Yes        | —       | —           |
-| `aria-label`  | `string`               | No         | —       | —           |
-| `orientation` | `'horizontal'          | 'vertical' | 'both'` | No          | —   | —   |
-| `className`   | `string`               | No         | —       | —           |
+| Name          | Type                   | Required   | Default | Description                                              |
+| ------------- | ---------------------- | ---------- | ------- | -------------------------------------------------------- | --- | ------------------------------------ |
+| `items`       | `NavigationMenuItem[]` | Yes        | —       | The items to render.                                     |
+| `aria-label`  | `string`               | No         | —       | Accessible label used when no visible label is present.  |
+| `orientation` | `'horizontal'          | 'vertical' | 'both'` | No                                                       | —   | Layout orientation of the component. |
+| `className`   | `string`               | No         | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 

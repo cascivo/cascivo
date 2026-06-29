@@ -8,16 +8,36 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'items', type: '{ id: string; label: string; level?: number }[]', required: true },
+    {
+      name: 'items',
+      description: 'The items to render.',
+      type: '{ id: string; label: string; level?: number }[]',
+      required: true,
+    },
     {
       name: 'activeId',
       type: 'string',
       required: false,
       description: 'Controlled active item id; disables built-in scroll-spy when set',
     },
-    { name: 'onActiveChange', type: '(id: string) => void', required: false },
-    { name: 'labels', type: '{ nav?: string }', required: false },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'onActiveChange',
+      description: 'Called with the id of the active section when it changes.',
+      type: '(id: string) => void',
+      required: false,
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: '{ nav?: string }',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-font-sans',

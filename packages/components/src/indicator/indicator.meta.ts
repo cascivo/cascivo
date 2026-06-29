@@ -10,6 +10,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'children',
+      description: 'Content rendered inside the component.',
       type: 'React.ReactNode',
       required: true,
     },
@@ -21,12 +22,14 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'placement',
+      description: 'Placement relative to the trigger.',
       type: "'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
       required: false,
       default: 'top-end',
     },
     {
       name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
       type: 'string',
       required: false,
     },

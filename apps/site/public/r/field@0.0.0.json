@@ -25,38 +25,45 @@
     "props": [
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "description",
+        "description": "Supporting description text.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "error",
+        "description": "Error message shown when the value is invalid.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "required",
+        "description": "When true, marks the field as required.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "disabled",
+        "description": "When true, disables the control and removes it from the tab order.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "id",
+        "description": "Id applied to the root element (auto-generated when omitted).",
         "type": "string",
         "required": false
       },
       {
         "name": "children",
+        "description": "Content rendered inside the component.",
         "type": "ReactElement",
         "required": true
       }

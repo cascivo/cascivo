@@ -8,9 +8,16 @@ export const meta: ComponentMeta = {
   variants: ['disc', 'decimal', 'none'],
   sizes: [],
   props: [
-    { name: 'as', type: "'ul' | 'ol'", required: false, default: 'ul' },
+    {
+      name: 'as',
+      description: 'The HTML element to render as.',
+      type: "'ul' | 'ol'",
+      required: false,
+      default: 'ul',
+    },
     {
       name: 'marker',
+      description: "List marker style ('disc' | 'decimal' | 'none').",
       type: "'disc' | 'decimal' | 'none'",
       required: false,
       default: 'derived from as (ul→disc, ol→decimal)',

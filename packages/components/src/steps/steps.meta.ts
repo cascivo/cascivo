@@ -29,7 +29,12 @@ export const meta: ComponentMeta = {
       default: "'horizontal'",
       description: 'Layout direction of the steps',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

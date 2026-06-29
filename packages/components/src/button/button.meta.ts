@@ -10,15 +10,46 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'primary' | 'secondary' | 'ghost' | 'destructive'",
       required: false,
       default: 'primary',
     },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
-    { name: 'loading', type: 'boolean', required: false, default: 'false' },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
-    { name: 'asChild', type: 'boolean', required: false, default: 'false' },
-    { name: 'onClick', type: 'React.MouseEventHandler<HTMLButtonElement>', required: false },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
+    {
+      name: 'loading',
+      description: 'When true, shows a loading state.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'asChild',
+      description:
+        'When true, renders the child element as the root via Slot, merging props (polymorphic rendering).',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'onClick',
+      description: 'Called when the element is clicked.',
+      type: 'React.MouseEventHandler<HTMLButtonElement>',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

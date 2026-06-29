@@ -46,6 +46,7 @@
       },
       {
         "name": "children",
+        "description": "Content rendered inside the component.",
         "type": "ReactNode",
         "required": true
       },
@@ -57,6 +58,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

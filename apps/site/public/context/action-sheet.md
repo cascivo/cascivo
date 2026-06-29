@@ -36,15 +36,15 @@ Renders role="menu" with role="menuitem" buttons under vertical roving focus (Ar
 
 | Name           | Type                                  | Required | Default | Description                                                                   |
 | -------------- | ------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
-| `open`         | `boolean`                             | No       | —       | —                                                                             |
-| `defaultOpen`  | `boolean`                             | No       | —       | —                                                                             |
-| `onOpenChange` | `(open: boolean) => void`             | No       | —       | —                                                                             |
+| `open`         | `boolean`                             | No       | —       | Whether the component is open (controlled).                                   |
+| `defaultOpen`  | `boolean`                             | No       | —       | Whether the component is open on first render (uncontrolled).                 |
+| `onOpenChange` | `(open: boolean) => void`             | No       | —       | Called with the next open state when it changes.                              |
 | `actions`      | `ActionSheetAction[]`                 | Yes      | —       | Choices, each with a label, onSelect, and optional destructive/disabled flags |
-| `title`        | `React.ReactNode`                     | No       | —       | —                                                                             |
-| `description`  | `React.ReactNode`                     | No       | —       | —                                                                             |
-| `showCancel`   | `boolean`                             | No       | true    | —                                                                             |
-| `labels`       | `{ cancel?: string; label?: string }` | No       | —       | —                                                                             |
-| `className`    | `string`                              | No       | —       | —                                                                             |
+| `title`        | `React.ReactNode`                     | No       | —       | Title text for the component.                                                 |
+| `description`  | `React.ReactNode`                     | No       | —       | Supporting description text.                                                  |
+| `showCancel`   | `boolean`                             | No       | true    | When true, shows a cancel button below the actions.                           |
+| `labels`       | `{ cancel?: string; label?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                    |
+| `className`    | `string`                              | No       | —       | Additional CSS class names merged onto the root element.                      |
 
 ## Tokens
 

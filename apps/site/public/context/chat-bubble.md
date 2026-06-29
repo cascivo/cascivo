@@ -33,14 +33,14 @@ Pure layout component with role="none". Wrap a list of ChatBubble elements in an
 
 ## Props
 
-| Name        | Type              | Required | Default | Description |
-| ----------- | ----------------- | -------- | ------- | ----------- | --- |
-| `children`  | `React.ReactNode` | Yes      | —       | —           |
-| `side`      | `'start'          | 'end'`   | No      | start       | —   |
-| `avatar`    | `React.ReactNode` | No       | —       | —           |
-| `name`      | `string`          | No       | —       | —           |
-| `time`      | `string`          | No       | —       | —           |
-| `className` | `string`          | No       | —       | —           |
+| Name        | Type              | Required | Default | Description                                              |
+| ----------- | ----------------- | -------- | ------- | -------------------------------------------------------- | ---------------------------------- |
+| `children`  | `React.ReactNode` | Yes      | —       | Content rendered inside the component.                   |
+| `side`      | `'start'          | 'end'`   | No      | start                                                    | Edge the component is anchored to. |
+| `avatar`    | `React.ReactNode` | No       | —       | Avatar element shown beside the message.                 |
+| `name`      | `string`          | No       | —       | Display name of the message sender.                      |
+| `time`      | `string`          | No       | —       | Timestamp text shown with the message.                   |
+| `className` | `string`          | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 

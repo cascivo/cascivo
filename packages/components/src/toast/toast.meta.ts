@@ -8,15 +8,27 @@ export const meta: ComponentMeta = {
   variants: ['default', 'success', 'warning', 'destructive'],
   sizes: [],
   props: [
-    { name: 'title', type: 'string', required: true },
-    { name: 'description', type: 'string', required: false },
+    { name: 'title', description: 'Title text for the component.', type: 'string', required: true },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'default' | 'success' | 'warning' | 'destructive'",
       required: false,
       default: 'default',
     },
-    { name: 'duration', type: 'number', required: false, default: '5000' },
+    {
+      name: 'duration',
+      description: 'How long (ms) the toast stays visible before auto-dismiss.',
+      type: 'number',
+      required: false,
+      default: '5000',
+    },
   ],
   tokens: [
     '--cascivo-color-surface-overlay',

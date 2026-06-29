@@ -33,20 +33,20 @@ import { Search } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                      | Required | Default        | Description |
-| -------------- | ------------------------- | -------- | -------------- | ----------- | ---- | --- |
-| `value`        | `string`                  | no       | —              | —           |
-| `defaultValue` | `string`                  | no       | `''`           | —           |
-| `onChange`     | `(value: string) => void` | no       | —              | —           |
-| `onSearch`     | `(value: string) => void` | no       | —              | —           |
-| `debounceMs`   | `number`                  | no       | `300`          | —           |
-| `placeholder`  | `string`                  | no       | `Search`       | —           |
-| `size`         | `'sm'                     | 'md'     | 'lg'`          | no          | `md` | —   |
-| `label`        | `string`                  | no       | `Search`       | —           |
-| `disabled`     | `boolean`                 | no       | `false`        | —           |
-| `clearLabel`   | `string`                  | no       | `Clear search` | —           |
-| `id`           | `string`                  | no       | —              | —           |
-| `className`    | `string`                  | no       | —              | —           |
+| Prop           | Type                      | Required | Default        | Description                                                        |
+| -------------- | ------------------------- | -------- | -------------- | ------------------------------------------------------------------ | ---- | ----------------------------------------------------- |
+| `value`        | `string`                  | no       | —              | The controlled value.                                              |
+| `defaultValue` | `string`                  | no       | `''`           | The initial value when uncontrolled.                               |
+| `onChange`     | `(value: string) => void` | no       | —              | Called when the value changes.                                     |
+| `onSearch`     | `(value: string) => void` | no       | —              | Called with the query, debounced, as the user types.               |
+| `debounceMs`   | `number`                  | no       | `300`          | Debounce delay (ms) before onSearch fires.                         |
+| `placeholder`  | `string`                  | no       | `Search`       | Placeholder text shown when the field is empty.                    |
+| `size`         | `'sm'                     | 'md'     | 'lg'`          | no                                                                 | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `label`        | `string`                  | no       | `Search`       | Text label for the control.                                        |
+| `disabled`     | `boolean`                 | no       | `false`        | When true, disables the control and removes it from the tab order. |
+| `clearLabel`   | `string`                  | no       | `Clear search` | Accessible label for the clear button.                             |
+| `id`           | `string`                  | no       | —              | Id applied to the root element (auto-generated when omitted).      |
+| `className`    | `string`                  | no       | —              | Additional CSS class names merged onto the root element.           |
 
 ## Examples
 

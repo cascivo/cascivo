@@ -24,8 +24,8 @@ import { Sparkline } from '@cascivo/charts'
 | -------- | ---------- | -------- | ------- | --------------------------- |
 | `data`   | `number[]` | yes      | —       | Array of numeric values     |
 | `label`  | `string`   | yes      | —       | Accessible label            |
-| `width`  | `number`   | no       | `80`    | —                           |
-| `height` | `number`   | no       | `32`    | —                           |
+| `width`  | `number`   | no       | `80`    | Width of the component.     |
+| `height` | `number`   | no       | `32`    | Height of the component.    |
 | `color`  | `string`   | no       | —       | Stroke color (CSS value)    |
 | `endDot` | `boolean`  | no       | —       | Show dot at last data point |
 

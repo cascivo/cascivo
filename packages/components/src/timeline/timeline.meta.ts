@@ -10,11 +10,13 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'items',
+      description: 'The items to render.',
       type: '{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" | "current" | "upcoming" }[]',
       required: true,
     },
     {
       name: 'orientation',
+      description: 'Layout orientation of the component.',
       type: "'vertical' | 'horizontal'",
       required: false,
       default: 'vertical',

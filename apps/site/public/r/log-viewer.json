@@ -25,50 +25,59 @@
     "props": [
       {
         "name": "lines",
+        "description": "The log lines to display (a signal or array).",
         "type": "ReadonlySignal<readonly LogLine[]> | readonly LogLine[]",
         "required": true
       },
       {
         "name": "rowHeight",
+        "description": "Height of each row in pixels, used for virtualization.",
         "type": "number",
         "required": false,
         "default": "20"
       },
       {
         "name": "overscan",
+        "description": "Number of extra rows rendered above and below the viewport.",
         "type": "number",
         "required": false,
         "default": "8"
       },
       {
         "name": "follow",
+        "description": "Whether the view auto-scrolls to follow new lines (controlled).",
         "type": "boolean",
         "required": false
       },
       {
         "name": "onFollowChange",
+        "description": "Called with the new follow state when it changes.",
         "type": "(follow: boolean) => void",
         "required": false
       },
       {
         "name": "ansi",
+        "description": "When true, parses ANSI color escape codes into colored spans.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "search",
+        "description": "Query used to filter and highlight matching lines.",
         "type": "string",
         "required": false
       },
       {
         "name": "maxHeight",
+        "description": "Maximum height of the scroll viewport (CSS length).",
         "type": "string",
         "required": false,
         "default": "'24rem'"
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "LogViewerLabels",
         "required": false
       }

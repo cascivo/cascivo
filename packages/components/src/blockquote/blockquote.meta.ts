@@ -10,6 +10,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'cite',
+      description: 'URL of the quote’s source (sets the HTML cite attribute).',
       type: 'string',
       required: false,
       default: 'undefined',

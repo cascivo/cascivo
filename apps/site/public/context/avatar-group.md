@@ -33,13 +33,13 @@ The stack is a labelled group; the +N chip carries an i18n-defaulted aria-label 
 
 ## Props
 
-| Name      | Type                | Required | Default | Description                                   |
-| --------- | ------------------- | -------- | ------- | --------------------------------------------- | --- | --- |
-| `max`     | `number`            | No       | —       | Cap the number of visible avatars             |
-| `total`   | `number`            | No       | —       | Override the total count used for the +N chip |
-| `spacing` | `'sm'               | 'md'     | 'lg'`   | No                                            | md  | —   |
-| `isGrid`  | `boolean`           | No       | false   | —                                             |
-| `labels`  | `AvatarGroupLabels` | No       | —       | —                                             |
+| Name      | Type                | Required | Default | Description                                                                |
+| --------- | ------------------- | -------- | ------- | -------------------------------------------------------------------------- | --- | ---------------------- |
+| `max`     | `number`            | No       | —       | Cap the number of visible avatars                                          |
+| `total`   | `number`            | No       | —       | Override the total count used for the +N chip                              |
+| `spacing` | `'sm'               | 'md'     | 'lg'`   | No                                                                         | md  | Spacing between items. |
+| `isGrid`  | `boolean`           | No       | false   | When true, lays the avatars out in a grid instead of an overlapping stack. |
+| `labels`  | `AvatarGroupLabels` | No       | —       | Overrides for the component’s user-visible strings (i18n).                 |
 
 ## Tokens
 

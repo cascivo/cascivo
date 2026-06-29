@@ -34,16 +34,16 @@ role="img" with alt names the image; on error it shows a fallback image or neutr
 ## Props
 
 | Name            | Type      | Required | Default | Description                                               |
-| --------------- | --------- | -------- | ------- | --------------------------------------------------------- | ------- | --- | --- | --- |
-| `src`           | `string`  | No       | —       | —                                                         |
-| `alt`           | `string`  | No       | —       | —                                                         |
+| --------------- | --------- | -------- | ------- | --------------------------------------------------------- | ------------------------ | --- | --- | ---------------------------------- | ---- | ---- | ---- | -------- |
+| `src`           | `string`  | No       | —       | Image source URL.                                         |
+| `alt`           | `string`  | No       | —       | Alternative text describing the image.                    |
 | `fallbackSrc`   | `string`  | No       | —       | Image shown if src fails to load                          |
-| `width`         | `string   | number`  | No      | —                                                         | —       |
-| `height`        | `string   | number`  | No      | —                                                         | —       |
-| `radius`        | `'none'   | 'sm'     | 'md'    | 'lg'                                                      | 'full'` | No  | md  | —   |
-| `zoom`          | `boolean` | No       | false   | —                                                         |
+| `width`         | `string   | number`  | No      | —                                                         | Width of the component.  |
+| `height`        | `string   | number`  | No      | —                                                         | Height of the component. |
+| `radius`        | `'none'   | 'sm'     | 'md'    | 'lg'                                                      | 'full'`                  | No  | md  | Corner radius of the image ('none' | 'sm' | 'md' | 'lg' | 'full'). |
+| `zoom`          | `boolean` | No       | false   | When true, zooms the image on hover.                      |
 | `removeWrapper` | `boolean` | No       | false   | Render a bare <img> with no wrapper, placeholder, or zoom |
-| `isBlurred`     | `boolean` | No       | false   | —                                                         |
+| `isBlurred`     | `boolean` | No       | false   | When true, renders a blurred backdrop behind the image.   |
 
 ## Tokens
 

@@ -10,6 +10,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'orientation',
+      description: 'Layout orientation of the component.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',

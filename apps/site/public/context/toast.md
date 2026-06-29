@@ -33,12 +33,12 @@ Toasts render into a labelled region; non-critical ones use role="status" with a
 
 ## Props
 
-| Name          | Type       | Required  | Default   | Description    |
-| ------------- | ---------- | --------- | --------- | -------------- | --- | ------- | --- |
-| `title`       | `string`   | Yes       | —         | —              |
-| `description` | `string`   | No        | —         | —              |
-| `variant`     | `'default' | 'success' | 'warning' | 'destructive'` | No  | default | —   |
-| `duration`    | `number`   | No        | 5000      | —              |
+| Name          | Type       | Required  | Default   | Description                                                |
+| ------------- | ---------- | --------- | --------- | ---------------------------------------------------------- | --- | ------- | --------------------------------- |
+| `title`       | `string`   | Yes       | —         | Title text for the component.                              |
+| `description` | `string`   | No        | —         | Supporting description text.                               |
+| `variant`     | `'default' | 'success' | 'warning' | 'destructive'`                                             | No  | default | Selects the visual style variant. |
+| `duration`    | `number`   | No        | 5000      | How long (ms) the toast stays visible before auto-dismiss. |
 
 ## Tokens
 

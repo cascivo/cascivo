@@ -27,14 +27,14 @@ import { MultiSelect } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                    | Required | Default | Description |
-| --------------- | ----------------------- | -------- | ------- | ----------- |
-| `options`       | `MultiSelectOption[]`   | yes      | —       | —           |
-| `value`         | `string[]`              | yes      | —       | —           |
-| `onValueChange` | `(v: string[]) => void` | yes      | —       | —           |
-| `placeholder`   | `string`                | no       | —       | —           |
-| `disabled`      | `boolean`               | no       | `false` | —           |
-| `labels`        | `MultiSelectLabels`     | no       | —       | —           |
+| Prop            | Type                    | Required | Default | Description                                                        |
+| --------------- | ----------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `options`       | `MultiSelectOption[]`   | yes      | —       | The selectable options.                                            |
+| `value`         | `string[]`              | yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: string[]) => void` | yes      | —       | Called with the new value when it changes.                         |
+| `placeholder`   | `string`                | no       | —       | Placeholder text shown when the field is empty.                    |
+| `disabled`      | `boolean`               | no       | `false` | When true, disables the control and removes it from the tab order. |
+| `labels`        | `MultiSelectLabels`     | no       | —       | Overrides for the component’s user-visible strings (i18n).         |
 
 ## Examples
 

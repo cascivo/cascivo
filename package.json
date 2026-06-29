@@ -33,6 +33,7 @@
     "deps:check": "node scripts/registry/deps-check.ts",
     "deps:smoke": "node scripts/registry/standalone-smoke.ts",
     "deps:check:test": "node --experimental-strip-types --test scripts/registry/deps-check.test.ts",
+    "docs:coverage": "node scripts/registry/docs-coverage.ts",
     "llms:generate": "node scripts/llms/generate.ts",
     "sitemap:generate": "node scripts/sitemap/generate.ts",
     "registry:generate": "node scripts/registry/generate.ts",

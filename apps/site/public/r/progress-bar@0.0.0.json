@@ -31,6 +31,7 @@
       },
       {
         "name": "max",
+        "description": "Maximum allowed value.",
         "type": "number",
         "required": false,
         "default": "100"
@@ -43,11 +44,13 @@
       },
       {
         "name": "helperText",
+        "description": "Supplementary text shown with the progress bar.",
         "type": "string",
         "required": false
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md'",
         "required": false,
         "default": "md"

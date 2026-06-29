@@ -8,7 +8,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
     {
       name: 'label',
       type: 'string',

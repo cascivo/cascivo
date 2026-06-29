@@ -33,8 +33,14 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Square shorthand (width === height). Explicit width/height win.',
     },
-    { name: 'width', type: 'number', required: false },
-    { name: 'height', type: 'number', required: false, default: '300' },
+    { name: 'width', description: 'Width of the component.', type: 'number', required: false },
+    {
+      name: 'height',
+      description: 'Height of the component.',
+      type: 'number',
+      required: false,
+      default: '300',
+    },
     {
       name: 'max',
       type: 'number',
@@ -63,7 +69,12 @@ export const meta: ComponentMeta = {
     },
     { name: 'tooltip', type: 'boolean', required: false, description: 'Enable hover tooltip.' },
     { name: 'legend', type: 'boolean', required: false, description: 'Show ring legend.' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'plain',
       type: 'boolean',

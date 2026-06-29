@@ -34,11 +34,11 @@ role="status" with aria-live="polite" announces the label when the status change
 
 ## Props
 
-| Name     | Type                                                     | Required | Default    | Description |
-| -------- | -------------------------------------------------------- | -------- | ---------- | ----------- | --- | --- | --- |
-| `status` | `'inactive'                                              | 'active' | 'finished' | 'error'`    | Yes | —   | —   |
-| `label`  | `ReactNode`                                              | No       | —          | —           |
-| `labels` | `{ active?: string; finished?: string; error?: string }` | No       | —          | —           |
+| Name     | Type                                                     | Required | Default    | Description                                                |
+| -------- | -------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------- | --- | --- | ------------- |
+| `status` | `'inactive'                                              | 'active' | 'finished' | 'error'`                                                   | Yes | —   | Status state. |
+| `label`  | `ReactNode`                                              | No       | —          | Text label for the control.                                |
+| `labels` | `{ active?: string; finished?: string; error?: string }` | No       | —          | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 

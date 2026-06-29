@@ -22,7 +22,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Actions revealed by dragging toward the start edge (shown on the end edge)',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

@@ -28,14 +28,14 @@ import { TagsInput } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                       | Required | Default | Description |
-| --------------- | -------------------------- | -------- | ------- | ----------- |
-| `value`         | `string[]`                 | yes      | —       | —           |
-| `onValueChange` | `(v: string[]) => void`    | yes      | —       | —           |
-| `placeholder`   | `string`                   | no       | —       | —           |
-| `validate`      | `(tag: string) => boolean` | no       | —       | —           |
-| `max`           | `number`                   | no       | —       | —           |
-| `disabled`      | `boolean`                  | no       | `false` | —           |
+| Prop            | Type                       | Required | Default | Description                                                        |
+| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `value`         | `string[]`                 | yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: string[]) => void`    | yes      | —       | Called with the new value when it changes.                         |
+| `placeholder`   | `string`                   | no       | —       | Placeholder text shown when the field is empty.                    |
+| `validate`      | `(tag: string) => boolean` | no       | —       | Returns whether a candidate tag is allowed.                        |
+| `max`           | `number`                   | no       | —       | Maximum allowed value.                                             |
+| `disabled`      | `boolean`                  | no       | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 

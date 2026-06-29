@@ -31,6 +31,7 @@
       },
       {
         "name": "title",
+        "description": "Title text for the component.",
         "type": "string",
         "required": true
       },
@@ -42,22 +43,26 @@
       },
       {
         "name": "description",
+        "description": "Supporting description text.",
         "type": "string",
         "required": false
       },
       {
         "name": "width",
+        "description": "Width of the component.",
         "type": "number",
         "required": false
       },
       {
         "name": "height",
+        "description": "Height of the component.",
         "type": "number",
         "required": false,
         "default": "300"
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       },

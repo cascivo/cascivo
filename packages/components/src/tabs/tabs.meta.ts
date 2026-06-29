@@ -8,9 +8,19 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'defaultValue', type: 'string', required: false },
-    { name: 'value', type: 'string', required: false },
-    { name: 'onValueChange', type: '(value: string) => void', required: false },
+    {
+      name: 'defaultValue',
+      description: 'The initial value when uncontrolled.',
+      type: 'string',
+      required: false,
+    },
+    { name: 'value', description: 'The controlled value.', type: 'string', required: false },
+    {
+      name: 'onValueChange',
+      description: 'Called with the new value when it changes.',
+      type: '(value: string) => void',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

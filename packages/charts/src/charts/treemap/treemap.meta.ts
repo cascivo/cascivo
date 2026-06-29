@@ -10,14 +10,31 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'data',
+      description: 'The hierarchical data to render as nested rectangles.',
       type: '{ id: string; label: string; value: number }[]',
       required: true,
     },
-    { name: 'title', type: 'string', required: true },
-    { name: 'description', type: 'string', required: false },
-    { name: 'width', type: 'number', required: false },
-    { name: 'height', type: 'number', required: false, default: '320' },
-    { name: 'className', type: 'string', required: false },
+    { name: 'title', description: 'Title text for the component.', type: 'string', required: true },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'string',
+      required: false,
+    },
+    { name: 'width', description: 'Width of the component.', type: 'number', required: false },
+    {
+      name: 'height',
+      description: 'Height of the component.',
+      type: 'number',
+      required: false,
+      default: '320',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'plain',
       type: 'boolean',

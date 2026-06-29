@@ -25,35 +25,41 @@
     "props": [
       {
         "name": "orientation",
+        "description": "Layout orientation of the component.",
         "type": "'horizontal' | 'vertical'",
         "required": false,
         "default": "horizontal"
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"
       },
       {
         "name": "roving",
+        "description": "When true, uses roving tabindex so arrow keys move focus between buttons.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "loop",
+        "description": "When true, navigation wraps around from end to start.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "aria-label",
+        "description": "Accessible label used when no visible label is present.",
         "type": "string",
         "required": false
       },
       {
         "name": "aria-labelledby",
+        "description": "Id of the element that labels this component.",
         "type": "string",
         "required": false
       }

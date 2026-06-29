@@ -50,6 +50,9 @@ jobs:
           pnpm run deps:check
           pnpm run deps:smoke
 
+      - name: Prop-documentation coverage
+        run: pnpm run docs:coverage
+
       - name: Story audit (orphan stories)
         run: pnpm run audit:stories
 

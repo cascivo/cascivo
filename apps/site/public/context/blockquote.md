@@ -31,9 +31,9 @@ Renders a native <blockquote> with the attribution in <footer><cite>, so the quo
 
 ## Props
 
-| Name   | Type     | Required | Default   | Description |
-| ------ | -------- | -------- | --------- | ----------- |
-| `cite` | `string` | No       | undefined | —           |
+| Name   | Type     | Required | Default   | Description                                               |
+| ------ | -------- | -------- | --------- | --------------------------------------------------------- |
+| `cite` | `string` | No       | undefined | URL of the quote’s source (sets the HTML cite attribute). |
 
 ## Tokens
 

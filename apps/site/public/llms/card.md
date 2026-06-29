@@ -29,9 +29,9 @@ import { Card } from '@cascivo/react'
 ## Props
 
 | Prop      | Type       | Required   | Default     | Description |
-| --------- | ---------- | ---------- | ----------- | ----------- | --------- | ---- | --- |
-| `variant` | `'default' | 'outlined' | 'elevated'` | no          | `default` | —    |
-| `padding` | `'none'    | 'sm'       | 'md'        | 'lg'`       | no        | `md` | —   |
+| --------- | ---------- | ---------- | ----------- | ----------- | --------- | --------------------------------- | ------------------------------- |
+| `variant` | `'default' | 'outlined' | 'elevated'` | no          | `default` | Selects the visual style variant. |
+| `padding` | `'none'    | 'sm'       | 'md'        | 'lg'`       | no        | `md`                              | Inner padding of the component. |
 
 ## Examples
 

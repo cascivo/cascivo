@@ -28,8 +28,8 @@ import { Kbd } from '@cascivo/react'
 ## Props
 
 | Prop   | Type  | Required | Default | Description |
-| ------ | ----- | -------- | ------- | ----------- | --- |
-| `size` | `'sm' | 'md'`    | no      | `md`        | —   |
+| ------ | ----- | -------- | ------- | ----------- | ----------------------------------------------------- |
+| `size` | `'sm' | 'md'`    | no      | `md`        | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 

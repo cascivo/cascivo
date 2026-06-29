@@ -25,16 +25,19 @@
     "props": [
       {
         "name": "open",
+        "description": "Whether the component is open (controlled).",
         "type": "boolean",
         "required": false
       },
       {
         "name": "defaultOpen",
+        "description": "Whether the component is open on first render (uncontrolled).",
         "type": "boolean",
         "required": false
       },
       {
         "name": "onOpenChange",
+        "description": "Called with the next open state when it changes.",
         "type": "(open: boolean) => void",
         "required": false
       },
@@ -47,42 +50,50 @@
       },
       {
         "name": "activeSnap",
+        "description": "The controlled snap-point index.",
         "type": "number",
         "required": false
       },
       {
         "name": "defaultSnap",
+        "description": "The initial snap-point index when uncontrolled.",
         "type": "number",
         "required": false,
         "default": "0"
       },
       {
         "name": "onSnapChange",
+        "description": "Called with the new snap-point index when it changes.",
         "type": "(index: number) => void",
         "required": false
       },
       {
         "name": "title",
+        "description": "Title text for the component.",
         "type": "React.ReactNode",
         "required": false
       },
       {
         "name": "description",
+        "description": "Supporting description text.",
         "type": "React.ReactNode",
         "required": false
       },
       {
         "name": "children",
+        "description": "Content rendered inside the component.",
         "type": "React.ReactNode",
         "required": false
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "{ close?: string; handle?: string }",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

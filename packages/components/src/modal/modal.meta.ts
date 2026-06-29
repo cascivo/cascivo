@@ -8,11 +8,38 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'open', type: 'boolean', required: false, default: 'false' },
-    { name: 'onClose', type: '() => void', required: false },
-    { name: 'title', type: 'string', required: false },
-    { name: 'description', type: 'string', required: false },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'open',
+      description: 'Whether the component is open (controlled).',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'onClose',
+      description: 'Called when the component is closed.',
+      type: '() => void',
+      required: false,
+    },
+    {
+      name: 'title',
+      description: 'Title text for the component.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
     {
       name: 'draggable',
       type: 'boolean',

@@ -27,8 +27,14 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Subtitle below the title.',
     },
-    { name: 'width', type: 'number', required: false },
-    { name: 'height', type: 'number', required: false, default: '320' },
+    { name: 'width', description: 'Width of the component.', type: 'number', required: false },
+    {
+      name: 'height',
+      description: 'Height of the component.',
+      type: 'number',
+      required: false,
+      default: '320',
+    },
     {
       name: 'showConversion',
       type: 'boolean',
@@ -37,7 +43,12 @@ export const meta: ComponentMeta = {
       description: 'Append each stage’s % of the first stage to its label.',
     },
     { name: 'tooltip', type: 'boolean', required: false, description: 'Enable hover tooltip.' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'plain',
       type: 'boolean',

@@ -35,7 +35,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Pattern color (defaults to the border token).',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-color-border'],
   accessibility: {

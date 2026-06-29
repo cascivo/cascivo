@@ -28,15 +28,15 @@ import { Field } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type           | Required | Default | Description |
-| ------------- | -------------- | -------- | ------- | ----------- |
-| `label`       | `ReactNode`    | no       | —       | —           |
-| `description` | `ReactNode`    | no       | —       | —           |
-| `error`       | `ReactNode`    | no       | —       | —           |
-| `required`    | `boolean`      | no       | `false` | —           |
-| `disabled`    | `boolean`      | no       | `false` | —           |
-| `id`          | `string`       | no       | —       | —           |
-| `children`    | `ReactElement` | yes      | —       | —           |
+| Prop          | Type           | Required | Default | Description                                                        |
+| ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `label`       | `ReactNode`    | no       | —       | Text label for the control.                                        |
+| `description` | `ReactNode`    | no       | —       | Supporting description text.                                       |
+| `error`       | `ReactNode`    | no       | —       | Error message shown when the value is invalid.                     |
+| `required`    | `boolean`      | no       | `false` | When true, marks the field as required.                            |
+| `disabled`    | `boolean`      | no       | `false` | When true, disables the control and removes it from the tab order. |
+| `id`          | `string`       | no       | —       | Id applied to the root element (auto-generated when omitted).      |
+| `children`    | `ReactElement` | yes      | —       | Content rendered inside the component.                             |
 
 ## Examples
 

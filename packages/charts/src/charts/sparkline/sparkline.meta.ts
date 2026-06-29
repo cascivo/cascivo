@@ -10,8 +10,20 @@ export const meta: ComponentMeta = {
   props: [
     { name: 'data', type: 'number[]', required: true, description: 'Array of numeric values' },
     { name: 'label', type: 'string', required: true, description: 'Accessible label' },
-    { name: 'width', type: 'number', required: false, default: '80' },
-    { name: 'height', type: 'number', required: false, default: '32' },
+    {
+      name: 'width',
+      description: 'Width of the component.',
+      type: 'number',
+      required: false,
+      default: '80',
+    },
+    {
+      name: 'height',
+      description: 'Height of the component.',
+      type: 'number',
+      required: false,
+      default: '32',
+    },
     { name: 'color', type: 'string', required: false, description: 'Stroke color (CSS value)' },
     {
       name: 'endDot',

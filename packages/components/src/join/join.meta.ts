@@ -11,17 +11,20 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'children',
+      description: 'Content rendered inside the component.',
       type: 'React.ReactNode',
       required: true,
     },
     {
       name: 'orientation',
+      description: 'Layout orientation of the component.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',
     },
     {
       name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
       type: 'string',
       required: false,
     },

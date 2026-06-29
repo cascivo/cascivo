@@ -8,16 +8,38 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'open', type: 'boolean', required: true },
-    { name: 'onOpenChange', type: '(open: boolean) => void', required: true },
-    { name: 'groups', type: 'CommandGroup[]', required: true },
+    {
+      name: 'open',
+      description: 'Whether the component is open (controlled).',
+      type: 'boolean',
+      required: true,
+    },
+    {
+      name: 'onOpenChange',
+      description: 'Called with the next open state when it changes.',
+      type: '(open: boolean) => void',
+      required: true,
+    },
+    {
+      name: 'groups',
+      description: 'The grouped commands to display.',
+      type: 'CommandGroup[]',
+      required: true,
+    },
     {
       name: 'placeholder',
+      description: 'Placeholder text shown when the field is empty.',
       type: 'string',
       required: false,
       default: 'Type a command or search…',
     },
-    { name: 'emptyLabel', type: 'string', required: false, default: 'No results found' },
+    {
+      name: 'emptyLabel',
+      description: 'Text shown when no commands match the query.',
+      type: 'string',
+      required: false,
+      default: 'No results found',
+    },
     {
       name: 'hotkey',
       type: 'boolean',
@@ -25,7 +47,13 @@ export const meta: ComponentMeta = {
       default: 'true',
       description: 'Global Cmd/Ctrl+K toggles the menu via onOpenChange',
     },
-    { name: 'label', type: 'string', required: false, default: 'Command menu' },
+    {
+      name: 'label',
+      description: 'Text label for the control.',
+      type: 'string',
+      required: false,
+      default: 'Command menu',
+    },
     {
       name: 'loading',
       type: 'boolean',
@@ -39,7 +67,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Fires on every query keystroke — use to fetch async items',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface-overlay',

@@ -10,15 +10,42 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'default' | 'info' | 'success' | 'warning' | 'destructive'",
       required: false,
       default: 'default',
     },
-    { name: 'title', type: 'string', required: false },
-    { name: 'icon', type: 'ReactNode', required: false },
-    { name: 'dismissible', type: 'boolean', required: false, default: 'false' },
-    { name: 'onDismiss', type: '() => void', required: false },
-    { name: 'action', type: '{ label: string; onClick: () => void }', required: false },
+    {
+      name: 'title',
+      description: 'Title text for the component.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'icon',
+      description: 'Icon element rendered in the component.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'dismissible',
+      description: 'When true, shows a control to dismiss the component.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'onDismiss',
+      description: 'Called when the component is dismissed.',
+      type: '() => void',
+      required: false,
+    },
+    {
+      name: 'action',
+      description: 'Primary action shown in the component.',
+      type: '{ label: string; onClick: () => void }',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-info',

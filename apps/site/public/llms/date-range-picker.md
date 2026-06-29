@@ -91,7 +91,6 @@ Limits the selectable dates
 
 - `@cascivo/core`
 - `@cascivo/i18n`
-- `Calendar`
 
 ## Tags
 

@@ -35,12 +35,12 @@ The floating element uses role="tooltip" and is linked to the trigger via aria-d
 
 ## Props
 
-| Name        | Type           | Required | Default  | Description                         |
-| ----------- | -------------- | -------- | -------- | ----------------------------------- | --- | --- | --- |
-| `content`   | `ReactNode`    | Yes      | —        | —                                   |
-| `placement` | `'top'         | 'right'  | 'bottom' | 'left'`                             | No  | top | —   |
-| `children`  | `ReactElement` | Yes      | —        | —                                   |
-| `delay`     | `number`       | No       | 200      | Milliseconds to wait before showing |
+| Name        | Type           | Required | Default  | Description                               |
+| ----------- | -------------- | -------- | -------- | ----------------------------------------- | --- | --- | ---------------------------------- |
+| `content`   | `ReactNode`    | Yes      | —        | The tooltip content shown on hover/focus. |
+| `placement` | `'top'         | 'right'  | 'bottom' | 'left'`                                   | No  | top | Placement relative to the trigger. |
+| `children`  | `ReactElement` | Yes      | —        | Content rendered inside the component.    |
+| `delay`     | `number`       | No       | 200      | Milliseconds to wait before showing       |
 
 ## Tokens
 

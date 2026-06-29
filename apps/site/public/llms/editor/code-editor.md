@@ -32,9 +32,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 | `tabSize`         | `number`                  | no                                 | `2`         | Spaces per tab stop                                                                            |
 | `insertSpaces`    | `boolean`                 | no                                 | `true`      | Insert spaces vs a literal tab on Tab                                                          |
 | `wrap`            | `boolean`                 | no                                 | `false`     | Soft-wrap long lines instead of scrolling horizontally                                         |
-| `readOnly`        | `boolean`                 | no                                 | `false`     | —                                                                                              |
-| `disabled`        | `boolean`                 | no                                 | `false`     | —                                                                                              |
-| `placeholder`     | `string`                  | no                                 | —           | —                                                                                              |
+| `readOnly`        | `boolean`                 | no                                 | `false`     | When true, the value is shown but cannot be edited.                                            |
+| `disabled`        | `boolean`                 | no                                 | `false`     | When true, disables the control and removes it from the tab order.                             |
+| `placeholder`     | `string`                  | no                                 | —           | Placeholder text shown when the field is empty.                                                |
 | `label`           | `string`                  | no                                 | —           | Accessible label (defaults to the i18n "Code editor")                                          |
 | `onSave`          | `(value: string) => void` | no                                 | —           | Called on Mod-S; the browser save dialog is suppressed                                         |
 | `bracketMatching` | `boolean`                 | no                                 | `false`     | Highlight the bracket matching the one adjacent to the caret                                   |
@@ -43,7 +43,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 | `decorations`     | `Decoration[]             | ((value: string) => Decoration[])` | no          | —                                                                                              | Extra offset-range → CSS class decorations |
 | `commands`        | `SlashCommand[]`          | no                                 | —           | Slash-command entries; typing "/" opens a filtered menu. Omit to disable.                      |
 | `ref`             | `Ref<CodeEditorHandle>`   | no                                 | —           | Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu |
-| `className`       | `string`                  | no                                 | —           | —                                                                                              |
+| `className`       | `string`                  | no                                 | —           | Additional CSS class names merged onto the root element.                                       |
 
 ## Examples
 

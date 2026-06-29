@@ -23,11 +23,11 @@ import { Indicator } from '@cascivo/react'
 ## Props
 
 | Prop        | Type              | Required  | Default        | Description                                              |
-| ----------- | ----------------- | --------- | -------------- | -------------------------------------------------------- | --- | --------- | --- |
-| `children`  | `React.ReactNode` | yes       | —              | —                                                        |
+| ----------- | ----------------- | --------- | -------------- | -------------------------------------------------------- | --- | --------- | ---------------------------------- |
+| `children`  | `React.ReactNode` | yes       | —              | Content rendered inside the component.                   |
 | `overlay`   | `React.ReactNode` | yes       | —              | The element to display at the corner (badge, dot, count) |
-| `placement` | `'top-start'      | 'top-end' | 'bottom-start' | 'bottom-end'`                                            | no  | `top-end` | —   |
-| `className` | `string`          | no        | —              | —                                                        |
+| `placement` | `'top-start'      | 'top-end' | 'bottom-start' | 'bottom-end'`                                            | no  | `top-end` | Placement relative to the trigger. |
+| `className` | `string`          | no        | —              | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

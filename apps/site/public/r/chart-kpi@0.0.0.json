@@ -43,6 +43,7 @@
       },
       {
         "name": "icon",
+        "description": "Icon element rendered in the component.",
         "type": "ReactNode",
         "required": false
       },
@@ -54,6 +55,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

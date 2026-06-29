@@ -34,17 +34,17 @@ The scroll region is role="log" with aria-live="polite" so assistive tech announ
 
 ## Props
 
-| Name             | Type                                | Required            | Default | Description |
-| ---------------- | ----------------------------------- | ------------------- | ------- | ----------- | --- |
-| `lines`          | `ReadonlySignal<readonly LogLine[]> | readonly LogLine[]` | Yes     | —           | —   |
-| `rowHeight`      | `number`                            | No                  | 20      | —           |
-| `overscan`       | `number`                            | No                  | 8       | —           |
-| `follow`         | `boolean`                           | No                  | —       | —           |
-| `onFollowChange` | `(follow: boolean) => void`         | No                  | —       | —           |
-| `ansi`           | `boolean`                           | No                  | false   | —           |
-| `search`         | `string`                            | No                  | —       | —           |
-| `maxHeight`      | `string`                            | No                  | '24rem' | —           |
-| `labels`         | `LogViewerLabels`                   | No                  | —       | —           |
+| Name             | Type                                | Required            | Default | Description                                                     |
+| ---------------- | ----------------------------------- | ------------------- | ------- | --------------------------------------------------------------- | --------------------------------------------- |
+| `lines`          | `ReadonlySignal<readonly LogLine[]> | readonly LogLine[]` | Yes     | —                                                               | The log lines to display (a signal or array). |
+| `rowHeight`      | `number`                            | No                  | 20      | Height of each row in pixels, used for virtualization.          |
+| `overscan`       | `number`                            | No                  | 8       | Number of extra rows rendered above and below the viewport.     |
+| `follow`         | `boolean`                           | No                  | —       | Whether the view auto-scrolls to follow new lines (controlled). |
+| `onFollowChange` | `(follow: boolean) => void`         | No                  | —       | Called with the new follow state when it changes.               |
+| `ansi`           | `boolean`                           | No                  | false   | When true, parses ANSI color escape codes into colored spans.   |
+| `search`         | `string`                            | No                  | —       | Query used to filter and highlight matching lines.              |
+| `maxHeight`      | `string`                            | No                  | '24rem' | Maximum height of the scroll viewport (CSS length).             |
+| `labels`         | `LogViewerLabels`                   | No                  | —       | Overrides for the component’s user-visible strings (i18n).      |
 
 ## Tokens
 

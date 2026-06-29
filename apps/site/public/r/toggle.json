@@ -25,33 +25,39 @@
     "props": [
       {
         "name": "checked",
+        "description": "Whether the control is checked (controlled).",
         "type": "boolean",
         "required": false
       },
       {
         "name": "defaultChecked",
+        "description": "Whether the control is checked on first render (uncontrolled).",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "onChange",
+        "description": "Called when the value changes.",
         "type": "(checked: boolean) => void",
         "required": false
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": false
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md'",
         "required": false,
         "default": "md"
       },
       {
         "name": "disabled",
+        "description": "When true, disables the control and removes it from the tab order.",
         "type": "boolean",
         "required": false,
         "default": "false"

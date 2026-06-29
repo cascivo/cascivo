@@ -25,38 +25,45 @@
       },
       {
         "name": "sourceY",
+        "description": "Y coordinate of the edge’s source point.",
         "type": "number",
         "required": true
       },
       {
         "name": "targetX",
+        "description": "X coordinate of the edge’s target point.",
         "type": "number",
         "required": true
       },
       {
         "name": "targetY",
+        "description": "Y coordinate of the edge’s target point.",
         "type": "number",
         "required": true
       },
       {
         "name": "type",
+        "description": "Edge path style ('bezier' | 'straight' | 'smoothstep').",
         "type": "'bezier' | 'straight' | 'smoothstep'",
         "required": false,
         "default": "bezier"
       },
       {
         "name": "animated",
+        "description": "When true, animates the edge path (dashed flow).",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "selected",
+        "description": "Whether the edge is rendered as selected.",
         "type": "boolean",
         "required": false,
         "default": "false"
@@ -77,6 +84,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

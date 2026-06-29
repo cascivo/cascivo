@@ -24,11 +24,11 @@ import { Toc } from '@cascivo/react'
 
 | Prop             | Type                                              | Required | Default | Description                                                      |
 | ---------------- | ------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------- |
-| `items`          | `{ id: string; label: string; level?: number }[]` | yes      | —       | —                                                                |
+| `items`          | `{ id: string; label: string; level?: number }[]` | yes      | —       | The items to render.                                             |
 | `activeId`       | `string`                                          | no       | —       | Controlled active item id; disables built-in scroll-spy when set |
-| `onActiveChange` | `(id: string) => void`                            | no       | —       | —                                                                |
-| `labels`         | `{ nav?: string }`                                | no       | —       | —                                                                |
-| `className`      | `string`                                          | no       | —       | —                                                                |
+| `onActiveChange` | `(id: string) => void`                            | no       | —       | Called with the id of the active section when it changes.        |
+| `labels`         | `{ nav?: string }`                                | no       | —       | Overrides for the component’s user-visible strings (i18n).       |
+| `className`      | `string`                                          | no       | —       | Additional CSS class names merged onto the root element.         |
 
 ## Examples
 

@@ -31,12 +31,14 @@
       },
       {
         "name": "defaultValue",
+        "description": "The initial value when uncontrolled.",
         "type": "string",
         "required": false,
         "default": "#3b82f6"
       },
       {
         "name": "onValueChange",
+        "description": "Called with the new value when it changes.",
         "type": "(value: string) => void",
         "required": false
       },
@@ -48,23 +50,27 @@
       },
       {
         "name": "alpha",
+        "description": "When true, enables alpha (opacity) selection.",
         "type": "boolean",
         "required": false,
         "default": "true"
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": false
       },
       {
         "name": "disabled",
+        "description": "When true, disables the control and removes it from the tab order.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"

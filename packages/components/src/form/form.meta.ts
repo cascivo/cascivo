@@ -9,10 +9,30 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'form', type: 'FormStore<T>', required: true },
-    { name: 'onValid', type: '(values: T) => void | Promise<void>', required: true },
-    { name: 'children', type: 'ReactNode', required: true },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'form',
+      description: 'The form store holding values, validation, and submission state.',
+      type: 'FormStore<T>',
+      required: true,
+    },
+    {
+      name: 'onValid',
+      description: 'Called with the values when the form passes validation.',
+      type: '(values: T) => void | Promise<void>',
+      required: true,
+    },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'ReactNode',
+      required: true,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-space-4'],
   accessibility: {

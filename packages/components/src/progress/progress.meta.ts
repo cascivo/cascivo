@@ -16,11 +16,18 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'primary' | 'info' | 'success' | 'warning' | 'error'",
       required: false,
       default: 'primary',
     },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
   ],
   tokens: [
     '--cascivo-color-surface-2',

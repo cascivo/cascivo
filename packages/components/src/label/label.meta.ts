@@ -8,12 +8,46 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'htmlFor', type: 'string', required: false },
-    { name: 'asChild', type: 'boolean', required: false, default: 'false' },
-    { name: 'required', type: 'boolean', required: false, default: 'false' },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
-    { name: 'children', type: 'ReactNode', required: true },
-    { name: 'labels', type: '{ required?: string }', required: false },
+    {
+      name: 'htmlFor',
+      description: 'Id of the form control this label is associated with.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'asChild',
+      description:
+        'When true, renders the child element as the root via Slot, merging props (polymorphic rendering).',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'required',
+      description: 'When true, marks the field as required.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'ReactNode',
+      required: true,
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: '{ required?: string }',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-space-1',

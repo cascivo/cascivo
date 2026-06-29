@@ -8,11 +8,33 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'label', type: 'string', required: false },
-    { name: 'checked', type: 'boolean', required: false },
-    { name: 'indeterminate', type: 'boolean', required: false, default: 'false' },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
-    { name: 'onChange', type: 'React.ChangeEventHandler<HTMLInputElement>', required: false },
+    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'checked',
+      description: 'Whether the control is checked (controlled).',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'indeterminate',
+      description: 'When true, renders the mixed/indeterminate state.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'onChange',
+      description: 'Called when the value changes.',
+      type: 'React.ChangeEventHandler<HTMLInputElement>',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

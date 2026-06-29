@@ -33,15 +33,15 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 ## Props
 
-| Name           | Type      | Required | Default | Description |
-| -------------- | --------- | -------- | ------- | ----------- |
-| `label`        | `string`  | No       | —       | —           |
-| `min`          | `number`  | No       | 0       | —           |
-| `max`          | `number`  | No       | 100     | —           |
-| `step`         | `number`  | No       | 1       | —           |
-| `value`        | `number`  | No       | —       | —           |
-| `defaultValue` | `number`  | No       | —       | —           |
-| `disabled`     | `boolean` | No       | false   | —           |
+| Name           | Type      | Required | Default | Description                                                        |
+| -------------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
+| `label`        | `string`  | No       | —       | Text label for the control.                                        |
+| `min`          | `number`  | No       | 0       | Minimum allowed value.                                             |
+| `max`          | `number`  | No       | 100     | Maximum allowed value.                                             |
+| `step`         | `number`  | No       | 1       | Increment between allowed values.                                  |
+| `value`        | `number`  | No       | —       | The controlled value.                                              |
+| `defaultValue` | `number`  | No       | —       | The initial value when uncontrolled.                               |
+| `disabled`     | `boolean` | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 

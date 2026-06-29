@@ -38,15 +38,15 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 
 ## Props
 
-| Name          | Type           | Required | Default | Description |
-| ------------- | -------------- | -------- | ------- | ----------- |
-| `label`       | `ReactNode`    | No       | —       | —           |
-| `description` | `ReactNode`    | No       | —       | —           |
-| `error`       | `ReactNode`    | No       | —       | —           |
-| `required`    | `boolean`      | No       | false   | —           |
-| `disabled`    | `boolean`      | No       | false   | —           |
-| `id`          | `string`       | No       | —       | —           |
-| `children`    | `ReactElement` | Yes      | —       | —           |
+| Name          | Type           | Required | Default | Description                                                        |
+| ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `label`       | `ReactNode`    | No       | —       | Text label for the control.                                        |
+| `description` | `ReactNode`    | No       | —       | Supporting description text.                                       |
+| `error`       | `ReactNode`    | No       | —       | Error message shown when the value is invalid.                     |
+| `required`    | `boolean`      | No       | false   | When true, marks the field as required.                            |
+| `disabled`    | `boolean`      | No       | false   | When true, disables the control and removes it from the tab order. |
+| `id`          | `string`       | No       | —       | Id applied to the root element (auto-generated when omitted).      |
+| `children`    | `ReactElement` | Yes      | —       | Content rendered inside the component.                             |
 
 ## Tokens
 

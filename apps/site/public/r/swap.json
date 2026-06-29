@@ -25,38 +25,45 @@
     "props": [
       {
         "name": "on",
+        "description": "Content shown in the active (on) state.",
         "type": "React.ReactNode",
         "required": true
       },
       {
         "name": "off",
+        "description": "Content shown in the inactive (off) state.",
         "type": "React.ReactNode",
         "required": true
       },
       {
         "name": "checked",
+        "description": "Whether the control is checked (controlled).",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "onChange",
+        "description": "Called when the value changes.",
         "type": "(checked: boolean) => void",
         "required": false
       },
       {
         "name": "mode",
+        "description": "Transition between states ('rotate' | 'flip').",
         "type": "'rotate' | 'flip'",
         "required": false,
         "default": "rotate"
       },
       {
         "name": "aria-label",
+        "description": "Accessible label used when no visible label is present.",
         "type": "string",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

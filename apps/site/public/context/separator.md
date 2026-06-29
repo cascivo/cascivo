@@ -33,8 +33,8 @@ role="separator" when meaningful so screen readers announce the division; settin
 ## Props
 
 | Name          | Type          | Required    | Default | Description                                                              |
-| ------------- | ------------- | ----------- | ------- | ------------------------------------------------------------------------ | --- |
-| `orientation` | `'horizontal' | 'vertical'` | No      | horizontal                                                               | —   |
+| ------------- | ------------- | ----------- | ------- | ------------------------------------------------------------------------ | ------------------------------------ |
+| `orientation` | `'horizontal' | 'vertical'` | No      | horizontal                                                               | Layout orientation of the component. |
 | `decorative`  | `boolean`     | No          | false   | When true, the separator is purely visual and hidden from assistive tech |
 
 ## Tokens

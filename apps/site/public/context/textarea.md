@@ -33,14 +33,14 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Props
 
-| Name       | Type      | Required   | Default | Description |
-| ---------- | --------- | ---------- | ------- | ----------- | -------- | --- |
-| `label`    | `string`  | No         | —       | —           |
-| `hint`     | `string`  | No         | —       | —           |
-| `error`    | `string`  | No         | —       | —           |
-| `rows`     | `number`  | No         | 4       | —           |
-| `resize`   | `'none'   | 'vertical' | 'both'` | No          | vertical | —   |
-| `disabled` | `boolean` | No         | false   | —           |
+| Name       | Type      | Required   | Default | Description                                                        |
+| ---------- | --------- | ---------- | ------- | ------------------------------------------------------------------ | -------- | ---------------------------------------------------- | ---------- | -------- |
+| `label`    | `string`  | No         | —       | Text label for the control.                                        |
+| `hint`     | `string`  | No         | —       | Supplementary hint text shown with the control.                    |
+| `error`    | `string`  | No         | —       | Error message shown when the value is invalid.                     |
+| `rows`     | `number`  | No         | 4       | Number of visible text rows.                                       |
+| `resize`   | `'none'   | 'vertical' | 'both'` | No                                                                 | vertical | Which directions the textarea can be resized ('none' | 'vertical' | 'both'). |
+| `disabled` | `boolean` | No         | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 

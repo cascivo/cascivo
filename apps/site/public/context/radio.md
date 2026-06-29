@@ -34,12 +34,12 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 
 ## Props
 
-| Name       | Type      | Required | Default | Description |
-| ---------- | --------- | -------- | ------- | ----------- |
-| `label`    | `string`  | No       | —       | —           |
-| `value`    | `string`  | Yes      | —       | —           |
-| `disabled` | `boolean` | No       | false   | —           |
-| `name`     | `string`  | No       | —       | —           |
+| Name       | Type      | Required | Default | Description                                                        |
+| ---------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
+| `label`    | `string`  | No       | —       | Text label for the control.                                        |
+| `value`    | `string`  | Yes      | —       | The controlled value.                                              |
+| `disabled` | `boolean` | No       | false   | When true, disables the control and removes it from the tab order. |
+| `name`     | `string`  | No       | —       | Form field name shared by the radio group.                         |
 
 ## Tokens
 

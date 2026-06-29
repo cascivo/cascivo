@@ -37,18 +37,21 @@
       },
       {
         "name": "spacing",
+        "description": "Spacing between items.",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"
       },
       {
         "name": "isGrid",
+        "description": "When true, lays the avatars out in a grid instead of an overlapping stack.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "AvatarGroupLabels",
         "required": false
       }

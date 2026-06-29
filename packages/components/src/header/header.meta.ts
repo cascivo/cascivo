@@ -26,8 +26,19 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Right-aligned slot for buttons or an avatar',
     },
-    { name: 'sticky', type: 'boolean', required: false, default: 'false' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'sticky',
+      description: 'When true, the header sticks to the top on scroll.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-header-bg',

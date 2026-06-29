@@ -32,15 +32,15 @@ import { OverflowMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type                                                                                              | Required      | Default        | Description  |
-| ----------- | ------------------------------------------------------------------------------------------------- | ------------- | -------------- | ------------ | --- |
-| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes           | —              | —            |
-| `onSelect`  | `(value: string) => void`                                                                         | no            | —              | —            |
-| `placement` | `'bottom-start'                                                                                   | 'bottom-end'` | no             | `bottom-end` | —   |
-| `ariaLabel` | `string`                                                                                          | no            | `More actions` | —            |
-| `size`      | `'sm'                                                                                             | 'md'`         | no             | `md`         | —   |
-| `disabled`  | `boolean`                                                                                         | no            | `false`        | —            |
-| `className` | `string`                                                                                          | no            | —              | —            |
+| Prop        | Type                                                                                              | Required      | Default        | Description                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------- | -------------- | ------------------------------------------------------------------ | ----------------------------------------------------- |
+| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes           | —              | The items to render.                                               |
+| `onSelect`  | `(value: string) => void`                                                                         | no            | —              | Called with the selected value.                                    |
+| `placement` | `'bottom-start'                                                                                   | 'bottom-end'` | no             | `bottom-end`                                                       | Placement relative to the trigger.                    |
+| `ariaLabel` | `string`                                                                                          | no            | `More actions` | Accessible label for the component.                                |
+| `size`      | `'sm'                                                                                             | 'md'`         | no             | `md`                                                               | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled`  | `boolean`                                                                                         | no            | `false`        | When true, disables the control and removes it from the tab order. |
+| `className` | `string`                                                                                          | no            | —              | Additional CSS class names merged onto the root element.           |
 
 ## Examples
 

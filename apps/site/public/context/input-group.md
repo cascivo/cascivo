@@ -33,11 +33,11 @@ Inline addons are marked aria-hidden because they are purely decorative units/ic
 
 ## Props
 
-| Name       | Type        | Required | Default | Description |
-| ---------- | ----------- | -------- | ------- | ----------- |
-| `prefix`   | `ReactNode` | No       | —       | —           |
-| `suffix`   | `ReactNode` | No       | —       | —           |
-| `children` | `ReactNode` | Yes      | —       | —           |
+| Name       | Type        | Required | Default | Description                                            |
+| ---------- | ----------- | -------- | ------- | ------------------------------------------------------ |
+| `prefix`   | `ReactNode` | No       | —       | Content rendered before the input (leading adornment). |
+| `suffix`   | `ReactNode` | No       | —       | Content rendered after the input (trailing adornment). |
+| `children` | `ReactNode` | Yes      | —       | Content rendered inside the component.                 |
 
 ## Tokens
 

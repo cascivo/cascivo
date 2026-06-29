@@ -8,16 +8,32 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['xs', 'sm', 'md', 'lg', 'xl'],
   props: [
-    { name: 'src', type: 'string', required: false },
-    { name: 'alt', type: 'string', required: false },
+    { name: 'src', description: 'Image source URL.', type: 'string', required: false },
+    {
+      name: 'alt',
+      description: 'Alternative text describing the image.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'fallback',
       type: 'string',
       required: false,
       description: 'Initials shown when no image is available',
     },
-    { name: 'size', type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'", required: false, default: 'md' },
-    { name: 'status', type: "'online' | 'offline' | 'busy'", required: false },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      required: false,
+      default: 'md',
+    },
+    {
+      name: 'status',
+      description: 'Status state.',
+      type: "'online' | 'offline' | 'busy'",
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-accent-subtle',

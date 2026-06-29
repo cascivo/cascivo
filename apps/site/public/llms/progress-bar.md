@@ -39,13 +39,13 @@ import { ProgressBar } from '@cascivo/react'
 ## Props
 
 | Prop         | Type      | Required  | Default  | Description                                                |
-| ------------ | --------- | --------- | -------- | ---------------------------------------------------------- | -------- | -------------------------------------------------------------- |
+| ------------ | --------- | --------- | -------- | ---------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------- |
 | `value`      | `number`  | no        | —        | Current value from 0 to max; omit for an indeterminate bar |
-| `max`        | `number`  | no        | `100`    | —                                                          |
+| `max`        | `number`  | no        | `100`    | Maximum allowed value.                                     |
 | `label`      | `string`  | no        | —        | Visible label above the track, wired via aria-labelledby   |
-| `helperText` | `string`  | no        | —        | —                                                          |
-| `size`       | `'sm'     | 'md'`     | no       | `md`                                                       | —        |
-| `status`     | `'active' | 'success' | 'error'` | no                                                         | `active` | success/error tint the fill and show a glyph next to the label |
+| `helperText` | `string`  | no        | —        | Supplementary text shown with the progress bar.            |
+| `size`       | `'sm'     | 'md'`     | no       | `md`                                                       | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `status`     | `'active' | 'success' | 'error'` | no                                                         | `active`                                              | success/error tint the fill and show a glyph next to the label |
 
 ## Examples
 

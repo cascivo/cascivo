@@ -29,13 +29,13 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop            | Type      | Required  | Default  | Description                       |
-| --------------- | --------- | --------- | -------- | --------------------------------- | --- | --- | ------------------------------------------------------- |
-| `type`          | `'source' | 'target'` | yes      | —                                 | —   |
-| `position`      | `'top'    | 'right'   | 'bottom' | 'left'`                           | no  | —   | Edge of the node (defaults: source→right, target→left). |
-| `id`            | `string`  | no        | —        | Handle id for multi-handle nodes. |
-| `isConnectable` | `boolean` | no        | `true`   | —                                 |
-| `className`     | `string`  | no        | —        | —                                 |
+| Prop            | Type      | Required  | Default  | Description                                              |
+| --------------- | --------- | --------- | -------- | -------------------------------------------------------- | ------------------------------------------------------------- | ---------- | ------------------------------------------------------- |
+| `type`          | `'source' | 'target'` | yes      | —                                                        | Whether the handle is a connection source or target ('source' | 'target'). |
+| `position`      | `'top'    | 'right'   | 'bottom' | 'left'`                                                  | no                                                            | —          | Edge of the node (defaults: source→right, target→left). |
+| `id`            | `string`  | no        | —        | Handle id for multi-handle nodes.                        |
+| `isConnectable` | `boolean` | no        | `true`   | Whether new connections can start or end at this handle. |
+| `className`     | `string`  | no        | —        | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
