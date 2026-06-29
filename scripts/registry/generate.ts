@@ -231,10 +231,10 @@ async function scanRoot(root: SourceRoot, version: string): Promise<RegistryComp
 }
 
 /** Run the repo formatter over registry.json so committed output is stable. */
-function formatRegistry(): void {
+function formatRegistry(target: string = REGISTRY_PATH): void {
   const vp = join(REPO_ROOT, 'node_modules', '.bin', process.platform === 'win32' ? 'vp.cmd' : 'vp')
   if (!existsSync(vp)) return
-  spawnSync(vp, ['fmt', REGISTRY_PATH], { cwd: REPO_ROOT, stdio: 'ignore' })
+  spawnSync(vp, ['fmt', target], { cwd: REPO_ROOT, stdio: 'ignore' })
 }
 
 async function main(): Promise<void> {
@@ -265,6 +265,10 @@ async function main(): Promise<void> {
   const docsPublicR = join(REPO_ROOT, 'apps', 'site', 'public', 'r')
   const index = parseLegacyRegistry(registry)
   await buildRegistry(index, docsPublicR)
+  // buildRegistry emits JSON.stringify(_, 2) with expanded arrays; oxfmt collapses
+  // short arrays. Format here so committed per-item files match the formatter and
+  // raw `pnpm regen` output stays drift-free without a separate `vp check --fix`.
+  formatRegistry(docsPublicR)
 
   // Additive shadcn-registry interop: emit r/shadcn/<name>.json with inlined
   // source so `npx shadcn add <host>/r/shadcn/<name>.json` works. cascivo's own
@@ -285,6 +289,7 @@ async function main(): Promise<void> {
   }
   const shadcnDir = join(docsPublicR, 'shadcn')
   await writeShadcnRegistry(index, shadcnDir, { resolveContent: (url) => contentByUrl.get(url) })
+  formatRegistry(shadcnDir)
   console.log(`Wrote shadcn-compatible registry to ${shadcnDir}`)
 
   // Copy JSON Schemas to docs public
