@@ -7,7 +7,7 @@
  * gallery (apps/site) renders that file — it never queries anything at runtime.
  *
  * Network failures are soft (a registry is skipped with a warning); the catalog
- * is written from whatever resolved. Run: pnpm exec tsx scripts/registry/build-marketplace.ts
+ * is written from whatever resolved. Run: node scripts/registry/build-marketplace.ts
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
