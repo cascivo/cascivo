@@ -36,6 +36,17 @@ const fixtureCatalog: TokenCatalog = {
       group: 'button',
       resolvedDefault: null,
       resolvesPerTheme: true,
+      canonical: true,
+    },
+    {
+      name: '--cascivo-color-bg',
+      value: 'var(--cascivo-color-background)',
+      layer: 'semantic',
+      group: 'color',
+      resolvedDefault: null,
+      resolvesPerTheme: true,
+      canonical: false,
+      aliasOf: '--cascivo-color-background',
     },
   ],
 }
@@ -94,13 +105,25 @@ describe('token filtering (via fixture)', () => {
 
   it('filters by layer semantic', () => {
     const semantic = fixtureCatalog.tokens.filter((t) => t.layer === 'semantic')
-    expect(semantic).toHaveLength(1)
-    expect(semantic[0]?.name).toBe('--cascivo-color-accent')
+    expect(semantic.map((t) => t.name)).toEqual(['--cascivo-color-accent', '--cascivo-color-bg'])
   })
 
   it('filters by layer component', () => {
     const component = fixtureCatalog.tokens.filter((t) => t.layer === 'component')
     expect(component).toHaveLength(1)
     expect(component[0]?.name).toBe('--cascivo-button-bg')
+  })
+
+  it('excludes aliases by default — one canonical name per purpose (post-1 F3)', () => {
+    // Mirrors the get_tokens default filter: drop tokens with an aliasOf.
+    const canonicalOnly = fixtureCatalog.tokens.filter((t) => !t.aliasOf)
+    expect(canonicalOnly.some((t) => t.name === '--cascivo-color-bg')).toBe(false)
+    expect(canonicalOnly.some((t) => t.name === '--cascivo-color-accent')).toBe(true)
+  })
+
+  it('surfaces the canonical name when aliases are included', () => {
+    const alias = fixtureCatalog.tokens.find((t) => t.name === '--cascivo-color-bg')!
+    expect(alias.canonical).toBe(false)
+    expect(alias.aliasOf).toBe('--cascivo-color-background')
   })
 })

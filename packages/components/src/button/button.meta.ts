@@ -60,6 +60,8 @@ export const meta: ComponentMeta = {
     '--cascivo-radius-button',
     '--cascivo-focus-ring',
     '--cascivo-disabled-opacity',
+    '--cascivo-text-ui',
+    '--cascivo-text-body',
   ],
   accessibility: {
     role: 'button',

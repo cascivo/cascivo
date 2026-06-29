@@ -40,6 +40,12 @@ export interface ValidateComponentOptions {
    * `var(--cascivo-…)` reference outside this set is flagged as hallucinated.
    */
   tokenNames?: ReadonlySet<string>
+  /**
+   * Map of alias token → canonical token. When provided, any `var(--cascivo-…)`
+   * reference using an alias is flagged (warning) to steer toward the canonical
+   * name — "exactly one correct token" per purpose.
+   */
+  aliasMap?: ReadonlyMap<string, string>
 }
 
 export interface ValidateComponentResult {
@@ -204,6 +210,31 @@ function checkTokens(css: string, tokenNames: ReadonlySet<string>): ComponentVio
   return violations
 }
 
+/** Flag `var(--cascivo-…)` references that use an alias where a canonical token exists. */
+function checkAliasTokens(
+  css: string,
+  aliasMap: ReadonlyMap<string, string>,
+): ComponentViolation[] {
+  if (aliasMap.size === 0) return []
+  const violations: ComponentViolation[] = []
+  const re = /var\(\s*(--cascivo-[\w-]+)/g
+  let m: RegExpExecArray | null
+  const seen = new Set<string>()
+  while ((m = re.exec(css)) !== null) {
+    const token = m[1]!
+    const canonical = aliasMap.get(token)
+    if (!canonical || seen.has(token)) continue
+    seen.add(token)
+    violations.push({
+      rule: 'alias-token-used',
+      severity: 'warning',
+      line: lineOf(css, m.index),
+      detail: `"${token}" is an alias — prefer the canonical "${canonical}"`,
+    })
+  }
+  return violations
+}
+
 /** Run all structural invariants over a candidate component's source. */
 export function validateComponentSource(
   input: ValidateComponentInput,
@@ -215,6 +246,7 @@ export function validateComponentSource(
     violations.push(...checkBreakpoints(input.css))
     violations.push(...checkFallbacks(input.css))
     if (options.tokenNames) violations.push(...checkTokens(input.css, options.tokenNames))
+    if (options.aliasMap) violations.push(...checkAliasTokens(input.css, options.aliasMap))
   }
   violations.sort((a, b) => a.line - b.line)
   return {

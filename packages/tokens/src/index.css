@@ -127,6 +127,26 @@
     --cascivo-tracking-normal: 0em;
     --cascivo-tracking-wide: 0.025em;
 
+    /* ── Typography roles (semantic) ───────────────────
+       Purpose-named type tokens. Each resolves to exactly ONE primitive size
+       above, so "what size is a button label?" has exactly one answer:
+       --cascivo-text-ui. These tokens carry size only; pair them with the
+       recommended weight/leading in docs/cookbooks/derivable-theming.md. */
+    --cascivo-text-display: var(--cascivo-text-4xl); /* hero / marketing display */
+    --cascivo-text-heading-lg: var(--cascivo-text-3xl); /* page title (h1) */
+    --cascivo-text-heading-md: var(--cascivo-text-2xl); /* section heading (h2) */
+    --cascivo-text-heading-sm: var(--cascivo-text-xl); /* subsection heading (h3) */
+    --cascivo-text-body: var(--cascivo-text-base); /* default body copy */
+    --cascivo-text-body-sm: var(--cascivo-text-sm); /* secondary / dense body copy */
+    --cascivo-text-ui: var(
+      --cascivo-text-sm
+    ); /* control & button labels (the canonical "ui.default") */
+    --cascivo-text-label: var(--cascivo-text-sm); /* form field labels */
+    --cascivo-text-caption: var(--cascivo-text-xs); /* captions, helper text, metadata */
+    --cascivo-text-code: var(
+      --cascivo-text-sm
+    ); /* inline code / mono (pair with --cascivo-font-mono) */
+
     /* ── Border Radius — Primitive ───────────────────── */
     --cascivo-radius-none: 0px;
     --cascivo-radius-sm: 0.25rem; /* 4px */

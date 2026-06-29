@@ -32,6 +32,25 @@ export interface TokenEntry {
   group: string
   resolvedDefault: string | null
   resolvesPerTheme: boolean
+  /** True unless this token is a backwards-compat alias of another (canonical) token. */
+  canonical: boolean
+  /** When this token is an alias, the canonical token name to prefer instead. */
+  aliasOf?: string
+}
+
+// Canonical/alias map — MUST mirror scripts/tokens/generate-manifest.mjs ALIASES.
+// Key = alias token, value = its canonical token. Kept here so the catalog
+// (and every agent surface that reads it) can steer to the one correct name.
+const ALIASES: Record<string, string> = {
+  '--cascivo-color-bg': '--cascivo-color-background',
+  '--cascivo-color-text': '--cascivo-color-foreground',
+  '--cascivo-color-foreground-muted': '--cascivo-color-text-muted',
+  '--cascivo-color-error': '--cascivo-color-destructive',
+  '--cascivo-color-accent-content': '--cascivo-color-accent-foreground',
+  '--cascivo-color-success-content': '--cascivo-color-success-foreground',
+  '--cascivo-color-warning-content': '--cascivo-color-warning-foreground',
+  '--cascivo-color-destructive-content': '--cascivo-color-destructive-foreground',
+  '--cascivo-color-primary-content': '--cascivo-color-primary-fg',
 }
 
 // Primitive scale group names that use numeric or named-size suffixes.
@@ -88,7 +107,11 @@ export function extractDeclarations(css: string): Map<string, string> {
   while ((m = re.exec(css)) !== null) {
     const name = m[1]!.trim()
     const value = m[2]!.trim().replace(/\s+/g, ' ')
-    if (name.startsWith('--cascivo-')) {
+    // First declaration per name wins. Where a token is declared twice in one
+    // block (a static fallback followed by a progressive `oklch(from …)` /
+    // `contrast-color()` form), this captures the static literal — so the
+    // catalog and variant matrix resolve to a concrete value, not an expression.
+    if (name.startsWith('--cascivo-') && !result.has(name)) {
       result.set(name, value)
     }
   }
@@ -119,8 +142,10 @@ function classifyLayer(name: string): 'primitive' | 'semantic' | 'component' {
     const last = segments[segments.length - 1]!
     // Numeric suffix (e.g. "500", "4", "100", "200")
     if (/^\d+$/.test(last)) return 'primitive'
-    // Named size suffix
-    if (NAMED_SIZES.has(last)) return 'primitive'
+    // Named size suffix — only for a bare 2-segment scale step (e.g. text-lg,
+    // radius-xl). A 3+-segment token that merely ends in a size (text-heading-lg,
+    // text-body-sm) is a semantic *role*, not a primitive scale step.
+    if (NAMED_SIZES.has(last) && segments.length === 2) return 'primitive'
     // Font-stack tokens: --cascivo-font-sans, --cascivo-font-mono
     if (group === 'font' && (last === 'sans' || last === 'mono')) return 'primitive'
     // Single-segment ease tokens: --cascivo-ease-in, --cascivo-ease-out, --cascivo-ease-in-out
@@ -194,6 +219,7 @@ export function parseTokens(indexCss: string, lightCss: string): TokenEntry[] {
     const rawValue = combinedMap.get(name)!
     const onlyInTheme = !indexMap.has(name)
     const { resolved, usedTheme } = resolveValue(rawValue, indexMap, combinedMap)
+    const aliasOf = ALIASES[name]
 
     return {
       name,
@@ -202,6 +228,8 @@ export function parseTokens(indexCss: string, lightCss: string): TokenEntry[] {
       group: extractGroup(name),
       resolvedDefault: resolved,
       resolvesPerTheme: onlyInTheme || usedTheme,
+      canonical: !aliasOf,
+      ...(aliasOf ? { aliasOf } : {}),
     }
   })
 }

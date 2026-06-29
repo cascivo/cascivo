@@ -13,6 +13,7 @@
    Component CSS (@cascivo/react/styles.css) adds cascivo.component on top. */
 
 @import '@cascivo/tokens';
+@import '@cascivo/tokens/properties.css';
 @import './base.css';
 @import './light.css';
 @import './dark.css';

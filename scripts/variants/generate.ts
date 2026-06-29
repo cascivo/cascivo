@@ -47,9 +47,12 @@ export interface VariantToken {
   name: string
   layer: 'primitive' | 'semantic' | 'component'
   group: string
-  /** Semantic colour role (e.g. "accent"), only set for the `color` group. */
+  /**
+   * Semantic role: a colour role (e.g. "accent") for the `color` group, or the
+   * typography role (e.g. "ui", "heading-lg") for semantic `text` tokens.
+   */
   role?: string
-  /** State slot within the role (e.g. "hover", or "base"), only for `color`. */
+  /** State slot within the role (e.g. "hover", or "base"); colour + typography. */
   slot?: string
   /** Resolved concrete value per theme. `null` when the token is undefined there. */
   byTheme: Record<string, string | null>
@@ -105,7 +108,12 @@ function classifyLayer(name: string): 'primitive' | 'semantic' | 'component' {
   if (PRIMITIVE.has(group)) {
     const last = segments[segments.length - 1]!
     if (/^\d+$/.test(last)) return 'primitive'
-    if (['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full', 'none'].includes(last))
+    // Bare 2-segment scale step only (text-lg); a role that ends in a size
+    // (text-heading-lg, text-body-sm) is semantic, not primitive.
+    if (
+      ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full', 'none'].includes(last) &&
+      segments.length === 2
+    )
       return 'primitive'
     if (group === 'font' && (last === 'sans' || last === 'mono')) return 'primitive'
     if (group === 'ease') return 'primitive'
@@ -188,6 +196,14 @@ export function buildVariantMatrix(
         token.slot = split.slot
         ;(families[split.role] ??= {})[split.slot] = name
       }
+    } else if (group === 'text' && !name.endsWith('-fluid')) {
+      // Semantic typography role (primitives like text-lg are already skipped).
+      // The `typography` family answers "which type token for purpose X?" the
+      // same way the colour families answer "which token for accent-hover?".
+      const role = name.slice('--cascivo-text-'.length)
+      token.role = role
+      token.slot = 'base'
+      ;(families.typography ??= {})[role] = name
     }
     tokens.push(token)
   }

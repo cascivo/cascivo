@@ -1,0 +1,76 @@
+/* packages/tokens/src/properties.css */
+/* cascivo — @property registrations for themeable color custom properties.
+ *
+ * Registering the themeable color tokens as typed custom properties (<color>,
+ * inherits) buys two things:
+ *   1. Smooth interpolation when [data-theme] changes under a transition.
+ *   2. A typed substrate for future @container style() palette branching.
+ *
+ * Only *themeable* color props are registered (the values a theme overrides or
+ * that animate), not the whole primitive scale. Registration sets the property
+ * type + initial value; theme blocks still override the value as usual.
+ *
+ * Imported by @cascivo/themes/all.css (and safe to import standalone). @property
+ * is a top-level at-rule and intentionally lives outside @layer.
+ */
+
+@property --cascivo-color-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.52 0.2 250);
+}
+@property --cascivo-color-accent-hover {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.45 0.2 250);
+}
+@property --cascivo-color-accent-active {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.373 0.155 250);
+}
+@property --cascivo-color-primary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.205 0 0);
+}
+@property --cascivo-color-primary-hover {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.27 0 0);
+}
+@property --cascivo-color-primary-active {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.32 0 0);
+}
+@property --cascivo-color-secondary {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.92 0.004 264);
+}
+@property --cascivo-color-secondary-hover {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.86 0.006 264);
+}
+@property --cascivo-color-destructive {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.54 0.188 22);
+}
+@property --cascivo-color-destructive-hover {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(0.448 0.17 22);
+}
+@property --cascivo-color-text-on-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(1 0 0);
+}
+@property --cascivo-color-text-on-destructive {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: oklch(1 0 0);
+}

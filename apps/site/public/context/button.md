@@ -51,6 +51,8 @@ Renders a native <button> so Enter/Space activation, focus, and role come from t
 - `--cascivo-radius-button`
 - `--cascivo-focus-ring`
 - `--cascivo-disabled-opacity`
+- `--cascivo-text-ui`
+- `--cascivo-text-body`
 
 ## Examples
 
@@ -104,7 +106,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Button is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity
+  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-color-text-on-accent, --cascivo-color-destructive, --cascivo-radius-button, --cascivo-focus-ring, --cascivo-disabled-opacity, --cascivo-text-ui, --cascivo-text-body
 
 Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 

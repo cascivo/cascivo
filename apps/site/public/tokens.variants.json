@@ -79,6 +79,20 @@
       "content": "--cascivo-color-warning-content",
       "foreground": "--cascivo-color-warning-foreground",
       "subtle": "--cascivo-color-warning-subtle"
+    },
+    "typography": {
+      "4xl": "--cascivo-text-4xl",
+      "base": "--cascivo-text-base",
+      "body": "--cascivo-text-body",
+      "body-sm": "--cascivo-text-body-sm",
+      "caption": "--cascivo-text-caption",
+      "code": "--cascivo-text-code",
+      "display": "--cascivo-text-display",
+      "heading-lg": "--cascivo-text-heading-lg",
+      "heading-md": "--cascivo-text-heading-md",
+      "heading-sm": "--cascivo-text-heading-sm",
+      "label": "--cascivo-text-label",
+      "ui": "--cascivo-text-ui"
     }
   },
   "tokens": [
@@ -2784,7 +2798,9 @@
         "tailwind": "2.25rem",
         "terminal": "2.25rem",
         "warm": "2.25rem"
-      }
+      },
+      "role": "4xl",
+      "slot": "base"
     },
     {
       "name": "--cascivo-text-4xl-fluid",
@@ -2824,7 +2840,229 @@
         "tailwind": "1rem",
         "terminal": "1rem",
         "warm": "1rem"
-      }
+      },
+      "role": "base",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-body",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "1rem",
+        "brutalist": "1rem",
+        "corporate": "1rem",
+        "cyberpunk": "1rem",
+        "dark": "1rem",
+        "flat": "1rem",
+        "light": "1rem",
+        "midnight": "1rem",
+        "minimal": "1rem",
+        "pastel": "1rem",
+        "tailwind": "1rem",
+        "terminal": "1rem",
+        "warm": "1rem"
+      },
+      "role": "body",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-body-sm",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "0.875rem",
+        "brutalist": "0.875rem",
+        "corporate": "0.875rem",
+        "cyberpunk": "0.875rem",
+        "dark": "0.875rem",
+        "flat": "0.875rem",
+        "light": "0.875rem",
+        "midnight": "0.875rem",
+        "minimal": "0.875rem",
+        "pastel": "0.875rem",
+        "tailwind": "0.875rem",
+        "terminal": "0.875rem",
+        "warm": "0.875rem"
+      },
+      "role": "body-sm",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-caption",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "0.75rem",
+        "brutalist": "0.75rem",
+        "corporate": "0.75rem",
+        "cyberpunk": "0.75rem",
+        "dark": "0.75rem",
+        "flat": "0.75rem",
+        "light": "0.75rem",
+        "midnight": "0.75rem",
+        "minimal": "0.75rem",
+        "pastel": "0.75rem",
+        "tailwind": "0.75rem",
+        "terminal": "0.75rem",
+        "warm": "0.75rem"
+      },
+      "role": "caption",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-code",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "var( --cascivo-text-sm )",
+        "brutalist": "var( --cascivo-text-sm )",
+        "corporate": "var( --cascivo-text-sm )",
+        "cyberpunk": "var( --cascivo-text-sm )",
+        "dark": "var( --cascivo-text-sm )",
+        "flat": "var( --cascivo-text-sm )",
+        "light": "var( --cascivo-text-sm )",
+        "midnight": "var( --cascivo-text-sm )",
+        "minimal": "var( --cascivo-text-sm )",
+        "pastel": "var( --cascivo-text-sm )",
+        "tailwind": "var( --cascivo-text-sm )",
+        "terminal": "var( --cascivo-text-sm )",
+        "warm": "var( --cascivo-text-sm )"
+      },
+      "role": "code",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-display",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "2.25rem",
+        "brutalist": "2.25rem",
+        "corporate": "2.25rem",
+        "cyberpunk": "2.25rem",
+        "dark": "2.25rem",
+        "flat": "2.25rem",
+        "light": "2.25rem",
+        "midnight": "2.25rem",
+        "minimal": "2.25rem",
+        "pastel": "2.25rem",
+        "tailwind": "2.25rem",
+        "terminal": "2.25rem",
+        "warm": "2.25rem"
+      },
+      "role": "display",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-heading-lg",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "1.875rem",
+        "brutalist": "1.875rem",
+        "corporate": "1.875rem",
+        "cyberpunk": "1.875rem",
+        "dark": "1.875rem",
+        "flat": "1.875rem",
+        "light": "1.875rem",
+        "midnight": "1.875rem",
+        "minimal": "1.875rem",
+        "pastel": "1.875rem",
+        "tailwind": "1.875rem",
+        "terminal": "1.875rem",
+        "warm": "1.875rem"
+      },
+      "role": "heading-lg",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-heading-md",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "1.5rem",
+        "brutalist": "1.5rem",
+        "corporate": "1.5rem",
+        "cyberpunk": "1.5rem",
+        "dark": "1.5rem",
+        "flat": "1.5rem",
+        "light": "1.5rem",
+        "midnight": "1.5rem",
+        "minimal": "1.5rem",
+        "pastel": "1.5rem",
+        "tailwind": "1.5rem",
+        "terminal": "1.5rem",
+        "warm": "1.5rem"
+      },
+      "role": "heading-md",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-heading-sm",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "1.25rem",
+        "brutalist": "1.25rem",
+        "corporate": "1.25rem",
+        "cyberpunk": "1.25rem",
+        "dark": "1.25rem",
+        "flat": "1.25rem",
+        "light": "1.25rem",
+        "midnight": "1.25rem",
+        "minimal": "1.25rem",
+        "pastel": "1.25rem",
+        "tailwind": "1.25rem",
+        "terminal": "1.25rem",
+        "warm": "1.25rem"
+      },
+      "role": "heading-sm",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-label",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "0.875rem",
+        "brutalist": "0.875rem",
+        "corporate": "0.875rem",
+        "cyberpunk": "0.875rem",
+        "dark": "0.875rem",
+        "flat": "0.875rem",
+        "light": "0.875rem",
+        "midnight": "0.875rem",
+        "minimal": "0.875rem",
+        "pastel": "0.875rem",
+        "tailwind": "0.875rem",
+        "terminal": "0.875rem",
+        "warm": "0.875rem"
+      },
+      "role": "label",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-text-ui",
+      "layer": "semantic",
+      "group": "text",
+      "byTheme": {
+        "arcade": "var( --cascivo-text-sm )",
+        "brutalist": "var( --cascivo-text-sm )",
+        "corporate": "var( --cascivo-text-sm )",
+        "cyberpunk": "var( --cascivo-text-sm )",
+        "dark": "var( --cascivo-text-sm )",
+        "flat": "var( --cascivo-text-sm )",
+        "light": "var( --cascivo-text-sm )",
+        "midnight": "var( --cascivo-text-sm )",
+        "minimal": "var( --cascivo-text-sm )",
+        "pastel": "var( --cascivo-text-sm )",
+        "tailwind": "var( --cascivo-text-sm )",
+        "terminal": "var( --cascivo-text-sm )",
+        "warm": "var( --cascivo-text-sm )"
+      },
+      "role": "ui",
+      "slot": "base"
     },
     {
       "name": "--cascivo-tracking-normal",

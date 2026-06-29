@@ -34,14 +34,23 @@
     --cascivo-color-text: var(--cascivo-color-foreground);
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
     --cascivo-color-text-muted: oklch(0.52 0.02 265);
-    --cascivo-color-text-on-accent: oklch(0.98 0 0);
-    --cascivo-color-text-on-destructive: oklch(0.98 0 0);
-
+    --cascivo-color-text-on-accent: oklch(0.98 0 0); /* static fallback */
+    --cascivo-color-text-on-accent: contrast-color(
+      var(--cascivo-color-accent)
+    ); /* auto-contrast (WCAG) */
+    --cascivo-color-text-on-destructive: oklch(0.98 0 0); /* static fallback */
+    --cascivo-color-text-on-destructive: contrast-color(
+      var(--cascivo-color-destructive)
+    ); /* auto-contrast (WCAG) */
     /* ── Accent — coin-op red ─────────────────────────── */
     --cascivo-color-accent: oklch(0.55 0.22 27);
     --cascivo-color-accent-foreground: oklch(0.98 0 0);
-    --cascivo-color-accent-hover: oklch(0.49 0.23 27);
-    --cascivo-color-accent-active: oklch(0.44 0.23 27);
+    --cascivo-color-accent-hover: oklch(0.49 0.23 27); /* static fallback */
+    --cascivo-color-accent-hover: oklch(from var(--cascivo-color-accent) 0.49 0.23 h); /* derived */
+    --cascivo-color-accent-active: oklch(0.44 0.23 27); /* static fallback */
+    --cascivo-color-accent-active: oklch(
+      from var(--cascivo-color-accent) 0.44 0.23 h
+    ); /* derived */
     --cascivo-color-accent-subtle: oklch(0.55 0.22 27 / 0.12);
     --cascivo-color-accent-muted: oklch(0.55 0.22 27 / 0.2);
 
@@ -54,7 +63,10 @@
 
     /* ── Destructive ──────────────────────────────────── */
     --cascivo-color-destructive: oklch(0.52 0.24 25);
-    --cascivo-color-destructive-hover: oklch(0.46 0.24 25);
+    --cascivo-color-destructive-hover: oklch(0.46 0.24 25); /* static fallback */
+    --cascivo-color-destructive-hover: oklch(
+      from var(--cascivo-color-destructive) 0.46 0.24 h
+    ); /* derived */
     --cascivo-color-destructive-subtle: oklch(0.95 0.05 25);
 
     /* ── Semantic status colors ───────────────────────── */

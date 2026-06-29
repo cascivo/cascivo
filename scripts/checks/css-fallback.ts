@@ -19,6 +19,14 @@ function isIfExpression(value: string): boolean {
   return /\bif\s*\(/.test(value)
 }
 
+// Detect contrast-color(): a newer (Chrome-only as of 2026) progressive function
+// that, like @function/if(), must have a static fallback for the same property.
+// Relative color syntax (oklch(from …)) is intentionally NOT flagged — it is
+// baseline-supported and already used without fallback across the codebase.
+function isContrastColor(value: string): boolean {
+  return /\bcontrast-color\s*\(/.test(value)
+}
+
 export function auditFallbacks(cssSource: string, filename: string): FallbackViolation[] {
   const violations: FallbackViolation[] = []
   const lines = cssSource.split('\n')
@@ -66,7 +74,7 @@ export function auditFallbacks(cssSource: string, filename: string): FallbackVio
 
     const [, property, value] = declMatch
 
-    if (isFunctionCall(value) || isIfExpression(value)) {
+    if (isFunctionCall(value) || isIfExpression(value) || isContrastColor(value)) {
       // Check if current or parent block has a preceding static declaration for this property
       let hasFallback = false
 
@@ -88,7 +96,7 @@ export function auditFallbacks(cssSource: string, filename: string): FallbackVio
           line: lineNum,
           property,
           value,
-          reason: `No static fallback for '${property}' before @function/@if() call`,
+          reason: `No static fallback for '${property}' before @function/if()/contrast-color() call`,
         })
       }
     } else {

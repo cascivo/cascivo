@@ -34,9 +34,14 @@
     --cascivo-color-text: var(--cascivo-color-foreground);
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
     --cascivo-color-text-muted: oklch(0.5 0 0);
-    --cascivo-color-text-on-accent: oklch(0.1 0 0);
-    --cascivo-color-text-on-destructive: oklch(1 0 0);
-
+    --cascivo-color-text-on-accent: oklch(0.1 0 0); /* static fallback */
+    --cascivo-color-text-on-accent: contrast-color(
+      var(--cascivo-color-accent)
+    ); /* auto-contrast (WCAG) */
+    --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
+    --cascivo-color-text-on-destructive: contrast-color(
+      var(--cascivo-color-destructive)
+    ); /* auto-contrast (WCAG) */
     /* ── Accent — acid yellow ─────────────────────────── */
     --cascivo-color-accent: oklch(0.88 0.19 105);
     --cascivo-color-accent-foreground: oklch(0.1 0 0);
@@ -54,7 +59,10 @@
 
     /* ── Destructive ──────────────────────────────────── */
     --cascivo-color-destructive: oklch(0.52 0.22 22);
-    --cascivo-color-destructive-hover: oklch(0.46 0.23 22);
+    --cascivo-color-destructive-hover: oklch(0.46 0.23 22); /* static fallback */
+    --cascivo-color-destructive-hover: oklch(
+      from var(--cascivo-color-destructive) 0.46 0.23 h
+    ); /* derived */
     --cascivo-color-destructive-subtle: oklch(0.95 0.05 22);
 
     /* ── Semantic status colors ───────────────────────── */
