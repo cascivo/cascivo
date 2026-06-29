@@ -32,7 +32,7 @@
     &[data-size='sm'] {
       height: var(--cascivo-control-height-sm);
       padding-inline: var(--cascivo-space-3);
-      font-size: var(--cascivo-text-sm);
+      font-size: var(--cascivo-text-ui); /* canonical control-label role (= text-sm) */
     }
 
     &[data-size='md'] {
@@ -40,13 +40,13 @@
       padding-inline: var(--cascivo-space-4);
       padding-block: 0.5rem; /* static fallback — non-supporting browsers */
       padding-block: --cascivo-step(2); /* progressive enhancement — Chrome 133+ */
-      font-size: var(--cascivo-text-sm);
+      font-size: var(--cascivo-text-ui); /* canonical control-label role (= text-sm) */
     }
 
     &[data-size='lg'] {
       height: var(--cascivo-control-height-lg);
       padding-inline: var(--cascivo-space-6);
-      font-size: var(--cascivo-text-base);
+      font-size: var(--cascivo-text-body); /* larger control label (= text-base) */
     }
 
     /* Coarse-pointer touch targets — raise minimum to 44px, desktop density unchanged */

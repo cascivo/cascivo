@@ -2,7 +2,7 @@
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
   "generatedAt": "2026-06-29",
-  "count": 251,
+  "count": 261,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -754,6 +754,86 @@
       "layer": "semantic",
       "group": "tracking",
       "resolvedDefault": "0.025em",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-display",
+      "value": "var(--cascivo-text-4xl)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "2.25rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-heading-lg",
+      "value": "var(--cascivo-text-3xl)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "1.875rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-heading-md",
+      "value": "var(--cascivo-text-2xl)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "1.5rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-heading-sm",
+      "value": "var(--cascivo-text-xl)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "1.25rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-body",
+      "value": "var(--cascivo-text-base)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "1rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-body-sm",
+      "value": "var(--cascivo-text-sm)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "0.875rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-ui",
+      "value": "var(--cascivo-text-sm)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "0.875rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-label",
+      "value": "var(--cascivo-text-sm)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "0.875rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-caption",
+      "value": "var(--cascivo-text-xs)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "0.75rem",
+      "resolvesPerTheme": false
+    },
+    {
+      "name": "--cascivo-text-code",
+      "value": "var(--cascivo-text-sm)",
+      "layer": "semantic",
+      "group": "text",
+      "resolvedDefault": "0.875rem",
       "resolvesPerTheme": false
     },
     {

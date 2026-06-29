@@ -11,6 +11,10 @@ const INDEX_CSS = `
     --cascivo-color-accent-hover: var(--cascivo-blue-500);
     --cascivo-radius-base: 0.375rem;
     --cascivo-radius-button: var(--cascivo-radius-base);
+    --cascivo-text-sm: 0.875rem;
+    --cascivo-text-base: 1rem;
+    --cascivo-text-ui: var(--cascivo-text-sm);
+    --cascivo-text-body: var(--cascivo-text-base);
   }
 }
 `
@@ -111,6 +115,23 @@ describe('buildVariantMatrix', () => {
   it('builds a family mapping intent (role + slot) to token names', () => {
     assert.equal(matrix.families.accent?.base, '--cascivo-color-accent')
     assert.equal(matrix.families.accent?.hover, '--cascivo-color-accent-hover')
+  })
+
+  it('builds a typography family mapping role → token (post-1 "ui.default")', () => {
+    assert.equal(matrix.families.typography?.ui, '--cascivo-text-ui')
+    assert.equal(matrix.families.typography?.body, '--cascivo-text-body')
+  })
+
+  it('resolves a typography role to a theme-invariant primitive size', () => {
+    const ui = matrix.tokens.find((t) => t.name === '--cascivo-text-ui')!
+    assert.equal(ui.role, 'ui')
+    assert.equal(ui.slot, 'base')
+    assert.equal(ui.byTheme.light, '0.875rem')
+    assert.equal(ui.byTheme.warm, '0.875rem')
+  })
+
+  it('excludes primitive type scale steps from the matrix', () => {
+    assert.ok(!matrix.tokens.some((t) => t.name === '--cascivo-text-sm'))
   })
 
   it('reflects per-theme component-token resolution shifts', () => {

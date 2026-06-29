@@ -119,8 +119,10 @@ function classifyLayer(name: string): 'primitive' | 'semantic' | 'component' {
     const last = segments[segments.length - 1]!
     // Numeric suffix (e.g. "500", "4", "100", "200")
     if (/^\d+$/.test(last)) return 'primitive'
-    // Named size suffix
-    if (NAMED_SIZES.has(last)) return 'primitive'
+    // Named size suffix — only for a bare 2-segment scale step (e.g. text-lg,
+    // radius-xl). A 3+-segment token that merely ends in a size (text-heading-lg,
+    // text-body-sm) is a semantic *role*, not a primitive scale step.
+    if (NAMED_SIZES.has(last) && segments.length === 2) return 'primitive'
     // Font-stack tokens: --cascivo-font-sans, --cascivo-font-mono
     if (group === 'font' && (last === 'sans' || last === 'mono')) return 'primitive'
     // Single-segment ease tokens: --cascivo-ease-in, --cascivo-ease-out, --cascivo-ease-in-out

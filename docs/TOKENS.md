@@ -189,8 +189,18 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-text-4xl`** | `2.25rem` |  |
 | **`--cascivo-text-4xl-fluid`** | `clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)` |  |
 | **`--cascivo-text-base`** | `1rem` |  |
+| **`--cascivo-text-body`** | `var(--cascivo-text-base)` |  |
+| **`--cascivo-text-body-sm`** | `var(--cascivo-text-sm)` |  |
+| **`--cascivo-text-caption`** | `var(--cascivo-text-xs)` |  |
+| **`--cascivo-text-code`** | `var(--cascivo-text-sm)` |  |
+| **`--cascivo-text-display`** | `var(--cascivo-text-4xl)` |  |
+| **`--cascivo-text-heading-lg`** | `var(--cascivo-text-3xl)` |  |
+| **`--cascivo-text-heading-md`** | `var(--cascivo-text-2xl)` |  |
+| **`--cascivo-text-heading-sm`** | `var(--cascivo-text-xl)` |  |
+| **`--cascivo-text-label`** | `var(--cascivo-text-sm)` |  |
 | **`--cascivo-text-lg`** | `1.125rem` |  |
 | **`--cascivo-text-sm`** | `0.875rem` |  |
+| **`--cascivo-text-ui`** | `var(--cascivo-text-sm)` |  |
 | **`--cascivo-text-xl`** | `1.25rem` |  |
 | **`--cascivo-text-xs`** | `0.75rem` |  |
 | **`--cascivo-tracking-normal`** | `0em` |  |

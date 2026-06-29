@@ -89,6 +89,8 @@ Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
 - `--cascivo-radius-button`
 - `--cascivo-focus-ring`
 - `--cascivo-disabled-opacity`
+- `--cascivo-text-ui`
+- `--cascivo-text-body`
 
 ## Accessibility
 
