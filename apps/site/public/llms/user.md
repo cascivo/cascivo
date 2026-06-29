@@ -28,8 +28,8 @@ import { User } from '@cascivo/react'
 
 | Prop          | Type          | Required | Default | Description                        |
 | ------------- | ------------- | -------- | ------- | ---------------------------------- |
-| `name`        | `ReactNode`   | yes      | —       | —                                  |
-| `description` | `ReactNode`   | no       | —       | —                                  |
+| `name`        | `ReactNode`   | yes      | —       | The user’s display name.           |
+| `description` | `ReactNode`   | no       | —       | Supporting description text.       |
 | `avatarProps` | `AvatarProps` | no       | —       | Forwarded to the composed <Avatar> |
 
 ## Examples

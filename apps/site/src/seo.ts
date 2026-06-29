@@ -21,6 +21,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'The cascivo AI layer: the @cascivo/mcp server, machine-readable manifests, llms.txt, and bound-vocabulary grammar that lets agents build with cascivo without hallucinating.',
   },
+  '/api': {
+    title: `API reference${SUFFIX}`,
+    description:
+      'Every cascivo component prop, variant, and size in one searchable reference — filter by component or prop name.',
+  },
   '/charts': {
     title: `Charts${SUFFIX}`,
     description:

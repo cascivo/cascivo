@@ -33,14 +33,14 @@ Static lists use table/row/cell roles so columns are announced; selectable lists
 
 ## Props
 
-| Name           | Type                                                       | Required | Default | Description |
-| -------------- | ---------------------------------------------------------- | -------- | ------- | ----------- |
-| `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | Yes      | —       | —           |
-| `headers`      | `ReactNode[]`                                              | No       | —       | —           |
-| `selectable`   | `boolean`                                                  | No       | false   | —           |
-| `value`        | `string`                                                   | No       | —       | —           |
-| `defaultValue` | `string`                                                   | No       | —       | —           |
-| `onSelect`     | `(id: string) => void`                                     | No       | —       | —           |
+| Name           | Type                                                       | Required | Default | Description                          |
+| -------------- | ---------------------------------------------------------- | -------- | ------- | ------------------------------------ |
+| `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | Yes      | —       | The items to render.                 |
+| `headers`      | `ReactNode[]`                                              | No       | —       | The column header cells.             |
+| `selectable`   | `boolean`                                                  | No       | false   | When true, rows can be selected.     |
+| `value`        | `string`                                                   | No       | —       | The controlled value.                |
+| `defaultValue` | `string`                                                   | No       | —       | The initial value when uncontrolled. |
+| `onSelect`     | `(id: string) => void`                                     | No       | —       | Called with the selected value.      |
 
 ## Tokens
 

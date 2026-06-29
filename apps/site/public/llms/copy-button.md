@@ -33,9 +33,9 @@ import { CopyButton } from '@cascivo/react'
 ## Props
 
 | Prop     | Type                                 | Required | Default | Description                                     |
-| -------- | ------------------------------------ | -------- | ------- | ----------------------------------------------- | --- |
+| -------- | ------------------------------------ | -------- | ------- | ----------------------------------------------- | ----------------------------------------------------- |
 | `value`  | `string`                             | yes      | —       | The text written to the clipboard on click      |
-| `size`   | `'sm'                                | 'md'`    | no      | `md`                                            | —   |
+| `size`   | `'sm'                                | 'md'`    | no      | `md`                                            | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `labels` | `{ copy?: string; copied?: string }` | no       | —       | Overrides the built-in i18n labels per instance |
 
 ## Examples

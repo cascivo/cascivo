@@ -9,7 +9,12 @@ export const meta: ComponentMeta = {
   variants: ['source', 'target'],
   sizes: [],
   props: [
-    { name: 'type', type: "'source' | 'target'", required: true },
+    {
+      name: 'type',
+      description: "Whether the handle is a connection source or target ('source' | 'target').",
+      type: "'source' | 'target'",
+      required: true,
+    },
     {
       name: 'position',
       type: "'top' | 'right' | 'bottom' | 'left'",
@@ -22,8 +27,19 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Handle id for multi-handle nodes.',
     },
-    { name: 'isConnectable', type: 'boolean', required: false, default: 'true' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'isConnectable',
+      description: 'Whether new connections can start or end at this handle.',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-color-accent', '--cascivo-color-surface', '--cascivo-target-min-coarse'],
   accessibility: {

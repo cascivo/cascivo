@@ -22,11 +22,11 @@ import { Stack } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type              | Required | Default | Description                                 |
-| ----------- | ----------------- | -------- | ------- | ------------------------------------------- |
-| `children`  | `React.ReactNode` | yes      | —       | —                                           |
-| `offset`    | `number`          | no       | `4`     | Pixel offset applied per layer in both axes |
-| `className` | `string`          | no       | —       | —                                           |
+| Prop        | Type              | Required | Default | Description                                              |
+| ----------- | ----------------- | -------- | ------- | -------------------------------------------------------- |
+| `children`  | `React.ReactNode` | yes      | —       | Content rendered inside the component.                   |
+| `offset`    | `number`          | no       | `4`     | Pixel offset applied per layer in both axes              |
+| `className` | `string`          | no       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

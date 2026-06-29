@@ -37,6 +37,7 @@
       },
       {
         "name": "onClick",
+        "description": "Called when the element is clicked.",
         "type": "() => void",
         "required": false
       },
@@ -48,27 +49,32 @@
       },
       {
         "name": "position",
+        "description": "Position of the component.",
         "type": "'bottom-end' | 'bottom-start'",
         "required": false,
         "default": "bottom-end"
       },
       {
         "name": "open",
+        "description": "Whether the component is open (controlled).",
         "type": "boolean",
         "required": false
       },
       {
         "name": "defaultOpen",
+        "description": "Whether the component is open on first render (uncontrolled).",
         "type": "boolean",
         "required": false
       },
       {
         "name": "onOpenChange",
+        "description": "Called with the next open state when it changes.",
         "type": "(open: boolean) => void",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

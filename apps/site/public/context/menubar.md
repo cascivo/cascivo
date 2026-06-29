@@ -33,11 +33,11 @@ Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem trigg
 
 ## Props
 
-| Name         | Type            | Required | Default | Description |
-| ------------ | --------------- | -------- | ------- | ----------- |
-| `menus`      | `MenubarMenu[]` | Yes      | —       | —           |
-| `aria-label` | `string`        | Yes      | —       | —           |
-| `className`  | `string`        | No       | —       | —           |
+| Name         | Type            | Required | Default | Description                                              |
+| ------------ | --------------- | -------- | ------- | -------------------------------------------------------- |
+| `menus`      | `MenubarMenu[]` | Yes      | —       | The top-level menus to render.                           |
+| `aria-label` | `string`        | Yes      | —       | Accessible label used when no visible label is present.  |
+| `className`  | `string`        | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 

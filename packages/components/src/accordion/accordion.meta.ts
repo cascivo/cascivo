@@ -8,10 +8,31 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'type', type: "'single' | 'multiple'", required: false, default: 'single' },
-    { name: 'defaultValue', type: 'string | string[]', required: false },
-    { name: 'value', type: 'string | string[]', required: false },
-    { name: 'onValueChange', type: '(value: string | string[]) => void', required: false },
+    {
+      name: 'type',
+      description: "Whether one or multiple sections can be open at once ('single' | 'multiple').",
+      type: "'single' | 'multiple'",
+      required: false,
+      default: 'single',
+    },
+    {
+      name: 'defaultValue',
+      description: 'The initial value when uncontrolled.',
+      type: 'string | string[]',
+      required: false,
+    },
+    {
+      name: 'value',
+      description: 'The controlled value.',
+      type: 'string | string[]',
+      required: false,
+    },
+    {
+      name: 'onValueChange',
+      description: 'Called with the new value when it changes.',
+      type: '(value: string | string[]) => void',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-border',

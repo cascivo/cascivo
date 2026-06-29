@@ -33,12 +33,12 @@ Renders a native <form> with noValidate so validation messages come from the com
 
 ## Props
 
-| Name        | Type                 | Required       | Default | Description |
-| ----------- | -------------------- | -------------- | ------- | ----------- | --- |
-| `form`      | `FormStore<T>`       | Yes            | —       | —           |
-| `onValid`   | `(values: T) => void | Promise<void>` | Yes     | —           | —   |
-| `children`  | `ReactNode`          | Yes            | —       | —           |
-| `className` | `string`             | No             | —       | —           |
+| Name        | Type                 | Required       | Default | Description                                                      |
+| ----------- | -------------------- | -------------- | ------- | ---------------------------------------------------------------- | ------------------------------------------------------- |
+| `form`      | `FormStore<T>`       | Yes            | —       | The form store holding values, validation, and submission state. |
+| `onValid`   | `(values: T) => void | Promise<void>` | Yes     | —                                                                | Called with the values when the form passes validation. |
+| `children`  | `ReactNode`          | Yes            | —       | Content rendered inside the component.                           |
+| `className` | `string`             | No             | —       | Additional CSS class names merged onto the root element.         |
 
 ## Tokens
 

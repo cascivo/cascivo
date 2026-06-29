@@ -31,18 +31,18 @@ _Copy-paste only — this block/layout is not published as an importable package
 ## Props
 
 | Prop          | Type        | Required   | Default       | Description                                                                           |
-| ------------- | ----------- | ---------- | ------------- | ------------------------------------------------------------------------------------- | -------- | --- |
+| ------------- | ----------- | ---------- | ------------- | ------------------------------------------------------------------------------------- | -------- | ------------------------- | ---------- | -------------- |
 | `sourceX`     | `number`    | yes        | —             | Source anchor x (flow coords).                                                        |
-| `sourceY`     | `number`    | yes        | —             | —                                                                                     |
-| `targetX`     | `number`    | yes        | —             | —                                                                                     |
-| `targetY`     | `number`    | yes        | —             | —                                                                                     |
-| `type`        | `'bezier'   | 'straight' | 'smoothstep'` | no                                                                                    | `bezier` | —   |
-| `animated`    | `boolean`   | no         | `false`       | —                                                                                     |
-| `label`       | `ReactNode` | no         | —             | —                                                                                     |
-| `selected`    | `boolean`   | no         | `false`       | —                                                                                     |
+| `sourceY`     | `number`    | yes        | —             | Y coordinate of the edge’s source point.                                              |
+| `targetX`     | `number`    | yes        | —             | X coordinate of the edge’s target point.                                              |
+| `targetY`     | `number`    | yes        | —             | Y coordinate of the edge’s target point.                                              |
+| `type`        | `'bezier'   | 'straight' | 'smoothstep'` | no                                                                                    | `bezier` | Edge path style ('bezier' | 'straight' | 'smoothstep'). |
+| `animated`    | `boolean`   | no         | `false`       | When true, animates the edge path (dashed flow).                                      |
+| `label`       | `ReactNode` | no         | —             | Text label for the control.                                                           |
+| `selected`    | `boolean`   | no         | `false`       | Whether the edge is rendered as selected.                                             |
 | `markerStart` | `boolean`   | no         | `false`       | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
 | `markerEnd`   | `boolean`   | no         | `true`        | Arrowhead at the target. Set false for an undirected line.                            |
-| `className`   | `string`    | no         | —             | —                                                                                     |
+| `className`   | `string`    | no         | —             | Additional CSS class names merged onto the root element.                              |
 
 ## Examples
 

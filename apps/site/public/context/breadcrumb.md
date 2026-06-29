@@ -34,10 +34,10 @@ Wrapped in <nav> with an aria-label and the current page marked aria-current="pa
 
 | Name         | Type                                 | Required | Default    | Description                                                                                   |
 | ------------ | ------------------------------------ | -------- | ---------- | --------------------------------------------------------------------------------------------- |
-| `items`      | `{ label: string; href?: string }[]` | Yes      | —          | —                                                                                             |
+| `items`      | `{ label: string; href?: string }[]` | Yes      | —          | The items to render.                                                                          |
 | `maxVisible` | `number`                             | No       | —          | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
-| `className`  | `string`                             | No       | —          | —                                                                                             |
-| `ariaLabel`  | `string`                             | No       | Breadcrumb | —                                                                                             |
+| `className`  | `string`                             | No       | —          | Additional CSS class names merged onto the root element.                                      |
+| `ariaLabel`  | `string`                             | No       | Breadcrumb | Accessible label for the component.                                                           |
 
 ## Tokens
 

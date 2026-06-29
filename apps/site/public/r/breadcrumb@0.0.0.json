@@ -25,6 +25,7 @@
     "props": [
       {
         "name": "items",
+        "description": "The items to render.",
         "type": "{ label: string; href?: string }[]",
         "required": true
       },
@@ -36,11 +37,13 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       },
       {
         "name": "ariaLabel",
+        "description": "Accessible label for the component.",
         "type": "string",
         "required": false,
         "default": "Breadcrumb"

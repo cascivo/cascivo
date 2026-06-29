@@ -25,19 +25,19 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 | Prop           | Type                     | Required | Default | Description                                                                           |
 | -------------- | ------------------------ | -------- | ------- | ------------------------------------------------------------------------------------- |
-| `nodes`        | `FlowNode[]`             | yes      | —       | —                                                                                     |
-| `edges`        | `FlowEdge[]`             | yes      | —       | —                                                                                     |
+| `nodes`        | `FlowNode[]`             | yes      | —       | The nodes to render.                                                                  |
+| `edges`        | `FlowEdge[]`             | yes      | —       | The edges to render at each step.                                                     |
 | `script`       | `StoryStep[]`            | yes      | —       | Ordered steps: { from, to, label? } or { edge, reverse? }.                            |
-| `loop`         | `boolean`                | no       | `true`  | —                                                                                     |
-| `stepDuration` | `number`                 | no       | `1500`  | —                                                                                     |
+| `loop`         | `boolean`                | no       | `true`  | When true, navigation wraps around from end to start.                                 |
+| `stepDuration` | `number`                 | no       | `1500`  | How long (ms) each step is shown during playback.                                     |
 | `stepGap`      | `number`                 | no       | `0`     | Extra pause after each step before advancing (ms) — makes the story easier to follow. |
-| `playing`      | `boolean`                | no       | —       | —                                                                                     |
-| `currentStep`  | `number`                 | no       | —       | —                                                                                     |
-| `onStepChange` | `(step: number) => void` | no       | —       | —                                                                                     |
-| `controls`     | `boolean`                | no       | `true`  | —                                                                                     |
-| `autoPlay`     | `boolean`                | no       | `true`  | —                                                                                     |
+| `playing`      | `boolean`                | no       | —       | Whether the story is currently playing (controlled).                                  |
+| `currentStep`  | `number`                 | no       | —       | The controlled current step index.                                                    |
+| `onStepChange` | `(step: number) => void` | no       | —       | Called with the new step index when it changes.                                       |
+| `controls`     | `boolean`                | no       | `true`  | Whether to show the controls.                                                         |
+| `autoPlay`     | `boolean`                | no       | `true`  | When true, starts playback automatically on mount.                                    |
 | `interactive`  | `boolean`                | no       | `false` | A storyline is a view by default — set true to allow selecting/dragging/connecting.   |
-| `className`    | `string`                 | no       | —       | —                                                                                     |
+| `className`    | `string`                 | no       | —       | Additional CSS class names merged onto the root element.                              |
 
 ## Examples
 

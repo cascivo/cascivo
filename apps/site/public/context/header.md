@@ -37,8 +37,8 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 | `brand`     | `React.ReactNode`                                     | No       | —       | Product name or logo area, typically wraps a link              |
 | `links`     | `{ label: string; href: string; active?: boolean }[]` | No       | —       | Primary navigation links; active link gets aria-current="page" |
 | `actions`   | `React.ReactNode`                                     | No       | —       | Right-aligned slot for buttons or an avatar                    |
-| `sticky`    | `boolean`                                             | No       | false   | —                                                              |
-| `className` | `string`                                              | No       | —       | —                                                              |
+| `sticky`    | `boolean`                                             | No       | false   | When true, the header sticks to the top on scroll.             |
+| `className` | `string`                                              | No       | —       | Additional CSS class names merged onto the root element.       |
 
 ## Tokens
 

@@ -8,15 +8,34 @@ export const meta: ComponentMeta = {
   variants: ['normal', 'medium', 'semibold'],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'as', type: "'p' | 'span' | 'div'", required: false, default: 'p' },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'as',
+      description: 'The HTML element to render as.',
+      type: "'p' | 'span' | 'div'",
+      required: false,
+      default: 'p',
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
     {
       name: 'weight',
+      description: "Font weight ('normal' | 'medium' | 'semibold').",
       type: "'normal' | 'medium' | 'semibold'",
       required: false,
       default: 'normal',
     },
-    { name: 'muted', type: 'boolean', required: false, default: 'false' },
+    {
+      name: 'muted',
+      description: 'When true, renders in a muted/subtle color.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
   ],
   tokens: [
     '--cascivo-font-sans',

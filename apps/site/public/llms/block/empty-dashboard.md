@@ -40,7 +40,6 @@ Empty dashboard
 ## Dependencies
 
 - `@cascivo/react`
-- `layout/dashboard-layout`
 
 ## Tags
 

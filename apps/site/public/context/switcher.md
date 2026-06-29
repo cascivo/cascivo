@@ -35,8 +35,8 @@ role="list" structures the entries; each switch target is a real link with the a
 | Name        | Type              | Required | Default            | Description                                                                   |
 | ----------- | ----------------- | -------- | ------------------ | ----------------------------------------------------------------------------- |
 | `items`     | `SwitcherEntry[]` | Yes      | —                  | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label`     | `string`          | No       | Switch application | —                                                                             |
-| `className` | `string`          | No       | —                  | —                                                                             |
+| `label`     | `string`          | No       | Switch application | Text label for the control.                                                   |
+| `className` | `string`          | No       | —                  | Additional CSS class names merged onto the root element.                      |
 
 ## Tokens
 

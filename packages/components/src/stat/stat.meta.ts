@@ -16,7 +16,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Change indicator rendered next to the trend arrow',
     },
-    { name: 'trend', type: "'up' | 'down' | 'flat'", required: false, default: 'flat' },
+    {
+      name: 'trend',
+      description: "Direction of the trend indicator ('up' | 'down' | 'flat').",
+      type: "'up' | 'down' | 'flat'",
+      required: false,
+      default: 'flat',
+    },
     {
       name: 'helpText',
       type: 'string',

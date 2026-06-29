@@ -29,10 +29,10 @@ import { ProgressCircle } from '@cascivo/react'
 ## Props
 
 | Prop        | Type      | Required | Default | Description                                                              |
-| ----------- | --------- | -------- | ------- | ------------------------------------------------------------------------ | ---- | --- |
+| ----------- | --------- | -------- | ------- | ------------------------------------------------------------------------ | ---- | ----------------------------------------------------- |
 | `value`     | `number`  | yes      | —       | Current value from 0 to max — clamped                                    |
-| `max`       | `number`  | no       | `100`   | —                                                                        |
-| `size`      | `'sm'     | 'md'     | 'lg'`   | no                                                                       | `md` | —   |
+| `max`       | `number`  | no       | `100`   | Maximum allowed value.                                                   |
+| `size`      | `'sm'     | 'md'     | 'lg'`   | no                                                                       | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `showValue` | `boolean` | no       | `false` | Renders the rounded percentage in the center — pairs best with md and lg |
 | `label`     | `string`  | no       | —       | Accessible name announced by screen readers                              |
 

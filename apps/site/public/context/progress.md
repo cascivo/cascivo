@@ -33,10 +33,10 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 ## Props
 
 | Name      | Type       | Required | Default   | Description                          |
-| --------- | ---------- | -------- | --------- | ------------------------------------ | -------- | --- | ------- | --- |
+| --------- | ---------- | -------- | --------- | ------------------------------------ | -------- | ----------------------------------------------------- | ------- | --------------------------------- |
 | `value`   | `number`   | No       | —         | 0–100. Omit for indeterminate state. |
-| `variant` | `'primary' | 'info'   | 'success' | 'warning'                            | 'error'` | No  | primary | —   |
-| `size`    | `'sm'      | 'md'     | 'lg'`     | No                                   | md       | —   |
+| `variant` | `'primary' | 'info'   | 'success' | 'warning'                            | 'error'` | No                                                    | primary | Selects the visual style variant. |
+| `size`    | `'sm'      | 'md'     | 'lg'`     | No                                   | md       | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 

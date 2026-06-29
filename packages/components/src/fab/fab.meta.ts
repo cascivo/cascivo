@@ -16,7 +16,12 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Accessible name for the button',
     },
-    { name: 'onClick', type: '() => void', required: false },
+    {
+      name: 'onClick',
+      description: 'Called when the element is clicked.',
+      type: '() => void',
+      required: false,
+    },
     {
       name: 'actions',
       type: 'FabAction[]',
@@ -25,14 +30,35 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'position',
+      description: 'Position of the component.',
       type: "'bottom-end' | 'bottom-start'",
       required: false,
       default: 'bottom-end',
     },
-    { name: 'open', type: 'boolean', required: false },
-    { name: 'defaultOpen', type: 'boolean', required: false },
-    { name: 'onOpenChange', type: '(open: boolean) => void', required: false },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'open',
+      description: 'Whether the component is open (controlled).',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'defaultOpen',
+      description: 'Whether the component is open on first render (uncontrolled).',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      description: 'Called with the next open state when it changes.',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

@@ -33,11 +33,11 @@ The container heading labels the ul/li structure; interactive rows must slot a r
 
 ## Props
 
-| Name     | Type        | Required     | Default | Description |
-| -------- | ----------- | ------------ | ------- | ----------- | --- |
-| `label`  | `ReactNode` | Yes          | —       | —           |
-| `kind`   | `'on-page'  | 'disclosed'` | No      | on-page     | —   |
-| `action` | `ReactNode` | No           | —       | —           |
+| Name     | Type        | Required     | Default | Description                            |
+| -------- | ----------- | ------------ | ------- | -------------------------------------- | -------------------------------------------- |
+| `label`  | `ReactNode` | Yes          | —       | Text label for the control.            |
+| `kind`   | `'on-page'  | 'disclosed'` | No      | on-page                                | Visual treatment — 'on-page' or 'disclosed'. |
+| `action` | `ReactNode` | No           | —       | Primary action shown in the component. |
 
 ## Tokens
 

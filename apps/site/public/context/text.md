@@ -32,12 +32,12 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 
 ## Props
 
-| Name     | Type      | Required | Default     | Description |
-| -------- | --------- | -------- | ----------- | ----------- | ------ | --- |
-| `as`     | `'p'      | 'span'   | 'div'`      | No          | p      | —   |
-| `size`   | `'sm'     | 'md'     | 'lg'`       | No          | md     | —   |
-| `weight` | `'normal' | 'medium' | 'semibold'` | No          | normal | —   |
-| `muted`  | `boolean` | No       | false       | —           |
+| Name     | Type      | Required | Default     | Description                                 |
+| -------- | --------- | -------- | ----------- | ------------------------------------------- | ------ | ----------------------------------------------------- | -------- | ------------ |
+| `as`     | `'p'      | 'span'   | 'div'`      | No                                          | p      | The HTML element to render as.                        |
+| `size`   | `'sm'     | 'md'     | 'lg'`       | No                                          | md     | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `weight` | `'normal' | 'medium' | 'semibold'` | No                                          | normal | Font weight ('normal'                                 | 'medium' | 'semibold'). |
+| `muted`  | `boolean` | No       | false       | When true, renders in a muted/subtle color. |
 
 ## Tokens
 

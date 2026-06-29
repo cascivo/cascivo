@@ -34,11 +34,11 @@ When dismissible, the remove control is a real button with a label (dismissLabel
 ## Props
 
 | Name           | Type         | Required | Default   | Description                                                     |
-| -------------- | ------------ | -------- | --------- | --------------------------------------------------------------- | -------- | --- | ------- | --- |
-| `variant`      | `'default'   | 'info'   | 'success' | 'warning'                                                       | 'error'` | No  | default | —   |
-| `size`         | `'sm'        | 'md'`    | No        | md                                                              | —        |
+| -------------- | ------------ | -------- | --------- | --------------------------------------------------------------- | ----------------------------------------------------- | --- | ------- | --------------------------------- |
+| `variant`      | `'default'   | 'info'   | 'success' | 'warning'                                                       | 'error'`                                              | No  | default | Selects the visual style variant. |
+| `size`         | `'sm'        | 'md'`    | No        | md                                                              | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `onDismiss`    | `() => void` | No       | —         | When provided, renders a trailing remove button inside the chip |
-| `dismissLabel` | `string`     | No       | Remove    | —                                                               |
+| `dismissLabel` | `string`     | No       | Remove    | Accessible label for the dismiss button.                        |
 
 ## Tokens
 

@@ -8,9 +8,28 @@ export const meta: ComponentMeta = {
   variants: ['default', 'muted'],
   sizes: ['sm', 'md'],
   props: [
-    { name: 'asChild', type: 'boolean', required: false, default: 'false' },
-    { name: 'variant', type: "'default' | 'muted'", required: false, default: 'default' },
-    { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
+    {
+      name: 'asChild',
+      description:
+        'When true, renders the child element as the root via Slot, merging props (polymorphic rendering).',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'variant',
+      description: 'Selects the visual style variant.',
+      type: "'default' | 'muted'",
+      required: false,
+      default: 'default',
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md'",
+      required: false,
+      default: 'md',
+    },
   ],
   tokens: [
     '--cascivo-color-text',

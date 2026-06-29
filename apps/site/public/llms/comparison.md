@@ -26,16 +26,16 @@ import { Comparison } from '@cascivo/react'
 
 ## Props
 
-| Prop               | Type                         | Required    | Default | Description                          |
-| ------------------ | ---------------------------- | ----------- | ------- | ------------------------------------ | --- |
-| `after`            | `ReactNode`                  | yes         | —       | Base layer shown underneath          |
-| `before`           | `ReactNode`                  | yes         | —       | Top layer revealed up to the divider |
-| `position`         | `number`                     | no          | —       | Divider position 0–100 (controlled)  |
-| `defaultPosition`  | `number`                     | no          | `50`    | —                                    |
-| `onPositionChange` | `(position: number) => void` | no          | —       | —                                    |
-| `orientation`      | `'horizontal'                | 'vertical'` | no      | `horizontal`                         | —   |
-| `keyboardStep`     | `number`                     | no          | `5`     | —                                    |
-| `label`            | `string`                     | no          | —       | —                                    |
+| Prop               | Type                         | Required    | Default | Description                                             |
+| ------------------ | ---------------------------- | ----------- | ------- | ------------------------------------------------------- | ------------------------------------ |
+| `after`            | `ReactNode`                  | yes         | —       | Base layer shown underneath                             |
+| `before`           | `ReactNode`                  | yes         | —       | Top layer revealed up to the divider                    |
+| `position`         | `number`                     | no          | —       | Divider position 0–100 (controlled)                     |
+| `defaultPosition`  | `number`                     | no          | `50`    | The initial divider position (0–100) when uncontrolled. |
+| `onPositionChange` | `(position: number) => void` | no          | —       | Called with the new divider position when it changes.   |
+| `orientation`      | `'horizontal'                | 'vertical'` | no      | `horizontal`                                            | Layout orientation of the component. |
+| `keyboardStep`     | `number`                     | no          | `5`     | How far the divider moves per arrow-key press.          |
+| `label`            | `string`                     | no          | —       | Text label for the control.                             |
 
 ## Examples
 

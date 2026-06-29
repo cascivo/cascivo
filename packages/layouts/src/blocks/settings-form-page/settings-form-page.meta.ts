@@ -18,7 +18,8 @@ export const meta: ComponentMeta = {
   tokens: [],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<SettingsFormPage />', description: 'Settings form page' }],
-  dependencies: ['@cascivo/react', 'layout/settings-layout'],
+  dependencies: ['@cascivo/react'],
+  registryDependencies: ['layout/settings-layout'],
   tags: ['block', 'settings', 'form', 'page'],
   intent: {
     whenToUse: [

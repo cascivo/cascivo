@@ -35,16 +35,16 @@ The main button is icon-only and requires a `label` that becomes its aria-label.
 ## Props
 
 | Name           | Type                      | Required        | Default | Description                                                                 |
-| -------------- | ------------------------- | --------------- | ------- | --------------------------------------------------------------------------- | --- |
+| -------------- | ------------------------- | --------------- | ------- | --------------------------------------------------------------------------- | -------------------------- |
 | `children`     | `React.ReactNode`         | Yes             | —       | The main icon                                                               |
 | `label`        | `string`                  | Yes             | —       | Accessible name for the button                                              |
-| `onClick`      | `() => void`              | No              | —       | —                                                                           |
+| `onClick`      | `() => void`              | No              | —       | Called when the element is clicked.                                         |
 | `actions`      | `FabAction[]`             | No              | —       | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
-| `position`     | `'bottom-end'             | 'bottom-start'` | No      | bottom-end                                                                  | —   |
-| `open`         | `boolean`                 | No              | —       | —                                                                           |
-| `defaultOpen`  | `boolean`                 | No              | —       | —                                                                           |
-| `onOpenChange` | `(open: boolean) => void` | No              | —       | —                                                                           |
-| `className`    | `string`                  | No              | —       | —                                                                           |
+| `position`     | `'bottom-end'             | 'bottom-start'` | No      | bottom-end                                                                  | Position of the component. |
+| `open`         | `boolean`                 | No              | —       | Whether the component is open (controlled).                                 |
+| `defaultOpen`  | `boolean`                 | No              | —       | Whether the component is open on first render (uncontrolled).               |
+| `onOpenChange` | `(open: boolean) => void` | No              | —       | Called with the next open state when it changes.                            |
+| `className`    | `string`                  | No              | —       | Additional CSS class names merged onto the root element.                    |
 
 ## Tokens
 

@@ -34,29 +34,29 @@ import { DataTable } from '@cascivo/react'
 
 ## Props
 
-| Prop                | Type                                                            | Required                                                            | Default    | Description |
-| ------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- | ---------- | ----------- | ---------- | --- |
-| `columns`           | `Column<Row>[]`                                                 | yes                                                                 | —          | —           |
-| `rows`              | `Row[]`                                                         | yes                                                                 | —          | —           |
-| `getRowId`          | `(row: Row) => string`                                          | no                                                                  | —          | —           |
-| `sort`              | `SortState`                                                     | no                                                                  | —          | —           |
-| `defaultSort`       | `SortState`                                                     | no                                                                  | —          | —           |
-| `sortMode`          | `'client'                                                       | 'server'`                                                           | no         | `'client'`  | —          |
-| `onSortChange`      | `(sort: SortState                                               | undefined) => void`                                                 | no         | —           | —          |
-| `searchable`        | `boolean`                                                       | no                                                                  | `false`    | —           |
-| `pagination`        | `{ pageSize: number; pageSizeOptions?: number[] }`              | no                                                                  | —          | —           |
-| `selection`         | `{ mode: 'single'                                               | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no         | —           | —          |
-| `batchActions`      | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | no                                                                  | —          | —           |
-| `renderExpandedRow` | `(row: Row) => ReactNode`                                       | no                                                                  | —          | —           |
-| `density`           | `'compact'                                                      | 'normal'                                                            | 'relaxed'` | no          | `'normal'` | —   |
-| `zebra`             | `boolean`                                                       | no                                                                  | `false`    | —           |
-| `stickyHeader`      | `boolean`                                                       | no                                                                  | `false`    | —           |
-| `loading`           | `boolean`                                                       | no                                                                  | `false`    | —           |
-| `emptyState`        | `ReactNode`                                                     | no                                                                  | —          | —           |
-| `title`             | `string`                                                        | no                                                                  | —          | —           |
-| `description`       | `string`                                                        | no                                                                  | —          | —           |
-| `labels`            | `DataTableLabels`                                               | no                                                                  | —          | —           |
-| `className`         | `string`                                                        | no                                                                  | —          | —           |
+| Prop                | Type                                                            | Required                                                            | Default    | Description                                                |
+| ------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------- | ---------- | ---------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------ |
+| `columns`           | `Column<Row>[]`                                                 | yes                                                                 | —          | The column definitions describing each table column.       |
+| `rows`              | `Row[]`                                                         | yes                                                                 | —          | Number of visible text rows.                               |
+| `getRowId`          | `(row: Row) => string`                                          | no                                                                  | —          | Returns a stable unique id for a row.                      |
+| `sort`              | `SortState`                                                     | no                                                                  | —          | The controlled sort state.                                 |
+| `defaultSort`       | `SortState`                                                     | no                                                                  | —          | The initial sort state when uncontrolled.                  |
+| `sortMode`          | `'client'                                                       | 'server'`                                                           | no         | `'client'`                                                 | Whether sorting is handled client-side or by the server ('client' | 'server').                                       |
+| `onSortChange`      | `(sort: SortState                                               | undefined) => void`                                                 | no         | —                                                          | Called with the new sort state when it changes.                   |
+| `searchable`        | `boolean`                                                       | no                                                                  | `false`    | When true, shows a search/filter input.                    |
+| `pagination`        | `{ pageSize: number; pageSizeOptions?: number[] }`              | no                                                                  | —          | Pagination configuration (page size and options).          |
+| `selection`         | `{ mode: 'single'                                               | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no         | —                                                          | Row-selection configuration (mode and selected ids).              |
+| `batchActions`      | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | no                                                                  | —          | Actions applied to the currently selected rows.            |
+| `renderExpandedRow` | `(row: Row) => ReactNode`                                       | no                                                                  | —          | Renders the expanded content for a row.                    |
+| `density`           | `'compact'                                                      | 'normal'                                                            | 'relaxed'` | no                                                         | `'normal'`                                                        | Row density — 'compact', 'normal', or 'relaxed'. |
+| `zebra`             | `boolean`                                                       | no                                                                  | `false`    | When true, applies alternating row striping.               |
+| `stickyHeader`      | `boolean`                                                       | no                                                                  | `false`    | When true, the header stays fixed while the body scrolls.  |
+| `loading`           | `boolean`                                                       | no                                                                  | `false`    | When true, shows a loading state.                          |
+| `emptyState`        | `ReactNode`                                                     | no                                                                  | —          | Content shown when there are no rows.                      |
+| `title`             | `string`                                                        | no                                                                  | —          | Title text for the component.                              |
+| `description`       | `string`                                                        | no                                                                  | —          | Supporting description text.                               |
+| `labels`            | `DataTableLabels`                                               | no                                                                  | —          | Overrides for the component’s user-visible strings (i18n). |
+| `className`         | `string`                                                        | no                                                                  | —          | Additional CSS class names merged onto the root element.   |
 
 ## Examples
 

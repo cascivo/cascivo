@@ -15,8 +15,19 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })',
     },
-    { name: 'label', type: 'string', required: false, default: 'Switch application' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'label',
+      description: 'Text label for the control.',
+      type: 'string',
+      required: false,
+      default: 'Switch application',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-text',

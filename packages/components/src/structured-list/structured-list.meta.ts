@@ -10,14 +10,36 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'items',
+      description: 'The items to render.',
       type: '{ id: string; cells: ReactNode[]; selected?: boolean }[]',
       required: true,
     },
-    { name: 'headers', type: 'ReactNode[]', required: false },
-    { name: 'selectable', type: 'boolean', required: false, default: 'false' },
-    { name: 'value', type: 'string', required: false },
-    { name: 'defaultValue', type: 'string', required: false },
-    { name: 'onSelect', type: '(id: string) => void', required: false },
+    {
+      name: 'headers',
+      description: 'The column header cells.',
+      type: 'ReactNode[]',
+      required: false,
+    },
+    {
+      name: 'selectable',
+      description: 'When true, rows can be selected.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    { name: 'value', description: 'The controlled value.', type: 'string', required: false },
+    {
+      name: 'defaultValue',
+      description: 'The initial value when uncontrolled.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'onSelect',
+      description: 'Called with the selected value.',
+      type: '(id: string) => void',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-border',

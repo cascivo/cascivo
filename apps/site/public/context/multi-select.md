@@ -35,14 +35,14 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 
 ## Props
 
-| Name            | Type                    | Required | Default | Description |
-| --------------- | ----------------------- | -------- | ------- | ----------- |
-| `options`       | `MultiSelectOption[]`   | Yes      | —       | —           |
-| `value`         | `string[]`              | Yes      | —       | —           |
-| `onValueChange` | `(v: string[]) => void` | Yes      | —       | —           |
-| `placeholder`   | `string`                | No       | —       | —           |
-| `disabled`      | `boolean`               | No       | false   | —           |
-| `labels`        | `MultiSelectLabels`     | No       | —       | —           |
+| Name            | Type                    | Required | Default | Description                                                        |
+| --------------- | ----------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `options`       | `MultiSelectOption[]`   | Yes      | —       | The selectable options.                                            |
+| `value`         | `string[]`              | Yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: string[]) => void` | Yes      | —       | Called with the new value when it changes.                         |
+| `placeholder`   | `string`                | No       | —       | Placeholder text shown when the field is empty.                    |
+| `disabled`      | `boolean`               | No       | false   | When true, disables the control and removes it from the tab order. |
+| `labels`        | `MultiSelectLabels`     | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
 
 ## Tokens
 

@@ -35,8 +35,8 @@ The composite is a labelled group; the name provides the accessible identity and
 
 | Name          | Type          | Required | Default | Description                        |
 | ------------- | ------------- | -------- | ------- | ---------------------------------- |
-| `name`        | `ReactNode`   | Yes      | —       | —                                  |
-| `description` | `ReactNode`   | No       | —       | —                                  |
+| `name`        | `ReactNode`   | Yes      | —       | The user’s display name.           |
+| `description` | `ReactNode`   | No       | —       | Supporting description text.       |
 | `avatarProps` | `AvatarProps` | No       | —       | Forwarded to the composed <Avatar> |
 
 ## Tokens

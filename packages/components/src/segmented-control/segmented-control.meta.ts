@@ -8,11 +8,33 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'options', type: 'SegmentedControlOption[]', required: true },
-    { name: 'value', type: 'string', required: true },
-    { name: 'onValueChange', type: '(v: string) => void', required: true },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
+    {
+      name: 'options',
+      description: 'The selectable options.',
+      type: 'SegmentedControlOption[]',
+      required: true,
+    },
+    { name: 'value', description: 'The controlled value.', type: 'string', required: true },
+    {
+      name: 'onValueChange',
+      description: 'Called with the new value when it changes.',
+      type: '(v: string) => void',
+      required: true,
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
   ],
   tokens: [
     '--cascivo-color-bg-subtle',

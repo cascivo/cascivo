@@ -28,20 +28,20 @@ import { BottomSheet } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                                  | Required | Default       | Description                                                 |
-| -------------- | ------------------------------------- | -------- | ------------- | ----------------------------------------------------------- |
-| `open`         | `boolean`                             | no       | —             | —                                                           |
-| `defaultOpen`  | `boolean`                             | no       | —             | —                                                           |
-| `onOpenChange` | `(open: boolean) => void`             | no       | —             | —                                                           |
-| `snapPoints`   | `number[]`                            | no       | `[0.5, 0.92]` | Detent heights as ascending fractions of the viewport (0–1) |
-| `activeSnap`   | `number`                              | no       | —             | —                                                           |
-| `defaultSnap`  | `number`                              | no       | `0`           | —                                                           |
-| `onSnapChange` | `(index: number) => void`             | no       | —             | —                                                           |
-| `title`        | `React.ReactNode`                     | no       | —             | —                                                           |
-| `description`  | `React.ReactNode`                     | no       | —             | —                                                           |
-| `children`     | `React.ReactNode`                     | no       | —             | —                                                           |
-| `labels`       | `{ close?: string; handle?: string }` | no       | —             | —                                                           |
-| `className`    | `string`                              | no       | —             | —                                                           |
+| Prop           | Type                                  | Required | Default       | Description                                                   |
+| -------------- | ------------------------------------- | -------- | ------------- | ------------------------------------------------------------- |
+| `open`         | `boolean`                             | no       | —             | Whether the component is open (controlled).                   |
+| `defaultOpen`  | `boolean`                             | no       | —             | Whether the component is open on first render (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void`             | no       | —             | Called with the next open state when it changes.              |
+| `snapPoints`   | `number[]`                            | no       | `[0.5, 0.92]` | Detent heights as ascending fractions of the viewport (0–1)   |
+| `activeSnap`   | `number`                              | no       | —             | The controlled snap-point index.                              |
+| `defaultSnap`  | `number`                              | no       | `0`           | The initial snap-point index when uncontrolled.               |
+| `onSnapChange` | `(index: number) => void`             | no       | —             | Called with the new snap-point index when it changes.         |
+| `title`        | `React.ReactNode`                     | no       | —             | Title text for the component.                                 |
+| `description`  | `React.ReactNode`                     | no       | —             | Supporting description text.                                  |
+| `children`     | `React.ReactNode`                     | no       | —             | Content rendered inside the component.                        |
+| `labels`       | `{ close?: string; handle?: string }` | no       | —             | Overrides for the component’s user-visible strings (i18n).    |
+| `className`    | `string`                              | no       | —             | Additional CSS class names merged onto the root element.      |
 
 ## Design tokens
 

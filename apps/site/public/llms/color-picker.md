@@ -28,16 +28,16 @@ import { ColorPicker } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default   | Description                |
-| --------------- | ------------------------- | -------- | --------- | -------------------------- | ---- | --- |
-| `value`         | `string`                  | no       | —         | Controlled hex color value |
-| `defaultValue`  | `string`                  | no       | `#3b82f6` | —                          |
-| `onValueChange` | `(value: string) => void` | no       | —         | —                          |
-| `presets`       | `string[]`                | no       | —         | Preset swatch colors       |
-| `alpha`         | `boolean`                 | no       | `true`    | —                          |
-| `label`         | `string`                  | no       | —         | —                          |
-| `disabled`      | `boolean`                 | no       | `false`   | —                          |
-| `size`          | `'sm'                     | 'md'     | 'lg'`     | no                         | `md` | —   |
+| Prop            | Type                      | Required | Default   | Description                                                        |
+| --------------- | ------------------------- | -------- | --------- | ------------------------------------------------------------------ | ---- | ----------------------------------------------------- |
+| `value`         | `string`                  | no       | —         | Controlled hex color value                                         |
+| `defaultValue`  | `string`                  | no       | `#3b82f6` | The initial value when uncontrolled.                               |
+| `onValueChange` | `(value: string) => void` | no       | —         | Called with the new value when it changes.                         |
+| `presets`       | `string[]`                | no       | —         | Preset swatch colors                                               |
+| `alpha`         | `boolean`                 | no       | `true`    | When true, enables alpha (opacity) selection.                      |
+| `label`         | `string`                  | no       | —         | Text label for the control.                                        |
+| `disabled`      | `boolean`                 | no       | `false`   | When true, disables the control and removes it from the tab order. |
+| `size`          | `'sm'                     | 'md'     | 'lg'`     | no                                                                 | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 

@@ -2,7 +2,13 @@ import { resolve as resolvePath } from 'node:path'
 import type { CascadeConfig } from '../utils/config.js'
 import { installPackages } from '../utils/exec.js'
 import { resolveOutputPath, writeFileSafe } from '../utils/fs.js'
-import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
+import {
+  fetchRegistry,
+  fileName,
+  findComponent,
+  type Registry,
+  type RegistryComponent,
+} from '../utils/registry.js'
 import { createLock, readLock, sha256, updateLockEntry, writeLock } from '../utils/lock.js'
 import { resolveClosure } from '../utils/resolve.js'
 import { resolveFromDirectory } from '../utils/directory.js'
@@ -22,6 +28,62 @@ async function fetchText(url: string): Promise<string> {
 /** Resolve where a template's own file is written — relative to the project root. */
 export function resolveTemplateTarget(cwd: string, target: string): string {
   return resolvePath(cwd, target)
+}
+
+export interface ResolvedBareEntry {
+  entry: RegistryComponent
+  /** True if reached via an original `cascivo add` argument; false if pulled as a transitive dependency. */
+  requested: boolean
+}
+
+/**
+ * Names from other libraries → the cascivo layout primitive that fills the same
+ * role, so `cascivo add flex` installs `layout/stack`. Bare names that already
+ * resolve (e.g. `stack` → `layout/stack` via suffix match) need no alias.
+ */
+export const LAYOUT_ALIASES: Record<string, string> = {
+  flex: 'stack',
+  box: 'stack',
+  hstack: 'stack',
+  vstack: 'stack',
+  gap: 'spacer',
+}
+
+/**
+ * Resolve the transitive closure of bare-name registry entries, following each
+ * entry's `registryDependencies`. De-duped by resolved registry name and
+ * cycle-safe (an entry is processed at most once). Returns resolved entries in
+ * install order plus the names that could not be found. Pure — no I/O.
+ */
+export function resolveBareClosure(
+  registry: Registry,
+  bareSpecs: string[],
+): { resolved: ResolvedBareEntry[]; missing: string[] } {
+  const queue: { name: string; requested: boolean }[] = bareSpecs.map((name) => ({
+    name,
+    requested: true,
+  }))
+  const installed = new Set<string>()
+  const resolved: ResolvedBareEntry[] = []
+  const missing: string[] = []
+
+  while (queue.length > 0) {
+    const { name, requested } = queue.shift()!
+    const resolvedName = LAYOUT_ALIASES[name.toLowerCase()] ?? name
+    const entry = findComponent(registry, resolvedName)
+    if (!entry) {
+      missing.push(name)
+      continue
+    }
+    if (installed.has(entry.name)) continue
+    installed.add(entry.name)
+    resolved.push({ entry, requested })
+    for (const dep of entry.registryDependencies ?? []) {
+      queue.push({ name: dep, requested: false })
+    }
+  }
+
+  return { resolved, missing }
 }
 
 function isMultiRegistrySpec(name: string): boolean {
@@ -95,17 +157,31 @@ export async function add(
     return
   }
 
-  // Legacy bare-name path (uses existing registry fetch)
+  // Legacy bare-name path (uses existing registry fetch).
+  // Resolves the transitive closure of registry (component) dependencies so a
+  // component that imports a shared hook/sibling (e.g. `../popover/use-popover`)
+  // installs that dependency too. De-duped by resolved name; cycle-safe.
   const registry = await fetchRegistry(config.registry)
   const missingDeps = new Set<string>()
+  const registryBase = config.registry.replace(/\/registry\.json$/, '').replace(/\/r$/, '')
 
-  for (const name of bareSpecs) {
-    const entry = findComponent(registry, name)
-    if (!entry) {
-      console.error(`Component "${name}" not found in registry. Run "cascivo list".`)
-      continue
+  for (const spec of bareSpecs) {
+    const alias = LAYOUT_ALIASES[spec.toLowerCase()]
+    if (!alias) continue
+    const target = findComponent(registry, alias)
+    if (target) {
+      console.log(
+        `"${spec}" is not a cascivo component — installing ${target.name} (its ${spec} primitive).`,
+      )
     }
+  }
 
+  const { resolved, missing } = resolveBareClosure(registry, bareSpecs)
+  for (const name of missing) {
+    console.error(`Component "${name}" not found in registry. Run "cascivo list".`)
+  }
+
+  for (const { entry, requested } of resolved) {
     if (entry.type === 'chart') {
       const pkg = entry.install ?? '@cascivo/charts'
       console.log(`Chart "${entry.name}" is distributed as an npm package.`)
@@ -128,7 +204,6 @@ export async function add(
       if (!ASSUMED_DEPS.has(dep)) missingDeps.add(dep)
     }
 
-    const registryBase = config.registry.replace(/\/registry\.json$/, '').replace(/\/r$/, '')
     lock = updateLockEntry(lock, entry.name, {
       registry: registryBase,
       version: entry.version,
@@ -136,7 +211,8 @@ export async function add(
       files: fileHashes,
     })
 
-    console.log(`Added ${entry.name} to ${config.outputDir}/${outputName}/`)
+    const suffix = requested ? '' : ' (dependency)'
+    console.log(`Added ${entry.name} to ${config.outputDir}/${outputName}/${suffix}`)
   }
 
   if (missingDeps.size > 0) {

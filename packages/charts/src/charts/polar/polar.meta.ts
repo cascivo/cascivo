@@ -21,7 +21,12 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Chart title (also aria-label).',
     },
-    { name: 'description', type: 'string', required: false },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'mode',
       type: "'bar' | 'line' | 'area'",
@@ -29,8 +34,14 @@ export const meta: ComponentMeta = {
       default: 'bar',
       description: 'Bars (rose), a polar line, or a filled polar area.',
     },
-    { name: 'width', type: 'number', required: false },
-    { name: 'height', type: 'number', required: false, default: '320' },
+    { name: 'width', description: 'Width of the component.', type: 'number', required: false },
+    {
+      name: 'height',
+      description: 'Height of the component.',
+      type: 'number',
+      required: false,
+      default: '320',
+    },
     {
       name: 'rings',
       type: 'number',
@@ -45,7 +56,12 @@ export const meta: ComponentMeta = {
       description: 'Domain top (full radius). Defaults to the largest value.',
     },
     { name: 'tooltip', type: 'boolean', required: false, description: 'Enable hover tooltip.' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'plain',
       type: 'boolean',

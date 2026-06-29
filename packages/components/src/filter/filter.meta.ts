@@ -29,6 +29,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'onChange',
+      description: 'Called when the value changes.',
       type: '(selected: string[]) => void',
       required: false,
     },
@@ -41,6 +42,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'pill' | 'outline'",
       required: false,
       default: 'pill',

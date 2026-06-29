@@ -34,11 +34,11 @@ Rendered as a <nav> landmark with a label; entries are real anchor links and the
 
 | Name             | Type                                              | Required | Default | Description                                                      |
 | ---------------- | ------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------- |
-| `items`          | `{ id: string; label: string; level?: number }[]` | Yes      | —       | —                                                                |
+| `items`          | `{ id: string; label: string; level?: number }[]` | Yes      | —       | The items to render.                                             |
 | `activeId`       | `string`                                          | No       | —       | Controlled active item id; disables built-in scroll-spy when set |
-| `onActiveChange` | `(id: string) => void`                            | No       | —       | —                                                                |
-| `labels`         | `{ nav?: string }`                                | No       | —       | —                                                                |
-| `className`      | `string`                                          | No       | —       | —                                                                |
+| `onActiveChange` | `(id: string) => void`                            | No       | —       | Called with the id of the active section when it changes.        |
+| `labels`         | `{ nav?: string }`                                | No       | —       | Overrides for the component’s user-visible strings (i18n).       |
+| `className`      | `string`                                          | No       | —       | Additional CSS class names merged onto the root element.         |
 
 ## Tokens
 

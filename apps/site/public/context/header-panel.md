@@ -33,14 +33,14 @@ role="region" with the label prop names the panel as a landmark; Escape closes i
 
 ## Props
 
-| Name        | Type                | Required | Default | Description                                             |
-| ----------- | ------------------- | -------- | ------- | ------------------------------------------------------- |
-| `open`      | `boolean`           | Yes      | —       | Controlled open state                                   |
-| `onClose`   | `() => void`        | Yes      | —       | Called on close button click or light-dismiss           |
-| `label`     | `string`            | Yes      | —       | Accessible label for the region (shown as header title) |
-| `children`  | `ReactNode`         | Yes      | —       | —                                                       |
-| `labels`    | `HeaderPanelLabels` | No       | —       | i18n overrides                                          |
-| `className` | `string`            | No       | —       | —                                                       |
+| Name        | Type                | Required | Default | Description                                              |
+| ----------- | ------------------- | -------- | ------- | -------------------------------------------------------- |
+| `open`      | `boolean`           | Yes      | —       | Controlled open state                                    |
+| `onClose`   | `() => void`        | Yes      | —       | Called on close button click or light-dismiss            |
+| `label`     | `string`            | Yes      | —       | Accessible label for the region (shown as header title)  |
+| `children`  | `ReactNode`         | Yes      | —       | Content rendered inside the component.                   |
+| `labels`    | `HeaderPanelLabels` | No       | —       | i18n overrides                                           |
+| `className` | `string`            | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 

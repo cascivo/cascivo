@@ -19,44 +19,52 @@
     "props": [
       {
         "name": "position",
+        "description": "Position of the component.",
         "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
         "required": false,
         "default": "bottom-left"
       },
       {
         "name": "showZoom",
+        "description": "When true, shows the zoom-in/zoom-out buttons.",
         "type": "boolean",
         "required": false,
         "default": "true"
       },
       {
         "name": "showFitView",
+        "description": "When true, shows the fit-to-view button.",
         "type": "boolean",
         "required": false,
         "default": "true"
       },
       {
         "name": "onZoomIn",
+        "description": "Called when the zoom-in control is activated.",
         "type": "() => void",
         "required": false
       },
       {
         "name": "onZoomOut",
+        "description": "Called when the zoom-out control is activated.",
         "type": "() => void",
         "required": false
       },
       {
         "name": "onFitView",
+        "description": "Called when the fit-to-view control is activated.",
         "type": "() => void",
         "required": false
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "FlowControlsLabels",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

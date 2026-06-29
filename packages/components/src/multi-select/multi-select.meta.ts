@@ -8,12 +8,38 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'options', type: 'MultiSelectOption[]', required: true },
-    { name: 'value', type: 'string[]', required: true },
-    { name: 'onValueChange', type: '(v: string[]) => void', required: true },
-    { name: 'placeholder', type: 'string', required: false },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
-    { name: 'labels', type: 'MultiSelectLabels', required: false },
+    {
+      name: 'options',
+      description: 'The selectable options.',
+      type: 'MultiSelectOption[]',
+      required: true,
+    },
+    { name: 'value', description: 'The controlled value.', type: 'string[]', required: true },
+    {
+      name: 'onValueChange',
+      description: 'Called with the new value when it changes.',
+      type: '(v: string[]) => void',
+      required: true,
+    },
+    {
+      name: 'placeholder',
+      description: 'Placeholder text shown when the field is empty.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: 'MultiSelectLabels',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',
@@ -37,6 +63,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['popover'],
   tags: ['form', 'select', 'multi', 'input', 'popover'],
   intent: {
     whenToUse: [

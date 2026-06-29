@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/encode.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
     }
   ],
@@ -31,6 +34,7 @@
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "number",
         "required": false,
         "default": "128"
@@ -50,18 +54,21 @@
       },
       {
         "name": "fill",
+        "description": "Foreground color of the QR modules.",
         "type": "string",
         "required": false,
         "default": "currentColor"
       },
       {
         "name": "background",
+        "description": "Background color behind the QR code.",
         "type": "string",
         "required": false,
         "default": "transparent"
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": false
       }

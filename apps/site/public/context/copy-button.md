@@ -33,9 +33,9 @@ Renders a native <button> so Enter/Space, focus, and role come from the platform
 ## Props
 
 | Name     | Type                                 | Required | Default | Description                                     |
-| -------- | ------------------------------------ | -------- | ------- | ----------------------------------------------- | --- |
+| -------- | ------------------------------------ | -------- | ------- | ----------------------------------------------- | ----------------------------------------------------- |
 | `value`  | `string`                             | Yes      | —       | The text written to the clipboard on click      |
-| `size`   | `'sm'                                | 'md'`    | No      | md                                              | —   |
+| `size`   | `'sm'                                | 'md'`    | No      | md                                              | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `labels` | `{ copy?: string; copied?: string }` | No       | —       | Overrides the built-in i18n labels per instance |
 
 ## Tokens

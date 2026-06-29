@@ -44,7 +44,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Accessible label for the code block',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-editor-bg',

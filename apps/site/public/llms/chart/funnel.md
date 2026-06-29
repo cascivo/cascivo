@@ -25,11 +25,11 @@ import { Funnel } from '@cascivo/charts'
 | `data`           | `FunnelStage[]` | yes      | —       | Ordered stages (descending): { id, label, value, color? }. |
 | `title`          | `string`        | yes      | —       | Chart title (also used as aria-label).                     |
 | `description`    | `string`        | no       | —       | Subtitle below the title.                                  |
-| `width`          | `number`        | no       | —       | —                                                          |
-| `height`         | `number`        | no       | `320`   | —                                                          |
+| `width`          | `number`        | no       | —       | Width of the component.                                    |
+| `height`         | `number`        | no       | `320`   | Height of the component.                                   |
 | `showConversion` | `boolean`       | no       | `false` | Append each stage’s % of the first stage to its label.     |
 | `tooltip`        | `boolean`       | no       | —       | Enable hover tooltip.                                      |
-| `className`      | `string`        | no       | —       | —                                                          |
+| `className`      | `string`        | no       | —       | Additional CSS class names merged onto the root element.   |
 | `plain`          | `boolean`       | no       | `false` | Marks only — no labels. For micro/inline charts.           |
 
 ## Examples

@@ -29,16 +29,16 @@ import { Fab } from '@cascivo/react'
 ## Props
 
 | Prop           | Type                      | Required        | Default | Description                                                                 |
-| -------------- | ------------------------- | --------------- | ------- | --------------------------------------------------------------------------- | --- |
+| -------------- | ------------------------- | --------------- | ------- | --------------------------------------------------------------------------- | -------------------------- |
 | `children`     | `React.ReactNode`         | yes             | —       | The main icon                                                               |
 | `label`        | `string`                  | yes             | —       | Accessible name for the button                                              |
-| `onClick`      | `() => void`              | no              | —       | —                                                                           |
+| `onClick`      | `() => void`              | no              | —       | Called when the element is clicked.                                         |
 | `actions`      | `FabAction[]`             | no              | —       | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
-| `position`     | `'bottom-end'             | 'bottom-start'` | no      | `bottom-end`                                                                | —   |
-| `open`         | `boolean`                 | no              | —       | —                                                                           |
-| `defaultOpen`  | `boolean`                 | no              | —       | —                                                                           |
-| `onOpenChange` | `(open: boolean) => void` | no              | —       | —                                                                           |
-| `className`    | `string`                  | no              | —       | —                                                                           |
+| `position`     | `'bottom-end'             | 'bottom-start'` | no      | `bottom-end`                                                                | Position of the component. |
+| `open`         | `boolean`                 | no              | —       | Whether the component is open (controlled).                                 |
+| `defaultOpen`  | `boolean`                 | no              | —       | Whether the component is open on first render (uncontrolled).               |
+| `onOpenChange` | `(open: boolean) => void` | no              | —       | Called with the next open state when it changes.                            |
+| `className`    | `string`                  | no              | —       | Additional CSS class names merged onto the root element.                    |
 
 ## Design tokens
 

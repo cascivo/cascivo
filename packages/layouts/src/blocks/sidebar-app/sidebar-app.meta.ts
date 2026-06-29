@@ -13,7 +13,8 @@ export const meta: ComponentMeta = {
   examples: [
     { title: 'Default', code: '<SidebarApp />', description: 'App with sidebar navigation' },
   ],
-  dependencies: ['@cascivo/react', 'layout/app-shell'],
+  dependencies: ['@cascivo/react'],
+  registryDependencies: ['layout/app-shell'],
   tags: ['block', 'sidebar', 'navigation', 'app-shell'],
   intent: {
     whenToUse: [

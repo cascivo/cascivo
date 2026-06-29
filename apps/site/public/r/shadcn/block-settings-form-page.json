@@ -10,7 +10,7 @@
     }
   ],
   "description": "Settings page with profile form inside a two-column settings layout.",
-  "dependencies": ["@cascivo/react", "layout/settings-layout"],
+  "dependencies": ["@cascivo/react"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

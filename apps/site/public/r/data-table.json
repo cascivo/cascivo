@@ -25,112 +25,133 @@
     "props": [
       {
         "name": "columns",
+        "description": "The column definitions describing each table column.",
         "type": "Column<Row>[]",
         "required": true
       },
       {
         "name": "rows",
+        "description": "Number of visible text rows.",
         "type": "Row[]",
         "required": true
       },
       {
         "name": "getRowId",
+        "description": "Returns a stable unique id for a row.",
         "type": "(row: Row) => string",
         "required": false
       },
       {
         "name": "sort",
+        "description": "The controlled sort state.",
         "type": "SortState",
         "required": false
       },
       {
         "name": "defaultSort",
+        "description": "The initial sort state when uncontrolled.",
         "type": "SortState",
         "required": false
       },
       {
         "name": "sortMode",
+        "description": "Whether sorting is handled client-side or by the server ('client' | 'server').",
         "type": "'client' | 'server'",
         "required": false,
         "default": "'client'"
       },
       {
         "name": "onSortChange",
+        "description": "Called with the new sort state when it changes.",
         "type": "(sort: SortState | undefined) => void",
         "required": false
       },
       {
         "name": "searchable",
+        "description": "When true, shows a search/filter input.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "pagination",
+        "description": "Pagination configuration (page size and options).",
         "type": "{ pageSize: number; pageSizeOptions?: number[] }",
         "required": false
       },
       {
         "name": "selection",
+        "description": "Row-selection configuration (mode and selected ids).",
         "type": "{ mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }",
         "required": false
       },
       {
         "name": "batchActions",
+        "description": "Actions applied to the currently selected rows.",
         "type": "{ label: string; onClick: (selectedIds: string[]) => void }[]",
         "required": false
       },
       {
         "name": "renderExpandedRow",
+        "description": "Renders the expanded content for a row.",
         "type": "(row: Row) => ReactNode",
         "required": false
       },
       {
         "name": "density",
+        "description": "Row density — 'compact', 'normal', or 'relaxed'.",
         "type": "'compact' | 'normal' | 'relaxed'",
         "required": false,
         "default": "'normal'"
       },
       {
         "name": "zebra",
+        "description": "When true, applies alternating row striping.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "stickyHeader",
+        "description": "When true, the header stays fixed while the body scrolls.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "loading",
+        "description": "When true, shows a loading state.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "emptyState",
+        "description": "Content shown when there are no rows.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "title",
+        "description": "Title text for the component.",
         "type": "string",
         "required": false
       },
       {
         "name": "description",
+        "description": "Supporting description text.",
         "type": "string",
         "required": false
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "DataTableLabels",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }
@@ -175,6 +196,7 @@
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["button", "checkbox"],
     "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
     "intent": {
       "whenToUse": [

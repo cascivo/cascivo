@@ -20,15 +20,15 @@ import { Kpi } from '@cascivo/charts'
 
 ## Props
 
-| Prop         | Type        | Required | Default | Description                                   |
-| ------------ | ----------- | -------- | ------- | --------------------------------------------- | -------------------- |
-| `value`      | `string     | number`  | yes     | —                                             | Primary metric value |
-| `label`      | `string`    | yes      | —       | Metric label                                  |
-| `delta`      | `number`    | no       | —       | Change value (positive = up, negative = down) |
-| `deltaLabel` | `string`    | no       | —       | Delta context label (e.g. "vs last week")     |
-| `icon`       | `ReactNode` | no       | —       | —                                             |
-| `sparkline`  | `number[]`  | no       | —       | Trend data for embedded sparkline             |
-| `className`  | `string`    | no       | —       | —                                             |
+| Prop         | Type        | Required | Default | Description                                              |
+| ------------ | ----------- | -------- | ------- | -------------------------------------------------------- | -------------------- |
+| `value`      | `string     | number`  | yes     | —                                                        | Primary metric value |
+| `label`      | `string`    | yes      | —       | Metric label                                             |
+| `delta`      | `number`    | no       | —       | Change value (positive = up, negative = down)            |
+| `deltaLabel` | `string`    | no       | —       | Delta context label (e.g. "vs last week")                |
+| `icon`       | `ReactNode` | no       | —       | Icon element rendered in the component.                  |
+| `sparkline`  | `number[]`  | no       | —       | Trend data for embedded sparkline                        |
+| `className`  | `string`    | no       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

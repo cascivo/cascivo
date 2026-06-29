@@ -29,22 +29,26 @@
         "props": [
           {
             "name": "type",
+            "description": "Whether one or multiple sections can be open at once ('single' | 'multiple').",
             "type": "'single' | 'multiple'",
             "required": false,
             "default": "single"
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string | string[]",
             "required": false
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string | string[]",
             "required": false
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(value: string | string[]) => void",
             "required": false
           }
@@ -134,16 +138,19 @@
         "props": [
           {
             "name": "open",
+            "description": "Whether the component is open (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "defaultOpen",
+            "description": "Whether the component is open on first render (uncontrolled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "onOpenChange",
+            "description": "Called with the next open state when it changes.",
             "type": "(open: boolean) => void",
             "required": false
           },
@@ -155,27 +162,32 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "showCancel",
+            "description": "When true, shows a cancel button below the actions.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "{ cancel?: string; label?: string }",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -280,33 +292,39 @@
         "props": [
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'default' | 'info' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": false
           },
           {
             "name": "icon",
+            "description": "Icon element rendered in the component.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "dismissible",
+            "description": "When true, shows a control to dismiss the component.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onDismiss",
+            "description": "Called when the component is dismissed.",
             "type": "() => void",
             "required": false
           },
           {
             "name": "action",
+            "description": "Primary action shown in the component.",
             "type": "{ label: string; onClick: () => void }",
             "required": false
           }
@@ -717,11 +735,13 @@
         "props": [
           {
             "name": "src",
+            "description": "Image source URL.",
             "type": "string",
             "required": false
           },
           {
             "name": "alt",
+            "description": "Alternative text describing the image.",
             "type": "string",
             "required": false
           },
@@ -733,12 +753,14 @@
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
             "required": false,
             "default": "md"
           },
           {
             "name": "status",
+            "description": "Status state.",
             "type": "'online' | 'offline' | 'busy'",
             "required": false
           }
@@ -836,18 +858,21 @@
           },
           {
             "name": "spacing",
+            "description": "Spacing between items.",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "isGrid",
+            "description": "When true, lays the avatars out in a grid instead of an overlapping stack.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "AvatarGroupLabels",
             "required": false
           }
@@ -865,6 +890,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "registryDependencies": ["avatar"],
         "tags": ["avatar", "group", "stack", "overflow", "display"],
         "intent": {
           "whenToUse": [
@@ -938,12 +964,14 @@
         "props": [
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
             "required": false,
             "default": "default"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -1044,12 +1072,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
         }
       ],
-      "dependencies": [
-        "@cascivo/react",
-        "@cascivo/icons",
-        "layout/app-shell",
-        "layout/page-header"
-      ],
+      "dependencies": ["@cascivo/react", "@cascivo/icons"],
       "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
       "category": "display",
       "meta": {
@@ -1076,12 +1099,8 @@
           "keyboard": ["Escape", "Tab"]
         },
         "examples": [],
-        "dependencies": [
-          "@cascivo/react",
-          "@cascivo/icons",
-          "layout/app-shell",
-          "layout/page-header"
-        ],
+        "dependencies": ["@cascivo/react", "@cascivo/icons"],
+        "registryDependencies": ["layout/app-shell", "layout/page-header"],
         "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
         "intent": {
           "whenToUse": [
@@ -1140,6 +1159,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/charts", "@cascivo/react"],
+        "registryDependencies": ["layout/dashboard-layout"],
         "tags": ["block", "dashboard", "charts", "kpi"],
         "intent": {
           "whenToUse": [
@@ -1179,7 +1199,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "dashboard", "empty-state", "page"],
       "category": "display",
       "meta": {
@@ -1204,7 +1224,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/dashboard-layout"],
         "tags": ["block", "dashboard", "empty-state", "page"],
         "intent": {
           "whenToUse": [
@@ -1239,7 +1260,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/auth-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "login", "auth", "form", "page"],
       "category": "display",
       "meta": {
@@ -1264,7 +1285,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/auth-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/auth-layout"],
         "tags": ["block", "login", "auth", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -1299,7 +1321,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "notifications", "alerts"],
       "category": "display",
       "meta": {
@@ -1330,7 +1352,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/stack"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/stack"],
         "tags": ["block", "notifications", "alerts"],
         "intent": {
           "whenToUse": [
@@ -1365,7 +1388,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "breadcrumb", "page", "navigation"],
       "category": "display",
       "meta": {
@@ -1383,7 +1406,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/page-header", "layout/center"],
         "tags": ["block", "breadcrumb", "page", "navigation"],
         "intent": {
           "whenToUse": [
@@ -1418,7 +1442,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/settings-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "settings", "form", "page"],
       "category": "display",
       "meta": {
@@ -1443,7 +1467,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/settings-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/settings-layout"],
         "tags": ["block", "settings", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -1478,7 +1503,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/app-shell"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "sidebar", "navigation", "app-shell"],
       "category": "display",
       "meta": {
@@ -1496,7 +1521,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/app-shell"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/app-shell"],
         "tags": ["block", "sidebar", "navigation", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -1601,7 +1627,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "users", "table", "page"],
       "category": "display",
       "meta": {
@@ -1632,7 +1658,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/page-header", "layout/stack"],
         "tags": ["block", "users", "table", "page"],
         "intent": {
           "whenToUse": [
@@ -1683,6 +1710,7 @@
         "props": [
           {
             "name": "cite",
+            "description": "URL of the quote’s source (sets the HTML cite attribute).",
             "type": "string",
             "required": false,
             "default": "undefined"
@@ -1776,16 +1804,19 @@
         "props": [
           {
             "name": "open",
+            "description": "Whether the component is open (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "defaultOpen",
+            "description": "Whether the component is open on first render (uncontrolled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "onOpenChange",
+            "description": "Called with the next open state when it changes.",
             "type": "(open: boolean) => void",
             "required": false
           },
@@ -1798,42 +1829,50 @@
           },
           {
             "name": "activeSnap",
+            "description": "The controlled snap-point index.",
             "type": "number",
             "required": false
           },
           {
             "name": "defaultSnap",
+            "description": "The initial snap-point index when uncontrolled.",
             "type": "number",
             "required": false,
             "default": "0"
           },
           {
             "name": "onSnapChange",
+            "description": "Called with the new snap-point index when it changes.",
             "type": "(index: number) => void",
             "required": false
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "{ close?: string; handle?: string }",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -1934,6 +1973,7 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ label: string; href?: string }[]",
             "required": true
           },
@@ -1945,11 +1985,13 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
           {
             "name": "ariaLabel",
+            "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
             "default": "Breadcrumb"
@@ -2041,36 +2083,42 @@
         "props": [
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'primary' | 'secondary' | 'ghost' | 'destructive'",
             "required": false,
             "default": "primary"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "loading",
+            "description": "When true, shows a loading state.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "asChild",
+            "description": "When true, renders the child element as the root via Slot, merging props (polymorphic rendering).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onClick",
+            "description": "Called when the element is clicked.",
             "type": "React.MouseEventHandler<HTMLButtonElement>",
             "required": false
           }
@@ -2095,6 +2143,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["spinner"],
         "tags": ["action", "form", "interactive"],
         "intent": {
           "whenToUse": [
@@ -2171,35 +2220,41 @@
         "props": [
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "roving",
+            "description": "When true, uses roving tabindex so arrow keys move focus between buttons.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "loop",
+            "description": "When true, navigation wraps around from end to start.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "aria-label",
+            "description": "Accessible label used when no visible label is present.",
             "type": "string",
             "required": false
           },
           {
             "name": "aria-labelledby",
+            "description": "Id of the element that labels this component.",
             "type": "string",
             "required": false
           }
@@ -2470,12 +2525,14 @@
         "props": [
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'default' | 'outlined' | 'elevated'",
             "required": false,
             "default": "default"
           },
           {
             "name": "padding",
+            "description": "Inner padding of the component.",
             "type": "'none' | 'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -2580,17 +2637,20 @@
           },
           {
             "name": "defaultIndex",
+            "description": "The initial slide index when uncontrolled.",
             "type": "number",
             "required": false,
             "default": "0"
           },
           {
             "name": "onIndexChange",
+            "description": "Called with the new slide index when it changes.",
             "type": "(index: number) => void",
             "required": false
           },
           {
             "name": "loop",
+            "description": "When true, navigation wraps around from end to start.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -2694,11 +2754,13 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -2730,29 +2792,34 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "xTicks",
+            "description": "Approximate number of ticks on the x-axis.",
             "type": "number",
             "required": false,
             "default": "5"
           },
           {
             "name": "yTicks",
+            "description": "Approximate number of ticks on the y-axis.",
             "type": "number",
             "required": false,
             "default": "5"
           },
           {
             "name": "legend",
+            "description": "Whether to show the legend.",
             "type": "boolean",
             "required": false
           },
@@ -2764,6 +2831,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -2916,26 +2984,31 @@
           },
           {
             "name": "x",
+            "description": "Accessor returning the category label for a datum.",
             "type": "(d: Datum) => string",
             "required": true
           },
           {
             "name": "y",
+            "description": "Accessor returning the numeric value for a datum.",
             "type": "(d: Datum) => number",
             "required": true
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -2949,22 +3022,26 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "xTicks",
+            "description": "Approximate number of ticks on the x-axis.",
             "type": "number",
             "required": false
           },
           {
             "name": "yTicks",
+            "description": "Approximate number of ticks on the y-axis.",
             "type": "number",
             "required": false,
             "default": "5"
@@ -2977,11 +3054,13 @@
           },
           {
             "name": "legend",
+            "description": "Whether to show the legend.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "tooltip",
+            "description": "Whether to show tooltips on hover.",
             "type": "boolean",
             "required": false
           },
@@ -2993,6 +3072,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -3209,27 +3289,32 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -3307,26 +3392,31 @@
         "props": [
           {
             "name": "series",
+            "description": "The data series to plot.",
             "type": "{ name: string; data: { x: number; y: number; size: number }[] }[]",
             "required": true
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -3339,6 +3429,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -3440,11 +3531,13 @@
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": true
           },
           {
             "name": "min",
+            "description": "Minimum allowed value.",
             "type": "number",
             "required": false,
             "default": "0"
@@ -3457,18 +3550,21 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "40"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -3541,11 +3637,13 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -3563,27 +3661,32 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "160"
           },
           {
             "name": "tooltip",
+            "description": "Whether to show tooltips on hover.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
           {
             "name": "plain",
+            "description": "When true, renders a minimal variant without chart chrome.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -3663,22 +3766,26 @@
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
           },
           {
             "name": "yTicks",
+            "description": "Approximate number of ticks on the y-axis.",
             "type": "number",
             "required": false,
             "default": "5"
@@ -3710,6 +3817,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -3789,11 +3897,13 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -3805,11 +3915,13 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -3822,6 +3934,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -3919,11 +4032,13 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -3943,6 +4058,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -4025,12 +4141,14 @@
           },
           {
             "name": "min",
+            "description": "Minimum allowed value.",
             "type": "number",
             "required": false,
             "default": "0"
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false,
             "default": "100"
@@ -4069,22 +4187,26 @@
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "240"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -4159,27 +4281,32 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -4267,6 +4394,7 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
@@ -4278,22 +4406,26 @@
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -4386,6 +4518,7 @@
           },
           {
             "name": "icon",
+            "description": "Icon element rendered in the component.",
             "type": "ReactNode",
             "required": false
           },
@@ -4397,6 +4530,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -4540,6 +4674,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -4717,23 +4852,27 @@
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": true
           },
           {
             "name": "min",
+            "description": "Minimum allowed value.",
             "type": "number",
             "required": false,
             "default": "0"
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false,
             "default": "100"
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'bar' | 'gauge'",
             "required": false,
             "default": "bar"
@@ -4746,11 +4885,13 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false
           }
@@ -4818,11 +4959,13 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -4834,11 +4977,13 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -4893,11 +5038,13 @@
           },
           {
             "name": "legend",
+            "description": "Whether to show the legend.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -5058,6 +5205,7 @@
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -5070,11 +5218,13 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -5100,6 +5250,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -5200,27 +5351,32 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -5317,11 +5473,13 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -5371,6 +5529,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -5465,37 +5624,44 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
           },
           {
             "name": "tooltip",
+            "description": "Whether to show tooltips on hover.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
           {
             "name": "plain",
+            "description": "When true, renders a minimal variant without chart chrome.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -5566,16 +5732,19 @@
         "props": [
           {
             "name": "series",
+            "description": "The data series to plot.",
             "type": "ScatterChartSeries[]",
             "required": true
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -5588,29 +5757,34 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "xTicks",
+            "description": "Approximate number of ticks on the x-axis.",
             "type": "number",
             "required": false,
             "default": "5"
           },
           {
             "name": "yTicks",
+            "description": "Approximate number of ticks on the y-axis.",
             "type": "number",
             "required": false,
             "default": "5"
           },
           {
             "name": "legend",
+            "description": "Whether to show the legend.",
             "type": "boolean",
             "required": false
           },
@@ -5622,6 +5796,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -5753,12 +5928,14 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false,
             "default": "80"
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "32"
@@ -5845,11 +6022,13 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -5869,32 +6048,38 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "legend",
+            "description": "Whether to show the legend.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "tooltip",
+            "description": "Whether to show tooltips on hover.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
           {
             "name": "plain",
+            "description": "When true, renders a minimal variant without chart chrome.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -5971,11 +6156,13 @@
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
@@ -5987,27 +6174,32 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "tooltip",
+            "description": "Whether to show tooltips on hover.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
           {
             "name": "plain",
+            "description": "When true, renders a minimal variant without chart chrome.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -6078,32 +6270,38 @@
         "props": [
           {
             "name": "data",
+            "description": "The hierarchical data to render as nested rectangles.",
             "type": "{ id: string; label: string; value: number }[]",
             "required": true
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "320"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           },
@@ -6187,32 +6385,38 @@
         "props": [
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "React.ReactNode",
             "required": true
           },
           {
             "name": "side",
+            "description": "Edge the component is anchored to.",
             "type": "'start' | 'end'",
             "required": false,
             "default": "start"
           },
           {
             "name": "avatar",
+            "description": "Avatar element shown beside the message.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "name",
+            "description": "Display name of the message sender.",
             "type": "string",
             "required": false
           },
           {
             "name": "time",
+            "description": "Timestamp text shown with the message.",
             "type": "string",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -6307,28 +6511,33 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "checked",
+            "description": "Whether the control is checked (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "indeterminate",
+            "description": "When true, renders the mixed/indeterminate state.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "React.ChangeEventHandler<HTMLInputElement>",
             "required": false
           }
@@ -6416,6 +6625,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.module.css"
@@ -6557,6 +6769,7 @@
         "props": [
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -6632,6 +6845,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/highlight.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
@@ -6889,12 +7105,14 @@
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string",
             "required": false,
             "default": "#3b82f6"
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(value: string) => void",
             "required": false
           },
@@ -6906,23 +7124,27 @@
           },
           {
             "name": "alpha",
+            "description": "When true, enables alpha (opacity) selection.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -7018,70 +7240,83 @@
         "props": [
           {
             "name": "options",
+            "description": "The selectable options.",
             "type": "ComboboxOption[]",
             "required": true
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": false
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string",
             "required": false
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "(value: string | undefined) => void",
             "required": false
           },
           {
             "name": "clearable",
+            "description": "When true, shows a control to clear the selected value.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "searchable",
+            "description": "When true, shows a search/filter input.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "hint",
+            "description": "Supplementary hint text shown with the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "error",
+            "description": "Error message shown when the value is invalid.",
             "type": "string",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "'md'"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "ComboboxLabels",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -7198,27 +7433,32 @@
         "props": [
           {
             "name": "open",
+            "description": "Whether the component is open (controlled).",
             "type": "boolean",
             "required": true
           },
           {
             "name": "onOpenChange",
+            "description": "Called with the next open state when it changes.",
             "type": "(open: boolean) => void",
             "required": true
           },
           {
             "name": "groups",
+            "description": "The grouped commands to display.",
             "type": "CommandGroup[]",
             "required": true
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false,
             "default": "Type a command or search…"
           },
           {
             "name": "emptyLabel",
+            "description": "Text shown when no commands match the query.",
             "type": "string",
             "required": false,
             "default": "No results found"
@@ -7232,6 +7472,7 @@
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false,
             "default": "Command menu"
@@ -7251,6 +7492,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -7275,6 +7517,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["kbd", "spinner"],
         "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
         "intent": {
           "whenToUse": [
@@ -7384,29 +7627,34 @@
           },
           {
             "name": "defaultPosition",
+            "description": "The initial divider position (0–100) when uncontrolled.",
             "type": "number",
             "required": false,
             "default": "50"
           },
           {
             "name": "onPositionChange",
+            "description": "Called with the new divider position when it changes.",
             "type": "(position: number) => void",
             "required": false
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
           },
           {
             "name": "keyboardStep",
+            "description": "How far the divider moves per arrow-key press.",
             "type": "number",
             "required": false,
             "default": "5"
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           }
@@ -7511,17 +7759,20 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "ReactNode",
             "required": true
           },
           {
             "name": "kind",
+            "description": "Visual treatment — 'on-page' or 'disclosed'.",
             "type": "'on-page' | 'disclosed'",
             "required": false,
             "default": "on-page"
           },
           {
             "name": "action",
+            "description": "Primary action shown in the component.",
             "type": "ReactNode",
             "required": false
           }
@@ -7705,6 +7956,7 @@
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -7811,23 +8063,27 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ id?: string; label: ReactNode; value: ReactNode }[]",
             "required": true
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
           },
           {
             "name": "dividers",
+            "description": "When true, shows dividers between items.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -7915,112 +8171,133 @@
         "props": [
           {
             "name": "columns",
+            "description": "The column definitions describing each table column.",
             "type": "Column<Row>[]",
             "required": true
           },
           {
             "name": "rows",
+            "description": "Number of visible text rows.",
             "type": "Row[]",
             "required": true
           },
           {
             "name": "getRowId",
+            "description": "Returns a stable unique id for a row.",
             "type": "(row: Row) => string",
             "required": false
           },
           {
             "name": "sort",
+            "description": "The controlled sort state.",
             "type": "SortState",
             "required": false
           },
           {
             "name": "defaultSort",
+            "description": "The initial sort state when uncontrolled.",
             "type": "SortState",
             "required": false
           },
           {
             "name": "sortMode",
+            "description": "Whether sorting is handled client-side or by the server ('client' | 'server').",
             "type": "'client' | 'server'",
             "required": false,
             "default": "'client'"
           },
           {
             "name": "onSortChange",
+            "description": "Called with the new sort state when it changes.",
             "type": "(sort: SortState | undefined) => void",
             "required": false
           },
           {
             "name": "searchable",
+            "description": "When true, shows a search/filter input.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "pagination",
+            "description": "Pagination configuration (page size and options).",
             "type": "{ pageSize: number; pageSizeOptions?: number[] }",
             "required": false
           },
           {
             "name": "selection",
+            "description": "Row-selection configuration (mode and selected ids).",
             "type": "{ mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }",
             "required": false
           },
           {
             "name": "batchActions",
+            "description": "Actions applied to the currently selected rows.",
             "type": "{ label: string; onClick: (selectedIds: string[]) => void }[]",
             "required": false
           },
           {
             "name": "renderExpandedRow",
+            "description": "Renders the expanded content for a row.",
             "type": "(row: Row) => ReactNode",
             "required": false
           },
           {
             "name": "density",
+            "description": "Row density — 'compact', 'normal', or 'relaxed'.",
             "type": "'compact' | 'normal' | 'relaxed'",
             "required": false,
             "default": "'normal'"
           },
           {
             "name": "zebra",
+            "description": "When true, applies alternating row striping.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "stickyHeader",
+            "description": "When true, the header stays fixed while the body scrolls.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "loading",
+            "description": "When true, shows a loading state.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "emptyState",
+            "description": "Content shown when there are no rows.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": false
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "DataTableLabels",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -8056,6 +8333,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["button", "checkbox"],
         "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
         "intent": {
           "whenToUse": [
@@ -8291,7 +8569,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["date", "range", "calendar", "picker", "input", "form"],
       "category": "inputs",
       "meta": {
@@ -8393,7 +8671,8 @@
           ]
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["calendar"],
         "tags": ["date", "range", "calendar", "picker", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -8483,6 +8762,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -8670,32 +8950,38 @@
         "props": [
           {
             "name": "trigger",
+            "description": "The element that opens the dropdown when activated.",
             "type": "ReactElement",
             "required": true
           },
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]",
             "required": true
           },
           {
             "name": "onSelect",
+            "description": "Called with the selected value.",
             "type": "(value: string) => void",
             "required": false
           },
           {
             "name": "placement",
+            "description": "Placement relative to the trigger.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-start"
           },
           {
             "name": "open",
+            "description": "Whether the component is open (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "onOpenChange",
+            "description": "Called with the next open state when it changes.",
             "type": "(open: boolean) => void",
             "required": false
           }
@@ -8799,33 +9085,39 @@
         "props": [
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": true
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(v: string) => void",
             "required": true
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "submitOnBlur",
+            "description": "When true, commits the edit when the field loses focus.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "onCancel",
+            "description": "Called when the edit is cancelled.",
             "type": "() => void",
             "required": false
           }
@@ -8972,18 +9264,21 @@
           },
           {
             "name": "readOnly",
+            "description": "When true, the value is shown but cannot be edited.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false
           },
@@ -9038,6 +9333,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -9184,6 +9480,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -9252,26 +9549,31 @@
         "props": [
           {
             "name": "icon",
+            "description": "Icon element rendered in the component.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "action",
+            "description": "Primary action shown in the component.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -9380,6 +9682,7 @@
           },
           {
             "name": "onClick",
+            "description": "Called when the element is clicked.",
             "type": "() => void",
             "required": false
           },
@@ -9391,27 +9694,32 @@
           },
           {
             "name": "position",
+            "description": "Position of the component.",
             "type": "'bottom-end' | 'bottom-start'",
             "required": false,
             "default": "bottom-end"
           },
           {
             "name": "open",
+            "description": "Whether the component is open (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "defaultOpen",
+            "description": "Whether the component is open on first render (uncontrolled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "onOpenChange",
+            "description": "Called with the next open state when it changes.",
             "type": "(open: boolean) => void",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -9515,38 +9823,45 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "error",
+            "description": "Error message shown when the value is invalid.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "required",
+            "description": "When true, marks the field as required.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "id",
+            "description": "Id applied to the root element (auto-generated when omitted).",
             "type": "string",
             "required": false
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "ReactElement",
             "required": true
           }
@@ -9567,6 +9882,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["label"],
         "tags": ["form", "layout", "validation", "accessibility"],
         "intent": {
           "whenToUse": [
@@ -9727,6 +10043,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["upload", "file", "drop", "drag", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -9833,6 +10150,7 @@
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "(selected: string[]) => void",
             "required": false
           },
@@ -9845,6 +10163,7 @@
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'pill' | 'outline'",
             "required": false,
             "default": "pill"
@@ -9953,16 +10272,19 @@
           },
           {
             "name": "onNodesChange",
+            "description": "Called with the next nodes when they change (drag, add, remove).",
             "type": "(nodes: FlowNode[]) => void",
             "required": false
           },
           {
             "name": "onEdgesChange",
+            "description": "Called with the next edges when they change.",
             "type": "(edges: FlowEdge[]) => void",
             "required": false
           },
           {
             "name": "onConnect",
+            "description": "Called when two handles are connected to form a new edge.",
             "type": "(connection: Connection) => void",
             "required": false
           },
@@ -9974,24 +10296,28 @@
           },
           {
             "name": "fitView",
+            "description": "When true, fits the graph to the viewport on mount.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "background",
+            "description": "Background pattern — true for the default dots, or a config object.",
             "type": "boolean | FlowBackgroundProps",
             "required": false,
             "default": "false"
           },
           {
             "name": "controls",
+            "description": "Whether to show the controls.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "minimap",
+            "description": "When true, shows the minimap overlay.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -10011,6 +10337,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10131,6 +10458,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10198,44 +10526,52 @@
         "props": [
           {
             "name": "position",
+            "description": "Position of the component.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-left"
           },
           {
             "name": "showZoom",
+            "description": "When true, shows the zoom-in/zoom-out buttons.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "showFitView",
+            "description": "When true, shows the fit-to-view button.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "onZoomIn",
+            "description": "Called when the zoom-in control is activated.",
             "type": "() => void",
             "required": false
           },
           {
             "name": "onZoomOut",
+            "description": "Called when the zoom-out control is activated.",
             "type": "() => void",
             "required": false
           },
           {
             "name": "onFitView",
+            "description": "Called when the fit-to-view control is activated.",
             "type": "() => void",
             "required": false
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "FlowControlsLabels",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10312,38 +10648,45 @@
           },
           {
             "name": "sourceY",
+            "description": "Y coordinate of the edge’s source point.",
             "type": "number",
             "required": true
           },
           {
             "name": "targetX",
+            "description": "X coordinate of the edge’s target point.",
             "type": "number",
             "required": true
           },
           {
             "name": "targetY",
+            "description": "Y coordinate of the edge’s target point.",
             "type": "number",
             "required": true
           },
           {
             "name": "type",
+            "description": "Edge path style ('bezier' | 'straight' | 'smoothstep').",
             "type": "'bezier' | 'straight' | 'smoothstep'",
             "required": false,
             "default": "bezier"
           },
           {
             "name": "animated",
+            "description": "When true, animates the edge path (dashed flow).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "selected",
+            "description": "Whether the edge is rendered as selected.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -10364,6 +10707,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10446,6 +10790,7 @@
         "props": [
           {
             "name": "type",
+            "description": "Whether the handle is a connection source or target ('source' | 'target').",
             "type": "'source' | 'target'",
             "required": true
           },
@@ -10463,12 +10808,14 @@
           },
           {
             "name": "isConnectable",
+            "description": "Whether new connections can start or end at this handle.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10537,49 +10884,58 @@
         "props": [
           {
             "name": "nodes",
+            "description": "The nodes to render.",
             "type": "FlowNode[]",
             "required": true
           },
           {
             "name": "viewport",
+            "description": "The current pan/zoom viewport to reflect in the minimap.",
             "type": "Viewport",
             "required": true
           },
           {
             "name": "containerWidth",
+            "description": "Width of the flow container, used to scale the minimap.",
             "type": "number",
             "required": false
           },
           {
             "name": "containerHeight",
+            "description": "Height of the flow container, used to scale the minimap.",
             "type": "number",
             "required": false
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "number",
             "required": false,
             "default": "200"
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "number",
             "required": false,
             "default": "150"
           },
           {
             "name": "position",
+            "description": "Position of the component.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-right"
           },
           {
             "name": "onViewportChange",
+            "description": "Called with the new viewport when the minimap is dragged.",
             "type": "(viewport: Viewport) => void",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10668,12 +11024,14 @@
           },
           {
             "name": "selected",
+            "description": "Whether the node is rendered as selected.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "draggable",
+            "description": "Whether the node can be dragged.",
             "type": "boolean",
             "required": false,
             "default": "true"
@@ -10687,6 +11045,7 @@
           },
           {
             "name": "onSelect",
+            "description": "Called with the selected value.",
             "type": "(id: string) => void",
             "required": false
           },
@@ -10698,6 +11057,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10779,17 +11139,20 @@
         "props": [
           {
             "name": "position",
+            "description": "Position of the component.",
             "type": "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
             "required": false,
             "default": "top-right"
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10846,11 +11209,13 @@
         "props": [
           {
             "name": "nodes",
+            "description": "The nodes to render.",
             "type": "FlowNode[]",
             "required": true
           },
           {
             "name": "edges",
+            "description": "The edges to render at each step.",
             "type": "FlowEdge[]",
             "required": true
           },
@@ -10862,12 +11227,14 @@
           },
           {
             "name": "loop",
+            "description": "When true, navigation wraps around from end to start.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "stepDuration",
+            "description": "How long (ms) each step is shown during playback.",
             "type": "number",
             "required": false,
             "default": "1500"
@@ -10881,27 +11248,32 @@
           },
           {
             "name": "playing",
+            "description": "Whether the story is currently playing (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "currentStep",
+            "description": "The controlled current step index.",
             "type": "number",
             "required": false
           },
           {
             "name": "onStepChange",
+            "description": "Called with the new step index when it changes.",
             "type": "(step: number) => void",
             "required": false
           },
           {
             "name": "controls",
+            "description": "Whether to show the controls.",
             "type": "boolean",
             "required": false,
             "default": "true"
           },
           {
             "name": "autoPlay",
+            "description": "When true, starts playback automatically on mount.",
             "type": "boolean",
             "required": false,
             "default": "true"
@@ -10915,6 +11287,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -10988,6 +11361,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/standard-schema.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.module.css"
         }
       ],
@@ -11004,21 +11380,25 @@
         "props": [
           {
             "name": "form",
+            "description": "The form store holding values, validation, and submission state.",
             "type": "FormStore<T>",
             "required": true
           },
           {
             "name": "onValid",
+            "description": "Called with the values when the form passes validation.",
             "type": "(values: T) => void | Promise<void>",
             "required": true
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "ReactNode",
             "required": true
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -11127,12 +11507,14 @@
           },
           {
             "name": "sticky",
+            "description": "When true, the header sticks to the top on scroll.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -11206,6 +11588,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
         }
       ],
@@ -11240,6 +11625,7 @@
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "ReactNode",
             "required": true
           },
@@ -11251,6 +11637,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -11343,12 +11730,14 @@
         "props": [
           {
             "name": "level",
+            "description": "Heading level (1–6) mapping to h1–h6.",
             "type": "1 | 2 | 3 | 4 | 5 | 6",
             "required": false,
             "default": "2"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg' | 'xl' | '2xl'",
             "required": false,
             "default": "derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)"
@@ -11462,6 +11851,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["popover"],
         "tags": ["overlay", "hover", "preview", "floating"],
         "intent": {
           "whenToUse": [
@@ -11541,40 +11931,47 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": true
           },
           {
             "name": "icon",
+            "description": "Icon element rendered in the component.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'ghost' | 'outline' | 'filled'",
             "required": false,
             "default": "ghost"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "asChild",
+            "description": "When true, renders the child element as the root via Slot, merging props (polymorphic rendering).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onClick",
+            "description": "Called when the element is clicked.",
             "type": "React.MouseEventHandler<HTMLButtonElement>",
             "required": false
           }
@@ -11677,11 +12074,13 @@
         "props": [
           {
             "name": "src",
+            "description": "Image source URL.",
             "type": "string",
             "required": false
           },
           {
             "name": "alt",
+            "description": "Alternative text describing the image.",
             "type": "string",
             "required": false
           },
@@ -11693,22 +12092,26 @@
           },
           {
             "name": "width",
+            "description": "Width of the component.",
             "type": "string | number",
             "required": false
           },
           {
             "name": "height",
+            "description": "Height of the component.",
             "type": "string | number",
             "required": false
           },
           {
             "name": "radius",
+            "description": "Corner radius of the image ('none' | 'sm' | 'md' | 'lg' | 'full').",
             "type": "'none' | 'sm' | 'md' | 'lg' | 'full'",
             "required": false,
             "default": "md"
           },
           {
             "name": "zoom",
+            "description": "When true, zooms the image on hover.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -11722,6 +12125,7 @@
           },
           {
             "name": "isBlurred",
+            "description": "When true, renders a blurred backdrop behind the image.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -11818,6 +12222,7 @@
         "props": [
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "React.ReactNode",
             "required": true
           },
@@ -11829,12 +12234,14 @@
           },
           {
             "name": "placement",
+            "description": "Placement relative to the trigger.",
             "type": "'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "top-end"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -11905,16 +12312,19 @@
         "props": [
           {
             "name": "status",
+            "description": "Status state.",
             "type": "'inactive' | 'active' | 'finished' | 'error'",
             "required": true
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "{ active?: string; finished?: string; error?: string }",
             "required": false
           }
@@ -11935,6 +12345,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["loading", "status", "progress", "feedback", "spinner"],
         "intent": {
           "whenToUse": [
@@ -12013,32 +12424,38 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "hint",
+            "description": "Supplementary hint text shown with the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "error",
+            "description": "Error message shown when the value is invalid.",
             "type": "string",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -12149,16 +12566,19 @@
         "props": [
           {
             "name": "prefix",
+            "description": "Content rendered before the input (leading adornment).",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "suffix",
+            "description": "Content rendered after the input (trailing adornment).",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "ReactNode",
             "required": true
           }
@@ -12254,18 +12674,21 @@
         "props": [
           {
             "name": "asChild",
+            "description": "When true, renders the child element as the root via Slot, merging props (polymorphic rendering).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'default' | 'muted'",
             "required": false,
             "default": "default"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -12358,17 +12781,20 @@
         "props": [
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "React.ReactNode",
             "required": true
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -12442,6 +12868,7 @@
         "props": [
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -12528,34 +12955,40 @@
         "props": [
           {
             "name": "htmlFor",
+            "description": "Id of the form control this label is associated with.",
             "type": "string",
             "required": false
           },
           {
             "name": "asChild",
+            "description": "When true, renders the child element as the root via Slot, merging props (polymorphic rendering).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "required",
+            "description": "When true, marks the field as required.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "ReactNode",
             "required": true
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "{ required?: string }",
             "required": false
           }
@@ -12641,6 +13074,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/shell-state.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
@@ -13799,24 +14235,28 @@
         "props": [
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'standalone' | 'inline'",
             "required": false,
             "default": "standalone"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "external",
+            "description": "When true, treats the link as external (opens in a new tab with rel safety).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "href",
+            "description": "The destination URL.",
             "type": "string",
             "required": false
           }
@@ -13907,12 +14347,14 @@
         "props": [
           {
             "name": "as",
+            "description": "The HTML element to render as.",
             "type": "'ul' | 'ol'",
             "required": false,
             "default": "ul"
           },
           {
             "name": "marker",
+            "description": "List marker style ('disc' | 'decimal' | 'none').",
             "type": "'disc' | 'decimal' | 'none'",
             "required": false,
             "default": "derived from as (ul→disc, ol→decimal)"
@@ -14001,50 +14443,59 @@
         "props": [
           {
             "name": "lines",
+            "description": "The log lines to display (a signal or array).",
             "type": "ReadonlySignal<readonly LogLine[]> | readonly LogLine[]",
             "required": true
           },
           {
             "name": "rowHeight",
+            "description": "Height of each row in pixels, used for virtualization.",
             "type": "number",
             "required": false,
             "default": "20"
           },
           {
             "name": "overscan",
+            "description": "Number of extra rows rendered above and below the viewport.",
             "type": "number",
             "required": false,
             "default": "8"
           },
           {
             "name": "follow",
+            "description": "Whether the view auto-scrolls to follow new lines (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "onFollowChange",
+            "description": "Called with the new follow state when it changes.",
             "type": "(follow: boolean) => void",
             "required": false
           },
           {
             "name": "ansi",
+            "description": "When true, parses ANSI color escape codes into colored spans.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "search",
+            "description": "Query used to filter and highlight matching lines.",
             "type": "string",
             "required": false
           },
           {
             "name": "maxHeight",
+            "description": "Maximum height of the scroll viewport (CSS length).",
             "type": "string",
             "required": false,
             "default": "'24rem'"
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "LogViewerLabels",
             "required": false
           }
@@ -14163,6 +14614,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["popover"],
         "tags": ["overlay", "menu", "dropdown", "floating"],
         "intent": {
           "whenToUse": [
@@ -14413,16 +14865,19 @@
         "props": [
           {
             "name": "menus",
+            "description": "The top-level menus to render.",
             "type": "MenubarMenu[]",
             "required": true
           },
           {
             "name": "aria-label",
+            "description": "Accessible label used when no visible label is present.",
             "type": "string",
             "required": true
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -14528,27 +14983,32 @@
         "props": [
           {
             "name": "open",
+            "description": "Whether the component is open (controlled).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onClose",
+            "description": "Called when the component is closed.",
             "type": "() => void",
             "required": false
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": false
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -14666,32 +15126,38 @@
         "props": [
           {
             "name": "options",
+            "description": "The selectable options.",
             "type": "MultiSelectOption[]",
             "required": true
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string[]",
             "required": true
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(v: string[]) => void",
             "required": true
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "MultiSelectLabels",
             "required": false
           }
@@ -14713,6 +15179,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover"],
         "tags": ["form", "select", "multi", "input", "popover"],
         "intent": {
           "whenToUse": [
@@ -14889,21 +15356,25 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "NavigationMenuItem[]",
             "required": true
           },
           {
             "name": "aria-label",
+            "description": "Accessible label used when no visible label is present.",
             "type": "string",
             "required": false
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical' | 'both'",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -15000,43 +15471,51 @@
         "props": [
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "ReactNode",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "info"
           },
           {
             "name": "dismissible",
+            "description": "When true, shows a control to dismiss the component.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onDismiss",
+            "description": "Called when the component is dismissed.",
             "type": "() => void",
             "required": false
           },
           {
             "name": "actions",
+            "description": "Action elements shown in the notification.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "icon",
+            "description": "Icon element rendered in the component.",
             "type": "ReactNode",
             "required": false
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "{ dismiss?: string }",
             "required": false
           }
@@ -15144,11 +15623,13 @@
         "props": [
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "number | null",
             "required": false
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "number",
             "required": false
           },
@@ -15160,16 +15641,19 @@
           },
           {
             "name": "min",
+            "description": "Minimum allowed value.",
             "type": "number",
             "required": false
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false
           },
           {
             "name": "step",
+            "description": "Increment between allowed values.",
             "type": "number",
             "required": false,
             "default": "1"
@@ -15188,39 +15672,46 @@
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "hint",
+            "description": "Supplementary hint text shown with the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "error",
+            "description": "Error message shown when the value is invalid.",
             "type": "string",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "incrementLabel",
+            "description": "Accessible label for the increment button.",
             "type": "string",
             "required": false,
             "default": "Increment"
           },
           {
             "name": "decrementLabel",
+            "description": "Accessible label for the decrement button.",
             "type": "string",
             "required": false,
             "default": "Decrement"
@@ -15322,28 +15813,33 @@
         "props": [
           {
             "name": "length",
+            "description": "Number of input cells.",
             "type": "number",
             "required": false,
             "default": "6"
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": true
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(v: string) => void",
             "required": true
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "type",
+            "description": "Accepted characters ('numeric' | 'alphanumeric').",
             "type": "'numeric' | 'alphanumeric'",
             "required": false,
             "default": "numeric"
@@ -15438,40 +15934,47 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]",
             "required": true
           },
           {
             "name": "onSelect",
+            "description": "Called with the selected value.",
             "type": "(value: string) => void",
             "required": false
           },
           {
             "name": "placement",
+            "description": "Placement relative to the trigger.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-end"
           },
           {
             "name": "ariaLabel",
+            "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
             "default": "More actions"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -15492,6 +15995,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["dropdown"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"],
         "intent": {
           "whenToUse": [
@@ -15592,11 +16096,13 @@
           },
           {
             "name": "onPageChange",
+            "description": "Called with the new page number when it changes.",
             "type": "(page: number) => void",
             "required": true
           },
           {
             "name": "onPageSizeChange",
+            "description": "Called with the new page size when it changes.",
             "type": "(size: number) => void",
             "required": false
           },
@@ -15615,6 +16121,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -15712,39 +16219,46 @@
         "props": [
           {
             "name": "showStrengthMeter",
+            "description": "When true, shows a password-strength meter.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "PasswordInputLabels",
             "required": false
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": false
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "(e: React.ChangeEvent<HTMLInputElement>) => void",
             "required": false
           }
@@ -15824,6 +16338,12 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/use-popover.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.module.css"
@@ -15939,12 +16459,14 @@
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -16047,6 +16569,7 @@
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false,
             "default": "100"
@@ -16059,11 +16582,13 @@
           },
           {
             "name": "helperText",
+            "description": "Supplementary text shown with the progress bar.",
             "type": "string",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -16173,12 +16698,14 @@
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false,
             "default": "100"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -16291,12 +16818,14 @@
           },
           {
             "name": "vertical",
+            "description": "When true, lays the steps out vertically.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -16491,27 +17020,32 @@
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "React.ReactNode",
             "required": true
           },
           {
             "name": "threshold",
+            "description": "Pull distance (px) required to trigger a refresh.",
             "type": "number",
             "required": false,
             "default": "64"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "{ pull?: string; release?: string; refreshing?: string }",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -16524,6 +17058,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
         "intent": {
           "whenToUse": [
@@ -16582,6 +17117,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/encode.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
         }
       ],
@@ -16604,6 +17142,7 @@
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "number",
             "required": false,
             "default": "128"
@@ -16623,18 +17162,21 @@
           },
           {
             "name": "fill",
+            "description": "Foreground color of the QR modules.",
             "type": "string",
             "required": false,
             "default": "currentColor"
           },
           {
             "name": "background",
+            "description": "Background color behind the QR code.",
             "type": "string",
             "required": false,
             "default": "transparent"
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           }
@@ -16715,33 +17257,39 @@
         "props": [
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "number",
             "required": true
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "aria-label",
+            "description": "Accessible label used when no visible label is present.",
             "type": "string",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -16843,22 +17391,26 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": true
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "name",
+            "description": "Form field name shared by the radio group.",
             "type": "string",
             "required": false
           }
@@ -16941,6 +17493,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.module.css"
@@ -17073,40 +17628,47 @@
         "props": [
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "number",
             "required": true
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(v: number) => void",
             "required": false
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false,
             "default": "5"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "readOnly",
+            "description": "When true, the value is shown but cannot be edited.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "RatingGroupLabels",
             "required": false
           }
@@ -17197,11 +17759,13 @@
         "props": [
           {
             "name": "date",
+            "description": "The date to render relative to now.",
             "type": "Date | number | string",
             "required": true
           },
           {
             "name": "sync",
+            "description": "When true, updates the relative time as it elapses.",
             "type": "boolean",
             "required": false,
             "default": "true"
@@ -17214,6 +17778,7 @@
           },
           {
             "name": "format",
+            "description": "Intl.RelativeTimeFormat options controlling the output.",
             "type": "Intl.RelativeTimeFormatOptions",
             "required": false
           }
@@ -17300,12 +17865,14 @@
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
           },
           {
             "name": "defaultRatio",
+            "description": "The initial split ratio when uncontrolled.",
             "type": "number",
             "required": false,
             "default": "0.5"
@@ -17318,18 +17885,21 @@
           },
           {
             "name": "minRatio",
+            "description": "Minimum allowed split ratio.",
             "type": "number",
             "required": false,
             "default": "0.1"
           },
           {
             "name": "maxRatio",
+            "description": "Maximum allowed split ratio.",
             "type": "number",
             "required": false,
             "default": "0.9"
           },
           {
             "name": "onRatioChange",
+            "description": "Called with the new split ratio when it changes.",
             "type": "(ratio: number) => void",
             "required": false
           }
@@ -17532,68 +18102,80 @@
         "props": [
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": false
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string",
             "required": false,
             "default": "''"
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "(value: string) => void",
             "required": false
           },
           {
             "name": "onSearch",
+            "description": "Called with the query, debounced, as the user types.",
             "type": "(value: string) => void",
             "required": false
           },
           {
             "name": "debounceMs",
+            "description": "Debounce delay (ms) before onSearch fires.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false,
             "default": "Search"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false,
             "default": "Search"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "clearLabel",
+            "description": "Accessible label for the clear button.",
             "type": "string",
             "required": false,
             "default": "Clear search"
           },
           {
             "name": "id",
+            "description": "Id applied to the root element (auto-generated when omitted).",
             "type": "string",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -17733,6 +18315,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/section"],
         "tags": ["section", "cta", "marketing"],
         "intent": {
           "whenToUse": [
@@ -17837,6 +18420,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/auto-grid", "layout/section"],
         "tags": ["section", "features", "grid"],
         "intent": {
           "whenToUse": [
@@ -17951,6 +18535,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/section"],
         "tags": ["section", "hero", "marketing"],
         "intent": {
           "whenToUse": [
@@ -18058,6 +18643,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/masonry", "layout/section"],
         "tags": ["section", "gallery", "masonry"],
         "intent": {
           "whenToUse": [
@@ -18142,6 +18728,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/auto-grid"],
         "tags": ["section", "footer", "navigation"],
         "intent": {
           "whenToUse": [
@@ -18221,6 +18808,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/charts"],
+        "registryDependencies": ["layout/auto-grid"],
         "tags": ["section", "stats", "kpi", "charts"],
         "intent": {
           "whenToUse": [
@@ -18276,27 +18864,32 @@
         "props": [
           {
             "name": "options",
+            "description": "The selectable options.",
             "type": "SegmentedControlOption[]",
             "required": true
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": true
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(v: string) => void",
             "required": true
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -18396,37 +18989,44 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "hint",
+            "description": "Supplementary hint text shown with the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "error",
+            "description": "Error message shown when the value is invalid.",
             "type": "string",
             "required": false
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false
           },
           {
             "name": "options",
+            "description": "The selectable options.",
             "type": "{ value: string; label: string; disabled?: boolean }[]",
             "required": true
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -18528,6 +19128,7 @@
         "props": [
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -18616,21 +19217,25 @@
         "props": [
           {
             "name": "open",
+            "description": "Whether the component is open (controlled).",
             "type": "boolean",
             "required": true
           },
           {
             "name": "onClose",
+            "description": "Called when the component is closed.",
             "type": "() => void",
             "required": true
           },
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "React.ReactNode",
             "required": false
           },
           {
             "name": "side",
+            "description": "Edge the component is anchored to.",
             "type": "'start' | 'end' | 'top' | 'bottom'",
             "required": false,
             "default": "end"
@@ -18706,6 +19311,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
@@ -18788,6 +19396,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover"],
         "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -18878,29 +19487,34 @@
           },
           {
             "name": "defaultCollapsed",
+            "description": "Whether the rail is collapsed on first render (uncontrolled).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onCollapsedChange",
+            "description": "Called with the new collapsed state when it changes.",
             "type": "(collapsed: boolean) => void",
             "required": false
           },
           {
             "name": "ariaLabel",
+            "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
             "default": "Side navigation"
           },
           {
             "name": "collapseLabel",
+            "description": "Accessible label for the collapse control.",
             "type": "string",
             "required": false,
             "default": "Collapse navigation"
           },
           {
             "name": "expandLabel",
+            "description": "Accessible label for the expand control.",
             "type": "string",
             "required": false,
             "default": "Expand navigation"
@@ -18926,6 +19540,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -18956,6 +19571,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover", "tooltip"],
         "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
         "intent": {
           "whenToUse": [
@@ -19024,6 +19640,7 @@
         "props": [
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'text' | 'circle' | 'rect'",
             "required": false,
             "default": "text"
@@ -19240,39 +19857,46 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "min",
+            "description": "Minimum allowed value.",
             "type": "number",
             "required": false,
             "default": "0"
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false,
             "default": "100"
           },
           {
             "name": "step",
+            "description": "Increment between allowed values.",
             "type": "number",
             "required": false,
             "default": "1"
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "number",
             "required": false
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "number",
             "required": false
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -19367,6 +19991,7 @@
         "props": [
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -19461,6 +20086,7 @@
         "props": [
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "React.ReactNode",
             "required": true
           },
@@ -19473,6 +20099,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -19565,6 +20192,7 @@
           },
           {
             "name": "trend",
+            "description": "Direction of the trend indicator ('up' | 'down' | 'flat').",
             "type": "'up' | 'down' | 'flat'",
             "required": false,
             "default": "flat"
@@ -19662,6 +20290,7 @@
         "props": [
           {
             "name": "status",
+            "description": "Status state.",
             "type": "'success' | 'warning' | 'error' | 'info' | 'neutral'",
             "required": false,
             "default": "neutral"
@@ -19787,6 +20416,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -19887,32 +20517,38 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ id: string; cells: ReactNode[]; selected?: boolean }[]",
             "required": true
           },
           {
             "name": "headers",
+            "description": "The column header cells.",
             "type": "ReactNode[]",
             "required": false
           },
           {
             "name": "selectable",
+            "description": "When true, rows can be selected.",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": false
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string",
             "required": false
           },
           {
             "name": "onSelect",
+            "description": "Called with the selected value.",
             "type": "(id: string) => void",
             "required": false
           }
@@ -20008,38 +20644,45 @@
         "props": [
           {
             "name": "on",
+            "description": "Content shown in the active (on) state.",
             "type": "React.ReactNode",
             "required": true
           },
           {
             "name": "off",
+            "description": "Content shown in the inactive (off) state.",
             "type": "React.ReactNode",
             "required": true
           },
           {
             "name": "checked",
+            "description": "Whether the control is checked (controlled).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "(checked: boolean) => void",
             "required": false
           },
           {
             "name": "mode",
+            "description": "Transition between states ('rotate' | 'flip').",
             "type": "'rotate' | 'flip'",
             "required": false,
             "default": "rotate"
           },
           {
             "name": "aria-label",
+            "description": "Accessible label used when no visible label is present.",
             "type": "string",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -20149,6 +20792,7 @@
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -20227,6 +20871,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
         }
       ],
@@ -20249,12 +20896,14 @@
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false,
             "default": "Switch application"
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -20342,16 +20991,19 @@
         "props": [
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string",
             "required": false
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string",
             "required": false
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(value: string) => void",
             "required": false
           }
@@ -20446,12 +21098,14 @@
         "props": [
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'default' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "default"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
@@ -20464,6 +21118,7 @@
           },
           {
             "name": "dismissLabel",
+            "description": "Accessible label for the dismiss button.",
             "type": "string",
             "required": false,
             "default": "Remove"
@@ -20567,31 +21222,37 @@
         "props": [
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string[]",
             "required": true
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(v: string[]) => void",
             "required": true
           },
           {
             "name": "placeholder",
+            "description": "Placeholder text shown when the field is empty.",
             "type": "string",
             "required": false
           },
           {
             "name": "validate",
+            "description": "Returns whether a candidate tag is allowed.",
             "type": "(tag: string) => boolean",
             "required": false
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "number",
             "required": false
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -20691,24 +21352,28 @@
         "props": [
           {
             "name": "as",
+            "description": "The HTML element to render as.",
             "type": "'p' | 'span' | 'div'",
             "required": false,
             "default": "p"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "weight",
+            "description": "Font weight ('normal' | 'medium' | 'semibold').",
             "type": "'normal' | 'medium' | 'semibold'",
             "required": false,
             "default": "normal"
           },
           {
             "name": "muted",
+            "description": "When true, renders in a muted/subtle color.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -20805,33 +21470,39 @@
         "props": [
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "hint",
+            "description": "Supplementary hint text shown with the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "error",
+            "description": "Error message shown when the value is invalid.",
             "type": "string",
             "required": false
           },
           {
             "name": "rows",
+            "description": "Number of visible text rows.",
             "type": "number",
             "required": false,
             "default": "4"
           },
           {
             "name": "resize",
+            "description": "Which directions the textarea can be resized ('none' | 'vertical' | 'both').",
             "type": "'none' | 'vertical' | 'both'",
             "required": false,
             "default": "vertical"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -21030,57 +21701,68 @@
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string",
             "required": false
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "(value: string) => void",
             "required": false
           },
           {
             "name": "min",
+            "description": "Minimum allowed value.",
             "type": "string",
             "required": false
           },
           {
             "name": "max",
+            "description": "Maximum allowed value.",
             "type": "string",
             "required": false
           },
           {
             "name": "step",
+            "description": "Increment between allowed values.",
             "type": "number",
             "required": false
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "hint",
+            "description": "Supplementary hint text shown with the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "error",
+            "description": "Error message shown when the value is invalid.",
             "type": "string",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "'md'"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -21177,11 +21859,13 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\" }[]",
             "required": true
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -21270,22 +21954,26 @@
         "props": [
           {
             "name": "title",
+            "description": "Title text for the component.",
             "type": "string",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "string",
             "required": false
           },
           {
             "name": "variant",
+            "description": "Selects the visual style variant.",
             "type": "'default' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
           },
           {
             "name": "duration",
+            "description": "How long (ms) the toast stays visible before auto-dismiss.",
             "type": "number",
             "required": false,
             "default": "5000"
@@ -21369,6 +22057,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/use-toc-from-region.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.module.css"
         }
       ],
@@ -21385,6 +22076,7 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ id: string; label: string; level?: number }[]",
             "required": true
           },
@@ -21396,16 +22088,19 @@
           },
           {
             "name": "onActiveChange",
+            "description": "Called with the id of the active section when it changes.",
             "type": "(id: string) => void",
             "required": false
           },
           {
             "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
             "type": "{ nav?: string }",
             "required": false
           },
           {
             "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
           }
@@ -21501,33 +22196,39 @@
         "props": [
           {
             "name": "checked",
+            "description": "Whether the control is checked (controlled).",
             "type": "boolean",
             "required": false
           },
           {
             "name": "defaultChecked",
+            "description": "Whether the control is checked on first render (uncontrolled).",
             "type": "boolean",
             "required": false,
             "default": "false"
           },
           {
             "name": "onChange",
+            "description": "Called when the value changes.",
             "type": "(checked: boolean) => void",
             "required": false
           },
           {
             "name": "label",
+            "description": "Text label for the control.",
             "type": "string",
             "required": false
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md'",
             "required": false,
             "default": "md"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -21623,43 +22324,51 @@
         "props": [
           {
             "name": "type",
+            "description": "Whether one or multiple items can be pressed at once ('single' | 'multiple').",
             "type": "'single' | 'multiple'",
             "required": true
           },
           {
             "name": "value",
+            "description": "The controlled value.",
             "type": "string | string[]",
             "required": false
           },
           {
             "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
             "type": "string | string[]",
             "required": false
           },
           {
             "name": "onValueChange",
+            "description": "Called with the new value when it changes.",
             "type": "(value: string | string[]) => void",
             "required": false
           },
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]",
             "required": true
           },
           {
             "name": "orientation",
+            "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
           },
           {
             "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
           },
           {
             "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -21925,17 +22634,20 @@
         "props": [
           {
             "name": "content",
+            "description": "The tooltip content shown on hover/focus.",
             "type": "ReactNode",
             "required": true
           },
           {
             "name": "placement",
+            "description": "Placement relative to the trigger.",
             "type": "'top' | 'right' | 'bottom' | 'left'",
             "required": false,
             "default": "top"
           },
           {
             "name": "children",
+            "description": "Content rendered inside the component.",
             "type": "ReactElement",
             "required": true
           },
@@ -22046,42 +22758,50 @@
         "props": [
           {
             "name": "items",
+            "description": "The items to render.",
             "type": "{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]",
             "required": true
           },
           {
             "name": "selectionMode",
+            "description": "Whether one or multiple nodes can be selected ('single' | 'multi').",
             "type": "'single' | 'multi'",
             "required": false,
             "default": "single"
           },
           {
             "name": "selected",
+            "description": "The controlled selected node id(s).",
             "type": "string | string[]",
             "required": false
           },
           {
             "name": "defaultSelected",
+            "description": "The initially selected node id(s) when uncontrolled.",
             "type": "string | string[]",
             "required": false
           },
           {
             "name": "onSelectChange",
+            "description": "Called with the new selection when it changes.",
             "type": "(selected: string | string[]) => void",
             "required": false
           },
           {
             "name": "expanded",
+            "description": "The controlled set of expanded node ids.",
             "type": "string[]",
             "required": false
           },
           {
             "name": "defaultExpanded",
+            "description": "The initially expanded node ids when uncontrolled.",
             "type": "string[]",
             "required": false
           },
           {
             "name": "onExpandedChange",
+            "description": "Called with the new expanded set when it changes.",
             "type": "(expanded: string[]) => void",
             "required": false
           }
@@ -22195,11 +22915,13 @@
         "props": [
           {
             "name": "name",
+            "description": "The user’s display name.",
             "type": "ReactNode",
             "required": true
           },
           {
             "name": "description",
+            "description": "Supporting description text.",
             "type": "ReactNode",
             "required": false
           },
@@ -22224,6 +22946,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "registryDependencies": ["avatar"],
         "tags": ["user", "avatar", "identity", "display"],
         "intent": {
           "whenToUse": [

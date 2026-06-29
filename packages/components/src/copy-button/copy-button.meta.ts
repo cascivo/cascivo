@@ -14,7 +14,13 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'The text written to the clipboard on click',
     },
-    { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md'",
+      required: false,
+      default: 'md',
+    },
     {
       name: 'labels',
       type: '{ copy?: string; copied?: string }',

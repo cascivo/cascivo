@@ -38,14 +38,14 @@ Renders a native <label> so the platform handles click-to-focus and accessible n
 
 ## Props
 
-| Name       | Type                    | Required | Default | Description |
-| ---------- | ----------------------- | -------- | ------- | ----------- |
-| `htmlFor`  | `string`                | No       | —       | —           |
-| `asChild`  | `boolean`               | No       | false   | —           |
-| `required` | `boolean`               | No       | false   | —           |
-| `disabled` | `boolean`               | No       | false   | —           |
-| `children` | `ReactNode`             | Yes      | —       | —           |
-| `labels`   | `{ required?: string }` | No       | —       | —           |
+| Name       | Type                    | Required | Default | Description                                                                                       |
+| ---------- | ----------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `htmlFor`  | `string`                | No       | —       | Id of the form control this label is associated with.                                             |
+| `asChild`  | `boolean`               | No       | false   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `required` | `boolean`               | No       | false   | When true, marks the field as required.                                                           |
+| `disabled` | `boolean`               | No       | false   | When true, disables the control and removes it from the tab order.                                |
+| `children` | `ReactNode`             | Yes      | —       | Content rendered inside the component.                                                            |
+| `labels`   | `{ required?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                                        |
 
 ## Tokens
 

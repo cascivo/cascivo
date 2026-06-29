@@ -18,16 +18,16 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop          | Type                 | Required    | Default       | Description     |
-| ------------- | -------------------- | ----------- | ------------- | --------------- | --- | ------------- | --- |
-| `position`    | `'top-left'          | 'top-right' | 'bottom-left' | 'bottom-right'` | no  | `bottom-left` | —   |
-| `showZoom`    | `boolean`            | no          | `true`        | —               |
-| `showFitView` | `boolean`            | no          | `true`        | —               |
-| `onZoomIn`    | `() => void`         | no          | —             | —               |
-| `onZoomOut`   | `() => void`         | no          | —             | —               |
-| `onFitView`   | `() => void`         | no          | —             | —               |
-| `labels`      | `FlowControlsLabels` | no          | —             | —               |
-| `className`   | `string`             | no          | —             | —               |
+| Prop          | Type                 | Required    | Default       | Description                                                |
+| ------------- | -------------------- | ----------- | ------------- | ---------------------------------------------------------- | --- | ------------- | -------------------------- |
+| `position`    | `'top-left'          | 'top-right' | 'bottom-left' | 'bottom-right'`                                            | no  | `bottom-left` | Position of the component. |
+| `showZoom`    | `boolean`            | no          | `true`        | When true, shows the zoom-in/zoom-out buttons.             |
+| `showFitView` | `boolean`            | no          | `true`        | When true, shows the fit-to-view button.                   |
+| `onZoomIn`    | `() => void`         | no          | —             | Called when the zoom-in control is activated.              |
+| `onZoomOut`   | `() => void`         | no          | —             | Called when the zoom-out control is activated.             |
+| `onFitView`   | `() => void`         | no          | —             | Called when the fit-to-view control is activated.          |
+| `labels`      | `FlowControlsLabels` | no          | —             | Overrides for the component’s user-visible strings (i18n). |
+| `className`   | `string`             | no          | —             | Additional CSS class names merged onto the root element.   |
 
 ## Examples
 

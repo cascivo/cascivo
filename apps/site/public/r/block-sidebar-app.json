@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/app-shell"],
+  "dependencies": ["@cascivo/react"],
   "tags": ["block", "sidebar", "navigation", "app-shell"],
   "category": "display",
   "meta": {
@@ -33,7 +33,8 @@
         "description": "App with sidebar navigation"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/app-shell"],
+    "dependencies": ["@cascivo/react"],
+    "registryDependencies": ["layout/app-shell"],
     "tags": ["block", "sidebar", "navigation", "app-shell"],
     "intent": {
       "whenToUse": [

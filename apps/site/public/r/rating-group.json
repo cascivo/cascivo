@@ -25,40 +25,47 @@
     "props": [
       {
         "name": "value",
+        "description": "The controlled value.",
         "type": "number",
         "required": true
       },
       {
         "name": "onValueChange",
+        "description": "Called with the new value when it changes.",
         "type": "(v: number) => void",
         "required": false
       },
       {
         "name": "max",
+        "description": "Maximum allowed value.",
         "type": "number",
         "required": false,
         "default": "5"
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"
       },
       {
         "name": "disabled",
+        "description": "When true, disables the control and removes it from the tab order.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "readOnly",
+        "description": "When true, the value is shown but cannot be edited.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "RatingGroupLabels",
         "required": false
       }

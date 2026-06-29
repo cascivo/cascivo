@@ -10,20 +10,50 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'items',
+      description: 'The items to render.',
       type: '{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]',
       required: true,
     },
-    { name: 'onSelect', type: '(value: string) => void', required: false },
+    {
+      name: 'onSelect',
+      description: 'Called with the selected value.',
+      type: '(value: string) => void',
+      required: false,
+    },
     {
       name: 'placement',
+      description: 'Placement relative to the trigger.',
       type: "'bottom-start' | 'bottom-end'",
       required: false,
       default: 'bottom-end',
     },
-    { name: 'ariaLabel', type: 'string', required: false, default: 'More actions' },
-    { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'ariaLabel',
+      description: 'Accessible label for the component.',
+      type: 'string',
+      required: false,
+      default: 'More actions',
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md'",
+      required: false,
+      default: 'md',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-text',
@@ -50,6 +80,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['dropdown'],
   tags: ['overlay', 'menu', 'actions', 'kebab', 'table'],
   intent: {
     whenToUse: [

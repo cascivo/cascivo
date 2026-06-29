@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+  "dependencies": ["@cascivo/react"],
   "tags": ["block", "users", "table", "page"],
   "category": "display",
   "meta": {
@@ -46,7 +46,8 @@
         "description": "Demo users table"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+    "dependencies": ["@cascivo/react"],
+    "registryDependencies": ["layout/page-header", "layout/stack"],
     "tags": ["block", "users", "table", "page"],
     "intent": {
       "whenToUse": [

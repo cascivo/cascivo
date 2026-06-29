@@ -13,7 +13,8 @@ export const meta: ComponentMeta = {
   examples: [
     { title: 'Default', code: '<PageWithBreadcrumb />', description: 'Page with breadcrumb' },
   ],
-  dependencies: ['@cascivo/react', 'layout/page-header', 'layout/center'],
+  dependencies: ['@cascivo/react'],
+  registryDependencies: ['layout/page-header', 'layout/center'],
   tags: ['block', 'breadcrumb', 'page', 'navigation'],
   intent: {
     whenToUse: [

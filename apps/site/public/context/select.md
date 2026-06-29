@@ -35,15 +35,15 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Props
 
-| Name          | Type                                                     | Required | Default | Description |
-| ------------- | -------------------------------------------------------- | -------- | ------- | ----------- | --- | --- |
-| `label`       | `string`                                                 | No       | —       | —           |
-| `hint`        | `string`                                                 | No       | —       | —           |
-| `error`       | `string`                                                 | No       | —       | —           |
-| `placeholder` | `string`                                                 | No       | —       | —           |
-| `options`     | `{ value: string; label: string; disabled?: boolean }[]` | Yes      | —       | —           |
-| `size`        | `'sm'                                                    | 'md'     | 'lg'`   | No          | md  | —   |
-| `disabled`    | `boolean`                                                | No       | false   | —           |
+| Name          | Type                                                     | Required | Default | Description                                                        |
+| ------------- | -------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ | --- | ----------------------------------------------------- |
+| `label`       | `string`                                                 | No       | —       | Text label for the control.                                        |
+| `hint`        | `string`                                                 | No       | —       | Supplementary hint text shown with the control.                    |
+| `error`       | `string`                                                 | No       | —       | Error message shown when the value is invalid.                     |
+| `placeholder` | `string`                                                 | No       | —       | Placeholder text shown when the field is empty.                    |
+| `options`     | `{ value: string; label: string; disabled?: boolean }[]` | Yes      | —       | The selectable options.                                            |
+| `size`        | `'sm'                                                    | 'md'     | 'lg'`   | No                                                                 | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled`    | `boolean`                                                | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 

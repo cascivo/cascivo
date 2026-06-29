@@ -29,11 +29,11 @@ import { InlineLoading } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                                     | Required | Default    | Description |
-| -------- | -------------------------------------------------------- | -------- | ---------- | ----------- | --- | --- | --- |
-| `status` | `'inactive'                                              | 'active' | 'finished' | 'error'`    | yes | —   | —   |
-| `label`  | `ReactNode`                                              | no       | —          | —           |
-| `labels` | `{ active?: string; finished?: string; error?: string }` | no       | —          | —           |
+| Prop     | Type                                                     | Required | Default    | Description                                                |
+| -------- | -------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------- | --- | --- | ------------- |
+| `status` | `'inactive'                                              | 'active' | 'finished' | 'error'`                                                   | yes | —   | Status state. |
+| `label`  | `ReactNode`                                              | no       | —          | Text label for the control.                                |
+| `labels` | `{ active?: string; finished?: string; error?: string }` | no       | —          | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
 

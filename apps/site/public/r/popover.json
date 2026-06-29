@@ -9,6 +9,12 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/use-popover.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.module.css"
     }
   ],

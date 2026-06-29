@@ -25,12 +25,14 @@
     "props": [
       {
         "name": "variant",
+        "description": "Selects the visual style variant.",
         "type": "'default' | 'info' | 'success' | 'warning' | 'error'",
         "required": false,
         "default": "default"
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md'",
         "required": false,
         "default": "md"
@@ -43,6 +45,7 @@
       },
       {
         "name": "dismissLabel",
+        "description": "Accessible label for the dismiss button.",
         "type": "string",
         "required": false,
         "default": "Remove"

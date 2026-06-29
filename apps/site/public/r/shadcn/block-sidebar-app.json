@@ -10,7 +10,7 @@
     }
   ],
   "description": "Full app shell with collapsible side navigation and top header.",
-  "dependencies": ["@cascivo/react", "layout/app-shell"],
+  "dependencies": ["@cascivo/react"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

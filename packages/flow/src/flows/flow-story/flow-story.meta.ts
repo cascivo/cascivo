@@ -9,16 +9,33 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'nodes', type: 'FlowNode[]', required: true },
-    { name: 'edges', type: 'FlowEdge[]', required: true },
+    { name: 'nodes', description: 'The nodes to render.', type: 'FlowNode[]', required: true },
+    {
+      name: 'edges',
+      description: 'The edges to render at each step.',
+      type: 'FlowEdge[]',
+      required: true,
+    },
     {
       name: 'script',
       type: 'StoryStep[]',
       required: true,
       description: 'Ordered steps: { from, to, label? } or { edge, reverse? }.',
     },
-    { name: 'loop', type: 'boolean', required: false, default: 'true' },
-    { name: 'stepDuration', type: 'number', required: false, default: '1500' },
+    {
+      name: 'loop',
+      description: 'When true, navigation wraps around from end to start.',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+    },
+    {
+      name: 'stepDuration',
+      description: 'How long (ms) each step is shown during playback.',
+      type: 'number',
+      required: false,
+      default: '1500',
+    },
     {
       name: 'stepGap',
       type: 'number',
@@ -27,11 +44,38 @@ export const meta: ComponentMeta = {
       description:
         'Extra pause after each step before advancing (ms) — makes the story easier to follow.',
     },
-    { name: 'playing', type: 'boolean', required: false },
-    { name: 'currentStep', type: 'number', required: false },
-    { name: 'onStepChange', type: '(step: number) => void', required: false },
-    { name: 'controls', type: 'boolean', required: false, default: 'true' },
-    { name: 'autoPlay', type: 'boolean', required: false, default: 'true' },
+    {
+      name: 'playing',
+      description: 'Whether the story is currently playing (controlled).',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'currentStep',
+      description: 'The controlled current step index.',
+      type: 'number',
+      required: false,
+    },
+    {
+      name: 'onStepChange',
+      description: 'Called with the new step index when it changes.',
+      type: '(step: number) => void',
+      required: false,
+    },
+    {
+      name: 'controls',
+      description: 'Whether to show the controls.',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+    },
+    {
+      name: 'autoPlay',
+      description: 'When true, starts playback automatically on mount.',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+    },
     {
       name: 'interactive',
       type: 'boolean',
@@ -40,7 +84,12 @@ export const meta: ComponentMeta = {
       description:
         'A storyline is a view by default — set true to allow selecting/dragging/connecting.',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-color-surface', '--cascivo-color-accent', '--cascivo-color-text-muted'],
   accessibility: {

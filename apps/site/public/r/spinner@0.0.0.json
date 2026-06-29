@@ -25,6 +25,7 @@
     "props": [
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"

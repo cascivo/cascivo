@@ -8,21 +8,43 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'trigger', type: 'ReactElement', required: true },
+    {
+      name: 'trigger',
+      description: 'The element that opens the dropdown when activated.',
+      type: 'ReactElement',
+      required: true,
+    },
     {
       name: 'items',
+      description: 'The items to render.',
       type: '{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]',
       required: true,
     },
-    { name: 'onSelect', type: '(value: string) => void', required: false },
+    {
+      name: 'onSelect',
+      description: 'Called with the selected value.',
+      type: '(value: string) => void',
+      required: false,
+    },
     {
       name: 'placement',
+      description: 'Placement relative to the trigger.',
       type: "'bottom-start' | 'bottom-end'",
       required: false,
       default: 'bottom-start',
     },
-    { name: 'open', type: 'boolean', required: false },
-    { name: 'onOpenChange', type: '(open: boolean) => void', required: false },
+    {
+      name: 'open',
+      description: 'Whether the component is open (controlled).',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      description: 'Called with the next open state when it changes.',
+      type: '(open: boolean) => void',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface-overlay',

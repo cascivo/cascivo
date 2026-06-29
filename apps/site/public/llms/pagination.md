@@ -27,11 +27,11 @@ import { Pagination } from '@cascivo/react'
 | `page`             | `number`                 | yes      | —                   | Current page (1-based)                                          |
 | `pageSize`         | `number`                 | yes      | —                   | Items per page                                                  |
 | `totalItems`       | `number`                 | yes      | —                   | Total number of items                                           |
-| `onPageChange`     | `(page: number) => void` | yes      | —                   | —                                                               |
-| `onPageSizeChange` | `(size: number) => void` | no       | —                   | —                                                               |
+| `onPageChange`     | `(page: number) => void` | yes      | —                   | Called with the new page number when it changes.                |
+| `onPageSizeChange` | `(size: number) => void` | no       | —                   | Called with the new page size when it changes.                  |
 | `pageSizeOptions`  | `number[]`               | no       | `[10, 25, 50, 100]` | Options for the page size select                                |
 | `labels`           | `PaginationLabels`       | no       | —                   | Overridable English strings for all visible and accessible text |
-| `className`        | `string`                 | no       | —                   | —                                                               |
+| `className`        | `string`                 | no       | —                   | Additional CSS class names merged onto the root element.        |
 
 ## Examples
 

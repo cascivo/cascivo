@@ -32,14 +32,14 @@ Exposes role="group" so assistive tech treats the buttons as one labeled set; op
 
 ## Props
 
-| Name              | Type          | Required    | Default | Description |
-| ----------------- | ------------- | ----------- | ------- | ----------- | --- | --- |
-| `orientation`     | `'horizontal' | 'vertical'` | No      | horizontal  | —   |
-| `size`            | `'sm'         | 'md'        | 'lg'`   | No          | md  | —   |
-| `roving`          | `boolean`     | No          | false   | —           |
-| `loop`            | `boolean`     | No          | false   | —           |
-| `aria-label`      | `string`      | No          | —       | —           |
-| `aria-labelledby` | `string`      | No          | —       | —           |
+| Name              | Type          | Required    | Default | Description                                                               |
+| ----------------- | ------------- | ----------- | ------- | ------------------------------------------------------------------------- | ------------------------------------ | ----------------------------------------------------- |
+| `orientation`     | `'horizontal' | 'vertical'` | No      | horizontal                                                                | Layout orientation of the component. |
+| `size`            | `'sm'         | 'md'        | 'lg'`   | No                                                                        | md                                   | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `roving`          | `boolean`     | No          | false   | When true, uses roving tabindex so arrow keys move focus between buttons. |
+| `loop`            | `boolean`     | No          | false   | When true, navigation wraps around from end to start.                     |
+| `aria-label`      | `string`      | No          | —       | Accessible label used when no visible label is present.                   |
+| `aria-labelledby` | `string`      | No          | —       | Id of the element that labels this component.                             |
 
 ## Tokens
 

@@ -39,7 +39,7 @@ Rendered as an ordered list (<ol>) with aria-label; the active item carries aria
 | `steps`       | `Step[]`      | Yes         | —       | Array of step objects with label and optional explicit state |
 | `activeStep`  | `number`      | No          | 0       | Index of the currently active step (0-based)                 |
 | `orientation` | `'horizontal' | 'vertical'` | No      | 'horizontal'                                                 | Layout direction of the steps |
-| `className`   | `string`      | No          | —       | —                                                            |
+| `className`   | `string`      | No          | —       | Additional CSS class names merged onto the root element.     |
 
 ## Tokens
 

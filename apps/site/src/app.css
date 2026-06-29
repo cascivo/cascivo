@@ -210,6 +210,46 @@ a {
   color: var(--cascivo-color-text-muted);
 }
 
+/* ── API reference page ───────────────────────────────── */
+.api-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  margin-block: var(--cascivo-space-4);
+}
+
+.api-filter label {
+  font-weight: 600;
+}
+
+.api-filter input {
+  flex: 1 1 16rem;
+  min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
+  font: inherit;
+  color: var(--cascivo-color-text);
+  background-color: var(--cascivo-color-surface);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+}
+
+.api-entry {
+  padding-block-start: var(--cascivo-space-5);
+}
+
+.api-entry > h3 {
+  margin-block-end: var(--cascivo-space-1);
+}
+
+.api-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cascivo-space-2);
+  margin-block: var(--cascivo-space-2);
+}
+
 /* ── Tables ───────────────────────────────────────────── */
 .table-wrap {
   overflow-x: auto;

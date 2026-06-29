@@ -233,12 +233,7 @@
         }
       ],
       "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
-      "dependencies": [
-        "@cascivo/react",
-        "@cascivo/icons",
-        "layout/app-shell",
-        "layout/page-header"
-      ],
+      "dependencies": ["@cascivo/react", "@cascivo/icons"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -278,7 +273,7 @@
         }
       ],
       "description": "Dashboard page showing an empty state with a call-to-action button.",
-      "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -298,7 +293,7 @@
         }
       ],
       "description": "Authentication login page with email and password form.",
-      "dependencies": ["@cascivo/react", "layout/auth-layout"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -318,7 +313,7 @@
         }
       ],
       "description": "A list of notification alerts with a mark-all-read action.",
-      "dependencies": ["@cascivo/react", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -338,7 +333,7 @@
         }
       ],
       "description": "A centered content page with a breadcrumb navigation and page header.",
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -358,7 +353,7 @@
         }
       ],
       "description": "Settings page with profile form inside a two-column settings layout.",
-      "dependencies": ["@cascivo/react", "layout/settings-layout"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -378,7 +373,7 @@
         }
       ],
       "description": "Full app shell with collapsible side navigation and top header.",
-      "dependencies": ["@cascivo/react", "layout/app-shell"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -418,7 +413,7 @@
         }
       ],
       "description": "Full users management page with table, search, and invite action.",
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -1051,6 +1046,10 @@
           "type": "registry:component"
         },
         {
+          "path": "checkbox-card/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "checkbox-card/checkbox-card.module.css",
           "type": "registry:component"
         }
@@ -1096,6 +1095,10 @@
       "files": [
         {
           "path": "code-snippet/code-snippet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "code-snippet/highlight.ts",
           "type": "registry:component"
         },
         {
@@ -1392,7 +1395,7 @@
         }
       ],
       "description": "A dual-calendar picker for selecting a contiguous date range.",
-      "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["inputs"],
       "meta": {
         "cascivo": {
@@ -1791,6 +1794,10 @@
           "type": "registry:component"
         },
         {
+          "path": "form/standard-schema.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "form/form.module.css",
           "type": "registry:component"
         }
@@ -1836,6 +1843,10 @@
       "files": [
         {
           "path": "header-panel/header-panel.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "header-panel/index.ts",
           "type": "registry:component"
         },
         {
@@ -2146,6 +2157,10 @@
       "files": [
         {
           "path": "layout-app-shell/app-shell.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-app-shell/shell-state.ts",
           "type": "registry:block"
         },
         {
@@ -2869,6 +2884,14 @@
           "type": "registry:component"
         },
         {
+          "path": "popover/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "popover/use-popover.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "popover/popover.module.css",
           "type": "registry:component"
         }
@@ -3037,6 +3060,10 @@
           "type": "registry:component"
         },
         {
+          "path": "qr-code/encode.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "qr-code/qr-code.module.css",
           "type": "registry:component"
         }
@@ -3105,6 +3132,10 @@
       "files": [
         {
           "path": "radio-card/radio-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "radio-card/index.ts",
           "type": "registry:component"
         },
         {
@@ -3492,6 +3523,10 @@
           "type": "registry:component"
         },
         {
+          "path": "shell-header/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "shell-header/shell-header.module.css",
           "type": "registry:component"
         }
@@ -3803,6 +3838,10 @@
           "type": "registry:component"
         },
         {
+          "path": "switcher/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "switcher/switcher.module.css",
           "type": "registry:component"
         }
@@ -4040,6 +4079,10 @@
       "files": [
         {
           "path": "toc/toc.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toc/use-toc-from-region.ts",
           "type": "registry:component"
         },
         {

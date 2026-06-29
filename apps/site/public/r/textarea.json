@@ -25,33 +25,39 @@
     "props": [
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": false
       },
       {
         "name": "hint",
+        "description": "Supplementary hint text shown with the control.",
         "type": "string",
         "required": false
       },
       {
         "name": "error",
+        "description": "Error message shown when the value is invalid.",
         "type": "string",
         "required": false
       },
       {
         "name": "rows",
+        "description": "Number of visible text rows.",
         "type": "number",
         "required": false,
         "default": "4"
       },
       {
         "name": "resize",
+        "description": "Which directions the textarea can be resized ('none' | 'vertical' | 'both').",
         "type": "'none' | 'vertical' | 'both'",
         "required": false,
         "default": "vertical"
       },
       {
         "name": "disabled",
+        "description": "When true, disables the control and removes it from the tab order.",
         "type": "boolean",
         "required": false,
         "default": "false"

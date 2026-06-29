@@ -41,8 +41,6 @@ Demo users table
 ## Dependencies
 
 - `@cascivo/react`
-- `layout/page-header`
-- `layout/stack`
 
 ## Tags
 

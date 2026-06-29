@@ -20,17 +20,17 @@ import { Sankey } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type           | Required | Default | Description                       |
-| ------------- | -------------- | -------- | ------- | --------------------------------- |
-| `nodes`       | `SankeyNode[]` | yes      | —       | Nodes: { id, label, color? }.     |
-| `links`       | `SankeyLink[]` | yes      | —       | Links: { source, target, value }. |
-| `title`       | `string`       | yes      | —       | —                                 |
-| `description` | `string`       | no       | —       | —                                 |
-| `width`       | `number`       | no       | —       | —                                 |
-| `height`      | `number`       | no       | `320`   | —                                 |
-| `tooltip`     | `boolean`      | no       | —       | —                                 |
-| `className`   | `string`       | no       | —       | —                                 |
-| `plain`       | `boolean`      | no       | `false` | —                                 |
+| Prop          | Type           | Required | Default | Description                                                |
+| ------------- | -------------- | -------- | ------- | ---------------------------------------------------------- |
+| `nodes`       | `SankeyNode[]` | yes      | —       | Nodes: { id, label, color? }.                              |
+| `links`       | `SankeyLink[]` | yes      | —       | Links: { source, target, value }.                          |
+| `title`       | `string`       | yes      | —       | Title text for the component.                              |
+| `description` | `string`       | no       | —       | Supporting description text.                               |
+| `width`       | `number`       | no       | —       | Width of the component.                                    |
+| `height`      | `number`       | no       | `320`   | Height of the component.                                   |
+| `tooltip`     | `boolean`      | no       | —       | Whether to show tooltips on hover.                         |
+| `className`   | `string`       | no       | —       | Additional CSS class names merged onto the root element.   |
+| `plain`       | `boolean`      | no       | `false` | When true, renders a minimal variant without chart chrome. |
 
 ## Examples
 

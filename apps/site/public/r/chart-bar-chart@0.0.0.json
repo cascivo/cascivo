@@ -25,26 +25,31 @@
       },
       {
         "name": "x",
+        "description": "Accessor returning the category label for a datum.",
         "type": "(d: Datum) => string",
         "required": true
       },
       {
         "name": "y",
+        "description": "Accessor returning the numeric value for a datum.",
         "type": "(d: Datum) => number",
         "required": true
       },
       {
         "name": "title",
+        "description": "Title text for the component.",
         "type": "string",
         "required": true
       },
       {
         "name": "description",
+        "description": "Supporting description text.",
         "type": "string",
         "required": false
       },
       {
         "name": "orientation",
+        "description": "Layout orientation of the component.",
         "type": "'vertical' | 'horizontal'",
         "required": false,
         "default": "vertical"
@@ -58,22 +63,26 @@
       },
       {
         "name": "width",
+        "description": "Width of the component.",
         "type": "number",
         "required": false
       },
       {
         "name": "height",
+        "description": "Height of the component.",
         "type": "number",
         "required": false,
         "default": "300"
       },
       {
         "name": "xTicks",
+        "description": "Approximate number of ticks on the x-axis.",
         "type": "number",
         "required": false
       },
       {
         "name": "yTicks",
+        "description": "Approximate number of ticks on the y-axis.",
         "type": "number",
         "required": false,
         "default": "5"
@@ -86,11 +95,13 @@
       },
       {
         "name": "legend",
+        "description": "Whether to show the legend.",
         "type": "boolean",
         "required": false
       },
       {
         "name": "tooltip",
+        "description": "Whether to show tooltips on hover.",
         "type": "boolean",
         "required": false
       },
@@ -102,6 +113,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       },

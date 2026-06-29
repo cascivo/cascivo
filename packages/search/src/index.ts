@@ -6,6 +6,12 @@ export interface SearchItem {
   href: string
   type: 'component' | 'page'
   category?: string
+  /**
+   * Extra searchable terms not shown as the title/description — prop names,
+   * variant/size values, and naming aliases (e.g. `flex`/`box` → Stack). Lets a
+   * query like "loading" or "flex" surface the components that expose them.
+   */
+  keywords?: string
 }
 
 export class SearchIndex {
@@ -29,11 +35,13 @@ export class SearchIndex {
       const desc = item.description?.toLowerCase() ?? ''
       const section = item.section?.toLowerCase() ?? ''
       const category = item.category?.toLowerCase() ?? ''
+      const keywords = item.keywords?.toLowerCase() ?? ''
 
       if (title === q) return 100
       if (title.startsWith(q)) return 80
       if (title.includes(q)) return 60
       if (desc.includes(q)) return 40
+      if (keywords.includes(q)) return 30
       if (section.includes(q) || category.includes(q)) return 20
       return 0
     }

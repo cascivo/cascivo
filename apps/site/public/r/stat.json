@@ -43,6 +43,7 @@
       },
       {
         "name": "trend",
+        "description": "Direction of the trend indicator ('up' | 'down' | 'flat').",
         "type": "'up' | 'down' | 'flat'",
         "required": false,
         "default": "flat"

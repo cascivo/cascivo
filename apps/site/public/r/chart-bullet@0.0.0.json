@@ -37,11 +37,13 @@
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": true
       },
       {
         "name": "min",
+        "description": "Minimum allowed value.",
         "type": "number",
         "required": false,
         "default": "0"
@@ -54,18 +56,21 @@
       },
       {
         "name": "width",
+        "description": "Width of the component.",
         "type": "number",
         "required": false,
         "default": "300"
       },
       {
         "name": "height",
+        "description": "Height of the component.",
         "type": "number",
         "required": false,
         "default": "40"
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

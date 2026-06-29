@@ -32,16 +32,16 @@ Single mode renders role="radiogroup" with role="radio" + aria-checked items; mu
 
 ## Props
 
-| Name            | Type                                                                              | Required           | Default | Description |
-| --------------- | --------------------------------------------------------------------------------- | ------------------ | ------- | ----------- | --- | --- |
-| `type`          | `'single'                                                                         | 'multiple'`        | Yes     | —           | —   |
-| `value`         | `string                                                                           | string[]`          | No      | —           | —   |
-| `defaultValue`  | `string                                                                           | string[]`          | No      | —           | —   |
-| `onValueChange` | `(value: string                                                                   | string[]) => void` | No      | —           | —   |
-| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | Yes                | —       | —           |
-| `orientation`   | `'horizontal'                                                                     | 'vertical'`        | No      | horizontal  | —   |
-| `size`          | `'sm'                                                                             | 'md'               | 'lg'`   | No          | md  | —   |
-| `disabled`      | `boolean`                                                                         | No                 | false   | —           |
+| Name            | Type                                                                              | Required           | Default | Description                                                        |
+| --------------- | --------------------------------------------------------------------------------- | ------------------ | ------- | ------------------------------------------------------------------ | -------------------------------------------------------------- | ----------------------------------------------------- |
+| `type`          | `'single'                                                                         | 'multiple'`        | Yes     | —                                                                  | Whether one or multiple items can be pressed at once ('single' | 'multiple').                                          |
+| `value`         | `string                                                                           | string[]`          | No      | —                                                                  | The controlled value.                                          |
+| `defaultValue`  | `string                                                                           | string[]`          | No      | —                                                                  | The initial value when uncontrolled.                           |
+| `onValueChange` | `(value: string                                                                   | string[]) => void` | No      | —                                                                  | Called with the new value when it changes.                     |
+| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | Yes                | —       | The items to render.                                               |
+| `orientation`   | `'horizontal'                                                                     | 'vertical'`        | No      | horizontal                                                         | Layout orientation of the component.                           |
+| `size`          | `'sm'                                                                             | 'md'               | 'lg'`   | No                                                                 | md                                                             | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled`      | `boolean`                                                                         | No                 | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 

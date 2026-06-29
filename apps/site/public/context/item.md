@@ -33,11 +33,11 @@ Item is presentational by default; the slotted element determines the role and f
 
 ## Props
 
-| Name      | Type       | Required | Default | Description |
-| --------- | ---------- | -------- | ------- | ----------- | --- |
-| `asChild` | `boolean`  | No       | false   | —           |
-| `variant` | `'default' | 'muted'` | No      | default     | —   |
-| `size`    | `'sm'      | 'md'`    | No      | md          | —   |
+| Name      | Type       | Required | Default | Description                                                                                       |
+| --------- | ---------- | -------- | ------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `asChild` | `boolean`  | No       | false   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `variant` | `'default' | 'muted'` | No      | default                                                                                           | Selects the visual style variant.                     |
+| `size`    | `'sm'      | 'md'`    | No      | md                                                                                                | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 

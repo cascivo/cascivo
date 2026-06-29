@@ -15,11 +15,22 @@ export const meta: ComponentMeta = {
       description:
         'Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice.',
     },
-    { name: 'title', type: 'string', required: true },
-    { name: 'description', type: 'string', required: false },
+    { name: 'title', description: 'Title text for the component.', type: 'string', required: true },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'string',
+      required: false,
+    },
     { name: 'donut', type: 'boolean', required: false, description: 'Render as donut chart' },
-    { name: 'width', type: 'number', required: false },
-    { name: 'height', type: 'number', required: false, default: '300' },
+    { name: 'width', description: 'Width of the component.', type: 'number', required: false },
+    {
+      name: 'height',
+      description: 'Height of the component.',
+      type: 'number',
+      required: false,
+      default: '300',
+    },
     {
       name: 'size',
       type: 'number',
@@ -70,8 +81,18 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Custom tooltip formatter. Defaults to "value (pct%)" in the slice color.',
     },
-    { name: 'legend', type: 'boolean', required: false },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'legend',
+      description: 'Whether to show the legend.',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'plain',
       type: 'boolean',

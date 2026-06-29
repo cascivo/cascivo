@@ -24,15 +24,15 @@ import { Candlestick } from '@cascivo/charts'
 | ------------- | -------------------- | -------- | ------- | -------------------------------------------------------------- |
 | `data`        | `CandlestickDatum[]` | yes      | —       | One candle per period: { t, open, high, low, close, volume? }. |
 | `title`       | `string`             | yes      | —       | Chart title (also aria-label).                                 |
-| `description` | `string`             | no       | —       | —                                                              |
-| `width`       | `number`             | no       | —       | —                                                              |
-| `height`      | `number`             | no       | `320`   | —                                                              |
-| `yTicks`      | `number`             | no       | `5`     | —                                                              |
+| `description` | `string`             | no       | —       | Supporting description text.                                   |
+| `width`       | `number`             | no       | —       | Width of the component.                                        |
+| `height`      | `number`             | no       | `320`   | Height of the component.                                       |
+| `yTicks`      | `number`             | no       | `5`     | Approximate number of ticks on the y-axis.                     |
 | `upColor`     | `string`             | no       | —       | Colour for up candles (close ≥ open).                          |
 | `downColor`   | `string`             | no       | —       | Colour for down candles (close < open).                        |
 | `volume`      | `boolean`            | no       | `false` | Render volume bars beneath the candles.                        |
 | `tooltip`     | `boolean`            | no       | —       | Enable hover tooltip (OHLC).                                   |
-| `className`   | `string`             | no       | —       | —                                                              |
+| `className`   | `string`             | no       | —       | Additional CSS class names merged onto the root element.       |
 | `plain`       | `boolean`            | no       | `false` | Marks only — no axes. For micro/inline charts.                 |
 
 ## Examples

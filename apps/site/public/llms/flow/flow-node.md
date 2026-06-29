@@ -31,12 +31,12 @@ _Copy-paste only — this block/layout is not published as an importable package
 | `position`         | `{ x: number; y: number }`       | no       | —       | Position in flow coords (controllable).                                     |
 | `onPositionChange` | `(position: XYPosition) => void` | no       | —       | Fired while dragging.                                                       |
 | `zoom`             | `number`                         | no       | `1`     | Current zoom (drag deltas are divided by it).                               |
-| `selected`         | `boolean`                        | no       | `false` | —                                                                           |
-| `draggable`        | `boolean`                        | no       | `true`  | —                                                                           |
+| `selected`         | `boolean`                        | no       | `false` | Whether the node is rendered as selected.                                   |
+| `draggable`        | `boolean`                        | no       | `true`  | Whether the node can be dragged.                                            |
 | `interactive`      | `boolean`                        | no       | `true`  | When false, the node is view-only: not draggable, selectable, or focusable. |
-| `onSelect`         | `(id: string) => void`           | no       | —       | —                                                                           |
+| `onSelect`         | `(id: string) => void`           | no       | —       | Called with the selected value.                                             |
 | `children`         | `ReactNode`                      | no       | —       | Any cascivo content.                                                        |
-| `className`        | `string`                         | no       | —       | —                                                                           |
+| `className`        | `string`                         | no       | —       | Additional CSS class names merged onto the root element.                    |
 
 ## Examples
 

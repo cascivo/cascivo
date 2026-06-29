@@ -25,27 +25,32 @@
     "props": [
       {
         "name": "open",
+        "description": "Whether the component is open (controlled).",
         "type": "boolean",
         "required": true
       },
       {
         "name": "onOpenChange",
+        "description": "Called with the next open state when it changes.",
         "type": "(open: boolean) => void",
         "required": true
       },
       {
         "name": "groups",
+        "description": "The grouped commands to display.",
         "type": "CommandGroup[]",
         "required": true
       },
       {
         "name": "placeholder",
+        "description": "Placeholder text shown when the field is empty.",
         "type": "string",
         "required": false,
         "default": "Type a command or search…"
       },
       {
         "name": "emptyLabel",
+        "description": "Text shown when no commands match the query.",
         "type": "string",
         "required": false,
         "default": "No results found"
@@ -59,6 +64,7 @@
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": false,
         "default": "Command menu"
@@ -78,6 +84,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }
@@ -107,6 +114,7 @@
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["kbd", "spinner"],
     "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
     "intent": {
       "whenToUse": [

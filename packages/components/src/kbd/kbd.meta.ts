@@ -7,7 +7,15 @@ export const meta: ComponentMeta = {
   states: [],
   variants: [],
   sizes: ['sm', 'md'],
-  props: [{ name: 'size', type: "'sm' | 'md'", required: false, default: 'md' }],
+  props: [
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md'",
+      required: false,
+      default: 'md',
+    },
+  ],
   tokens: [
     '--cascivo-color-text-subtle',
     '--cascivo-color-surface-raised',

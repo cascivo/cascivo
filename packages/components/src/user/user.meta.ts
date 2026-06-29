@@ -8,8 +8,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'name', type: 'ReactNode', required: true },
-    { name: 'description', type: 'ReactNode', required: false },
+    { name: 'name', description: 'The user’s display name.', type: 'ReactNode', required: true },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'ReactNode',
+      required: false,
+    },
     {
       name: 'avatarProps',
       type: 'AvatarProps',
@@ -40,6 +45,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/components'],
+  registryDependencies: ['avatar'],
   tags: ['user', 'avatar', 'identity', 'display'],
   intent: {
     whenToUse: [

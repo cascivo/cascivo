@@ -10,11 +10,18 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'default' | 'outlined' | 'elevated'",
       required: false,
       default: 'default',
     },
-    { name: 'padding', type: "'none' | 'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'padding',
+      description: 'Inner padding of the component.',
+      type: "'none' | 'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

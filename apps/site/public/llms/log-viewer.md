@@ -28,17 +28,17 @@ import { LogViewer } from '@cascivo/react'
 
 ## Props
 
-| Prop             | Type                                | Required            | Default   | Description |
-| ---------------- | ----------------------------------- | ------------------- | --------- | ----------- | --- |
-| `lines`          | `ReadonlySignal<readonly LogLine[]> | readonly LogLine[]` | yes       | —           | —   |
-| `rowHeight`      | `number`                            | no                  | `20`      | —           |
-| `overscan`       | `number`                            | no                  | `8`       | —           |
-| `follow`         | `boolean`                           | no                  | —         | —           |
-| `onFollowChange` | `(follow: boolean) => void`         | no                  | —         | —           |
-| `ansi`           | `boolean`                           | no                  | `false`   | —           |
-| `search`         | `string`                            | no                  | —         | —           |
-| `maxHeight`      | `string`                            | no                  | `'24rem'` | —           |
-| `labels`         | `LogViewerLabels`                   | no                  | —         | —           |
+| Prop             | Type                                | Required            | Default   | Description                                                     |
+| ---------------- | ----------------------------------- | ------------------- | --------- | --------------------------------------------------------------- | --------------------------------------------- |
+| `lines`          | `ReadonlySignal<readonly LogLine[]> | readonly LogLine[]` | yes       | —                                                               | The log lines to display (a signal or array). |
+| `rowHeight`      | `number`                            | no                  | `20`      | Height of each row in pixels, used for virtualization.          |
+| `overscan`       | `number`                            | no                  | `8`       | Number of extra rows rendered above and below the viewport.     |
+| `follow`         | `boolean`                           | no                  | —         | Whether the view auto-scrolls to follow new lines (controlled). |
+| `onFollowChange` | `(follow: boolean) => void`         | no                  | —         | Called with the new follow state when it changes.               |
+| `ansi`           | `boolean`                           | no                  | `false`   | When true, parses ANSI color escape codes into colored spans.   |
+| `search`         | `string`                            | no                  | —         | Query used to filter and highlight matching lines.              |
+| `maxHeight`      | `string`                            | no                  | `'24rem'` | Maximum height of the scroll viewport (CSS length).             |
+| `labels`         | `LogViewerLabels`                   | no                  | —         | Overrides for the component’s user-visible strings (i18n).      |
 
 ## Examples
 

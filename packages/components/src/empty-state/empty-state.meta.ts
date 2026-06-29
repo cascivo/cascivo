@@ -8,11 +8,32 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['md', 'lg'],
   props: [
-    { name: 'icon', type: 'ReactNode', required: false },
-    { name: 'title', type: 'string', required: true },
-    { name: 'description', type: 'string', required: false },
-    { name: 'action', type: 'ReactNode', required: false },
-    { name: 'size', type: "'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'icon',
+      description: 'Icon element rendered in the component.',
+      type: 'ReactNode',
+      required: false,
+    },
+    { name: 'title', description: 'Title text for the component.', type: 'string', required: true },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'action',
+      description: 'Primary action shown in the component.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
   ],
   tokens: [
     '--cascivo-color-text',

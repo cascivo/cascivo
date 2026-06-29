@@ -21,11 +21,40 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Controlled collapsed state (rail mode)',
     },
-    { name: 'defaultCollapsed', type: 'boolean', required: false, default: 'false' },
-    { name: 'onCollapsedChange', type: '(collapsed: boolean) => void', required: false },
-    { name: 'ariaLabel', type: 'string', required: false, default: 'Side navigation' },
-    { name: 'collapseLabel', type: 'string', required: false, default: 'Collapse navigation' },
-    { name: 'expandLabel', type: 'string', required: false, default: 'Expand navigation' },
+    {
+      name: 'defaultCollapsed',
+      description: 'Whether the rail is collapsed on first render (uncontrolled).',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'onCollapsedChange',
+      description: 'Called with the new collapsed state when it changes.',
+      type: '(collapsed: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'ariaLabel',
+      description: 'Accessible label for the component.',
+      type: 'string',
+      required: false,
+      default: 'Side navigation',
+    },
+    {
+      name: 'collapseLabel',
+      description: 'Accessible label for the collapse control.',
+      type: 'string',
+      required: false,
+      default: 'Collapse navigation',
+    },
+    {
+      name: 'expandLabel',
+      description: 'Accessible label for the expand control.',
+      type: 'string',
+      required: false,
+      default: 'Expand navigation',
+    },
     {
       name: 'expandOnHover',
       type: 'boolean',
@@ -47,7 +76,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Content rendered above the collapse toggle (e.g. version string, user info)',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-sidenav-inline-size',
@@ -95,6 +129,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['popover', 'tooltip'],
   tags: ['navigation', 'sidebar', 'app-shell', 'collapsible'],
   intent: {
     whenToUse: [

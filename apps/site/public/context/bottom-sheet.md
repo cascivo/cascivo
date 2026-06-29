@@ -34,20 +34,20 @@ Renders role="dialog" with aria-modal; the title labels it via aria-labelledby a
 
 ## Props
 
-| Name           | Type                                  | Required | Default     | Description                                                 |
-| -------------- | ------------------------------------- | -------- | ----------- | ----------------------------------------------------------- |
-| `open`         | `boolean`                             | No       | —           | —                                                           |
-| `defaultOpen`  | `boolean`                             | No       | —           | —                                                           |
-| `onOpenChange` | `(open: boolean) => void`             | No       | —           | —                                                           |
-| `snapPoints`   | `number[]`                            | No       | [0.5, 0.92] | Detent heights as ascending fractions of the viewport (0–1) |
-| `activeSnap`   | `number`                              | No       | —           | —                                                           |
-| `defaultSnap`  | `number`                              | No       | 0           | —                                                           |
-| `onSnapChange` | `(index: number) => void`             | No       | —           | —                                                           |
-| `title`        | `React.ReactNode`                     | No       | —           | —                                                           |
-| `description`  | `React.ReactNode`                     | No       | —           | —                                                           |
-| `children`     | `React.ReactNode`                     | No       | —           | —                                                           |
-| `labels`       | `{ close?: string; handle?: string }` | No       | —           | —                                                           |
-| `className`    | `string`                              | No       | —           | —                                                           |
+| Name           | Type                                  | Required | Default     | Description                                                   |
+| -------------- | ------------------------------------- | -------- | ----------- | ------------------------------------------------------------- |
+| `open`         | `boolean`                             | No       | —           | Whether the component is open (controlled).                   |
+| `defaultOpen`  | `boolean`                             | No       | —           | Whether the component is open on first render (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void`             | No       | —           | Called with the next open state when it changes.              |
+| `snapPoints`   | `number[]`                            | No       | [0.5, 0.92] | Detent heights as ascending fractions of the viewport (0–1)   |
+| `activeSnap`   | `number`                              | No       | —           | The controlled snap-point index.                              |
+| `defaultSnap`  | `number`                              | No       | 0           | The initial snap-point index when uncontrolled.               |
+| `onSnapChange` | `(index: number) => void`             | No       | —           | Called with the new snap-point index when it changes.         |
+| `title`        | `React.ReactNode`                     | No       | —           | Title text for the component.                                 |
+| `description`  | `React.ReactNode`                     | No       | —           | Supporting description text.                                  |
+| `children`     | `React.ReactNode`                     | No       | —           | Content rendered inside the component.                        |
+| `labels`       | `{ close?: string; handle?: string }` | No       | —           | Overrides for the component’s user-visible strings (i18n).    |
+| `className`    | `string`                              | No       | —           | Additional CSS class names merged onto the root element.      |
 
 ## Tokens
 

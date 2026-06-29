@@ -30,14 +30,14 @@ import { Alert } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                     | Required | Default   | Description |
-| ------------- | ---------------------------------------- | -------- | --------- | ----------- | -------------- | --- | --------- | --- |
-| `variant`     | `'default'                               | 'info'   | 'success' | 'warning'   | 'destructive'` | no  | `default` | —   |
-| `title`       | `string`                                 | no       | —         | —           |
-| `icon`        | `ReactNode`                              | no       | —         | —           |
-| `dismissible` | `boolean`                                | no       | `false`   | —           |
-| `onDismiss`   | `() => void`                             | no       | —         | —           |
-| `action`      | `{ label: string; onClick: () => void }` | no       | —         | —           |
+| Prop          | Type                                     | Required | Default   | Description                                          |
+| ------------- | ---------------------------------------- | -------- | --------- | ---------------------------------------------------- | -------------- | --- | --------- | --------------------------------- |
+| `variant`     | `'default'                               | 'info'   | 'success' | 'warning'                                            | 'destructive'` | no  | `default` | Selects the visual style variant. |
+| `title`       | `string`                                 | no       | —         | Title text for the component.                        |
+| `icon`        | `ReactNode`                              | no       | —         | Icon element rendered in the component.              |
+| `dismissible` | `boolean`                                | no       | `false`   | When true, shows a control to dismiss the component. |
+| `onDismiss`   | `() => void`                             | no       | —         | Called when the component is dismissed.              |
+| `action`      | `{ label: string; onClick: () => void }` | no       | —         | Primary action shown in the component.               |
 
 ## Examples
 

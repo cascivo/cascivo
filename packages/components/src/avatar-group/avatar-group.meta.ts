@@ -20,9 +20,26 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Override the total count used for the +N chip',
     },
-    { name: 'spacing', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
-    { name: 'isGrid', type: 'boolean', required: false, default: 'false' },
-    { name: 'labels', type: 'AvatarGroupLabels', required: false },
+    {
+      name: 'spacing',
+      description: 'Spacing between items.',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
+    {
+      name: 'isGrid',
+      description: 'When true, lays the avatars out in a grid instead of an overlapping stack.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: 'AvatarGroupLabels',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',
@@ -47,6 +64,7 @@ export const meta: ComponentMeta = {
     { title: 'Grid', code: '<AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>' },
   ],
   dependencies: ['@cascivo/core', '@cascivo/components'],
+  registryDependencies: ['avatar'],
   tags: ['avatar', 'group', 'stack', 'overflow', 'display'],
   intent: {
     whenToUse: [

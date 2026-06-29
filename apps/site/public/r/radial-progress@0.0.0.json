@@ -25,33 +25,39 @@
     "props": [
       {
         "name": "value",
+        "description": "The controlled value.",
         "type": "number",
         "required": true
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"
       },
       {
         "name": "variant",
+        "description": "Selects the visual style variant.",
         "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
         "required": false,
         "default": "primary"
       },
       {
         "name": "children",
+        "description": "Content rendered inside the component.",
         "type": "React.ReactNode",
         "required": false
       },
       {
         "name": "aria-label",
+        "description": "Accessible label used when no visible label is present.",
         "type": "string",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

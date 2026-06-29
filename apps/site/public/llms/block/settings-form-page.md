@@ -40,7 +40,6 @@ Settings form page
 ## Dependencies
 
 - `@cascivo/react`
-- `layout/settings-layout`
 
 ## Tags
 

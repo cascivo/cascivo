@@ -33,15 +33,15 @@ Each star is a <button role="radio"> inside a role="radiogroup" with aria-checke
 
 ## Props
 
-| Name            | Type                  | Required | Default | Description |
-| --------------- | --------------------- | -------- | ------- | ----------- | --- | --- |
-| `value`         | `number`              | Yes      | —       | —           |
-| `onValueChange` | `(v: number) => void` | No       | —       | —           |
-| `max`           | `number`              | No       | 5       | —           |
-| `size`          | `'sm'                 | 'md'     | 'lg'`   | No          | md  | —   |
-| `disabled`      | `boolean`             | No       | false   | —           |
-| `readOnly`      | `boolean`             | No       | false   | —           |
-| `labels`        | `RatingGroupLabels`   | No       | —       | —           |
+| Name            | Type                  | Required | Default | Description                                                        |
+| --------------- | --------------------- | -------- | ------- | ------------------------------------------------------------------ | --- | ----------------------------------------------------- |
+| `value`         | `number`              | Yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: number) => void` | No       | —       | Called with the new value when it changes.                         |
+| `max`           | `number`              | No       | 5       | Maximum allowed value.                                             |
+| `size`          | `'sm'                 | 'md'     | 'lg'`   | No                                                                 | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled`      | `boolean`             | No       | false   | When true, disables the control and removes it from the tab order. |
+| `readOnly`      | `boolean`             | No       | false   | When true, the value is shown but cannot be edited.                |
+| `labels`        | `RatingGroupLabels`   | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
 
 ## Tokens
 

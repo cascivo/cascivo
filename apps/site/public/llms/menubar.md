@@ -27,11 +27,11 @@ import { Menubar } from '@cascivo/react'
 
 ## Props
 
-| Prop         | Type            | Required | Default | Description |
-| ------------ | --------------- | -------- | ------- | ----------- |
-| `menus`      | `MenubarMenu[]` | yes      | —       | —           |
-| `aria-label` | `string`        | yes      | —       | —           |
-| `className`  | `string`        | no       | —       | —           |
+| Prop         | Type            | Required | Default | Description                                              |
+| ------------ | --------------- | -------- | ------- | -------------------------------------------------------- |
+| `menus`      | `MenubarMenu[]` | yes      | —       | The top-level menus to render.                           |
+| `aria-label` | `string`        | yes      | —       | Accessible label used when no visible label is present.  |
+| `className`  | `string`        | no       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

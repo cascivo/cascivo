@@ -33,12 +33,12 @@ import { Link } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type          | Required  | Default | Description  |
-| ---------- | ------------- | --------- | ------- | ------------ | ---- | --- |
-| `variant`  | `'standalone' | 'inline'` | no      | `standalone` | —    |
-| `size`     | `'sm'         | 'md'      | 'lg'`   | no           | `md` | —   |
-| `external` | `boolean`     | no        | `false` | —            |
-| `href`     | `string`      | no        | —       | —            |
+| Prop       | Type          | Required  | Default | Description                                                                  |
+| ---------- | ------------- | --------- | ------- | ---------------------------------------------------------------------------- | --------------------------------- | ----------------------------------------------------- |
+| `variant`  | `'standalone' | 'inline'` | no      | `standalone`                                                                 | Selects the visual style variant. |
+| `size`     | `'sm'         | 'md'      | 'lg'`   | no                                                                           | `md`                              | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `external` | `boolean`     | no        | `false` | When true, treats the link as external (opens in a new tab with rel safety). |
+| `href`     | `string`      | no        | —       | The destination URL.                                                         |
 
 ## Examples
 

@@ -100,7 +100,8 @@ export const meta: ComponentMeta = {
       description: 'Limits the selectable dates',
     },
   ],
-  dependencies: ['@cascivo/core', '@cascivo/i18n', 'Calendar'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['calendar'],
   tags: ['date', 'range', 'calendar', 'picker', 'input', 'form'],
   intent: {
     whenToUse: [

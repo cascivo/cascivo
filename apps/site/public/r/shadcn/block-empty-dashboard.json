@@ -10,7 +10,7 @@
     }
   ],
   "description": "Dashboard page showing an empty state with a call-to-action button.",
-  "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+  "dependencies": ["@cascivo/react"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

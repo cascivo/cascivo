@@ -10,18 +10,31 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'default' | 'info' | 'success' | 'warning' | 'error'",
       required: false,
       default: 'default',
     },
-    { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md'",
+      required: false,
+      default: 'md',
+    },
     {
       name: 'onDismiss',
       type: '() => void',
       required: false,
       description: 'When provided, renders a trailing remove button inside the chip',
     },
-    { name: 'dismissLabel', type: 'string', required: false, default: 'Remove' },
+    {
+      name: 'dismissLabel',
+      description: 'Accessible label for the dismiss button.',
+      type: 'string',
+      required: false,
+      default: 'Remove',
+    },
   ],
   tokens: [
     '--cascivo-color-bg-subtle',

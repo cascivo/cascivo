@@ -44,12 +44,14 @@
       },
       {
         "name": "selected",
+        "description": "Whether the node is rendered as selected.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "draggable",
+        "description": "Whether the node can be dragged.",
         "type": "boolean",
         "required": false,
         "default": "true"
@@ -63,6 +65,7 @@
       },
       {
         "name": "onSelect",
+        "description": "Called with the selected value.",
         "type": "(id: string) => void",
         "required": false
       },
@@ -74,6 +77,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

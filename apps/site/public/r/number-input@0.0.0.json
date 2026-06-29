@@ -25,11 +25,13 @@
     "props": [
       {
         "name": "value",
+        "description": "The controlled value.",
         "type": "number | null",
         "required": false
       },
       {
         "name": "defaultValue",
+        "description": "The initial value when uncontrolled.",
         "type": "number",
         "required": false
       },
@@ -41,16 +43,19 @@
       },
       {
         "name": "min",
+        "description": "Minimum allowed value.",
         "type": "number",
         "required": false
       },
       {
         "name": "max",
+        "description": "Maximum allowed value.",
         "type": "number",
         "required": false
       },
       {
         "name": "step",
+        "description": "Increment between allowed values.",
         "type": "number",
         "required": false,
         "default": "1"
@@ -69,39 +74,46 @@
       },
       {
         "name": "label",
+        "description": "Text label for the control.",
         "type": "string",
         "required": false
       },
       {
         "name": "hint",
+        "description": "Supplementary hint text shown with the control.",
         "type": "string",
         "required": false
       },
       {
         "name": "error",
+        "description": "Error message shown when the value is invalid.",
         "type": "string",
         "required": false
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "default": "md"
       },
       {
         "name": "disabled",
+        "description": "When true, disables the control and removes it from the tab order.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "incrementLabel",
+        "description": "Accessible label for the increment button.",
         "type": "string",
         "required": false,
         "default": "Increment"
       },
       {
         "name": "decrementLabel",
+        "description": "Accessible label for the decrement button.",
         "type": "string",
         "required": false,
         "default": "Decrement"

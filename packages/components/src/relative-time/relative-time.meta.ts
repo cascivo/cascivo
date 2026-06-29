@@ -8,15 +8,31 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'date', type: 'Date | number | string', required: true },
-    { name: 'sync', type: 'boolean', required: false, default: 'true' },
+    {
+      name: 'date',
+      description: 'The date to render relative to now.',
+      type: 'Date | number | string',
+      required: true,
+    },
+    {
+      name: 'sync',
+      description: 'When true, updates the relative time as it elapses.',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+    },
     {
       name: 'now',
       type: 'number',
       required: false,
       description: 'Override "now" (ms); disables the interval',
     },
-    { name: 'format', type: 'Intl.RelativeTimeFormatOptions', required: false },
+    {
+      name: 'format',
+      description: 'Intl.RelativeTimeFormat options controlling the output.',
+      type: 'Intl.RelativeTimeFormatOptions',
+      required: false,
+    },
   ],
   tokens: [],
   accessibility: {

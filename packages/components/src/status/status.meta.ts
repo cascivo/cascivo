@@ -10,6 +10,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'status',
+      description: 'Status state.',
       type: "'success' | 'warning' | 'error' | 'info' | 'neutral'",
       required: false,
       default: 'neutral',

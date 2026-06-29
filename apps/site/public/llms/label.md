@@ -27,14 +27,14 @@ import { Label } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                    | Required | Default | Description |
-| ---------- | ----------------------- | -------- | ------- | ----------- |
-| `htmlFor`  | `string`                | no       | —       | —           |
-| `asChild`  | `boolean`               | no       | `false` | —           |
-| `required` | `boolean`               | no       | `false` | —           |
-| `disabled` | `boolean`               | no       | `false` | —           |
-| `children` | `ReactNode`             | yes      | —       | —           |
-| `labels`   | `{ required?: string }` | no       | —       | —           |
+| Prop       | Type                    | Required | Default | Description                                                                                       |
+| ---------- | ----------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `htmlFor`  | `string`                | no       | —       | Id of the form control this label is associated with.                                             |
+| `asChild`  | `boolean`               | no       | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `required` | `boolean`               | no       | `false` | When true, marks the field as required.                                                           |
+| `disabled` | `boolean`               | no       | `false` | When true, disables the control and removes it from the tab order.                                |
+| `children` | `ReactNode`             | yes      | —       | Content rendered inside the component.                                                            |
+| `labels`   | `{ required?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                                        |
 
 ## Examples
 

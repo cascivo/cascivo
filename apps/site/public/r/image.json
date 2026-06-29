@@ -25,11 +25,13 @@
     "props": [
       {
         "name": "src",
+        "description": "Image source URL.",
         "type": "string",
         "required": false
       },
       {
         "name": "alt",
+        "description": "Alternative text describing the image.",
         "type": "string",
         "required": false
       },
@@ -41,22 +43,26 @@
       },
       {
         "name": "width",
+        "description": "Width of the component.",
         "type": "string | number",
         "required": false
       },
       {
         "name": "height",
+        "description": "Height of the component.",
         "type": "string | number",
         "required": false
       },
       {
         "name": "radius",
+        "description": "Corner radius of the image ('none' | 'sm' | 'md' | 'lg' | 'full').",
         "type": "'none' | 'sm' | 'md' | 'lg' | 'full'",
         "required": false,
         "default": "md"
       },
       {
         "name": "zoom",
+        "description": "When true, zooms the image on hover.",
         "type": "boolean",
         "required": false,
         "default": "false"
@@ -70,6 +76,7 @@
       },
       {
         "name": "isBlurred",
+        "description": "When true, renders a blurred backdrop behind the image.",
         "type": "boolean",
         "required": false,
         "default": "false"

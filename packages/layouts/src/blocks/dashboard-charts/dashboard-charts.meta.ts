@@ -14,6 +14,7 @@ export const meta: ComponentMeta = {
     { title: 'Default', code: '<DashboardCharts />', description: 'Charts dashboard demo' },
   ],
   dependencies: ['@cascivo/charts', '@cascivo/react'],
+  registryDependencies: ['layout/dashboard-layout'],
   tags: ['block', 'dashboard', 'charts', 'kpi'],
   intent: {
     whenToUse: [

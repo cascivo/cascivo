@@ -35,13 +35,13 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 ## Props
 
 | Name           | Type                           | Required   | Default | Description                                                   |
-| -------------- | ------------------------------ | ---------- | ------- | ------------------------------------------------------------- | --- |
+| -------------- | ------------------------------ | ---------- | ------- | ------------------------------------------------------------- | --------------------------------- |
 | `options`      | `FilterOption[]`               | Yes        | —       | Array of { label, value } objects to render as filter buttons |
 | `value`        | `string[]`                     | No         | —       | Controlled selected values                                    |
 | `defaultValue` | `string[]`                     | No         | []      | Initial selected values for uncontrolled use                  |
-| `onChange`     | `(selected: string[]) => void` | No         | —       | —                                                             |
+| `onChange`     | `(selected: string[]) => void` | No         | —       | Called when the value changes.                                |
 | `multi`        | `boolean`                      | No         | false   | Allow multiple items to be selected simultaneously            |
-| `variant`      | `'pill'                        | 'outline'` | No      | pill                                                          | —   |
+| `variant`      | `'pill'                        | 'outline'` | No      | pill                                                          | Selects the visual style variant. |
 
 ## Tokens
 

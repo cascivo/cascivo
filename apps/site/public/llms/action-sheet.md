@@ -29,15 +29,15 @@ import { ActionSheet } from '@cascivo/react'
 
 | Prop           | Type                                  | Required | Default | Description                                                                   |
 | -------------- | ------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
-| `open`         | `boolean`                             | no       | —       | —                                                                             |
-| `defaultOpen`  | `boolean`                             | no       | —       | —                                                                             |
-| `onOpenChange` | `(open: boolean) => void`             | no       | —       | —                                                                             |
+| `open`         | `boolean`                             | no       | —       | Whether the component is open (controlled).                                   |
+| `defaultOpen`  | `boolean`                             | no       | —       | Whether the component is open on first render (uncontrolled).                 |
+| `onOpenChange` | `(open: boolean) => void`             | no       | —       | Called with the next open state when it changes.                              |
 | `actions`      | `ActionSheetAction[]`                 | yes      | —       | Choices, each with a label, onSelect, and optional destructive/disabled flags |
-| `title`        | `React.ReactNode`                     | no       | —       | —                                                                             |
-| `description`  | `React.ReactNode`                     | no       | —       | —                                                                             |
-| `showCancel`   | `boolean`                             | no       | `true`  | —                                                                             |
-| `labels`       | `{ cancel?: string; label?: string }` | no       | —       | —                                                                             |
-| `className`    | `string`                              | no       | —       | —                                                                             |
+| `title`        | `React.ReactNode`                     | no       | —       | Title text for the component.                                                 |
+| `description`  | `React.ReactNode`                     | no       | —       | Supporting description text.                                                  |
+| `showCancel`   | `boolean`                             | no       | `true`  | When true, shows a cancel button below the actions.                           |
+| `labels`       | `{ cancel?: string; label?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                    |
+| `className`    | `string`                              | no       | —       | Additional CSS class names merged onto the root element.                      |
 
 ## Design tokens
 

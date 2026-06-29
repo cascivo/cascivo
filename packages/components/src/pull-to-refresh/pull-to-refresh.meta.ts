@@ -15,15 +15,37 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Called when the pull passes the threshold; the spinner shows until it settles',
     },
-    { name: 'children', type: 'React.ReactNode', required: true },
-    { name: 'threshold', type: 'number', required: false, default: '64' },
-    { name: 'disabled', type: 'boolean', required: false },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'threshold',
+      description: 'Pull distance (px) required to trigger a refresh.',
+      type: 'number',
+      required: false,
+      default: '64',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+    },
     {
       name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
       type: '{ pull?: string; release?: string; refreshing?: string }',
       required: false,
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-color-text-muted', '--cascivo-motion-enter'],
   accessibility: {
@@ -33,6 +55,7 @@ export const meta: ComponentMeta = {
   },
   examples: [],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['spinner'],
   tags: ['feedback', 'pull-to-refresh', 'mobile', 'gesture', 'scroll', 'refresh'],
   intent: {
     whenToUse: [

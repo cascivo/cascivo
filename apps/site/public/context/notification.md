@@ -34,16 +34,16 @@ role="alert" for warning and error so assistive tech announces them assertively,
 
 ## Props
 
-| Name          | Type                   | Required  | Default   | Description |
-| ------------- | ---------------------- | --------- | --------- | ----------- | --- | ---- | --- |
-| `title`       | `ReactNode`            | Yes       | —         | —           |
-| `description` | `ReactNode`            | No        | —         | —           |
-| `variant`     | `'info'                | 'success' | 'warning' | 'error'`    | No  | info | —   |
-| `dismissible` | `boolean`              | No        | false     | —           |
-| `onDismiss`   | `() => void`           | No        | —         | —           |
-| `actions`     | `ReactNode`            | No        | —         | —           |
-| `icon`        | `ReactNode`            | No        | —         | —           |
-| `labels`      | `{ dismiss?: string }` | No        | —         | —           |
+| Name          | Type                   | Required  | Default   | Description                                                |
+| ------------- | ---------------------- | --------- | --------- | ---------------------------------------------------------- | --- | ---- | --------------------------------- |
+| `title`       | `ReactNode`            | Yes       | —         | Title text for the component.                              |
+| `description` | `ReactNode`            | No        | —         | Supporting description text.                               |
+| `variant`     | `'info'                | 'success' | 'warning' | 'error'`                                                   | No  | info | Selects the visual style variant. |
+| `dismissible` | `boolean`              | No        | false     | When true, shows a control to dismiss the component.       |
+| `onDismiss`   | `() => void`           | No        | —         | Called when the component is dismissed.                    |
+| `actions`     | `ReactNode`            | No        | —         | Action elements shown in the notification.                 |
+| `icon`        | `ReactNode`            | No        | —         | Icon element rendered in the component.                    |
+| `labels`      | `{ dismiss?: string }` | No        | —         | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 

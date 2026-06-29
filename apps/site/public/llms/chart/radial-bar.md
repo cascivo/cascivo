@@ -26,8 +26,8 @@ import { RadialBar } from '@cascivo/charts'
 | `title`       | `string`           | yes      | —       | Chart title (also used as aria-label).                                         |
 | `description` | `string`           | no       | —       | Subtitle below the title.                                                      |
 | `size`        | `number`           | no       | —       | Square shorthand (width === height). Explicit width/height win.                |
-| `width`       | `number`           | no       | —       | —                                                                              |
-| `height`      | `number`           | no       | `300`   | —                                                                              |
+| `width`       | `number`           | no       | —       | Width of the component.                                                        |
+| `height`      | `number`           | no       | `300`   | Height of the component.                                                       |
 | `max`         | `number`           | no       | —       | Domain top — the value a full sweep represents. Defaults to the largest datum. |
 | `sweep`       | `number`           | no       | `270`   | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring).                 |
 | `centerValue` | `string`           | no       | —       | Text in the hole.                                                              |
@@ -35,7 +35,7 @@ import { RadialBar } from '@cascivo/charts'
 | `centerSlot`  | `ReactNode`        | no       | —       | Arbitrary hole content; wins over centerValue/centerLabel.                     |
 | `tooltip`     | `boolean`          | no       | —       | Enable hover tooltip.                                                          |
 | `legend`      | `boolean`          | no       | —       | Show ring legend.                                                              |
-| `className`   | `string`           | no       | —       | —                                                                              |
+| `className`   | `string`           | no       | —       | Additional CSS class names merged onto the root element.                       |
 | `plain`       | `boolean`          | no       | `false` | Marks only — no legend. For micro/inline charts.                               |
 
 ## Examples

@@ -19,11 +19,13 @@
     "props": [
       {
         "name": "nodes",
+        "description": "The nodes to render.",
         "type": "FlowNode[]",
         "required": true
       },
       {
         "name": "edges",
+        "description": "The edges to render at each step.",
         "type": "FlowEdge[]",
         "required": true
       },
@@ -35,12 +37,14 @@
       },
       {
         "name": "loop",
+        "description": "When true, navigation wraps around from end to start.",
         "type": "boolean",
         "required": false,
         "default": "true"
       },
       {
         "name": "stepDuration",
+        "description": "How long (ms) each step is shown during playback.",
         "type": "number",
         "required": false,
         "default": "1500"
@@ -54,27 +58,32 @@
       },
       {
         "name": "playing",
+        "description": "Whether the story is currently playing (controlled).",
         "type": "boolean",
         "required": false
       },
       {
         "name": "currentStep",
+        "description": "The controlled current step index.",
         "type": "number",
         "required": false
       },
       {
         "name": "onStepChange",
+        "description": "Called with the new step index when it changes.",
         "type": "(step: number) => void",
         "required": false
       },
       {
         "name": "controls",
+        "description": "Whether to show the controls.",
         "type": "boolean",
         "required": false,
         "default": "true"
       },
       {
         "name": "autoPlay",
+        "description": "When true, starts playback automatically on mount.",
         "type": "boolean",
         "required": false,
         "default": "true"
@@ -88,6 +97,7 @@
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/use-toc-from-region.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.module.css"
     }
   ],
@@ -25,6 +28,7 @@
     "props": [
       {
         "name": "items",
+        "description": "The items to render.",
         "type": "{ id: string; label: string; level?: number }[]",
         "required": true
       },
@@ -36,16 +40,19 @@
       },
       {
         "name": "onActiveChange",
+        "description": "Called with the id of the active section when it changes.",
         "type": "(id: string) => void",
         "required": false
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "{ nav?: string }",
         "required": false
       },
       {
         "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
       }

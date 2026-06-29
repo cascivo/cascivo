@@ -14,8 +14,20 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Current value from 0 to max — clamped',
     },
-    { name: 'max', type: 'number', required: false, default: '100' },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, default: 'md' },
+    {
+      name: 'max',
+      description: 'Maximum allowed value.',
+      type: 'number',
+      required: false,
+      default: '100',
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
     {
       name: 'showValue',
       type: 'boolean',

@@ -34,15 +34,15 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Props
 
-| Name        | Type                                                                                              | Required      | Default      | Description |
-| ----------- | ------------------------------------------------------------------------------------------------- | ------------- | ------------ | ----------- | --- |
-| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes           | —            | —           |
-| `onSelect`  | `(value: string) => void`                                                                         | No            | —            | —           |
-| `placement` | `'bottom-start'                                                                                   | 'bottom-end'` | No           | bottom-end  | —   |
-| `ariaLabel` | `string`                                                                                          | No            | More actions | —           |
-| `size`      | `'sm'                                                                                             | 'md'`         | No           | md          | —   |
-| `disabled`  | `boolean`                                                                                         | No            | false        | —           |
-| `className` | `string`                                                                                          | No            | —            | —           |
+| Name        | Type                                                                                              | Required      | Default      | Description                                                        |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------- | ------------ | ------------------------------------------------------------------ | ----------------------------------------------------- |
+| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes           | —            | The items to render.                                               |
+| `onSelect`  | `(value: string) => void`                                                                         | No            | —            | Called with the selected value.                                    |
+| `placement` | `'bottom-start'                                                                                   | 'bottom-end'` | No           | bottom-end                                                         | Placement relative to the trigger.                    |
+| `ariaLabel` | `string`                                                                                          | No            | More actions | Accessible label for the component.                                |
+| `size`      | `'sm'                                                                                             | 'md'`         | No           | md                                                                 | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled`  | `boolean`                                                                                         | No            | false        | When true, disables the control and removes it from the tab order. |
+| `className` | `string`                                                                                          | No            | —            | Additional CSS class names merged onto the root element.           |
 
 ## Tokens
 

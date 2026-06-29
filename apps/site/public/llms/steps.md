@@ -34,7 +34,7 @@ import { Steps } from '@cascivo/react'
 | `steps`       | `Step[]`      | yes         | —       | Array of step objects with label and optional explicit state |
 | `activeStep`  | `number`      | no          | `0`     | Index of the currently active step (0-based)                 |
 | `orientation` | `'horizontal' | 'vertical'` | no      | `'horizontal'`                                               | Layout direction of the steps |
-| `className`   | `string`      | no          | —       | —                                                            |
+| `className`   | `string`      | no          | —       | Additional CSS class names merged onto the root element.     |
 
 ## Examples
 

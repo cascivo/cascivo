@@ -77,6 +77,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['layout/section'],
   tags: ['section', 'hero', 'marketing'],
   intent: {
     whenToUse: [

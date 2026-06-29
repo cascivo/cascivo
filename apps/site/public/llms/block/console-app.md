@@ -51,8 +51,6 @@ Full console shell demo
 
 - `@cascivo/react`
 - `@cascivo/icons`
-- `layout/app-shell`
-- `layout/page-header`
 
 ## Tags
 

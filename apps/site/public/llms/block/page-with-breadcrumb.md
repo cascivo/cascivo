@@ -38,8 +38,6 @@ Page with breadcrumb
 ## Dependencies
 
 - `@cascivo/react`
-- `layout/page-header`
-- `layout/center`
 
 ## Tags
 

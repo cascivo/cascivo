@@ -22,11 +22,11 @@ import { InputGroup } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type        | Required | Default | Description |
-| ---------- | ----------- | -------- | ------- | ----------- |
-| `prefix`   | `ReactNode` | no       | —       | —           |
-| `suffix`   | `ReactNode` | no       | —       | —           |
-| `children` | `ReactNode` | yes      | —       | —           |
+| Prop       | Type        | Required | Default | Description                                            |
+| ---------- | ----------- | -------- | ------- | ------------------------------------------------------ |
+| `prefix`   | `ReactNode` | no       | —       | Content rendered before the input (leading adornment). |
+| `suffix`   | `ReactNode` | no       | —       | Content rendered after the input (trailing adornment). |
+| `children` | `ReactNode` | yes      | —       | Content rendered inside the component.                 |
 
 ## Examples
 

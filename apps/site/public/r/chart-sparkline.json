@@ -31,12 +31,14 @@
       },
       {
         "name": "width",
+        "description": "Width of the component.",
         "type": "number",
         "required": false,
         "default": "80"
       },
       {
         "name": "height",
+        "description": "Height of the component.",
         "type": "number",
         "required": false,
         "default": "32"

@@ -10,11 +10,18 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
+      description: 'Selects the visual style variant.',
       type: "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
       required: false,
       default: 'default',
     },
-    { name: 'size', type: "'sm' | 'md'", required: false, default: 'md' },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md'",
+      required: false,
+      default: 'md',
+    },
   ],
   tokens: [
     '--cascivo-font-sans',

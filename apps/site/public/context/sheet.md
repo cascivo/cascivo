@@ -33,12 +33,12 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 
 ## Props
 
-| Name      | Type              | Required | Default | Description |
-| --------- | ----------------- | -------- | ------- | ----------- | --- | --- | --- |
-| `open`    | `boolean`         | Yes      | —       | —           |
-| `onClose` | `() => void`      | Yes      | —       | —           |
-| `title`   | `React.ReactNode` | No       | —       | —           |
-| `side`    | `'start'          | 'end'    | 'top'   | 'bottom'`   | No  | end | —   |
+| Name      | Type              | Required | Default | Description                                 |
+| --------- | ----------------- | -------- | ------- | ------------------------------------------- | --- | --- | ---------------------------------- |
+| `open`    | `boolean`         | Yes      | —       | Whether the component is open (controlled). |
+| `onClose` | `() => void`      | Yes      | —       | Called when the component is closed.        |
+| `title`   | `React.ReactNode` | No       | —       | Title text for the component.               |
+| `side`    | `'start'          | 'end'    | 'top'   | 'bottom'`                                   | No  | end | Edge the component is anchored to. |
 
 ## Tokens
 

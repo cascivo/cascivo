@@ -31,6 +31,7 @@
       },
       {
         "name": "size",
+        "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
         "type": "'sm' | 'md'",
         "required": false,
         "default": "md"

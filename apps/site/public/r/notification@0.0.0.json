@@ -25,43 +25,51 @@
     "props": [
       {
         "name": "title",
+        "description": "Title text for the component.",
         "type": "ReactNode",
         "required": true
       },
       {
         "name": "description",
+        "description": "Supporting description text.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "variant",
+        "description": "Selects the visual style variant.",
         "type": "'info' | 'success' | 'warning' | 'error'",
         "required": false,
         "default": "info"
       },
       {
         "name": "dismissible",
+        "description": "When true, shows a control to dismiss the component.",
         "type": "boolean",
         "required": false,
         "default": "false"
       },
       {
         "name": "onDismiss",
+        "description": "Called when the component is dismissed.",
         "type": "() => void",
         "required": false
       },
       {
         "name": "actions",
+        "description": "Action elements shown in the notification.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "icon",
+        "description": "Icon element rendered in the component.",
         "type": "ReactNode",
         "required": false
       },
       {
         "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
         "type": "{ dismiss?: string }",
         "required": false
       }

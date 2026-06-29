@@ -57,9 +57,26 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Soft-wrap long lines instead of scrolling horizontally',
     },
-    { name: 'readOnly', type: 'boolean', required: false, default: 'false' },
-    { name: 'disabled', type: 'boolean', required: false, default: 'false' },
-    { name: 'placeholder', type: 'string', required: false },
+    {
+      name: 'readOnly',
+      description: 'When true, the value is shown but cannot be edited.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'placeholder',
+      description: 'Placeholder text shown when the field is empty.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'label',
       type: 'string',
@@ -110,7 +127,12 @@ export const meta: ComponentMeta = {
       description:
         'Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-editor-bg',

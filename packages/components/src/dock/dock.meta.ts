@@ -20,7 +20,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Index of the currently active item (0-based)',
     },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

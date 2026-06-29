@@ -8,6 +8,8 @@ export interface RegistryComponent {
   /** npm package to install (used when type === 'chart'). */
   install?: string
   dependencies: string[]
+  /** Other registry components to install transitively (shared hooks/siblings). */
+  registryDependencies?: string[]
   tags: string[]
   meta: { name: string }
 }
@@ -78,6 +80,10 @@ export function parseRegistry(raw: unknown): Registry {
     }
     if (type !== undefined) result.type = type
     if (typeof c.install === 'string') result.install = c.install
+    if (Array.isArray(c.registryDependencies)) {
+      const deps = asStringArray(c.registryDependencies)
+      if (deps.length > 0) result.registryDependencies = deps
+    }
     return result
   })
 

@@ -40,7 +40,6 @@ Login page
 ## Dependencies
 
 - `@cascivo/react`
-- `layout/auth-layout`
 
 ## Tags
 

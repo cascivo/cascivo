@@ -20,8 +20,19 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Index of the current step (0-based)',
     },
-    { name: 'vertical', type: 'boolean', required: false, default: 'false' },
-    { name: 'className', type: 'string', required: false },
+    {
+      name: 'vertical',
+      description: 'When true, lays the steps out vertically.',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

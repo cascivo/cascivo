@@ -25,11 +25,11 @@ Stack is a layout-only container (role="none"). Each child must carry its own ac
 
 ## Props
 
-| Name        | Type              | Required | Default | Description                                 |
-| ----------- | ----------------- | -------- | ------- | ------------------------------------------- |
-| `children`  | `React.ReactNode` | Yes      | —       | —                                           |
-| `offset`    | `number`          | No       | 4       | Pixel offset applied per layer in both axes |
-| `className` | `string`          | No       | —       | —                                           |
+| Name        | Type              | Required | Default | Description                                              |
+| ----------- | ----------------- | -------- | ------- | -------------------------------------------------------- |
+| `children`  | `React.ReactNode` | Yes      | —       | Content rendered inside the component.                   |
+| `offset`    | `number`          | No       | 4       | Pixel offset applied per layer in both axes              |
+| `className` | `string`          | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

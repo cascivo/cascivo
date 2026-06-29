@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
     }
   ],
-  "dependencies": ["@cascivo/react", "@cascivo/icons", "layout/app-shell", "layout/page-header"],
+  "dependencies": ["@cascivo/react", "@cascivo/icons"],
   "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
   "category": "display",
   "meta": {
@@ -45,7 +45,8 @@
         "description": "Full console shell demo"
       }
     ],
-    "dependencies": ["@cascivo/react", "@cascivo/icons", "layout/app-shell", "layout/page-header"],
+    "dependencies": ["@cascivo/react", "@cascivo/icons"],
+    "registryDependencies": ["layout/app-shell", "layout/page-header"],
     "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
     "intent": {
       "whenToUse": [

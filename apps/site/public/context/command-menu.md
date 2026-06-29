@@ -42,16 +42,16 @@ The search input is role="combobox" with aria-controls, aria-expanded, aria-auto
 
 | Name            | Type                      | Required | Default                   | Description                                                           |
 | --------------- | ------------------------- | -------- | ------------------------- | --------------------------------------------------------------------- |
-| `open`          | `boolean`                 | Yes      | —                         | —                                                                     |
-| `onOpenChange`  | `(open: boolean) => void` | Yes      | —                         | —                                                                     |
-| `groups`        | `CommandGroup[]`          | Yes      | —                         | —                                                                     |
-| `placeholder`   | `string`                  | No       | Type a command or search… | —                                                                     |
-| `emptyLabel`    | `string`                  | No       | No results found          | —                                                                     |
+| `open`          | `boolean`                 | Yes      | —                         | Whether the component is open (controlled).                           |
+| `onOpenChange`  | `(open: boolean) => void` | Yes      | —                         | Called with the next open state when it changes.                      |
+| `groups`        | `CommandGroup[]`          | Yes      | —                         | The grouped commands to display.                                      |
+| `placeholder`   | `string`                  | No       | Type a command or search… | Placeholder text shown when the field is empty.                       |
+| `emptyLabel`    | `string`                  | No       | No results found          | Text shown when no commands match the query.                          |
 | `hotkey`        | `boolean`                 | No       | true                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                   |
-| `label`         | `string`                  | No       | Command menu              | —                                                                     |
+| `label`         | `string`                  | No       | Command menu              | Text label for the control.                                           |
 | `loading`       | `boolean`                 | No       | false                     | Shows a loading spinner in place of the empty state (for async items) |
 | `onQueryChange` | `(query: string) => void` | No       | —                         | Fires on every query keystroke — use to fetch async items             |
-| `className`     | `string`                  | No       | —                         | —                                                                     |
+| `className`     | `string`                  | No       | —                         | Additional CSS class names merged onto the root element.              |
 
 ## Tokens
 

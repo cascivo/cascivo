@@ -10,7 +10,7 @@
     }
   ],
   "description": "Authentication login page with email and password form.",
-  "dependencies": ["@cascivo/react", "layout/auth-layout"],
+  "dependencies": ["@cascivo/react"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

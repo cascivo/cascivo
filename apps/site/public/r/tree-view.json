@@ -25,42 +25,50 @@
     "props": [
       {
         "name": "items",
+        "description": "The items to render.",
         "type": "{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]",
         "required": true
       },
       {
         "name": "selectionMode",
+        "description": "Whether one or multiple nodes can be selected ('single' | 'multi').",
         "type": "'single' | 'multi'",
         "required": false,
         "default": "single"
       },
       {
         "name": "selected",
+        "description": "The controlled selected node id(s).",
         "type": "string | string[]",
         "required": false
       },
       {
         "name": "defaultSelected",
+        "description": "The initially selected node id(s) when uncontrolled.",
         "type": "string | string[]",
         "required": false
       },
       {
         "name": "onSelectChange",
+        "description": "Called with the new selection when it changes.",
         "type": "(selected: string | string[]) => void",
         "required": false
       },
       {
         "name": "expanded",
+        "description": "The controlled set of expanded node ids.",
         "type": "string[]",
         "required": false
       },
       {
         "name": "defaultExpanded",
+        "description": "The initially expanded node ids when uncontrolled.",
         "type": "string[]",
         "required": false
       },
       {
         "name": "onExpandedChange",
+        "description": "Called with the new expanded set when it changes.",
         "type": "(expanded: string[]) => void",
         "required": false
       }
