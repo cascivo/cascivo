@@ -1,5 +1,11 @@
 # @cascivo/icons
 
+## 0.2.3
+
+### Patch Changes
+
+- bb3c77e: Templates and further improvements
+
 ## 0.2.2
 
 ### Patch Changes

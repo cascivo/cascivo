@@ -1,5 +1,13 @@
 # @cascivo/storage
 
+## 0.1.6
+
+### Patch Changes
+
+- bb3c77e: Templates and further improvements
+- Updated dependencies [bb3c77e]
+  - @cascivo/core@0.2.3
+
 ## 0.1.5
 
 ### Patch Changes

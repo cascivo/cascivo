@@ -1,5 +1,14 @@
 # @cascivo/i18n
 
+## 0.1.11
+
+### Patch Changes
+
+- 6b50710: Addition chart types, and general chart improvements
+- bb3c77e: Templates and further improvements
+- Updated dependencies [bb3c77e]
+  - @cascivo/core@0.2.3
+
 ## 0.1.10
 
 ### Patch Changes
