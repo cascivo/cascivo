@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-28",
+  "generatedAt": "2026-06-29",
   "templates": [
     {
       "name": "auth",
@@ -7,8 +7,16 @@
       "description": "A centered sign-in screen with email/password fields and a submit action",
       "category": "auth",
       "framework": "react-vite",
-      "tags": ["auth", "login", "template"],
-      "components": ["card", "input", "button"],
+      "tags": [
+        "auth",
+        "login",
+        "template"
+      ],
+      "components": [
+        "card",
+        "input",
+        "button"
+      ],
       "screenshots": [
         {
           "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/auth/screenshot-light.svg",
@@ -27,8 +35,16 @@
       "description": "An analytics dashboard with KPI cards, a chart slot, and a recent-activity table",
       "category": "dashboard",
       "framework": "react-vite",
-      "tags": ["dashboard", "analytics", "template"],
-      "components": ["card", "badge", "data-table"],
+      "tags": [
+        "dashboard",
+        "analytics",
+        "template"
+      ],
+      "components": [
+        "card",
+        "badge",
+        "data-table"
+      ],
       "screenshots": [
         {
           "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/dashboard/screenshot-light.svg",
@@ -47,8 +63,16 @@
       "description": "A marketing landing page with a hero, a feature grid, and a call-to-action",
       "category": "marketing",
       "framework": "react-vite",
-      "tags": ["marketing", "landing", "template"],
-      "components": ["button", "card", "badge"],
+      "tags": [
+        "marketing",
+        "landing",
+        "template"
+      ],
+      "components": [
+        "button",
+        "card",
+        "badge"
+      ],
       "screenshots": [
         {
           "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/landing/screenshot-light.svg",
@@ -63,8 +87,22 @@
     }
   ],
   "facets": {
-    "categories": ["auth", "dashboard", "marketing"],
-    "frameworks": ["react-vite"],
-    "tags": ["analytics", "auth", "dashboard", "landing", "login", "marketing", "template"]
+    "categories": [
+      "auth",
+      "dashboard",
+      "marketing"
+    ],
+    "frameworks": [
+      "react-vite"
+    ],
+    "tags": [
+      "analytics",
+      "auth",
+      "dashboard",
+      "landing",
+      "login",
+      "marketing",
+      "template"
+    ]
   }
 }
