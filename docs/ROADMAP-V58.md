@@ -1,8 +1,12 @@
 # cascivo — Roadmap v58: Derivable Theming & Unambiguous Specs — Semantic Type, OKLCH-Derived Color, Canonical Tokens for Agents
 
 **Last updated:** 2026-06-29
-**Status:** 📋 Planned — not yet implemented. Planning docs only; no code shipped.
-**Plan documents:** `docs/superpowers/plans/2026-06-29-v58-master-plan.md` + tranches 1–5
+**Status:** ✅ Shipped — T1–T6 implemented across six commits: a semantic typography role layer + a `typography`
+family in the variant matrix; relative-color-syntax derivation of color state ladders across 10 themes +
+`@property`-registered themeable props; `contrast-color()` for `text-on-*` across all 12 themes; an all-OKLCH
+rewrite of the `create_theme` generator (no hex / no color-mix); canonical-only `get_tokens` + an alias-warning in
+`validate_component`; and the derivable-theming cookbook + THEMING corrections. See the implementation log at the end.
+**Plan documents:** `docs/superpowers/plans/2026-06-29-v58-master-plan.md` + tranches 1–6
 **Builds on:** the all-OKLCH primitive token set (`packages/tokens/src/index.css` in `@layer cascivo.tokens`),
 the 12-theme semantic layer (`packages/themes/src/*.css` in `@layer cascivo.theme`, keyed `[data-theme]`),
 the progressive-enhancement CSS-function contract (`packages/tokens/src/functions.css` + `pnpm fallback:check`),
@@ -194,6 +198,52 @@ last. Critical path: T2→T3→T4; T1 and T5(after T1) parallelize; T6 last.
 - `pnpm ready` green; `pnpm ready:ci` if the token/theme build pipeline changed; `pnpm breakpoint:check` +
   `pnpm fallback:check` + the drift check clean; **no new runtime dependency, no new component, no utility-CSS
   layer, no move off `[data-theme]` or OKLCH.**
+
+---
+
+## Implementation log (2026-06-29)
+
+Shipped across six commits. No new runtime dependency, no new component, no utility-CSS layer, no move off
+`[data-theme]` or OKLCH.
+
+- **T1 — Semantic typography tokens + matrix family.** Added `--cascivo-text-{display,heading-lg,heading-md,
+  heading-sm,body,body-sm,ui,label,caption,code}` to `packages/tokens/src/index.css`, each `var()`-ing exactly one
+  primitive; extended `scripts/variants/generate.ts` to emit a `typography` family (role→token); refined the layer
+  classifier in `generate.ts` + `scripts/catalog/parse-tokens.ts` so a role that ends in a size (`text-heading-lg`)
+  is semantic, not a primitive scale step; migrated Button's label to `--cascivo-text-ui`/`-body` (visually
+  identical). **Closes M-1.**
+- **T2 — Derivable color in the themes.** A data-driven transform rewrote 28 literal hover/active ladders across 10
+  themes to `oklch(from var(--base) L C h)` (inherit base hue, value-exact), each behind the literal as a static
+  fallback; skipped `var()`-ref and hue-shifted (warm/brutalist accent) values as bespoke. Added
+  `@cascivo/tokens/properties.css` (`@property` registration of the themeable color props) imported by `all.css`.
+  Made the shared token parser first-declaration-wins so the catalog/variant matrix resolve to the static literal
+  (agent surfaces unchanged) — which also corrected duration tokens that had been capturing the
+  `prefers-reduced-motion` override. Parity held; build validated `oklch(from)` + `@property` through lightningcss.
+  **Closes M-2.**
+- **T3 — Automatic contrast.** Swapped `--cascivo-color-text-on-accent`/`-on-destructive` to
+  `contrast-color(var(--base))` across all 12 themes, each behind the literal fallback; extended `fallback:check` to
+  require a static fallback for `contrast-color()` (relative color syntax stays unflagged — baseline) and added
+  `packages/themes/src` to its scan. Build validated `contrast-color()`. **Closes M-3.**
+- **T4 — `create_theme` onto the model.** Rewrote `packages/mcp/src/theme.ts` to emit `oklch(from …)` relative-color
+  ramps + `contrast-color()` (each with a static OKLCH fallback) and OKLCH status constants — **no hex, no
+  color-mix**; added a dependency-free sRGB→OKLCH parser; `theme.test.ts` asserts the relative-color presence,
+  fallback-before-progressive contract, and the no-hex/no-color-mix invariants. **Closes M-4.**
+- **T5 — Canonical tokens for agents.** The token catalog now carries `canonical`/`aliasOf` (parse-tokens mirrors
+  the generator's `ALIASES`); `get_tokens` returns canonical-only by default with an opt-in `includeAliases`;
+  `get_variant_matrix` exposes the T1 `typography` family; `validate_component` emits a non-fatal `alias-token-used`
+  warning. CSS aliases untouched. **Closes M-5.**
+- **T6 — Docs + corrections.** Added `docs/cookbooks/derivable-theming.md` and the `THEMING.md` sections recording
+  why `[data-theme]` stays over `light-dark()` (C-1), that `@container style()` branching is deferred (C-2), and
+  that OKLCH is the floor (C-3); flipped this roadmap to Shipped.
+
+### Deferred to a follow-up
+
+- **`@container style()` palette branching** (C-2) — recorded as a future-roadmap candidate; the `@property`
+  registrations are its substrate.
+- **Wholesale migration of every component to the typography roles** — T1 migrated the Button exemplar; broad
+  adoption across all components is a mechanical follow-up.
+- **Relative-color derivation of the bespoke (warm/brutalist accent, `var()`-ref) ladders** — intentionally left
+  literal to avoid a visible shift.
 
 ---
 

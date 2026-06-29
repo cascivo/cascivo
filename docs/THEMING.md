@@ -224,3 +224,43 @@ a first-party theme: scope every semantic token under `[data-theme='brand']`
 inside `@layer cascivo.theme`, declare the **full** token set (so nothing falls
 back to another theme), and import it after the tokens. Use an existing theme
 file in `packages/themes/src/` as the canonical checklist of tokens to define.
+
+---
+
+## Deriving instead of hand-authoring
+
+Themes derive their hover/active ladders and on-color text rather than restating
+every shade: relative color syntax (`oklch(from var(--base) …)`),
+`contrast-color()`, and `@property`-registered tokens, all behind static
+fallbacks. See the [Derivable theming cookbook](./cookbooks/derivable-theming.md).
+
+---
+
+## Why `[data-theme]`, not `light-dark()`
+
+The CSS `light-dark()` function resolves a **two-way** light/dark pair off the
+computed `color-scheme`. cascivo ships **twelve** themes
+(`light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate,
+terminal, cyberpunk, arcade`) and scopes them to **any container** via the
+`[data-theme]` attribute. `light-dark()` cannot express `warm` vs `brutalist`,
+and keying on `color-scheme` would collapse container-scoped multi-theming to a
+binary — so cascivo keeps `[data-theme]`. `light-dark()` *could* be used narrowly
+inside the light/dark pair, but it buys little over the attribute system already
+in place, so the first-party themes do not use it.
+
+## `@container style()` palette branching — deferred
+
+A component's text palette can branch by the surface it sits on, via a registered
+`--contrast-color` custom property + `@container style()` queries. It is powerful
+micro-theming, but advanced and orthogonal to cascivo's current derive-and-
+disambiguate model, and gated on broader `@container style()` support. It is a
+**future-roadmap candidate**, not shipped today; the `@property` registrations in
+`@cascivo/tokens/properties.css` are the substrate a future implementation would
+build on.
+
+## OKLCH is the floor
+
+Every cascivo color — primitive and semantic — is already OKLCH (see
+`packages/tokens/src/index.css`). The common "use OKLCH so machines can derive
+in-system shades" advice is therefore already satisfied; the *derivation* layer
+(relative color, `contrast-color()`) is built on top of it.
