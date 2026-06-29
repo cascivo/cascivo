@@ -32,6 +32,25 @@ export interface TokenEntry {
   group: string
   resolvedDefault: string | null
   resolvesPerTheme: boolean
+  /** True unless this token is a backwards-compat alias of another (canonical) token. */
+  canonical: boolean
+  /** When this token is an alias, the canonical token name to prefer instead. */
+  aliasOf?: string
+}
+
+// Canonical/alias map — MUST mirror scripts/tokens/generate-manifest.mjs ALIASES.
+// Key = alias token, value = its canonical token. Kept here so the catalog
+// (and every agent surface that reads it) can steer to the one correct name.
+const ALIASES: Record<string, string> = {
+  '--cascivo-color-bg': '--cascivo-color-background',
+  '--cascivo-color-text': '--cascivo-color-foreground',
+  '--cascivo-color-foreground-muted': '--cascivo-color-text-muted',
+  '--cascivo-color-error': '--cascivo-color-destructive',
+  '--cascivo-color-accent-content': '--cascivo-color-accent-foreground',
+  '--cascivo-color-success-content': '--cascivo-color-success-foreground',
+  '--cascivo-color-warning-content': '--cascivo-color-warning-foreground',
+  '--cascivo-color-destructive-content': '--cascivo-color-destructive-foreground',
+  '--cascivo-color-primary-content': '--cascivo-color-primary-fg',
 }
 
 // Primitive scale group names that use numeric or named-size suffixes.
@@ -196,6 +215,7 @@ export function parseTokens(indexCss: string, lightCss: string): TokenEntry[] {
     const rawValue = combinedMap.get(name)!
     const onlyInTheme = !indexMap.has(name)
     const { resolved, usedTheme } = resolveValue(rawValue, indexMap, combinedMap)
+    const aliasOf = ALIASES[name]
 
     return {
       name,
@@ -204,6 +224,8 @@ export function parseTokens(indexCss: string, lightCss: string): TokenEntry[] {
       group: extractGroup(name),
       resolvedDefault: resolved,
       resolvesPerTheme: onlyInTheme || usedTheme,
+      canonical: !aliasOf,
+      ...(aliasOf ? { aliasOf } : {}),
     }
   })
 }

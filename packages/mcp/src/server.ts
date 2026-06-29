@@ -442,7 +442,7 @@ export function Diagram() {
     {
       title: 'Get tokens',
       description:
-        'Get the cascade token catalog (closed set). Agents must select from this catalog rather than hard-coding values.',
+        'Get the cascade token catalog (closed set). Agents must select from this catalog rather than hard-coding values. Returns the CANONICAL token set by default — exactly one name per purpose. Pass includeAliases: true to also list backwards-compat aliases, each tagged with its canonical name.',
       inputSchema: {
         group: z
           .string()
@@ -452,12 +452,20 @@ export function Diagram() {
           .enum(['primitive', 'semantic', 'component'])
           .optional()
           .describe('Filter by layer'),
+        includeAliases: z
+          .boolean()
+          .optional()
+          .describe(
+            'Include backwards-compat alias tokens (e.g. --cascivo-color-bg → --cascivo-color-background). Off by default so agents see one correct token per purpose.',
+          ),
       },
     },
-    async ({ group, layer }) => {
+    async ({ group, layer, includeAliases }) => {
       try {
         const catalog = await loadTokenCatalog(fetchFn)
         let tokens = catalog.tokens
+        // Canonical-only by default: hide tokens that are an alias of another.
+        if (!includeAliases) tokens = tokens.filter((t) => !t.aliasOf)
         if (group) tokens = tokens.filter((t) => t.group === group)
         if (layer) tokens = tokens.filter((t) => t.layer === layer)
         return json({ count: tokens.length, tokens })
@@ -527,15 +535,20 @@ export function Diagram() {
     },
     async ({ tsx, css, name }) => {
       let tokenNames: Set<string> | undefined
+      let aliasMap: Map<string, string> | undefined
       try {
         const catalog = await loadTokenCatalog(fetchFn)
         tokenNames = new Set(catalog.tokens.map((t) => t.name))
+        aliasMap = new Map(catalog.tokens.filter((t) => t.aliasOf).map((t) => [t.name, t.aliasOf!]))
       } catch {
-        // Token catalog is optional — skip the hallucination check if unavailable.
+        // Token catalog is optional — skip the hallucination/alias checks if unavailable.
       }
       const result = validateComponentSource(
         { ...(tsx ? { tsx } : {}), ...(css ? { css } : {}), ...(name ? { name } : {}) },
-        tokenNames ? { tokenNames } : {},
+        {
+          ...(tokenNames ? { tokenNames } : {}),
+          ...(aliasMap && aliasMap.size > 0 ? { aliasMap } : {}),
+        },
       )
       return json(result)
     },

@@ -88,3 +88,22 @@ describe('validateComponentSource — token hallucination', () => {
     expect(validateComponentSource({ css }).valid).toBe(true)
   })
 })
+
+describe('validateComponentSource — canonical token steering (post-1 F3)', () => {
+  const aliasMap = new Map([['--cascivo-color-bg', '--cascivo-color-background']])
+
+  it('warns (non-fatally) when an alias is used where a canonical token exists', () => {
+    const css = `.x { background: var(--cascivo-color-bg); }`
+    const result = validateComponentSource({ css }, { aliasMap })
+    expect(result.valid).toBe(true) // warning, not error
+    const alias = result.violations.find((v) => v.rule === 'alias-token-used')
+    expect(alias?.severity).toBe('warning')
+    expect(alias?.detail).toContain('--cascivo-color-background')
+  })
+
+  it('does not warn when only canonical tokens are used', () => {
+    const css = `.x { background: var(--cascivo-color-background); }`
+    const result = validateComponentSource({ css }, { aliasMap })
+    expect(result.violations.some((v) => v.rule === 'alias-token-used')).toBe(false)
+  })
+})

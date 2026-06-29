@@ -10,7 +10,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-50",
@@ -18,7 +19,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.985 0.002 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-100",
@@ -26,7 +28,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.967 0.003 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-200",
@@ -34,7 +37,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.928 0.006 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-300",
@@ -42,7 +46,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.872 0.008 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-400",
@@ -50,7 +55,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.707 0.015 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-500",
@@ -58,7 +64,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.554 0.018 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-600",
@@ -66,7 +73,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.446 0.018 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-700",
@@ -74,7 +82,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.373 0.015 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-800",
@@ -82,7 +91,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.269 0.01 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-900",
@@ -90,7 +100,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.205 0.007 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-gray-950",
@@ -98,7 +109,8 @@
       "layer": "primitive",
       "group": "gray",
       "resolvedDefault": "oklch(0.145 0.005 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-50",
@@ -106,7 +118,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.97 0.025 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-100",
@@ -114,7 +127,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.932 0.055 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-200",
@@ -122,7 +136,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.882 0.095 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-300",
@@ -130,7 +145,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.808 0.14 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-400",
@@ -138,7 +154,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.707 0.18 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-500",
@@ -146,7 +163,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.623 0.214 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-600",
@@ -154,7 +172,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.546 0.224 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-700",
@@ -162,7 +181,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.452 0.196 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-800",
@@ -170,7 +190,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.373 0.155 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-900",
@@ -178,7 +199,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.29 0.105 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-blue-950",
@@ -186,7 +208,8 @@
       "layer": "primitive",
       "group": "blue",
       "resolvedDefault": "oklch(0.205 0.065 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-50",
@@ -194,7 +217,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.982 0.018 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-100",
@@ -202,7 +226,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.962 0.044 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-200",
@@ -210,7 +235,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.925 0.084 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-400",
@@ -218,7 +244,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.75 0.15 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-500",
@@ -226,7 +253,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.648 0.15 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-600",
@@ -234,7 +262,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.548 0.14 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-700",
@@ -242,7 +271,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.448 0.12 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-green-900",
@@ -250,7 +280,8 @@
       "layer": "primitive",
       "group": "green",
       "resolvedDefault": "oklch(0.28 0.075 145)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-50",
@@ -258,7 +289,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.971 0.013 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-100",
@@ -266,7 +298,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.936 0.032 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-200",
@@ -274,7 +307,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.885 0.062 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-400",
@@ -282,7 +316,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.72 0.16 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-500",
@@ -290,7 +325,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.628 0.188 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-600",
@@ -298,7 +334,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.54 0.188 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-700",
@@ -306,7 +343,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.448 0.17 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-red-900",
@@ -314,7 +352,8 @@
       "layer": "primitive",
       "group": "red",
       "resolvedDefault": "oklch(0.28 0.1 22)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-orange-50",
@@ -322,7 +361,8 @@
       "layer": "primitive",
       "group": "orange",
       "resolvedDefault": "oklch(0.98 0.02 75)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-orange-100",
@@ -330,7 +370,8 @@
       "layer": "primitive",
       "group": "orange",
       "resolvedDefault": "oklch(0.96 0.045 75)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-orange-400",
@@ -338,7 +379,8 @@
       "layer": "primitive",
       "group": "orange",
       "resolvedDefault": "oklch(0.82 0.13 60)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-orange-500",
@@ -346,7 +388,8 @@
       "layer": "primitive",
       "group": "orange",
       "resolvedDefault": "oklch(0.768 0.145 55)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-orange-600",
@@ -354,7 +397,8 @@
       "layer": "primitive",
       "group": "orange",
       "resolvedDefault": "oklch(0.68 0.155 50)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-yellow-50",
@@ -362,7 +406,8 @@
       "layer": "primitive",
       "group": "yellow",
       "resolvedDefault": "oklch(0.987 0.026 95)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-yellow-100",
@@ -370,7 +415,8 @@
       "layer": "primitive",
       "group": "yellow",
       "resolvedDefault": "oklch(0.973 0.05 95)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-yellow-400",
@@ -378,7 +424,8 @@
       "layer": "primitive",
       "group": "yellow",
       "resolvedDefault": "oklch(0.868 0.145 80)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-yellow-500",
@@ -386,7 +433,8 @@
       "layer": "primitive",
       "group": "yellow",
       "resolvedDefault": "oklch(0.768 0.145 75)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-50",
@@ -394,7 +442,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.982 0.008 80)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-100",
@@ -402,7 +451,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.962 0.016 80)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-200",
@@ -410,7 +460,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.92 0.025 78)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-300",
@@ -418,7 +469,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.87 0.035 75)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-400",
@@ -426,7 +478,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.76 0.045 70)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-500",
@@ -434,7 +487,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.64 0.045 65)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-600",
@@ -442,7 +496,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.52 0.04 60)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-700",
@@ -450,7 +505,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.42 0.03 55)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-800",
@@ -458,7 +514,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.31 0.022 50)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-warm-900",
@@ -466,7 +523,8 @@
       "layer": "primitive",
       "group": "warm",
       "resolvedDefault": "oklch(0.21 0.015 50)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-0",
@@ -474,7 +532,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "0px",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-1",
@@ -482,7 +541,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "0.25rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-2",
@@ -490,7 +550,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "0.5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-3",
@@ -498,7 +559,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "0.75rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-4",
@@ -506,7 +568,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "1rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-5",
@@ -514,7 +577,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "1.25rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-6",
@@ -522,7 +586,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "1.5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-8",
@@ -530,7 +595,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "2rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-10",
@@ -538,7 +604,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "2.5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-12",
@@ -546,7 +613,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "3rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-16",
@@ -554,7 +622,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "4rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-20",
@@ -562,7 +631,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-space-24",
@@ -570,7 +640,8 @@
       "layer": "primitive",
       "group": "space",
       "resolvedDefault": "6rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-font-sans",
@@ -578,7 +649,8 @@
       "layer": "primitive",
       "group": "font",
       "resolvedDefault": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-font-mono",
@@ -586,7 +658,8 @@
       "layer": "primitive",
       "group": "font",
       "resolvedDefault": "ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-font-display",
@@ -594,7 +667,8 @@
       "layer": "semantic",
       "group": "font",
       "resolvedDefault": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-xs",
@@ -602,7 +676,8 @@
       "layer": "primitive",
       "group": "text",
       "resolvedDefault": "0.75rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-sm",
@@ -610,7 +685,8 @@
       "layer": "primitive",
       "group": "text",
       "resolvedDefault": "0.875rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-base",
@@ -618,7 +694,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "1rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-lg",
@@ -626,7 +703,8 @@
       "layer": "primitive",
       "group": "text",
       "resolvedDefault": "1.125rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-xl",
@@ -634,7 +712,8 @@
       "layer": "primitive",
       "group": "text",
       "resolvedDefault": "1.25rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-2xl",
@@ -642,7 +721,8 @@
       "layer": "primitive",
       "group": "text",
       "resolvedDefault": "1.5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-3xl",
@@ -650,7 +730,8 @@
       "layer": "primitive",
       "group": "text",
       "resolvedDefault": "1.875rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-4xl",
@@ -658,7 +739,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "2.25rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-font-normal",
@@ -666,7 +748,8 @@
       "layer": "semantic",
       "group": "font",
       "resolvedDefault": "400",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-font-medium",
@@ -674,7 +757,8 @@
       "layer": "semantic",
       "group": "font",
       "resolvedDefault": "500",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-font-semibold",
@@ -682,7 +766,8 @@
       "layer": "semantic",
       "group": "font",
       "resolvedDefault": "600",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-font-bold",
@@ -690,7 +775,8 @@
       "layer": "semantic",
       "group": "font",
       "resolvedDefault": "700",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-leading-none",
@@ -698,7 +784,8 @@
       "layer": "primitive",
       "group": "leading",
       "resolvedDefault": "1",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-leading-tight",
@@ -706,7 +793,8 @@
       "layer": "semantic",
       "group": "leading",
       "resolvedDefault": "1.25",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-leading-snug",
@@ -714,7 +802,8 @@
       "layer": "semantic",
       "group": "leading",
       "resolvedDefault": "1.375",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-leading-normal",
@@ -722,7 +811,8 @@
       "layer": "semantic",
       "group": "leading",
       "resolvedDefault": "1.5",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-leading-relaxed",
@@ -730,7 +820,8 @@
       "layer": "semantic",
       "group": "leading",
       "resolvedDefault": "1.625",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-tracking-tight",
@@ -738,7 +829,8 @@
       "layer": "semantic",
       "group": "tracking",
       "resolvedDefault": "-0.025em",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-tracking-normal",
@@ -746,7 +838,8 @@
       "layer": "semantic",
       "group": "tracking",
       "resolvedDefault": "0em",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-tracking-wide",
@@ -754,7 +847,8 @@
       "layer": "semantic",
       "group": "tracking",
       "resolvedDefault": "0.025em",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-display",
@@ -762,7 +856,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "2.25rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-heading-lg",
@@ -770,7 +865,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "1.875rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-heading-md",
@@ -778,7 +874,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "1.5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-heading-sm",
@@ -786,7 +883,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "1.25rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-body",
@@ -794,7 +892,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "1rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-body-sm",
@@ -802,15 +901,17 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "0.875rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-ui",
-      "value": "var(--cascivo-text-sm)",
+      "value": "var( --cascivo-text-sm )",
       "layer": "semantic",
       "group": "text",
-      "resolvedDefault": "0.875rem",
-      "resolvesPerTheme": false
+      "resolvedDefault": "var( --cascivo-text-sm )",
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-label",
@@ -818,7 +919,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "0.875rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-caption",
@@ -826,15 +928,17 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "0.75rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-code",
-      "value": "var(--cascivo-text-sm)",
+      "value": "var( --cascivo-text-sm )",
       "layer": "semantic",
       "group": "text",
-      "resolvedDefault": "0.875rem",
-      "resolvesPerTheme": false
+      "resolvedDefault": "var( --cascivo-text-sm )",
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-none",
@@ -842,7 +946,8 @@
       "layer": "primitive",
       "group": "radius",
       "resolvedDefault": "0px",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-sm",
@@ -850,7 +955,8 @@
       "layer": "primitive",
       "group": "radius",
       "resolvedDefault": "0.25rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-md",
@@ -858,7 +964,8 @@
       "layer": "primitive",
       "group": "radius",
       "resolvedDefault": "0.375rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-lg",
@@ -866,7 +973,8 @@
       "layer": "primitive",
       "group": "radius",
       "resolvedDefault": "0.5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-xl",
@@ -874,7 +982,8 @@
       "layer": "primitive",
       "group": "radius",
       "resolvedDefault": "0.75rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-2xl",
@@ -882,7 +991,8 @@
       "layer": "primitive",
       "group": "radius",
       "resolvedDefault": "1rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-full",
@@ -890,7 +1000,8 @@
       "layer": "primitive",
       "group": "radius",
       "resolvedDefault": "9999px",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-base",
@@ -898,7 +1009,8 @@
       "layer": "semantic",
       "group": "radius",
       "resolvedDefault": "0.375rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-control",
@@ -906,7 +1018,8 @@
       "layer": "component",
       "group": "radius",
       "resolvedDefault": "0.375rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-field",
@@ -914,7 +1027,8 @@
       "layer": "semantic",
       "group": "radius",
       "resolvedDefault": "0.375rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-item",
@@ -922,7 +1036,8 @@
       "layer": "semantic",
       "group": "radius",
       "resolvedDefault": "calc(var(--cascivo-radius-base) * 0.66)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-surface",
@@ -930,7 +1045,8 @@
       "layer": "semantic",
       "group": "radius",
       "resolvedDefault": "calc(var(--cascivo-radius-base) * 1.66)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-overlay",
@@ -938,7 +1054,8 @@
       "layer": "component",
       "group": "radius",
       "resolvedDefault": "calc(var(--cascivo-radius-base) * 2)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-indicator",
@@ -946,7 +1063,8 @@
       "layer": "semantic",
       "group": "radius",
       "resolvedDefault": "calc(var(--cascivo-radius-base) / 2)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-disabled-opacity",
@@ -954,7 +1072,8 @@
       "layer": "semantic",
       "group": "disabled",
       "resolvedDefault": "0.5",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-hover-opacity",
@@ -962,7 +1081,8 @@
       "layer": "semantic",
       "group": "hover",
       "resolvedDefault": "0.8",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shadow-xs",
@@ -970,7 +1090,8 @@
       "layer": "primitive",
       "group": "shadow",
       "resolvedDefault": "0 1px 2px oklch(0 0 0 / 0.05)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shadow-sm",
@@ -978,7 +1099,8 @@
       "layer": "primitive",
       "group": "shadow",
       "resolvedDefault": "0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shadow-md",
@@ -986,7 +1108,8 @@
       "layer": "primitive",
       "group": "shadow",
       "resolvedDefault": "0 2px 8px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shadow-overlay",
@@ -994,7 +1117,8 @@
       "layer": "component",
       "group": "shadow",
       "resolvedDefault": "0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shadow-lg",
@@ -1002,7 +1126,8 @@
       "layer": "primitive",
       "group": "shadow",
       "resolvedDefault": "0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shadow-xl",
@@ -1010,7 +1135,8 @@
       "layer": "primitive",
       "group": "shadow",
       "resolvedDefault": "0 4px 32px oklch(0 0 0 / 0.16), 0 0 0 1px oklch(0 0 0 / 0.04)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-ring-width",
@@ -1018,7 +1144,8 @@
       "layer": "component",
       "group": "ring",
       "resolvedDefault": "2px",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-ring-offset",
@@ -1026,7 +1153,8 @@
       "layer": "component",
       "group": "ring",
       "resolvedDefault": "0px",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-ring-color",
@@ -1034,7 +1162,8 @@
       "layer": "component",
       "group": "ring",
       "resolvedDefault": "color-mix(in oklch, var(--cascivo-color-accent) 55%, transparent)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-primary",
@@ -1042,7 +1171,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.205 0 0)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-primary-fg",
@@ -1050,7 +1180,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.985 0 0)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-primary-hover",
@@ -1058,7 +1189,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.27 0 0)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-primary-active",
@@ -1066,7 +1198,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.32 0 0)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-active-bg",
@@ -1074,7 +1207,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.145 0.005 264 / 6%)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-control-height-sm",
@@ -1082,7 +1216,8 @@
       "layer": "component",
       "group": "control",
       "resolvedDefault": "2rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-control-height-md",
@@ -1090,7 +1225,8 @@
       "layer": "component",
       "group": "control",
       "resolvedDefault": "2.5rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-control-height-lg",
@@ -1098,7 +1234,8 @@
       "layer": "component",
       "group": "control",
       "resolvedDefault": "3rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-border-subtle",
@@ -1106,7 +1243,8 @@
       "layer": "semantic",
       "group": "border",
       "resolvedDefault": "oklch(0.928 0.006 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-border-default",
@@ -1114,7 +1252,8 @@
       "layer": "semantic",
       "group": "border",
       "resolvedDefault": "oklch(0.872 0.008 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-border-strong",
@@ -1122,7 +1261,8 @@
       "layer": "semantic",
       "group": "border",
       "resolvedDefault": "oklch(0.707 0.015 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-ease-in",
@@ -1130,7 +1270,8 @@
       "layer": "primitive",
       "group": "ease",
       "resolvedDefault": "cubic-bezier(0.4, 0, 1, 1)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-ease-out",
@@ -1138,7 +1279,8 @@
       "layer": "primitive",
       "group": "ease",
       "resolvedDefault": "cubic-bezier(0, 0, 0.2, 1)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-ease-in-out",
@@ -1146,7 +1288,8 @@
       "layer": "primitive",
       "group": "ease",
       "resolvedDefault": "cubic-bezier(0.4, 0, 0.2, 1)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-duration-75",
@@ -1154,7 +1297,8 @@
       "layer": "primitive",
       "group": "duration",
       "resolvedDefault": "0.01ms",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-duration-100",
@@ -1162,7 +1306,8 @@
       "layer": "primitive",
       "group": "duration",
       "resolvedDefault": "0.01ms",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-duration-150",
@@ -1170,7 +1315,8 @@
       "layer": "primitive",
       "group": "duration",
       "resolvedDefault": "0.01ms",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-duration-200",
@@ -1178,7 +1324,8 @@
       "layer": "primitive",
       "group": "duration",
       "resolvedDefault": "0.01ms",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-duration-300",
@@ -1186,7 +1333,8 @@
       "layer": "primitive",
       "group": "duration",
       "resolvedDefault": "0.01ms",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-duration-500",
@@ -1194,7 +1342,8 @@
       "layer": "primitive",
       "group": "duration",
       "resolvedDefault": "0.01ms",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-motion-enter",
@@ -1202,7 +1351,8 @@
       "layer": "semantic",
       "group": "motion",
       "resolvedDefault": "var(--cascivo-duration-200) var(--cascivo-ease-out)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-motion-exit",
@@ -1210,7 +1360,8 @@
       "layer": "semantic",
       "group": "motion",
       "resolvedDefault": "var(--cascivo-duration-150) var(--cascivo-ease-in)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-motion-emphasis",
@@ -1218,7 +1369,8 @@
       "layer": "semantic",
       "group": "motion",
       "resolvedDefault": "var(--cascivo-duration-300) var(--cascivo-ease-in-out)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-1",
@@ -1226,7 +1378,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.62 0.13 70)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-2",
@@ -1234,7 +1387,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.62 0.11 240)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-3",
@@ -1242,7 +1396,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.6 0.13 135)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-4",
@@ -1250,7 +1405,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.6 0.18 55)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-5",
@@ -1258,7 +1414,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.5 0.13 270)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-6",
@@ -1266,7 +1423,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.58 0.16 30)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-7",
@@ -1274,7 +1432,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.62 0.12 350)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-8",
@@ -1282,7 +1441,8 @@
       "layer": "primitive",
       "group": "chart",
       "resolvedDefault": "oklch(0.5 0.12 200)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-grid",
@@ -1290,7 +1450,8 @@
       "layer": "semantic",
       "group": "chart",
       "resolvedDefault": "oklch(0.928 0.006 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-chart-axis",
@@ -1298,7 +1459,8 @@
       "layer": "semantic",
       "group": "chart",
       "resolvedDefault": "oklch(0.707 0.015 264)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-bg",
@@ -1306,7 +1468,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-fg",
@@ -1314,7 +1477,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-gutter-bg",
@@ -1322,7 +1486,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-surface-2, oklch(0.967 0.003 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-gutter-fg",
@@ -1330,7 +1495,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-text-muted, oklch(0.55 0.018 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-current-line",
@@ -1338,7 +1504,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-active-bg, oklch(0.55 0.02 264 / 8%))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-selection",
@@ -1346,7 +1513,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-accent-muted, oklch(0.882 0.095 250))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-border",
@@ -1354,7 +1522,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-border, oklch(0.928 0.006 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-keyword",
@@ -1362,7 +1531,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-string",
@@ -1370,7 +1540,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-number",
@@ -1378,7 +1549,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-comment",
@@ -1386,7 +1558,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-function",
@@ -1394,7 +1567,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-5, oklch(0.5 0.16 265))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-type",
@@ -1402,7 +1576,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-operator",
@@ -1410,7 +1585,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-punctuation",
@@ -1418,7 +1594,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-text-subtle, oklch(0.446 0.018 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-variable",
@@ -1426,7 +1603,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-foreground, oklch(0.205 0.005 264))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-tag",
@@ -1434,7 +1612,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-color-accent, oklch(0.52 0.2 250))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-attr",
@@ -1442,7 +1621,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-regexp",
@@ -1450,7 +1630,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-boolean",
@@ -1458,7 +1639,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-property",
@@ -1466,7 +1648,8 @@
       "layer": "semantic",
       "group": "editor",
       "resolvedDefault": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-brand-primary",
@@ -1474,7 +1657,8 @@
       "layer": "semantic",
       "group": "brand",
       "resolvedDefault": "oklch( 0.55 0.15 240 )",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-brand-accent",
@@ -1482,7 +1666,8 @@
       "layer": "semantic",
       "group": "brand",
       "resolvedDefault": "oklch(0.72 0.13 195)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-brand-ink",
@@ -1490,7 +1675,8 @@
       "layer": "semantic",
       "group": "brand",
       "resolvedDefault": "oklch( 0.22 0.03 250 )",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-brand-paper",
@@ -1498,7 +1684,8 @@
       "layer": "semantic",
       "group": "brand",
       "resolvedDefault": "oklch(0.99 0.005 250)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-brand-gradient-start",
@@ -1506,7 +1693,8 @@
       "layer": "semantic",
       "group": "brand",
       "resolvedDefault": "oklch(0.55 0.15 240)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-brand-gradient-end",
@@ -1514,7 +1702,8 @@
       "layer": "semantic",
       "group": "brand",
       "resolvedDefault": "oklch(0.72 0.13 195)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-z-base",
@@ -1522,7 +1711,8 @@
       "layer": "semantic",
       "group": "z",
       "resolvedDefault": "0",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-z-raised",
@@ -1530,7 +1720,8 @@
       "layer": "semantic",
       "group": "z",
       "resolvedDefault": "10",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-z-dropdown",
@@ -1538,7 +1729,8 @@
       "layer": "semantic",
       "group": "z",
       "resolvedDefault": "100",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-z-overlay",
@@ -1546,7 +1738,8 @@
       "layer": "component",
       "group": "z",
       "resolvedDefault": "200",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-z-modal",
@@ -1554,7 +1747,8 @@
       "layer": "component",
       "group": "z",
       "resolvedDefault": "300",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-z-toast",
@@ -1562,7 +1756,8 @@
       "layer": "semantic",
       "group": "z",
       "resolvedDefault": "400",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-z-tooltip",
@@ -1570,7 +1765,8 @@
       "layer": "semantic",
       "group": "z",
       "resolvedDefault": "500",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shell-header-block-size",
@@ -1578,7 +1774,8 @@
       "layer": "component",
       "group": "shell",
       "resolvedDefault": "3rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shell-panel-inline-size",
@@ -1586,7 +1783,8 @@
       "layer": "component",
       "group": "shell",
       "resolvedDefault": "20rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-shell-aside-inline-size",
@@ -1594,7 +1792,8 @@
       "layer": "component",
       "group": "shell",
       "resolvedDefault": "18rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-screen-sm",
@@ -1602,7 +1801,8 @@
       "layer": "semantic",
       "group": "screen",
       "resolvedDefault": "30rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-screen-md",
@@ -1610,7 +1810,8 @@
       "layer": "semantic",
       "group": "screen",
       "resolvedDefault": "40rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-screen-lg",
@@ -1618,7 +1819,8 @@
       "layer": "semantic",
       "group": "screen",
       "resolvedDefault": "64rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-screen-xl",
@@ -1626,7 +1828,8 @@
       "layer": "semantic",
       "group": "screen",
       "resolvedDefault": "80rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-2xl-fluid",
@@ -1634,7 +1837,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "clamp(1.25rem, 1rem + 1.25vw, 1.5rem)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-3xl-fluid",
@@ -1642,7 +1846,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "clamp(1.5rem, 1.125rem + 1.875vw, 1.875rem)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-text-4xl-fluid",
@@ -1650,7 +1855,8 @@
       "layer": "semantic",
       "group": "text",
       "resolvedDefault": "clamp(1.875rem, 1.5rem + 1.875vw, 2.25rem)",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-target-min-coarse",
@@ -1658,7 +1864,8 @@
       "layer": "semantic",
       "group": "target",
       "resolvedDefault": "2.75rem",
-      "resolvesPerTheme": false
+      "resolvesPerTheme": false,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-background",
@@ -1666,7 +1873,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-surface",
@@ -1674,7 +1882,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.985 0.002 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-surface-2",
@@ -1682,7 +1891,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.967 0.003 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-bg",
@@ -1690,7 +1900,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-background"
     },
     {
       "name": "--cascivo-color-bg-subtle",
@@ -1698,7 +1910,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.985 0.002 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-surface-raised",
@@ -1706,7 +1919,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.985 0.002 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-surface-overlay",
@@ -1714,7 +1928,8 @@
       "layer": "component",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-border",
@@ -1722,7 +1937,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.928 0.006 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-border-strong",
@@ -1730,7 +1946,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.872 0.008 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-foreground",
@@ -1738,7 +1955,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.145 0.005 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-foreground-muted",
@@ -1746,7 +1964,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.554 0.018 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-text-muted"
     },
     {
       "name": "--cascivo-color-text",
@@ -1754,7 +1974,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.145 0.005 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-foreground"
     },
     {
       "name": "--cascivo-color-text-subtle",
@@ -1762,7 +1984,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.446 0.018 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-text-muted",
@@ -1770,7 +1993,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.707 0.015 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-text-on-accent",
@@ -1778,7 +2002,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-text-on-destructive",
@@ -1786,7 +2011,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-accent",
@@ -1794,7 +2020,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.52 0.2 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-accent-foreground",
@@ -1802,7 +2029,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-accent-hover",
@@ -1810,7 +2038,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.45 0.2 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-accent-active",
@@ -1818,7 +2047,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.373 0.155 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-accent-subtle",
@@ -1826,7 +2056,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.97 0.025 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-accent-muted",
@@ -1834,7 +2065,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.932 0.055 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-destructive",
@@ -1842,7 +2074,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.54 0.188 22)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-destructive-hover",
@@ -1850,7 +2083,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.448 0.17 22)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-destructive-subtle",
@@ -1858,7 +2092,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.971 0.013 22)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-error",
@@ -1866,7 +2101,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.628 0.188 22)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-destructive"
     },
     {
       "name": "--cascivo-color-warning",
@@ -1874,7 +2111,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.768 0.145 75)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-success",
@@ -1882,7 +2120,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.648 0.15 145)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-success-subtle",
@@ -1890,7 +2129,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.982 0.018 145)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-warning-subtle",
@@ -1898,7 +2138,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.98 0.02 75)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-info",
@@ -1906,7 +2147,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.546 0.224 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-info-subtle",
@@ -1914,7 +2156,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.97 0.025 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-success-foreground",
@@ -1922,7 +2165,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.45 0.14 145)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-warning-foreground",
@@ -1930,7 +2174,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.5 0.14 75)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-destructive-foreground",
@@ -1938,7 +2183,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.448 0.17 22)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-component",
@@ -1946,7 +2192,8 @@
       "layer": "semantic",
       "group": "radius",
       "resolvedDefault": "0.375rem",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-button",
@@ -1954,7 +2201,8 @@
       "layer": "component",
       "group": "radius",
       "resolvedDefault": "0.375rem",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-input",
@@ -1962,7 +2210,8 @@
       "layer": "component",
       "group": "radius",
       "resolvedDefault": "0.375rem",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-card",
@@ -1970,7 +2219,8 @@
       "layer": "component",
       "group": "radius",
       "resolvedDefault": "calc(var(--cascivo-radius-base) * 1.66)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-badge",
@@ -1978,7 +2228,8 @@
       "layer": "component",
       "group": "radius",
       "resolvedDefault": "9999px",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-radius-modal",
@@ -1986,7 +2237,8 @@
       "layer": "component",
       "group": "radius",
       "resolvedDefault": "calc(var(--cascivo-radius-base) * 2)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-focus-ring",
@@ -1994,7 +2246,8 @@
       "layer": "component",
       "group": "color",
       "resolvedDefault": "oklch(0.623 0.214 250)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-focus-ring",
@@ -2002,7 +2255,8 @@
       "layer": "component",
       "group": "focus",
       "resolvedDefault": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-primary-content",
@@ -2010,7 +2264,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.985 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-primary-fg"
     },
     {
       "name": "--cascivo-color-accent-content",
@@ -2018,7 +2274,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-accent-foreground"
     },
     {
       "name": "--cascivo-color-destructive-content",
@@ -2026,7 +2284,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-destructive-foreground"
     },
     {
       "name": "--cascivo-color-info-content",
@@ -2034,7 +2294,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-success-content",
@@ -2042,7 +2303,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-success-foreground"
     },
     {
       "name": "--cascivo-color-warning-content",
@@ -2050,7 +2313,9 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.145 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": false,
+      "aliasOf": "--cascivo-color-warning-foreground"
     },
     {
       "name": "--cascivo-color-error-content",
@@ -2058,7 +2323,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(1 0 0)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-secondary",
@@ -2066,7 +2332,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.92 0.004 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-secondary-content",
@@ -2074,7 +2341,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.27 0.01 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-secondary-hover",
@@ -2082,7 +2350,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.86 0.006 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     },
     {
       "name": "--cascivo-color-secondary-subtle",
@@ -2090,7 +2359,8 @@
       "layer": "semantic",
       "group": "color",
       "resolvedDefault": "oklch(0.967 0.002 264)",
-      "resolvesPerTheme": true
+      "resolvesPerTheme": true,
+      "canonical": true
     }
   ]
 }

@@ -9,6 +9,10 @@ export interface TokenCatalogEntry {
   group: string
   resolvedDefault: string | null
   resolvesPerTheme: boolean
+  /** True unless this token is a backwards-compat alias of another (canonical) token. */
+  canonical?: boolean
+  /** When this token is an alias, the canonical token name to prefer instead. */
+  aliasOf?: string
 }
 
 export interface TokenCatalog {

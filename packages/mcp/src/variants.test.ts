@@ -6,6 +6,7 @@ const fixture: VariantMatrix = {
   themes: ['light', 'warm'],
   families: {
     accent: { base: '--cascivo-color-accent', hover: '--cascivo-color-accent-hover' },
+    typography: { ui: '--cascivo-text-ui', body: '--cascivo-text-body' },
   },
   tokens: [
     {
@@ -38,5 +39,9 @@ describe('variant matrix querying (via fixture)', () => {
   it('resolves a token to a concrete value per theme', () => {
     const accent = fixture.tokens.find((t) => t.name === '--cascivo-color-accent')!
     expect(accent.byTheme.warm).toBe('oklch(0.768 0.145 75)')
+  })
+
+  it('exposes the typography family so agents resolve type deterministically (T1)', () => {
+    expect(fixture.families.typography?.ui).toBe('--cascivo-text-ui')
   })
 })
