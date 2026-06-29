@@ -1,0 +1,50 @@
+/**
+ * Opt-in Tailwind v4 interop bridge for cascivo.
+ *
+ * Import this LAST, after your Tailwind entry and your cascivo theme imports,
+ * from a stylesheet processed by Tailwind v4:
+ *
+ *   @import 'tailwindcss';
+ *   @import '@cascivo/tokens';
+ *   @import '@cascivo/themes/light.css';
+ *   @import '@cascivo/themes/dark.css';
+ *   @import '@cascivo/themes/tailwind.css';   // this file — last
+ *
+ * It does two things and changes neither token system:
+ *   1. Re-points Tailwind's `dark:` variant at cascivo's `[data-theme="dark"]`
+ *      mechanism, so a single attribute drives BOTH systems (no `.dark` class
+ *      needed, no attribute-setting from CSS, no duplicated token values).
+ *   2. Bridges cascivo semantic color tokens into Tailwind's `--color-*`
+ *      namespace, so utilities like `bg-accent`, `text-foreground`, and
+ *      `border-border` resolve to cascivo values.
+ *
+ * Outside a Tailwind v4 build these are unknown at-rules and are simply ignored,
+ * so importing this file in a non-Tailwind project is harmless.
+ *
+ * See docs/USING-WITH-TAILWIND.md for the full setup and dark-mode guidance.
+ */
+
+/* 1 — Tailwind's dark: variant follows cascivo's [data-theme] attribute. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* 2 — cascivo semantic tokens → Tailwind --color-* utilities. `inline` so the
+   values are read at use-site, keeping them reactive to the active theme. */
+@theme inline {
+  --color-background: var(--cascivo-color-background);
+  --color-foreground: var(--cascivo-color-foreground);
+  --color-surface: var(--cascivo-color-surface);
+  --color-surface-raised: var(--cascivo-color-surface-raised);
+  --color-border: var(--cascivo-color-border);
+  --color-muted: var(--cascivo-color-text-muted);
+  --color-subtle: var(--cascivo-color-text-subtle);
+
+  --color-accent: var(--cascivo-color-accent);
+  --color-accent-foreground: var(--cascivo-color-accent-foreground);
+  --color-primary: var(--cascivo-color-primary);
+  --color-secondary: var(--cascivo-color-secondary);
+
+  --color-destructive: var(--cascivo-color-destructive);
+  --color-success: var(--cascivo-color-success);
+  --color-warning: var(--cascivo-color-warning);
+  --color-info: var(--cascivo-color-info);
+}

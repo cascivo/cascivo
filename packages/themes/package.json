@@ -54,7 +54,9 @@
     "./cyberpunk": "./src/cyberpunk.css",
     "./cyberpunk.css": "./src/cyberpunk.css",
     "./arcade": "./src/arcade.css",
-    "./arcade.css": "./src/arcade.css"
+    "./arcade.css": "./src/arcade.css",
+    "./tailwind": "./src/tailwind.css",
+    "./tailwind.css": "./src/tailwind.css"
   },
   "publishConfig": {
     "access": "public",

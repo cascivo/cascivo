@@ -52,6 +52,10 @@ Apply a theme by setting the attribute on any container:
 
 ---
 
+> **Using Tailwind v4?** See [`USING-WITH-TAILWIND.md`](./USING-WITH-TAILWIND.md)
+> for coexisting token layers, a one-attribute dark-mode bridge, and mapping
+> cascivo semantics onto Tailwind's `--color-*` utilities.
+
 ## The specificity footgun (read this before writing a brand theme)
 
 `:root:not([data-theme])` has specificity **(0,2,0)** — higher than a plain

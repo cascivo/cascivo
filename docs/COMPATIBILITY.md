@@ -50,6 +50,11 @@ import '@cascivo/tokens/functions.css' // Chrome 133+ progressive enhancement
 - **CSS minifiers:** cssnano and esbuild handle the shipped CSS as-is.
   lightningcss (Tailwind v4) works too **as long as you don't opt into**
   `@cascivo/tokens/functions.css` (see above).
+- **Using Tailwind v4 alongside cascivo?** See
+  [`USING-WITH-TAILWIND.md`](./USING-WITH-TAILWIND.md) for the `@layer` order, the
+  `.dark` ↔ `[data-theme]` dark-mode bridge, and the opt-in
+  `@cascivo/themes/tailwind.css` that maps cascivo tokens onto Tailwind's
+  `--color-*` utilities.
 - **The `@import` order is spec-clean:** tokens no longer emit an `@import` after
   a `@layer`, so there's no `@import must precede all other statements` warning.
 
