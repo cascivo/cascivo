@@ -37,6 +37,19 @@ export interface ResolvedBareEntry {
 }
 
 /**
+ * Names from other libraries → the cascivo layout primitive that fills the same
+ * role, so `cascivo add flex` installs `layout/stack`. Bare names that already
+ * resolve (e.g. `stack` → `layout/stack` via suffix match) need no alias.
+ */
+export const LAYOUT_ALIASES: Record<string, string> = {
+  flex: 'stack',
+  box: 'stack',
+  hstack: 'stack',
+  vstack: 'stack',
+  gap: 'spacer',
+}
+
+/**
  * Resolve the transitive closure of bare-name registry entries, following each
  * entry's `registryDependencies`. De-duped by resolved registry name and
  * cycle-safe (an entry is processed at most once). Returns resolved entries in
@@ -56,7 +69,8 @@ export function resolveBareClosure(
 
   while (queue.length > 0) {
     const { name, requested } = queue.shift()!
-    const entry = findComponent(registry, name)
+    const resolvedName = LAYOUT_ALIASES[name.toLowerCase()] ?? name
+    const entry = findComponent(registry, resolvedName)
     if (!entry) {
       missing.push(name)
       continue
@@ -150,6 +164,17 @@ export async function add(
   const registry = await fetchRegistry(config.registry)
   const missingDeps = new Set<string>()
   const registryBase = config.registry.replace(/\/registry\.json$/, '').replace(/\/r$/, '')
+
+  for (const spec of bareSpecs) {
+    const alias = LAYOUT_ALIASES[spec.toLowerCase()]
+    if (!alias) continue
+    const target = findComponent(registry, alias)
+    if (target) {
+      console.log(
+        `"${spec}" is not a cascivo component — installing ${target.name} (its ${spec} primitive).`,
+      )
+    }
+  }
 
   const { resolved, missing } = resolveBareClosure(registry, bareSpecs)
   for (const name of missing) {

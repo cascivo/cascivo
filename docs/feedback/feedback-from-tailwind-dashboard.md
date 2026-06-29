@@ -65,7 +65,51 @@ thin documentation would slow teams down.
 > registry dependency-graph blocker; thin prop docs / no prop-level search; no
 > Tailwind-v4 interop guidance) from the *misstated* ones (layout primitives and a
 > documented spacing scale already ship — the gap is discoverability, and "utility
-> classes" run against the no-utility-CSS philosophy). A maintainer **resolution
-> log** will be appended here when v57 ships.
+> classes" run against the no-utility-CSS philosophy).
+
+---
+
+## Resolution log (maintainers)
+
+> Added when v57 shipped. ✅ fixed · 📝 documented · 🔎 corrected (claim was
+> inaccurate against the code).
+
+### The hard blocker — `use-popover` not installed
+- ✅ **`cascivo add` now resolves internal registry dependencies.** Root cause was
+  three broken links: the registry generator dropped `.ts` files (so
+  `use-popover.ts` shipped with no component), `ComponentMeta` had no
+  `registryDependencies` field, and the CLI bare-name path ignored it. All three
+  fixed; `shell-header`/`side-nav`/`menu`/`multi-select`/`hover-card` declare the
+  edge and `cascivo add shell-header` now installs the hook and builds standalone
+  (v57 T1).
+- ✅ **It can't reship.** A new `deps:check` import-graph guard + a clean-room
+  install/`tsc` smoke test run in `regen`/CI. The audit surfaced **34** more latent
+  cases (e.g. `button`→`spinner`, `data-table`→`button`/`checkbox`, `field`→`label`)
+  — all now declared (v57 T2).
+
+### Sparse documentation
+- ✅ **100% prop-description coverage** (1151/1151), guarded by a `docs:coverage`
+  check so it can't regress. 🔎 Per-component prop tables and Cmd+K search already
+  existed — the real gap was empty descriptions + no prop-level search.
+- 📝 **Prop-level + alias search** (Cmd+K now indexes prop/variant/size names and
+  `flex`/`box`/`hstack`→`Stack`) and a central **`/docs/api`** reference page
+  (v57 T3).
+
+### Theme collision with Tailwind
+- 📝 **`docs/USING-WITH-TAILWIND.md`** documents the cross-system `@layer` order,
+  the dark-mode bridge, and the "keep both / override / pick one" answer.
+- ✅ **Opt-in `@cascivo/themes/tailwind.css`** re-points Tailwind's `dark:` variant
+  at cascivo's `[data-theme]` and maps `--cascivo-*` semantics onto Tailwind's
+  `--color-*` utilities — no token-system change, no Tailwind dependency (v57 T4).
+
+### "No layout primitives / no spacing utilities" (inline-style drift)
+- 🔎 **Inaccurate** — `Stack`, `Grid`, `AutoGrid`, `Columns`, `Spacer`, `Center`,
+  `Section` ship and are CLI-installable as `layout/*`; the `--cascivo-space-*`
+  scale is documented in `TOKENS.md`. The gap was discoverability.
+- ✅ **`cascivo add flex`/`box`/`hstack`/`vstack` → `layout/stack`** (bare `stack`
+  already resolved); `cascivo list` surfaces the Layouts group + a usage tip.
+- 📝 **`docs/cookbooks/layout-and-spacing.md`** maps the names you'd expect to the
+  ones that exist and replaces inline styles with primitives + `var(--cascivo-space-N)`.
+  Utility classes intentionally **not** shipped (no-utility-CSS principle) (v57 T5).
 </content>
 </invoke>

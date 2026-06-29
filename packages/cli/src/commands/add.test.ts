@@ -100,6 +100,13 @@ describe('resolveBareClosure (transitive registry dependencies)', () => {
     const { resolved } = resolveBareClosure(registry, ['stack'])
     expect(resolved.map((r) => r.entry.name)).toEqual(['layout/stack'])
   })
+
+  it('resolves naming aliases to the layout primitive (flex/box → layout/stack)', () => {
+    const registry = makeRegistry(comp('layout/stack'), comp('layout/spacer'))
+    expect(resolveBareClosure(registry, ['flex']).resolved[0]?.entry.name).toBe('layout/stack')
+    expect(resolveBareClosure(registry, ['box']).resolved[0]?.entry.name).toBe('layout/stack')
+    expect(resolveBareClosure(registry, ['gap']).resolved[0]?.entry.name).toBe('layout/spacer')
+  })
 })
 
 describe('resolveTemplateTarget', () => {

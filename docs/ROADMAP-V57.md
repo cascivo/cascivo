@@ -1,7 +1,12 @@
 # cascivo — Roadmap v57: Standalone-Install Integrity — Resolve the Package Graph, Deepen the Docs, Document the Tailwind Seam
 
 **Last updated:** 2026-06-29
-**Status:** 📋 Planned — analysis complete, tranches authored, not yet implemented.
+**Status:** ✅ Shipped — T1–T5 implemented across five commits: `cascivo add` now resolves internal registry
+dependencies (the `use-popover` blocker is gone) and a `deps:check` guard + clean-room smoke test keep it that way;
+prop-description coverage is 100% with a `docs:coverage` guard, Cmd+K search indexes props/variants/sizes + aliases,
+and a `/docs/api` reference shipped; `docs/USING-WITH-TAILWIND.md` + an opt-in `@cascivo/themes/tailwind.css` bridge
+document the Tailwind seam; and `cascivo add flex`→`layout/stack` aliases + `docs/cookbooks/layout-and-spacing.md`
+close the layout/spacing discoverability gap. See the implementation log at the end.
 **Plan documents:** `docs/superpowers/plans/2026-06-29-v57-master-plan.md` + tranches 1–5
 **Builds on:** the registry pipeline (`packages/registry/src/` — `types.ts` schema v2 already has
 `registryDependencies`, `validate.ts`, `build.ts`; `scripts/registry/generate.ts` — the manifest→`registry.json`
@@ -198,6 +203,45 @@ T1→T2; T3, T4, T5 parallelize.
 - The feedback file carries a maintainer resolution log; this roadmap is **✅ Shipped**.
 - `pnpm ready` green; `pnpm ready:ci` if the registry/build pipeline changed; `pnpm breakpoint:check` + the drift
   check clean; **no new runtime dependency**, **no new component**, **no utility-CSS layer**.
+
+---
+
+## Implementation log (2026-06-29)
+
+Shipped across five commits. No new runtime dependency, no new component, no utility-CSS layer (C-1/C-2 held).
+
+- **T1 — Registry dependency-graph resolution.** Added `registryDependencies?` to `ComponentMeta`
+  (`packages/core/src/types.ts`); widened `scripts/registry/generate.ts` `isSourceFile` to ship shared `.ts` source
+  (so `use-popover.ts` and same-dir helpers like `highlight.ts`/`encode.ts`/`standard-schema.ts` now ship) and emit
+  `registryDependencies`; declared the edge on `shell-header`/`side-nav`(+`tooltip`)/`multi-select`/`menu`/`hover-card`;
+  brought the CLI bare-name path (`add.ts`) to parity with the multi-registry resolver via a transitive, de-duped,
+  cycle-safe closure (`resolveBareClosure`) + preserved-in-`parseRegistry`. `cascivo add shell-header` now installs
+  the hook and builds standalone. **Closes M-1.**
+- **T2 — Standalone-install guard.** `scripts/registry/deps-graph.ts` (pure, tested) + `deps-check.ts` (static
+  import-graph audit) + `standalone-smoke.ts` (clean-room closure self-consistency), wired into `regen` + CI. The
+  audit surfaced **34** stragglers beyond popover (e.g. `button`→`spinner`, `data-table`→`button`/`checkbox`,
+  `field`→`label`, sections/blocks→layout primitives) — all declared; blocks that mis-listed `layout/*` under npm
+  `dependencies` corrected to `registryDependencies`. **Closes M-2.**
+- **T3 — Documentation depth.** Backfilled **all 1151** prop descriptions (common-prop map for universal names + a
+  per-component table for the specific 151), guarded by `docs:coverage` (CI). Extended `@cascivo/search` with a
+  `keywords` field and populated prop/variant/size terms + `flex`/`box`/`hstack`/`vstack`→`Stack` aliases in
+  `buildIndex.ts`; added the manifest-generated `/docs/api` reference page. Prop tables + search already existed (C-3);
+  this deepened them. **Closes M-3.**
+- **T4 — Tailwind v4 interop.** `docs/USING-WITH-TAILWIND.md` (layer order, dark-mode bridge, token map) + opt-in
+  `@cascivo/themes/tailwind.css` using `@custom-variant` (re-points Tailwind `dark:` at `[data-theme]`) and
+  `@theme inline` (`--cascivo-*`→`--color-*`); cross-linked from `COMPATIBILITY.md`/`THEMING.md`. No token-system
+  change, no Tailwind dependency. **Closes M-4.**
+- **T5 — Discoverability + wrap-up.** CLI `LAYOUT_ALIASES` (`flex`/`box`/`hstack`/`vstack`→`stack`, `gap`→`spacer`)
+  with a resolution notice; bare `stack`→`layout/stack` already worked via suffix match; `cascivo list` gained a
+  discovery tip. `docs/cookbooks/layout-and-spacing.md` maps expected names to the shipping primitives and replaces
+  inline styles with primitives + `var(--cascivo-space-N)` (no utilities — C-2). Appended the maintainer resolution
+  log to the feedback; flipped this roadmap to Shipped. **Closes M-5 / C-1 / C-2.**
+
+### Deferred to a follow-up
+
+- **Per-prop deep-link anchors in `/docs/api`** (filter is in place; row-level anchors are a follow-up).
+- **A TS-AST prop extractor** remains out of scope — manifests stay hand-authored; the `docs:coverage` guard keeps
+  them complete.
 
 ---
 
