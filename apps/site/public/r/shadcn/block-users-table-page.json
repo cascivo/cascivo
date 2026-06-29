@@ -10,7 +10,7 @@
     }
   ],
   "description": "Full users management page with table, search, and invite action.",
-  "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+  "dependencies": ["@cascivo/react"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

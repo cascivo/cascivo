@@ -47,6 +47,7 @@ export const meta: ComponentMeta = {
     { title: 'Grid', code: '<AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>' },
   ],
   dependencies: ['@cascivo/core', '@cascivo/components'],
+  registryDependencies: ['avatar'],
   tags: ['avatar', 'group', 'stack', 'overflow', 'display'],
   intent: {
     whenToUse: [

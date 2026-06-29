@@ -865,6 +865,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "registryDependencies": ["avatar"],
         "tags": ["avatar", "group", "stack", "overflow", "display"],
         "intent": {
           "whenToUse": [
@@ -1044,12 +1045,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
         }
       ],
-      "dependencies": [
-        "@cascivo/react",
-        "@cascivo/icons",
-        "layout/app-shell",
-        "layout/page-header"
-      ],
+      "dependencies": ["@cascivo/react", "@cascivo/icons"],
       "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
       "category": "display",
       "meta": {
@@ -1076,12 +1072,8 @@
           "keyboard": ["Escape", "Tab"]
         },
         "examples": [],
-        "dependencies": [
-          "@cascivo/react",
-          "@cascivo/icons",
-          "layout/app-shell",
-          "layout/page-header"
-        ],
+        "dependencies": ["@cascivo/react", "@cascivo/icons"],
+        "registryDependencies": ["layout/app-shell", "layout/page-header"],
         "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
         "intent": {
           "whenToUse": [
@@ -1140,6 +1132,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/charts", "@cascivo/react"],
+        "registryDependencies": ["layout/dashboard-layout"],
         "tags": ["block", "dashboard", "charts", "kpi"],
         "intent": {
           "whenToUse": [
@@ -1179,7 +1172,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "dashboard", "empty-state", "page"],
       "category": "display",
       "meta": {
@@ -1204,7 +1197,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/dashboard-layout"],
         "tags": ["block", "dashboard", "empty-state", "page"],
         "intent": {
           "whenToUse": [
@@ -1239,7 +1233,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/auth-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "login", "auth", "form", "page"],
       "category": "display",
       "meta": {
@@ -1264,7 +1258,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/auth-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/auth-layout"],
         "tags": ["block", "login", "auth", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -1299,7 +1294,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "notifications", "alerts"],
       "category": "display",
       "meta": {
@@ -1330,7 +1325,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/stack"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/stack"],
         "tags": ["block", "notifications", "alerts"],
         "intent": {
           "whenToUse": [
@@ -1365,7 +1361,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "breadcrumb", "page", "navigation"],
       "category": "display",
       "meta": {
@@ -1383,7 +1379,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/page-header", "layout/center"],
         "tags": ["block", "breadcrumb", "page", "navigation"],
         "intent": {
           "whenToUse": [
@@ -1418,7 +1415,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/settings-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "settings", "form", "page"],
       "category": "display",
       "meta": {
@@ -1443,7 +1440,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/settings-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/settings-layout"],
         "tags": ["block", "settings", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -1478,7 +1476,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/app-shell"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "sidebar", "navigation", "app-shell"],
       "category": "display",
       "meta": {
@@ -1496,7 +1494,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/app-shell"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/app-shell"],
         "tags": ["block", "sidebar", "navigation", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -1601,7 +1600,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
         }
       ],
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "users", "table", "page"],
       "category": "display",
       "meta": {
@@ -1632,7 +1631,8 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/page-header", "layout/stack"],
         "tags": ["block", "users", "table", "page"],
         "intent": {
           "whenToUse": [
@@ -2095,6 +2095,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["spinner"],
         "tags": ["action", "form", "interactive"],
         "intent": {
           "whenToUse": [
@@ -7281,6 +7282,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["kbd", "spinner"],
         "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
         "intent": {
           "whenToUse": [
@@ -8062,6 +8064,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["button", "checkbox"],
         "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
         "intent": {
           "whenToUse": [
@@ -8297,7 +8300,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["date", "range", "calendar", "picker", "input", "form"],
       "category": "inputs",
       "meta": {
@@ -8399,7 +8402,8 @@
           ]
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["calendar"],
         "tags": ["date", "range", "calendar", "picker", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -9573,6 +9577,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["label"],
         "tags": ["form", "layout", "validation", "accessibility"],
         "intent": {
           "whenToUse": [
@@ -9733,6 +9738,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["upload", "file", "drop", "drag", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -11948,6 +11954,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["loading", "status", "progress", "feedback", "spinner"],
         "intent": {
           "whenToUse": [
@@ -15510,6 +15517,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["dropdown"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"],
         "intent": {
           "whenToUse": [
@@ -16548,6 +16556,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
         "intent": {
           "whenToUse": [
@@ -17763,6 +17772,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/section"],
         "tags": ["section", "cta", "marketing"],
         "intent": {
           "whenToUse": [
@@ -17867,6 +17877,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/auto-grid", "layout/section"],
         "tags": ["section", "features", "grid"],
         "intent": {
           "whenToUse": [
@@ -17981,6 +17992,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/section"],
         "tags": ["section", "hero", "marketing"],
         "intent": {
           "whenToUse": [
@@ -18088,6 +18100,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/masonry", "layout/section"],
         "tags": ["section", "gallery", "masonry"],
         "intent": {
           "whenToUse": [
@@ -18172,6 +18185,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/auto-grid"],
         "tags": ["section", "footer", "navigation"],
         "intent": {
           "whenToUse": [
@@ -18251,6 +18265,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/charts"],
+        "registryDependencies": ["layout/auto-grid"],
         "tags": ["section", "stats", "kpi", "charts"],
         "intent": {
           "whenToUse": [
@@ -22265,6 +22280,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "registryDependencies": ["avatar"],
         "tags": ["user", "avatar", "identity", "display"],
         "intent": {
           "whenToUse": [

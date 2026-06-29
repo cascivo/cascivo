@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/settings-layout"],
+  "dependencies": ["@cascivo/react"],
   "tags": ["block", "settings", "form", "page"],
   "category": "display",
   "meta": {
@@ -40,7 +40,8 @@
         "description": "Settings form page"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/settings-layout"],
+    "dependencies": ["@cascivo/react"],
+    "registryDependencies": ["layout/settings-layout"],
     "tags": ["block", "settings", "form", "page"],
     "intent": {
       "whenToUse": [

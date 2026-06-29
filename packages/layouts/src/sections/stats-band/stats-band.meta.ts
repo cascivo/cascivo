@@ -51,6 +51,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/charts'],
+  registryDependencies: ['layout/auto-grid'],
   tags: ['section', 'stats', 'kpi', 'charts'],
   intent: {
     whenToUse: [

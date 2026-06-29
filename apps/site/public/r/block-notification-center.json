@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/stack"],
+  "dependencies": ["@cascivo/react"],
   "tags": ["block", "notifications", "alerts"],
   "category": "display",
   "meta": {
@@ -46,7 +46,8 @@
         "description": "Notification center"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/stack"],
+    "dependencies": ["@cascivo/react"],
+    "registryDependencies": ["layout/stack"],
     "tags": ["block", "notifications", "alerts"],
     "intent": {
       "whenToUse": [

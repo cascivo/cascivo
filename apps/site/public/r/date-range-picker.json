@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["date", "range", "calendar", "picker", "input", "form"],
   "category": "inputs",
   "meta": {
@@ -130,7 +130,8 @@
         "description": "Limits the selectable dates"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["calendar"],
     "tags": ["date", "range", "calendar", "picker", "input", "form"],
     "intent": {
       "whenToUse": [

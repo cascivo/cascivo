@@ -41,6 +41,7 @@ export const meta: ComponentMeta = {
     { title: 'Error', code: '<InlineLoading status="error" label="Save failed" />' },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['spinner'],
   tags: ['loading', 'status', 'progress', 'feedback', 'spinner'],
   intent: {
     whenToUse: [

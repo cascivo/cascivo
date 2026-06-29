@@ -75,6 +75,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['spinner'],
   tags: ['upload', 'file', 'drop', 'drag', 'input', 'form'],
   intent: {
     whenToUse: [

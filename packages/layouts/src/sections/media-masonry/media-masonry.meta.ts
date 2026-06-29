@@ -66,6 +66,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['layout/masonry', 'layout/section'],
   tags: ['section', 'gallery', 'masonry'],
   intent: {
     whenToUse: [

@@ -10,7 +10,7 @@
     }
   ],
   "description": "A list of notification alerts with a mark-all-read action.",
-  "dependencies": ["@cascivo/react", "layout/stack"],
+  "dependencies": ["@cascivo/react"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

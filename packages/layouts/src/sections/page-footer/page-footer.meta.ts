@@ -55,6 +55,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['layout/auto-grid'],
   tags: ['section', 'footer', 'navigation'],
   intent: {
     whenToUse: [

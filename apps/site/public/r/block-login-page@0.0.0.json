@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/auth-layout"],
+  "dependencies": ["@cascivo/react"],
   "tags": ["block", "login", "auth", "form", "page"],
   "category": "display",
   "meta": {
@@ -40,7 +40,8 @@
         "description": "Login page"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/auth-layout"],
+    "dependencies": ["@cascivo/react"],
+    "registryDependencies": ["layout/auth-layout"],
     "tags": ["block", "login", "auth", "form", "page"],
     "intent": {
       "whenToUse": [

@@ -18,7 +18,8 @@ export const meta: ComponentMeta = {
   tokens: [],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<LoginPage />', description: 'Login page' }],
-  dependencies: ['@cascivo/react', 'layout/auth-layout'],
+  dependencies: ['@cascivo/react'],
+  registryDependencies: ['layout/auth-layout'],
   tags: ['block', 'login', 'auth', 'form', 'page'],
   intent: {
     whenToUse: [

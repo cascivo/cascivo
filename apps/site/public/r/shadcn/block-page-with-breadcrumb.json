@@ -10,7 +10,7 @@
     }
   ],
   "description": "A centered content page with a breadcrumb navigation and page header.",
-  "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+  "dependencies": ["@cascivo/react"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

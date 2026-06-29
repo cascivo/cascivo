@@ -46,6 +46,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['label'],
   tags: ['form', 'layout', 'validation', 'accessibility'],
   intent: {
     whenToUse: [

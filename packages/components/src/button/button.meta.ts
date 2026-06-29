@@ -49,6 +49,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['spinner'],
   tags: ['action', 'form', 'interactive'],
   intent: {
     whenToUse: [

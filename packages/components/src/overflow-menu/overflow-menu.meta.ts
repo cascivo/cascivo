@@ -50,6 +50,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['dropdown'],
   tags: ['overlay', 'menu', 'actions', 'kebab', 'table'],
   intent: {
     whenToUse: [

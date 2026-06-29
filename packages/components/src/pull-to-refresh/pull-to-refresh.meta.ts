@@ -33,6 +33,7 @@ export const meta: ComponentMeta = {
   },
   examples: [],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['spinner'],
   tags: ['feedback', 'pull-to-refresh', 'mobile', 'gesture', 'scroll', 'refresh'],
   intent: {
     whenToUse: [

@@ -233,12 +233,7 @@
         }
       ],
       "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
-      "dependencies": [
-        "@cascivo/react",
-        "@cascivo/icons",
-        "layout/app-shell",
-        "layout/page-header"
-      ],
+      "dependencies": ["@cascivo/react", "@cascivo/icons"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -278,7 +273,7 @@
         }
       ],
       "description": "Dashboard page showing an empty state with a call-to-action button.",
-      "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -298,7 +293,7 @@
         }
       ],
       "description": "Authentication login page with email and password form.",
-      "dependencies": ["@cascivo/react", "layout/auth-layout"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -318,7 +313,7 @@
         }
       ],
       "description": "A list of notification alerts with a mark-all-read action.",
-      "dependencies": ["@cascivo/react", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -338,7 +333,7 @@
         }
       ],
       "description": "A centered content page with a breadcrumb navigation and page header.",
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -358,7 +353,7 @@
         }
       ],
       "description": "Settings page with profile form inside a two-column settings layout.",
-      "dependencies": ["@cascivo/react", "layout/settings-layout"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -378,7 +373,7 @@
         }
       ],
       "description": "Full app shell with collapsible side navigation and top header.",
-      "dependencies": ["@cascivo/react", "layout/app-shell"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -418,7 +413,7 @@
         }
       ],
       "description": "Full users management page with table, search, and invite action.",
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "categories": ["display"],
       "meta": {
         "cascivo": {
@@ -1400,7 +1395,7 @@
         }
       ],
       "description": "A dual-calendar picker for selecting a contiguous date range.",
-      "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["inputs"],
       "meta": {
         "cascivo": {

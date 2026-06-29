@@ -113,6 +113,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['button', 'checkbox'],
   tags: ['table', 'data', 'grid', 'sort', 'filter', 'pagination', 'selection'],
   intent: {
     whenToUse: [

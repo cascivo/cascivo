@@ -44,6 +44,12 @@ jobs:
       - name: Demo storage-key collision check
         run: pnpm run demos:storage:check
 
+      - name: Standalone-install integrity (deps graph)
+        run: |
+          pnpm run deps:check:test
+          pnpm run deps:check
+          pnpm run deps:smoke
+
       - name: Story audit (orphan stories)
         run: pnpm run audit:stories
 

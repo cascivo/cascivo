@@ -71,6 +71,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['layout/auto-grid', 'layout/section'],
   tags: ['section', 'features', 'grid'],
   intent: {
     whenToUse: [

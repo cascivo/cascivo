@@ -40,6 +40,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/components'],
+  registryDependencies: ['avatar'],
   tags: ['user', 'avatar', 'identity', 'display'],
   intent: {
     whenToUse: [

@@ -66,6 +66,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['kbd', 'spinner'],
   tags: ['overlay', 'command', 'palette', 'search', 'cmdk', 'keyboard'],
   intent: {
     whenToUse: [

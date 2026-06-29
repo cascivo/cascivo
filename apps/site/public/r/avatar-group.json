@@ -79,6 +79,7 @@
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/components"],
+    "registryDependencies": ["avatar"],
     "tags": ["avatar", "group", "stack", "overflow", "display"],
     "intent": {
       "whenToUse": [

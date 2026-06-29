@@ -888,6 +888,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "registryDependencies": ["avatar"],
         "tags": ["avatar", "group", "stack", "overflow", "display"],
         "intent": {
           "whenToUse": [
@@ -932,7 +933,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["avatar"]
     },
     {
       "name": "badge",
@@ -1518,6 +1520,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["spinner"],
         "tags": ["action", "form", "interactive"],
         "intent": {
           "whenToUse": [
@@ -1565,7 +1568,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["spinner"]
     },
     {
       "name": "button-group",
@@ -3242,6 +3246,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["kbd", "spinner"],
         "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
         "intent": {
           "whenToUse": [
@@ -3304,7 +3309,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["kbd", "spinner"]
     },
     {
       "name": "comparison",
@@ -4047,6 +4053,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["button", "checkbox"],
         "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
         "intent": {
           "whenToUse": [
@@ -4091,7 +4098,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["button", "checkbox"]
     },
     {
       "name": "date-picker",
@@ -4289,7 +4297,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["date", "range", "calendar", "picker", "input", "form"],
       "meta": {
         "name": "DateRangePicker",
@@ -4406,7 +4414,8 @@
             "description": "Limits the selectable dates"
           }
         ],
-        "dependencies": ["@cascivo/core", "@cascivo/i18n", "Calendar"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["calendar"],
         "tags": ["date", "range", "calendar", "picker", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -4455,7 +4464,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["calendar"]
     },
     {
       "name": "dock",
@@ -5266,6 +5276,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["label"],
         "tags": ["form", "layout", "validation", "accessibility"],
         "intent": {
           "whenToUse": [
@@ -5318,7 +5329,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["label"]
     },
     {
       "name": "file-uploader",
@@ -5437,6 +5449,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["upload", "file", "drop", "drag", "input", "form"],
         "intent": {
           "whenToUse": [
@@ -5495,7 +5508,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["spinner"]
     },
     {
       "name": "filter",
@@ -6652,6 +6666,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["loading", "status", "progress", "feedback", "spinner"],
         "intent": {
           "whenToUse": [
@@ -6701,7 +6716,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["spinner"]
     },
     {
       "name": "input",
@@ -9170,6 +9186,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["dropdown"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"],
         "intent": {
           "whenToUse": [
@@ -9223,7 +9240,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["dropdown"]
     },
     {
       "name": "pagination",
@@ -10243,6 +10261,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
         "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
         "intent": {
           "whenToUse": [
@@ -10288,7 +10307,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["spinner"]
     },
     {
       "name": "qr-code",
@@ -15540,6 +15560,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "registryDependencies": ["avatar"],
         "tags": ["user", "avatar", "identity", "display"],
         "intent": {
           "whenToUse": [
@@ -15584,7 +15605,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["avatar"]
     },
     {
       "name": "visually-hidden",
@@ -16846,12 +16868,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
       ],
-      "dependencies": [
-        "@cascivo/react",
-        "@cascivo/icons",
-        "layout/app-shell",
-        "layout/page-header"
-      ],
+      "dependencies": ["@cascivo/react", "@cascivo/icons"],
       "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
       "meta": {
         "name": "ConsoleApp",
@@ -16883,12 +16900,8 @@
             "description": "Full console shell demo"
           }
         ],
-        "dependencies": [
-          "@cascivo/react",
-          "@cascivo/icons",
-          "layout/app-shell",
-          "layout/page-header"
-        ],
+        "dependencies": ["@cascivo/react", "@cascivo/icons"],
+        "registryDependencies": ["layout/app-shell", "layout/page-header"],
         "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
         "intent": {
           "whenToUse": [
@@ -16915,7 +16928,8 @@
           "a11yRationale": "Provides header, navigation, and complementary landmarks for screen reader orientation.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/app-shell", "layout/page-header"]
     },
     {
       "name": "block/dashboard-charts",
@@ -16950,6 +16964,7 @@
           }
         ],
         "dependencies": ["@cascivo/charts", "@cascivo/react"],
+        "registryDependencies": ["layout/dashboard-layout"],
         "tags": ["block", "dashboard", "charts", "kpi"],
         "intent": {
           "whenToUse": [
@@ -16976,7 +16991,8 @@
           "a11yRationale": "Charts within render with role=\"img\" and titled labels for screen readers.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/dashboard-layout"]
     },
     {
       "name": "block/empty-dashboard",
@@ -16987,7 +17003,7 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
       ],
-      "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "dashboard", "empty-state", "page"],
       "meta": {
         "name": "EmptyDashboard",
@@ -17017,7 +17033,8 @@
             "description": "Empty dashboard"
           }
         ],
-        "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/dashboard-layout"],
         "tags": ["block", "dashboard", "empty-state", "page"],
         "intent": {
           "whenToUse": [
@@ -17039,7 +17056,8 @@
           "a11yRationale": "Provides a main landmark with a clear heading and actionable CTA.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/dashboard-layout"]
     },
     {
       "name": "block/login-page",
@@ -17050,7 +17068,7 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
       ],
-      "dependencies": ["@cascivo/react", "layout/auth-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "login", "auth", "form", "page"],
       "meta": {
         "name": "LoginPage",
@@ -17080,7 +17098,8 @@
             "description": "Login page"
           }
         ],
-        "dependencies": ["@cascivo/react", "layout/auth-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/auth-layout"],
         "tags": ["block", "login", "auth", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -17102,7 +17121,8 @@
           "a11yRationale": "Form fields are labeled and validation messages are associated for screen readers.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/auth-layout"]
     },
     {
       "name": "block/notification-center",
@@ -17113,7 +17133,7 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
       ],
-      "dependencies": ["@cascivo/react", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "notifications", "alerts"],
       "meta": {
         "name": "NotificationCenter",
@@ -17149,7 +17169,8 @@
             "description": "Notification center"
           }
         ],
-        "dependencies": ["@cascivo/react", "layout/stack"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/stack"],
         "tags": ["block", "notifications", "alerts"],
         "intent": {
           "whenToUse": [
@@ -17171,7 +17192,8 @@
           "a11yRationale": "Notification items use alert semantics so screen readers announce new entries.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/stack"]
     },
     {
       "name": "block/page-with-breadcrumb",
@@ -17182,7 +17204,7 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
       ],
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "breadcrumb", "page", "navigation"],
       "meta": {
         "name": "PageWithBreadcrumb",
@@ -17205,7 +17227,8 @@
             "description": "Page with breadcrumb"
           }
         ],
-        "dependencies": ["@cascivo/react", "layout/page-header", "layout/center"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/page-header", "layout/center"],
         "tags": ["block", "breadcrumb", "page", "navigation"],
         "intent": {
           "whenToUse": [
@@ -17227,7 +17250,8 @@
           "a11yRationale": "Breadcrumb renders as a labeled navigation region for screen reader orientation.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/page-header", "layout/center"]
     },
     {
       "name": "block/settings-form-page",
@@ -17238,7 +17262,7 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
       ],
-      "dependencies": ["@cascivo/react", "layout/settings-layout"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "settings", "form", "page"],
       "meta": {
         "name": "SettingsFormPage",
@@ -17268,7 +17292,8 @@
             "description": "Settings form page"
           }
         ],
-        "dependencies": ["@cascivo/react", "layout/settings-layout"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/settings-layout"],
         "tags": ["block", "settings", "form", "page"],
         "intent": {
           "whenToUse": [
@@ -17290,7 +17315,8 @@
           "a11yRationale": "Form fields are labeled and validation messages are associated for screen readers.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/settings-layout"]
     },
     {
       "name": "block/sidebar-app",
@@ -17301,7 +17327,7 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
       ],
-      "dependencies": ["@cascivo/react", "layout/app-shell"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "sidebar", "navigation", "app-shell"],
       "meta": {
         "name": "SidebarApp",
@@ -17324,7 +17350,8 @@
             "description": "App with sidebar navigation"
           }
         ],
-        "dependencies": ["@cascivo/react", "layout/app-shell"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/app-shell"],
         "tags": ["block", "sidebar", "navigation", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -17351,7 +17378,8 @@
           "a11yRationale": "Provides header and navigation landmarks for screen reader orientation.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/app-shell"]
     },
     {
       "name": "block/stats-cards",
@@ -17430,7 +17458,7 @@
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
       ],
-      "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+      "dependencies": ["@cascivo/react"],
       "tags": ["block", "users", "table", "page"],
       "meta": {
         "name": "UsersTablePage",
@@ -17466,7 +17494,8 @@
             "description": "Demo users table"
           }
         ],
-        "dependencies": ["@cascivo/react", "layout/page-header", "layout/stack"],
+        "dependencies": ["@cascivo/react"],
+        "registryDependencies": ["layout/page-header", "layout/stack"],
         "tags": ["block", "users", "table", "page"],
         "intent": {
           "whenToUse": [
@@ -17488,7 +17517,8 @@
           "a11yRationale": "Table uses proper row/column semantics and the search field is labeled.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/page-header", "layout/stack"]
     },
     {
       "name": "chart/area-chart",
@@ -21527,6 +21557,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/section"],
         "tags": ["section", "cta", "marketing"],
         "intent": {
           "whenToUse": [
@@ -21553,7 +21584,8 @@
           "a11yRationale": "Renders a section with a heading and clearly labeled action controls.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/section"]
     },
     {
       "name": "section/feature-grid",
@@ -21632,6 +21664,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/auto-grid", "layout/section"],
         "tags": ["section", "features", "grid"],
         "intent": {
           "whenToUse": [
@@ -21658,7 +21691,8 @@
           "a11yRationale": "Renders a section with an optional heading grouping the feature items.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/auto-grid", "layout/section"]
     },
     {
       "name": "section/hero",
@@ -21752,6 +21786,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/section"],
         "tags": ["section", "hero", "marketing"],
         "intent": {
           "whenToUse": [
@@ -21778,7 +21813,8 @@
           "a11yRationale": "Renders a section with the page-level heading as its primary landmark.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/section"]
     },
     {
       "name": "section/media-masonry",
@@ -21860,6 +21896,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/masonry", "layout/section"],
         "tags": ["section", "gallery", "masonry"],
         "intent": {
           "whenToUse": [
@@ -21881,7 +21918,8 @@
           "a11yRationale": "Renders a section shell; tiles supply their own accessible content.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/masonry", "layout/section"]
     },
     {
       "name": "section/page-footer",
@@ -21945,6 +21983,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["layout/auto-grid"],
         "tags": ["section", "footer", "navigation"],
         "intent": {
           "whenToUse": [
@@ -21966,7 +22005,8 @@
           "a11yRationale": "Renders a footer element wrapping a labeled Footer navigation region.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/auto-grid"]
     },
     {
       "name": "section/stats-band",
@@ -22025,6 +22065,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/charts"],
+        "registryDependencies": ["layout/auto-grid"],
         "tags": ["section", "stats", "kpi", "charts"],
         "intent": {
           "whenToUse": [
@@ -22051,7 +22092,8 @@
           "a11yRationale": "Has no visible heading; consumers must supply an aria-label for the band.",
           "flexibility": []
         }
-      }
+      },
+      "registryDependencies": ["layout/auto-grid"]
     },
     {
       "name": "flow/flow",

@@ -9,7 +9,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
     }
   ],
-  "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+  "dependencies": ["@cascivo/react"],
   "tags": ["block", "dashboard", "empty-state", "page"],
   "category": "display",
   "meta": {
@@ -40,7 +40,8 @@
         "description": "Empty dashboard"
       }
     ],
-    "dependencies": ["@cascivo/react", "layout/dashboard-layout"],
+    "dependencies": ["@cascivo/react"],
+    "registryDependencies": ["layout/dashboard-layout"],
     "tags": ["block", "dashboard", "empty-state", "page"],
     "intent": {
       "whenToUse": [

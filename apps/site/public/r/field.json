@@ -91,6 +91,7 @@
       }
     ],
     "dependencies": ["@cascivo/core"],
+    "registryDependencies": ["label"],
     "tags": ["form", "layout", "validation", "accessibility"],
     "intent": {
       "whenToUse": [
