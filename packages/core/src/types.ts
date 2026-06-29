@@ -97,6 +97,14 @@ export interface ComponentMeta {
   accessibility: AccessibilityMeta
   examples: ExampleMeta[]
   dependencies: string[]
+  /**
+   * Other **registry** components this one needs at install time — shared hooks/
+   * utils or sibling components imported by relative path (e.g. a component that
+   * imports `../popover/use-popover` declares `['popover']`). The CLI installs
+   * these transitively so the component compiles standalone. Distinct from
+   * `dependencies` (npm packages).
+   */
+  registryDependencies?: string[]
   tags: string[]
   intent?: ComponentIntent
 }

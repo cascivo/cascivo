@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
     }
   ],
@@ -95,6 +98,7 @@
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["popover"],
     "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
     "intent": {
       "whenToUse": [

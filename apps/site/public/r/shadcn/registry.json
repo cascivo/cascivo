@@ -1051,6 +1051,10 @@
           "type": "registry:component"
         },
         {
+          "path": "checkbox-card/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "checkbox-card/checkbox-card.module.css",
           "type": "registry:component"
         }
@@ -1096,6 +1100,10 @@
       "files": [
         {
           "path": "code-snippet/code-snippet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "code-snippet/highlight.ts",
           "type": "registry:component"
         },
         {
@@ -1791,6 +1799,10 @@
           "type": "registry:component"
         },
         {
+          "path": "form/standard-schema.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "form/form.module.css",
           "type": "registry:component"
         }
@@ -1836,6 +1848,10 @@
       "files": [
         {
           "path": "header-panel/header-panel.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "header-panel/index.ts",
           "type": "registry:component"
         },
         {
@@ -2146,6 +2162,10 @@
       "files": [
         {
           "path": "layout-app-shell/app-shell.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-app-shell/shell-state.ts",
           "type": "registry:block"
         },
         {
@@ -2869,6 +2889,14 @@
           "type": "registry:component"
         },
         {
+          "path": "popover/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "popover/use-popover.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "popover/popover.module.css",
           "type": "registry:component"
         }
@@ -3037,6 +3065,10 @@
           "type": "registry:component"
         },
         {
+          "path": "qr-code/encode.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "qr-code/qr-code.module.css",
           "type": "registry:component"
         }
@@ -3105,6 +3137,10 @@
       "files": [
         {
           "path": "radio-card/radio-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "radio-card/index.ts",
           "type": "registry:component"
         },
         {
@@ -3492,6 +3528,10 @@
           "type": "registry:component"
         },
         {
+          "path": "shell-header/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "shell-header/shell-header.module.css",
           "type": "registry:component"
         }
@@ -3803,6 +3843,10 @@
           "type": "registry:component"
         },
         {
+          "path": "switcher/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "switcher/switcher.module.css",
           "type": "registry:component"
         }
@@ -4040,6 +4084,10 @@
       "files": [
         {
           "path": "toc/toc.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toc/use-toc-from-region.ts",
           "type": "registry:component"
         },
         {

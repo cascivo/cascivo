@@ -87,19 +87,29 @@ interface RegistryComponent {
   /** npm package to install instead of copying files (used for type: 'chart'). */
   install?: string
   dependencies: string[]
+  /** Other registry components this entry needs (shared hooks/utils, siblings). */
+  registryDependencies?: string[]
   tags: string[]
   /** Full component manifest — consumed by the MCP server and docs. */
   meta: ComponentMeta
 }
 
-/** Files that make up a copy-paste component, in a stable display order. */
+/**
+ * Files that make up a copy-paste component, in a stable display order.
+ * Includes `.tsx`, shared `.ts` source (hooks/utils a component imports, e.g.
+ * `use-popover.ts`), and `.module.css`. Excludes tests, manifests, stories, and
+ * ambient declarations.
+ */
 function isSourceFile(file: string): boolean {
-  if (file.endsWith('.test.tsx')) return false
-  return file.endsWith('.tsx') || file.endsWith('.module.css')
+  if (file.endsWith('.test.tsx') || file.endsWith('.test.ts')) return false
+  if (file.endsWith('.meta.ts') || file.endsWith('.d.ts')) return false
+  if (file.endsWith('.stories.tsx') || file.endsWith('.stories.ts')) return false
+  return file.endsWith('.tsx') || file.endsWith('.ts') || file.endsWith('.module.css')
 }
 
 function sortFiles(a: string, b: string): number {
-  const rank = (f: string) => (f.endsWith('.tsx') ? 0 : 1)
+  // .tsx (main) first, then shared .ts, then .module.css.
+  const rank = (f: string) => (f.endsWith('.tsx') ? 0 : f.endsWith('.module.css') ? 2 : 1)
   return rank(a) - rank(b) || a.localeCompare(b)
 }
 
@@ -143,6 +153,9 @@ async function buildEntry(
     dependencies: meta.dependencies,
     tags: meta.tags,
     meta,
+  }
+  if (meta.registryDependencies?.length) {
+    entry.registryDependencies = meta.registryDependencies
   }
   if (root.type === 'chart') {
     entry.install = '@cascivo/charts'

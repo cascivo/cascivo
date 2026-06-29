@@ -23,6 +23,7 @@ export const meta: ComponentMeta = {
   },
   examples: [],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['popover'],
   tags: ['overlay', 'hover', 'preview', 'floating'],
   intent: {
     whenToUse: [

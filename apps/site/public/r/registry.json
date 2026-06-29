@@ -6418,6 +6418,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.module.css"
         }
       ],
@@ -6632,6 +6635,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/highlight.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
@@ -10988,6 +10994,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/standard-schema.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.module.css"
         }
       ],
@@ -11204,6 +11213,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
@@ -11462,6 +11474,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["popover"],
         "tags": ["overlay", "hover", "preview", "floating"],
         "intent": {
           "whenToUse": [
@@ -12641,6 +12654,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/shell-state.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
@@ -14163,6 +14179,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["popover"],
         "tags": ["overlay", "menu", "dropdown", "floating"],
         "intent": {
           "whenToUse": [
@@ -14713,6 +14730,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover"],
         "tags": ["form", "select", "multi", "input", "popover"],
         "intent": {
           "whenToUse": [
@@ -15826,6 +15844,12 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/index.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/use-popover.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.module.css"
         }
       ],
@@ -16582,6 +16606,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/encode.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
         }
       ],
@@ -16941,6 +16968,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.module.css"
@@ -18708,6 +18738,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
         }
       ],
@@ -18788,6 +18821,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover"],
         "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -18956,6 +18990,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover", "tooltip"],
         "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
         "intent": {
           "whenToUse": [
@@ -20227,6 +20262,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
         }
       ],
@@ -21367,6 +21405,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/use-toc-from-region.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.module.css"

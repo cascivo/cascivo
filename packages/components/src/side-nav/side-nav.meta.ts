@@ -95,6 +95,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['popover', 'tooltip'],
   tags: ['navigation', 'sidebar', 'app-shell', 'collapsible'],
   intent: {
     whenToUse: [

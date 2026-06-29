@@ -37,6 +37,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['popover'],
   tags: ['form', 'select', 'multi', 'input', 'popover'],
   intent: {
     whenToUse: [

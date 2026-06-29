@@ -24,6 +24,7 @@ export const meta: ComponentMeta = {
   },
   examples: [],
   dependencies: ['@cascivo/core'],
+  registryDependencies: ['popover'],
   tags: ['overlay', 'menu', 'dropdown', 'floating'],
   intent: {
     whenToUse: [

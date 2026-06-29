@@ -2367,6 +2367,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.module.css"
       ],
       "dependencies": ["@cascivo/core"],
@@ -2593,6 +2594,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/highlight.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -5644,6 +5646,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/standard-schema.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.module.css"
       ],
       "dependencies": ["@cascivo/core"],
@@ -5870,6 +5873,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -6134,6 +6138,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["popover"],
         "tags": ["overlay", "hover", "preview", "floating"],
         "intent": {
           "whenToUse": [
@@ -6184,7 +6189,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["popover"]
     },
     {
       "name": "icon-button",
@@ -7806,6 +7812,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "registryDependencies": ["popover"],
         "tags": ["overlay", "menu", "dropdown", "floating"],
         "intent": {
           "whenToUse": [
@@ -7861,7 +7868,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["popover"]
     },
     {
       "name": "menu-button",
@@ -8362,6 +8370,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover"],
         "tags": ["form", "select", "multi", "input", "popover"],
         "intent": {
           "whenToUse": [
@@ -8421,7 +8430,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["popover"]
     },
     {
       "name": "native-select",
@@ -9503,6 +9513,8 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/index.ts",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/use-popover.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.module.css"
       ],
       "dependencies": ["@cascivo/core"],
@@ -10286,6 +10298,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/encode.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10666,6 +10679,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.module.css"
       ],
       "dependencies": ["@cascivo/core"],
@@ -11880,6 +11894,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -11964,6 +11979,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover"],
         "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
         "intent": {
           "whenToUse": [
@@ -12013,7 +12029,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["popover"]
     },
     {
       "name": "side-nav",
@@ -12146,6 +12163,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["popover", "tooltip"],
         "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
         "intent": {
           "whenToUse": [
@@ -12185,7 +12203,8 @@
             }
           ]
         }
-      }
+      },
+      "registryDependencies": ["popover", "tooltip"]
     },
     {
       "name": "skeleton",
@@ -13474,6 +13493,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/index.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -14634,6 +14654,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/use-toc-from-region.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15663,6 +15684,7 @@
       "version": "0.0.0",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.tsx",
+        "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/shell-state.ts",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
       ],
       "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
