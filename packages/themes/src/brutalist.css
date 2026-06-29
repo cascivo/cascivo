@@ -54,7 +54,10 @@
 
     /* ── Destructive ──────────────────────────────────── */
     --cascivo-color-destructive: oklch(0.52 0.22 22);
-    --cascivo-color-destructive-hover: oklch(0.46 0.23 22);
+    --cascivo-color-destructive-hover: oklch(0.46 0.23 22); /* static fallback */
+    --cascivo-color-destructive-hover: oklch(
+      from var(--cascivo-color-destructive) 0.46 0.23 h
+    ); /* derived */
     --cascivo-color-destructive-subtle: oklch(0.95 0.05 22);
 
     /* ── Semantic status colors ───────────────────────── */

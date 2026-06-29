@@ -40,8 +40,10 @@
     /* ── Accent — neon magenta ───────────────────────── */
     --cascivo-color-accent: oklch(0.7 0.25 330);
     --cascivo-color-accent-foreground: oklch(0.16 0.03 285);
-    --cascivo-color-accent-hover: oklch(0.76 0.23 330);
-    --cascivo-color-accent-active: oklch(0.82 0.2 330);
+    --cascivo-color-accent-hover: oklch(0.76 0.23 330); /* static fallback */
+    --cascivo-color-accent-hover: oklch(from var(--cascivo-color-accent) 0.76 0.23 h); /* derived */
+    --cascivo-color-accent-active: oklch(0.82 0.2 330); /* static fallback */
+    --cascivo-color-accent-active: oklch(from var(--cascivo-color-accent) 0.82 0.2 h); /* derived */
     --cascivo-color-accent-subtle: oklch(0.7 0.25 330 / 0.12);
     --cascivo-color-accent-muted: oklch(0.7 0.25 330 / 0.22);
 
@@ -54,7 +56,10 @@
 
     /* ── Destructive — neon red ───────────────────────── */
     --cascivo-color-destructive: oklch(0.65 0.25 18);
-    --cascivo-color-destructive-hover: oklch(0.72 0.22 18);
+    --cascivo-color-destructive-hover: oklch(0.72 0.22 18); /* static fallback */
+    --cascivo-color-destructive-hover: oklch(
+      from var(--cascivo-color-destructive) 0.72 0.22 h
+    ); /* derived */
     --cascivo-color-destructive-subtle: oklch(0.65 0.25 18 / 0.12);
 
     /* ── Semantic status colors ───────────────────────── */

@@ -1293,55 +1293,55 @@
     },
     {
       "name": "--cascivo-duration-75",
-      "value": "0.01ms",
+      "value": "75ms",
       "layer": "primitive",
       "group": "duration",
-      "resolvedDefault": "0.01ms",
+      "resolvedDefault": "75ms",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-duration-100",
-      "value": "0.01ms",
+      "value": "100ms",
       "layer": "primitive",
       "group": "duration",
-      "resolvedDefault": "0.01ms",
+      "resolvedDefault": "100ms",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-duration-150",
-      "value": "0.01ms",
+      "value": "150ms",
       "layer": "primitive",
       "group": "duration",
-      "resolvedDefault": "0.01ms",
+      "resolvedDefault": "150ms",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-duration-200",
-      "value": "0.01ms",
+      "value": "200ms",
       "layer": "primitive",
       "group": "duration",
-      "resolvedDefault": "0.01ms",
+      "resolvedDefault": "200ms",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-duration-300",
-      "value": "0.01ms",
+      "value": "300ms",
       "layer": "primitive",
       "group": "duration",
-      "resolvedDefault": "0.01ms",
+      "resolvedDefault": "300ms",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-duration-500",
-      "value": "0.01ms",
+      "value": "500ms",
       "layer": "primitive",
       "group": "duration",
-      "resolvedDefault": "0.01ms",
+      "resolvedDefault": "500ms",
       "resolvesPerTheme": false,
       "canonical": true
     },

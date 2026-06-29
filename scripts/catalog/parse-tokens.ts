@@ -107,7 +107,11 @@ export function extractDeclarations(css: string): Map<string, string> {
   while ((m = re.exec(css)) !== null) {
     const name = m[1]!.trim()
     const value = m[2]!.trim().replace(/\s+/g, ' ')
-    if (name.startsWith('--cascivo-')) {
+    // First declaration per name wins. Where a token is declared twice in one
+    // block (a static fallback followed by a progressive `oklch(from …)` /
+    // `contrast-color()` form), this captures the static literal — so the
+    // catalog and variant matrix resolve to a concrete value, not an expression.
+    if (name.startsWith('--cascivo-') && !result.has(name)) {
       result.set(name, value)
     }
   }

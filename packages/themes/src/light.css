@@ -44,7 +44,8 @@
        white (was 3.55:1). Hover darkened to stay below the new base. */
     --cascivo-color-accent: oklch(0.52 0.2 250);
     --cascivo-color-accent-foreground: oklch(1 0 0);
-    --cascivo-color-accent-hover: oklch(0.45 0.2 250);
+    --cascivo-color-accent-hover: oklch(0.45 0.2 250); /* static fallback */
+    --cascivo-color-accent-hover: oklch(from var(--cascivo-color-accent) 0.45 0.2 h); /* derived */
     --cascivo-color-accent-active: var(--cascivo-blue-800);
     --cascivo-color-accent-subtle: var(--cascivo-blue-50);
     --cascivo-color-accent-muted: var(--cascivo-blue-100);

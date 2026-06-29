@@ -30,6 +30,8 @@
   ],
   "exports": {
     ".": "./src/index.css",
+    "./properties": "./src/properties.css",
+    "./properties.css": "./src/properties.css",
     "./functions": "./src/functions.css",
     "./functions.css": "./src/functions.css",
     "./screens": "./src/screens.ts",

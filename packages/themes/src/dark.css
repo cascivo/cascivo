@@ -41,14 +41,23 @@
     /* ── Accent ───────────────────────────────────────── */
     --cascivo-color-accent: oklch(0.65 0.2 250);
     --cascivo-color-accent-foreground: oklch(0.145 0.005 250);
-    --cascivo-color-accent-hover: oklch(0.707 0.18 250);
-    --cascivo-color-accent-active: oklch(0.808 0.14 250);
+    --cascivo-color-accent-hover: oklch(0.707 0.18 250); /* static fallback */
+    --cascivo-color-accent-hover: oklch(
+      from var(--cascivo-color-accent) 0.707 0.18 h
+    ); /* derived */
+    --cascivo-color-accent-active: oklch(0.808 0.14 250); /* static fallback */
+    --cascivo-color-accent-active: oklch(
+      from var(--cascivo-color-accent) 0.808 0.14 h
+    ); /* derived */
     --cascivo-color-accent-subtle: oklch(0.623 0.214 250 / 0.1);
     --cascivo-color-accent-muted: oklch(0.623 0.214 250 / 0.2);
 
     /* ── Destructive ──────────────────────────────────── */
     --cascivo-color-destructive: oklch(0.72 0.16 22);
-    --cascivo-color-destructive-hover: oklch(0.628 0.188 22);
+    --cascivo-color-destructive-hover: oklch(0.628 0.188 22); /* static fallback */
+    --cascivo-color-destructive-hover: oklch(
+      from var(--cascivo-color-destructive) 0.628 0.188 h
+    ); /* derived */
     --cascivo-color-destructive-subtle: oklch(0.628 0.188 22 / 0.1);
 
     /* ── Semantic status colors ───────────────────────── */

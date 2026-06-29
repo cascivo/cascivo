@@ -40,8 +40,12 @@
     /* ── Accent — bright phosphor green ──────────────── */
     --cascivo-color-accent: oklch(0.82 0.2 145);
     --cascivo-color-accent-foreground: oklch(0.17 0.01 150);
-    --cascivo-color-accent-hover: oklch(0.88 0.18 145);
-    --cascivo-color-accent-active: oklch(0.92 0.15 145);
+    --cascivo-color-accent-hover: oklch(0.88 0.18 145); /* static fallback */
+    --cascivo-color-accent-hover: oklch(from var(--cascivo-color-accent) 0.88 0.18 h); /* derived */
+    --cascivo-color-accent-active: oklch(0.92 0.15 145); /* static fallback */
+    --cascivo-color-accent-active: oklch(
+      from var(--cascivo-color-accent) 0.92 0.15 h
+    ); /* derived */
     --cascivo-color-accent-subtle: oklch(0.82 0.2 145 / 0.1);
     --cascivo-color-accent-muted: oklch(0.82 0.2 145 / 0.2);
 
@@ -54,7 +58,10 @@
 
     /* ── Destructive — red on dark green bg ───────────── */
     --cascivo-color-destructive: oklch(0.72 0.16 22);
-    --cascivo-color-destructive-hover: oklch(0.78 0.14 22);
+    --cascivo-color-destructive-hover: oklch(0.78 0.14 22); /* static fallback */
+    --cascivo-color-destructive-hover: oklch(
+      from var(--cascivo-color-destructive) 0.78 0.14 h
+    ); /* derived */
     --cascivo-color-destructive-subtle: oklch(0.72 0.16 22 / 0.1);
 
     /* ── Semantic status colors ───────────────────────── */
