@@ -38,7 +38,7 @@ jobs:
       - name: Build marketplace catalog
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm exec tsx scripts/registry/build-marketplace.ts
+        run: node scripts/registry/build-marketplace.ts
 
       - name: Commit catalog if changed
         run: |
