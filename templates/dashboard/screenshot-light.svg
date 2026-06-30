@@ -1,7 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="dashboard template preview">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Analytics dashboard with KPI cards and a recent-activity table">
   <rect width="1280" height="720" fill="#f9fafb"/>
-  <rect x="0" y="0" width="1280" height="64" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="40" y="40" font-family="system-ui, sans-serif" font-size="22" fill="#111827">cascivo — dashboard template</text>
-  <rect x="40" y="104" width="1200" height="560" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="640" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#6b7280">dashboard preview</text>
+  <g font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+    <!-- header -->
+    <text x="40" y="62" font-size="30" font-weight="700" fill="#111827">Overview</text>
+    <text x="40" y="90" font-size="15" fill="#6b7280">Last 30 days</text>
+
+    <!-- KPI cards -->
+    <g>
+      <rect x="40" y="120" width="285" height="110" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+      <text x="60" y="150" font-size="13" fill="#6b7280">Revenue</text>
+      <text x="60" y="188" font-size="28" font-weight="700" fill="#111827">$48.2k</text>
+      <text x="60" y="214" font-size="13" font-weight="600" fill="#16a34a">▲ 12.5%</text>
+
+      <rect x="345" y="120" width="285" height="110" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+      <text x="365" y="150" font-size="13" fill="#6b7280">Active users</text>
+      <text x="365" y="188" font-size="28" font-weight="700" fill="#111827">3,210</text>
+      <text x="365" y="214" font-size="13" font-weight="600" fill="#16a34a">▲ 4.1%</text>
+
+      <rect x="650" y="120" width="285" height="110" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+      <text x="670" y="150" font-size="13" fill="#6b7280">Churn</text>
+      <text x="670" y="188" font-size="28" font-weight="700" fill="#111827">1.8%</text>
+      <text x="670" y="214" font-size="13" font-weight="600" fill="#dc2626">▼ 0.6%</text>
+
+      <rect x="955" y="120" width="285" height="110" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+      <text x="975" y="150" font-size="13" fill="#6b7280">Sessions</text>
+      <text x="975" y="188" font-size="28" font-weight="700" fill="#111827">12.4k</text>
+      <text x="975" y="214" font-size="13" font-weight="600" fill="#16a34a">▲ 8.9%</text>
+    </g>
+
+    <!-- chart card -->
+    <rect x="40" y="250" width="1200" height="190" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+    <text x="60" y="282" font-size="15" font-weight="600" fill="#111827">Trend</text>
+    <polyline fill="none" stroke="#2563eb" stroke-width="3"
+      points="60,400 200,372 340,388 480,330 620,348 760,300 900,318 1040,262 1180,288"/>
+    <polygon fill="#2563eb" opacity="0.08"
+      points="60,400 200,372 340,388 480,330 620,348 760,300 900,318 1040,262 1180,288 1180,420 60,420"/>
+
+    <!-- activity table -->
+    <rect x="40" y="460" width="1200" height="232" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
+    <text x="60" y="492" font-size="15" font-weight="600" fill="#111827">Recent activity</text>
+    <text x="60" y="528" font-size="12" font-weight="600" fill="#9ca3af">WHEN</text>
+    <text x="320" y="528" font-size="12" font-weight="600" fill="#9ca3af">USER</text>
+    <text x="700" y="528" font-size="12" font-weight="600" fill="#9ca3af">ACTION</text>
+    <line x1="60" y1="540" x2="1220" y2="540" stroke="#e5e7eb"/>
+    <g font-size="14" fill="#374151">
+      <text x="60" y="572">2m ago</text><text x="320" y="572">amir@acme.io</text><text x="700" y="572">Deployed production</text>
+      <line x1="60" y1="586" x2="1220" y2="586" stroke="#f3f4f6"/>
+      <text x="60" y="614">18m ago</text><text x="320" y="614">jo@acme.io</text><text x="700" y="614">Invited a teammate</text>
+      <line x1="60" y1="628" x2="1220" y2="628" stroke="#f3f4f6"/>
+      <text x="60" y="656">1h ago</text><text x="320" y="656">sam@acme.io</text><text x="700" y="656">Updated billing plan</text>
+    </g>
+  </g>
 </svg>

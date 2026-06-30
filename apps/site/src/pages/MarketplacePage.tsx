@@ -225,13 +225,18 @@ function TemplateCard({ template: t }: { template: MarketplaceTemplate }) {
           alt={shot.alt}
           loading="lazy"
           style={{
-            inlineSize: '100%',
+            // Pull the banner out to the card's edges (the Card's default `md`
+            // padding would otherwise inset it); the card's overflow:hidden
+            // clips it to the rounded top corners.
+            marginBlockStart: 'calc(-1 * var(--cascivo-space-6))',
+            marginInline: 'calc(-1 * var(--cascivo-space-6))',
+            marginBlockEnd: 'var(--cascivo-space-2)',
+            inlineSize: 'calc(100% + 2 * var(--cascivo-space-6))',
             blockSize: 'auto',
             aspectRatio: '16 / 9',
             objectFit: 'cover',
             background: 'var(--cascivo-color-surface-raised)',
-            borderStartStartRadius: 'var(--cascivo-radius-md)',
-            borderStartEndRadius: 'var(--cascivo-radius-md)',
+            borderBlockEnd: '1px solid var(--cascivo-color-border)',
           }}
         />
       )}

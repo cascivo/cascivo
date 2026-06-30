@@ -1,7 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="landing template preview">
-  <rect width="1280" height="720" fill="#f9fafb"/>
-  <rect x="0" y="0" width="1280" height="64" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="40" y="40" font-family="system-ui, sans-serif" font-size="22" fill="#111827">cascivo — landing template</text>
-  <rect x="40" y="104" width="1200" height="560" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="640" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#6b7280">landing preview</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Landing page with a hero headline and a three-column feature grid">
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, sans-serif" text-anchor="middle">
+    <!-- hero -->
+    <text x="640" y="132" font-size="13" font-weight="700" letter-spacing="3" fill="#2563eb">INTRODUCING CASCIVO</text>
+    <text x="640" y="206" font-size="52" font-weight="800" fill="#111827">Ship beautiful UI, faster</text>
+    <text x="640" y="252" font-size="19" fill="#6b7280">The CSS-native, signal-driven, AI-first React design system.</text>
+    <rect x="540" y="288" width="200" height="50" rx="10" fill="#2563eb"/>
+    <text x="640" y="320" font-size="16" font-weight="600" fill="#ffffff">Get started</text>
+  </g>
+  <g font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+    <!-- feature grid -->
+    <rect x="40" y="420" width="384" height="220" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+    <rect x="60" y="446" width="40" height="40" rx="10" fill="#dbeafe"/>
+    <text x="60" y="528" font-size="20" font-weight="700" fill="#111827">Fast</text>
+    <text x="60" y="562" font-size="15" fill="#6b7280">Rolldown-powered builds and</text>
+    <text x="60" y="586" font-size="15" fill="#6b7280">zero-runtime styling.</text>
+
+    <rect x="448" y="420" width="384" height="220" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+    <rect x="468" y="446" width="40" height="40" rx="10" fill="#dcfce7"/>
+    <text x="468" y="528" font-size="20" font-weight="700" fill="#111827">Owned</text>
+    <text x="468" y="562" font-size="15" fill="#6b7280">Copy-paste components you</text>
+    <text x="468" y="586" font-size="15" fill="#6b7280">control — no lock-in.</text>
+
+    <rect x="856" y="420" width="384" height="220" rx="12" fill="#f9fafb" stroke="#e5e7eb"/>
+    <rect x="876" y="446" width="40" height="40" rx="10" fill="#fef3c7"/>
+    <text x="876" y="528" font-size="20" font-weight="700" fill="#111827">Beautiful</text>
+    <text x="876" y="562" font-size="15" fill="#6b7280">Themed by default, light</text>
+    <text x="876" y="586" font-size="15" fill="#6b7280">and dark out of the box.</text>
+  </g>
 </svg>

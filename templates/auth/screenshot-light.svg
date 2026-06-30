@@ -1,7 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="auth template preview">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Centered sign-in card with email and password fields">
   <rect width="1280" height="720" fill="#f9fafb"/>
-  <rect x="0" y="0" width="1280" height="64" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="40" y="40" font-family="system-ui, sans-serif" font-size="22" fill="#111827">cascivo — auth template</text>
-  <rect x="40" y="104" width="1200" height="560" rx="12" fill="#ffffff" stroke="#e5e7eb"/>
-  <text x="640" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="28" fill="#6b7280">auth preview</text>
+  <g font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+    <!-- card -->
+    <rect x="430" y="140" width="420" height="440" rx="16" fill="#ffffff" stroke="#e5e7eb"/>
+    <text x="462" y="208" font-size="28" font-weight="700" fill="#111827">Sign in</text>
+    <text x="462" y="240" font-size="15" fill="#6b7280">Welcome back — enter your details.</text>
+
+    <!-- email field -->
+    <text x="462" y="290" font-size="13" fill="#6b7280">Email</text>
+    <rect x="462" y="300" width="356" height="44" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+    <text x="478" y="328" font-size="14" fill="#9ca3af">you@example.com</text>
+
+    <!-- password field -->
+    <text x="462" y="380" font-size="13" fill="#6b7280">Password</text>
+    <rect x="462" y="390" width="356" height="44" rx="8" fill="#ffffff" stroke="#e5e7eb"/>
+    <text x="478" y="418" font-size="14" fill="#9ca3af">••••••••</text>
+
+    <!-- submit -->
+    <rect x="462" y="458" width="356" height="44" rx="8" fill="#2563eb"/>
+    <text x="640" y="486" text-anchor="middle" font-size="15" font-weight="600" fill="#ffffff">Sign in</text>
+
+    <!-- alt -->
+    <text x="640" y="540" text-anchor="middle" font-size="14" fill="#6b7280">No account? <tspan fill="#2563eb">Create one</tspan></text>
+  </g>
 </svg>
