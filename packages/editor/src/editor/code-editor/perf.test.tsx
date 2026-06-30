@@ -95,6 +95,46 @@ describe('CodeEditor performance', () => {
     expect(__tokenizeCount()).toBeLessThanOrEqual(budget)
   }, 30_000)
 
+  it('re-measures the viewport on resize so a grown editor fills new rows', () => {
+    stubLineHeight(20)
+    // jsdom has no ResizeObserver — install a controllable polyfill that lets the
+    // test fire the resize callback on demand (like packages/flow's measure test).
+    const observers: Array<() => void> = []
+    class MockResizeObserver {
+      constructor(cb: ResizeObserverCallback) {
+        observers.push(() => cb([], this as unknown as ResizeObserver))
+      }
+      observe(): void {}
+      disconnect(): void {}
+    }
+    vi.stubGlobal('ResizeObserver', MockResizeObserver)
+
+    const doc = Array.from({ length: 5000 }, (_, i) => `line ${i}`).join('\n')
+    const { container } = render(
+      <CodeEditor language="plaintext" defaultValue={doc} lineNumbers={false} />,
+    )
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+
+    // Start with a short viewport: the window is small.
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 200 })
+    act(() => {
+      fireEvent.scroll(ta)
+    })
+    const small = container.querySelectorAll('pre code > span').length
+
+    // Grow the editor WITHOUT scrolling. Only the ResizeObserver can refresh the
+    // viewport now; before this fix the window stayed sized to the old height and
+    // the new bottom rows rendered blank/un-highlighted.
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 1600 })
+    act(() => {
+      for (const fire of observers) fire()
+    })
+    const large = container.querySelectorAll('pre code > span').length
+
+    expect(large).toBeGreaterThan(small)
+  })
+
   it('renders every row (no windowing) when wrapping is on', () => {
     stubLineHeight(20)
     const doc = Array.from({ length: 1200 }, (_, i) => `line ${i}`).join('\n')

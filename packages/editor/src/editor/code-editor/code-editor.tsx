@@ -334,7 +334,11 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
       const lh = Number.parseFloat(getComputedStyle(ta).lineHeight)
       lineHeight.value = Number.isFinite(lh) && lh > 0 ? lh : 0
       viewport.value = ta.clientHeight
-      if (charWidth.value === 0) charWidth.value = measureCharWidth(ta)
+      // Re-measure (not just once): the line box height and glyph advance change
+      // when a web font loads or the host restyles, and a stale value drifts the
+      // windowed highlight layer off the textarea's native caret.
+      const cw = measureCharWidth(ta)
+      if (cw > 0) charWidth.value = cw
     }
     const syncScroll = (): void => {
       scrollTop.value = ta.scrollTop
@@ -365,7 +369,33 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     ta.addEventListener('click', syncCaret)
     ta.addEventListener('input', syncCaret)
     document.addEventListener('selectionchange', syncCaretIfActive)
+
+    // Re-measure when the editor is resized. `viewport` (clientHeight) and the
+    // windowing math depend on it, and the browser may clamp `scrollTop` on a
+    // resize — without this, growing the editor leaves the new bottom rows
+    // un-highlighted (the window is sized from a stale viewport).
+    let ro: ResizeObserver | undefined
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(() => {
+        measure()
+        syncScroll()
+      })
+      ro.observe(ta)
+    }
+    // Web fonts can resolve after mount, changing the line box height; re-measure
+    // once they're ready so the windowed layer realigns with the caret.
+    let disposed = false
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts
+    if (fonts?.ready) {
+      fonts.ready
+        .then(() => {
+          if (!disposed) measure()
+        })
+        .catch(() => {})
+    }
     return () => {
+      disposed = true
+      ro?.disconnect()
       ta.removeEventListener('scroll', syncScroll)
       ta.removeEventListener('keyup', syncCaret)
       ta.removeEventListener('click', syncCaret)
