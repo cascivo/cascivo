@@ -37,7 +37,12 @@ See master-plan **Decision 8** (perf guarded deterministically).
 
 The DOM is virtualized: above `VIRTUALIZE_THRESHOLD` (1,000 lines, and when `wrap` is
 off) only the visible slice of rows is rendered, with spacer padding to keep the scroll
-height. So **the DOM is not the bottleneck.**
+height. So **the DOM is not the bottleneck.** This holds from the **first paint** too:
+the textarea is measured in a post-paint effect, so until then the line height/viewport
+are unknown — the initial render falls back to a cheap top slice (`INITIAL_WINDOW_ROWS`)
+rather than committing every row, and the measurement narrows it to the real viewport on
+the next frame. Resizes and late web-font loads re-measure (via `ResizeObserver` and
+`document.fonts.ready`) so the windowed layer stays aligned with the textarea caret.
 
 Since v47, tokenization is windowed too. On every render `CodeEditor`:
 

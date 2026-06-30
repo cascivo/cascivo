@@ -2,7 +2,7 @@ import { act, fireEvent, render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { makeMarkdownDoc } from '../../engine/large-doc.fixture.ts'
 import { __resetTokenizeCount, __tokenizeCount, clearTokenizeCache } from '../../engine/tokenize.ts'
-import { CodeEditor, OVERSCAN } from './code-editor.tsx'
+import { CodeEditor, INITIAL_WINDOW_ROWS, OVERSCAN } from './code-editor.tsx'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -94,6 +94,24 @@ describe('CodeEditor performance', () => {
     // Bounded by the window; a re-tokenize-from-line-0 path would be ~4,000.
     expect(__tokenizeCount()).toBeLessThanOrEqual(budget)
   }, 30_000)
+
+  it('caps the first paint of a large document instead of rendering every row', () => {
+    // No getComputedStyle stub: line height stays unmeasured (jsdom has no layout),
+    // so this exercises the pre-measurement first-paint path — the mount that, before
+    // the cap, committed every row (a 50k-line freeze) because windowing waited on a
+    // measured line height that only arrives post-paint.
+    const N = 10000
+    const doc = Array.from({ length: N }, (_, i) => `line ${i}`).join('\n')
+    const { container } = render(
+      <CodeEditor language="plaintext" defaultValue={doc} lineNumbers={false} />,
+    )
+    const rows = container.querySelectorAll('pre code > span')
+    expect(rows.length).toBeGreaterThan(0)
+    expect(rows.length).toBeLessThanOrEqual(INITIAL_WINDOW_ROWS)
+    // The textarea still holds the entire document.
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    expect(ta.value.split('\n').length).toBe(N)
+  })
 
   it('re-measures the viewport on resize so a grown editor fills new rows', () => {
     stubLineHeight(20)

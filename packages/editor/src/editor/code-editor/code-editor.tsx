@@ -86,6 +86,15 @@ export interface CodeEditorHandle {
 export const VIRTUALIZE_THRESHOLD = 1000
 /** Extra rows rendered above/below the viewport so fast scrolls stay covered. */
 export const OVERSCAN = 12
+/**
+ * Rows rendered on the first paint of a windowed document, before the textarea has
+ * been measured (line height/viewport are unknown until the mount effect runs, which
+ * is post-paint). Bounds the initial render to a cheap top slice instead of the whole
+ * document — a 50k-line mount no longer commits 50k rows — while staying generous
+ * enough to fill any realistic viewport for the one frame until the real window is
+ * measured. Top-anchored because a fresh mount starts at `scrollTop` 0.
+ */
+export const INITIAL_WINDOW_ROWS = 200
 
 export interface CodeEditorProps extends Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -504,14 +513,23 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   // without wrap-aware pixel virtualization (out of scope). Edits stay cheap: the
   // index/memo above re-tokenize only the changed suffix. Disable `wrap` for very
   // large docs if sustained editing matters (see PERFORMANCE.md).
-  const lh = lineHeight.value
-  const windowed = (virtualize ?? total > VIRTUALIZE_THRESHOLD) && !wrap && lh > 0
+  // `lineHeight` is 0 until the mount effect measures it (post-paint). Fall back to
+  // an estimate so a large document windows on its very first render instead of
+  // committing every row once; the measurement corrects it next frame.
+  const measured = lineHeight.value > 0
+  const lh = measured ? lineHeight.value : 20
+  const windowed = (virtualize ?? total > VIRTUALIZE_THRESHOLD) && !wrap
   let start = 0
   let end = total
   if (windowed) {
-    start = Math.max(0, Math.floor(scrollTop.value / lh) - OVERSCAN)
-    const visibleRows = Math.ceil(viewport.value / lh)
-    end = Math.min(total, start + visibleRows + OVERSCAN * 2)
+    if (measured) {
+      start = Math.max(0, Math.floor(scrollTop.value / lh) - OVERSCAN)
+      const visibleRows = Math.ceil(viewport.value / lh)
+      end = Math.min(total, start + visibleRows + OVERSCAN * 2)
+    } else {
+      // Pre-measurement first paint: a cheap top slice (mount is at scrollTop 0).
+      end = Math.min(total, INITIAL_WINDOW_ROWS)
+    }
   }
   // Tokenize ONLY the visible window: O(viewport) per render, not O(document).
   const rows = tokenizeRange(grammar, allLines, start, end, index)
