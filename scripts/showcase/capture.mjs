@@ -31,6 +31,7 @@ const SITES = [
   { slug: 'sharu', url: 'https://new.sharu.io' },
   { slug: 'aime', url: 'https://aime.directory' },
   { slug: 'kaihuman', url: 'https://kaihuman.com' },
+  { slug: 'lumen', url: 'https://thelumen.art' },
 ]
 
 const DESKTOP = { width: 1280, height: 800 }
