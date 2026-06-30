@@ -62,6 +62,18 @@ document from line 0. The index memoizes the grammar **end-state after each line
   the next render re-threads only from there until the state reconverges or the window
   bottom is reached.
 
+A **far scrollbar jump** to a region the index has not threaded yet is the one case that
+would otherwise require walking every intervening line at once (a freeze proportional to
+the jump distance). When the gap exceeds `WALK_BUDGET` lines the window paints
+*approximately* (seeded from the grammar's initial state) and a per-frame catch-up effect
+threads the prefix `WALK_BUDGET` lines per frame until it converges and the window turns
+exact — so a 50k-line slam costs a handful of bounded frames, never one long freeze. The
+highlight is only briefly approximate, and only if the jump lands inside an still-open
+multi-line construct (block comment, fence). During momentum/fling scrolling — where
+scroll events are throttled below frame rate — the scroll position is also resampled each
+frame so the windowed highlight (the only visible text; the textarea is transparent)
+stays pinned to the textarea instead of flashing blank.
+
 The per-line memo (`tokenize`, keyed `(grammar, startState, line)`) is now **unbounded**
 — the cliff-causing `MAX_CACHE = 5000` cap is removed. It no longer needs a cap because
 `tokenizeRange` only ever builds token arrays for the window, so the memo grows with the

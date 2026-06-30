@@ -19,7 +19,8 @@ import {
 } from 'react'
 import { getGrammar } from '../../engine/registry.ts'
 import { createLineStateIndex, type LineStateIndex } from '../../engine/line-state.ts'
-import { tokenizeRange } from '../../engine/tokenize.ts'
+import { tokenizeRange, tokenizeWindowFrom } from '../../engine/tokenize.ts'
+import type { Token } from '../../engine/types.ts'
 import '../../grammars/builtins.ts'
 import { Gutter, renderRows, type Decoration } from '../view.tsx'
 import hl from '../highlight/highlight.module.css'
@@ -95,6 +96,14 @@ export const OVERSCAN = 12
  * measured. Top-anchored because a fresh mount starts at `scrollTop` 0.
  */
 export const INITIAL_WINDOW_ROWS = 200
+/**
+ * Max lines the line-state index threads per frame while catching up to a window
+ * the user jumped to (scrollbar slam) far ahead of the threaded prefix. Bounds the
+ * per-frame work so the jump never freezes; the window paints approximately until
+ * the index converges over the next few frames. Large enough to converge quickly
+ * (a 50k jump in ~25 frames), small enough that one chunk stays well under a frame.
+ */
+export const WALK_BUDGET = 2000
 
 export interface CodeEditorProps extends Omit<
   TextareaHTMLAttributes<HTMLTextAreaElement>,
@@ -189,6 +198,9 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   const preRef = useRef<HTMLPreElement>(null)
   const gutterRef = useRef<HTMLDivElement>(null)
   const taRef = useRef<HTMLTextAreaElement>(null)
+  // Latest split lines, shared with the catch-up effect (which threads grammar
+  // state toward a far-jumped window) so it never re-splits the document.
+  const linesRef = useRef<string[]>([])
 
   // Owned undo/redo history (survives programmatic `value` writes, unlike native
   // textarea undo). Seeded once with the initial state.
@@ -279,6 +291,11 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
 
   // Live caret offset (reactive, drives bracket matching).
   const caretOffset = useSignal(0)
+
+  // Bumped by the chunked catch-up effect after a far scrollbar jump, so the render
+  // re-evaluates the window as the line-state index threads up to it (index.length
+  // is a plain read, not reactive — this is what makes progress repaint).
+  const catchupTick = useSignal(0)
 
   // ── Slash commands ───────────────────────────────────────────────────────────
   // Menu state lives in signals (the signal IS the state — no FSM, since the open
@@ -371,9 +388,32 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     const syncCaretIfActive = (): void => {
       if (document.activeElement === ta) syncCaret()
     }
+    // Scroll events can lag the compositor during momentum/fling scrolling (they're
+    // throttled below frame rate), which would leave the windowed highlight — the
+    // only visible text, since the textarea is transparent — briefly blank. So after
+    // each scroll event, sample the real scroll position every frame until it settles,
+    // keeping the highlight window pinned to where the textarea actually is.
+    let frameId = 0
+    let lastTop = -1
+    const sampleFrame = (): void => {
+      syncScroll()
+      if (ta.scrollTop !== lastTop) {
+        lastTop = ta.scrollTop
+        frameId = requestAnimationFrame(sampleFrame)
+      } else {
+        frameId = 0 // settled — stop sampling until the next scroll
+      }
+    }
+    const onScroll = (): void => {
+      syncScroll() // immediate: no lag for a single discrete scroll
+      if (frameId === 0 && typeof requestAnimationFrame === 'function') {
+        lastTop = -1 // force at least one more sampled frame
+        frameId = requestAnimationFrame(sampleFrame)
+      }
+    }
     measure()
     syncCaret()
-    ta.addEventListener('scroll', syncScroll)
+    ta.addEventListener('scroll', onScroll)
     ta.addEventListener('keyup', syncCaret)
     ta.addEventListener('click', syncCaret)
     ta.addEventListener('input', syncCaret)
@@ -404,8 +444,9 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     }
     return () => {
       disposed = true
+      if (frameId !== 0 && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(frameId)
       ro?.disconnect()
-      ta.removeEventListener('scroll', syncScroll)
+      ta.removeEventListener('scroll', onScroll)
       ta.removeEventListener('keyup', syncCaret)
       ta.removeEventListener('click', syncCaret)
       ta.removeEventListener('input', syncCaret)
@@ -486,6 +527,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
   // Split for the line COUNT only — no token arrays built for the whole document.
   const allLines = highlightText.value.split('\n')
   const total = allLines.length
+  linesRef.current = allLines
 
   // Keep the index consistent with the current text by invalidating only from the
   // FIRST CHANGED LINE (via v46's diff), not from line 0 — so an edit re-threads
@@ -532,9 +574,52 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     }
   }
   // Tokenize ONLY the visible window: O(viewport) per render, not O(document).
-  const rows = tokenizeRange(grammar, allLines, start, end, index)
+  // A scrollbar jump can leave the window ahead of the threaded line-state prefix.
+  // If the gap is small (≤ WALK_BUDGET) thread it synchronously now — bounded, so no
+  // freeze, and the window is exact immediately. If it's large, painting it exactly
+  // would mean walking thousands of lines on this frame (the freeze); instead paint
+  // approximately from the grammar's initial state and let the catch-up effect below
+  // thread the prefix over the next frames, re-rendering (via `catchupTick`) until it
+  // converges and this branch turns exact.
+  const gap = windowed && start > index.length ? start - index.length : 0
+  const reachable = !windowed || start === 0 || index.length >= start || gap <= WALK_BUDGET
+  let rows: Token[][]
+  if (reachable) {
+    rows = tokenizeRange(grammar, allLines, start, end, index)
+  } else {
+    void catchupTick.value
+    rows = tokenizeWindowFrom(grammar, allLines, start, end, grammar.initialState)
+  }
   const topPad = start * lh
   const bottomPad = (total - end) * lh
+
+  // Chunked catch-up after a far jump: thread the line-state prefix toward the
+  // window WALK_BUDGET lines per frame so a scrollbar slam converges over a few
+  // frames instead of freezing one. Re-runs as the viewport moves, the text changes
+  // (the index was invalidated), or a chunk completes; bumping `catchupTick` repaints
+  // the window with the freshly threaded prefix (exact once it arrives). Stops once
+  // the prefix reaches the window or the whole document is threaded.
+  useSignalEffect(() => {
+    void highlightText.value
+    void catchupTick.value
+    const lhNow = lineHeight.value
+    const lines = linesRef.current
+    const totalLines = lines.length
+    const on = (virtualize ?? totalLines > VIRTUALIZE_THRESHOLD) && !wrap && lhNow > 0
+    if (!on) return
+    const s = Math.max(0, Math.floor(scrollTop.value / lhNow) - OVERSCAN)
+    if (s === 0 || index.length >= s || index.length >= totalLines) return
+    const advance = (): void => {
+      index.ensure(lines, Math.min(s - 1, index.length + WALK_BUDGET))
+      catchupTick.value++
+    }
+    if (typeof requestAnimationFrame !== 'function') {
+      advance() // no rAF (SSR/test): thread synchronously rather than stall
+      return
+    }
+    const id = requestAnimationFrame(advance)
+    return () => cancelAnimationFrame(id)
+  })
 
   // ── Find / replace ──────────────────────────────────────────────────────────
   const matches: Match[] = findOpen.value

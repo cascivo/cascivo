@@ -2,7 +2,7 @@ import { act, fireEvent, render } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { makeMarkdownDoc } from '../../engine/large-doc.fixture.ts'
 import { __resetTokenizeCount, __tokenizeCount, clearTokenizeCache } from '../../engine/tokenize.ts'
-import { CodeEditor, INITIAL_WINDOW_ROWS, OVERSCAN } from './code-editor.tsx'
+import { CodeEditor, INITIAL_WINDOW_ROWS, OVERSCAN, WALK_BUDGET } from './code-editor.tsx'
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -69,11 +69,14 @@ describe('CodeEditor performance', () => {
     Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
     flush()
 
-    // Scroll to the middle so the window (and its prefix states) settle there.
+    // Scroll to the middle. This is a far jump (past WALK_BUDGET), so the prefix
+    // threads over a few frames rather than synchronously — flush until it settles
+    // so we measure the steady-state keystroke cost, not the one-time catch-up.
     act(() => {
       ;(ta as unknown as { scrollTop: number }).scrollTop = MID_LINE * LINE_PX
       fireEvent.scroll(ta)
     })
+    for (let i = 0; i < 10; i++) flush()
 
     // Type one character into a middle line (the visible window).
     const lines = doc.split('\n')
@@ -151,6 +154,88 @@ describe('CodeEditor performance', () => {
     const large = container.querySelectorAll('pre code > span').length
 
     expect(large).toBeGreaterThan(small)
+  })
+
+  it('does not synchronously thread the whole prefix on a far scrollbar jump', () => {
+    const LINE_PX = 20
+    const VIEWPORT_PX = 400
+    stubLineHeight(LINE_PX)
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const DOC_LINES = 8000
+    // Markdown has cross-line state (fences), so the prefix genuinely needs threading
+    // — the case that used to walk every intervening line synchronously on a jump.
+    const doc = makeMarkdownDoc(DOC_LINES)
+    const { container } = render(
+      <CodeEditor language="markdown" defaultValue={doc} lineNumbers={false} />,
+    )
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: VIEWPORT_PX })
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+    flush()
+    act(() => {
+      fireEvent.scroll(ta)
+    })
+    for (let i = 0; i < 5; i++) flush() // settle the top window
+
+    // Jump far to a region never visited (well past WALK_BUDGET from the threaded
+    // prefix). The triggering render must stay window-bounded — NOT ~7,000 lines.
+    clearTokenizeCache()
+    __resetTokenizeCount()
+    act(() => {
+      ;(ta as unknown as { scrollTop: number }).scrollTop = 7000 * LINE_PX
+      fireEvent.scroll(ta)
+    })
+    const onJump = __tokenizeCount()
+    const visibleRows = Math.ceil(VIEWPORT_PX / LINE_PX)
+    expect(onJump).toBeLessThanOrEqual(visibleRows + OVERSCAN * 2 + 8)
+
+    // …but it does converge: flushing threads the skipped prefix over frames (real
+    // tokenization, just spread out so no single frame freezes).
+    for (let i = 0; i < 10; i++) flush()
+    expect(__tokenizeCount()).toBeGreaterThan(WALK_BUDGET)
+  }, 30_000)
+
+  it('tracks the scroll position each frame when scroll events lag the compositor', () => {
+    const LINE_PX = 20
+    stubLineHeight(LINE_PX)
+    const frames: FrameRequestCallback[] = []
+    vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
+    vi.stubGlobal('cancelAnimationFrame', () => {})
+    const flush = (): void =>
+      act(() => {
+        for (const f of frames.splice(0)) f(0)
+      })
+
+    const doc = Array.from({ length: 5000 }, (_, i) => `line ${i}`).join('\n')
+    const { container } = render(
+      <CodeEditor language="plaintext" defaultValue={doc} lineNumbers={false} />,
+    )
+    const ta = container.querySelector('textarea') as HTMLTextAreaElement
+    Object.defineProperty(ta, 'clientHeight', { configurable: true, value: 400 })
+    Object.defineProperty(ta, 'scrollTop', { configurable: true, writable: true, value: 0 })
+    flush()
+
+    // One scroll event at the top starts the per-frame sampler.
+    act(() => {
+      fireEvent.scroll(ta)
+    })
+    expect((container.querySelector('pre code > span') as HTMLElement).textContent).toBe('line 0')
+
+    // The compositor now moves WITHOUT firing a scroll event (momentum/fling, where
+    // events are throttled below frame rate). A sampled frame must catch up to it.
+    ;(ta as unknown as { scrollTop: number }).scrollTop = 4000
+    flush()
+    const expectedFirst = 4000 / LINE_PX - OVERSCAN // floor(4000/20) - OVERSCAN = 188
+    expect((container.querySelector('pre code > span') as HTMLElement).textContent).toBe(
+      `line ${expectedFirst}`,
+    )
   })
 
   it('renders every row (no windowing) when wrapping is on', () => {
