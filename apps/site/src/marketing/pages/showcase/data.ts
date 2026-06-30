@@ -69,6 +69,14 @@ export const SHOWCASE: ShowcaseSite[] = [
     tagline:
       'An operating system for personal improvement — track habits, goals, and knowledge on a local-first, GitHub-backed platform.',
   },
+  {
+    slug: 'lumen',
+    url: 'https://thelumen.art',
+    name: 'Lumen & Logic',
+    category: 'Generative art',
+    tagline:
+      'A gallery of bespoke algorithmic artworks for hospitality spaces — original by algorithm, every piece unique.',
+  },
 ]
 
 /** Host without protocol/trailing slash, for the faux browser URL bar. */
