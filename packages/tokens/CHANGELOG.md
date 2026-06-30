@@ -1,5 +1,12 @@
 # @cascivo/tokens
 
+## 0.3.5
+
+### Patch Changes
+
+- bc69e5b: Derivable theming, semantic typography, canonical tokens
+- bb3c77e: Templates and further improvements
+
 ## 0.3.4
 
 ### Patch Changes

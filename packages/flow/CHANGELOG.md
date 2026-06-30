@@ -1,5 +1,15 @@
 # @cascivo/flow
 
+## 0.1.5
+
+### Patch Changes
+
+- bb3c77e: Templates and further improvements
+- Updated dependencies [6b50710]
+- Updated dependencies [bb3c77e]
+  - @cascivo/i18n@0.1.11
+  - @cascivo/core@0.2.3
+
 ## 0.1.4
 
 ### Patch Changes

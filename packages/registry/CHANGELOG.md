@@ -1,5 +1,11 @@
 # @cascivo/registry
 
+## 0.1.5
+
+### Patch Changes
+
+- bb3c77e: Templates and further improvements
+
 ## 0.1.4
 
 ### Patch Changes

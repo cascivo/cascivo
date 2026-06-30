@@ -1,5 +1,17 @@
 # cascivo
 
+## 0.2.0
+
+### Minor Changes
+
+- f2f1c62: Add an app scaffold generator. The `cascivo create [name]` CLI command scaffolds a complete, ready-to-run app (Vite + React + TypeScript) pre-wired with the cascivo app shell, side navigation, header, and a chosen theme — one page per nav section, with signal-driven section switching. The MCP server exposes the same capability through a new `create_app` tool.
+
+### Patch Changes
+
+- bb3c77e: Templates and further improvements
+- Updated dependencies [bb3c77e]
+  - @cascivo/registry@0.1.5
+
 ## 0.1.6
 
 ### Patch Changes

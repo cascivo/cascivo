@@ -1,5 +1,16 @@
 # @cascivo/react
 
+## 0.3.8
+
+### Patch Changes
+
+- 6b50710: Addition chart types, and general chart improvements
+- bb3c77e: Templates and further improvements
+- Updated dependencies [6b50710]
+- Updated dependencies [bb3c77e]
+  - @cascivo/i18n@0.1.11
+  - @cascivo/core@0.2.3
+
 ## 0.3.7
 
 ### Patch Changes
