@@ -1,5 +1,11 @@
 # @cascivo/editor
 
+## 0.2.6
+
+### Patch Changes
+
+- 25ab8b2: Improved editor handling
+
 ## 0.2.5
 
 ### Patch Changes
