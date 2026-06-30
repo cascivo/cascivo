@@ -65,7 +65,7 @@ document from line 0. The index memoizes the grammar **end-state after each line
 A **far scrollbar jump** to a region the index has not threaded yet is the one case that
 would otherwise require walking every intervening line at once (a freeze proportional to
 the jump distance). When the gap exceeds `WALK_BUDGET` lines the window paints
-*approximately* (seeded from the grammar's initial state) and a per-frame catch-up effect
+_approximately_ (seeded from the grammar's initial state) and a per-frame catch-up effect
 threads the prefix `WALK_BUDGET` lines per frame until it converges and the window turns
 exact — so a 50k-line slam costs a handful of bounded frames, never one long freeze. The
 highlight is only briefly approximate, and only if the jump lands inside an still-open
