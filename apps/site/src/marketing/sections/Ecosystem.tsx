@@ -1,4 +1,3 @@
-const DOCS_BASE = 'https://cascivo.dev'
 const GITHUB_BASE = 'https://github.com/cascivo/cascivo/tree/main/packages'
 
 const PACKAGES = [
@@ -7,14 +6,30 @@ const PACKAGES = [
     value:
       'Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies.',
     install: 'pnpm add @cascivo/charts',
-    href: `${DOCS_BASE}/charts`,
+    href: '/docs/charts',
     linkLabel: 'View charts docs',
+  },
+  {
+    name: '@cascivo/flow',
+    value:
+      'Node/edge diagrams from plain data — pan, zoom, draggable nodes, animated edges. CSS-native, zero dependencies.',
+    install: 'pnpm add @cascivo/flow',
+    href: '/docs/flow',
+    linkLabel: 'View flow docs',
+  },
+  {
+    name: '@cascivo/editor',
+    value:
+      'A lightweight code editor — owned tokenizer, syntax highlighting, find/replace, slash commands, per-instance theming.',
+    install: 'pnpm add @cascivo/editor',
+    href: '/docs/editor',
+    linkLabel: 'View editor docs',
   },
   {
     name: '@cascivo/layouts',
     value: 'AppShell, off-canvas nav, responsive grid — the shell that powers these very docs.',
     install: 'pnpm add @cascivo/layouts',
-    href: `${DOCS_BASE}/layouts`,
+    href: '/docs/layouts',
     linkLabel: 'View layouts docs',
   },
   {

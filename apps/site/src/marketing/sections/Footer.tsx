@@ -54,6 +54,8 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
     label: 'Ecosystem',
     links: [
       { label: '@cascivo/charts', href: `${REPO}/tree/main/packages/charts`, mono: true },
+      { label: '@cascivo/flow', href: `${REPO}/tree/main/packages/flow`, mono: true },
+      { label: '@cascivo/editor', href: `${REPO}/tree/main/packages/editor`, mono: true },
       { label: '@cascivo/layouts', href: `${REPO}/tree/main/packages/layouts`, mono: true },
       { label: '@cascivo/i18n', href: `${REPO}/tree/main/packages/i18n`, mono: true },
       { label: '@cascivo/icons', href: `${REPO}/tree/main/packages/icons`, mono: true },
