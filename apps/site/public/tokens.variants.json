@@ -1,6 +1,6 @@
 {
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/*.css"],
-  "generatedAt": "2026-06-29",
+  "generatedAt": "2026-06-30",
   "themes": [
     "arcade",
     "brutalist",
