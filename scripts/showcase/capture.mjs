@@ -32,6 +32,7 @@ const SITES = [
   { slug: 'aime', url: 'https://aime.directory' },
   { slug: 'kaihuman', url: 'https://kaihuman.com' },
   { slug: 'lumen', url: 'https://thelumen.art' },
+  { slug: 'beleggo', url: 'https://beleggo.de' },
 ]
 
 const DESKTOP = { width: 1280, height: 800 }

@@ -77,6 +77,14 @@ export const SHOWCASE: ShowcaseSite[] = [
     tagline:
       'A gallery of bespoke algorithmic artworks for hospitality spaces — original by algorithm, every piece unique.',
   },
+  {
+    slug: 'beleggo',
+    url: 'https://beleggo.de',
+    name: 'Beleggo',
+    category: 'Finance',
+    tagline:
+      'Create and validate e-invoices in XRechnung, ZUGFeRD, and Peppol formats — fully in-browser, no data ever leaves your device.',
+  },
 ]
 
 /** Host without protocol/trailing slash, for the faux browser URL bar. */
