@@ -41,6 +41,9 @@ jobs:
       - name: Release-filter guard (build:release covers all published packages)
         run: pnpm run release:check
 
+      - name: Meta-coverage guard (every manifest is registered)
+        run: pnpm run meta:check
+
       - name: Animation audit
         run: pnpm run audit:animation
 

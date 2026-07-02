@@ -43,6 +43,26 @@ import { BottomSheet } from '@cascivo/react'
 | `labels`       | `{ close?: string; handle?: string }` | no       | —             | Overrides for the component’s user-visible strings (i18n).    |
 | `className`    | `string`                              | no       | —             | Additional CSS class names merged onto the root element.      |
 
+## Examples
+
+### Basic
+
+```tsx
+<BottomSheet open={isOpen} onOpenChange={setIsOpen} title="Filters">
+  <FilterForm />
+</BottomSheet>
+```
+
+### Custom detents
+
+Snaps between three detents by dragging the handle; opens at half height.
+
+```tsx
+<BottomSheet defaultOpen snapPoints={[0.25, 0.5, 0.9]} defaultSnap={1} title="Nearby">
+  <PlacesList />
+</BottomSheet>
+```
+
 ## Design tokens
 
 - `--cascivo-color-surface`

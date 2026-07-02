@@ -61,6 +61,30 @@ Renders role="menu" with role="menuitem" buttons under vertical roving focus (Ar
 - `--cascivo-motion-exit`
 - `--cascivo-z-overlay`
 
+## Examples
+
+### Basic
+
+```jsx
+<ActionSheet
+  open={isOpen}
+  onOpenChange={setIsOpen}
+  title="Share photo"
+  actions={[
+    { label: 'Copy link', onSelect: copyLink },
+    { label: 'Delete', onSelect: remove, destructive: true },
+  ]}
+/>
+```
+
+### Without cancel button
+
+Escape and outside press still dismiss the sheet.
+
+```jsx
+<ActionSheet defaultOpen showCancel={false} actions={[{ label: 'Archive', onSelect: archive }]} />
+```
+
 ## Boundaries
 
 | Area       | Level    | Note                                                                               |

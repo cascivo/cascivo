@@ -1,9 +1,32 @@
 {
   "name": "@cascivo/ai",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat",
+  "keywords": [
+    "ai",
+    "cascivo",
+    "chat",
+    "css",
+    "design-system",
+    "react",
+    "signals",
+    "streaming"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/ai#readme",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/ai"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "types": "./dist/index.d.mts",
   "exports": {
     ".": {
@@ -11,6 +34,10 @@
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build": "vp pack",

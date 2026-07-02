@@ -321,6 +321,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `- Icon catalog (every @cascivo/icons icon + keywords/category): ${DOCS}/icons.catalog.json`,
   )
+  lines.push(
+    `- Breaking/feature changes (major+minor releases per package — detect API drift): ${DOCS}/breaking-changes.json`,
+  )
   lines.push('')
   lines.push('## Icons')
   lines.push('')

@@ -32,6 +32,16 @@
 
 The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded reflecting open state, and the panel uses role="dialog" via the native Popover API so Escape-to-close and light-dismiss come from the platform rather than custom handlers.
 
+## Props
+
+| Name           | Type                      | Required | Default | Description                                      |
+| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------ | --- | ------ | ---------------------------------- |
+| `children`     | `React.ReactNode`         | Yes      | —       | A PopoverTrigger and PopoverContent pair.        |
+| `open`         | `boolean`                 | No       | —       | Whether the component is open (controlled).      |
+| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called with the next open state when it changes. |
+| `placement`    | `'top'                    | 'bottom' | 'left'  | 'right'`                                         | No  | bottom | Placement relative to the trigger. |
+| `offset`       | `number`                  | No       | 4       | Distance (px) between the trigger and the panel. |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -40,6 +50,30 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 - `--cascivo-shadow-md`
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`
+
+## Examples
+
+### Basic
+
+```jsx
+<Popover>
+  <PopoverTrigger>Open settings</PopoverTrigger>
+  <PopoverContent>
+    <form>…</form>
+  </PopoverContent>
+</Popover>
+```
+
+### Controlled with placement
+
+```jsx
+<Popover open={isOpen} onOpenChange={setIsOpen} placement="top">
+  <PopoverTrigger>Filters</PopoverTrigger>
+  <PopoverContent>
+    <FilterForm />
+  </PopoverContent>
+</Popover>
+```
 
 ## Boundaries
 

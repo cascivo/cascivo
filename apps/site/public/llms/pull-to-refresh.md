@@ -38,6 +38,28 @@ import { PullToRefresh } from '@cascivo/react'
 | `labels`    | `{ pull?: string; release?: string; refreshing?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).         |
 | `className` | `string`                                                   | no       | —       | Additional CSS class names merged onto the root element.           |
 
+## Examples
+
+### Basic
+
+The spinner shows until the returned promise settles.
+
+```tsx
+<PullToRefresh onRefresh={() => refetch()}>
+  <FeedList items={items} />
+</PullToRefresh>
+```
+
+### Custom threshold
+
+Requires a longer pull before a refresh is triggered.
+
+```tsx
+<PullToRefresh onRefresh={loadLatest} threshold={96}>
+  <MessageList />
+</PullToRefresh>
+```
+
 ## Design tokens
 
 - `--cascivo-color-text-muted`

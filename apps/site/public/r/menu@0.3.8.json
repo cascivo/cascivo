@@ -22,7 +22,14 @@
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],
-    "props": [],
+    "props": [
+      {
+        "name": "children",
+        "description": "The MenuTrigger first, followed by MenuItem/MenuSeparator children.",
+        "type": "React.ReactNode",
+        "required": true
+      }
+    ],
     "tokens": [
       "--cascivo-color-surface",
       "--cascivo-color-border",
@@ -37,7 +44,16 @@
       "wcag": "2.2-AA",
       "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<Menu>\n  <MenuTrigger>Options</MenuTrigger>\n  <MenuItem onSelect={rename}>Rename</MenuItem>\n  <MenuItem onSelect={duplicate}>Duplicate</MenuItem>\n</Menu>"
+      },
+      {
+        "title": "With separator and disabled item",
+        "code": "<Menu>\n  <MenuTrigger aria-label=\"More actions\">…</MenuTrigger>\n  <MenuItem onSelect={share}>Share</MenuItem>\n  <MenuSeparator />\n  <MenuItem onSelect={remove} disabled>Delete</MenuItem>\n</Menu>"
+      }
+    ],
     "dependencies": ["@cascivo/core"],
     "registryDependencies": ["popover"],
     "tags": ["overlay", "menu", "dropdown", "floating"],

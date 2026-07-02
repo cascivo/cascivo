@@ -98,7 +98,17 @@
       "wcag": "2.2-AA",
       "keyboard": ["ArrowUp", "ArrowDown", "Home", "End", "Enter", "Space", "Escape"]
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<ActionSheet\n  open={isOpen}\n  onOpenChange={setIsOpen}\n  title=\"Share photo\"\n  actions={[\n    { label: 'Copy link', onSelect: copyLink },\n    { label: 'Delete', onSelect: remove, destructive: true },\n  ]}\n/>"
+      },
+      {
+        "title": "Without cancel button",
+        "code": "<ActionSheet defaultOpen showCancel={false} actions={[{ label: \"Archive\", onSelect: archive }]} />",
+        "description": "Escape and outside press still dismiss the sheet."
+      }
+    ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "action-sheet", "menu", "mobile", "sheet"],
     "intent": {

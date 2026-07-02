@@ -8,7 +8,71 @@ export const meta: ComponentMeta = {
   states: ['default', 'selected', 'focus', 'disabled'],
   variants: ['single', 'multi'],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'value',
+      description: 'Identifies this tile within a group.',
+      type: 'string',
+      required: true,
+    },
+    {
+      name: 'selected',
+      description: 'Controlled selected state.',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'defaultSelected',
+      description: 'Initial selected state for uncontrolled use.',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onSelect',
+      description: "Called with this tile's value whenever it is toggled on (or off for multi).",
+      type: '(value: string) => void',
+      required: false,
+    },
+    {
+      name: 'selectable',
+      description:
+        'Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off).',
+      type: "'single' | 'multi'",
+      required: false,
+      default: 'single',
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'icon',
+      description: 'Optional leading icon/visual.',
+      type: 'React.ReactNode',
+      required: false,
+    },
+    {
+      name: 'asChild',
+      description:
+        'When true, renders the child element as the root via Slot, merging props (polymorphic rendering).',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'React.ReactNode',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
   tokens: [
     '--cascivo-color-bg',
     '--cascivo-color-border',
@@ -24,7 +88,22 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Enter', 'Space'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Single-select group',
+      code: `<div role="radiogroup" aria-label="Plan">
+  <Tile value="starter" selected={plan === 'starter'} onSelect={setPlan}>Starter</Tile>
+  <Tile value="pro" selected={plan === 'pro'} onSelect={setPlan}>Pro</Tile>
+</div>`,
+    },
+    {
+      title: 'Multi-select with icon',
+      code: `<Tile value="notifications" selectable="multi" icon={<BellIcon />} defaultSelected>
+  Email notifications
+</Tile>`,
+      description: 'Multi tiles toggle on and off like a checkbox.',
+    },
+  ],
   dependencies: ['@cascivo/core'],
   tags: ['inputs', 'tile', 'card', 'selectable', 'choice'],
   intent: {

@@ -12,6 +12,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { parseEnum } from '../../packages/mcp/src/grammar.ts'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -110,11 +111,33 @@ export const AUTHORING_RULES = [
   'WCAG 2.1 AA minimum — keyboard navigable, screen-reader tested',
 ]
 
+/**
+ * Structured form of a prop's TS type string, so tools that cannot re-parse
+ * TS unions (the raw `type` stays alongside) can still validate values.
+ */
+export interface PropSchema {
+  kind: 'enum' | 'boolean' | 'number' | 'string' | 'function' | 'node' | 'other'
+  values?: string[]
+}
+
+export function propSchema(type: string): PropSchema {
+  const values = parseEnum(type)
+  if (values) return { kind: 'enum', values }
+  const t = type.trim()
+  if (t === 'boolean') return { kind: 'boolean' }
+  if (t === 'number') return { kind: 'number' }
+  if (t === 'string') return { kind: 'string' }
+  if (t.includes('=>')) return { kind: 'function' }
+  if (/ReactNode|ReactElement|JSX\./.test(t)) return { kind: 'node' }
+  return { kind: 'other' }
+}
+
 export interface ContextIndexEntry {
   name: string
   category: string
   description: string
   intent: ComponentIntent | null
+  props: (PropMeta & { schema: PropSchema })[]
   contextUrl: string
   /** Copy-pasteable system-prompt snippet that pins an LLM to this component. */
   aiPrompt: string
@@ -164,6 +187,7 @@ export function buildContextIndex(
       category: entry.category,
       description: entry.description,
       intent: entry.meta?.intent ?? null,
+      props: (entry.meta?.props ?? []).map((p) => ({ ...p, schema: propSchema(p.type) })),
       contextUrl: `/context/${entry.name}.md`,
       aiPrompt: buildContextPrompt(entry),
     })),
@@ -381,7 +405,11 @@ function readJsonIfExists(path: string): Record<string, unknown> | null {
 
 function main() {
   const registry: Registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf8'))
-  const entries = registry.components.filter((c) => c.type === 'component')
+  // Every registry entry gets context — an agent choosing between a chart, a
+  // layout, and a component needs intent for all of them, not just
+  // type:"component" (which used to leave 60+ entries invisible to
+  // select_component/get_context).
+  const entries = registry.components
 
   mkdirSync(CONTEXT_DIR, { recursive: true })
 
@@ -408,7 +436,10 @@ function main() {
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   for (const entry of sorted) {
     const md = buildComponentMarkdown(entry)
-    writeFileSync(join(CONTEXT_DIR, `${entry.name}.md`), md)
+    // Prefixed names (layout/app-shell, chart/bar-chart, …) nest one level.
+    const outPath = join(CONTEXT_DIR, `${entry.name}.md`)
+    mkdirSync(dirname(outPath), { recursive: true })
+    writeFileSync(outPath, md)
   }
   console.log(`Wrote ${sorted.length} files to context/`)
 

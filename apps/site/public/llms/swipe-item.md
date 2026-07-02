@@ -35,6 +35,32 @@ import { SwipeItem } from '@cascivo/react'
 | `trailingActions` | `SwipeAction[]`   | no       | —       | Actions revealed by dragging toward the start edge (shown on the end edge) |
 | `className`       | `string`          | no       | —       | Additional CSS class names merged onto the root element.                   |
 
+## Examples
+
+### Trailing actions
+
+```tsx
+<SwipeItem
+  trailingActions={[
+    { label: 'Archive', onSelect: archive },
+    { label: 'Delete', onSelect: remove, destructive: true },
+  ]}
+>
+  <MessageRow message={message} />
+</SwipeItem>
+```
+
+### Leading and trailing
+
+```tsx
+<SwipeItem
+  leadingActions={[{ label: 'Pin', icon: <PinIcon />, onSelect: pin }]}
+  trailingActions={[{ label: 'Delete', onSelect: remove, destructive: true }]}
+>
+  <TaskRow task={task} />
+</SwipeItem>
+```
+
 ## Design tokens
 
 - `--cascivo-color-surface`

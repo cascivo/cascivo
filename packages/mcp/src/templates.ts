@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { CASCIVO_HOST } from './host.js'
 
 /** A template record as stored in the static marketplace catalog. */
 export interface MarketplaceTemplate {
@@ -27,20 +28,18 @@ export interface MarketplaceCatalog {
   facets: { categories: string[]; frameworks: string[]; tags: string[] }
 }
 
-const HERE = dirname(fileURLToPath(import.meta.url))
+type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
-const EMPTY: MarketplaceCatalog = {
-  generatedAt: '',
-  templates: [],
-  facets: { categories: [], frameworks: [], tags: [] },
-}
+const HERE = dirname(fileURLToPath(import.meta.url))
+const CATALOG_BASE_URL = CASCIVO_HOST
 
 /**
- * Resolve the marketplace catalog location. Checks, in order: an explicit path,
+ * Resolve a local marketplace catalog. Checks, in order: an explicit path,
  * the `CASCIVO_MARKETPLACE_PATH` env var, a copy bundled next to the built
  * server, and the in-repo `apps/site/public/marketplace.json` (dev).
+ * Returns null when no candidate exists on disk.
  */
-export function resolveCatalogPath(explicit?: string): string {
+export function resolveCatalogPath(explicit?: string): string | null {
   const candidates = [
     explicit,
     process.env.CASCIVO_MARKETPLACE_PATH,
@@ -49,18 +48,42 @@ export function resolveCatalogPath(explicit?: string): string {
     join(HERE, '..', '..', 'apps', 'site', 'public', 'marketplace.json'),
   ].filter((p): p is string => typeof p === 'string' && p.length > 0)
 
-  return candidates.find((p) => existsSync(p)) ?? candidates[candidates.length - 1] ?? ''
+  return candidates.find((p) => existsSync(p)) ?? null
 }
 
-/** Load the marketplace catalog, returning an empty catalog if none is found. */
-export function loadCatalog(explicit?: string): MarketplaceCatalog {
+/**
+ * Load the marketplace catalog: bundled/local copy first, then the hosted one.
+ * Throws when neither is available — an empty catalog would silently make
+ * every template invisible, which is worse than a visible error.
+ */
+export async function loadCatalog(
+  explicit?: string,
+  fetchFn?: FetchFn,
+): Promise<MarketplaceCatalog> {
   const path = resolveCatalogPath(explicit)
-  if (!path || !existsSync(path)) return EMPTY
-  try {
-    return JSON.parse(readFileSync(path, 'utf8')) as MarketplaceCatalog
-  } catch {
-    return EMPTY
+  if (path) {
+    try {
+      return JSON.parse(readFileSync(path, 'utf8')) as MarketplaceCatalog
+    } catch {
+      // Unreadable local copy — fall through to the network.
+    }
   }
+  const url = `${CATALOG_BASE_URL}/marketplace.json`
+  const fn = fetchFn ?? fetch
+  let res: Response
+  try {
+    res = await fn(url)
+  } catch (e) {
+    throw new Error(
+      `Marketplace catalog unavailable: no local copy and ${url} unreachable (${e instanceof Error ? e.message : e})`,
+    )
+  }
+  if (!res.ok) {
+    throw new Error(
+      `Marketplace catalog unavailable: no local copy and ${url} returned ${res.status}`,
+    )
+  }
+  return res.json() as Promise<MarketplaceCatalog>
 }
 
 export interface TemplateFilter {

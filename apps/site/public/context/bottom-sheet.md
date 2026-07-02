@@ -60,6 +60,26 @@ Renders role="dialog" with aria-modal; the title labels it via aria-labelledby a
 - `--cascivo-target-min-coarse`
 - `--cascivo-z-overlay`
 
+## Examples
+
+### Basic
+
+```jsx
+<BottomSheet open={isOpen} onOpenChange={setIsOpen} title="Filters">
+  <FilterForm />
+</BottomSheet>
+```
+
+### Custom detents
+
+Snaps between three detents by dragging the handle; opens at half height.
+
+```jsx
+<BottomSheet defaultOpen snapPoints={[0.25, 0.5, 0.9]} defaultSnap={1} title="Nearby">
+  <PlacesList />
+</BottomSheet>
+```
+
 ## Boundaries
 
 | Area          | Level    | Note                                                                   |

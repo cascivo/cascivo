@@ -62,7 +62,16 @@
       "wcag": "2.2-AA",
       "keyboard": ["Tab", "Enter", "Space", "Escape"]
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Trailing actions",
+        "code": "<SwipeItem\n  trailingActions={[\n    { label: 'Archive', onSelect: archive },\n    { label: 'Delete', onSelect: remove, destructive: true },\n  ]}\n>\n  <MessageRow message={message} />\n</SwipeItem>"
+      },
+      {
+        "title": "Leading and trailing",
+        "code": "<SwipeItem\n  leadingActions={[{ label: 'Pin', icon: <PinIcon />, onSelect: pin }]}\n  trailingActions={[{ label: 'Delete', onSelect: remove, destructive: true }]}\n>\n  <TaskRow task={task} />\n</SwipeItem>"
+      }
+    ],
     "dependencies": ["@cascivo/core"],
     "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
     "intent": {

@@ -62,7 +62,16 @@
       "wcag": "2.2-AA",
       "keyboard": ["Escape", "Tab", "Shift+Tab"]
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<Sheet open={isOpen} onClose={() => setIsOpen(false)} title=\"Filters\">\n  <FilterForm />\n</Sheet>"
+      },
+      {
+        "title": "Bottom sheet",
+        "code": "<Sheet open={isOpen} onClose={close} side=\"bottom\" title=\"Share\">\n  <ShareOptions />\n</Sheet>"
+      }
+    ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "drawer", "panel", "slide"],
     "intent": {

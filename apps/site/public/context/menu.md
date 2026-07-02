@@ -33,6 +33,12 @@
 
 The trigger exposes aria-haspopup="menu" and aria-expanded, the panel is role="menu" with role="menuitem" children, focus moves to the first enabled item on open, ArrowUp/ArrowDown rove focus between items, disabled items are aria-disabled and removed from the tab order, and separators use role="separator".
 
+## Props
+
+| Name       | Type              | Required | Default | Description                                                         |
+| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `children` | `React.ReactNode` | Yes      | —       | The MenuTrigger first, followed by MenuItem/MenuSeparator children. |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -42,6 +48,31 @@ The trigger exposes aria-haspopup="menu" and aria-expanded, the panel is role="m
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`
 - `--cascivo-color-bg-subtle`
+
+## Examples
+
+### Basic
+
+```jsx
+<Menu>
+  <MenuTrigger>Options</MenuTrigger>
+  <MenuItem onSelect={rename}>Rename</MenuItem>
+  <MenuItem onSelect={duplicate}>Duplicate</MenuItem>
+</Menu>
+```
+
+### With separator and disabled item
+
+```jsx
+<Menu>
+  <MenuTrigger aria-label="More actions">…</MenuTrigger>
+  <MenuItem onSelect={share}>Share</MenuItem>
+  <MenuSeparator />
+  <MenuItem onSelect={remove} disabled>
+    Delete
+  </MenuItem>
+</Menu>
+```
 
 ## Boundaries
 

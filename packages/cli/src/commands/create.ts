@@ -2,7 +2,7 @@ import { existsSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline/promises'
-import { THEMES, type ThemeName } from '../utils/config.js'
+import { CASCIVO_HOST, THEMES, type ThemeName } from '../utils/config.js'
 import { writeFileSafe } from '../utils/fs.js'
 
 /** Version specifier used for every `@cascivo/*` dependency in generated apps. */
@@ -303,7 +303,7 @@ function cascivoConfig(opts: ScaffoldOptions): string {
   return `import type { CascadeConfig } from 'cascivo'
 
 const config: CascadeConfig = {
-  registry: 'https://cascivo.com/registry.json',
+  registry: '${CASCIVO_HOST}/registry.json',
   outputDir: 'src/components/ui',
   theme: '${opts.theme}',
 }

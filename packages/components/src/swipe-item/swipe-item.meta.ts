@@ -43,7 +43,28 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Tab', 'Enter', 'Space', 'Escape'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Trailing actions',
+      code: `<SwipeItem
+  trailingActions={[
+    { label: 'Archive', onSelect: archive },
+    { label: 'Delete', onSelect: remove, destructive: true },
+  ]}
+>
+  <MessageRow message={message} />
+</SwipeItem>`,
+    },
+    {
+      title: 'Leading and trailing',
+      code: `<SwipeItem
+  leadingActions={[{ label: 'Pin', icon: <PinIcon />, onSelect: pin }]}
+  trailingActions={[{ label: 'Delete', onSelect: remove, destructive: true }]}
+>
+  <TaskRow task={task} />
+</SwipeItem>`,
+    },
+  ],
   dependencies: ['@cascivo/core'],
   tags: ['display', 'swipe', 'list', 'mobile', 'gesture', 'actions'],
   intent: {

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 2,
+  "name": "flow/flow-canvas",
+  "type": "flow",
+  "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
+  "version": "0.3.8",
+  "files": [],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
+  "category": "display",
+  "install": "@cascivo/flow",
+  "meta": {
+    "name": "FlowCanvas",
+    "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
+    "category": "display",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Background, nodes, edges."
+      },
+      {
+        "name": "viewport",
+        "type": "{ x: number; y: number; zoom: number }",
+        "required": false,
+        "description": "Controlled viewport."
+      },
+      {
+        "name": "onViewportChange",
+        "type": "(viewport: Viewport) => void",
+        "required": false,
+        "description": "Viewport change callback."
+      },
+      {
+        "name": "minZoom",
+        "type": "number",
+        "required": false,
+        "default": "0.2"
+      },
+      {
+        "name": "maxZoom",
+        "type": "number",
+        "required": false,
+        "default": "2"
+      },
+      {
+        "name": "panOnDrag",
+        "type": "boolean",
+        "required": false,
+        "default": "true"
+      },
+      {
+        "name": "zoomOnScroll",
+        "type": "boolean",
+        "required": false,
+        "default": "true"
+      },
+      {
+        "name": "fitView",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      }
+    ],
+    "tokens": ["--cascivo-color-bg", "--cascivo-radius-surface"],
+    "accessibility": {
+      "role": "application",
+      "wcag": "2.1-AA",
+      "keyboard": ["Tab (focus)", "Drag (pan)", "Wheel (zoom)"]
+    },
+    "examples": [
+      {
+        "title": "Empty canvas with a background",
+        "code": "() => (\n  <FlowCanvas style={{ height: 240 }}>\n    <FlowBackground />\n  </FlowCanvas>\n)"
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
+    "intent": {
+      "whenToUse": [
+        "Hosting a hand-composed flow from low-level FlowNode/FlowEdge primitives",
+        "When you need direct control of the viewport, pan, and zoom"
+      ],
+      "whenNotToUse": ["For the common case — prefer the declarative <Flow nodes edges /> instead"],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "Flow",
+          "relationship": "alternative",
+          "reason": "The declarative data-driven wrapper."
+        },
+        {
+          "name": "FlowBackground",
+          "relationship": "contains",
+          "reason": "A common child."
+        }
+      ],
+      "a11yRationale": "role=\"application\" — the pane is an interactive canvas with pointer gestures.",
+      "flexibility": [
+        {
+          "area": "viewport",
+          "level": "flexible",
+          "note": "Controllable; pan/zoom toggleable."
+        }
+      ]
+    }
+  }
+}

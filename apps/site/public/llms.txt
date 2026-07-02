@@ -22,6 +22,7 @@ so this file plus the linked resources are enough to build with cascivo.
 - Context bundle (all intent + boundaries + rules): https://docs.cascivo.com/context.json
 - Token catalog (closed set, every --cascivo-* + layer + default): https://docs.cascivo.com/tokens.catalog.json
 - Icon catalog (every @cascivo/icons icon + keywords/category): https://docs.cascivo.com/icons.catalog.json
+- Breaking/feature changes (major+minor releases per package — detect API drift): https://docs.cascivo.com/breaking-changes.json
 
 ## Icons
 
@@ -109,7 +110,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
-## Component index (191 components)
+## Component index (192 components)
 
 ### chart
 
@@ -170,6 +171,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [empty-state](https://docs.cascivo.com/llms/empty-state.md) — Placeholder for views that have no data to display
 - [flow/flow](https://docs.cascivo.com/llms/flow/flow.md) — The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.
 - [flow/flow-background](https://docs.cascivo.com/llms/flow/flow-background.md) — Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.
+- [flow/flow-canvas](https://docs.cascivo.com/llms/flow/flow-canvas.md) — The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.
 - [flow/flow-controls](https://docs.cascivo.com/llms/flow/flow-controls.md) — Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.
 - [flow/flow-edge](https://docs.cascivo.com/llms/flow/flow-edge.md) — An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.
 - [flow/flow-handle](https://docs.cascivo.com/llms/flow/flow-handle.md) — A connection port on a node edge — where edges attach and interactive connect starts.
@@ -407,6 +409,7 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - [Filter](https://docs.cascivo.com/context/filter.md) — Use when: Tag or category filtering on listing pages where the active filters must remain visible
 - [Flow](https://docs.cascivo.com/context/flow/flow.md) — Use when: Rendering a graph from data — the common case and the agent-emittable surface
 - [FlowBackground](https://docs.cascivo.com/context/flow/flow-background.md) — Use when: Giving a flow canvas a sense of space and scale with a dotted or grid backdrop
+- [FlowCanvas](https://docs.cascivo.com/context/flow/flow-canvas.md) — Use when: Hosting a hand-composed flow from low-level FlowNode/FlowEdge primitives
 - [FlowControls](https://docs.cascivo.com/context/flow/flow-controls.md) — Use when: Giving users explicit zoom/fit controls on a flow canvas
 - [FlowEdge](https://docs.cascivo.com/context/flow/flow-edge.md) — Use when: Connecting two nodes with a directed path and arrowhead
 - [FlowHandle](https://docs.cascivo.com/context/flow/flow-handle.md) — Use when: Marking where edges connect to a node

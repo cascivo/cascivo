@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { CASCIVO_HOST } from './host.js'
 
 export interface ContextRelated {
   name: string
@@ -50,7 +51,7 @@ export interface ContextBundle {
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const CONTEXT_BASE_URL = 'https://cascivo.com'
+const CONTEXT_BASE_URL = CASCIVO_HOST
 
 export async function loadContext(fetchFn?: FetchFn): Promise<ContextBundle> {
   const localPaths = [

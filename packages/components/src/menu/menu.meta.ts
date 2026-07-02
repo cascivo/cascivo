@@ -7,7 +7,14 @@ export const meta: ComponentMeta = {
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'children',
+      description: 'The MenuTrigger first, followed by MenuItem/MenuSeparator children.',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-border',
@@ -22,7 +29,25 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Space', 'Escape'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<Menu>
+  <MenuTrigger>Options</MenuTrigger>
+  <MenuItem onSelect={rename}>Rename</MenuItem>
+  <MenuItem onSelect={duplicate}>Duplicate</MenuItem>
+</Menu>`,
+    },
+    {
+      title: 'With separator and disabled item',
+      code: `<Menu>
+  <MenuTrigger aria-label="More actions">…</MenuTrigger>
+  <MenuItem onSelect={share}>Share</MenuItem>
+  <MenuSeparator />
+  <MenuItem onSelect={remove} disabled>Delete</MenuItem>
+</Menu>`,
+    },
+  ],
   dependencies: ['@cascivo/core'],
   registryDependencies: ['popover'],
   tags: ['overlay', 'menu', 'dropdown', 'floating'],

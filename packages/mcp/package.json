@@ -43,7 +43,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp pack && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c);fs.copyFileSync('../../registry.json','dist/registry.json')\" && chmod +x dist/index.mjs",
+    "build": "vp pack && node scripts/postbuild.mjs",
     "check": "tsc --noEmit",
     "test": "vp test"
   },

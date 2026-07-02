@@ -76,6 +76,13 @@ const ROOTS: SourceRoot[] = [
     type: 'flow',
     prefix: 'flow/',
   },
+  {
+    // FlowCanvas is public @cascivo/flow API (exported from the package root);
+    // it lives under core/ rather than flows/ but must still be discoverable.
+    dir: join(REPO_ROOT, 'packages', 'flow', 'src', 'core'),
+    type: 'flow',
+    prefix: 'flow/',
+  },
 ]
 
 interface RegistryComponent {
@@ -192,6 +199,8 @@ interface BlockRegistryEntry {
   dependencies: string[]
   tags: string[]
   screenshot: { light: string; dark: string }
+  /** When-to-use guidance for agents — mirrors component metas. */
+  intent?: BlockMeta['intent']
 }
 
 const BLOCKS_DIR = join(REPO_ROOT, 'packages', 'components', 'src', 'blocks')
@@ -231,6 +240,7 @@ async function scanBlocks(version: string): Promise<BlockRegistryEntry[]> {
       dependencies: ['@cascivo/react'],
       tags: meta.tags,
       screenshot: meta.screenshot,
+      ...(meta.intent ? { intent: meta.intent } : {}),
     })
   }
   return entries

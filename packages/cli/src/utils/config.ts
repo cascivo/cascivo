@@ -2,6 +2,13 @@ import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
+/**
+ * Canonical host for hosted cascivo artifacts (registry.json, per-item
+ * r/<name>.json, marketplace.json). docs.cascivo.com mirrors the same tree.
+ * Keep in sync with CASCIVO_HOST in packages/mcp.
+ */
+export const CASCIVO_HOST = 'https://cascivo.com'
+
 /** All first-party themes shipped by @cascivo/themes (selectable via data-theme). */
 export const THEMES = [
   'light',
@@ -41,7 +48,7 @@ export const DEFAULT_CONFIG: CascadeConfig = {
   // Canonical hosted registry index (served from the landing site, documented in
   // llms.txt). Prefer this over a branch's GitHub raw URL, which 404s for
   // unauthenticated/private-repo requests and breaks `cascivo list`/`add`.
-  registry: 'https://cascivo.com/registry.json',
+  registry: `${CASCIVO_HOST}/registry.json`,
   outputDir: 'src/components/ui',
   theme: 'light',
 }

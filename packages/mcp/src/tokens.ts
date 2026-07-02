@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { CASCIVO_HOST } from './host.js'
 
 export interface TokenCatalogEntry {
   name: string
@@ -24,7 +25,7 @@ export interface TokenCatalog {
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const CATALOG_BASE_URL = 'https://cascivo.com'
+const CATALOG_BASE_URL = CASCIVO_HOST
 
 export async function loadTokenCatalog(fetchFn?: FetchFn): Promise<TokenCatalog> {
   const localPaths = [

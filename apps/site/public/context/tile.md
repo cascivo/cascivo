@@ -31,6 +31,21 @@
 
 Exposes role="radio" (single) or role="checkbox" (multi) with aria-checked reflecting selection, is focusable, and toggles on Space/Enter. aria-disabled and a -1 tabindex remove disabled tiles from interaction.
 
+## Props
+
+| Name              | Type                      | Required | Default | Description                                                                                       |
+| ----------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `value`           | `string`                  | Yes      | —       | Identifies this tile within a group.                                                              |
+| `selected`        | `boolean`                 | No       | —       | Controlled selected state.                                                                        |
+| `defaultSelected` | `boolean`                 | No       | —       | Initial selected state for uncontrolled use.                                                      |
+| `onSelect`        | `(value: string) => void` | No       | —       | Called with this tile's value whenever it is toggled on (or off for multi).                       |
+| `selectable`      | `'single'                 | 'multi'` | No      | single                                                                                            | Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off). |
+| `disabled`        | `boolean`                 | No       | —       | When true, disables the control and removes it from the tab order.                                |
+| `icon`            | `React.ReactNode`         | No       | —       | Optional leading icon/visual.                                                                     |
+| `asChild`         | `boolean`                 | No       | —       | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `children`        | `React.ReactNode`         | No       | —       | Content rendered inside the component.                                                            |
+| `className`       | `string`                  | No       | —       | Additional CSS class names merged onto the root element.                                          |
+
 ## Tokens
 
 - `--cascivo-color-bg`
@@ -41,6 +56,31 @@ Exposes role="radio" (single) or role="checkbox" (multi) with aria-checked refle
 - `--cascivo-color-text-muted`
 - `--cascivo-radius-surface`
 - `--cascivo-focus-ring`
+
+## Examples
+
+### Single-select group
+
+```jsx
+<div role="radiogroup" aria-label="Plan">
+  <Tile value="starter" selected={plan === 'starter'} onSelect={setPlan}>
+    Starter
+  </Tile>
+  <Tile value="pro" selected={plan === 'pro'} onSelect={setPlan}>
+    Pro
+  </Tile>
+</div>
+```
+
+### Multi-select with icon
+
+Multi tiles toggle on and off like a checkbox.
+
+```jsx
+<Tile value="notifications" selectable="multi" icon={<BellIcon />} defaultSelected>
+  Email notifications
+</Tile>
+```
 
 ## Boundaries
 

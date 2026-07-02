@@ -32,7 +32,43 @@ import { AlertDialog } from '@cascivo/react'
 
 ## Props
 
-_No props._
+| Prop          | Type                | Required   | Default | Description                                                |
+| ------------- | ------------------- | ---------- | ------- | ---------------------------------------------------------- | --------------------------------- |
+| `open`        | `boolean`           | yes        | —       | Whether the component is open (controlled).                |
+| `title`       | `string`            | yes        | —       | Title text for the component.                              |
+| `description` | `string`            | yes        | —       | Supporting description text.                               |
+| `onConfirm`   | `() => void`        | yes        | —       | Called when the confirm button is activated.               |
+| `onCancel`    | `() => void`        | yes        | —       | Called when the cancel button is activated.                |
+| `labels`      | `AlertDialogLabels` | no         | —       | Overrides for the component’s user-visible strings (i18n). |
+| `variant`     | `'destructive'      | 'default'` | no      | `default`                                                  | Selects the visual style variant. |
+
+## Examples
+
+### Destructive confirm
+
+```tsx
+<AlertDialog
+  open={isOpen}
+  variant="destructive"
+  title="Delete project?"
+  description="This permanently removes the project and cannot be undone."
+  onConfirm={remove}
+  onCancel={() => setIsOpen(false)}
+/>
+```
+
+### Custom action labels
+
+```tsx
+<AlertDialog
+  open={isOpen}
+  title="Sign out?"
+  description="Unsaved changes will be lost."
+  labels={{ confirm: 'Sign out', cancel: 'Stay' }}
+  onConfirm={signOut}
+  onCancel={() => setIsOpen(false)}
+/>
+```
 
 ## Design tokens
 

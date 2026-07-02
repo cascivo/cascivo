@@ -22,7 +22,51 @@
     "states": ["open", "closed"],
     "variants": ["default", "destructive"],
     "sizes": [],
-    "props": [],
+    "props": [
+      {
+        "name": "open",
+        "description": "Whether the component is open (controlled).",
+        "type": "boolean",
+        "required": true
+      },
+      {
+        "name": "title",
+        "description": "Title text for the component.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "description": "Supporting description text.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "onConfirm",
+        "description": "Called when the confirm button is activated.",
+        "type": "() => void",
+        "required": true
+      },
+      {
+        "name": "onCancel",
+        "description": "Called when the cancel button is activated.",
+        "type": "() => void",
+        "required": true
+      },
+      {
+        "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
+        "type": "AlertDialogLabels",
+        "required": false
+      },
+      {
+        "name": "variant",
+        "description": "Selects the visual style variant.",
+        "type": "'destructive' | 'default'",
+        "required": false,
+        "default": "default"
+      }
+    ],
     "tokens": [
       "--cascivo-color-surface",
       "--cascivo-color-border",
@@ -38,7 +82,16 @@
       "wcag": "2.2-AA",
       "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Destructive confirm",
+        "code": "<AlertDialog\n  open={isOpen}\n  variant=\"destructive\"\n  title=\"Delete project?\"\n  description=\"This permanently removes the project and cannot be undone.\"\n  onConfirm={remove}\n  onCancel={() => setIsOpen(false)}\n/>"
+      },
+      {
+        "title": "Custom action labels",
+        "code": "<AlertDialog\n  open={isOpen}\n  title=\"Sign out?\"\n  description=\"Unsaved changes will be lost.\"\n  labels={{ confirm: 'Sign out', cancel: 'Stay' }}\n  onConfirm={signOut}\n  onCancel={() => setIsOpen(false)}\n/>"
+      }
+    ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": ["overlay", "dialog", "confirm", "destructive"],
     "intent": {

@@ -32,6 +32,22 @@
 
 Renders role="dialog" with aria-modal; the title labels it via aria-labelledby and the description via aria-describedby. FocusScope traps Tab focus and restores it on close; DismissableLayer handles Escape and outside-pointer dismissal.
 
+## Props
+
+| Name             | Type                      | Required | Default | Description                                                                   |
+| ---------------- | ------------------------- | -------- | ------- | ----------------------------------------------------------------------------- | --- | --- | ---------------------------------------------------------- |
+| `open`           | `boolean`                 | No       | —       | Whether the component is open (controlled).                                   |
+| `defaultOpen`    | `boolean`                 | No       | —       | Whether the component is open on first render (uncontrolled).                 |
+| `onOpenChange`   | `(open: boolean) => void` | No       | —       | Called with the next open state when it changes.                              |
+| `side`           | `'start'                  | 'end'    | 'top'   | 'bottom'`                                                                     | No  | end | Edge the panel is anchored to. Drives the slide direction. |
+| `size`           | `string`                  | No       | —       | Panel size along its cross axis (width for start/end, height for top/bottom). |
+| `title`          | `React.ReactNode`         | No       | —       | Title text for the component.                                                 |
+| `description`    | `React.ReactNode`         | No       | —       | Supporting description text.                                                  |
+| `children`       | `React.ReactNode`         | No       | —       | Content rendered inside the component.                                        |
+| `labels`         | `{ close?: string }`      | No       | —       | Overrides for the component’s user-visible strings (i18n).                    |
+| `className`      | `string`                  | No       | —       | Additional CSS class names merged onto the root element.                      |
+| `swipeToDismiss` | `boolean`                 | No       | false   | Allow dragging the header toward its edge to dismiss (opt-in).                |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -40,6 +56,26 @@ Renders role="dialog" with aria-modal; the title labels it via aria-labelledby a
 - `--cascivo-shadow-overlay`
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`
+
+## Examples
+
+### Basic
+
+```jsx
+<Drawer open={isOpen} onOpenChange={setIsOpen} title="Settings">
+  <SettingsForm />
+</Drawer>
+```
+
+### Bottom drawer with swipe-to-dismiss
+
+Dragging the header past a threshold toward the edge dismisses the panel.
+
+```jsx
+<Drawer defaultOpen side="bottom" size="20rem" swipeToDismiss title="Details">
+  <OrderDetails />
+</Drawer>
+```
 
 ## Boundaries
 

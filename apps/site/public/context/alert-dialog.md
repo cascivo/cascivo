@@ -37,6 +37,18 @@
 
 Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assistive tech announces it as an interruptive decision; focus moves to the cancel button on open so the safe default is selected, and popover="manual" prevents accidental dismissal that would skip the decision
 
+## Props
+
+| Name          | Type                | Required   | Default | Description                                                |
+| ------------- | ------------------- | ---------- | ------- | ---------------------------------------------------------- | --------------------------------- |
+| `open`        | `boolean`           | Yes        | —       | Whether the component is open (controlled).                |
+| `title`       | `string`            | Yes        | —       | Title text for the component.                              |
+| `description` | `string`            | Yes        | —       | Supporting description text.                               |
+| `onConfirm`   | `() => void`        | Yes        | —       | Called when the confirm button is activated.               |
+| `onCancel`    | `() => void`        | Yes        | —       | Called when the cancel button is activated.                |
+| `labels`      | `AlertDialogLabels` | No         | —       | Overrides for the component’s user-visible strings (i18n). |
+| `variant`     | `'destructive'      | 'default'` | No      | default                                                    | Selects the visual style variant. |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -47,6 +59,34 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 - `--cascivo-motion-exit`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
+
+## Examples
+
+### Destructive confirm
+
+```jsx
+<AlertDialog
+  open={isOpen}
+  variant="destructive"
+  title="Delete project?"
+  description="This permanently removes the project and cannot be undone."
+  onConfirm={remove}
+  onCancel={() => setIsOpen(false)}
+/>
+```
+
+### Custom action labels
+
+```jsx
+<AlertDialog
+  open={isOpen}
+  title="Sign out?"
+  description="Unsaved changes will be lost."
+  labels={{ confirm: 'Sign out', cancel: 'Stay' }}
+  onConfirm={signOut}
+  onCancel={() => setIsOpen(false)}
+/>
+```
 
 ## Boundaries
 

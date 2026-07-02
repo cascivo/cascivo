@@ -67,7 +67,18 @@
       "wcag": "2.2-AA",
       "keyboard": []
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<PullToRefresh onRefresh={() => refetch()}>\n  <FeedList items={items} />\n</PullToRefresh>",
+        "description": "The spinner shows until the returned promise settles."
+      },
+      {
+        "title": "Custom threshold",
+        "code": "<PullToRefresh onRefresh={loadLatest} threshold={96}>\n  <MessageList />\n</PullToRefresh>",
+        "description": "Requires a longer pull before a refresh is triggered."
+      }
+    ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "registryDependencies": ["spinner"],
     "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],

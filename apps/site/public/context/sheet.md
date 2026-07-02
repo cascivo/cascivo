@@ -49,6 +49,24 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`
 
+## Examples
+
+### Basic
+
+```jsx
+<Sheet open={isOpen} onClose={() => setIsOpen(false)} title="Filters">
+  <FilterForm />
+</Sheet>
+```
+
+### Bottom sheet
+
+```jsx
+<Sheet open={isOpen} onClose={close} side="bottom" title="Share">
+  <ShareOptions />
+</Sheet>
+```
+
 ## Boundaries
 
 | Area         | Level    | Note                                           |

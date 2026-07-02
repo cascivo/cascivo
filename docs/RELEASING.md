@@ -8,11 +8,12 @@ and [npm Trusted Publishing](https://docs.npmjs.com/generating-provenance-statem
 
 ### 1. Configure trusted publishers on npmjs.com
 
-For each of the ten Tier-1 packages, you must configure a trusted publisher on npmjs.com
+For each published package, you must configure a trusted publisher on npmjs.com
 **before** the first automated publish. Go to each package page → Settings → Trusted Publisher:
 
 | Package  | npm name          |
 | -------- | ----------------- |
+| ai       | @cascivo/ai       |
 | core     | @cascivo/core     |
 | tokens   | @cascivo/tokens   |
 | themes   | @cascivo/themes   |

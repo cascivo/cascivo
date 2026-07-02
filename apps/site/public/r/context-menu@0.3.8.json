@@ -22,7 +22,14 @@
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],
-    "props": [],
+    "props": [
+      {
+        "name": "children",
+        "description": "The right-click target first, followed by ContextMenuItem children.",
+        "type": "React.ReactNode",
+        "required": true
+      }
+    ],
     "tokens": [
       "--cascivo-color-surface",
       "--cascivo-color-border",
@@ -37,7 +44,16 @@
       "wcag": "2.2-AA",
       "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Basic",
+        "code": "<ContextMenu>\n  <div>Right-click me</div>\n  <ContextMenuItem onSelect={rename}>Rename</ContextMenuItem>\n  <ContextMenuItem onSelect={remove}>Delete</ContextMenuItem>\n</ContextMenu>"
+      },
+      {
+        "title": "Disabled item",
+        "code": "<ContextMenu>\n  <FileRow file={file} />\n  <ContextMenuItem onSelect={copy}>Copy</ContextMenuItem>\n  <ContextMenuItem onSelect={paste} disabled>Paste</ContextMenuItem>\n</ContextMenu>"
+      }
+    ],
     "dependencies": ["@cascivo/core"],
     "tags": ["overlay", "menu", "context", "right-click"],
     "intent": {

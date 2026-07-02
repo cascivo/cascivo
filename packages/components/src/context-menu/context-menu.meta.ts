@@ -7,7 +7,14 @@ export const meta: ComponentMeta = {
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'children',
+      description: 'The right-click target first, followed by ContextMenuItem children.',
+      type: 'React.ReactNode',
+      required: true,
+    },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-border',
@@ -22,7 +29,24 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Space', 'Escape'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<ContextMenu>
+  <div>Right-click me</div>
+  <ContextMenuItem onSelect={rename}>Rename</ContextMenuItem>
+  <ContextMenuItem onSelect={remove}>Delete</ContextMenuItem>
+</ContextMenu>`,
+    },
+    {
+      title: 'Disabled item',
+      code: `<ContextMenu>
+  <FileRow file={file} />
+  <ContextMenuItem onSelect={copy}>Copy</ContextMenuItem>
+  <ContextMenuItem onSelect={paste} disabled>Paste</ContextMenuItem>
+</ContextMenu>`,
+    },
+  ],
   dependencies: ['@cascivo/core'],
   tags: ['overlay', 'menu', 'context', 'right-click'],
   intent: {

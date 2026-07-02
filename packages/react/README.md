@@ -150,7 +150,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-191 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
+192 components, exported from `@cascivo/react`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).
 
 ### Inputs
 
@@ -218,6 +218,7 @@ routing break after adding one of these, check that the import resolves to
 - **EmptyState** — Placeholder for views that have no data to display
 - **Flow** — The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.
 - **FlowBackground** — Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.
+- **FlowCanvas** — The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.
 - **FlowControls** — Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.
 - **FlowEdge** — An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.
 - **FlowHandle** — A connection port on a node edge — where edges attach and interactive connect starts.

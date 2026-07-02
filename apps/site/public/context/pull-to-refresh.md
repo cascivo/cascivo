@@ -48,6 +48,28 @@ The gesture is a touch-only enhancement: it arms only at scrollTop 0 and uses to
 - `--cascivo-color-text-muted`
 - `--cascivo-motion-enter`
 
+## Examples
+
+### Basic
+
+The spinner shows until the returned promise settles.
+
+```jsx
+<PullToRefresh onRefresh={() => refetch()}>
+  <FeedList items={items} />
+</PullToRefresh>
+```
+
+### Custom threshold
+
+Requires a longer pull before a refresh is triggered.
+
+```jsx
+<PullToRefresh onRefresh={loadLatest} threshold={96}>
+  <MessageList />
+</PullToRefresh>
+```
+
 ## Boundaries
 
 | Area      | Level    | Note                                                             |

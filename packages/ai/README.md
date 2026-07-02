@@ -5,10 +5,12 @@
   <h1>@cascivo/ai</h1>
   <p><strong>AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat</strong></p>
 
-![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
+[![npm](https://img.shields.io/npm/v/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/ai)
+[![downloads](https://img.shields.io/npm/dm/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/ai)
+[![license](https://img.shields.io/npm/l/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://github.com/cascivo/cascivo/blob/main/LICENSE)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[npm](https://www.npmjs.com/package/@cascivo/ai) · [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 </div>
 
@@ -25,6 +27,12 @@ The **context layer** for cascivo — the WHY that sits alongside the WHAT (mani
 ## Why a context layer
 
 Manifests tell an agent _what_ a `Button` is and _which_ props it takes. The context layer tells it _when_ to reach for a `Button` versus a `Link`, _what not to do_, and _which token_ to use — then `cascivo audit --ai` verifies the result. Together they turn "generate some UI" into "select from closed sets and prove the output conforms."
+
+## Install
+
+```sh
+pnpm add @cascivo/ai
+```
 
 ---
 

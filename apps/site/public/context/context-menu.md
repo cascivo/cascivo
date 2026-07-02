@@ -30,6 +30,12 @@
 
 The menu container is role="menu" and items are role="menuitem" with tabIndex management and aria-disabled, and it uses popover="auto" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent
 
+## Props
+
+| Name       | Type              | Required | Default | Description                                                         |
+| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `children` | `React.ReactNode` | Yes      | —       | The right-click target first, followed by ContextMenuItem children. |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -39,6 +45,30 @@ The menu container is role="menu" and items are role="menuitem" with tabIndex ma
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`
 - `--cascivo-color-bg-subtle`
+
+## Examples
+
+### Basic
+
+```jsx
+<ContextMenu>
+  <div>Right-click me</div>
+  <ContextMenuItem onSelect={rename}>Rename</ContextMenuItem>
+  <ContextMenuItem onSelect={remove}>Delete</ContextMenuItem>
+</ContextMenu>
+```
+
+### Disabled item
+
+```jsx
+<ContextMenu>
+  <FileRow file={file} />
+  <ContextMenuItem onSelect={copy}>Copy</ContextMenuItem>
+  <ContextMenuItem onSelect={paste} disabled>
+    Paste
+  </ContextMenuItem>
+</ContextMenu>
+```
 
 ## Boundaries
 

@@ -37,7 +37,64 @@
     "states": ["idle", "copied"],
     "variants": ["inline", "single", "multi"],
     "sizes": [],
-    "props": [],
+    "props": [
+      {
+        "name": "code",
+        "description": "The code to display (and copy).",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "variant",
+        "description": "inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>.",
+        "type": "'inline' | 'single' | 'multi'",
+        "required": false,
+        "default": "single"
+      },
+      {
+        "name": "language",
+        "description": "Enables built-in syntax highlighting for the block variants; inline is never highlighted.",
+        "type": "'bash' | 'css' | 'js' | 'ts'",
+        "required": false
+      },
+      {
+        "name": "terminal",
+        "description": "Renders terminal-window chrome (title bar with dots). Block variants only.",
+        "type": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "name": "title",
+        "description": "Optional label shown in the terminal title bar.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "showLineNumbers",
+        "description": "Show line numbers (multi only; ignored when language is set).",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "showCopyButton",
+        "description": "Show the copy-to-clipboard button. Defaults true for single/multi, false for inline.",
+        "type": "boolean",
+        "required": false
+      },
+      {
+        "name": "labels",
+        "description": "Overrides for the component’s user-visible strings (i18n).",
+        "type": "{ copy?: string; copied?: string }",
+        "required": false
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      }
+    ],
     "tokens": [
       "--cascivo-font-mono",
       "--cascivo-color-text",
@@ -53,7 +110,21 @@
       "wcag": "2.2-AA",
       "keyboard": ["Enter", "Space"]
     },
-    "examples": [],
+    "examples": [
+      {
+        "title": "Install command",
+        "code": "<CodeSnippet code=\"npx cascivo add button\" language=\"bash\" />"
+      },
+      {
+        "title": "Inline",
+        "code": "<p>Run <CodeSnippet variant=\"inline\" code=\"pnpm build\" /> first.</p>"
+      },
+      {
+        "title": "Terminal block",
+        "code": "<CodeSnippet\n  variant=\"multi\"\n  language=\"bash\"\n  terminal\n  title=\"deploy.sh\"\n  code={'pnpm build\\npnpm deploy'}\n/>",
+        "description": "Multi-line shell transcript with terminal-window chrome."
+      }
+    ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "tags": [
       "display",

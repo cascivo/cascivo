@@ -7,7 +7,26 @@ export const meta: ComponentMeta = {
   states: [],
   variants: [],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'children',
+      description: 'Authored flow content (headings, paragraphs, lists, code, tables) to style.',
+      type: 'React.ReactNode',
+      required: false,
+    },
+    {
+      name: 'dangerouslySetInnerHTML',
+      description: 'Rendered HTML you do not control (CMS, markdown pipelines). Sanitize first.',
+      type: '{ __html: string }',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
   tokens: [
     '--cascivo-font-sans',
     '--cascivo-font-mono',

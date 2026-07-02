@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flow-flow-canvas",
+  "type": "registry:component",
+  "files": [],
+  "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["display"],
+  "meta": {
+    "cascivo": {
+      "type": "flow",
+      "version": "0.3.8"
+    }
+  }
+}

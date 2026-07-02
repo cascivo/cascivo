@@ -51,6 +51,32 @@ The action buttons are always rendered in the DOM and the accessibility tree, ne
 - `--cascivo-target-min-coarse`
 - `--cascivo-motion-enter`
 
+## Examples
+
+### Trailing actions
+
+```jsx
+<SwipeItem
+  trailingActions={[
+    { label: 'Archive', onSelect: archive },
+    { label: 'Delete', onSelect: remove, destructive: true },
+  ]}
+>
+  <MessageRow message={message} />
+</SwipeItem>
+```
+
+### Leading and trailing
+
+```jsx
+<SwipeItem
+  leadingActions={[{ label: 'Pin', icon: <PinIcon />, onSelect: pin }]}
+  trailingActions={[{ label: 'Delete', onSelect: remove, destructive: true }]}
+>
+  <TaskRow task={task} />
+</SwipeItem>
+```
+
 ## Boundaries
 
 | Area             | Level    | Note                                                                             |

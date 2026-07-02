@@ -214,7 +214,17 @@
           "wcag": "2.2-AA",
           "keyboard": ["ArrowUp", "ArrowDown", "Home", "End", "Enter", "Space", "Escape"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<ActionSheet\n  open={isOpen}\n  onOpenChange={setIsOpen}\n  title=\"Share photo\"\n  actions={[\n    { label: 'Copy link', onSelect: copyLink },\n    { label: 'Delete', onSelect: remove, destructive: true },\n  ]}\n/>"
+          },
+          {
+            "title": "Without cancel button",
+            "code": "<ActionSheet defaultOpen showCancel={false} actions={[{ label: \"Archive\", onSelect: archive }]} />",
+            "description": "Escape and outside press still dismiss the sheet."
+          }
+        ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "action-sheet", "menu", "mobile", "sheet"],
         "intent": {
@@ -434,7 +444,51 @@
         "states": ["open", "closed"],
         "variants": ["default", "destructive"],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "open",
+            "description": "Whether the component is open (controlled).",
+            "type": "boolean",
+            "required": true
+          },
+          {
+            "name": "title",
+            "description": "Title text for the component.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "description",
+            "description": "Supporting description text.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "onConfirm",
+            "description": "Called when the confirm button is activated.",
+            "type": "() => void",
+            "required": true
+          },
+          {
+            "name": "onCancel",
+            "description": "Called when the cancel button is activated.",
+            "type": "() => void",
+            "required": true
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "AlertDialogLabels",
+            "required": false
+          },
+          {
+            "name": "variant",
+            "description": "Selects the visual style variant.",
+            "type": "'destructive' | 'default'",
+            "required": false,
+            "default": "default"
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-border",
@@ -450,7 +504,16 @@
           "wcag": "2.2-AA",
           "keyboard": ["Tab", "Shift+Tab", "Enter", "Space"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Destructive confirm",
+            "code": "<AlertDialog\n  open={isOpen}\n  variant=\"destructive\"\n  title=\"Delete project?\"\n  description=\"This permanently removes the project and cannot be undone.\"\n  onConfirm={remove}\n  onCancel={() => setIsOpen(false)}\n/>"
+          },
+          {
+            "title": "Custom action labels",
+            "code": "<AlertDialog\n  open={isOpen}\n  title=\"Sign out?\"\n  description=\"Unsaved changes will be lost.\"\n  labels={{ confirm: 'Sign out', cancel: 'Stay' }}\n  onConfirm={signOut}\n  onCancel={() => setIsOpen(false)}\n/>"
+          }
+        ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "dialog", "confirm", "destructive"],
         "intent": {
@@ -1343,7 +1406,17 @@
           "wcag": "2.2-AA",
           "keyboard": ["Escape", "Tab", "Shift+Tab"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<BottomSheet open={isOpen} onOpenChange={setIsOpen} title=\"Filters\">\n  <FilterForm />\n</BottomSheet>"
+          },
+          {
+            "title": "Custom detents",
+            "code": "<BottomSheet defaultOpen snapPoints={[0.25, 0.5, 0.9]} defaultSnap={1} title=\"Nearby\">\n  <PlacesList />\n</BottomSheet>",
+            "description": "Snaps between three detents by dragging the handle; opens at half height."
+          }
+        ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "sheet", "bottom-sheet", "mobile", "drag", "detent", "gesture"],
         "intent": {
@@ -2785,7 +2858,64 @@
         "states": ["idle", "copied"],
         "variants": ["inline", "single", "multi"],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "code",
+            "description": "The code to display (and copy).",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "variant",
+            "description": "inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>.",
+            "type": "'inline' | 'single' | 'multi'",
+            "required": false,
+            "default": "single"
+          },
+          {
+            "name": "language",
+            "description": "Enables built-in syntax highlighting for the block variants; inline is never highlighted.",
+            "type": "'bash' | 'css' | 'js' | 'ts'",
+            "required": false
+          },
+          {
+            "name": "terminal",
+            "description": "Renders terminal-window chrome (title bar with dots). Block variants only.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "title",
+            "description": "Optional label shown in the terminal title bar.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "showLineNumbers",
+            "description": "Show line numbers (multi only; ignored when language is set).",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "showCopyButton",
+            "description": "Show the copy-to-clipboard button. Defaults true for single/multi, false for inline.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "{ copy?: string; copied?: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
         "tokens": [
           "--cascivo-font-mono",
           "--cascivo-color-text",
@@ -2801,7 +2931,21 @@
           "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Install command",
+            "code": "<CodeSnippet code=\"npx cascivo add button\" language=\"bash\" />"
+          },
+          {
+            "title": "Inline",
+            "code": "<p>Run <CodeSnippet variant=\"inline\" code=\"pnpm build\" /> first.</p>"
+          },
+          {
+            "title": "Terminal block",
+            "code": "<CodeSnippet\n  variant=\"multi\"\n  language=\"bash\"\n  terminal\n  title=\"deploy.sh\"\n  code={'pnpm build\\npnpm deploy'}\n/>",
+            "description": "Multi-line shell transcript with terminal-window chrome."
+          }
+        ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": [
           "display",
@@ -3815,7 +3959,14 @@
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "The right-click target first, followed by ContextMenuItem children.",
+            "type": "React.ReactNode",
+            "required": true
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-border",
@@ -3830,7 +3981,16 @@
           "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<ContextMenu>\n  <div>Right-click me</div>\n  <ContextMenuItem onSelect={rename}>Rename</ContextMenuItem>\n  <ContextMenuItem onSelect={remove}>Delete</ContextMenuItem>\n</ContextMenu>"
+          },
+          {
+            "title": "Disabled item",
+            "code": "<ContextMenu>\n  <FileRow file={file} />\n  <ContextMenuItem onSelect={copy}>Copy</ContextMenuItem>\n  <ContextMenuItem onSelect={paste} disabled>Paste</ContextMenuItem>\n</ContextMenu>"
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "menu", "context", "right-click"],
         "intent": {
@@ -4879,7 +5039,76 @@
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "open",
+            "description": "Whether the component is open (controlled).",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "defaultOpen",
+            "description": "Whether the component is open on first render (uncontrolled).",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "description": "Called with the next open state when it changes.",
+            "type": "(open: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "side",
+            "description": "Edge the panel is anchored to. Drives the slide direction.",
+            "type": "'start' | 'end' | 'top' | 'bottom'",
+            "required": false,
+            "default": "end"
+          },
+          {
+            "name": "size",
+            "description": "Panel size along its cross axis (width for start/end, height for top/bottom).",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "title",
+            "description": "Title text for the component.",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "description",
+            "description": "Supporting description text.",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "children",
+            "description": "Content rendered inside the component.",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "{ close?: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "swipeToDismiss",
+            "description": "Allow dragging the header toward its edge to dismiss (opt-in).",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-border",
@@ -4893,7 +5122,17 @@
           "wcag": "2.2-AA",
           "keyboard": ["Escape", "Tab", "Shift+Tab"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Drawer open={isOpen} onOpenChange={setIsOpen} title=\"Settings\">\n  <SettingsForm />\n</Drawer>"
+          },
+          {
+            "title": "Bottom drawer with swipe-to-dismiss",
+            "code": "<Drawer defaultOpen side=\"bottom\" size=\"20rem\" swipeToDismiss title=\"Details\">\n  <OrderDetails />\n</Drawer>",
+            "description": "Dragging the header past a threshold toward the edge dismisses the panel."
+          }
+        ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
         "intent": {
@@ -5453,7 +5692,21 @@
           "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space", "ArrowUp", "ArrowDown", "Home", "End", "Escape"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Single action",
+            "code": "<Fab label=\"Compose\" onClick={compose}><PlusIcon /></Fab>"
+          },
+          {
+            "title": "Speed dial",
+            "code": "<Fab\n  label=\"Create\"\n  actions={[\n    { label: 'New note', icon: <NoteIcon />, onSelect: newNote },\n    { label: 'New folder', icon: <FolderIcon />, onSelect: newFolder },\n  ]}\n>\n  <PlusIcon />\n</Fab>",
+            "description": "The main button toggles a menu of secondary actions."
+          },
+          {
+            "title": "Start corner",
+            "code": "<Fab label=\"Help\" position=\"bottom-start\" onClick={openHelp}><HelpIcon /></Fab>"
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "tags": ["inputs", "fab", "floating-action-button", "mobile", "speed-dial"],
         "intent": {
@@ -6508,7 +6761,28 @@
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "A HoverCardTrigger and HoverCardContent pair.",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "openDelay",
+            "description": "Delay (ms) before the card opens on hover/focus.",
+            "type": "number",
+            "required": false,
+            "default": "300"
+          },
+          {
+            "name": "closeDelay",
+            "description": "Delay (ms) before the card closes after hover/focus leaves.",
+            "type": "number",
+            "required": false,
+            "default": "100"
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-border",
@@ -6522,7 +6796,16 @@
           "wcag": "2.2-AA",
           "keyboard": ["Tab", "Escape"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Profile preview",
+            "code": "<HoverCard>\n  <HoverCardTrigger><a href=\"/users/ada\">@ada</a></HoverCardTrigger>\n  <HoverCardContent>\n    <Avatar name=\"Ada Lovelace\" />\n    <p>Wrote the first program.</p>\n  </HoverCardContent>\n</HoverCard>"
+          },
+          {
+            "title": "Custom delays",
+            "code": "<HoverCard openDelay={500} closeDelay={200}>\n  <HoverCardTrigger>Definition</HoverCardTrigger>\n  <HoverCardContent>A longer explanation shown on hover or focus.</HoverCardContent>\n</HoverCard>"
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "registryDependencies": ["popover"],
         "tags": ["overlay", "hover", "preview", "floating"],
@@ -8296,7 +8579,14 @@
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "The MenuTrigger first, followed by MenuItem/MenuSeparator children.",
+            "type": "React.ReactNode",
+            "required": true
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-border",
@@ -8311,7 +8601,16 @@
           "wcag": "2.2-AA",
           "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Menu>\n  <MenuTrigger>Options</MenuTrigger>\n  <MenuItem onSelect={rename}>Rename</MenuItem>\n  <MenuItem onSelect={duplicate}>Duplicate</MenuItem>\n</Menu>"
+          },
+          {
+            "title": "With separator and disabled item",
+            "code": "<Menu>\n  <MenuTrigger aria-label=\"More actions\">…</MenuTrigger>\n  <MenuItem onSelect={share}>Share</MenuItem>\n  <MenuSeparator />\n  <MenuItem onSelect={remove} disabled>Delete</MenuItem>\n</Menu>"
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "registryDependencies": ["popover"],
         "tags": ["overlay", "menu", "dropdown", "floating"],
@@ -8987,7 +9286,69 @@
         "states": ["default", "focus", "disabled", "invalid"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
-        "props": [],
+        "props": [
+          {
+            "name": "options",
+            "description": "Options to render. Alternatively pass <option> children.",
+            "type": "NativeSelectOption[]",
+            "required": false
+          },
+          {
+            "name": "children",
+            "description": "Raw <option> children (used when options is not provided).",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "size",
+            "description": "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+            "type": "'sm' | 'md' | 'lg'",
+            "required": false,
+            "default": "md"
+          },
+          {
+            "name": "invalid",
+            "description": "Marks the control as invalid for error styling and a11y.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "placeholder",
+            "description": "Placeholder rendered as a disabled, hidden first option.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "value",
+            "description": "The controlled value.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "defaultValue",
+            "description": "The initial value when uncontrolled.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "onChange",
+            "description": "Called when the selected value changes.",
+            "type": "React.ChangeEventHandler<HTMLSelectElement>",
+            "required": false
+          },
+          {
+            "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-border",
@@ -9003,7 +9364,20 @@
           "wcag": "2.2-AA",
           "keyboard": ["ArrowUp", "ArrowDown", "Enter", "Space", "Home", "End"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<NativeSelect\n  placeholder=\"Choose a country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n  ]}\n  onChange={(e) => setCountry(e.target.value)}\n/>"
+          },
+          {
+            "title": "Option children",
+            "code": "<NativeSelect size=\"sm\" defaultValue=\"light\">\n  <option value=\"light\">Light</option>\n  <option value=\"dark\">Dark</option>\n</NativeSelect>"
+          },
+          {
+            "title": "Invalid",
+            "code": "<NativeSelect invalid placeholder=\"Required\" options={countries} />"
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "tags": ["inputs", "select", "native", "form", "dropdown"],
         "intent": {
@@ -10143,7 +10517,40 @@
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "A PopoverTrigger and PopoverContent pair.",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "open",
+            "description": "Whether the component is open (controlled).",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onOpenChange",
+            "description": "Called with the next open state when it changes.",
+            "type": "(open: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "placement",
+            "description": "Placement relative to the trigger.",
+            "type": "'top' | 'bottom' | 'left' | 'right'",
+            "required": false,
+            "default": "bottom"
+          },
+          {
+            "name": "offset",
+            "description": "Distance (px) between the trigger and the panel.",
+            "type": "number",
+            "required": false,
+            "default": "4"
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-border",
@@ -10157,7 +10564,16 @@
           "wcag": "2.2-AA",
           "keyboard": ["Escape"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Popover>\n  <PopoverTrigger>Open settings</PopoverTrigger>\n  <PopoverContent>\n    <form>…</form>\n  </PopoverContent>\n</Popover>"
+          },
+          {
+            "title": "Controlled with placement",
+            "code": "<Popover open={isOpen} onOpenChange={setIsOpen} placement=\"top\">\n  <PopoverTrigger>Filters</PopoverTrigger>\n  <PopoverContent><FilterForm /></PopoverContent>\n</Popover>"
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "tags": ["overlay", "floating", "anchor", "popover"],
         "intent": {
@@ -10748,7 +11164,26 @@
         "states": [],
         "variants": [],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "children",
+            "description": "Authored flow content (headings, paragraphs, lists, code, tables) to style.",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "dangerouslySetInnerHTML",
+            "description": "Rendered HTML you do not control (CMS, markdown pipelines). Sanitize first.",
+            "type": "{ __html: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
         "tokens": [
           "--cascivo-font-sans",
           "--cascivo-font-mono",
@@ -10896,7 +11331,18 @@
           "wcag": "2.2-AA",
           "keyboard": []
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<PullToRefresh onRefresh={() => refetch()}>\n  <FeedList items={items} />\n</PullToRefresh>",
+            "description": "The spinner shows until the returned promise settles."
+          },
+          {
+            "title": "Custom threshold",
+            "code": "<PullToRefresh onRefresh={loadLatest} threshold={96}>\n  <MessageList />\n</PullToRefresh>",
+            "description": "Requires a longer pull before a refresh is triggered."
+          }
+        ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "registryDependencies": ["spinner"],
         "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
@@ -12607,7 +13053,16 @@
           "wcag": "2.2-AA",
           "keyboard": ["Escape", "Tab", "Shift+Tab"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Basic",
+            "code": "<Sheet open={isOpen} onClose={() => setIsOpen(false)} title=\"Filters\">\n  <FilterForm />\n</Sheet>"
+          },
+          {
+            "title": "Bottom sheet",
+            "code": "<Sheet open={isOpen} onClose={close} side=\"bottom\" title=\"Share\">\n  <ShareOptions />\n</Sheet>"
+          }
+        ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "tags": ["overlay", "drawer", "panel", "slide"],
         "intent": {
@@ -14292,7 +14747,16 @@
           "wcag": "2.2-AA",
           "keyboard": ["Tab", "Enter", "Space", "Escape"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Trailing actions",
+            "code": "<SwipeItem\n  trailingActions={[\n    { label: 'Archive', onSelect: archive },\n    { label: 'Delete', onSelect: remove, destructive: true },\n  ]}\n>\n  <MessageRow message={message} />\n</SwipeItem>"
+          },
+          {
+            "title": "Leading and trailing",
+            "code": "<SwipeItem\n  leadingActions={[{ label: 'Pin', icon: <PinIcon />, onSelect: pin }]}\n  trailingActions={[{ label: 'Delete', onSelect: remove, destructive: true }]}\n>\n  <TaskRow task={task} />\n</SwipeItem>"
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
         "intent": {
@@ -15125,7 +15589,69 @@
         "states": ["default", "selected", "focus", "disabled"],
         "variants": ["single", "multi"],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "value",
+            "description": "Identifies this tile within a group.",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "selected",
+            "description": "Controlled selected state.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "defaultSelected",
+            "description": "Initial selected state for uncontrolled use.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "onSelect",
+            "description": "Called with this tile's value whenever it is toggled on (or off for multi).",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
+            "name": "selectable",
+            "description": "Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off).",
+            "type": "'single' | 'multi'",
+            "required": false,
+            "default": "single"
+          },
+          {
+            "name": "disabled",
+            "description": "When true, disables the control and removes it from the tab order.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "icon",
+            "description": "Optional leading icon/visual.",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "asChild",
+            "description": "When true, renders the child element as the root via Slot, merging props (polymorphic rendering).",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "children",
+            "description": "Content rendered inside the component.",
+            "type": "React.ReactNode",
+            "required": false
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
         "tokens": [
           "--cascivo-color-bg",
           "--cascivo-color-border",
@@ -15141,7 +15667,17 @@
           "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"]
         },
-        "examples": [],
+        "examples": [
+          {
+            "title": "Single-select group",
+            "code": "<div role=\"radiogroup\" aria-label=\"Plan\">\n  <Tile value=\"starter\" selected={plan === 'starter'} onSelect={setPlan}>Starter</Tile>\n  <Tile value=\"pro\" selected={plan === 'pro'} onSelect={setPlan}>Pro</Tile>\n</div>"
+          },
+          {
+            "title": "Multi-select with icon",
+            "code": "<Tile value=\"notifications\" selectable=\"multi\" icon={<BellIcon />} defaultSelected>\n  Email notifications\n</Tile>",
+            "description": "Multi tiles toggle on and off like a checkbox."
+          }
+        ],
         "dependencies": ["@cascivo/core"],
         "tags": ["inputs", "tile", "card", "selectable", "choice"],
         "intent": {
@@ -17995,7 +18531,14 @@
         "states": [],
         "variants": [],
         "sizes": [],
-        "props": [],
+        "props": [
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root DashboardLayout element.",
+            "type": "string",
+            "required": false
+          }
+        ],
         "tokens": [],
         "accessibility": {
           "role": "generic",
@@ -24502,6 +25045,125 @@
         }
       },
       "install": "@cascivo/flow"
+    },
+    {
+      "name": "flow/flow-canvas",
+      "type": "flow",
+      "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
+      "category": "display",
+      "version": "0.3.8",
+      "files": [],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
+      "meta": {
+        "name": "FlowCanvas",
+        "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
+        "category": "display",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Background, nodes, edges."
+          },
+          {
+            "name": "viewport",
+            "type": "{ x: number; y: number; zoom: number }",
+            "required": false,
+            "description": "Controlled viewport."
+          },
+          {
+            "name": "onViewportChange",
+            "type": "(viewport: Viewport) => void",
+            "required": false,
+            "description": "Viewport change callback."
+          },
+          {
+            "name": "minZoom",
+            "type": "number",
+            "required": false,
+            "default": "0.2"
+          },
+          {
+            "name": "maxZoom",
+            "type": "number",
+            "required": false,
+            "default": "2"
+          },
+          {
+            "name": "panOnDrag",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "zoomOnScroll",
+            "type": "boolean",
+            "required": false,
+            "default": "true"
+          },
+          {
+            "name": "fitView",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": ["--cascivo-color-bg", "--cascivo-radius-surface"],
+        "accessibility": {
+          "role": "application",
+          "wcag": "2.1-AA",
+          "keyboard": ["Tab (focus)", "Drag (pan)", "Wheel (zoom)"]
+        },
+        "examples": [
+          {
+            "title": "Empty canvas with a background",
+            "code": "() => (\n  <FlowCanvas style={{ height: 240 }}>\n    <FlowBackground />\n  </FlowCanvas>\n)"
+          }
+        ],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
+        "intent": {
+          "whenToUse": [
+            "Hosting a hand-composed flow from low-level FlowNode/FlowEdge primitives",
+            "When you need direct control of the viewport, pan, and zoom"
+          ],
+          "whenNotToUse": [
+            "For the common case — prefer the declarative <Flow nodes edges /> instead"
+          ],
+          "antiPatterns": [],
+          "related": [
+            {
+              "name": "Flow",
+              "relationship": "alternative",
+              "reason": "The declarative data-driven wrapper."
+            },
+            {
+              "name": "FlowBackground",
+              "relationship": "contains",
+              "reason": "A common child."
+            }
+          ],
+          "a11yRationale": "role=\"application\" — the pane is an interactive canvas with pointer gestures.",
+          "flexibility": [
+            {
+              "area": "viewport",
+              "level": "flexible",
+              "note": "Controllable; pan/zoom toggleable."
+            }
+          ]
+        }
+      },
+      "install": "@cascivo/flow"
     }
   ],
   "blocks": [
@@ -24521,6 +25183,30 @@
       "screenshot": {
         "light": "/blocks/screenshots/app-shell-light.png",
         "dark": "/blocks/screenshots/app-shell-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Frame for an authenticated app: persistent sidebar nav on desktop, drawer nav on mobile",
+          "Starting point when a page needs a topbar, main navigation, and a content area",
+          "Hosting dashboard or settings blocks inside consistent app chrome"
+        ],
+        "whenNotToUse": [
+          "Marketing or landing pages — compose marketing-hero, marketing-features, and site-footer instead",
+          "Standalone auth screens — auth-login and auth-signup are full-page centered cards without app chrome"
+        ],
+        "related": [
+          {
+            "name": "dashboard-overview",
+            "relationship": "pairs-with",
+            "reason": "Typical content for the shell’s main area"
+          },
+          {
+            "name": "settings-profile",
+            "relationship": "pairs-with",
+            "reason": "Settings pages render inside this shell"
+          }
+        ],
+        "a11yRationale": "Sidebar nav is a labeled <nav> landmark with aria-current=\"page\" on the active link; the mobile drawer toggle exposes aria-expanded, Escape closes the drawer, body scroll is locked while open, and the off-screen sidebar is aria-hidden on mobile so it leaves the a11y tree only when visually unavailable"
       }
     },
     {
@@ -24539,6 +25225,30 @@
       "screenshot": {
         "light": "/blocks/screenshots/auth-login-light.png",
         "dark": "/blocks/screenshots/auth-login-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Sign-in page for returning users with email + password credentials",
+          "Standalone centered auth screen with remember-me and a forgot-password recovery link"
+        ],
+        "whenNotToUse": [
+          "Registering new users — use auth-signup (this block links to it)",
+          "SSO/OAuth-only sign-in with no password field — the form is credential-based",
+          "Inline sign-in inside app chrome — this is a full-page centered card layout"
+        ],
+        "related": [
+          {
+            "name": "auth-signup",
+            "relationship": "pairs-with",
+            "reason": "The blocks cross-link: login footer points to signup and vice versa"
+          },
+          {
+            "name": "Input",
+            "relationship": "contains",
+            "reason": "Email and password fields are Input components with autocomplete wired"
+          }
+        ],
+        "a11yRationale": "Every field has an explicit <label htmlFor>, inputs declare autoComplete=\"email\"/\"current-password\" for password managers, and the submit is a real type=\"submit\" button inside a <form>"
       }
     },
     {
@@ -24557,6 +25267,29 @@
       "screenshot": {
         "light": "/blocks/screenshots/auth-signup-light.png",
         "dark": "/blocks/screenshots/auth-signup-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Registration page collecting name, email, and password with confirmation",
+          "Flows that require explicit terms-of-service / privacy-policy consent before account creation"
+        ],
+        "whenNotToUse": [
+          "Signing in existing users — use auth-login (this block links to it)",
+          "Multi-step onboarding wizards — this is a single-screen form"
+        ],
+        "related": [
+          {
+            "name": "auth-login",
+            "relationship": "pairs-with",
+            "reason": "The blocks cross-link: signup footer points to login and vice versa"
+          },
+          {
+            "name": "Checkbox",
+            "relationship": "contains",
+            "reason": "Terms consent is a Checkbox tied to its label with links to terms and privacy"
+          }
+        ],
+        "a11yRationale": "Every field has an explicit <label htmlFor>, password fields declare autoComplete=\"new-password\" so managers offer generation, and the terms checkbox is associated with its label text"
       }
     },
     {
@@ -24575,6 +25308,33 @@
       "screenshot": {
         "light": "/blocks/screenshots/dashboard-overview-light.png",
         "dark": "/blocks/screenshots/dashboard-overview-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Landing view of a dashboard summarizing headline KPIs (revenue, users, orders, conversion) at a glance",
+          "A stat-card row with up/down deltas versus the previous period, placed above detail views"
+        ],
+        "whenNotToUse": [
+          "Browsing row-level records — use dashboard-table",
+          "Trends over time that need charts — the cards show single values and deltas only"
+        ],
+        "related": [
+          {
+            "name": "dashboard-table",
+            "relationship": "pairs-with",
+            "reason": "Overview KPIs on top, record-level table below is the canonical dashboard page"
+          },
+          {
+            "name": "app-shell",
+            "relationship": "contained-by",
+            "reason": "Designed to render inside the app shell’s content area"
+          },
+          {
+            "name": "Badge",
+            "relationship": "contains",
+            "reason": "Deltas render as success/destructive Badges keyed to trend direction"
+          }
+        ]
       }
     },
     {
@@ -24593,6 +25353,28 @@
       "screenshot": {
         "light": "/blocks/screenshots/dashboard-table-light.png",
         "dark": "/blocks/screenshots/dashboard-table-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Admin views listing records (customers, orders) with text search, column sorting, and pagination",
+          "Tables where a status column benefits from Badge color coding (active/pending/inactive)"
+        ],
+        "whenNotToUse": [
+          "Aggregate metrics at a glance — use dashboard-overview",
+          "Large server-side datasets — filtering, sorting, and paging here are all client-side over in-memory rows"
+        ],
+        "related": [
+          {
+            "name": "dashboard-overview",
+            "relationship": "pairs-with",
+            "reason": "KPI cards above the record table is the canonical dashboard page"
+          },
+          {
+            "name": "app-shell",
+            "relationship": "contained-by",
+            "reason": "Designed to render inside the app shell’s content area"
+          }
+        ]
       }
     },
     {
@@ -24611,6 +25393,29 @@
       "screenshot": {
         "light": "/blocks/screenshots/faq-light.png",
         "dark": "/blocks/screenshots/faq-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Pre-sales or support question sections on marketing and pricing pages",
+          "Condensing a handful of short Q&A pairs behind single-open disclosures to keep the page scannable"
+        ],
+        "whenNotToUse": [
+          "Full product documentation — link to docs instead of stacking long answers in an accordion",
+          "Two or three short answers — rendering them as plain headings and paragraphs avoids the extra click"
+        ],
+        "related": [
+          {
+            "name": "Accordion",
+            "relationship": "contains",
+            "reason": "Each Q&A is an AccordionItem inside a type=\"single\" Accordion"
+          },
+          {
+            "name": "pricing",
+            "relationship": "pairs-with",
+            "reason": "Billing and plan questions typically follow the pricing section"
+          }
+        ],
+        "a11yRationale": "The section carries aria-label=\"Frequently asked questions\" and questions inherit Accordion’s button/region semantics and keyboard support"
       }
     },
     {
@@ -24629,6 +25434,29 @@
       "screenshot": {
         "light": "/blocks/screenshots/marketing-features-light.png",
         "dark": "/blocks/screenshots/marketing-features-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Landing-page section detailing product capabilities right after the hero",
+          "A scannable grid of short value propositions, each with an icon, title, and one-sentence description"
+        ],
+        "whenNotToUse": [
+          "Comparing plans or tiers — use pricing",
+          "Long-form explanations — the cells are built for one short sentence each, not prose"
+        ],
+        "related": [
+          {
+            "name": "marketing-hero",
+            "relationship": "pairs-with",
+            "reason": "The feature grid conventionally follows the hero on a landing page"
+          },
+          {
+            "name": "pricing",
+            "relationship": "pairs-with",
+            "reason": "Features establish value before the pricing section asks for commitment"
+          }
+        ],
+        "a11yRationale": "Each feature is an <article> with an <h3> under the section’s <h2>, keeping heading hierarchy intact; decorative icons are aria-hidden"
       }
     },
     {
@@ -24647,6 +25475,35 @@
       "screenshot": {
         "light": "/blocks/screenshots/marketing-hero-light.png",
         "dark": "/blocks/screenshots/marketing-hero-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "The opening section of a landing page: headline, supporting subtitle, and a primary/secondary CTA pair",
+          "Announcing a product or release — the eyebrow Badge slot carries the \"New\" callout",
+          "Building credibility above the fold via the trust-badge row (licence, a11y, dependency claims)"
+        ],
+        "whenNotToUse": [
+          "Interior or app pages — use a page header inside app-shell instead",
+          "Sections without one clear primary action — the layout is built around a dominant CTA"
+        ],
+        "related": [
+          {
+            "name": "marketing-features",
+            "relationship": "pairs-with",
+            "reason": "The feature grid is the natural next section after the hero"
+          },
+          {
+            "name": "pricing",
+            "relationship": "pairs-with",
+            "reason": "Hero CTA commonly leads to the pricing section further down the page"
+          },
+          {
+            "name": "site-footer",
+            "relationship": "pairs-with",
+            "reason": "Hero and footer bookend the standard marketing page composition"
+          }
+        ],
+        "a11yRationale": "The headline is the page’s single <h1>; CTAs are real Buttons and the section reads top-to-bottom in DOM order"
       }
     },
     {
@@ -24665,6 +25522,34 @@
       "screenshot": {
         "light": "/blocks/screenshots/pricing-light.png",
         "dark": "/blocks/screenshots/pricing-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Subscription products with a small number of tiers, each with a price, feature list, and its own CTA",
+          "Steering users toward a recommended plan — the featured tier gets an elevated card and \"Popular\" Badge"
+        ],
+        "whenNotToUse": [
+          "Usage-based or configurable pricing that needs a calculator rather than fixed tiers",
+          "More than four plans or many comparison dimensions — a comparison table scales better than cards"
+        ],
+        "related": [
+          {
+            "name": "faq",
+            "relationship": "pairs-with",
+            "reason": "Billing questions conventionally follow the pricing section"
+          },
+          {
+            "name": "marketing-hero",
+            "relationship": "pairs-with",
+            "reason": "Hero CTAs commonly link down to pricing on the same landing page"
+          },
+          {
+            "name": "Card",
+            "relationship": "contains",
+            "reason": "Each tier is a Card; the featured tier uses the elevated variant"
+          }
+        ],
+        "a11yRationale": "The section carries aria-label=\"Pricing plans\", each feature list is a real <ul>, and decorative check marks are aria-hidden"
       }
     },
     {
@@ -24683,6 +25568,29 @@
       "screenshot": {
         "light": "/blocks/screenshots/settings-profile-light.png",
         "dark": "/blocks/screenshots/settings-profile-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Account settings page combining editable profile fields (name, email, bio) with notification toggles",
+          "Settings screens that group fields into titled sections with a shared cancel/save footer"
+        ],
+        "whenNotToUse": [
+          "Collecting user details at registration — use auth-signup",
+          "Large settings surfaces spanning many areas — split into separate pages or Tabs rather than one long form"
+        ],
+        "related": [
+          {
+            "name": "app-shell",
+            "relationship": "contained-by",
+            "reason": "Settings render inside the app shell’s content area"
+          },
+          {
+            "name": "Toggle",
+            "relationship": "contains",
+            "reason": "Notification preferences are Toggles with aria-labels"
+          }
+        ],
+        "a11yRationale": "Text fields use explicit <label htmlFor>; each Toggle carries an aria-label matching its visible row label; sections are titled with <h2> under the page <h1>"
       }
     },
     {
@@ -24701,6 +25609,29 @@
       "screenshot": {
         "light": "/blocks/screenshots/site-footer-light.png",
         "dark": "/blocks/screenshots/site-footer-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Global footer for a marketing or docs site with grouped secondary navigation columns",
+          "Closing a landing page with a brand blurb, legal links, and an auto-updating copyright year"
+        ],
+        "whenNotToUse": [
+          "Authenticated app screens — footer link columns waste vertical space inside app-shell",
+          "Pages with only a copyright line — a Separator and one row of text is enough"
+        ],
+        "related": [
+          {
+            "name": "marketing-hero",
+            "relationship": "pairs-with",
+            "reason": "Hero and footer bookend the standard marketing page composition"
+          },
+          {
+            "name": "Link",
+            "relationship": "contains",
+            "reason": "All footer navigation and legal links are Link components"
+          }
+        ],
+        "a11yRationale": "Renders a real <footer> with the link columns wrapped in a <nav aria-label=\"Footer\"> landmark and lists marked up as <ul>"
       }
     },
     {
@@ -24719,6 +25650,34 @@
       "screenshot": {
         "light": "/blocks/screenshots/testimonials-light.png",
         "dark": "/blocks/screenshots/testimonials-dark.png"
+      },
+      "intent": {
+        "whenToUse": [
+          "Social-proof section on a landing or pricing page with short customer quotes",
+          "Attributed quotes where each card shows the person’s name, role, and avatar initials"
+        ],
+        "whenNotToUse": [
+          "Long-form case studies — cards fit one or two sentences, not narratives",
+          "Logo walls or press mentions without quotes — this block is quote-centric"
+        ],
+        "related": [
+          {
+            "name": "marketing-features",
+            "relationship": "pairs-with",
+            "reason": "Testimonials reinforce the claims made in the feature grid"
+          },
+          {
+            "name": "pricing",
+            "relationship": "pairs-with",
+            "reason": "Social proof placed near pricing supports the purchase decision"
+          },
+          {
+            "name": "Avatar",
+            "relationship": "contains",
+            "reason": "Attribution uses Avatar with initials fallback"
+          }
+        ],
+        "a11yRationale": "The section carries aria-label=\"Customer testimonials\" and each quote is a semantic <blockquote> with visible attribution"
       }
     }
   ],

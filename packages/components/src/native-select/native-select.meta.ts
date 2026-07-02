@@ -8,7 +8,69 @@ export const meta: ComponentMeta = {
   states: ['default', 'focus', 'disabled', 'invalid'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],
-  props: [],
+  props: [
+    {
+      name: 'options',
+      description: 'Options to render. Alternatively pass <option> children.',
+      type: 'NativeSelectOption[]',
+      required: false,
+    },
+    {
+      name: 'children',
+      description: 'Raw <option> children (used when options is not provided).',
+      type: 'React.ReactNode',
+      required: false,
+    },
+    {
+      name: 'size',
+      description: "Visual size of the component (e.g. 'sm', 'md', 'lg').",
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+    },
+    {
+      name: 'invalid',
+      description: 'Marks the control as invalid for error styling and a11y.',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'placeholder',
+      description: 'Placeholder rendered as a disabled, hidden first option.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'value',
+      description: 'The controlled value.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'defaultValue',
+      description: 'The initial value when uncontrolled.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'onChange',
+      description: 'Called when the selected value changes.',
+      type: 'React.ChangeEventHandler<HTMLSelectElement>',
+      required: false,
+    },
+    {
+      name: 'disabled',
+      description: 'When true, disables the control and removes it from the tab order.',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-border',
@@ -24,7 +86,30 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['ArrowUp', 'ArrowDown', 'Enter', 'Space', 'Home', 'End'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<NativeSelect
+  placeholder="Choose a country"
+  options={[
+    { value: 'us', label: 'United States' },
+    { value: 'de', label: 'Germany' },
+  ]}
+  onChange={(e) => setCountry(e.target.value)}
+/>`,
+    },
+    {
+      title: 'Option children',
+      code: `<NativeSelect size="sm" defaultValue="light">
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+</NativeSelect>`,
+    },
+    {
+      title: 'Invalid',
+      code: '<NativeSelect invalid placeholder="Required" options={countries} />',
+    },
+  ],
   dependencies: ['@cascivo/core'],
   tags: ['inputs', 'select', 'native', 'form', 'dropdown'],
   intent: {
