@@ -35,17 +35,55 @@ function badge(label: string, message: string, color: string, opts?: { logo?: st
   return `![${label}](https://img.shields.io/badge/${label}-${message}-${color}?style=flat-square${logo})`
 }
 
-function rootBadges(componentCount: number): string {
+function rootBadges(componentCount: number, themeCount: number): string {
   return [
     `[![license](https://img.shields.io/github/license/cascivo/cascivo?style=flat-square&color=${BRAND})](https://github.com/cascivo/cascivo/blob/main/LICENSE)`,
     `[${badge('TypeScript', 'strict', BRAND, { logo: 'typescript' })}](https://www.typescriptlang.org/)`,
     `[${badge('React', '18%2B', BRAND, { logo: 'react' })}](https://react.dev/)`,
     badge('CSS', 'native', BRAND, { logo: 'css3' }),
     badge('components', String(componentCount), BRAND),
-    badge('themes', '14', BRAND),
+    badge('themes', String(themeCount), BRAND),
     badge('WCAG_2.2', 'AA', BRAND),
     `[${badge('AI--first', 'MCP', AI)}](https://github.com/cascivo/cascivo/tree/main/packages/mcp)`,
   ].join('\n  ')
+}
+
+// Bundles and interop sheets that are not selectable themes. Keep in sync with
+// NON_THEME_CSS in apps/site/vite.config.ts.
+const NON_THEME_CSS = new Set(['all.css', 'base.css', 'tailwind.css'])
+
+interface Counts {
+  components: number
+  charts: number
+  themes: number
+}
+
+function readCounts(): Counts {
+  const registry = JSON.parse(readFileSync(join(root, 'registry.json'), 'utf8')) as {
+    components: { type?: string }[]
+  }
+  const themes = readdirSync(join(root, 'packages/themes/src')).filter(
+    (f) => f.endsWith('.css') && !NON_THEME_CSS.has(f),
+  ).length
+  return {
+    components: registry.components.length,
+    charts: registry.components.filter((c) => c.type === 'chart').length,
+    themes,
+  }
+}
+
+// Replace {{count.components}} / {{count.charts}} / {{count.themes}} in
+// readme.body.md content so hand-written prose can never drift from the
+// registry again. Fails hard on unknown placeholders.
+function substituteCounts(body: string, counts: Counts, source: string): string {
+  const out = body.replaceAll(/\{\{count\.(\w+)\}\}/g, (_, key: string) => {
+    const value = counts[key as keyof Counts]
+    if (value === undefined)
+      throw new Error(`Unknown count placeholder {{count.${key}}} in ${source}`)
+    return String(value)
+  })
+  if (out.includes('{{count.')) throw new Error(`Unresolved count placeholder left in ${source}`)
+  return out
 }
 
 function packageBadges(pkg: Pkg, installable: boolean): string {
@@ -235,15 +273,14 @@ function componentsTable(collapsible: boolean): string {
 }
 
 function buildReadme(dir: string, pkg: Pkg, isRoot: boolean, targets: string[]): string {
-  const registry = JSON.parse(readFileSync(join(root, 'registry.json'), 'utf8')) as {
-    components: unknown[]
-  }
-  const componentCount = registry.components.length
+  const counts = readCounts()
 
   const installable = !isRoot && pkg.private !== true && dir.startsWith(join(root, 'packages'))
   const title = isRoot ? 'cascivo' : pkg.name
   const tagline = isRoot ? TAGLINE : (pkg.description ?? TAGLINE)
-  const badges = isRoot ? rootBadges(componentCount) : packageBadges(pkg, installable)
+  const badges = isRoot
+    ? rootBadges(counts.components, counts.themes)
+    : packageBadges(pkg, installable)
   const links = installable
     ? `[npm](https://www.npmjs.com/package/${pkg.name}) · ${SITE_LINKS}`
     : SITE_LINKS
@@ -251,7 +288,9 @@ function buildReadme(dir: string, pkg: Pkg, isRoot: boolean, targets: string[]):
   const sections: string[] = [MARKER, '', header(title, tagline, badges, links), '']
 
   const bodyPath = join(dir, 'readme.body.md')
-  if (existsSync(bodyPath)) sections.push(readFileSync(bodyPath, 'utf8').trim(), '')
+  if (existsSync(bodyPath)) {
+    sections.push(substituteCounts(readFileSync(bodyPath, 'utf8').trim(), counts, bodyPath), '')
+  }
 
   if (installable) {
     sections.push('## Install', '', '```sh', `pnpm add ${pkg.name}`, '```', '')

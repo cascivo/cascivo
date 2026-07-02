@@ -15,7 +15,7 @@ The user wants to create a new component that follows cascivo's authoring conven
 
 Before writing any code, read the authoring rules at runtime:
 
-- Fetch `https://cascivo.com/llms.txt` (or local `apps/docs/public/llms.txt`) and locate the "Component authoring rules" section.
+- Fetch `https://cascivo.com/llms.txt` (or local `apps/site/public/llms.txt`) and locate the "Component authoring rules" section.
 
 Internalise and strictly follow those rules throughout this skill. Never use `useState`, `useEffect`, `useContext`, `useLayoutEffect`, or `useReducer`.
 

@@ -100,9 +100,9 @@ const CLAIMS: Claim[] = [
   },
   {
     number: 24,
-    title: 'AT-tested + legally mapped',
+    title: 'AT test plan + legal mapping',
     substance:
-      'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) documents tested components, OS/AT combos, and any known gaps. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascivo artifact that satisfies it. Both are browsable in the docs accessibility section.',
+      'A representative assistive-technology matrix (NVDA, JAWS, VoiceOver) defines the manual test plan — components, OS/AT combos, and per-cell result tracking; manual sessions are pending. An EAA / EN 301 549 / Section 508 legal mapping traces each standard to the cascivo artifact that satisfies it. Both are browsable in the docs accessibility section.',
     receipt: { label: 'Accessibility statement', href: '/accessibility' },
   },
   {
@@ -237,8 +237,8 @@ export function WhyCascadePage() {
           WCAG 2.1 AA, open registry model, and long-run sustainability. v13 adds the context layer:
           machine-readable intent, closed-set tokens, AI-output auditing, and CSS-native logic. v14
           adds earned quality: CVD-safe chart palettes, accessible chart tooltips, honest multi-lens
-          performance data, WCAG 2.2 AA + APG conformance, and AT testing with legal mapping. v15
-          adds brand + mobile: one coherent cascivo identity and a flawless mobile front door.
+          performance data, WCAG 2.2 AA + APG conformance, and an AT test plan with legal mapping.
+          v15 adds brand + mobile: one coherent cascivo identity and a flawless mobile front door.
         </p>
       </section>
 

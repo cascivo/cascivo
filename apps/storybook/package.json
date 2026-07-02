@@ -2,7 +2,7 @@
   "name": "@cascivo/storybook",
   "version": "0.0.0",
   "private": true,
-  "description": "Storybook stories generated from every cascivo component manifest",
+  "description": "Storybook stories generated from cascivo component manifests",
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6006",

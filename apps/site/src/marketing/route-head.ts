@@ -19,13 +19,15 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/': {
     title: 'cascivo — the CSS-native, signal-driven, AI-first React design system',
     description:
+      // Count literal (not the injected global): this module is also imported by
+      // scripts/sitemap/generate.ts under plain Node. claims:check guards drift.
       'cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus five functional example dashboards you can open and play with today.',
     ogTitle: 'cascivo',
   },
   '/accessibility': {
     title: 'Accessibility — cascivo',
     description:
-      'How cascivo meets WCAG 2.2 AA: zero axe violations in CI, keyboard and screen-reader support, and a representative assistive-technology support matrix.',
+      'How cascivo meets WCAG 2.2 AA: zero axe violations in the CI-gated suite, keyboard and screen-reader support, and a representative assistive-technology test plan.',
   },
   '/performance': {
     title: 'Performance — cascivo',

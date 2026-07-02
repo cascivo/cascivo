@@ -31,11 +31,15 @@ For each package, add a GitHub Actions trusted publisher with:
 - **Workflow filename:** `release.yml`
 - **Environment:** _(leave blank)_
 
-### 2. First-publish bootstrap
+### 2. First-publish bootstrap (completed — kept for reference)
 
-All ten package names are unpublished. npm requires a package to exist before
-a trusted publisher can be attached, so the very first publish must be done
-manually with a short-lived token.
+> **Status:** this bootstrap has been done — all packages above are live on npm
+> with trusted publishing attached. The steps below only apply again when a
+> **new** package name is published for the first time.
+
+npm requires a package to exist before a trusted publisher can be attached, so
+the very first publish of a new package name must be done manually with a
+short-lived token.
 
 #### Step-by-step
 

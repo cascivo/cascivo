@@ -6,13 +6,13 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 
 ## Highlights
 
-- **165 components, 7 categories** — inputs, display, overlay, navigation, layout, feedback, and 16 charts, all from a single token system.
+- **{{count.components}} components, 7 categories** — inputs, display, overlay, navigation, layout, feedback, and {{count.charts}} charts, all from a single token system.
 - **Modern CSS only** — `@layer` for predictable cascade, `@container` for slot-aware responsiveness, `:has()` for stateful styling. No Tailwind, no runtime style injection.
 - **Signal-driven interactivity** — fine-grained Preact Signals + a micro-FSM update precise DOM nodes with zero unnecessary React re-renders. RSC-compatible (`"use client"` preserved).
-- **Beautiful by default** — 14 first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
+- **Beautiful by default** — {{count.themes}} first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
 - **Three-level tokens** — primitive → semantic → component. Themes remap the semantic layer; you override component tokens for per-brand adaptation with no rebuild.
-- **AI-first context layer** — every component ships a `component.meta.ts` manifest; an MCP server, Claude Code skills, a closed-set token catalog, and `cascivo audit --ai` let agents generate against real props and have their output checked.
-- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, CI-enforced; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT support matrix (NVDA / JAWS / VoiceOver).
+- **AI-first context layer** — every component ships a `<name>.meta.ts` manifest (e.g. `button.meta.ts`); an MCP server, Claude Code skills, a closed-set token catalog, and `cascivo audit --ai` let agents generate against real props and have their output checked.
+- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, CI-enforced; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT test plan (NVDA / JAWS / VoiceOver — manual results pending).
 - **Mobile-first & RTL-ready** — fluid type, container queries, CSS logical properties, ≥44px touch targets, and zero overflow from 320–414px.
 - **Open registry** — publish your own components and host your own registry; install from any registry with `cascivo add owner/repo/component`.
 - **Templates & marketplace** — install whole-page compositions (a page + its components + fixtures) you own and adapt with `cascivo add @ns/<template>`; a backend-free, GitHub-hosted, community-contributed catalog.
@@ -93,7 +93,7 @@ cascivo/
 ├── packages/
 │   ├── core/         # @cascivo/core    — micro-FSM + Preact Signals primitives
 │   ├── tokens/       # @cascivo/tokens  — three-level CSS design tokens
-│   ├── themes/       # @cascivo/themes  — 14 first-party themes
+│   ├── themes/       # @cascivo/themes  — {{count.themes}} first-party themes
 │   ├── icons/        # @cascivo/icons   — optional SVG icon set
 │   ├── i18n/         # @cascivo/i18n    — signal-driven locale store + catalogs
 │   ├── storage/      # @cascivo/storage — persisted signals (localStorage/IndexedDB)
@@ -104,14 +104,13 @@ cascivo/
 │   ├── layouts/      # registry source — app shells and page layouts
 │   ├── registry/     # @cascivo/registry — registry schema, validation, shadcn interop
 │   ├── render/       # JSON → UI runtime renderer (CascadeView)
-│   ├── ai/           # AI context layer — context.json, token catalog, audit
+│   ├── ai/           # AI-native UI components (StreamingText, AiChat, Terminal)
 │   ├── search/       # registry search index
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
 ├── apps/
-│   ├── docs/         # docs.cascivo.com — generated from manifests
+│   ├── site/         # cascivo.com + docs.cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests
-│   ├── landing/      # cascivo.com landing page (dogfood)
 │   ├── bench/        # performance benchmarks
 │   └── examples/     # runnable example apps (Vite, Next.js, registry starter, demos)
 ├── skills/           # Claude Code skills — cascivo:add, design-page, create-theme, extend
