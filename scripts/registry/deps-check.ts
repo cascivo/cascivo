@@ -52,7 +52,7 @@ async function main(): Promise<void> {
   }
   console.error(
     `\nFix: add the owning component to the importer's registryDependencies in its *.meta.ts, ` +
-      `or ship the missing file. See docs/ROADMAP-V57.md (T1/T2).`,
+      `or ship the missing file. See docs/internal/ROADMAP-V57.md (T1/T2).`,
   )
   process.exit(1)
 }

@@ -244,13 +244,13 @@ Published packages install from npm. Components themselves are copy-pasted into 
 
 Not published to npm. `components` and `layouts` are the source of truth the CLI copies from; the rest power the docs, AI, and search surfaces.
 
-| Package                                      | Description                                                                                    |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| [`@cascivo/components`](packages/components) | Registry source — copy-paste component TSX + CSS + manifests (not published)                   |
-| [`@cascivo/layouts`](packages/layouts)       | Registry source — copy-paste app shells and page layouts (not published)                       |
-| [`@cascivo/render`](packages/render)         | Runtime JSON → UI renderer for cascivo                                                         |
-| [`@cascivo/search`](packages/search)         | Registry search index for the cascivo ecosystem                                                |
-| [`@cascivo/video`](packages/video)           | Remotion video studio for cascivo — animated explainers and launch films for the design system |
+| Package                                      | Description                                                                             |
+| -------------------------------------------- | --------------------------------------------------------------------------------------- |
+| [`@cascivo/components`](packages/components) | Registry source — copy-paste component TSX + CSS + manifests (not published)            |
+| [`@cascivo/layouts`](packages/layouts)       | Registry source — copy-paste app shells and page layouts (not published)                |
+| [`@cascivo/render`](packages/render)         | Runtime JSON → UI renderer for cascivo                                                  |
+| [`@cascivo/search`](packages/search)         | Experimental — registry search index for the cascivo ecosystem (API unstable)           |
+| [`@cascivo/video`](packages/video)           | Experimental — Remotion video studio for cascivo (animated explainers and launch films) |
 
 ### Apps
 

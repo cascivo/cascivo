@@ -31,26 +31,56 @@ Add it to your MCP client configuration:
 }
 ```
 
-The server speaks the MCP stdio transport. By default it reads the `registry.json` bundled with the package; override with the `CASCIVO_REGISTRY_PATH` environment variable to point at a local registry.
+The server speaks the MCP stdio transport. It is **self-contained**: the registry, token catalog, variant matrix, component context, and marketplace catalog are all bundled with the package, so discovery, token, and validation tools work offline — hosted data is only fetched as a fallback. Override the registry with the `CASCIVO_REGISTRY_PATH` environment variable; add extra registries via `CASCADE_REGISTRIES`.
 
 ## Tools
 
-| Tool                 | Input                                 | Returns                                                                                                                                 |
-| -------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `list_components`    | `{ category? }`                       | All component manifests, optionally filtered by category                                                                                |
-| `get_component`      | `{ name }`                            | The full manifest for one component                                                                                                     |
-| `search_components`  | `{ query }`                           | Components matching name, tags, or description                                                                                          |
-| `add_to_project`     | `{ name, outputDir? }`                | Runs `cascivo add <name>` as a child process                                                                                            |
-| `create_app`         | `{ name, theme?, sections?, cwd? }`   | Scaffolds a full Vite + React app (shell + side nav + theme) via `cascivo create`                                                       |
-| `create_theme`       | `{ primary, neutral, accent, name? }` | A custom theme as CSS (semantic token layer)                                                                                            |
-| `scaffold_page`      | `{ description, components? }`        | A JSX page layout string                                                                                                                |
-| `scaffold_view`      | `{ description, components? }`        | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                    |
-| `validate_view`      | `{ config }`                          | Validation errors (component, prop type/enum, refs) with exact paths                                                                    |
-| `get_view_grammar`   | `{ components? }`                     | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON                                                                |
-| `get_variant_matrix` | `{ role?, theme? }`                   | Deterministic intent→token map (role + state slot) + every token resolved per theme                                                     |
-| `validate_component` | `{ tsx?, css?, name? }`               | Static structural-invariant check of generated source (banned hooks, off-scale breakpoints, missing CSS fallbacks, hallucinated tokens) |
+### Discovery
 
-`category` is one of `inputs`, `display`, `overlay`, `navigation`, `feedback`.
+| Tool                | Input                  | Returns                                                                                            |
+| ------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
+| `list_registries`   | `{}`                   | Available registries: the cascivo directory plus any configured via `CASCADE_REGISTRIES`           |
+| `list_components`   | `{ category?, type? }` | All component manifests, filterable by category and entry type (`component`, `layout`, `block`, …) |
+| `get_component`     | `{ name, registry? }`  | The full manifest (props, states, tokens, a11y, examples) — optionally from an external registry   |
+| `search_components` | `{ query, registry? }` | Fuzzy search by name, tags, or description                                                         |
+| `get_context`       | `{ name }`             | Intent, whenToUse/whenNotToUse, and authoring guidance for one component                           |
+| `select_component`  | `{ need }`             | Heuristic ranking of components for a natural-language need, with scores and reasons               |
+
+`category` is one of `inputs`, `display`, `overlay`, `navigation`, `feedback`, `chart`.
+
+### Tokens & theming
+
+| Tool                 | Input                                 | Returns                                                                                      |
+| -------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `get_tokens`         | `{ group?, layer?, includeAliases? }` | The closed token catalog — canonical names only by default, so agents never hard-code values |
+| `get_variant_matrix` | `{ role?, theme? }`                   | Deterministic intent→token map (colour role + state slot) + every token resolved per theme   |
+| `create_theme`       | `{ primary, neutral, accent, name? }` | A custom theme as CSS (semantic token layer) generated from three colors                     |
+
+### Scaffold & validate
+
+| Tool                 | Input                              | Returns                                                                                                                                 |
+| -------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `scaffold_view`      | `{ description, components? }`     | A validated starter `ViewConfig` + the bound-vocabulary `grammar` for its components                                                    |
+| `validate_view`      | `{ config }`                       | Validation errors (component, prop type/enum, refs) with exact paths                                                                    |
+| `get_view_grammar`   | `{ components? }`                  | Bound-vocabulary grammar + generation prompt for valid `ViewConfig` JSON                                                                |
+| `validate_component` | `{ tsx?, css?, name? }`            | Static structural-invariant check of generated source (banned hooks, off-scale breakpoints, missing CSS fallbacks, hallucinated tokens) |
+| `scaffold_flow`      | `{ description, steps?, layout? }` | Starter nodes/edges + ready-to-paste `<Flow />` JSX (from `@cascivo/flow`) for a diagram                                                |
+| `scaffold_page`      | `{ description, components? }`     | **Deprecated** — use `scaffold_view`; still returns a JSX scaffold plus the `scaffold_view` output                                      |
+
+### Templates
+
+| Tool             | Input                                            | Returns                                                                          |
+| ---------------- | ------------------------------------------------ | -------------------------------------------------------------------------------- |
+| `list_templates` | `{ category?, tag?, framework?, verifiedOnly? }` | Marketplace templates (whole-page compositions) from the catalog                 |
+| `get_template`   | `{ name }`                                       | One template: its components, install command, demo link, and screenshots        |
+| `add_template`   | `{ name, cwd? }`                                 | Installs a template (components + page/fixture files) by running the cascivo CLI |
+
+### Project
+
+| Tool             | Input                               | Returns                                                                           |
+| ---------------- | ----------------------------------- | --------------------------------------------------------------------------------- |
+| `add_to_project` | `{ name, outputDir? }`              | Runs `cascivo add <name>` as a child process                                      |
+| `create_app`     | `{ name, theme?, sections?, cwd? }` | Scaffolds a full Vite + React app (shell + side nav + theme) via `cascivo create` |
 
 ### Bound-vocabulary generation (anti-hallucination)
 
@@ -59,11 +89,11 @@ prompt** plus a compact **allowed-vocabulary grammar** (each component → its
 props → enum/size/variant values) for emitting valid `ViewConfig` JSON rendered
 by `@cascivo/render` `<CascadeView />`. This is [OpenUI](https://openui.com)'s
 "generate the system prompt from the component library" mechanism (see
-[`docs/ROADMAP-V40.md`](../../docs/ROADMAP-V40.md)): because the grammar is
-**derived**, not authored, an LLM is structurally prevented from inventing
-components, props, or enum values, and the grammar can never drift from the
-components. Pair it with `validate_view` (which now also checks prop types/enums)
-as the enforcement backstop.
+[`ROADMAP-V40.md`](https://github.com/cascivo/cascivo/blob/main/docs/internal/ROADMAP-V40.md)):
+because the grammar is **derived**, not authored, an LLM is structurally
+prevented from inventing components, props, or enum values, and the grammar can
+never drift from the components. Pair it with `validate_view` (which also checks
+prop types/enums) as the enforcement backstop.
 
 ```ts
 import { buildGenerationPrompt, loadRegistry } from '@cascivo/mcp'
@@ -82,7 +112,7 @@ const server = createServer({ registryPath: './registry.json' })
 await server.connect(new StdioServerTransport())
 ```
 
-The pure helpers (`listComponents`, `getComponent`, `searchComponents`, `generateThemeCss`, `scaffoldPage`) are exported too, so the registry can be queried without spinning up the protocol.
+The pure helpers (`listComponents`, `getComponent`, `searchComponents`, `generateThemeCss`, `scaffoldPage`, `buildGrammar`, `buildGenerationPrompt`, `loadRegistry`) are exported too, so the registry can be queried without spinning up the protocol.
 
 ## Install
 

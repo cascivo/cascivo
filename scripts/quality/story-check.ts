@@ -9,9 +9,12 @@
  *     stray stories. Page-style stories that have no registry component (the
  *     Design Tokens catalog, AI demos, the intro page) live in the allowlist.
  *
- *  2. Component coverage (INFORMATIONAL — never exits 1):
- *     Registry entries without a story are reported as a backlog. Many
- *     components are not yet storied; a human decides when to close the gap.
+ *  2. Component coverage (ENFORCED for `component`-type entries — exits 1):
+ *     Every registry entry of type `component` must have a hand-written or
+ *     generated story (`pnpm stories:generate`), or be listed with a reason in
+ *     COMPONENT_STORY_EXCLUSIONS. Entries of other types (layout, block,
+ *     chart, …) without a story are still reported as an informational
+ *     backlog.
  */
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -32,6 +35,43 @@ const NON_COMPONENT_STORIES = new Set([
   'streaming-text',
   'terminal',
   'plain-charts',
+])
+
+/**
+ * `component`-type registry entries with no story, with the reason. These are
+ * exactly the components `pnpm stories:generate` cannot generate for: every
+ * one of their manifest examples references free identifiers (handlers, state
+ * setters, placeholder child components, or icon names that do not exist in
+ * `@cascivo/icons`), so no example compiles standalone. Remove an entry after
+ * hand-writing a story or making at least one manifest example self-contained.
+ */
+const COMPONENT_STORY_EXCLUSIONS = new Map<string, string>([
+  ['action-sheet', 'both examples reference free identifiers (isOpen/setIsOpen, action handlers)'],
+  ['app-shell', 'both examples reference free identifiers (items, header, nav, open signal)'],
+  [
+    'bottom-sheet',
+    'both examples reference free identifiers (isOpen/setIsOpen, FilterForm, PlacesList)',
+  ],
+  [
+    'drawer',
+    'both examples reference free identifiers (isOpen/setIsOpen, SettingsForm, OrderDetails)',
+  ],
+  ['fab', 'all examples reference nonexistent icons (PlusIcon, NoteIcon, …) and free handlers'],
+  ['icon-button', 'all examples reference nonexistent icons (GearIcon, PlusIcon, HomeIcon)'],
+  ['menu-button', 'both examples reference free identifiers (edit, duplicate, createDoc, …)'],
+  [
+    'pull-to-refresh',
+    'both examples reference free identifiers (refetch, FeedList, MessageList, …)',
+  ],
+  ['relative-time', 'all examples reference free identifiers (post.createdAt, date)'],
+  ['resizable', 'both examples reference placeholder children (Editor, Preview, Toolbar, Canvas)'],
+  ['swap', 'both examples reference nonexistent icons (SunIcon, MoonIcon, HeartIcon, …)'],
+  ['swipe-item', 'both examples reference free identifiers (archive, remove, MessageRow, …)'],
+  [
+    'tile',
+    'both examples reference free identifiers (plan/setPlan) or a nonexistent icon (BellIcon)',
+  ],
+  ['toggletip', 'both examples reference a nonexistent icon (InfoIcon) or free open/setOpen'],
 ])
 
 let registry: { components?: { name: string; type?: string }[] }
@@ -71,16 +111,48 @@ const orphans = [...storyKeys].filter(
   (key) => !registryKeys.has(key) && !NON_COMPONENT_STORIES.has(key),
 )
 
-// --- Check 2: component coverage (informational) ----------------------------
-const missing = components
-  .filter((c) => !storyKeys.has(toKebab(c.name.split('/').pop() ?? c.name)))
-  .map((c) => `${c.name}${c.type && c.type !== 'component' ? ` (${c.type})` : ''}`)
+// --- Check 2: component coverage (enforced for `component`-type entries) ----
+const missing = components.filter((c) => !storyKeys.has(toKebab(c.name.split('/').pop() ?? c.name)))
 
-if (missing.length > 0) {
-  console.log(`Story coverage backlog — ${missing.length} registry entries without a story:`)
-  missing.forEach((m) => console.log(`  - ${m}`))
-} else {
-  console.log(`All ${components.length} registry entries have Storybook stories.`)
+const missingComponents = missing
+  .filter((c) => (c.type ?? 'component') === 'component')
+  .map((c) => toKebab(c.name.split('/').pop() ?? c.name))
+const uncovered = missingComponents.filter((key) => !COMPONENT_STORY_EXCLUSIONS.has(key))
+const staleExclusions = [...COMPONENT_STORY_EXCLUSIONS.keys()].filter(
+  (key) => !missingComponents.includes(key),
+)
+
+const backlog = missing
+  .filter((c) => (c.type ?? 'component') !== 'component')
+  .map((c) => `${c.name} (${c.type})`)
+
+if (backlog.length > 0) {
+  console.log(`Story coverage backlog — ${backlog.length} non-component entries without a story:`)
+  backlog.forEach((m) => console.log(`  - ${m}`))
+}
+const componentTotal = components.filter((c) => (c.type ?? 'component') === 'component').length
+console.log(
+  `Component coverage: ${componentTotal - missingComponents.length} of ${componentTotal} component entries storied, ${missingComponents.length - uncovered.length} excluded.`,
+)
+
+if (uncovered.length > 0) {
+  console.error(
+    `\nComponent coverage gap — ${uncovered.length} component-type registry entries with no story:`,
+  )
+  uncovered.forEach((k) => console.error(`  - ${k}`))
+  console.error(
+    '\nRun `pnpm stories:generate`, hand-write a story, or add the name with a reason to COMPONENT_STORY_EXCLUSIONS in scripts/quality/story-check.ts.',
+  )
+  process.exit(1)
+}
+
+if (staleExclusions.length > 0) {
+  console.error(
+    `\nStale exclusions — ${staleExclusions.length} COMPONENT_STORY_EXCLUSIONS entries that now have a story (or left the registry):`,
+  )
+  staleExclusions.forEach((k) => console.error(`  - ${k}`))
+  console.error('\nRemove them from COMPONENT_STORY_EXCLUSIONS in scripts/quality/story-check.ts.')
+  process.exit(1)
 }
 
 if (orphans.length > 0) {

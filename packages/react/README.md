@@ -108,8 +108,10 @@ cascivo.base  <  cascivo.theme  <  cascivo.component
 **Unlayered** CSS in your app always beats every cascivo layer regardless of
 specificity, so your own (unlayered) styles win by default. To override cascivo
 from within a layer, declare a layer ordered after `cascivo.component`. See
-`CSS-LAYERS-PITFALL.md` for the full story and the recommended `@layer`
-declaration. Token names and aliases are documented in `TOKENS.md`.
+[CSS-LAYERS-PITFALL.md](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md)
+for the full story and the recommended `@layer` declaration. Token names and
+aliases are documented in
+[TOKENS.md](https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md).
 
 All components are client components (`'use client'` is preserved in the
 bundle), so the package works in Next.js App Router projects out of the box.

@@ -1,0 +1,27 @@
+@layer cascivo.example {
+  .app {
+    min-height: 100vh;
+    display: grid;
+    place-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--cascivo-color-background);
+    color: var(--cascivo-color-foreground);
+  }
+
+  .app-card {
+    max-width: 24rem;
+  }
+
+  .app-card-content {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+  }
+
+  .app-themes {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+}

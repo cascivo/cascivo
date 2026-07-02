@@ -18,33 +18,64 @@ A runtime that turns a plain **JSON config into live cascivo UI**. `CascadeView`
 
 ## Usage
 
-```tsx
-import { CascadeView } from '@cascivo/render'
+A `ViewConfig` is named regions of component nodes; each node names a component (`component`), plus optional `props`, `children`, data bindings, and event wiring:
 
-const view = {
-  type: 'Card',
-  children: [
-    { type: 'Heading', props: { level: 2 }, children: 'Welcome' },
-    { type: 'Button', props: { variant: 'primary' }, children: 'Start' },
-  ],
+```tsx
+import { CascadeView, type ViewConfig } from '@cascivo/render'
+
+const view: ViewConfig = {
+  view: {
+    regions: {
+      main: [
+        {
+          component: 'Card',
+          children: [
+            {
+              component: 'Badge',
+              props: { variant: 'secondary' },
+              bind: { children: '$data.count' },
+            },
+            {
+              component: 'Button',
+              props: { variant: 'primary' },
+              children: 'Invite',
+              events: { onClick: '$actions.invite' },
+            },
+          ],
+        },
+      ],
+    },
+  },
 }
 
 export function App() {
-  return <CascadeView config={view} />
+  return (
+    <CascadeView
+      config={view}
+      data={{ count: 42 }}
+      actions={{ invite: () => console.log('invite') }}
+    />
+  )
 }
 ```
 
+The JSON stays fully serializable: live values come from the host via `bind` (`"$data.users.active"` resolves a dot-path into the `data` prop) and handlers via `events` (`"$actions.invite"` looks up the `actions` prop) — never from the config itself. Strings can be i18n refs (`{ "$t": "catalog.key" }`), resolved through `@cascivo/i18n`. `config` also accepts a `Signal<ViewConfig>`, so a view can be swapped live.
+
+Nodes resolve against a built-in component map of ~50 core cascivo components (Button, Card, Badge, Input, Select, Modal, Tabs, DataTable, Form, …) — see `component-map.ts` for the full list.
+
 ## Validation
 
-`validateView` checks a config against the registry — unknown components, bad prop types, and out-of-range enum values are reported with exact paths, so generated views fail loudly rather than rendering garbage:
+Every render validates first. Invalid configs **throw** by default with exact paths; pass `onInvalid="render"` to show errors inline instead (playground mode). `validateView` is exported for validating before rendering:
 
 ```ts
 import { validateView } from '@cascivo/render'
 
-const errors = validateView(view) // ValidationError[] — empty when valid
+const { valid, errors } = validateView(view) // errors: { path, message }[]
 ```
 
-Pair it with the MCP server's bound-vocabulary grammar (`get_view_grammar`) for the full anti-hallucination loop: the model can only emit components and props that exist, and `validateView` is the enforcement backstop.
+Unknown components (with a did-you-mean hint), malformed nodes, and prop values that don't match the generated per-component prop schemas are reported with exact paths, so generated views fail loudly rather than rendering garbage.
+
+Pair it with the MCP server's bound-vocabulary grammar (`get_view_grammar`) and `scaffold_view` for the full anti-hallucination loop: the model can only emit components and props that exist, and `validateView` is the enforcement backstop. `cascivo generate <config.json>` converts a validated `ViewConfig` into owned TSX when you want to graduate from JSON to source.
 
 ---
 

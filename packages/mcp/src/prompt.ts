@@ -4,7 +4,7 @@
 // is restricted to cascivo's real components, props, and enum values — the
 // OpenUI "system prompt from the component library" anti-hallucination
 // mechanism, applied to the format cascivo already ships and dogfoods
-// (@cascivo/render). See docs/ROADMAP-V40.md.
+// (@cascivo/render). See docs/internal/ROADMAP-V40.md.
 
 import { buildGrammar, formatGrammar } from './grammar.js'
 import type { Registry } from './registry.js'

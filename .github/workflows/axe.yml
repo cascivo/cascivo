@@ -1,0 +1,35 @@
+name: Axe sweep (all stories)
+
+# Nightly + manual: runs axe-core (WCAG 2.x A/AA tags) over every built
+# Storybook story. Not PR-blocking until the finding backlog is triaged —
+# promote to pull_request once it runs clean.
+on:
+  schedule:
+    - cron: '43 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  axe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Chromium
+        run: pnpm --filter @cascivo/storybook exec playwright install chromium --with-deps
+
+      - name: Build packages + storybook
+        run: |
+          pnpm exec vp run -r build
+
+      - name: Axe sweep
+        run: pnpm --filter @cascivo/storybook run test:axe
