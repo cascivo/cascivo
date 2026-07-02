@@ -130,8 +130,8 @@ export async function resolveItemUrl(
         }
       }
 
-      // Built-in @cascade namespace fallback
-      if (ns === '@cascade') {
+      // Built-in first-party namespace fallback (@cascade is the legacy alias)
+      if (ns === '@cascivo' || ns === '@cascade') {
         return { url: `https://cascivo.com/r/${name}.json` }
       }
 

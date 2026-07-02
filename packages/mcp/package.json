@@ -23,7 +23,8 @@
     "directory": "packages/mcp"
   },
   "bin": {
-    "cascade-mcp": "./dist/index.mjs"
+    "cascade-mcp": "./dist/index.mjs",
+    "cascivo-mcp": "./dist/index.mjs"
   },
   "files": [
     "dist"

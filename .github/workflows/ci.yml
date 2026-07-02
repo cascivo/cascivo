@@ -6,8 +6,8 @@ on:
       - 'apps/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -34,6 +34,12 @@ jobs:
 
       - name: Brand guard (no cascade→cascivo regression)
         run: pnpm run brand:check
+
+      - name: Claims guard (hardcoded counts match reality)
+        run: pnpm run claims:check
+
+      - name: Release-filter guard (build:release covers all published packages)
+        run: pnpm run release:check
 
       - name: Animation audit
         run: pnpm run audit:animation
@@ -74,6 +80,9 @@ jobs:
       - name: Test (vp run -r test)
         run: pnpm run test
 
+      - name: Doctor (component rule violations)
+        run: node packages/cli/dist/index.mjs doctor --ci
+
   drift:
     runs-on: ubuntu-latest
     steps:
@@ -106,8 +115,10 @@ jobs:
         run: |
           COUNT=$(node -e "const r=JSON.parse(require('fs').readFileSync('registry.json','utf8')); \
             console.log((r.components?.length??0)+(r.charts?.length??0)+(r.layouts?.length??0)+(r.blocks?.length??0))")
-          if [ "$COUNT" -lt 49 ]; then
-            echo "::error::Registry has $COUNT entries — expected >= 49 (note: T3 display components are factory-queued but not yet built)"
+          # Moving floor: bump on release. A guard of 49 would let a
+          # mass-deletion regression to a quarter of the registry pass.
+          if [ "$COUNT" -lt 185 ]; then
+            echo "::error::Registry has $COUNT entries — expected >= 185"
             exit 1
           fi
-          echo "Registry count: $COUNT (>= 49)"
+          echo "Registry count: $COUNT (>= 185)"

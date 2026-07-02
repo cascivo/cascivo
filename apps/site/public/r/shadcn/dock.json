@@ -6,7 +6,7 @@
     {
       "path": "dock/dock.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport styles from './dock.module.css'\n\nexport interface DockItem {\n  label: string\n  icon: React.ReactNode\n  onClick?: () => void\n  href?: string\n}\n\nexport interface DockProps {\n  items: DockItem[]\n  activeIndex?: number\n  className?: string\n}\n\nexport function Dock({ items, activeIndex, className }: DockProps) {\n  return (\n    <nav\n      aria-label=\"Main navigation\"\n      className={[styles.dock, className].filter(Boolean).join(' ')}\n    >\n      {items.map((item, i) => {\n        const isActive = i === activeIndex\n        const Tag = item.href ? 'a' : 'button'\n        return (\n          <Tag\n            key={i}\n            className={styles.item}\n            data-active={isActive || undefined}\n            aria-current={isActive ? 'page' : undefined}\n            {...(item.href ? { href: item.href } : {})}\n            type={item.href ? undefined : 'button'}\n            onClick={item.onClick}\n          >\n            <span className={styles.icon} aria-hidden=\"true\">\n              {item.icon}\n            </span>\n            <span className={styles.label}>{item.label}</span>\n          </Tag>\n        )\n      })}\n    </nav>\n  )\n}\n"
+      "content": "'use client'\nimport { useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport styles from './dock.module.css'\n\nexport interface DockItem {\n  label: string\n  icon: React.ReactNode\n  onClick?: () => void\n  href?: string\n}\n\nexport interface DockProps {\n  items: DockItem[]\n  activeIndex?: number\n  className?: string\n  /** Accessible label for the nav landmark */\n  ariaLabel?: string\n}\n\nexport function Dock({ items, activeIndex, className, ariaLabel }: DockProps) {\n  useSignals()\n  const resolvedAriaLabel = ariaLabel ?? t(builtin.dock.nav)\n  return (\n    <nav\n      aria-label={resolvedAriaLabel}\n      className={[styles.dock, className].filter(Boolean).join(' ')}\n    >\n      {items.map((item, i) => {\n        const isActive = i === activeIndex\n        const Tag = item.href ? 'a' : 'button'\n        return (\n          <Tag\n            key={i}\n            className={styles.item}\n            data-active={isActive || undefined}\n            aria-current={isActive ? 'page' : undefined}\n            {...(item.href ? { href: item.href } : {})}\n            type={item.href ? undefined : 'button'}\n            onClick={item.onClick}\n          >\n            <span className={styles.icon} aria-hidden=\"true\">\n              {item.icon}\n            </span>\n            <span className={styles.label}>{item.label}</span>\n          </Tag>\n        )\n      })}\n    </nav>\n  )\n}\n"
     },
     {
       "path": "dock/dock.module.css",
@@ -15,11 +15,12 @@
     }
   ],
   "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "categories": ["navigation"],
   "meta": {
     "cascivo": {
       "type": "component",
-      "version": "0.0.0"
+      "version": "0.3.8"
     }
   }
 }

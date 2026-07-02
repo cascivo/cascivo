@@ -40,6 +40,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/registry/build-marketplace.ts
 
+      # The committed catalog must pass `vp check`, or every checkout after a
+      # bot rebuild fails the format gate.
+      - name: Format catalog
+        run: pnpm exec vp fmt apps/site/public/marketplace.json
+
       - name: Commit catalog if changed
         run: |
           if ! git diff --quiet -- apps/site/public/marketplace.json; then

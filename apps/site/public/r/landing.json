@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "name": "landing",
+  "type": "template",
+  "description": "A marketing landing page with a hero, a feature grid, and a call-to-action",
+  "category": "marketing",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "cascivo",
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/templates/landing",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/landing/landing.tsx",
+      "target": "src/pages/landing.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/landing/landing.module.css",
+      "target": "src/pages/landing.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/landing/fixtures.ts",
+      "target": "src/fixtures/landing.ts"
+    }
+  ],
+  "dependencies": [],
+  "registryDependencies": ["button", "card", "badge"],
+  "tags": ["marketing", "landing", "template"],
+  "meta": {
+    "intent": "Marketing landing page",
+    "framework": "react-vite",
+    "category": "marketing",
+    "screenshots": [
+      {
+        "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/landing/screenshot-light.svg",
+        "alt": "Landing page with a hero headline and a three-column feature grid"
+      }
+    ],
+    "fileRoles": {
+      "src/pages/landing.tsx": "page",
+      "src/pages/landing.module.css": "asset",
+      "src/fixtures/landing.ts": "fixture"
+    },
+    "pages": [
+      {
+        "name": "Landing",
+        "target": "src/pages/landing.tsx"
+      }
+    ]
+  }
+}

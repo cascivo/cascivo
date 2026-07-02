@@ -96,7 +96,7 @@ export const meta: ComponentMeta = {
 />`,
     },
   ],
-  dependencies: ['@cascivo/core'],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['steps', 'wizard', 'stepper', 'progress', 'navigation', 'onboarding', 'checkout'],
   intent: {
     whenToUse: [

@@ -1,3 +1,5 @@
+import { fetchJsonFresh } from './http.js'
+
 export interface RegistryComponent {
   name: string
   type?: 'component' | 'layout' | 'block' | 'chart' | 'section'
@@ -5,6 +7,8 @@ export interface RegistryComponent {
   category: string
   version: string
   files: string[]
+  /** filename → sha256 of upstream content — used by `update --check`. */
+  fileHashes?: Record<string, string>
   /** npm package to install (used when type === 'chart'). */
   install?: string
   dependencies: string[]
@@ -32,6 +36,8 @@ export interface Registry {
   generatedAt: string
   components: RegistryComponent[]
   blocks?: BlockRegistryEntry[]
+  /** Names of first-party templates — installed via the per-item path (r/<name>.json). */
+  templates: string[]
 }
 
 function asStringArray(value: unknown): string[] {
@@ -84,6 +90,13 @@ export function parseRegistry(raw: unknown): Registry {
       const deps = asStringArray(c.registryDependencies)
       if (deps.length > 0) result.registryDependencies = deps
     }
+    if (typeof c.fileHashes === 'object' && c.fileHashes !== null) {
+      const hashes: Record<string, string> = {}
+      for (const [file, hash] of Object.entries(c.fileHashes as Record<string, unknown>)) {
+        if (typeof hash === 'string') hashes[file] = hash
+      }
+      if (Object.keys(hashes).length > 0) result.fileHashes = hashes
+    }
     return result
   })
 
@@ -116,21 +129,34 @@ export function parseRegistry(raw: unknown): Registry {
       })
     : []
 
+  const templates: string[] = Array.isArray(obj.templates)
+    ? obj.templates.flatMap((entry) => {
+        if (typeof entry !== 'object' || entry === null) return []
+        const name = (entry as Record<string, unknown>).name
+        return typeof name === 'string' ? [name] : []
+      })
+    : []
+
   return {
     version: typeof obj.version === 'string' ? obj.version : '0.0.0',
     generatedAt: typeof obj.generatedAt === 'string' ? obj.generatedAt : '',
     components,
     blocks,
+    templates,
   }
 }
 
-/** Fetch and parse the registry from a URL. */
+/**
+ * Fetch and parse the registry from a URL. Retries transient failures and
+ * falls back to the last cached copy when offline (via fetchJsonFresh).
+ */
 export async function fetchRegistry(url: string): Promise<Registry> {
-  const res = await fetch(url)
-  if (!res.ok) {
-    throw new Error(`Failed to fetch registry from ${url}: ${res.status} ${res.statusText}`)
+  try {
+    return parseRegistry(await fetchJsonFresh(url))
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e)
+    throw new Error(`Failed to fetch registry from ${url}: ${msg}`)
   }
-  return parseRegistry(await res.json())
 }
 
 /**

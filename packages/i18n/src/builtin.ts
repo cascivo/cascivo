@@ -55,6 +55,7 @@ export const builtin = {
     placeholder: 'Select an option',
     empty: 'No options found',
     clear: 'Clear selection',
+    search: 'Search options',
   }),
   dataTable: defineMessages('cascade.dataTable', {
     search: 'Search',
@@ -63,6 +64,14 @@ export const builtin = {
     selectRow: 'Select row',
     itemsSelected: '{count} selected',
     expandRow: 'Expand row',
+    previousPage: 'Previous page',
+    nextPage: 'Next page',
+  }),
+  dock: defineMessages('cascade.dock', {
+    nav: 'Main navigation',
+  }),
+  steps: defineMessages('cascade.steps', {
+    label: 'Steps',
   }),
   overflowMenu: defineMessages('cascade.overflowMenu', {
     trigger: 'More actions',
@@ -335,6 +344,7 @@ defineCatalog(builtin.combobox, 'de', {
   placeholder: 'Option auswählen',
   empty: 'Keine Optionen gefunden',
   clear: 'Auswahl löschen',
+  search: 'Optionen durchsuchen',
 })
 defineCatalog(builtin.dataTable, 'de', {
   search: 'Suchen',
@@ -343,6 +353,14 @@ defineCatalog(builtin.dataTable, 'de', {
   selectRow: 'Zeile auswählen',
   itemsSelected: '{count} ausgewählt',
   expandRow: 'Zeile aufklappen',
+  previousPage: 'Vorherige Seite',
+  nextPage: 'Nächste Seite',
+})
+defineCatalog(builtin.dock, 'de', {
+  nav: 'Hauptnavigation',
+})
+defineCatalog(builtin.steps, 'de', {
+  label: 'Schritte',
 })
 defineCatalog(builtin.overflowMenu, 'de', {
   trigger: 'Weitere Aktionen',

@@ -1,7 +1,9 @@
-import { resolve as resolvePath } from 'node:path'
+import { readFileSync } from 'node:fs'
+import { join, resolve as resolvePath } from 'node:path'
 import type { CascadeConfig } from '../utils/config.js'
 import { installPackages } from '../utils/exec.js'
 import { resolveOutputPath, writeFileSafe } from '../utils/fs.js'
+import { fetchTextRetry } from '../utils/http.js'
 import {
   fetchRegistry,
   fileName,
@@ -17,12 +19,29 @@ import { isTemplateItem, type RegistryItem } from '@cascivo/registry'
 /** Dependencies always present in a cascade project — never auto-installed. */
 const ASSUMED_DEPS = new Set(['react', 'react-dom'])
 
-async function fetchText(url: string): Promise<string> {
-  const res = await fetch(url)
-  if (!res.ok) {
-    throw new Error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`)
+/**
+ * Copied components read `--cascivo-*` custom properties; without
+ * @cascivo/tokens or @cascivo/themes imported somewhere, they render unstyled.
+ * Print the wiring once after a successful install if neither is a dependency.
+ */
+function hintThemesIfMissing(cwd: string): void {
+  let deps: Record<string, unknown> = {}
+  try {
+    const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as {
+      dependencies?: Record<string, unknown>
+      devDependencies?: Record<string, unknown>
+    }
+    deps = { ...pkg.dependencies, ...pkg.devDependencies }
+  } catch {
+    // No package.json — still worth printing the hint.
   }
-  return res.text()
+  if (deps['@cascivo/themes'] !== undefined || deps['@cascivo/tokens'] !== undefined) return
+  console.log(
+    '\nStyling: cascivo components read --cascivo-* tokens, which this project does not import yet.',
+  )
+  console.log('  npm install @cascivo/themes')
+  console.log("  import '@cascivo/themes/all'   // once, in your entry file")
+  console.log('  <html data-theme="light">      // or any container')
 }
 
 /** Resolve where a template's own file is written — relative to the project root. */
@@ -86,6 +105,16 @@ export function resolveBareClosure(
   return { resolved, missing }
 }
 
+/**
+ * First-party items are hosted on cascivo.com or the cascivo/cascivo GitHub
+ * repo (raw file URLs). Anything else gets a review-before-use notice.
+ */
+const FIRST_PARTY_URL = /^https:\/\/(cascivo\.com|raw\.githubusercontent\.com\/cascivo\/cascivo)\//
+
+export function isThirdParty(itemUrl: string): boolean {
+  return !FIRST_PARTY_URL.test(itemUrl)
+}
+
 function isMultiRegistrySpec(name: string): boolean {
   return (
     name.startsWith('@') ||
@@ -109,7 +138,20 @@ export async function add(
 
   const cwd = opts.cwd ?? process.cwd()
   const multiSpecs = names.filter(isMultiRegistrySpec)
-  const bareSpecs = names.filter((n) => !isMultiRegistrySpec(n))
+  let bareSpecs = names.filter((n) => !isMultiRegistrySpec(n))
+
+  // Bare names that match a first-party template install through the per-item
+  // path (they carry file targets the bare component path cannot express).
+  let registry: Registry | null = null
+  if (bareSpecs.length > 0) {
+    registry = await fetchRegistry(config.registry)
+    const templateNames = new Set(registry.templates.map((t) => t.toLowerCase()))
+    const templateSpecs = bareSpecs.filter((n) => templateNames.has(n.toLowerCase()))
+    if (templateSpecs.length > 0) {
+      bareSpecs = bareSpecs.filter((n) => !templateNames.has(n.toLowerCase()))
+      multiSpecs.push(...templateSpecs.map((n) => `@cascivo/${n.toLowerCase()}`))
+    }
+  }
 
   let lock = (await readLock(cwd)) ?? createLock()
 
@@ -135,8 +177,6 @@ export async function add(
       return
     }
 
-    const isThirdParty = (itemUrl: string) => !itemUrl.includes('cascivo.com')
-
     for (const { item, itemUrl, registryBase } of plan.items) {
       if (isThirdParty(itemUrl)) {
         console.log(
@@ -145,7 +185,16 @@ export async function add(
         )
       }
 
-      const fileHashes = await installItem(item, config, cwd)
+      let fileHashes: Record<string, string>
+      try {
+        fileHashes = await installItem(item, config, cwd)
+      } catch (e) {
+        // Nothing was written for this item (fetch-all-then-write), so the
+        // lockfile must not record it either.
+        console.error(`Failed to install ${item.name}: ${e instanceof Error ? e.message : e}`)
+        process.exitCode = 1
+        continue
+      }
       lock = updateLockEntry(lock, item.name, {
         registry: registryBase,
         version: item.version,
@@ -154,14 +203,18 @@ export async function add(
       })
     }
     await writeLock(lock, cwd)
-    return
+    if (bareSpecs.length === 0) {
+      hintThemesIfMissing(cwd)
+      return
+    }
   }
 
-  // Legacy bare-name path (uses existing registry fetch).
-  // Resolves the transitive closure of registry (component) dependencies so a
-  // component that imports a shared hook/sibling (e.g. `../popover/use-popover`)
-  // installs that dependency too. De-duped by resolved name; cycle-safe.
-  const registry = await fetchRegistry(config.registry)
+  if (bareSpecs.length === 0) return
+  // Legacy bare-name path (uses the registry fetched above for template
+  // detection). Resolves the transitive closure of registry (component)
+  // dependencies so a component that imports a shared hook/sibling
+  // (e.g. `../popover/use-popover`) installs that dependency too.
+  registry ??= await fetchRegistry(config.registry)
   const missingDeps = new Set<string>()
   const registryBase = config.registry.replace(/\/registry\.json$/, '').replace(/\/r$/, '')
 
@@ -193,8 +246,20 @@ export async function add(
     const outputName = entry.name.includes('/') ? entry.name.split('/').pop()! : entry.name
     const fileHashes: Record<string, string> = {}
 
-    for (const url of entry.files) {
-      const content = await fetchText(url)
+    // Two-phase: fetch every file before writing any, so a mid-install network
+    // failure can never leave a half-copied component (or a lockfile entry
+    // pointing at one).
+    let fetched: { url: string; content: string }[]
+    try {
+      fetched = await Promise.all(
+        entry.files.map(async (url) => ({ url, content: await fetchTextRetry(url) })),
+      )
+    } catch (e) {
+      console.error(`Failed to install ${entry.name}: ${e instanceof Error ? e.message : e}`)
+      process.exitCode = 1
+      continue
+    }
+    for (const { url, content } of fetched) {
       const dest = resolveOutputPath(config.outputDir, outputName, fileName(url), cwd)
       await writeFileSafe(dest, content)
       fileHashes[dest] = sha256(content)
@@ -220,6 +285,7 @@ export async function add(
   }
 
   await writeLock(lock, cwd)
+  hintThemesIfMissing(cwd)
 }
 
 /**
@@ -239,18 +305,21 @@ async function installItem(
   const template = isTemplateItem(item)
   const outputName = item.name.includes('/') ? item.name.split('/').pop()! : item.name
 
-  for (const file of item.files ?? []) {
-    try {
-      const content = await fetchText(file.url)
-      const dest =
-        template && file.target
-          ? resolveTemplateTarget(cwd, file.target)
-          : resolveOutputPath(config.outputDir, outputName, fileName(file.url), cwd)
-      await writeFileSafe(dest, content)
-      fileHashes[dest] = sha256(content)
-    } catch {
-      console.warn(`  Could not fetch ${file.url}`)
-    }
+  // Two-phase: fetch every file before writing any. A failed fetch aborts the
+  // whole item (throws to the caller) instead of silently installing a subset.
+  const fetched = await Promise.all(
+    (item.files ?? []).map(async (file) => ({
+      file,
+      content: await fetchTextRetry(file.url),
+    })),
+  )
+  for (const { file, content } of fetched) {
+    const dest =
+      template && file.target
+        ? resolveTemplateTarget(cwd, file.target)
+        : resolveOutputPath(config.outputDir, outputName, fileName(file.url), cwd)
+    await writeFileSafe(dest, content)
+    fileHashes[dest] = sha256(content)
   }
 
   for (const dep of item.dependencies ?? []) {

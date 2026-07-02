@@ -1,13 +1,11 @@
 name: Visual regression
 
+# Nightly + manual only (not PR-blocking): a stale baseline should alert,
+# not block unrelated PRs. Use the workflow_dispatch `update` input to
+# regenerate baselines when rendering legitimately changes.
 on:
-  pull_request:
-    paths:
-      - 'packages/components/**'
-      - 'packages/themes/**'
-      - 'packages/tokens/**'
-      - 'apps/site/**'
-      - 'registry.json'
+  schedule:
+    - cron: '17 3 * * *'
   workflow_dispatch:
     inputs:
       update:
@@ -35,14 +33,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Install Chromium
-        run: pnpm --filter @cascade-ui/docs exec playwright install chromium --with-deps
+        run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
 
       - name: Build docs
-        run: pnpm exec vp run @cascade-ui/docs#build
+        run: pnpm exec vp run @cascivo/site#build
 
       - name: Screenshot components (3 themes)
         if: ${{ !inputs.update }}
-        run: pnpm --filter @cascade-ui/docs run test:visual
+        run: pnpm --filter @cascivo/site run test:visual
 
       - name: Upload diff report on failure
         if: failure()
@@ -56,7 +54,7 @@ jobs:
       - name: Regenerate + commit baselines
         if: ${{ inputs.update }}
         run: |
-          pnpm --filter @cascade-ui/docs run test:visual -- --update-snapshots
+          pnpm --filter @cascivo/site run test:visual -- --update-snapshots
           if ! git diff --quiet apps/site/test/snapshots; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"

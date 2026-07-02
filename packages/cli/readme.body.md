@@ -13,8 +13,17 @@ cascivo view owner/repo/dashboard  # preview an item (or template) before instal
 cascivo list                       # list available components
 cascivo update                     # pull newer versions of copied components
 cascivo audit --ai                 # flag hard-coded values, invented props, missing wiring
+cascivo search <query>             # search components across registries
+cascivo theme add <name>           # install a first-party theme (12 available)
+cascivo eject <component>          # eject tokens into a scoped local override file
+cascivo generate <config.json>     # generate TSX from a ViewConfig JSON file
+cascivo doctor [--ci] [--drift]    # check components for rule violations / registry drift
+cascivo tokens import <file>       # import external design tokens as overrides
 cascivo registry build             # build a registry from your own components
+cascivo template init <name>       # scaffold a new template
 ```
+
+Every command supports `--help` for its flags and examples.
 
 A **template** is a registry item (`type: "template"`) that bundles a working page with the components it composes (in `registryDependencies`) and its own page/fixture files (each with a `target`). `cascivo add` installs the component closure into your components directory and writes the template's files to their targets; `create --template` does the same into a freshly scaffolded app.
 

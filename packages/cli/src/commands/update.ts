@@ -7,7 +7,7 @@ import { diffLines, hasChanges } from '../utils/diff.js'
 import { readFileSafe, resolveOutputPath, writeFileSafe } from '../utils/fs.js'
 import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
 import { readLock, writeLock, updateLockEntry } from '../utils/lock.js'
-import { fetchJson } from '../utils/http.js'
+import { fetchJson, fetchTextRetry } from '../utils/http.js'
 import { merge } from '../utils/merge.js'
 import type { RegistryItem } from '@cascivo/registry'
 
@@ -19,12 +19,6 @@ async function confirm(question: string): Promise<boolean> {
   } finally {
     rl.close()
   }
-}
-
-async function fetchText(url: string): Promise<string> {
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`)
-  return res.text()
 }
 
 export async function update(
@@ -96,9 +90,9 @@ async function threeWayUpdate(
     const baseFile = baseItem.files.find((f) => fileName(f.url) === fname)
     const dest = resolveOutputPath(config.outputDir, outputName, fname)
 
-    const upstream = await fetchText(url)
+    const upstream = await fetchTextRetry(url)
     const local = existsSync(dest) ? await readFile(dest, 'utf8') : ''
-    const base = baseFile ? await fetchText(baseFile.url) : ''
+    const base = baseFile ? await fetchTextRetry(baseFile.url) : ''
 
     if (base === '' && local === '') {
       summaries.push({ file: fname, result: 'clean' })
@@ -175,12 +169,13 @@ async function twoWayUpdate(
   const pending: { path: string; content: string }[] = []
 
   for (const url of entry.files) {
-    const res = await fetch(url)
-    if (!res.ok) {
-      console.error(`Failed to fetch ${url}: ${res.status} ${res.statusText}`)
+    let latest: string
+    try {
+      latest = await fetchTextRetry(url)
+    } catch (e) {
+      console.error(e instanceof Error ? e.message : String(e))
       return
     }
-    const latest = await res.text()
     const dest = resolveOutputPath(config.outputDir, entry.name, fileName(url))
     const current = await readFileSafe(dest)
 
@@ -224,7 +219,22 @@ async function updateCheck(config: CascadeConfig): Promise<void> {
   for (const [name, entry] of Object.entries(lock.items)) {
     const current = findComponent(registry, name)
     if (!current) continue
-    if (current.version !== entry.version) {
+    // Content hashes are the accurate signal (they change with every source
+    // edit); the version compare is the fallback for older registries.
+    if (current.fileHashes && Object.keys(current.fileHashes).length > 0) {
+      const lockByBase = new Map(
+        Object.entries(entry.files).map(([dest, hash]) => [dest.split('/').pop()!, hash]),
+      )
+      const changed = Object.entries(current.fileHashes).filter(
+        ([file, hash]) => lockByBase.get(file) !== hash,
+      )
+      if (changed.length > 0) {
+        console.log(
+          `${name}: ${changed.length} file(s) changed upstream (${entry.version} → ${current.version})`,
+        )
+        outdated++
+      }
+    } else if (current.version !== entry.version) {
       console.log(`${name}: ${entry.version} → ${current.version}`)
       outdated++
     }

@@ -1,27 +1,13 @@
+import { THEMES } from '../utils/config.js'
 import { installPackages } from '../utils/exec.js'
-
-const THEMES = [
-  'light',
-  'dark',
-  'warm',
-  'flat',
-  'minimal',
-  'midnight',
-  'pastel',
-  'brutalist',
-  'corporate',
-  'terminal',
-  'cyberpunk',
-  'arcade',
-]
 
 export async function theme(args: string[]): Promise<void> {
   const [sub, name] = args
   if (sub !== 'add' || !name) {
-    console.error(`Usage: cascade theme add <${THEMES.join('|')}>`)
+    console.error(`Usage: cascivo theme add <${THEMES.join('|')}>`)
     return
   }
-  if (!THEMES.includes(name)) {
+  if (!(THEMES as readonly string[]).includes(name)) {
     console.error(`Unknown theme "${name}". Available: ${THEMES.join(', ')}`)
     return
   }

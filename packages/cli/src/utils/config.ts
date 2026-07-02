@@ -2,7 +2,23 @@ import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
-export type ThemeName = 'light' | 'dark' | 'warm'
+/** All first-party themes shipped by @cascivo/themes (selectable via data-theme). */
+export const THEMES = [
+  'light',
+  'dark',
+  'warm',
+  'flat',
+  'minimal',
+  'midnight',
+  'pastel',
+  'brutalist',
+  'corporate',
+  'terminal',
+  'cyberpunk',
+  'arcade',
+] as const
+
+export type ThemeName = (typeof THEMES)[number]
 
 export type RegistryNamespaceConfig =
   | string

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "name": "dashboard",
+  "type": "template",
+  "description": "An analytics dashboard with KPI cards, a chart slot, and a recent-activity table",
+  "category": "dashboard",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "cascivo",
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/templates/dashboard",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/dashboard/dashboard.tsx",
+      "target": "src/pages/dashboard.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/dashboard/dashboard.module.css",
+      "target": "src/pages/dashboard.module.css"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/dashboard/fixtures.ts",
+      "target": "src/fixtures/dashboard.ts"
+    }
+  ],
+  "dependencies": [],
+  "registryDependencies": ["card", "badge", "data-table"],
+  "tags": ["dashboard", "analytics", "template"],
+  "meta": {
+    "intent": "Analytics dashboard",
+    "framework": "react-vite",
+    "category": "dashboard",
+    "screenshots": [
+      {
+        "light": "https://raw.githubusercontent.com/cascivo/cascivo/main/templates/dashboard/screenshot-light.svg",
+        "alt": "Analytics dashboard with KPI cards and a recent-activity table"
+      }
+    ],
+    "fileRoles": {
+      "src/pages/dashboard.tsx": "page",
+      "src/pages/dashboard.module.css": "asset",
+      "src/fixtures/dashboard.ts": "fixture"
+    },
+    "pages": [
+      {
+        "name": "Dashboard",
+        "target": "src/pages/dashboard.tsx"
+      }
+    ]
+  }
+}

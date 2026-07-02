@@ -1,9 +1,15 @@
+import { createRequire } from 'node:module'
 import { argv } from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { createServer } from './server.js'
 
-export const VERSION = '0.0.0'
+// Read at runtime: this file lives one level below the package root both in
+// src/ (dev, tests) and in dist/ (published bundle), so ../package.json is
+// always the @cascivo/mcp package manifest.
+export const VERSION: string = (
+  createRequire(import.meta.url)('../package.json') as { version: string }
+).version
 
 export { createServer } from './server.js'
 export type { ServerOptions } from './server.js'
