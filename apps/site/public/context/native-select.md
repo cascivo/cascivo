@@ -31,6 +31,21 @@
 
 It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable.
 
+## Props
+
+| Name           | Type                                          | Required | Default | Description                                                        |
+| -------------- | --------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ | --- | ----------------------------------------------------- |
+| `options`      | `NativeSelectOption[]`                        | No       | —       | Options to render. Alternatively pass <option> children.           |
+| `children`     | `React.ReactNode`                             | No       | —       | Raw <option> children (used when options is not provided).         |
+| `size`         | `'sm'                                         | 'md'     | 'lg'`   | No                                                                 | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `invalid`      | `boolean`                                     | No       | —       | Marks the control as invalid for error styling and a11y.           |
+| `placeholder`  | `string`                                      | No       | —       | Placeholder rendered as a disabled, hidden first option.           |
+| `value`        | `string`                                      | No       | —       | The controlled value.                                              |
+| `defaultValue` | `string`                                      | No       | —       | The initial value when uncontrolled.                               |
+| `onChange`     | `React.ChangeEventHandler<HTMLSelectElement>` | No       | —       | Called when the selected value changes.                            |
+| `disabled`     | `boolean`                                     | No       | —       | When true, disables the control and removes it from the tab order. |
+| `className`    | `string`                                      | No       | —       | Additional CSS class names merged onto the root element.           |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -41,6 +56,36 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 - `--cascivo-color-text-muted`
 - `--cascivo-radius-field`
 - `--cascivo-focus-ring`
+
+## Examples
+
+### Basic
+
+```jsx
+<NativeSelect
+  placeholder="Choose a country"
+  options={[
+    { value: 'us', label: 'United States' },
+    { value: 'de', label: 'Germany' },
+  ]}
+  onChange={(e) => setCountry(e.target.value)}
+/>
+```
+
+### Option children
+
+```jsx
+<NativeSelect size="sm" defaultValue="light">
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+</NativeSelect>
+```
+
+### Invalid
+
+```jsx
+<NativeSelect invalid placeholder="Required" options={countries} />
+```
 
 ## Boundaries
 

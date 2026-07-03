@@ -99,7 +99,21 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Escape', 'Tab', 'Shift+Tab'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<BottomSheet open={isOpen} onOpenChange={setIsOpen} title="Filters">
+  <FilterForm />
+</BottomSheet>`,
+    },
+    {
+      title: 'Custom detents',
+      code: `<BottomSheet defaultOpen snapPoints={[0.25, 0.5, 0.9]} defaultSnap={1} title="Nearby">
+  <PlacesList />
+</BottomSheet>`,
+      description: 'Snaps between three detents by dragging the handle; opens at half height.',
+    },
+  ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'sheet', 'bottom-sheet', 'mobile', 'drag', 'detent', 'gesture'],
   intent: {

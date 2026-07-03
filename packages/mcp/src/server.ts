@@ -5,6 +5,7 @@ import {
   fetchDirectory,
   fetchRegistryIndex,
   getComponent,
+  getComponentWithVersion,
   getEnvRegistries,
   listComponents,
   loadRegistry,
@@ -124,7 +125,7 @@ export function createServer(options: ServerOptions = {}): McpServer {
         const meta = getComponent(remoteRegistry, name)
         return meta ? json(meta) : error(`Component "${name}" not found in registry "${ns}".`)
       }
-      const meta = getComponent(registry, name)
+      const meta = getComponentWithVersion(registry, name)
       return meta ? json(meta) : error(`Component "${name}" not found.`)
     },
   )
@@ -193,8 +194,13 @@ export function createServer(options: ServerOptions = {}): McpServer {
         verifiedOnly: z.boolean().optional().describe('Only verified templates'),
       },
     },
-    ({ category, tag, framework, verifiedOnly }) => {
-      const catalog = loadCatalog()
+    async ({ category, tag, framework, verifiedOnly }) => {
+      let catalog
+      try {
+        catalog = await loadCatalog(undefined, fetchFn)
+      } catch (e) {
+        return error(e instanceof Error ? e.message : String(e))
+      }
       const filter: Parameters<typeof listTemplates>[1] = {}
       if (category) filter.category = category
       if (tag) filter.tag = tag
@@ -214,8 +220,14 @@ export function createServer(options: ServerOptions = {}): McpServer {
         name: z.string().describe('Template name or install spec, e.g. "@cascivo/dashboard"'),
       },
     },
-    ({ name }) => {
-      const tpl = getTemplate(loadCatalog(), name)
+    async ({ name }) => {
+      let catalog
+      try {
+        catalog = await loadCatalog(undefined, fetchFn)
+      } catch (e) {
+        return error(e instanceof Error ? e.message : String(e))
+      }
+      const tpl = getTemplate(catalog, name)
       if (!tpl) return error(`Template "${name}" not found in the marketplace catalog.`)
       return json(tpl)
     },
@@ -232,9 +244,11 @@ export function createServer(options: ServerOptions = {}): McpServer {
         cwd: z.string().optional().describe('Project directory (default: current directory)'),
       },
     },
-    ({ name, cwd }) => {
-      const tpl = getTemplate(loadCatalog(), name)
-      const spec = tpl?.installSpec ?? name
+    async ({ name, cwd }) => {
+      // The catalog only maps name → installSpec here; without it, pass the
+      // name straight to the CLI (which resolves specs itself).
+      const catalog = await loadCatalog(undefined, fetchFn).catch(() => null)
+      const spec = (catalog ? getTemplate(catalog, name)?.installSpec : undefined) ?? name
       const result = spawnSync('npx', ['-y', 'cascivo', 'add', spec], {
         encoding: 'utf8',
         ...(cwd ? { cwd } : {}),

@@ -28,7 +28,7 @@ export function AccessibilityStatement() {
     <section className="section" id="statement" data-reveal="">
       <h2>Conformance statement</h2>
       <p className="section-sub">
-        WCAG 2.2 AA · APG-conformant · AT-tested · EAA / EN 301 549 / Section 508 mapped
+        WCAG 2.2 AA · APG-conformant · AT test plan defined · EAA / EN 301 549 / Section 508 mapped
       </p>
 
       <div className="a11y-stmt-grid">
@@ -64,11 +64,11 @@ export function AccessibilityStatement() {
         {/* AT matrix */}
         <article className="a11y-stmt-card">
           <h3>AT support matrix</h3>
-          <p className="a11y-stmt-stat">12 × 4</p>
+          <p className="a11y-stmt-stat">12 × 4 planned</p>
           <p className="a11y-stmt-desc">
-            Representative manual AT testing across 12 components and 4 stacks (NVDA/Chrome,
-            JAWS/Chrome, VoiceOver/Safari, TalkBack/Chrome). Results in{' '}
-            <code>docs/specs/at-matrix.md</code>.
+            A defined manual test plan covering 12 components and 4 stacks (NVDA/Chrome,
+            JAWS/Chrome, VoiceOver/Safari, TalkBack/Chrome). Manual sessions have not run yet;
+            per-cell results are tracked in <code>docs/specs/at-matrix.md</code>.
           </p>
         </article>
 
@@ -77,9 +77,10 @@ export function AccessibilityStatement() {
           <h3>Automated axe-core testing</h3>
           <p className="a11y-stmt-stat">0 violations</p>
           <p className="a11y-stmt-desc">
-            Zero axe violations across all components in CI — four app states, WCAG 2.2 AA tags.
-            This is a floor, not a ceiling: axe detects roughly 30–40% of WCAG issues by design. See
-            the <a href="#axe">axe comparison</a> section above for methodology.
+            Zero axe violations in the CI-gated interaction suite — four app states (data table,
+            1k-row table, form, dialog), WCAG 2.2 AA tags. This is a floor, not a ceiling: axe
+            detects roughly 30–40% of WCAG issues by design. See the{' '}
+            <a href="#axe">axe comparison</a> section above for methodology.
           </p>
         </article>
       </div>
@@ -116,7 +117,10 @@ export function AccessibilityStatement() {
       <h3 className="a11y-stmt-sub-heading">Scope and limitations</h3>
       <ul className="a11y-stmt-limits">
         <li>Conformance is at the component level, not the application level.</li>
-        <li>AT testing is representative (12 components × 4 stacks), not exhaustive.</li>
+        <li>
+          AT testing is planned as representative (12 components × 4 stacks), not exhaustive —
+          manual sessions are pending, and every matrix cell currently reads &quot;not tested&quot;.
+        </li>
         <li>No third-party VPAT has been issued for cascivo.</li>
         <li>
           Legal accessibility compliance of the final product is the integrator&apos;s

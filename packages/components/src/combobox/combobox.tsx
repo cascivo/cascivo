@@ -29,6 +29,7 @@ export interface ComboboxLabels {
   placeholder?: string
   empty?: string
   clear?: string
+  search?: string
 }
 
 export interface ComboboxProps {
@@ -73,6 +74,7 @@ export function Combobox({
   const resolvedPlaceholder = labels?.placeholder ?? t(builtin.combobox.placeholder)
   const resolvedEmpty = labels?.empty ?? t(builtin.combobox.empty)
   const resolvedClear = labels?.clear ?? t(builtin.combobox.clear)
+  const resolvedSearch = labels?.search ?? t(builtin.combobox.search)
 
   // Controlled vs. uncontrolled selected value
   const selectedSignal = useSignal<string | undefined>(value ?? defaultValue)
@@ -239,7 +241,7 @@ export function Combobox({
                 activeIndex.value = 0
               }}
               onKeyDown={handleInputKeyDown}
-              aria-label="Search options"
+              aria-label={resolvedSearch}
               autoComplete="off"
             />
           </div>

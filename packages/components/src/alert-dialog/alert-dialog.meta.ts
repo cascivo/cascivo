@@ -7,7 +7,51 @@ export const meta: ComponentMeta = {
   states: ['open', 'closed'],
   variants: ['default', 'destructive'],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'open',
+      description: 'Whether the component is open (controlled).',
+      type: 'boolean',
+      required: true,
+    },
+    {
+      name: 'title',
+      description: 'Title text for the component.',
+      type: 'string',
+      required: true,
+    },
+    {
+      name: 'description',
+      description: 'Supporting description text.',
+      type: 'string',
+      required: true,
+    },
+    {
+      name: 'onConfirm',
+      description: 'Called when the confirm button is activated.',
+      type: '() => void',
+      required: true,
+    },
+    {
+      name: 'onCancel',
+      description: 'Called when the cancel button is activated.',
+      type: '() => void',
+      required: true,
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: 'AlertDialogLabels',
+      required: false,
+    },
+    {
+      name: 'variant',
+      description: 'Selects the visual style variant.',
+      type: "'destructive' | 'default'",
+      required: false,
+      default: 'default',
+    },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-border',
@@ -23,7 +67,30 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Tab', 'Shift+Tab', 'Enter', 'Space'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Destructive confirm',
+      code: `<AlertDialog
+  open={isOpen}
+  variant="destructive"
+  title="Delete project?"
+  description="This permanently removes the project and cannot be undone."
+  onConfirm={remove}
+  onCancel={() => setIsOpen(false)}
+/>`,
+    },
+    {
+      title: 'Custom action labels',
+      code: `<AlertDialog
+  open={isOpen}
+  title="Sign out?"
+  description="Unsaved changes will be lost."
+  labels={{ confirm: 'Sign out', cancel: 'Stay' }}
+  onConfirm={signOut}
+  onCancel={() => setIsOpen(false)}
+/>`,
+    },
+  ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'dialog', 'confirm', 'destructive'],
   intent: {

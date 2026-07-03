@@ -7,7 +7,28 @@ export const meta: ComponentMeta = {
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'children',
+      description: 'A HoverCardTrigger and HoverCardContent pair.',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'openDelay',
+      description: 'Delay (ms) before the card opens on hover/focus.',
+      type: 'number',
+      required: false,
+      default: '300',
+    },
+    {
+      name: 'closeDelay',
+      description: 'Delay (ms) before the card closes after hover/focus leaves.',
+      type: 'number',
+      required: false,
+      default: '100',
+    },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-border',
@@ -21,7 +42,25 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Tab', 'Escape'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Profile preview',
+      code: `<HoverCard>
+  <HoverCardTrigger><a href="/users/ada">@ada</a></HoverCardTrigger>
+  <HoverCardContent>
+    <Avatar name="Ada Lovelace" />
+    <p>Wrote the first program.</p>
+  </HoverCardContent>
+</HoverCard>`,
+    },
+    {
+      title: 'Custom delays',
+      code: `<HoverCard openDelay={500} closeDelay={200}>
+  <HoverCardTrigger>Definition</HoverCardTrigger>
+  <HoverCardContent>A longer explanation shown on hover or focus.</HoverCardContent>
+</HoverCard>`,
+    },
+  ],
   dependencies: ['@cascivo/core'],
   registryDependencies: ['popover'],
   tags: ['overlay', 'hover', 'preview', 'floating'],

@@ -19,6 +19,7 @@ const config: StorybookConfig = {
         '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
         '@cascivo/editor': resolve(root, 'packages/editor/src/index.ts'),
         '@cascivo/flow': resolve(root, 'packages/flow/src/index.ts'),
+        '@cascivo/react': resolve(root, 'packages/react/src/index.ts'),
         '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
         '@cascivo/storage': resolve(root, 'packages/storage/src/index.ts'),
         '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),

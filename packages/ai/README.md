@@ -5,26 +5,101 @@
   <h1>@cascivo/ai</h1>
   <p><strong>AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat</strong></p>
 
-![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
+[![npm](https://img.shields.io/npm/v/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/ai)
+[![downloads](https://img.shields.io/npm/dm/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/ai)
+[![license](https://img.shields.io/npm/l/%40cascivo%2Fai?style=flat-square&color=0079bf)](https://github.com/cascivo/cascivo/blob/main/LICENSE)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[npm](https://www.npmjs.com/package/@cascivo/ai) · [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 </div>
 
 ---
 
-The **context layer** for cascivo — the WHY that sits alongside the WHAT (manifests, tokens, MCP). It gives AI agents machine-readable intent, design boundaries, and a way to check their own output.
+AI-native components for cascivo — the presentation layer for AI features: streaming text, generation status, animated terminals, and a full chat surface. Signal-driven like the rest of the design system (no `useState`, no `useEffect`), typed, and localized via `@cascivo/i18n` built-in catalogs.
 
-## What it exports
+> Newly published — first release on npm as of `0.1.0`.
 
-- **`context.json`** — intent, when-to-use / anti-patterns, component selection edges, design boundaries, specs, and authoring rules in one bundle.
-- **`tokens.catalog.json`** — the closed-set token catalog: every `--cascivo-*` property with its layer and resolved default, so an agent picks an existing token instead of inventing a value.
-- **`cascivo audit --ai`** integration — flags hard-coded values, invented props, and missing required wiring in generated code.
+**Peer dependencies:** `react >=18` and `@preact/signals-react >=2` (the components are signal-driven). Styles ship as CSS modules bundled with the components — no stylesheet import needed. Pair with `@cascivo/themes` for tokens.
 
-## Why a context layer
+```sh
+pnpm add @cascivo/ai @preact/signals-react
+```
 
-Manifests tell an agent _what_ a `Button` is and _which_ props it takes. The context layer tells it _when_ to reach for a `Button` versus a `Link`, _what not to do_, and _which token_ to use — then `cascivo audit --ai` verifies the result. Together they turn "generate some UI" into "select from closed sets and prove the output conforms."
+## `StreamingText`
+
+Types text out character-by-character with a blinking cursor, driven by `requestAnimationFrame`. Feed it a growing string (e.g. an accumulating LLM response) or a static one:
+
+```tsx
+import { StreamingText } from '@cascivo/ai'
+;<StreamingText
+  text={response} // target text; typing catches up as it grows
+  speed={2} // characters per frame (default 2)
+  onComplete={() => setDone(true)}
+/>
+```
+
+The cursor renders only while the displayed text lags the target, and the animation resets when `text` is replaced with a shorter string.
+
+## `AiLabel`
+
+A `role="status"` badge for AI-generated content with three variants — `generating` (default), `done`, `error`. Labels come from the `@cascivo/i18n` built-in catalog, so they localize automatically:
+
+```tsx
+import { AiLabel } from '@cascivo/ai'
+
+<AiLabel variant="generating" />
+<AiLabel variant="done" />
+<AiLabel variant="error" />
+```
+
+It extends `HTMLAttributes<HTMLSpanElement>`, so `className`, `title`, etc. pass through.
+
+## `Terminal`
+
+An animated terminal window (`role="log"`, `aria-live="polite"`) that types out a script of lines. Each line has a `type` (`command` | `output` | `error` | `comment`) for per-line styling and an optional `prefix` (e.g. `$`):
+
+```tsx
+import { Terminal } from '@cascivo/ai'
+;<Terminal
+  lines={[
+    { text: 'npx cascivo add button', prefix: '$', type: 'command' },
+    { text: 'Added button to src/components.', type: 'output' },
+    { text: '# done in 1.2s', type: 'comment' },
+  ]}
+  speed={3} // characters per frame (default 3)
+  loop // restart from the top after the last line
+  onComplete={() => {}}
+/>
+```
+
+## `AiChat`
+
+A complete chat surface: message list (`role="log"`), streaming assistant bubble, and a textarea composer with Enter-to-send (Shift+Enter for a newline). It is fully controlled — you own the message array and the send handler:
+
+```tsx
+import { AiChat, type ChatMessage } from '@cascivo/ai'
+
+const messages: ChatMessage[] = [
+  { id: '1', role: 'user', content: 'What is cascivo?' },
+  { id: '2', role: 'assistant', content: 'A CSS-native design system.' },
+]
+
+<AiChat
+  messages={messages} // system messages are accepted but not rendered
+  onSend={(text) => append({ role: 'user', content: text })}
+  isStreaming={streaming} // disables the send button
+  streamingText={partial} // rendered as a live assistant bubble via StreamingText
+/>
+```
+
+Role labels ("You" / "Assistant"), the input placeholder, and the send button label all default from the `@cascivo/i18n` built-in catalog.
+
+## Install
+
+```sh
+pnpm add @cascivo/ai
+```
 
 ---
 

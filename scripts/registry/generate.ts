@@ -7,6 +7,7 @@
  * Run with: `pnpm registry:generate` (or `vp run registry:generate`).
  */
 import { spawnSync } from 'node:child_process'
+import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
@@ -75,6 +76,13 @@ const ROOTS: SourceRoot[] = [
     type: 'flow',
     prefix: 'flow/',
   },
+  {
+    // FlowCanvas is public @cascivo/flow API (exported from the package root);
+    // it lives under core/ rather than flows/ but must still be discoverable.
+    dir: join(REPO_ROOT, 'packages', 'flow', 'src', 'core'),
+    type: 'flow',
+    prefix: 'flow/',
+  },
 ]
 
 interface RegistryComponent {
@@ -84,6 +92,8 @@ interface RegistryComponent {
   category: string
   version: string
   files: string[]
+  /** filename → sha256 of the source content — `cascivo update --check` diffs these against the lockfile. */
+  fileHashes?: Record<string, string>
   /** npm package to install instead of copying files (used for type: 'chart'). */
   install?: string
   dependencies: string[]
@@ -113,9 +123,19 @@ function sortFiles(a: string, b: string): number {
   return rank(a) - rank(b) || a.localeCompare(b)
 }
 
+function sha256(content: string): string {
+  return `sha256-${createHash('sha256').update(content).digest('hex')}`
+}
+
+/**
+ * Registry entries carry the @cascivo/react version: the components package
+ * itself is private and pinned at 0.0.0, while @cascivo/react is the published
+ * distribution of the same sources and is bumped by changesets whenever they
+ * change — so it is the meaningful "library version" for installed copies.
+ */
 async function readComponentVersion(): Promise<string> {
   const pkg = JSON.parse(
-    await readFile(join(REPO_ROOT, 'packages', 'components', 'package.json'), 'utf8'),
+    await readFile(join(REPO_ROOT, 'packages', 'react', 'package.json'), 'utf8'),
   ) as { version: string }
   return pkg.version
 }
@@ -136,12 +156,12 @@ async function buildEntry(
   // Charts, flow primitives, and the editor are npm-installed (not copy-pasted): empty files.
   const isNpmInstalled = root.type === 'chart' || root.type === 'flow' || root.type === 'editor'
 
-  const files = isNpmInstalled
-    ? []
-    : (await readdir(dir))
-        .filter(isSourceFile)
-        .sort(sortFiles)
-        .map((file) => `${BASE_URL}/${relDir}/${file}`)
+  const fileNames = isNpmInstalled ? [] : (await readdir(dir)).filter(isSourceFile).sort(sortFiles)
+  const files = fileNames.map((file) => `${BASE_URL}/${relDir}/${file}`)
+  const fileHashes: Record<string, string> = {}
+  for (const file of fileNames) {
+    fileHashes[file] = sha256(await readFile(join(dir, file), 'utf8'))
+  }
 
   const entry: RegistryComponent = {
     name: `${root.prefix}${localName}`,
@@ -150,6 +170,7 @@ async function buildEntry(
     category: meta.category,
     version,
     files,
+    ...(fileNames.length > 0 ? { fileHashes } : {}),
     dependencies: meta.dependencies,
     tags: meta.tags,
     meta,
@@ -178,6 +199,8 @@ interface BlockRegistryEntry {
   dependencies: string[]
   tags: string[]
   screenshot: { light: string; dark: string }
+  /** When-to-use guidance for agents — mirrors component metas. */
+  intent?: BlockMeta['intent']
 }
 
 const BLOCKS_DIR = join(REPO_ROOT, 'packages', 'components', 'src', 'blocks')
@@ -217,6 +240,7 @@ async function scanBlocks(version: string): Promise<BlockRegistryEntry[]> {
       dependencies: ['@cascivo/react'],
       tags: meta.tags,
       screenshot: meta.screenshot,
+      ...(meta.intent ? { intent: meta.intent } : {}),
     })
   }
   return entries
@@ -250,6 +274,32 @@ function formatRegistry(target: string = REGISTRY_PATH): void {
   spawnSync(vp, ['fmt', target], { cwd: REPO_ROOT, stdio: 'ignore' })
 }
 
+/** Hosts a registry file URL may point at. Anything else is a generation bug. */
+const ALLOWED_URL_HOSTS =
+  /^https:\/\/(raw\.githubusercontent\.com\/cascivo\/cascivo|cascivo\.com)\//
+
+interface TemplateItem {
+  name: string
+  type: string
+  files: { url: string; target?: string }[]
+  [key: string]: unknown
+}
+
+/** First-party templates, folded in from templates/cascivo-registry.json so the CLI can resolve them by bare name. */
+async function readTemplates(): Promise<TemplateItem[]> {
+  const manifestPath = join(REPO_ROOT, 'templates', 'cascivo-registry.json')
+  if (!existsSync(manifestPath)) return []
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8')) as { items: TemplateItem[] }
+  return manifest.items.filter((item) => item.type === 'template')
+}
+
+function assertAllowedHosts(urls: string[]): void {
+  const bad = urls.filter((u) => !ALLOWED_URL_HOSTS.test(u) && !u.startsWith(BASE_URL))
+  if (bad.length > 0) {
+    throw new Error(`Registry file URLs on non-allowlisted hosts:\n  ${bad.join('\n  ')}`)
+  }
+}
+
 async function main(): Promise<void> {
   const version = await readComponentVersion()
 
@@ -260,24 +310,39 @@ async function main(): Promise<void> {
   }
 
   const blocks = await scanBlocks(version)
+  const templates = await readTemplates()
+
+  assertAllowedHosts([
+    ...components.flatMap((c) => c.files),
+    ...blocks.flatMap((b) => b.files),
+    ...templates.flatMap((t) => t.files.map((f) => f.url)),
+  ])
 
   const registry = {
     version,
     generatedAt: new Date().toISOString().slice(0, 10),
     components,
     blocks,
+    templates,
   }
 
   await writeFile(REGISTRY_PATH, `${JSON.stringify(registry, null, 2)}\n`, 'utf8')
   formatRegistry()
   console.log(
-    `Wrote ${components.length} component entries and ${blocks.length} block entries to registry.json (base: ${BASE_URL})`,
+    `Wrote ${components.length} component entries, ${blocks.length} block entries, and ${templates.length} template entries to registry.json (base: ${BASE_URL})`,
   )
 
   // Emit per-item static files under apps/site/public/r/
   const docsPublicR = join(REPO_ROOT, 'apps', 'site', 'public', 'r')
   const index = parseLegacyRegistry(registry)
   await buildRegistry(index, docsPublicR)
+
+  // Templates resolve through the same per-item path (cascivo.com/r/<name>.json),
+  // so `cascivo add dashboard` / `create --template dashboard` work against the
+  // default registry.
+  for (const t of templates) {
+    await writeFile(join(docsPublicR, `${t.name}.json`), `${JSON.stringify(t, null, 2)}\n`, 'utf8')
+  }
   // buildRegistry emits JSON.stringify(_, 2) with expanded arrays; oxfmt collapses
   // short arrays. Format here so committed per-item files match the formatter and
   // raw `pnpm regen` output stays drift-free without a separate `vp check --fix`.

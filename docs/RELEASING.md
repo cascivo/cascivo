@@ -8,11 +8,12 @@ and [npm Trusted Publishing](https://docs.npmjs.com/generating-provenance-statem
 
 ### 1. Configure trusted publishers on npmjs.com
 
-For each of the ten Tier-1 packages, you must configure a trusted publisher on npmjs.com
+For each published package, you must configure a trusted publisher on npmjs.com
 **before** the first automated publish. Go to each package page → Settings → Trusted Publisher:
 
 | Package  | npm name          |
 | -------- | ----------------- |
+| ai       | @cascivo/ai       |
 | core     | @cascivo/core     |
 | tokens   | @cascivo/tokens   |
 | themes   | @cascivo/themes   |
@@ -31,11 +32,15 @@ For each package, add a GitHub Actions trusted publisher with:
 - **Workflow filename:** `release.yml`
 - **Environment:** _(leave blank)_
 
-### 2. First-publish bootstrap
+### 2. First-publish bootstrap (completed — kept for reference)
 
-All ten package names are unpublished. npm requires a package to exist before
-a trusted publisher can be attached, so the very first publish must be done
-manually with a short-lived token.
+> **Status:** this bootstrap has been done — all packages above are live on npm
+> with trusted publishing attached. The steps below only apply again when a
+> **new** package name is published for the first time.
+
+npm requires a package to exist before a trusted publisher can be attached, so
+the very first publish of a new package name must be done manually with a
+short-lived token.
 
 #### Step-by-step
 

@@ -22,7 +22,11 @@ import { Prose } from '@cascivo/react'
 
 ## Props
 
-_No props._
+| Prop                      | Type                 | Required | Default | Description                                                                 |
+| ------------------------- | -------------------- | -------- | ------- | --------------------------------------------------------------------------- |
+| `children`                | `React.ReactNode`    | no       | —       | Authored flow content (headings, paragraphs, lists, code, tables) to style. |
+| `dangerouslySetInnerHTML` | `{ __html: string }` | no       | —       | Rendered HTML you do not control (CMS, markdown pipelines). Sanitize first. |
+| `className`               | `string`             | no       | —       | Additional CSS class names merged onto the root element.                    |
 
 ## Examples
 

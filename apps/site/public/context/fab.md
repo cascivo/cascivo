@@ -60,6 +60,40 @@ The main button is icon-only and requires a `label` that becomes its aria-label.
 - `--cascivo-motion-exit`
 - `--cascivo-z-dropdown`
 
+## Examples
+
+### Single action
+
+```jsx
+<Fab label="Compose" onClick={compose}>
+  <PlusIcon />
+</Fab>
+```
+
+### Speed dial
+
+The main button toggles a menu of secondary actions.
+
+```jsx
+<Fab
+  label="Create"
+  actions={[
+    { label: 'New note', icon: <NoteIcon />, onSelect: newNote },
+    { label: 'New folder', icon: <FolderIcon />, onSelect: newFolder },
+  ]}
+>
+  <PlusIcon />
+</Fab>
+```
+
+### Start corner
+
+```jsx
+<Fab label="Help" position="bottom-start" onClick={openHelp}>
+  <HelpIcon />
+</Fab>
+```
+
 ## Boundaries
 
 | Area       | Level    | Note                                                                          |

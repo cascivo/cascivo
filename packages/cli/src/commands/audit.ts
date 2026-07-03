@@ -145,7 +145,7 @@ function applyFixes(files: string[], contract: Contract): number {
 
 export async function audit(args: string[], _config: CascadeConfig): Promise<void> {
   if (!args.includes('--ai')) {
-    console.log('cascade audit: use --ai to audit AI-generated code against the cascade contract')
+    console.log('cascivo audit: use --ai to audit AI-generated code against the cascivo contract')
     return
   }
 

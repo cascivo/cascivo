@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/storybook</h1>
-  <p><strong>Storybook stories generated from every cascivo component manifest</strong></p>
+  <p><strong>Storybook stories generated from cascivo component manifests</strong></p>
 
 ![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)

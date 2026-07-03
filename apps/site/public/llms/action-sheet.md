@@ -39,6 +39,30 @@ import { ActionSheet } from '@cascivo/react'
 | `labels`       | `{ cancel?: string; label?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                    |
 | `className`    | `string`                              | no       | —       | Additional CSS class names merged onto the root element.                      |
 
+## Examples
+
+### Basic
+
+```tsx
+<ActionSheet
+  open={isOpen}
+  onOpenChange={setIsOpen}
+  title="Share photo"
+  actions={[
+    { label: 'Copy link', onSelect: copyLink },
+    { label: 'Delete', onSelect: remove, destructive: true },
+  ]}
+/>
+```
+
+### Without cancel button
+
+Escape and outside press still dismiss the sheet.
+
+```tsx
+<ActionSheet defaultOpen showCancel={false} actions={[{ label: 'Archive', onSelect: archive }]} />
+```
+
 ## Design tokens
 
 - `--cascivo-color-surface`

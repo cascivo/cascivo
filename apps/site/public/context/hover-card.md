@@ -32,6 +32,14 @@
 
 The trigger opens on both mouseenter and focus (and closes on mouseleave/blur) so keyboard users get the same preview, and the content is marked role="complementary" to signal it is supplementary rather than a required dialog; the open/close delays prevent accidental flicker.
 
+## Props
+
+| Name         | Type              | Required | Default | Description                                                 |
+| ------------ | ----------------- | -------- | ------- | ----------------------------------------------------------- |
+| `children`   | `React.ReactNode` | Yes      | —       | A HoverCardTrigger and HoverCardContent pair.               |
+| `openDelay`  | `number`          | No       | 300     | Delay (ms) before the card opens on hover/focus.            |
+| `closeDelay` | `number`          | No       | 100     | Delay (ms) before the card closes after hover/focus leaves. |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -40,6 +48,31 @@ The trigger opens on both mouseenter and focus (and closes on mouseleave/blur) s
 - `--cascivo-shadow-md`
 - `--cascivo-motion-enter`
 - `--cascivo-motion-exit`
+
+## Examples
+
+### Profile preview
+
+```jsx
+<HoverCard>
+  <HoverCardTrigger>
+    <a href="/users/ada">@ada</a>
+  </HoverCardTrigger>
+  <HoverCardContent>
+    <Avatar name="Ada Lovelace" />
+    <p>Wrote the first program.</p>
+  </HoverCardContent>
+</HoverCard>
+```
+
+### Custom delays
+
+```jsx
+<HoverCard openDelay={500} closeDelay={200}>
+  <HoverCardTrigger>Definition</HoverCardTrigger>
+  <HoverCardContent>A longer explanation shown on hover or focus.</HoverCardContent>
+</HoverCard>
+```
 
 ## Boundaries
 

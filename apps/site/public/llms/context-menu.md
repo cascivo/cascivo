@@ -27,7 +27,33 @@ import { ContextMenu } from '@cascivo/react'
 
 ## Props
 
-_No props._
+| Prop       | Type              | Required | Default | Description                                                         |
+| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `children` | `React.ReactNode` | yes      | —       | The right-click target first, followed by ContextMenuItem children. |
+
+## Examples
+
+### Basic
+
+```tsx
+<ContextMenu>
+  <div>Right-click me</div>
+  <ContextMenuItem onSelect={rename}>Rename</ContextMenuItem>
+  <ContextMenuItem onSelect={remove}>Delete</ContextMenuItem>
+</ContextMenu>
+```
+
+### Disabled item
+
+```tsx
+<ContextMenu>
+  <FileRow file={file} />
+  <ContextMenuItem onSelect={copy}>Copy</ContextMenuItem>
+  <ContextMenuItem onSelect={paste} disabled>
+    Paste
+  </ContextMenuItem>
+</ContextMenu>
+```
 
 ## Design tokens
 

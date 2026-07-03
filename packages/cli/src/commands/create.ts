@@ -2,10 +2,8 @@ import { existsSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline/promises'
-import type { ThemeName } from '../utils/config.js'
+import { CASCIVO_HOST, THEMES, type ThemeName } from '../utils/config.js'
 import { writeFileSafe } from '../utils/fs.js'
-
-const THEMES: ThemeName[] = ['light', 'dark', 'warm']
 
 /** Version specifier used for every `@cascivo/*` dependency in generated apps. */
 const CASCIVO_DEP = 'latest'
@@ -305,7 +303,7 @@ function cascivoConfig(opts: ScaffoldOptions): string {
   return `import type { CascadeConfig } from 'cascivo'
 
 const config: CascadeConfig = {
-  registry: 'https://cascivo.com/registry.json',
+  registry: '${CASCIVO_HOST}/registry.json',
   outputDir: 'src/components/ui',
   theme: '${opts.theme}',
 }
@@ -392,10 +390,10 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     name = name || 'my-cascivo-app'
 
     let theme = (themeArg ?? '').toLowerCase()
-    if (!THEMES.includes(theme as ThemeName) && rl) {
-      theme = (await rl.question('Theme? (light/dark/warm) [light]: ')).trim().toLowerCase()
+    if (!(THEMES as readonly string[]).includes(theme) && rl) {
+      theme = (await rl.question(`Theme? (${THEMES.join('/')}) [light]: `)).trim().toLowerCase()
     }
-    const resolvedTheme: ThemeName = THEMES.includes(theme as ThemeName)
+    const resolvedTheme: ThemeName = (THEMES as readonly string[]).includes(theme)
       ? (theme as ThemeName)
       : 'light'
 

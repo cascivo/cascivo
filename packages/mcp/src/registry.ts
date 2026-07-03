@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { CASCIVO_HOST } from './host.js'
 
 export interface PropManifest {
   name: string
@@ -32,6 +33,8 @@ export interface RegistryComponent {
   category: string
   version: string
   files: string[]
+  /** filename → sha256 of upstream content — lets agents detect drift between installed and current source. */
+  fileHashes?: Record<string, string>
   dependencies: string[]
   tags: string[]
   meta: ComponentManifest
@@ -93,6 +96,30 @@ export function getComponent(registry: Registry, name: string): ComponentManifes
   )?.meta
 }
 
+/**
+ * Manifest enriched with distribution facts (version, file hashes) so an agent
+ * can compare its installed copy against upstream — `getComponent` alone
+ * drops those registry-entry fields.
+ */
+export function getComponentWithVersion(
+  registry: Registry,
+  name: string,
+):
+  | (ComponentManifest & { version: string; files: string[]; fileHashes?: Record<string, string> })
+  | undefined {
+  const target = name.toLowerCase()
+  const entry = registry.components.find(
+    (c) => c.name.toLowerCase() === target || c.meta.name.toLowerCase() === target,
+  )
+  if (!entry) return undefined
+  return {
+    ...entry.meta,
+    version: entry.version,
+    files: entry.files,
+    ...(entry.fileHashes ? { fileHashes: entry.fileHashes } : {}),
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Multi-registry support
 // ---------------------------------------------------------------------------
@@ -106,7 +133,7 @@ export interface RegistryDirectoryEntry {
   homepage?: string
 }
 
-const DIRECTORY_URL = 'https://cascivo.com/r/registries.json'
+const DIRECTORY_URL = `${CASCIVO_HOST}/r/registries.json`
 const FETCH_TIMEOUT_MS = 15_000
 const MAX_BODY_BYTES = 1_048_576 // 1 MB
 

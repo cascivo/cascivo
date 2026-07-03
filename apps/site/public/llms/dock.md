@@ -84,6 +84,11 @@ Link-based dock items for standard navigation
 - **ARIA role:** `navigation`
 - **Keyboard:** Tab, Enter
 
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
 ## Tags
 
 dock, tab-bar, bottom-nav, mobile, navigation, app-shell

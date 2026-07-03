@@ -53,7 +53,22 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: [],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<PullToRefresh onRefresh={() => refetch()}>
+  <FeedList items={items} />
+</PullToRefresh>`,
+      description: 'The spinner shows until the returned promise settles.',
+    },
+    {
+      title: 'Custom threshold',
+      code: `<PullToRefresh onRefresh={loadLatest} threshold={96}>
+  <MessageList />
+</PullToRefresh>`,
+      description: 'Requires a longer pull before a refresh is triggered.',
+    },
+  ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
   registryDependencies: ['spinner'],
   tags: ['feedback', 'pull-to-refresh', 'mobile', 'gesture', 'scroll', 'refresh'],

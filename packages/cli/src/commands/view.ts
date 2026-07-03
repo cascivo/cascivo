@@ -51,7 +51,7 @@ export function formatItem(item: RegistryItem): string {
 export async function view(args: string[], config: CascadeConfig): Promise<void> {
   const spec = args[0]
   if (!spec) {
-    console.error('Usage: cascade view <component-spec>')
+    console.error('Usage: cascivo view <component-spec>')
     return
   }
 

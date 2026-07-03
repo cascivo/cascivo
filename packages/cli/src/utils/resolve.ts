@@ -1,4 +1,4 @@
-import type { CascadeConfig, RegistryNamespaceConfig } from './config.js'
+import { CASCIVO_HOST, type CascadeConfig, type RegistryNamespaceConfig } from './config.js'
 import { fetchJson } from './http.js'
 import type { RegistryItem } from '@cascivo/registry'
 
@@ -130,9 +130,9 @@ export async function resolveItemUrl(
         }
       }
 
-      // Built-in @cascade namespace fallback
-      if (ns === '@cascade') {
-        return { url: `https://cascivo.com/r/${name}.json` }
+      // Built-in first-party namespace fallback (@cascade is the legacy alias)
+      if (ns === '@cascivo' || ns === '@cascade') {
+        return { url: `${CASCIVO_HOST}/r/${name}.json` }
       }
 
       throw new Error(

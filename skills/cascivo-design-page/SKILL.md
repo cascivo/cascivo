@@ -27,7 +27,7 @@ than generating from zero.
 
 Before generating anything, read the registry and llms.txt at runtime:
 
-- Read `https://cascivo.com/llms.txt` (or local `apps/docs/public/llms.txt`) for the component index and authoring rules.
+- Read `https://cascivo.com/llms.txt` (or local `apps/site/public/llms.txt`) for the component index and authoring rules.
 - For any component you plan to use, read its `/llms/<name>.md` file for the exact props and example usage.
 
 Do NOT rely on training-data knowledge of component APIs — always read from the live files.

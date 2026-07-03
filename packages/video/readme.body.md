@@ -1,6 +1,8 @@
+> **Status: experimental** — API unstable, not yet part of the supported surface.
+
 Remotion video studio for cascivo — animated explainers and launch films for the design system. Private workspace package; not published to npm.
 
-The flagship composition is **`Intro`**: a ~2½-minute launch film that pitches cascivo end to end — the problem it removes, modern CSS over Tailwind, signal-driven reactivity, 14 themes from one attribute, 165 components, three-level tokens, the AI-first context layer, accessibility, and a closing call to action. It uses the real brand palette (brand blue + AI purple) and the positioning from the project README.
+The flagship composition is **`Intro`**: a ~2½-minute launch film that pitches cascivo end to end — the problem it removes, modern CSS over Tailwind, signal-driven reactivity, {{count.themes}} themes from one attribute, {{count.components}} components, three-level tokens, the AI-first context layer, accessibility, and a closing call to action. It uses the real brand palette (brand blue + AI purple) and the positioning from the project README.
 
 ## Develop
 

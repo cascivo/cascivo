@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { CASCIVO_HOST } from './host.js'
 
 export interface VariantToken {
   name: string
@@ -21,7 +22,7 @@ export interface VariantMatrix {
 type FetchFn = (url: string, init?: RequestInit) => Promise<Response>
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const BASE_URL = 'https://cascivo.com'
+const BASE_URL = CASCIVO_HOST
 
 export async function loadVariantMatrix(fetchFn?: FetchFn): Promise<VariantMatrix> {
   const localPaths = [

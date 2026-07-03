@@ -283,7 +283,7 @@ Themes override the semantic layer only. Users override component tokens for per
 
 ### Component Manifest Schema
 
-Every component in `packages/components/` ships a `component.meta.ts`:
+Every component in `packages/components/` ships a `<name>.meta.ts` manifest (e.g. `button.meta.ts`):
 
 ```ts
 export const meta: ComponentMeta = {
@@ -308,13 +308,13 @@ export const meta: ComponentMeta = {
 
 ### AI Layer
 
-| Surface             | Package                           | Purpose                                                                                      |
-| ------------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
-| Component manifest  | `component.meta.ts` per component | Ground truth for all AI surfaces                                                             |
-| MCP server          | `@cascivo/mcp`                    | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
-| Claude Code skills  | `skills/`                         | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`               |
-| Auto-generated docs | `apps/site/` (docs routes)        | Markdown + interactive examples generated from manifests                                     |
-| Registry manifest   | `registry.json`                   | Machine-readable index — CLI + MCP + docs all read from this                                 |
+| Surface             | Package                        | Purpose                                                                                      |
+| ------------------- | ------------------------------ | -------------------------------------------------------------------------------------------- |
+| Component manifest  | `<name>.meta.ts` per component | Ground truth for all AI surfaces                                                             |
+| MCP server          | `@cascivo/mcp`                 | Tools: `list_components`, `get_component`, `create_theme`, `scaffold_page`, `add_to_project` |
+| Claude Code skills  | `skills/`                      | `cascivo:add`, `cascivo:design-page`, `cascivo:create-theme`, `cascivo:extend`               |
+| Auto-generated docs | `apps/site/` (docs routes)     | Markdown + interactive examples generated from manifests                                     |
+| Registry manifest   | `registry.json`                | Machine-readable index — CLI + MCP + docs all read from this                                 |
 
 ### Dark Factory Pipeline
 

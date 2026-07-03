@@ -2,7 +2,9 @@ import type { RegistryNamespaceConfig } from './config.js'
 import { fetchJson } from './http.js'
 import type { FetchFn } from './http.js'
 
-export const DIRECTORY_URL = 'https://cascivo.com/r/registries.json'
+import { CASCIVO_HOST } from './config.js'
+
+export const DIRECTORY_URL = `${CASCIVO_HOST}/r/registries.json`
 
 interface DirectoryEntry {
   namespace: string

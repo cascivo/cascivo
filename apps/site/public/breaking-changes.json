@@ -1,0 +1,210 @@
+{
+  "generatedAt": "2026-07-03",
+  "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
+  "packages": [
+    {
+      "name": "@cascivo/charts",
+      "version": "0.3.4",
+      "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": [
+            "PieChart: donut `centerValue`/`centerLabel` (+ `centerSlot`), `thickness`/`innerRadius`, square"
+          ]
+        },
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": ["Publish `@cascivo/charts` to npm. The package was previously private and"]
+        }
+      ]
+    },
+    {
+      "name": "cascivo",
+      "version": "0.2.0",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "Add an app scaffold generator. The `cascivo create [name]` CLI command scaffolds a complete, ready-to-run app (Vite + React + TypeScript) pre-wired with the cascivo app shell, side navigation, header, and a chosen theme — one page per nav section, with signal-driven section switching. The MCP server exposes the same capability through a new `create_app` tool."
+          ]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/core",
+      "version": "0.2.3",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "Make object-valued prop shapes machine-readable. `ComponentMeta` gains an optional"
+          ]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/editor",
+      "version": "0.2.6",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-render"
+          ]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": [
+            "Editor parity (v46): close the gap-analysis findings inside the textarea-overlay"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/flow",
+      "version": "0.1.5",
+      "releases": []
+    },
+    {
+      "name": "@cascivo/i18n",
+      "version": "0.1.11",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/icons",
+      "version": "0.2.3",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": ["Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons"]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/mcp",
+      "version": "0.2.0",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "Add an app scaffold generator. The `cascivo create [name]` CLI command scaffolds a complete, ready-to-run app (Vite + React + TypeScript) pre-wired with the cascivo app shell, side navigation, header, and a chosen theme — one page per nav section, with signal-driven section switching. The MCP server exposes the same capability through a new `create_app` tool."
+          ]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/react",
+      "version": "0.3.8",
+      "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
+        },
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/registry",
+      "version": "0.1.5",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/storage",
+      "version": "0.1.6",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/themes",
+      "version": "0.2.7",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/tokens",
+      "version": "0.3.5",
+      "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
+        },
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+        },
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
+        }
+      ]
+    }
+  ]
+}

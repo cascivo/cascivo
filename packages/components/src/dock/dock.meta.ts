@@ -70,7 +70,7 @@ export const meta: ComponentMeta = {
 />`,
     },
   ],
-  dependencies: [],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['dock', 'tab-bar', 'bottom-nav', 'mobile', 'navigation', 'app-shell'],
   intent: {
     whenToUse: [

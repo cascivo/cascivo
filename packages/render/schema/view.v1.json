@@ -151,6 +151,7 @@
             "Filter",
             "Flow",
             "FlowBackground",
+            "FlowCanvas",
             "FlowControls",
             "FlowEdge",
             "FlowHandle",
@@ -419,7 +420,26 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["AlertDialogLabels"]
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["destructive", "default"]
+                  }
+                },
+                "required": ["open", "title", "description", "onConfirm", "onCancel"]
               }
             }
           }
@@ -1002,7 +1022,35 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "enum": ["inline", "single", "multi"]
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": ["bash", "css", "js", "ts"]
+                  },
+                  "terminal": {
+                    "type": "boolean"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "showLineNumbers": {
+                    "type": "boolean"
+                  },
+                  "showCopyButton": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["code"]
               }
             }
           }
@@ -1267,7 +1315,8 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {},
+                "required": ["children"]
               }
             }
           }
@@ -1529,7 +1578,27 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "defaultOpen": {
+                    "type": "boolean"
+                  },
+                  "side": {
+                    "type": "string",
+                    "enum": ["start", "end", "top", "bottom"]
+                  },
+                  "size": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  },
+                  "swipeToDismiss": {
+                    "type": "boolean"
+                  }
+                }
               }
             }
           }
@@ -1909,7 +1978,15 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "openDelay": {
+                    "type": "number"
+                  },
+                  "closeDelay": {
+                    "type": "number"
+                  }
+                },
+                "required": ["children"]
               }
             }
           }
@@ -2356,7 +2433,8 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {},
+                "required": ["children"]
               }
             }
           }
@@ -2504,7 +2582,30 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "size": {
+                    "type": "string",
+                    "enum": ["sm", "md", "lg"]
+                  },
+                  "invalid": {
+                    "type": "boolean"
+                  },
+                  "placeholder": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "defaultValue": {
+                    "type": "string"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -2800,7 +2901,19 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "open": {
+                    "type": "boolean"
+                  },
+                  "placement": {
+                    "type": "string",
+                    "enum": ["top", "bottom", "left", "right"]
+                  },
+                  "offset": {
+                    "type": "number"
+                  }
+                },
+                "required": ["children"]
               }
             }
           }
@@ -2952,7 +3065,11 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "className": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -4059,7 +4176,31 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "selected": {
+                    "type": "boolean"
+                  },
+                  "defaultSelected": {
+                    "type": "boolean"
+                  },
+                  "selectable": {
+                    "type": "string",
+                    "enum": ["single", "multi"]
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "asChild": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value"]
               }
             }
           }
@@ -4856,7 +4997,11 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "className": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
@@ -6969,6 +7114,47 @@
                   }
                 },
                 "required": ["nodes", "edges", "script"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "FlowCanvas"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "children": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "minZoom": {
+                    "type": "number"
+                  },
+                  "maxZoom": {
+                    "type": "number"
+                  },
+                  "panOnDrag": {
+                    "type": "boolean"
+                  },
+                  "zoomOnScroll": {
+                    "type": "boolean"
+                  },
+                  "fitView": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }

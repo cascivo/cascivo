@@ -30,6 +30,14 @@
 
 Adds no roles of its own — it styles descendant native elements, so the document semantics of the underlying HTML (headings, lists, code) are preserved for assistive tech
 
+## Props
+
+| Name                      | Type                 | Required | Default | Description                                                                 |
+| ------------------------- | -------------------- | -------- | ------- | --------------------------------------------------------------------------- |
+| `children`                | `React.ReactNode`    | No       | —       | Authored flow content (headings, paragraphs, lists, code, tables) to style. |
+| `dangerouslySetInnerHTML` | `{ __html: string }` | No       | —       | Rendered HTML you do not control (CMS, markdown pipelines). Sanitize first. |
+| `className`               | `string`             | No       | —       | Additional CSS class names merged onto the root element.                    |
+
 ## Tokens
 
 - `--cascivo-font-sans`

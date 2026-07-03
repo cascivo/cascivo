@@ -47,7 +47,20 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Escape', 'Tab', 'Shift+Tab'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<Sheet open={isOpen} onClose={() => setIsOpen(false)} title="Filters">
+  <FilterForm />
+</Sheet>`,
+    },
+    {
+      title: 'Bottom sheet',
+      code: `<Sheet open={isOpen} onClose={close} side="bottom" title="Share">
+  <ShareOptions />
+</Sheet>`,
+    },
+  ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'drawer', 'panel', 'slide'],
   intent: {

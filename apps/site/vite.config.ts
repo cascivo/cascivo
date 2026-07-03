@@ -26,9 +26,11 @@ export function componentCount(): number {
   return registry.components.length
 }
 
-// `all.css` (light+dark bundle) and `base.css` (typography reset) are not
-// user-facing themes — exclude them so the injected count tracks selectable themes.
-const NON_THEME_CSS = new Set(['all.css', 'base.css'])
+// `all.css` (light+dark bundle), `base.css` (typography reset), and
+// `tailwind.css` (interop sheet) are not user-facing themes — exclude them so
+// the injected count tracks selectable themes. Keep in sync with NON_THEME_CSS
+// in scripts/readme/generate.ts.
+const NON_THEME_CSS = new Set(['all.css', 'base.css', 'tailwind.css'])
 
 export function themeCount(): number {
   return readdirSync(resolve(root, 'packages/themes/src')).filter(

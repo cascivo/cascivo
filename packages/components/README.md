@@ -224,6 +224,7 @@ The full catalog of what lives here:
 | flow/flow-node             | display    | An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.                                                                                                              |
 | flow/flow-panel            | display    | An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).                                                                                                                                      |
 | flow/flow-story            | display    | A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.                                                                                                               |
+| flow/flow-canvas           | display    | The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.                                                                                                                        |
 
 ---
 

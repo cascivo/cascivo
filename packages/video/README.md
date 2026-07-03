@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/video</h1>
-  <p><strong>Remotion video studio for cascivo — animated explainers and launch films for the design system</strong></p>
+  <p><strong>Experimental — Remotion video studio for cascivo (animated explainers and launch films)</strong></p>
 
 ![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
@@ -14,9 +14,11 @@
 
 ---
 
+> **Status: experimental** — API unstable, not yet part of the supported surface.
+
 Remotion video studio for cascivo — animated explainers and launch films for the design system. Private workspace package; not published to npm.
 
-The flagship composition is **`Intro`**: a ~2½-minute launch film that pitches cascivo end to end — the problem it removes, modern CSS over Tailwind, signal-driven reactivity, 14 themes from one attribute, 165 components, three-level tokens, the AI-first context layer, accessibility, and a closing call to action. It uses the real brand palette (brand blue + AI purple) and the positioning from the project README.
+The flagship composition is **`Intro`**: a ~2½-minute launch film that pitches cascivo end to end — the problem it removes, modern CSS over Tailwind, signal-driven reactivity, 12 themes from one attribute, 192 components, three-level tokens, the AI-first context layer, accessibility, and a closing call to action. It uses the real brand palette (brand blue + AI purple) and the positioning from the project README.
 
 ## Develop
 

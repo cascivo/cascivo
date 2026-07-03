@@ -445,6 +445,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/flow/flow-canvas</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/flow/flow-controls</loc>
     <priority>0.6</priority>
   </url>

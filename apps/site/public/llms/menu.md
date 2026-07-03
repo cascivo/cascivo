@@ -27,7 +27,34 @@ import { Menu } from '@cascivo/react'
 
 ## Props
 
-_No props._
+| Prop       | Type              | Required | Default | Description                                                         |
+| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `children` | `React.ReactNode` | yes      | —       | The MenuTrigger first, followed by MenuItem/MenuSeparator children. |
+
+## Examples
+
+### Basic
+
+```tsx
+<Menu>
+  <MenuTrigger>Options</MenuTrigger>
+  <MenuItem onSelect={rename}>Rename</MenuItem>
+  <MenuItem onSelect={duplicate}>Duplicate</MenuItem>
+</Menu>
+```
+
+### With separator and disabled item
+
+```tsx
+<Menu>
+  <MenuTrigger aria-label="More actions">…</MenuTrigger>
+  <MenuItem onSelect={share}>Share</MenuItem>
+  <MenuSeparator />
+  <MenuItem onSelect={remove} disabled>
+    Delete
+  </MenuItem>
+</Menu>
+```
 
 ## Design tokens
 

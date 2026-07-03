@@ -84,7 +84,25 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['ArrowUp', 'ArrowDown', 'Home', 'End', 'Enter', 'Space', 'Escape'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<ActionSheet
+  open={isOpen}
+  onOpenChange={setIsOpen}
+  title="Share photo"
+  actions={[
+    { label: 'Copy link', onSelect: copyLink },
+    { label: 'Delete', onSelect: remove, destructive: true },
+  ]}
+/>`,
+    },
+    {
+      title: 'Without cancel button',
+      code: '<ActionSheet defaultOpen showCancel={false} actions={[{ label: "Archive", onSelect: archive }]} />',
+      description: 'Escape and outside press still dismiss the sheet.',
+    },
+  ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['overlay', 'action-sheet', 'menu', 'mobile', 'sheet'],
   intent: {

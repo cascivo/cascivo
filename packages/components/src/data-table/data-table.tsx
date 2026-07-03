@@ -30,6 +30,8 @@ export interface DataTableLabels {
   selectRow?: string
   itemsSelected?: (n: number) => string
   expandRow?: string
+  previousPage?: string
+  nextPage?: string
 }
 
 export interface DataTableProps<Row> {
@@ -111,6 +113,8 @@ export function DataTable<Row>({
     itemsSelected: (n: number) =>
       labels?.itemsSelected?.(n) ?? t(builtin.dataTable.itemsSelected, { count: n }),
     expandRow: labels?.expandRow ?? t(builtin.dataTable.expandRow),
+    previousPage: labels?.previousPage ?? t(builtin.dataTable.previousPage),
+    nextPage: labels?.nextPage ?? t(builtin.dataTable.nextPage),
   }
   const l = resolvedLabels
 
@@ -554,7 +558,7 @@ export function DataTable<Row>({
             <button
               type="button"
               className={styles['pageButton']}
-              aria-label="Previous page"
+              aria-label={l.previousPage}
               disabled={currentPage.value <= 1}
               onClick={() => {
                 pageSignal.value = currentPage.value - 1
@@ -565,7 +569,7 @@ export function DataTable<Row>({
             <button
               type="button"
               className={styles['pageButton']}
-              aria-label="Next page"
+              aria-label={l.nextPage}
               disabled={currentPage.value >= pageCount.value}
               onClick={() => {
                 pageSignal.value = currentPage.value + 1

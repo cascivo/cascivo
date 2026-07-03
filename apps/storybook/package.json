@@ -2,13 +2,14 @@
   "name": "@cascivo/storybook",
   "version": "0.0.0",
   "private": true,
-  "description": "Storybook stories generated from every cascivo component manifest",
+  "description": "Storybook stories generated from cascivo component manifests",
   "type": "module",
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build",
     "check": "tsc --noEmit",
-    "test": "echo 'storybook: no tests yet'"
+    "test": "echo 'storybook: no tests yet'",
+    "test:axe": "node scripts/axe-sweep.mjs"
   },
   "dependencies": {
     "@cascivo/ai": "workspace:^",
@@ -17,10 +18,13 @@
     "@cascivo/flow": "workspace:*",
     "@cascivo/icons": "workspace:*",
     "@cascivo/layouts": "workspace:*",
+    "@cascivo/react": "workspace:*",
     "@cascivo/themes": "workspace:*",
     "@cascivo/tokens": "workspace:*"
   },
   "devDependencies": {
+    "@axe-core/playwright": "catalog:",
+    "@playwright/test": "catalog:",
     "@storybook/addon-a11y": "catalog:",
     "@storybook/addon-themes": "catalog:",
     "@storybook/react-vite": "catalog:",

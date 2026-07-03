@@ -30,6 +30,20 @@
 
 Code is rendered in semantic <code>/<pre>. The copy button is a real button with an aria-label that flips between the copy and copied messages so the action and its result are announced. Line numbers are aria-hidden so they are not read as content.
 
+## Props
+
+| Name              | Type                                 | Required | Default  | Description                                                                          |
+| ----------------- | ------------------------------------ | -------- | -------- | ------------------------------------------------------------------------------------ | ------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `code`            | `string`                             | Yes      | —        | The code to display (and copy).                                                      |
+| `variant`         | `'inline'                            | 'single' | 'multi'` | No                                                                                   | single | inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>. |
+| `language`        | `'bash'                              | 'css'    | 'js'     | 'ts'`                                                                                | No     | —                                                                          | Enables built-in syntax highlighting for the block variants; inline is never highlighted. |
+| `terminal`        | `boolean`                            | No       | false    | Renders terminal-window chrome (title bar with dots). Block variants only.           |
+| `title`           | `string`                             | No       | —        | Optional label shown in the terminal title bar.                                      |
+| `showLineNumbers` | `boolean`                            | No       | —        | Show line numbers (multi only; ignored when language is set).                        |
+| `showCopyButton`  | `boolean`                            | No       | —        | Show the copy-to-clipboard button. Defaults true for single/multi, false for inline. |
+| `labels`          | `{ copy?: string; copied?: string }` | No       | —        | Overrides for the component’s user-visible strings (i18n).                           |
+| `className`       | `string`                             | No       | —        | Additional CSS class names merged onto the root element.                             |
+
 ## Tokens
 
 - `--cascivo-font-mono`
@@ -40,6 +54,36 @@ Code is rendered in semantic <code>/<pre>. The copy button is a real button with
 - `--cascivo-color-border`
 - `--cascivo-radius-surface`
 - `--cascivo-radius-control`
+
+## Examples
+
+### Install command
+
+```jsx
+<CodeSnippet code="npx cascivo add button" language="bash" />
+```
+
+### Inline
+
+```jsx
+<p>
+  Run <CodeSnippet variant="inline" code="pnpm build" /> first.
+</p>
+```
+
+### Terminal block
+
+Multi-line shell transcript with terminal-window chrome.
+
+```jsx
+<CodeSnippet
+  variant="multi"
+  language="bash"
+  terminal
+  title="deploy.sh"
+  code={'pnpm build\npnpm deploy'}
+/>
+```
 
 ## Boundaries
 

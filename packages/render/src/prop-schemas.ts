@@ -103,7 +103,40 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
-  AlertDialog: [],
+  AlertDialog: [
+    {
+      name: 'open',
+      required: true,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'onConfirm',
+      required: true,
+    },
+    {
+      name: 'onCancel',
+      required: true,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'variant',
+      required: false,
+      enum: ['destructive', 'default'],
+    },
+  ],
   AppShell: [
     {
       name: 'header',
@@ -1105,7 +1138,52 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
-  CodeSnippet: [],
+  CodeSnippet: [
+    {
+      name: 'code',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'variant',
+      required: false,
+      enum: ['inline', 'single', 'multi'],
+    },
+    {
+      name: 'language',
+      required: false,
+      enum: ['bash', 'css', 'js', 'ts'],
+    },
+    {
+      name: 'terminal',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'title',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'showLineNumbers',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'showCopyButton',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Collapsible: [
     {
       name: 'open',
@@ -1407,7 +1485,12 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
-  ContextMenu: [],
+  ContextMenu: [
+    {
+      name: 'children',
+      required: true,
+    },
+  ],
   CopyButton: [
     {
       name: 'value',
@@ -1442,7 +1525,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
-  DashboardCharts: [],
+  DashboardCharts: [
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   DashboardLayout: [
     {
       name: 'stats',
@@ -1698,7 +1787,58 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
-  Drawer: [],
+  Drawer: [
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultOpen',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'side',
+      required: false,
+      enum: ['start', 'end', 'top', 'bottom'],
+    },
+    {
+      name: 'size',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'title',
+      required: false,
+    },
+    {
+      name: 'description',
+      required: false,
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'swipeToDismiss',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   Dropdown: [
     {
       name: 'trigger',
@@ -2046,6 +2186,50 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'color',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
+  FlowCanvas: [
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'viewport',
+      required: false,
+    },
+    {
+      name: 'onViewportChange',
+      required: false,
+    },
+    {
+      name: 'minZoom',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'maxZoom',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'panOnDrag',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'zoomOnScroll',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'fitView',
+      required: false,
+      primitives: ['boolean'],
     },
     {
       name: 'className',
@@ -2714,7 +2898,22 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
   ],
-  HoverCard: [],
+  HoverCard: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'openDelay',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'closeDelay',
+      required: false,
+      primitives: ['number'],
+    },
+  ],
   IconButton: [
     {
       name: 'label',
@@ -3250,7 +3449,12 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
-  Menu: [],
+  Menu: [
+    {
+      name: 'children',
+      required: true,
+    },
+  ],
   MenuButton: [
     {
       name: 'label',
@@ -3401,7 +3605,55 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
-  NativeSelect: [],
+  NativeSelect: [
+    {
+      name: 'options',
+      required: false,
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'size',
+      required: false,
+      enum: ['sm', 'md', 'lg'],
+    },
+    {
+      name: 'invalid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'placeholder',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'value',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'defaultValue',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'onChange',
+      required: false,
+    },
+    {
+      name: 'disabled',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   NavigationMenu: [
     {
       name: 'items',
@@ -3866,7 +4118,31 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
   ],
-  Popover: [],
+  Popover: [
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'open',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onOpenChange',
+      required: false,
+    },
+    {
+      name: 'placement',
+      required: false,
+      enum: ['top', 'bottom', 'left', 'right'],
+    },
+    {
+      name: 'offset',
+      required: false,
+      primitives: ['number'],
+    },
+  ],
   Progress: [
     {
       name: 'value',
@@ -3964,7 +4240,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
-  Prose: [],
+  Prose: [
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'dangerouslySetInnerHTML',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   PullToRefresh: [
     {
       name: 'onRefresh',
@@ -5310,7 +5600,55 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
   ],
-  Tile: [],
+  Tile: [
+    {
+      name: 'value',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'selected',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'defaultSelected',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'onSelect',
+      required: false,
+    },
+    {
+      name: 'selectable',
+      required: false,
+      enum: ['single', 'multi'],
+    },
+    {
+      name: 'disabled',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'icon',
+      required: false,
+    },
+    {
+      name: 'asChild',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'children',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   TimePicker: [
     {
       name: 'value',

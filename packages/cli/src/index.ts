@@ -1,3 +1,4 @@
+import { createRequire } from 'node:module'
 import { argv } from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { add } from './commands/add.js'
@@ -11,9 +12,14 @@ import { search } from './commands/search.js'
 import { theme } from './commands/theme.js'
 import { update } from './commands/update.js'
 import { view } from './commands/view.js'
-import { loadConfig } from './utils/config.js'
+import { loadConfig, THEMES } from './utils/config.js'
 
-export const VERSION = '0.0.0'
+// Read at runtime: this file lives one level below the package root both in
+// src/ (dev, tests) and in dist/ (published bundle), so ../package.json is
+// always the cascivo package manifest.
+export const VERSION: string = (
+  createRequire(import.meta.url)('../package.json') as { version: string }
+).version
 
 export type { CascadeConfig, ThemeName } from './utils/config.js'
 
@@ -30,25 +36,149 @@ Commands:
   update [component]       Update installed components (--check: list outdated)
   search <query>           Search components across registries
   view <spec>              View a component before installing
-  theme add <name>         Install a theme (light | dark | warm)
+  theme add <name>         Install a first-party theme (see "cascivo theme --help")
   eject <component>        Eject specific tokens into a scoped local override file
   generate <config.json>   Generate TSX from a ViewConfig JSON file
   doctor [--ci]            Check components for rule violations
   audit --ai <paths...>    Audit AI-generated code against the cascivo contract
   registry build           Build a static registry from a cascivo-registry.json file
   template init <name>     Scaffold a new template (source + manifest + registry entry)
+  tokens import <file>     Import external design tokens as cascivo overrides
 
 Run "cascivo <command> --help" for details.`
 
+const THEME_LIST = THEMES.join(' | ')
+
+const COMMAND_HELP: Record<string, string> = {
+  create: `Usage: cascivo create [name] [options]
+
+Scaffold a new ready-to-run app — Vite + React + TypeScript, pre-wired with the
+cascivo app shell, side navigation, header, and a theme.
+
+Options:
+  --template <spec>     Start from a marketplace template (@ns/name or owner/repo/name)
+  --theme <name>        Theme to install (${THEME_LIST})
+  --sections "<a, b>"   Comma-separated nav section labels (one component each)
+  --yes, -y             Accept defaults, never prompt`,
+  init: `Usage: cascivo init [options]
+
+Set up cascivo in the current project: installs @cascivo/core + @cascivo/tokens
+and writes cascivo.config.ts.
+
+Options:
+  --theme <name>  Theme to configure (${THEME_LIST})
+  --yes, -y       Accept defaults, never prompt (implied when stdin is not a TTY)`,
+  add: `Usage: cascivo add <component...> [options]
+
+Copy component source (TSX + CSS module) from the registry into your project,
+resolving component dependencies. Also installs templates (@ns/name) and
+third-party components (owner/repo/name).
+
+Options:
+  --dry-run  Show what would be written without writing
+  --yes, -y  Skip confirmation prompts`,
+  list: `Usage: cascivo list [options]
+
+List components available in the configured registry.
+
+Options:
+  --installed  Only list components already installed in this project`,
+  update: `Usage: cascivo update [component] [options]
+
+Update installed components to the current registry version. Without a
+component argument, updates everything in the lockfile.
+
+Options:
+  --check    List outdated components without writing
+  --yes, -y  Skip confirmation prompts`,
+  search: `Usage: cascivo search <query> [options]
+
+Search components across the configured registries.
+
+Options:
+  --registry <@ns>  Restrict the search to one registry namespace`,
+  view: `Usage: cascivo view <spec>
+
+Preview a component or template (files, dependencies, description) before
+installing. <spec> is a bare name, @ns/name, or owner/repo/name.`,
+  theme: `Usage: cascivo theme add <name>
+
+Install @cascivo/themes and print the import + data-theme wiring for a theme.
+
+Themes: ${THEME_LIST}`,
+  eject: `Usage: cascivo eject <component> [options]
+
+Eject specific tokens into a scoped local override file so you can restyle a
+component without forking it.
+
+Options:
+  --tokens <a,b>  Comma-separated token names to eject (default: all)
+  --scope <sel>   CSS selector the overrides are scoped to
+  --out <file>    Output file path
+  --dry-run       Print the override file without writing`,
+  generate: `Usage: cascivo generate <config.json> [options]
+
+Generate TSX from a ViewConfig JSON file (see the MCP scaffold_view tool).
+
+Options:
+  --out <file>            Output file (default: stdout)
+  --components-dir <dir>  Components import base (default: ./src/components/ui)`,
+  doctor: `Usage: cascivo doctor [options]
+
+Check components in this repo for cascivo rule violations (banned React hooks,
+hardcoded strings, missing @cascivo/react exports).
+
+Options:
+  --ci     Exit non-zero when violations are found
+  --drift  Compare installed components against the registry (copy-paste drift)`,
+  audit: `Usage: cascivo audit --ai <paths...> [options]
+
+Audit AI-generated code against the cascivo contract: hard-coded values that
+should be tokens, invented props, missing required props, raw strings where
+i18n is expected.
+
+Options:
+  --fix           Rewrite unambiguous CSS literals to their token equivalents
+  --json          Machine-readable output
+  --level <name>  Minimum finding level to report (error | warn; default error)`,
+  registry: `Usage: cascivo registry build [dir]
+
+Build a static registry (registry.json + file payloads) from a
+cascivo-registry.json manifest, ready to host on any static file server.`,
+  template: `Usage: cascivo template init <name> [options]
+
+Scaffold a new template: source, manifest, and registry entry.
+
+Options:
+  --category <name>    Template category (e.g. dashboard)
+  --framework <name>   Target framework (default react-vite)
+  --components <a,b>   Registry components the template composes
+  --repo <owner/repo>  Repository the template will be hosted in`,
+  tokens: `Usage: cascivo tokens import <file>
+
+Import external design tokens (W3C design-tokens JSON) as cascivo token
+overrides.`,
+}
+
 export async function run(args: string[]): Promise<void> {
   const [command, ...rest] = args
+
+  // Per-command help must short-circuit BEFORE any prompt, fetch, or install:
+  // "cascivo add --help" must never try to install a component named --help.
+  if (command !== undefined && (rest.includes('--help') || rest.includes('-h'))) {
+    const commandHelp = COMMAND_HELP[command]
+    if (commandHelp !== undefined) {
+      console.log(commandHelp)
+      return
+    }
+  }
 
   switch (command) {
     case 'create':
       await create(rest)
       break
     case 'init':
-      await init()
+      await init(rest)
       break
     case 'add':
       await add(rest, await loadConfig(), {

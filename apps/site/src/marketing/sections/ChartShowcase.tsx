@@ -89,7 +89,7 @@ export function ChartShowcase() {
       </div>
 
       <p className="chart-showcase-cvd">
-        All 12 themes use CVD-safe palettes.{' '}
+        All {__CASCIVO_THEME_COUNT__} themes use CVD-safe palettes.{' '}
         <a href="/accessibility">See accessibility evidence →</a>
       </p>
 

@@ -96,6 +96,7 @@ Override derived state on a specific step
 ## Dependencies
 
 - `@cascivo/core`
+- `@cascivo/i18n`
 
 ## Tags
 

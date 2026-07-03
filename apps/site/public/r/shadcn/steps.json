@@ -6,7 +6,7 @@
     {
       "path": "steps/steps.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { useSignal, useSignals } from '@cascivo/core'\nimport styles from './steps.module.css'\n\nexport type StepState = 'pending' | 'active' | 'complete' | 'error'\n\nexport interface Step {\n  label: string\n  state?: StepState\n}\n\nexport interface StepsProps {\n  steps: Step[]\n  activeStep?: number\n  orientation?: 'horizontal' | 'vertical'\n  className?: string\n}\n\nexport function Steps({\n  steps,\n  activeStep: controlledActiveStep,\n  orientation = 'horizontal',\n  className,\n}: StepsProps) {\n  useSignals()\n  const active = useSignal(controlledActiveStep ?? 0)\n  active.value = controlledActiveStep ?? active.value\n\n  return (\n    <ol\n      className={[styles.steps, className].filter(Boolean).join(' ')}\n      data-orientation={orientation}\n      aria-label=\"Steps\"\n    >\n      {steps.map((step, i) => {\n        const state: StepState =\n          step.state ?? (i < active.value ? 'complete' : i === active.value ? 'active' : 'pending')\n        return (\n          <li\n            key={i}\n            className={styles.step}\n            data-state={state}\n            aria-current={state === 'active' ? 'step' : undefined}\n          >\n            <div className={styles.circle}>\n              {state === 'complete' ? '✓' : state === 'error' ? '✕' : i + 1}\n            </div>\n            <span className={styles.label}>{step.label}</span>\n          </li>\n        )\n      })}\n    </ol>\n  )\n}\n"
+      "content": "'use client'\nimport { useSignal, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport styles from './steps.module.css'\n\nexport type StepState = 'pending' | 'active' | 'complete' | 'error'\n\nexport interface Step {\n  label: string\n  state?: StepState\n}\n\nexport interface StepsProps {\n  steps: Step[]\n  activeStep?: number\n  orientation?: 'horizontal' | 'vertical'\n  className?: string\n  /** Accessible label for the steps list */\n  ariaLabel?: string\n}\n\nexport function Steps({\n  steps,\n  activeStep: controlledActiveStep,\n  orientation = 'horizontal',\n  className,\n  ariaLabel,\n}: StepsProps) {\n  useSignals()\n  const active = useSignal(controlledActiveStep ?? 0)\n  active.value = controlledActiveStep ?? active.value\n  const resolvedAriaLabel = ariaLabel ?? t(builtin.steps.label)\n\n  return (\n    <ol\n      className={[styles.steps, className].filter(Boolean).join(' ')}\n      data-orientation={orientation}\n      aria-label={resolvedAriaLabel}\n    >\n      {steps.map((step, i) => {\n        const state: StepState =\n          step.state ?? (i < active.value ? 'complete' : i === active.value ? 'active' : 'pending')\n        return (\n          <li\n            key={i}\n            className={styles.step}\n            data-state={state}\n            aria-current={state === 'active' ? 'step' : undefined}\n          >\n            <div className={styles.circle}>\n              {state === 'complete' ? '✓' : state === 'error' ? '✕' : i + 1}\n            </div>\n            <span className={styles.label}>{step.label}</span>\n          </li>\n        )\n      })}\n    </ol>\n  )\n}\n"
     },
     {
       "path": "steps/steps.module.css",
@@ -15,12 +15,12 @@
     }
   ],
   "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
-  "dependencies": ["@cascivo/core"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "categories": ["navigation"],
   "meta": {
     "cascivo": {
       "type": "component",
-      "version": "0.0.0"
+      "version": "0.3.8"
     }
   }
 }

@@ -7,7 +7,14 @@ export const meta: ComponentMeta = {
   states: [],
   variants: [],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root DashboardLayout element.',
+      type: 'string',
+      required: false,
+    },
+  ],
   tokens: [],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [

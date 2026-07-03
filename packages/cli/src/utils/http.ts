@@ -4,21 +4,27 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
-const CACHE_DIR = join(homedir(), '.cascade', 'cache')
+const CACHE_DIR = join(homedir(), '.cascivo', 'cache')
 const MAX_SIZE = 10 * 1024 * 1024 // 10 MB
 const TIMEOUT_MS = 15_000
 const MAX_RETRIES = 4
 
 export type FetchFn = (url: string, opts?: RequestInit) => Promise<Response>
 
-let _fetchFn: FetchFn = globalThis.fetch as FetchFn
+let _fetchFn: FetchFn | null = null
 
 export function setFetch(fn: FetchFn): void {
   _fetchFn = fn
 }
 
 export function resetFetch(): void {
-  _fetchFn = globalThis.fetch as FetchFn
+  _fetchFn = null
+}
+
+// Resolved lazily so test stubs of globalThis.fetch (vi.stubGlobal) are seen
+// even when they are installed after this module loads.
+function currentFetch(): FetchFn {
+  return _fetchFn ?? (globalThis.fetch as FetchFn)
 }
 
 function cacheKey(url: string): string {
@@ -65,7 +71,7 @@ export async function fetchJson(
       const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
       let res: Response
       try {
-        res = await _fetchFn(fullUrl, {
+        res = await currentFetch()(fullUrl, {
           headers: { Accept: 'application/json', ...opts.headers },
           signal: controller.signal,
         })
@@ -107,6 +113,62 @@ export async function fetchJson(
   throw new Error(
     `Network error fetching ${fullUrl}: ${msg}\n(Check your internet connection or registry URL)`,
   )
+}
+
+/**
+ * Fetch text with the same retry/backoff/timeout/size handling as fetchJson,
+ * but no cache — used for component file payloads, which must be fresh and
+ * whose failures must fail the install (never silently truncate).
+ */
+export async function fetchTextRetry(url: string): Promise<string> {
+  let lastError: unknown
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    if (attempt > 0) {
+      await new Promise((r) => setTimeout(r, 1000 * 2 ** (attempt - 1)))
+    }
+    try {
+      const controller = new AbortController()
+      const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
+      let res: Response
+      try {
+        res = await currentFetch()(url, { signal: controller.signal })
+      } finally {
+        clearTimeout(timer)
+      }
+      if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`)
+      const text = await res.text()
+      if (text.length > MAX_SIZE) throw new Error(`Response too large from ${url}`)
+      return text
+    } catch (e) {
+      lastError = e
+      // Don't retry client errors
+      if (e instanceof Error && /HTTP 4\d\d/.test(e.message)) break
+    }
+  }
+  const msg = lastError instanceof Error ? lastError.message : String(lastError)
+  throw new Error(
+    `Network error fetching ${url}: ${msg}\n(Check your internet connection or registry URL)`,
+  )
+}
+
+/**
+ * Network-first JSON fetch with an offline fallback to the last cached copy.
+ * Used for the registry index: a fresh copy when reachable, the cached one
+ * (with a notice) when not.
+ */
+export async function fetchJsonFresh(url: string): Promise<unknown> {
+  try {
+    const json = JSON.parse(await fetchTextRetry(url)) as unknown
+    await setCached(url, json)
+    return json
+  } catch (e) {
+    const cached = await getCached(url)
+    if (cached !== null) {
+      console.warn(`Could not reach ${url} — using the last cached copy.`)
+      return cached
+    }
+    throw e
+  }
 }
 
 export { existsSync }

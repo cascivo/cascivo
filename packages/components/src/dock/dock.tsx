@@ -1,4 +1,6 @@
 'use client'
+import { useSignals } from '@cascivo/core'
+import { builtin, t } from '@cascivo/i18n'
 import styles from './dock.module.css'
 
 export interface DockItem {
@@ -12,12 +14,16 @@ export interface DockProps {
   items: DockItem[]
   activeIndex?: number
   className?: string
+  /** Accessible label for the nav landmark */
+  ariaLabel?: string
 }
 
-export function Dock({ items, activeIndex, className }: DockProps) {
+export function Dock({ items, activeIndex, className, ariaLabel }: DockProps) {
+  useSignals()
+  const resolvedAriaLabel = ariaLabel ?? t(builtin.dock.nav)
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label={resolvedAriaLabel}
       className={[styles.dock, className].filter(Boolean).join(' ')}
     >
       {items.map((item, i) => {

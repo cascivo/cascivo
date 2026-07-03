@@ -7,7 +7,40 @@ export const meta: ComponentMeta = {
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
-  props: [],
+  props: [
+    {
+      name: 'children',
+      description: 'A PopoverTrigger and PopoverContent pair.',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'open',
+      description: 'Whether the component is open (controlled).',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'onOpenChange',
+      description: 'Called with the next open state when it changes.',
+      type: '(open: boolean) => void',
+      required: false,
+    },
+    {
+      name: 'placement',
+      description: 'Placement relative to the trigger.',
+      type: "'top' | 'bottom' | 'left' | 'right'",
+      required: false,
+      default: 'bottom',
+    },
+    {
+      name: 'offset',
+      description: 'Distance (px) between the trigger and the panel.',
+      type: 'number',
+      required: false,
+      default: '4',
+    },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-border',
@@ -21,7 +54,24 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Escape'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Basic',
+      code: `<Popover>
+  <PopoverTrigger>Open settings</PopoverTrigger>
+  <PopoverContent>
+    <form>…</form>
+  </PopoverContent>
+</Popover>`,
+    },
+    {
+      title: 'Controlled with placement',
+      code: `<Popover open={isOpen} onOpenChange={setIsOpen} placement="top">
+  <PopoverTrigger>Filters</PopoverTrigger>
+  <PopoverContent><FilterForm /></PopoverContent>
+</Popover>`,
+    },
+  ],
   dependencies: ['@cascivo/core'],
   tags: ['overlay', 'floating', 'anchor', 'popover'],
   intent: {

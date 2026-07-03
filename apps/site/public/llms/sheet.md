@@ -34,6 +34,24 @@ import { Sheet } from '@cascivo/react'
 | `title`   | `React.ReactNode` | no       | —       | Title text for the component.               |
 | `side`    | `'start'          | 'end'    | 'top'   | 'bottom'`                                   | no  | `end` | Edge the component is anchored to. |
 
+## Examples
+
+### Basic
+
+```tsx
+<Sheet open={isOpen} onClose={() => setIsOpen(false)} title="Filters">
+  <FilterForm />
+</Sheet>
+```
+
+### Bottom sheet
+
+```tsx
+<Sheet open={isOpen} onClose={close} side="bottom" title="Share">
+  <ShareOptions />
+</Sheet>
+```
+
 ## Design tokens
 
 - `--cascivo-color-surface`

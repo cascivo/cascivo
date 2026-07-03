@@ -40,6 +40,40 @@ import { Fab } from '@cascivo/react'
 | `onOpenChange` | `(open: boolean) => void` | no              | —       | Called with the next open state when it changes.                            |
 | `className`    | `string`                  | no              | —       | Additional CSS class names merged onto the root element.                    |
 
+## Examples
+
+### Single action
+
+```tsx
+<Fab label="Compose" onClick={compose}>
+  <PlusIcon />
+</Fab>
+```
+
+### Speed dial
+
+The main button toggles a menu of secondary actions.
+
+```tsx
+<Fab
+  label="Create"
+  actions={[
+    { label: 'New note', icon: <NoteIcon />, onSelect: newNote },
+    { label: 'New folder', icon: <FolderIcon />, onSelect: newFolder },
+  ]}
+>
+  <PlusIcon />
+</Fab>
+```
+
+### Start corner
+
+```tsx
+<Fab label="Help" position="bottom-start" onClick={openHelp}>
+  <HelpIcon />
+</Fab>
+```
+
 ## Design tokens
 
 - `--cascivo-color-accent`

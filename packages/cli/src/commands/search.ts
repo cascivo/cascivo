@@ -26,7 +26,7 @@ export async function search(args: string[], config: CascadeConfig): Promise<voi
   const query = queryParts.join(' ').trim()
 
   if (!query) {
-    console.error('Usage: cascade search <query> [--registry @ns]')
+    console.error('Usage: cascivo search <query> [--registry @ns]')
     return
   }
 

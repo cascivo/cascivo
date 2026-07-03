@@ -78,7 +78,29 @@ export const meta: ComponentMeta = {
     wcag: '2.2-AA',
     keyboard: ['Enter', 'Space', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Escape'],
   },
-  examples: [],
+  examples: [
+    {
+      title: 'Single action',
+      code: '<Fab label="Compose" onClick={compose}><PlusIcon /></Fab>',
+    },
+    {
+      title: 'Speed dial',
+      code: `<Fab
+  label="Create"
+  actions={[
+    { label: 'New note', icon: <NoteIcon />, onSelect: newNote },
+    { label: 'New folder', icon: <FolderIcon />, onSelect: newFolder },
+  ]}
+>
+  <PlusIcon />
+</Fab>`,
+      description: 'The main button toggles a menu of secondary actions.',
+    },
+    {
+      title: 'Start corner',
+      code: '<Fab label="Help" position="bottom-start" onClick={openHelp}><HelpIcon /></Fab>',
+    },
+  ],
   dependencies: ['@cascivo/core'],
   tags: ['inputs', 'fab', 'floating-action-button', 'mobile', 'speed-dial'],
   intent: {
