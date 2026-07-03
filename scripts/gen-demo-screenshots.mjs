@@ -38,6 +38,7 @@ const DEMOS = {
   flow: { accent: [252, 93, 39] },
   track: { accent: [94, 106, 210] },
   pulse: { accent: [99, 44, 166] },
+  trade: { accent: [34, 197, 94] },
 }
 
 const VIEWPORTS = {

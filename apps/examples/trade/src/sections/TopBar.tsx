@@ -84,11 +84,16 @@ export function TopBar() {
 
           <div className={styles['twoUp']}>
             <Card variant="outlined" padding="md">
-              <DataList size="sm" items={[{ id: 'acc', label: t(msg.accounts), value: 'AU' }]} />
+              <DataList
+                size="sm"
+                orientation="vertical"
+                items={[{ id: 'acc', label: t(msg.accounts), value: 'AU' }]}
+              />
             </Card>
             <Card variant="outlined" padding="md">
               <DataList
                 size="sm"
+                orientation="vertical"
                 items={[{ id: 'nw', label: t(msg.netWorth), value: money(portfolioValue.value) }]}
               />
             </Card>

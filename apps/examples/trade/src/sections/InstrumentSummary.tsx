@@ -69,13 +69,22 @@ export function InstrumentSummary() {
             />
 
             <div className={styles['stats']}>
-              <Stat label={t(msg.position)} value={money(positionValue.value)} />
-              <Stat
-                label={t(msg.returnLabel)}
-                value={signedPct(returnPct.value)}
-                trend={returnPct.value >= 0 ? 'up' : 'down'}
-              />
-              <Stat label={t(msg.activity)} value={qty(activityCount.value)} />
+              <div className={styles['metric']}>
+                <span className={styles['mLabel']}>{t(msg.position)}</span>
+                <span className={styles['mValue']}>{money(positionValue.value)}</span>
+              </div>
+              <div className={styles['metric']}>
+                <span className={styles['mLabel']}>{t(msg.returnLabel)}</span>
+                <span
+                  className={`${styles['mValue']} ${returnPct.value >= 0 ? styles['up'] : styles['down']}`}
+                >
+                  {signedPct(returnPct.value)}
+                </span>
+              </div>
+              <div className={styles['metric']}>
+                <span className={styles['mLabel']}>{t(msg.activity)}</span>
+                <span className={styles['mValue']}>{qty(activityCount.value)}</span>
+              </div>
             </div>
 
             <h3 className={styles['subhead']}>{t(msg.keyStats)}</h3>

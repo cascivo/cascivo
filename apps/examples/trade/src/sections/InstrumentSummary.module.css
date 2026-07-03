@@ -24,6 +24,36 @@
   gap: var(--cascivo-space-2);
 }
 
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-inline-size: 0;
+}
+
+.mLabel {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+}
+
+.mValue {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--cascivo-color-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.up {
+  color: var(--cascivo-color-success);
+}
+
+.down {
+  color: var(--cascivo-color-error);
+}
+
 .subhead {
   font-size: var(--cascivo-text-xs);
   font-weight: 600;

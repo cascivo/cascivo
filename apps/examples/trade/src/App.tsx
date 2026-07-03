@@ -108,16 +108,18 @@ export default function App() {
           </Button>
         </div>
 
-        <Sheet
-          open={ticketSheetOpen.value}
-          onClose={() => {
-            ticketSheetOpen.value = false
-          }}
-          side="bottom"
-          title={t(msg.ticketTitle)}
-        >
-          <OrderTicket key={`sheet-${selectedInstrumentId.value}`} />
-        </Sheet>
+        {ticketSheetOpen.value && (
+          <Sheet
+            open
+            onClose={() => {
+              ticketSheetOpen.value = false
+            }}
+            side="bottom"
+            title={t(msg.ticketTitle)}
+          >
+            <OrderTicket key={`sheet-${selectedInstrumentId.value}`} />
+          </Sheet>
+        )}
       </AppShell>
     </ToastProvider>
   )
