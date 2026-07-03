@@ -1,5 +1,5 @@
 'use client'
-import { useSignals } from '@cascivo/core'
+import { useSignal, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
 import { FileText, Gift, LifeBuoy, Percent, Sliders } from '@cascivo/icons'
 import {
@@ -15,7 +15,7 @@ import {
   User,
   useToast,
 } from '@cascivo/react'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { msg } from '../i18n'
 import { money, signedPct } from '../format'
 import { changePct } from '../store/market'
@@ -33,6 +33,9 @@ export function TopBar() {
   useSignals()
   const { toast } = useToast()
   const up = changePct.value >= 0
+  // Measured at open time so the panel starts just below the avatar regardless
+  // of the (variable-height) banner + header above it.
+  const panelTop = useSignal(0)
 
   const items: MenuItem[] = [
     { icon: <LifeBuoy size={18} />, title: t(msg.getHelp), hint: t(msg.getHelpHint) },
@@ -59,66 +62,72 @@ export function TopBar() {
         className={styles['avatarBtn']}
         aria-label={t(msg.openProfile)}
         aria-expanded={profileOpen.value}
-        onClick={() => {
+        onClick={(e) => {
+          panelTop.value = Math.round(e.currentTarget.getBoundingClientRect().bottom + 8)
           profileOpen.value = !profileOpen.value
         }}
       >
         <Avatar fallback="AU" size="sm" />
       </button>
 
-      <HeaderPanel
-        open={profileOpen.value}
-        onClose={() => {
-          profileOpen.value = false
-        }}
-        label={t(msg.profile)}
+      <div
+        style={{ display: 'contents', '--trade-panel-top': `${panelTop.value}px` } as CSSProperties}
       >
-        <div className={styles['panel']}>
-          <Card variant="outlined" padding="md">
-            <User
-              name={t(msg.profileName)}
-              description={t(msg.profile)}
-              avatarProps={{ fallback: 'AU' }}
-            />
-          </Card>
-
-          <div className={styles['twoUp']}>
+        <HeaderPanel
+          className={styles['profilePanel']}
+          open={profileOpen.value}
+          onClose={() => {
+            profileOpen.value = false
+          }}
+          label={t(msg.profile)}
+        >
+          <div className={styles['panel']}>
             <Card variant="outlined" padding="md">
-              <DataList
-                size="sm"
-                orientation="vertical"
-                items={[{ id: 'acc', label: t(msg.accounts), value: 'AU' }]}
+              <User
+                name={t(msg.profileName)}
+                description={t(msg.profile)}
+                avatarProps={{ fallback: 'AU' }}
               />
             </Card>
-            <Card variant="outlined" padding="md">
-              <DataList
-                size="sm"
-                orientation="vertical"
-                items={[{ id: 'nw', label: t(msg.netWorth), value: money(portfolioValue.value) }]}
-              />
+
+            <div className={styles['twoUp']}>
+              <Card variant="outlined" padding="md">
+                <DataList
+                  size="sm"
+                  orientation="vertical"
+                  items={[{ id: 'acc', label: t(msg.accounts), value: 'AU' }]}
+                />
+              </Card>
+              <Card variant="outlined" padding="md">
+                <DataList
+                  size="sm"
+                  orientation="vertical"
+                  items={[{ id: 'nw', label: t(msg.netWorth), value: money(portfolioValue.value) }]}
+                />
+              </Card>
+            </div>
+
+            <Card variant="outlined" padding="none">
+              <p className={styles['menuHead']}>{t(msg.profile)}</p>
+              <ul className={styles['menu']}>
+                {items.map((it) => (
+                  <li key={it.title}>
+                    <Item asChild size="sm">
+                      <button type="button" className={styles['menuBtn']} onClick={stub}>
+                        <ItemMedia>{it.icon}</ItemMedia>
+                        <ItemContent>
+                          <ItemTitle>{it.title}</ItemTitle>
+                          <ItemDescription>{it.hint}</ItemDescription>
+                        </ItemContent>
+                      </button>
+                    </Item>
+                  </li>
+                ))}
+              </ul>
             </Card>
           </div>
-
-          <Card variant="outlined" padding="none">
-            <p className={styles['menuHead']}>{t(msg.profile)}</p>
-            <ul className={styles['menu']}>
-              {items.map((it) => (
-                <li key={it.title}>
-                  <Item asChild size="sm">
-                    <button type="button" className={styles['menuBtn']} onClick={stub}>
-                      <ItemMedia>{it.icon}</ItemMedia>
-                      <ItemContent>
-                        <ItemTitle>{it.title}</ItemTitle>
-                        <ItemDescription>{it.hint}</ItemDescription>
-                      </ItemContent>
-                    </button>
-                  </Item>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </div>
-      </HeaderPanel>
+        </HeaderPanel>
+      </div>
     </div>
   )
 }

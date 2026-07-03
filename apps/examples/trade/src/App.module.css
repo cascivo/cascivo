@@ -1,7 +1,38 @@
+/* Transparent header — app CSS is unlayered, so it beats the component layer's
+   surface background. Header content stays token-colored and legible. */
+.transparentHeader {
+  background: transparent;
+  border-block-end-color: transparent;
+}
+
+/* The header nav belongs to the desktop terminal; a 390px header can't hold it
+   alongside the live controls + portfolio, and the mobile app is single-view. */
+.transparentHeader nav {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .transparentHeader nav {
+    display: block;
+  }
+}
+
 .headerActions {
   display: flex;
   align-items: center;
   gap: var(--cascivo-space-3);
+}
+
+/* LIVE + Pause: hidden on small screens so the portfolio + profile stay
+   reachable; the simulation keeps running. */
+.simControls {
+  display: none;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+}
+@media (min-width: 40rem) {
+  .simControls {
+    display: flex;
+  }
 }
 
 .live {
@@ -11,44 +42,25 @@
   color: var(--cascivo-color-success);
 }
 
-/* Base: single dense column (mobile-first). Order ticket lives in the Sheet. */
+/* Base: single dense column (mobile-first). Three column-groups stack; the
+   order ticket lives in the bottom Sheet, so its group is hidden here. */
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--cascivo-space-3);
   padding: var(--cascivo-space-3);
-  grid-template-areas:
-    'chart'
-    'summary'
-    'orderbook'
-    'tape'
-    'orders';
 }
 
-.chart {
-  grid-area: chart;
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
   min-inline-size: 0;
+  min-block-size: 0;
 }
-.ticketInline {
-  grid-area: ticket;
-  min-inline-size: 0;
-  display: none; /* content stays reachable via the Sheet on small screens */
-}
-.summary {
-  grid-area: summary;
-  min-inline-size: 0;
-}
-.orderbook {
-  grid-area: orderbook;
-  min-inline-size: 0;
-}
-.tape {
-  grid-area: tape;
-  min-inline-size: 0;
-}
-.orders {
-  grid-area: orders;
-  min-inline-size: 0;
+
+.colTicket {
+  display: none; /* content stays reachable via the Sheet below 64rem */
 }
 
 .tradeSticky {
@@ -65,29 +77,57 @@
   box-shadow: var(--cascivo-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.3));
 }
 
-/* md — two columns; summary + orderbook pair up. */
+/* md — pair summary + orderbook inside the right group; tape spans below. */
 @media (min-width: 40rem) {
-  .grid {
+  .colRight {
+    display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-      'chart chart'
       'summary orderbook'
-      'tape tape'
-      'orders orders';
+      'tape tape';
+    align-items: start;
+  }
+  .colRight > :nth-child(1) {
+    grid-area: summary;
+  }
+  .colRight > :nth-child(2) {
+    grid-area: orderbook;
+  }
+  .colRight > :nth-child(3) {
+    grid-area: tape;
   }
 }
 
-/* lg — three columns; the order ticket becomes an inline left panel. */
+/* lg — full-viewport three-column terminal; panels fill, no page scroll. */
 @media (min-width: 64rem) {
   .grid {
-    grid-template-columns: 18rem 1fr 21rem;
-    grid-template-areas:
-      'ticket chart summary'
-      'ticket chart orderbook'
-      'ticket orders tape';
+    block-size: 100%;
+    grid-template-columns: 20rem minmax(0, 1fr) 23rem;
+    overflow: hidden;
   }
-  .ticketInline {
-    display: block;
+  .colTicket {
+    display: flex;
+  }
+  .colRight {
+    display: flex; /* revert md grid → a vertical stack that fills the column */
+  }
+  .colTicket > :only-child {
+    flex: 1;
+  }
+  .colCenter > :first-child {
+    flex: 1 1 62%; /* chart */
+  }
+  .colCenter > :last-child {
+    flex: 1 1 38%; /* orders */
+  }
+  .colRight > :nth-child(1) {
+    flex: 1 1 46%; /* summary (content-heavy) */
+  }
+  .colRight > :nth-child(2) {
+    flex: 1 1 32%; /* orderbook */
+  }
+  .colRight > :nth-child(3) {
+    flex: 1 1 22%; /* tape */
   }
   .tradeSticky {
     display: none;
@@ -97,6 +137,6 @@
 /* xl — widen the rails for the reference's terminal density. */
 @media (min-width: 80rem) {
   .grid {
-    grid-template-columns: 20rem 1fr 24rem;
+    grid-template-columns: 22rem minmax(0, 1fr) 24rem;
   }
 }

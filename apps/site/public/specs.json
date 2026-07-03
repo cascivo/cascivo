@@ -86,6 +86,12 @@
       "summary": "**Status:** Deferred within v13 **Decision date:** 2026-06-13 **Tranche:** T5 (CSS-native progressive enhancement)"
     },
     {
+      "id": "trade-dashboard-adjustments",
+      "title": "trade-dashboard-adjustments",
+      "path": "/docs/specs/trade-dashboard-adjustments.md",
+      "summary": "**Status:** Approved plan, ready for implementation **Date:** 2026-07-03 **Scope:** Four adjustments to the shipped `apps/examples/trade` showcase (see `docs/specs/trading-dashboard-showcase.md` for the original spec). Plus two small, opt-in enhancements to shared code that the adjustments require. **Audience:** Implementing agent (Opus). Follow CLAUDE.md rules throughout — signals only, `useSignals()` first in render-reading components, i18n for all strings, canonical breakpoint literals only, `pnpm ready` green before every commit."
+    },
+    {
       "id": "trading-dashboard-showcase",
       "title": "trading-dashboard-showcase",
       "path": "/docs/specs/trading-dashboard-showcase.md",

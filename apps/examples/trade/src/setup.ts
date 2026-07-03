@@ -15,3 +15,12 @@ HTMLElement.prototype.setAttribute = function (name: string, value: string) {
 }
 HTMLElement.prototype.showPopover = function () {}
 HTMLElement.prototype.hidePopover = function () {}
+
+// jsdom lacks ResizeObserver, used by useElementSize.
+if (typeof globalThis.ResizeObserver === 'undefined') {
+  globalThis.ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver
+}

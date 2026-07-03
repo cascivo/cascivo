@@ -43,11 +43,28 @@
   outline-offset: 2px;
 }
 
+/* Fill the panel body's content box — never set a fixed inline size here, or it
+   overflows the panel and forces an internal horizontal scrollbar. */
 .panel {
   display: flex;
   flex-direction: column;
   gap: var(--cascivo-space-3);
-  inline-size: min(20rem, 86vw);
+  inline-size: auto;
+}
+
+/* Turn the shared HeaderPanel (a full-height right rail) into a floating card
+   that starts just below the avatar (--trade-panel-top measured at open). */
+.profilePanel {
+  --cascivo-shell-panel-inline-size: min(23rem, calc(100vw - 2 * var(--cascivo-space-3)));
+  inset-block-start: var(
+    --trade-panel-top,
+    calc(var(--cascivo-shell-header-block-size) + var(--cascivo-space-2))
+  );
+  inset-block-end: auto;
+  inset-inline-end: var(--cascivo-space-3);
+  max-block-size: calc(100dvh - var(--trade-panel-top, 6rem) - var(--cascivo-space-3));
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-overlay, 0.75rem);
 }
 
 .twoUp {

@@ -3,6 +3,13 @@
   flex-direction: column;
   gap: var(--cascivo-space-3);
   min-inline-size: 0;
+  min-block-size: 0;
+}
+
+@media (min-width: 64rem) {
+  .panel {
+    overflow-y: auto;
+  }
 }
 
 .head {
@@ -25,4 +32,13 @@
   padding: var(--cascivo-space-1) var(--cascivo-space-3);
   border-radius: var(--cascivo-radius-full, 999px);
   background: var(--cascivo-color-bg-subtle);
+}
+
+/* Keep instrument names on one line so rows stay compact. */
+.instrument {
+  display: block;
+  max-inline-size: 13rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

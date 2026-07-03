@@ -23,7 +23,7 @@ export function TimeAndSales() {
         <span className={styles['num']}>{t(msg.price)}</span>
         <span className={styles['num']}>{t(msg.size)}</span>
       </div>
-      <ScrollArea height="18rem">
+      <ScrollArea className={styles['tapeScroll']}>
         <ul className={styles['list']}>
           {rows.map(({ tr, up }) => (
             <li key={tr.id} className={styles['row']}>

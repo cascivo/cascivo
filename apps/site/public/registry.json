@@ -13122,7 +13122,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
       ],
       "fileHashes": {
-        "shell-header.tsx": "sha256-a93b16763e6a0619a6385326dd8f1b281c0418ea608a8c6296157c7fc832e0c3",
+        "shell-header.tsx": "sha256-194a15d621d5450b514c917dd636e07a8a2ebe29bd2aa8bece2cf7fd2f8171a0",
         "index.ts": "sha256-331ae306f93610807dbedf315036e545e7d6c49358dda073d71cfcc19b4a8e7e",
         "shell-header.module.css": "sha256-39038f94cc518efafab29d85f59c8b97628af931a1cf8232690d29e62c64e484"
       },
@@ -13146,7 +13146,7 @@
             "name": "nav",
             "type": "ShellHeaderNavItem[]",
             "required": false,
-            "description": "Top nav: links or dropdown menus ({ label, items })"
+            "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })"
           },
           {
             "name": "actions",

@@ -1,7 +1,7 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { type KeyboardEvent, type ReactNode, type RefObject } from 'react'
+import { type KeyboardEvent, type MouseEvent, type ReactNode, type RefObject } from 'react'
 import { usePopover } from '../popover/use-popover'
 import styles from './shell-header.module.css'
 
@@ -15,6 +15,8 @@ export interface ShellHeaderNavLink {
   label: string
   href: string
   active?: boolean
+  /** Intercept navigation (e.g. a SPA section switch). Forwarded to the `<a>`. */
+  onClick?: ((e: MouseEvent<HTMLAnchorElement>) => void) | undefined
 }
 
 export interface ShellHeaderNavMenuItem {
@@ -239,6 +241,7 @@ export function ShellHeader({
                     aria-current={item.active ? 'page' : undefined}
                     data-state={item.active ? 'active' : undefined}
                     className={styles['navLink']}
+                    {...(item.onClick ? { onClick: item.onClick } : {})}
                   >
                     {item.label}
                   </a>

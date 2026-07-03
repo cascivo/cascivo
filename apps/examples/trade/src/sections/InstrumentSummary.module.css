@@ -3,6 +3,14 @@
   flex-direction: column;
   gap: var(--cascivo-space-3);
   min-inline-size: 0;
+  min-block-size: 0;
+}
+
+/* When height-constrained in the desktop grid, scroll inside the panel. */
+@media (min-width: 64rem) {
+  .panel {
+    overflow-y: auto;
+  }
 }
 
 .title {

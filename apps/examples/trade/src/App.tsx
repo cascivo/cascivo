@@ -1,8 +1,8 @@
 'use client'
 import { useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { Button, Sheet, ToastProvider } from '@cascivo/react'
-import type { CommandGroup, SideNavItem } from '@cascivo/react'
+import { Button, Sheet, ToastProvider, useToast } from '@cascivo/react'
+import type { CommandGroup, ShellHeaderNavItem } from '@cascivo/react'
 import { AppShell, useSimulation } from '@cascivo/example-kit'
 import { msg } from './i18n'
 import { INSTRUMENTS } from './data/instruments'
@@ -26,17 +26,22 @@ import '@cascivo/tokens'
 export default function App() {
   useSignals()
   useSimulation(marketSim)
+  const { toast } = useToast()
 
-  const navItems: SideNavItem[] = [
+  const headerNav: ShellHeaderNavItem[] = [
     {
       label: t(msg.navTrading),
+      href: '#trading',
       active: true,
       onClick: (e) => e.preventDefault(),
     },
     {
       label: t(msg.navResearch),
-      active: false,
-      onClick: (e) => e.preventDefault(),
+      href: '#research',
+      onClick: (e) => {
+        e.preventDefault()
+        toast({ title: t(msg.navResearchHint) })
+      },
     },
   ]
 
@@ -54,16 +59,18 @@ export default function App() {
 
   const actions = (
     <div className={styles['headerActions']}>
-      {marketSim.running.value && <span className={styles['live']}>{t(msg.live)}</span>}
-      <Button
-        size="sm"
-        variant="secondary"
-        onClick={() => {
-          marketSim.toggle()
-        }}
-      >
-        {marketSim.running.value ? t(msg.pause) : t(msg.resume)}
-      </Button>
+      <div className={styles['simControls']}>
+        {marketSim.running.value && <span className={styles['live']}>{t(msg.live)}</span>}
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => {
+            marketSim.toggle()
+          }}
+        >
+          {marketSim.running.value ? t(msg.pause) : t(msg.resume)}
+        </Button>
+      </div>
       <TopBar />
     </div>
   )
@@ -71,30 +78,25 @@ export default function App() {
   return (
     <ToastProvider>
       <AppShell
-        navItems={navItems}
+        headerNav={headerNav}
+        headerClassName={styles['transparentHeader']}
         commandGroups={commandGroups}
         actions={actions}
         brand={{ name: t(msg.appTitle) }}
         mockBanner
       >
         <div className={styles['grid']}>
-          <div className={styles['chart']}>
-            <PriceChart />
-          </div>
-          <div className={styles['ticketInline']}>
+          <div className={`${styles['col']} ${styles['colTicket']}`}>
             <OrderTicket />
           </div>
-          <div className={styles['summary']}>
-            <InstrumentSummary />
-          </div>
-          <div className={styles['orderbook']}>
-            <Orderbook />
-          </div>
-          <div className={styles['tape']}>
-            <TimeAndSales />
-          </div>
-          <div className={styles['orders']}>
+          <div className={`${styles['col']} ${styles['colCenter']}`}>
+            <PriceChart />
             <OrdersTable />
+          </div>
+          <div className={`${styles['col']} ${styles['colRight']}`}>
+            <InstrumentSummary />
+            <Orderbook />
+            <TimeAndSales />
           </div>
         </div>
 

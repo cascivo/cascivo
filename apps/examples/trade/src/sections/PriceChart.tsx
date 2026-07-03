@@ -18,6 +18,7 @@ import {
   selectedInstrument,
 } from '../store/market'
 import { chartInterval, chartRange, RANGE_BARS, ticketSheetOpen, type Range } from '../store/ui'
+import { useElementSize } from '../useElementSize'
 import styles from './PriceChart.module.css'
 
 const INTERVAL_OPTIONS = (['10m', '1h', 'D', 'W'] as Interval[]).map((v) => ({
@@ -39,6 +40,7 @@ function labelFor(epoch: number, interval: Interval): string {
 
 export function PriceChart() {
   useSignals()
+  const chartBox = useElementSize<HTMLDivElement>()
   const interval = chartInterval.value
   const range = chartRange.value
   const all = candles.value[interval]
@@ -56,6 +58,11 @@ export function PriceChart() {
   }))
 
   const last = Math.round(lastPrice.value * 100) / 100
+
+  // The chart fills the leftover column height; reserve room for the DataZoom
+  // slider + gap that Candlestick renders below the plot.
+  const measured = chartBox.height.value
+  const chartHeight = measured > 0 ? Math.max(200, Math.round(measured - 44)) : 360
 
   return (
     <Card padding="md" className={styles['panel']}>
@@ -109,21 +116,23 @@ export function PriceChart() {
         />
       </div>
 
-      <Candlestick
-        // Remount on interval/range change so the internal zoom window resets.
-        key={`${interval}-${range}-${prevClose.value === 0 ? 'x' : selectedInstrument.value.id}`}
-        data={data}
-        title={selectedInstrument.value.name}
-        description={`OHLC candles, ${interval} interval, ${INTERVAL_MS[interval] / 60000}-minute buckets`}
-        height={360}
-        volume
-        zoom
-        dataZoom
-        tooltipMode="axis"
-        upColor="var(--cascivo-color-success)"
-        downColor="var(--cascivo-color-error)"
-        annotations={[{ kind: 'line', axis: 'y', value: last, label: price(last) }]}
-      />
+      <div ref={chartBox.ref} className={styles['chartWrap']}>
+        <Candlestick
+          // Remount on interval/range change so the internal zoom window resets.
+          key={`${interval}-${range}-${prevClose.value === 0 ? 'x' : selectedInstrument.value.id}`}
+          data={data}
+          title={selectedInstrument.value.name}
+          description={`OHLC candles, ${interval} interval, ${INTERVAL_MS[interval] / 60000}-minute buckets`}
+          height={chartHeight}
+          volume
+          zoom
+          dataZoom
+          tooltipMode="axis"
+          upColor="var(--cascivo-color-success)"
+          downColor="var(--cascivo-color-error)"
+          annotations={[{ kind: 'line', axis: 'y', value: last, label: price(last) }]}
+        />
+      </div>
     </Card>
   )
 }

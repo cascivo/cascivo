@@ -3,6 +3,14 @@
   flex-direction: column;
   gap: var(--cascivo-space-3);
   min-inline-size: 0;
+  min-block-size: 0;
+}
+
+/* The chart fills whatever height the column leaves after header + controls.
+   min-block-size:0 lets it shrink; useElementSize measures this box. */
+.chartWrap {
+  flex: 1;
+  min-block-size: 18rem;
 }
 
 .header {

@@ -25,7 +25,15 @@ export function OrdersTable() {
     {
       key: 'instrument',
       header: t(msg.colInstrument),
-      render: (o) => getInstrument(o.instrumentId).name,
+      width: '14rem',
+      render: (o) => {
+        const name = getInstrument(o.instrumentId).name
+        return (
+          <span className={styles['instrument']} title={name}>
+            {name}
+          </span>
+        )
+      },
     },
     {
       key: 'status',
