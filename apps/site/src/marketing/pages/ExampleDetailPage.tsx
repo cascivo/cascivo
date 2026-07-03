@@ -91,6 +91,58 @@ export function ExampleDetailPage() {
                 </ul>
               </section>
 
+              <section
+                className="section example-detail-start"
+                aria-label="Start from this example"
+              >
+                <h2>Start from this example</h2>
+                <p className="section-sub">
+                  Three ways to build on {demo.name} — run it, lift the source, or scaffold your own
+                  on the same foundation.
+                </p>
+                <div className="example-start-grid">
+                  <article className="example-start-card">
+                    <span className="example-start-step">1</span>
+                    <h3>Run &amp; tinker</h3>
+                    <p>Clone the repo and start this exact example in the workspace.</p>
+                    <pre className="tech-pre">
+                      <code>{`git clone https://github.com/cascivo/cascivo
+cd cascivo && pnpm install
+pnpm --filter @cascivo/example-${demo.slug} dev`}</code>
+                    </pre>
+                  </article>
+
+                  <article className="example-start-card">
+                    <span className="example-start-step">2</span>
+                    <h3>Copy the source</h3>
+                    <p>
+                      Grab this example&rsquo;s files to lift its composition into your project.
+                    </p>
+                    <pre className="tech-pre">
+                      <code>{`npx degit cascivo/cascivo/apps/examples/${demo.slug} ${demo.slug}-app`}</code>
+                    </pre>
+                    <p className="example-start-note">
+                      Wired for the monorepo — point the <code>@cascivo/*</code> imports at the
+                      published packages to run it on its own.
+                    </p>
+                  </article>
+
+                  <article className="example-start-card">
+                    <span className="example-start-step">3</span>
+                    <h3>Scaffold your own</h3>
+                    <p>
+                      A fresh, standalone cascivo app with the same app shell and theme — then add
+                      the components this example uses.
+                    </p>
+                    <pre className="tech-pre">
+                      <code>{`npx cascivo create ${demo.slug}-app
+cd ${demo.slug}-app && npm install
+npx cascivo add data-table stat badge`}</code>
+                    </pre>
+                  </article>
+                </div>
+              </section>
+
               <section className="section example-detail-cta" aria-label="Open the demo">
                 <h2>See it for yourself</h2>
                 <p className="section-sub">

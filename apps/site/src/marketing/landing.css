@@ -3382,10 +3382,82 @@ kbd {
 
 .example-detail-shots,
 .example-detail-proves,
+.example-detail-start,
 .example-detail-cta {
   max-width: 1100px;
   margin-inline: auto;
   padding-inline: var(--cascivo-space-6);
+}
+
+/* ── Start from this example ─────────────────────────────── */
+.example-start-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cascivo-space-4);
+  margin-block-start: var(--cascivo-space-5);
+}
+
+@media (min-width: 64rem) {
+  .example-start-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.example-start-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  padding: var(--cascivo-space-4);
+  min-inline-size: 0;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-bg-subtle);
+}
+
+.example-start-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  border-radius: 50%;
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-foreground, #fff);
+  font-size: var(--cascivo-text-xs);
+  font-weight: 700;
+}
+
+.example-start-card h3 {
+  font-size: var(--cascivo-text-lg);
+  color: var(--cascivo-color-text);
+}
+
+.example-start-card > p {
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+  margin: 0;
+}
+
+.example-start-card .tech-pre {
+  flex: none;
+  min-inline-size: 0;
+  margin-block-start: auto;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md);
+  font-size: var(--cascivo-text-xs);
+  white-space: pre;
+}
+
+.example-start-note {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-muted);
+}
+
+.example-start-note code,
+.example-start-card p code {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.9em;
 }
 
 .example-shots-grid {
