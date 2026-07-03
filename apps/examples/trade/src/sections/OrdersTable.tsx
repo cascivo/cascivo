@@ -55,7 +55,7 @@ export function OrdersTable() {
       key: 'venue',
       header: t(msg.colVenue),
       render: (o) => (
-        <span className={styles['nowrap']} title={o.venue}>
+        <span className={styles['venue']} title={o.venue}>
           {o.venue}
         </span>
       ),
@@ -65,7 +65,7 @@ export function OrdersTable() {
       header: t(msg.colPlaced),
       sortable: true,
       align: 'end',
-      render: (o) => day(o.placed),
+      render: (o) => <span className={styles['nowrap']}>{day(o.placed)}</span>,
     },
   ]
 

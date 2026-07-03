@@ -1,7 +1,7 @@
 import { defineMessages } from '@cascivo/i18n'
 
 export const msg = defineMessages('trade', {
-  appTitle: 'Cascade Trade',
+  appTitle: 'Cascivo Trade',
   navTrading: 'Trading',
   navResearch: 'Research',
   navResearchHint: 'Research is not part of this demo',

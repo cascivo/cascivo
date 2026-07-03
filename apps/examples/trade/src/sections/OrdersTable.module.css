@@ -51,3 +51,12 @@
 .nowrap {
   white-space: nowrap;
 }
+
+/* Truncate the venue so it never collides with the placed date at narrow widths. */
+.venue {
+  display: block;
+  max-inline-size: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

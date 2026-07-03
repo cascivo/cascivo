@@ -1,4 +1,4 @@
-Cascade Flow — a functional mock of a process orchestration dashboard (feels like Camunda).
+Cascivo Flow — a functional mock of a process orchestration dashboard (feels like Camunda).
 
 **Mock demo: no real backend.** Data loads via a client-side mock API with seeded latency. Task claim
 and completion state persists across reload via `@cascivo/storage`.

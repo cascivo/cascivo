@@ -1,7 +1,7 @@
 import { defineMessages } from '@cascivo/i18n'
 
 export const msg = defineMessages('pay', {
-  appTitle: 'Cascade Pay',
+  appTitle: 'Cascivo Pay',
   navOverview: 'Overview',
   navPayments: 'Payments',
   navCustomers: 'Customers',

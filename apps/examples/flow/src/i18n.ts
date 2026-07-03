@@ -1,7 +1,7 @@
 import { defineMessages } from '@cascivo/i18n'
 
 export const msg = defineMessages('flow', {
-  appTitle: 'Cascade Flow',
+  appTitle: 'Cascivo Flow',
   navInstances: 'Instances',
   navIncidents: 'Incidents',
   navTasklist: 'Task List',

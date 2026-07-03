@@ -1,4 +1,4 @@
-Cascade Trade — a functional mock of a retail brokerage trading workspace (feels like Trade Republic).
+Cascivo Trade — a functional mock of a retail brokerage trading workspace (feels like Trade Republic).
 
 **Mock demo: no real market data.** Prices, the orderbook, and the trade tape update live via a
 pausable, seeded simulation engine. The selected instrument persists across reload via

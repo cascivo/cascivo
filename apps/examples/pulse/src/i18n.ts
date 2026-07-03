@@ -1,7 +1,7 @@
 import { defineMessages } from '@cascivo/i18n'
 
 export const msg = defineMessages('pulse', {
-  appTitle: 'Cascade Pulse',
+  appTitle: 'Cascivo Pulse',
   navOverview: 'Overview',
   navMetrics: 'Metrics',
   navAlerts: 'Alerts',

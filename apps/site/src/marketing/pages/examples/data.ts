@@ -50,7 +50,7 @@ function screenshots(slug: DemoSlug): DemoScreenshots {
 export const DEMOS: Demo[] = [
   {
     slug: 'deploy',
-    name: 'Cascade Deploy',
+    name: 'Cascivo Deploy',
     feelsLike: 'Vercel',
     tagline: 'Projects, deployments, and build logs with a live simulation engine.',
     description:
@@ -74,7 +74,7 @@ export const DEMOS: Demo[] = [
   },
   {
     slug: 'pay',
-    name: 'Cascade Pay',
+    name: 'Cascivo Pay',
     feelsLike: 'Stripe',
     tagline: 'Revenue, payments, and customer management with date-range filtering.',
     description:
@@ -97,7 +97,7 @@ export const DEMOS: Demo[] = [
   },
   {
     slug: 'flow',
-    name: 'Cascade Flow',
+    name: 'Cascivo Flow',
     feelsLike: 'Camunda',
     tagline: 'Process instances, task queues, and incidents with a live process diagram.',
     description:
@@ -120,7 +120,7 @@ export const DEMOS: Demo[] = [
   },
   {
     slug: 'track',
-    name: 'Cascade Track',
+    name: 'Cascivo Track',
     feelsLike: 'Linear',
     tagline: 'Issues board and backlog with Cmd+K command menu and persisted mutations.',
     description:
@@ -142,7 +142,7 @@ export const DEMOS: Demo[] = [
   },
   {
     slug: 'pulse',
-    name: 'Cascade Pulse',
+    name: 'Cascivo Pulse',
     feelsLike: 'Datadog',
     tagline:
       'Metrics, alerts, and a log stream with a real-time simulation and time-range selector.',
@@ -166,7 +166,7 @@ export const DEMOS: Demo[] = [
   },
   {
     slug: 'trade',
-    name: 'Cascade Trade',
+    name: 'Cascivo Trade',
     feelsLike: 'Trade Republic',
     tagline:
       'A brokerage trading workspace — live candlesticks, an orderbook, and an order ticket.',
