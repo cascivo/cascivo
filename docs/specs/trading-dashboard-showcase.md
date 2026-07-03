@@ -18,7 +18,8 @@ Recreate the essential experience of a professional retail trading dashboard
 sixth showcase demo. The reference UI has:
 
 1. **Top bar** — workspace tabs, portfolio value + day change, cash balance, profile
-   avatar with a dropdown menu (profile card, net worth, help/tax/statements/settings items).
+   avatar opening a card-based profile panel (profile card, accounts/net-worth card pair,
+   grouped help/tax/statements/settings items).
 2. **Order ticket panel** — execution-venue selector ("Best Price", bid/ask), Buy/Sell
    side toggle, order type (Market/Limit/Stop), validity (Today/GTC), shares number
    input, fees/total summary, available cash, disclaimer, submit button.
@@ -73,7 +74,7 @@ Verdict: **the dashboard is buildable today with ~95% existing primitives.** Fin
 | Panels | `Card` (+ `CardHeader`), `Separator`, `Skeleton`, `EmptyState` | |
 | Layout | `Grid`/`GridItem` (12-col), `Resizable` (drag-resizable pane splits), `Stack` | |
 | Shell + top bar | Kit `AppShell` (`apps/examples/kit`) — theme cycling, CommandMenu, nav | Same as all five existing demos. |
-| Profile menu | `Dropdown`/`Menu` + `User` + `Avatar` in header end slot | Screenshot 2's menu = `User` card + menu items. |
+| Profile panel (screenshot 2) | `HeaderPanel` + `Card` surfaces + `User` + `Item` | `HeaderPanel` is purpose-built for this: a non-modal panel anchored below the shell header at the inline-end edge (native Popover API, focus restore, light-dismiss/Escape). Its `children` are arbitrary, so the card-based composition drops straight in — see the TopBar spec in 5.5. |
 | Instrument switcher | `CommandMenu` (Cmd+K) | Also satisfies the demo-coverage test. |
 | Tabs (Summary/Insights) | `Tabs` | |
 | Range pills (1D/1W/…) | `SegmentedControl` size `sm` | |
@@ -216,7 +217,7 @@ apps/examples/trade/
       ticket.ts         # order-ticket state signals + computed fees/total/validity
     format.ts           # money/quantity helpers over @cascivo/i18n formatNumber
     sections/
-      TopBar.tsx        # portfolio value, cash, profile Dropdown (screenshot 2)
+      TopBar.tsx        # portfolio value, cash, profile HeaderPanel (screenshot 2)
       OrderTicket.tsx   # + OrderTicket.module.css
       PriceChart.tsx    # candlestick panel + interval/range controls
       InstrumentSummary.tsx
@@ -318,11 +319,23 @@ closest slot the kit exposes; `pulse` shows the pattern):
 - portfolio pill: `formatNumber(portfolioValue, currency)` + day change `Stat`-style delta
   (green/red via `success`/`error` tokens),
 - cash pill: `€{cash}`,
-- profile: `Avatar` (initials "AU", fictional user "Alex Urban") triggering a `Dropdown`
-  whose content mirrors screenshot 2: `User` (name + "Profile" description), a small
-  `DataList` (Accounts, Net Worth), then menu items — Get help, Invite friends, Tax,
-  Statements, Settings — each an icon (from `@cascivo/icons`) + label + description.
-  Items are demo stubs: selecting fires a `Toast` ("Not part of this demo").
+- profile: `Avatar` (initials "AU", fictional user "Alex Urban") as a toggle button
+  controlling a **`HeaderPanel`** (`open` signal + `onClose`; the component brings native
+  Popover-API anchoring below the header at the inline-end edge, focus restore, Escape and
+  light-dismiss for free). The panel body reproduces screenshot 2's **card-based**
+  composition as a `Stack` of `Card` surfaces on a dimmed backdrop:
+  1. **Profile card** — `Card` containing `User` (avatar + "Profile" eyebrow + full name);
+     the whole card is a button navigating nowhere (demo stub).
+  2. **Two-up card row** — `Columns`/`Grid` (2 cols): an "Accounts" `Card` (label +
+     `AvatarGroup` of account avatars) and a "Net Worth" `Card` (label + formatted value —
+     reuse the `portfolioValue` computed).
+  3. **Menu card** — `Card` (`padding:'none'`) with a "Profile" section heading and a
+     stack of `Item` rows (`ItemMedia` = icon from `@cascivo/icons`, `ItemContent` =
+     `ItemTitle` + `ItemDescription`): Get help / Invite friends / Tax / Statements /
+     Settings — each rendered as a `<button>`; selecting fires a `Toast`
+     ("Not part of this demo") and closes the panel.
+  Do **not** use `Dropdown` here — its declarative `items` API cannot host card content;
+  `HeaderPanel` exists precisely for this rich header-anchored surface.
 
 **OrderTicket** — `Card` containing:
 - venue `Dropdown` ("Best Price — Bid €x.xx · Ask €x.xx", one fictional alternative venue),
@@ -432,7 +445,7 @@ Every item is required; miss one and CI or deploy silently skips the app.
    `DEMOS` array: slug `trade`, tagline (e.g. "A brokerage trading workspace — live
    candlesticks, orderbook, and order flow"), `feelsLike`, `coverage[]` (Candlestick,
    Sparkline, Meter, DataTable, NumberInput, SegmentedControl, CommandMenu, Resizable,
-   Sheet, Stat, …), `liveHref: '/demos/trade/'`, `detailHref: '/examples/trade'`.
+   Sheet, Stat, HeaderPanel, Item, …), `liveHref: '/demos/trade/'`, `detailHref: '/examples/trade'`.
 4. **Screenshots** — run `screenshots:generate` (`scripts/gen-demo-screenshots.mjs`) and
    commit the generated assets referenced by the marketing page.
 5. **`scripts/checks/demo-storage-keys.test.ts`** — add `'trade'` to the `DEMOS` array;
@@ -460,8 +473,10 @@ app up automatically for `vp run -r` build/check/test.
    over-cash buy is blocked with a visible error.
 5. Interval + range selectors re-window the candlestick; wheel/drag zoom and the DataZoom
    slider work; last-price threshold annotation tracks ticks.
-6. Profile dropdown matches screenshot 2's structure (profile card, accounts/net-worth,
-   five menu entries).
+6. Profile `HeaderPanel` matches screenshot 2's card composition — profile `Card`,
+   accounts/net-worth two-up `Card` row, grouped menu `Card` with five `Item` entries —
+   anchored below the header at the inline-end edge, closing on Escape and light-dismiss
+   with focus restored to the avatar button.
 7. Mobile sweep at 320/360/390/414: no horizontal overflow, ticket reachable via bottom
    sheet, touch targets ≥ 44px, nothing display:none'd away.
 8. Keyboard-only pass: ticket fully operable, chart zoom keys (+/−/0) work, dropdown/menu/
