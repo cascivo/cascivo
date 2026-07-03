@@ -6,10 +6,10 @@
   min-block-size: 0;
 }
 
-/* When height-constrained in the desktop grid, scroll inside the panel. */
+/* When height-constrained in the desktop grid, clip (no scrollbar). */
 @media (min-width: 64rem) {
   .panel {
-    overflow-y: auto;
+    overflow: hidden;
   }
 }
 

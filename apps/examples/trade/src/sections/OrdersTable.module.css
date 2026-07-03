@@ -8,7 +8,12 @@
 
 @media (min-width: 64rem) {
   .panel {
-    overflow-y: auto;
+    overflow: hidden;
+  }
+  /* Never show a horizontal scrollbar on the table — at desktop widths it fits;
+     on a narrow laptop the trailing column clips instead of scrolling. */
+  .panel [class*='scroller'] {
+    overflow-x: hidden;
   }
 }
 
@@ -37,8 +42,12 @@
 /* Keep instrument names on one line so rows stay compact. */
 .instrument {
   display: block;
-  max-inline-size: 13rem;
+  max-inline-size: 8rem;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nowrap {
   white-space: nowrap;
 }

@@ -8,7 +8,7 @@
 
 @media (min-width: 64rem) {
   .panel {
-    overflow-y: auto;
+    overflow: hidden;
   }
 }
 

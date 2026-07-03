@@ -52,8 +52,8 @@
   inline-size: auto;
 }
 
-/* Turn the shared HeaderPanel (a full-height right rail) into a floating card
-   that starts just below the avatar (--trade-panel-top measured at open). */
+/* A floating panel below the avatar (--trade-panel-top measured at open). No
+   heavy surface fill — it blends with the page (opaque bg for legibility). */
 .profilePanel {
   --cascivo-shell-panel-inline-size: min(23rem, calc(100vw - 2 * var(--cascivo-space-3)));
   inset-block-start: var(
@@ -63,23 +63,36 @@
   inset-block-end: auto;
   inset-inline-end: var(--cascivo-space-3);
   max-block-size: calc(100dvh - var(--trade-panel-top, 6rem) - var(--cascivo-space-3));
+  background: var(--cascivo-color-bg);
   border: 1px solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-overlay, 0.75rem);
+}
+
+/* The shared HeaderPanel always renders a title + close bar; the menu doesn't
+   need it (light-dismiss / Escape close it). */
+.profilePanel > :first-child {
+  display: none;
+}
+/* Body: let the rows/sections own the horizontal padding (full-width hover). */
+.profilePanel > :last-child {
+  padding: var(--cascivo-space-2) 0;
+}
+
+.profileRow {
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
 }
 
 .twoUp {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--cascivo-space-2);
+  padding: 0 var(--cascivo-space-3) var(--cascivo-space-2);
 }
 
-.menuHead {
-  padding: var(--cascivo-space-2) var(--cascivo-space-3) 0;
-  font-size: var(--cascivo-text-xs);
-  font-weight: 600;
-  color: var(--cascivo-color-foreground-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.stat {
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-md, 0.5rem);
 }
 
 .menu {
@@ -104,8 +117,43 @@
   outline-offset: -2px;
 }
 
+.chevron {
+  margin-inline-start: auto;
+  color: var(--cascivo-color-foreground-muted);
+  display: inline-flex;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--cascivo-space-1);
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
+  border: none;
+  background: transparent;
+  color: var(--cascivo-color-foreground-muted);
+  cursor: pointer;
+  font-size: var(--cascivo-text-sm);
+}
+
+.back:hover {
+  color: var(--cascivo-color-foreground);
+}
+
+.back:focus-visible {
+  outline: 2px solid var(--cascivo-color-focus-ring, var(--cascivo-color-accent));
+  outline-offset: -2px;
+}
+
+.viewTitle {
+  padding: 0 var(--cascivo-space-3) var(--cascivo-space-1);
+  font-size: var(--cascivo-text-md);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
 @media (pointer: coarse) {
-  .menuBtn {
+  .menuBtn,
+  .back {
     min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
   }
 }

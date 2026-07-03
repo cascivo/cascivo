@@ -24,3 +24,6 @@ export const ticketSheetOpen = signal(false)
 
 /** Profile HeaderPanel open state. */
 export const profileOpen = signal(false)
+
+/** Which profile submenu is showing (null = the main menu). */
+export const profileView = signal<string | null>(null)

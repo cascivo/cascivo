@@ -25,7 +25,7 @@ export function OrdersTable() {
     {
       key: 'instrument',
       header: t(msg.colInstrument),
-      width: '14rem',
+      width: '9rem',
       render: (o) => {
         const name = getInstrument(o.instrumentId).name
         return (
@@ -51,8 +51,15 @@ export function OrdersTable() {
       ),
     },
     { key: 'side', header: t(msg.colSide), render: (o) => cap(o.side) },
-    { key: 'type', header: t(msg.colType), render: (o) => cap(o.type) },
-    { key: 'venue', header: t(msg.colVenue) },
+    {
+      key: 'venue',
+      header: t(msg.colVenue),
+      render: (o) => (
+        <span className={styles['nowrap']} title={o.venue}>
+          {o.venue}
+        </span>
+      ),
+    },
     {
       key: 'placed',
       header: t(msg.colPlaced),
@@ -75,7 +82,7 @@ export function OrdersTable() {
         density="compact"
         stickyHeader
         defaultSort={{ key: 'placed', direction: 'desc' }}
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 6 }}
       />
     </Card>
   )

@@ -1,10 +1,17 @@
 'use client'
 import { useSignal, useSignals } from '@cascivo/core'
 import { t } from '@cascivo/i18n'
-import { FileText, Gift, LifeBuoy, Percent, Sliders } from '@cascivo/icons'
+import {
+  ChevronLeft,
+  ChevronRight,
+  FileText,
+  Gift,
+  LifeBuoy,
+  Percent,
+  Sliders,
+} from '@cascivo/icons'
 import {
   Avatar,
-  Card,
   DataList,
   HeaderPanel,
   Item,
@@ -20,35 +27,71 @@ import { msg } from '../i18n'
 import { money, signedPct } from '../format'
 import { changePct } from '../store/market'
 import { portfolioValue } from '../store/portfolio'
-import { profileOpen } from '../store/ui'
+import { profileOpen, profileView } from '../store/ui'
 import styles from './TopBar.module.css'
 
-interface MenuItem {
+interface MenuEntry {
+  id: string
   icon: ReactNode
   title: string
   hint: string
+  sub: string[]
 }
 
 export function TopBar() {
   useSignals()
   const { toast } = useToast()
   const up = changePct.value >= 0
-  // Measured at open time so the panel starts just below the avatar regardless
-  // of the (variable-height) banner + header above it.
   const panelTop = useSignal(0)
 
-  const items: MenuItem[] = [
-    { icon: <LifeBuoy size={18} />, title: t(msg.getHelp), hint: t(msg.getHelpHint) },
-    { icon: <Gift size={18} />, title: t(msg.invite), hint: t(msg.inviteHint) },
-    { icon: <Percent size={18} />, title: t(msg.tax), hint: t(msg.taxHint) },
-    { icon: <FileText size={18} />, title: t(msg.statements), hint: t(msg.statementsHint) },
-    { icon: <Sliders size={18} />, title: t(msg.settings), hint: t(msg.settingsHint) },
+  const entries: MenuEntry[] = [
+    {
+      id: 'help',
+      icon: <LifeBuoy size={18} />,
+      title: t(msg.getHelp),
+      hint: t(msg.getHelpHint),
+      sub: [t(msg.helpSub1), t(msg.helpSub2), t(msg.helpSub3)],
+    },
+    {
+      id: 'invite',
+      icon: <Gift size={18} />,
+      title: t(msg.invite),
+      hint: t(msg.inviteHint),
+      sub: [t(msg.inviteSub1), t(msg.inviteSub2), t(msg.inviteSub3)],
+    },
+    {
+      id: 'tax',
+      icon: <Percent size={18} />,
+      title: t(msg.tax),
+      hint: t(msg.taxHint),
+      sub: [t(msg.taxSub1), t(msg.taxSub2), t(msg.taxSub3)],
+    },
+    {
+      id: 'statements',
+      icon: <FileText size={18} />,
+      title: t(msg.statements),
+      hint: t(msg.statementsHint),
+      sub: [t(msg.statementsSub1), t(msg.statementsSub2), t(msg.statementsSub3)],
+    },
+    {
+      id: 'settings',
+      icon: <Sliders size={18} />,
+      title: t(msg.settings),
+      hint: t(msg.settingsHint),
+      sub: [t(msg.settingsSub1), t(msg.settingsSub2), t(msg.settingsSub3)],
+    },
   ]
 
+  function close() {
+    profileOpen.value = false
+    profileView.value = null
+  }
   function stub() {
     toast({ title: t(msg.demoStub) })
-    profileOpen.value = false
+    close()
   }
+
+  const active = entries.find((e) => e.id === profileView.value)
 
   return (
     <div className={styles['bar']}>
@@ -64,6 +107,7 @@ export function TopBar() {
         aria-expanded={profileOpen.value}
         onClick={(e) => {
           panelTop.value = Math.round(e.currentTarget.getBoundingClientRect().bottom + 8)
+          profileView.value = null
           profileOpen.value = !profileOpen.value
         }}
       >
@@ -76,56 +120,93 @@ export function TopBar() {
         <HeaderPanel
           className={styles['profilePanel']}
           open={profileOpen.value}
-          onClose={() => {
-            profileOpen.value = false
-          }}
+          onClose={close}
           label={t(msg.profile)}
         >
-          <div className={styles['panel']}>
-            <Card variant="outlined" padding="md">
-              <User
-                name={t(msg.profileName)}
-                description={t(msg.profile)}
-                avatarProps={{ fallback: 'AU' }}
-              />
-            </Card>
-
-            <div className={styles['twoUp']}>
-              <Card variant="outlined" padding="md">
-                <DataList
-                  size="sm"
-                  orientation="vertical"
-                  items={[{ id: 'acc', label: t(msg.accounts), value: 'AU' }]}
-                />
-              </Card>
-              <Card variant="outlined" padding="md">
-                <DataList
-                  size="sm"
-                  orientation="vertical"
-                  items={[{ id: 'nw', label: t(msg.netWorth), value: money(portfolioValue.value) }]}
-                />
-              </Card>
-            </div>
-
-            <Card variant="outlined" padding="none">
-              <p className={styles['menuHead']}>{t(msg.profile)}</p>
+          {active ? (
+            // ── Submenu — replaces the main menu, same style, with a Back button.
+            <div className={styles['panel']}>
+              <button
+                type="button"
+                className={styles['back']}
+                onClick={() => {
+                  profileView.value = null
+                }}
+              >
+                <ChevronLeft size={16} />
+                <span>{t(msg.back)}</span>
+              </button>
+              <p className={styles['viewTitle']}>{active.title}</p>
               <ul className={styles['menu']}>
-                {items.map((it) => (
-                  <li key={it.title}>
+                {active.sub.map((label) => (
+                  <li key={label}>
                     <Item asChild size="sm">
                       <button type="button" className={styles['menuBtn']} onClick={stub}>
-                        <ItemMedia>{it.icon}</ItemMedia>
                         <ItemContent>
-                          <ItemTitle>{it.title}</ItemTitle>
-                          <ItemDescription>{it.hint}</ItemDescription>
+                          <ItemTitle>{label}</ItemTitle>
                         </ItemContent>
                       </button>
                     </Item>
                   </li>
                 ))}
               </ul>
-            </Card>
-          </div>
+            </div>
+          ) : (
+            // ── Main menu.
+            <div className={styles['panel']}>
+              <div className={styles['profileRow']}>
+                <User
+                  name={t(msg.profileName)}
+                  description={t(msg.profile)}
+                  avatarProps={{ fallback: 'AU' }}
+                />
+              </div>
+
+              <div className={styles['twoUp']}>
+                <div className={styles['stat']}>
+                  <DataList
+                    size="sm"
+                    orientation="vertical"
+                    items={[{ id: 'acc', label: t(msg.accounts), value: 'AU' }]}
+                  />
+                </div>
+                <div className={styles['stat']}>
+                  <DataList
+                    size="sm"
+                    orientation="vertical"
+                    items={[
+                      { id: 'nw', label: t(msg.netWorth), value: money(portfolioValue.value) },
+                    ]}
+                  />
+                </div>
+              </div>
+
+              <ul className={styles['menu']}>
+                {entries.map((entry) => (
+                  <li key={entry.id}>
+                    <Item asChild size="sm">
+                      <button
+                        type="button"
+                        className={styles['menuBtn']}
+                        onClick={() => {
+                          profileView.value = entry.id
+                        }}
+                      >
+                        <ItemMedia>{entry.icon}</ItemMedia>
+                        <ItemContent>
+                          <ItemTitle>{entry.title}</ItemTitle>
+                          <ItemDescription>{entry.hint}</ItemDescription>
+                        </ItemContent>
+                        <span className={styles['chevron']} aria-hidden="true">
+                          <ChevronRight size={16} />
+                        </span>
+                      </button>
+                    </Item>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </HeaderPanel>
       </div>
     </div>

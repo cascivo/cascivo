@@ -102,7 +102,7 @@
 @media (min-width: 64rem) {
   .grid {
     block-size: 100%;
-    grid-template-columns: 20rem minmax(0, 1fr) 23rem;
+    grid-template-columns: 18rem minmax(0, 1fr) 20rem;
     overflow: hidden;
   }
   .colTicket {
@@ -110,24 +110,29 @@
   }
   .colRight {
     display: flex; /* revert md grid → a vertical stack that fills the column */
+    align-items: stretch; /* override the md grid's align-items:start so cards span full width */
   }
   .colTicket > :only-child {
-    flex: 1;
+    flex: 1; /* ticket fills the column */
   }
+  /* Chart absorbs the leftover height; orders takes its natural (paginated) size
+     so its own scroller never has to appear. */
   .colCenter > :first-child {
-    flex: 1 1 62%; /* chart */
+    flex: 1 1 auto;
+    min-block-size: 14rem;
   }
   .colCenter > :last-child {
-    flex: 1 1 38%; /* orders */
+    flex: 0 0 auto;
   }
-  .colRight > :nth-child(1) {
-    flex: 1 1 46%; /* summary (content-heavy) */
-  }
+  /* Summary + orderbook show at natural height (nothing clipped); the tape
+     flex-fills the remainder and clips its oldest rows — no scrollbars anywhere. */
+  .colRight > :nth-child(1),
   .colRight > :nth-child(2) {
-    flex: 1 1 32%; /* orderbook */
+    flex: 0 0 auto;
   }
   .colRight > :nth-child(3) {
-    flex: 1 1 22%; /* tape */
+    flex: 1 1 auto;
+    min-block-size: 6rem;
   }
   .tradeSticky {
     display: none;

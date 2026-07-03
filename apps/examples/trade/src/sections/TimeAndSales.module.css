@@ -16,6 +16,8 @@
     flex: 1;
     min-block-size: 0;
     max-block-size: none;
+    /* No scrollbar on desktop — the tape clips older rows (newest stay on top). */
+    overflow: hidden;
   }
 }
 
