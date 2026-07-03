@@ -25085,31 +25085,36 @@
             "name": "minZoom",
             "type": "number",
             "required": false,
-            "default": "0.2"
+            "default": "0.2",
+            "description": "Lower bound for the viewport zoom level."
           },
           {
             "name": "maxZoom",
             "type": "number",
             "required": false,
-            "default": "2"
+            "default": "2",
+            "description": "Upper bound for the viewport zoom level."
           },
           {
             "name": "panOnDrag",
             "type": "boolean",
             "required": false,
-            "default": "true"
+            "default": "true",
+            "description": "Drag the empty pane to pan the viewport."
           },
           {
             "name": "zoomOnScroll",
             "type": "boolean",
             "required": false,
-            "default": "true"
+            "default": "true",
+            "description": "Wheel or pinch to zoom the viewport."
           },
           {
             "name": "fitView",
             "type": "boolean",
             "required": false,
-            "default": "false"
+            "default": "false",
+            "description": "Frame the whole graph once on mount."
           },
           {
             "name": "className",

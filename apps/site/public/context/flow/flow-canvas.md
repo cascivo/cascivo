@@ -28,11 +28,11 @@ role="application" — the pane is an interactive canvas with pointer gestures.
 | `children`         | `ReactNode`                              | No       | —       | Background, nodes, edges.                                |
 | `viewport`         | `{ x: number; y: number; zoom: number }` | No       | —       | Controlled viewport.                                     |
 | `onViewportChange` | `(viewport: Viewport) => void`           | No       | —       | Viewport change callback.                                |
-| `minZoom`          | `number`                                 | No       | 0.2     | —                                                        |
-| `maxZoom`          | `number`                                 | No       | 2       | —                                                        |
-| `panOnDrag`        | `boolean`                                | No       | true    | —                                                        |
-| `zoomOnScroll`     | `boolean`                                | No       | true    | —                                                        |
-| `fitView`          | `boolean`                                | No       | false   | —                                                        |
+| `minZoom`          | `number`                                 | No       | 0.2     | Lower bound for the viewport zoom level.                 |
+| `maxZoom`          | `number`                                 | No       | 2       | Upper bound for the viewport zoom level.                 |
+| `panOnDrag`        | `boolean`                                | No       | true    | Drag the empty pane to pan the viewport.                 |
+| `zoomOnScroll`     | `boolean`                                | No       | true    | Wheel or pinch to zoom the viewport.                     |
+| `fitView`          | `boolean`                                | No       | false   | Frame the whole graph once on mount.                     |
 | `className`        | `string`                                 | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens

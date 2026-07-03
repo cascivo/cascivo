@@ -11565,6 +11565,7 @@
           "type": "number",
           "required": false,
           "default": "0.2",
+          "description": "Lower bound for the viewport zoom level.",
           "schema": {
             "kind": "number"
           }
@@ -11574,6 +11575,7 @@
           "type": "number",
           "required": false,
           "default": "2",
+          "description": "Upper bound for the viewport zoom level.",
           "schema": {
             "kind": "number"
           }
@@ -11583,6 +11585,7 @@
           "type": "boolean",
           "required": false,
           "default": "true",
+          "description": "Drag the empty pane to pan the viewport.",
           "schema": {
             "kind": "boolean"
           }
@@ -11592,6 +11595,7 @@
           "type": "boolean",
           "required": false,
           "default": "true",
+          "description": "Wheel or pinch to zoom the viewport.",
           "schema": {
             "kind": "boolean"
           }
@@ -11601,6 +11605,7 @@
           "type": "boolean",
           "required": false,
           "default": "false",
+          "description": "Frame the whole graph once on mount.",
           "schema": {
             "kind": "boolean"
           }
