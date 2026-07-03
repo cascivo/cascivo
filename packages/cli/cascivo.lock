@@ -4,18 +4,18 @@
     "layout/app-shell": {
       "registry": "https://example.com",
       "version": "0.0.0",
-      "installedAt": "2026-07-02",
+      "installedAt": "2026-07-03",
       "files": {
-        "/tmp/cascade-cli-test-rnLPc5/components/app-shell/app-shell.tsx": "sha256-7010f5b7c7b40cabca9d8bec43be369facaf64297213b34a5f76c52b1d310bd0",
-        "/tmp/cascade-cli-test-rnLPc5/components/app-shell/app-shell.module.css": "sha256-7010f5b7c7b40cabca9d8bec43be369facaf64297213b34a5f76c52b1d310bd0"
+        "/tmp/cascade-cli-test-zcsd2B/components/app-shell/app-shell.tsx": "sha256-7010f5b7c7b40cabca9d8bec43be369facaf64297213b34a5f76c52b1d310bd0",
+        "/tmp/cascade-cli-test-zcsd2B/components/app-shell/app-shell.module.css": "sha256-7010f5b7c7b40cabca9d8bec43be369facaf64297213b34a5f76c52b1d310bd0"
       }
     },
     "users-table-page": {
       "registry": "https://example.com",
       "version": "0.0.0",
-      "installedAt": "2026-07-02",
+      "installedAt": "2026-07-03",
       "files": {
-        "/tmp/cascade-cli-test-Pgqev0/components/users-table-page/users-table-page.tsx": "sha256-7010f5b7c7b40cabca9d8bec43be369facaf64297213b34a5f76c52b1d310bd0"
+        "/tmp/cascade-cli-test-5EGrpC/components/users-table-page/users-table-page.tsx": "sha256-7010f5b7c7b40cabca9d8bec43be369facaf64297213b34a5f76c52b1d310bd0"
       }
     }
   }
