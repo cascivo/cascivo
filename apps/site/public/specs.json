@@ -86,6 +86,12 @@
       "summary": "**Status:** Deferred within v13 **Decision date:** 2026-06-13 **Tranche:** T5 (CSS-native progressive enhancement)"
     },
     {
+      "id": "trading-dashboard-showcase",
+      "title": "trading-dashboard-showcase",
+      "path": "/docs/specs/trading-dashboard-showcase.md",
+      "summary": "**Status:** Approved plan, ready for implementation **Date:** 2026-07-03 **Deliverable:** A new example app `apps/examples/trade` (a Trade Republic-style brokerage trading workspace) plus two small, targeted enhancements to `@cascivo/charts`. **Audience:** Implementing agent (Opus/Sonnet). Follow CLAUDE.md rules throughout — signals only (no `useState`/`useEffect`), `useSignals()` first in every render-reading React component, i18n for every user-visible string, mobile-first CSS on the canonical breakpoint scale, `pnpm ready` green before every commit."
+    },
+    {
       "id": "wcag-2.2",
       "title": "wcag-2.2",
       "path": "/docs/specs/wcag-2.2.md",

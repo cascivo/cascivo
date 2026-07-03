@@ -902,6 +902,35 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'annotations',
+      required: false,
+    },
+    {
+      name: 'brush',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'dataZoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'zoom',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'syncId',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'tooltipMode',
+      required: false,
+      enum: ['item', 'axis'],
+    },
   ],
   Card: [
     {

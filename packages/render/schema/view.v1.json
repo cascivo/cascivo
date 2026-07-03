@@ -5536,6 +5536,22 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "brush": {
+                    "type": "boolean"
+                  },
+                  "dataZoom": {
+                    "type": "boolean"
+                  },
+                  "zoom": {
+                    "type": "boolean"
+                  },
+                  "syncId": {
+                    "type": "string"
+                  },
+                  "tooltipMode": {
+                    "type": "string",
+                    "enum": ["item", "axis"]
                   }
                 },
                 "required": ["data", "title"]

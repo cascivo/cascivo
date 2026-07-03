@@ -33,3 +33,18 @@ export const Default: Story = {
 export const WithVolume: Story = {
   args: { data, title: 'ACME daily + volume', tooltip: true, volume: true },
 }
+
+const lastClose = data[data.length - 1]!.close
+
+export const Zoomable: Story = {
+  args: {
+    data,
+    title: 'ACME daily — zoom + annotations',
+    tooltip: true,
+    tooltipMode: 'axis',
+    volume: true,
+    zoom: true,
+    dataZoom: true,
+    annotations: [{ kind: 'line', axis: 'y', value: lastClose, label: String(lastClose) }],
+  },
+}
