@@ -1,0 +1,102 @@
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+}
+
+.live {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--cascivo-color-success);
+}
+
+/* Base: single dense column (mobile-first). Order ticket lives in the Sheet. */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-3);
+  grid-template-areas:
+    'chart'
+    'summary'
+    'orderbook'
+    'tape'
+    'orders';
+}
+
+.chart {
+  grid-area: chart;
+  min-inline-size: 0;
+}
+.ticketInline {
+  grid-area: ticket;
+  min-inline-size: 0;
+  display: none; /* content stays reachable via the Sheet on small screens */
+}
+.summary {
+  grid-area: summary;
+  min-inline-size: 0;
+}
+.orderbook {
+  grid-area: orderbook;
+  min-inline-size: 0;
+}
+.tape {
+  grid-area: tape;
+  min-inline-size: 0;
+}
+.orders {
+  grid-area: orders;
+  min-inline-size: 0;
+}
+
+.tradeSticky {
+  position: sticky;
+  inset-block-end: var(--cascivo-space-3);
+  display: flex;
+  justify-content: center;
+  padding: var(--cascivo-space-3);
+  pointer-events: none;
+}
+.tradeSticky button {
+  pointer-events: auto;
+  min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  box-shadow: var(--cascivo-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+/* md — two columns; summary + orderbook pair up. */
+@media (min-width: 40rem) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'chart chart'
+      'summary orderbook'
+      'tape tape'
+      'orders orders';
+  }
+}
+
+/* lg — three columns; the order ticket becomes an inline left panel. */
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: 18rem 1fr 21rem;
+    grid-template-areas:
+      'ticket chart summary'
+      'ticket chart orderbook'
+      'ticket orders tape';
+  }
+  .ticketInline {
+    display: block;
+  }
+  .tradeSticky {
+    display: none;
+  }
+}
+
+/* xl — widen the rails for the reference's terminal density. */
+@media (min-width: 80rem) {
+  .grid {
+    grid-template-columns: 20rem 1fr 24rem;
+  }
+}

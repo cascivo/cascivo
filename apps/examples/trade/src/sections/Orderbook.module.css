@@ -1,0 +1,63 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  min-inline-size: 0;
+}
+
+.title {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
+.best {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--cascivo-space-2);
+}
+
+.depthWrap {
+  position: relative;
+}
+
+.depth {
+  inline-size: 100%;
+  block-size: 4rem;
+  display: block;
+}
+
+.ladder {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--cascivo-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.ladder th {
+  padding-block: var(--cascivo-space-1);
+  font-weight: 500;
+  color: var(--cascivo-color-foreground-muted);
+}
+
+.ladder td {
+  padding-block: 0.125rem;
+}
+
+.num {
+  text-align: end;
+  padding-inline: var(--cascivo-space-2);
+}
+
+.bid {
+  color: var(--cascivo-color-success);
+}
+
+.ask {
+  color: var(--cascivo-color-error);
+}
+
+.footnote {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+}

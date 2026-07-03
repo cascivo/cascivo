@@ -6,7 +6,7 @@
 // scripts/assemble-demos.mjs); marketing pages live at /examples/<slug>.
 // Import-free of React so build-time code can reuse the slugs.
 
-export type DemoSlug = 'deploy' | 'pay' | 'flow' | 'track' | 'pulse'
+export type DemoSlug = 'deploy' | 'pay' | 'flow' | 'track' | 'pulse' | 'trade'
 
 export interface DemoScreenshots {
   /** 1280×800 captures. */
@@ -163,6 +163,32 @@ export const DEMOS: Demo[] = [
     liveHref: '/demos/pulse/',
     detailHref: '/examples/pulse',
     screenshots: screenshots('pulse'),
+  },
+  {
+    slug: 'trade',
+    name: 'Cascade Trade',
+    feelsLike: 'Trade Republic',
+    tagline:
+      'A brokerage trading workspace — live candlesticks, an orderbook, and an order ticket.',
+    description:
+      'A retail trading terminal in the shape of Trade Republic: a candlestick chart with a volume pane, zoom, and a last-price rule; a live orderbook with a depth histogram; a streaming time-and-sales tape; an order ticket that fills against the book; and your order history. A pausable, seeded simulation ticks the price, book, and tape in real time — all client-side.',
+    proves:
+      'The densest financial composition of the set — Candlestick (zoom + dataZoom + axis crosshair + annotations), Sparkline, and Meter over a live streaming buffer — plus an order ticket built from NumberInput, SegmentedControl and Select, a compact DataTable of orders, and a card-based profile HeaderPanel.',
+    coverage: [
+      'Candlestick',
+      'Sparkline',
+      'Meter',
+      'NumberInput',
+      'SegmentedControl',
+      'DataTable',
+      'HeaderPanel',
+      'CommandMenu',
+      'Sheet',
+      'Stat',
+    ],
+    liveHref: '/demos/trade/',
+    detailHref: '/examples/trade',
+    screenshots: screenshots('trade'),
   },
 ]
 

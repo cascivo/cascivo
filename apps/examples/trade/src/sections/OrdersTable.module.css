@@ -1,0 +1,28 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  min-inline-size: 0;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cascivo-space-3);
+}
+
+.title {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
+.tag {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 500;
+  color: var(--cascivo-color-foreground-muted);
+  padding: var(--cascivo-space-1) var(--cascivo-space-3);
+  border-radius: var(--cascivo-radius-full, 999px);
+  background: var(--cascivo-color-bg-subtle);
+}

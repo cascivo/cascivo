@@ -28,6 +28,7 @@ const DEMOS = {
   flow: '@cascivo/example-flow',
   track: '@cascivo/example-track',
   pulse: '@cascivo/example-pulse',
+  trade: '@cascivo/example-trade',
 }
 
 const shouldBuild = process.argv.includes('--build')

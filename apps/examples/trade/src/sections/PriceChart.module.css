@@ -1,0 +1,46 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  min-inline-size: 0;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--cascivo-space-3);
+}
+
+.ident {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  min-inline-size: 0;
+}
+
+.name {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
+.quote {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+  flex-wrap: wrap;
+}
+
+.tabnum {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-2);
+}
