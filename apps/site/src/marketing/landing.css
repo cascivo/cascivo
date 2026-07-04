@@ -1502,6 +1502,97 @@ kbd {
   font-weight: var(--cascivo-font-medium);
 }
 
+/* ── Home showcase strip (real products) ──────────────── */
+.showcase-strip {
+  scroll-margin-block-start: 5rem;
+}
+
+.showcase-strip-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: var(--cascivo-space-5);
+}
+
+.showcase-strip-card {
+  margin: 0;
+}
+
+.showcase-strip-link {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  overflow: hidden;
+  background-color: var(--cascivo-color-surface);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.showcase-strip-link:hover {
+  border-color: var(--cascivo-color-accent);
+}
+
+.showcase-strip-link:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.showcase-strip-shot {
+  display: block;
+  aspect-ratio: 16 / 10;
+  background-color: var(--cascivo-color-bg-subtle);
+  overflow: hidden;
+}
+
+.showcase-strip-shot img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.showcase-strip-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cascivo-space-2);
+  padding: var(--cascivo-space-3) var(--cascivo-space-4) 0;
+}
+
+.showcase-strip-name {
+  font-weight: var(--cascivo-font-semibold);
+}
+
+.showcase-strip-cat {
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-text-subtle);
+  white-space: nowrap;
+}
+
+.showcase-strip-host {
+  padding: var(--cascivo-space-1) var(--cascivo-space-4) var(--cascivo-space-4);
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-accent-hover);
+}
+
+.showcase-strip-more {
+  margin: var(--cascivo-space-6) 0 0;
+}
+
+.showcase-strip-more a {
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent-hover);
+}
+
 /* ── Footer mono links ────────────────────────────────── */
 .footer-link-mono {
   font-family: var(--cascivo-font-mono);

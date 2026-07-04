@@ -4,7 +4,7 @@ import { Footer } from '../sections/Footer'
 import { SHOWCASE, displayHost } from './showcase/data'
 
 const REPO_DATA_URL =
-  'https://github.com/cascivo/cascivo/edit/main/apps/landing/src/pages/showcase/data.ts'
+  'https://github.com/cascivo/cascivo/edit/main/apps/site/src/marketing/pages/showcase/data.ts'
 
 export function ShowcasePage() {
   return (
