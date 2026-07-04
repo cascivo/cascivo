@@ -1,5 +1,12 @@
 # @cascivo/charts
 
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies [5bafdb6]
+  - @cascivo/i18n@0.2.0
+
 ## 0.3.4
 
 ### Patch Changes
