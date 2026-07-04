@@ -50,7 +50,7 @@ Counts are derived by the generator from the tables below; see `parity.json` for
 | Calendar        | covered       | calendar        | Queued (v18-t6)                                                             |
 | Card            | covered       | card            |                                                                             |
 | Carousel        | covered       | carousel        | Queued (v18-t6)                                                             |
-| Chart           | covered       | chart           | 16 charts via @cascivo/charts                                               |
+| Chart           | covered       | chart           | chart family via @cascivo/charts                                            |
 | Checkbox        | covered       | checkbox        |                                                                             |
 | Collapsible     | covered       | collapsible     | Queued (v18-t5)                                                             |
 | Combobox        | covered       | combobox        |                                                                             |

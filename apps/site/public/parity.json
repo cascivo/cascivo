@@ -85,7 +85,7 @@
           "competitor": "Chart",
           "status": "covered",
           "cascivo": "chart",
-          "note": "16 charts via @cascivo/charts"
+          "note": "chart family via @cascivo/charts"
         },
         {
           "competitor": "Checkbox",
