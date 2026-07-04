@@ -34,10 +34,10 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 ## Props
 
 | Name           | Type                                          | Required | Default | Description                                                        |
-| -------------- | --------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ | --- | ----------------------------------------------------- |
+| -------------- | --------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
 | `options`      | `NativeSelectOption[]`                        | No       | —       | Options to render. Alternatively pass <option> children.           |
 | `children`     | `React.ReactNode`                             | No       | —       | Raw <option> children (used when options is not provided).         |
-| `size`         | `'sm'                                         | 'md'     | 'lg'`   | No                                                                 | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `size`         | `'sm' \| 'md' \| 'lg'`                        | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 | `invalid`      | `boolean`                                     | No       | —       | Marks the control as invalid for error styling and a11y.           |
 | `placeholder`  | `string`                                      | No       | —       | Placeholder rendered as a disabled, hidden first option.           |
 | `value`        | `string`                                      | No       | —       | The controlled value.                                              |

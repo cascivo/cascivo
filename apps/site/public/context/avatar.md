@@ -32,13 +32,13 @@ role="img" with alt names the person; on image error it falls back to initials s
 
 ## Props
 
-| Name       | Type      | Required  | Default | Description                               |
-| ---------- | --------- | --------- | ------- | ----------------------------------------- | ----- | ------------- | --- | ----------------------------------------------------- |
-| `src`      | `string`  | No        | —       | Image source URL.                         |
-| `alt`      | `string`  | No        | —       | Alternative text describing the image.    |
-| `fallback` | `string`  | No        | —       | Initials shown when no image is available |
-| `size`     | `'xs'     | 'sm'      | 'md'    | 'lg'                                      | 'xl'` | No            | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `status`   | `'online' | 'offline' | 'busy'` | No                                        | —     | Status state. |
+| Name       | Type                                   | Required | Default | Description                                           |
+| ---------- | -------------------------------------- | -------- | ------- | ----------------------------------------------------- |
+| `src`      | `string`                               | No       | —       | Image source URL.                                     |
+| `alt`      | `string`                               | No       | —       | Alternative text describing the image.                |
+| `fallback` | `string`                               | No       | —       | Initials shown when no image is available             |
+| `size`     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `status`   | `'online' \| 'offline' \| 'busy'`      | No       | —       | Status state.                                         |
 
 ## Tokens
 

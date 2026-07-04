@@ -33,10 +33,10 @@ Meaning is carried by the text label, never by the dot color alone; the pulse an
 
 ## Props
 
-| Name     | Type       | Required  | Default | Description                                                         |
-| -------- | ---------- | --------- | ------- | ------------------------------------------------------------------- | ---------- | --- | ------- | ------------- |
-| `status` | `'success' | 'warning' | 'error' | 'info'                                                              | 'neutral'` | No  | neutral | Status state. |
-| `pulse`  | `boolean`  | No        | false   | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
+| Name     | Type                                                       | Required | Default | Description                                                         |
+| -------- | ---------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `status` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | No       | neutral | Status state.                                                       |
+| `pulse`  | `boolean`                                                  | No       | false   | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
 
 ## Tokens
 

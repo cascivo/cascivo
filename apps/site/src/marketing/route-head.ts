@@ -21,13 +21,13 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       // Count literal (not the injected global): this module is also imported by
       // scripts/sitemap/generate.ts under plain Node. claims:check guards drift.
-      'cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus five functional example dashboards you can open and play with today.',
+      'cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus six functional example dashboards you can open and play with today.',
     ogTitle: 'cascivo',
   },
   '/accessibility': {
     title: 'Accessibility — cascivo',
     description:
-      'How cascivo meets WCAG 2.2 AA: zero axe violations in the CI-gated suite, keyboard and screen-reader support, and a representative assistive-technology test plan.',
+      'How cascivo meets WCAG 2.2 AA: zero axe violations in the automated axe suite, keyboard and screen-reader support, and a representative assistive-technology test plan.',
   },
   '/performance': {
     title: 'Performance — cascivo',
@@ -60,7 +60,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/examples': {
     title: 'Examples — cascivo',
     description:
-      'Five functional example dashboards built with cascivo — each modelled on a well-known SaaS product (Vercel, Stripe, Camunda, Linear, Datadog). Open one and play: no backend, no accounts, no setup.',
+      'Six functional example dashboards built with cascivo — each modelled on a well-known SaaS product (Vercel, Stripe, Camunda, Linear, Datadog, Trade Republic). Open one and play: no backend, no accounts, no setup.',
     ogTitle: 'cascivo examples',
   },
   '/examples/deploy': {
@@ -96,7 +96,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/showcase': {
     title: 'Showcase — products built with cascivo',
     description:
-      'Real, shipped products built with the cascivo design system: Pagome (SEPA payment links), BPMN Kit (a BPMN diagram SDK), the Weeklyfoo Directory, and u11g — proof the library holds up in production.',
+      'Nine real, shipped products built with the cascivo design system — Pagome (SEPA payment links), BPMN Kit (a BPMN diagram SDK), the Weeklyfoo Directory, u11g, Sharu, AI & me, kaihuman, Lumen & Logic, and Beleggo — proof the library holds up in production.',
     ogTitle: 'Built with cascivo',
   },
   '/ai': {

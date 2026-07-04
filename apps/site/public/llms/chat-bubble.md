@@ -27,14 +27,14 @@ import { ChatBubble } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type              | Required | Default | Description                                              |
-| ----------- | ----------------- | -------- | ------- | -------------------------------------------------------- | ---------------------------------- |
-| `children`  | `React.ReactNode` | yes      | —       | Content rendered inside the component.                   |
-| `side`      | `'start'          | 'end'`   | no      | `start`                                                  | Edge the component is anchored to. |
-| `avatar`    | `React.ReactNode` | no       | —       | Avatar element shown beside the message.                 |
-| `name`      | `string`          | no       | —       | Display name of the message sender.                      |
-| `time`      | `string`          | no       | —       | Timestamp text shown with the message.                   |
-| `className` | `string`          | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop        | Type               | Required | Default | Description                                              |
+| ----------- | ------------------ | -------- | ------- | -------------------------------------------------------- |
+| `children`  | `React.ReactNode`  | yes      | —       | Content rendered inside the component.                   |
+| `side`      | `'start' \| 'end'` | no       | `start` | Edge the component is anchored to.                       |
+| `avatar`    | `React.ReactNode`  | no       | —       | Avatar element shown beside the message.                 |
+| `name`      | `string`           | no       | —       | Display name of the message sender.                      |
+| `time`      | `string`           | no       | —       | Timestamp text shown with the message.                   |
+| `className` | `string`           | no       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

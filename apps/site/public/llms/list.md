@@ -28,10 +28,10 @@ import { List } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type    | Required  | Default | Description |
-| -------- | ------- | --------- | ------- | ----------- | --------------------------------------- | ------------------------- | --------- | -------- |
-| `as`     | `'ul'   | 'ol'`     | no      | `ul`        | The HTML element to render as.          |
-| `marker` | `'disc' | 'decimal' | 'none'` | no          | `derived from as (ul→disc, ol→decimal)` | List marker style ('disc' | 'decimal' | 'none'). |
+| Prop     | Type                            | Required | Default                                 | Description                                        |
+| -------- | ------------------------------- | -------- | --------------------------------------- | -------------------------------------------------- |
+| `as`     | `'ul' \| 'ol'`                  | no       | `ul`                                    | The HTML element to render as.                     |
+| `marker` | `'disc' \| 'decimal' \| 'none'` | no       | `derived from as (ul→disc, ol→decimal)` | List marker style ('disc' \| 'decimal' \| 'none'). |
 
 ## Examples
 

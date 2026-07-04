@@ -18,11 +18,11 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop   | Type     | Required | Default | Description                 |
-| ------ | -------- | -------- | ------- | --------------------------- | --- | --- | --- | --- | --- | --- | --- | ------------------ |
-| `cols` | `number` | no       | —       | Number of grid columns      |
-| `gap`  | `1       | 2        | 3       | 4                           | 5   | 6   | 8   | 10  | 12` | no  | —   | Spacing token step |
-| `span` | `number` | no       | —       | GridItem: column span count |
+| Prop   | Type                          | Required | Default | Description                 |
+| ------ | ----------------------------- | -------- | ------- | --------------------------- |
+| `cols` | `number`                      | no       | —       | Number of grid columns      |
+| `gap`  | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | —       | Spacing token step          |
+| `span` | `number`                      | no       | —       | GridItem: column span count |
 
 ## Examples
 

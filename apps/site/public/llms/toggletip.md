@@ -27,15 +27,15 @@ import { Toggletip } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                      | Required | Default | Description                                                   |
-| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------- | ----------- | --------- | -------------- | ------------- | --- | ------- | -------------------------------------------------------- |
-| `trigger`      | `ReactNode`               | yes      | —       | Trigger content, rendered inside a button (e.g. an info icon) |
-| `children`     | `ReactNode`               | yes      | —       | The popover content — interactive and selectable              |
-| `placement`    | `'top'                    | 'bottom' | 'left'  | 'right'                                                       | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'` | no  | `'top'` | Side and alignment of the bubble relative to the trigger |
-| `defaultOpen`  | `boolean`                 | no       | `false` | Initial open state when uncontrolled                          |
-| `open`         | `boolean`                 | no       | —       | Controlled open state                                         |
-| `onOpenChange` | `(open: boolean) => void` | no       | —       | Called whenever the open state should change                  |
-| `labels`       | `{ label?: string }`      | no       | —       | Override the trigger accessible name                          |
+| Prop           | Type                                                                                                   | Required | Default | Description                                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------ | -------- | ------- | ------------------------------------------------------------- |
+| `trigger`      | `ReactNode`                                                                                            | yes      | —       | Trigger content, rendered inside a button (e.g. an info icon) |
+| `children`     | `ReactNode`                                                                                            | yes      | —       | The popover content — interactive and selectable              |
+| `placement`    | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-start' \| 'top-end' \| 'bottom-start' \| 'bottom-end'` | no       | `'top'` | Side and alignment of the bubble relative to the trigger      |
+| `defaultOpen`  | `boolean`                                                                                              | no       | `false` | Initial open state when uncontrolled                          |
+| `open`         | `boolean`                                                                                              | no       | —       | Controlled open state                                         |
+| `onOpenChange` | `(open: boolean) => void`                                                                              | no       | —       | Called whenever the open state should change                  |
+| `labels`       | `{ label?: string }`                                                                                   | no       | —       | Override the trigger accessible name                          |
 
 ## Examples
 

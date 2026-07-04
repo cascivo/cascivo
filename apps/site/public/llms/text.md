@@ -34,12 +34,12 @@ import { Text } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type      | Required | Default     | Description                                 |
-| -------- | --------- | -------- | ----------- | ------------------------------------------- | -------- | ----------------------------------------------------- | -------- | ------------ |
-| `as`     | `'p'      | 'span'   | 'div'`      | no                                          | `p`      | The HTML element to render as.                        |
-| `size`   | `'sm'     | 'md'     | 'lg'`       | no                                          | `md`     | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `weight` | `'normal' | 'medium' | 'semibold'` | no                                          | `normal` | Font weight ('normal'                                 | 'medium' | 'semibold'). |
-| `muted`  | `boolean` | no       | `false`     | When true, renders in a muted/subtle color. |
+| Prop     | Type                                 | Required | Default  | Description                                           |
+| -------- | ------------------------------------ | -------- | -------- | ----------------------------------------------------- |
+| `as`     | `'p' \| 'span' \| 'div'`             | no       | `p`      | The HTML element to render as.                        |
+| `size`   | `'sm' \| 'md' \| 'lg'`               | no       | `md`     | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `weight` | `'normal' \| 'medium' \| 'semibold'` | no       | `normal` | Font weight ('normal' \| 'medium' \| 'semibold').     |
+| `muted`  | `boolean`                            | no       | `false`  | When true, renders in a muted/subtle color.           |
 
 ## Examples
 

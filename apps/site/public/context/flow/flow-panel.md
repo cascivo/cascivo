@@ -21,11 +21,11 @@ A plain positioned container; semantics come from its children.
 
 ## Props
 
-| Name        | Type        | Required     | Default     | Description                                              |
-| ----------- | ----------- | ------------ | ----------- | -------------------------------------------------------- | --------------- | --------------- | --- | --------- | -------------------------- |
-| `position`  | `'top-left' | 'top-center' | 'top-right' | 'bottom-left'                                            | 'bottom-center' | 'bottom-right'` | No  | top-right | Position of the component. |
-| `children`  | `ReactNode` | No           | —           | Content rendered inside the component.                   |
-| `className` | `string`    | No           | —           | Additional CSS class names merged onto the root element. |
+| Name        | Type                                                                                              | Required | Default   | Description                                              |
+| ----------- | ------------------------------------------------------------------------------------------------- | -------- | --------- | -------------------------------------------------------- |
+| `position`  | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | No       | top-right | Position of the component.                               |
+| `children`  | `ReactNode`                                                                                       | No       | —         | Content rendered inside the component.                   |
+| `className` | `string`                                                                                          | No       | —         | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 

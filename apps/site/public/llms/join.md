@@ -22,11 +22,11 @@ import { Join } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type              | Required    | Default | Description                                              |
-| ------------- | ----------------- | ----------- | ------- | -------------------------------------------------------- | ------------------------------------ |
-| `children`    | `React.ReactNode` | yes         | —       | Content rendered inside the component.                   |
-| `orientation` | `'horizontal'     | 'vertical'` | no      | `horizontal`                                             | Layout orientation of the component. |
-| `className`   | `string`          | no          | —       | Additional CSS class names merged onto the root element. |
+| Prop          | Type                         | Required | Default      | Description                                              |
+| ------------- | ---------------------------- | -------- | ------------ | -------------------------------------------------------- |
+| `children`    | `React.ReactNode`            | yes      | —            | Content rendered inside the component.                   |
+| `orientation` | `'horizontal' \| 'vertical'` | no       | `horizontal` | Layout orientation of the component.                     |
+| `className`   | `string`                     | no       | —            | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

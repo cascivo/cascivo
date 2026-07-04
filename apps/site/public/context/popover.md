@@ -34,13 +34,13 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 
 ## Props
 
-| Name           | Type                      | Required | Default | Description                                      |
-| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------ | --- | ------ | ---------------------------------- |
-| `children`     | `React.ReactNode`         | Yes      | —       | A PopoverTrigger and PopoverContent pair.        |
-| `open`         | `boolean`                 | No       | —       | Whether the component is open (controlled).      |
-| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called with the next open state when it changes. |
-| `placement`    | `'top'                    | 'bottom' | 'left'  | 'right'`                                         | No  | bottom | Placement relative to the trigger. |
-| `offset`       | `number`                  | No       | 4       | Distance (px) between the trigger and the panel. |
+| Name           | Type                                     | Required | Default | Description                                      |
+| -------------- | ---------------------------------------- | -------- | ------- | ------------------------------------------------ |
+| `children`     | `React.ReactNode`                        | Yes      | —       | A PopoverTrigger and PopoverContent pair.        |
+| `open`         | `boolean`                                | No       | —       | Whether the component is open (controlled).      |
+| `onOpenChange` | `(open: boolean) => void`                | No       | —       | Called with the next open state when it changes. |
+| `placement`    | `'top' \| 'bottom' \| 'left' \| 'right'` | No       | bottom  | Placement relative to the trigger.               |
+| `offset`       | `number`                                 | No       | 4       | Distance (px) between the trigger and the panel. |
 
 ## Tokens
 

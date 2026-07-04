@@ -20,20 +20,20 @@ import { Stream } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type             | Required   | Default | Description                                                |
-| ------------- | ---------------- | ---------- | ------- | ---------------------------------------------------------- | --------------------------------------------------------------------- |
-| `series`      | `StreamSeries[]` | yes        | —       | Series, each with values[] aligned to categories.          |
-| `categories`  | `(string         | number)[]` | yes     | —                                                          | X-axis labels aligned with each series values.                        |
-| `title`       | `string`         | yes        | —       | Title text for the component.                              |
-| `description` | `string`         | no         | —       | Supporting description text.                               |
-| `offset`      | `'silhouette'    | 'zero'`    | no      | `silhouette`                                               | silhouette centers the stack (streamgraph); zero is a baseline stack. |
-| `curve`       | `Curve`          | no         | `basis` | Interpolation curve.                                       |
-| `width`       | `number`         | no         | —       | Width of the component.                                    |
-| `height`      | `number`         | no         | `300`   | Height of the component.                                   |
-| `legend`      | `boolean`        | no         | —       | Whether to show the legend.                                |
-| `tooltip`     | `boolean`        | no         | —       | Whether to show tooltips on hover.                         |
-| `className`   | `string`         | no         | —       | Additional CSS class names merged onto the root element.   |
-| `plain`       | `boolean`        | no         | `false` | When true, renders a minimal variant without chart chrome. |
+| Prop          | Type                     | Required | Default      | Description                                                           |
+| ------------- | ------------------------ | -------- | ------------ | --------------------------------------------------------------------- |
+| `series`      | `StreamSeries[]`         | yes      | —            | Series, each with values[] aligned to categories.                     |
+| `categories`  | `(string \| number)[]`   | yes      | —            | X-axis labels aligned with each series values.                        |
+| `title`       | `string`                 | yes      | —            | Title text for the component.                                         |
+| `description` | `string`                 | no       | —            | Supporting description text.                                          |
+| `offset`      | `'silhouette' \| 'zero'` | no       | `silhouette` | silhouette centers the stack (streamgraph); zero is a baseline stack. |
+| `curve`       | `Curve`                  | no       | `basis`      | Interpolation curve.                                                  |
+| `width`       | `number`                 | no       | —            | Width of the component.                                               |
+| `height`      | `number`                 | no       | `300`        | Height of the component.                                              |
+| `legend`      | `boolean`                | no       | —            | Whether to show the legend.                                           |
+| `tooltip`     | `boolean`                | no       | —            | Whether to show tooltips on hover.                                    |
+| `className`   | `string`                 | no       | —            | Additional CSS class names merged onto the root element.              |
+| `plain`       | `boolean`                | no       | `false`      | When true, renders a minimal variant without chart chrome.            |
 
 ## Examples
 

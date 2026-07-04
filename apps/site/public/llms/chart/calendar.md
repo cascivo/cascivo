@@ -21,12 +21,12 @@ import { Calendar } from '@cascivo/charts'
 ## Props
 
 | Prop          | Type               | Required | Default | Description                                                                                                              |
-| ------------- | ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------- |
-| `data`        | `CalendarDatum[]`  | yes      | —       | Days: { day: string                                                                                                      | Date, value }.                     |
+| ------------- | ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `data`        | `CalendarDatum[]`  | yes      | —       | Days: { day: string \| Date, value }.                                                                                    |
 | `title`       | `string`           | yes      | —       | Title text for the component.                                                                                            |
 | `description` | `string`           | no       | —       | Supporting description text.                                                                                             |
-| `from`        | `string            | Date`    | no      | —                                                                                                                        | Range start (defaults to min day). |
-| `to`          | `string            | Date`    | no      | —                                                                                                                        | Range end (defaults to max day).   |
+| `from`        | `string \| Date`   | no       | —       | Range start (defaults to min day).                                                                                       |
+| `to`          | `string \| Date`   | no       | —       | Range end (defaults to max day).                                                                                         |
 | `width`       | `number`           | no       | —       | Width of the component.                                                                                                  |
 | `height`      | `number`           | no       | `160`   | Height of the component.                                                                                                 |
 | `tooltip`     | `boolean`          | no       | —       | Whether to show tooltips on hover.                                                                                       |

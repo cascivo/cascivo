@@ -28,10 +28,10 @@ import { Spinner } from '@cascivo/react'
 
 ## Props
 
-| Prop    | Type     | Required | Default   | Description                                  |
-| ------- | -------- | -------- | --------- | -------------------------------------------- | ---- | ----------------------------------------------------- |
-| `size`  | `'sm'    | 'md'     | 'lg'`     | no                                           | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `label` | `string` | no       | `Loading` | Accessible label announced by screen readers |
+| Prop    | Type                   | Required | Default   | Description                                           |
+| ------- | ---------------------- | -------- | --------- | ----------------------------------------------------- |
+| `size`  | `'sm' \| 'md' \| 'lg'` | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `label` | `string`               | no       | `Loading` | Accessible label announced by screen readers          |
 
 ## Examples
 

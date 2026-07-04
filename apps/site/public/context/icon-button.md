@@ -32,15 +32,15 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 
 ## Props
 
-| Name       | Type                                         | Required  | Default   | Description                                                                                       |
-| ---------- | -------------------------------------------- | --------- | --------- | ------------------------------------------------------------------------------------------------- | ----- | ----------------------------------------------------- |
-| `label`    | `string`                                     | Yes       | —         | Text label for the control.                                                                       |
-| `icon`     | `React.ReactNode`                            | No        | —         | Icon element rendered in the component.                                                           |
-| `variant`  | `'ghost'                                     | 'outline' | 'filled'` | No                                                                                                | ghost | Selects the visual style variant.                     |
-| `size`     | `'sm'                                        | 'md'      | 'lg'`     | No                                                                                                | md    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `asChild`  | `boolean`                                    | No        | false     | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `disabled` | `boolean`                                    | No        | false     | When true, disables the control and removes it from the tab order.                                |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No        | —         | Called when the element is clicked.                                                               |
+| Name       | Type                                         | Required | Default | Description                                                                                       |
+| ---------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `label`    | `string`                                     | Yes      | —       | Text label for the control.                                                                       |
+| `icon`     | `React.ReactNode`                            | No       | —       | Icon element rendered in the component.                                                           |
+| `variant`  | `'ghost' \| 'outline' \| 'filled'`           | No       | ghost   | Selects the visual style variant.                                                                 |
+| `size`     | `'sm' \| 'md' \| 'lg'`                       | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                             |
+| `asChild`  | `boolean`                                    | No       | false   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `disabled` | `boolean`                                    | No       | false   | When true, disables the control and removes it from the tab order.                                |
+| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No       | —       | Called when the element is clicked.                                                               |
 
 ## Tokens
 

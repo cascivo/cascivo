@@ -3955,87 +3955,11 @@ kbd {
   color: var(--cascivo-color-accent);
 }
 
-.hero-tagline {
-  margin: 0;
-  max-width: 38rem;
-  font-size: var(--cascivo-text-lg);
-  color: var(--cascivo-color-text-subtle);
-}
-
 .hero-ctas {
   display: flex;
   flex-wrap: wrap;
   gap: var(--cascivo-space-3);
   justify-content: center;
-}
-
-.hero-stage-wrap {
-  inline-size: min(100%, 560px);
-  margin-block-start: var(--cascivo-space-6);
-  border: 1px solid var(--cascivo-color-border);
-  border-radius: var(--cascivo-radius-lg);
-  background-color: var(--cascivo-color-surface);
-  overflow: hidden;
-}
-
-.hero-stage-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--cascivo-space-2) var(--cascivo-space-4);
-  border-block-end: 1px solid var(--cascivo-color-border);
-  background-color: var(--cascivo-color-bg-subtle);
-}
-
-.hero-stage-label {
-  font-family: var(--cascivo-font-mono);
-  font-size: var(--cascivo-text-xs);
-  color: var(--cascivo-color-text-muted);
-}
-
-.hero-theme-switcher {
-  display: flex;
-  gap: var(--cascivo-space-1);
-}
-
-.hero-theme-btn {
-  padding: var(--cascivo-space-1) var(--cascivo-space-2);
-  font-size: var(--cascivo-text-xs);
-  font-family: var(--cascivo-font-sans);
-  background: transparent;
-  border: 1px solid var(--cascivo-color-border);
-  border-radius: var(--cascivo-radius-sm);
-  color: var(--cascivo-color-text-subtle);
-  cursor: pointer;
-}
-
-.hero-theme-btn.active {
-  background-color: var(--cascivo-color-accent);
-  border-color: var(--cascivo-color-accent);
-  color: var(--cascivo-color-text-on-accent);
-}
-
-.hero-stage {
-  view-transition-name: hero-stage;
-  display: grid;
-  place-items: center;
-  min-block-size: 14rem;
-  padding: var(--cascivo-space-8);
-  text-align: start;
-}
-
-.hero-slide-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--cascivo-space-3);
-  justify-content: center;
-}
-
-.hero-slide-col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--cascivo-space-4);
-  inline-size: min(100%, 20rem);
 }
 
 .hero-title {
@@ -4186,30 +4110,6 @@ kbd {
   .bg-field::after,
   .home-sheet {
     transition: none;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  ::view-transition-old(hero-stage) {
-    animation: hero-out 200ms ease both;
-  }
-
-  ::view-transition-new(hero-stage) {
-    animation: hero-in 250ms ease both;
-  }
-
-  @keyframes hero-out {
-    to {
-      opacity: 0;
-      translate: 0 -0.5rem;
-    }
-  }
-
-  @keyframes hero-in {
-    from {
-      opacity: 0;
-      translate: 0 0.5rem;
-    }
   }
 }
 

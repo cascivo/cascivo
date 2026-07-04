@@ -24,13 +24,13 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop        | Type     | Required | Default  | Description                                              |
-| ----------- | -------- | -------- | -------- | -------------------------------------------------------- | ------ | -------------- |
-| `variant`   | `'dots'  | 'grid'   | 'cross'` | no                                                       | `dots` | Pattern style. |
-| `gap`       | `number` | no       | `20`     | Cell spacing (px).                                       |
-| `size`      | `number` | no       | `1`      | Dot radius / line thickness (px).                        |
-| `color`     | `string` | no       | —        | Pattern color (defaults to the border token).            |
-| `className` | `string` | no       | —        | Additional CSS class names merged onto the root element. |
+| Prop        | Type                          | Required | Default | Description                                              |
+| ----------- | ----------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `variant`   | `'dots' \| 'grid' \| 'cross'` | no       | `dots`  | Pattern style.                                           |
+| `gap`       | `number`                      | no       | `20`    | Cell spacing (px).                                       |
+| `size`      | `number`                      | no       | `1`     | Dot radius / line thickness (px).                        |
+| `color`     | `string`                      | no       | —       | Pattern color (defaults to the border token).            |
+| `className` | `string`                      | no       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

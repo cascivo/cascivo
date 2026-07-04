@@ -33,14 +33,14 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 
 ## Props
 
-| Name          | Type                                     | Required | Default   | Description                                          |
-| ------------- | ---------------------------------------- | -------- | --------- | ---------------------------------------------------- | -------------- | --- | ------- | --------------------------------- |
-| `variant`     | `'default'                               | 'info'   | 'success' | 'warning'                                            | 'destructive'` | No  | default | Selects the visual style variant. |
-| `title`       | `string`                                 | No       | —         | Title text for the component.                        |
-| `icon`        | `ReactNode`                              | No       | —         | Icon element rendered in the component.              |
-| `dismissible` | `boolean`                                | No       | false     | When true, shows a control to dismiss the component. |
-| `onDismiss`   | `() => void`                             | No       | —         | Called when the component is dismissed.              |
-| `action`      | `{ label: string; onClick: () => void }` | No       | —         | Primary action shown in the component.               |
+| Name          | Type                                                             | Required | Default | Description                                          |
+| ------------- | ---------------------------------------------------------------- | -------- | ------- | ---------------------------------------------------- |
+| `variant`     | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | No       | default | Selects the visual style variant.                    |
+| `title`       | `string`                                                         | No       | —       | Title text for the component.                        |
+| `icon`        | `ReactNode`                                                      | No       | —       | Icon element rendered in the component.              |
+| `dismissible` | `boolean`                                                        | No       | false   | When true, shows a control to dismiss the component. |
+| `onDismiss`   | `() => void`                                                     | No       | —       | Called when the component is dismissed.              |
+| `action`      | `{ label: string; onClick: () => void }`                         | No       | —       | Primary action shown in the component.               |
 
 ## Tokens
 

@@ -34,7 +34,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 - **Beautiful by default** — 12 first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
 - **Three-level tokens** — primitive → semantic → component. Themes remap the semantic layer; you override component tokens for per-brand adaptation with no rebuild.
 - **AI-first context layer** — every component ships a `<name>.meta.ts` manifest (e.g. `button.meta.ts`); an MCP server, Claude Code skills, a closed-set token catalog, and `cascivo audit --ai` let agents generate against real props and have their output checked.
-- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, CI-enforced; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT test plan (NVDA / JAWS / VoiceOver — manual results pending).
+- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, verified by a nightly axe sweep over every story; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT test plan (NVDA / JAWS / VoiceOver — manual results pending).
 - **Mobile-first & RTL-ready** — fluid type, container queries, CSS logical properties, ≥44px touch targets, and zero overflow from 320–414px.
 - **Open registry** — publish your own components and host your own registry; install from any registry with `cascivo add owner/repo/component`.
 - **Templates & marketplace** — install whole-page compositions (a page + its components + fixtures) you own and adapt with `cascivo add @ns/<template>`; a backend-free, GitHub-hosted, community-contributed catalog.

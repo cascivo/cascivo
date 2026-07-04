@@ -40,14 +40,14 @@ import { Button } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                                         | Required    | Default | Description                                                                                       |
-| ---------- | -------------------------------------------- | ----------- | ------- | ------------------------------------------------------------------------------------------------- | ---- | ----------------------------------------------------- | --------------------------------- |
-| `variant`  | `'primary'                                   | 'secondary' | 'ghost' | 'destructive'`                                                                                    | no   | `primary`                                             | Selects the visual style variant. |
-| `size`     | `'sm'                                        | 'md'        | 'lg'`   | no                                                                                                | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `loading`  | `boolean`                                    | no          | `false` | When true, shows a loading state.                                                                 |
-| `disabled` | `boolean`                                    | no          | `false` | When true, disables the control and removes it from the tab order.                                |
-| `asChild`  | `boolean`                                    | no          | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | no          | —       | Called when the element is clicked.                                                               |
+| Prop       | Type                                                   | Required | Default   | Description                                                                                       |
+| ---------- | ------------------------------------------------------ | -------- | --------- | ------------------------------------------------------------------------------------------------- |
+| `variant`  | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | no       | `primary` | Selects the visual style variant.                                                                 |
+| `size`     | `'sm' \| 'md' \| 'lg'`                                 | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                             |
+| `loading`  | `boolean`                                              | no       | `false`   | When true, shows a loading state.                                                                 |
+| `disabled` | `boolean`                                              | no       | `false`   | When true, disables the control and removes it from the tab order.                                |
+| `asChild`  | `boolean`                                              | no       | `false`   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>`           | no       | —         | Called when the element is clicked.                                                               |
 
 ## Examples
 

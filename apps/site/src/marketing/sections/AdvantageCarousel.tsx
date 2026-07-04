@@ -7,9 +7,16 @@ import { Download, Layers, Sun, Terminal, Zap } from '@cascivo/icons'
 import { THEMES } from '../../theme'
 import bench from 'virtual:bench'
 
-const typing = bench.renders?.['type-20-chars']
-const cascadeCommits = typing?.cascade
-const shadcnCommits = typing?.shadcn
+// Fine-grained update benchmark: update every 10th row of a 1,000-row table.
+// Signals patch only the rows that changed; a React list re-renders to diff.
+// Median wall-clock ms from the committed cross-library bench — a real number,
+// not a commit count (the render-commit instrumentation is not wired up yet, so
+// we surface latency instead of a placeholder). Guarded by bench-stats.test.ts.
+const partialUpdate = bench.runtime?.['update-every-10th']
+const cascadeUpdateMs = partialUpdate?.cascade?.median
+const shadcnUpdateMs = partialUpdate?.shadcn?.median
+const updateSpeedup =
+  cascadeUpdateMs && shadcnUpdateMs ? shadcnUpdateMs / cascadeUpdateMs : undefined
 
 interface Advantage {
   id: string
@@ -56,17 +63,25 @@ function SignalsPanel() {
   return (
     <>
       <div className="adv-figure" aria-hidden="true">
-        <span className="adv-bignum">{cascadeCommits ?? 1}</span>
-        <span className="adv-bignum-label">
-          React commits while typing 20 characters
-          {shadcnCommits !== undefined ? ` — typical React UI: ${shadcnCommits}` : ''}
-        </span>
+        {updateSpeedup && cascadeUpdateMs && shadcnUpdateMs ? (
+          <>
+            <span className="adv-bignum">{updateSpeedup.toFixed(1)}&times;</span>
+            <span className="adv-bignum-label">
+              faster partial updates than shadcn — {Math.round(cascadeUpdateMs)} ms vs{' '}
+              {Math.round(shadcnUpdateMs)} ms updating every 10th row of 1,000
+            </span>
+          </>
+        ) : (
+          <span className="adv-bignum-label">
+            Fine-grained updates that skip React&rsquo;s reconciler
+          </span>
+        )}
       </div>
       <div className="adv-copy">
         <h3>Interactions commit once</h3>
         <p>
           Fine-grained signals write state past React&rsquo;s reconciler. A component re-renders
-          only when its own data changes — counted on the benchmark page, not claimed.
+          only when its own data changes — measured on the benchmark page, not claimed.
         </p>
         <a className="adv-link" href="/performance">
           See the benchmarks &rarr;

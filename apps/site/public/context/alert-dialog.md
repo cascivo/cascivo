@@ -39,15 +39,15 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 
 ## Props
 
-| Name          | Type                | Required   | Default | Description                                                |
-| ------------- | ------------------- | ---------- | ------- | ---------------------------------------------------------- | --------------------------------- |
-| `open`        | `boolean`           | Yes        | —       | Whether the component is open (controlled).                |
-| `title`       | `string`            | Yes        | —       | Title text for the component.                              |
-| `description` | `string`            | Yes        | —       | Supporting description text.                               |
-| `onConfirm`   | `() => void`        | Yes        | —       | Called when the confirm button is activated.               |
-| `onCancel`    | `() => void`        | Yes        | —       | Called when the cancel button is activated.                |
-| `labels`      | `AlertDialogLabels` | No         | —       | Overrides for the component’s user-visible strings (i18n). |
-| `variant`     | `'destructive'      | 'default'` | No      | default                                                    | Selects the visual style variant. |
+| Name          | Type                         | Required | Default | Description                                                |
+| ------------- | ---------------------------- | -------- | ------- | ---------------------------------------------------------- |
+| `open`        | `boolean`                    | Yes      | —       | Whether the component is open (controlled).                |
+| `title`       | `string`                     | Yes      | —       | Title text for the component.                              |
+| `description` | `string`                     | Yes      | —       | Supporting description text.                               |
+| `onConfirm`   | `() => void`                 | Yes      | —       | Called when the confirm button is activated.               |
+| `onCancel`    | `() => void`                 | Yes      | —       | Called when the cancel button is activated.                |
+| `labels`      | `AlertDialogLabels`          | No       | —       | Overrides for the component’s user-visible strings (i18n). |
+| `variant`     | `'destructive' \| 'default'` | No       | default | Selects the visual style variant.                          |
 
 ## Tokens
 

@@ -32,10 +32,10 @@ role="status" lets assistive tech expose the label as state; meaning is reinforc
 
 ## Props
 
-| Name      | Type       | Required    | Default   | Description |
-| --------- | ---------- | ----------- | --------- | ----------- | ----------------------------------------------------- | ---------- | --- | ------- | --------------------------------- |
-| `variant` | `'default' | 'secondary' | 'success' | 'warning'   | 'destructive'                                         | 'outline'` | No  | default | Selects the visual style variant. |
-| `size`    | `'sm'      | 'md'`       | No        | md          | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Name      | Type                                                                               | Required | Default | Description                                           |
+| --------- | ---------------------------------------------------------------------------------- | -------- | ------- | ----------------------------------------------------- |
+| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | No       | default | Selects the visual style variant.                     |
+| `size`    | `'sm' \| 'md'`                                                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 

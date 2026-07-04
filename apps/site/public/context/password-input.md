@@ -33,9 +33,9 @@ The reveal control is a real <button> whose aria-label switches between reveal/h
 ## Props
 
 | Name                | Type                                               | Required | Default | Description                                                        |
-| ------------------- | -------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ | --- | ----------------------------------------------------- |
+| ------------------- | -------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
 | `showStrengthMeter` | `boolean`                                          | No       | false   | When true, shows a password-strength meter.                        |
-| `size`              | `'sm'                                              | 'md'     | 'lg'`   | No                                                                 | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `size`              | `'sm' \| 'md' \| 'lg'`                             | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 | `labels`            | `PasswordInputLabels`                              | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
 | `disabled`          | `boolean`                                          | No       | false   | When true, disables the control and removes it from the tab order. |
 | `placeholder`       | `string`                                           | No       | —       | Placeholder text shown when the field is empty.                    |

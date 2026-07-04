@@ -24,7 +24,7 @@ Renders with role="img"; OHLC values are in the fallback table and tooltip.
 ## Props
 
 | Name          | Type                 | Required | Default | Description                                                                |
-| ------------- | -------------------- | -------- | ------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ------------- | -------------------- | -------- | ------- | -------------------------------------------------------------------------- |
 | `data`        | `CandlestickDatum[]` | Yes      | —       | One candle per period: { t, open, high, low, close, volume? }.             |
 | `title`       | `string`             | Yes      | —       | Chart title (also aria-label).                                             |
 | `description` | `string`             | No       | —       | Supporting description text.                                               |
@@ -42,7 +42,7 @@ Renders with role="img"; OHLC values are in the fallback table and tooltip.
 | `dataZoom`    | `boolean`            | No       | —       | DataZoom slider below the plot — a Brush whose body also pans the window.  |
 | `zoom`        | `boolean`            | No       | —       | In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window. |
 | `syncId`      | `string`             | No       | —       | Connect charts sharing this id — they mirror the zoom window.              |
-| `tooltipMode` | `'item'              | 'axis'`  | No      | item                                                                       | item (nearest candle) or axis (crosshair + OHLC at the hovered x). |
+| `tooltipMode` | `'item' \| 'axis'`   | No       | item    | item (nearest candle) or axis (crosshair + OHLC at the hovered x).         |
 
 ## Tokens
 

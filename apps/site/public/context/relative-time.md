@@ -33,8 +33,8 @@ Renders a native <time> element with a machine-readable datetime and the absolut
 ## Props
 
 | Name     | Type                             | Required | Default | Description                                             |
-| -------- | -------------------------------- | -------- | ------- | ------------------------------------------------------- | --- | ----------------------------------- |
-| `date`   | `Date                            | number   | string` | Yes                                                     | —   | The date to render relative to now. |
+| -------- | -------------------------------- | -------- | ------- | ------------------------------------------------------- |
+| `date`   | `Date \| number \| string`       | Yes      | —       | The date to render relative to now.                     |
 | `sync`   | `boolean`                        | No       | true    | When true, updates the relative time as it elapses.     |
 | `now`    | `number`                         | No       | —       | Override "now" (ms); disables the interval              |
 | `format` | `Intl.RelativeTimeFormatOptions` | No       | —       | Intl.RelativeTimeFormat options controlling the output. |

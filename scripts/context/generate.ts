@@ -325,11 +325,14 @@ export function buildComponentMarkdown(entry: RegistryEntry): string {
     lines.push('')
     lines.push('| Name | Type | Required | Default | Description |')
     lines.push('|------|------|----------|---------|-------------|')
+    // Escape pipes so union types don't spawn extra table columns (GFM treats a
+    // bare `|` as a cell delimiter even inside a code span).
+    const esc = (s: string) => s.replace(/\|/g, '\\|')
     for (const p of meta.props) {
-      const def = p.default !== undefined ? p.default : '—'
-      const desc = p.description ?? '—'
+      const def = p.default !== undefined ? esc(String(p.default)) : '—'
+      const desc = esc(p.description ?? '—')
       lines.push(
-        `| \`${p.name}\` | \`${p.type}\` | ${p.required ? 'Yes' : 'No'} | ${def} | ${desc} |`,
+        `| \`${p.name}\` | \`${esc(p.type)}\` | ${p.required ? 'Yes' : 'No'} | ${def} | ${desc} |`,
       )
     }
     lines.push('')
@@ -366,8 +369,9 @@ export function buildComponentMarkdown(entry: RegistryEntry): string {
     lines.push('')
     lines.push('| Area | Level | Note |')
     lines.push('|------|-------|------|')
+    const escCell = (s: string) => String(s).replace(/\|/g, '\\|')
     for (const f of intent.flexibility) {
-      lines.push(`| ${f.area} | ${f.level} | ${f.note} |`)
+      lines.push(`| ${escCell(f.area)} | ${escCell(f.level)} | ${escCell(f.note)} |`)
     }
     lines.push('')
   }

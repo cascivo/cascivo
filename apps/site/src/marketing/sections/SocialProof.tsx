@@ -26,7 +26,7 @@ const SIGNALS: Signal[] = [
   },
   {
     label: 'WCAG 2.2 AA',
-    detail: 'zero axe violations in the CI-gated suite',
+    detail: 'zero axe violations in the automated axe suite',
     href: '/accessibility',
   },
 ]

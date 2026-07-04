@@ -34,7 +34,7 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 ## Props
 
 | Name            | Type                      | Required | Default | Description                                                        |
-| --------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ | --- | ----------------------------------------------------- |
+| --------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ |
 | `value`         | `string`                  | No       | —       | Controlled hex color value                                         |
 | `defaultValue`  | `string`                  | No       | #3b82f6 | The initial value when uncontrolled.                               |
 | `onValueChange` | `(value: string) => void` | No       | —       | Called with the new value when it changes.                         |
@@ -42,7 +42,7 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 | `alpha`         | `boolean`                 | No       | true    | When true, enables alpha (opacity) selection.                      |
 | `label`         | `string`                  | No       | —       | Text label for the control.                                        |
 | `disabled`      | `boolean`                 | No       | false   | When true, disables the control and removes it from the tab order. |
-| `size`          | `'sm'                     | 'md'     | 'lg'`   | No                                                                 | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `size`          | `'sm' \| 'md' \| 'lg'`    | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 
 ## Tokens
 

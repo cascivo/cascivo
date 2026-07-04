@@ -97,6 +97,8 @@ const CATEGORY_ICONS = {
   Overlay: <Bell size={16} />,
   Navigation: <MenuIcon size={16} />,
   Feedback: <AlertCircle size={16} />,
+  Layout: <Layers size={16} />,
+  Chart: <BarChart size={16} />,
 }
 
 /** Resolve the docs page component for the current path. */
@@ -104,7 +106,10 @@ function pageFor(path: string) {
   const Static = DOCS_ROUTES[path]
   if (Static) return <Static />
   if (path.startsWith('/docs/components/')) {
-    const name = decodeURIComponent(path.slice('/docs/components/'.length).split('/')[0] ?? '')
+    // Registry names can contain a category prefix (e.g. `chart/area-chart`,
+    // `layout/stack`, `block/login-page`), so the full remainder after the
+    // prefix IS the name — do not split on `/` or slashed entries 404.
+    const name = decodeURIComponent(path.slice('/docs/components/'.length).replace(/\/+$/, ''))
     return <ComponentPage name={name} />
   }
   return <ComponentPage />

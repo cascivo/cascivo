@@ -41,7 +41,7 @@ export function ComponentPage({ name }: { name?: string }) {
   return (
     <article class="doc-page">
       <header class="doc-head">
-        <div class="doc-eyebrow">{CATEGORY_LABELS[entry.category]}</div>
+        <div class="doc-eyebrow">{CATEGORY_LABELS[entry.category] ?? entry.category}</div>
         <h1>{meta.name}</h1>
         <p class="doc-lede">{meta.description}</p>
       </header>

@@ -34,7 +34,7 @@ export function OgCard() {
         }}
       >
         Native to the web.{' '}
-        <span style={{ color: 'var(--cascivo-color-accent)' }}>Fluent in agent.</span>
+        <span style={{ color: 'var(--cascivo-color-accent)' }}>Fluent with agents.</span>
       </h1>
       <p
         style={{
@@ -46,7 +46,7 @@ export function OgCard() {
           maxWidth: '56rem',
         }}
       >
-        cascivo — CSS-native. Signal-driven. AI-first.
+        The React design system you copy in and own — built on modern CSS and signals.
       </p>
       <div
         style={{

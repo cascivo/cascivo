@@ -20,17 +20,17 @@ import { BubbleChart } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type                                                                 | Required                       | Default | Description                                                           |
-| ------------- | -------------------------------------------------------------------- | ------------------------------ | ------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes                            | —       | The data series to plot.                                              |
-| `title`       | `string`                                                             | yes                            | —       | Title text for the component.                                         |
-| `description` | `string`                                                             | no                             | —       | Supporting description text.                                          |
-| `width`       | `number`                                                             | no                             | —       | Width of the component.                                               |
-| `height`      | `number`                                                             | no                             | `320`   | Height of the component.                                              |
-| `tooltip`     | `boolean`                                                            | no                             | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`                                                             | no                             | —       | Additional CSS class names merged onto the root element.              |
-| `plain`       | `boolean`                                                            | no                             | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
-| `glyph`       | `GlyphShape                                                          | ((d, seriesId) => GlyphShape)` | no      | —                                                                     | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
+| Prop          | Type                                                                 | Required | Default | Description                                                                                                                |
+| ------------- | -------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes      | —       | The data series to plot.                                                                                                   |
+| `title`       | `string`                                                             | yes      | —       | Title text for the component.                                                                                              |
+| `description` | `string`                                                             | no       | —       | Supporting description text.                                                                                               |
+| `width`       | `number`                                                             | no       | —       | Width of the component.                                                                                                    |
+| `height`      | `number`                                                             | no       | `320`   | Height of the component.                                                                                                   |
+| `tooltip`     | `boolean`                                                            | no       | —       | Enable hover/keyboard tooltip                                                                                              |
+| `className`   | `string`                                                             | no       | —       | Additional CSS class names merged onto the root element.                                                                   |
+| `plain`       | `boolean`                                                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                      |
+| `glyph`       | `GlyphShape \| ((d, seriesId) => GlyphShape)`                        | no       | —       | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
 
 ## Examples
 

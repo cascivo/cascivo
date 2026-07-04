@@ -5,6 +5,9 @@ import { ChartShowcase } from '../sections/ChartShowcase'
 import { RelayConsole } from '../demo/RelayConsole'
 import { DEMOS } from './examples/data'
 
+const NUMERALS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine']
+const DEMO_COUNT_WORD = NUMERALS[DEMOS.length] ?? String(DEMOS.length)
+
 export function ExamplesPage() {
   return (
     <>
@@ -20,9 +23,9 @@ export function ExamplesPage() {
             <p className="guides-eyebrow">Examples</p>
             <h1>Drive it, don&rsquo;t read about it.</h1>
             <p className="proof-hero-sub">
-              Five functional dashboards, each modelled on a well-known SaaS product and built
-              entirely with cascivo. No backend, no accounts, no setup — open one and play. Together
-              they exercise every component and every chart in the library.
+              {DEMO_COUNT_WORD} functional dashboards, each modelled on a well-known SaaS product
+              and built entirely with cascivo. No backend, no accounts, no setup — open one and
+              play. Together they exercise every component and every chart in the library.
             </p>
           </section>
 

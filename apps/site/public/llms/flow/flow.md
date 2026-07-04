@@ -18,21 +18,21 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop            | Type                               | Required             | Default                         | Description                                                                                                          |
-| --------------- | ---------------------------------- | -------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------------------------- |
-| `nodes`         | `FlowNode[]`                       | yes                  | —                               | Initial nodes (serializable).                                                                                        |
-| `edges`         | `FlowEdge[]`                       | yes                  | —                               | Initial edges (serializable).                                                                                        |
-| `onNodesChange` | `(nodes: FlowNode[]) => void`      | no                   | —                               | Called with the next nodes when they change (drag, add, remove).                                                     |
-| `onEdgesChange` | `(edges: FlowEdge[]) => void`      | no                   | —                               | Called with the next edges when they change.                                                                         |
-| `onConnect`     | `(connection: Connection) => void` | no                   | —                               | Called when two handles are connected to form a new edge.                                                            |
-| `nodeTypes`     | `Record<string, NodeRenderer>`     | no                   | —                               | Custom node renderers keyed by node.type.                                                                            |
-| `fitView`       | `boolean`                          | no                   | `true`                          | When true, fits the graph to the viewport on mount.                                                                  |
-| `background`    | `boolean                           | FlowBackgroundProps` | no                              | `false`                                                                                                              | Background pattern — true for the default dots, or a config object. |
-| `controls`      | `boolean`                          | no                   | `false`                         | Whether to show the controls.                                                                                        |
-| `minimap`       | `boolean`                          | no                   | `false`                         | When true, shows the minimap overlay.                                                                                |
-| `layout`        | `'grid'                            | 'layered'            | ((nodes, edges) => FlowNode[])` | no                                                                                                                   | —                                                                   | Optional dependency-free layout. |
-| `interactive`   | `boolean`                          | no                   | `true`                          | When false (view mode), nodes cannot be selected, dragged, or connected and handles are hidden; pan/zoom still work. |
-| `className`     | `string`                           | no                   | —                               | Additional CSS class names merged onto the root element.                                                             |
+| Prop            | Type                                                    | Required | Default | Description                                                                                                          |
+| --------------- | ------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
+| `nodes`         | `FlowNode[]`                                            | yes      | —       | Initial nodes (serializable).                                                                                        |
+| `edges`         | `FlowEdge[]`                                            | yes      | —       | Initial edges (serializable).                                                                                        |
+| `onNodesChange` | `(nodes: FlowNode[]) => void`                           | no       | —       | Called with the next nodes when they change (drag, add, remove).                                                     |
+| `onEdgesChange` | `(edges: FlowEdge[]) => void`                           | no       | —       | Called with the next edges when they change.                                                                         |
+| `onConnect`     | `(connection: Connection) => void`                      | no       | —       | Called when two handles are connected to form a new edge.                                                            |
+| `nodeTypes`     | `Record<string, NodeRenderer>`                          | no       | —       | Custom node renderers keyed by node.type.                                                                            |
+| `fitView`       | `boolean`                                               | no       | `true`  | When true, fits the graph to the viewport on mount.                                                                  |
+| `background`    | `boolean \| FlowBackgroundProps`                        | no       | `false` | Background pattern — true for the default dots, or a config object.                                                  |
+| `controls`      | `boolean`                                               | no       | `false` | Whether to show the controls.                                                                                        |
+| `minimap`       | `boolean`                                               | no       | `false` | When true, shows the minimap overlay.                                                                                |
+| `layout`        | `'grid' \| 'layered' \| ((nodes, edges) => FlowNode[])` | no       | —       | Optional dependency-free layout.                                                                                     |
+| `interactive`   | `boolean`                                               | no       | `true`  | When false (view mode), nodes cannot be selected, dragged, or connected and handles are hidden; pan/zoom still work. |
+| `className`     | `string`                                                | no       | —       | Additional CSS class names merged onto the root element.                                                             |
 
 ## Examples
 

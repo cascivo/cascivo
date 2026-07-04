@@ -18,9 +18,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop   | Type | Required | Default | Description |
-| ------ | ---- | -------- | ------- | ----------- | --- | --- | --- | --- | --- | --- | --- | ------------------ |
-| `size` | `1   | 2        | 3       | 4           | 5   | 6   | 8   | 10  | 12` | no  | —   | Spacing token step |
+| Prop   | Type                          | Required | Default | Description        |
+| ------ | ----------------------------- | -------- | ------- | ------------------ |
+| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | —       | Spacing token step |
 
 ## Examples
 

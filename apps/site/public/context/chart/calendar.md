@@ -24,12 +24,12 @@ Renders role="img" with a title and a fallback day/value table.
 ## Props
 
 | Name          | Type               | Required | Default | Description                                                                                                              |
-| ------------- | ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------- |
-| `data`        | `CalendarDatum[]`  | Yes      | —       | Days: { day: string                                                                                                      | Date, value }.                     |
+| ------------- | ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `data`        | `CalendarDatum[]`  | Yes      | —       | Days: { day: string \| Date, value }.                                                                                    |
 | `title`       | `string`           | Yes      | —       | Title text for the component.                                                                                            |
 | `description` | `string`           | No       | —       | Supporting description text.                                                                                             |
-| `from`        | `string            | Date`    | No      | —                                                                                                                        | Range start (defaults to min day). |
-| `to`          | `string            | Date`    | No      | —                                                                                                                        | Range end (defaults to max day).   |
+| `from`        | `string \| Date`   | No       | —       | Range start (defaults to min day).                                                                                       |
+| `to`          | `string \| Date`   | No       | —       | Range end (defaults to max day).                                                                                         |
 | `width`       | `number`           | No       | —       | Width of the component.                                                                                                  |
 | `height`      | `number`           | No       | 160     | Height of the component.                                                                                                 |
 | `tooltip`     | `boolean`          | No       | —       | Whether to show tooltips on hover.                                                                                       |

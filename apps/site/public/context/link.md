@@ -32,12 +32,12 @@ Renders a native <a> so role, Enter activation, and focus come from the platform
 
 ## Props
 
-| Name       | Type          | Required  | Default | Description                                                                  |
-| ---------- | ------------- | --------- | ------- | ---------------------------------------------------------------------------- | --------------------------------- | ----------------------------------------------------- |
-| `variant`  | `'standalone' | 'inline'` | No      | standalone                                                                   | Selects the visual style variant. |
-| `size`     | `'sm'         | 'md'      | 'lg'`   | No                                                                           | md                                | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `external` | `boolean`     | No        | false   | When true, treats the link as external (opens in a new tab with rel safety). |
-| `href`     | `string`      | No        | —       | The destination URL.                                                         |
+| Name       | Type                       | Required | Default    | Description                                                                  |
+| ---------- | -------------------------- | -------- | ---------- | ---------------------------------------------------------------------------- |
+| `variant`  | `'standalone' \| 'inline'` | No       | standalone | Selects the visual style variant.                                            |
+| `size`     | `'sm' \| 'md' \| 'lg'`     | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                        |
+| `external` | `boolean`                  | No       | false      | When true, treats the link as external (opens in a new tab with rel safety). |
+| `href`     | `string`                   | No       | —          | The destination URL.                                                         |
 
 ## Tokens
 

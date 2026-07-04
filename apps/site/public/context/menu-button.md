@@ -43,15 +43,15 @@ The trigger is a real <button> exposing aria-haspopup="menu", aria-expanded refl
 
 ## Props
 
-| Name       | Type                | Required    | Default  | Description                                       |
-| ---------- | ------------------- | ----------- | -------- | ------------------------------------------------- | ------------------------------------------------------- | ---------------------- |
-| `label`    | `ReactNode`         | Yes         | —        | Trigger button content                            |
-| `items`    | `MenuButtonItem[]`  | Yes         | —        | Action items: { id, label, onSelect?, disabled? } |
-| `variant`  | `'primary'          | 'secondary' | 'ghost'` | No                                                | 'secondary'                                             | Trigger visual variant |
-| `size`     | `'sm'               | 'md'        | 'lg'`    | No                                                | 'md'                                                    | Trigger size           |
-| `disabled` | `boolean`           | No          | false    | Disables the trigger                              |
-| `align`    | `'start'            | 'end'`      | No       | 'start'                                           | Aligns the menu to the start or end edge of the trigger |
-| `labels`   | `{ open?: string }` | No          | —        | Override the trigger accessible name              |
+| Name       | Type                                  | Required | Default     | Description                                             |
+| ---------- | ------------------------------------- | -------- | ----------- | ------------------------------------------------------- |
+| `label`    | `ReactNode`                           | Yes      | —           | Trigger button content                                  |
+| `items`    | `MenuButtonItem[]`                    | Yes      | —           | Action items: { id, label, onSelect?, disabled? }       |
+| `variant`  | `'primary' \| 'secondary' \| 'ghost'` | No       | 'secondary' | Trigger visual variant                                  |
+| `size`     | `'sm' \| 'md' \| 'lg'`                | No       | 'md'        | Trigger size                                            |
+| `disabled` | `boolean`                             | No       | false       | Disables the trigger                                    |
+| `align`    | `'start' \| 'end'`                    | No       | 'start'     | Aligns the menu to the start or end edge of the trigger |
+| `labels`   | `{ open?: string }`                   | No       | —           | Override the trigger accessible name                    |
 
 ## Tokens
 

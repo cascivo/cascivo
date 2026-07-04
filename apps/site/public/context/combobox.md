@@ -40,21 +40,21 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 
 ## Props
 
-| Name           | Type               | Required            | Default | Description                                                        |
-| -------------- | ------------------ | ------------------- | ------- | ------------------------------------------------------------------ | ------------------------------ | ----------------------------------------------------- |
-| `options`      | `ComboboxOption[]` | Yes                 | —       | The selectable options.                                            |
-| `value`        | `string`           | No                  | —       | The controlled value.                                              |
-| `defaultValue` | `string`           | No                  | —       | The initial value when uncontrolled.                               |
-| `onChange`     | `(value: string    | undefined) => void` | No      | —                                                                  | Called when the value changes. |
-| `clearable`    | `boolean`          | No                  | false   | When true, shows a control to clear the selected value.            |
-| `searchable`   | `boolean`          | No                  | true    | When true, shows a search/filter input.                            |
-| `label`        | `string`           | No                  | —       | Text label for the control.                                        |
-| `hint`         | `string`           | No                  | —       | Supplementary hint text shown with the control.                    |
-| `error`        | `string`           | No                  | —       | Error message shown when the value is invalid.                     |
-| `size`         | `'sm'              | 'md'                | 'lg'`   | No                                                                 | 'md'                           | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled`     | `boolean`          | No                  | false   | When true, disables the control and removes it from the tab order. |
-| `labels`       | `ComboboxLabels`   | No                  | —       | Overrides for the component’s user-visible strings (i18n).         |
-| `className`    | `string`           | No                  | —       | Additional CSS class names merged onto the root element.           |
+| Name           | Type                                   | Required | Default | Description                                                        |
+| -------------- | -------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `options`      | `ComboboxOption[]`                     | Yes      | —       | The selectable options.                                            |
+| `value`        | `string`                               | No       | —       | The controlled value.                                              |
+| `defaultValue` | `string`                               | No       | —       | The initial value when uncontrolled.                               |
+| `onChange`     | `(value: string \| undefined) => void` | No       | —       | Called when the value changes.                                     |
+| `clearable`    | `boolean`                              | No       | false   | When true, shows a control to clear the selected value.            |
+| `searchable`   | `boolean`                              | No       | true    | When true, shows a search/filter input.                            |
+| `label`        | `string`                               | No       | —       | Text label for the control.                                        |
+| `hint`         | `string`                               | No       | —       | Supplementary hint text shown with the control.                    |
+| `error`        | `string`                               | No       | —       | Error message shown when the value is invalid.                     |
+| `size`         | `'sm' \| 'md' \| 'lg'`                 | No       | 'md'    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `disabled`     | `boolean`                              | No       | false   | When true, disables the control and removes it from the tab order. |
+| `labels`       | `ComboboxLabels`                       | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
+| `className`    | `string`                               | No       | —       | Additional CSS class names merged onto the root element.           |
 
 ## Tokens
 

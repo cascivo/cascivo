@@ -33,15 +33,15 @@ Renders an APG-compliant role="grid" table with role="row"/role="gridcell"; a ro
 ## Props
 
 | Name            | Type                                              | Required | Default | Description                                              |
-| --------------- | ------------------------------------------------- | -------- | ------- | -------------------------------------------------------- | ------------------------ | -------------- |
-| `value`         | `Date                                             | null`    | No      | —                                                        | Controlled selected date |
+| --------------- | ------------------------------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `value`         | `Date \| null`                                    | No       | —       | Controlled selected date                                 |
 | `defaultValue`  | `Date`                                            | No       | —       | Uncontrolled initial selected date                       |
 | `onValueChange` | `(date: Date) => void`                            | No       | —       | Called when a day is selected                            |
 | `min`           | `Date`                                            | No       | —       | Earliest selectable date                                 |
 | `max`           | `Date`                                            | No       | —       | Latest selectable date                                   |
 | `disabled`      | `(date: Date) => boolean`                         | No       | —       | Predicate to disable individual days                     |
 | `locale`        | `string`                                          | No       | —       | BCP-47 locale; defaults to the current i18n locale       |
-| `size`          | `'sm'                                             | 'md'     | 'lg'`   | No                                                       | —                        | Grid cell size |
+| `size`          | `'sm' \| 'md' \| 'lg'`                            | No       | —       | Grid cell size                                           |
 | `labels`        | `CalendarLabels`                                  | No       | —       | i18n label overrides for the nav buttons                 |
 | `month`         | `number`                                          | No       | —       | Controlled view month (0-11)                             |
 | `year`          | `number`                                          | No       | —       | Controlled view year                                     |

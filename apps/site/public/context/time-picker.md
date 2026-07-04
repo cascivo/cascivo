@@ -34,7 +34,7 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 ## Props
 
 | Name           | Type                      | Required | Default | Description                                                        |
-| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ | ---- | ----------------------------------------------------- |
+| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ |
 | `value`        | `string`                  | No       | —       | Controlled value (HH:mm)                                           |
 | `defaultValue` | `string`                  | No       | —       | The initial value when uncontrolled.                               |
 | `onChange`     | `(value: string) => void` | No       | —       | Called when the value changes.                                     |
@@ -44,7 +44,7 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 | `label`        | `string`                  | No       | —       | Text label for the control.                                        |
 | `hint`         | `string`                  | No       | —       | Supplementary hint text shown with the control.                    |
 | `error`        | `string`                  | No       | —       | Error message shown when the value is invalid.                     |
-| `size`         | `'sm'                     | 'md'     | 'lg'`   | No                                                                 | 'md' | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `size`         | `'sm' \| 'md' \| 'lg'`    | No       | 'md'    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 | `disabled`     | `boolean`                 | No       | —       | When true, disables the control and removes it from the tab order. |
 | `className`    | `string`                  | No       | —       | Additional CSS class names merged onto the root element.           |
 

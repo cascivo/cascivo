@@ -24,10 +24,10 @@ Renders a section element to group related content for screen readers.
 
 ## Props
 
-| Name    | Type       | Required | Default | Description |
-| ------- | ---------- | -------- | ------- | ----------- | --------- | ----------------------------------------------------- | --- | --- | --- | --- | --- | ----------------------------------------------- |
-| `width` | `"content" | "wide"   | "full"` | No          | "content" | Max inline size: content=72rem, wide=90rem, full=none |
-| `gap`   | `1         | 2        | 3       | 4           | 5         | 6                                                     | 8   | 10  | 12` | No  | 8   | Stack gap between children (spacing token step) |
+| Name    | Type                            | Required | Default   | Description                                           |
+| ------- | ------------------------------- | -------- | --------- | ----------------------------------------------------- |
+| `width` | `"content" \| "wide" \| "full"` | No       | "content" | Max inline size: content=72rem, wide=90rem, full=none |
+| `gap`   | `1\|2\|3\|4\|5\|6\|8\|10\|12`   | No       | 8         | Stack gap between children (spacing token step)       |
 
 ## Tokens
 

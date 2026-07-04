@@ -32,15 +32,15 @@ The divider is a focusable role="separator" with aria-orientation and aria-value
 
 ## Props
 
-| Name            | Type                      | Required    | Default | Description                                      |
-| --------------- | ------------------------- | ----------- | ------- | ------------------------------------------------ | ------------------------------------ |
-| `children`      | `ReactNode`               | Yes         | —       | Exactly two panes                                |
-| `orientation`   | `'horizontal'             | 'vertical'` | No      | horizontal                                       | Layout orientation of the component. |
-| `defaultRatio`  | `number`                  | No          | 0.5     | The initial split ratio when uncontrolled.       |
-| `ratio`         | `number`                  | No          | —       | Controlled ratio (0–1)                           |
-| `minRatio`      | `number`                  | No          | 0.1     | Minimum allowed split ratio.                     |
-| `maxRatio`      | `number`                  | No          | 0.9     | Maximum allowed split ratio.                     |
-| `onRatioChange` | `(ratio: number) => void` | No          | —       | Called with the new split ratio when it changes. |
+| Name            | Type                         | Required | Default    | Description                                      |
+| --------------- | ---------------------------- | -------- | ---------- | ------------------------------------------------ |
+| `children`      | `ReactNode`                  | Yes      | —          | Exactly two panes                                |
+| `orientation`   | `'horizontal' \| 'vertical'` | No       | horizontal | Layout orientation of the component.             |
+| `defaultRatio`  | `number`                     | No       | 0.5        | The initial split ratio when uncontrolled.       |
+| `ratio`         | `number`                     | No       | —          | Controlled ratio (0–1)                           |
+| `minRatio`      | `number`                     | No       | 0.1        | Minimum allowed split ratio.                     |
+| `maxRatio`      | `number`                     | No       | 0.9        | Maximum allowed split ratio.                     |
+| `onRatioChange` | `(ratio: number) => void`    | No       | —          | Called with the new split ratio when it changes. |
 
 ## Tokens
 

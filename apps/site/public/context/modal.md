@@ -35,14 +35,14 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Props
 
-| Name          | Type         | Required | Default | Description                                 |
-| ------------- | ------------ | -------- | ------- | ------------------------------------------- | --- | ----------------------------------------------------- |
-| `open`        | `boolean`    | No       | false   | Whether the component is open (controlled). |
-| `onClose`     | `() => void` | No       | —       | Called when the component is closed.        |
-| `title`       | `string`     | No       | —       | Title text for the component.               |
-| `description` | `string`     | No       | —       | Supporting description text.                |
-| `size`        | `'sm'        | 'md'     | 'lg'`   | No                                          | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `draggable`   | `boolean`    | No       | false   | Allow dragging the dialog by its header     |
+| Name          | Type                   | Required | Default | Description                                           |
+| ------------- | ---------------------- | -------- | ------- | ----------------------------------------------------- |
+| `open`        | `boolean`              | No       | false   | Whether the component is open (controlled).           |
+| `onClose`     | `() => void`           | No       | —       | Called when the component is closed.                  |
+| `title`       | `string`               | No       | —       | Title text for the component.                         |
+| `description` | `string`               | No       | —       | Supporting description text.                          |
+| `size`        | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `draggable`   | `boolean`              | No       | false   | Allow dragging the dialog by its header               |
 
 ## Tokens
 
@@ -65,9 +65,9 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 ## Boundaries
 
 | Area                       | Level    | Note                                                                                                   |
-| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ | --- | -------------------- |
+| -------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
 | token names                | strict   | Overlay surface, border, radius, shadow, and focus-ring must resolve to the listed --cascivo-\* tokens |
-| size                       | flexible | sm                                                                                                     | md  | lg, defaulting to md |
+| size                       | flexible | sm \| md \| lg, defaulting to md                                                                       |
 | title / description / body | flexible | All optional; body accepts arbitrary children                                                          |
 
 ## AI context prompt

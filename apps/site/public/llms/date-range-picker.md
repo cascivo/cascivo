@@ -35,8 +35,8 @@ import { DateRangePicker } from '@cascivo/react'
 ## Props
 
 | Prop            | Type                                                     | Required | Default | Description                                        |
-| --------------- | -------------------------------------------------------- | -------- | ------- | -------------------------------------------------- | ------------------------- | --------------- |
-| `value`         | `{ start: Date; end: Date }                              | null`    | no      | —                                                  | Controlled selected range |
+| --------------- | -------------------------------------------------------- | -------- | ------- | -------------------------------------------------- |
+| `value`         | `{ start: Date; end: Date } \| null`                     | no       | —       | Controlled selected range                          |
 | `defaultValue`  | `{ start: Date; end: Date }`                             | no       | —       | Uncontrolled initial range                         |
 | `onValueChange` | `(range: { start: Date; end: Date }) => void`            | no       | —       | Called when a complete range is selected           |
 | `min`           | `Date`                                                   | no       | —       | Earliest selectable date                           |
@@ -45,7 +45,7 @@ import { DateRangePicker } from '@cascivo/react'
 | `presets`       | `{ label: string; range: { start: Date; end: Date } }[]` | no       | —       | Quick-select preset ranges shown in a side column  |
 | `locale`        | `string`                                                 | no       | —       | BCP-47 locale; defaults to the current i18n locale |
 | `placeholder`   | `string`                                                 | no       | —       | Empty-state trigger text                           |
-| `size`          | `'sm'                                                    | 'md'     | 'lg'`   | no                                                 | —                         | Field/grid size |
+| `size`          | `'sm' \| 'md' \| 'lg'`                                   | no       | —       | Field/grid size                                    |
 | `labels`        | `DateRangePickerLabels`                                  | no       | —       | i18n label overrides                               |
 
 ## Examples
