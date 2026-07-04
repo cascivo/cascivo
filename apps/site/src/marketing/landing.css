@@ -1593,6 +1593,64 @@ kbd {
   color: var(--cascivo-color-accent-hover);
 }
 
+/* ── Framework compatibility band ─────────────────────── */
+.framework-band {
+  scroll-margin-block-start: 5rem;
+}
+
+.framework-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--cascivo-space-4);
+}
+
+.framework-card {
+  margin: 0;
+}
+
+.framework-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  block-size: 100%;
+  padding: var(--cascivo-space-5);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-surface);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease;
+}
+
+.framework-link:hover {
+  border-color: var(--cascivo-color-accent);
+}
+
+.framework-link:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.framework-name {
+  font-size: var(--cascivo-text-lg);
+  font-weight: var(--cascivo-font-semibold);
+}
+
+.framework-note {
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.framework-cta {
+  margin-block-start: auto;
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-accent-hover);
+}
+
 /* ── Footer mono links ────────────────────────────────── */
 .footer-link-mono {
   font-family: var(--cascivo-font-mono);

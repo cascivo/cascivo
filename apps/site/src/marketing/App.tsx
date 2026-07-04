@@ -38,6 +38,9 @@ const Comparison = lazy(() =>
 const ShowcaseStrip = lazy(() =>
   import('./sections/ShowcaseStrip').then((m) => ({ default: m.ShowcaseStrip })),
 )
+const FrameworkBand = lazy(() =>
+  import('./sections/FrameworkBand').then((m) => ({ default: m.FrameworkBand })),
+)
 
 // Non-home routes — loaded on demand, never in the home bundle.
 const AccessibilityPage = lazy(() =>
@@ -120,6 +123,10 @@ function HomePage() {
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <QuickStart />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={300} />}>
+              <FrameworkBand />
             </Suspense>
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
