@@ -32,6 +32,9 @@ const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.
 const ProofTeasers = lazy(() =>
   import('./sections/ProofTeasers').then((m) => ({ default: m.ProofTeasers })),
 )
+const Comparison = lazy(() =>
+  import('./sections/Comparison').then((m) => ({ default: m.Comparison })),
+)
 
 // Non-home routes — loaded on demand, never in the home bundle.
 const AccessibilityPage = lazy(() =>
@@ -102,6 +105,10 @@ function HomePage() {
             </Suspense>
             <Suspense fallback={<SectionFallback height={360} />}>
               <ProofTeasers withLeadingDivider />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={480} />}>
+              <Comparison />
             </Suspense>
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>

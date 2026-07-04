@@ -1426,6 +1426,82 @@ kbd {
   overflow: visible;
 }
 
+/* ── Comparison table (vs shadcn) ─────────────────────── */
+.compare {
+  scroll-margin-block-start: 5rem;
+}
+
+.compare-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-surface);
+}
+
+/* Visible focus ring for the keyboard-scrollable region. */
+.compare-scroll:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.compare-table {
+  inline-size: 100%;
+  min-inline-size: 34rem;
+  border-collapse: collapse;
+  font-size: var(--cascivo-text-sm);
+}
+
+.compare-table th,
+.compare-table td {
+  padding: var(--cascivo-space-3) var(--cascivo-space-4);
+  text-align: start;
+  vertical-align: top;
+  border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.compare-table tbody tr:last-child th,
+.compare-table tbody tr:last-child td {
+  border-block-end: none;
+}
+
+.compare-table thead th {
+  font-weight: var(--cascivo-font-semibold);
+  color: var(--cascivo-color-text);
+  white-space: nowrap;
+}
+
+.compare-table tbody th {
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-text);
+  white-space: nowrap;
+}
+
+.compare-table td {
+  color: var(--cascivo-color-text-subtle);
+}
+
+/* Highlight the cascivo column so the eye lands on it. */
+.compare-table .compare-col-us {
+  background-color: var(--cascivo-color-accent-subtle);
+  color: var(--cascivo-color-text);
+  font-weight: var(--cascivo-font-medium);
+}
+
+.compare-table thead .compare-col-us {
+  color: var(--cascivo-color-accent-hover);
+}
+
+.compare-foot {
+  margin: var(--cascivo-space-5) 0 0;
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.compare-foot a {
+  color: var(--cascivo-color-accent-hover);
+  font-weight: var(--cascivo-font-medium);
+}
+
 /* ── Footer mono links ────────────────────────────────── */
 .footer-link-mono {
   font-family: var(--cascivo-font-mono);
