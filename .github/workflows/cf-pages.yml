@@ -34,6 +34,7 @@ jobs:
               - 'apps/examples/flow/**'
               - 'apps/examples/track/**'
               - 'apps/examples/pulse/**'
+              - 'apps/examples/trade/**'
               - 'apps/examples/kit/**'
               - 'scripts/assemble-demos.mjs'
               - 'packages/**'

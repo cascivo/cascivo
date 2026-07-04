@@ -1,4 +1,4 @@
-Cascade Pulse — a functional mock of a real-time observability dashboard (feels like Datadog).
+Cascivo Pulse — a functional mock of a real-time observability dashboard (feels like Datadog).
 
 **Mock demo: no real backend.** Metrics update live via a pausable, seeded simulation engine.
 Alert acknowledgements and time-range preferences persist across reload via `@cascivo/storage`.

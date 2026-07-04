@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
+import type { MouseEvent } from 'react'
 import { ShellHeader } from './shell-header'
 
 describe('ShellHeader', () => {
@@ -52,6 +53,14 @@ describe('ShellHeader nav', () => {
   it('renders plain links with aria-current', () => {
     render(<ShellHeader nav={navFixture} />)
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page')
+  })
+
+  it('forwards onClick on a nav link and lets it preventDefault', async () => {
+    const onClick = vi.fn((e: MouseEvent) => e.preventDefault())
+    render(<ShellHeader nav={[{ label: 'Trading', href: '#trading', active: true, onClick }]} />)
+    await userEvent.click(screen.getByRole('link', { name: 'Trading' }))
+    expect(onClick).toHaveBeenCalledTimes(1)
+    expect(onClick.mock.calls[0]![0].defaultPrevented).toBe(true)
   })
 
   it('opens a dropdown menu on trigger click and closes on Escape', async () => {

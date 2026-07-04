@@ -1,0 +1,62 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+@media (min-width: 64rem) {
+  .panel {
+    overflow: hidden;
+  }
+  /* Never show a horizontal scrollbar on the table — at desktop widths it fits;
+     on a narrow laptop the trailing column clips instead of scrolling. */
+  .panel [class*='scroller'] {
+    overflow-x: hidden;
+  }
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cascivo-space-3);
+}
+
+.title {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
+.tag {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 500;
+  color: var(--cascivo-color-foreground-muted);
+  padding: var(--cascivo-space-1) var(--cascivo-space-3);
+  border-radius: var(--cascivo-radius-full, 999px);
+  background: var(--cascivo-color-bg-subtle);
+}
+
+/* Keep instrument names on one line so rows stay compact. */
+.instrument {
+  display: block;
+  max-inline-size: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Truncate the venue so it never collides with the placed date at narrow widths. */
+.venue {
+  display: block;
+  max-inline-size: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

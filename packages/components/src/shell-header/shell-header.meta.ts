@@ -19,7 +19,8 @@ export const meta: ComponentMeta = {
       name: 'nav',
       type: 'ShellHeaderNavItem[]',
       required: false,
-      description: 'Top nav: links or dropdown menus ({ label, items })',
+      description:
+        'Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })',
     },
     {
       name: 'actions',

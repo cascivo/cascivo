@@ -1,4 +1,4 @@
-Cascade Track — a functional mock of a keyboard-first issue tracker (feels like Linear).
+Cascivo Track — a functional mock of a keyboard-first issue tracker (feels like Linear).
 
 **Mock demo: no real backend.** Data loads via a client-side mock API with seeded latency. Issue
 mutations (status, assignee, priority) persist across reload via `@cascivo/storage`.

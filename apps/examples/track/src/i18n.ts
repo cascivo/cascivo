@@ -2,7 +2,7 @@ import { defineMessages } from '@cascivo/i18n'
 
 export const msg = defineMessages('track', {
   // App
-  appTitle: 'Cascade Track',
+  appTitle: 'Cascivo Track',
   mockBanner: 'Demo — data persisted in localStorage',
 
   // Nav

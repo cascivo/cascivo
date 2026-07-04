@@ -1,7 +1,7 @@
 import { defineMessages } from '@cascivo/i18n'
 
 export const deployMsg = defineMessages('deploy', {
-  appTitle: 'Cascade Deploy',
+  appTitle: 'Cascivo Deploy',
   navPipelines: 'Pipelines',
   navEnvironments: 'Environments',
   navMetrics: 'Metrics',

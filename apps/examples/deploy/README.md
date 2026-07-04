@@ -14,7 +14,7 @@
 
 ---
 
-Cascade Deploy — a functional mock of a deployment platform (feels like Vercel).
+Cascivo Deploy — a functional mock of a deployment platform (feels like Vercel).
 
 **Mock demo: no real backend.** Data loads via a client-side mock API with seeded latency. Theme and
 simulation state persist across reload via `@cascivo/storage`.

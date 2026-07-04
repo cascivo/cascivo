@@ -1,0 +1,84 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+/* Base: cap the tape height. At 64rem+ it fills the column's flex share. */
+.tapeScroll {
+  max-block-size: 18rem;
+}
+
+@media (min-width: 64rem) {
+  .tapeScroll {
+    flex: 1;
+    min-block-size: 0;
+    max-block-size: none;
+    /* No scrollbar on desktop — the tape clips older rows (newest stay on top). */
+    overflow: hidden;
+  }
+}
+
+.title {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
+.head,
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--cascivo-space-2);
+  font-size: var(--cascivo-text-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.head {
+  color: var(--cascivo-color-foreground-muted);
+  font-weight: 500;
+  padding-block-end: var(--cascivo-space-1);
+  border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.list {
+  list-style: none;
+}
+
+.row {
+  padding-block: 0.125rem;
+  animation: tape-in 0.4s ease-out;
+}
+
+.time {
+  color: var(--cascivo-color-foreground-muted);
+}
+
+.num {
+  text-align: end;
+}
+
+.up {
+  color: var(--cascivo-color-success);
+}
+
+.down {
+  color: var(--cascivo-color-error);
+}
+
+@keyframes tape-in {
+  from {
+    background: var(--cascivo-color-bg-subtle);
+  }
+  to {
+    background: transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    animation: none;
+  }
+}

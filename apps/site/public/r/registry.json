@@ -3880,6 +3880,43 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes. For micro/inline charts."
+          },
+          {
+            "name": "annotations",
+            "type": "Annotation[]",
+            "required": false,
+            "description": "Reference lines/bands/markers over the plot (e.g. a last-price rule)."
+          },
+          {
+            "name": "brush",
+            "type": "boolean",
+            "required": false,
+            "description": "Keyboard-operable Brush below the plot to subset the candles to a window."
+          },
+          {
+            "name": "dataZoom",
+            "type": "boolean",
+            "required": false,
+            "description": "DataZoom slider below the plot — a Brush whose body also pans the window."
+          },
+          {
+            "name": "zoom",
+            "type": "boolean",
+            "required": false,
+            "description": "In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window."
+          },
+          {
+            "name": "syncId",
+            "type": "string",
+            "required": false,
+            "description": "Connect charts sharing this id — they mirror the zoom window."
+          },
+          {
+            "name": "tooltipMode",
+            "type": "'item' | 'axis'",
+            "required": false,
+            "default": "item",
+            "description": "item (nearest candle) or axis (crosshair + OHLC at the hovered x)."
           }
         ],
         "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],
@@ -3889,6 +3926,7 @@
           "keyboard": [
             "Tab (focus chart)",
             "ArrowLeft/ArrowRight (navigate candles)",
+            "+/- (zoom), 0 (reset) when zoom enabled",
             "Escape (clear focus)"
           ]
         },
@@ -19788,7 +19826,7 @@
             "name": "nav",
             "type": "ShellHeaderNavItem[]",
             "required": false,
-            "description": "Top nav: links or dropdown menus ({ label, items })"
+            "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })"
           },
           {
             "name": "actions",

@@ -88,6 +88,16 @@
       "path": "/docs/specs/t5-deferral.md"
     },
     {
+      "id": "trade-dashboard-adjustments",
+      "title": "trade-dashboard-adjustments",
+      "path": "/docs/specs/trade-dashboard-adjustments.md"
+    },
+    {
+      "id": "trading-dashboard-showcase",
+      "title": "trading-dashboard-showcase",
+      "path": "/docs/specs/trading-dashboard-showcase.md"
+    },
+    {
       "id": "wcag-2.2",
       "title": "wcag-2.2",
       "path": "/docs/specs/wcag-2.2.md"
@@ -5093,10 +5103,66 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "annotations",
+          "type": "Annotation[]",
+          "required": false,
+          "description": "Reference lines/bands/markers over the plot (e.g. a last-price rule).",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "brush",
+          "type": "boolean",
+          "required": false,
+          "description": "Keyboard-operable Brush below the plot to subset the candles to a window.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "dataZoom",
+          "type": "boolean",
+          "required": false,
+          "description": "DataZoom slider below the plot — a Brush whose body also pans the window.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "zoom",
+          "type": "boolean",
+          "required": false,
+          "description": "In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "syncId",
+          "type": "string",
+          "required": false,
+          "description": "Connect charts sharing this id — they mirror the zoom window.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "tooltipMode",
+          "type": "'item' | 'axis'",
+          "required": false,
+          "default": "item",
+          "description": "item (nearest candle) or axis (crosshair + OHLC at the hovered x).",
+          "schema": {
+            "kind": "enum",
+            "values": ["item", "axis"]
+          }
         }
       ],
       "contextUrl": "/context/chart/candlestick.md",
-      "aiPrompt": "I am modifying the cascivo Candlestick component (chart). OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCandlestick is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-chart-2, --cascivo-chart-4, --cascivo-chart-grid\n\nAccessibility: role \"img\", WCAG 2.1-AA, keyboard: Tab (focus chart)/ArrowLeft/ArrowRight (navigate candles)/Escape (clear focus). Keep it AA.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Candlestick component (chart). OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nCandlestick is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-chart-2, --cascivo-chart-4, --cascivo-chart-grid\n\nAccessibility: role \"img\", WCAG 2.1-AA, keyboard: Tab (focus chart)/ArrowLeft/ArrowRight (navigate candles)/+/- (zoom), 0 (reset) when zoom enabled/Escape (clear focus). Keep it AA.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "ComboChart",
@@ -19211,7 +19277,7 @@
           "name": "nav",
           "type": "ShellHeaderNavItem[]",
           "required": false,
-          "description": "Top nav: links or dropdown menus ({ label, items })",
+          "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })",
           "schema": {
             "kind": "other"
           }

@@ -5,7 +5,13 @@ import { Moon, Sun } from '@cascivo/icons'
 import { AppShell as LayoutsAppShell } from '@cascivo/layouts/app-shell'
 import { createShellState } from '@cascivo/layouts/shell-state'
 import { CommandMenu, ShellHeader, SideNav } from '@cascivo/react'
-import type { CommandGroup, ShellHeaderBrand, SideNavGroup, SideNavItem } from '@cascivo/react'
+import type {
+  CommandGroup,
+  ShellHeaderBrand,
+  ShellHeaderNavItem,
+  SideNavGroup,
+  SideNavItem,
+} from '@cascivo/react'
 import { persistedSignal } from '@cascivo/storage'
 import type { ReactNode } from 'react'
 import styles from './app-shell.module.css'
@@ -34,6 +40,11 @@ export function getAppTheme(): AppShellTheme {
 export interface AppShellProps {
   navItems?: SideNavItem[]
   navGroups?: SideNavGroup[]
+  /** Nav rendered in the header instead of a sidebar. When set (and no side-nav
+   * items are given) the sidebar and its hamburger are omitted entirely. */
+  headerNav?: ShellHeaderNavItem[] | undefined
+  /** Extra class merged onto the ShellHeader (e.g. to make it transparent). */
+  headerClassName?: string | undefined
   commandGroups?: CommandGroup[]
   brand?: ShellHeaderBrand
   actions?: ReactNode
@@ -44,6 +55,8 @@ export interface AppShellProps {
 export function AppShell({
   navItems,
   navGroups,
+  headerNav,
+  headerClassName,
   commandGroups = [],
   brand,
   actions,
@@ -51,6 +64,9 @@ export function AppShell({
   mockBanner = false,
 }: AppShellProps) {
   useSignals()
+
+  // A sidebar (and its hamburger) exist only when side-nav items are provided.
+  const hasSideNav = Boolean(navItems || navGroups)
 
   function cycleTheme() {
     const next = THEMES[(THEMES.indexOf(theme.value) + 1) % THEMES.length]
@@ -68,8 +84,14 @@ export function AppShell({
             {mockBanner && <div className={styles['mockBanner']}>{t(msg.mockBanner)}</div>}
             <ShellHeader
               brand={brand ?? { name: 'Demo' }}
-              onMenuClick={shellState.toggleSideNav}
-              menuExpanded={!shellState.sideNavCollapsed.value}
+              {...(headerClassName ? { className: headerClassName } : {})}
+              {...(headerNav ? { nav: headerNav } : {})}
+              {...(hasSideNav
+                ? {
+                    onMenuClick: shellState.toggleSideNav,
+                    menuExpanded: !shellState.sideNavCollapsed.value,
+                  }
+                : {})}
               actions={[
                 {
                   id: 'theme',
@@ -83,14 +105,16 @@ export function AppShell({
           </>
         }
         sideNav={
-          <SideNav
-            {...(navGroups ? { groups: navGroups } : {})}
-            {...(navItems ? { items: navItems } : {})}
-            collapsed={shellState.sideNavCollapsed.value}
-            onCollapsedChange={(c) => {
-              shellState.sideNavCollapsed.value = c
-            }}
-          />
+          hasSideNav ? (
+            <SideNav
+              {...(navGroups ? { groups: navGroups } : {})}
+              {...(navItems ? { items: navItems } : {})}
+              collapsed={shellState.sideNavCollapsed.value}
+              onCollapsedChange={(c) => {
+                shellState.sideNavCollapsed.value = c
+              }}
+            />
+          ) : undefined
         }
       >
         {children}

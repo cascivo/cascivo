@@ -1,0 +1,71 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+/* When height-constrained in the desktop grid, clip (no scrollbar). */
+@media (min-width: 64rem) {
+  .panel {
+    overflow: hidden;
+  }
+}
+
+.title {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  padding-block-start: var(--cascivo-space-3);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--cascivo-space-2);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-inline-size: 0;
+}
+
+.mLabel {
+  font-size: var(--cascivo-text-xs);
+  color: var(--cascivo-color-foreground-muted);
+}
+
+.mValue {
+  font-size: var(--cascivo-text-sm);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--cascivo-color-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.up {
+  color: var(--cascivo-color-success);
+}
+
+.down {
+  color: var(--cascivo-color-error);
+}
+
+.subhead {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

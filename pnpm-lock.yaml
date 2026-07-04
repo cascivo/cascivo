@@ -739,6 +739,64 @@ importers:
         specifier: 4.1.9
         version: 4.1.9(@types/node@25.9.2)(@vitest/browser-preview@4.1.9)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
 
+  apps/examples/trade:
+    dependencies:
+      '@cascivo/charts':
+        specifier: workspace:*
+        version: link:../../../packages/charts
+      '@cascivo/core':
+        specifier: workspace:*
+        version: link:../../../packages/core
+      '@cascivo/example-kit':
+        specifier: workspace:*
+        version: link:../kit
+      '@cascivo/i18n':
+        specifier: workspace:*
+        version: link:../../../packages/i18n
+      '@cascivo/icons':
+        specifier: workspace:*
+        version: link:../../../packages/icons
+      '@cascivo/react':
+        specifier: workspace:*
+        version: link:../../../packages/react
+      '@cascivo/storage':
+        specifier: workspace:*
+        version: link:../../../packages/storage
+      '@cascivo/themes':
+        specifier: workspace:*
+        version: link:../../../packages/themes
+      '@cascivo/tokens':
+        specifier: workspace:*
+        version: link:../../../packages/tokens
+      react:
+        specifier: 'catalog:'
+        version: 19.2.7
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.7(react@19.2.7)
+    devDependencies:
+      '@testing-library/jest-dom':
+        specifier: 'catalog:'
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: 'catalog:'
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.3(@types/react@19.2.17)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.2.1(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
+      vitest:
+        specifier: 4.1.9
+        version: 4.1.9(@types/node@25.9.2)(@vitest/browser-preview@4.1.9)(jsdom@29.1.1)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
+
   apps/site:
     dependencies:
       '@cascivo/ai':

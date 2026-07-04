@@ -21,7 +21,7 @@ const REPO_ROOT = join(import.meta.dirname, '../..')
 const EXAMPLES_DIR = join(REPO_ROOT, 'apps/examples')
 
 // slug → accepted key prefixes. Keys may use either `<slug>.` or `<slug>-`.
-const DEMOS = ['deploy', 'pay', 'flow', 'track', 'pulse'] as const
+const DEMOS = ['deploy', 'pay', 'flow', 'track', 'pulse', 'trade'] as const
 
 function collectSourceFiles(dir: string): string[] {
   const results: string[] = []

@@ -20,20 +20,26 @@ import { Candlestick } from '@cascivo/charts'
 
 ## Props
 
-| Prop          | Type                 | Required | Default | Description                                                    |
-| ------------- | -------------------- | -------- | ------- | -------------------------------------------------------------- |
-| `data`        | `CandlestickDatum[]` | yes      | —       | One candle per period: { t, open, high, low, close, volume? }. |
-| `title`       | `string`             | yes      | —       | Chart title (also aria-label).                                 |
-| `description` | `string`             | no       | —       | Supporting description text.                                   |
-| `width`       | `number`             | no       | —       | Width of the component.                                        |
-| `height`      | `number`             | no       | `320`   | Height of the component.                                       |
-| `yTicks`      | `number`             | no       | `5`     | Approximate number of ticks on the y-axis.                     |
-| `upColor`     | `string`             | no       | —       | Colour for up candles (close ≥ open).                          |
-| `downColor`   | `string`             | no       | —       | Colour for down candles (close < open).                        |
-| `volume`      | `boolean`            | no       | `false` | Render volume bars beneath the candles.                        |
-| `tooltip`     | `boolean`            | no       | —       | Enable hover tooltip (OHLC).                                   |
-| `className`   | `string`             | no       | —       | Additional CSS class names merged onto the root element.       |
-| `plain`       | `boolean`            | no       | `false` | Marks only — no axes. For micro/inline charts.                 |
+| Prop          | Type                 | Required | Default | Description                                                                |
+| ------------- | -------------------- | -------- | ------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `data`        | `CandlestickDatum[]` | yes      | —       | One candle per period: { t, open, high, low, close, volume? }.             |
+| `title`       | `string`             | yes      | —       | Chart title (also aria-label).                                             |
+| `description` | `string`             | no       | —       | Supporting description text.                                               |
+| `width`       | `number`             | no       | —       | Width of the component.                                                    |
+| `height`      | `number`             | no       | `320`   | Height of the component.                                                   |
+| `yTicks`      | `number`             | no       | `5`     | Approximate number of ticks on the y-axis.                                 |
+| `upColor`     | `string`             | no       | —       | Colour for up candles (close ≥ open).                                      |
+| `downColor`   | `string`             | no       | —       | Colour for down candles (close < open).                                    |
+| `volume`      | `boolean`            | no       | `false` | Render volume bars beneath the candles.                                    |
+| `tooltip`     | `boolean`            | no       | —       | Enable hover tooltip (OHLC).                                               |
+| `className`   | `string`             | no       | —       | Additional CSS class names merged onto the root element.                   |
+| `plain`       | `boolean`            | no       | `false` | Marks only — no axes. For micro/inline charts.                             |
+| `annotations` | `Annotation[]`       | no       | —       | Reference lines/bands/markers over the plot (e.g. a last-price rule).      |
+| `brush`       | `boolean`            | no       | —       | Keyboard-operable Brush below the plot to subset the candles to a window.  |
+| `dataZoom`    | `boolean`            | no       | —       | DataZoom slider below the plot — a Brush whose body also pans the window.  |
+| `zoom`        | `boolean`            | no       | —       | In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window. |
+| `syncId`      | `string`             | no       | —       | Connect charts sharing this id — they mirror the zoom window.              |
+| `tooltipMode` | `'item'              | 'axis'`  | no      | `item`                                                                     | item (nearest candle) or axis (crosshair + OHLC at the hovered x). |
 
 ## Examples
 
@@ -52,6 +58,20 @@ import { Candlestick } from '@cascivo/charts'
 />
 ```
 
+### Zoomable with a last-price rule
+
+```tsx
+<Candlestick
+  title="ACME daily"
+  data={candles}
+  volume
+  zoom
+  dataZoom
+  tooltipMode="axis"
+  annotations={[{ kind: 'line', axis: 'y', value: lastClose, label: '42.77' }]}
+/>
+```
+
 ## Design tokens
 
 - `--cascivo-chart-2`
@@ -62,7 +82,7 @@ import { Candlestick } from '@cascivo/charts'
 
 - **WCAG level:** 2.1-AA
 - **ARIA role:** `img`
-- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate candles), Escape (clear focus)
+- **Keyboard:** Tab (focus chart), ArrowLeft/ArrowRight (navigate candles), +/- (zoom), 0 (reset) when zoom enabled, Escape (clear focus)
 
 ## Dependencies
 

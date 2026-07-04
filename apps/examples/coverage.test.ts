@@ -11,7 +11,7 @@ import { resolve } from 'node:path'
  * is the implementation site for CommandMenu — apps import AppShell, not CommandMenu directly.
  */
 
-const APPS = ['deploy', 'pay', 'flow', 'track', 'pulse', 'kit']
+const APPS = ['deploy', 'pay', 'flow', 'track', 'pulse', 'trade', 'kit']
 const ROOT = resolve(import.meta.dirname, '../..')
 
 // Collect all TypeScript source from the 5 apps + kit
@@ -52,6 +52,7 @@ const REQUIRED_CHARTS = [
   'Heatmap',
   'Meter',
   'Bullet',
+  'Candlestick', // demoed by the trade workspace
   // Allowed to be undemoed (more specialized):
   // PieChart, ScatterChart, Histogram, Boxplot, BubbleChart, ComboChart, Treemap, Radar
 ]

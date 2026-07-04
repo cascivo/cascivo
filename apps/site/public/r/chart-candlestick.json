@@ -92,6 +92,43 @@
         "required": false,
         "default": "false",
         "description": "Marks only — no axes. For micro/inline charts."
+      },
+      {
+        "name": "annotations",
+        "type": "Annotation[]",
+        "required": false,
+        "description": "Reference lines/bands/markers over the plot (e.g. a last-price rule)."
+      },
+      {
+        "name": "brush",
+        "type": "boolean",
+        "required": false,
+        "description": "Keyboard-operable Brush below the plot to subset the candles to a window."
+      },
+      {
+        "name": "dataZoom",
+        "type": "boolean",
+        "required": false,
+        "description": "DataZoom slider below the plot — a Brush whose body also pans the window."
+      },
+      {
+        "name": "zoom",
+        "type": "boolean",
+        "required": false,
+        "description": "In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window."
+      },
+      {
+        "name": "syncId",
+        "type": "string",
+        "required": false,
+        "description": "Connect charts sharing this id — they mirror the zoom window."
+      },
+      {
+        "name": "tooltipMode",
+        "type": "'item' | 'axis'",
+        "required": false,
+        "default": "item",
+        "description": "item (nearest candle) or axis (crosshair + OHLC at the hovered x)."
       }
     ],
     "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],
@@ -101,6 +138,7 @@
       "keyboard": [
         "Tab (focus chart)",
         "ArrowLeft/ArrowRight (navigate candles)",
+        "+/- (zoom), 0 (reset) when zoom enabled",
         "Escape (clear focus)"
       ]
     },
@@ -108,6 +146,10 @@
       {
         "title": "OHLC price series",
         "code": "import { Candlestick } from '@cascivo/charts'\n\n<Candlestick\n  title=\"ACME daily\"\n  tooltip\n  data={[\n    { t: 'Mon', open: 10, high: 14, low: 9, close: 13 },\n    { t: 'Tue', open: 13, high: 15, low: 11, close: 11 },\n    { t: 'Wed', open: 11, high: 12, low: 8, close: 9 },\n  ]}\n/>"
+      },
+      {
+        "title": "Zoomable with a last-price rule",
+        "code": "<Candlestick\n  title=\"ACME daily\"\n  data={candles}\n  volume\n  zoom\n  dataZoom\n  tooltipMode=\"axis\"\n  annotations={[{ kind: 'line', axis: 'y', value: lastClose, label: '42.77' }]}\n/>"
       }
     ],
     "dependencies": ["@cascivo/charts"],

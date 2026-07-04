@@ -1,0 +1,147 @@
+/* Transparent header — app CSS is unlayered, so it beats the component layer's
+   surface background. Header content stays token-colored and legible. */
+.transparentHeader {
+  background: transparent;
+  border-block-end-color: transparent;
+}
+
+/* The header nav belongs to the desktop terminal; a 390px header can't hold it
+   alongside the live controls + portfolio, and the mobile app is single-view. */
+.transparentHeader nav {
+  display: none;
+}
+@media (min-width: 64rem) {
+  .transparentHeader nav {
+    display: block;
+  }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+}
+
+/* LIVE + Pause: hidden on small screens so the portfolio + profile stay
+   reachable; the simulation keeps running. */
+.simControls {
+  display: none;
+  align-items: center;
+  gap: var(--cascivo-space-3);
+}
+@media (min-width: 40rem) {
+  .simControls {
+    display: flex;
+  }
+}
+
+.live {
+  font-size: var(--cascivo-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--cascivo-color-success);
+}
+
+/* Base: single dense column (mobile-first). Three column-groups stack; the
+   order ticket lives in the bottom Sheet, so its group is hidden here. */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--cascivo-space-3);
+  padding: var(--cascivo-space-3);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+.colTicket {
+  display: none; /* content stays reachable via the Sheet below 64rem */
+}
+
+.tradeSticky {
+  position: sticky;
+  inset-block-end: var(--cascivo-space-3);
+  display: flex;
+  justify-content: center;
+  padding: var(--cascivo-space-3);
+  pointer-events: none;
+}
+.tradeSticky button {
+  pointer-events: auto;
+  min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  box-shadow: var(--cascivo-shadow-md, 0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+/* md — pair summary + orderbook inside the right group; tape spans below. */
+@media (min-width: 40rem) {
+  .colRight {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'summary orderbook'
+      'tape tape';
+    align-items: start;
+  }
+  .colRight > :nth-child(1) {
+    grid-area: summary;
+  }
+  .colRight > :nth-child(2) {
+    grid-area: orderbook;
+  }
+  .colRight > :nth-child(3) {
+    grid-area: tape;
+  }
+}
+
+/* lg — full-viewport three-column terminal; panels fill, no page scroll. */
+@media (min-width: 64rem) {
+  .grid {
+    block-size: 100%;
+    grid-template-columns: 18rem minmax(0, 1fr) 20rem;
+    overflow: hidden;
+  }
+  .colTicket {
+    display: flex;
+  }
+  .colRight {
+    display: flex; /* revert md grid → a vertical stack that fills the column */
+    align-items: stretch; /* override the md grid's align-items:start so cards span full width */
+  }
+  .colTicket > :only-child {
+    flex: 1; /* ticket fills the column */
+  }
+  /* Chart absorbs the leftover height; orders takes its natural (paginated) size
+     so its own scroller never has to appear. */
+  .colCenter > :first-child {
+    flex: 1 1 auto;
+    min-block-size: 14rem;
+  }
+  .colCenter > :last-child {
+    flex: 0 0 auto;
+  }
+  /* Summary + orderbook show at natural height (nothing clipped); the tape
+     flex-fills the remainder and clips its oldest rows — no scrollbars anywhere. */
+  .colRight > :nth-child(1),
+  .colRight > :nth-child(2) {
+    flex: 0 0 auto;
+  }
+  .colRight > :nth-child(3) {
+    flex: 1 1 auto;
+    min-block-size: 6rem;
+  }
+  .tradeSticky {
+    display: none;
+  }
+}
+
+/* xl — widen the rails for the reference's terminal density. */
+@media (min-width: 80rem) {
+  .grid {
+    grid-template-columns: 22rem minmax(0, 1fr) 24rem;
+  }
+}

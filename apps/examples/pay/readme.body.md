@@ -1,4 +1,4 @@
-Cascade Pay — a functional mock of a payments and revenue dashboard (feels like Stripe).
+Cascivo Pay — a functional mock of a payments and revenue dashboard (feels like Stripe).
 
 **Mock demo: no real backend.** Data loads via a client-side mock API with seeded latency. Refund
 mutations persist across reload via `@cascivo/storage`.

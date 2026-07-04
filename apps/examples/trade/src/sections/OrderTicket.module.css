@@ -1,0 +1,32 @@
+.ticket {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+
+@media (min-width: 64rem) {
+  .ticket {
+    overflow: hidden;
+  }
+}
+
+.title {
+  font-size: var(--cascivo-text-md);
+  font-weight: 600;
+  color: var(--cascivo-color-foreground);
+}
+
+.disclaimer {
+  font-size: var(--cascivo-text-xs);
+  line-height: 1.5;
+  color: var(--cascivo-color-foreground-muted);
+}
+
+/* Ensure the submit + steppers meet the coarse-pointer touch target. */
+@media (pointer: coarse) {
+  .ticket button {
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  }
+}

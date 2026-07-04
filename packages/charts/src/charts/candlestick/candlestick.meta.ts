@@ -80,6 +80,43 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes. For micro/inline charts.',
     },
+    {
+      name: 'annotations',
+      type: 'Annotation[]',
+      required: false,
+      description: 'Reference lines/bands/markers over the plot (e.g. a last-price rule).',
+    },
+    {
+      name: 'brush',
+      type: 'boolean',
+      required: false,
+      description: 'Keyboard-operable Brush below the plot to subset the candles to a window.',
+    },
+    {
+      name: 'dataZoom',
+      type: 'boolean',
+      required: false,
+      description: 'DataZoom slider below the plot — a Brush whose body also pans the window.',
+    },
+    {
+      name: 'zoom',
+      type: 'boolean',
+      required: false,
+      description: 'In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window.',
+    },
+    {
+      name: 'syncId',
+      type: 'string',
+      required: false,
+      description: 'Connect charts sharing this id — they mirror the zoom window.',
+    },
+    {
+      name: 'tooltipMode',
+      type: "'item' | 'axis'",
+      required: false,
+      default: 'item',
+      description: 'item (nearest candle) or axis (crosshair + OHLC at the hovered x).',
+    },
   ],
   tokens: ['--cascivo-chart-2', '--cascivo-chart-4', '--cascivo-chart-grid'],
   accessibility: {
@@ -88,6 +125,7 @@ export const meta: ComponentMeta = {
     keyboard: [
       'Tab (focus chart)',
       'ArrowLeft/ArrowRight (navigate candles)',
+      '+/- (zoom), 0 (reset) when zoom enabled',
       'Escape (clear focus)',
     ],
   },
@@ -104,6 +142,18 @@ export const meta: ComponentMeta = {
     { t: 'Tue', open: 13, high: 15, low: 11, close: 11 },
     { t: 'Wed', open: 11, high: 12, low: 8, close: 9 },
   ]}
+/>`,
+    },
+    {
+      title: 'Zoomable with a last-price rule',
+      code: `<Candlestick
+  title="ACME daily"
+  data={candles}
+  volume
+  zoom
+  dataZoom
+  tooltipMode="axis"
+  annotations={[{ kind: 'line', axis: 'y', value: lastClose, label: '42.77' }]}
 />`,
     },
   ],
