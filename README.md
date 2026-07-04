@@ -5,6 +5,8 @@
   <h1>cascivo</h1>
   <p><strong>The CSS-native, signal-driven, AI-first React design system</strong></p>
 
+[![CI](https://img.shields.io/github/actions/workflow/status/cascivo/cascivo/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/cascivo/cascivo/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/cascivo?style=flat-square&color=0079bf&label=cascivo)](https://www.npmjs.com/package/cascivo)
 [![license](https://img.shields.io/github/license/cascivo/cascivo?style=flat-square&color=0079bf)](https://github.com/cascivo/cascivo/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)

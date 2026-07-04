@@ -37,6 +37,8 @@ function badge(label: string, message: string, color: string, opts?: { logo?: st
 
 function rootBadges(componentCount: number, themeCount: number): string {
   return [
+    `[![CI](https://img.shields.io/github/actions/workflow/status/cascivo/cascivo/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/cascivo/cascivo/actions/workflows/ci.yml)`,
+    `[![npm](https://img.shields.io/npm/v/cascivo?style=flat-square&color=${BRAND}&label=cascivo)](https://www.npmjs.com/package/cascivo)`,
     `[![license](https://img.shields.io/github/license/cascivo/cascivo?style=flat-square&color=${BRAND})](https://github.com/cascivo/cascivo/blob/main/LICENSE)`,
     `[${badge('TypeScript', 'strict', BRAND, { logo: 'typescript' })}](https://www.typescriptlang.org/)`,
     `[${badge('React', '18%2B', BRAND, { logo: 'react' })}](https://react.dev/)`,
