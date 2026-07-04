@@ -1,4 +1,4 @@
-import { CATEGORY_LABELS, getComponent } from '../data'
+import { CATEGORY_LABELS, getComponent, type RegistryEntry } from '../data'
 import { demos } from '../demos'
 import { CodeBlock } from './components/CodeBlock'
 import { PropsTable } from './components/PropsTable'
@@ -7,6 +7,43 @@ import { TokenList } from './components/TokenList'
 function storybookUrl(category: string, name: string): string {
   const slug = `${category}-${name.toLowerCase().replace(/[^a-z0-9]/g, '')}`
   return `https://storybook.cascivo.com/?path=/story/${slug}--primary`
+}
+
+// Mirrors packageFor()/install logic in scripts/llms/generate.ts so the doc page
+// and the AI docs agree: charts ship as @cascivo/charts; components install via
+// the CLI (copy-paste) and, when published, from the prebuilt @cascivo/react.
+function InstallSection({ entry }: { entry: RegistryEntry }) {
+  const exportName = entry.meta.name
+  if (entry.type === 'chart') {
+    return (
+      <section class="doc-section">
+        <h2>Installation</h2>
+        <p class="muted">
+          Charts ship in the <code>@cascivo/charts</code> package:
+        </p>
+        <CodeBlock lang="bash" code="pnpm add @cascivo/charts" />
+        <CodeBlock lang="tsx" code={`import { ${exportName} } from '@cascivo/charts'`} />
+      </section>
+    )
+  }
+  const fromReact = (entry.files?.[0] ?? '').includes('/packages/components/src/')
+  return (
+    <section class="doc-section">
+      <h2>Installation</h2>
+      <p class="muted">Copy the source into your project — you own it and can edit it:</p>
+      <CodeBlock lang="bash" code={`npx cascivo add ${entry.name}`} />
+      {fromReact ? (
+        <>
+          <p class="muted">Or use it from the prebuilt package, without copying:</p>
+          <CodeBlock lang="tsx" code={`import { ${exportName} } from '@cascivo/react'`} />
+        </>
+      ) : (
+        <p class="muted">
+          Copy-paste only — this block/layout is not published as an importable package.
+        </p>
+      )}
+    </section>
+  )
 }
 
 function Chips({ values }: { values: string[] }) {
@@ -45,6 +82,8 @@ export function ComponentPage({ name }: { name?: string }) {
         <h1>{meta.name}</h1>
         <p class="doc-lede">{meta.description}</p>
       </header>
+
+      <InstallSection entry={entry} />
 
       <section class="doc-section">
         <h2>Preview</h2>
