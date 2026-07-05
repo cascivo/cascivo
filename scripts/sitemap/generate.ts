@@ -37,6 +37,7 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs/benchmarks', priority: '0.7' },
   { path: '/docs/parity', priority: '0.7' },
   { path: '/docs/migrating', priority: '0.7' },
+  { path: '/docs/keyboard', priority: '0.6' },
   { path: '/docs/brand', priority: '0.6' },
 ]
 

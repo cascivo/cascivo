@@ -113,6 +113,10 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/keyboard</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/brand</loc>
     <priority>0.6</priority>
   </url>

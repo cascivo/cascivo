@@ -29,6 +29,7 @@ import { EditorPage } from './pages/EditorPage'
 import { FlowPage } from './pages/FlowPage'
 import { ComponentPage } from './pages/ComponentPage'
 import { ApiReferencePage } from './pages/ApiReferencePage'
+import { KeyboardReferencePage } from './pages/KeyboardReferencePage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { PlaygroundPage } from './pages/PlaygroundPage'
 import { Benchmarks } from './pages/Benchmarks'
@@ -51,6 +52,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs': Home,
   '/docs/getting-started': GettingStartedPage,
   '/docs/api': ApiReferencePage,
+  '/docs/keyboard': KeyboardReferencePage,
   '/docs/ai': AiPage,
   '/docs/charts': ChartsPage,
   '/docs/editor': EditorPage,
@@ -73,6 +75,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
 const exploreItems = [
   { label: 'Getting Started', href: '/docs/getting-started', icon: <Zap size={16} /> },
   { label: 'API reference', href: '/docs/api', icon: <Grid size={16} /> },
+  { label: 'Keyboard reference', href: '/docs/keyboard', icon: <Grid size={16} /> },
   { label: 'AI / MCP', href: '/docs/ai', icon: <Server size={16} /> },
   { label: 'Context Explorer', href: '/docs/context', icon: <Eye size={16} /> },
   { label: 'Design Tokens', href: '/docs/tokens', icon: <Layers size={16} /> },

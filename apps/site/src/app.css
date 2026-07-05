@@ -250,6 +250,42 @@ a {
   margin-block: var(--cascivo-space-2);
 }
 
+/* ── Keyboard reference ───────────────────────────────── */
+.kbd-ref-scroll {
+  overflow-x: auto;
+}
+
+.kbd-ref-table {
+  inline-size: 100%;
+  min-inline-size: 30rem;
+  border-collapse: collapse;
+}
+
+.kbd-ref-table th,
+.kbd-ref-table td {
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
+  text-align: start;
+  vertical-align: top;
+  border-block-end: 1px solid var(--cascivo-color-border);
+}
+
+.kbd-ref-table thead th {
+  color: var(--cascivo-color-text-subtle);
+  font-weight: var(--cascivo-font-medium);
+  white-space: nowrap;
+}
+
+.kbd-ref-table tbody th {
+  font-weight: var(--cascivo-font-medium);
+  white-space: nowrap;
+}
+
+.kbd-ref-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-1);
+}
+
 /* ── Tables ───────────────────────────────────────────── */
 .table-wrap {
   overflow-x: auto;

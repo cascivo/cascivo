@@ -26,6 +26,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Every cascivo component prop, variant, and size in one searchable reference — filter by component or prop name.',
   },
+  '/keyboard': {
+    title: `Keyboard reference${SUFFIX}`,
+    description:
+      'Every keyboard interaction in cascivo, derived from each component’s manifest — filter by component, ARIA role, or key.',
+  },
   '/charts': {
     title: `Charts${SUFFIX}`,
     description:
