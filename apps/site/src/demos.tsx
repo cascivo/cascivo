@@ -103,6 +103,12 @@ import { DateRangePicker } from '@cascivo/components/date-range-picker'
 import { Swap } from '@cascivo/components/swap'
 import { ToggleGroup } from '@cascivo/components/toggle-group'
 import { TreeView } from '@cascivo/components/tree-view'
+import { AvatarGroup } from '@cascivo/components/avatar-group'
+import { User } from '@cascivo/components/user'
+import { QrCode } from '@cascivo/components/qr-code'
+import { RelativeTime } from '@cascivo/components/relative-time'
+import { Toggletip } from '@cascivo/components/toggletip'
+import { Info } from '@cascivo/icons'
 
 function Row({ children }: { children: ComponentChildren }) {
   return (
@@ -498,6 +504,20 @@ function TreeViewDemo() {
 }
 
 export const demos: Record<string, () => JSX.Element> = {
+  'avatar-group': () => (
+    <AvatarGroup max={3} total={5}>
+      <Avatar fallback="AC" />
+      <Avatar fallback="BS" />
+      <Avatar fallback="CD" />
+      <Avatar fallback="DW" />
+    </AvatarGroup>
+  ),
+  user: () => <User name="Jane Doe" description="jane@acme.com" avatarProps={{ fallback: 'JD' }} />,
+  'qr-code': () => <QrCode value="https://cascivo.com" size={120} />,
+  'relative-time': () => <RelativeTime date={Date.now() - 3600_000} />,
+  toggletip: () => (
+    <Toggletip trigger={<Info />}>Your password must contain at least 12 characters.</Toggletip>
+  ),
   button: () => (
     <Row>
       <Button variant="primary">Primary</Button>

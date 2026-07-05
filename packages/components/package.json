@@ -10,6 +10,7 @@
     "./alert-dialog": "./src/alert-dialog/alert-dialog.tsx",
     "./aspect-ratio": "./src/aspect-ratio/aspect-ratio.tsx",
     "./avatar": "./src/avatar/avatar.tsx",
+    "./avatar-group": "./src/avatar-group/avatar-group.tsx",
     "./badge": "./src/badge/badge.tsx",
     "./blockquote": "./src/blockquote/blockquote.tsx",
     "./breadcrumb": "./src/breadcrumb/breadcrumb.tsx",
@@ -75,10 +76,12 @@
     "./progress-circle": "./src/progress-circle/progress-circle.tsx",
     "./progress-indicator": "./src/progress-indicator/progress-indicator.tsx",
     "./prose": "./src/prose/prose.tsx",
+    "./qr-code": "./src/qr-code/qr-code.tsx",
     "./radial-progress": "./src/radial-progress/radial-progress.tsx",
     "./radio": "./src/radio/radio.tsx",
     "./radio-card": "./src/radio-card/radio-card.tsx",
     "./rating-group": "./src/rating-group/rating-group.tsx",
+    "./relative-time": "./src/relative-time/relative-time.tsx",
     "./resizable": "./src/resizable/resizable.tsx",
     "./scroll-area": "./src/scroll-area/scroll-area.tsx",
     "./search": "./src/search/search.tsx",
@@ -112,6 +115,7 @@
     "./toggletip": "./src/toggletip/toggletip.tsx",
     "./tooltip": "./src/tooltip/tooltip.tsx",
     "./tree-view": "./src/tree-view/tree-view.tsx",
+    "./user": "./src/user/user.tsx",
     "./visually-hidden": "./src/visually-hidden/visually-hidden.tsx"
   },
   "scripts": {
