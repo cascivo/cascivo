@@ -1502,6 +1502,18 @@ kbd {
   font-weight: var(--cascivo-font-medium);
 }
 
+.compare-feature-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--cascivo-color-border);
+  text-underline-offset: 0.2em;
+}
+
+.compare-feature-link:hover {
+  text-decoration-color: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-hover);
+}
+
 /* ── Home showcase strip (real products) ──────────────── */
 .showcase-strip {
   scroll-margin-block-start: 5rem;
