@@ -11,6 +11,23 @@ const MCP_SETUP = `// .claude/settings.json
   }
 }`
 
+const AGENT_SESSION = `# An illustrative agent session — select, scaffold, validate.
+
+User: "Add a searchable table of invoices with status badges, keyboard accessible."
+
+agent → select_component { needs: "tabular data · sortable · filterable · a11y" }
+      ← data-table   (sort · filter · pagination · row selection · WCAG 2.2 AA · ⌘-nav)
+
+agent → scaffold_view "invoices table with a status column and a search box"
+      ← view.json { regions: [ search, data-table ] }
+
+agent → validate_view view.json
+      ← ⚠ data-table.columns[2] hard-codes "#16a34a"
+         → render a <status> or use --cascivo-color-success (see get_tokens)
+
+agent (fixes the column, re-runs) → validate_view view.json
+      ← ✓ 0 invented props · 0 raw values · all required wiring present`
+
 const VIEW_QUICKSTART = `// view.json — describe a page in JSON, generate owned React code
 {
   "version": "1",
@@ -41,22 +58,52 @@ export function AiPage() {
       </header>
 
       <section class="doc-section">
+        <h2>Not just install — select, scaffold, validate</h2>
+        <p>
+          Most component MCP servers browse a registry and install items. cascivo does that too (
+          <code>list_components</code>, <code>search_components</code>, <code>get_component</code>,{' '}
+          <code>add_to_project</code>) — and then goes further, because every component ships a
+          manifest and every token is a closed set. An agent can{' '}
+          <strong>select by constraint</strong> (<code>select_component</code>),{' '}
+          <strong>scaffold a whole view</strong> from a grammar (<code>scaffold_view</code> ·{' '}
+          <code>get_view_grammar</code>), and <strong>validate its own output</strong> against the
+          manifests and tokens (<code>validate_view</code> · <code>validate_component</code>). The
+          agent doesn&rsquo;t just get code — it gets told when the code is wrong.
+        </p>
+        <CodeBlock code={AGENT_SESSION} lang="bash" />
+        <p class="muted">
+          The same checks run in your codebase with <code>cascivo audit --ai</code> — it flags
+          hard-coded values, invented props, and missing required wiring in generated code.
+        </p>
+      </section>
+
+      <section class="doc-section">
         <h2>MCP server setup</h2>
         <p>Add the cascivo MCP server to your Claude Code (or any MCP-compatible agent) config:</p>
         <CodeBlock code={MCP_SETUP} lang="bash" />
-        <p>Available MCP tools:</p>
+        <p>Key MCP tools (20 in total — browse, select, scaffold, validate, theme, install):</p>
         <ul>
           <li>
-            <code>list_components</code> — list all components with category and tags
+            <code>list_components</code> / <code>search_components</code> — browse by category, tag,
+            or query
           </li>
           <li>
-            <code>get_component</code> — full component manifest with props, tokens, examples
+            <code>get_component</code> — full manifest: props, tokens, states, a11y, examples
           </li>
           <li>
-            <code>scaffold_view</code> — natural language description → JSON view config
+            <code>select_component</code> — pick the right component from a described constraint
           </li>
           <li>
-            <code>validate_view</code> — validate a view config against the schema
+            <code>scaffold_view</code> / <code>get_view_grammar</code> — description → validated
+            JSON view config
+          </li>
+          <li>
+            <code>validate_view</code> / <code>validate_component</code> — check generated output
+            against the manifests and closed token set
+          </li>
+          <li>
+            <code>get_tokens</code> / <code>get_context</code> / <code>create_theme</code> — tokens,
+            intent/boundaries, and brand themes
           </li>
           <li>
             <code>add_to_project</code> — install components into the user project
