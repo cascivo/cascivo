@@ -33,6 +33,7 @@ import { KeyboardReferencePage } from './pages/KeyboardReferencePage'
 import { PlatformPage } from './pages/PlatformPage'
 import { FaqPage } from './pages/FaqPage'
 import { ChangelogPage } from './pages/ChangelogPage'
+import { UpgradingPage } from './pages/UpgradingPage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { PlaygroundPage } from './pages/PlaygroundPage'
 import { Benchmarks } from './pages/Benchmarks'
@@ -59,6 +60,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs/platform': PlatformPage,
   '/docs/faq': FaqPage,
   '/docs/changelog': ChangelogPage,
+  '/docs/upgrading': UpgradingPage,
   '/docs/ai': AiPage,
   '/docs/charts': ChartsPage,
   '/docs/editor': EditorPage,
@@ -92,6 +94,7 @@ const exploreItems = [
   { label: 'Parity', href: '/docs/parity', icon: <Grid size={16} /> },
   { label: 'Migrating from shadcn', href: '/docs/migrating', icon: <Grid size={16} /> },
   { label: 'Changelog', href: '/docs/changelog', icon: <Grid size={16} /> },
+  { label: 'Upgrading', href: '/docs/upgrading', icon: <Check size={16} /> },
   { label: 'Brand', href: '/docs/brand', icon: <Eye size={16} /> },
   { label: 'Benchmarks', href: '/docs/benchmarks', icon: <BarChart size={16} /> },
   { label: 'Charts', href: '/docs/charts', icon: <BarChart size={16} /> },

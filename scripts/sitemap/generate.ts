@@ -30,6 +30,7 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs/why', priority: '0.8' },
   { path: '/docs/faq', priority: '0.7' },
   { path: '/docs/platform', priority: '0.7' },
+  { path: '/docs/upgrading', priority: '0.7' },
   { path: '/docs/ai', priority: '0.8' },
   { path: '/docs/directory', priority: '0.8' },
   { path: '/docs/context', priority: '0.8' },

@@ -46,6 +46,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Major and minor releases per published cascivo package, parsed from changesets — compare against your installed versions to detect API drift.',
   },
+  '/upgrading': {
+    title: `Upgrading${SUFFIX}`,
+    description:
+      'How cascivo updates owned copy-in components without clobbering your edits: a versioned registry, a lockfile, and a real three-way merge via cascivo update.',
+  },
   '/charts': {
     title: `Charts${SUFFIX}`,
     description:
