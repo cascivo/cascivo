@@ -32,7 +32,11 @@ playwright-report/
 
 # Brainstorm sessions (already ignored, confirm it's here)
 .superpowers/
+# Component lockfile written into a consumer project by `cascivo add/update`
+# (and by CLI integration tests). Never a repo artifact; the legacy name was
+# `cascade.lock`.
 cascade.lock
+cascivo.lock
 
 tmppackages/*/.types-tmp/
 tmp
