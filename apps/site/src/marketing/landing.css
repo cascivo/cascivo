@@ -4094,26 +4094,17 @@ kbd {
   scroll-margin-block-start: 5rem;
 }
 
-/* Social-proof / credibility strip — sits directly under the hero CTAs. */
+/* Social-proof / credibility strip — sits below the hero's live theme preview. */
 .social-proof {
   max-width: 60rem;
   margin-inline: auto;
   padding-inline: var(--cascivo-space-6);
-  margin-block-start: calc(-1 * var(--cascivo-space-8));
+  margin-block-start: var(--cascivo-space-4);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--cascivo-space-4);
   text-align: center;
-}
-
-/* The negative tuck assumes the shorter desktop hero; on mobile the hero wraps
-   taller and the CTAs stack, so drop the pull-up to avoid colliding with the
-   hero's copy-command. */
-@media (max-width: 39.99rem) {
-  .social-proof {
-    margin-block-start: var(--cascivo-space-4);
-  }
 }
 
 .social-proof-lead {
@@ -4198,6 +4189,103 @@ kbd {
 
 .hero-title-accent {
   color: var(--cascivo-color-accent);
+}
+
+/* ── Hero live theme preview ──────────────────────────── */
+.hero-preview {
+  inline-size: min(100%, 30rem);
+  margin-inline: auto;
+  margin-block-start: var(--cascivo-space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-3);
+}
+
+.hero-preview-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--cascivo-space-2);
+}
+
+.hero-preview-chip {
+  padding: var(--cascivo-space-1) var(--cascivo-space-3);
+  font: inherit;
+  font-size: var(--cascivo-text-sm);
+  text-transform: capitalize;
+  color: var(--cascivo-color-text-subtle);
+  background: transparent;
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-full);
+  cursor: pointer;
+  min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+@media (pointer: fine) {
+  .hero-preview-chip {
+    min-block-size: auto;
+  }
+}
+
+.hero-preview-chip:hover {
+  color: var(--cascivo-color-text);
+  border-color: var(--cascivo-color-text-subtle);
+}
+
+.hero-preview-chip[data-active] {
+  color: var(--cascivo-color-accent-foreground);
+  background-color: var(--cascivo-color-accent);
+  border-color: var(--cascivo-color-accent);
+}
+
+.hero-preview-chip:focus-visible {
+  outline: 2px solid var(--cascivo-color-accent);
+  outline-offset: 2px;
+}
+
+.hero-preview-stage {
+  padding: var(--cascivo-space-5);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-lg);
+  background-color: var(--cascivo-color-bg);
+  color: var(--cascivo-color-text);
+  text-align: start;
+  transition: background-color 0.2s ease;
+}
+
+.hero-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--cascivo-space-2);
+}
+
+.hero-preview-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-4);
+}
+
+.hero-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cascivo-space-2);
+}
+
+.hero-preview-cap {
+  margin: 0;
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+  text-align: center;
+}
+
+.hero-preview-cap a {
+  color: var(--cascivo-color-accent-hover);
+  font-weight: var(--cascivo-font-medium);
+  white-space: nowrap;
 }
 
 .hero-sub {
