@@ -62,7 +62,14 @@ function injectCounts(): Plugin {
  */
 function rewriteHead(
   html: string,
-  opts: { title: string; description: string; canonical: string; ogTitle: string; robots: string },
+  opts: {
+    title: string
+    description: string
+    canonical: string
+    ogTitle: string
+    robots: string
+    ogImage?: string
+  },
 ): string {
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
   const metaContent = (h: string, attrPair: string, value: string) =>
@@ -82,6 +89,11 @@ function rewriteHead(
   out = metaContent(out, 'property="og:url"', opts.canonical)
   out = metaContent(out, 'name="twitter:title"', opts.ogTitle)
   out = metaContent(out, 'name="twitter:description"', opts.description)
+  if (opts.ogImage) {
+    const abs = `https://cascivo.com${opts.ogImage}`
+    out = metaContent(out, 'property="og:image"', abs)
+    out = metaContent(out, 'name="twitter:image"', abs)
+  }
   return out
 }
 
@@ -106,6 +118,7 @@ function prerenderHeads(): Plugin {
           canonical: canonicalFor(`/${route}`),
           ogTitle: head.ogTitle ?? head.title,
           robots: 'index, follow',
+          ogImage: head.ogImage,
         })
         mkdirSync(resolve(dist, route), { recursive: true })
         writeFileSync(resolve(dist, route, 'index.html'), html)
