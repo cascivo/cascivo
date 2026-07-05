@@ -250,6 +250,70 @@ a {
   margin-block: var(--cascivo-space-2);
 }
 
+/* ── Changelog ────────────────────────────────────────── */
+.changelog-pkg h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--cascivo-space-2);
+  font-size: var(--cascivo-text-lg);
+}
+
+.changelog-current {
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.changelog-src {
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent-hover);
+  margin-inline-start: auto;
+}
+
+.changelog-releases {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--cascivo-space-2);
+}
+
+.changelog-releases li {
+  display: grid;
+  grid-template-columns: 4rem 4rem 1fr;
+  gap: var(--cascivo-space-3);
+  align-items: baseline;
+  padding-block: var(--cascivo-space-1);
+}
+
+.changelog-ver {
+  font-family: var(--cascivo-font-mono);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+}
+
+.changelog-level {
+  font-size: var(--cascivo-text-xs);
+  font-weight: var(--cascivo-font-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--cascivo-tracking-wide, 0.02em);
+}
+
+.changelog-notes {
+  color: var(--cascivo-color-text-subtle);
+  font-size: var(--cascivo-text-sm);
+}
+
+@media (max-width: 30rem) {
+  .changelog-releases li {
+    grid-template-columns: 1fr;
+    gap: var(--cascivo-space-1);
+  }
+}
+
 /* ── FAQ ──────────────────────────────────────────────── */
 .faq-entry h2 {
   font-size: var(--cascivo-text-xl);

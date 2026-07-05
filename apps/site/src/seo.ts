@@ -41,6 +41,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Frequently asked questions about cascivo — licensing, adopting one component, Next.js/RSC, Tailwind, theming, and how it compares to shadcn/ui.',
   },
+  '/changelog': {
+    title: `Changelog${SUFFIX}`,
+    description:
+      'Major and minor releases per published cascivo package, parsed from changesets — compare against your installed versions to detect API drift.',
+  },
   '/charts': {
     title: `Charts${SUFFIX}`,
     description:
