@@ -17,6 +17,12 @@ import { Radar } from '@cascivo/charts'
 import { Bullet } from '@cascivo/charts'
 import { RadialBar } from '@cascivo/charts'
 import { Funnel } from '@cascivo/charts'
+import { Calendar } from '@cascivo/charts'
+import { Candlestick } from '@cascivo/charts'
+import { Gauge } from '@cascivo/charts'
+import { Polar } from '@cascivo/charts'
+import { Stream } from '@cascivo/charts'
+import { Sunburst } from '@cascivo/charts'
 
 // Small, self-contained sample datasets — mirrors the proven usages on the
 // /docs/charts gallery page so each component's own doc page renders one live,
@@ -75,6 +81,63 @@ const scatterSeries = [
 ]
 
 const sparkData = [120, 132, 101, 134, 90, 230, 210, 182, 191, 234, 290, 330]
+
+const DAY_MS = 86_400_000
+const calendarData = Array.from({ length: 70 }, (_, i) => ({
+  day: new Date(Date.UTC(2024, 0, 1) + i * DAY_MS).toISOString().slice(0, 10),
+  value: (i * 7 + (i % 5) * 11) % 40,
+}))
+
+const candleData = Array.from({ length: 14 }, (_, i) => {
+  const open = 100 + i * 3 + (i % 3) * 4
+  const close = open + (i % 2 === 0 ? 1 : -1) * (3 + (i % 4))
+  return {
+    t: `D${i + 1}`,
+    open,
+    high: Math.max(open, close) + 3,
+    low: Math.min(open, close) - 3,
+    close,
+  }
+})
+
+const polarData = [
+  { label: 'N', value: 20 },
+  { label: 'NE', value: 34 },
+  { label: 'E', value: 28 },
+  { label: 'SE', value: 16 },
+  { label: 'S', value: 24 },
+  { label: 'SW', value: 38 },
+  { label: 'W', value: 30 },
+  { label: 'NW', value: 12 },
+]
+
+const streamCategories = ['W1', 'W2', 'W3', 'W4', 'W5', 'W6']
+const streamSeries = [
+  { id: 'search', label: 'Search', values: [10, 14, 12, 18, 16, 22] },
+  { id: 'direct', label: 'Direct', values: [8, 10, 14, 12, 16, 14] },
+  { id: 'social', label: 'Social', values: [4, 6, 5, 9, 8, 12] },
+]
+
+const sunburstData = {
+  label: 'Traffic',
+  children: [
+    {
+      label: 'Search',
+      children: [
+        { label: 'Google', value: 40 },
+        { label: 'Bing', value: 8 },
+      ],
+    },
+    { label: 'Direct', value: 25 },
+    {
+      label: 'Social',
+      children: [
+        { label: 'X', value: 12 },
+        { label: 'LinkedIn', value: 9 },
+      ],
+    },
+  ],
+}
 
 /** Keyed by the chart slug WITHOUT the `chart/` category prefix. */
 export const chartDemos: Record<string, () => JSX.Element> = {
@@ -237,4 +300,31 @@ export const chartDemos: Record<string, () => JSX.Element> = {
       tooltip
     />
   ),
+  calendar: () => <Calendar data={calendarData} title="Contributions" height={160} />,
+  candlestick: () => <Candlestick data={candleData} title="Price (OHLC)" height={260} volume />,
+  gauge: () => (
+    <Gauge
+      value={68}
+      unit="%"
+      title="Throughput"
+      width={240}
+      height={170}
+      thresholds={[
+        { upTo: 50, color: 'var(--cascivo-color-success)' },
+        { upTo: 80, color: 'var(--cascivo-color-warning)' },
+        { upTo: 100, color: 'var(--cascivo-color-destructive)' },
+      ]}
+    />
+  ),
+  polar: () => <Polar data={polarData} title="Wind by direction" mode="bar" height={260} />,
+  stream: () => (
+    <Stream
+      series={streamSeries}
+      categories={streamCategories}
+      title="Channels over time"
+      height={260}
+      legend
+    />
+  ),
+  sunburst: () => <Sunburst data={sunburstData} title="Traffic breakdown" height={260} />,
 }

@@ -31,6 +31,15 @@ export declare function Radar(props: { series?: unknown[]; [key: string]: unknow
 export declare function Bullet(props: { value?: number; [key: string]: unknown }): JSX.Element
 export declare function RadialBar(props: { data?: unknown[]; [key: string]: unknown }): JSX.Element
 export declare function Funnel(props: { data?: unknown[]; [key: string]: unknown }): JSX.Element
+export declare function Calendar(props: { data?: unknown[]; [key: string]: unknown }): JSX.Element
+export declare function Candlestick(props: {
+  data?: unknown[]
+  [key: string]: unknown
+}): JSX.Element
+export declare function Gauge(props: { value?: number; [key: string]: unknown }): JSX.Element
+export declare function Polar(props: { data?: unknown[]; [key: string]: unknown }): JSX.Element
+export declare function Stream(props: { series?: unknown[]; [key: string]: unknown }): JSX.Element
+export declare function Sunburst(props: { data?: unknown; [key: string]: unknown }): JSX.Element
 export declare function toStackedSeries(rows: readonly unknown[]): {
   series: unknown[]
   x: Accessor<unknown>
