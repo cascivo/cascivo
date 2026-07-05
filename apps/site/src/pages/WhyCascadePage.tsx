@@ -208,7 +208,7 @@ const CLAIMS: Claim[] = [
     number: 36,
     title: 'The catalog keeps closing the gap',
     substance:
-      'Every parity gap is a real factory-backlog.json entry; the dark factory builds them on the v18 ' +
+      'Every parity gap is a real backlog entry; the dark factory builds them on the v18 ' +
       'primitives. v18 shipped 29 of them — the Tier-1 a11y substrate (Label, Field, Button Group, ' +
       'Toggle Group, Icon Button, Inline Loading, Notification, Scroll Area, Collapsible, Aspect Ratio) ' +
       'and the Tier-2 structural set (Navigation Menu, Menubar, Menu Button, Toggletip, Resizable, ' +

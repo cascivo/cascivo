@@ -238,10 +238,9 @@ cascade/
 │       └── react-next/ # Next.js App Router example (RSC demo)
 ├── skills/             # Claude Code skills — cascivo:add, cascivo:design-page, cascivo:create-theme, cascivo:extend
 ├── scripts/
-│   ├── factory/        # Dark factory — headless Claude Code agents, factory-supervisor.sh
+│   ├── factory/        # Dark factory — in-session agent loop + backlog.json (component spec queue)
 │   └── registry/       # registry.json generation + GitHub raw URL map
-├── registry.json       # Component registry manifest — source of truth for CLI + MCP + docs
-└── factory-backlog.json # Queue of component specs for the dark factory
+└── registry.json       # Component registry manifest — source of truth for CLI + MCP + docs
 ```
 
 ### Tech Stack
@@ -322,7 +321,7 @@ Tiered automation:
 
 - **New components**: dark factory opens a PR → human reviews design + a11y → merge
 - **Patches, doc regeneration, story updates, lint fixes**: fully automated, auto-merged
-- **Trigger**: `factory-backlog.json` — queue of component specs the factory works through
+- **Trigger**: `scripts/factory/backlog.json` — queue of component specs the factory works through
 - **Loop**: generate → lint → type-check → test → if pass: open PR; if fail: self-heal (max 5 attempts) → escalate
 
 ### v1 Component List (~20)

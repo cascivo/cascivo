@@ -126,8 +126,8 @@ switch (command) {
     const { join } = await import('node:path')
     const { renderReport } = await import('./report.ts')
     const { loadResults } = await import('./results-io.ts')
-    writeFileSync(join(repoRoot, 'BENCHMARKS.md'), renderReport(loadResults(repoRoot)))
-    console.log('✓ BENCHMARKS.md written')
+    writeFileSync(join(repoRoot, 'docs', 'BENCHMARKS.md'), renderReport(loadResults(repoRoot)))
+    console.log('✓ docs/BENCHMARKS.md written')
     break
   }
 

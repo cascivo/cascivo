@@ -114,9 +114,8 @@ cascivo/
 │   ├── bench/        # performance benchmarks
 │   └── examples/     # runnable example apps (Vite, Next.js, registry starter, demos)
 ├── skills/           # Claude Code skills — cascivo:add, design-page, create-theme, extend
-├── scripts/          # registry/readme/context/token generators + quality gates
-├── registry.json     # machine-readable component index (CLI + MCP + docs read this)
-└── factory-backlog.json # dark-factory component queue
+├── scripts/          # registry/readme/context/token generators, quality gates, dark-factory backlog
+└── registry.json     # machine-readable component index (CLI + MCP + docs read this)
 ```
 
 ## Development

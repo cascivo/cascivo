@@ -1,6 +1,6 @@
 # Dark Factory
 
-The cascade dark factory generates new components from `factory-backlog.json`.
+The cascade dark factory generates new components from `backlog.json`.
 
 ## How it runs: inside Claude Code, not headless
 
@@ -20,7 +20,7 @@ agents) is intentionally **not** used here. Two reasons:
 
 ## The mechanism
 
-- **State** lives entirely in `factory-backlog.json` (`status`, `milestone`,
+- **State** lives entirely in `backlog.json` (`status`, `milestone`,
   `attempts` per item) plus git history. Any session can resume where the last
   one stopped — including mid-component.
 - **The supervisor is a skill:** [`.claude/skills/factory/SKILL.md`](../../.claude/skills/factory/SKILL.md).
@@ -33,7 +33,7 @@ agents) is intentionally **not** used here. Two reasons:
 
 ## Queueing components
 
-Append an item to `factory-backlog.json`:
+Append an item to `backlog.json`:
 
 ```json
 {
