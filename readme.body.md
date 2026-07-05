@@ -164,7 +164,7 @@ pnpm release            # build and publish changed packages to npm
 
 ## Contributing
 
-Contributions are welcome — bug reports, new components, theme proposals, docs, and fixes.
+Contributions are welcome — bug reports, new components, theme proposals, docs, and fixes. See where the project is headed in [ROADMAP.md](ROADMAP.md).
 
 1. Fork and create a feature branch.
 2. `pnpm install` to set up the workspace.
