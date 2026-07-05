@@ -31,6 +31,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Every keyboard interaction in cascivo, derived from each component’s manifest — filter by component, ARIA role, or key.',
   },
+  '/platform': {
+    title: `Built on the platform${SUFFIX}`,
+    description:
+      'cascivo builds controls on browser-native primitives — native dialog, the Popover API, CSS anchor positioning — not wrapped third-party dependencies. Measured line counts, zero runtime deps.',
+  },
   '/charts': {
     title: `Charts${SUFFIX}`,
     description:

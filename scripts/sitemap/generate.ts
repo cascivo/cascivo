@@ -28,6 +28,7 @@ const OUT_PATH = join(ROOT, 'apps', 'site', 'public', 'sitemap.xml')
 const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs', priority: '0.9' },
   { path: '/docs/why', priority: '0.8' },
+  { path: '/docs/platform', priority: '0.7' },
   { path: '/docs/ai', priority: '0.8' },
   { path: '/docs/directory', priority: '0.8' },
   { path: '/docs/context', priority: '0.8' },

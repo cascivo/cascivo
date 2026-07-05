@@ -1,0 +1,44 @@
+{
+  "components": [
+    {
+      "name": "radio",
+      "label": "Radio",
+      "primitive": "Native <input type=\"radio\">",
+      "loc": 166,
+      "files": 2,
+      "deps": 0
+    },
+    {
+      "name": "checkbox",
+      "label": "Checkbox",
+      "primitive": "Native <input type=\"checkbox\">",
+      "loc": 122,
+      "files": 2,
+      "deps": 0
+    },
+    {
+      "name": "toggle",
+      "label": "Switch",
+      "primitive": "Accessible <button> + :has()",
+      "loc": 136,
+      "files": 2,
+      "deps": 0
+    },
+    {
+      "name": "modal",
+      "label": "Dialog",
+      "primitive": "Native <dialog> + showModal()",
+      "loc": 286,
+      "files": 2,
+      "deps": 0
+    },
+    {
+      "name": "popover",
+      "label": "Popover",
+      "primitive": "Popover API + CSS anchor positioning",
+      "loc": 228,
+      "files": 4,
+      "deps": 0
+    }
+  ]
+}

@@ -30,6 +30,7 @@ import { FlowPage } from './pages/FlowPage'
 import { ComponentPage } from './pages/ComponentPage'
 import { ApiReferencePage } from './pages/ApiReferencePage'
 import { KeyboardReferencePage } from './pages/KeyboardReferencePage'
+import { PlatformPage } from './pages/PlatformPage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { PlaygroundPage } from './pages/PlaygroundPage'
 import { Benchmarks } from './pages/Benchmarks'
@@ -53,6 +54,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs/getting-started': GettingStartedPage,
   '/docs/api': ApiReferencePage,
   '/docs/keyboard': KeyboardReferencePage,
+  '/docs/platform': PlatformPage,
   '/docs/ai': AiPage,
   '/docs/charts': ChartsPage,
   '/docs/editor': EditorPage,
@@ -81,6 +83,7 @@ const exploreItems = [
   { label: 'Design Tokens', href: '/docs/tokens', icon: <Layers size={16} /> },
   { label: 'Icons', href: '/docs/icons', icon: <Grid size={16} /> },
   { label: 'Why cascivo', href: '/docs/why', icon: <Check size={16} /> },
+  { label: 'Built on the platform', href: '/docs/platform', icon: <Check size={16} /> },
   { label: 'Parity', href: '/docs/parity', icon: <Grid size={16} /> },
   { label: 'Migrating from shadcn', href: '/docs/migrating', icon: <Grid size={16} /> },
   { label: 'Brand', href: '/docs/brand', icon: <Eye size={16} /> },
