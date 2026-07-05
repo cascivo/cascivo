@@ -108,6 +108,13 @@ import { User } from '@cascivo/components/user'
 import { QrCode } from '@cascivo/components/qr-code'
 import { RelativeTime } from '@cascivo/components/relative-time'
 import { Toggletip } from '@cascivo/components/toggletip'
+import { AspectRatio } from '@cascivo/components/aspect-ratio'
+import { Stack } from '@cascivo/components/stack'
+import { Join } from '@cascivo/components/join'
+import { Indicator } from '@cascivo/components/indicator'
+import { ScrollArea } from '@cascivo/components/scroll-area'
+import { LogViewer } from '@cascivo/components/log-viewer'
+import { Toc } from '@cascivo/components/toc'
 import { Info } from '@cascivo/icons'
 
 function Row({ children }: { children: ComponentChildren }) {
@@ -517,6 +524,79 @@ export const demos: Record<string, () => JSX.Element> = {
   'relative-time': () => <RelativeTime date={Date.now() - 3600_000} />,
   toggletip: () => (
     <Toggletip trigger={<Info />}>Your password must contain at least 12 characters.</Toggletip>
+  ),
+  'aspect-ratio': () => (
+    <div style={{ maxWidth: '20rem', width: '100%' }}>
+      <AspectRatio ratio={16 / 9}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            blockSize: '100%',
+            fontFamily: 'var(--cascivo-font-mono)',
+            color: 'var(--cascivo-color-text-subtle)',
+            background: 'var(--cascivo-color-surface-raised)',
+            border: '1px solid var(--cascivo-color-border)',
+            borderRadius: 'var(--cascivo-radius-md)',
+          }}
+        >
+          16 / 9
+        </div>
+      </AspectRatio>
+    </div>
+  ),
+  stack: () => (
+    <Stack offset={10}>
+      <Avatar fallback="AC" />
+      <Avatar fallback="BS" />
+      <Avatar fallback="CD" />
+      <Avatar fallback="DW" />
+    </Stack>
+  ),
+  join: () => (
+    <Join>
+      <Button variant="secondary">Left</Button>
+      <Button variant="secondary">Center</Button>
+      <Button variant="secondary">Right</Button>
+    </Join>
+  ),
+  indicator: () => (
+    <Indicator overlay={<Badge variant="destructive">3</Badge>}>
+      <Button variant="secondary">Inbox</Button>
+    </Indicator>
+  ),
+  'scroll-area': () => (
+    <ScrollArea height="9rem" style={{ maxWidth: '20rem' }}>
+      <Col>
+        {Array.from({ length: 12 }, (_, i) => (
+          <Text key={i}>Scrollable row {i + 1}</Text>
+        ))}
+      </Col>
+    </ScrollArea>
+  ),
+  'log-viewer': () => (
+    <LogViewer
+      maxHeight="10rem"
+      lines={[
+        { id: 1, text: '[12:00:01] Build started', level: 'info' },
+        { id: 2, text: '[12:00:02] Resolving 128 modules', level: 'debug' },
+        { id: 3, text: '[12:00:03] Deprecation: legacy API in use', level: 'warn' },
+        { id: 4, text: '[12:00:04] Type error in src/app.tsx', level: 'error' },
+        { id: 5, text: '[12:00:05] Build finished in 4.1s', level: 'info' },
+      ]}
+    />
+  ),
+  toc: () => (
+    <Toc
+      activeId="usage"
+      items={[
+        { id: 'overview', label: 'Overview', level: 1 },
+        { id: 'usage', label: 'Usage', level: 1 },
+        { id: 'props', label: 'Props', level: 2 },
+        { id: 'accessibility', label: 'Accessibility', level: 1 },
+      ]}
+    />
   ),
   button: () => (
     <Row>
