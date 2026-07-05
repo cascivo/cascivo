@@ -58,6 +58,34 @@ export function PlatformPage() {
         </p>
       </section>
 
+      <section class="doc-section">
+        <h2>The treadmill this avoids</h2>
+        <p>
+          A stack built on third-party primitives inherits their release cadence. Recent examples
+          the wider ecosystem has had to absorb:
+        </p>
+        <ul class="a11y-list">
+          <li>
+            <strong>Tailwind CSS v4 (2025).</strong> A new engine and configuration model — a
+            migration for every project that themed through Tailwind.
+          </li>
+          <li>
+            <strong>Radix → Base UI (2026).</strong> The headless-primitive default shifted, so
+            copied components built on the old default need porting to keep receiving fixes.
+          </li>
+          <li>
+            <strong>Recurring CLI majors.</strong> Tooling that scaffolds and updates components
+            bumps major versions on its own schedule, independent of your app.
+          </li>
+        </ul>
+        <p class="muted">
+          None of these reach a cascivo component: a native <code>&lt;dialog&gt;</code>,{' '}
+          <code>&lt;input&gt;</code>, the Popover API, and CSS carry no upstream version to chase.
+          See the <a href="/docs/upgrading">upgrade path</a> for how you pull fixes into code you
+          own.
+        </p>
+      </section>
+
       {error.value && (
         <section class="doc-section">
           <p style={{ color: 'var(--cascivo-color-destructive)' }}>

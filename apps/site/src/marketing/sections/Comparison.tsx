@@ -55,6 +55,12 @@ const ROWS: Row[] = [
   },
   { feature: 'Tests with the source', cascivo: 'Ship with each component', shadcn: 'Not included' },
   {
+    feature: 'Custom registries',
+    cascivo: 'GitHub-as-registry + versioned artifacts',
+    shadcn: 'GitHub-as-registry',
+    href: '/docs/directory',
+  },
+  {
     feature: 'Upgrades after you edit',
     cascivo: 'Versioned registry + cascivo update',
     shadcn: 'Manual diff against main',
