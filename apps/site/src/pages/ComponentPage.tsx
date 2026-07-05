@@ -1,5 +1,6 @@
 import { CATEGORY_LABELS, getComponent, type RegistryEntry } from '../data'
 import { demos } from '../demos'
+import { chartDemos } from '../chart-demos'
 import { CodeBlock } from './components/CodeBlock'
 import { PropsTable } from './components/PropsTable'
 import { TokenList } from './components/TokenList'
@@ -73,7 +74,11 @@ export function ComponentPage({ name }: { name?: string }) {
   }
 
   const { meta } = entry
-  const Demo = demos[entry.name]
+  // Chart slugs carry a `chart/` prefix (e.g. `chart/line-chart`); their live
+  // previews live in a separate module keyed by the bare name.
+  const Demo = entry.name.startsWith('chart/')
+    ? chartDemos[entry.name.slice('chart/'.length)]
+    : demos[entry.name]
 
   return (
     <article class="doc-page">
