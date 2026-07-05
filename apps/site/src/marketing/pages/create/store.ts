@@ -1,35 +1,16 @@
 import { signal } from '@cascivo/core'
+import { DEFAULT_CONFIG, type ThemeConfig } from '@cascivo/theme-kit'
 
-export type FontFamily = 'system' | 'geometric' | 'humanist' | 'transitional' | 'mono'
-
-export const RADIUS_STOPS = [0, 0.25, 0.375, 0.5, 0.75, 1.5] as const
-export type RadiusStop = (typeof RADIUS_STOPS)[number]
-
-export const RADIUS_LABELS: Record<RadiusStop, string> = {
-  0: 'none',
-  0.25: 'sm',
-  0.375: 'md',
-  0.5: 'lg',
-  0.75: 'xl',
-  1.5: 'pill',
-}
-
-export type ThemeConfig = {
-  baseMode: 'light' | 'dark'
-  accentHue: number
-  accentChroma: number
-  radiusBase: RadiusStop
-  fontFamily: FontFamily
-  presetId: string | null
-}
-
-export const DEFAULT_CONFIG: ThemeConfig = {
-  baseMode: 'light',
-  accentHue: 250,
-  accentChroma: 0.2,
-  radiusBase: 0.375,
-  fontFamily: 'system',
-  presetId: 'light',
-}
+// Theme-config types + constants live in @cascivo/theme-kit so the site builder
+// and the `cascivo theme create` CLI share one definition. Re-exported here so
+// existing local imports (`./store`) keep working.
+export {
+  type FontFamily,
+  type RadiusStop,
+  type ThemeConfig,
+  RADIUS_STOPS,
+  RADIUS_LABELS,
+  DEFAULT_CONFIG,
+} from '@cascivo/theme-kit'
 
 export const config = signal<ThemeConfig>(DEFAULT_CONFIG)

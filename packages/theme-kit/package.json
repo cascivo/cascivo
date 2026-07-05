@@ -1,0 +1,21 @@
+{
+  "name": "@cascivo/theme-kit",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared theme-config codec + CSS generator for the /create theme builder and the cascivo CLI",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
