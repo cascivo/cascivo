@@ -41,15 +41,37 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "cascivo",
-        "description": "The CSS-native, signal-driven, AI-first React design system. Owned-code components, signal reactivity, a closed three-tier token system, first-party themes, WCAG 2.2 AA, and a machine-readable AI layer.",
-        "url": "https://cascivo.com/",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Web",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-        "license": "https://opensource.org/licenses/MIT",
-        "sameAs": ["https://github.com/cascivo/cascivo", "https://cascivo.com"]
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://cascivo.com/#org",
+            "name": "cascivo",
+            "url": "https://cascivo.com/",
+            "logo": "https://cascivo.com/favicon.svg",
+            "sameAs": ["https://github.com/cascivo/cascivo"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://cascivo.com/#site",
+            "name": "cascivo",
+            "url": "https://cascivo.com/",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://cascivo.com/#org" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "cascivo",
+            "description": "The CSS-native, signal-driven, AI-first React design system. Owned-code components, signal reactivity, a closed three-tier token system, first-party themes, WCAG 2.2 AA, and a machine-readable AI layer.",
+            "url": "https://cascivo.com/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "license": "https://opensource.org/licenses/MIT",
+            "isPartOf": { "@id": "https://cascivo.com/#site" },
+            "publisher": { "@id": "https://cascivo.com/#org" },
+            "sameAs": ["https://github.com/cascivo/cascivo"]
+          }
+        ]
       }
     </script>
     <script>
