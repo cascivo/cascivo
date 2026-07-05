@@ -36,6 +36,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'cascivo builds controls on browser-native primitives — native dialog, the Popover API, CSS anchor positioning — not wrapped third-party dependencies. Measured line counts, zero runtime deps.',
   },
+  '/faq': {
+    title: `FAQ${SUFFIX}`,
+    description:
+      'Frequently asked questions about cascivo — licensing, adopting one component, Next.js/RSC, Tailwind, theming, and how it compares to shadcn/ui.',
+  },
   '/charts': {
     title: `Charts${SUFFIX}`,
     description:

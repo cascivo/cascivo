@@ -250,6 +250,19 @@ a {
   margin-block: var(--cascivo-space-2);
 }
 
+/* ── FAQ ──────────────────────────────────────────────── */
+.faq-entry h2 {
+  font-size: var(--cascivo-text-xl);
+}
+
+.faq-next {
+  display: inline-block;
+  margin-block-start: var(--cascivo-space-1);
+  font-size: var(--cascivo-text-sm);
+  font-weight: var(--cascivo-font-medium);
+  color: var(--cascivo-color-accent-hover);
+}
+
 /* ── Keyboard reference ───────────────────────────────── */
 .kbd-ref-scroll {
   overflow-x: auto;
