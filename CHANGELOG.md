@@ -11,7 +11,7 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | ------------------- | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------- |
 | `@cascivo/ai`       | 0.2.0   | 0.2.0 — AI-layer delivery (audit wave 3):                                                | [CHANGELOG](packages/ai/CHANGELOG.md)       |
 | `@cascivo/charts`   | 0.3.5   | 0.3.0 — PieChart: donut `centerValue`/`centerLabel` (+ `centerSlot`), `thickness`/`inner | [CHANGELOG](packages/charts/CHANGELOG.md)   |
-| `cascivo`           | 0.3.0   | 0.3.0 — Adoption-audit fixes (waves 1–2):                                                | [CHANGELOG](packages/cli/CHANGELOG.md)      |
+| `cascivo`           | 0.3.1   | 0.3.0 — Adoption-audit fixes (waves 1–2):                                                | [CHANGELOG](packages/cli/CHANGELOG.md)      |
 | `@cascivo/core`     | 0.2.3   | 0.2.0 — Make object-valued prop shapes machine-readable. `ComponentMeta` gains an option | [CHANGELOG](packages/core/CHANGELOG.md)     |
 | `@cascivo/editor`   | 0.2.7   | 0.2.0 — Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-r | [CHANGELOG](packages/editor/CHANGELOG.md)   |
 | `@cascivo/flow`     | 0.1.6   | —                                                                                        | [CHANGELOG](packages/flow/CHANGELOG.md)     |
