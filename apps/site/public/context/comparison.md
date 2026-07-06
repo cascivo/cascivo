@@ -34,16 +34,16 @@ The divider is a role="slider" with aria-valuemin/max/now and full keyboard supp
 
 ## Props
 
-| Name               | Type                         | Required    | Default | Description                                             |
-| ------------------ | ---------------------------- | ----------- | ------- | ------------------------------------------------------- | ------------------------------------ |
-| `after`            | `ReactNode`                  | Yes         | —       | Base layer shown underneath                             |
-| `before`           | `ReactNode`                  | Yes         | —       | Top layer revealed up to the divider                    |
-| `position`         | `number`                     | No          | —       | Divider position 0–100 (controlled)                     |
-| `defaultPosition`  | `number`                     | No          | 50      | The initial divider position (0–100) when uncontrolled. |
-| `onPositionChange` | `(position: number) => void` | No          | —       | Called with the new divider position when it changes.   |
-| `orientation`      | `'horizontal'                | 'vertical'` | No      | horizontal                                              | Layout orientation of the component. |
-| `keyboardStep`     | `number`                     | No          | 5       | How far the divider moves per arrow-key press.          |
-| `label`            | `string`                     | No          | —       | Text label for the control.                             |
+| Name               | Type                         | Required | Default    | Description                                             |
+| ------------------ | ---------------------------- | -------- | ---------- | ------------------------------------------------------- |
+| `after`            | `ReactNode`                  | Yes      | —          | Base layer shown underneath                             |
+| `before`           | `ReactNode`                  | Yes      | —          | Top layer revealed up to the divider                    |
+| `position`         | `number`                     | No       | —          | Divider position 0–100 (controlled)                     |
+| `defaultPosition`  | `number`                     | No       | 50         | The initial divider position (0–100) when uncontrolled. |
+| `onPositionChange` | `(position: number) => void` | No       | —          | Called with the new divider position when it changes.   |
+| `orientation`      | `'horizontal' \| 'vertical'` | No       | horizontal | Layout orientation of the component.                    |
+| `keyboardStep`     | `number`                     | No       | 5          | How far the divider moves per arrow-key press.          |
+| `label`            | `string`                     | No       | —          | Text label for the control.                             |
 
 ## Tokens
 

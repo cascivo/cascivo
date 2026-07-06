@@ -841,6 +841,9 @@ importers:
       '@cascivo/storage':
         specifier: workspace:^
         version: link:../../packages/storage
+      '@cascivo/theme-kit':
+        specifier: workspace:*
+        version: link:../../packages/theme-kit
       '@cascivo/themes':
         specifier: workspace:*
         version: link:../../packages/themes
@@ -1035,6 +1038,9 @@ importers:
         specifier: workspace:^
         version: link:../registry
     devDependencies:
+      '@cascivo/theme-kit':
+        specifier: workspace:*
+        version: link:../theme-kit
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.2
@@ -1460,6 +1466,18 @@ importers:
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      vite-plus:
+        specifier: 'catalog:'
+        version: 0.2.1(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
+
+  packages/theme-kit:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.2
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

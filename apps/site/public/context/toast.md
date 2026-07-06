@@ -33,12 +33,12 @@ Toasts render into a labelled region; non-critical ones use role="status" with a
 
 ## Props
 
-| Name          | Type       | Required  | Default   | Description                                                |
-| ------------- | ---------- | --------- | --------- | ---------------------------------------------------------- | --- | ------- | --------------------------------- |
-| `title`       | `string`   | Yes       | —         | Title text for the component.                              |
-| `description` | `string`   | No        | —         | Supporting description text.                               |
-| `variant`     | `'default' | 'success' | 'warning' | 'destructive'`                                             | No  | default | Selects the visual style variant. |
-| `duration`    | `number`   | No        | 5000      | How long (ms) the toast stays visible before auto-dismiss. |
+| Name          | Type                                                   | Required | Default | Description                                                |
+| ------------- | ------------------------------------------------------ | -------- | ------- | ---------------------------------------------------------- |
+| `title`       | `string`                                               | Yes      | —       | Title text for the component.                              |
+| `description` | `string`                                               | No       | —       | Supporting description text.                               |
+| `variant`     | `'default' \| 'success' \| 'warning' \| 'destructive'` | No       | default | Selects the visual style variant.                          |
+| `duration`    | `number`                                               | No       | 5000    | How long (ms) the toast stays visible before auto-dismiss. |
 
 ## Tokens
 
@@ -60,10 +60,10 @@ toast({ title: 'Saved', variant: 'success' })
 
 ## Boundaries
 
-| Area     | Level    | Note                                                   |
-| -------- | -------- | ------------------------------------------------------ | ------- | ------- | -------------------------------------------------- |
-| variant  | strict   | Limited to default                                     | success | warning | destructive — drives color and live-region urgency |
-| duration | flexible | Consumer can tune auto-dismiss timing (default 5000ms) |
+| Area     | Level    | Note                                                                                           |
+| -------- | -------- | ---------------------------------------------------------------------------------------------- |
+| variant  | strict   | Limited to default \| success \| warning \| destructive — drives color and live-region urgency |
+| duration | flexible | Consumer can tune auto-dismiss timing (default 5000ms)                                         |
 
 ## AI context prompt
 

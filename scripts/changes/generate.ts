@@ -113,7 +113,10 @@ function buildRootChangelog(packages: PackageChanges[]): string {
   ]
   for (const pkg of packages) {
     const latest = pkg.releases[0]
-    const latestCell = latest ? `${latest.version} — ${(latest.notes[0] ?? '').slice(0, 80)}` : '—'
+    // Escape pipes so a note containing a union type or `a|b` doesn't spawn an
+    // extra table column. Escape after slicing so the 80-char budget is on text.
+    const note = (latest?.notes[0] ?? '').slice(0, 80).replace(/\|/g, '\\|')
+    const latestCell = latest ? `${latest.version} — ${note}` : '—'
     const dir = pkg.name === 'cascivo' ? 'cli' : pkg.name.replace('@cascivo/', '')
     lines.push(
       `| \`${pkg.name}\` | ${pkg.version} | ${latestCell} | [CHANGELOG](packages/${dir}/CHANGELOG.md) |`,

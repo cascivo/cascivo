@@ -29,6 +29,11 @@ import { EditorPage } from './pages/EditorPage'
 import { FlowPage } from './pages/FlowPage'
 import { ComponentPage } from './pages/ComponentPage'
 import { ApiReferencePage } from './pages/ApiReferencePage'
+import { KeyboardReferencePage } from './pages/KeyboardReferencePage'
+import { PlatformPage } from './pages/PlatformPage'
+import { FaqPage } from './pages/FaqPage'
+import { ChangelogPage } from './pages/ChangelogPage'
+import { UpgradingPage } from './pages/UpgradingPage'
 import { PerfDataTable } from './pages/PerfDataTable'
 import { PlaygroundPage } from './pages/PlaygroundPage'
 import { Benchmarks } from './pages/Benchmarks'
@@ -51,6 +56,11 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs': Home,
   '/docs/getting-started': GettingStartedPage,
   '/docs/api': ApiReferencePage,
+  '/docs/keyboard': KeyboardReferencePage,
+  '/docs/platform': PlatformPage,
+  '/docs/faq': FaqPage,
+  '/docs/changelog': ChangelogPage,
+  '/docs/upgrading': UpgradingPage,
   '/docs/ai': AiPage,
   '/docs/charts': ChartsPage,
   '/docs/editor': EditorPage,
@@ -72,14 +82,19 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
 
 const exploreItems = [
   { label: 'Getting Started', href: '/docs/getting-started', icon: <Zap size={16} /> },
+  { label: 'FAQ', href: '/docs/faq', icon: <Check size={16} /> },
   { label: 'API reference', href: '/docs/api', icon: <Grid size={16} /> },
+  { label: 'Keyboard reference', href: '/docs/keyboard', icon: <Grid size={16} /> },
   { label: 'AI / MCP', href: '/docs/ai', icon: <Server size={16} /> },
   { label: 'Context Explorer', href: '/docs/context', icon: <Eye size={16} /> },
   { label: 'Design Tokens', href: '/docs/tokens', icon: <Layers size={16} /> },
   { label: 'Icons', href: '/docs/icons', icon: <Grid size={16} /> },
   { label: 'Why cascivo', href: '/docs/why', icon: <Check size={16} /> },
+  { label: 'Built on the platform', href: '/docs/platform', icon: <Check size={16} /> },
   { label: 'Parity', href: '/docs/parity', icon: <Grid size={16} /> },
   { label: 'Migrating from shadcn', href: '/docs/migrating', icon: <Grid size={16} /> },
+  { label: 'Changelog', href: '/docs/changelog', icon: <Grid size={16} /> },
+  { label: 'Upgrading', href: '/docs/upgrading', icon: <Check size={16} /> },
   { label: 'Brand', href: '/docs/brand', icon: <Eye size={16} /> },
   { label: 'Benchmarks', href: '/docs/benchmarks', icon: <BarChart size={16} /> },
   { label: 'Charts', href: '/docs/charts', icon: <BarChart size={16} /> },
@@ -97,6 +112,8 @@ const CATEGORY_ICONS = {
   Overlay: <Bell size={16} />,
   Navigation: <MenuIcon size={16} />,
   Feedback: <AlertCircle size={16} />,
+  Layout: <Layers size={16} />,
+  Chart: <BarChart size={16} />,
 }
 
 /** Resolve the docs page component for the current path. */
@@ -104,7 +121,10 @@ function pageFor(path: string) {
   const Static = DOCS_ROUTES[path]
   if (Static) return <Static />
   if (path.startsWith('/docs/components/')) {
-    const name = decodeURIComponent(path.slice('/docs/components/'.length).split('/')[0] ?? '')
+    // Registry names can contain a category prefix (e.g. `chart/area-chart`,
+    // `layout/stack`, `block/login-page`), so the full remainder after the
+    // prefix IS the name — do not split on `/` or slashed entries 404.
+    const name = decodeURIComponent(path.slice('/docs/components/'.length).replace(/\/+$/, ''))
     return <ComponentPage name={name} />
   }
   return <ComponentPage />

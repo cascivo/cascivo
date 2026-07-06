@@ -1,18 +1,18 @@
 ---
 name: factory
-description: Run the cascade dark factory — generate, verify, and integrate the next queued component(s) from factory-backlog.json. Use when the user asks to run the factory, build queued components, or work the backlog. Runs entirely inside this Claude Code session (no API key, no headless claude -p).
+description: Run the cascade dark factory — generate, verify, and integrate the next queued component(s) from scripts/factory/backlog.json. Use when the user asks to run the factory, build queued components, or work the backlog. Runs entirely inside this Claude Code session (no API key, no headless claude -p).
 ---
 
 # Cascade Dark Factory
 
 You are the factory supervisor **and** the worker, running inside this Claude Code
 session. There is no headless `claude -p`, no bash supervisor, and no Anthropic
-API key. All state lives in `factory-backlog.json` and in git history, so any
+API key. All state lives in `scripts/factory/backlog.json` and in git history, so any
 future session can resume exactly where the last one stopped.
 
 ## State model
 
-Each item in `factory-backlog.json` has:
+Each item in `scripts/factory/backlog.json` has:
 
 - `status`: `pending` → `in-progress` → `review` → `done`, or `escalated`
 - `milestone`: `null` → `scaffold` → `verify` → `integrate` → `finished`
@@ -37,8 +37,8 @@ Repeat until no item has `status` of `pending` or `in-progress`:
 4. When milestones finish, set `status = "review"`, `milestone = "finished"`,
    commit `factory: <name> ready for review`, then return to step 1.
 
-Use the Edit tool to update `factory-backlog.json` — do not shell out to `jq`.
-Run `vp fmt factory-backlog.json` after edits so the commit stays clean.
+Use the Edit tool to update `scripts/factory/backlog.json` — do not shell out to `jq`.
+Run `vp fmt scripts/factory/backlog.json` after edits so the commit stays clean.
 
 ## Milestone: scaffold
 
@@ -135,7 +135,7 @@ the queue is empty. Do **not** open a PR or push unless the user asked you to.
 
 ## Queueing new work
 
-To add a component, append an item to `factory-backlog.json` with a unique
+To add a component, append an item to `scripts/factory/backlog.json` with a unique
 `name`, a `category`, the next `priority`, a one-paragraph `spec`,
 `status: "pending"`, `milestone: null`, `attempts: 0`. The next `/factory` run
 picks it up. The user can ask any session to "queue a `<Name>` in the factory

@@ -21,7 +21,7 @@ import { Candlestick } from '@cascivo/charts'
 ## Props
 
 | Prop          | Type                 | Required | Default | Description                                                                |
-| ------------- | -------------------- | -------- | ------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| ------------- | -------------------- | -------- | ------- | -------------------------------------------------------------------------- |
 | `data`        | `CandlestickDatum[]` | yes      | —       | One candle per period: { t, open, high, low, close, volume? }.             |
 | `title`       | `string`             | yes      | —       | Chart title (also aria-label).                                             |
 | `description` | `string`             | no       | —       | Supporting description text.                                               |
@@ -39,7 +39,7 @@ import { Candlestick } from '@cascivo/charts'
 | `dataZoom`    | `boolean`            | no       | —       | DataZoom slider below the plot — a Brush whose body also pans the window.  |
 | `zoom`        | `boolean`            | no       | —       | In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window. |
 | `syncId`      | `string`             | no       | —       | Connect charts sharing this id — they mirror the zoom window.              |
-| `tooltipMode` | `'item'              | 'axis'`  | no      | `item`                                                                     | item (nearest candle) or axis (crosshair + OHLC at the hovered x). |
+| `tooltipMode` | `'item' \| 'axis'`   | no       | `item`  | item (nearest candle) or axis (crosshair + OHLC at the hovered x).         |
 
 ## Examples
 

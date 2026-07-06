@@ -51,7 +51,20 @@ if (
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ v: 1, value: legacy }))
 }
 
-export const theme = persistedSignal<Theme>(STORAGE_KEY, 'dark')
+// Default from the visitor's OS preference when nothing is stored yet. A
+// persisted choice always wins — `persistedSignal` only falls back to this
+// initial when storage is empty. Mirrors the pre-paint script in index.html.
+function preferredTheme(): Theme {
+  if (typeof window === 'undefined') return 'dark'
+  try {
+    if (window.matchMedia('(prefers-color-scheme: light)').matches) return 'light'
+  } catch {
+    // matchMedia unavailable — fall through to dark
+  }
+  return 'dark'
+}
+
+export const theme = persistedSignal<Theme>(STORAGE_KEY, preferredTheme())
 
 // Only light/dark/warm are render-blocking. The rest live in a deferred chunk
 // (themes-extra.css) so they stay off the home critical path; we load it lazily

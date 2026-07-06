@@ -78,6 +78,21 @@ export function applyRouteSeo(path: string, title: string): void {
     'content',
     description,
   )
+  // Per-route social card, falling back to the default so navigating away from a
+  // custom-card route restores the shared image rather than leaving it stale.
+  const ogImage = `https://cascivo.com${head?.ogImage ?? '/og.png'}`
+  setMeta(
+    'meta[property="og:image"]',
+    { tag: 'meta', attrName: 'property', key: 'og:image' },
+    'content',
+    ogImage,
+  )
+  setMeta(
+    'meta[name="twitter:image"]',
+    { tag: 'meta', attrName: 'name', key: 'twitter:image' },
+    'content',
+    ogImage,
+  )
 }
 
 /** Apply the NotFound head: home-ish title but noindex (T3). */

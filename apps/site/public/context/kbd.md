@@ -31,9 +31,9 @@ Renders a native <kbd> element so assistive tech identifies the content as keybo
 
 ## Props
 
-| Name   | Type  | Required | Default | Description |
-| ------ | ----- | -------- | ------- | ----------- | ----------------------------------------------------- |
-| `size` | `'sm' | 'md'`    | No      | md          | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Name   | Type           | Required | Default | Description                                           |
+| ------ | -------------- | -------- | ------- | ----------------------------------------------------- |
+| `size` | `'sm' \| 'md'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 

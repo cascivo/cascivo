@@ -4,6 +4,7 @@ import { Button } from '@cascivo/components/button'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@cascivo/components/tabs'
 import { config } from './store'
 import { configToCSS, highlightCSS } from './css-gen'
+import { configToHash } from './url-state'
 
 function useCopyState() {
   const copied = useSignal(false)
@@ -32,7 +33,9 @@ const USAGE_JSX = `/* 3. Wrap your app (or any subtree) */
 export function CodePanel() {
   useSignals()
   const css = configToCSS(config.value)
+  const cliCommand = `npx cascivo theme create custom --from ${configToHash(config.value)}`
   const cssCopy = useCopyState()
+  const cliCopy = useCopyState()
   const shareCopy = useCopyState()
 
   function downloadCSS() {
@@ -50,6 +53,7 @@ export function CodePanel() {
       <Tabs defaultValue="css">
         <TabsList>
           <TabsTrigger value="css">CSS variables</TabsTrigger>
+          <TabsTrigger value="cli">CLI</TabsTrigger>
           <TabsTrigger value="usage">Usage</TabsTrigger>
         </TabsList>
 
@@ -65,6 +69,23 @@ export function CodePanel() {
             </Button>
             <Button variant="secondary" size="sm" onClick={downloadCSS}>
               Download theme.css
+            </Button>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="cli">
+          <p className="code-panel-hint">
+            Skip the copy-paste — install this exact theme into your project as an owned{' '}
+            <code>custom.theme.css</code>:
+          </p>
+          <div className="code-block-wrapper">
+            <pre className="code-block">
+              <code>{cliCommand}</code>
+            </pre>
+          </div>
+          <div className="code-actions">
+            <Button variant="primary" size="sm" onClick={() => cliCopy.triggerCopy(cliCommand)}>
+              {cliCopy.copied.value ? 'Copied!' : 'Copy CLI command'}
             </Button>
           </div>
         </TabsContent>

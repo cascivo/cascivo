@@ -394,3 +394,9 @@
 .css-value {
   color: var(--cascivo-color-success-foreground, oklch(0.45 0.14 145));
 }
+
+.code-panel-hint {
+  margin-block: 0 var(--cascivo-space-3);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}

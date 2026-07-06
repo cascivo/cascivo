@@ -37,6 +37,8 @@ function badge(label: string, message: string, color: string, opts?: { logo?: st
 
 function rootBadges(componentCount: number, themeCount: number): string {
   return [
+    `[![CI](https://img.shields.io/github/actions/workflow/status/cascivo/cascivo/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/cascivo/cascivo/actions/workflows/ci.yml)`,
+    `[![npm](https://img.shields.io/npm/v/cascivo?style=flat-square&color=${BRAND}&label=cascivo)](https://www.npmjs.com/package/cascivo)`,
     `[![license](https://img.shields.io/github/license/cascivo/cascivo?style=flat-square&color=${BRAND})](https://github.com/cascivo/cascivo/blob/main/LICENSE)`,
     `[${badge('TypeScript', 'strict', BRAND, { logo: 'typescript' })}](https://www.typescriptlang.org/)`,
     `[${badge('React', '18%2B', BRAND, { logo: 'react' })}](https://react.dev/)`,
@@ -257,15 +259,33 @@ function componentsTable(collapsible: boolean): string {
   const table = `| Name | Category | Description |\n| --- | --- | --- |\n${rows}`
 
   if (!collapsible) return `## Components\n\n${table}\n`
+
+  // Compact, scannable summary — one line per category listing the names, rather
+  // than a ~200-row table. Descriptions + live previews live on the docs site;
+  // the full machine-readable index is registry.json. Keeps the README short and
+  // keeps every component name greppable/crawlable in the collapsed block.
+  const byCategory = new Map<string, string[]>()
+  for (const c of registry.components) {
+    const list = byCategory.get(c.category) ?? []
+    list.push(c.name)
+    byCategory.set(c.category, list)
+  }
+  const categoryLines = [...byCategory.entries()]
+    .sort((a, b) => b[1].length - a[1].length)
+    .map(([cat, names]) => `**${cat}** (${names.length}) — ${names.sort().join(', ')}`)
+    .join('\n\n')
+
   return [
     '## Components',
     '',
     `**${registry.components.length} components** — ${summary}.`,
     '',
-    '<details>',
-    `<summary>Browse all ${registry.components.length} components</summary>`,
+    'Browse the full catalog with live previews at [cascivo.com/docs/components](https://cascivo.com/docs/components), or read the machine index at [registry.json](https://cascivo.com/registry.json).',
     '',
-    table,
+    `<details>`,
+    `<summary>All ${registry.components.length} components by category</summary>`,
+    '',
+    categoryLines,
     '',
     '</details>',
     '',

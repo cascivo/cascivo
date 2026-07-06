@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop  | Type     | Required | Default   | Description                                            |
-| ----- | -------- | -------- | --------- | ------------------------------------------------------ | --- | --- | --- | --- | --- | --- | --- | ------------------ |
-| `min` | `string` | no       | `"16rem"` | Minimum track width before items wrap to fewer columns |
-| `gap` | `1       | 2        | 3         | 4                                                      | 5   | 6   | 8   | 10  | 12` | no  | `4` | Spacing token step |
+| Prop  | Type                          | Required | Default   | Description                                            |
+| ----- | ----------------------------- | -------- | --------- | ------------------------------------------------------ |
+| `min` | `string`                      | no       | `"16rem"` | Minimum track width before items wrap to fewer columns |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | `4`       | Spacing token step                                     |
 
 ## Examples
 

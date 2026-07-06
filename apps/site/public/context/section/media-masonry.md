@@ -23,14 +23,14 @@ Renders a section shell; tiles supply their own accessible content.
 
 ## Props
 
-| Name           | Type        | Required | Default | Description                                                               |
-| -------------- | ----------- | -------- | ------- | ------------------------------------------------------------------------- | --- | ---------------------------------------- | --- | --- | --- | --- | --- | -------------------------------------- |
-| `children`     | `ReactNode` | Yes      | —       | Tile elements (images, cards, quotes) — consumer-provided and self-styled |
-| `title`        | `ReactNode` | No       | —       | Section heading above the gallery                                         |
-| `description`  | `ReactNode` | No       | —       | Subheading below the section title                                        |
-| `headingLevel` | `1          | 2        | 3`      | No                                                                        | 2   | HTML heading level for the section title |
-| `cols`         | `number`    | No       | 3       | Number of masonry columns                                                 |
-| `gap`          | `1          | 2        | 3       | 4                                                                         | 5   | 6                                        | 8   | 10  | 12` | No  | 4   | Gap between tiles (spacing token step) |
+| Name           | Type                          | Required | Default | Description                                                               |
+| -------------- | ----------------------------- | -------- | ------- | ------------------------------------------------------------------------- |
+| `children`     | `ReactNode`                   | Yes      | —       | Tile elements (images, cards, quotes) — consumer-provided and self-styled |
+| `title`        | `ReactNode`                   | No       | —       | Section heading above the gallery                                         |
+| `description`  | `ReactNode`                   | No       | —       | Subheading below the section title                                        |
+| `headingLevel` | `1 \| 2 \| 3`                 | No       | 2       | HTML heading level for the section title                                  |
+| `cols`         | `number`                      | No       | 3       | Number of masonry columns                                                 |
+| `gap`          | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | 4       | Gap between tiles (spacing token step)                                    |
 
 ## Tokens
 

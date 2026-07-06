@@ -6,18 +6,26 @@ interface SearchButtonProps {
   onClick: () => void
 }
 
+// Apple platforms use ⌘K; everything else uses Ctrl+K. Detect once so the
+// visible key and the accessible label agree cross-platform.
+const isApple =
+  typeof navigator !== 'undefined' &&
+  /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent)
+const SHORTCUT_LABEL = isApple ? 'Cmd+K' : 'Ctrl+K'
+const SHORTCUT_KEYS = isApple ? '⌘K' : 'Ctrl K'
+
 export function SearchButton({ onClick }: SearchButtonProps) {
   useSignals()
   return (
     <button
       type="button"
       className="header-search-btn"
-      aria-label="Search (Ctrl+K)"
+      aria-label={`Search (${SHORTCUT_LABEL})`}
       onClick={onClick}
     >
       <SearchIcon />
       <span className="header-search-shortcut" aria-hidden="true">
-        <Kbd size="sm">⌘K</Kbd>
+        <Kbd size="sm">{SHORTCUT_KEYS}</Kbd>
       </span>
     </button>
   )

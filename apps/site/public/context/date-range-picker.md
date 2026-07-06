@@ -33,8 +33,8 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the po
 ## Props
 
 | Name            | Type                                                     | Required | Default | Description                                        |
-| --------------- | -------------------------------------------------------- | -------- | ------- | -------------------------------------------------- | ------------------------- | --------------- |
-| `value`         | `{ start: Date; end: Date }                              | null`    | No      | —                                                  | Controlled selected range |
+| --------------- | -------------------------------------------------------- | -------- | ------- | -------------------------------------------------- |
+| `value`         | `{ start: Date; end: Date } \| null`                     | No       | —       | Controlled selected range                          |
 | `defaultValue`  | `{ start: Date; end: Date }`                             | No       | —       | Uncontrolled initial range                         |
 | `onValueChange` | `(range: { start: Date; end: Date }) => void`            | No       | —       | Called when a complete range is selected           |
 | `min`           | `Date`                                                   | No       | —       | Earliest selectable date                           |
@@ -43,7 +43,7 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the po
 | `presets`       | `{ label: string; range: { start: Date; end: Date } }[]` | No       | —       | Quick-select preset ranges shown in a side column  |
 | `locale`        | `string`                                                 | No       | —       | BCP-47 locale; defaults to the current i18n locale |
 | `placeholder`   | `string`                                                 | No       | —       | Empty-state trigger text                           |
-| `size`          | `'sm'                                                    | 'md'     | 'lg'`   | No                                                 | —                         | Field/grid size |
+| `size`          | `'sm' \| 'md' \| 'lg'`                                   | No       | —       | Field/grid size                                    |
 | `labels`        | `DateRangePickerLabels`                                  | No       | —       | i18n label overrides                               |
 
 ## Tokens

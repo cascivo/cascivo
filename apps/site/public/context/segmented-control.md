@@ -35,11 +35,11 @@ Wraps role="radio" buttons in a role="group" with aria-checked marking the selec
 ## Props
 
 | Name            | Type                       | Required | Default | Description                                                        |
-| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ | --- | ----------------------------------------------------- |
+| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
 | `options`       | `SegmentedControlOption[]` | Yes      | —       | The selectable options.                                            |
 | `value`         | `string`                   | Yes      | —       | The controlled value.                                              |
 | `onValueChange` | `(v: string) => void`      | Yes      | —       | Called with the new value when it changes.                         |
-| `size`          | `'sm'                      | 'md'     | 'lg'`   | No                                                                 | md  | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `size`          | `'sm' \| 'md' \| 'lg'`     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 | `disabled`      | `boolean`                  | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens

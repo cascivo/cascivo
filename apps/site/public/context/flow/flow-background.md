@@ -30,13 +30,13 @@ Purely decorative — marked aria-hidden and presentation, never in the a11y tre
 
 ## Props
 
-| Name        | Type     | Required | Default  | Description                                              |
-| ----------- | -------- | -------- | -------- | -------------------------------------------------------- | ---- | -------------- |
-| `variant`   | `'dots'  | 'grid'   | 'cross'` | No                                                       | dots | Pattern style. |
-| `gap`       | `number` | No       | 20       | Cell spacing (px).                                       |
-| `size`      | `number` | No       | 1        | Dot radius / line thickness (px).                        |
-| `color`     | `string` | No       | —        | Pattern color (defaults to the border token).            |
-| `className` | `string` | No       | —        | Additional CSS class names merged onto the root element. |
+| Name        | Type                          | Required | Default | Description                                              |
+| ----------- | ----------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `variant`   | `'dots' \| 'grid' \| 'cross'` | No       | dots    | Pattern style.                                           |
+| `gap`       | `number`                      | No       | 20      | Cell spacing (px).                                       |
+| `size`      | `number`                      | No       | 1       | Dot radius / line thickness (px).                        |
+| `color`     | `string`                      | No       | —       | Pattern color (defaults to the border token).            |
+| `className` | `string`                      | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -75,9 +75,9 @@ The grid and cross variants.
 
 ## Boundaries
 
-| Area    | Level    | Note |
-| ------- | -------- | ---- | ---- | --------------------------------- |
-| pattern | flexible | dots | grid | cross with configurable gap/size. |
+| Area    | Level    | Note                                              |
+| ------- | -------- | ------------------------------------------------- |
+| pattern | flexible | dots \| grid \| cross with configurable gap/size. |
 
 ## AI context prompt
 

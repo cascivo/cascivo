@@ -12,7 +12,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 - **Beautiful by default** — {{count.themes}} first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
 - **Three-level tokens** — primitive → semantic → component. Themes remap the semantic layer; you override component tokens for per-brand adaptation with no rebuild.
 - **AI-first context layer** — every component ships a `<name>.meta.ts` manifest (e.g. `button.meta.ts`); an MCP server, Claude Code skills, a closed-set token catalog, and `cascivo audit --ai` let agents generate against real props and have their output checked.
-- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, CI-enforced; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT test plan (NVDA / JAWS / VoiceOver — manual results pending).
+- **Earned accessibility** — WCAG 2.2 AA + APG-conformant, verified by a nightly axe sweep over every story; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT test plan (NVDA / JAWS / VoiceOver — manual results pending).
 - **Mobile-first & RTL-ready** — fluid type, container queries, CSS logical properties, ≥44px touch targets, and zero overflow from 320–414px.
 - **Open registry** — publish your own components and host your own registry; install from any registry with `cascivo add owner/repo/component`.
 - **Templates & marketplace** — install whole-page compositions (a page + its components + fixtures) you own and adapt with `cascivo add @ns/<template>`; a backend-free, GitHub-hosted, community-contributed catalog.
@@ -114,9 +114,8 @@ cascivo/
 │   ├── bench/        # performance benchmarks
 │   └── examples/     # runnable example apps (Vite, Next.js, registry starter, demos)
 ├── skills/           # Claude Code skills — cascivo:add, design-page, create-theme, extend
-├── scripts/          # registry/readme/context/token generators + quality gates
-├── registry.json     # machine-readable component index (CLI + MCP + docs read this)
-└── factory-backlog.json # dark-factory component queue
+├── scripts/          # registry/readme/context/token generators, quality gates, dark-factory backlog
+└── registry.json     # machine-readable component index (CLI + MCP + docs read this)
 ```
 
 ## Development
@@ -164,7 +163,7 @@ pnpm release            # build and publish changed packages to npm
 
 ## Contributing
 
-Contributions are welcome — bug reports, new components, theme proposals, docs, and fixes.
+Contributions are welcome — bug reports, new components, theme proposals, docs, and fixes. See where the project is headed in [ROADMAP.md](ROADMAP.md).
 
 1. Fork and create a feature branch.
 2. `pnpm install` to set up the workspace.

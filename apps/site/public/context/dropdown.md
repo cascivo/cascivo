@@ -33,14 +33,14 @@ The menu is role="menu" with role="menuitem" buttons and roving tabindex; the tr
 
 ## Props
 
-| Name           | Type                                                                                            | Required      | Default | Description                                         |
-| -------------- | ----------------------------------------------------------------------------------------------- | ------------- | ------- | --------------------------------------------------- | ---------------------------------- |
-| `trigger`      | `ReactElement`                                                                                  | Yes           | —       | The element that opens the dropdown when activated. |
-| `items`        | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | Yes           | —       | The items to render.                                |
-| `onSelect`     | `(value: string) => void`                                                                       | No            | —       | Called with the selected value.                     |
-| `placement`    | `'bottom-start'                                                                                 | 'bottom-end'` | No      | bottom-start                                        | Placement relative to the trigger. |
-| `open`         | `boolean`                                                                                       | No            | —       | Whether the component is open (controlled).         |
-| `onOpenChange` | `(open: boolean) => void`                                                                       | No            | —       | Called with the next open state when it changes.    |
+| Name           | Type                                                                                            | Required | Default      | Description                                         |
+| -------------- | ----------------------------------------------------------------------------------------------- | -------- | ------------ | --------------------------------------------------- |
+| `trigger`      | `ReactElement`                                                                                  | Yes      | —            | The element that opens the dropdown when activated. |
+| `items`        | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | Yes      | —            | The items to render.                                |
+| `onSelect`     | `(value: string) => void`                                                                       | No       | —            | Called with the selected value.                     |
+| `placement`    | `'bottom-start' \| 'bottom-end'`                                                                | No       | bottom-start | Placement relative to the trigger.                  |
+| `open`         | `boolean`                                                                                       | No       | —            | Whether the component is open (controlled).         |
+| `onOpenChange` | `(open: boolean) => void`                                                                       | No       | —            | Called with the next open state when it changes.    |
 
 ## Tokens
 

@@ -33,13 +33,13 @@ Presentational by role; the title carries the meaning as text and the action is 
 
 ## Props
 
-| Name          | Type        | Required | Default | Description                             |
-| ------------- | ----------- | -------- | ------- | --------------------------------------- | ----------------------------------------------------- |
-| `icon`        | `ReactNode` | No       | —       | Icon element rendered in the component. |
-| `title`       | `string`    | Yes      | —       | Title text for the component.           |
-| `description` | `string`    | No       | —       | Supporting description text.            |
-| `action`      | `ReactNode` | No       | —       | Primary action shown in the component.  |
-| `size`        | `'md'       | 'lg'`    | No      | md                                      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Name          | Type           | Required | Default | Description                                           |
+| ------------- | -------------- | -------- | ------- | ----------------------------------------------------- |
+| `icon`        | `ReactNode`    | No       | —       | Icon element rendered in the component.               |
+| `title`       | `string`       | Yes      | —       | Title text for the component.                         |
+| `description` | `string`       | No       | —       | Supporting description text.                          |
+| `action`      | `ReactNode`    | No       | —       | Primary action shown in the component.                |
+| `size`        | `'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 

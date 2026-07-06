@@ -32,6 +32,20 @@ const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.
 const ProofTeasers = lazy(() =>
   import('./sections/ProofTeasers').then((m) => ({ default: m.ProofTeasers })),
 )
+const Comparison = lazy(() =>
+  import('./sections/Comparison').then((m) => ({ default: m.Comparison })),
+)
+const ShowcaseStrip = lazy(() =>
+  import('./sections/ShowcaseStrip').then((m) => ({ default: m.ShowcaseStrip })),
+)
+const FrameworkBand = lazy(() =>
+  import('./sections/FrameworkBand').then((m) => ({ default: m.FrameworkBand })),
+)
+// Interactive above-the-fold theme preview. Lazy so its component cluster +
+// extra-theme CSS never weigh on the hero's LCP text paint.
+const HeroThemePreview = lazy(() =>
+  import('./sections/HeroThemePreview').then((m) => ({ default: m.HeroThemePreview })),
+)
 
 // Non-home routes — loaded on demand, never in the home bundle.
 const AccessibilityPage = lazy(() =>
@@ -95,6 +109,9 @@ function HomePage() {
         <SkipNavTarget>
           <main>
             <Hero />
+            <Suspense fallback={<SectionFallback height={360} />}>
+              <HeroThemePreview />
+            </Suspense>
             <SocialProof />
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={520} />}>
@@ -104,8 +121,20 @@ function HomePage() {
               <ProofTeasers withLeadingDivider />
             </Suspense>
             <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={480} />}>
+              <Comparison />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={420} />}>
+              <ShowcaseStrip />
+            </Suspense>
+            <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <QuickStart />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={300} />}>
+              <FrameworkBand />
             </Suspense>
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>

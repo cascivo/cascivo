@@ -90,10 +90,15 @@ function propsTable(props: PropMeta[]): string {
   if (props.length === 0) return '_No props._\n'
   const header = '| Prop | Type | Required | Default | Description |'
   const sep = '|------|------|----------|---------|-------------|'
+  // Escape pipes so union types (`'sm' | 'md' | 'lg'`) don't spawn extra table
+  // columns — even inside code spans, GFM tables treat a bare `|` as a cell
+  // delimiter. Mirrors typeDefsSection() below.
+  const esc = (s: string) => s.replace(/\|/g, '\\|')
   const rows = props.map((p) => {
-    const def = p.default !== undefined ? `\`${p.default}\`` : '—'
-    const desc = p.description ?? '—'
-    return `| \`${p.name}\` | \`${p.type}\` | ${p.required ? 'yes' : 'no'} | ${def} | ${desc} |`
+    const type = esc(p.type)
+    const def = p.default !== undefined ? `\`${esc(p.default)}\`` : '—'
+    const desc = esc(p.description ?? '—')
+    return `| \`${p.name}\` | \`${type}\` | ${p.required ? 'yes' : 'no'} | ${def} | ${desc} |`
   })
   return [header, sep, ...rows].join('\n') + '\n'
 }

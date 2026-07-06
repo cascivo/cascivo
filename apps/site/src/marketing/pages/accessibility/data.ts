@@ -1,5 +1,6 @@
 import registry from '../../../../../../registry.json'
 import bench from 'virtual:bench'
+import atResultsRaw from './at-results.json'
 
 interface RegistryEntry {
   name: string
@@ -54,3 +55,47 @@ export const AXE: { cascade: AxeSlice; shadcn: AxeSlice; carbon: AxeSlice } | un
   bench.a11y?.cascade && bench.a11y.shadcn && bench.a11y.carbon
     ? { cascade: bench.a11y.cascade, shadcn: bench.a11y.shadcn, carbon: bench.a11y.carbon }
     : undefined
+
+// ── Assistive-technology (screen-reader) results ──────────────────────────────
+// Written by .github/workflows/a11y-at.yml (guidepup drives NVDA + VoiceOver in
+// CI). Until the first run lands, generatedAt is null and every cell reads
+// "pending" — the plan is public, the results are honestly marked as not-yet-run.
+
+export type AtStatus = 'pass' | 'partial' | 'fail' | 'pending' | 'na'
+
+export interface AtStack {
+  id: string
+  label: string
+  platform: string
+}
+
+export interface AtComponent {
+  name: string
+  story: string
+  results: Record<string, AtStatus>
+}
+
+interface AtResultsFile {
+  generatedAt: string | null
+  stacks: AtStack[]
+  components: { name: string; story: string; results?: Record<string, string> }[]
+}
+
+function normalizeAtStatus(v: string | undefined): AtStatus {
+  return v === 'pass' || v === 'partial' || v === 'fail' || v === 'na' ? v : 'pending'
+}
+
+const atFile = atResultsRaw as AtResultsFile
+
+/** ISO date of the last automated run, or null if none has landed yet. */
+export const AT_GENERATED_AT: string | null = atFile.generatedAt
+export const AT_STACKS: AtStack[] = atFile.stacks
+export const AT_COMPONENTS: AtComponent[] = atFile.components.map((c) => ({
+  name: c.name,
+  story: c.story,
+  results: Object.fromEntries(
+    atFile.stacks.map((s) => [s.id, normalizeAtStatus(c.results?.[s.id])]),
+  ),
+}))
+/** True once an automated run has written real results. */
+export const AT_HAS_RESULTS = AT_GENERATED_AT !== null

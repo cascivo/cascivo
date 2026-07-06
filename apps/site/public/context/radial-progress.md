@@ -35,14 +35,14 @@ Renders a div with role="progressbar", aria-valuenow (clamped 0–100), aria-val
 
 ## Props
 
-| Name         | Type              | Required | Default   | Description                                              |
-| ------------ | ----------------- | -------- | --------- | -------------------------------------------------------- | -------- | ----------------------------------------------------- | ------- | --------------------------------- |
-| `value`      | `number`          | Yes      | —         | The controlled value.                                    |
-| `size`       | `'sm'             | 'md'     | 'lg'`     | No                                                       | md       | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `variant`    | `'primary'        | 'info'   | 'success' | 'warning'                                                | 'error'` | No                                                    | primary | Selects the visual style variant. |
-| `children`   | `React.ReactNode` | No       | —         | Content rendered inside the component.                   |
-| `aria-label` | `string`          | No       | —         | Accessible label used when no visible label is present.  |
-| `className`  | `string`          | No       | —         | Additional CSS class names merged onto the root element. |
+| Name         | Type                                                       | Required | Default | Description                                              |
+| ------------ | ---------------------------------------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `value`      | `number`                                                   | Yes      | —       | The controlled value.                                    |
+| `size`       | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').    |
+| `variant`    | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                        |
+| `children`   | `React.ReactNode`                                          | No       | —       | Content rendered inside the component.                   |
+| `aria-label` | `string`                                                   | No       | —       | Accessible label used when no visible label is present.  |
+| `className`  | `string`                                                   | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 

@@ -22,15 +22,15 @@ import { Resizable } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required    | Default | Description                                      |
-| --------------- | ------------------------- | ----------- | ------- | ------------------------------------------------ | ------------------------------------ |
-| `children`      | `ReactNode`               | yes         | —       | Exactly two panes                                |
-| `orientation`   | `'horizontal'             | 'vertical'` | no      | `horizontal`                                     | Layout orientation of the component. |
-| `defaultRatio`  | `number`                  | no          | `0.5`   | The initial split ratio when uncontrolled.       |
-| `ratio`         | `number`                  | no          | —       | Controlled ratio (0–1)                           |
-| `minRatio`      | `number`                  | no          | `0.1`   | Minimum allowed split ratio.                     |
-| `maxRatio`      | `number`                  | no          | `0.9`   | Maximum allowed split ratio.                     |
-| `onRatioChange` | `(ratio: number) => void` | no          | —       | Called with the new split ratio when it changes. |
+| Prop            | Type                         | Required | Default      | Description                                      |
+| --------------- | ---------------------------- | -------- | ------------ | ------------------------------------------------ |
+| `children`      | `ReactNode`                  | yes      | —            | Exactly two panes                                |
+| `orientation`   | `'horizontal' \| 'vertical'` | no       | `horizontal` | Layout orientation of the component.             |
+| `defaultRatio`  | `number`                     | no       | `0.5`        | The initial split ratio when uncontrolled.       |
+| `ratio`         | `number`                     | no       | —            | Controlled ratio (0–1)                           |
+| `minRatio`      | `number`                     | no       | `0.1`        | Minimum allowed split ratio.                     |
+| `maxRatio`      | `number`                     | no       | `0.9`        | Maximum allowed split ratio.                     |
+| `onRatioChange` | `(ratio: number) => void`    | no       | —            | Called with the new split ratio when it changes. |
 
 ## Examples
 

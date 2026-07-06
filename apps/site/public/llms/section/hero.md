@@ -23,15 +23,15 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type        | Required | Default | Description                                                    |
-| -------------- | ----------- | -------- | ------- | -------------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------- |
-| `variant`      | `"centered" | "split"` | no      | `"centered"`                                                   | Layout variant: centered (single column) or split (two columns) |
-| `title`        | `ReactNode` | yes      | —       | Primary heading content                                        |
-| `eyebrow`      | `ReactNode` | no       | —       | Small monospace label above the title                          |
-| `description`  | `ReactNode` | no       | —       | Supporting paragraph below the title                           |
-| `actions`      | `ReactNode` | no       | —       | Buttons or links rendered in a row below the description       |
-| `media`        | `ReactNode` | no       | —       | Right-hand slot in the split variant (image, demo, code block) |
-| `headingLevel` | `1          | 2        | 3`      | no                                                             | `1`                                                             | HTML heading level for document outline control |
+| Prop           | Type                    | Required | Default      | Description                                                     |
+| -------------- | ----------------------- | -------- | ------------ | --------------------------------------------------------------- |
+| `variant`      | `"centered" \| "split"` | no       | `"centered"` | Layout variant: centered (single column) or split (two columns) |
+| `title`        | `ReactNode`             | yes      | —            | Primary heading content                                         |
+| `eyebrow`      | `ReactNode`             | no       | —            | Small monospace label above the title                           |
+| `description`  | `ReactNode`             | no       | —            | Supporting paragraph below the title                            |
+| `actions`      | `ReactNode`             | no       | —            | Buttons or links rendered in a row below the description        |
+| `media`        | `ReactNode`             | no       | —            | Right-hand slot in the split variant (image, demo, code block)  |
+| `headingLevel` | `1 \| 2 \| 3`           | no       | `1`          | HTML heading level for document outline control                 |
 
 ## Examples
 

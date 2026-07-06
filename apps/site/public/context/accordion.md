@@ -32,12 +32,12 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 
 ## Props
 
-| Name            | Type            | Required           | Default | Description |
-| --------------- | --------------- | ------------------ | ------- | ----------- | -------------------------------------------------------------- | ------------ |
-| `type`          | `'single'       | 'multiple'`        | No      | single      | Whether one or multiple sections can be open at once ('single' | 'multiple'). |
-| `defaultValue`  | `string         | string[]`          | No      | —           | The initial value when uncontrolled.                           |
-| `value`         | `string         | string[]`          | No      | —           | The controlled value.                                          |
-| `onValueChange` | `(value: string | string[]) => void` | No      | —           | Called with the new value when it changes.                     |
+| Name            | Type                                  | Required | Default | Description                                                                    |
+| --------------- | ------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------ |
+| `type`          | `'single' \| 'multiple'`              | No       | single  | Whether one or multiple sections can be open at once ('single' \| 'multiple'). |
+| `defaultValue`  | `string \| string[]`                  | No       | —       | The initial value when uncontrolled.                                           |
+| `value`         | `string \| string[]`                  | No       | —       | The controlled value.                                                          |
+| `onValueChange` | `(value: string \| string[]) => void` | No       | —       | Called with the new value when it changes.                                     |
 
 ## Tokens
 

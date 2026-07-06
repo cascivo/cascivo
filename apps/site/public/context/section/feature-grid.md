@@ -25,11 +25,11 @@ Renders a section with an optional heading grouping the feature items.
 ## Props
 
 | Name           | Type            | Required | Default | Description                                                             |
-| -------------- | --------------- | -------- | ------- | ----------------------------------------------------------------------- | --- | ---------------------------------------------------------------- |
+| -------------- | --------------- | -------- | ------- | ----------------------------------------------------------------------- |
 | `items`        | `FeatureItem[]` | Yes      | —       | Array of feature items with title, optional description, icon, and href |
 | `title`        | `ReactNode`     | No       | —       | Section heading above the grid                                          |
 | `description`  | `ReactNode`     | No       | —       | Subheading below the section title                                      |
-| `headingLevel` | `1              | 2        | 3`      | No                                                                      | 2   | Heading level for the section title (items use headingLevel + 1) |
+| `headingLevel` | `1 \| 2 \| 3`   | No       | 2       | Heading level for the section title (items use headingLevel + 1)        |
 | `min`          | `string`        | No       | "16rem" | Minimum track width forwarded to AutoGrid                               |
 
 ## Tokens

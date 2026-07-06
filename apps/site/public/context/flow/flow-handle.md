@@ -23,13 +23,13 @@ Focusable with a ≥44px coarse-pointer hit area around the visible dot.
 
 ## Props
 
-| Name            | Type      | Required  | Default  | Description                                              |
-| --------------- | --------- | --------- | -------- | -------------------------------------------------------- | ------------------------------------------------------------- | ---------- | ------------------------------------------------------- |
-| `type`          | `'source' | 'target'` | Yes      | —                                                        | Whether the handle is a connection source or target ('source' | 'target'). |
-| `position`      | `'top'    | 'right'   | 'bottom' | 'left'`                                                  | No                                                            | —          | Edge of the node (defaults: source→right, target→left). |
-| `id`            | `string`  | No        | —        | Handle id for multi-handle nodes.                        |
-| `isConnectable` | `boolean` | No        | true     | Whether new connections can start or end at this handle. |
-| `className`     | `string`  | No        | —        | Additional CSS class names merged onto the root element. |
+| Name            | Type                                     | Required | Default | Description                                                                 |
+| --------------- | ---------------------------------------- | -------- | ------- | --------------------------------------------------------------------------- |
+| `type`          | `'source' \| 'target'`                   | Yes      | —       | Whether the handle is a connection source or target ('source' \| 'target'). |
+| `position`      | `'top' \| 'right' \| 'bottom' \| 'left'` | No       | —       | Edge of the node (defaults: source→right, target→left).                     |
+| `id`            | `string`                                 | No       | —       | Handle id for multi-handle nodes.                                           |
+| `isConnectable` | `boolean`                                | No       | true    | Whether new connections can start or end at this handle.                    |
+| `className`     | `string`                                 | No       | —       | Additional CSS class names merged onto the root element.                    |
 
 ## Tokens
 
@@ -55,9 +55,9 @@ Focusable with a ≥44px coarse-pointer hit area around the visible dot.
 
 ## Boundaries
 
-| Area     | Level    | Note |
-| -------- | -------- | ---- | ----- | ------ | ----- |
-| position | flexible | top  | right | bottom | left. |
+| Area     | Level    | Note                            |
+| -------- | -------- | ------------------------------- |
+| position | flexible | top \| right \| bottom \| left. |
 
 ## AI context prompt
 

@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop    | Type       | Required | Default | Description |
-| ------- | ---------- | -------- | ------- | ----------- | ----------- | ----------------------------------------------------- | --- | --- | --- | --- | --- | ----------------------------------------------- |
-| `width` | `"content" | "wide"   | "full"` | no          | `"content"` | Max inline size: content=72rem, wide=90rem, full=none |
-| `gap`   | `1         | 2        | 3       | 4           | 5           | 6                                                     | 8   | 10  | 12` | no  | `8` | Stack gap between children (spacing token step) |
+| Prop    | Type                            | Required | Default     | Description                                           |
+| ------- | ------------------------------- | -------- | ----------- | ----------------------------------------------------- |
+| `width` | `"content" \| "wide" \| "full"` | no       | `"content"` | Max inline size: content=72rem, wide=90rem, full=none |
+| `gap`   | `1\|2\|3\|4\|5\|6\|8\|10\|12`   | no       | `8`         | Stack gap between children (spacing token step)       |
 
 ## Examples
 

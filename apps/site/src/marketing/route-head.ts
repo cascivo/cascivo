@@ -13,6 +13,8 @@ export type RouteHead = {
   description: string
   /** Optional og/twitter title override (defaults to `title`). */
   ogTitle?: string
+  /** Absolute-from-root path to a per-route social card (defaults to /og.png). */
+  ogImage?: string
 }
 
 export const ROUTE_HEAD: Record<string, RouteHead> = {
@@ -21,24 +23,26 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       // Count literal (not the injected global): this module is also imported by
       // scripts/sitemap/generate.ts under plain Node. claims:check guards drift.
-      'cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus five functional example dashboards you can open and play with today.',
+      'cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus six functional example dashboards you can open and play with today.',
     ogTitle: 'cascivo',
   },
   '/accessibility': {
     title: 'Accessibility — cascivo',
     description:
-      'How cascivo meets WCAG 2.2 AA: zero axe violations in the CI-gated suite, keyboard and screen-reader support, and a representative assistive-technology test plan.',
+      'How cascivo meets WCAG 2.2 AA: zero axe violations in the automated axe suite, keyboard and screen-reader support, and a representative assistive-technology test plan.',
   },
   '/performance': {
     title: 'Performance — cascivo',
     description:
       'cascivo performance: signal-driven fine-grained updates, per-component CSS, and measured benchmarks against popular React UI libraries — fewer re-renders, smaller bundles.',
+    ogImage: '/og/performance.png',
   },
   '/charts': {
     title: 'Charts — cascivo',
     description:
       '18 chart types built from scratch in @cascivo/charts: line, area, bar, pie, scatter, bubble, combo, radar, heatmap, treemap, histogram, boxplot, sparkline, KPI, meter, bullet, radial-bar and funnel. Annotations, value labels, percent stacking, and click-to-drill — keyboard-navigable, theme-aware, and CVD-safe with zero runtime dependencies.',
     ogTitle: 'cascivo charts — 18 types, CVD-safe, keyboard-first',
+    ogImage: '/og/charts.png',
   },
   '/guides': {
     title: 'Guides — cascivo',
@@ -60,8 +64,9 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/examples': {
     title: 'Examples — cascivo',
     description:
-      'Five functional example dashboards built with cascivo — each modelled on a well-known SaaS product (Vercel, Stripe, Camunda, Linear, Datadog). Open one and play: no backend, no accounts, no setup.',
+      'Six functional example dashboards built with cascivo — each modelled on a well-known SaaS product (Vercel, Stripe, Camunda, Linear, Datadog, Trade Republic). Open one and play: no backend, no accounts, no setup.',
     ogTitle: 'cascivo examples',
+    ogImage: '/og/examples.png',
   },
   '/examples/deploy': {
     title: 'Cascade Deploy — a Vercel-shaped demo built with cascivo',
@@ -96,7 +101,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
   '/showcase': {
     title: 'Showcase — products built with cascivo',
     description:
-      'Real, shipped products built with the cascivo design system: Pagome (SEPA payment links), BPMN Kit (a BPMN diagram SDK), the Weeklyfoo Directory, and u11g — proof the library holds up in production.',
+      'Nine real, shipped products built with the cascivo design system — Pagome (SEPA payment links), BPMN Kit (a BPMN diagram SDK), the Weeklyfoo Directory, u11g, Sharu, AI & me, kaihuman, Lumen & Logic, and Beleggo — proof the library holds up in production.',
     ogTitle: 'Built with cascivo',
   },
   '/ai': {
@@ -104,12 +109,14 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'cascivo is AI-first: every component ships a machine-readable manifest that powers an MCP server, Claude Code skills, and llms.txt. Connect the MCP server, let your agent read every manifest, build real UI, and audit it with cascivo audit --ai.',
     ogTitle: 'cascivo AI layer',
+    ogImage: '/og/ai.png',
   },
   '/create': {
     title: 'Create a theme — cascivo',
     description:
       'Design your cascivo theme in seconds: pick an accent colour, border radius, and font — see real components update live, then copy the CSS.',
     ogTitle: 'cascivo theme configurator',
+    ogImage: '/og/create.png',
   },
   '/blocks': {
     title: 'Blocks — cascivo',

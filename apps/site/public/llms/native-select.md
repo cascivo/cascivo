@@ -36,10 +36,10 @@ import { NativeSelect } from '@cascivo/react'
 ## Props
 
 | Prop           | Type                                          | Required | Default | Description                                                        |
-| -------------- | --------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ | ---- | ----------------------------------------------------- |
+| -------------- | --------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
 | `options`      | `NativeSelectOption[]`                        | no       | —       | Options to render. Alternatively pass <option> children.           |
 | `children`     | `React.ReactNode`                             | no       | —       | Raw <option> children (used when options is not provided).         |
-| `size`         | `'sm'                                         | 'md'     | 'lg'`   | no                                                                 | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `size`         | `'sm' \| 'md' \| 'lg'`                        | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 | `invalid`      | `boolean`                                     | no       | —       | Marks the control as invalid for error styling and a11y.           |
 | `placeholder`  | `string`                                      | no       | —       | Placeholder rendered as a disabled, hidden first option.           |
 | `value`        | `string`                                      | no       | —       | The controlled value.                                              |

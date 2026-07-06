@@ -34,23 +34,23 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 
 ## Props
 
-| Name             | Type                       | Required       | Default   | Description                                                           |
-| ---------------- | -------------------------- | -------------- | --------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- |
-| `value`          | `number                    | null`          | No        | —                                                                     | The controlled value.                                                   |
-| `defaultValue`   | `number`                   | No             | —         | The initial value when uncontrolled.                                  |
-| `onChange`       | `(value: number            | null) => void` | No        | —                                                                     | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
-| `min`            | `number`                   | No             | —         | Minimum allowed value.                                                |
-| `max`            | `number`                   | No             | —         | Maximum allowed value.                                                |
-| `step`           | `number`                   | No             | 1         | Increment between allowed values.                                     |
-| `precision`      | `number`                   | No             | —         | Decimal places applied on commit                                      |
-| `formatOptions`  | `Intl.NumberFormatOptions` | No             | —         | Display formatting applied on blur; raw editable string while focused |
-| `label`          | `string`                   | No             | —         | Text label for the control.                                           |
-| `hint`           | `string`                   | No             | —         | Supplementary hint text shown with the control.                       |
-| `error`          | `string`                   | No             | —         | Error message shown when the value is invalid.                        |
-| `size`           | `'sm'                      | 'md'           | 'lg'`     | No                                                                    | md                                                                      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled`       | `boolean`                  | No             | false     | When true, disables the control and removes it from the tab order.    |
-| `incrementLabel` | `string`                   | No             | Increment | Accessible label for the increment button.                            |
-| `decrementLabel` | `string`                   | No             | Decrement | Accessible label for the decrement button.                            |
+| Name             | Type                              | Required | Default   | Description                                                             |
+| ---------------- | --------------------------------- | -------- | --------- | ----------------------------------------------------------------------- |
+| `value`          | `number \| null`                  | No       | —         | The controlled value.                                                   |
+| `defaultValue`   | `number`                          | No       | —         | The initial value when uncontrolled.                                    |
+| `onChange`       | `(value: number \| null) => void` | No       | —         | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
+| `min`            | `number`                          | No       | —         | Minimum allowed value.                                                  |
+| `max`            | `number`                          | No       | —         | Maximum allowed value.                                                  |
+| `step`           | `number`                          | No       | 1         | Increment between allowed values.                                       |
+| `precision`      | `number`                          | No       | —         | Decimal places applied on commit                                        |
+| `formatOptions`  | `Intl.NumberFormatOptions`        | No       | —         | Display formatting applied on blur; raw editable string while focused   |
+| `label`          | `string`                          | No       | —         | Text label for the control.                                             |
+| `hint`           | `string`                          | No       | —         | Supplementary hint text shown with the control.                         |
+| `error`          | `string`                          | No       | —         | Error message shown when the value is invalid.                          |
+| `size`           | `'sm' \| 'md' \| 'lg'`            | No       | md        | Visual size of the component (e.g. 'sm', 'md', 'lg').                   |
+| `disabled`       | `boolean`                         | No       | false     | When true, disables the control and removes it from the tab order.      |
+| `incrementLabel` | `string`                          | No       | Increment | Accessible label for the increment button.                              |
+| `decrementLabel` | `string`                          | No       | Decrement | Accessible label for the decrement button.                              |
 
 ## Tokens
 

@@ -35,12 +35,12 @@ import { Toast } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type       | Required  | Default   | Description                                                |
-| ------------- | ---------- | --------- | --------- | ---------------------------------------------------------- | --- | --------- | --------------------------------- |
-| `title`       | `string`   | yes       | —         | Title text for the component.                              |
-| `description` | `string`   | no        | —         | Supporting description text.                               |
-| `variant`     | `'default' | 'success' | 'warning' | 'destructive'`                                             | no  | `default` | Selects the visual style variant. |
-| `duration`    | `number`   | no        | `5000`    | How long (ms) the toast stays visible before auto-dismiss. |
+| Prop          | Type                                                   | Required | Default   | Description                                                |
+| ------------- | ------------------------------------------------------ | -------- | --------- | ---------------------------------------------------------- |
+| `title`       | `string`                                               | yes      | —         | Title text for the component.                              |
+| `description` | `string`                                               | no       | —         | Supporting description text.                               |
+| `variant`     | `'default' \| 'success' \| 'warning' \| 'destructive'` | no       | `default` | Selects the visual style variant.                          |
+| `duration`    | `number`                                               | no       | `5000`    | How long (ms) the toast stays visible before auto-dismiss. |
 
 ## Examples
 

@@ -33,12 +33,12 @@ Presentational by role — the placeholder shapes carry no meaning; the surround
 
 ## Props
 
-| Name      | Type     | Required | Default | Description                                                       |
-| --------- | -------- | -------- | ------- | ----------------------------------------------------------------- | ---- | --------------------------------- |
-| `variant` | `'text'  | 'circle' | 'rect'` | No                                                                | text | Selects the visual style variant. |
-| `width`   | `string` | No       | —       | CSS length applied as an inline custom property                   |
-| `height`  | `string` | No       | —       | CSS length applied as an inline custom property                   |
-| `lines`   | `number` | No       | 1       | Number of bars for the text variant; the last bar renders shorter |
+| Name      | Type                           | Required | Default | Description                                                       |
+| --------- | ------------------------------ | -------- | ------- | ----------------------------------------------------------------- |
+| `variant` | `'text' \| 'circle' \| 'rect'` | No       | text    | Selects the visual style variant.                                 |
+| `width`   | `string`                       | No       | —       | CSS length applied as an inline custom property                   |
+| `height`  | `string`                       | No       | —       | CSS length applied as an inline custom property                   |
+| `lines`   | `number`                       | No       | 1       | Number of bars for the text variant; the last bar renders shorter |
 
 ## Tokens
 

@@ -6,7 +6,7 @@
     <title>cascivo — the CSS-native, signal-driven, AI-first React design system</title>
     <meta
       name="description"
-      content="cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus five functional example dashboards you can open and play with today."
+      content="cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus six functional example dashboards you can open and play with today."
     />
     <link rel="canonical" href="https://cascivo.com/" />
     <meta name="robots" content="index, follow" />
@@ -41,15 +41,37 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "cascivo",
-        "description": "The CSS-native, signal-driven, AI-first React design system. Owned-code components, signal reactivity, a closed three-tier token system, first-party themes, WCAG 2.2 AA, and a machine-readable AI layer.",
-        "url": "https://cascivo.com/",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Web",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-        "license": "https://opensource.org/licenses/MIT",
-        "sameAs": ["https://github.com/cascivo/cascivo", "https://cascivo.com"]
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://cascivo.com/#org",
+            "name": "cascivo",
+            "url": "https://cascivo.com/",
+            "logo": "https://cascivo.com/favicon.svg",
+            "sameAs": ["https://github.com/cascivo/cascivo"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://cascivo.com/#site",
+            "name": "cascivo",
+            "url": "https://cascivo.com/",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://cascivo.com/#org" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "cascivo",
+            "description": "The CSS-native, signal-driven, AI-first React design system. Owned-code components, signal reactivity, a closed three-tier token system, first-party themes, WCAG 2.2 AA, and a machine-readable AI layer.",
+            "url": "https://cascivo.com/",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Web",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "license": "https://opensource.org/licenses/MIT",
+            "isPartOf": { "@id": "https://cascivo.com/#site" },
+            "publisher": { "@id": "https://cascivo.com/#org" },
+            "sameAs": ["https://github.com/cascivo/cascivo"]
+          }
+        ]
       }
     </script>
     <script>
@@ -57,11 +79,14 @@
       // Storage holds a versioned envelope ({"v":1,"value":"dark"}); older builds
       // stored the bare string. Only light/dark/warm are render-blocking, so any
       // other (deferred) theme paints as `dark` here and the app swaps it in once
-      // its CSS loads. Default is `dark` to match the app's theme signal.
+      // its CSS loads. With nothing stored, default from the OS color-scheme
+      // preference (light/dark) — matches preferredTheme() in src/theme.ts.
       ;(function () {
         try {
+          var prefersLight =
+            typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: light)').matches
+          var v = prefersLight ? 'light' : 'dark'
           var raw = localStorage.getItem('cascade-theme')
-          var v = 'dark'
           if (raw) {
             v = raw
             try {

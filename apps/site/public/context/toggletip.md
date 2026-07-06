@@ -42,15 +42,15 @@ The trigger is a real <button> with aria-expanded reflecting open state and aria
 
 ## Props
 
-| Name           | Type                      | Required | Default | Description                                                   |
-| -------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------- | ----------- | --------- | -------------- | ------------- | --- | ----- | -------------------------------------------------------- |
-| `trigger`      | `ReactNode`               | Yes      | —       | Trigger content, rendered inside a button (e.g. an info icon) |
-| `children`     | `ReactNode`               | Yes      | —       | The popover content — interactive and selectable              |
-| `placement`    | `'top'                    | 'bottom' | 'left'  | 'right'                                                       | 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'` | No  | 'top' | Side and alignment of the bubble relative to the trigger |
-| `defaultOpen`  | `boolean`                 | No       | false   | Initial open state when uncontrolled                          |
-| `open`         | `boolean`                 | No       | —       | Controlled open state                                         |
-| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called whenever the open state should change                  |
-| `labels`       | `{ label?: string }`      | No       | —       | Override the trigger accessible name                          |
+| Name           | Type                                                                                                   | Required | Default | Description                                                   |
+| -------------- | ------------------------------------------------------------------------------------------------------ | -------- | ------- | ------------------------------------------------------------- |
+| `trigger`      | `ReactNode`                                                                                            | Yes      | —       | Trigger content, rendered inside a button (e.g. an info icon) |
+| `children`     | `ReactNode`                                                                                            | Yes      | —       | The popover content — interactive and selectable              |
+| `placement`    | `'top' \| 'bottom' \| 'left' \| 'right' \| 'top-start' \| 'top-end' \| 'bottom-start' \| 'bottom-end'` | No       | 'top'   | Side and alignment of the bubble relative to the trigger      |
+| `defaultOpen`  | `boolean`                                                                                              | No       | false   | Initial open state when uncontrolled                          |
+| `open`         | `boolean`                                                                                              | No       | —       | Controlled open state                                         |
+| `onOpenChange` | `(open: boolean) => void`                                                                              | No       | —       | Called whenever the open state should change                  |
+| `labels`       | `{ label?: string }`                                                                                   | No       | —       | Override the trigger accessible name                          |
 
 ## Tokens
 

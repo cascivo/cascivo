@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04",
+  "generatedAt": "2026-07-06",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -78,6 +78,11 @@
       "path": "/docs/specs/perf-methodology.md"
     },
     {
+      "id": "shadcn-comparison-2026-07",
+      "title": "shadcn-comparison-2026-07",
+      "path": "/docs/specs/shadcn-comparison-2026-07.md"
+    },
+    {
       "id": "spec-spacing",
       "title": "Spacing",
       "path": "/docs/specs/spacing.md"
@@ -104,7 +109,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-07-04",
+    "generatedAt": "2026-07-06",
     "global": {
       "strict": [
         {
@@ -1763,7 +1768,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-07-04",
+    "generatedAt": "2026-07-06",
     "exceptions": [
       {
         "id": "EXC-001",

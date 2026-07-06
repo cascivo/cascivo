@@ -23,17 +23,17 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name          | Type                                                                 | Required                       | Default | Description                                                           |
-| ------------- | -------------------------------------------------------------------- | ------------------------------ | ------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | Yes                            | —       | The data series to plot.                                              |
-| `title`       | `string`                                                             | Yes                            | —       | Title text for the component.                                         |
-| `description` | `string`                                                             | No                             | —       | Supporting description text.                                          |
-| `width`       | `number`                                                             | No                             | —       | Width of the component.                                               |
-| `height`      | `number`                                                             | No                             | 320     | Height of the component.                                              |
-| `tooltip`     | `boolean`                                                            | No                             | —       | Enable hover/keyboard tooltip                                         |
-| `className`   | `string`                                                             | No                             | —       | Additional CSS class names merged onto the root element.              |
-| `plain`       | `boolean`                                                            | No                             | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
-| `glyph`       | `GlyphShape                                                          | ((d, seriesId) => GlyphShape)` | No      | —                                                                     | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
+| Name          | Type                                                                 | Required | Default | Description                                                                                                                |
+| ------------- | -------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `series`      | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | Yes      | —       | The data series to plot.                                                                                                   |
+| `title`       | `string`                                                             | Yes      | —       | Title text for the component.                                                                                              |
+| `description` | `string`                                                             | No       | —       | Supporting description text.                                                                                               |
+| `width`       | `number`                                                             | No       | —       | Width of the component.                                                                                                    |
+| `height`      | `number`                                                             | No       | 320     | Height of the component.                                                                                                   |
+| `tooltip`     | `boolean`                                                            | No       | —       | Enable hover/keyboard tooltip                                                                                              |
+| `className`   | `string`                                                             | No       | —       | Additional CSS class names merged onto the root element.                                                                   |
+| `plain`       | `boolean`                                                            | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                      |
+| `glyph`       | `GlyphShape \| ((d, seriesId) => GlyphShape)`                        | No       | —       | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
 
 ## Tokens
 

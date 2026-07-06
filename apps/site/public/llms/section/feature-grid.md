@@ -19,11 +19,11 @@ _Copy-paste only — this block/layout is not published as an importable package
 ## Props
 
 | Prop           | Type            | Required | Default   | Description                                                             |
-| -------------- | --------------- | -------- | --------- | ----------------------------------------------------------------------- | --- | ---------------------------------------------------------------- |
+| -------------- | --------------- | -------- | --------- | ----------------------------------------------------------------------- |
 | `items`        | `FeatureItem[]` | yes      | —         | Array of feature items with title, optional description, icon, and href |
 | `title`        | `ReactNode`     | no       | —         | Section heading above the grid                                          |
 | `description`  | `ReactNode`     | no       | —         | Subheading below the section title                                      |
-| `headingLevel` | `1              | 2        | 3`        | no                                                                      | `2` | Heading level for the section title (items use headingLevel + 1) |
+| `headingLevel` | `1 \| 2 \| 3`   | no       | `2`       | Heading level for the section title (items use headingLevel + 1)        |
 | `min`          | `string`        | no       | `"16rem"` | Minimum track width forwarded to AutoGrid                               |
 
 ## Examples

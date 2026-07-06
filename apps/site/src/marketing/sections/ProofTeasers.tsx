@@ -39,12 +39,15 @@ export function ProofTeasers({
                 <CardTitle>Accessibility</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="proof-number">{axe.cascade.violations}</p>
-                <p className="proof-number-label">axe violations · WCAG 2.2 AA · four app states</p>
+                <p className="proof-number">WCAG 2.2 AA</p>
+                <p className="proof-number-label">
+                  conformance statement · APG keyboard matrix · CVD-safe charts
+                </p>
                 <p className="proof-line">
-                  Same scan, same rules: shadcn {axe.shadcn.violations} · Carbon{' '}
-                  {axe.carbon.violations}. Plus a keyboard and ARIA matrix generated from every
-                  manifest in the registry.
+                  A published conformance statement, a keyboard and ARIA matrix generated from every
+                  manifest, and colour-blind-safe chart palettes. Table stakes too:{' '}
+                  {axe.cascade.violations} axe violations across four app states (same scan as
+                  shadcn and Carbon).
                 </p>
               </CardContent>
               <CardFooter>

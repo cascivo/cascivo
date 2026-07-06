@@ -34,9 +34,9 @@ import { PasswordInput } from '@cascivo/react'
 ## Props
 
 | Prop                | Type                                               | Required | Default | Description                                                        |
-| ------------------- | -------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ | ---- | ----------------------------------------------------- |
+| ------------------- | -------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
 | `showStrengthMeter` | `boolean`                                          | no       | `false` | When true, shows a password-strength meter.                        |
-| `size`              | `'sm'                                              | 'md'     | 'lg'`   | no                                                                 | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `size`              | `'sm' \| 'md' \| 'lg'`                             | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 | `labels`            | `PasswordInputLabels`                              | no       | —       | Overrides for the component’s user-visible strings (i18n).         |
 | `disabled`          | `boolean`                                          | no       | `false` | When true, disables the control and removes it from the tab order. |
 | `placeholder`       | `string`                                           | no       | —       | Placeholder text shown when the field is empty.                    |

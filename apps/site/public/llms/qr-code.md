@@ -26,15 +26,15 @@ import { QrCode } from '@cascivo/react'
 
 ## Props
 
-| Prop              | Type     | Required | Default        | Description                                           |
-| ----------------- | -------- | -------- | -------------- | ----------------------------------------------------- | --- | --- | ----------------------------------------------------- |
-| `value`           | `string` | yes      | —              | Text or URL to encode                                 |
-| `size`            | `number` | no       | `128`          | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `errorCorrection` | `'L'     | 'M'      | 'Q'            | 'H'`                                                  | no  | `M` | Higher levels tolerate more damage but hold less data |
-| `radius`          | `string` | no       | —              | CSS length rounding the corners                       |
-| `fill`            | `string` | no       | `currentColor` | Foreground color of the QR modules.                   |
-| `background`      | `string` | no       | `transparent`  | Background color behind the QR code.                  |
-| `label`           | `string` | no       | —              | Text label for the control.                           |
+| Prop              | Type                       | Required | Default        | Description                                           |
+| ----------------- | -------------------------- | -------- | -------------- | ----------------------------------------------------- |
+| `value`           | `string`                   | yes      | —              | Text or URL to encode                                 |
+| `size`            | `number`                   | no       | `128`          | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `errorCorrection` | `'L' \| 'M' \| 'Q' \| 'H'` | no       | `M`            | Higher levels tolerate more damage but hold less data |
+| `radius`          | `string`                   | no       | —              | CSS length rounding the corners                       |
+| `fill`            | `string`                   | no       | `currentColor` | Foreground color of the QR modules.                   |
+| `background`      | `string`                   | no       | `transparent`  | Background color behind the QR code.                  |
+| `label`           | `string`                   | no       | —              | Text label for the control.                           |
 
 ## Examples
 

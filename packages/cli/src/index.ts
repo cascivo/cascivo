@@ -36,7 +36,7 @@ Commands:
   update [component]       Update installed components (--check: list outdated)
   search <query>           Search components across registries
   view <spec>              View a component before installing
-  theme add <name>         Install a first-party theme (see "cascivo theme --help")
+  theme <add|create>       Install a first-party theme, or build a custom one from /create
   eject <component>        Eject specific tokens into a scoped local override file
   generate <config.json>   Generate TSX from a ViewConfig JSON file
   doctor [--ci]            Check components for rule violations
@@ -102,8 +102,12 @@ Options:
 Preview a component or template (files, dependencies, description) before
 installing. <spec> is a bare name, @ns/name, or owner/repo/name.`,
   theme: `Usage: cascivo theme add <name>
+       cascivo theme create <name> --from <hash> [--out <path>]
 
-Install @cascivo/themes and print the import + data-theme wiring for a theme.
+add     Install @cascivo/themes and print the import + data-theme wiring.
+create  Turn a theme-builder config into an owned <name>.theme.css. Get <hash>
+        from https://cascivo.com/create ("Copy CLI command"). --dry-run prints
+        the CSS without writing.
 
 Themes: ${THEME_LIST}`,
   eject: `Usage: cascivo eject <component> [options]

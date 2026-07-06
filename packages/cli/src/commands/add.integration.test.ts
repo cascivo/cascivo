@@ -77,14 +77,20 @@ function mockFetch() {
 describe('add command (integration)', () => {
   let tmpDir: string
   let fetchSpy: ReturnType<typeof mockFetch>
+  let originalCwd: string
 
   beforeEach(async () => {
     tmpDir = await mkdtemp(join(tmpdir(), 'cascade-cli-test-'))
     fetchSpy = mockFetch()
+    // `add` writes cascivo.lock to process.cwd(); run inside the temp dir so the
+    // lockfile lands there (cleaned up below) instead of polluting packages/cli.
+    originalCwd = process.cwd()
+    process.chdir(tmpDir)
   })
 
   afterEach(async () => {
     fetchSpy.mockRestore()
+    process.chdir(originalCwd)
     await rm(tmpDir, { recursive: true, force: true })
   })
 

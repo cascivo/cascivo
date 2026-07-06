@@ -77,7 +77,7 @@ export function AccessibilityStatement() {
           <h3>Automated axe-core testing</h3>
           <p className="a11y-stmt-stat">0 violations</p>
           <p className="a11y-stmt-desc">
-            Zero axe violations in the CI-gated interaction suite — four app states (data table,
+            Zero axe violations in the automated interaction suite — four app states (data table,
             1k-row table, form, dialog), WCAG 2.2 AA tags. This is a floor, not a ceiling: axe
             detects roughly 30–40% of WCAG issues by design. See the{' '}
             <a href="#axe">axe comparison</a> section above for methodology.

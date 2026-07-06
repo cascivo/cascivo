@@ -24,12 +24,12 @@ The overlay is marked aria-hidden because it is a visual affordance — the unde
 
 ## Props
 
-| Name        | Type              | Required  | Default        | Description                                              |
-| ----------- | ----------------- | --------- | -------------- | -------------------------------------------------------- | --- | ------- | ---------------------------------- |
-| `children`  | `React.ReactNode` | Yes       | —              | Content rendered inside the component.                   |
-| `overlay`   | `React.ReactNode` | Yes       | —              | The element to display at the corner (badge, dot, count) |
-| `placement` | `'top-start'      | 'top-end' | 'bottom-start' | 'bottom-end'`                                            | No  | top-end | Placement relative to the trigger. |
-| `className` | `string`          | No        | —              | Additional CSS class names merged onto the root element. |
+| Name        | Type                                                         | Required | Default | Description                                              |
+| ----------- | ------------------------------------------------------------ | -------- | ------- | -------------------------------------------------------- |
+| `children`  | `React.ReactNode`                                            | Yes      | —       | Content rendered inside the component.                   |
+| `overlay`   | `React.ReactNode`                                            | Yes      | —       | The element to display at the corner (badge, dot, count) |
+| `placement` | `'top-start' \| 'top-end' \| 'bottom-start' \| 'bottom-end'` | No       | top-end | Placement relative to the trigger.                       |
+| `className` | `string`                                                     | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

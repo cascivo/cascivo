@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04",
+  "generatedAt": "2026-07-06",
   "competitors": {
     "shadcn": {
       "total": 59,
@@ -85,7 +85,7 @@
           "competitor": "Chart",
           "status": "covered",
           "cascivo": "chart",
-          "note": "16 charts via @cascivo/charts"
+          "note": "chart family via @cascivo/charts"
         },
         {
           "competitor": "Checkbox",

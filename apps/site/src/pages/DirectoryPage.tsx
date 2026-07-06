@@ -102,6 +102,51 @@ export function DirectoryPage() {
           ))}
         </div>
       </section>
+
+      <section class="doc-section">
+        <h2>Publish your own</h2>
+        <p>
+          A cascivo registry is just static JSON. The CLI reads the same schema whether it&rsquo;s
+          first-party or yours, so you can host a registry on GitHub with no server:
+        </p>
+        <ol class="a11y-list">
+          <li>
+            Fork the{' '}
+            <a
+              href="https://github.com/cascivo/cascivo/tree/main/apps/examples/registry-starter"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              registry starter
+            </a>{' '}
+            — a workspace with a typed manifest and the build step already wired.
+          </li>
+          <li>
+            Add your components under <code>src/</code> and build the per-item artifacts (
+            <code>r/&lt;name&gt;.json</code>, each with source URLs and any{' '}
+            <code>registryDependencies</code>).
+          </li>
+          <li>
+            Push to a public GitHub repo. The raw <code>r/</code> files are the registry — no
+            hosting to run.
+          </li>
+          <li>
+            Anyone installs a component straight from your repo:
+            <br />
+            <code>npx cascivo add your-org/your-repo/&lt;component&gt;</code>
+            <br />
+            transitive <code>registryDependencies</code> resolve automatically, and{' '}
+            <a href="/docs/upgrading">
+              <code>cascivo update</code>
+            </a>{' '}
+            works against your versioned artifacts too.
+          </li>
+        </ol>
+        <p class="muted">
+          To appear in the directory above, add an entry to <code>directory/registries.json</code>{' '}
+          and open a pull request.
+        </p>
+      </section>
     </article>
   )
 }

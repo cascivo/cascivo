@@ -8,7 +8,7 @@ import {
 } from '../data'
 import { PropsTable } from './components/PropsTable'
 
-/** Entries routed under /docs/components/* — the five core component categories. */
+/** Entries routed under /docs/components/* — every documented category. */
 const CORE = new Set<string>(CATEGORY_ORDER)
 
 function matches(entry: RegistryEntry, q: string): boolean {

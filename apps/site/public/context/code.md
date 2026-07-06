@@ -32,9 +32,9 @@ Renders a native <code> element so assistive tech can expose the content as code
 
 ## Props
 
-| Name   | Type  | Required | Default | Description |
-| ------ | ----- | -------- | ------- | ----------- | ----------------------------------------------------- |
-| `size` | `'sm' | 'md'`    | No      | md          | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Name   | Type           | Required | Default | Description                                           |
+| ------ | -------------- | -------- | ------- | ----------------------------------------------------- |
+| `size` | `'sm' \| 'md'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 

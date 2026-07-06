@@ -1,4 +1,4 @@
-// Single source of truth for the five v21 showcase demos, shared by:
+// Single source of truth for the six showcase demos, shared by:
 //   - pages/ExamplesPage.tsx        (the /examples hub)
 //   - pages/ExampleDetailPage.tsx   (the /examples/<slug> detail pages)
 //

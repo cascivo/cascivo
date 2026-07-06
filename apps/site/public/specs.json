@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-04",
+  "generatedAt": "2026-07-06",
   "specs": [
     {
       "id": "at-matrix",
@@ -72,6 +72,12 @@
       "title": "perf-methodology",
       "path": "/docs/specs/perf-methodology.md",
       "summary": "This document diagnoses the current state of the per-component incremental bundle matrix before any fixes land (T3-T2 and later). Read `apps/bench/METHODOLOGY.md` for the overall benchmark methodology; this doc focuses specifically on the incremental matrix and the two known defects that corrupt its output."
+    },
+    {
+      "id": "shadcn-comparison-2026-07",
+      "title": "shadcn-comparison-2026-07",
+      "path": "/docs/specs/shadcn-comparison-2026-07.md",
+      "summary": "**Status:** analysis + plan only — nothing in this document is implemented yet. **Scope:** landing page (cascivo.com), documentation (docs.cascivo.com + `docs/`), GitHub repo presentation. **Benchmark:** shadcn/ui as of July 2026 (the most popular UI library; ~118k stars, ~4M+ weekly CLI downloads). **Method:** four parallel deep audits (landing code, docs surface, repo hygiene, shadcn web research) plus a live run of `apps/site` with screenshot review at 1440×900 and 390×844, light/dark emulation. Every finding cites a file path. Findings marked **[verified]** were independently re-checked against source or runtime data."
     },
     {
       "id": "spec-spacing",

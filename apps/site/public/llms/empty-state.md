@@ -27,13 +27,13 @@ import { EmptyState } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type        | Required | Default | Description                             |
-| ------------- | ----------- | -------- | ------- | --------------------------------------- | ----------------------------------------------------- |
-| `icon`        | `ReactNode` | no       | —       | Icon element rendered in the component. |
-| `title`       | `string`    | yes      | —       | Title text for the component.           |
-| `description` | `string`    | no       | —       | Supporting description text.            |
-| `action`      | `ReactNode` | no       | —       | Primary action shown in the component.  |
-| `size`        | `'md'       | 'lg'`    | no      | `md`                                    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop          | Type           | Required | Default | Description                                           |
+| ------------- | -------------- | -------- | ------- | ----------------------------------------------------- |
+| `icon`        | `ReactNode`    | no       | —       | Icon element rendered in the component.               |
+| `title`       | `string`       | yes      | —       | Title text for the component.                         |
+| `description` | `string`       | no       | —       | Supporting description text.                          |
+| `action`      | `ReactNode`    | no       | —       | Primary action shown in the component.                |
+| `size`        | `'md' \| 'lg'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 

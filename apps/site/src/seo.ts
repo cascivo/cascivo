@@ -26,6 +26,31 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Every cascivo component prop, variant, and size in one searchable reference — filter by component or prop name.',
   },
+  '/keyboard': {
+    title: `Keyboard reference${SUFFIX}`,
+    description:
+      'Every keyboard interaction in cascivo, derived from each component’s manifest — filter by component, ARIA role, or key.',
+  },
+  '/platform': {
+    title: `Built on the platform${SUFFIX}`,
+    description:
+      'cascivo builds controls on browser-native primitives — native dialog, the Popover API, CSS anchor positioning — not wrapped third-party dependencies. Measured line counts, zero runtime deps.',
+  },
+  '/faq': {
+    title: `FAQ${SUFFIX}`,
+    description:
+      'Frequently asked questions about cascivo — licensing, adopting one component, Next.js/RSC, Tailwind, theming, and how it compares to shadcn/ui.',
+  },
+  '/changelog': {
+    title: `Changelog${SUFFIX}`,
+    description:
+      'Major and minor releases per published cascivo package, parsed from changesets — compare against your installed versions to detect API drift.',
+  },
+  '/upgrading': {
+    title: `Upgrading${SUFFIX}`,
+    description:
+      'How cascivo updates owned copy-in components without clobbering your edits: a versioned registry, a lockfile, and a real three-way merge via cascivo update.',
+  },
   '/charts': {
     title: `Charts${SUFFIX}`,
     description:
@@ -108,6 +133,37 @@ function canonicalFor(path: string): string {
   return path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`
 }
 
+/**
+ * Maintain a single BreadcrumbList JSON-LD script in the head (SPA-navigated,
+ * so it's updated per route; removed on non-indexable routes). Googlebot renders
+ * the client, so this is picked up despite not being in the prerendered HTML.
+ */
+function setBreadcrumb(items: { name: string; url: string }[] | null): void {
+  if (typeof document === 'undefined') return
+  const id = 'ld-breadcrumb'
+  let el = document.getElementById(id) as HTMLScriptElement | null
+  if (!items) {
+    el?.remove()
+    return
+  }
+  if (!el) {
+    el = document.createElement('script')
+    el.id = id
+    el.type = 'application/ld+json'
+    document.head.appendChild(el)
+  }
+  el.textContent = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  })
+}
+
 /** Resolve the head (title + description) for a path, including component pages. */
 function headFor(path: string): { head: RouteHead; index: boolean } {
   // Docs lives under /docs on the unified domain; ROUTE_HEAD keys are
@@ -116,7 +172,9 @@ function headFor(path: string): { head: RouteHead; index: boolean } {
   const known = ROUTE_HEAD[rel]
   if (known) return { head: known, index: true }
 
-  const componentMatch = rel.match(/^\/components\/([^/]+)$/)
+  // Component slugs can carry a category prefix (`chart/area-chart`,
+  // `layout/stack`), so match the full remainder, not just one path segment.
+  const componentMatch = rel.match(/^\/components\/(.+)$/)
   if (componentMatch) {
     const entry = getComponent(decodeURIComponent(componentMatch[1] ?? ''))
     if (entry) {
@@ -189,4 +247,19 @@ export function applyDocsSeo(path: string): void {
     'content',
     head.description,
   )
+
+  // Breadcrumb: cascivo › Docs › <this page> (skipped on the docs root and on
+  // non-indexable / not-found routes).
+  if (!index) {
+    setBreadcrumb(null)
+  } else {
+    const crumbs = [
+      { name: 'cascivo', url: `${SITE_URL}/` },
+      { name: 'Docs', url: `${SITE_URL}/docs` },
+    ]
+    if (path !== '/docs') {
+      crumbs.push({ name: head.title.replace(SUFFIX, ''), url: canonical })
+    }
+    setBreadcrumb(crumbs)
+  }
 }

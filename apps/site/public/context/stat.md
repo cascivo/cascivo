@@ -32,13 +32,13 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ## Props
 
-| Name       | Type     | Required | Default | Description                                          |
-| ---------- | -------- | -------- | ------- | ---------------------------------------------------- | ---------------- | -------------------------------------- | ------ | -------- |
-| `label`    | `string` | Yes      | —       | What the metric measures                             |
-| `value`    | `string  | number`  | Yes     | —                                                    | The metric value |
-| `delta`    | `string` | No       | —       | Change indicator rendered next to the trend arrow    |
-| `trend`    | `'up'    | 'down'   | 'flat'` | No                                                   | flat             | Direction of the trend indicator ('up' | 'down' | 'flat'). |
-| `helpText` | `string` | No       | —       | Fine print below the value (methodology, time range) |
+| Name       | Type                       | Required | Default | Description                                                  |
+| ---------- | -------------------------- | -------- | ------- | ------------------------------------------------------------ |
+| `label`    | `string`                   | Yes      | —       | What the metric measures                                     |
+| `value`    | `string \| number`         | Yes      | —       | The metric value                                             |
+| `delta`    | `string`                   | No       | —       | Change indicator rendered next to the trend arrow            |
+| `trend`    | `'up' \| 'down' \| 'flat'` | No       | flat    | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
+| `helpText` | `string`                   | No       | —       | Fine print below the value (methodology, time range)         |
 
 ## Tokens
 

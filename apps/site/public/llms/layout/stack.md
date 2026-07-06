@@ -18,13 +18,13 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop        | Type        | Required      | Default | Description    |
-| ----------- | ----------- | ------------- | ------- | -------------- | -------------- | --- | --------------- | --- | --- | --- | --- | ------------------ |
-| `direction` | `'vertical' | 'horizontal'` | no      | —              | Flex direction |
-| `gap`       | `1          | 2             | 3       | 4              | 5              | 6   | 8               | 10  | 12` | no  | —   | Spacing token step |
-| `align`     | `'start'    | 'center'      | 'end'   | 'stretch'`     | no             | —   | align-items     |
-| `justify`   | `'start'    | 'center'      | 'end'   | 'between'`     | no             | —   | justify-content |
-| `wrap`      | `boolean`   | no            | —       | Allow wrapping |
+| Prop        | Type                                  | Required | Default | Description        |
+| ----------- | ------------------------------------- | -------- | ------- | ------------------ |
+| `direction` | `'vertical' \| 'horizontal'`          | no       | —       | Flex direction     |
+| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | no       | —       | Spacing token step |
+| `align`     | `'start'\|'center'\|'end'\|'stretch'` | no       | —       | align-items        |
+| `justify`   | `'start'\|'center'\|'end'\|'between'` | no       | —       | justify-content    |
+| `wrap`      | `boolean`                             | no       | —       | Allow wrapping     |
 
 ## Examples
 

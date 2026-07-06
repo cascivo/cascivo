@@ -37,9 +37,24 @@ export interface RegistryEntry {
   meta: ComponentMeta
 }
 
-export type Category = 'inputs' | 'display' | 'overlay' | 'navigation' | 'feedback'
+export type Category =
+  | 'inputs'
+  | 'display'
+  | 'overlay'
+  | 'navigation'
+  | 'feedback'
+  | 'layout'
+  | 'chart'
 
-export const CATEGORY_ORDER: Category[] = ['inputs', 'display', 'overlay', 'navigation', 'feedback']
+export const CATEGORY_ORDER: Category[] = [
+  'inputs',
+  'display',
+  'overlay',
+  'navigation',
+  'feedback',
+  'layout',
+  'chart',
+]
 
 export const CATEGORY_LABELS: Record<Category, string> = {
   inputs: 'Inputs',
@@ -47,6 +62,8 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   overlay: 'Overlay',
   navigation: 'Navigation',
   feedback: 'Feedback',
+  layout: 'Layout',
+  chart: 'Chart',
 }
 
 export const components: RegistryEntry[] = (

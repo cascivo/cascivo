@@ -34,16 +34,16 @@ role="banner" landmarks the header; nav dropdowns expose aria-expanded, icon act
 
 ## Props
 
-| Name                | Type                   | Required   | Default | Description                                                                              |
-| ------------------- | ---------------------- | ---------- | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| `brand`             | `ShellHeaderBrand      | ReactNode` | No      | —                                                                                        | Brand: { prefix?, name, href? } or free-form node |
-| `nav`               | `ShellHeaderNavItem[]` | No         | —       | Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items }) |
-| `actions`           | `ShellHeaderAction[]`  | No         | —       | Right-aligned global icon actions with aria-pressed                                      |
-| `end`               | `ReactNode`            | No         | —       | Free-form trailing slot (user menu, theme switcher)                                      |
-| `onMenuClick`       | `() => void`           | No         | —       | Renders the hamburger button; call shell.toggleSideNav                                   |
-| `menuExpanded`      | `boolean`              | No         | —       | aria-expanded for the hamburger button                                                   |
-| `skipToContentHref` | `string                | false`     | No      | '#cascade-main'                                                                          | Skip-link target; false disables the link         |
-| `labels`            | `ShellHeaderLabels`    | No         | —       | i18n overrides for built-in strings                                                      |
+| Name                | Type                            | Required | Default         | Description                                                                              |
+| ------------------- | ------------------------------- | -------- | --------------- | ---------------------------------------------------------------------------------------- |
+| `brand`             | `ShellHeaderBrand \| ReactNode` | No       | —               | Brand: { prefix?, name, href? } or free-form node                                        |
+| `nav`               | `ShellHeaderNavItem[]`          | No       | —               | Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items }) |
+| `actions`           | `ShellHeaderAction[]`           | No       | —               | Right-aligned global icon actions with aria-pressed                                      |
+| `end`               | `ReactNode`                     | No       | —               | Free-form trailing slot (user menu, theme switcher)                                      |
+| `onMenuClick`       | `() => void`                    | No       | —               | Renders the hamburger button; call shell.toggleSideNav                                   |
+| `menuExpanded`      | `boolean`                       | No       | —               | aria-expanded for the hamburger button                                                   |
+| `skipToContentHref` | `string \| false`               | No       | '#cascade-main' | Skip-link target; false disables the link                                                |
+| `labels`            | `ShellHeaderLabels`             | No       | —               | i18n overrides for built-in strings                                                      |
 
 ## Tokens
 

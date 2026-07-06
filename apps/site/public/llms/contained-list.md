@@ -27,11 +27,11 @@ import { ContainedList } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type        | Required     | Default | Description                            |
-| -------- | ----------- | ------------ | ------- | -------------------------------------- | -------------------------------------------- |
-| `label`  | `ReactNode` | yes          | —       | Text label for the control.            |
-| `kind`   | `'on-page'  | 'disclosed'` | no      | `on-page`                              | Visual treatment — 'on-page' or 'disclosed'. |
-| `action` | `ReactNode` | no           | —       | Primary action shown in the component. |
+| Prop     | Type                       | Required | Default   | Description                                  |
+| -------- | -------------------------- | -------- | --------- | -------------------------------------------- |
+| `label`  | `ReactNode`                | yes      | —         | Text label for the control.                  |
+| `kind`   | `'on-page' \| 'disclosed'` | no       | `on-page` | Visual treatment — 'on-page' or 'disclosed'. |
+| `action` | `ReactNode`                | no       | —         | Primary action shown in the component.       |
 
 ## Examples
 

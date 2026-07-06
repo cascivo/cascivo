@@ -145,7 +145,7 @@ pnpm install
 pnpm bench   # bundle → treeshake → runtime → renders → lighthouse → a11y → report
 ```
 
-**Timing disclosure policy:** Timing numbers (runtime suite) in `BENCHMARKS.md` come only from
+**Timing disclosure policy:** Timing numbers (runtime suite) in `docs/BENCHMARKS.md` come only from
 `results.json` entries where `meta.source == 'local'` — i.e., runs from a disclosed dedicated
 machine. CI produces timing artifacts for smoke-testing but **never commits them**. The
 committed `results.json` carries full hardware metadata (`meta.cpu`, `meta.cores`, `meta.memGb`,

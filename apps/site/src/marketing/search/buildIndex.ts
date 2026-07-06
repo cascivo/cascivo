@@ -88,7 +88,7 @@ const PAGE_SECTIONS: SearchItem[] = [
     section: 'Home',
     href: '/#advantages',
     type: 'page',
-    description: 'Ten token-driven themes — swap data-theme to restyle everything',
+    description: 'Token-driven themes — swap data-theme to restyle everything',
   },
   {
     id: 'page-charts',
