@@ -24,9 +24,9 @@ Pure layout wrapper with no semantic role; does not affect the accessibility tre
 
 ## Props
 
-| Name       | Type     | Required | Default | Description         |
-| ---------- | -------- | -------- | ------- | ------------------- |
-| `maxWidth` | `string` | No       | —       | CSS max-width value |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `maxWidth` | `string` | No | — | CSS max-width value |
 
 ## Tokens
 
@@ -39,9 +39,7 @@ Pure layout wrapper with no semantic role; does not affect the accessibility tre
 Centered container with custom max-width
 
 ```jsx
-<Center maxWidth="60rem">
-  <p>Content</p>
-</Center>
+<Center maxWidth="60rem"><p>Content</p></Center>
 ```
 
 ## AI context prompt

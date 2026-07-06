@@ -32,13 +32,13 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ## Props
 
-| Name       | Type                       | Required | Default | Description                                                  |
-| ---------- | -------------------------- | -------- | ------- | ------------------------------------------------------------ |
-| `label`    | `string`                   | Yes      | —       | What the metric measures                                     |
-| `value`    | `string \| number`         | Yes      | —       | The metric value                                             |
-| `delta`    | `string`                   | No       | —       | Change indicator rendered next to the trend arrow            |
-| `trend`    | `'up' \| 'down' \| 'flat'` | No       | flat    | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
-| `helpText` | `string`                   | No       | —       | Fine print below the value (methodology, time range)         |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | Yes | — | What the metric measures |
+| `value` | `string \| number` | Yes | — | The metric value |
+| `delta` | `string` | No | — | Change indicator rendered next to the trend arrow |
+| `trend` | `'up' \| 'down' \| 'flat'` | No | flat | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
+| `helpText` | `string` | No | — | Fine print below the value (methodology, time range) |
 
 ## Tokens
 
@@ -70,10 +70,10 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ## Boundaries
 
-| Area            | Level    | Note                                                             |
-| --------------- | -------- | ---------------------------------------------------------------- |
-| delta and trend | flexible | Optional — include only when change is meaningful                |
-| token names     | strict   | Trend colors must resolve to --cascivo-color-success/destructive |
+| Area | Level | Note |
+|------|-------|------|
+| delta and trend | flexible | Optional — include only when change is meaningful |
+| token names | strict | Trend colors must resolve to --cascivo-color-success/destructive |
 
 ## AI context prompt
 

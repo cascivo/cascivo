@@ -1,5 +1,11 @@
 # @cascivo/mcp
 
+## 0.3.1
+
+### Patch Changes
+
+- fc61671: Minor improvements
+
 ## 0.3.0
 
 ### Minor Changes

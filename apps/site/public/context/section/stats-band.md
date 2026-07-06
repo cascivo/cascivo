@@ -24,10 +24,10 @@ Has no visible heading; consumers must supply an aria-label for the band.
 
 ## Props
 
-| Name         | Type         | Required | Default       | Description                                                                                            |
-| ------------ | ------------ | -------- | ------------- | ------------------------------------------------------------------------------------------------------ |
-| `stats`      | `StatItem[]` | Yes      | —             | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
-| `aria-label` | `string`     | No       | "Key metrics" | Accessible label for the stats region                                                                  |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `stats` | `StatItem[]` | Yes | — | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
+| `aria-label` | `string` | No | "Key metrics" | Accessible label for the stats region |
 
 ## Tokens
 

@@ -25,29 +25,27 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop               | Type                             | Required | Default | Description                                                                 |
-| ------------------ | -------------------------------- | -------- | ------- | --------------------------------------------------------------------------- |
-| `id`               | `string`                         | yes      | —       | Stable node id.                                                             |
-| `position`         | `{ x: number; y: number }`       | no       | —       | Position in flow coords (controllable).                                     |
-| `onPositionChange` | `(position: XYPosition) => void` | no       | —       | Fired while dragging.                                                       |
-| `zoom`             | `number`                         | no       | `1`     | Current zoom (drag deltas are divided by it).                               |
-| `selected`         | `boolean`                        | no       | `false` | Whether the node is rendered as selected.                                   |
-| `draggable`        | `boolean`                        | no       | `true`  | Whether the node can be dragged.                                            |
-| `interactive`      | `boolean`                        | no       | `true`  | When false, the node is view-only: not draggable, selectable, or focusable. |
-| `onSelect`         | `(id: string) => void`           | no       | —       | Called with the selected value.                                             |
-| `children`         | `ReactNode`                      | no       | —       | Any cascivo content.                                                        |
-| `className`        | `string`                         | no       | —       | Additional CSS class names merged onto the root element.                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `id` | `string` | yes | — | Stable node id. |
+| `position` | `{ x: number; y: number }` | no | — | Position in flow coords (controllable). |
+| `onPositionChange` | `(position: XYPosition) => void` | no | — | Fired while dragging. |
+| `zoom` | `number` | no | `1` | Current zoom (drag deltas are divided by it). |
+| `selected` | `boolean` | no | `false` | Whether the node is rendered as selected. |
+| `draggable` | `boolean` | no | `true` | Whether the node can be dragged. |
+| `interactive` | `boolean` | no | `true` | When false, the node is view-only: not draggable, selectable, or focusable. |
+| `onSelect` | `(id: string) => void` | no | — | Called with the selected value. |
+| `children` | `ReactNode` | no | — | Any cascivo content. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### A draggable node
 
 ```tsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 160 }}>
-    <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>
-      Service A
-    </FlowNode>
+    <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>Service A</FlowNode>
   </div>
 )
 ```

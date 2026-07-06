@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/flow",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": false,
   "description": "Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies",
   "keywords": [

@@ -33,18 +33,18 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 
 ## Props
 
-| Name           | Type                                          | Required | Default | Description                                                        |
-| -------------- | --------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `options`      | `NativeSelectOption[]`                        | No       | —       | Options to render. Alternatively pass <option> children.           |
-| `children`     | `React.ReactNode`                             | No       | —       | Raw <option> children (used when options is not provided).         |
-| `size`         | `'sm' \| 'md' \| 'lg'`                        | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `invalid`      | `boolean`                                     | No       | —       | Marks the control as invalid for error styling and a11y.           |
-| `placeholder`  | `string`                                      | No       | —       | Placeholder rendered as a disabled, hidden first option.           |
-| `value`        | `string`                                      | No       | —       | The controlled value.                                              |
-| `defaultValue` | `string`                                      | No       | —       | The initial value when uncontrolled.                               |
-| `onChange`     | `React.ChangeEventHandler<HTMLSelectElement>` | No       | —       | Called when the selected value changes.                            |
-| `disabled`     | `boolean`                                     | No       | —       | When true, disables the control and removes it from the tab order. |
-| `className`    | `string`                                      | No       | —       | Additional CSS class names merged onto the root element.           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `NativeSelectOption[]` | No | — | Options to render. Alternatively pass <option> children. |
+| `children` | `React.ReactNode` | No | — | Raw <option> children (used when options is not provided). |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `invalid` | `boolean` | No | — | Marks the control as invalid for error styling and a11y. |
+| `placeholder` | `string` | No | — | Placeholder rendered as a disabled, hidden first option. |
+| `value` | `string` | No | — | The controlled value. |
+| `defaultValue` | `string` | No | — | The initial value when uncontrolled. |
+| `onChange` | `React.ChangeEventHandler<HTMLSelectElement>` | No | — | Called when the selected value changes. |
+| `disabled` | `boolean` | No | — | When true, disables the control and removes it from the tab order. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -89,10 +89,10 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 
 ## Boundaries
 
-| Area    | Level    | Note                                                       |
-| ------- | -------- | ---------------------------------------------------------- |
-| options | flexible | Pass an options array or raw <option> children             |
-| value   | flexible | Controlled (value/onChange) or uncontrolled (defaultValue) |
+| Area | Level | Note |
+|------|-------|------|
+| options | flexible | Pass an options array or raw <option> children |
+| value | flexible | Controlled (value/onChange) or uncontrolled (defaultValue) |
 
 ## AI context prompt
 

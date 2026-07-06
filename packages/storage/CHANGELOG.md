@@ -1,5 +1,13 @@
 # @cascivo/storage
 
+## 0.1.7
+
+### Patch Changes
+
+- fc61671: Minor improvements
+- Updated dependencies [fc61671]
+  - @cascivo/core@0.2.4
+
 ## 0.1.6
 
 ### Patch Changes

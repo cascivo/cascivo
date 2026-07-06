@@ -1,5 +1,13 @@
 # cascivo
 
+## 0.3.2
+
+### Patch Changes
+
+- fc61671: Minor improvements
+- Updated dependencies [fc61671]
+  - @cascivo/registry@0.1.7
+
 ## 0.3.1
 
 ### Patch Changes

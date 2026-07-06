@@ -28,12 +28,12 @@ import { RadioCard } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type        | Required | Default | Description          |
-| ------------- | ----------- | -------- | ------- | -------------------- |
-| `value`       | `string`    | yes      | —       | Radio value          |
-| `title`       | `ReactNode` | yes      | —       | Card title           |
-| `description` | `ReactNode` | no       | —       | Optional description |
-| `disabled`    | `boolean`   | no       | —       | Disables the card    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | yes | — | Radio value |
+| `title` | `ReactNode` | yes | — | Card title |
+| `description` | `ReactNode` | no | — | Optional description |
+| `disabled` | `boolean` | no | — | Disables the card |
 
 ## Examples
 

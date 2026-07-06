@@ -32,12 +32,12 @@ import { DataList } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                    | Required | Default      | Description                                           |
-| ------------- | ------------------------------------------------------- | -------- | ------------ | ----------------------------------------------------- |
-| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes      | —            | The items to render.                                  |
-| `orientation` | `'horizontal' \| 'vertical'`                            | no       | `horizontal` | Layout orientation of the component.                  |
-| `dividers`    | `boolean`                                               | no       | `false`      | When true, shows dividers between items.              |
-| `size`        | `'sm' \| 'md'`                                          | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes | — | The items to render. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `dividers` | `boolean` | no | `false` | When true, shows dividers between items. |
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -55,7 +55,11 @@ import { DataList } from '@cascivo/react'
 ### Vertical with dividers
 
 ```tsx
-<DataList orientation="vertical" dividers items={[{ label: 'Email', value: 'ada@example.com' }]} />
+<DataList
+  orientation="vertical"
+  dividers
+  items={[{ label: 'Email', value: 'ada@example.com' }]}
+/>
 ```
 
 ## Design tokens

@@ -23,10 +23,10 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 ## Props
 
-| Name  | Type                          | Required | Default | Description                                            |
-| ----- | ----------------------------- | -------- | ------- | ------------------------------------------------------ |
-| `min` | `string`                      | No       | "16rem" | Minimum track width before items wrap to fewer columns |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | 4       | Spacing token step                                     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `min` | `string` | No | "16rem" | Minimum track width before items wrap to fewer columns |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No | 4 | Spacing token step |
 
 ## Tokens
 
@@ -39,11 +39,7 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 Items fill available space and wrap when narrower than 12rem
 
 ```jsx
-<AutoGrid min="12rem" gap={4}>
-  <div>Card 1</div>
-  <div>Card 2</div>
-  <div>Card 3</div>
-</AutoGrid>
+<AutoGrid min="12rem" gap={4}><div>Card 1</div><div>Card 2</div><div>Card 3</div></AutoGrid>
 ```
 
 ## AI context prompt
