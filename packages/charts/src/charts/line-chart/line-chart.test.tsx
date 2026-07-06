@@ -90,13 +90,15 @@ describe('LineChart', () => {
     expect(screen.getByRole('application')).toBeTruthy()
   })
 
+  // Rendering 5000 points + a 5000-row fallback table in jsdom is heavy; under
+  // loaded/cold CI it can exceed the 5s default, so give it explicit headroom.
   it('renders a large series without crashing', () => {
     const bigData = Array.from({ length: 5000 }, (_, i) => ({ x: i, y: Math.sin(i / 100) * 100 }))
     const bigSeries = [{ id: 'big', label: 'Big', data: bigData }]
     const { container } = render(<LineChart series={bigSeries} x={x} y={y} title="Big Chart" />)
     const path = container.querySelector('path[data-series="big"]')
     expect(path?.getAttribute('d')?.length).toBeGreaterThan(0)
-  })
+  }, 20000)
 
   describe('plain mode', () => {
     it('renders no Axis or GridLines elements', () => {
