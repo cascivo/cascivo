@@ -4465,3 +4465,56 @@ kbd {
     justify-content: center;
   }
 }
+
+/* ── Assistive-technology matrix (accessibility page) ── */
+.at-pending-note {
+  margin-block: 0 var(--cascivo-space-4);
+  padding: var(--cascivo-space-3) var(--cascivo-space-4);
+  border: 1px solid var(--cascivo-color-border);
+  border-radius: var(--cascivo-radius-surface, 0.5rem);
+  background: var(--cascivo-color-surface-raised);
+  font-size: var(--cascivo-text-sm);
+  color: var(--cascivo-color-text-subtle);
+}
+
+.at-matrix-scroll {
+  overflow-x: auto;
+}
+
+.at-matrix-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--cascivo-text-sm);
+}
+
+.at-matrix-table th,
+.at-matrix-table td {
+  padding: var(--cascivo-space-2) var(--cascivo-space-3);
+  text-align: start;
+  border-block-end: 1px solid var(--cascivo-color-border);
+  white-space: nowrap;
+}
+
+.at-matrix-table thead th {
+  color: var(--cascivo-color-text-subtle);
+  font-weight: 600;
+}
+
+.at-stack-platform {
+  color: var(--cascivo-color-text-muted);
+  font-weight: 400;
+}
+
+.at-cell-label {
+  color: var(--cascivo-color-text-subtle);
+}
+
+.at-cell-pass {
+  color: var(--cascivo-color-success-foreground, oklch(0.45 0.14 145));
+}
+.at-cell-partial {
+  color: var(--cascivo-color-warning-foreground, oklch(0.5 0.14 75));
+}
+.at-cell-fail {
+  color: var(--cascivo-color-destructive);
+}

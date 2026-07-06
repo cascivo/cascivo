@@ -1,0 +1,87 @@
+name: AT sweep (screen readers)
+
+# Nightly + manual: drives real screen readers over the 12-component AT plan and
+# records what they announce. VoiceOver on macOS and NVDA on Windows are driven
+# by guidepup; JAWS is licensed and not automatable on hosted runners, so it
+# stays a manual spot-check (docs/specs/at-matrix.md).
+#
+# Each OS job writes its own stack column into at-results.json and uploads it as
+# an artifact. A maintainer reviews the runs, merges the two columns, stamps the
+# date, and commits the file — the accessibility page then renders real results
+# instead of "pending". Not PR-blocking; announcement grading is a first pass a
+# human confirms from the logged phrases.
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  voiceover:
+    name: VoiceOver (macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build packages + storybook
+        run: pnpm exec vp run -r build
+      - name: Install AT tooling (not committed to the lockfile)
+        run: |
+          cd apps/storybook
+          npm install --no-save @guidepup/guidepup playwright
+          npx playwright install webkit
+      - name: Enable VoiceOver automation
+        run: npx --yes @guidepup/setup
+      - name: Sweep
+        env:
+          AT_SR: voiceover
+          AT_STACK_ID: voiceover-safari
+        run: |
+          export AT_DATE=$(date -u +%Y-%m-%d)
+          node apps/storybook/scripts/at-sweep.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at-results-voiceover
+          path: apps/site/src/marketing/pages/accessibility/at-results.json
+
+  nvda:
+    name: NVDA (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Build packages + storybook
+        run: pnpm exec vp run -r build
+      - name: Install AT tooling (not committed to the lockfile)
+        run: |
+          cd apps/storybook
+          npm install --no-save @guidepup/guidepup playwright
+          npx playwright install chromium
+      - name: Enable NVDA automation
+        run: npx --yes @guidepup/setup
+      - name: Sweep
+        env:
+          AT_SR: nvda
+          AT_STACK_ID: nvda-chrome
+        shell: bash
+        run: |
+          export AT_DATE=$(date -u +%Y-%m-%d)
+          node apps/storybook/scripts/at-sweep.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: at-results-nvda
+          path: apps/site/src/marketing/pages/accessibility/at-results.json

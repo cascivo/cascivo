@@ -1,0 +1,22 @@
+{
+  "$comment": "Screen-reader announcement results, written by .github/workflows/a11y-at.yml (guidepup drives NVDA on Windows + VoiceOver on macOS). generatedAt=null means no automated run has landed yet — the page shows the plan as 'pending'. JAWS is licensed and not automatable in CI; it stays a manual spot-check, tracked in docs/specs/at-matrix.md.",
+  "generatedAt": null,
+  "stacks": [
+    { "id": "nvda-chrome", "label": "NVDA + Chrome", "platform": "Windows" },
+    { "id": "voiceover-safari", "label": "VoiceOver + Safari", "platform": "macOS" }
+  ],
+  "components": [
+    { "name": "Button", "story": "inputs-button--primary", "results": {} },
+    { "name": "Checkbox", "story": "inputs-checkbox--primary", "results": {} },
+    { "name": "Radio", "story": "inputs-radio--primary", "results": {} },
+    { "name": "Toggle", "story": "inputs-toggle--primary", "results": {} },
+    { "name": "Slider", "story": "inputs-slider--primary", "results": {} },
+    { "name": "Tabs", "story": "navigation-tabs--primary", "results": {} },
+    { "name": "Accordion", "story": "navigation-accordion--primary", "results": {} },
+    { "name": "Modal", "story": "overlay-modal--primary", "results": {} },
+    { "name": "Dropdown", "story": "overlay-dropdown--primary", "results": {} },
+    { "name": "Tooltip", "story": "overlay-tooltip--primary", "results": {} },
+    { "name": "Toast", "story": "overlay-toast--primary", "results": {} },
+    { "name": "BarChart", "story": "charts-barchart--default", "results": {} }
+  ]
+}

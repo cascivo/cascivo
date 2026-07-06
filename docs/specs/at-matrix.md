@@ -61,8 +61,24 @@ These are documented quirks from published ARIA APG research that implementers s
 
 ---
 
+## Automation
+
+NVDA (Windows) and VoiceOver (macOS) are now driven in CI by guidepup — see
+`.github/workflows/a11y-at.yml` and `apps/storybook/scripts/at-sweep.mjs`. Each
+nightly run walks every component's Storybook story, records the spoken phrases,
+and writes a first-pass grade (`pass` when the expected role/state is announced,
+`partial` when something is announced but the keyword is missing, `fail` on
+silence) into `apps/site/src/marketing/pages/accessibility/at-results.json`. The
+accessibility page renders that file; until a run lands and is committed, every
+cell reads `pending`.
+
+The grade is a regression guard, not a substitute for lived AT use — a human
+reviews the logged phrases and confirms/adjusts each cell. JAWS is licensed and
+cannot run on hosted runners, so the `JAWS+Chrome` column stays a manual
+spot-check using the methodology below.
+
 ## Next Steps
 
-To populate real results, run the methodology from `at-methodology.md` on each stack. Record pass / partial / fail per cell as testing is completed. File issues for any `fail` cells. Re-test after fixes. Update this matrix with each release cycle.
-
-Cells remain `not tested` until a contributor with the required environment (physical Windows or macOS machine with the screen reader installed) runs the protocol and records observations.
+Run the methodology from `at-methodology.md` for the manual JAWS column and to
+confirm the automated NVDA/VoiceOver grades. Record pass / partial / fail per
+cell, file issues for any `fail`, re-test after fixes, and refresh each release.

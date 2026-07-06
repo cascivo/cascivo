@@ -58,8 +58,8 @@ export function AxeComparison() {
             <code>prefers-contrast</code> media-feature audit (runs in CI)
           </li>
           <li>
-            An AT support matrix covering representative components (manual, see{' '}
-            <code>docs/specs/at-matrix.md</code>)
+            A screen-reader announcement matrix — NVDA + VoiceOver driven in CI over the
+            12-component plan (see the <a href="#at">AT matrix</a> below)
           </li>
         </ul>
       </div>

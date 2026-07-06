@@ -28,8 +28,11 @@ _Last updated: 2026-07-05._
 - **Accessibility, on the record.** Promote the axe sweep from nightly to
   PR-blocking once the finding backlog is triaged, and publish a standing
   per-release conformance report (axe + APG keyboard matrix).
-- **Manual assistive-technology pass.** Complete the NVDA / JAWS / VoiceOver
-  test plan for the representative 12-component set and publish the results.
+- **Assistive-technology pass.** NVDA and VoiceOver now run in CI via guidepup
+  over the 12-component plan (`.github/workflows/a11y-at.yml`), publishing a
+  screen-reader announcement matrix on the accessibility page. Remaining: land
+  the first runs, human-confirm the automated grades, and cover JAWS manually
+  (it can't be driven on hosted runners).
 - **Theme builder → project handoff.** Let the `/create` theme configurator hand
   its output directly to the CLI, so "design a theme in the browser" ends in an
   installable theme rather than a copy-paste.
