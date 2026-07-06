@@ -24,19 +24,19 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name          | Type                                 | Required | Default | Description                                                                                    |
-| ------------- | ------------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------- |
-| `bars`        | `{ label: string; value: number }[]` | Yes      | —       | Bar series data                                                                                |
-| `line`        | `{ x: number; y: number }[]`         | Yes      | —       | Line series data points                                                                        |
-| `title`       | `string`                             | Yes      | —       | Title text for the component.                                                                  |
-| `description` | `string`                             | No       | —       | Supporting description text.                                                                   |
-| `secondAxis`  | `boolean`                            | No       | —       | Render line on a secondary right y-axis                                                        |
-| `width`       | `number`                             | No       | —       | Width of the component.                                                                        |
-| `height`      | `number`                             | No       | 320     | Height of the component.                                                                       |
-| `tooltip`     | `boolean`                            | No       | —       | Enable hover/keyboard tooltip                                                                  |
-| `className`   | `string`                             | No       | —       | Additional CSS class names merged onto the root element.                                       |
-| `plain`       | `boolean`                            | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                          |
-| `annotations` | `Annotation[]`                       | No       | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `bars` | `{ label: string; value: number }[]` | Yes | — | Bar series data |
+| `line` | `{ x: number; y: number }[]` | Yes | — | Line series data points |
+| `title` | `string` | Yes | — | Title text for the component. |
+| `description` | `string` | No | — | Supporting description text. |
+| `secondAxis` | `boolean` | No | — | Render line on a secondary right y-axis |
+| `width` | `number` | No | — | Width of the component. |
+| `height` | `number` | No | 320 | Height of the component. |
+| `tooltip` | `boolean` | No | — | Enable hover/keyboard tooltip |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| `annotations` | `Annotation[]` | No | — | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 
 ## Tokens
 

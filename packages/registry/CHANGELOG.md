@@ -1,5 +1,11 @@
 # @cascivo/registry
 
+## 0.1.7
+
+### Patch Changes
+
+- fc61671: Minor improvements
+
 ## 0.1.6
 
 ### Patch Changes

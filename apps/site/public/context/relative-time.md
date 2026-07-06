@@ -32,12 +32,12 @@ Renders a native <time> element with a machine-readable datetime and the absolut
 
 ## Props
 
-| Name     | Type                             | Required | Default | Description                                             |
-| -------- | -------------------------------- | -------- | ------- | ------------------------------------------------------- |
-| `date`   | `Date \| number \| string`       | Yes      | —       | The date to render relative to now.                     |
-| `sync`   | `boolean`                        | No       | true    | When true, updates the relative time as it elapses.     |
-| `now`    | `number`                         | No       | —       | Override "now" (ms); disables the interval              |
-| `format` | `Intl.RelativeTimeFormatOptions` | No       | —       | Intl.RelativeTimeFormat options controlling the output. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `date` | `Date \| number \| string` | Yes | — | The date to render relative to now. |
+| `sync` | `boolean` | No | true | When true, updates the relative time as it elapses. |
+| `now` | `number` | No | — | Override "now" (ms); disables the interval |
+| `format` | `Intl.RelativeTimeFormatOptions` | No | — | Intl.RelativeTimeFormat options controlling the output. |
 
 ## Examples
 
@@ -50,7 +50,7 @@ Renders a native <time> element with a machine-readable datetime and the absolut
 ### Natural language
 
 ```jsx
-<RelativeTime date={date} format={{ numeric: 'auto' }} />
+<RelativeTime date={date} format={{ numeric: "auto" }} />
 ```
 
 ### Static (no ticking)
@@ -61,10 +61,10 @@ Renders a native <time> element with a machine-readable datetime and the absolut
 
 ## Boundaries
 
-| Area   | Level    | Note                                                                            |
-| ------ | -------- | ------------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | format | flexible | Pass Intl.RelativeTimeFormat options (e.g. numeric: "auto") to tune the wording |
-| sync   | flexible | Disable ticking for static contexts or long-past dates                          |
+| sync | flexible | Disable ticking for static contexts or long-past dates |
 
 ## AI context prompt
 

@@ -4,18 +4,20 @@
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "releases": [
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["AI-layer delivery (audit wave 3):"]
+          "notes": [
+            "AI-layer delivery (audit wave 3):"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "releases": [
         {
           "version": "0.3.0",
@@ -27,18 +29,22 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["Publish `@cascivo/charts` to npm. The package was previously private and"]
+          "notes": [
+            "Publish `@cascivo/charts` to npm. The package was previously private and"
+          ]
         }
       ]
     },
     {
       "name": "cascivo",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "releases": [
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):"
+          ]
         },
         {
           "version": "0.2.0",
@@ -50,13 +56,15 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/core",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "releases": [
         {
           "version": "0.2.0",
@@ -68,13 +76,15 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "releases": [
         {
           "version": "0.2.0",
@@ -94,49 +104,60 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "releases": [
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):"
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "releases": [
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons"]
+          "notes": [
+            "Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons"
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "releases": [
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):", "AI-layer delivery (audit wave 3):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):",
+            "AI-layer delivery (audit wave 3):"
+          ]
         },
         {
           "version": "0.2.0",
@@ -148,92 +169,116 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/react",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "releases": [
         {
           "version": "0.4.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):"
+          ]
         },
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
+          "notes": [
+            "Integration-feedback fixes (from the bpmn-kit and pagome migrations):"
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+          "notes": [
+            "v37 migration hardening — fixes from the boringtools migration feedback."
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "releases": [
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.6",
+      "version": "0.1.7",
       "releases": [
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.2.8",
+      "version": "0.2.9",
       "releases": [
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+          "notes": [
+            "v37 migration hardening — fixes from the boringtools migration feedback."
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "releases": [
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
+          "notes": [
+            "Integration-feedback fixes (from the bpmn-kit and pagome migrations):"
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+          "notes": [
+            "v37 migration hardening — fixes from the boringtools migration feedback."
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     }

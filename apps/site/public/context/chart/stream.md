@@ -23,20 +23,20 @@ Renders role="img" with a title and a fallback data table.
 
 ## Props
 
-| Name          | Type                     | Required | Default    | Description                                                           |
-| ------------- | ------------------------ | -------- | ---------- | --------------------------------------------------------------------- |
-| `series`      | `StreamSeries[]`         | Yes      | —          | Series, each with values[] aligned to categories.                     |
-| `categories`  | `(string \| number)[]`   | Yes      | —          | X-axis labels aligned with each series values.                        |
-| `title`       | `string`                 | Yes      | —          | Title text for the component.                                         |
-| `description` | `string`                 | No       | —          | Supporting description text.                                          |
-| `offset`      | `'silhouette' \| 'zero'` | No       | silhouette | silhouette centers the stack (streamgraph); zero is a baseline stack. |
-| `curve`       | `Curve`                  | No       | basis      | Interpolation curve.                                                  |
-| `width`       | `number`                 | No       | —          | Width of the component.                                               |
-| `height`      | `number`                 | No       | 300        | Height of the component.                                              |
-| `legend`      | `boolean`                | No       | —          | Whether to show the legend.                                           |
-| `tooltip`     | `boolean`                | No       | —          | Whether to show tooltips on hover.                                    |
-| `className`   | `string`                 | No       | —          | Additional CSS class names merged onto the root element.              |
-| `plain`       | `boolean`                | No       | false      | When true, renders a minimal variant without chart chrome.            |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `StreamSeries[]` | Yes | — | Series, each with values[] aligned to categories. |
+| `categories` | `(string \| number)[]` | Yes | — | X-axis labels aligned with each series values. |
+| `title` | `string` | Yes | — | Title text for the component. |
+| `description` | `string` | No | — | Supporting description text. |
+| `offset` | `'silhouette' \| 'zero'` | No | silhouette | silhouette centers the stack (streamgraph); zero is a baseline stack. |
+| `curve` | `Curve` | No | basis | Interpolation curve. |
+| `width` | `number` | No | — | Width of the component. |
+| `height` | `number` | No | 300 | Height of the component. |
+| `legend` | `boolean` | No | — | Whether to show the legend. |
+| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
 
 ## Tokens
 
@@ -55,9 +55,10 @@ Renders role="img" with a title and a fallback data table.
 
 ```jsx
 import { Stream } from '@cascivo/charts'
-;<Stream
+
+<Stream
   title="Topics over time"
-  categories={['Jan', 'Feb', 'Mar', 'Apr']}
+  categories={['Jan','Feb','Mar','Apr']}
   series={[
     { id: 'a', label: 'A', values: [4, 6, 5, 8] },
     { id: 'b', label: 'B', values: [2, 3, 7, 4] },

@@ -33,12 +33,12 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 
 ## Props
 
-| Name          | Type                                   | Required | Default | Description                                              |
-| ------------- | -------------------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `items`       | `NavigationMenuItem[]`                 | Yes      | —       | The items to render.                                     |
-| `aria-label`  | `string`                               | No       | —       | Accessible label used when no visible label is present.  |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No       | —       | Layout orientation of the component.                     |
-| `className`   | `string`                               | No       | —       | Additional CSS class names merged onto the root element. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `NavigationMenuItem[]` | Yes | — | The items to render. |
+| `aria-label` | `string` | No | — | Accessible label used when no visible label is present. |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No | — | Layout orientation of the component. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -55,20 +55,14 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 ### Basic
 
 ```jsx
-<NavigationMenu
-  aria-label="Main"
-  items={[
-    { id: 'home', label: 'Home', href: '/' },
-    { id: 'products', label: 'Products', content: <ul>…</ul> },
-  ]}
-/>
+<NavigationMenu aria-label="Main" items={[{ id: "home", label: "Home", href: "/" }, { id: "products", label: "Products", content: <ul>…</ul> }]} />
 ```
 
 ## Boundaries
 
-| Area          | Level    | Note                                                                          |
-| ------------- | -------- | ----------------------------------------------------------------------------- |
-| orientation   | flexible | horizontal (default) or vertical roving navigation                            |
+| Area | Level | Note |
+|------|-------|------|
+| orientation | flexible | horizontal (default) or vertical roving navigation |
 | panel content | flexible | content is arbitrary ReactNode; links without content render as plain anchors |
 
 ## AI context prompt

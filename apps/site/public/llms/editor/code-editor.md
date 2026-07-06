@@ -22,28 +22,28 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop              | Type                                                | Required | Default     | Description                                                                                    |
-| ----------------- | --------------------------------------------------- | -------- | ----------- | ---------------------------------------------------------------------------------------------- |
-| `value`           | `string`                                            | no       | —           | Controlled value                                                                               |
-| `defaultValue`    | `string`                                            | no       | —           | Initial value for uncontrolled use                                                             |
-| `onValueChange`   | `(value: string) => void`                           | no       | —           | Called with the new text on every edit                                                         |
-| `language`        | `string`                                            | no       | `plaintext` | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash)                     |
-| `lineNumbers`     | `boolean`                                           | no       | `true`      | Show the line-number gutter                                                                    |
-| `tabSize`         | `number`                                            | no       | `2`         | Spaces per tab stop                                                                            |
-| `insertSpaces`    | `boolean`                                           | no       | `true`      | Insert spaces vs a literal tab on Tab                                                          |
-| `wrap`            | `boolean`                                           | no       | `false`     | Soft-wrap long lines instead of scrolling horizontally                                         |
-| `readOnly`        | `boolean`                                           | no       | `false`     | When true, the value is shown but cannot be edited.                                            |
-| `disabled`        | `boolean`                                           | no       | `false`     | When true, disables the control and removes it from the tab order.                             |
-| `placeholder`     | `string`                                            | no       | —           | Placeholder text shown when the field is empty.                                                |
-| `label`           | `string`                                            | no       | —           | Accessible label (defaults to the i18n "Code editor")                                          |
-| `onSave`          | `(value: string) => void`                           | no       | —           | Called on Mod-S; the browser save dialog is suppressed                                         |
-| `bracketMatching` | `boolean`                                           | no       | `false`     | Highlight the bracket matching the one adjacent to the caret                                   |
-| `theme`           | `EditorTheme`                                       | no       | —           | Per-instance --cascivo-editor-\* overrides; swapping it re-themes live                         |
-| `keymap`          | `KeyMap`                                            | no       | —           | Extra key bindings merged over the built-ins (user wins on a chord)                            |
-| `decorations`     | `Decoration[] \| ((value: string) => Decoration[])` | no       | —           | Extra offset-range → CSS class decorations                                                     |
-| `commands`        | `SlashCommand[]`                                    | no       | —           | Slash-command entries; typing "/" opens a filtered menu. Omit to disable.                      |
-| `ref`             | `Ref<CodeEditorHandle>`                             | no       | —           | Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu |
-| `className`       | `string`                                            | no       | —           | Additional CSS class names merged onto the root element.                                       |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | no | — | Controlled value |
+| `defaultValue` | `string` | no | — | Initial value for uncontrolled use |
+| `onValueChange` | `(value: string) => void` | no | — | Called with the new text on every edit |
+| `language` | `string` | no | `plaintext` | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash) |
+| `lineNumbers` | `boolean` | no | `true` | Show the line-number gutter |
+| `tabSize` | `number` | no | `2` | Spaces per tab stop |
+| `insertSpaces` | `boolean` | no | `true` | Insert spaces vs a literal tab on Tab |
+| `wrap` | `boolean` | no | `false` | Soft-wrap long lines instead of scrolling horizontally |
+| `readOnly` | `boolean` | no | `false` | When true, the value is shown but cannot be edited. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
+| `label` | `string` | no | — | Accessible label (defaults to the i18n "Code editor") |
+| `onSave` | `(value: string) => void` | no | — | Called on Mod-S; the browser save dialog is suppressed |
+| `bracketMatching` | `boolean` | no | `false` | Highlight the bracket matching the one adjacent to the caret |
+| `theme` | `EditorTheme` | no | — | Per-instance --cascivo-editor-* overrides; swapping it re-themes live |
+| `keymap` | `KeyMap` | no | — | Extra key bindings merged over the built-ins (user wins on a chord) |
+| `decorations` | `Decoration[] \| ((value: string) => Decoration[])` | no | — | Extra offset-range → CSS class decorations |
+| `commands` | `SlashCommand[]` | no | — | Slash-command entries; typing "/" opens a filtered menu. Omit to disable. |
+| `ref` | `Ref<CodeEditorHandle>` | no | — | Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -52,7 +52,8 @@ _Copy-paste only — this block/layout is not published as an importable package
 ```tsx
 import { CodeEditor } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
-;<CodeEditor language="typescript" lineNumbers defaultValue={'const x = 1\n'} />
+
+<CodeEditor language="typescript" lineNumbers defaultValue={'const x = 1\n'} />
 ```
 
 ### Controlled

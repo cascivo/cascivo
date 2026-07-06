@@ -24,11 +24,11 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 ## Props
 
-| Name   | Type                          | Required | Default | Description                 |
-| ------ | ----------------------------- | -------- | ------- | --------------------------- |
-| `cols` | `number`                      | No       | —       | Number of grid columns      |
-| `gap`  | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | —       | Spacing token step          |
-| `span` | `number`                      | No       | —       | GridItem: column span count |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `cols` | `number` | No | — | Number of grid columns |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No | — | Spacing token step |
+| `span` | `number` | No | — | GridItem: column span count |
 
 ## Tokens
 
@@ -41,10 +41,7 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 3-column grid with spanning item
 
 ```jsx
-<Grid cols={3} gap={4}>
-  <GridItem span={1}>A</GridItem>
-  <GridItem span={2}>B</GridItem>
-</Grid>
+<Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>
 ```
 
 ## AI context prompt

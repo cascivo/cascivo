@@ -1,5 +1,14 @@
 # @cascivo/react
 
+## 0.4.1
+
+### Patch Changes
+
+- fc61671: Minor improvements
+- Updated dependencies [fc61671]
+  - @cascivo/core@0.2.4
+  - @cascivo/i18n@0.2.1
+
 ## 0.4.0
 
 ### Minor Changes

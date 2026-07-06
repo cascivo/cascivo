@@ -33,15 +33,15 @@ The hidden nav uses transform/inline-size + inert (never display:none alone), so
 
 ## Props
 
-| Name           | Type                      | Required | Default | Description                                                                                                      |
-| -------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
-| `header`       | `ReactNode`               | Yes      | —       | Top bar (typically a ShellHeader). If a React element, its onMenuClick/menuExpanded are bound to the nav toggle. |
-| `nav`          | `ReactNode`               | No       | —       | Side navigation (typically a SideNav). Fills full height and scrolls internally.                                 |
-| `children`     | `ReactNode`               | Yes      | —       | Main content, rendered inside the single scroll container.                                                       |
-| `footer`       | `ReactNode`               | No       | —       | Optional footer pinned below the content area.                                                                   |
-| `open`         | `boolean`                 | No       | —       | Controlled nav open/visible state. Omit for uncontrolled.                                                        |
-| `defaultOpen`  | `boolean`                 | No       | —       | Initial open state when uncontrolled. Defaults open on desktop, closed on small screens.                         |
-| `onOpenChange` | `(open: boolean) => void` | No       | —       | Fired when the nav requests open/close (burger, Escape, scrim).                                                  |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `header` | `ReactNode` | Yes | — | Top bar (typically a ShellHeader). If a React element, its onMenuClick/menuExpanded are bound to the nav toggle. |
+| `nav` | `ReactNode` | No | — | Side navigation (typically a SideNav). Fills full height and scrolls internally. |
+| `children` | `ReactNode` | Yes | — | Main content, rendered inside the single scroll container. |
+| `footer` | `ReactNode` | No | — | Optional footer pinned below the content area. |
+| `open` | `boolean` | No | — | Controlled nav open/visible state. Omit for uncontrolled. |
+| `defaultOpen` | `boolean` | No | — | Initial open state when uncontrolled. Defaults open on desktop, closed on small screens. |
+| `onOpenChange` | `(open: boolean) => void` | No | — | Fired when the nav requests open/close (burger, Escape, scrim). |
 
 ## Tokens
 
@@ -60,7 +60,10 @@ The hidden nav uses transform/inline-size + inert (never display:none alone), so
 The burger in ShellHeader toggles the SideNav automatically.
 
 ```jsx
-<AppShell header={<ShellHeader brand={{ name: 'Acme' }} />} nav={<SideNav items={items} />}>
+<AppShell
+  header={<ShellHeader brand={{ name: 'Acme' }} />}
+  nav={<SideNav items={items} />}
+>
   <h1>Dashboard</h1>
 </AppShell>
 ```

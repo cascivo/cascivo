@@ -24,13 +24,13 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop        | Type                          | Required | Default | Description                                              |
-| ----------- | ----------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `variant`   | `'dots' \| 'grid' \| 'cross'` | no       | `dots`  | Pattern style.                                           |
-| `gap`       | `number`                      | no       | `20`    | Cell spacing (px).                                       |
-| `size`      | `number`                      | no       | `1`     | Dot radius / line thickness (px).                        |
-| `color`     | `string`                      | no       | —       | Pattern color (defaults to the border token).            |
-| `className` | `string`                      | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'dots' \| 'grid' \| 'cross'` | no | `dots` | Pattern style. |
+| `gap` | `number` | no | `20` | Cell spacing (px). |
+| `size` | `number` | no | `1` | Dot radius / line thickness (px). |
+| `color` | `string` | no | — | Pattern color (defaults to the border token). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -39,7 +39,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 A dotted grid behind a flow canvas.
 
 ```tsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 220, overflow: 'hidden' }}>
     <FlowBackground variant="dots" gap={24} />
   </div>
@@ -51,7 +51,7 @@ A dotted grid behind a flow canvas.
 The grid and cross variants.
 
 ```tsx
-;() => (
+() => (
   <div style={{ display: 'grid', gap: 16, gridTemplateColumns: '1fr 1fr' }}>
     <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
       <FlowBackground variant="grid" gap={28} />

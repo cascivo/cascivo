@@ -1,5 +1,11 @@
 # @cascivo/tokens
 
+## 0.3.6
+
+### Patch Changes
+
+- fc61671: Minor improvements
+
 ## 0.3.5
 
 ### Patch Changes

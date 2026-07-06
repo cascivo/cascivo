@@ -1,5 +1,15 @@
 # @cascivo/ai
 
+## 0.2.1
+
+### Patch Changes
+
+- fc61671: Minor improvements
+- Updated dependencies [fc61671]
+  - @cascivo/core@0.2.4
+  - @cascivo/i18n@0.2.1
+  - @cascivo/tokens@0.3.6
+
 ## 0.2.0
 
 ### Minor Changes

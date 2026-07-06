@@ -18,9 +18,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop       | Type     | Required | Default | Description         |
-| ---------- | -------- | -------- | ------- | ------------------- |
-| `maxWidth` | `string` | no       | —       | CSS max-width value |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `maxWidth` | `string` | no | — | CSS max-width value |
 
 ## Examples
 
@@ -29,9 +29,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 Centered container with custom max-width
 
 ```tsx
-<Center maxWidth="60rem">
-  <p>Content</p>
-</Center>
+<Center maxWidth="60rem"><p>Content</p></Center>
 ```
 
 ## Design tokens

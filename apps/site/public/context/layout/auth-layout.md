@@ -24,10 +24,10 @@ Provides a main landmark wrapping the focused auth content.
 
 ## Props
 
-| Name       | Type        | Required | Default | Description                            |
-| ---------- | ----------- | -------- | ------- | -------------------------------------- |
-| `children` | `ReactNode` | Yes      | —       | Auth form content                      |
-| `logo`     | `ReactNode` | No       | —       | Optional logo displayed above the form |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | Yes | — | Auth form content |
+| `logo` | `ReactNode` | No | — | Optional logo displayed above the form |
 
 ## Tokens
 
@@ -46,9 +46,7 @@ Provides a main landmark wrapping the focused auth content.
 Centered auth card with logo
 
 ```jsx
-<AuthLayout logo={<img src="/logo.svg" alt="Logo" />}>
-  <form>...</form>
-</AuthLayout>
+<AuthLayout logo={<img src="/logo.svg" alt="Logo" />}><form>...</form></AuthLayout>
 ```
 
 ## AI context prompt

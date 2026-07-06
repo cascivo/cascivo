@@ -1,5 +1,11 @@
 # @cascivo/themes
 
+## 0.2.9
+
+### Patch Changes
+
+- fc61671: Minor improvements
+
 ## 0.2.8
 
 ### Patch Changes

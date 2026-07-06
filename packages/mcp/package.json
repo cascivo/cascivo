@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/mcp",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "description": "MCP server exposing the cascivo component registry to AI agents",
   "keywords": [

@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop         | Type         | Required | Default         | Description                                                                                            |
-| ------------ | ------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------ |
-| `stats`      | `StatItem[]` | yes      | —               | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
-| `aria-label` | `string`     | no       | `"Key metrics"` | Accessible label for the stats region                                                                  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `stats` | `StatItem[]` | yes | — | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
+| `aria-label` | `string` | no | `"Key metrics"` | Accessible label for the stats region |
 
 ## Examples
 
