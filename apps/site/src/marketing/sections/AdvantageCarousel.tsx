@@ -233,9 +233,15 @@ export function AdvantageCarousel() {
   // reduce` the carousel never auto-advances — it becomes a static, manually
   // controlled tabset (the tabs still switch on click/keyboard).
   const reduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)')
+  // Below 64rem the panels stack into a single column (see `.adv-panel` in
+  // landing.css) where their heights differ enough that auto-advancing visibly
+  // shoves the rest of the page up and down every rotation — a jarring UX on
+  // phones. Only auto-rotate on the desktop 2-column layout, where the panel
+  // height is stable; on narrower screens it stays a manual tabset.
+  const stacked = useMediaQuery('(max-width: 63.99rem)')
 
   useSignalEffect(() => {
-    if (reduceMotion.value) return
+    if (reduceMotion.value || stacked.value) return
     const id = setInterval(() => {
       if (paused.value) return
       const idx = ADVANTAGES.findIndex((a) => a.id === active.value)
