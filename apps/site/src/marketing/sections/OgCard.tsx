@@ -2,15 +2,38 @@ import { Badge } from '@cascivo/components/badge'
 import { Card } from '@cascivo/components/card'
 import registry from '../../../../../registry.json'
 
-const componentCount = (registry as { components: unknown[] }).components.length
+interface RegistryComponentEntry {
+  name: string
+  category: string
+  meta: { name: string; description: string }
+}
+
+const components = (registry as { components: RegistryComponentEntry[] }).components
+const componentCount = components.length
 
 interface OgSpec {
   eyebrow?: string
   title: string
-  accent: string
+  /** Home/route cards split the headline into two colours; component cards don't. */
+  accent?: string
   sub: string
   /** Home card shows the demo stat tiles; route cards keep it clean. */
   stats?: boolean
+}
+
+function capitalize(s: string): string {
+  return s.length ? s[0]!.toUpperCase() + s.slice(1) : s
+}
+
+/** Data-driven card for a `/docs/components/<name>` page — no hand-authored copy, so it scales to all registry entries. */
+function cardForComponent(slug: string): OgSpec | undefined {
+  const entry = components.find((c) => c.name === slug)
+  if (!entry) return undefined
+  return {
+    eyebrow: capitalize(entry.category),
+    title: entry.meta.name,
+    sub: entry.meta.description,
+  }
 }
 
 const HOME: OgSpec = {
@@ -56,9 +79,10 @@ const CARDS: Record<string, OgSpec> = {
 }
 
 export function OgCard() {
-  const key =
-    typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('r') : null
-  const spec = (key && CARDS[key]) || HOME
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null
+  const componentSlug = params?.get('component') ?? null
+  const key = params?.get('r') ?? null
+  const spec = (componentSlug && cardForComponent(componentSlug)) || (key && CARDS[key]) || HOME
 
   return (
     <div
@@ -103,7 +127,10 @@ export function OgCard() {
           lineHeight: 1.1,
         }}
       >
-        {spec.title} <span style={{ color: 'var(--cascivo-color-accent)' }}>{spec.accent}</span>
+        {spec.title}{' '}
+        {spec.accent ? (
+          <span style={{ color: 'var(--cascivo-color-accent)' }}>{spec.accent}</span>
+        ) : null}
       </h1>
       <p
         style={{

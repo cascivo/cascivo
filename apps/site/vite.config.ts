@@ -11,6 +11,7 @@ import path, { extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { imagetools } from 'vite-imagetools'
 import { type Plugin, defineConfig } from 'vite-plus'
+import { componentOgImage, componentTitle } from './src/component-head'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/marketing/route-head'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
@@ -205,6 +206,34 @@ function resolveRelatedSlug(displayName: string, knownSlugs: Set<string>): strin
 }
 
 /**
+ * `SoftwareSourceCode` JSON-LD for a component page — machine-readable
+ * confirmation of what the static body already says in prose, for crawlers/AI
+ * engines that weight structured data. Embedded statically (not runtime-only
+ * like the existing BreadcrumbList in seo.ts) so it's visible with JS off too.
+ */
+function renderComponentJsonLd(entry: RegistryComponentEntry, canonical: string): string {
+  const { meta } = entry
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareSourceCode',
+    name: meta.name,
+    description: meta.description,
+    programmingLanguage: 'TypeScript',
+    runtimePlatform: 'React',
+    about: entry.category,
+    keywords: meta.tags.join(', '),
+    url: canonical,
+    license: 'https://opensource.org/licenses/MIT',
+    isPartOf: { '@id': 'https://cascivo.com/#org' },
+  }
+  // Defend against a `</script>`-like sequence in any string value breaking out
+  // of the script tag early — none of the current data contains one, but this
+  // is free insurance since it's all sourced from manifests, not our copy.
+  const json = JSON.stringify(ld).replace(/</g, '\\u003c')
+  return `<script type="application/ld+json">${json}</script>`
+}
+
+/**
  * Static SEO body for a `/docs/components/<name>` page — built entirely from
  * registry.json data (no component execution), so it's safe to generate at
  * build time. Mirrors the sections ComponentPage.tsx renders at runtime.
@@ -328,20 +357,21 @@ function prerenderPages(): Plugin {
       const knownSlugs = new Set(components.map((c) => c.name.toLowerCase()))
       for (const entry of components) {
         const path = `/docs/components/${entry.name}`
-        const title = `${entry.meta.name} — cascivo docs`
+        const canonical = canonicalFor(path)
+        const title = componentTitle(entry.meta)
         const html = rewriteHead(shell, {
           title,
           description: entry.meta.description,
-          canonical: canonicalFor(path),
+          canonical,
           ogTitle: title,
           robots: 'index, follow',
+          ogImage: componentOgImage(entry.name),
         })
         const outDir = resolve(dist, 'docs', 'components', entry.name)
         mkdirSync(outDir, { recursive: true })
-        writeFileSync(
-          resolve(outDir, 'index.html'),
-          injectBody(html, renderComponentBody(entry, knownSlugs)),
-        )
+        const body =
+          renderComponentBody(entry, knownSlugs) + renderComponentJsonLd(entry, canonical)
+        writeFileSync(resolve(outDir, 'index.html'), injectBody(html, body))
       }
 
       // Static-host fallback for unknown deep links → real NotFound (noindex).
