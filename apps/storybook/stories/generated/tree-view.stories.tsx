@@ -3,15 +3,17 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { TreeView } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/TreeView",
+  title: 'Display/TreeView',
 }
 export default meta
 type Story = StoryObj
 
 export const SingleSelect: Story = {
-  name: "Single select",
+  name: 'Single select',
   render: () => (
-    <TreeView defaultExpanded={["src"]} items={[{ id: "src", label: "src", children: [{ id: "index", label: "index.ts" }] }]} />
+    <TreeView
+      defaultExpanded={['src']}
+      items={[{ id: 'src', label: 'src', children: [{ id: 'index', label: 'index.ts' }] }]}
+    />
   ),
 }
-

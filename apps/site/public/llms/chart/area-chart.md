@@ -20,35 +20,35 @@ import { AreaChart } from '@cascivo/charts'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `series` | `AreaChartSeries<Datum>[]` | yes | — | Array of data series |
-| `x` | `(d: Datum) => number` | yes | — | X-value accessor |
-| `y` | `(d: Datum) => number` | yes | — | Y-value accessor |
-| `title` | `string` | yes | — | Title text for the component. |
-| `description` | `string` | no | — | Supporting description text. |
-| `stacked` | `boolean` | no | — | Stack series areas |
-| `curve` | `'linear' \| 'monotone' \| 'step' \| 'stepBefore' \| 'stepAfter' \| 'natural' \| 'basis' \| 'cardinal' \| 'catmullRom'` | no | `monotone` | Line/area interpolation curve. |
-| `fill` | `'solid' \| 'gradient' \| 'pattern'` | no | `solid` | Area fill style — solid, a top→bottom gradient, or a pattern. |
-| `patternKind` | `'dots' \| 'lines' \| 'cross'` | no | — | Pattern motif when fill="pattern". |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
-| `xTicks` | `number` | no | `5` | Approximate number of ticks on the x-axis. |
-| `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
-| `legend` | `boolean` | no | — | Whether to show the legend. |
-| `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
-| `annotations` | `Annotation[]` | no | — | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
-| `labels` | `boolean \| { format?: (v: number) => string; position?: string }` | no | — | Print each value as a label on the mark (collision-aware, decorative/aria-hidden). |
-| `onSelect` | `(point: ChartPoint) => void` | no | — | Fired when a point is clicked or activated (Enter/Space) — for drill-down. |
-| `brush` | `boolean` | no | `false` | Show a keyboard-operable Brush below the plot to subset the series to a window. |
-| `dataZoom` | `boolean` | no | `false` | Show a DataZoom slider below the plot — a Brush whose body also pans the window. |
-| `zoom` | `boolean` | no | `false` | Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a reset control and re-ticked axes. |
-| `syncId` | `string` | no | — | Connect this chart to others sharing the same id — they mirror the zoom window and hovered x. |
-| `tooltipMode` | `'item' \| 'axis'` | no | `item` | Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x). |
-| `decimate` | `boolean \| { method?: 'lttb' \| 'minmax'; threshold?: number }` | no | — | Downsample dense non-stacked series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data. |
-| `toolbox` | `boolean \| ToolboxOptions` | no | — | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom). |
+| Prop          | Type                                                                                                                    | Required | Default    | Description                                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `series`      | `AreaChartSeries<Datum>[]`                                                                                              | yes      | —          | Array of data series                                                                                                        |
+| `x`           | `(d: Datum) => number`                                                                                                  | yes      | —          | X-value accessor                                                                                                            |
+| `y`           | `(d: Datum) => number`                                                                                                  | yes      | —          | Y-value accessor                                                                                                            |
+| `title`       | `string`                                                                                                                | yes      | —          | Title text for the component.                                                                                               |
+| `description` | `string`                                                                                                                | no       | —          | Supporting description text.                                                                                                |
+| `stacked`     | `boolean`                                                                                                               | no       | —          | Stack series areas                                                                                                          |
+| `curve`       | `'linear' \| 'monotone' \| 'step' \| 'stepBefore' \| 'stepAfter' \| 'natural' \| 'basis' \| 'cardinal' \| 'catmullRom'` | no       | `monotone` | Line/area interpolation curve.                                                                                              |
+| `fill`        | `'solid' \| 'gradient' \| 'pattern'`                                                                                    | no       | `solid`    | Area fill style — solid, a top→bottom gradient, or a pattern.                                                               |
+| `patternKind` | `'dots' \| 'lines' \| 'cross'`                                                                                          | no       | —          | Pattern motif when fill="pattern".                                                                                          |
+| `width`       | `number`                                                                                                                | no       | —          | Width of the component.                                                                                                     |
+| `height`      | `number`                                                                                                                | no       | `300`      | Height of the component.                                                                                                    |
+| `xTicks`      | `number`                                                                                                                | no       | `5`        | Approximate number of ticks on the x-axis.                                                                                  |
+| `yTicks`      | `number`                                                                                                                | no       | `5`        | Approximate number of ticks on the y-axis.                                                                                  |
+| `legend`      | `boolean`                                                                                                               | no       | —          | Whether to show the legend.                                                                                                 |
+| `tooltip`     | `boolean`                                                                                                               | no       | —          | Enable hover/keyboard tooltip                                                                                               |
+| `className`   | `string`                                                                                                                | no       | —          | Additional CSS class names merged onto the root element.                                                                    |
+| `plain`       | `boolean`                                                                                                               | no       | `false`    | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                       |
+| `annotations` | `Annotation[]`                                                                                                          | no       | —          | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).                              |
+| `labels`      | `boolean \| { format?: (v: number) => string; position?: string }`                                                      | no       | —          | Print each value as a label on the mark (collision-aware, decorative/aria-hidden).                                          |
+| `onSelect`    | `(point: ChartPoint) => void`                                                                                           | no       | —          | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                  |
+| `brush`       | `boolean`                                                                                                               | no       | `false`    | Show a keyboard-operable Brush below the plot to subset the series to a window.                                             |
+| `dataZoom`    | `boolean`                                                                                                               | no       | `false`    | Show a DataZoom slider below the plot — a Brush whose body also pans the window.                                            |
+| `zoom`        | `boolean`                                                                                                               | no       | `false`    | Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a reset control and re-ticked axes.  |
+| `syncId`      | `string`                                                                                                                | no       | —          | Connect this chart to others sharing the same id — they mirror the zoom window and hovered x.                               |
+| `tooltipMode` | `'item' \| 'axis'`                                                                                                      | no       | `item`     | Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x).      |
+| `decimate`    | `boolean \| { method?: 'lttb' \| 'minmax'; threshold?: number }`                                                        | no       | —          | Downsample dense non-stacked series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data. |
+| `toolbox`     | `boolean \| ToolboxOptions`                                                                                             | no       | —          | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom).                   |
 
 ## Examples
 

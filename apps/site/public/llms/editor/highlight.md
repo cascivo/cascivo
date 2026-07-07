@@ -18,15 +18,15 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | yes | — | Code to render |
-| `language` | `string` | no | `plaintext` | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash) |
-| `lineNumbers` | `boolean` | no | `false` | Show the line-number gutter |
-| `wrap` | `boolean` | no | `false` | Soft-wrap long lines |
-| `tabSize` | `number` | no | `2` | Spaces per tab stop |
-| `label` | `string` | no | — | Accessible label for the code block |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop          | Type      | Required | Default     | Description                                                                |
+| ------------- | --------- | -------- | ----------- | -------------------------------------------------------------------------- |
+| `value`       | `string`  | yes      | —           | Code to render                                                             |
+| `language`    | `string`  | no       | `plaintext` | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash) |
+| `lineNumbers` | `boolean` | no       | `false`     | Show the line-number gutter                                                |
+| `wrap`        | `boolean` | no       | `false`     | Soft-wrap long lines                                                       |
+| `tabSize`     | `number`  | no       | `2`         | Spaces per tab stop                                                        |
+| `label`       | `string`  | no       | —           | Accessible label for the code block                                        |
+| `className`   | `string`  | no       | —           | Additional CSS class names merged onto the root element.                   |
 
 ## Examples
 
@@ -35,8 +35,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 ```tsx
 import { Highlight } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
-
-<Highlight language="json" value={'{ "ok": true }'} />
+;<Highlight language="json" value={'{ "ok": true }'} />
 ```
 
 ## Design tokens

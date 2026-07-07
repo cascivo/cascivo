@@ -24,14 +24,14 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `number[]` | Yes | — | Array of numeric values |
-| `label` | `string` | Yes | — | Accessible label |
-| `width` | `number` | No | 80 | Width of the component. |
-| `height` | `number` | No | 32 | Height of the component. |
-| `color` | `string` | No | — | Stroke color (CSS value) |
-| `endDot` | `boolean` | No | — | Show dot at last data point |
+| Name     | Type       | Required | Default | Description                 |
+| -------- | ---------- | -------- | ------- | --------------------------- |
+| `data`   | `number[]` | Yes      | —       | Array of numeric values     |
+| `label`  | `string`   | Yes      | —       | Accessible label            |
+| `width`  | `number`   | No       | 80      | Width of the component.     |
+| `height` | `number`   | No       | 32      | Height of the component.    |
+| `color`  | `string`   | No       | —       | Stroke color (CSS value)    |
+| `endDot` | `boolean`  | No       | —       | Show dot at last data point |
 
 ## Tokens
 
@@ -43,8 +43,7 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ```jsx
 import { Sparkline } from '@cascivo/charts'
-
-<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
+;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 
 ## AI context prompt

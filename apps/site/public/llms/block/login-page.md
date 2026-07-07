@@ -18,9 +18,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `onSubmit` | `(values: LoginValues) => void` | no | — | Called with valid form values on submit |
+| Prop       | Type                            | Required | Default | Description                             |
+| ---------- | ------------------------------- | -------- | ------- | --------------------------------------- |
+| `onSubmit` | `(values: LoginValues) => void` | no       | —       | Called with valid form values on submit |
 
 ## Examples
 

@@ -20,19 +20,19 @@ import { Polar } from '@cascivo/charts'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `PolarDatum[]` | yes | — | One entry per category: { label, value, color? }. |
-| `title` | `string` | yes | — | Chart title (also aria-label). |
-| `description` | `string` | no | — | Supporting description text. |
-| `mode` | `'bar' \| 'line' \| 'area'` | no | `bar` | Bars (rose), a polar line, or a filled polar area. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
-| `rings` | `number` | no | `4` | Radial ring count. |
-| `max` | `number` | no | — | Domain top (full radius). Defaults to the largest value. |
-| `tooltip` | `boolean` | no | — | Enable hover tooltip. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | no | `false` | Marks only — no rings or labels. For micro/inline charts. |
+| Prop          | Type                        | Required | Default | Description                                               |
+| ------------- | --------------------------- | -------- | ------- | --------------------------------------------------------- |
+| `data`        | `PolarDatum[]`              | yes      | —       | One entry per category: { label, value, color? }.         |
+| `title`       | `string`                    | yes      | —       | Chart title (also aria-label).                            |
+| `description` | `string`                    | no       | —       | Supporting description text.                              |
+| `mode`        | `'bar' \| 'line' \| 'area'` | no       | `bar`   | Bars (rose), a polar line, or a filled polar area.        |
+| `width`       | `number`                    | no       | —       | Width of the component.                                   |
+| `height`      | `number`                    | no       | `320`   | Height of the component.                                  |
+| `rings`       | `number`                    | no       | `4`     | Radial ring count.                                        |
+| `max`         | `number`                    | no       | —       | Domain top (full radius). Defaults to the largest value.  |
+| `tooltip`     | `boolean`                   | no       | —       | Enable hover tooltip.                                     |
+| `className`   | `string`                    | no       | —       | Additional CSS class names merged onto the root element.  |
+| `plain`       | `boolean`                   | no       | `false` | Marks only — no rings or labels. For micro/inline charts. |
 
 ## Examples
 
@@ -40,8 +40,7 @@ import { Polar } from '@cascivo/charts'
 
 ```tsx
 import { Polar } from '@cascivo/charts'
-
-<Polar
+;<Polar
   title="Wind by direction"
   mode="bar"
   tooltip

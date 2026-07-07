@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { NativeSelect } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Inputs/NativeSelect",
+  title: 'Inputs/NativeSelect',
 }
 export default meta
 type Story = StoryObj
 
 export const OptionChildren: Story = {
-  name: "Option children",
+  name: 'Option children',
   render: () => (
     <NativeSelect size="sm" defaultValue="light">
       <option value="light">Light</option>
@@ -17,4 +17,3 @@ export const OptionChildren: Story = {
     </NativeSelect>
   ),
 }
-

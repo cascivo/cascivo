@@ -23,9 +23,9 @@ Empty presentational spacer with no semantic role; ignored by assistive tech.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No | — | Spacing token step |
+| Name   | Type                          | Required | Default | Description        |
+| ------ | ----------------------------- | -------- | ------- | ------------------ |
+| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | —       | Spacing token step |
 
 ## Tokens
 

@@ -24,14 +24,14 @@ Provides landmark structure with header and navigation regions for screen reader
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `header` | `ReactNode` | Yes | — | Top header slot |
-| `sideNav` | `ReactNode` | No | — | Side navigation slot |
-| `aside` | `ReactNode` | No | — | Right aside slot |
-| `children` | `ReactNode` | Yes | — | Main content |
-| `persistKey` | `string \| false` | No | — | localStorage key prefix. Pass false to disable persistence. |
-| `state` | `ShellState` | No | — | External shell state from createShellState(). Created internally when omitted. |
+| Name         | Type              | Required | Default | Description                                                                    |
+| ------------ | ----------------- | -------- | ------- | ------------------------------------------------------------------------------ |
+| `header`     | `ReactNode`       | Yes      | —       | Top header slot                                                                |
+| `sideNav`    | `ReactNode`       | No       | —       | Side navigation slot                                                           |
+| `aside`      | `ReactNode`       | No       | —       | Right aside slot                                                               |
+| `children`   | `ReactNode`       | Yes      | —       | Main content                                                                   |
+| `persistKey` | `string \| false` | No       | —       | localStorage key prefix. Pass false to disable persistence.                    |
+| `state`      | `ShellState`      | No       | —       | External shell state from createShellState(). Created internally when omitted. |
 
 ## Tokens
 
@@ -55,7 +55,9 @@ Provides landmark structure with header and navigation regions for screen reader
 App shell with collapsible nav
 
 ```jsx
-<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>
+<AppShell header={<Header />} sideNav={<Nav />}>
+  content
+</AppShell>
 ```
 
 ## AI context prompt

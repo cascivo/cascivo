@@ -33,16 +33,16 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | Yes | — | The items to render. |
-| `selectionMode` | `'single' \| 'multi'` | No | single | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
-| `selected` | `string \| string[]` | No | — | The controlled selected node id(s). |
-| `defaultSelected` | `string \| string[]` | No | — | The initially selected node id(s) when uncontrolled. |
-| `onSelectChange` | `(selected: string \| string[]) => void` | No | — | Called with the new selection when it changes. |
-| `expanded` | `string[]` | No | — | The controlled set of expanded node ids. |
-| `defaultExpanded` | `string[]` | No | — | The initially expanded node ids when uncontrolled. |
-| `onExpandedChange` | `(expanded: string[]) => void` | No | — | Called with the new expanded set when it changes. |
+| Name               | Type                                                                          | Required | Default | Description                                                          |
+| ------------------ | ----------------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------- |
+| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | Yes      | —       | The items to render.                                                 |
+| `selectionMode`    | `'single' \| 'multi'`                                                         | No       | single  | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
+| `selected`         | `string \| string[]`                                                          | No       | —       | The controlled selected node id(s).                                  |
+| `defaultSelected`  | `string \| string[]`                                                          | No       | —       | The initially selected node id(s) when uncontrolled.                 |
+| `onSelectChange`   | `(selected: string \| string[]) => void`                                      | No       | —       | Called with the new selection when it changes.                       |
+| `expanded`         | `string[]`                                                                    | No       | —       | The controlled set of expanded node ids.                             |
+| `defaultExpanded`  | `string[]`                                                                    | No       | —       | The initially expanded node ids when uncontrolled.                   |
+| `onExpandedChange` | `(expanded: string[]) => void`                                                | No       | —       | Called with the new expanded set when it changes.                    |
 
 ## Tokens
 
@@ -61,7 +61,10 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 ### Single select
 
 ```jsx
-<TreeView defaultExpanded={["src"]} items={[{ id: "src", label: "src", children: [{ id: "index", label: "index.ts" }] }]} />
+<TreeView
+  defaultExpanded={['src']}
+  items={[{ id: 'src', label: 'src', children: [{ id: 'index', label: 'index.ts' }] }]}
+/>
 ```
 
 ### Multi select
@@ -72,11 +75,11 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| selectionMode | flexible | single vs multi is the consumer’s choice based on the interaction |
-| keyboard model | strict | Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped |
-| indent token | flexible | Per-level indent is driven by --cascivo-tree-indent and may be overridden |
+| Area           | Level    | Note                                                                                     |
+| -------------- | -------- | ---------------------------------------------------------------------------------------- |
+| selectionMode  | flexible | single vs multi is the consumer’s choice based on the interaction                        |
+| keyboard model | strict   | Arrow/Home/End/typeahead behavior follows the APG tree pattern and must not be re-mapped |
+| indent token   | flexible | Per-level indent is driven by --cascivo-tree-indent and may be overridden                |
 
 ## AI context prompt
 

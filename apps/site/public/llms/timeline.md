@@ -33,10 +33,10 @@ import { Timeline } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | yes | — | The items to render. |
-| `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Layout orientation of the component. |
+| Prop          | Type                                                                                                                                           | Required | Default    | Description                          |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------ |
+| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | yes      | —          | The items to render.                 |
+| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                   | no       | `vertical` | Layout orientation of the component. |
 
 ## Examples
 
