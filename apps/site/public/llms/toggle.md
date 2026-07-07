@@ -32,14 +32,14 @@ import { Toggle } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `checked` | `boolean` | no | — | Whether the control is checked (controlled). |
-| `defaultChecked` | `boolean` | no | `false` | Whether the control is checked on first render (uncontrolled). |
-| `onChange` | `(checked: boolean) => void` | no | — | Called when the value changes. |
-| `label` | `string` | no | — | Text label for the control. |
-| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| Prop             | Type                         | Required | Default | Description                                                        |
+| ---------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `checked`        | `boolean`                    | no       | —       | Whether the control is checked (controlled).                       |
+| `defaultChecked` | `boolean`                    | no       | `false` | Whether the control is checked on first render (uncontrolled).     |
+| `onChange`       | `(checked: boolean) => void` | no       | —       | Called when the value changes.                                     |
+| `label`          | `string`                     | no       | —       | Text label for the control.                                        |
+| `size`           | `'sm' \| 'md'`               | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `disabled`       | `boolean`                    | no       | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 

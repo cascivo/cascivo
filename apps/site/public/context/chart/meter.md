@@ -24,16 +24,16 @@ Renders with role="meter" exposing min, max, and current value to assistive tech
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | Yes | — | Current value |
-| `label` | `string` | Yes | — | Text label for the control. |
-| `min` | `number` | No | 0 | Minimum allowed value. |
-| `max` | `number` | No | 100 | Maximum allowed value. |
-| `variant` | `'bar' \| 'gauge'` | No | bar | Selects the visual style variant. |
-| `thresholds` | `MeterThresholds` | No | — | Color breakpoints |
-| `width` | `number` | No | — | Width of the component. |
-| `height` | `number` | No | — | Height of the component. |
+| Name         | Type               | Required | Default | Description                       |
+| ------------ | ------------------ | -------- | ------- | --------------------------------- |
+| `value`      | `number`           | Yes      | —       | Current value                     |
+| `label`      | `string`           | Yes      | —       | Text label for the control.       |
+| `min`        | `number`           | No       | 0       | Minimum allowed value.            |
+| `max`        | `number`           | No       | 100     | Maximum allowed value.            |
+| `variant`    | `'bar' \| 'gauge'` | No       | bar     | Selects the visual style variant. |
+| `thresholds` | `MeterThresholds`  | No       | —       | Color breakpoints                 |
+| `width`      | `number`           | No       | —       | Width of the component.           |
+| `height`     | `number`           | No       | —       | Height of the component.          |
 
 ## Tokens
 
@@ -45,8 +45,7 @@ Renders with role="meter" exposing min, max, and current value to assistive tech
 
 ```jsx
 import { Meter } from '@cascivo/charts'
-
-<Meter value={72} label="CPU usage" />
+;<Meter value={72} label="CPU usage" />
 ```
 
 ## AI context prompt

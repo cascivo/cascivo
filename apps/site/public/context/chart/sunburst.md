@@ -23,17 +23,17 @@ Renders role="img" with a title and a fallback path/value table.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `HierNode` | Yes | — | Root of the tree; leaves carry value, parents sum their children. |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `description` | `string` | No | — | Supporting description text. |
-| `size` | `number` | No | — | Square shorthand (width === height). |
-| `width` | `number` | No | — | Width of the component. |
-| `height` | `number` | No | 300 | Height of the component. |
-| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
+| Name          | Type       | Required | Default | Description                                                       |
+| ------------- | ---------- | -------- | ------- | ----------------------------------------------------------------- |
+| `data`        | `HierNode` | Yes      | —       | Root of the tree; leaves carry value, parents sum their children. |
+| `title`       | `string`   | Yes      | —       | Title text for the component.                                     |
+| `description` | `string`   | No       | —       | Supporting description text.                                      |
+| `size`        | `number`   | No       | —       | Square shorthand (width === height).                              |
+| `width`       | `number`   | No       | —       | Width of the component.                                           |
+| `height`      | `number`   | No       | 300     | Height of the component.                                          |
+| `tooltip`     | `boolean`  | No       | —       | Whether to show tooltips on hover.                                |
+| `className`   | `string`   | No       | —       | Additional CSS class names merged onto the root element.          |
+| `plain`       | `boolean`  | No       | false   | When true, renders a minimal variant without chart chrome.        |
 
 ## Tokens
 
@@ -52,13 +52,21 @@ Renders role="img" with a title and a fallback path/value table.
 
 ```jsx
 import { Sunburst } from '@cascivo/charts'
-
-<Sunburst
+;<Sunburst
   title="Disk usage"
-  data={{ label: 'root', children: [
-    { label: 'src', children: [{ label: 'app', value: 40 }, { label: 'lib', value: 25 }] },
-    { label: 'docs', value: 15 },
-  ] }}
+  data={{
+    label: 'root',
+    children: [
+      {
+        label: 'src',
+        children: [
+          { label: 'app', value: 40 },
+          { label: 'lib', value: 25 },
+        ],
+      },
+      { label: 'docs', value: 15 },
+    ],
+  }}
 />
 ```
 

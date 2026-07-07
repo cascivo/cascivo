@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `notifications` | `Notification[]` | no | — | Notification items to display |
-| `onMarkAllRead` | `() => void` | no | — | Mark all read button handler |
+| Prop            | Type             | Required | Default | Description                   |
+| --------------- | ---------------- | -------- | ------- | ----------------------------- |
+| `notifications` | `Notification[]` | no       | —       | Notification items to display |
+| `onMarkAllRead` | `() => void`     | no       | —       | Mark all read button handler  |
 
 ## Examples
 

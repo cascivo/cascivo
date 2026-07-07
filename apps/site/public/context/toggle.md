@@ -33,14 +33,14 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `checked` | `boolean` | No | — | Whether the control is checked (controlled). |
-| `defaultChecked` | `boolean` | No | false | Whether the control is checked on first render (uncontrolled). |
-| `onChange` | `(checked: boolean) => void` | No | — | Called when the value changes. |
-| `label` | `string` | No | — | Text label for the control. |
-| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| Name             | Type                         | Required | Default | Description                                                        |
+| ---------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `checked`        | `boolean`                    | No       | —       | Whether the control is checked (controlled).                       |
+| `defaultChecked` | `boolean`                    | No       | false   | Whether the control is checked on first render (uncontrolled).     |
+| `onChange`       | `(checked: boolean) => void` | No       | —       | Called when the value changes.                                     |
+| `label`          | `string`                     | No       | —       | Text label for the control.                                        |
+| `size`           | `'sm' \| 'md'`               | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `disabled`       | `boolean`                    | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 
@@ -66,10 +66,10 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens |
-| label copy | flexible | Optional label describing the setting being toggled |
+| Area        | Level    | Note                                                                                   |
+| ----------- | -------- | -------------------------------------------------------------------------------------- |
+| token names | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
+| label copy  | flexible | Optional label describing the setting being toggled                                    |
 
 ## AI context prompt
 

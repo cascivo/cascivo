@@ -26,24 +26,30 @@ import { User } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `name` | `ReactNode` | yes | — | The user’s display name. |
-| `description` | `ReactNode` | no | — | Supporting description text. |
-| `avatarProps` | `AvatarProps` | no | — | Forwarded to the composed <Avatar> |
+| Prop          | Type          | Required | Default | Description                        |
+| ------------- | ------------- | -------- | ------- | ---------------------------------- |
+| `name`        | `ReactNode`   | yes      | —       | The user’s display name.           |
+| `description` | `ReactNode`   | no       | —       | Supporting description text.       |
+| `avatarProps` | `AvatarProps` | no       | —       | Forwarded to the composed <Avatar> |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<User name="Jane Doe" description="jane@acme.com" avatarProps={{ src: "/jane.jpg", alt: "Jane Doe" }} />
+<User
+  name="Jane Doe"
+  description="jane@acme.com"
+  avatarProps={{ src: '/jane.jpg', alt: 'Jane Doe' }}
+/>
 ```
 
 ### With action
 
 ```tsx
-<User name="Jane Doe" description="Admin"><IconButton aria-label="More" /></User>
+<User name="Jane Doe" description="Admin">
+  <IconButton aria-label="More" />
+</User>
 ```
 
 ## Design tokens

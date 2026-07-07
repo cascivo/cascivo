@@ -23,17 +23,17 @@ Renders role="img" with a title and a fallback from/to/value table.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `nodes` | `SankeyNode[]` | Yes | — | Nodes: { id, label, color? }. |
-| `links` | `SankeyLink[]` | Yes | — | Links: { source, target, value }. |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `description` | `string` | No | — | Supporting description text. |
-| `width` | `number` | No | — | Width of the component. |
-| `height` | `number` | No | 320 | Height of the component. |
-| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
+| Name          | Type           | Required | Default | Description                                                |
+| ------------- | -------------- | -------- | ------- | ---------------------------------------------------------- |
+| `nodes`       | `SankeyNode[]` | Yes      | —       | Nodes: { id, label, color? }.                              |
+| `links`       | `SankeyLink[]` | Yes      | —       | Links: { source, target, value }.                          |
+| `title`       | `string`       | Yes      | —       | Title text for the component.                              |
+| `description` | `string`       | No       | —       | Supporting description text.                               |
+| `width`       | `number`       | No       | —       | Width of the component.                                    |
+| `height`      | `number`       | No       | 320     | Height of the component.                                   |
+| `tooltip`     | `boolean`      | No       | —       | Whether to show tooltips on hover.                         |
+| `className`   | `string`       | No       | —       | Additional CSS class names merged onto the root element.   |
+| `plain`       | `boolean`      | No       | false   | When true, renders a minimal variant without chart chrome. |
 
 ## Tokens
 
@@ -52,11 +52,17 @@ Renders role="img" with a title and a fallback from/to/value table.
 
 ```jsx
 import { Sankey } from '@cascivo/charts'
-
-<Sankey
+;<Sankey
   title="Traffic flow"
-  nodes={[{ id: 'a', label: 'Search' }, { id: 'b', label: 'Home' }, { id: 'c', label: 'Signup' }]}
-  links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}
+  nodes={[
+    { id: 'a', label: 'Search' },
+    { id: 'b', label: 'Home' },
+    { id: 'c', label: 'Signup' },
+  ]}
+  links={[
+    { source: 'a', target: 'b', value: 30 },
+    { source: 'b', target: 'c', value: 12 },
+  ]}
 />
 ```
 

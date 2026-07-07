@@ -23,17 +23,17 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `FunnelStage[]` | Yes | — | Ordered stages (descending): { id, label, value, color? }. |
-| `title` | `string` | Yes | — | Chart title (also used as aria-label). |
-| `description` | `string` | No | — | Subtitle below the title. |
-| `width` | `number` | No | — | Width of the component. |
-| `height` | `number` | No | 320 | Height of the component. |
-| `showConversion` | `boolean` | No | false | Append each stage’s % of the first stage to its label. |
-| `tooltip` | `boolean` | No | — | Enable hover tooltip. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | Marks only — no labels. For micro/inline charts. |
+| Name             | Type            | Required | Default | Description                                                |
+| ---------------- | --------------- | -------- | ------- | ---------------------------------------------------------- |
+| `data`           | `FunnelStage[]` | Yes      | —       | Ordered stages (descending): { id, label, value, color? }. |
+| `title`          | `string`        | Yes      | —       | Chart title (also used as aria-label).                     |
+| `description`    | `string`        | No       | —       | Subtitle below the title.                                  |
+| `width`          | `number`        | No       | —       | Width of the component.                                    |
+| `height`         | `number`        | No       | 320     | Height of the component.                                   |
+| `showConversion` | `boolean`       | No       | false   | Append each stage’s % of the first stage to its label.     |
+| `tooltip`        | `boolean`       | No       | —       | Enable hover tooltip.                                      |
+| `className`      | `string`        | No       | —       | Additional CSS class names merged onto the root element.   |
+| `plain`          | `boolean`       | No       | false   | Marks only — no labels. For micro/inline charts.           |
 
 ## Tokens
 
@@ -52,8 +52,7 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ```jsx
 import { Funnel } from '@cascivo/charts'
-
-<Funnel
+;<Funnel
   title="Signup funnel"
   showConversion
   data={[
