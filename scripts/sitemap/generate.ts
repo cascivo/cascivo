@@ -14,6 +14,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { CATEGORY_ORDER } from '../../apps/site/src/category-head.ts'
 import {
   PRERENDER_ROUTES,
   canonicalFor,
@@ -77,6 +78,8 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
 
 interface RegistryEntry {
   name: string
+  type?: string
+  category: string
   files?: string[]
 }
 
@@ -116,9 +119,16 @@ const docsStaticLastMod = lastModForPath('apps/site/src/seo.ts')
 // any manifest changes, so it's a safe, deterministic last resort.
 const registryLastMod = lastModForPath('registry.json')
 
+const categoryRoutes = CATEGORY_ORDER.filter((cat) =>
+  registry.components.some((c) => c.category === cat),
+)
+
 const entries = [
   ...marketingRoutes.map((r) => urlEntry(canonicalFor(r.path), r.priority, marketingLastMod)),
   ...DOCS_STATIC_ROUTES.map((r) => urlEntry(`${SITE_URL}${r.path}`, r.priority, docsStaticLastMod)),
+  ...categoryRoutes.map((cat) =>
+    urlEntry(`${SITE_URL}/docs/categories/${cat}`, '0.7', registryLastMod),
+  ),
   ...components.map((c) => {
     const relPaths = (c.files ?? [])
       .filter((f) => f.startsWith(RAW_BASE))
@@ -129,6 +139,20 @@ const entries = [
       latestLastMod(relPaths) ?? registryLastMod,
     )
   }),
+  // Accessibility guides — one per `type: 'component'` entry (real UI
+  // controls only; charts/layouts/blocks don't get one, see vite.config.ts).
+  ...components
+    .filter((c) => (c.type ?? 'component') === 'component')
+    .map((c) => {
+      const relPaths = (c.files ?? [])
+        .filter((f) => f.startsWith(RAW_BASE))
+        .map((f) => f.slice(RAW_BASE.length))
+      return urlEntry(
+        `${SITE_URL}/accessibility/${c.name}`,
+        '0.6',
+        latestLastMod(relPaths) ?? registryLastMod,
+      )
+    }),
 ]
 
 writeFileSync(OUT_PATH, sitemap(entries))

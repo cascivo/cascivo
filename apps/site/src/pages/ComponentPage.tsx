@@ -83,7 +83,9 @@ export function ComponentPage({ name }: { name?: string }) {
   return (
     <article class="doc-page">
       <header class="doc-head">
-        <div class="doc-eyebrow">{CATEGORY_LABELS[entry.category] ?? entry.category}</div>
+        <a class="doc-eyebrow" href={`/docs/categories/${entry.category}`}>
+          {CATEGORY_LABELS[entry.category] ?? entry.category}
+        </a>
         <h1>{meta.name}</h1>
         <p class="doc-lede">{meta.description}</p>
       </header>
@@ -159,6 +161,13 @@ export function ComponentPage({ name }: { name?: string }) {
             )}
           </li>
         </ul>
+        {(entry.type ?? 'component') === 'component' && (
+          <p>
+            <a href={`/accessibility/${entry.name}`}>
+              How to build an accessible {meta.name} in React →
+            </a>
+          </p>
+        )}
       </section>
     </article>
   )

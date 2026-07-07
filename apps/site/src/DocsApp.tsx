@@ -28,6 +28,7 @@ import { ChartsPage } from './pages/ChartsPage'
 import { EditorPage } from './pages/EditorPage'
 import { FlowPage } from './pages/FlowPage'
 import { ComponentPage } from './pages/ComponentPage'
+import { CategoryPage } from './pages/CategoryPage'
 import { ApiReferencePage } from './pages/ApiReferencePage'
 import { KeyboardReferencePage } from './pages/KeyboardReferencePage'
 import { PlatformPage } from './pages/PlatformPage'
@@ -126,6 +127,10 @@ function pageFor(path: string) {
     // prefix IS the name — do not split on `/` or slashed entries 404.
     const name = decodeURIComponent(path.slice('/docs/components/'.length).replace(/\/+$/, ''))
     return <ComponentPage name={name} />
+  }
+  if (path.startsWith('/docs/categories/')) {
+    const category = decodeURIComponent(path.slice('/docs/categories/'.length).replace(/\/+$/, ''))
+    return <CategoryPage category={category} />
   }
   return <ComponentPage />
 }

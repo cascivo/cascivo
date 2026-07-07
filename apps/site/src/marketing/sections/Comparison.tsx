@@ -125,7 +125,7 @@ export function Comparison() {
         {shadcnParity.covered} of {shadcnParity.total} shadcn components have a cascivo equivalent —
         see the <a href="/docs/parity">parity matrix</a>. shadcn leads on ecosystem size and
         adoption today; cascivo's bet is the architecture. <a href="/docs/why">Why cascivo →</a> ·{' '}
-        <a href="/guides#migrate">Migrating from shadcn →</a>
+        <a href="/guides/coming-from-shadcn">Migrating from shadcn →</a>
       </p>
     </section>
   )

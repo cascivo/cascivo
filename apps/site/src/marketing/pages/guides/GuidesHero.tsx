@@ -9,14 +9,8 @@ export function GuidesHero() {
       <p className="proof-hero-sub">{GUIDES_HERO.sub}</p>
       <div className="guides-hero-ctas">
         {GUIDES_HERO.ctas.map((cta, i) => (
-          <Button
-            key={cta.href}
-            variant={i === 0 ? 'primary' : 'secondary'}
-            onClick={() => {
-              window.location.hash = cta.href.replace('#', '')
-            }}
-          >
-            {cta.label}
+          <Button key={cta.href} variant={i === 0 ? 'primary' : 'secondary'} asChild>
+            <a href={cta.href}>{cta.label}</a>
           </Button>
         ))}
       </div>

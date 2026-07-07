@@ -7,8 +7,8 @@ export const GUIDES_HERO = {
   title: 'From "looks good" to "shipping Monday."',
   sub: 'Switching from shadcn? Branding it for your team? Wondering if it even fits your project? Straight answers, real steps, every one ending in a next move.',
   ctas: [
-    { label: 'Coming from shadcn →', href: '#migrate' },
-    { label: 'Make it yours →', href: '#customize' },
+    { label: 'Coming from shadcn →', href: '/guides/coming-from-shadcn' },
+    { label: 'Make it yours →', href: '/guides/customization' },
   ],
 } as const
 
@@ -184,7 +184,7 @@ export const SCENARIOS: Scenario[] = [
     persona: "You're shipping a multi-brand product",
     situation: 'One codebase, several brands or tenants, each with its own look.',
     why: 'data-theme scopes a full theme to any subtree; a semantic token override rebrands in a single line.',
-    receipt: { label: 'Make it yours', href: '/guides#customize' },
+    receipt: { label: 'Make it yours', href: '/guides/customization' },
   },
   {
     persona: 'Performance is a hard requirement',
@@ -239,13 +239,13 @@ export const FAQ: FaqEntry[] = [
     id: 'tailwind',
     q: 'Do I need Tailwind?',
     a: 'No. Styling is modern platform CSS — @layer, custom properties, and container queries — driven by a three-tier token system. No utility classes, no build-time CSS framework.',
-    next: { label: 'How theming works', href: '/guides#customize' },
+    next: { label: 'How theming works', href: '/guides/customization' },
   },
   {
     id: 'vs-shadcn',
     q: 'How is this different from shadcn/ui?',
     a: 'It shares the best idea — you own copied source — and adds signal reactivity, a closed token system, twelve themes, built-in WCAG 2.2 AA, and a machine-readable AI layer. The migration guide maps exactly what transfers and what changes.',
-    next: { label: 'Coming from shadcn?', href: '/guides#migrate' },
+    next: { label: 'Coming from shadcn?', href: '/guides/coming-from-shadcn' },
   },
   {
     id: 'agent-correct',
@@ -266,7 +266,7 @@ export const FAQ: FaqEntry[] = [
     id: 'browsers',
     q: 'What browsers are supported?',
     a: 'The last two versions of Chrome, Firefox, and Safari — cascivo relies on :has() and @container. Some CSS-native logic is a Chrome-leading pilot with static fallbacks everywhere else, so nothing breaks.',
-    next: { label: 'See the honest boundaries', href: '/guides#when-not' },
+    next: { label: 'See the honest boundaries', href: '/guides/when-not-to-use' },
   },
 ]
 

@@ -9,6 +9,7 @@ import { PracticesGrid } from './accessibility/PracticesGrid'
 import { CiGate } from './accessibility/CiGate'
 import { A11yCta } from './accessibility/A11yCta'
 import { AccessibilityStatement } from './accessibility/AccessibilityStatement'
+import { AccessibilityGuidesIndex } from './accessibility/AccessibilityGuidesIndex'
 
 export function AccessibilityPage() {
   return (
@@ -24,6 +25,7 @@ export function AccessibilityPage() {
           <PracticesGrid />
           <CiGate />
           <AccessibilityStatement />
+          <AccessibilityGuidesIndex />
           <A11yCta />
         </main>
       </SkipNavTarget>

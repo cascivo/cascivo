@@ -1,5 +1,6 @@
+import { CATEGORY_LABELS, categoryDescription, categoryTitle, isCategory } from './category-head'
 import { componentOgImage, componentTitle } from './component-head'
-import { getComponent } from './data'
+import { components, getComponent } from './data'
 
 const SITE_URL = 'https://cascivo.com'
 const SUFFIX = ' — cascivo docs'
@@ -191,6 +192,24 @@ function headFor(path: string): { head: RouteHead; index: boolean } {
           crumbLabel: entry.meta.name,
         },
         index: true,
+      }
+    }
+  }
+
+  const categoryMatch = rel.match(/^\/categories\/(.+)$/)
+  if (categoryMatch) {
+    const key = decodeURIComponent(categoryMatch[1] ?? '')
+    if (isCategory(key)) {
+      const count = components.filter((c) => c.category === key).length
+      if (count > 0) {
+        return {
+          head: {
+            title: categoryTitle(key, count),
+            description: categoryDescription(key, count),
+            crumbLabel: CATEGORY_LABELS[key],
+          },
+          index: true,
+        }
       }
     }
   }

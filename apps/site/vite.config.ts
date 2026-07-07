@@ -11,6 +11,17 @@ import path, { extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { imagetools } from 'vite-imagetools'
 import { type Plugin, defineConfig } from 'vite-plus'
+import {
+  CATEGORY_INTRO,
+  CATEGORY_LABELS,
+  CATEGORY_ORDER,
+  categoryDescription,
+  categoryTitle,
+} from './src/category-head'
+import {
+  accessibilityGuideDescription,
+  accessibilityGuideTitle,
+} from './src/accessibility-guide-head'
 import { componentOgImage, componentTitle } from './src/component-head'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/marketing/route-head'
 
@@ -150,10 +161,18 @@ interface RegistryRelated {
   reason: string
 }
 
+interface RegistryAntiPattern {
+  bad: string
+  good?: string
+  why: string
+}
+
 interface RegistryIntent {
   whenToUse?: string[]
   whenNotToUse?: string[]
   related?: RegistryRelated[]
+  antiPatterns?: RegistryAntiPattern[]
+  a11yRationale?: string
 }
 
 interface RegistryComponentMeta {
@@ -164,7 +183,7 @@ interface RegistryComponentMeta {
   sizes: string[]
   props: RegistryPropMeta[]
   tokens: string[]
-  accessibility: { wcag: string }
+  accessibility: { wcag: string; role: string; keyboard: string[] }
   examples: { title: string; code: string; description?: string }[]
   tags: string[]
   intent?: RegistryIntent
@@ -172,6 +191,7 @@ interface RegistryComponentMeta {
 
 interface RegistryComponentEntry {
   name: string
+  type?: string
   category: string
   meta: RegistryComponentMeta
 }
@@ -290,11 +310,16 @@ function renderComponentBody(entry: RegistryComponentEntry, knownSlugs: Set<stri
         .join('')}</ul>`
     : ''
 
+  const accessibilityGuideLink =
+    (entry.type ?? 'component') === 'component'
+      ? `<p><a href="/accessibility/${e(entry.name)}">How to build an accessible ${e(meta.name)} in React →</a></p>`
+      : ''
+
   return (
     `<article>` +
     `<h1>${e(meta.name)}</h1>` +
     `<p>${e(meta.description)}</p>` +
-    `<p>Category: ${e(entry.category)} · WCAG ${e(meta.accessibility.wcag)}` +
+    `<p>Category: <a href="/docs/categories/${e(entry.category)}">${e(entry.category)}</a> · WCAG ${e(meta.accessibility.wcag)}` +
     (meta.tags.length ? ` · ${meta.tags.map(e).join(', ')}` : '') +
     `</p>` +
     (meta.variants.length ? `<h2>Variants</h2>${chipList(meta.variants)}` : '') +
@@ -304,9 +329,95 @@ function renderComponentBody(entry: RegistryComponentEntry, knownSlugs: Set<stri
     tokens +
     whenToUse +
     whenNotToUse +
+    accessibilityGuideLink +
     examples +
     related +
     `<p><a href="/docs">← Back to docs</a></p>` +
+    `</article>`
+  )
+}
+
+/**
+ * Static SEO body for a `/docs/categories/<category>` page — grouped straight
+ * from registry.json, mirrors CategoryPage.tsx.
+ */
+function renderCategoryBody(
+  category: (typeof CATEGORY_ORDER)[number],
+  items: RegistryComponentEntry[],
+): string {
+  const e = escapeHtml
+  const label = CATEGORY_LABELS[category]
+  const rows = items
+    .slice()
+    .sort((a, b) => a.meta.name.localeCompare(b.meta.name))
+    .map(
+      (c) =>
+        `<li><a href="/docs/components/${e(c.name)}">${e(c.meta.name)}</a> — ${e(c.meta.description)}</li>`,
+    )
+    .join('')
+  return (
+    `<article>` +
+    `<h1>${e(label)}</h1>` +
+    `<p>${e(CATEGORY_INTRO[category])}</p>` +
+    `<h2>${items.length} ${e(label.toLowerCase())} component${items.length === 1 ? '' : 's'}</h2>` +
+    `<ul>${rows}</ul>` +
+    `<p><a href="/docs">← Back to docs</a></p>` +
+    `</article>`
+  )
+}
+
+/**
+ * Static SEO body for a `/accessibility/<name>` guide page — leads with the
+ * intent/a11y narrative (when to use, keyboard, common mistakes), not the
+ * props table, so it doesn't read as a near-duplicate of the component
+ * reference page. Mirrors AccessibleComponentPage.tsx.
+ */
+function renderAccessibilityGuideBody(entry: RegistryComponentEntry): string {
+  const e = escapeHtml
+  const { meta } = entry
+  const intent = meta.intent
+
+  const list = (items: string[]) => `<ul>${items.map((v) => `<li>${e(v)}</li>`).join('')}</ul>`
+
+  const whenToUse = intent?.whenToUse?.length
+    ? `<h2>When to use a ${e(meta.name)}</h2>${list(intent.whenToUse)}`
+    : ''
+  const whenNotToUse = intent?.whenNotToUse?.length
+    ? `<h2>When not to use it</h2>${list(intent.whenNotToUse)}`
+    : ''
+
+  const a11yIntro = `<p>Role <code>${e(meta.accessibility.role)}</code>, verified at WCAG ${e(meta.accessibility.wcag)}.</p>`
+  const keyboard = meta.accessibility.keyboard.length
+    ? `<h2>Keyboard interactions</h2>${a11yIntro}<ul>${meta.accessibility.keyboard
+        .map((k) => `<li><code>${e(k)}</code></li>`)
+        .join('')}</ul>`
+    : `<h2>Accessibility</h2>${a11yIntro}`
+
+  const antiPatterns = intent?.antiPatterns?.length
+    ? `<h2>Common mistakes</h2>${intent.antiPatterns
+        .map(
+          (ap) =>
+            `<p><strong>Avoid:</strong> <code>${e(ap.bad)}</code></p>` +
+            (ap.good ? `<p><strong>Prefer:</strong> <code>${e(ap.good)}</code></p>` : '') +
+            `<p>${e(ap.why)}</p>`,
+        )
+        .join('')}`
+    : ''
+
+  const example = meta.examples.length
+    ? `<h2>Example</h2><pre><code>${e(meta.examples[0]?.code ?? '')}</code></pre>`
+    : ''
+
+  return (
+    `<article>` +
+    `<h1>How to build an accessible ${e(meta.name)} in React</h1>` +
+    `<p>${e(intent?.a11yRationale ?? '')}</p>` +
+    whenToUse +
+    whenNotToUse +
+    keyboard +
+    antiPatterns +
+    example +
+    `<p><a href="/docs/components/${e(entry.name)}">See the full ${e(meta.name)} reference →</a></p>` +
     `</article>`
   )
 }
@@ -372,6 +483,57 @@ function prerenderPages(): Plugin {
         const body =
           renderComponentBody(entry, knownSlugs) + renderComponentJsonLd(entry, canonical)
         writeFileSync(resolve(outDir, 'index.html'), injectBody(html, body))
+      }
+
+      // Docs category pages (/docs/categories/<category>) — one per registry
+      // category, grouping every component in it with a short factual intro.
+      for (const category of CATEGORY_ORDER) {
+        const items = components.filter((c) => c.category === category)
+        if (items.length === 0) continue
+        const path = `/docs/categories/${category}`
+        const canonical = canonicalFor(path)
+        const title = categoryTitle(category, items.length)
+        const html = rewriteHead(shell, {
+          title,
+          description: categoryDescription(category, items.length),
+          canonical,
+          ogTitle: title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, 'docs', 'categories', category)
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(
+          resolve(outDir, 'index.html'),
+          injectBody(html, renderCategoryBody(category, items)),
+        )
+      }
+
+      // Per-component accessibility guides (/accessibility/<name>) — one per
+      // `type: 'component'` registry entry (real UI controls; charts/layouts/
+      // blocks are covered by their component reference page instead). Built
+      // from meta.intent, distinct framing from /docs/components/<name> so it
+      // doesn't read as near-duplicate content.
+      for (const entry of components) {
+        if ((entry.type ?? 'component') !== 'component') continue
+        const path = `/accessibility/${entry.name}`
+        const canonical = canonicalFor(path)
+        const title = accessibilityGuideTitle(entry.meta)
+        const html = rewriteHead(shell, {
+          title,
+          description: accessibilityGuideDescription({
+            name: entry.meta.name,
+            a11yRationale: entry.meta.intent?.a11yRationale ?? '',
+          }),
+          canonical,
+          ogTitle: title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, 'accessibility', entry.name)
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(
+          resolve(outDir, 'index.html'),
+          injectBody(html, renderAccessibilityGuideBody(entry)),
+        )
       }
 
       // Static-host fallback for unknown deep links → real NotFound (noindex).
