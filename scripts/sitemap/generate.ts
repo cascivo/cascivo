@@ -14,6 +14,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { POSTS } from '../../apps/site/src/blog/index.ts'
 import { CATEGORY_ORDER } from '../../apps/site/src/category-head.ts'
 import {
   PRERENDER_ROUTES,
@@ -160,6 +161,14 @@ const entries = [
       '0.6',
       lastModForPath(`packages/themes/src/${theme}.css`),
     ),
+  ),
+  // /blog isn't in PRERENDER_ROUTES (see vite.config.ts — it gets a real
+  // post-list body instead of the generic thin one), so it's not covered by
+  // marketingRoutes above; add it and every post explicitly. lastmod comes
+  // from each post's own authored date, not git history.
+  urlEntry(`${SITE_URL}/blog`, '0.8', POSTS[0]?.dateModified ?? POSTS[0]?.datePublished),
+  ...POSTS.map((post) =>
+    urlEntry(`${SITE_URL}/blog/${post.slug}`, '0.6', post.dateModified ?? post.datePublished),
   ),
 ]
 

@@ -1875,4 +1875,14 @@
     <lastmod>2026-06-29</lastmod>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://cascivo.com/blog</loc>
+    <lastmod>2026-07-07</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/blog/ai-agents-without-hallucination</loc>
+    <lastmod>2026-07-07</lastmod>
+    <priority>0.6</priority>
+  </url>
 </urlset>

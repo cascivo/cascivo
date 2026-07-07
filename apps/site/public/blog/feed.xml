@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>cascivo blog</title>
+  <link>https://cascivo.com/blog</link>
+  <description>Notes on building cascivo: the AI layer, signal-driven reactivity, modern CSS, and what shipping an owned-code design system actually looks like.</description>
+  <item>
+    <title>Giving your AI coding agent a component library it can’t hallucinate</title>
+    <link>https://cascivo.com/blog/ai-agents-without-hallucination</link>
+    <guid>https://cascivo.com/blog/ai-agents-without-hallucination</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>AI agents write plausible-looking UI code that invents props, colors, and class names that don’t exist. cascivo ships a machine-readable manifest per component so agents can select, scaffold, and validate their own output instead of guessing.</description>
+  </item>
+</channel>
+</rss>

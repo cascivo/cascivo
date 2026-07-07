@@ -120,6 +120,16 @@ export function applyAccessibilityGuideSeo(path: string, title: string, descript
   applyOgImage(undefined)
 }
 
+/**
+ * Apply the head for a `/blog/<slug>` post or the `/blog` index — title/
+ * description come from the post data itself, not ROUTE_HEAD.
+ */
+export function applyBlogSeo(path: string, title: string, description: string): void {
+  if (typeof document === 'undefined') return
+  applyHead(canonicalFor(path), title, description, title)
+  applyOgImage(undefined)
+}
+
 /** Apply the NotFound head: home-ish title but noindex (T3). */
 export function applyNotFoundSeo(): void {
   if (typeof document === 'undefined') return

@@ -23,6 +23,8 @@ import {
   accessibilityGuideTitle,
 } from './src/accessibility-guide-head'
 import { componentOgImage, componentTitle } from './src/component-head'
+import { POSTS } from './src/blog'
+import type { BlogBlock, BlogPost } from './src/blog/types'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/marketing/route-head'
 import {
   THEME_LABELS,
@@ -453,6 +455,78 @@ function renderThemeBody(theme: (typeof THEME_ORDER)[number]): string {
   )
 }
 
+/**
+ * Renders a post's content blocks to an HTML string — the build-time
+ * counterpart to BlogBlocks.tsx. Same block shape, same cases; the two
+ * cannot drift because they both read `BlogPost.blocks` directly.
+ */
+function renderBlogBlocksHtml(blocks: BlogBlock[]): string {
+  const e = escapeHtml
+  return blocks
+    .map((block) => {
+      switch (block.type) {
+        case 'p':
+          return `<p>${e(block.text)}</p>`
+        case 'h2':
+          return `<h2>${e(block.text)}</h2>`
+        case 'ul':
+          return `<ul>${block.items.map((item) => `<li>${e(item)}</li>`).join('')}</ul>`
+        case 'code':
+          return `<pre><code>${e(block.code)}</code></pre>`
+        case 'callout':
+          return `<blockquote>${e(block.text)}</blockquote>`
+        case 'links':
+          return `<ul>${block.items
+            .map((link) => `<li><a href="${e(link.href)}">${e(link.text)} →</a></li>`)
+            .join('')}</ul>`
+        default:
+          return ''
+      }
+    })
+    .join('')
+}
+
+function renderBlogPostJsonLd(post: BlogPost, canonical: string): string {
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    datePublished: post.datePublished,
+    dateModified: post.dateModified ?? post.datePublished,
+    url: canonical,
+    keywords: post.tags.join(', '),
+    author: { '@id': 'https://cascivo.com/#org' },
+    publisher: { '@id': 'https://cascivo.com/#org' },
+    isPartOf: { '@id': 'https://cascivo.com/#site' },
+  }
+  const json = JSON.stringify(ld).replace(/</g, '\\u003c')
+  return `<script type="application/ld+json">${json}</script>`
+}
+
+function renderBlogPostBody(post: BlogPost, canonical: string): string {
+  const e = escapeHtml
+  return (
+    `<article>` +
+    `<header><h1>${e(post.title)}</h1><p><time datetime="${e(post.datePublished)}">${e(post.datePublished)}</time></p></header>` +
+    renderBlogBlocksHtml(post.blocks) +
+    `</article>` +
+    renderBlogPostJsonLd(post, canonical)
+  )
+}
+
+function renderBlogIndexBody(posts: BlogPost[]): string {
+  const e = escapeHtml
+  const items = posts
+    .map(
+      (post) =>
+        `<li><a href="/blog/${e(post.slug)}">${e(post.title)}</a> — ${e(post.description)} ` +
+        `<time datetime="${e(post.datePublished)}">${e(post.datePublished)}</time></li>`,
+    )
+    .join('')
+  return `<main><h1>Blog</h1><p>${e(ROUTE_HEAD['/blog']?.description ?? '')}</p><ul>${items}</ul></main>`
+}
+
 function prerenderPages(): Plugin {
   return {
     name: 'cascade:prerender-pages',
@@ -582,6 +656,45 @@ function prerenderPages(): Plugin {
         const outDir = resolve(dist, 'docs', 'themes', theme)
         mkdirSync(outDir, { recursive: true })
         writeFileSync(resolve(outDir, 'index.html'), injectBody(html, renderThemeBody(theme)))
+      }
+
+      // Blog index (/blog) — not in PRERENDER_ROUTES: it gets a real post-list
+      // body here instead of the generic thin marketing one.
+      const blogIndexHead = ROUTE_HEAD['/blog']
+      if (blogIndexHead) {
+        const blogHtml = rewriteHead(shell, {
+          title: blogIndexHead.title,
+          description: blogIndexHead.description,
+          canonical: canonicalFor('/blog'),
+          ogTitle: blogIndexHead.title,
+          robots: 'index, follow',
+        })
+        mkdirSync(resolve(dist, 'blog'), { recursive: true })
+        writeFileSync(
+          resolve(dist, 'blog', 'index.html'),
+          injectBody(blogHtml, renderBlogIndexBody(POSTS)),
+        )
+      }
+
+      // Blog posts (/blog/<slug>) — title/description come from the post data
+      // itself, not a hand-authored ROUTE_HEAD entry (same reasoning as the
+      // accessibility guides: this is content, not marketing copy).
+      for (const post of POSTS) {
+        const path = `/blog/${post.slug}`
+        const canonical = canonicalFor(path)
+        const html = rewriteHead(shell, {
+          title: post.title,
+          description: post.description,
+          canonical,
+          ogTitle: post.title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, 'blog', post.slug)
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(
+          resolve(outDir, 'index.html'),
+          injectBody(html, renderBlogPostBody(post, canonical)),
+        )
       }
 
       // Static-host fallback for unknown deep links → real NotFound (noindex).

@@ -49,6 +49,11 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Guides for adopting cascivo: migrating from shadcn, brand customization, real use-case scenarios, and an honest take on when not to use it.',
   },
+  '/blog': {
+    title: 'Blog — cascivo',
+    description:
+      'Notes on building cascivo: the AI layer, signal-driven reactivity, modern CSS, and what shipping an owned-code design system actually looks like.',
+  },
   '/guides/coming-from-shadcn': {
     title: 'Coming from shadcn/ui? — cascivo',
     description:

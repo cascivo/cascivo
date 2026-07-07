@@ -73,6 +73,12 @@ const WhenNotToUsePage = lazy(() =>
 const GuidesFaqPage = lazy(() =>
   import('./pages/guides/GuidesFaqPage').then((m) => ({ default: m.GuidesFaqPage })),
 )
+const BlogIndexPage = lazy(() =>
+  import('./pages/BlogIndexPage').then((m) => ({ default: m.BlogIndexPage })),
+)
+const BlogPostPage = lazy(() =>
+  import('./pages/blog/BlogPostPage').then((m) => ({ default: m.BlogPostPage })),
+)
 const ModernCssPage = lazy(() =>
   import('./pages/ModernCssPage').then((m) => ({ default: m.ModernCssPage })),
 )
@@ -184,6 +190,7 @@ const ROUTES: Record<string, Route> = {
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
+  '/blog': { Page: BlogIndexPage, title: ROUTE_HEAD['/blog']?.title ?? 'cascivo' },
   '/guides/coming-from-shadcn': {
     Page: ComingFromShadcnPage,
     title: ROUTE_HEAD['/guides/coming-from-shadcn']?.title ?? 'cascivo',
@@ -267,6 +274,18 @@ export function MarketingApp() {
       return (
         <Suspense fallback={<SectionFallback tall />}>
           <AccessibleComponentPage name={name} />
+        </Suspense>
+      )
+    }
+  }
+
+  // /blog/:slug — post. Same self-contained-lookup reasoning as /accessibility/:name.
+  if (pathname.startsWith('/blog/') && pathname !== '/blog/') {
+    const slug = decodeURIComponent(pathname.slice('/blog/'.length).split('/')[0] ?? '')
+    if (slug) {
+      return (
+        <Suspense fallback={<SectionFallback tall />}>
+          <BlogPostPage slug={slug} />
         </Suspense>
       )
     }

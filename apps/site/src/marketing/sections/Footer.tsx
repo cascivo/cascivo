@@ -33,6 +33,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
     label: 'Explore',
     links: [
+      { label: 'Blog', href: '/blog' },
       { label: 'Guides', href: '/guides' },
       { label: 'Migrating from shadcn', href: '/docs/migrating' },
       { label: 'Create a theme', href: '/create' },
