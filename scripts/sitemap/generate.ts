@@ -6,10 +6,11 @@
  *   - docs component pages from registry.json (under /docs/components/<name>)
  *
  * Both surfaces now live in one app at one domain, so there is one sitemap.
- * Output is deterministic (no timestamps) so the drift check stays green; run as
- * part of `pnpm regen`.
+ * Output is deterministic (derived from git history, not wall-clock) so the
+ * drift check stays green; run as part of `pnpm regen`.
  */
 
+import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -23,6 +24,35 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
 const REGISTRY_PATH = join(ROOT, 'registry.json')
 const OUT_PATH = join(ROOT, 'apps', 'site', 'public', 'sitemap.xml')
+const RAW_BASE = 'https://raw.githubusercontent.com/cascivo/cascivo/main/'
+
+/**
+ * Last-modified date for a repo-relative path, from git history (`%cs` = commit
+ * date, short form). Deterministic across runs given the same history — no
+ * wall-clock — so the drift check (`pnpm regen` + `git diff --exit-code`) stays
+ * green until the source file actually changes. Returns undefined for paths git
+ * has no history for (e.g. not yet committed).
+ */
+function lastModForPath(relPath: string): string | undefined {
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', relPath], {
+      cwd: ROOT,
+      encoding: 'utf8',
+    }).trim()
+    return out || undefined
+  } catch {
+    return undefined
+  }
+}
+
+/** Most recent lastmod across a set of repo-relative paths. */
+function latestLastMod(relPaths: string[]): string | undefined {
+  return relPaths
+    .map(lastModForPath)
+    .filter((d): d is string => Boolean(d))
+    .sort()
+    .at(-1)
+}
 
 /** Indexable static docs routes (under /docs), in priority order. */
 const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
@@ -47,10 +77,12 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
 
 interface RegistryEntry {
   name: string
+  files?: string[]
 }
 
-function urlEntry(loc: string, priority: string): string {
-  return `  <url>\n    <loc>${loc}</loc>\n    <priority>${priority}</priority>\n  </url>`
+function urlEntry(loc: string, priority: string, lastmod?: string): string {
+  const lastmodTag = lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''
+  return `  <url>\n    <loc>${loc}</loc>${lastmodTag}\n    <priority>${priority}</priority>\n  </url>`
 }
 
 function sitemap(entries: string[]): string {
@@ -62,7 +94,7 @@ ${entries.join('\n')}
 }
 
 const registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf8')) as { components: RegistryEntry[] }
-const componentNames = registry.components.map((c) => c.name).sort((a, b) => a.localeCompare(b))
+const components = [...registry.components].sort((a, b) => a.name.localeCompare(b.name))
 
 // Home first (1.0), then marketing routes, then docs static routes + components.
 const marketingRoutes = [
@@ -73,10 +105,30 @@ const marketingRoutes = [
   })),
 ]
 
+// Coarse but deterministic: every marketing route's head/copy is sourced from
+// route-head.ts, and every static docs route's head from seo.ts, so a change to
+// either bumps every route it governs. Component pages get per-component
+// lastmod below, from their own source files — much more precise.
+const marketingLastMod = lastModForPath('apps/site/src/marketing/route-head.ts')
+const docsStaticLastMod = lastModForPath('apps/site/src/seo.ts')
+// Fallback for registry entries with no `files` (some chart/editor/flow entries
+// have an empty files array) — registry.json's own commit still moves whenever
+// any manifest changes, so it's a safe, deterministic last resort.
+const registryLastMod = lastModForPath('registry.json')
+
 const entries = [
-  ...marketingRoutes.map((r) => urlEntry(canonicalFor(r.path), r.priority)),
-  ...DOCS_STATIC_ROUTES.map((r) => urlEntry(`${SITE_URL}${r.path}`, r.priority)),
-  ...componentNames.map((name) => urlEntry(`${SITE_URL}/docs/components/${name}`, '0.6')),
+  ...marketingRoutes.map((r) => urlEntry(canonicalFor(r.path), r.priority, marketingLastMod)),
+  ...DOCS_STATIC_ROUTES.map((r) => urlEntry(`${SITE_URL}${r.path}`, r.priority, docsStaticLastMod)),
+  ...components.map((c) => {
+    const relPaths = (c.files ?? [])
+      .filter((f) => f.startsWith(RAW_BASE))
+      .map((f) => f.slice(RAW_BASE.length))
+    return urlEntry(
+      `${SITE_URL}/docs/components/${c.name}`,
+      '0.6',
+      latestLastMod(relPaths) ?? registryLastMod,
+    )
+  }),
 ]
 
 writeFileSync(OUT_PATH, sitemap(entries))

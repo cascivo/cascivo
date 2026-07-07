@@ -97,9 +97,194 @@ function rewriteHead(
   return out
 }
 
-function prerenderHeads(): Plugin {
+/**
+ * Escape text for interpolation into either HTML text nodes or attribute
+ * values — used throughout the static SEO body renderers below, since all of
+ * it is built from manifest/registry data (component descriptions, code
+ * examples, prop docs) via plain string concatenation, not JSX.
+ */
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+/**
+ * Replace the empty `<div id="app"></div>` shell with one containing static,
+ * non-interactive body markup. This is deliberately NOT a hydration target:
+ * main.tsx clears #app before mounting Preact, so this markup only needs to
+ * exist for crawlers/social scrapers/AI agents that don't execute JS — it can
+ * never cause a hydration mismatch because Preact never tries to reconcile
+ * against it.
+ */
+function injectBody(html: string, bodyHtml: string): string {
+  return html.replace('<div id="app"></div>', `<div id="app">${bodyHtml}</div>`)
+}
+
+function renderMarketingBody(head: {
+  title: string
+  ogTitle?: string
+  description: string
+}): string {
+  const h1 = escapeHtml(head.ogTitle ?? head.title)
+  return (
+    `<main><h1>${h1}</h1>` +
+    `<p>${escapeHtml(head.description)}</p>` +
+    `<p><a href="/docs">Browse the docs →</a></p></main>`
+  )
+}
+
+interface RegistryPropMeta {
+  name: string
+  type: string
+  default?: string
+  description?: string
+}
+
+interface RegistryRelated {
+  name: string
+  reason: string
+}
+
+interface RegistryIntent {
+  whenToUse?: string[]
+  whenNotToUse?: string[]
+  related?: RegistryRelated[]
+}
+
+interface RegistryComponentMeta {
+  name: string
+  description: string
+  states: string[]
+  variants: string[]
+  sizes: string[]
+  props: RegistryPropMeta[]
+  tokens: string[]
+  accessibility: { wcag: string }
+  examples: { title: string; code: string; description?: string }[]
+  tags: string[]
+  intent?: RegistryIntent
+}
+
+interface RegistryComponentEntry {
+  name: string
+  category: string
+  meta: RegistryComponentMeta
+}
+
+function loadRegistryComponents(): RegistryComponentEntry[] {
+  const registry = JSON.parse(readFileSync(resolve(root, 'registry.json'), 'utf8')) as {
+    components: RegistryComponentEntry[]
+  }
+  return registry.components
+}
+
+// Category-prefixed registry slugs (`chart/area-chart`, `layout/stack`) mean a
+// related-component display name like "AreaChart" can't be slugified straight
+// to its route — try each known prefix in turn. Keep in sync with the root
+// dirs scanned by scripts/registry/generate.ts.
+const REGISTRY_SLUG_PREFIXES = ['', 'layout/', 'chart/', 'block/', 'editor/', 'flow/', 'section/']
+
+function slugifyComponentName(name: string): string {
+  return name
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .replace(/\s+/g, '-')
+    .toLowerCase()
+}
+
+/** Resolve an `intent.related[].name` display name to a real registry slug, or null if it isn't a separately-registered component (e.g. a sub-part or utility). */
+function resolveRelatedSlug(displayName: string, knownSlugs: Set<string>): string | null {
+  const slug = slugifyComponentName(displayName)
+  for (const prefix of REGISTRY_SLUG_PREFIXES) {
+    if (knownSlugs.has(prefix + slug)) return prefix + slug
+  }
+  return null
+}
+
+/**
+ * Static SEO body for a `/docs/components/<name>` page — built entirely from
+ * registry.json data (no component execution), so it's safe to generate at
+ * build time. Mirrors the sections ComponentPage.tsx renders at runtime.
+ */
+function renderComponentBody(entry: RegistryComponentEntry, knownSlugs: Set<string>): string {
+  const e = escapeHtml
+  const { meta } = entry
+
+  const chipList = (items: string[]) =>
+    items.length ? `<ul>${items.map((v) => `<li>${e(v)}</li>`).join('')}</ul>` : ''
+
+  const propsRows = meta.props
+    .map(
+      (p) =>
+        `<tr><td><code>${e(p.name)}</code></td><td><code>${e(p.type)}</code></td>` +
+        `<td>${p.default !== undefined ? `<code>${e(p.default)}</code>` : '—'}</td>` +
+        `<td>${e(p.description ?? '')}</td></tr>`,
+    )
+    .join('')
+  const propsTable = meta.props.length
+    ? `<h2>Props</h2><table><thead><tr><th>Prop</th><th>Type</th><th>Default</th>` +
+      `<th>Description</th></tr></thead><tbody>${propsRows}</tbody></table>`
+    : ''
+
+  const tokens = meta.tokens.length
+    ? `<h2>Design tokens</h2><ul>${meta.tokens.map((t) => `<li><code>${e(t)}</code></li>`).join('')}</ul>`
+    : ''
+
+  const examples = meta.examples.length
+    ? `<h2>Examples</h2>${meta.examples
+        .map(
+          (ex) =>
+            `<h3>${e(ex.title)}</h3>` +
+            (ex.description ? `<p>${e(ex.description)}</p>` : '') +
+            `<pre><code>${e(ex.code)}</code></pre>`,
+        )
+        .join('')}`
+    : ''
+
+  const whenToUse = meta.intent?.whenToUse?.length
+    ? `<h2>When to use</h2>${chipList(meta.intent.whenToUse)}`
+    : ''
+  const whenNotToUse = meta.intent?.whenNotToUse?.length
+    ? `<h2>When not to use</h2>${chipList(meta.intent.whenNotToUse)}`
+    : ''
+
+  const related = meta.intent?.related?.length
+    ? `<h2>Related components</h2><ul>${meta.intent.related
+        .map((r) => {
+          const slug = resolveRelatedSlug(r.name, knownSlugs)
+          const label = slug ? `<a href="/docs/components/${e(slug)}">${e(r.name)}</a>` : e(r.name)
+          return `<li>${label} — ${e(r.reason)}</li>`
+        })
+        .join('')}</ul>`
+    : ''
+
+  return (
+    `<article>` +
+    `<h1>${e(meta.name)}</h1>` +
+    `<p>${e(meta.description)}</p>` +
+    `<p>Category: ${e(entry.category)} · WCAG ${e(meta.accessibility.wcag)}` +
+    (meta.tags.length ? ` · ${meta.tags.map(e).join(', ')}` : '') +
+    `</p>` +
+    (meta.variants.length ? `<h2>Variants</h2>${chipList(meta.variants)}` : '') +
+    (meta.sizes.length ? `<h2>Sizes</h2>${chipList(meta.sizes)}` : '') +
+    (meta.states.length ? `<h2>States</h2>${chipList(meta.states)}` : '') +
+    propsTable +
+    tokens +
+    whenToUse +
+    whenNotToUse +
+    examples +
+    related +
+    `<p><a href="/docs">← Back to docs</a></p>` +
+    `</article>`
+  )
+}
+
+function prerenderPages(): Plugin {
   return {
-    name: 'cascade:prerender-heads',
+    name: 'cascade:prerender-pages',
     apply: 'build',
     closeBundle() {
       const dist = resolve(__dirname, 'dist')
@@ -108,6 +293,13 @@ function prerenderHeads(): Plugin {
       // phases (multi-environment). Skip rather than abort the whole build.
       if (!existsSync(shellPath)) return
       const shell = readFileSync(shellPath, 'utf8')
+
+      // Home ('/') keeps the shell's own head (already correct) but still gets
+      // a static body — it's the single highest-value URL on the site.
+      const homeHead = ROUTE_HEAD['/']
+      if (homeHead) {
+        writeFileSync(shellPath, injectBody(shell, renderMarketingBody(homeHead)))
+      }
 
       for (const route of PRERENDER_ROUTES) {
         const head = ROUTE_HEAD[`/${route}`]
@@ -121,7 +313,35 @@ function prerenderHeads(): Plugin {
           ogImage: head.ogImage,
         })
         mkdirSync(resolve(dist, route), { recursive: true })
-        writeFileSync(resolve(dist, route, 'index.html'), html)
+        writeFileSync(
+          resolve(dist, route, 'index.html'),
+          injectBody(html, renderMarketingBody(head)),
+        )
+      }
+
+      // Docs component pages (/docs/components/<name>) — the largest single
+      // page family and, until now, not prerendered at all: their head was
+      // client-JS-only and their body was always an empty shell. Both are
+      // fully derivable from registry.json, so generate real HTML for every
+      // one at build time.
+      const components = loadRegistryComponents()
+      const knownSlugs = new Set(components.map((c) => c.name.toLowerCase()))
+      for (const entry of components) {
+        const path = `/docs/components/${entry.name}`
+        const title = `${entry.meta.name} — cascivo docs`
+        const html = rewriteHead(shell, {
+          title,
+          description: entry.meta.description,
+          canonical: canonicalFor(path),
+          ogTitle: title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, 'docs', 'components', entry.name)
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(
+          resolve(outDir, 'index.html'),
+          injectBody(html, renderComponentBody(entry, knownSlugs)),
+        )
       }
 
       // Static-host fallback for unknown deep links → real NotFound (noindex).
@@ -255,7 +475,7 @@ for (const n of BLOCK_NAMES) {
 }
 
 export default defineConfig({
-  plugins: [imagetools(), injectCounts(), prerenderHeads(), benchData(), serveExampleDemos()],
+  plugins: [imagetools(), injectCounts(), prerenderPages(), benchData(), serveExampleDemos()],
   define: {
     __CASCIVO_COMPONENT_COUNT__: componentCount(),
     __CASCIVO_THEME_COUNT__: themeCount(),
