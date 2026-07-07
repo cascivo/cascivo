@@ -1,6 +1,7 @@
 import { CATEGORY_LABELS, categoryDescription, categoryTitle, isCategory } from './category-head'
 import { componentOgImage, componentTitle } from './component-head'
 import { components, getComponent } from './data'
+import { THEME_LABELS, isThemeName, themeDescription, themeTitle } from './theme-head'
 
 const SITE_URL = 'https://cascivo.com'
 const SUFFIX = ' — cascivo docs'
@@ -87,8 +88,9 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
       'Application layout primitives — app shell, grids, and responsive containers built on container queries and CSS logical properties.',
   },
   '/directory': {
-    title: `Component directory${SUFFIX}`,
-    description: 'The full searchable index of every cascivo component, layout, block, and chart.',
+    title: `Registry directory${SUFFIX}`,
+    description:
+      'Third-party and first-party component registries compatible with the cascivo CLI — search and install from any registry with npx cascivo add @ns/<component>.',
   },
   '/context': {
     title: `Context Explorer${SUFFIX}`,
@@ -210,6 +212,21 @@ function headFor(path: string): { head: RouteHead; index: boolean } {
           },
           index: true,
         }
+      }
+    }
+  }
+
+  const themeMatch = rel.match(/^\/themes\/(.+)$/)
+  if (themeMatch) {
+    const key = decodeURIComponent(themeMatch[1] ?? '')
+    if (isThemeName(key)) {
+      return {
+        head: {
+          title: themeTitle(key),
+          description: themeDescription(key),
+          crumbLabel: THEME_LABELS[key],
+        },
+        index: true,
       }
     }
   }

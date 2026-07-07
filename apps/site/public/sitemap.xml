@@ -2,112 +2,112 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://cascivo.com/</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://cascivo.com/accessibility</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/performance</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/guides</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/guides/coming-from-shadcn</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/guides/customization</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/guides/use-cases</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/guides/when-not-to-use</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/guides/faq</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/modern-css</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/highlights</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/examples</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/showcase</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/examples/deploy</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/examples/pay</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/examples/flow</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/examples/track</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/examples/pulse</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://cascivo.com/ai</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/charts</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/create</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://cascivo.com/blocks</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-07</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -1813,6 +1813,66 @@
   <url>
     <loc>https://cascivo.com/accessibility/visually-hidden</loc>
     <lastmod>2026-06-24</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/light</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/dark</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/warm</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/corporate</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/minimal</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/flat</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/midnight</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/pastel</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/terminal</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/cyberpunk</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/brutalist</loc>
+    <lastmod>2026-06-29</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/themes/arcade</loc>
+    <lastmod>2026-06-29</lastmod>
     <priority>0.6</priority>
   </url>
 </urlset>

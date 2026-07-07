@@ -20,6 +20,7 @@ import {
   canonicalFor,
   SITE_URL,
 } from '../../apps/site/src/marketing/route-head.ts'
+import { THEME_ORDER } from '../../apps/site/src/theme-head.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -153,6 +154,13 @@ const entries = [
         latestLastMod(relPaths) ?? registryLastMod,
       )
     }),
+  ...THEME_ORDER.map((theme) =>
+    urlEntry(
+      `${SITE_URL}/docs/themes/${theme}`,
+      '0.6',
+      lastModForPath(`packages/themes/src/${theme}.css`),
+    ),
+  ),
 ]
 
 writeFileSync(OUT_PATH, sitemap(entries))

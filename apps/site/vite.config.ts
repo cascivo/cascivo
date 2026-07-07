@@ -24,6 +24,13 @@ import {
 } from './src/accessibility-guide-head'
 import { componentOgImage, componentTitle } from './src/component-head'
 import { ROUTE_HEAD, canonicalFor, PRERENDER_ROUTES } from './src/marketing/route-head'
+import {
+  THEME_LABELS,
+  THEME_ORDER,
+  THEME_TAGLINES,
+  themeDescription,
+  themeTitle,
+} from './src/theme-head'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const root = path.resolve(__dirname, '../..')
@@ -422,6 +429,30 @@ function renderAccessibilityGuideBody(entry: RegistryComponentEntry): string {
   )
 }
 
+/**
+ * Static SEO body for a `/docs/themes/<name>` page — mirrors ThemePage.tsx.
+ * Taglines come from theme-head.ts (copied from each theme's CSS header
+ * comment), not computed from anything at build time.
+ */
+function renderThemeBody(theme: (typeof THEME_ORDER)[number]): string {
+  const e = escapeHtml
+  const label = THEME_LABELS[theme]
+  return (
+    `<article>` +
+    `<h1>${e(label)}</h1>` +
+    `<p>${e(THEME_TAGLINES[theme])}</p>` +
+    `<h2>Use it</h2>` +
+    `<pre><code>@import '@cascivo/themes/${e(theme)}.css';</code></pre>` +
+    `<pre><code>&lt;html data-theme="${e(theme)}"&gt;</code></pre>` +
+    `<h2>Customize it</h2>` +
+    `<p>Override any semantic or component token to make it yours — see the ` +
+    `<a href="/guides/customization">customization guide</a>, or generate a full brand theme ` +
+    `from a single color in the <a href="/create">theme configurator</a>.</p>` +
+    `<p><a href="/docs">← Back to docs</a></p>` +
+    `</article>`
+  )
+}
+
 function prerenderPages(): Plugin {
   return {
     name: 'cascade:prerender-pages',
@@ -534,6 +565,23 @@ function prerenderPages(): Plugin {
           resolve(outDir, 'index.html'),
           injectBody(html, renderAccessibilityGuideBody(entry)),
         )
+      }
+
+      // Docs theme pages (/docs/themes/<name>) — one per first-party theme.
+      for (const theme of THEME_ORDER) {
+        const path = `/docs/themes/${theme}`
+        const canonical = canonicalFor(path)
+        const title = themeTitle(theme)
+        const html = rewriteHead(shell, {
+          title,
+          description: themeDescription(theme),
+          canonical,
+          ogTitle: title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, 'docs', 'themes', theme)
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(resolve(outDir, 'index.html'), injectBody(html, renderThemeBody(theme)))
       }
 
       // Static-host fallback for unknown deep links → real NotFound (noindex).

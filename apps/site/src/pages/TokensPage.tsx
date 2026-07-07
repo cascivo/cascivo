@@ -6,6 +6,7 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import type { JSX } from 'preact'
 import { Input } from '@cascivo/components/input'
 import { Select } from '@cascivo/components/select'
+import { THEME_LABELS, THEME_ORDER, THEME_TAGLINES } from '../theme-head'
 
 interface CatalogToken {
   name: string
@@ -177,6 +178,21 @@ export function TokensPage() {
           {catalog.value.count} tokens.
         </p>
       </div>
+
+      <section class="doc-section">
+        <h2>Themes</h2>
+        <p class="muted">
+          {THEME_ORDER.length} first-party themes override the semantic layer above — pick one, or
+          use it as a starting point for your own with the <a href="/create">theme configurator</a>.
+        </p>
+        <ul>
+          {THEME_ORDER.map((theme) => (
+            <li key={theme}>
+              <a href={`/docs/themes/${theme}`}>{THEME_LABELS[theme]}</a> — {THEME_TAGLINES[theme]}
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section class="doc-section">
         <div
