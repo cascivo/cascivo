@@ -18,5 +18,12 @@
     <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
     <description>cascivo components use signals instead of useState — not as a style preference, but because it changes what re-renders. Here’s what that means in practice, and where the line for &quot;genuine internal state&quot; actually sits.</description>
   </item>
+  <item>
+    <title>Owned-code components: what shadcn got right, and where we took it further</title>
+    <link>https://cascivo.com/blog/owned-code-shadcn</link>
+    <guid>https://cascivo.com/blog/owned-code-shadcn</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>shadcn/ui’s biggest idea wasn’t a component set — it was making you own the code instead of depending on it. cascivo keeps that idea and builds the rest of what you’d otherwise have to hand-roll on top of it.</description>
+  </item>
 </channel>
 </rss>
