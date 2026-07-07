@@ -11,5 +11,12 @@
     <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
     <description>AI agents write plausible-looking UI code that invents props, colors, and class names that don’t exist. cascivo ships a machine-readable manifest per component so agents can select, scaffold, and validate their own output instead of guessing.</description>
   </item>
+  <item>
+    <title>Signals vs. useState: what actually changes</title>
+    <link>https://cascivo.com/blog/signals-vs-usestate</link>
+    <guid>https://cascivo.com/blog/signals-vs-usestate</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>cascivo components use signals instead of useState — not as a style preference, but because it changes what re-renders. Here’s what that means in practice, and where the line for &quot;genuine internal state&quot; actually sits.</description>
+  </item>
 </channel>
 </rss>
