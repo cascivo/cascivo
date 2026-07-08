@@ -97,6 +97,16 @@ interface RegistryComponent {
   /** npm package to install instead of copying files (used for type: 'chart'). */
   install?: string
   dependencies: string[]
+  /**
+   * Minimum published version of each `@cascivo/*` npm dependency this entry's
+   * copied source requires, e.g. `{ "@cascivo/i18n": ">=0.2.1" }` — derived
+   * from the current workspace package version at generation time. Lets the
+   * CLI (`add`, `doctor --drift`) detect installs where the copied registry
+   * source is ahead of the npm-installed peer package (the DataTable/i18n
+   * dashboard-feedback failure: a component references a builtin catalog key
+   * a not-yet-published i18n version lacks).
+   */
+  peerVersions?: Record<string, string>
   /** Other registry components this entry needs (shared hooks/utils, siblings). */
   registryDependencies?: string[]
   tags: string[]
@@ -140,6 +150,41 @@ async function readComponentVersion(): Promise<string> {
   return pkg.version
 }
 
+const workspaceVersionCache = new Map<string, string | null>()
+
+/** Resolves a `@cascivo/<pkg>` dependency to its current workspace version, or null if not a workspace package. */
+async function resolveWorkspaceVersion(dep: string): Promise<string | null> {
+  if (workspaceVersionCache.has(dep)) return workspaceVersionCache.get(dep) ?? null
+  const m = /^@cascivo\/(.+)$/.exec(dep)
+  if (!m) {
+    workspaceVersionCache.set(dep, null)
+    return null
+  }
+  try {
+    const pkg = JSON.parse(
+      await readFile(join(REPO_ROOT, 'packages', m[1]!, 'package.json'), 'utf8'),
+    ) as { version?: string }
+    const version = typeof pkg.version === 'string' ? pkg.version : null
+    workspaceVersionCache.set(dep, version)
+    return version
+  } catch {
+    workspaceVersionCache.set(dep, null)
+    return null
+  }
+}
+
+/** Builds the `>=x.y.z` peer-version floor map for a component's `@cascivo/*` dependencies. */
+async function resolvePeerVersions(
+  dependencies: string[],
+): Promise<Record<string, string> | undefined> {
+  const floors: Record<string, string> = {}
+  for (const dep of dependencies) {
+    const version = await resolveWorkspaceVersion(dep)
+    if (version) floors[dep] = `>=${version}`
+  }
+  return Object.keys(floors).length > 0 ? floors : undefined
+}
+
 async function buildEntry(
   root: SourceRoot,
   localName: string,
@@ -163,6 +208,7 @@ async function buildEntry(
     fileHashes[file] = sha256(await readFile(join(dir, file), 'utf8'))
   }
 
+  const peerVersions = await resolvePeerVersions(meta.dependencies)
   const entry: RegistryComponent = {
     name: `${root.prefix}${localName}`,
     type: root.type,
@@ -172,6 +218,7 @@ async function buildEntry(
     files,
     ...(fileNames.length > 0 ? { fileHashes } : {}),
     dependencies: meta.dependencies,
+    ...(peerVersions ? { peerVersions } : {}),
     tags: meta.tags,
     meta,
   }

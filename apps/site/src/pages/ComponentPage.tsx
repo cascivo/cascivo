@@ -1,9 +1,11 @@
-import { CATEGORY_LABELS, getComponent, type RegistryEntry } from '../data'
+import { CATEGORY_LABELS, components, getComponent, type Intent, type RegistryEntry } from '../data'
 import { demos } from '../demos'
 import { chartDemos } from '../chart-demos'
 import { CodeBlock } from './components/CodeBlock'
 import { PropsTable } from './components/PropsTable'
 import { TokenList } from './components/TokenList'
+
+const knownNames = new Set(components.map((c) => c.name))
 
 function storybookUrl(category: string, name: string): string {
   const slug = `${category}-${name.toLowerCase().replace(/[^a-z0-9]/g, '')}`
@@ -47,6 +49,72 @@ function InstallSection({ entry }: { entry: RegistryEntry }) {
   )
 }
 
+function IntentSection({ intent }: { intent: Intent }) {
+  return (
+    <section class="doc-section">
+      <h2>Usage guidance</h2>
+      {intent.whenToUse?.length ? (
+        <>
+          <h3>When to use</h3>
+          <ul>
+            {intent.whenToUse.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      {intent.whenNotToUse?.length ? (
+        <>
+          <h3>When not to use</h3>
+          <ul>
+            {intent.whenNotToUse.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      {intent.antiPatterns?.length ? (
+        <>
+          <h3>Anti-patterns</h3>
+          {intent.antiPatterns.map((ap) => (
+            <p key={ap.bad} class="muted">
+              <strong>Avoid:</strong> {ap.bad}
+              {ap.good ? (
+                <>
+                  {' '}
+                  — <strong>prefer:</strong> {ap.good}
+                </>
+              ) : null}
+              {' — '}
+              {ap.why}
+            </p>
+          ))}
+        </>
+      ) : null}
+      {intent.related?.length ? (
+        <>
+          <h3>Related</h3>
+          <ul>
+            {intent.related.map((rel) => (
+              <li key={rel.name}>
+                {knownNames.has(rel.name) ? (
+                  <a href={`/docs/components/${rel.name}`}>{rel.name}</a>
+                ) : (
+                  <strong>{rel.name}</strong>
+                )}{' '}
+                ({rel.relationship}) — {rel.reason}
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
+      <p class="muted">
+        <a href="/docs/context">Browse full intent data in the Context Explorer →</a>
+      </p>
+    </section>
+  )
+}
+
 function Chips({ values }: { values: string[] }) {
   if (values.length === 0) return <span class="muted">None</span>
   return (
@@ -79,7 +147,6 @@ export function ComponentPage({ name }: { name?: string }) {
   const Demo = entry.name.startsWith('chart/')
     ? chartDemos[entry.name.slice('chart/'.length)]
     : demos[entry.name]
-
   return (
     <article class="doc-page">
       <header class="doc-head">
@@ -104,6 +171,8 @@ export function ComponentPage({ name }: { name?: string }) {
           View in Storybook →
         </a>
       </section>
+
+      {meta.intent && <IntentSection intent={meta.intent} />}
 
       {meta.examples.length > 0 && (
         <section class="doc-section">

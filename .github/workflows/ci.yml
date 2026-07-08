@@ -44,6 +44,12 @@ jobs:
       - name: Meta-coverage guard (every manifest is registered)
         run: pnpm run meta:check
 
+      - name: i18n key-coverage guard (builtin.<ns>.<key> refs exist)
+        run: pnpm run i18n:check
+
+      - name: Docs route-indexing guard (every route has SEO head + sitemap entry)
+        run: pnpm run docs-routes:check
+
       - name: Animation audit
         run: pnpm run audit:animation
 

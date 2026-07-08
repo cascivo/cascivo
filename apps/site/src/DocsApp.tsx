@@ -23,6 +23,8 @@ import { currentPath } from './router'
 import { Header } from './marketing/sections/Header'
 import { Home } from './pages/Home'
 import { GettingStartedPage } from './pages/GettingStartedPage'
+import { InstallationPage } from './pages/InstallationPage'
+import { DocsNotFound } from './pages/DocsNotFound'
 import { AiPage } from './pages/AiPage'
 import { ChartsPage } from './pages/ChartsPage'
 import { EditorPage } from './pages/EditorPage'
@@ -56,6 +58,7 @@ const shell = createShellState({ persistKey: 'cascivo.docs.shell' })
 /** Static docs routes, keyed by full path (every docs route lives under /docs). */
 const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs': Home,
+  '/docs/installation': InstallationPage,
   '/docs/getting-started': GettingStartedPage,
   '/docs/api': ApiReferencePage,
   '/docs/keyboard': KeyboardReferencePage,
@@ -83,6 +86,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
 }
 
 const exploreItems = [
+  { label: 'Installation', href: '/docs/installation', icon: <Zap size={16} /> },
   { label: 'Getting Started', href: '/docs/getting-started', icon: <Zap size={16} /> },
   { label: 'FAQ', href: '/docs/faq', icon: <Check size={16} /> },
   { label: 'API reference', href: '/docs/api', icon: <Grid size={16} /> },
@@ -137,7 +141,7 @@ function pageFor(path: string) {
     const theme = decodeURIComponent(path.slice('/docs/themes/'.length).replace(/\/+$/, ''))
     return <ThemePage theme={theme} />
   }
-  return <ComponentPage />
+  return <DocsNotFound />
 }
 
 export function DocsApp() {

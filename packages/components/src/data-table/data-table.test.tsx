@@ -31,6 +31,21 @@ describe('DataTable', () => {
     expect(screen.getByRole('cell', { name: 'Person 00' })).toBeInTheDocument()
   })
 
+  it('renders with pagination and no labels prop without throwing (regression: builtin.dataTable i18n key drift)', () => {
+    // A version-skewed @cascivo/i18n install once lacked the previousPage/nextPage
+    // builtin keys, which crashed this render before any labels override applied.
+    render(
+      <DataTable
+        columns={columns}
+        rows={people}
+        getRowId={(p) => p.id}
+        pagination={{ pageSize: 10 }}
+      />,
+    )
+    expect(screen.getByRole('button', { name: /previous page/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /next page/i })).toBeInTheDocument()
+  })
+
   it('client sort: click Age sorts ascending then descending', async () => {
     const user = userEvent.setup()
     render(<DataTable columns={columns} rows={people} getRowId={(p) => p.id} />)

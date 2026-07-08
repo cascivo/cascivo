@@ -17,6 +17,9 @@
         "accordion.module.css": "sha256-0690d967181b92475453f566917af6fe4876c12fce1695a92ef68010da0f228c"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["navigation", "collapse", "disclosure"],
       "meta": {
         "name": "Accordion",
@@ -130,6 +133,10 @@
         "action-sheet.module.css": "sha256-d1f0305ac1c08b0cd7e1656648d525d3b0c9b3c7cf9ff66057264b4eada60c2c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "action-sheet", "menu", "mobile", "sheet"],
       "meta": {
         "name": "ActionSheet",
@@ -293,6 +300,10 @@
         "alert.module.css": "sha256-edd0e443ac88fb62e05f55013e5c89996ba2ab2dbd477c7d755f65c9f62b690c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["notification", "message", "feedback"],
       "meta": {
         "name": "Alert",
@@ -436,6 +447,10 @@
         "alert-dialog.module.css": "sha256-267fbaf50c0ed20988a872e8b04b1dceb27d9a46efbe382dbaec98bb598336ca"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "dialog", "confirm", "destructive"],
       "meta": {
         "name": "AlertDialog",
@@ -593,6 +608,9 @@
         "app-shell.module.css": "sha256-83ce3c2da71f0d5249d4a18f12c12779e1a1b7bc8973ab889d19d0a39004180b"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
       "meta": {
         "name": "AppShell",
@@ -721,6 +739,9 @@
         "aspect-ratio.module.css": "sha256-45fe567e8d1e3e8c98e15503cfecf46f488d2cee567d6ae8d87624a0abab47ea"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "ratio", "image", "video", "responsive"],
       "meta": {
         "name": "AspectRatio",
@@ -817,6 +838,9 @@
         "avatar.module.css": "sha256-e0f5b3e477d8a6b541293d9966e530c235ddb3df57fabf55955c17f62847d13f"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["user", "profile", "image"],
       "meta": {
         "name": "Avatar",
@@ -940,6 +964,10 @@
         "avatar-group.module.css": "sha256-6a3367c2fa054dc6d0ff0ca768f0162a5c9f4de52f539c0d3f4090c39924c810"
       },
       "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/components": ">=0.0.0"
+      },
       "tags": ["avatar", "group", "stack", "overflow", "display"],
       "meta": {
         "name": "AvatarGroup",
@@ -1071,6 +1099,9 @@
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["label", "status", "tag"],
       "meta": {
         "name": "Badge",
@@ -1204,6 +1235,9 @@
         "blockquote.module.css": "sha256-2d67d6719167f6bed6857a2be2ea7041d70b29e0124c7e1d536a16ac9d956bfb"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["typography", "quote", "blockquote", "citation"],
       "meta": {
         "name": "Blockquote",
@@ -1307,6 +1341,10 @@
         "bottom-sheet.module.css": "sha256-4e8f886dd70fa89cf89a69e16601ad8c3c9bd73dc176a8fbbda8c7d755b86d59"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "sheet", "bottom-sheet", "mobile", "drag", "detent", "gesture"],
       "meta": {
         "name": "BottomSheet",
@@ -1485,6 +1523,10 @@
         "breadcrumb.module.css": "sha256-f75bb68385f2664591666d0cfa8017ce32440ffb9bef2e9d42ef5f512d46637d"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["breadcrumb", "navigation", "hierarchy"],
       "meta": {
         "name": "Breadcrumb",
@@ -1604,6 +1646,9 @@
         "button.module.css": "sha256-908a78949db98adc34d37e0d51e45dc3abbe9b78fe09f057bc68f22b53a06721"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["action", "form", "interactive"],
       "meta": {
         "name": "Button",
@@ -1761,6 +1806,9 @@
         "button-group.module.css": "sha256-38ef0e5c125f8d4300ddf2afcce6cfccd0be37b90d2cbb7c9c3d464b3afa065d"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["action", "segmented", "toolbar", "layout"],
       "meta": {
         "name": "ButtonGroup",
@@ -1893,6 +1941,10 @@
         "calendar.module.css": "sha256-b963f6d9f94387973c7b2163f62fc89cfa1346b61e9ffa7131de2a44480433ee"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["calendar", "date", "month", "grid", "picker", "input"],
       "meta": {
         "name": "Calendar",
@@ -2089,6 +2141,9 @@
         "card.module.css": "sha256-4254f5771afae924202d923a7f8e667aa340c3c34d5c54e88215b8f7df425264"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["container", "layout", "surface"],
       "meta": {
         "name": "Card",
@@ -2187,6 +2242,10 @@
         "carousel.module.css": "sha256-54bffbc1b857a12c34064c4f673931e66508a51c638ccca42c6d201ede8ccfdf"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["slider", "gallery", "slideshow", "deck", "scroll-snap"],
       "meta": {
         "name": "Carousel",
@@ -2459,6 +2518,9 @@
         "checkbox.module.css": "sha256-67ab94d2766e3fdff0c3cbbd2fd178f3bc1b489af3825ddd31292de6281295f2"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "toggle", "boolean"],
       "meta": {
         "name": "Checkbox",
@@ -2601,6 +2663,9 @@
         "checkbox-card.module.css": "sha256-d5ad60a070092525432b2ba86419777ceea2b5e0a5f834ac3764d3838480a8c9"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["checkbox", "card", "selectable", "form"],
       "meta": {
         "name": "CheckboxCard",
@@ -2729,6 +2794,9 @@
         "code.module.css": "sha256-795e9e62fcedbf7f83b8548fc99d7f2b392e5eca7ce3ee1dcdc98005b69340ae"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["typography", "code", "inline", "mono"],
       "meta": {
         "name": "Code",
@@ -2838,6 +2906,10 @@
         "code-snippet.module.css": "sha256-8fc59484d1db377346646a7144fec2d4d8b5f3d616277d203849ca63125a1130"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": [
         "display",
         "code",
@@ -3015,6 +3087,9 @@
         "collapsible.module.css": "sha256-2dc44bd421295fc372eac76be82ddbd08abb9e7938e351d5d946d412f3008d4c"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["disclosure", "collapse", "expand", "toggle", "show-hide"],
       "meta": {
         "name": "Collapsible",
@@ -3149,6 +3224,10 @@
         "color-picker.module.css": "sha256-77b085a0afb2e106ecdb4dc6e2c6ec80fb202e6c545120b41dfddcb59733188f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["color", "input", "form", "picker", "hue", "alpha"],
       "meta": {
         "name": "ColorPicker",
@@ -3298,6 +3377,10 @@
         "combobox.module.css": "sha256-52fa79ee3757a937b5b7bead3064db8435c0a23f990a176f6ecc9c33ba395324"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["select", "combobox", "dropdown", "filter", "search"],
       "meta": {
         "name": "Combobox",
@@ -3495,6 +3578,10 @@
         "command-menu.module.css": "sha256-43602b96adbe7a67d5b7ec93f48eb940b447e5ef7312b93ff003039a183d7e9e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard"],
       "meta": {
         "name": "CommandMenu",
@@ -3676,6 +3763,10 @@
         "comparison.module.css": "sha256-aca33593240a1f285f5b2b96e077e9c78d592e67582938b093a65418a44ea34c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["comparison", "before-after", "image", "slider", "display"],
       "meta": {
         "name": "Comparison",
@@ -3838,6 +3929,9 @@
         "contained-list.module.css": "sha256-0e5173f57b1ed47368cce8555fff3c435f01ac6c168ea948ab9c1b574efd734f"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["list", "container", "rows", "group"],
       "meta": {
         "name": "ContainedList",
@@ -3951,6 +4045,9 @@
         "context-menu.module.css": "sha256-56560bcc3e7c74bf522b5cbbd0e044e04143f35426dbfb003b4db968a5b89e7f"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["overlay", "menu", "context", "right-click"],
       "meta": {
         "name": "ContextMenu",
@@ -4052,6 +4149,10 @@
         "copy-button.module.css": "sha256-5113a86476597891a2a86ca7cfff03c2f9c668c1d54c9e9844b447b7bb634207"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["clipboard", "copy", "button", "snippet"],
       "meta": {
         "name": "CopyButton",
@@ -4178,6 +4279,9 @@
         "data-list.module.css": "sha256-2543d44f539a0b05d7f4ee26b3d5b481797444173fe4d9f5e5f14ceaeea7242d"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["key-value", "description", "metadata", "details"],
       "meta": {
         "name": "DataList",
@@ -4294,6 +4398,10 @@
         "data-table.module.css": "sha256-3ff137a8ed3199760908df35225019ee3c5c6b24436af93720070ba0f6c24bf2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
       "meta": {
         "name": "DataTable",
@@ -4539,6 +4647,10 @@
         "date-picker.module.css": "sha256-8995d3ee9ec5e2d70e5232adf4feb90e14170aa499c4cfbb84e8914bd37441ae"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["date", "calendar", "picker", "input", "form"],
       "meta": {
         "name": "DatePicker",
@@ -4729,6 +4841,10 @@
         "date-range-picker.module.css": "sha256-c9fa6b5cf1ba86f23eb53b47bdf871c8ae3c86e730df0469df914bd9c11d3942"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["date", "range", "calendar", "picker", "input", "form"],
       "meta": {
         "name": "DateRangePicker",
@@ -4913,6 +5029,10 @@
         "dock.module.css": "sha256-181c821754d69a349531b945047e28daf17e981d6a20addfdd19c97122574503"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["dock", "tab-bar", "bottom-nav", "mobile", "navigation", "app-shell"],
       "meta": {
         "name": "Dock",
@@ -5031,6 +5151,10 @@
         "drawer.module.css": "sha256-78400367e1181c57f0a882d1ad3c0a50e0b2b8b1230023c160c1f8fa55910be4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
       "meta": {
         "name": "Drawer",
@@ -5201,6 +5325,9 @@
         "dropdown.module.css": "sha256-ec2a02c41f49dd3f859b26e4eefe651c26c3d0ff9b58baa68a086072c8683c5c"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["overlay", "menu", "actions"],
       "meta": {
         "name": "Dropdown",
@@ -5340,6 +5467,9 @@
         "editable.module.css": "sha256-e27d115820fd61b515f0abb93b7de15acd064a5ab9b268e91b170f535e353b60"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "editable", "inline", "input", "text"],
       "meta": {
         "name": "Editable",
@@ -5480,6 +5610,9 @@
         "empty-state.module.css": "sha256-a96b87df58c53d5f14db3962fa0c3bd68bff8186b83b31c064206bc4cad2e747"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["empty", "placeholder", "zero-state", "no-data"],
       "meta": {
         "name": "EmptyState",
@@ -5609,6 +5742,9 @@
         "fab.module.css": "sha256-829a972d999ba2199e07711e7c51683bf92fe268214fd20cb3d8ae8bc83511e8"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["inputs", "fab", "floating-action-button", "mobile", "speed-dial"],
       "meta": {
         "name": "Fab",
@@ -5775,6 +5911,9 @@
         "field.module.css": "sha256-0aeb9ff8562b462d119eef97fec7766d80452366edc87eeee633d1ca24ea9468"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "layout", "validation", "accessibility"],
       "meta": {
         "name": "Field",
@@ -5930,6 +6069,10 @@
         "file-uploader.module.css": "sha256-3d108798167bdd5f50257a116b48f6cd488a17d4321654cb95efcf94900d4ea2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["upload", "file", "drop", "drag", "input", "form"],
       "meta": {
         "name": "FileUploader",
@@ -6113,6 +6256,9 @@
         "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["filter", "chip", "tag", "pill", "facet", "category"],
       "meta": {
         "name": "Filter",
@@ -6262,6 +6408,9 @@
         "form.module.css": "sha256-522ba6343e1880a683fe540cca1823c61f02299bde71e561762fd1a3ca46d755"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "validation", "signals", "input"],
       "meta": {
         "name": "Form",
@@ -6375,6 +6524,10 @@
         "header.module.css": "sha256-b9881e5799d65035192bafa5d933a89c8039918e5c5f1084cc08311a148c74a2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["navigation", "app-shell", "top-bar", "banner"],
       "meta": {
         "name": "Header",
@@ -6504,6 +6657,10 @@
         "header-panel.module.css": "sha256-a1b424f1c33c6b5ba16e54398d94d7222757b5c6a61e06d70454d5cce540d923"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
       "meta": {
         "name": "HeaderPanel",
@@ -6632,6 +6789,9 @@
         "heading.module.css": "sha256-c875b4b9398b9c50e9e911741c21836678687beef9483cbdc1a8f9ebc54966c5"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["typography", "heading", "title"],
       "meta": {
         "name": "Heading",
@@ -6753,6 +6913,9 @@
         "hover-card.module.css": "sha256-67859345fbd6fda68e4e27c25db687eead9ea88cd3ffff1a9d34170011134800"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["overlay", "hover", "preview", "floating"],
       "meta": {
         "name": "HoverCard",
@@ -6876,6 +7039,9 @@
         "icon-button.module.css": "sha256-9c1b9c3fde386758f4969adc4b5231e8d6e3d276813b443ba30838cec7b049ff"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["action", "icon", "compact", "toolbar"],
       "meta": {
         "name": "IconButton",
@@ -7031,6 +7197,9 @@
         "image.module.css": "sha256-28f9e7a5c0b95886412cd8af561dd7d85846d6c94d05455fac8edb617e19881e"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["image", "media", "display", "loading"],
       "meta": {
         "name": "Image",
@@ -7300,6 +7469,10 @@
         "inline-loading.module.css": "sha256-cd6c01b496ea7778e743d19e1ac04e5f55569dd96c1313655fdc5ed155dc8f94"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["loading", "status", "progress", "feedback", "spinner"],
       "meta": {
         "name": "InlineLoading",
@@ -7425,6 +7598,9 @@
         "input.module.css": "sha256-c3bb10eea73c453dbd9eac5ea0b7d8ee0c965d9b3bd6e77409de976f80e71a9c"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "text", "input"],
       "meta": {
         "name": "Input",
@@ -7575,6 +7751,9 @@
         "input-group.module.css": "sha256-417db77a965dd1c0a16d4a9add4f7e2e812e13d6447bd82e42d1563dfb114b22"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "input", "addon", "group", "layout"],
       "meta": {
         "name": "InputGroup",
@@ -7699,6 +7878,9 @@
         "item.module.css": "sha256-f5135544daac74ff1d176b610a576067fde08eab6133fbfd9f7d83a1f6d28de1"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["row", "primitive", "list-item", "layout"],
       "meta": {
         "name": "Item",
@@ -7916,6 +8098,9 @@
         "kbd.module.css": "sha256-ab0c35cd53062ef3f521534cf8de9b3ecd55e4abb538b3200dfff073f7fe2205"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["keyboard", "shortcut", "hotkey"],
       "meta": {
         "name": "Kbd",
@@ -8016,6 +8201,10 @@
         "label.module.css": "sha256-4ad66385f2ed2f7864fbaf25ade338f1296aedb83fd3881d4e0b5e31a877fc2a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["form", "caption", "accessibility"],
       "meta": {
         "name": "Label",
@@ -8166,6 +8355,9 @@
         "link.module.css": "sha256-f7a46896130cf3861ccdce5c70a20e4946d14d00dde51b8b98b9e86f5305c0b4"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["link", "anchor", "navigation"],
       "meta": {
         "name": "Link",
@@ -8292,6 +8484,9 @@
         "list.module.css": "sha256-04cff38d1581297fbc1bf783c65c2f3525bd2ad12986a45fd173004173186fae"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["typography", "list", "ul", "ol"],
       "meta": {
         "name": "List",
@@ -8401,6 +8596,10 @@
         "log-viewer.module.css": "sha256-93dbcf0053622f46a1cd9db906e10ca9583630be54a2a58ecc6e59c9f35257e6"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["log", "stream", "virtual", "console", "terminal", "monospace"],
       "meta": {
         "name": "LogViewer",
@@ -8571,6 +8770,9 @@
         "menu.module.css": "sha256-821ed4f3f24f3b931ea2d307228fbaf67208b04ca8ea43714c75e0d890a3fb8c"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["overlay", "menu", "dropdown", "floating"],
       "meta": {
         "name": "Menu",
@@ -8686,6 +8888,10 @@
         "menu-button.module.css": "sha256-37dfec8bd0bc3ea0b3820cfd73a83a35727d7f58df902b0aec6b61e08af25ee1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
       "meta": {
         "name": "MenuButton",
@@ -8862,6 +9068,9 @@
         "menubar.module.css": "sha256-6118e39206465f67c045b4ccb1276728ccd05963aa043ca2d2cb48aed74bc2d4"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["navigation", "menubar", "menu", "application"],
       "meta": {
         "name": "Menubar",
@@ -8984,6 +9193,10 @@
         "modal.module.css": "sha256-ef7bb366fae8d9bf58cc685b5697fec0506fe397ff3eceb0108cb8ead419bd8f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "dialog", "popup"],
       "meta": {
         "name": "Modal",
@@ -9131,6 +9344,10 @@
         "multi-select.module.css": "sha256-02e5301590d519bdc8bd27ebd2d3dabdce40bfc512828cfaf16c13a1044c9244"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["form", "select", "multi", "input", "popover"],
       "meta": {
         "name": "MultiSelect",
@@ -9278,6 +9495,9 @@
         "native-select.module.css": "sha256-5db10e0e8b579e8400de5616832442a2e89825f2a2e2803b5e802fde2ac02138"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["inputs", "select", "native", "form", "dropdown"],
       "meta": {
         "name": "NativeSelect",
@@ -9440,6 +9660,9 @@
         "navigation-menu.module.css": "sha256-27871a11da58d30b376d8194b52813d9c6b608b7bbd4b2fd053496d38a102f04"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["navigation", "menu", "flyout", "site-nav"],
       "meta": {
         "name": "NavigationMenu",
@@ -9559,6 +9782,10 @@
         "notification.module.css": "sha256-4fbae198f0f4eda1a2578b78537ee44054aaf35650b36a32990d7d134b35c1d1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["notification", "banner", "message", "feedback", "actionable"],
       "meta": {
         "name": "Notification",
@@ -9723,6 +9950,10 @@
         "number-input.module.css": "sha256-9cde02d5c3628757a62aa5bc0fdade19e5fd2705b0a3cedfccc7767f5b57e53c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["form", "number", "input", "spinbutton", "stepper"],
       "meta": {
         "name": "NumberInput",
@@ -9925,6 +10156,10 @@
         "otp-input.module.css": "sha256-931793cd10ec700cc722af29df0b1f7ef5507d23c303ddc31ff3ac0a533d9f03"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["form", "otp", "code", "input", "verification"],
       "meta": {
         "name": "OtpInput",
@@ -10054,6 +10289,10 @@
         "overflow-menu.module.css": "sha256-21f4c4a11b7f8dc0d8bf6ac885e922bf145a1d2ea68dc75ae3b77186112a89a9"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
       "meta": {
         "name": "OverflowMenu",
@@ -10207,6 +10446,10 @@
         "pagination.module.css": "sha256-8abeed2da3e0e2613253f5a0714867e4b36db2f7dbd672c4146a03adc21fdf2a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["pagination", "navigation", "table", "data", "pages"],
       "meta": {
         "name": "Pagination",
@@ -10360,6 +10603,10 @@
         "password-input.module.css": "sha256-15a89bfcbc2ec38cc026f052e7709d8d65ff2617cc6f3f764f66d81d44531ac7"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["form", "password", "input", "security"],
       "meta": {
         "name": "PasswordInput",
@@ -10509,6 +10756,9 @@
         "popover.module.css": "sha256-e513ab4270e86c7cc0cb0fbe27518070ffc06be160e8ab8a8ae564ca8010c930"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["overlay", "floating", "anchor", "popover"],
       "meta": {
         "name": "Popover",
@@ -10641,6 +10891,9 @@
         "progress.module.css": "sha256-b096cd775fd5682dce7112a207cea6072d9af8e513ef11a8065354446fbd449a"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["progress", "loading", "upload", "bar"],
       "meta": {
         "name": "Progress",
@@ -10767,6 +11020,9 @@
         "progress-bar.module.css": "sha256-6a9f481b3748c57d08fa06a4201ad720cc9d16f2074aa0edc81ff660790628ce"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["progress", "loading", "status", "feedback"],
       "meta": {
         "name": "ProgressBar",
@@ -10908,6 +11164,9 @@
         "progress-circle.module.css": "sha256-1d91d42681c703f98e6cc8e775a102c362bb899529a48e9646ba3d6721167c55"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["progress", "loading", "circle", "feedback"],
       "meta": {
         "name": "ProgressCircle",
@@ -11034,6 +11293,9 @@
         "progress-indicator.module.css": "sha256-408dad3a0db11ac5fcd71a812fa322cd557ed8ac1685948e44116a03de247418"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
       "meta": {
         "name": "ProgressIndicator",
@@ -11156,6 +11418,9 @@
         "prose.module.css": "sha256-0d751b15fe871a32b78852a5443abfb0be90249a09e7164d4c358a92a2deebba"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["typography", "prose", "content", "markdown", "article"],
       "meta": {
         "name": "Prose",
@@ -11278,6 +11543,10 @@
         "pull-to-refresh.module.css": "sha256-b5fed18a205afb7b9e0b8c30acfaff1f9214b56afa4346413fd9e1422cc3d362"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
       "meta": {
         "name": "PullToRefresh",
@@ -11410,6 +11679,10 @@
         "qr-code.module.css": "sha256-8805c704330aebfc339530698a01899025c42998d1fcb428fb222c7a1bcf4ec3"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["qr", "qr-code", "barcode", "encode", "display"],
       "meta": {
         "name": "QrCode",
@@ -11692,6 +11965,9 @@
         "radio.module.css": "sha256-505ca3d7c8e242dcb0f3a7149db2857f09e5dff3d712fb8dcf9badb21ca009ab"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "choice", "group"],
       "meta": {
         "name": "Radio",
@@ -11818,6 +12094,9 @@
         "radio-card.module.css": "sha256-79062a7529ad5b79235d0c9ff389069a6c7da7bc130843206e6203ba47a611e4"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["radio", "card", "selectable", "form"],
       "meta": {
         "name": "RadioCard",
@@ -11937,6 +12216,9 @@
         "rating-group.module.css": "sha256-e62a96251c881c34547e83349a315475b3ea7750aa944d971d0f45f1963b2155"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "rating", "stars", "input", "feedback"],
       "meta": {
         "name": "RatingGroup",
@@ -12076,6 +12358,10 @@
         "relative-time.module.css": "sha256-c25d05f5dceeb217bfc60eb61d6ba451c2c63e17843f853c46a0a925dbe185f1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["time", "date", "relative", "i18n", "display"],
       "meta": {
         "name": "RelativeTime",
@@ -12188,6 +12474,10 @@
         "resizable.module.css": "sha256-40a8a32bcfcb7794299bf966a0ac466cc2298613f00456046d88d861dea3a2ad"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["splitter", "panes", "layout", "resize", "divider"],
       "meta": {
         "name": "Resizable",
@@ -12324,6 +12614,9 @@
         "scroll-area.module.css": "sha256-0c12fb5a58bc67accb5458b031961b1b164cfaef78997938fbf566301142e08c"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["scroll", "overflow", "scrollbar", "container", "layout"],
       "meta": {
         "name": "ScrollArea",
@@ -12447,6 +12740,10 @@
         "search.module.css": "sha256-7efba1f7d8c215435bc8292d07924113889f412c50068c01c022f8450971c003"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["search", "input", "filter", "form"],
       "meta": {
         "name": "Search",
@@ -12632,6 +12929,9 @@
         "segmented-control.module.css": "sha256-75f43302c357675012e3a15115355fe07dd9030bb61f7193f595cb92c27a3cb0"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "toggle", "group", "segmented", "input"],
       "meta": {
         "name": "SegmentedControl",
@@ -12761,6 +13061,9 @@
         "select.module.css": "sha256-8ca4c52fb34be14d6c8fbe1d6e7f7eb5732117eabffef18f0967b942f0eac7f8"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "dropdown", "menu"],
       "meta": {
         "name": "Select",
@@ -12908,6 +13211,9 @@
         "separator.module.css": "sha256-d17fbd02899fe563a5e28fad65cad951e84d8bbbdafe30931fad3de8722d1ef4"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["divider", "rule", "layout"],
       "meta": {
         "name": "Separator",
@@ -13005,6 +13311,10 @@
         "sheet.module.css": "sha256-518a56818809c8deb112812336439cfcb4b8e2fa0bf027d262ab211c1f0427b8"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "drawer", "panel", "slide"],
       "meta": {
         "name": "Sheet",
@@ -13127,6 +13437,10 @@
         "shell-header.module.css": "sha256-39038f94cc518efafab29d85f59c8b97628af931a1cf8232690d29e62c64e484"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
       "meta": {
         "name": "ShellHeader",
@@ -13276,6 +13590,10 @@
         "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
       "meta": {
         "name": "SideNav",
@@ -13460,6 +13778,9 @@
         "skeleton.module.css": "sha256-f66948cbe0383dace12f9d82650fbe061e5edf7227b049e9f817e54179d3ab44"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["loading", "placeholder", "shimmer"],
       "meta": {
         "name": "Skeleton",
@@ -13584,6 +13905,10 @@
         "skip-nav.module.css": "sha256-1e0452730a3b255759d417aca101a6cac9c8e0853150fdb4bcea3e57e5d4ee5c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
       "meta": {
         "name": "SkipNav",
@@ -13698,6 +14023,9 @@
         "slider.module.css": "sha256-4bff460e358e21d6595f9e3d4472642bcd9f9ee2826b810c76387c712d5c8632"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "range", "input"],
       "meta": {
         "name": "Slider",
@@ -13840,6 +14168,10 @@
         "spinner.module.css": "sha256-3494ac97d644c317847fa59c04667b3decba483e40c1ab81168c8e0890d0cb2c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["loading", "progress", "feedback"],
       "meta": {
         "name": "Spinner",
@@ -14041,6 +14373,9 @@
         "stat.module.css": "sha256-64addbc635064b882e59e871f12345747752869aa3259d07b6a51531c4264283"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["stat", "kpi", "metric", "number"],
       "meta": {
         "name": "Stat",
@@ -14169,6 +14504,9 @@
         "status.module.css": "sha256-bd74f83a9465a3a9a9948a51a291ddc29b07e323540d9a1b328d2fad979fa96f"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["status", "indicator", "dot", "badge"],
       "meta": {
         "name": "Status",
@@ -14288,6 +14626,10 @@
         "steps.module.css": "sha256-4d7bf2c9662cded823daf8887bcd199095d45d2ca95aea430bc7a928982cddaf"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["steps", "wizard", "stepper", "progress", "navigation", "onboarding", "checkout"],
       "meta": {
         "name": "Steps",
@@ -14424,6 +14766,9 @@
         "structured-list.module.css": "sha256-6d70d2d5b53f472098236450775c8847cfe86e4b380f5f40ecee475955cc1d90"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["display", "list", "table", "data"],
       "meta": {
         "name": "StructuredList",
@@ -14559,6 +14904,9 @@
         "swap.module.css": "sha256-69738c9cf9a9f3da5d4da1d17ab6229af3f45772739251bfa39dcc447e3984b1"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["toggle", "icon", "animate", "switch", "flip", "rotate"],
       "meta": {
         "name": "Swap",
@@ -14699,6 +15047,9 @@
         "swipe-item.module.css": "sha256-fc199d4832bb8a5a909aa84c5c6e474644c39bff94352802b0a45f04bc3b4100"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
       "meta": {
         "name": "SwipeItem",
@@ -14822,6 +15173,10 @@
         "switcher.module.css": "sha256-767671854de81fafe3dca885b1689729896b6d2b011d484bfcb2eedf302f74f3"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
       "meta": {
         "name": "Switcher",
@@ -14928,6 +15283,9 @@
         "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["navigation", "tabs", "sections"],
       "meta": {
         "name": "Tabs",
@@ -15039,6 +15397,10 @@
         "tag.module.css": "sha256-155c454c1674ccb136c05a4dc0b215579da28f1f11d3bf29f7c517bb8f1e2ea9"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["chip", "label", "filter", "category"],
       "meta": {
         "name": "Tag",
@@ -15176,6 +15538,10 @@
         "tags-input.module.css": "sha256-fb78c39405f9fa2ac03a361b661ddb8fb471d07464bc4a4fc58ffbdb4fbf2e3e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["form", "tags", "chips", "multi", "input"],
       "meta": {
         "name": "TagsInput",
@@ -15310,6 +15676,9 @@
         "text.module.css": "sha256-5d7d11e88320100b61c66160ec1bb43006a1c5e995280e47aa4a73dd8788c24e"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["typography", "text", "paragraph", "body"],
       "meta": {
         "name": "Text",
@@ -15441,6 +15810,9 @@
         "textarea.module.css": "sha256-2c8ed910ccd40ae57317955d706f49d8e19012da7a3d18509654b567ca94dfd0"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["form", "text", "multiline"],
       "meta": {
         "name": "Textarea",
@@ -15581,6 +15953,9 @@
         "tile.module.css": "sha256-d0d5569c695a9bd4e53e6a2ecaae21154c8226b0703fed52ee0fc41e5b3097b7"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["inputs", "tile", "card", "selectable", "choice"],
       "meta": {
         "name": "Tile",
@@ -15745,6 +16120,9 @@
         "time-picker.module.css": "sha256-4ab7b2fa853a8dfd7456ac1c395dedd46567566fc56a0c16a08c77eb10a39842"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["time", "input", "form"],
       "meta": {
         "name": "TimePicker",
@@ -15913,6 +16291,9 @@
         "timeline.module.css": "sha256-9e62ffd1aed349f9a48e4e59a5965995b18ce0a9ded8b405513ad1e8f6aabfa3"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["timeline", "steps", "history", "progress", "events"],
       "meta": {
         "name": "Timeline",
@@ -16012,6 +16393,10 @@
         "toast.module.css": "sha256-82684d36074adddec92890257efda3de42777822cea867a43b56db003f195ec9"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "notification", "feedback"],
       "meta": {
         "name": "Toast",
@@ -16137,6 +16522,10 @@
         "toc.module.css": "sha256-52e93175cedcbe261dc2093c7f30d68dd294640599e0bb2a0e54ca505f5198d4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["toc", "table-of-contents", "navigation", "scroll-spy", "anchor"],
       "meta": {
         "name": "Toc",
@@ -16266,6 +16655,9 @@
         "toggle.module.css": "sha256-9c452a066e05bdcf11ffe10f5245ec08d99a4eb36d00bada9fa53de0460572bf"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["switch", "form", "boolean"],
       "meta": {
         "name": "Toggle",
@@ -16402,6 +16794,9 @@
         "toggle-group.module.css": "sha256-971ab0ac7fc68a484b1871621339784f48f372fe78b57db1b57c370721ac50b3"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["selection", "segmented", "toolbar", "choice"],
       "meta": {
         "name": "ToggleGroup",
@@ -16566,6 +16961,10 @@
         "toggletip.module.css": "sha256-32a210dcd77c90bc4c28b7c794b1b9240460996efff65d386837a8feab71343e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["overlay", "toggletip", "info", "popover", "floating"],
       "meta": {
         "name": "Toggletip",
@@ -16730,6 +17129,9 @@
         "tooltip.module.css": "sha256-10303a9b8948c9464efe2b1a56943377824089a52f2931ccb9ba789e84db6d02"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["overlay", "hint", "popover"],
       "meta": {
         "name": "Tooltip",
@@ -16858,6 +17260,10 @@
         "tree-view.module.css": "sha256-88580b0ad4ee242e5a32187b3f1565425b6dd42356ba0369f529cc40ea50a193"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["display", "tree", "hierarchy", "navigation", "files"],
       "meta": {
         "name": "TreeView",
@@ -17023,6 +17429,10 @@
         "user.module.css": "sha256-d94f57f12e1784e025f85c00e31de446bd532de9f13e49b14928d72d8053a8f7"
       },
       "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/components": ">=0.0.0"
+      },
       "tags": ["user", "avatar", "identity", "display"],
       "meta": {
         "name": "User",
@@ -17137,6 +17547,9 @@
         "visually-hidden.module.css": "sha256-c48abbc8b2078546467ccb9d4ff08191ae2efdd11cca35207cd746b55abcc347"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
       "meta": {
         "name": "VisuallyHidden",
@@ -17233,6 +17646,11 @@
         "app-shell.module.css": "sha256-171613b8ad89cb1af5ba00d97284697f532c3d06972144ba31fa4c5f33f13d8a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1",
+        "@cascivo/storage": ">=0.1.7"
+      },
       "tags": ["layout", "shell", "sidebar", "navigation"],
       "meta": {
         "name": "AppShell",
@@ -17349,6 +17767,9 @@
         "auth-layout.module.css": "sha256-5a80937a55aa6a462469214dcfd5f90ca86ba97478b4b5d6557ad1837bc181ec"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "auth", "login", "page"],
       "meta": {
         "name": "AuthLayout",
@@ -17436,6 +17857,9 @@
         "auto-grid.module.css": "sha256-c4ddabc261c6f0ae4292d463dd92647c5bb91a67bc137bf56cfcfd47e9603082"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "grid", "responsive"],
       "meta": {
         "name": "AutoGrid",
@@ -17512,6 +17936,9 @@
         "center.module.css": "sha256-179d9de5d56624bc88d2a8218f297d75501842258032767fe1c289fc38522a7f"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "center", "wrapper"],
       "meta": {
         "name": "Center",
@@ -17585,6 +18012,9 @@
         "columns.module.css": "sha256-8915e325ee410ce1e86080721abc847aeaf0a8dff13904fc0a4acbf2ceaf4414"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "grid", "columns"],
       "meta": {
         "name": "Columns",
@@ -17664,6 +18094,9 @@
         "dashboard-layout.module.css": "sha256-89cadb02ecead74e8062237f501c7865882c5569f30ceec04bfae58c33473997"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "dashboard", "page"],
       "meta": {
         "name": "DashboardLayout",
@@ -17749,6 +18182,9 @@
         "grid.module.css": "sha256-320fba77239841f69b371bc90dacc583e41e7b5861d2c44b1a2ffd780b599d23"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "grid", "columns"],
       "meta": {
         "name": "Grid",
@@ -17834,6 +18270,9 @@
         "masonry.module.css": "sha256-6d4dff2b18d3b3db045e24372c7cfa352a4fecb930bd9f94a2364c025d775793"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "masonry", "gallery"],
       "meta": {
         "name": "Masonry",
@@ -17915,6 +18354,9 @@
         "page-header.module.css": "sha256-1fb6578f9e3ebda3c63d002e2eb13d4e1409cd97c4f9912c54a2e7c3c2a00818"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "header", "page"],
       "meta": {
         "name": "PageHeader",
@@ -18020,6 +18462,9 @@
         "section.module.css": "sha256-94d60eef5a1a659f3455da858f1dd311a1524c06565cd718c65e1f616b5b2001"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "section", "page"],
       "meta": {
         "name": "Section",
@@ -18101,6 +18546,9 @@
         "settings-layout.module.css": "sha256-f73f09016cf7f1aa1d2820f5b62863baa6741b776a8913f7f842d92488907fd0"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "settings", "page"],
       "meta": {
         "name": "SettingsLayout",
@@ -18180,6 +18628,9 @@
         "spacer.module.css": "sha256-b958a185559596febc9b8f7be84fea0da37cba494e8e096eb24cefce645836ca"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "spacer", "spacing"],
       "meta": {
         "name": "Spacer",
@@ -18248,6 +18699,9 @@
         "split-view.module.css": "sha256-6abe3492b40fa6bfe00e0f5d4d65829f269c3f6565b9e929af7b2705e178f6e9"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "split", "resizable", "pane"],
       "meta": {
         "name": "SplitView",
@@ -18346,6 +18800,9 @@
         "stack.module.css": "sha256-846d09ddb584dd91a9e24bd35aab074184f21164cdd6c928aaba34aecd17eac0"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["layout", "flex", "stack", "spacing"],
       "meta": {
         "name": "Stack",
@@ -18448,6 +18905,10 @@
         "console-app.module.css": "sha256-19f2b03d57de531b64acf059e9e04f3378cb4b43f0c9f13a1d78854d55ad7048"
       },
       "dependencies": ["@cascivo/react", "@cascivo/icons"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1",
+        "@cascivo/icons": ">=0.2.4"
+      },
       "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
       "meta": {
         "name": "ConsoleApp",
@@ -18523,6 +18984,10 @@
         "dashboard-charts.tsx": "sha256-3bb27e23a84dcd1c7e4ebca46ae77a1b0cb9eec256c9f2f780daa7f5035b57aa"
       },
       "dependencies": ["@cascivo/charts", "@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6",
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "dashboard", "charts", "kpi"],
       "meta": {
         "name": "DashboardCharts",
@@ -18596,6 +19061,9 @@
         "empty-dashboard.tsx": "sha256-8fb276557cda1c5298c496bb94fb69a261c15a67d6579dde0332c5b17b32b4b1"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "dashboard", "empty-state", "page"],
       "meta": {
         "name": "EmptyDashboard",
@@ -18664,6 +19132,9 @@
         "login-page.tsx": "sha256-a2778539cc582f27fe1f76effa711530a41df781d2b4ae397fbf45d25b6995bd"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "login", "auth", "form", "page"],
       "meta": {
         "name": "LoginPage",
@@ -18732,6 +19203,9 @@
         "notification-center.tsx": "sha256-fa0042e46a3e33edaadba0ee5f39eb38ba99b36b51094699a3a543270834cb26"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "notifications", "alerts"],
       "meta": {
         "name": "NotificationCenter",
@@ -18806,6 +19280,9 @@
         "page-with-breadcrumb.tsx": "sha256-6e6b64edabf1c32f7eac0e38bad87b91052a27107c9b920db72e1ca20027867f"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "breadcrumb", "page", "navigation"],
       "meta": {
         "name": "PageWithBreadcrumb",
@@ -18867,6 +19344,9 @@
         "settings-form-page.tsx": "sha256-0edab442c248ad2eb9f052913175059ae081cba732a3164beba94dfe09453c6f"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "settings", "form", "page"],
       "meta": {
         "name": "SettingsFormPage",
@@ -18935,6 +19415,9 @@
         "sidebar-app.tsx": "sha256-27b534b24ef567c1a6369416205c9a7de3925fa99445d1a0491c372d7a46c0c6"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "sidebar", "navigation", "app-shell"],
       "meta": {
         "name": "SidebarApp",
@@ -19001,6 +19484,9 @@
         "stats-cards.tsx": "sha256-1fd9e2e506807936bc1f7940d94eeade80096263daee0bf97971ae7c0377be4c"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "stats", "kpi", "cards"],
       "meta": {
         "name": "StatsCards",
@@ -19072,6 +19558,9 @@
         "users-table-page.tsx": "sha256-2ef74509b53f938538a679738ba7bc7096412d31039b0a09a88a2de94ec81fcf"
       },
       "dependencies": ["@cascivo/react"],
+      "peerVersions": {
+        "@cascivo/react": ">=0.4.1"
+      },
       "tags": ["block", "users", "table", "page"],
       "meta": {
         "name": "UsersTablePage",
@@ -19141,6 +19630,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "area", "data-viz"],
       "meta": {
         "name": "AreaChart",
@@ -19387,6 +19879,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "bar", "data-viz"],
       "meta": {
         "name": "BarChart",
@@ -19700,6 +20195,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
       "meta": {
         "name": "Boxplot",
@@ -19813,6 +20311,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
       "meta": {
         "name": "BubbleChart",
@@ -19938,6 +20439,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
       "meta": {
         "name": "Bullet",
@@ -20060,6 +20564,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
       "meta": {
         "name": "Calendar",
@@ -20187,6 +20694,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
       "meta": {
         "name": "Candlestick",
@@ -20364,6 +20874,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
       "meta": {
         "name": "ComboChart",
@@ -20497,6 +21010,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
       "meta": {
         "name": "Funnel",
@@ -20622,6 +21138,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
       "meta": {
         "name": "Gauge",
@@ -20766,6 +21285,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "heatmap", "matrix", "data-viz"],
       "meta": {
         "name": "Heatmap",
@@ -20877,6 +21399,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
       "meta": {
         "name": "Histogram",
@@ -20993,6 +21518,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
       "meta": {
         "name": "Kpi",
@@ -21095,6 +21623,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "line", "time-series", "data-viz"],
       "meta": {
         "name": "LineChart",
@@ -21357,6 +21888,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
       "meta": {
         "name": "Meter",
@@ -21468,6 +22002,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "pie", "donut", "data-viz"],
       "meta": {
         "name": "PieChart",
@@ -21720,6 +22257,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "polar", "rose", "radial", "data-viz"],
       "meta": {
         "name": "Polar",
@@ -21864,6 +22404,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "radar", "spider", "polar", "data-viz"],
       "meta": {
         "name": "Radar",
@@ -21984,6 +22527,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
       "meta": {
         "name": "RadialBar",
@@ -22151,6 +22697,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "sankey", "flow", "network", "data-viz"],
       "meta": {
         "name": "Sankey",
@@ -22275,6 +22824,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "scatter", "plot", "data-viz"],
       "meta": {
         "name": "ScatterChart",
@@ -22463,6 +23015,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
       "meta": {
         "name": "Sparkline",
@@ -22561,6 +23116,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
       "meta": {
         "name": "Stream",
@@ -22705,6 +23263,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
       "meta": {
         "name": "Sunburst",
@@ -22829,6 +23390,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
       "meta": {
         "name": "Treemap",
@@ -22942,6 +23506,10 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["editor", "code", "syntax-highlighting", "textarea", "inputs"],
       "meta": {
         "name": "CodeEditor",
@@ -23188,6 +23756,10 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/i18n": ">=0.2.1"
+      },
       "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],
       "meta": {
         "name": "Highlight",
@@ -23302,6 +23874,9 @@
         "cta.module.css": "sha256-feecd79bffa74171b77fb856c3c77698d1bbb6adb40659d031916582123502d6"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["section", "cta", "marketing"],
       "meta": {
         "name": "Cta",
@@ -23404,6 +23979,9 @@
         "feature-grid.module.css": "sha256-774b6b4aa5bd4ff50235d7b8d1d6de1265c0bfcaac1caac055388d8fbae0815a"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["section", "features", "grid"],
       "meta": {
         "name": "FeatureGrid",
@@ -23515,6 +24093,9 @@
         "hero.module.css": "sha256-364a9734afec739cd492e63ba1d2e2a8ddf2de4c12d8f4d6243802675e56f5f1"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["section", "hero", "marketing"],
       "meta": {
         "name": "Hero",
@@ -23641,6 +24222,9 @@
         "media-masonry.module.css": "sha256-002c56f1e7a23af38eb79d397b5298b51575535677282ecc826f8b73f9adf18c"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["section", "gallery", "masonry"],
       "meta": {
         "name": "MediaMasonry",
@@ -23750,6 +24334,9 @@
         "page-footer.module.css": "sha256-0f9fe93c8d81f7bc2633fc41d853ad26797a0f064dc2e8e5e1a7a22187e207ad"
       },
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["section", "footer", "navigation"],
       "meta": {
         "name": "PageFooter",
@@ -23841,6 +24428,10 @@
         "stats-band.module.css": "sha256-2c48d1b94571a513eea6768fc57b07e8ddbceca1755f026f522c8c61a525c4b4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4",
+        "@cascivo/charts": ">=0.3.6"
+      },
       "tags": ["section", "stats", "kpi", "charts"],
       "meta": {
         "name": "StatsBand",
@@ -23925,6 +24516,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "graph", "declarative", "diagram", "ai-first"],
       "meta": {
         "name": "Flow",
@@ -24106,6 +24700,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "background", "grid", "dots", "canvas"],
       "meta": {
         "name": "FlowBackground",
@@ -24211,6 +24808,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "controls", "zoom", "chrome"],
       "meta": {
         "name": "FlowControls",
@@ -24331,6 +24931,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "edge", "connector", "animated", "svg"],
       "meta": {
         "name": "FlowEdge",
@@ -24489,6 +25092,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "handle", "port", "connect"],
       "meta": {
         "name": "FlowHandle",
@@ -24587,6 +25193,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "minimap", "overview", "chrome"],
       "meta": {
         "name": "FlowMiniMap",
@@ -24706,6 +25315,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "node", "draggable", "graph"],
       "meta": {
         "name": "FlowNode",
@@ -24850,6 +25462,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "panel", "slot", "chrome"],
       "meta": {
         "name": "FlowPanel",
@@ -24924,6 +25539,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
       "meta": {
         "name": "FlowStory",
@@ -25096,6 +25714,9 @@
       "version": "0.4.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
+      "peerVersions": {
+        "@cascivo/core": ">=0.2.4"
+      },
       "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
       "meta": {
         "name": "FlowCanvas",

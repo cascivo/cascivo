@@ -23,6 +23,31 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     title: 'cascivo docs',
     description: DEFAULT_DESCRIPTION,
   },
+  '/installation': {
+    title: `Installation${SUFFIX}`,
+    description:
+      'Install cascivo: scaffold a new app, use the prebuilt @cascivo/react package, or copy component source into your repo with the CLI.',
+  },
+  '/getting-started': {
+    title: `Getting started${SUFFIX}`,
+    description:
+      'The fastest path into cascivo — scaffold an app, install the prebuilt package, or copy-paste components with the CLI, plus theming and Next.js setup.',
+  },
+  '/editor': {
+    title: `Editor${SUFFIX}`,
+    description:
+      'A CSS-native, signal-driven code editor component — syntax highlighting, find & replace, and a command menu.',
+  },
+  '/marketplace': {
+    title: `Marketplace${SUFFIX}`,
+    description:
+      'Browse first-party and third-party templates installable with npx cascivo add @ns/<template>.',
+  },
+  '/tokens': {
+    title: `Design tokens${SUFFIX}`,
+    description:
+      'The three-level cascivo token system — primitive, semantic, and component layers — and how to override them for your brand.',
+  },
   '/ai': {
     title: `AI & MCP${SUFFIX}`,
     description:

@@ -60,6 +60,10 @@ export function translateKey(key: string, params?: Record<string, string | numbe
 
 export function t<V extends MessageValue>(message: Message<V>, ...args: TArgs<V>): string {
   void catalogVersion.value // subscribe signal-tracked callers to catalog updates
+  // A version-skewed @cascivo/i18n install can lack a builtin key a newer
+  // component references (message is undefined at runtime despite the type).
+  // Degrade to '' rather than crash the render.
+  if (message == null || typeof message.key !== 'string') return ''
   const locale = currentLocale()
   const value = catalogs.get(locale)?.get(message.key) ?? message.value
   const params = args[0] as Record<string, string | number> | undefined

@@ -12,6 +12,7 @@ import {
   type RegistryComponent,
 } from '../utils/registry.js'
 import { createLock, readLock, sha256, updateLockEntry, writeLock } from '../utils/lock.js'
+import { checkPeerVersions } from '../utils/peer-versions.js'
 import { resolveClosure } from '../utils/resolve.js'
 import { resolveFromDirectory } from '../utils/directory.js'
 import { isTemplateItem, type RegistryItem } from '@cascivo/registry'
@@ -234,6 +235,15 @@ export async function add(
     console.error(`Component "${name}" not found in registry. Run "cascivo list".`)
   }
 
+  // Aggregate each resolved entry's peer-version floors (e.g. "install data-table
+  // needs @cascivo/i18n >= 0.2.1") so we can verify what actually got installed.
+  const peerFloors: Record<string, string> = {}
+  for (const { entry } of resolved) {
+    for (const [pkg, floor] of Object.entries(entry.peerVersions ?? {})) {
+      peerFloors[pkg] = floor
+    }
+  }
+
   for (const { entry, requested } of resolved) {
     if (entry.type === 'chart') {
       const pkg = entry.install ?? '@cascivo/charts'
@@ -282,6 +292,18 @@ export async function add(
 
   if (missingDeps.size > 0) {
     installPackages([...missingDeps])
+  }
+
+  if (Object.keys(peerFloors).length > 0) {
+    const violations = await checkPeerVersions(cwd, peerFloors)
+    for (const v of violations) {
+      console.error(
+        `\nWarning: ${v.pkg} ${v.installed ? `${v.installed} is` : 'is not'} installed, but ` +
+          `the copied component source needs ${v.pkg} ${v.required}. ` +
+          `Run: npm install ${v.pkg}@latest`,
+      )
+      process.exitCode = 1
+    }
   }
 
   await writeLock(lock, cwd)

@@ -259,7 +259,7 @@ export async function run(args: string[]): Promise<void> {
       const drift = rest.includes('--drift')
       if (drift) {
         const { runDoctorDrift } = await import('./commands/drift.js')
-        await runDoctorDrift(rest)
+        await runDoctorDrift(await loadConfig())
       } else {
         const result = await runDoctor(process.cwd())
         if (result.passed) {

@@ -93,6 +93,18 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/installation</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/getting-started</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/api</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/why</loc>
     <priority>0.8</priority>
   </url>
@@ -125,7 +137,23 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/flow</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/icons</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/editor</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/tokens</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/marketplace</loc>
     <priority>0.7</priority>
   </url>
   <url>
@@ -155,6 +183,14 @@
   <url>
     <loc>https://cascivo.com/docs/brand</loc>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/playground</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/perf/data-table</loc>
+    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://cascivo.com/docs/categories/inputs</loc>

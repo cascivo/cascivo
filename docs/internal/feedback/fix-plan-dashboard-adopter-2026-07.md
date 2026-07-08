@@ -1,6 +1,12 @@
 # Fix plan — "Vercel-like dashboard" adopter feedback (2026-07)
 
-**Status:** spec / not yet implemented. Hand-off to an implementer (Sonnet).
+**Status:** Step 1 implemented (1A-iii/iv/v, 1B, 1C). Two items deferred — see
+"Implementation notes" at the end: 1A-i (actually publishing packages to npm)
+is an infrastructure action, not a code change, and out of reach from this
+environment; 1A-ii (SHA-pinning registry URLs in the release workflow) was
+deferred to Step 2 per its own documented fallback below, since it touches
+the release pipeline in a way that can't be safely validated without a real
+CI run and a real npm publish.
 **Source:** external adopter who built a Vercel-style console with the CLI + registry.
 **Scoring context:** adopter rated the result 7/10; blocking objections are the three
 red flags below. This plan is ordered so **all three red flags are closed in Step 1**;
@@ -357,3 +363,62 @@ Run `pnpm ready` (regen → `vp check --fix` → brand/claims/release/meta check
 type check → tests) plus the new `pnpm i18n:check` and route-indexing guard. For build-
 ordering safety after registry/CLI changes, run `pnpm ready:ci`. All must exit 0, and
 `pnpm regen && git diff --exit-code` must be clean.
+
+---
+
+## Implementation notes (post-execution)
+
+What actually shipped, and why two items didn't:
+
+**1A-i (publish the lagging i18n version) — not applicable in this environment.**
+Publishing to npm is an infrastructure action gated by CI/OIDC trusted publishing
+(`.github/workflows/release.yml`), not a code change, and cannot be exercised or
+verified from here. The structural fixes below (1A-iii/iv/v) neutralize the
+*symptom* and prevent recurrence regardless of what's currently on npm.
+
+**1A-ii (SHA-pin registry file URLs at release) — deferred to Step 2**, per this
+plan's own stated fallback: pinning `REGISTRY_BASE_URL` to a release commit
+requires the release workflow to commit the regenerated `registry.json` back to
+`main` post-publish and reconciling that against the PR-time drift gate — a
+release-pipeline change that can't be safely validated without a real GitHub
+Actions run and a real npm publish. Shipping 1A-iii/iv/v first (done, tested)
+was the documented lower-risk path; the URL-pin remains the first Step 2 item.
+
+**Shipped:**
+- **1A-iii** — `t()` in `packages/i18n/src/messages.ts` now degrades to `''`
+  instead of throwing when passed an undefined/malformed message (the exact
+  `TypeError` that crashed the reported DataTable render). Regression test in
+  `messages.test.ts`.
+- **1A-iv** — `scripts/checks/i18n-keys.test.ts` (new, wired as `pnpm i18n:check`
+  into `ready`/`ready:ci`/CI) statically verifies every `builtin.<ns>.<key>`
+  reference under `packages/` exists in `packages/i18n/src/builtin.ts`. Plus an
+  explicit regression test in `data-table.test.tsx` rendering `DataTable` with
+  pagination and no `labels` prop — the exact scenario that crashed.
+- **1A-v** — `scripts/registry/generate.ts` now emits a `peerVersions` floor per
+  registry entry (e.g. `{"@cascivo/i18n": ">=0.2.1"}`), derived from workspace
+  package versions at generation time. Threaded through
+  `packages/cli/src/utils/registry.ts`, enforced in `add.ts` (warns after
+  install if an installed peer doesn't satisfy the floor), and surfaced via a
+  newly-implemented `cascivo doctor --drift` (`packages/cli/src/commands/drift.ts`,
+  previously a stub) that also flags locally-edited files vs. the lockfile.
+  New `packages/cli/src/utils/semver.ts` + `peer-versions.ts` with tests.
+- **1B** — Added `/docs/installation` (`InstallationPage.tsx`) and a proper
+  `DocsNotFound` page for unmatched `/docs/*` routes (previously fell through to
+  a confusing empty `ComponentPage`); a static `/installation → /docs/installation`
+  redirect (`apps/site/public/_redirects`); missing `seo.ts` `ROUTE_HEAD` and
+  `scripts/sitemap/generate.ts` entries for `installation`, `getting-started`,
+  `api`, `editor`, `tokens`, `marketplace`, `playground`, `perf/data-table`, and
+  `flow` (found by the new guard, not in the original list); a new
+  `scripts/checks/docs-routes.test.ts` (`pnpm docs-routes:check`) asserting
+  every static docs route has both an SEO head and sitemap entry; `intent`
+  (whenToUse/antiPatterns/related) now renders on `ComponentPage.tsx`; a "How
+  theming works" section added to `TokensPage.tsx`.
+- **1C** — Fixed stale `apps/docs/` references in `CLAUDE.md` and `AGENTS.md`
+  (actual path is `apps/site/`) and the inaccurate "Markdown generated from
+  manifests" claim; added a versioning/stability FAQ entry pointing at
+  `cascivo doctor --drift` for troubleshooting.
+
+**Verified:** full `pnpm run build`, `pnpm exec vp run -r check` (typecheck),
+`pnpm run test` all exit 0 across the monorepo; `pnpm run regen && vp check --fix`
+produces no uncommitted drift; the two new checks (`i18n:check`, `docs-routes:check`)
+pass and were confirmed to catch their target regression when deliberately broken.
