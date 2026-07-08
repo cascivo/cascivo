@@ -17,7 +17,7 @@ const marketingDir = join(root, 'apps/site/src/marketing')
 const appTsx = join(marketingDir, 'App.tsx')
 
 // Deploy-served paths that are NOT in the SPA router (separate apps / root assets).
-const DEPLOY_SERVED = ['/docs', '/storybook', '/llms.txt', '/registry.json']
+const DEPLOY_SERVED = ['/docs', '/storybook', '/llms.txt', '/registry.json', '/blog/feed.xml']
 // Dynamic route prefixes — any path under these is valid (detail/preview pages,
 // the docs app's own sub-pages like /docs/why and /docs/benchmarks).
 const KNOWN_PREFIXES = ['/examples/', '/blocks/', '/docs/']

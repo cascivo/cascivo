@@ -1,4 +1,7 @@
-import { getComponent } from './data'
+import { CATEGORY_LABELS, categoryDescription, categoryTitle, isCategory } from './category-head'
+import { componentOgImage, componentTitle } from './component-head'
+import { components, getComponent } from './data'
+import { THEME_LABELS, isThemeName, themeDescription, themeTitle } from './theme-head'
 
 const SITE_URL = 'https://cascivo.com'
 const SUFFIX = ' — cascivo docs'
@@ -8,6 +11,10 @@ const DEFAULT_DESCRIPTION =
 interface RouteHead {
   title: string
   description: string
+  /** Absolute-from-root path to a per-route social card; defaults to /og.png. */
+  ogImage?: string
+  /** Breadcrumb label, when it isn't derivable by stripping SUFFIX from title. */
+  crumbLabel?: string
 }
 
 /** Per-route head for the static (non-component) docs routes. */
@@ -81,8 +88,9 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
       'Application layout primitives — app shell, grids, and responsive containers built on container queries and CSS logical properties.',
   },
   '/directory': {
-    title: `Component directory${SUFFIX}`,
-    description: 'The full searchable index of every cascivo component, layout, block, and chart.',
+    title: `Registry directory${SUFFIX}`,
+    description:
+      'Third-party and first-party component registries compatible with the cascivo CLI — search and install from any registry with npx cascivo add @ns/<component>.',
   },
   '/context': {
     title: `Context Explorer${SUFFIX}`,
@@ -179,7 +187,45 @@ function headFor(path: string): { head: RouteHead; index: boolean } {
     const entry = getComponent(decodeURIComponent(componentMatch[1] ?? ''))
     if (entry) {
       return {
-        head: { title: `${entry.meta.name}${SUFFIX}`, description: entry.meta.description },
+        head: {
+          title: componentTitle(entry.meta),
+          description: entry.meta.description,
+          ogImage: componentOgImage(entry.name),
+          crumbLabel: entry.meta.name,
+        },
+        index: true,
+      }
+    }
+  }
+
+  const categoryMatch = rel.match(/^\/categories\/(.+)$/)
+  if (categoryMatch) {
+    const key = decodeURIComponent(categoryMatch[1] ?? '')
+    if (isCategory(key)) {
+      const count = components.filter((c) => c.category === key).length
+      if (count > 0) {
+        return {
+          head: {
+            title: categoryTitle(key, count),
+            description: categoryDescription(key, count),
+            crumbLabel: CATEGORY_LABELS[key],
+          },
+          index: true,
+        }
+      }
+    }
+  }
+
+  const themeMatch = rel.match(/^\/themes\/(.+)$/)
+  if (themeMatch) {
+    const key = decodeURIComponent(themeMatch[1] ?? '')
+    if (isThemeName(key)) {
+      return {
+        head: {
+          title: themeTitle(key),
+          description: themeDescription(key),
+          crumbLabel: THEME_LABELS[key],
+        },
         index: true,
       }
     }
@@ -229,6 +275,19 @@ export function applyDocsSeo(path: string): void {
     'content',
     head.description,
   )
+  const ogImage = `${SITE_URL}${head.ogImage ?? '/og.png'}`
+  setMeta(
+    'meta[property="og:image"]',
+    { tag: 'meta', attrName: 'property', key: 'og:image' },
+    'content',
+    ogImage,
+  )
+  setMeta(
+    'meta[name="twitter:image"]',
+    { tag: 'meta', attrName: 'name', key: 'twitter:image' },
+    'content',
+    ogImage,
+  )
   setMeta(
     'meta[property="og:url"]',
     { tag: 'meta', attrName: 'property', key: 'og:url' },
@@ -258,7 +317,7 @@ export function applyDocsSeo(path: string): void {
       { name: 'Docs', url: `${SITE_URL}/docs` },
     ]
     if (path !== '/docs') {
-      crumbs.push({ name: head.title.replace(SUFFIX, ''), url: canonical })
+      crumbs.push({ name: head.crumbLabel ?? head.title.replace(SUFFIX, ''), url: canonical })
     }
     setBreadcrumb(crumbs)
   }

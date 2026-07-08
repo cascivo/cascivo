@@ -161,7 +161,7 @@ const CLAIMS: Claim[] = [
       'A step-by-step guide for switching from shadcn/ui: what transfers for free (the copy-own ' +
       'model, accessible primitives, your app structure) and what changes (signals, three-tier ' +
       'tokens, data-theme), with honest bundle and accessibility deltas read from live bench data.',
-    receipt: { label: 'Coming from shadcn? See the guide', href: '/guides#migrate' },
+    receipt: { label: 'Coming from shadcn? See the guide', href: '/guides/coming-from-shadcn' },
   },
   {
     number: 32,
@@ -170,7 +170,7 @@ const CLAIMS: Claim[] = [
       'Three-tier token overrides — primitive, semantic, component — let you rebrand in one line, ' +
       'brand a single component, or scope a whole theme to any subtree with data-theme. For a full ' +
       'brand theme, the create-theme skill and the create_theme MCP tool generate one from a color.',
-    receipt: { label: 'Make it yours — the customization guide', href: '/guides#customize' },
+    receipt: { label: 'Make it yours — the customization guide', href: '/guides/customization' },
   },
   {
     number: 33,
@@ -179,7 +179,7 @@ const CLAIMS: Claim[] = [
       'Use-case scenarios that say where cascivo wins — AI-driven UI, multi-brand, performance, ' +
       'accessibility, ownership — and a "when not to use" section that says where it does not: ' +
       'Chrome-leading CSS pilots, alpha tooling, React/Preact-only, modern browsers. Candor, not adjectives.',
-    receipt: { label: 'Use cases & honest boundaries', href: '/guides#use-cases' },
+    receipt: { label: 'Use cases & honest boundaries', href: '/guides/use-cases' },
   },
   {
     number: 34,

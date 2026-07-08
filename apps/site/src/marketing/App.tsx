@@ -51,10 +51,34 @@ const HeroThemePreview = lazy(() =>
 const AccessibilityPage = lazy(() =>
   import('./pages/AccessibilityPage').then((m) => ({ default: m.AccessibilityPage })),
 )
+const AccessibleComponentPage = lazy(() =>
+  import('./pages/AccessibleComponentPage').then((m) => ({ default: m.AccessibleComponentPage })),
+)
 const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
+const ComingFromShadcnPage = lazy(() =>
+  import('./pages/guides/ComingFromShadcnPage').then((m) => ({ default: m.ComingFromShadcnPage })),
+)
+const CustomizationPage = lazy(() =>
+  import('./pages/guides/CustomizationPage').then((m) => ({ default: m.CustomizationPage })),
+)
+const UseCasesPage = lazy(() =>
+  import('./pages/guides/UseCasesPage').then((m) => ({ default: m.UseCasesPage })),
+)
+const WhenNotToUsePage = lazy(() =>
+  import('./pages/guides/WhenNotToUsePage').then((m) => ({ default: m.WhenNotToUsePage })),
+)
+const GuidesFaqPage = lazy(() =>
+  import('./pages/guides/GuidesFaqPage').then((m) => ({ default: m.GuidesFaqPage })),
+)
+const BlogIndexPage = lazy(() =>
+  import('./pages/BlogIndexPage').then((m) => ({ default: m.BlogIndexPage })),
+)
+const BlogPostPage = lazy(() =>
+  import('./pages/blog/BlogPostPage').then((m) => ({ default: m.BlogPostPage })),
+)
 const ModernCssPage = lazy(() =>
   import('./pages/ModernCssPage').then((m) => ({ default: m.ModernCssPage })),
 )
@@ -166,6 +190,24 @@ const ROUTES: Record<string, Route> = {
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
+  '/blog': { Page: BlogIndexPage, title: ROUTE_HEAD['/blog']?.title ?? 'cascivo' },
+  '/guides/coming-from-shadcn': {
+    Page: ComingFromShadcnPage,
+    title: ROUTE_HEAD['/guides/coming-from-shadcn']?.title ?? 'cascivo',
+  },
+  '/guides/customization': {
+    Page: CustomizationPage,
+    title: ROUTE_HEAD['/guides/customization']?.title ?? 'cascivo',
+  },
+  '/guides/use-cases': {
+    Page: UseCasesPage,
+    title: ROUTE_HEAD['/guides/use-cases']?.title ?? 'cascivo',
+  },
+  '/guides/when-not-to-use': {
+    Page: WhenNotToUsePage,
+    title: ROUTE_HEAD['/guides/when-not-to-use']?.title ?? 'cascivo',
+  },
+  '/guides/faq': { Page: GuidesFaqPage, title: ROUTE_HEAD['/guides/faq']?.title ?? 'cascivo' },
   '/modern-css': { Page: ModernCssPage, title: ROUTE_HEAD['/modern-css']?.title ?? 'cascivo' },
   '/highlights': { Page: HighlightsPage, title: ROUTE_HEAD['/highlights']?.title ?? 'cascivo' },
   '/examples': { Page: ExamplesPage, title: ROUTE_HEAD['/examples']?.title ?? 'cascivo' },
@@ -216,6 +258,34 @@ export function MarketingApp() {
       return (
         <Suspense fallback={<SectionFallback tall />}>
           <BlockDetailPage name={blockName} />
+        </Suspense>
+      )
+    }
+  }
+
+  // /accessibility/:name — per-component accessibility guide, registry-derived.
+  // Deliberately does NOT import `data.ts` here (it pulls in the full 1MB+
+  // registry.json) — the lazy AccessibleComponentPage chunk owns the lookup
+  // and applies its own head, exactly like DocsApp/ComponentPage do, so the
+  // eager marketing bundle never gets the registry attached to it.
+  if (pathname.startsWith('/accessibility/') && pathname !== '/accessibility/') {
+    const name = decodeURIComponent(pathname.slice('/accessibility/'.length).split('/')[0] ?? '')
+    if (name) {
+      return (
+        <Suspense fallback={<SectionFallback tall />}>
+          <AccessibleComponentPage name={name} />
+        </Suspense>
+      )
+    }
+  }
+
+  // /blog/:slug — post. Same self-contained-lookup reasoning as /accessibility/:name.
+  if (pathname.startsWith('/blog/') && pathname !== '/blog/') {
+    const slug = decodeURIComponent(pathname.slice('/blog/'.length).split('/')[0] ?? '')
+    if (slug) {
+      return (
+        <Suspense fallback={<SectionFallback tall />}>
+          <BlogPostPage slug={slug} />
         </Suspense>
       )
     }

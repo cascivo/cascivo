@@ -8,6 +8,26 @@ export interface PropMeta {
   description?: string
 }
 
+export interface IntentAntiPattern {
+  bad: string
+  good?: string
+  why: string
+}
+
+export interface IntentRelated {
+  name: string
+  relationship: string
+  reason: string
+}
+
+export interface Intent {
+  whenToUse?: string[]
+  whenNotToUse?: string[]
+  antiPatterns?: IntentAntiPattern[]
+  related?: IntentRelated[]
+  a11yRationale?: string
+}
+
 export interface ComponentMeta {
   name: string
   description: string
@@ -21,6 +41,7 @@ export interface ComponentMeta {
   examples: { title: string; code: string; description?: string }[]
   dependencies: string[]
   tags: string[]
+  intent?: Intent
 }
 
 export type EntryType = 'component' | 'layout' | 'block' | 'chart' | 'section' | 'flow'

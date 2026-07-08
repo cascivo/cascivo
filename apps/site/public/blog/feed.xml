@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>cascivo blog</title>
+  <link>https://cascivo.com/blog</link>
+  <description>Notes on building cascivo: the AI layer, signal-driven reactivity, modern CSS, and what shipping an owned-code design system actually looks like.</description>
+  <item>
+    <title>Giving your AI coding agent a component library it can’t hallucinate</title>
+    <link>https://cascivo.com/blog/ai-agents-without-hallucination</link>
+    <guid>https://cascivo.com/blog/ai-agents-without-hallucination</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>AI agents write plausible-looking UI code that invents props, colors, and class names that don’t exist. cascivo ships a machine-readable manifest per component so agents can select, scaffold, and validate their own output instead of guessing.</description>
+  </item>
+  <item>
+    <title>Signals vs. useState: what actually changes</title>
+    <link>https://cascivo.com/blog/signals-vs-usestate</link>
+    <guid>https://cascivo.com/blog/signals-vs-usestate</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>cascivo components use signals instead of useState — not as a style preference, but because it changes what re-renders. Here’s what that means in practice, and where the line for &quot;genuine internal state&quot; actually sits.</description>
+  </item>
+  <item>
+    <title>Owned-code components: what shadcn got right, and where we took it further</title>
+    <link>https://cascivo.com/blog/owned-code-shadcn</link>
+    <guid>https://cascivo.com/blog/owned-code-shadcn</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>shadcn/ui’s biggest idea wasn’t a component set — it was making you own the code instead of depending on it. cascivo keeps that idea and builds the rest of what you’d otherwise have to hand-roll on top of it.</description>
+  </item>
+  <item>
+    <title>Do you still need a component library with modern CSS?</title>
+    <link>https://cascivo.com/blog/modern-css-component-library</link>
+    <guid>https://cascivo.com/blog/modern-css-component-library</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>@layer, @container, and :has() close real gaps that used to require a utility framework or JavaScript. Here’s what they replace, in code, and why &quot;modern CSS is enough&quot; and &quot;you still want a component library&quot; aren’t actually in tension.</description>
+  </item>
+  <item>
+    <title>Building an accessible command palette in React</title>
+    <link>https://cascivo.com/blog/accessible-command-palette</link>
+    <guid>https://cascivo.com/blog/accessible-command-palette</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>A Cmd/Ctrl+K command palette looks simple until you get to focus trapping, screen-reader announcements, and keyboard navigation. Here’s what actually has to be right, and a working example.</description>
+  </item>
+  <item>
+    <title>Theming a React app with CSS custom properties, no build step</title>
+    <link>https://cascivo.com/blog/theming-css-custom-properties</link>
+    <guid>https://cascivo.com/blog/theming-css-custom-properties</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>No config file, no build plugin, no CSS-in-JS runtime. A three-tier token system and a data-theme attribute — here’s how far you can get with plain CSS custom properties.</description>
+  </item>
+  <item>
+    <title>cascivo vs IBM Carbon: same enterprise bar, different architecture</title>
+    <link>https://cascivo.com/blog/cascivo-vs-ibm-carbon</link>
+    <guid>https://cascivo.com/blog/cascivo-vs-ibm-carbon</guid>
+    <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+    <description>IBM Carbon is a mature, genuinely accessible enterprise design system — it sets a real bar. cascivo tries to clear the same bar with a different architecture: copy-in ownership and native CSS instead of an npm dependency and SCSS.</description>
+  </item>
+</channel>
+</rss>

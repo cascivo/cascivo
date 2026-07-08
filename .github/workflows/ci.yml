@@ -89,7 +89,16 @@ jobs:
   drift:
     runs-on: ubuntu-latest
     steps:
+      # Full history (not the default shallow depth-1 clone) — sitemap
+      # generation (scripts/sitemap/generate.ts) derives `lastmod` per URL
+      # from `git log` on each source file. On a shallow clone, `git log`
+      # finds no history for files untouched by the single fetched commit
+      # and silently falls back to today's date, so the regenerated
+      # sitemap.xml never matches the committed one and this job always
+      # reports drift that isn't real.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v4
 

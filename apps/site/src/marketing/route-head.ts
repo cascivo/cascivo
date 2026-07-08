@@ -49,6 +49,41 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'Guides for adopting cascivo: migrating from shadcn, brand customization, real use-case scenarios, and an honest take on when not to use it.',
   },
+  '/blog': {
+    title: 'Blog — cascivo',
+    description:
+      'Notes on building cascivo: the AI layer, signal-driven reactivity, modern CSS, and what shipping an owned-code design system actually looks like.',
+  },
+  '/guides/coming-from-shadcn': {
+    title: 'Coming from shadcn/ui? — cascivo',
+    description:
+      'What transfers for free and what changes when you move from shadcn/ui to cascivo, a step-by-step migration path, and an honest verdict — with live bundle-size and accessibility deltas.',
+    ogTitle: 'Coming from shadcn/ui?',
+  },
+  '/guides/customization': {
+    title: 'Make it yours — theming cascivo — cascivo',
+    description:
+      'Branding cascivo with the three-tier token system: rebrand in one CSS line, brand a single component, or theme any subtree with data-theme — no fork, no config file.',
+    ogTitle: 'Make it yours',
+  },
+  '/guides/use-cases': {
+    title: 'When is cascivo the right call? — cascivo',
+    description:
+      'Five scenarios where cascivo earns its place — AI-driven UI, multi-brand products, performance, accessibility, and component ownership — each mapped to the receipt that proves it.',
+    ogTitle: 'When is cascivo the right call?',
+  },
+  '/guides/when-not-to-use': {
+    title: 'When not to use cascivo — cascivo',
+    description:
+      'An honest list of where cascivo is the wrong tool or only a forward bet: Chrome-leading CSS pilots, alpha tooling, React/Preact only, and modern-browsers-only support.',
+    ogTitle: 'When not to use cascivo',
+  },
+  '/guides/faq': {
+    title: 'Questions before you adopt cascivo — cascivo',
+    description:
+      'The questions people ask before committing to cascivo — licensing, adopting one component at a time, Next.js/RSC, Tailwind, and how it compares to shadcn/ui.',
+    ogTitle: 'Questions before you adopt cascivo',
+  },
   '/modern-css': {
     title: 'Modern CSS — cascivo',
     description:
@@ -131,6 +166,11 @@ export const PRERENDER_ROUTES = [
   'accessibility',
   'performance',
   'guides',
+  'guides/coming-from-shadcn',
+  'guides/customization',
+  'guides/use-cases',
+  'guides/when-not-to-use',
+  'guides/faq',
   'modern-css',
   'highlights',
   'examples',

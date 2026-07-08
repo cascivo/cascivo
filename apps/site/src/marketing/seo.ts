@@ -26,14 +26,13 @@ function setRobots(content: string): void {
   )
 }
 
-/** Apply the per-route head (title + description + canonical + og + twitter). */
-export function applyRouteSeo(path: string, title: string): void {
+/**
+ * Apply a fully-resolved head (title + description + canonical + og +
+ * twitter). Shared by `applyRouteSeo` (hand-authored ROUTE_HEAD lookup) and
+ * `applyAccessibilityGuideSeo` (registry-derived, no ROUTE_HEAD entry).
+ */
+function applyHead(canonical: string, title: string, description: string, ogTitle: string): void {
   if (typeof document === 'undefined') return
-  const head = ROUTE_HEAD[path]
-  const description = head?.description ?? ROUTE_HEAD['/']?.description ?? ''
-  const ogTitle = head?.ogTitle ?? title
-  const canonical = canonicalFor(path)
-
   document.title = title
   setRobots('index, follow')
   setMeta(
@@ -78,21 +77,57 @@ export function applyRouteSeo(path: string, title: string): void {
     'content',
     description,
   )
-  // Per-route social card, falling back to the default so navigating away from a
-  // custom-card route restores the shared image rather than leaving it stale.
-  const ogImage = `https://cascivo.com${head?.ogImage ?? '/og.png'}`
+}
+
+function applyOgImage(ogImage?: string): void {
+  // Falls back to the default so navigating away from a custom-card route
+  // restores the shared image rather than leaving it stale.
+  const abs = `https://cascivo.com${ogImage ?? '/og.png'}`
   setMeta(
     'meta[property="og:image"]',
     { tag: 'meta', attrName: 'property', key: 'og:image' },
     'content',
-    ogImage,
+    abs,
   )
   setMeta(
     'meta[name="twitter:image"]',
     { tag: 'meta', attrName: 'name', key: 'twitter:image' },
     'content',
-    ogImage,
+    abs,
   )
+}
+
+/** Apply the per-route head (title + description + canonical + og + twitter). */
+export function applyRouteSeo(path: string, title: string): void {
+  if (typeof document === 'undefined') return
+  const head = ROUTE_HEAD[path]
+  const description = head?.description ?? ROUTE_HEAD['/']?.description ?? ''
+  const ogTitle = head?.ogTitle ?? title
+  const canonical = canonicalFor(path)
+
+  applyHead(canonical, title, description, ogTitle)
+  applyOgImage(head?.ogImage)
+}
+
+/**
+ * Apply the head for a `/accessibility/<name>` guide page — title/description
+ * are derived from the registry, not hand-authored, so there's no ROUTE_HEAD
+ * entry to look up (125 of them would bloat that file for no benefit).
+ */
+export function applyAccessibilityGuideSeo(path: string, title: string, description: string): void {
+  if (typeof document === 'undefined') return
+  applyHead(canonicalFor(path), title, description, title)
+  applyOgImage(undefined)
+}
+
+/**
+ * Apply the head for a `/blog/<slug>` post or the `/blog` index — title/
+ * description come from the post data itself, not ROUTE_HEAD.
+ */
+export function applyBlogSeo(path: string, title: string, description: string): void {
+  if (typeof document === 'undefined') return
+  applyHead(canonicalFor(path), title, description, title)
+  applyOgImage(undefined)
 }
 
 /** Apply the NotFound head: home-ish title but noindex (T3). */
