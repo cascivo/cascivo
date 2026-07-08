@@ -2861,10 +2861,16 @@ kbd {
 }
 
 /* ── Blog post ────────────────────────────────────────── */
+.blog-back {
+  max-width: 42rem;
+  margin-inline: auto;
+  padding: var(--cascivo-space-8) var(--cascivo-space-6) 0;
+}
+
 .blog-post {
   max-width: 42rem;
   margin-inline: auto;
-  padding: var(--cascivo-space-12) var(--cascivo-space-6) var(--cascivo-space-20);
+  padding: var(--cascivo-space-6) var(--cascivo-space-6) var(--cascivo-space-20);
 }
 
 .blog-post-header {
@@ -2932,8 +2938,12 @@ kbd {
 }
 
 @media (max-width: 29.99rem) {
+  .blog-back {
+    padding-inline: var(--cascivo-space-4);
+  }
+
   .blog-post {
-    padding: var(--cascivo-space-8) var(--cascivo-space-4) var(--cascivo-space-12);
+    padding: var(--cascivo-space-6) var(--cascivo-space-4) var(--cascivo-space-12);
   }
 }
 
