@@ -47,10 +47,10 @@ export function BlogPostPage({ slug }: { slug: string }) {
 
   return (
     <BlogLayout>
-      <article>
-        <header>
+      <article class="blog-post">
+        <header class="blog-post-header">
           <h1>{post.title}</h1>
-          <p class="guides-section-sub">
+          <p class="blog-post-date">
             <time dateTime={post.datePublished}>{post.datePublished}</time>
           </p>
         </header>
