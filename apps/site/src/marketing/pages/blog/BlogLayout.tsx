@@ -11,7 +11,7 @@ export function BlogLayout({ children }: { children: ComponentChildren }) {
       <Header />
       <SkipNavTarget>
         <main>
-          <p class="guides-eyebrow">
+          <p class="guides-eyebrow blog-back">
             <a href="/blog">← Blog</a>
           </p>
           {children}
