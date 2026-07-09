@@ -35,6 +35,9 @@ const OUT_PATH = join(ROOT, 'apps', 'site', 'public', 'sitemap.xml')
 /** Indexable static docs routes (under /docs), in priority order. */
 const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs', priority: '0.9' },
+  { path: '/docs/installation', priority: '0.9' },
+  { path: '/docs/getting-started', priority: '0.9' },
+  { path: '/docs/api', priority: '0.8' },
   { path: '/docs/why', priority: '0.8' },
   { path: '/docs/faq', priority: '0.7' },
   { path: '/docs/platform', priority: '0.7' },
@@ -43,7 +46,11 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs/directory', priority: '0.8' },
   { path: '/docs/context', priority: '0.8' },
   { path: '/docs/charts', priority: '0.7' },
+  { path: '/docs/flow', priority: '0.7' },
   { path: '/docs/icons', priority: '0.7' },
+  { path: '/docs/editor', priority: '0.7' },
+  { path: '/docs/tokens', priority: '0.7' },
+  { path: '/docs/marketplace', priority: '0.7' },
   { path: '/docs/layouts', priority: '0.7' },
   { path: '/docs/benchmarks', priority: '0.7' },
   { path: '/docs/parity', priority: '0.7' },
@@ -51,6 +58,8 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs/changelog', priority: '0.6' },
   { path: '/docs/keyboard', priority: '0.6' },
   { path: '/docs/brand', priority: '0.6' },
+  { path: '/docs/playground', priority: '0.5' },
+  { path: '/docs/perf/data-table', priority: '0.4' },
 ]
 
 interface RegistryEntry {

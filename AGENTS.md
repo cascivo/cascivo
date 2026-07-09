@@ -22,8 +22,8 @@ CSS-in-JS** — and made reactive with Preact Signals via `@cascivo/core` — **
   `scaffold_view`, and `get_view_grammar` (a bound-vocabulary prompt + grammar
   for generating valid `ViewConfig` JSON — use it to avoid hallucinating
   components/props/enums).
-- **`llms.txt`** — `apps/docs/public/llms.txt` (+ per-component markdown) and
-  `apps/landing/public/llms.txt`.
+- **`llms.txt`** — `apps/site/public/llms.txt` (+ per-component markdown under
+  `apps/site/public/llms/`).
 - **`component.meta.ts`** — per-component manifest beside each component in
   `packages/components/src/<name>/`.
 - **`skills/`** — Claude Code skills (`cascivo:add`, `cascivo:design-page`,

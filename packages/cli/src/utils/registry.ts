@@ -12,6 +12,12 @@ export interface RegistryComponent {
   /** npm package to install (used when type === 'chart'). */
   install?: string
   dependencies: string[]
+  /**
+   * Minimum published version required for each `@cascivo/*` dependency, e.g.
+   * `{ "@cascivo/i18n": ">=0.2.1" }`. Used by `add`/`doctor --drift` to detect
+   * an installed peer package that is older than what this copied source needs.
+   */
+  peerVersions?: Record<string, string>
   /** Other registry components to install transitively (shared hooks/siblings). */
   registryDependencies?: string[]
   tags: string[]
@@ -96,6 +102,13 @@ export function parseRegistry(raw: unknown): Registry {
         if (typeof hash === 'string') hashes[file] = hash
       }
       if (Object.keys(hashes).length > 0) result.fileHashes = hashes
+    }
+    if (typeof c.peerVersions === 'object' && c.peerVersions !== null) {
+      const floors: Record<string, string> = {}
+      for (const [dep, floor] of Object.entries(c.peerVersions as Record<string, unknown>)) {
+        if (typeof floor === 'string') floors[dep] = floor
+      }
+      if (Object.keys(floors).length > 0) result.peerVersions = floors
     }
     return result
   })

@@ -195,6 +195,40 @@ export function TokensPage() {
       </section>
 
       <section class="doc-section">
+        <h2>How theming works</h2>
+        <p class="muted">
+          Three layers of <code>--cascivo-*</code> custom properties: <strong>primitive</strong>{' '}
+          (raw values, e.g. <code>--cascivo-color-blue-500</code>), <strong>semantic</strong>{' '}
+          (theme-mapped, e.g. <code>--cascivo-color-accent</code>), and <strong>component</strong>{' '}
+          (usage-scoped, e.g. <code>--cascivo-button-bg</code>). A theme overrides only the semantic
+          layer — components never reference primitives directly.
+        </p>
+        <p class="muted">
+          Apply a theme with <code>data-theme</code> on any element — the whole subtree adopts it,
+          so you can nest a different theme inside part of a page:
+        </p>
+        <pre class="code-plain">
+          <code>{`<html data-theme="dark">
+  <section data-theme="light">/* this section renders light */</section>
+</html>`}</code>
+        </pre>
+        <p class="muted">
+          To adapt a theme to your brand, override component tokens in your own CSS — no rebuild, no
+          config file:
+        </p>
+        <pre class="code-plain">
+          <code>{`:root {
+  --cascivo-button-bg: var(--cascivo-color-brand-600);
+}`}</code>
+        </pre>
+        <p class="muted">
+          Styles live in cascade layers (
+          <code>cascivo.base &lt; cascivo.theme &lt; cascivo.component</code>
+          ), so unlayered CSS in your own stylesheet always wins without <code>!important</code>.
+        </p>
+      </section>
+
+      <section class="doc-section">
         <div
           style={{
             display: 'flex',

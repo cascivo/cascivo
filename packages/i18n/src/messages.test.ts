@@ -47,6 +47,15 @@ describe('t()', () => {
     // @ts-expect-error — plain takes no params
     t(messages.plain, { name: 'x' })
   })
+
+  it('degrades to an empty string instead of throwing on a version-skewed missing message', () => {
+    // Simulates an older @cascivo/i18n build lacking a key a newer component references
+    // (e.g. builtin.dataTable.previousPage undefined at runtime) — see messages.ts t().
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(t(undefined as any)).toBe('')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(t({} as any)).toBe('')
+  })
 })
 
 describe('translateKey()', () => {

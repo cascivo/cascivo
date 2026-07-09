@@ -21,7 +21,8 @@ export function GettingStartedPage() {
         The fastest path is <code>npx cascivo create</code> — a complete app, scaffolded. Already
         have a project? Use the prebuilt <code>@cascivo/react</code> package, or copy component
         source into your repo with the CLI. All three share the same tokens and themes; mix them in
-        one project.
+        one project. For just the install commands, see the{' '}
+        <a href="/docs/installation">Installation</a> reference.
       </p>
 
       <section style={cardStyle}>

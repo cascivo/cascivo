@@ -268,6 +268,12 @@ export const FAQ: FaqEntry[] = [
     a: 'The last two versions of Chrome, Firefox, and Safari — cascivo relies on :has() and @container. Some CSS-native logic is a Chrome-leading pilot with static fallbacks everywhere else, so nothing breaks.',
     next: { label: 'See the honest boundaries', href: '/guides/when-not-to-use' },
   },
+  {
+    id: 'versioning',
+    q: 'Packages are 0.x — what should I expect, and how do I stay in sync?',
+    a: 'Each @cascivo/* package follows semver within 0.x (minor bumps can include breaking changes, patch bumps never do). The CLI copies component source from the same commit its release publishes packages from, so a clean `cascivo add` always matches an installed peer package. If you ever see a runtime error after adding a component, run `cascivo doctor --drift` — it compares your installed components and their required peer package versions against the registry and tells you exactly what to update.',
+    next: { label: 'Installation & troubleshooting', href: '/docs/installation' },
+  },
 ]
 
 export const GUIDES_CTA = {
