@@ -13,6 +13,7 @@
 
 - Marketing/document pages where the whole page should scroll — use a plain Header instead
 - A single, always-visible sidebar with no toggle — compose SideNav directly
+- You need a persisted collapsible sidebar, a top progress bar, or a right aside — that is the richer copy-paste `layout/app-shell` (different props: `sideNav`/`aside`/`persistKey`/`state`), not this drop-in.
 
 ## Anti-patterns
 
@@ -24,6 +25,7 @@
 
 ## Related components
 
+- **layout/app-shell** (alternative): A richer, copy-paste-only app shell with a persisted collapsible sidebar, a signal-driven top progress bar, an error strip, and a right aside. Same `AppShell` name, different prop surface (`sideNav`/`aside`/`persistKey`/`state`). Choose this npm drop-in for a simple header + toggleable nav; choose layout/app-shell when you need persistence/progress/aside.
 - **ShellHeader** (pairs-with): Provides the top bar and burger AppShell binds to the nav
 - **SideNav** (pairs-with): The side navigation AppShell lays out full-height
 

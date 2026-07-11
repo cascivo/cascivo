@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09",
+  "generatedAt": "2026-07-11",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -109,7 +109,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-07-09",
+    "generatedAt": "2026-07-11",
     "global": {
       "strict": [
         {
@@ -1768,7 +1768,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-07-09",
+    "generatedAt": "2026-07-11",
     "exceptions": [
       {
         "id": "EXC-001",
@@ -2263,7 +2263,8 @@
         ],
         "whenNotToUse": [
           "Marketing/document pages where the whole page should scroll — use a plain Header instead",
-          "A single, always-visible sidebar with no toggle — compose SideNav directly"
+          "A single, always-visible sidebar with no toggle — compose SideNav directly",
+          "You need a persisted collapsible sidebar, a top progress bar, or a right aside — that is the richer copy-paste `layout/app-shell` (different props: `sideNav`/`aside`/`persistKey`/`state`), not this drop-in."
         ],
         "antiPatterns": [
           {
@@ -2273,6 +2274,11 @@
           }
         ],
         "related": [
+          {
+            "name": "layout/app-shell",
+            "relationship": "alternative",
+            "reason": "A richer, copy-paste-only app shell with a persisted collapsible sidebar, a signal-driven top progress bar, an error strip, and a right aside. Same `AppShell` name, different prop surface (`sideNav`/`aside`/`persistKey`/`state`). Choose this npm drop-in for a simple header + toggleable nav; choose layout/app-shell when you need persistence/progress/aside."
+          },
           {
             "name": "ShellHeader",
             "relationship": "pairs-with",
@@ -13970,10 +13976,16 @@
         ],
         "whenNotToUse": [
           "You want opinionated, prewired sidebar navigation — use SidebarApp",
-          "A simple centered content page — use Section or Center"
+          "A simple centered content page — use Section or Center",
+          "You just need a drop-in header + toggleable nav with no persistence — use the published `AppShell` from @cascivo/react (a `nav` prop, no copy-paste), not this richer copy-paste shell."
         ],
         "antiPatterns": [],
         "related": [
+          {
+            "name": "AppShell (@cascivo/react)",
+            "relationship": "alternative",
+            "reason": "The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside."
+          },
           {
             "name": "SidebarApp",
             "relationship": "alternative",
@@ -14737,10 +14749,22 @@
         ],
         "whenNotToUse": [
           "Two-dimensional layouts — use Grid",
-          "Responsive auto-wrapping card collections — use AutoGrid"
+          "Responsive auto-wrapping card collections — use AutoGrid",
+          "A visual card-pile / overlapping avatars — that is the DIFFERENT `Stack` in @cascivo/react (an `offset` prop), not this flex layout primitive."
         ],
-        "antiPatterns": [],
+        "antiPatterns": [
+          {
+            "bad": "Expecting import { Stack } from '@cascivo/react' to gap items",
+            "good": "Copy this layout Stack in with `npx cascivo add stack`, then import it from your local layouts",
+            "why": "The published `Stack` export is a card-pile that overlaps children; this gap-based flex Stack is copy-paste-only despite sharing the name."
+          }
+        ],
         "related": [
+          {
+            "name": "Stack (card-pile)",
+            "relationship": "alternative",
+            "reason": "The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component that shares this name. Pick by behaviour: gap layout here, visual overlap there."
+          },
           {
             "name": "Grid",
             "relationship": "alternative",
@@ -19871,10 +19895,15 @@
           "Notification stack visualisations"
         ],
         "whenNotToUse": [
-          "Normal vertical lists — use a flex column or VStack instead",
+          "Gap-based vertical/horizontal layout — that is a DIFFERENT component, the flex `layout/stack` (also exported as `Stack`). This `Stack` only overlaps children with an offset.",
           "Independent positioned elements — use CSS position directly"
         ],
         "related": [
+          {
+            "name": "layout/stack",
+            "relationship": "alternative",
+            "reason": "The flex layout primitive for gap-based vertical/horizontal stacking. It shares the `Stack` export name but is copy-paste-only (`npx cascivo add stack`) — not this card-pile component."
+          },
           {
             "name": "Avatar",
             "relationship": "pairs-with",
@@ -19886,7 +19915,13 @@
             "reason": "Card pile visualisations are a common Stack pattern"
           }
         ],
-        "antiPatterns": [],
+        "antiPatterns": [
+          {
+            "bad": "import { Stack } from '@cascivo/react' to space items vertically",
+            "good": "For flex layout use layout/stack (npx cascivo add stack); use this Stack only for a visual card-pile",
+            "why": "The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. The two components share a name; pick by behaviour, not by the name."
+          }
+        ],
         "a11yRationale": "Stack is a layout-only container (role=\"none\"). Each child must carry its own accessible semantics. Stacked cards that are interactive should each have a focusable element and a descriptive label.",
         "flexibility": [
           {
@@ -21673,6 +21708,11 @@
             "bad": "<Toggle label=\"I accept the terms\" /> inside a submitted form",
             "good": "<Checkbox label=\"I accept the terms\" />",
             "why": "A switch implies an instant on/off setting; agreement that is submitted with the form is a checkbox"
+          },
+          {
+            "bad": "<h3>Dark mode</h3><Toggle label=\"Dark mode\" /> — the label repeats the heading",
+            "good": "<h3>Dark mode</h3><Toggle aria-label=\"Dark mode\" />",
+            "why": "The `label` prop renders visible text and is the accessible name; when a heading already names the control, use aria-label so the name is not shown (and read) twice"
           }
         ],
         "related": [
@@ -21732,7 +21772,7 @@
         },
         {
           "name": "label",
-          "description": "Text label for the control.",
+          "description": "Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text.",
           "type": "string",
           "required": false,
           "schema": {

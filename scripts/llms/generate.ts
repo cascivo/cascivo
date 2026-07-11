@@ -75,6 +75,10 @@ interface RegistryEntry {
   category: string
   version: string
   files: string[]
+  /** npm package to install (charts/flow/editor); absent for copy-paste entries. */
+  install?: string
+  /** stylesheet the npm package requires, e.g. `@cascivo/charts/styles.css`. */
+  styles?: string
   dependencies?: string[]
   tags?: string[]
   meta?: ComponentMeta & { intent?: ComponentIntent }
@@ -137,6 +141,18 @@ function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' 
   return null
 }
 
+/**
+ * Terse distribution-channel marker for the llms.txt component index, so an
+ * agent can see at a glance which package (if any) an entry comes from — the
+ * single most-reported time sink was not knowing a component was copy-paste vs
+ * a separate npm package.
+ */
+function channelLabel(entry: RegistryEntry): string {
+  if (entry.install) return `npm ${entry.install}`
+  if (packageFor(entry) === '@cascivo/react') return 'npm @cascivo/react · or copy-paste'
+  return 'copy-paste'
+}
+
 function componentMarkdown(entry: RegistryEntry): string {
   const meta = entry.meta
   const lines: string[] = []
@@ -151,16 +167,23 @@ function componentMarkdown(entry: RegistryEntry): string {
 
   lines.push('## Install')
   lines.push('')
-  if (entry.type === 'chart') {
-    // Charts ship only as the @cascivo/charts package (no copy-paste source files).
-    lines.push('Charts ship in the `@cascivo/charts` package:')
+  if (entry.install) {
+    // npm-distributed (charts, flow, editor): install the package, no copy-paste.
+    lines.push(`Ships in the \`${entry.install}\` package — install it (no copy-paste):`)
     lines.push('')
     lines.push('```sh')
-    lines.push('pnpm add @cascivo/charts')
+    lines.push(`pnpm add ${entry.install}`)
     lines.push('```')
     lines.push('')
     lines.push('```tsx')
-    lines.push(`import { ${exportName} } from '@cascivo/charts'`)
+    lines.push(`import { ${exportName} } from '${entry.install}'`)
+    if (entry.styles) {
+      const note =
+        entry.type === 'chart'
+          ? 'required — without it the screen-reader data-table fallback renders visibly'
+          : 'required stylesheet'
+      lines.push(`import '${entry.styles}' // ${note}`)
+    }
     lines.push('```')
     lines.push('')
   } else {
@@ -370,6 +393,15 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push('`@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.')
   lines.push('')
+  lines.push(
+    'Charts, the code editor, and flow ship their own stylesheet: when you use them, import the',
+  )
+  lines.push("matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise")
+  lines.push(
+    '`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a',
+  )
+  lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
+  lines.push('')
   lines.push('## Guides')
   lines.push('')
   lines.push(`- Theming & branding: ${REPO}/blob/main/docs/THEMING.md`)
@@ -441,7 +473,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     lines.push(`### ${category}`)
     lines.push('')
     for (const entry of sorted.filter((e) => e.category === category)) {
-      lines.push(`- [${entry.name}](${DOCS}/llms/${entry.name}.md) — ${entry.description}`)
+      lines.push(
+        `- [${entry.name}](${DOCS}/llms/${entry.name}.md) — ${entry.description} _(${channelLabel(entry)})_`,
+      )
     }
     lines.push('')
   }

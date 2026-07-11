@@ -58,9 +58,16 @@ export const meta: ComponentMeta = {
     whenNotToUse: [
       'You want opinionated, prewired sidebar navigation — use SidebarApp',
       'A simple centered content page — use Section or Center',
+      'You just need a drop-in header + toggleable nav with no persistence — use the published `AppShell` from @cascivo/react (a `nav` prop, no copy-paste), not this richer copy-paste shell.',
     ],
     antiPatterns: [],
     related: [
+      {
+        name: 'AppShell (@cascivo/react)',
+        relationship: 'alternative',
+        reason:
+          'The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside.',
+      },
       {
         name: 'SidebarApp',
         relationship: 'alternative',

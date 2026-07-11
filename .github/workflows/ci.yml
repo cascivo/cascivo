@@ -50,6 +50,9 @@ jobs:
       - name: Docs route-indexing guard (every route has SEO head + sitemap entry)
         run: pnpm run docs-routes:check
 
+      - name: LLMS channel + stylesheet guard (npm entries name their package + styles)
+        run: pnpm run llms:check
+
       - name: Animation audit
         run: pnpm run audit:animation
 

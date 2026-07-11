@@ -4,13 +4,16 @@ A scaled SVG overview of the graph with a draggable viewport rectangle.
 
 ## Install
 
-Copy-paste the source (you own and can edit it):
+Ships in the `@cascivo/flow` package — install it (no copy-paste):
 
-```bash
-npx cascivo add flow/flow-minimap
+```sh
+pnpm add @cascivo/flow
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+```tsx
+import { FlowMiniMap } from '@cascivo/flow'
+import '@cascivo/flow/styles.css' // required stylesheet
+```
 
 ## Category
 

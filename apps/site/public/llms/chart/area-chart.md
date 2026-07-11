@@ -4,7 +4,7 @@ Area chart with optional stacking, multi-series support, and hover tooltip.
 
 ## Install
 
-Charts ship in the `@cascivo/charts` package:
+Ships in the `@cascivo/charts` package — install it (no copy-paste):
 
 ```sh
 pnpm add @cascivo/charts
@@ -12,6 +12,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { AreaChart } from '@cascivo/charts'
+import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
 ```
 
 ## Category

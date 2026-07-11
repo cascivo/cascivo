@@ -96,6 +96,14 @@ interface RegistryComponent {
   fileHashes?: Record<string, string>
   /** npm package to install instead of copying files (used for type: 'chart'). */
   install?: string
+  /**
+   * Stylesheet import specifier this entry's npm package requires, e.g.
+   * `@cascivo/charts/styles.css` — present only when `install` is set and that
+   * package exports a `./styles.css`. Emitted so every generated surface (llms
+   * docs, CLI `add`) can remind consumers to import it; without it a chart's
+   * screen-reader data-table fallback renders visibly.
+   */
+  styles?: string
   dependencies: string[]
   /**
    * Minimum published version of each `@cascivo/*` npm dependency this entry's
@@ -148,6 +156,33 @@ async function readComponentVersion(): Promise<string> {
     await readFile(join(REPO_ROOT, 'packages', 'react', 'package.json'), 'utf8'),
   ) as { version: string }
   return pkg.version
+}
+
+const stylesheetCache = new Map<string, string | null>()
+
+/**
+ * Resolves the stylesheet import specifier for an npm-distributed package, by
+ * reading its `package.json` `exports` map for a `./styles.css` entry. Returns
+ * e.g. `@cascivo/charts/styles.css`, or null if the package ships no stylesheet.
+ * Driving this off the export map (rather than a hand-maintained per-type list)
+ * means any future npm package that adds a stylesheet is surfaced automatically.
+ */
+async function resolveStylesheet(installPkg: string): Promise<string | null> {
+  if (stylesheetCache.has(installPkg)) return stylesheetCache.get(installPkg) ?? null
+  const m = /^@cascivo\/(.+)$/.exec(installPkg)
+  let result: string | null = null
+  if (m) {
+    try {
+      const pkg = JSON.parse(
+        await readFile(join(REPO_ROOT, 'packages', m[1], 'package.json'), 'utf8'),
+      ) as { exports?: Record<string, unknown> }
+      if (pkg.exports?.['./styles.css']) result = `${installPkg}/styles.css`
+    } catch {
+      result = null
+    }
+  }
+  stylesheetCache.set(installPkg, result)
+  return result
 }
 
 const workspaceVersionCache = new Map<string, string | null>()
@@ -231,6 +266,10 @@ async function buildEntry(
     entry.install = '@cascivo/flow'
   } else if (root.type === 'editor') {
     entry.install = '@cascivo/editor'
+  }
+  if (entry.install) {
+    const styles = await resolveStylesheet(entry.install)
+    if (styles) entry.styles = styles
   }
   return entry
 }
