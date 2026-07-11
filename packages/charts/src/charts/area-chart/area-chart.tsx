@@ -1,6 +1,7 @@
 'use client'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
+import { warnNonFinite } from '../../core/dev-warn'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
@@ -165,6 +166,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const rightYvals = hasRight
     ? series.filter((s) => s.axis === 'right').flatMap((s) => s.data.map((d) => y(d)))
     : []
+  warnNonFinite('AreaChart', () => [...leftYvals, ...rightYvals])
   const hasData = allX.length > 0
 
   const xMin = hasData ? Math.min(...allX) : 0
