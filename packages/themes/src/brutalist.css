@@ -35,13 +35,17 @@
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
     --cascivo-color-text-muted: oklch(0.5 0 0);
     --cascivo-color-text-on-accent: oklch(0.1 0 0); /* static fallback */
-    --cascivo-color-text-on-accent: contrast-color(
-      var(--cascivo-color-accent)
-    ); /* auto-contrast (WCAG) */
     --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
-    --cascivo-color-text-on-destructive: contrast-color(
-      var(--cascivo-color-destructive)
-    ); /* auto-contrast (WCAG) */
+    /* Progressive auto-contrast: contrast-color() stored in a custom property
+   does not honor the static fallback on unsupported browsers — the var()
+   substitution keeps the invalid token and the color inherits foreground.
+   Guard the upgrade so only supporting browsers apply it. */
+    @supports (color: contrast-color(red)) {
+      & {
+        --cascivo-color-text-on-accent: contrast-color(var(--cascivo-color-accent));
+        --cascivo-color-text-on-destructive: contrast-color(var(--cascivo-color-destructive));
+      }
+    }
     /* ── Accent — acid yellow ─────────────────────────── */
     --cascivo-color-accent: oklch(0.88 0.19 105);
     --cascivo-color-accent-foreground: oklch(0.1 0 0);

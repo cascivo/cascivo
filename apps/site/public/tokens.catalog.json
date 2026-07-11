@@ -1536,19 +1536,19 @@
     },
     {
       "name": "--cascivo-editor-syntax-string",
-      "value": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "value": "oklch(0.53 0.13 135)",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "resolvedDefault": "oklch(0.53 0.13 135)",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-number",
-      "value": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "value": "oklch(0.54 0.15 40)",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "resolvedDefault": "oklch(0.54 0.15 40)",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -1572,10 +1572,10 @@
     },
     {
       "name": "--cascivo-editor-syntax-type",
-      "value": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+      "value": "oklch(0.54 0.12 350)",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-7, oklch(0.52 0.15 320))",
+      "resolvedDefault": "oklch(0.54 0.12 350)",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -1617,37 +1617,37 @@
     },
     {
       "name": "--cascivo-editor-syntax-attr",
-      "value": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "value": "oklch(0.54 0.15 40)",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "resolvedDefault": "oklch(0.54 0.15 40)",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-regexp",
-      "value": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "value": "oklch(0.53 0.13 135)",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-3, oklch(0.52 0.13 150))",
+      "resolvedDefault": "oklch(0.53 0.13 135)",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-boolean",
-      "value": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "value": "oklch(0.54 0.15 40)",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-6, oklch(0.55 0.16 40))",
+      "resolvedDefault": "oklch(0.54 0.15 40)",
       "resolvesPerTheme": false,
       "canonical": true
     },
     {
       "name": "--cascivo-editor-syntax-property",
-      "value": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+      "value": "oklch(0.53 0.12 240)",
       "layer": "semantic",
       "group": "editor",
-      "resolvedDefault": "var(--cascivo-chart-2, oklch(0.5 0.13 240))",
+      "resolvedDefault": "oklch(0.53 0.12 240)",
       "resolvesPerTheme": false,
       "canonical": true
     },

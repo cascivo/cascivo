@@ -18,10 +18,16 @@
       box-shadow: var(--cascivo-focus-ring);
     }
 
+    /* Dim via muted colors, not opacity: a 0.5 wrapper opacity dropped the tag
+       text below the WCAG contrast threshold. */
     &[data-disabled] {
-      opacity: 0.5;
       cursor: not-allowed;
       background-color: var(--cascivo-color-bg-subtle);
+    }
+
+    &[data-disabled] .tag {
+      color: var(--cascivo-color-text-muted);
+      border-color: var(--cascivo-color-border);
     }
   }
 

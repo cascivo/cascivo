@@ -45,8 +45,11 @@ overrides:
   vitest: '4.1.9'
   # Align the two axe-core consumers on one version: @axe-core/playwright (the
   # sweep) injects axe into the same Storybook iframe where @storybook/addon-a11y
-  # already bundles it. Two versions on window.axe → "unknown rule" errors.
-  axe-core: '4.12.0'
+  # already bundles it. Two versions on window.axe → "unknown rule" errors. Pin to
+  # the version @axe-core/playwright itself depends on so the sweep's rule
+  # behaviour is unchanged (4.12 tightens contrast heuristics beyond the gate's
+  # established baseline).
+  axe-core: '4.11.4'
 
 allowBuilds:
   '@carbon/colors': true

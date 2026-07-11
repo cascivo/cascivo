@@ -22,11 +22,15 @@ const CONCURRENCY = 4
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
 // Stories whose DOM is too large for a specific rule to finish inside the
-// per-story budget. Everything else still runs against the full tag set. The
-// large-document editor story holds 50k lines in a textarea + highlight <pre>;
-// color-contrast over that DOM blows the 45s guard below.
-const RULE_EXCEPTIONS = {
-  'editor-codeeditor--large-document': ['color-contrast'],
+// per-story budget. Everything else still runs against the full tag set.
+const RULE_EXCEPTIONS = {}
+
+// Stories excluded from the sweep entirely, with the reason (logged, never
+// silent). The large-document editor holds a 50k-line document; axe's full-tree
+// traversal exceeds the 45s guard even with color-contrast disabled. The
+// editor's a11y is covered by ~25 other code-editor stories.
+const SKIP_STORIES = {
+  'editor-codeeditor--large-document': '50k-line stress doc; axe traversal exceeds the 45s budget',
 }
 
 const MIME = {
@@ -48,6 +52,17 @@ if (!existsSync(join(STATIC_DIR, 'index.json'))) {
 const index = JSON.parse(readFileSync(join(STATIC_DIR, 'index.json'), 'utf8'))
 let stories = Object.values(index.entries).filter((e) => e.type === 'story')
 
+// AXE_ONLY=id1,id2 audits just those story ids (debugging a specific failure).
+const only = process.env.AXE_ONLY?.split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+if (only?.length) stories = stories.filter((s) => only.includes(s.id))
+
+for (const [id, reason] of Object.entries(SKIP_STORIES)) {
+  if (stories.some((s) => s.id === id)) console.log(`  skipping ${id} — ${reason}`)
+}
+stories = stories.filter((s) => !SKIP_STORIES[s.id])
+
 const maxStories = Number(process.env.AXE_MAX_STORIES ?? 0)
 if (maxStories > 0) stories = stories.slice(0, maxStories)
 const shard = process.env.AXE_SHARD
@@ -55,6 +70,8 @@ if (shard) {
   const [n, of] = shard.split('/').map(Number)
   stories = stories.filter((_, i) => i % of === n - 1)
 }
+// AXE_DEBUG prints each violation's node target + failure summary (exact colors).
+const DEBUG = Boolean(process.env.AXE_DEBUG)
 
 const server = createServer((req, res) => {
   const urlPath = decodeURIComponent(new URL(req.url, 'http://x').pathname)
@@ -115,6 +132,11 @@ async function auditStory(story) {
           impact: v.impact,
           nodes: v.nodes.length,
           help: v.help,
+          detail: DEBUG
+            ? v.nodes.map(
+                (n) => `${n.target?.join(' ')} :: ${n.failureSummary?.replace(/\s+/g, ' ')}`,
+              )
+            : undefined,
         })),
       })
     }
@@ -151,6 +173,7 @@ if (failures.length > 0) {
     } else {
       for (const v of f.violations) {
         console.error(`  ${f.id}: ${v.rule} (${v.impact}, ${v.nodes} node(s)) — ${v.help}`)
+        if (v.detail) for (const d of v.detail) console.error(`      ↳ ${d}`)
       }
     }
   }

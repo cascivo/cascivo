@@ -4395,7 +4395,7 @@
       ],
       "fileHashes": {
         "data-table.tsx": "sha256-2be25fc227a0a2826fbc259650f4ae368308d8e81072ecebfc1181e5a87d6d52",
-        "data-table.module.css": "sha256-3ff137a8ed3199760908df35225019ee3c5c6b24436af93720070ba0f6c24bf2"
+        "data-table.module.css": "sha256-b8ee42c3de6fce6c038186833ea60cccf5da7460cc223d06c8fd1df43e8cb788"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -15535,7 +15535,7 @@
       ],
       "fileHashes": {
         "tags-input.tsx": "sha256-5872dae820a7f99b232d5342f0adc7db7eb9d9ce75a5f0f48c85575d6da2bf5b",
-        "tags-input.module.css": "sha256-fb78c39405f9fa2ac03a361b661ddb8fb471d07464bc4a4fc58ffbdb4fbf2e3e"
+        "tags-input.module.css": "sha256-b27b6bf44d512c8b960b3fdd07e42e625ba951c49357ec25abf06dbd5f7172cc"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
