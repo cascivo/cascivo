@@ -96,7 +96,13 @@ const browser = await chromium.launch(
 const failures = []
 let done = 0
 
-async function auditStory(story) {
+// @storybook/addon-a11y injects its own axe-core into the preview iframe and
+// auto-runs it. That races AxeBuilder's injected copy: a stale global gives
+// "unknown rule" version mismatches, and an in-flight addon run gives "Axe is
+// already running". Both are transient — retry the story on a fresh page.
+const TRANSIENT = /already running|unknown rule|mismatch/i
+
+async function analyzeStory(story) {
   const context = await browser.newContext()
   const page = await context.newPage()
   try {
@@ -104,11 +110,9 @@ async function auditStory(story) {
       waitUntil: 'networkidle',
       timeout: 30_000,
     })
-    // Give signal-driven mount effects a beat to settle.
+    // Give signal-driven mount effects a beat to settle, then let any addon axe
+    // run finish before removing its global so AxeBuilder starts from a clean slate.
     await page.waitForTimeout(150)
-    // @storybook/addon-a11y bundles its own axe-core into the preview iframe and
-    // parks it on window.axe. AxeBuilder injects its own copy; a stale global
-    // from the addon triggers "unknown rule" version-mismatch errors. Start clean.
     await page.evaluate(() => {
       delete window.axe
     })
@@ -117,12 +121,32 @@ async function auditStory(story) {
     let builder = new AxeBuilder({ page }).withTags(TAGS)
     const excludedRules = RULE_EXCEPTIONS[story.id]
     if (excludedRules) builder = builder.disableRules(excludedRules)
-    const results = await Promise.race([
+    return await Promise.race([
       builder.analyze(),
       new Promise((_, reject) =>
         setTimeout(() => reject(new Error('axe analyze timed out (45s)')), 45_000),
       ),
     ])
+  } finally {
+    await context.close()
+  }
+}
+
+async function auditStory(story) {
+  try {
+    let results
+    for (let attempt = 1; ; attempt++) {
+      try {
+        results = await analyzeStory(story)
+        break
+      } catch (e) {
+        if (TRANSIENT.test(String(e)) && attempt < 3) {
+          await new Promise((r) => setTimeout(r, 250 * attempt))
+          continue
+        }
+        throw e
+      }
+    }
     if (results.violations.length > 0) {
       failures.push({
         id: story.id,
@@ -143,7 +167,6 @@ async function auditStory(story) {
   } catch (e) {
     failures.push({ id: story.id, title: story.title, error: String(e).slice(0, 200) })
   } finally {
-    await context.close()
     done++
     if (done % 50 === 0) console.log(`  ${done}/${stories.length} stories audited…`)
   }
