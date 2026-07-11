@@ -32,14 +32,18 @@ export function Avatar({
   useSignals()
   const [state, send] = useMachine(machine)
   const showImage = Boolean(src) && state.value !== 'error'
+  // Only expose role="img" when there's a name for it. A nameless avatar (no
+  // alt, no fallback — e.g. a src that 404s in a static build) becomes
+  // decorative instead of an unlabeled image (role-img-alt).
+  const label = alt || fallback
 
   return (
     <span
       data-size={size}
       data-status={status}
       className={cn(styles['avatar'], className)}
-      role={showImage ? undefined : 'img'}
-      aria-label={showImage ? undefined : alt || fallback}
+      role={showImage || !label ? undefined : 'img'}
+      aria-label={showImage ? undefined : label || undefined}
       {...props}
     >
       {showImage ? (

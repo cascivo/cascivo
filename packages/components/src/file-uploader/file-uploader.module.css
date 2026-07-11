@@ -92,7 +92,7 @@
   }
 
   .glyph-complete {
-    color: var(--cascivo-color-success);
+    color: var(--cascivo-color-success-foreground);
   }
 
   .glyph-error {

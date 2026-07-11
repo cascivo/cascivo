@@ -160,7 +160,6 @@ export function Heatmap({
                   fillOpacity={visible ? 1 : 0.12}
                   stroke="var(--cascivo-surface-base)"
                   strokeWidth={1}
-                  aria-label={`${d.x}, ${d.y}: ${d.value}`}
                 />
               )
             })}

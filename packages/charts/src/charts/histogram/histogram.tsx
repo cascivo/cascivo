@@ -130,7 +130,6 @@ export function Histogram({
                   height={Math.max(0, rh)}
                   fill="var(--cascivo-chart-1)"
                   opacity={0.85}
-                  aria-label={`${b.x0.toFixed(1)}–${b.x1.toFixed(1)}: ${b.count}`}
                 />
               )
             })}

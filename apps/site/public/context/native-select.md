@@ -75,7 +75,7 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 ### Option children
 
 ```jsx
-<NativeSelect size="sm" defaultValue="light">
+<NativeSelect size="sm" defaultValue="light" aria-label="Theme">
   <option value="light">Light</option>
   <option value="dark">Dark</option>
 </NativeSelect>

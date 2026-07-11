@@ -203,7 +203,6 @@ export function Radar({
                   fillOpacity={0.15}
                   stroke={color}
                   strokeWidth={2}
-                  aria-label={`${s.label}: ${s.values.join(', ')}`}
                 />
               )
             })}

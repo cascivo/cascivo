@@ -23,6 +23,7 @@ export interface DateRangePreset {
 }
 
 export interface DateRangePickerLabels {
+  label?: string
   placeholder?: string
   start?: string
   end?: string
@@ -231,6 +232,7 @@ export function DateRangePicker({
         role="combobox"
         aria-expanded={open.value}
         aria-haspopup="dialog"
+        aria-label={labels?.label ?? t(builtin.dateRangePicker.label)}
         className={styles['trigger']}
         onClick={open.value ? closePanel : openPanel}
       >

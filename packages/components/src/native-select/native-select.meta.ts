@@ -100,7 +100,7 @@ export const meta: ComponentMeta = {
     },
     {
       title: 'Option children',
-      code: `<NativeSelect size="sm" defaultValue="light">
+      code: `<NativeSelect size="sm" defaultValue="light" aria-label="Theme">
   <option value="light">Light</option>
   <option value="dark">Dark</option>
 </NativeSelect>`,

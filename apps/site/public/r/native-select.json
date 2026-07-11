@@ -107,7 +107,7 @@
       },
       {
         "title": "Option children",
-        "code": "<NativeSelect size=\"sm\" defaultValue=\"light\">\n  <option value=\"light\">Light</option>\n  <option value=\"dark\">Dark</option>\n</NativeSelect>"
+        "code": "<NativeSelect size=\"sm\" defaultValue=\"light\" aria-label=\"Theme\">\n  <option value=\"light\">Light</option>\n  <option value=\"dark\">Dark</option>\n</NativeSelect>"
       },
       {
         "title": "Invalid",

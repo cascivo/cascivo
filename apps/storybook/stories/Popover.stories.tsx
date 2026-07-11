@@ -14,9 +14,7 @@ export const Primary: Story = {}
 export const Default: Story = {
   render: () => (
     <Popover>
-      <PopoverTrigger>
-        <Button variant="secondary">Open popover</Button>
-      </PopoverTrigger>
+      <PopoverTrigger>Open popover</PopoverTrigger>
       <PopoverContent>
         <p style={{ margin: 0 }}>This is a popover using CSS Anchor Positioning.</p>
       </PopoverContent>
@@ -30,9 +28,7 @@ function ControlledPopover() {
     <div>
       <Button onClick={() => setOpen(!open)}>Toggle (controlled)</Button>
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger>
-          <Button variant="ghost">Trigger</Button>
-        </PopoverTrigger>
+        <PopoverTrigger>Trigger</PopoverTrigger>
         <PopoverContent>
           <p style={{ margin: 0 }}>Controlled popover content.</p>
         </PopoverContent>
@@ -46,9 +42,7 @@ export const Controlled: Story = { render: () => <ControlledPopover /> }
 export const Accessibility: Story = {
   render: () => (
     <Popover>
-      <PopoverTrigger>
-        <Button variant="secondary">Open popover</Button>
-      </PopoverTrigger>
+      <PopoverTrigger>Open popover</PopoverTrigger>
       <PopoverContent>
         <p style={{ margin: 0 }}>Accessible popover content.</p>
       </PopoverContent>

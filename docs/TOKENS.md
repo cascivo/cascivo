@@ -60,7 +60,7 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-chart-6`** | `oklch(0.58 0.16 30)` |  |
 | **`--cascivo-chart-7`** | `oklch(0.62 0.12 350)` |  |
 | **`--cascivo-chart-8`** | `oklch(0.5 0.12 200)` |  |
-| **`--cascivo-chart-axis`** | `var(--cascivo-gray-400)` |  |
+| **`--cascivo-chart-axis`** | `oklch(0.5 0.016 264)` |  |
 | **`--cascivo-chart-grid`** | `var(--cascivo-gray-200)` |  |
 | **`--cascivo-color-accent`** | `oklch(0.52 0.2 250)` |  |
 | **`--cascivo-color-accent-active`** | `var(--cascivo-blue-800)` |  |
@@ -84,9 +84,10 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-color-error-content`** | `oklch(1 0 0)` |  |
 | **`--cascivo-color-focus-ring`** | `var(--cascivo-blue-500)` |  |
 | **`--cascivo-color-foreground`** | `oklch(0.145 0.005 264)` |  |
-| `--cascivo-color-foreground-muted` | `oklch(0.554 0.018 264)` | alias of `--cascivo-color-text-muted` |
+| `--cascivo-color-foreground-muted` | `oklch(0.5 0.018 264)` | alias of `--cascivo-color-text-muted` |
 | **`--cascivo-color-info`** | `var(--cascivo-blue-600)` |  |
 | **`--cascivo-color-info-content`** | `oklch(1 0 0)` |  |
+| **`--cascivo-color-info-foreground`** | `oklch(0.45 0.19 250)` |  |
 | **`--cascivo-color-info-subtle`** | `var(--cascivo-blue-50)` |  |
 | **`--cascivo-color-primary`** | `oklch(0.205 0 0)` |  |
 | **`--cascivo-color-primary-active`** | `oklch(0.32 0 0)` |  |
@@ -106,7 +107,7 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-color-surface-overlay`** | `var(--cascivo-color-background)` |  |
 | **`--cascivo-color-surface-raised`** | `var(--cascivo-color-surface)` |  |
 | `--cascivo-color-text` | `var(--cascivo-color-foreground)` | alias of `--cascivo-color-foreground` |
-| **`--cascivo-color-text-muted`** | `var(--cascivo-gray-400)` |  |
+| **`--cascivo-color-text-muted`** | `oklch(0.5 0.016 264)` |  |
 | **`--cascivo-color-text-on-accent`** | `oklch(1 0 0)` |  |
 | **`--cascivo-color-text-on-destructive`** | `oklch(1 0 0)` |  |
 | **`--cascivo-color-text-subtle`** | `var(--cascivo-gray-600)` |  |

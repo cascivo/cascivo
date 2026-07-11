@@ -29,22 +29,22 @@
 
     &[data-variant='info'] {
       background-color: var(--cascivo-color-info-subtle);
-      color: var(--cascivo-color-info);
+      color: var(--cascivo-color-info-foreground);
     }
 
     &[data-variant='success'] {
       background-color: var(--cascivo-color-success-subtle);
-      color: var(--cascivo-color-success);
+      color: var(--cascivo-color-success-foreground);
     }
 
     &[data-variant='warning'] {
       background-color: var(--cascivo-color-warning-subtle);
-      color: var(--cascivo-color-warning);
+      color: var(--cascivo-color-warning-foreground);
     }
 
     &[data-variant='error'] {
       background-color: var(--cascivo-color-destructive-subtle);
-      color: var(--cascivo-color-destructive);
+      color: var(--cascivo-color-destructive-foreground);
     }
   }
 

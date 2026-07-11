@@ -48,6 +48,7 @@
   }
 
   .divider {
+    display: block;
     block-size: 0;
     margin-block: var(--cascivo-space-2);
     border-block-start: 1px solid var(--cascivo-color-border);

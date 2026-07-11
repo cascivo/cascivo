@@ -1,6 +1,6 @@
 {
   "version": "0.4.1",
-  "generatedAt": "2026-07-09",
+  "generatedAt": "2026-07-11",
   "components": [
     {
       "name": "accordion",
@@ -297,7 +297,7 @@
       ],
       "fileHashes": {
         "alert.tsx": "sha256-5e94a1c69e53ba5c0634b710ec52000a007ea15330b78031585db2169b8866ff",
-        "alert.module.css": "sha256-edd0e443ac88fb62e05f55013e5c89996ba2ab2dbd477c7d755f65c9f62b690c"
+        "alert.module.css": "sha256-10072baa13db3ed9408bf6d163c3785a3544c91dbd3e77388599fc03e3cc2621"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -834,7 +834,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.module.css"
       ],
       "fileHashes": {
-        "avatar.tsx": "sha256-1d6edb589b5381d5ef6e20a703e733e3b7f8edb3a605cf81e71b35d0113f38fb",
+        "avatar.tsx": "sha256-c7ffd5cc74dd093164877973879d414612d82aff00e1329a53a2d15be27b6893",
         "avatar.module.css": "sha256-e0f5b3e477d8a6b541293d9966e530c235ddb3df57fabf55955c17f62847d13f"
       },
       "dependencies": ["@cascivo/core"],
@@ -3374,7 +3374,7 @@
       ],
       "fileHashes": {
         "combobox.tsx": "sha256-88b597e7b9a77b69ed676bf958b14235506cff979db567c75a3008543186a3b6",
-        "combobox.module.css": "sha256-52fa79ee3757a937b5b7bead3064db8435c0a23f990a176f6ecc9c33ba395324"
+        "combobox.module.css": "sha256-42d3d49f6069242254d52d7334f7c3ec25f901c341112aa9c9c6736193870930"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -4644,7 +4644,7 @@
       ],
       "fileHashes": {
         "date-picker.tsx": "sha256-8062c224f11a2efe8aa3e239572c338a63fb1670bb08ba80a04e757c3bf627c2",
-        "date-picker.module.css": "sha256-8995d3ee9ec5e2d70e5232adf4feb90e14170aa499c4cfbb84e8914bd37441ae"
+        "date-picker.module.css": "sha256-01d78074b9b1f4f729b370afac818cf930a65207ea2a11f7d40ec260062d74a8"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -4837,7 +4837,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
       ],
       "fileHashes": {
-        "date-range-picker.tsx": "sha256-09b6d53bf647c363010966397a6b4225a712c101c8078c86d3cbb83ac8b64526",
+        "date-range-picker.tsx": "sha256-3c49c670601312a6a366b1eeeba44b186eadb59e436682a33e29be7bd2d6825b",
         "date-range-picker.module.css": "sha256-c9fa6b5cf1ba86f23eb53b47bdf871c8ae3c86e730df0469df914bd9c11d3942"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -6066,7 +6066,7 @@
       ],
       "fileHashes": {
         "file-uploader.tsx": "sha256-a89cdcddd09175cbfcdf88fc70e29068bc3f55fda5949df7cccc09259b5c11ed",
-        "file-uploader.module.css": "sha256-3d108798167bdd5f50257a116b48f6cd488a17d4321654cb95efcf94900d4ea2"
+        "file-uploader.module.css": "sha256-ddbc217d60c431a7ac0ddb841f9b58f8f622fdab22717cdea179bfd22e3dda10"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -8593,7 +8593,7 @@
       ],
       "fileHashes": {
         "log-viewer.tsx": "sha256-23b76bd246d264e684f9c677d6505f8802d89d1bac2a280fd9f29012a6e98ee3",
-        "log-viewer.module.css": "sha256-93dbcf0053622f46a1cd9db906e10ca9583630be54a2a58ecc6e59c9f35257e6"
+        "log-viewer.module.css": "sha256-b467bdb2f433578d52ead2852e25449280fb840f0a8a599e364ba57f081453b2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -8767,7 +8767,7 @@
       ],
       "fileHashes": {
         "menu.tsx": "sha256-9b928ae242a5accefba261a64b5ce326d2b402c3aec492a66fca09f1a21ceee7",
-        "menu.module.css": "sha256-821ed4f3f24f3b931ea2d307228fbaf67208b04ca8ea43714c75e0d890a3fb8c"
+        "menu.module.css": "sha256-08a920e868083bccbe2717b8c00e0fd78cb869b70a2a2300751e3a972f7c7d57"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -9340,7 +9340,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.module.css"
       ],
       "fileHashes": {
-        "multi-select.tsx": "sha256-ec473f3038028d9fa04742bbcd27298877c048c71ba12f9d87557973edead429",
+        "multi-select.tsx": "sha256-178b387a3a0f6b4783143cc155572d398cb752d59ae01b53b3a66949d7453cfa",
         "multi-select.module.css": "sha256-02e5301590d519bdc8bd27ebd2d3dabdce40bfc512828cfaf16c13a1044c9244"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9591,7 +9591,7 @@
           },
           {
             "title": "Option children",
-            "code": "<NativeSelect size=\"sm\" defaultValue=\"light\">\n  <option value=\"light\">Light</option>\n  <option value=\"dark\">Dark</option>\n</NativeSelect>"
+            "code": "<NativeSelect size=\"sm\" defaultValue=\"light\" aria-label=\"Theme\">\n  <option value=\"light\">Light</option>\n  <option value=\"dark\">Dark</option>\n</NativeSelect>"
           },
           {
             "title": "Invalid",
@@ -10599,7 +10599,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/password-input.module.css"
       ],
       "fileHashes": {
-        "password-input.tsx": "sha256-51cdb00242ad51af9142abd9b3d0cae7e3fdf1ac758ed1767afd0ffc33d66cb5",
+        "password-input.tsx": "sha256-42015863a0820d48f3235c2d9b72d895acd8ec7f8ea57b93a0a75e480f096cd2",
         "password-input.module.css": "sha256-15a89bfcbc2ec38cc026f052e7709d8d65ff2617cc6f3f764f66d81d44531ac7"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10753,7 +10753,7 @@
         "popover.tsx": "sha256-17556dafe67463be072edbf723ac64579ae160f9080239d57e5616764dae8e27",
         "index.ts": "sha256-2e50daeeb9dfa03e21cd5e7b890e55fc9db4054df101df845da6fa00ee285822",
         "use-popover.ts": "sha256-de9b13776d77ba273047042cb33aefd5e7220cf158b64aeae8d21132b80d8d02",
-        "popover.module.css": "sha256-e513ab4270e86c7cc0cb0fbe27518070ffc06be160e8ab8a8ae564ca8010c930"
+        "popover.module.css": "sha256-cd6827d53118b367cb7653d1376894ea7ccdd3e10bccfdc8296ddf779f191eb1"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -11812,7 +11812,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.module.css"
       ],
       "fileHashes": {
-        "radial-progress.tsx": "sha256-504b3a33e368d8f532984490754450ab95391dcdcf21bee89e1814fa32e00868",
+        "radial-progress.tsx": "sha256-3dd3cfb939cd5df0d5ed80e2dcb95e7796e2f823685c1a02815e5db2947dda61",
         "radial-progress.module.css": "sha256-14b34c799619dbe66ace841bb48cd9bdbb90b8976601b3ab45aa89c8b1f5fdc4"
       },
       "dependencies": [],
@@ -14370,7 +14370,7 @@
       ],
       "fileHashes": {
         "stat.tsx": "sha256-1c29bccb6a1371646b3cee38579f2e6c566153ec851878cf942947c8fbbb8a5b",
-        "stat.module.css": "sha256-64addbc635064b882e59e871f12345747752869aa3259d07b6a51531c4264283"
+        "stat.module.css": "sha256-5f229c57760e825277c4411df330e9567b235d1af422e8f54fb94abf9db9ba1e"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -14623,7 +14623,7 @@
       ],
       "fileHashes": {
         "steps.tsx": "sha256-ac56747eae8582b512ecfb754dc7f619d7b837c7f9f4dce96cceb3ad18b5ce4b",
-        "steps.module.css": "sha256-4d7bf2c9662cded823daf8887bcd199095d45d2ca95aea430bc7a928982cddaf"
+        "steps.module.css": "sha256-eb38a365985624e1c7ae566bc6293c5fd14a71bf9819e466102a0bc5f4044c73"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -15168,9 +15168,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-00287d3e0e1c237be6f6b7b04e78dee0753d865639e9e5186cc1ebee18a2457e",
+        "switcher.tsx": "sha256-424a80a12116ab1a4abb7631c1371a4aa80e3e3a53b65cd5086bd40d6b3f03c6",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
-        "switcher.module.css": "sha256-767671854de81fafe3dca885b1689729896b6d2b011d484bfcb2eedf302f74f3"
+        "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -15394,7 +15394,7 @@
       ],
       "fileHashes": {
         "tag.tsx": "sha256-b979d3748b4e0924f633f3339aa961a6e0ca1ca83f705e252a37b63c13d105c4",
-        "tag.module.css": "sha256-155c454c1674ccb136c05a4dc0b215579da28f1f11d3bf29f7c517bb8f1e2ea9"
+        "tag.module.css": "sha256-3d745266aa1b7b4cafa28646918b2374dd2dc850a6bd1700284a9af12407f91f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -15534,7 +15534,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.module.css"
       ],
       "fileHashes": {
-        "tags-input.tsx": "sha256-81670ab8f89f7ef7bfec7547c7cb46503c66e67beb8c2fe2607eb525c3eedb40",
+        "tags-input.tsx": "sha256-5872dae820a7f99b232d5342f0adc7db7eb9d9ce75a5f0f48c85575d6da2bf5b",
         "tags-input.module.css": "sha256-fb78c39405f9fa2ac03a361b661ddb8fb471d07464bc4a4fc58ffbdb4fbf2e3e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],

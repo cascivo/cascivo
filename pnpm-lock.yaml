@@ -100,6 +100,7 @@ catalogs:
 overrides:
   vite: npm:@voidzero-dev/vite-plus-core@0.2.1
   vitest: 4.1.9
+  axe-core: 4.12.0
 
 importers:
 
@@ -5014,10 +5015,6 @@ packages:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
 
-  axe-core@4.11.4:
-    resolution: {integrity: sha512-KunSNx+TVpkAw/6ULfhnx+HWRecjqZGTOyquAoWHYLRSdK1tB5Ihce1ZW+UY3fj33bYAFWPu7W/GRSmmrCGuxA==}
-    engines: {node: '>=4'}
-
   axe-core@4.12.0:
     resolution: {integrity: sha512-FTavr/7Ba0IptwGOPxnQvdyW2tAsdLBMTBXz7rKH6xJ2skpyxpBxyHkDdBs4lf69yRqYpkqCdfhnwS8YULGOmg==}
     engines: {node: '>=4'}
@@ -7923,12 +7920,12 @@ snapshots:
 
   '@axe-core/playwright@4.11.3(playwright-core@1.60.0)':
     dependencies:
-      axe-core: 4.11.4
+      axe-core: 4.12.0
       playwright-core: 1.60.0
 
   '@axe-core/playwright@4.11.3(playwright-core@1.61.0)':
     dependencies:
-      axe-core: 4.11.4
+      axe-core: 4.12.0
       playwright-core: 1.61.0
 
   '@babel/code-frame@7.29.7':
@@ -11000,8 +10997,6 @@ snapshots:
   ast-types@0.16.1:
     dependencies:
       tslib: 2.8.1
-
-  axe-core@4.11.4: {}
 
   axe-core@4.12.0: {}
 

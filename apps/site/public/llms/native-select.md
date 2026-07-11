@@ -66,7 +66,7 @@ import { NativeSelect } from '@cascivo/react'
 ### Option children
 
 ```tsx
-<NativeSelect size="sm" defaultValue="light">
+<NativeSelect size="sm" defaultValue="light" aria-label="Theme">
   <option value="light">Light</option>
   <option value="dark">Dark</option>
 </NativeSelect>

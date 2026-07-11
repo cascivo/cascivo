@@ -1,6 +1,11 @@
 @layer cascivo.component {
   .trigger {
     /* Trigger inherits button styles from the consuming component */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 1.5rem; /* 24px — WCAG 2.5.8 target size */
+    min-inline-size: 1.5rem;
   }
 
   .content {

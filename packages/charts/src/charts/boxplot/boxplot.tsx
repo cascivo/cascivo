@@ -151,7 +151,7 @@ export function Boxplot({
               const yMaxV = yScale.map(s.stats.max)
 
               return (
-                <g key={s.id} aria-label={`${s.label}: median ${s.stats.median.toFixed(2)}`}>
+                <g key={s.id}>
                   {/* Upper whisker: from q3 to max */}
                   <line x1={cx} y1={yQ3} x2={cx} y2={yMaxV} stroke={color} strokeWidth={1.5} />
                   {/* Lower whisker: from q1 to min */}
@@ -203,7 +203,6 @@ export function Boxplot({
                       fill="none"
                       stroke={color}
                       strokeWidth={1.5}
-                      aria-label={`Outlier: ${o.toFixed(2)}`}
                     />
                   ))}
                 </g>

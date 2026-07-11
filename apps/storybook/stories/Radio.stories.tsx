@@ -8,7 +8,7 @@ const meta: Meta<typeof Radio> = {
 export default meta
 type Story = StoryObj<typeof Radio>
 
-export const Primary: Story = {}
+export const Primary: Story = { args: { value: 'pro', label: 'Pro' } }
 
 export const Group: Story = {
   render: () => (

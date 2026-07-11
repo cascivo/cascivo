@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-09",
+  "generatedAt": "2026-07-11",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {

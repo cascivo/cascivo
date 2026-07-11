@@ -21,6 +21,14 @@ const STATIC_DIR = join(ROOT, 'storybook-static')
 const CONCURRENCY = 4
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
+// Stories whose DOM is too large for a specific rule to finish inside the
+// per-story budget. Everything else still runs against the full tag set. The
+// large-document editor story holds 50k lines in a textarea + highlight <pre>;
+// color-contrast over that DOM blows the 45s guard below.
+const RULE_EXCEPTIONS = {
+  'editor-codeeditor--large-document': ['color-contrast'],
+}
+
 const MIME = {
   '.html': 'text/html',
   '.js': 'text/javascript',
@@ -81,10 +89,19 @@ async function auditStory(story) {
     })
     // Give signal-driven mount effects a beat to settle.
     await page.waitForTimeout(150)
+    // @storybook/addon-a11y bundles its own axe-core into the preview iframe and
+    // parks it on window.axe. AxeBuilder injects its own copy; a stale global
+    // from the addon triggers "unknown rule" version-mismatch errors. Start clean.
+    await page.evaluate(() => {
+      delete window.axe
+    })
     // analyze() has no internal timeout and can hang on animation-heavy
     // stories — bound it so one story can never stall the sweep.
+    let builder = new AxeBuilder({ page }).withTags(TAGS)
+    const excludedRules = RULE_EXCEPTIONS[story.id]
+    if (excludedRules) builder = builder.disableRules(excludedRules)
     const results = await Promise.race([
-      new AxeBuilder({ page }).withTags(TAGS).analyze(),
+      builder.analyze(),
       new Promise((_, reject) =>
         setTimeout(() => reject(new Error('axe analyze timed out (45s)')), 45_000),
       ),

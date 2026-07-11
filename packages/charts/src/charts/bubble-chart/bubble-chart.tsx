@@ -165,10 +165,9 @@ export function BubbleChart({
                 >
                   {s.data.map((d, di) => {
                     const shape = typeof glyph === 'function' ? glyph(d, s.name) : glyph
-                    const label = `${s.name}: x=${d.x}, y=${d.y}, size=${d.size}`
                     if (shape && shape !== 'circle') {
                       return (
-                        <g key={di} aria-label={label}>
+                        <g key={di}>
                           <Glyph
                             shape={shape}
                             x={xScale.map(d.x)}
@@ -192,7 +191,6 @@ export function BubbleChart({
                         fillOpacity={0.6}
                         stroke={color}
                         strokeWidth={1}
-                        aria-label={label}
                       />
                     )
                   })}

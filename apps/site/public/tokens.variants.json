@@ -1,6 +1,6 @@
 {
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/*.css"],
-  "generatedAt": "2026-07-09",
+  "generatedAt": "2026-07-11",
   "themes": [
     "arcade",
     "brutalist",
@@ -48,6 +48,7 @@
     "info": {
       "base": "--cascivo-color-info",
       "content": "--cascivo-color-info-content",
+      "foreground": "--cascivo-color-info-foreground",
       "subtle": "--cascivo-color-info-subtle"
     },
     "primary": {
@@ -287,7 +288,7 @@
         "cyberpunk": "oklch(0.65 0.06 300)",
         "dark": "oklch(0.707 0.015 264)",
         "flat": "oklch(0.55 0 0)",
-        "light": "oklch(0.707 0.015 264)",
+        "light": "oklch(0.5 0.016 264)",
         "midnight": "oklch(0.68 0.02 285)",
         "minimal": "oklch(0.65 0.012 80)",
         "pastel": "oklch(0.7 0.02 325)",
@@ -811,7 +812,7 @@
         "cyberpunk": "oklch(0.7 0.05 300)",
         "dark": "oklch(0.707 0.015 264)",
         "flat": "oklch(0.4 0 0)",
-        "light": "oklch(0.554 0.018 264)",
+        "light": "oklch(0.5 0.018 264)",
         "midnight": "oklch(0.68 0.02 285)",
         "minimal": "oklch(0.55 0.015 80)",
         "pastel": "oklch(0.58 0.025 325)",
@@ -865,6 +866,28 @@
       },
       "role": "info",
       "slot": "content"
+    },
+    {
+      "name": "--cascivo-color-info-foreground",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.5 0.2 250)",
+        "brutalist": "oklch(0.45 0.2 250)",
+        "corporate": "oklch(0.45 0.17 255)",
+        "cyberpunk": "oklch(0.82 0.16 200)",
+        "dark": "oklch(0.75 0.16 250)",
+        "flat": "oklch(0.45 0.19 250)",
+        "light": "oklch(0.45 0.19 250)",
+        "midnight": "oklch(0.78 0.16 290)",
+        "minimal": "oklch(0.45 0.16 250)",
+        "pastel": "oklch(0.5 0.16 350)",
+        "tailwind": null,
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.45 0.19 250)"
+      },
+      "role": "info",
+      "slot": "foreground"
     },
     {
       "name": "--cascivo-color-info-subtle",
@@ -1295,7 +1318,7 @@
         "cyberpunk": "oklch(0.55 0.05 300)",
         "dark": "oklch(0.554 0.018 264)",
         "flat": "oklch(0.55 0 0)",
-        "light": "oklch(0.707 0.015 264)",
+        "light": "oklch(0.5 0.016 264)",
         "midnight": "oklch(0.52 0.02 280)",
         "minimal": "oklch(0.65 0.012 80)",
         "pastel": "oklch(0.7 0.02 325)",

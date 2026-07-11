@@ -78,6 +78,7 @@
     --cascivo-color-success-foreground: oklch(0.82 0.2 150);
     --cascivo-color-warning-foreground: oklch(0.82 0.17 75);
     --cascivo-color-destructive-foreground: oklch(0.78 0.18 18);
+    --cascivo-color-info-foreground: oklch(0.82 0.16 200);
 
     /* ── Radius — zero ───────────────────────────────── */
     --cascivo-radius-base: 0;
