@@ -124,6 +124,28 @@ fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when
 - User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks
 - WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested
 
+## High-throughput / streaming data
+
+For live logs, build output, market ticks, or streamed tokens, do NOT rebuild an array per
+event (`arr = [...arr.slice(1), line]` is O(n) per line and thrashes rendering). Use the
+built-in primitives, which coalesce bursts to one render per frame:
+
+- `useStreamBuffer` / `createStreamBuffer` (`@cascivo/core`) — fixed-capacity O(1) ring buffer,
+  rAF-coalesced; a burst within one frame is a single signal write.
+- `useStreamSeries` / `bindStream` (`@cascivo/charts`) — feed a live source into a chart with
+  optional LTTB/min-max decimation so a fast stream never blows the rendered point count.
+- `LogViewer` (`@cascivo/react`) — virtualized console for high-frequency logs (100k-line buffer
+  stays responsive), ANSI parsing, auto-follow tail. Pairs with `createStreamBuffer`.
+
+## Feedback signals for agents
+
+cascivo ships no runtime telemetry (copy-paste model — you own the code; no phone-home). To
+see how components behave without adding tracking, read these machine-readable CI outputs:
+
+- Breaking/feature changes per package: https://docs.cascivo.com/breaking-changes.json
+- Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
+- Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
+
 ## Component index (192 components)
 
 ### chart

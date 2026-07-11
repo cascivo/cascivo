@@ -481,6 +481,48 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks')
   lines.push('- WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested')
   lines.push('')
+  lines.push('## High-throughput / streaming data')
+  lines.push('')
+  lines.push(
+    'For live logs, build output, market ticks, or streamed tokens, do NOT rebuild an array per',
+  )
+  lines.push(
+    'event (`arr = [...arr.slice(1), line]` is O(n) per line and thrashes rendering). Use the',
+  )
+  lines.push('built-in primitives, which coalesce bursts to one render per frame:')
+  lines.push('')
+  lines.push(
+    '- `useStreamBuffer` / `createStreamBuffer` (`@cascivo/core`) — fixed-capacity O(1) ring buffer,',
+  )
+  lines.push('  rAF-coalesced; a burst within one frame is a single signal write.')
+  lines.push(
+    '- `useStreamSeries` / `bindStream` (`@cascivo/charts`) — feed a live source into a chart with',
+  )
+  lines.push(
+    '  optional LTTB/min-max decimation so a fast stream never blows the rendered point count.',
+  )
+  lines.push(
+    '- `LogViewer` (`@cascivo/react`) — virtualized console for high-frequency logs (100k-line buffer',
+  )
+  lines.push(
+    '  stays responsive), ANSI parsing, auto-follow tail. Pairs with `createStreamBuffer`.',
+  )
+  lines.push('')
+  lines.push('## Feedback signals for agents')
+  lines.push('')
+  lines.push(
+    'cascivo ships no runtime telemetry (copy-paste model — you own the code; no phone-home). To',
+  )
+  lines.push(
+    'see how components behave without adding tracking, read these machine-readable CI outputs:',
+  )
+  lines.push('')
+  lines.push(`- Breaking/feature changes per package: ${DOCS}/breaking-changes.json`)
+  lines.push(
+    `- Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): ${REPO}/blob/main/apps/bench/results/results.json`,
+  )
+  lines.push(`- Accessibility conformance (axe sweep, AT matrix): ${REPO}/tree/main/docs/specs`)
+  lines.push('')
 
   // Sort deterministically, then group the index by category.
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
