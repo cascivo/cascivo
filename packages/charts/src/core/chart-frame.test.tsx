@@ -249,3 +249,19 @@ describe('ChartFrame keyboard navigation', () => {
     expect(getLiveRegion().textContent).toBe('')
   })
 })
+
+describe('ChartFrame fallback hiding', () => {
+  it('hides the accessible data-table fallback with inline styles (no stylesheet dependency)', () => {
+    render(
+      <ChartFrame title="Sales" height={200} fallback={<table data-testid="fb" />}>
+        {() => null}
+      </ChartFrame>,
+    )
+    const wrapper = screen.getByTestId('fb').parentElement as HTMLElement
+    // The wrapper must hide the table via inline style, so a consumer who forgets
+    // `@cascivo/charts/styles.css` still does not see the raw x/y table.
+    expect(wrapper.style.position).toBe('absolute')
+    expect(wrapper.style.clipPath).toBe('inset(50%)')
+    expect(wrapper.style.overflow).toBe('hidden')
+  })
+})

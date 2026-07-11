@@ -5,6 +5,8 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './header.module.css'
 
 export interface HeaderLink {
+  /** Stable React key. Provide when `href`/`label` may repeat (e.g. placeholder `#` links). */
+  id?: string
   label: string
   href: string
   active?: boolean
@@ -44,8 +46,8 @@ export function Header({
       {links && links.length > 0 && (
         <nav aria-label={navLabel} className={styles['nav']}>
           <ul className={styles['list']}>
-            {links.map((link) => (
-              <li key={link.href}>
+            {links.map((link, i) => (
+              <li key={link.id ?? `${i}-${link.href}`}>
                 <a
                   href={link.href}
                   aria-current={link.active ? 'page' : undefined}

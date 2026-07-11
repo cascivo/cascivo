@@ -119,3 +119,22 @@ describe('ShellHeader actions', () => {
     expect(onClick).toHaveBeenCalledOnce()
   })
 })
+
+describe('ShellHeader stable keys', () => {
+  it('does not warn about duplicate keys when nav links share an href placeholder', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    render(
+      <ShellHeader
+        brand={{ name: 'Acme' }}
+        nav={[
+          { label: 'Overview', href: '#', onClick: () => {} },
+          { label: 'Reports', href: '#', onClick: () => {} },
+          { label: 'Settings', href: '#', onClick: () => {} },
+        ]}
+      />,
+    )
+    const dupKeyWarning = spy.mock.calls.find((c) => String(c[0]).includes('same key'))
+    expect(dupKeyWarning).toBeUndefined()
+    spy.mockRestore()
+  })
+})

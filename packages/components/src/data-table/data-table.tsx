@@ -45,7 +45,7 @@ export interface DataTableProps<Row> {
   searchable?: boolean
   pagination?: { pageSize: number; pageSizeOptions?: number[] }
   selection?: { mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }
-  batchActions?: { label: string; onClick: (selectedIds: string[]) => void }[]
+  batchActions?: { id?: string; label: string; onClick: (selectedIds: string[]) => void }[]
   renderExpandedRow?: (row: Row) => ReactNode
   density?: 'compact' | 'normal' | 'relaxed'
   zebra?: boolean
@@ -347,9 +347,9 @@ export function DataTable<Row>({
         <div className={styles['batchBar']}>
           <span className={styles['batchCount']}>{l.itemsSelected(selectedIds.length)}</span>
           <div className={styles['batchActions']}>
-            {batchActions.map((action) => (
+            {batchActions.map((action, i) => (
               <Button
-                key={action.label}
+                key={action.id ?? `${i}-${action.label}`}
                 size="sm"
                 variant="secondary"
                 onClick={() => action.onClick(selectedIds)}
