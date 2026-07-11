@@ -9,6 +9,7 @@
   "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Gauge",
     "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",

@@ -9,6 +9,7 @@
   "tags": ["chart", "scatter", "plot", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "ScatterChart",
     "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",

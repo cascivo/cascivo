@@ -9,6 +9,7 @@
   "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Treemap",
     "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",

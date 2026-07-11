@@ -9,6 +9,7 @@
   "tags": ["chart", "bar", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "BarChart",
     "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",

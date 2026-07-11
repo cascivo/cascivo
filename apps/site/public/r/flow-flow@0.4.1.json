@@ -9,6 +9,7 @@
   "tags": ["flow", "graph", "declarative", "diagram", "ai-first"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "Flow",
     "description": "The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.",

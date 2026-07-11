@@ -61,3 +61,38 @@ describe('formatItem (component)', () => {
     expect(out).not.toContain('Template:')
   })
 })
+
+describe('formatItem (distribution channel)', () => {
+  const CHART: RegistryItem = {
+    schemaVersion: 2,
+    name: 'chart/area-chart',
+    type: 'chart',
+    description: 'Area chart',
+    version: '0.4.1',
+    files: [],
+    install: '@cascivo/charts',
+    styles: '@cascivo/charts/styles.css',
+    dependencies: ['@cascivo/charts'],
+    tags: ['chart'],
+  }
+
+  it('shows the npm package and required stylesheet for an npm-distributed item', () => {
+    const out = formatItem(CHART)
+    expect(out).toContain('Distribution: npm package — pnpm add @cascivo/charts')
+    expect(out).toContain("Stylesheet: import '@cascivo/charts/styles.css' (required)")
+  })
+
+  it('shows the copy-paste path for a plain component', () => {
+    const out = formatItem({
+      schemaVersion: 2,
+      name: 'button',
+      type: 'component',
+      description: 'Button',
+      version: '0.4.1',
+      files: [{ url: 'https://example.com/button.tsx' }],
+      dependencies: [],
+      tags: [],
+    })
+    expect(out).toContain('Distribution: copy-paste — npx cascivo add button')
+  })
+})

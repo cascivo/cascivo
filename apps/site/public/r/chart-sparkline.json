@@ -9,6 +9,7 @@
   "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Sparkline",
     "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",

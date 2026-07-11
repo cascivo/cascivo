@@ -9,6 +9,7 @@
   "tags": ["chart", "sankey", "flow", "network", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Sankey",
     "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",

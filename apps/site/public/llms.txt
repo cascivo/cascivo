@@ -65,6 +65,15 @@ matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
 `@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
 common mistake: the chart's screen-reader data-table fallback then renders visibly.
 
+## Versioning & compatibility
+
+Packages version independently (changesets) — a low number on one package does not mean the
+whole system is behind. The compatibility truth is per-entry: every registry entry carries a
+`peerVersions` floor (e.g. `{ "@cascivo/i18n": ">=0.2.1" }`) for the packages its copied source
+needs. Pin exact versions, and after adding components run `cascivo doctor --drift` to catch an
+installed peer that is older than a copied component needs. Watch https://docs.cascivo.com/breaking-changes.json
+(major + minor releases per package) to detect API drift before upgrading.
+
 ## Guides
 
 - Theming & branding: https://github.com/cascivo/cascivo/blob/main/docs/THEMING.md

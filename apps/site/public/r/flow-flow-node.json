@@ -9,6 +9,7 @@
   "tags": ["flow", "node", "draggable", "graph"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "FlowNode",
     "description": "An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.",

@@ -97,6 +97,7 @@ export function validateItem(raw: unknown): ValidationResult {
     'homepage',
     'files',
     'install',
+    'styles',
     'dependencies',
     'registryDependencies',
     'tags',
@@ -168,6 +169,7 @@ export function parseLegacyRegistry(raw: unknown): RegistryIndex {
       }
       if (typeof c['category'] === 'string') item.category = c['category']
       if (typeof c['install'] === 'string') item.install = c['install']
+      if (typeof c['styles'] === 'string') item.styles = c['styles']
       if (c['meta']) item.meta = c['meta'] as RegistryItem['meta']
       return item
     }),

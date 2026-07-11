@@ -9,6 +9,7 @@
   "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Candlestick",
     "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",

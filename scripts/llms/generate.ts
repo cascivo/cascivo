@@ -402,6 +402,25 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
   lines.push('')
+  lines.push('## Versioning & compatibility')
+  lines.push('')
+  lines.push(
+    'Packages version independently (changesets) — a low number on one package does not mean the',
+  )
+  lines.push(
+    'whole system is behind. The compatibility truth is per-entry: every registry entry carries a',
+  )
+  lines.push(
+    '`peerVersions` floor (e.g. `{ "@cascivo/i18n": ">=0.2.1" }`) for the packages its copied source',
+  )
+  lines.push(
+    'needs. Pin exact versions, and after adding components run `cascivo doctor --drift` to catch an',
+  )
+  lines.push(
+    `installed peer that is older than a copied component needs. Watch ${DOCS}/breaking-changes.json`,
+  )
+  lines.push('(major + minor releases per package) to detect API drift before upgrading.')
+  lines.push('')
   lines.push('## Guides')
   lines.push('')
   lines.push(`- Theming & branding: ${REPO}/blob/main/docs/THEMING.md`)

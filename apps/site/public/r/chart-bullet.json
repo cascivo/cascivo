@@ -9,6 +9,7 @@
   "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Bullet",
     "description": "Bullet chart with background range bands, measure bar, and target tick.",

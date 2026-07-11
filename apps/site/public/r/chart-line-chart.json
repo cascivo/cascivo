@@ -9,6 +9,7 @@
   "tags": ["chart", "line", "time-series", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "LineChart",
     "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",

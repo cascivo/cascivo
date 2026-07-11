@@ -81,6 +81,8 @@ export interface RegistryItem {
   homepage?: string
   files: RegistryFile[]
   install?: string
+  /** Stylesheet the npm package requires, e.g. `@cascivo/charts/styles.css`. */
+  styles?: string
   dependencies: string[]
   registryDependencies?: string[]
   tags: string[]
@@ -103,6 +105,7 @@ export interface LegacyRegistryEntry {
   version: string
   files: string[]
   install?: string
+  styles?: string
   dependencies: string[]
   tags: string[]
   meta?: unknown

@@ -2785,6 +2785,7 @@
       "tags": ["chart", "area", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "AreaChart",
         "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
@@ -3027,6 +3028,7 @@
       "tags": ["chart", "bar", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "BarChart",
         "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
@@ -3332,6 +3334,7 @@
       "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Boxplot",
         "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
@@ -3441,6 +3444,7 @@
       "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "BubbleChart",
         "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
@@ -3562,6 +3566,7 @@
       "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Bullet",
         "description": "Bullet chart with background range bands, measure bar, and target tick.",
@@ -3680,6 +3685,7 @@
       "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Calendar",
         "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
@@ -3803,6 +3809,7 @@
       "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Candlestick",
         "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
@@ -3972,6 +3979,7 @@
       "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "ComboChart",
         "description": "Combination bar + line chart on shared or dual y-axes.",
@@ -4101,6 +4109,7 @@
       "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Funnel",
         "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
@@ -4222,6 +4231,7 @@
       "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Gauge",
         "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
@@ -4362,6 +4372,7 @@
       "tags": ["chart", "heatmap", "matrix", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Heatmap",
         "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
@@ -4469,6 +4480,7 @@
       "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Histogram",
         "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
@@ -4581,6 +4593,7 @@
       "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Kpi",
         "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
@@ -4679,6 +4692,7 @@
       "tags": ["chart", "line", "time-series", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "LineChart",
         "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
@@ -4933,6 +4947,7 @@
       "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Meter",
         "description": "Progress meter in bar or gauge variant with threshold coloring.",
@@ -5040,6 +5055,7 @@
       "tags": ["chart", "pie", "donut", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "PieChart",
         "description": "Pie or donut chart with hover segments and optional legend.",
@@ -5280,6 +5296,7 @@
       "tags": ["chart", "polar", "rose", "radial", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Polar",
         "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
@@ -5420,6 +5437,7 @@
       "tags": ["chart", "radar", "spider", "polar", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Radar",
         "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
@@ -5536,6 +5554,7 @@
       "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "RadialBar",
         "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
@@ -5699,6 +5718,7 @@
       "tags": ["chart", "sankey", "flow", "network", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Sankey",
         "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
@@ -5819,6 +5839,7 @@
       "tags": ["chart", "scatter", "plot", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "ScatterChart",
         "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -6003,6 +6024,7 @@
       "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Sparkline",
         "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
@@ -6097,6 +6119,7 @@
       "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Stream",
         "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
@@ -6237,6 +6260,7 @@
       "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Sunburst",
         "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
@@ -6357,6 +6381,7 @@
       "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Treemap",
         "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
@@ -9431,6 +9456,7 @@
       "tags": ["editor", "code", "syntax-highlighting", "textarea", "inputs"],
       "category": "inputs",
       "install": "@cascivo/editor",
+      "styles": "@cascivo/editor/styles.css",
       "meta": {
         "name": "CodeEditor",
         "description": "Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.",
@@ -9660,6 +9686,7 @@
       "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],
       "category": "display",
       "install": "@cascivo/editor",
+      "styles": "@cascivo/editor/styles.css",
       "meta": {
         "name": "Highlight",
         "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",
@@ -10480,6 +10507,7 @@
       "tags": ["flow", "graph", "declarative", "diagram", "ai-first"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "Flow",
         "description": "The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.",
@@ -10651,6 +10679,7 @@
       "tags": ["flow", "background", "grid", "dots", "canvas"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowBackground",
         "description": "Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.",
@@ -10746,6 +10775,7 @@
       "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowCanvas",
         "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
@@ -10866,6 +10896,7 @@
       "tags": ["flow", "controls", "zoom", "chrome"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowControls",
         "description": "Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.",
@@ -10982,6 +11013,7 @@
       "tags": ["flow", "edge", "connector", "animated", "svg"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowEdge",
         "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
@@ -11130,6 +11162,7 @@
       "tags": ["flow", "handle", "port", "connect"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowHandle",
         "description": "A connection port on a node edge — where edges attach and interactive connect starts.",
@@ -11224,6 +11257,7 @@
       "tags": ["flow", "minimap", "overview", "chrome"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowMiniMap",
         "description": "A scaled SVG overview of the graph with a draggable viewport rectangle.",
@@ -11339,6 +11373,7 @@
       "tags": ["flow", "node", "draggable", "graph"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowNode",
         "description": "An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.",
@@ -11479,6 +11514,7 @@
       "tags": ["flow", "panel", "slot", "chrome"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowPanel",
         "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
@@ -11549,6 +11585,7 @@
       "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowStory",
         "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",

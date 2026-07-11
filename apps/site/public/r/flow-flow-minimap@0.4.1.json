@@ -9,6 +9,7 @@
   "tags": ["flow", "minimap", "overview", "chrome"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "FlowMiniMap",
     "description": "A scaled SVG overview of the graph with a draggable viewport rectangle.",
