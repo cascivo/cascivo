@@ -1,5 +1,16 @@
 # @cascivo/i18n
 
+## 0.2.2
+
+### Patch Changes
+
+- b49e0ba: Fixed red flags.
+- 1d7599a: Fix version issues
+- 6ee2f91: Experience fixes
+- Updated dependencies [b49e0ba]
+- Updated dependencies [6ee2f91]
+  - @cascivo/core@0.2.5
+
 ## 0.2.1
 
 ### Patch Changes

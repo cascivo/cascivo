@@ -28,14 +28,14 @@ import { Textarea } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                             | Required | Default    | Description                                                                    |
-| ---------- | -------------------------------- | -------- | ---------- | ------------------------------------------------------------------------------ |
-| `label`    | `string`                         | no       | —          | Text label for the control.                                                    |
-| `hint`     | `string`                         | no       | —          | Supplementary hint text shown with the control.                                |
-| `error`    | `string`                         | no       | —          | Error message shown when the value is invalid.                                 |
-| `rows`     | `number`                         | no       | `4`        | Number of visible text rows.                                                   |
-| `resize`   | `'none' \| 'vertical' \| 'both'` | no       | `vertical` | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both'). |
-| `disabled` | `boolean`                        | no       | `false`    | When true, disables the control and removes it from the tab order.             |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Text label for the control. |
+| `hint` | `string` | no | — | Supplementary hint text shown with the control. |
+| `error` | `string` | no | — | Error message shown when the value is invalid. |
+| `rows` | `number` | no | `4` | Number of visible text rows. |
+| `resize` | `'none' \| 'vertical' \| 'both'` | no | `vertical` | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both'). |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 

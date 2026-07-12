@@ -26,13 +26,13 @@ import { Header } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type                                                  | Required | Default | Description                                                    |
-| ----------- | ----------------------------------------------------- | -------- | ------- | -------------------------------------------------------------- |
-| `brand`     | `React.ReactNode`                                     | no       | —       | Product name or logo area, typically wraps a link              |
-| `links`     | `{ label: string; href: string; active?: boolean }[]` | no       | —       | Primary navigation links; active link gets aria-current="page" |
-| `actions`   | `React.ReactNode`                                     | no       | —       | Right-aligned slot for buttons or an avatar                    |
-| `sticky`    | `boolean`                                             | no       | `false` | When true, the header sticks to the top on scroll.             |
-| `className` | `string`                                              | no       | —       | Additional CSS class names merged onto the root element.       |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `brand` | `React.ReactNode` | no | — | Product name or logo area, typically wraps a link |
+| `links` | `{ label: string; href: string; active?: boolean }[]` | no | — | Primary navigation links; active link gets aria-current="page" |
+| `actions` | `React.ReactNode` | no | — | Right-aligned slot for buttons or an avatar |
+| `sticky` | `boolean` | no | `false` | When true, the header sticks to the top on scroll. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

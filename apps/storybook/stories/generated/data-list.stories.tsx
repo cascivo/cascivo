@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DataList } from '@cascivo/react'
 
 const meta: Meta = {
-  title: 'Display/DataList',
+  title: "Display/DataList",
 }
 export default meta
 type Story = StoryObj
 
 export const HorizontalDataList: Story = {
-  name: 'Horizontal data list',
+  name: "Horizontal data list",
   render: () => (
     <DataList
       items={[
@@ -21,7 +21,7 @@ export const HorizontalDataList: Story = {
 }
 
 export const VerticalWithDividers: Story = {
-  name: 'Vertical with dividers',
+  name: "Vertical with dividers",
   render: () => (
     <DataList
       orientation="vertical"
@@ -30,3 +30,4 @@ export const VerticalWithDividers: Story = {
     />
   ),
 }
+

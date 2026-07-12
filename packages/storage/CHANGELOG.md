@@ -1,5 +1,15 @@
 # @cascivo/storage
 
+## 0.1.8
+
+### Patch Changes
+
+- b49e0ba: Fixed red flags.
+- 6ee2f91: Experience fixes
+- Updated dependencies [b49e0ba]
+- Updated dependencies [6ee2f91]
+  - @cascivo/core@0.2.5
+
 ## 0.1.7
 
 ### Patch Changes

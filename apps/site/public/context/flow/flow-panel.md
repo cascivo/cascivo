@@ -21,11 +21,11 @@ A plain positioned container; semantics come from its children.
 
 ## Props
 
-| Name        | Type                                                                                              | Required | Default   | Description                                              |
-| ----------- | ------------------------------------------------------------------------------------------------- | -------- | --------- | -------------------------------------------------------- |
-| `position`  | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | No       | top-right | Position of the component.                               |
-| `children`  | `ReactNode`                                                                                       | No       | —         | Content rendered inside the component.                   |
-| `className` | `string`                                                                                          | No       | —         | Additional CSS class names merged onto the root element. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | No | top-right | Position of the component. |
+| `children` | `ReactNode` | No | — | Content rendered inside the component. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -36,10 +36,8 @@ A plain positioned container; semantics come from its children.
 ### A legend panel
 
 ```jsx
-;() => (
-  <div
-    style={{ position: 'relative', height: 160, border: '1px solid var(--cascivo-color-border)' }}
-  >
+() => (
+  <div style={{ position: 'relative', height: 160, border: '1px solid var(--cascivo-color-border)' }}>
     <FlowPanel position="top-right">Legend</FlowPanel>
   </div>
 )
@@ -47,8 +45,8 @@ A plain positioned container; semantics come from its children.
 
 ## Boundaries
 
-| Area     | Level    | Note                  |
-| -------- | -------- | --------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | position | flexible | Six anchor positions. |
 
 ## AI context prompt

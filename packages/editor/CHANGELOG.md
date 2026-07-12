@@ -1,5 +1,17 @@
 # @cascivo/editor
 
+## 0.2.9
+
+### Patch Changes
+
+- b49e0ba: Fixed red flags.
+- 6ee2f91: Experience fixes
+- Updated dependencies [b49e0ba]
+- Updated dependencies [1d7599a]
+- Updated dependencies [6ee2f91]
+  - @cascivo/core@0.2.5
+  - @cascivo/i18n@0.2.2
+
 ## 0.2.8
 
 ### Patch Changes

@@ -34,13 +34,13 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 ## Props
 
-| Name        | Type                                  | Required | Default | Description        |
-| ----------- | ------------------------------------- | -------- | ------- | ------------------ |
-| `direction` | `'vertical' \| 'horizontal'`          | No       | —       | Flex direction     |
-| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | No       | —       | Spacing token step |
-| `align`     | `'start'\|'center'\|'end'\|'stretch'` | No       | —       | align-items        |
-| `justify`   | `'start'\|'center'\|'end'\|'between'` | No       | —       | justify-content    |
-| `wrap`      | `boolean`                             | No       | —       | Allow wrapping     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `direction` | `'vertical' \| 'horizontal'` | No | — | Flex direction |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No | — | Spacing token step |
+| `align` | `'start'\|'center'\|'end'\|'stretch'` | No | — | align-items |
+| `justify` | `'start'\|'center'\|'end'\|'between'` | No | — | justify-content |
+| `wrap` | `boolean` | No | — | Allow wrapping |
 
 ## Tokens
 
@@ -53,10 +53,7 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 Default vertical stack
 
 ```jsx
-<Stack gap={4}>
-  <div>A</div>
-  <div>B</div>
-</Stack>
+<Stack gap={4}><div>A</div><div>B</div></Stack>
 ```
 
 ### Horizontal
@@ -64,10 +61,7 @@ Default vertical stack
 Row layout
 
 ```jsx
-<Stack direction="horizontal" gap={2}>
-  <div>A</div>
-  <div>B</div>
-</Stack>
+<Stack direction="horizontal" gap={2}><div>A</div><div>B</div></Stack>
 ```
 
 ## AI context prompt

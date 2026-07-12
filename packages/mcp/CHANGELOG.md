@@ -1,5 +1,12 @@
 # @cascivo/mcp
 
+## 0.3.2
+
+### Patch Changes
+
+- b49e0ba: Fixed red flags.
+- 6ee2f91: Experience fixes
+
 ## 0.3.1
 
 ### Patch Changes

@@ -32,15 +32,15 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 
 ## Props
 
-| Name       | Type                                         | Required | Default | Description                                                                                       |
-| ---------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
-| `label`    | `string`                                     | Yes      | —       | Text label for the control.                                                                       |
-| `icon`     | `React.ReactNode`                            | No       | —       | Icon element rendered in the component.                                                           |
-| `variant`  | `'ghost' \| 'outline' \| 'filled'`           | No       | ghost   | Selects the visual style variant.                                                                 |
-| `size`     | `'sm' \| 'md' \| 'lg'`                       | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                             |
-| `asChild`  | `boolean`                                    | No       | false   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `disabled` | `boolean`                                    | No       | false   | When true, disables the control and removes it from the tab order.                                |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | No       | —       | Called when the element is clicked.                                                               |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | Yes | — | Text label for the control. |
+| `icon` | `React.ReactNode` | No | — | Icon element rendered in the component. |
+| `variant` | `'ghost' \| 'outline' \| 'filled'` | No | ghost | Selects the visual style variant. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `asChild` | `boolean` | No | false | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | No | — | Called when the element is clicked. |
 
 ## Tokens
 
@@ -61,9 +61,7 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 ### Ghost
 
 ```jsx
-<IconButton label="Settings">
-  <GearIcon />
-</IconButton>
+<IconButton label="Settings"><GearIcon /></IconButton>
 ```
 
 ### Filled
@@ -75,19 +73,15 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 ### As link
 
 ```jsx
-<IconButton label="Home" asChild>
-  <a href="/">
-    <HomeIcon />
-  </a>
-</IconButton>
+<IconButton label="Home" asChild><a href="/"><HomeIcon /></a></IconButton>
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                                  |
-| ----------- | -------- | ----------------------------------------------------------------------------------------------------- |
-| token names | strict   | Sizing must resolve to --cascivo-control-height-\* so it stays square and aligned with other controls |
-| icon choice | flexible | Any single icon node; consumer owns the icon set                                                      |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Sizing must resolve to --cascivo-control-height-* so it stays square and aligned with other controls |
+| icon choice | flexible | Any single icon node; consumer owns the icon set |
 
 ## AI context prompt
 
