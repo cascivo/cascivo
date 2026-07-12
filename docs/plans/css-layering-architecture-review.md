@@ -1,8 +1,20 @@
 # Remediation Spec — CSS Layering & Headless Primitives
 
 _Source: post-implementation experience review (CSS layering architecture)._
-_Status: proposed. Scope: `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/core`,
-`@cascivo/components`, `@cascivo/cli`, docs, checks._
+_Status: implemented (see Implementation status below). Scope: `@cascivo/tokens`,
+`@cascivo/themes`, `@cascivo/core`, `@cascivo/components`, `@cascivo/cli`, docs, checks._
+
+## Implementation status
+
+| Item | Status |
+| --- | --- |
+| **Issue 1** — canonical `@layer` order (`layers.css`), `cascivo.override` escape hatch, all entry paths + scaffold + examples + docs aligned, `layers:check` drift guard | ✅ done |
+| **Issue 2 Phase A** — Modal + Tooltip id bugs (also AlertDialog, found during the work) | ✅ done |
+| **Issue 2 Phase B** — `useTypeahead` primitive in `@cascivo/core` | ✅ done |
+| Composed `useMenu` / `useListbox` + submenu engine | ⏸ deferred — API should be driven by a concrete migration, not designed speculatively |
+| **Issue 2 Phase C** — Menu migrated to shared roving/typeahead; AlertDialog to `useId` | ✅ done |
+| Combobox / date-picker / date-range-picker outside-click → `DismissableLayer` | ⏸ deferred — wraps markup in DismissableLayer's element; needs a visual layout review. Tracked in the `primitive-adoption` allowlist. |
+| **Issue 2 Phase D** — `primitives:check` guard, CLAUDE.md rule, `docs/HEADLESS.md` | ✅ done |
 
 ---
 
