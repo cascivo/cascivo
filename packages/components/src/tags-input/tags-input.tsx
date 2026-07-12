@@ -75,6 +75,7 @@ export function TagsInput({
         ref={inputRef}
         className={styles['input']}
         value={inputValue.value}
+        aria-label={t(builtin.tagsInput.label)}
         placeholder={value.length === 0 ? placeholderText : undefined}
         disabled={disabled}
         onChange={(e) => {

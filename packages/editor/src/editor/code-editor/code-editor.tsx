@@ -884,6 +884,9 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
           readOnly={readOnly}
           disabled={disabled}
           spellCheck={spellCheck}
+          // combobox (not the plain textbox role) is the role that permits
+          // aria-expanded / aria-controls / aria-activedescendant for the slash menu.
+          role="combobox"
           aria-label={label ?? t(builtin.editor.label)}
           aria-expanded={slashOpen.value}
           aria-controls={slashOpen.value ? menuId : undefined}

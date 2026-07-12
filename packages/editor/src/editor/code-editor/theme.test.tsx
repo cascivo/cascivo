@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CodeEditor } from './code-editor.tsx'
 
 function root(): HTMLElement {
-  return screen.getByRole('textbox').closest('[style]') as HTMLElement
+  return screen.getByRole('combobox').closest('[style]') as HTMLElement
 }
 
 afterEach(() => {
@@ -31,7 +31,7 @@ describe('CodeEditor theming', () => {
 describe('CodeEditor bracket matching', () => {
   it('decorates the matching pair adjacent to the caret', () => {
     render(<CodeEditor defaultValue="(ab)" lineNumbers={false} bracketMatching />)
-    const ta = screen.getByRole('textbox') as HTMLTextAreaElement
+    const ta = screen.getByRole('combobox') as HTMLTextAreaElement
     ta.setSelectionRange(0, 0) // caret before '('
     fireEvent.keyUp(ta)
     const marks = document.querySelectorAll('pre code [class*="bracketMatch"]')
@@ -40,7 +40,7 @@ describe('CodeEditor bracket matching', () => {
 
   it('renders no bracket decorations when disabled', () => {
     render(<CodeEditor defaultValue="(ab)" lineNumbers={false} />)
-    const ta = screen.getByRole('textbox') as HTMLTextAreaElement
+    const ta = screen.getByRole('combobox') as HTMLTextAreaElement
     ta.setSelectionRange(0, 0)
     fireEvent.keyUp(ta)
     expect(document.querySelectorAll('pre code [class*="bracketMatch"]').length).toBe(0)

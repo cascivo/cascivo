@@ -108,7 +108,11 @@ export function PasswordInput({
       {showStrengthMeter && strength && (
         <div
           className={styles['strength-meter']}
+          role="meter"
           aria-label={strengthLabelStr}
+          aria-valuenow={strength.score}
+          aria-valuemin={0}
+          aria-valuemax={4}
           data-strength={strength.label}
         >
           {[0, 1, 2, 3].map((i) => (

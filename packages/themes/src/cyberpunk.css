@@ -35,13 +35,17 @@
     --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
     --cascivo-color-text-muted: oklch(0.55 0.05 300);
     --cascivo-color-text-on-accent: oklch(0.16 0.03 285); /* static fallback */
-    --cascivo-color-text-on-accent: contrast-color(
-      var(--cascivo-color-accent)
-    ); /* auto-contrast (WCAG) */
     --cascivo-color-text-on-destructive: oklch(0.16 0.03 285); /* static fallback */
-    --cascivo-color-text-on-destructive: contrast-color(
-      var(--cascivo-color-destructive)
-    ); /* auto-contrast (WCAG) */
+    /* Progressive auto-contrast: contrast-color() stored in a custom property
+   does not honor the static fallback on unsupported browsers — the var()
+   substitution keeps the invalid token and the color inherits foreground.
+   Guard the upgrade so only supporting browsers apply it. */
+    @supports (color: contrast-color(red)) {
+      & {
+        --cascivo-color-text-on-accent: contrast-color(var(--cascivo-color-accent));
+        --cascivo-color-text-on-destructive: contrast-color(var(--cascivo-color-destructive));
+      }
+    }
     /* ── Accent — neon magenta ───────────────────────── */
     --cascivo-color-accent: oklch(0.7 0.25 330);
     --cascivo-color-accent-foreground: oklch(0.16 0.03 285);
@@ -78,6 +82,7 @@
     --cascivo-color-success-foreground: oklch(0.82 0.2 150);
     --cascivo-color-warning-foreground: oklch(0.82 0.17 75);
     --cascivo-color-destructive-foreground: oklch(0.78 0.18 18);
+    --cascivo-color-info-foreground: oklch(0.82 0.16 200);
 
     /* ── Radius — zero ───────────────────────────────── */
     --cascivo-radius-base: 0;

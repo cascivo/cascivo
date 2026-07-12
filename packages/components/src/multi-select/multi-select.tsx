@@ -13,6 +13,7 @@ export interface MultiSelectOption {
 }
 
 export interface MultiSelectLabels {
+  label?: string
   placeholder?: string
   selected?: (count: number) => string
   search?: string
@@ -125,8 +126,6 @@ export function MultiSelect({
       <div
         ref={popover.popoverRef as React.RefObject<HTMLDivElement>}
         popover="auto"
-        role="listbox"
-        aria-multiselectable="true"
         className={styles['panel']}
         style={
           {
@@ -149,7 +148,13 @@ export function MultiSelect({
           />
         </div>
 
-        <div ref={listboxRef} className={styles['options']}>
+        <div
+          ref={listboxRef}
+          role="listbox"
+          aria-multiselectable="true"
+          aria-label={labels?.label ?? t(builtin.multiSelect.label)}
+          className={styles['options']}
+        >
           {filteredOptions.value.length === 0 ? (
             <div className={styles['no-results']}>{noResultsText}</div>
           ) : (

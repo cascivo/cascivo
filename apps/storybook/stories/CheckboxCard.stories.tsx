@@ -8,7 +8,9 @@ const meta: Meta<typeof CheckboxCard> = {
 export default meta
 type Story = StoryObj<typeof CheckboxCard>
 
-export const Primary: Story = {}
+export const Primary: Story = {
+  args: { title: 'Automated backups', description: 'Daily snapshots, 30-day retention' },
+}
 
 export const Default: Story = {
   render: () => (

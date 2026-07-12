@@ -16,6 +16,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+const isWin = process.platform === 'win32'
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 const outDir = mkdtempSync(join(tmpdir(), 'cascivo-react-dts-'))
 
@@ -23,10 +24,21 @@ try {
   // Generate the bundled .d.mts into a throwaway dir (we only keep the types).
   execFileSync(
     'pnpm',
-    ['exec', 'vp', 'pack', '--out-dir', outDir, '--dts', '--no-clean', 'src/index.ts'],
+    [
+      'exec',
+      'vp',
+      'pack',
+      '--out-dir',
+      isWin ? `"${outDir}"` : outDir,
+      '--dts',
+      '--no-clean',
+      'src/index.ts',
+    ],
     {
       cwd: pkgRoot,
       stdio: 'inherit',
+      // pnpm is pnpm.cmd on Windows; .cmd files require a shell on Node >= 22.
+      shell: isWin,
     },
   )
 

@@ -36,8 +36,8 @@ jobs:
       - name: Install AT tooling (not committed to the lockfile)
         run: |
           cd apps/storybook
-          npm install --no-save @guidepup/guidepup playwright
-          npx playwright install webkit
+          pnpm add -D @guidepup/guidepup playwright
+          pnpm exec playwright install webkit
       - name: Enable VoiceOver automation
         run: npx --yes @guidepup/setup
       - name: Sweep
@@ -69,8 +69,8 @@ jobs:
       - name: Install AT tooling (not committed to the lockfile)
         run: |
           cd apps/storybook
-          npm install --no-save @guidepup/guidepup playwright
-          npx playwright install chromium
+          pnpm add -D @guidepup/guidepup playwright
+          pnpm exec playwright install chromium
       - name: Enable NVDA automation
         run: npx --yes @guidepup/setup
       - name: Sweep

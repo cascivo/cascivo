@@ -7,7 +7,9 @@ import { CodeEditor, type CodeEditorHandle } from './code-editor.tsx'
 import hl from '../highlight/highlight.module.css'
 
 function getTextarea(): HTMLTextAreaElement {
-  return screen.getByRole('textbox') as HTMLTextAreaElement
+  // The editable surface is a combobox (it drives the slash-command menu via
+  // aria-expanded/-controls/-activedescendant), not a plain textbox.
+  return screen.getByRole('combobox') as HTMLTextAreaElement
 }
 
 afterEach(() => {
@@ -18,7 +20,11 @@ afterEach(() => {
 describe('CodeEditor', () => {
   it('renders a textarea with the value', () => {
     render(<CodeEditor language="javascript" defaultValue="const x = 1" />)
-    expect(getTextarea().value).toBe('const x = 1')
+    const ta = getTextarea()
+    expect(ta.value).toBe('const x = 1')
+    // combobox role permits aria-expanded/-controls/-activedescendant for the slash menu
+    expect(ta.tagName).toBe('TEXTAREA')
+    expect(ta).toHaveAttribute('role', 'combobox')
   })
 
   it('updates an uncontrolled editor and fires onValueChange', () => {

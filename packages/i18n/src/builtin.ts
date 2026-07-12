@@ -143,12 +143,14 @@ export const builtin = {
     strengthLabel: 'Password strength: {level}',
   }),
   multiSelect: defineMessages('cascade.multiSelect', {
+    label: 'Options',
     placeholder: 'Select options',
     selected: '{count} selected',
     search: 'Search options',
     noResults: 'No options found',
   }),
   tagsInput: defineMessages('cascade.tagsInput', {
+    label: 'Tags',
     remove: 'Remove {tag}',
     placeholder: 'Add tag…',
   }),
@@ -236,6 +238,7 @@ export const builtin = {
     copied: 'Copied',
   }),
   dateRangePicker: defineMessages('cascade.dateRangePicker', {
+    label: 'Date range',
     placeholder: 'Select a date range',
     start: 'Start date',
     end: 'End date',
@@ -432,12 +435,14 @@ defineCatalog(builtin.passwordInput, 'de', {
   strengthLabel: 'Passwortstärke: {level}',
 })
 defineCatalog(builtin.multiSelect, 'de', {
+  label: 'Optionen',
   placeholder: 'Optionen auswählen',
   selected: '{count} ausgewählt',
   search: 'Optionen durchsuchen',
   noResults: 'Keine Optionen gefunden',
 })
 defineCatalog(builtin.tagsInput, 'de', {
+  label: 'Schlagwörter',
   remove: '{tag} entfernen',
   placeholder: 'Tag hinzufügen…',
 })
@@ -525,6 +530,7 @@ defineCatalog(builtin.codeSnippet, 'de', {
   copied: 'Kopiert',
 })
 defineCatalog(builtin.dateRangePicker, 'de', {
+  label: 'Zeitraum',
   placeholder: 'Zeitraum auswählen',
   start: 'Startdatum',
   end: 'Enddatum',

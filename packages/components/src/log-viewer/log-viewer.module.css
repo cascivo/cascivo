@@ -107,11 +107,11 @@
     align-items: center;
 
     &[data-level='warn'] {
-      color: var(--cascivo-color-warning);
+      color: var(--cascivo-color-warning-foreground);
     }
 
     &[data-level='error'] {
-      color: var(--cascivo-color-error);
+      color: var(--cascivo-color-destructive-foreground);
     }
 
     &[data-level='debug'] {

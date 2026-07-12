@@ -390,7 +390,9 @@
     }
 
     &:disabled {
-      opacity: 0.4;
+      /* Dim via a muted foreground, not opacity — opacity:0.4 on the glyph
+         dropped the disabled arrow below 4.5:1 (WCAG color-contrast). */
+      color: var(--cascivo-color-text-muted);
       cursor: not-allowed;
     }
   }

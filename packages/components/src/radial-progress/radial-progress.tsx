@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import styles from './radial-progress.module.css'
 
 export type RadialProgressSize = 'sm' | 'md' | 'lg'
@@ -21,12 +22,17 @@ export function RadialProgress({
   ...aria
 }: RadialProgressProps) {
   const clamped = Math.min(100, Math.max(0, value))
+  const labelId = useId()
+  // progressbar takes its name from the author only — visible text doesn't
+  // count. Name it from its own label span unless the caller passed aria-label.
+  const hasAriaLabel = Boolean(aria['aria-label'])
   return (
     <div
       role="progressbar"
       aria-valuenow={clamped}
       aria-valuemin={0}
       aria-valuemax={100}
+      aria-labelledby={hasAriaLabel ? undefined : labelId}
       className={[styles.radialProgress, className].filter(Boolean).join(' ')}
       data-size={size}
       data-variant={variant}
@@ -37,7 +43,9 @@ export function RadialProgress({
       }
       {...aria}
     >
-      <span className={styles.label}>{children ?? `${clamped}%`}</span>
+      <span id={labelId} className={styles.label}>
+        {children ?? `${clamped}%`}
+      </span>
     </div>
   )
 }

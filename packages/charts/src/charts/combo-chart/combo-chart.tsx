@@ -192,7 +192,6 @@ export function ComboChart({
                   height={Math.max(0, inner.height - by)}
                   fill="var(--cascivo-chart-1)"
                   opacity={0.75}
-                  aria-label={`${b.label}: ${b.value}`}
                 />
               )
             })}

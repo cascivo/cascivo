@@ -92,6 +92,11 @@
   .clear {
     position: absolute;
     inset-inline-end: var(--cascivo-space-8);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-block-size: 1.5rem; /* 24px — WCAG 2.5.8 target size */
+    min-inline-size: 1.5rem;
     background: none;
     border: none;
     cursor: pointer;

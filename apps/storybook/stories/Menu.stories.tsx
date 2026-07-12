@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '@cascivo/components/button'
 import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@cascivo/components/menu'
 
 const meta: Meta = {
@@ -13,9 +12,7 @@ export const Primary: Story = {}
 export const Default: Story = {
   render: () => (
     <Menu>
-      <MenuTrigger>
-        <Button variant="secondary">Actions ▾</Button>
-      </MenuTrigger>
+      <MenuTrigger>Actions ▾</MenuTrigger>
       <MenuItem onSelect={() => {}}>Edit</MenuItem>
       <MenuItem onSelect={() => {}}>Duplicate</MenuItem>
       <MenuSeparator />
@@ -30,9 +27,7 @@ export const Default: Story = {
 export const Accessibility: Story = {
   render: () => (
     <Menu>
-      <MenuTrigger>
-        <Button variant="secondary">Actions ▾</Button>
-      </MenuTrigger>
+      <MenuTrigger>Actions ▾</MenuTrigger>
       <MenuItem onSelect={() => {}}>Edit</MenuItem>
       <MenuItem onSelect={() => {}}>Delete</MenuItem>
     </Menu>

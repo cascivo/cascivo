@@ -121,7 +121,7 @@ export function Treemap({
               const color = COLORS[i % COLORS.length] ?? 'var(--cascivo-chart-1)'
               const label = labelMap.get(r.id) ?? r.id
               return (
-                <g key={r.id} aria-label={`${label}: ${data.find((d) => d.id === r.id)?.value}`}>
+                <g key={r.id}>
                   <rect
                     x={r.x}
                     y={r.y}

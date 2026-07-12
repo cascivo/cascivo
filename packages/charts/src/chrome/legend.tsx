@@ -18,7 +18,7 @@ export interface LegendProps {
 export function Legend({ series, hidden }: LegendProps) {
   useSignals()
   return (
-    <div className={styles['legend']} aria-label="Chart legend">
+    <div className={styles['legend']} role="group" aria-label="Chart legend">
       {series.map((s, i) => {
         const isHidden = hidden.value.has(s.id)
         const toggle = () => {

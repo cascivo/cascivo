@@ -94,7 +94,6 @@ export function Bullet({
               width={Math.max(0, scale.map(value) - scale.map(min))}
               height={barH}
               fill="var(--cascivo-chart-1)"
-              aria-label={`Value: ${value}`}
             />
             {/* Target tick */}
             <line
@@ -104,7 +103,6 @@ export function Bullet({
               y2={targetY + targetH}
               stroke="var(--cascivo-text-primary)"
               strokeWidth={2.5}
-              aria-label={`Target: ${target}`}
             />
           </>
         )}

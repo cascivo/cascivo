@@ -21,6 +21,18 @@ const STATIC_DIR = join(ROOT, 'storybook-static')
 const CONCURRENCY = 4
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
+// Stories whose DOM is too large for a specific rule to finish inside the
+// per-story budget. Everything else still runs against the full tag set.
+const RULE_EXCEPTIONS = {}
+
+// Stories excluded from the sweep entirely, with the reason (logged, never
+// silent). The large-document editor holds a 50k-line document; axe's full-tree
+// traversal exceeds the 45s guard even with color-contrast disabled. The
+// editor's a11y is covered by ~25 other code-editor stories.
+const SKIP_STORIES = {
+  'editor-codeeditor--large-document': '50k-line stress doc; axe traversal exceeds the 45s budget',
+}
+
 const MIME = {
   '.html': 'text/html',
   '.js': 'text/javascript',
@@ -40,6 +52,17 @@ if (!existsSync(join(STATIC_DIR, 'index.json'))) {
 const index = JSON.parse(readFileSync(join(STATIC_DIR, 'index.json'), 'utf8'))
 let stories = Object.values(index.entries).filter((e) => e.type === 'story')
 
+// AXE_ONLY=id1,id2 audits just those story ids (debugging a specific failure).
+const only = process.env.AXE_ONLY?.split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+if (only?.length) stories = stories.filter((s) => only.includes(s.id))
+
+for (const [id, reason] of Object.entries(SKIP_STORIES)) {
+  if (stories.some((s) => s.id === id)) console.log(`  skipping ${id} — ${reason}`)
+}
+stories = stories.filter((s) => !SKIP_STORIES[s.id])
+
 const maxStories = Number(process.env.AXE_MAX_STORIES ?? 0)
 if (maxStories > 0) stories = stories.slice(0, maxStories)
 const shard = process.env.AXE_SHARD
@@ -47,6 +70,8 @@ if (shard) {
   const [n, of] = shard.split('/').map(Number)
   stories = stories.filter((_, i) => i % of === n - 1)
 }
+// AXE_DEBUG prints each violation's node target + failure summary (exact colors).
+const DEBUG = Boolean(process.env.AXE_DEBUG)
 
 const server = createServer((req, res) => {
   const urlPath = decodeURIComponent(new URL(req.url, 'http://x').pathname)
@@ -71,7 +96,13 @@ const browser = await chromium.launch(
 const failures = []
 let done = 0
 
-async function auditStory(story) {
+// @storybook/addon-a11y injects its own axe-core into the preview iframe and
+// auto-runs it. That races AxeBuilder's injected copy: a stale global gives
+// "unknown rule" version mismatches, and an in-flight addon run gives "Axe is
+// already running". Both are transient — retry the story on a fresh page.
+const TRANSIENT = /already running|unknown rule|mismatch/i
+
+async function analyzeStory(story) {
   const context = await browser.newContext()
   const page = await context.newPage()
   try {
@@ -79,16 +110,43 @@ async function auditStory(story) {
       waitUntil: 'networkidle',
       timeout: 30_000,
     })
-    // Give signal-driven mount effects a beat to settle.
+    // Give signal-driven mount effects a beat to settle, then let any addon axe
+    // run finish before removing its global so AxeBuilder starts from a clean slate.
     await page.waitForTimeout(150)
+    await page.evaluate(() => {
+      delete window.axe
+    })
     // analyze() has no internal timeout and can hang on animation-heavy
     // stories — bound it so one story can never stall the sweep.
-    const results = await Promise.race([
-      new AxeBuilder({ page }).withTags(TAGS).analyze(),
+    let builder = new AxeBuilder({ page }).withTags(TAGS)
+    const excludedRules = RULE_EXCEPTIONS[story.id]
+    if (excludedRules) builder = builder.disableRules(excludedRules)
+    return await Promise.race([
+      builder.analyze(),
       new Promise((_, reject) =>
         setTimeout(() => reject(new Error('axe analyze timed out (45s)')), 45_000),
       ),
     ])
+  } finally {
+    await context.close()
+  }
+}
+
+async function auditStory(story) {
+  try {
+    let results
+    for (let attempt = 1; ; attempt++) {
+      try {
+        results = await analyzeStory(story)
+        break
+      } catch (e) {
+        if (TRANSIENT.test(String(e)) && attempt < 3) {
+          await new Promise((r) => setTimeout(r, 250 * attempt))
+          continue
+        }
+        throw e
+      }
+    }
     if (results.violations.length > 0) {
       failures.push({
         id: story.id,
@@ -98,13 +156,17 @@ async function auditStory(story) {
           impact: v.impact,
           nodes: v.nodes.length,
           help: v.help,
+          detail: DEBUG
+            ? v.nodes.map(
+                (n) => `${n.target?.join(' ')} :: ${n.failureSummary?.replace(/\s+/g, ' ')}`,
+              )
+            : undefined,
         })),
       })
     }
   } catch (e) {
     failures.push({ id: story.id, title: story.title, error: String(e).slice(0, 200) })
   } finally {
-    await context.close()
     done++
     if (done % 50 === 0) console.log(`  ${done}/${stories.length} stories audited…`)
   }
@@ -134,6 +196,7 @@ if (failures.length > 0) {
     } else {
       for (const v of f.violations) {
         console.error(`  ${f.id}: ${v.rule} (${v.impact}, ${v.nodes} node(s)) — ${v.help}`)
+        if (v.detail) for (const d of v.detail) console.error(`      ↳ ${d}`)
       }
     }
   }

@@ -92,6 +92,6 @@
     color: var(--cascivo-color-text-subtle);
   }
   .step[data-state='error'] .label {
-    color: var(--cascivo-color-error);
+    color: var(--cascivo-color-destructive-foreground);
   }
 }

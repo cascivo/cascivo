@@ -12,15 +12,24 @@
   .root[data-variant='generating'] {
     background: var(--cascivo-color-surface-2);
     color: var(--cascivo-color-foreground-muted);
+  }
+  /* Pulse a decorative leading dot rather than the whole pill: animating the
+     label's opacity drops it below the WCAG contrast threshold mid-cycle. */
+  .root[data-variant='generating']::before {
+    content: '';
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    border-radius: var(--cascivo-radius-full);
+    background: currentColor;
     animation: cascade-ai-pulse 1.5s ease-in-out infinite;
   }
   .root[data-variant='done'] {
-    background: var(--cascivo-color-success, oklch(0.648 0.15 145));
-    color: oklch(1 0 0);
+    background: var(--cascivo-color-success-subtle);
+    color: var(--cascivo-color-success-foreground);
   }
   .root[data-variant='error'] {
-    background: var(--cascivo-color-error, oklch(0.628 0.188 22));
-    color: oklch(1 0 0);
+    background: var(--cascivo-color-destructive-subtle);
+    color: var(--cascivo-color-destructive-foreground);
   }
 }
 @keyframes cascade-ai-pulse {

@@ -249,21 +249,25 @@
     --cascivo-editor-selection: var(--cascivo-color-accent-muted, oklch(0.882 0.095 250));
     --cascivo-editor-border: var(--cascivo-color-border, oklch(0.928 0.006 264));
 
-    /* Syntax palette — one token per TokenKind */
+    /* Syntax palette — one token per TokenKind. String/number/type/property (and
+       their aliases regexp/attr/boolean) are pinned to text-safe darker values
+       instead of the raw chart hues, which are tuned for 3:1 fills and fall below
+       WCAG AA 4.5:1 as code text on the light editor surface. Dark-surface themes
+       restore the brighter chart hues below (they clear 4.5:1 on a dark bg). */
     --cascivo-editor-syntax-keyword: var(--cascivo-color-accent, oklch(0.52 0.2 250));
-    --cascivo-editor-syntax-string: var(--cascivo-chart-3, oklch(0.52 0.13 150));
-    --cascivo-editor-syntax-number: var(--cascivo-chart-6, oklch(0.55 0.16 40));
+    --cascivo-editor-syntax-string: oklch(0.53 0.13 135);
+    --cascivo-editor-syntax-number: oklch(0.54 0.15 40);
     --cascivo-editor-syntax-comment: var(--cascivo-color-foreground-muted, oklch(0.55 0.018 264));
     --cascivo-editor-syntax-function: var(--cascivo-chart-5, oklch(0.5 0.16 265));
-    --cascivo-editor-syntax-type: var(--cascivo-chart-7, oklch(0.52 0.15 320));
+    --cascivo-editor-syntax-type: oklch(0.54 0.12 350);
     --cascivo-editor-syntax-operator: var(--cascivo-color-foreground-muted, oklch(0.5 0.04 264));
     --cascivo-editor-syntax-punctuation: var(--cascivo-color-text-subtle, oklch(0.446 0.018 264));
     --cascivo-editor-syntax-variable: var(--cascivo-editor-fg);
     --cascivo-editor-syntax-tag: var(--cascivo-color-accent, oklch(0.52 0.2 250));
-    --cascivo-editor-syntax-attr: var(--cascivo-chart-6, oklch(0.55 0.16 40));
-    --cascivo-editor-syntax-regexp: var(--cascivo-chart-3, oklch(0.52 0.13 150));
-    --cascivo-editor-syntax-boolean: var(--cascivo-chart-6, oklch(0.55 0.16 40));
-    --cascivo-editor-syntax-property: var(--cascivo-chart-2, oklch(0.5 0.13 240));
+    --cascivo-editor-syntax-attr: oklch(0.54 0.15 40);
+    --cascivo-editor-syntax-regexp: oklch(0.53 0.13 135);
+    --cascivo-editor-syntax-boolean: oklch(0.54 0.15 40);
+    --cascivo-editor-syntax-property: oklch(0.53 0.12 240);
 
     /* ── Brand (apps/logo/OG only — never used in component CSS) ── */
     --cascivo-brand-primary: oklch(
@@ -311,6 +315,22 @@
     /* ── Coarse-pointer touch target ─────────────────── */
     /* Controls should reach this minimum under @media (pointer: coarse) — added in v20-t3.   */
     --cascivo-target-min-coarse: 2.75rem; /* 44px — Apple HIG comfortable touch target        */
+  }
+
+  /* Dark-surface themes: restore the brighter chart hues for editor syntax, which
+     clear WCAG AA 4.5:1 on a dark editor background (the light-theme darkened
+     literals above would be too low-contrast there). */
+  [data-theme='dark'],
+  [data-theme='midnight'],
+  [data-theme='terminal'],
+  [data-theme='cyberpunk'] {
+    --cascivo-editor-syntax-string: var(--cascivo-chart-3);
+    --cascivo-editor-syntax-regexp: var(--cascivo-chart-3);
+    --cascivo-editor-syntax-number: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-attr: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-boolean: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-type: var(--cascivo-chart-7);
+    --cascivo-editor-syntax-property: var(--cascivo-chart-2);
   }
 
   /* All cascade motion derives from the duration tokens, so collapsing them

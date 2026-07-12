@@ -29,11 +29,11 @@
     font-variant-numeric: tabular-nums;
 
     &[data-trend='up'] {
-      color: var(--cascivo-color-success);
+      color: var(--cascivo-color-success-foreground);
     }
 
     &[data-trend='down'] {
-      color: var(--cascivo-color-destructive);
+      color: var(--cascivo-color-destructive-foreground);
     }
 
     &[data-trend='flat'] {

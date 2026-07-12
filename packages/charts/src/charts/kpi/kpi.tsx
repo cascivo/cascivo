@@ -59,13 +59,14 @@ export function Kpi({ value, label, delta, deltaLabel, icon, sparkline, classNam
         </span>
         {delta != null && (
           <span
+            role="img"
             style={{
               fontSize: 'var(--cascivo-text-sm)',
               fontWeight: 500,
               color: deltaPositive
-                ? 'var(--cascivo-color-success)'
+                ? 'var(--cascivo-color-success-foreground)'
                 : deltaNegative
-                  ? 'var(--cascivo-color-destructive)'
+                  ? 'var(--cascivo-color-destructive-foreground)'
                   : 'var(--cascivo-color-foreground-muted)',
             }}
             aria-label={`Trend: ${formatDelta(delta)}${deltaLabel ? ` ${deltaLabel}` : ''}`}
