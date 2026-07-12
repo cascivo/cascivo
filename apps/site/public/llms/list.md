@@ -28,23 +28,29 @@ import { List } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `as` | `'ul' \| 'ol'` | no | `ul` | The HTML element to render as. |
-| `marker` | `'disc' \| 'decimal' \| 'none'` | no | `derived from as (ul→disc, ol→decimal)` | List marker style ('disc' \| 'decimal' \| 'none'). |
+| Prop     | Type                            | Required | Default                                 | Description                                        |
+| -------- | ------------------------------- | -------- | --------------------------------------- | -------------------------------------------------- |
+| `as`     | `'ul' \| 'ol'`                  | no       | `ul`                                    | The HTML element to render as.                     |
+| `marker` | `'disc' \| 'decimal' \| 'none'` | no       | `derived from as (ul→disc, ol→decimal)` | List marker style ('disc' \| 'decimal' \| 'none'). |
 
 ## Examples
 
 ### Unordered
 
 ```tsx
-<List><ListItem>Tokens</ListItem><ListItem>Themes</ListItem></List>
+<List>
+  <ListItem>Tokens</ListItem>
+  <ListItem>Themes</ListItem>
+</List>
 ```
 
 ### Ordered
 
 ```tsx
-<List as="ol"><ListItem>Init</ListItem><ListItem>Add</ListItem></List>
+<List as="ol">
+  <ListItem>Init</ListItem>
+  <ListItem>Add</ListItem>
+</List>
 ```
 
 ### Unmarked
@@ -52,7 +58,9 @@ import { List } from '@cascivo/react'
 Keeps list semantics without visual markers
 
 ```tsx
-<List marker="none"><ListItem>Clean row</ListItem></List>
+<List marker="none">
+  <ListItem>Clean row</ListItem>
+</List>
 ```
 
 ## Design tokens

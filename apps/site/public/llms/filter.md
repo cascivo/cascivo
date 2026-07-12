@@ -34,14 +34,14 @@ import { Filter } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
-| `value` | `string[]` | no | — | Controlled selected values |
-| `defaultValue` | `string[]` | no | `[]` | Initial selected values for uncontrolled use |
-| `onChange` | `(selected: string[]) => void` | no | — | Called when the value changes. |
-| `multi` | `boolean` | no | `false` | Allow multiple items to be selected simultaneously |
-| `variant` | `'pill' \| 'outline'` | no | `pill` | Selects the visual style variant. |
+| Prop           | Type                           | Required | Default | Description                                                   |
+| -------------- | ------------------------------ | -------- | ------- | ------------------------------------------------------------- |
+| `options`      | `FilterOption[]`               | yes      | —       | Array of { label, value } objects to render as filter buttons |
+| `value`        | `string[]`                     | no       | —       | Controlled selected values                                    |
+| `defaultValue` | `string[]`                     | no       | `[]`    | Initial selected values for uncontrolled use                  |
+| `onChange`     | `(selected: string[]) => void` | no       | —       | Called when the value changes.                                |
+| `multi`        | `boolean`                      | no       | `false` | Allow multiple items to be selected simultaneously            |
+| `variant`      | `'pill' \| 'outline'`          | no       | `pill`  | Selects the visual style variant.                             |
 
 ## Examples
 
@@ -77,7 +77,10 @@ import { Filter } from '@cascivo/react'
 ```tsx
 <Filter
   variant="outline"
-  options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}
+  options={[
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+  ]}
   aria-label="Filter by framework"
 />
 ```

@@ -34,21 +34,21 @@ import { Combobox } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `ComboboxOption[]` | yes | — | The selectable options. |
-| `value` | `string` | no | — | The controlled value. |
-| `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
-| `onChange` | `(value: string \| undefined) => void` | no | — | Called when the value changes. |
-| `clearable` | `boolean` | no | `false` | When true, shows a control to clear the selected value. |
-| `searchable` | `boolean` | no | `true` | When true, shows a search/filter input. |
-| `label` | `string` | no | — | Text label for the control. |
-| `hint` | `string` | no | — | Supplementary hint text shown with the control. |
-| `error` | `string` | no | — | Error message shown when the value is invalid. |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `'md'` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `labels` | `ComboboxLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop           | Type                                   | Required | Default | Description                                                        |
+| -------------- | -------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `options`      | `ComboboxOption[]`                     | yes      | —       | The selectable options.                                            |
+| `value`        | `string`                               | no       | —       | The controlled value.                                              |
+| `defaultValue` | `string`                               | no       | —       | The initial value when uncontrolled.                               |
+| `onChange`     | `(value: string \| undefined) => void` | no       | —       | Called when the value changes.                                     |
+| `clearable`    | `boolean`                              | no       | `false` | When true, shows a control to clear the selected value.            |
+| `searchable`   | `boolean`                              | no       | `true`  | When true, shows a search/filter input.                            |
+| `label`        | `string`                               | no       | —       | Text label for the control.                                        |
+| `hint`         | `string`                               | no       | —       | Supplementary hint text shown with the control.                    |
+| `error`        | `string`                               | no       | —       | Error message shown when the value is invalid.                     |
+| `size`         | `'sm' \| 'md' \| 'lg'`                 | no       | `'md'`  | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `disabled`     | `boolean`                              | no       | `false` | When true, disables the control and removes it from the tab order. |
+| `labels`       | `ComboboxLabels`                       | no       | —       | Overrides for the component’s user-visible strings (i18n).         |
+| `className`    | `string`                               | no       | —       | Additional CSS class names merged onto the root element.           |
 
 ## Examples
 

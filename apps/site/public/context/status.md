@@ -33,10 +33,10 @@ Meaning is carried by the text label, never by the dot color alone; the pulse an
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `status` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | No | neutral | Status state. |
-| `pulse` | `boolean` | No | false | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
+| Name     | Type                                                       | Required | Default | Description                                                         |
+| -------- | ---------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `status` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | No       | neutral | Status state.                                                       |
+| `pulse`  | `boolean`                                                  | No       | false   | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
 
 ## Tokens
 
@@ -67,15 +67,17 @@ Meaning is carried by the text label, never by the dot color alone; the pulse an
 The pulse animation respects prefers-reduced-motion
 
 ```jsx
-<Status status="info" pulse>Deploying</Status>
+<Status status="info" pulse>
+  Deploying
+</Status>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| pulse | flexible | Enable pulse only for actively-changing states |
-| token names | strict | State colors must resolve to --cascivo-color-success/warning/error/info |
+| Area        | Level    | Note                                                                    |
+| ----------- | -------- | ----------------------------------------------------------------------- |
+| pulse       | flexible | Enable pulse only for actively-changing states                          |
+| token names | strict   | State colors must resolve to --cascivo-color-success/warning/error/info |
 
 ## AI context prompt
 

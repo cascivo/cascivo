@@ -26,11 +26,11 @@ import { Switcher } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `SwitcherEntry[]` | yes | — | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label` | `string` | no | `Switch application` | Text label for the control. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop        | Type              | Required | Default              | Description                                                                   |
+| ----------- | ----------------- | -------- | -------------------- | ----------------------------------------------------------------------------- |
+| `items`     | `SwitcherEntry[]` | yes      | —                    | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
+| `label`     | `string`          | no       | `Switch application` | Text label for the control.                                                   |
+| `className` | `string`          | no       | —                    | Additional CSS class names merged onto the root element.                      |
 
 ## Examples
 

@@ -23,14 +23,14 @@ Exposes a keyboard-operable separator with role="separator" and aria-valuenow fo
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `start` | `ReactNode` | Yes | — | Left pane content |
-| `end` | `ReactNode` | Yes | — | Right pane content |
-| `defaultRatio` | `number` | No | — | Initial split ratio (0–1) |
-| `min` | `number` | No | — | Minimum ratio for start pane |
-| `max` | `number` | No | — | Maximum ratio for start pane |
-| `aria-label` | `string` | No | — | Label for the separator |
+| Name           | Type        | Required | Default | Description                  |
+| -------------- | ----------- | -------- | ------- | ---------------------------- |
+| `start`        | `ReactNode` | Yes      | —       | Left pane content            |
+| `end`          | `ReactNode` | Yes      | —       | Right pane content           |
+| `defaultRatio` | `number`    | No       | —       | Initial split ratio (0–1)    |
+| `min`          | `number`    | No       | —       | Minimum ratio for start pane |
+| `max`          | `number`    | No       | —       | Maximum ratio for start pane |
+| `aria-label`   | `string`    | No       | —       | Label for the separator      |
 
 ## Tokens
 

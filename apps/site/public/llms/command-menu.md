@@ -27,18 +27,18 @@ import { CommandMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | yes | — | Whether the component is open (controlled). |
-| `onOpenChange` | `(open: boolean) => void` | yes | — | Called with the next open state when it changes. |
-| `groups` | `CommandGroup[]` | yes | — | The grouped commands to display. |
-| `placeholder` | `string` | no | `Type a command or search…` | Placeholder text shown when the field is empty. |
-| `emptyLabel` | `string` | no | `No results found` | Text shown when no commands match the query. |
-| `hotkey` | `boolean` | no | `true` | Global Cmd/Ctrl+K toggles the menu via onOpenChange |
-| `label` | `string` | no | `Command menu` | Text label for the control. |
-| `loading` | `boolean` | no | `false` | Shows a loading spinner in place of the empty state (for async items) |
-| `onQueryChange` | `(query: string) => void` | no | — | Fires on every query keystroke — use to fetch async items |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop            | Type                      | Required | Default                     | Description                                                           |
+| --------------- | ------------------------- | -------- | --------------------------- | --------------------------------------------------------------------- |
+| `open`          | `boolean`                 | yes      | —                           | Whether the component is open (controlled).                           |
+| `onOpenChange`  | `(open: boolean) => void` | yes      | —                           | Called with the next open state when it changes.                      |
+| `groups`        | `CommandGroup[]`          | yes      | —                           | The grouped commands to display.                                      |
+| `placeholder`   | `string`                  | no       | `Type a command or search…` | Placeholder text shown when the field is empty.                       |
+| `emptyLabel`    | `string`                  | no       | `No results found`          | Text shown when no commands match the query.                          |
+| `hotkey`        | `boolean`                 | no       | `true`                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                   |
+| `label`         | `string`                  | no       | `Command menu`              | Text label for the control.                                           |
+| `loading`       | `boolean`                 | no       | `false`                     | Shows a loading spinner in place of the empty state (for async items) |
+| `onQueryChange` | `(query: string) => void` | no       | —                           | Fires on every query keystroke — use to fetch async items             |
+| `className`     | `string`                  | no       | —                           | Additional CSS class names merged onto the root element.              |
 
 ## Examples
 

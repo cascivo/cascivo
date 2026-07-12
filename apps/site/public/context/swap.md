@@ -34,15 +34,15 @@ Renders a <button role="switch"> with aria-checked reflecting state. Both on/off
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `on` | `React.ReactNode` | Yes | — | Content shown in the active (on) state. |
-| `off` | `React.ReactNode` | Yes | — | Content shown in the inactive (off) state. |
-| `checked` | `boolean` | No | false | Whether the control is checked (controlled). |
-| `onChange` | `(checked: boolean) => void` | No | — | Called when the value changes. |
-| `mode` | `'rotate' \| 'flip'` | No | rotate | Transition between states ('rotate' \| 'flip'). |
-| `aria-label` | `string` | No | — | Accessible label used when no visible label is present. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name         | Type                         | Required | Default | Description                                              |
+| ------------ | ---------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `on`         | `React.ReactNode`            | Yes      | —       | Content shown in the active (on) state.                  |
+| `off`        | `React.ReactNode`            | Yes      | —       | Content shown in the inactive (off) state.               |
+| `checked`    | `boolean`                    | No       | false   | Whether the control is checked (controlled).             |
+| `onChange`   | `(checked: boolean) => void` | No       | —       | Called when the value changes.                           |
+| `mode`       | `'rotate' \| 'flip'`         | No       | rotate  | Transition between states ('rotate' \| 'flip').          |
+| `aria-label` | `string`                     | No       | —       | Accessible label used when no visible label is present.  |
+| `className`  | `string`                     | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -71,9 +71,9 @@ Heart icon that flips to filled on activation
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| content | flexible | on/off slots accept any ReactNode — icons, text, images |
+| Area           | Level    | Note                                                                        |
+| -------------- | -------- | --------------------------------------------------------------------------- |
+| content        | flexible | on/off slots accept any ReactNode — icons, text, images                     |
 | animation mode | flexible | rotate (default) or flip — choose based on the visual metaphor of the icons |
 
 ## AI context prompt

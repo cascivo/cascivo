@@ -9,9 +9,7 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": [
-            "AI-layer delivery (audit wave 3):"
-          ]
+          "notes": ["AI-layer delivery (audit wave 3):"]
         }
       ]
     },
@@ -29,9 +27,7 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": [
-            "Publish `@cascivo/charts` to npm. The package was previously private and"
-          ]
+          "notes": ["Publish `@cascivo/charts` to npm. The package was previously private and"]
         }
       ]
     },
@@ -42,9 +38,7 @@
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": [
-            "Adoption-audit fixes (waves 1–2):"
-          ]
+          "notes": ["Adoption-audit fixes (waves 1–2):"]
         },
         {
           "version": "0.2.0",
@@ -56,9 +50,7 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -76,9 +68,7 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -114,16 +104,12 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": [
-            "Adoption-audit fixes (waves 1–2):"
-          ]
+          "notes": ["Adoption-audit fixes (waves 1–2):"]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -134,16 +120,12 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": [
-            "Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons"
-          ]
+          "notes": ["Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons"]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -154,10 +136,7 @@
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": [
-            "Adoption-audit fixes (waves 1–2):",
-            "AI-layer delivery (audit wave 3):"
-          ]
+          "notes": ["Adoption-audit fixes (waves 1–2):", "AI-layer delivery (audit wave 3):"]
         },
         {
           "version": "0.2.0",
@@ -169,9 +148,7 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -182,30 +159,22 @@
         {
           "version": "0.4.0",
           "level": "minor",
-          "notes": [
-            "Adoption-audit fixes (waves 1–2):"
-          ]
+          "notes": ["Adoption-audit fixes (waves 1–2):"]
         },
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": [
-            "Integration-feedback fixes (from the bpmn-kit and pagome migrations):"
-          ]
+          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": [
-            "v37 migration hardening — fixes from the boringtools migration feedback."
-          ]
+          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -216,9 +185,7 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -229,9 +196,7 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -242,16 +207,12 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": [
-            "v37 migration hardening — fixes from the boringtools migration feedback."
-          ]
+          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     },
@@ -262,23 +223,17 @@
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": [
-            "Integration-feedback fixes (from the bpmn-kit and pagome migrations):"
-          ]
+          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": [
-            "v37 migration hardening — fixes from the boringtools migration feedback."
-          ]
+          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": [
-            "Initial public release of the cascivo design system. Includes:"
-          ]
+          "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
     }
