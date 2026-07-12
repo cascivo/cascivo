@@ -53,6 +53,12 @@ jobs:
       - name: LLMS channel + stylesheet guard (npm entries name their package + styles)
         run: pnpm run llms:check
 
+      - name: Layer-order guard (one canonical @layer order, no drift)
+        run: pnpm run layers:check
+
+      - name: Primitive-adoption guard (components consume shared headless primitives)
+        run: pnpm run primitives:check
+
       - name: Animation audit
         run: pnpm run audit:animation
 

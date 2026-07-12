@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { useSignal, useSignalEffect } from '@cascivo/core'
+import { useId, useSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './alert-dialog.module.css'
 
@@ -30,6 +30,8 @@ export function AlertDialog({
   variant = 'default',
 }: AlertDialogProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
+  const titleId = useId('cascivo-alert-dialog-title')
+  const descId = useId('cascivo-alert-dialog-desc')
   const isOpen = useSignal(open)
   isOpen.value = open
 
@@ -66,17 +68,17 @@ export function AlertDialog({
       popover="manual"
       role="alertdialog"
       aria-modal="true"
-      aria-labelledby="cascade-alert-dialog-title"
-      aria-describedby="cascade-alert-dialog-desc"
+      aria-labelledby={titleId}
+      aria-describedby={descId}
       data-state={open ? 'open' : 'closed'}
       data-variant={variant}
       className={styles.dialog}
     >
       <div className={styles.content}>
-        <p id="cascade-alert-dialog-title" className={styles.title}>
+        <p id={titleId} className={styles.title}>
           {title}
         </p>
-        <p id="cascade-alert-dialog-desc" className={styles.description}>
+        <p id={descId} className={styles.description}>
           {description}
         </p>
         <div className={styles.actions}>
