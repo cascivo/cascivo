@@ -161,7 +161,7 @@ function indexHtml(opts: ScaffoldOptions): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${opts.name}</title>
     <style>
-      @layer cascivo.reset, cascivo.tokens, cascivo.component, cascivo.theme;
+      @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.override;
       @layer cascivo.reset {
         *,
         *::before,

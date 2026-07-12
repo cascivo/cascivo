@@ -8,10 +8,12 @@
    below also self-import @cascivo/tokens for standalone use; bundlers and
    browsers dedupe the identical @import URL, so tokens are still emitted once.
 
-   Layer order (first appearance, lowest → highest priority):
-     cascivo.tokens  <  cascivo.base  <  cascivo.theme  ( <  cascivo.component )
-   Component CSS (@cascivo/react/styles.css) adds cascivo.component on top. */
+   Canonical layer order (lowest → highest priority) — see @cascivo/tokens/layers.css:
+     cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme < cascivo.override
+   The order statement is emitted first (below, and again transitively via
+   @cascivo/tokens); identical @layer statements are idempotent. */
 
+@import '@cascivo/tokens/layers.css';
 @import '@cascivo/tokens';
 @import '@cascivo/tokens/properties.css';
 @import './base.css';

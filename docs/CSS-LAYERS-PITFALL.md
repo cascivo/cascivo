@@ -7,22 +7,45 @@
 > breaking change (the brand is `cascivo`, not `cascade`) — see the package
 > CHANGELOGs.
 
-## Recommended layer ordering
+## Canonical layer ordering
 
-cascivo ships three layers, ordered lowest-priority → highest:
+cascivo ships one authoritative layer order, declared in
+[`@cascivo/tokens/layers.css`](../packages/tokens/src/layers.css) and emitted
+first by every entry path. Ordered lowest-priority → highest:
 
 ```
-cascivo.base   < cascivo.theme   < cascivo.component
+cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme < cascivo.override
 ```
 
+- `cascivo.reset` — consumer reset (`box-sizing`, margin/padding zeroing).
 - `cascivo.base` — the base reset (`font-family`, `line-height`, `color` on
-  `html`/`body`), shipped by `@cascivo/themes`.
-- `cascivo.theme` — semantic token values per `[data-theme]`.
-- `cascivo.component` — component styles.
+  `html`), shipped by `@cascivo/themes`.
+- `cascivo.tokens` — primitive design tokens, shipped by `@cascivo/tokens`.
+- `cascivo.component` — component + layout styles.
+- `cascivo.theme` — semantic token values per `[data-theme]`. Ordered **above**
+  `cascivo.component` so a theme always wins over component defaults.
+- `cascivo.override` — the consumer escape hatch (see below).
 
 **Unlayered** author CSS beats **all** cascivo layers regardless of specificity,
 so a consumer's plain (unlayered) stylesheet always wins. To override cascivo
-from *within* a layer, declare a layer ordered after `cascivo.component`.
+from *within* a layer, use `cascivo.override`.
+
+### `cascivo.override` — the escape hatch
+
+`cascivo.override` is the highest cascivo layer. Put brand or one-off overrides
+there and they beat tokens, components, **and** themes — with no
+`:root:not([data-theme])` specificity fight (see [`THEMING.md`](./THEMING.md#the-specificity-footgun-read-this-before-writing-a-brand-theme)):
+
+```css
+@layer cascivo.override {
+  :root {
+    --cascivo-color-accent: oklch(0.7 0.17 155); /* wins everywhere, no data-theme needed */
+  }
+}
+```
+
+App-local sublayers (`cascivo.example`, `cascivo.blocks.*`) are not shipped by any
+package; insert them between `cascivo.theme` and `cascivo.override`.
 
 ## The Problem
 
@@ -37,7 +60,8 @@ Declare the layer order **before any CSS loads** and wrap the reset inside the l
 ```html
 <!-- index.html -->
 <style>
-  @layer cascivo.reset, cascivo.tokens, cascivo.base, cascivo.component, cascivo.example, cascivo.theme;
+  @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.example, cascivo.theme,
+    cascivo.override;
   @layer cascivo.reset {
     *,
     *::before,
