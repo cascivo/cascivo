@@ -9,6 +9,7 @@
   "tags": ["chart", "polar", "rose", "radial", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Polar",
     "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",

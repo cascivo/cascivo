@@ -9,6 +9,7 @@
   "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Kpi",
     "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",

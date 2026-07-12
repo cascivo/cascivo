@@ -9,6 +9,7 @@
   "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Calendar",
     "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",

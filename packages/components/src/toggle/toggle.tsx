@@ -7,6 +7,12 @@ export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   checked?: boolean
   defaultChecked?: boolean
   onChange?: (checked: boolean) => void
+  /**
+   * Renders a **visible** text label beside the switch that also becomes its
+   * accessible name. When a visible heading already labels the control, omit
+   * `label` (it would duplicate that text) and pass `aria-label` instead —
+   * `aria-label` is forwarded to the underlying button.
+   */
   label?: string
   size?: 'sm' | 'md'
 }

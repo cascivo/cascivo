@@ -9,6 +9,7 @@
   "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "ComboChart",
     "description": "Combination bar + line chart on shared or dual y-axes.",

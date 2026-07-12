@@ -9,6 +9,7 @@
   "tags": ["flow", "handle", "port", "connect"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "FlowHandle",
     "description": "A connection port on a node edge — where edges attach and interactive connect starts.",

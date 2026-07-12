@@ -44,7 +44,7 @@
       },
       {
         "name": "label",
-        "description": "Text label for the control.",
+        "description": "Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text.",
         "type": "string",
         "required": false
       },
@@ -105,6 +105,11 @@
           "bad": "<Toggle label=\"I accept the terms\" /> inside a submitted form",
           "good": "<Checkbox label=\"I accept the terms\" />",
           "why": "A switch implies an instant on/off setting; agreement that is submitted with the form is a checkbox"
+        },
+        {
+          "bad": "<h3>Dark mode</h3><Toggle label=\"Dark mode\" /> — the label repeats the heading",
+          "good": "<h3>Dark mode</h3><Toggle aria-label=\"Dark mode\" />",
+          "why": "The `label` prop renders visible text and is the accessible name; when a heading already names the control, use aria-label so the name is not shown (and read) twice"
         }
       ],
       "related": [

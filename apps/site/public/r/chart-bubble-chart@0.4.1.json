@@ -9,6 +9,7 @@
   "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "BubbleChart",
     "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",

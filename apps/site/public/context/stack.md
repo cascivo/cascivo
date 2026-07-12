@@ -11,11 +11,20 @@
 
 ## When NOT to use
 
-- Normal vertical lists — use a flex column or VStack instead
+- Gap-based vertical/horizontal layout — that is a DIFFERENT component, the flex `layout/stack` (also exported as `Stack`). This `Stack` only overlaps children with an offset.
 - Independent positioned elements — use CSS position directly
+
+## Anti-patterns
+
+### The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. The two components share a name; pick by behaviour, not by the name.
+
+**Bad:** `import { Stack } from '@cascivo/react' to space items vertically`  
+**Good:** `For flex layout use layout/stack (npx cascivo add stack); use this Stack only for a visual card-pile`  
+**Why:** The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. The two components share a name; pick by behaviour, not by the name.
 
 ## Related components
 
+- **layout/stack** (alternative): The flex layout primitive for gap-based vertical/horizontal stacking. It shares the `Stack` export name but is copy-paste-only (`npx cascivo add stack`) — not this card-pile component.
 - **Avatar** (pairs-with): Overlapping avatar groups are a primary use case for Stack
 - **Card** (pairs-with): Card pile visualisations are a common Stack pattern
 

@@ -18,6 +18,8 @@ export type SideNavTone = 'default' | 'danger' | 'warning' | 'success'
 
 /** A selectable/navigable sub-item (link when `href` is set, action when `onSelect` is set). */
 export interface SideNavLinkSubItem {
+  /** Stable React key. Provide when `label`/`href` may repeat (e.g. placeholder `#` links). */
+  id?: string
   label: string
   href?: string
   icon?: ReactNode
@@ -35,6 +37,8 @@ export type SideNavSubItem =
   | { type: 'label'; label: string }
 
 export interface SideNavItem {
+  /** Stable React key. Provide when `label`/`href` may repeat (e.g. placeholder `#` links). */
+  id?: string
   label: string
   href?: string
   icon?: ReactNode
@@ -347,7 +351,7 @@ export function SideNav({
                 if (item.items) {
                   if (rail && !expandOnHover) {
                     return (
-                      <li key={item.label}>
+                      <li key={item.id ?? globalIndex}>
                         <RailGroupFlyout item={item as SideNavItem & { items: SideNavSubItem[] }} />
                       </li>
                     )
@@ -355,7 +359,7 @@ export function SideNav({
                   const open = expandedGroups.value.includes(item.label)
                   const sublistId = `${baseId}-group-${globalIndex}`
                   return (
-                    <li key={item.label}>
+                    <li key={item.id ?? globalIndex}>
                       <button
                         type="button"
                         aria-expanded={open}
@@ -424,7 +428,7 @@ export function SideNav({
 
                 if (item.render) {
                   return (
-                    <li key={item.label} className={styles['customItem']}>
+                    <li key={item.id ?? globalIndex} className={styles['customItem']}>
                       {item.render({ collapsed: rail })}
                     </li>
                   )
@@ -494,7 +498,7 @@ export function SideNav({
                   )
 
                 return (
-                  <li key={item.label}>
+                  <li key={item.id ?? globalIndex}>
                     {rail && !expandOnHover ? (
                       <Tooltip content={item.label} placement="right">
                         {link}

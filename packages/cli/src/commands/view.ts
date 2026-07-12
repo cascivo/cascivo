@@ -13,6 +13,13 @@ export function formatItem(item: RegistryItem): string {
   if (item.license) lines.push(`License: ${item.license}`)
   if (item.homepage) lines.push(`Homepage: ${item.homepage}`)
 
+  if (item.install) {
+    lines.push(`Distribution: npm package — pnpm add ${item.install}`)
+    if (item.styles) lines.push(`Stylesheet: import '${item.styles}' (required)`)
+  } else if (!isTemplateItem(item)) {
+    lines.push(`Distribution: copy-paste — npx cascivo add ${item.name}`)
+  }
+
   if (isTemplateItem(item)) {
     try {
       const meta = asTemplateMeta(item.meta)

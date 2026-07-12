@@ -358,3 +358,18 @@ describe('SideNav footer + expandOnHover', () => {
     )
   })
 })
+
+describe('SideNav stable keys', () => {
+  it('does not warn about duplicate keys when items share an href placeholder', () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const items: SideNavItem[] = [
+      { label: 'Overview', href: '#', onClick: () => {} },
+      { label: 'Reports', href: '#', onClick: () => {} },
+      { label: 'Settings', href: '#', onClick: () => {} },
+    ]
+    render(<SideNav items={items} />)
+    const dupKeyWarning = spy.mock.calls.find((c) => String(c[0]).includes('same key'))
+    expect(dupKeyWarning).toBeUndefined()
+    spy.mockRestore()
+  })
+})

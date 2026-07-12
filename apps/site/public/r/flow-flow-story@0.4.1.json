@@ -9,6 +9,7 @@
   "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "FlowStory",
     "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",

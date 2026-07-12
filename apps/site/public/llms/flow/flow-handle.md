@@ -4,13 +4,16 @@ A connection port on a node edge — where edges attach and interactive connect 
 
 ## Install
 
-Copy-paste the source (you own and can edit it):
+Ships in the `@cascivo/flow` package — install it (no copy-paste):
 
-```bash
-npx cascivo add flow/flow-handle
+```sh
+pnpm add @cascivo/flow
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+```tsx
+import { FlowHandle } from '@cascivo/flow'
+import '@cascivo/flow/styles.css' // required stylesheet
+```
 
 ## Category
 

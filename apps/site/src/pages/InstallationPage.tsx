@@ -85,6 +85,21 @@ npx cascivo add button    # copy button.tsx + button.module.css into your repo`}
           the registry and reports exactly what's out of date.
         </p>
       </section>
+
+      <section style={cardStyle}>
+        <h2>Versioning &amp; stability</h2>
+        <p>
+          Packages version independently via changesets, so a low number on one package doesn't mean
+          the whole system is behind. The compatibility truth is <em>per component</em>: every
+          registry entry records a <code>peerVersions</code> floor for the <code>@cascivo/*</code>{' '}
+          packages its copied source needs.
+        </p>
+        <p style={subtle}>
+          Pin exact versions, run <code>cascivo doctor --drift</code> after adding components, and
+          watch <a href="/breaking-changes.json">breaking-changes.json</a> (major + minor releases
+          per package) to catch API drift before you upgrade.
+        </p>
+      </section>
     </article>
   )
 }

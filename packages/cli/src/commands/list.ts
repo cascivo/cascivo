@@ -9,9 +9,12 @@ export interface ListOptions {
 
 const TYPE_LABELS: Record<string, string> = {
   component: 'Components',
-  layout: 'Layouts',
-  block: 'Blocks',
-  section: 'Sections',
+  layout: 'Layouts (copy-paste)',
+  block: 'Blocks (copy-paste)',
+  section: 'Sections (copy-paste)',
+  chart: 'Charts (npm: @cascivo/charts)',
+  flow: 'Flow (npm: @cascivo/flow)',
+  editor: 'Editor (npm: @cascivo/editor)',
 }
 
 /** Render a group of entries as an aligned text table (no section header). */

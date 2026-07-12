@@ -4,7 +4,7 @@ Compact inline sparkline for embedding trend data in dashboards or KPI cards.
 
 ## Install
 
-Charts ship in the `@cascivo/charts` package:
+Ships in the `@cascivo/charts` package — install it (no copy-paste):
 
 ```sh
 pnpm add @cascivo/charts
@@ -12,6 +12,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Sparkline } from '@cascivo/charts'
+import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
 ```
 
 ## Category

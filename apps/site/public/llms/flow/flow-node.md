@@ -4,13 +4,16 @@ An HTML node box positioned in the viewport pane — draggable, selectable, with
 
 ## Install
 
-Copy-paste the source (you own and can edit it):
+Ships in the `@cascivo/flow` package — install it (no copy-paste):
 
-```bash
-npx cascivo add flow/flow-node
+```sh
+pnpm add @cascivo/flow
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+```tsx
+import { FlowNode } from '@cascivo/flow'
+import '@cascivo/flow/styles.css' // required stylesheet
+```
 
 ## Category
 

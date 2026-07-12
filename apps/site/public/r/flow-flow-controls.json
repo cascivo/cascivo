@@ -9,6 +9,7 @@
   "tags": ["flow", "controls", "zoom", "chrome"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "FlowControls",
     "description": "Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.",

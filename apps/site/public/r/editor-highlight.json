@@ -9,6 +9,7 @@
   "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],
   "category": "display",
   "install": "@cascivo/editor",
+  "styles": "@cascivo/editor/styles.css",
   "meta": {
     "name": "Highlight",
     "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",

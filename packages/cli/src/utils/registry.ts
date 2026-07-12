@@ -2,15 +2,17 @@ import { fetchJsonFresh } from './http.js'
 
 export interface RegistryComponent {
   name: string
-  type?: 'component' | 'layout' | 'block' | 'chart' | 'section'
+  type?: 'component' | 'layout' | 'block' | 'chart' | 'section' | 'flow' | 'editor'
   description: string
   category: string
   version: string
   files: string[]
   /** filename → sha256 of upstream content — used by `update --check`. */
   fileHashes?: Record<string, string>
-  /** npm package to install (used when type === 'chart'). */
+  /** npm package to install (charts/flow/editor). */
   install?: string
+  /** stylesheet the npm package requires, e.g. `@cascivo/charts/styles.css`. */
+  styles?: string
   dependencies: string[]
   /**
    * Minimum published version required for each `@cascivo/*` dependency, e.g.
@@ -69,10 +71,18 @@ export function parseRegistry(raw: unknown): Registry {
       throw new Error(`Invalid registry: component at index ${i} is missing "name"`)
     }
     const rawType = c.type
-    const type =
-      rawType === 'component' || rawType === 'layout' || rawType === 'block' || rawType === 'chart'
-        ? rawType
-        : undefined
+    const KNOWN_TYPES = [
+      'component',
+      'layout',
+      'block',
+      'chart',
+      'section',
+      'flow',
+      'editor',
+    ] as const
+    const type = (KNOWN_TYPES as readonly string[]).includes(rawType as string)
+      ? (rawType as RegistryComponent['type'])
+      : undefined
     const rawMeta = c.meta
     const metaName =
       typeof rawMeta === 'object' &&
@@ -92,6 +102,7 @@ export function parseRegistry(raw: unknown): Registry {
     }
     if (type !== undefined) result.type = type
     if (typeof c.install === 'string') result.install = c.install
+    if (typeof c.styles === 'string') result.styles = c.styles
     if (Array.isArray(c.registryDependencies)) {
       const deps = asStringArray(c.registryDependencies)
       if (deps.length > 0) result.registryDependencies = deps

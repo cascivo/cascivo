@@ -75,6 +75,10 @@ interface RegistryEntry {
   category: string
   version: string
   files: string[]
+  /** npm package to install (charts/flow/editor); absent for copy-paste entries. */
+  install?: string
+  /** stylesheet the npm package requires, e.g. `@cascivo/charts/styles.css`. */
+  styles?: string
   dependencies?: string[]
   tags?: string[]
   meta?: ComponentMeta & { intent?: ComponentIntent }
@@ -137,6 +141,18 @@ function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' 
   return null
 }
 
+/**
+ * Terse distribution-channel marker for the llms.txt component index, so an
+ * agent can see at a glance which package (if any) an entry comes from — the
+ * single most-reported time sink was not knowing a component was copy-paste vs
+ * a separate npm package.
+ */
+function channelLabel(entry: RegistryEntry): string {
+  if (entry.install) return `npm ${entry.install}`
+  if (packageFor(entry) === '@cascivo/react') return 'npm @cascivo/react · or copy-paste'
+  return 'copy-paste'
+}
+
 function componentMarkdown(entry: RegistryEntry): string {
   const meta = entry.meta
   const lines: string[] = []
@@ -151,16 +167,23 @@ function componentMarkdown(entry: RegistryEntry): string {
 
   lines.push('## Install')
   lines.push('')
-  if (entry.type === 'chart') {
-    // Charts ship only as the @cascivo/charts package (no copy-paste source files).
-    lines.push('Charts ship in the `@cascivo/charts` package:')
+  if (entry.install) {
+    // npm-distributed (charts, flow, editor): install the package, no copy-paste.
+    lines.push(`Ships in the \`${entry.install}\` package — install it (no copy-paste):`)
     lines.push('')
     lines.push('```sh')
-    lines.push('pnpm add @cascivo/charts')
+    lines.push(`pnpm add ${entry.install}`)
     lines.push('```')
     lines.push('')
     lines.push('```tsx')
-    lines.push(`import { ${exportName} } from '@cascivo/charts'`)
+    lines.push(`import { ${exportName} } from '${entry.install}'`)
+    if (entry.styles) {
+      const note =
+        entry.type === 'chart'
+          ? 'required — without it the screen-reader data-table fallback renders visibly'
+          : 'required stylesheet'
+      lines.push(`import '${entry.styles}' // ${note}`)
+    }
     lines.push('```')
     lines.push('')
   } else {
@@ -370,6 +393,34 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push('`@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.')
   lines.push('')
+  lines.push(
+    'Charts, the code editor, and flow ship their own stylesheet: when you use them, import the',
+  )
+  lines.push("matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise")
+  lines.push(
+    '`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a',
+  )
+  lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
+  lines.push('')
+  lines.push('## Versioning & compatibility')
+  lines.push('')
+  lines.push(
+    'Packages version independently (changesets) — a low number on one package does not mean the',
+  )
+  lines.push(
+    'whole system is behind. The compatibility truth is per-entry: every registry entry carries a',
+  )
+  lines.push(
+    '`peerVersions` floor (e.g. `{ "@cascivo/i18n": ">=0.2.1" }`) for the packages its copied source',
+  )
+  lines.push(
+    'needs. Pin exact versions, and after adding components run `cascivo doctor --drift` to catch an',
+  )
+  lines.push(
+    `installed peer that is older than a copied component needs. Watch ${DOCS}/breaking-changes.json`,
+  )
+  lines.push('(major + minor releases per package) to detect API drift before upgrading.')
+  lines.push('')
   lines.push('## Guides')
   lines.push('')
   lines.push(`- Theming & branding: ${REPO}/blob/main/docs/THEMING.md`)
@@ -430,6 +481,48 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- User-visible strings via `@cascivo/i18n` — no hardcoded English fallbacks')
   lines.push('- WCAG 2.2 AA minimum — keyboard navigable, screen-reader tested')
   lines.push('')
+  lines.push('## High-throughput / streaming data')
+  lines.push('')
+  lines.push(
+    'For live logs, build output, market ticks, or streamed tokens, do NOT rebuild an array per',
+  )
+  lines.push(
+    'event (`arr = [...arr.slice(1), line]` is O(n) per line and thrashes rendering). Use the',
+  )
+  lines.push('built-in primitives, which coalesce bursts to one render per frame:')
+  lines.push('')
+  lines.push(
+    '- `useStreamBuffer` / `createStreamBuffer` (`@cascivo/core`) — fixed-capacity O(1) ring buffer,',
+  )
+  lines.push('  rAF-coalesced; a burst within one frame is a single signal write.')
+  lines.push(
+    '- `useStreamSeries` / `bindStream` (`@cascivo/charts`) — feed a live source into a chart with',
+  )
+  lines.push(
+    '  optional LTTB/min-max decimation so a fast stream never blows the rendered point count.',
+  )
+  lines.push(
+    '- `LogViewer` (`@cascivo/react`) — virtualized console for high-frequency logs (100k-line buffer',
+  )
+  lines.push(
+    '  stays responsive), ANSI parsing, auto-follow tail. Pairs with `createStreamBuffer`.',
+  )
+  lines.push('')
+  lines.push('## Feedback signals for agents')
+  lines.push('')
+  lines.push(
+    'cascivo ships no runtime telemetry (copy-paste model — you own the code; no phone-home). To',
+  )
+  lines.push(
+    'see how components behave without adding tracking, read these machine-readable CI outputs:',
+  )
+  lines.push('')
+  lines.push(`- Breaking/feature changes per package: ${DOCS}/breaking-changes.json`)
+  lines.push(
+    `- Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): ${REPO}/blob/main/apps/bench/results/results.json`,
+  )
+  lines.push(`- Accessibility conformance (axe sweep, AT matrix): ${REPO}/tree/main/docs/specs`)
+  lines.push('')
 
   // Sort deterministically, then group the index by category.
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
@@ -441,7 +534,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     lines.push(`### ${category}`)
     lines.push('')
     for (const entry of sorted.filter((e) => e.category === category)) {
-      lines.push(`- [${entry.name}](${DOCS}/llms/${entry.name}.md) — ${entry.description}`)
+      lines.push(
+        `- [${entry.name}](${DOCS}/llms/${entry.name}.md) — ${entry.description} _(${channelLabel(entry)})_`,
+      )
     }
     lines.push('')
   }

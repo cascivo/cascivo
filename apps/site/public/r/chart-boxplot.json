@@ -9,6 +9,7 @@
   "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Boxplot",
     "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",

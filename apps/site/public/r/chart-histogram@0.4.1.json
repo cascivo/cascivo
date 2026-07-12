@@ -9,6 +9,7 @@
   "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Histogram",
     "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",

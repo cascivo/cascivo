@@ -1,0 +1,140 @@
+{
+  "alert": [
+    {
+      "tag": "div",
+      "attrs": {
+        "data-variant": "warning",
+        "role": "alert"
+      },
+      "children": [
+        {
+          "tag": "div",
+          "children": [
+            {
+              "tag": "div"
+            },
+            {
+              "tag": "div"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "badge": [
+    {
+      "tag": "span",
+      "attrs": {
+        "data-size": "md",
+        "data-variant": "default"
+      }
+    }
+  ],
+  "breadcrumb": [
+    {
+      "tag": "nav",
+      "attrs": {
+        "aria-label": "Breadcrumb"
+      },
+      "children": [
+        {
+          "tag": "ol",
+          "children": [
+            {
+              "tag": "li",
+              "children": [
+                {
+                  "tag": "a",
+                  "attrs": {
+                    "href": "<href>"
+                  }
+                }
+              ]
+            },
+            {
+              "tag": "li",
+              "children": [
+                {
+                  "tag": "a",
+                  "attrs": {
+                    "href": "<href>"
+                  }
+                }
+              ]
+            },
+            {
+              "tag": "li",
+              "children": [
+                {
+                  "tag": "span",
+                  "attrs": {
+                    "aria-current": "page"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "button": [
+    {
+      "tag": "button",
+      "attrs": {
+        "data-size": "md",
+        "data-state": "idle",
+        "data-variant": "primary"
+      },
+      "children": [
+        {
+          "tag": "span"
+        }
+      ]
+    }
+  ],
+  "card": [
+    {
+      "tag": "div",
+      "attrs": {
+        "data-padding": "md",
+        "data-variant": "default"
+      }
+    }
+  ],
+  "separator": [
+    {
+      "tag": "hr",
+      "attrs": {
+        "data-orientation": "horizontal"
+      }
+    }
+  ],
+  "spinner": [
+    {
+      "tag": "span",
+      "attrs": {
+        "aria-label": "Loading",
+        "data-size": "md",
+        "role": "status"
+      }
+    }
+  ],
+  "status": [
+    {
+      "tag": "span",
+      "attrs": {
+        "data-pulse": "",
+        "data-status": "success"
+      },
+      "children": [
+        {
+          "tag": "span",
+          "attrs": {
+            "aria-hidden": "true"
+          }
+        }
+      ]
+    }
+  ]
+}

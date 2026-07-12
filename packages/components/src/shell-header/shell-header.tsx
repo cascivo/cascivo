@@ -12,6 +12,8 @@ export interface ShellHeaderBrand {
 }
 
 export interface ShellHeaderNavLink {
+  /** Stable React key. Provide when `href`/`label` may repeat (e.g. placeholder `#` links). */
+  id?: string
   label: string
   href: string
   active?: boolean
@@ -20,12 +22,16 @@ export interface ShellHeaderNavLink {
 }
 
 export interface ShellHeaderNavMenuItem {
+  /** Stable React key. Provide when `href`/`label` may repeat (e.g. placeholder `#` links). */
+  id?: string
   label: string
   href: string
   active?: boolean
 }
 
 export interface ShellHeaderNavMenu {
+  /** Stable React key. Provide when `label` may repeat across menus. */
+  id?: string
   label: string
   items: ShellHeaderNavMenuItem[]
 }
@@ -155,9 +161,9 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
         className={styles['navMenuPanel']}
         onKeyDown={handlePanelKeyDown}
       >
-        {item.items.map((sub) => (
+        {item.items.map((sub, i) => (
           <a
-            key={sub.href}
+            key={sub.id ?? `${i}-${sub.href}`}
             href={sub.href}
             role="menuitem"
             aria-current={sub.active ? 'page' : undefined}
@@ -231,11 +237,11 @@ export function ShellHeader({
       {nav && nav.length > 0 && (
         <nav aria-label={navLabel} className={styles['nav']}>
           <ul className={styles['navList']}>
-            {nav.map((item) =>
+            {nav.map((item, i) =>
               isNavMenu(item) ? (
-                <NavMenu key={item.label} item={item} />
+                <NavMenu key={item.id ?? `${i}-${item.label}`} item={item} />
               ) : (
-                <li key={item.href}>
+                <li key={item.id ?? `${i}-${item.href}`}>
                   <a
                     href={item.href}
                     aria-current={item.active ? 'page' : undefined}

@@ -13,6 +13,8 @@ import { useId, useRef, type ReactNode } from 'react'
 import styles from './fab.module.css'
 
 export interface FabAction {
+  /** Stable React key. Provide when `label` may repeat across actions. */
+  id?: string
   /** Accessible name and visible label for the speed-dial item. */
   label: string
   icon: ReactNode
@@ -139,7 +141,7 @@ export function Fab({
             {actions.map((action, index) => {
               const itemProps = roving.getItemProps(index)
               return (
-                <li key={action.label} role="presentation" className={styles['dialItem']}>
+                <li key={action.id ?? index} role="presentation" className={styles['dialItem']}>
                   <button
                     ref={itemProps.ref as React.Ref<HTMLButtonElement>}
                     type="button"

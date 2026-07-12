@@ -4,13 +4,16 @@ Lightweight code editor — a native textarea overlaid on a syntax-highlighted l
 
 ## Install
 
-Copy-paste the source (you own and can edit it):
+Ships in the `@cascivo/editor` package — install it (no copy-paste):
 
-```bash
-npx cascivo add editor/code-editor
+```sh
+pnpm add @cascivo/editor
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+```tsx
+import { CodeEditor } from '@cascivo/editor'
+import '@cascivo/editor/styles.css' // required stylesheet
+```
 
 ## Category
 
