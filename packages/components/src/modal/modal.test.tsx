@@ -85,9 +85,7 @@ describe('Modal', () => {
       </>,
     )
     const [first, second] = screen.getAllByRole('dialog')
-    expect(first!.getAttribute('aria-labelledby')).not.toBe(
-      second!.getAttribute('aria-labelledby'),
-    )
+    expect(first!.getAttribute('aria-labelledby')).not.toBe(second!.getAttribute('aria-labelledby'))
     expect(first!.getAttribute('aria-describedby')).not.toBe(
       second!.getAttribute('aria-describedby'),
     )

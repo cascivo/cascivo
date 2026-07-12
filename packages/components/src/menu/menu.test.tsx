@@ -49,6 +49,59 @@ describe('Menu', () => {
     expect(screen.getByText('Delete')).toHaveFocus()
   })
 
+  it('arrow navigation skips disabled items and separators', async () => {
+    render(
+      <Menu>
+        <MenuTrigger>Actions</MenuTrigger>
+        <MenuItem onSelect={() => {}}>Edit</MenuItem>
+        <MenuItem onSelect={() => {}} disabled>
+          Duplicate
+        </MenuItem>
+        <MenuSeparator />
+        <MenuItem onSelect={() => {}}>Delete</MenuItem>
+      </Menu>,
+    )
+    await userEvent.click(screen.getByText('Actions'))
+    screen.getByText('Edit').focus()
+    await userEvent.keyboard('{ArrowDown}')
+    // Skips the disabled "Duplicate" and the separator, landing on "Delete".
+    expect(screen.getByText('Delete')).toHaveFocus()
+  })
+
+  it('Home/End jump to first/last enabled item and ArrowUp wraps', async () => {
+    render(
+      <Menu>
+        <MenuTrigger>Actions</MenuTrigger>
+        <MenuItem onSelect={() => {}}>Edit</MenuItem>
+        <MenuItem onSelect={() => {}}>Copy</MenuItem>
+        <MenuItem onSelect={() => {}}>Delete</MenuItem>
+      </Menu>,
+    )
+    await userEvent.click(screen.getByText('Actions'))
+    screen.getByText('Edit').focus()
+    await userEvent.keyboard('{End}')
+    expect(screen.getByText('Delete')).toHaveFocus()
+    await userEvent.keyboard('{Home}')
+    expect(screen.getByText('Edit')).toHaveFocus()
+    await userEvent.keyboard('{ArrowUp}')
+    expect(screen.getByText('Delete')).toHaveFocus() // wraps to last
+  })
+
+  it('type-to-select focuses the first item matching the typed characters', async () => {
+    render(
+      <Menu>
+        <MenuTrigger>Actions</MenuTrigger>
+        <MenuItem onSelect={() => {}}>Edit</MenuItem>
+        <MenuItem onSelect={() => {}}>Delete</MenuItem>
+        <MenuItem onSelect={() => {}}>Duplicate</MenuItem>
+      </Menu>,
+    )
+    await userEvent.click(screen.getByText('Actions'))
+    screen.getByText('Edit').focus()
+    await userEvent.keyboard('du')
+    expect(screen.getByText('Duplicate')).toHaveFocus()
+  })
+
   it('renders separator', () => {
     const { container } = render(
       <Menu>
