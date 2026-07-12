@@ -34,14 +34,14 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `FilterOption[]` | Yes | — | Array of { label, value } objects to render as filter buttons |
-| `value` | `string[]` | No | — | Controlled selected values |
-| `defaultValue` | `string[]` | No | [] | Initial selected values for uncontrolled use |
-| `onChange` | `(selected: string[]) => void` | No | — | Called when the value changes. |
-| `multi` | `boolean` | No | false | Allow multiple items to be selected simultaneously |
-| `variant` | `'pill' \| 'outline'` | No | pill | Selects the visual style variant. |
+| Name           | Type                           | Required | Default | Description                                                   |
+| -------------- | ------------------------------ | -------- | ------- | ------------------------------------------------------------- |
+| `options`      | `FilterOption[]`               | Yes      | —       | Array of { label, value } objects to render as filter buttons |
+| `value`        | `string[]`                     | No       | —       | Controlled selected values                                    |
+| `defaultValue` | `string[]`                     | No       | []      | Initial selected values for uncontrolled use                  |
+| `onChange`     | `(selected: string[]) => void` | No       | —       | Called when the value changes.                                |
+| `multi`        | `boolean`                      | No       | false   | Allow multiple items to be selected simultaneously            |
+| `variant`      | `'pill' \| 'outline'`          | No       | pill    | Selects the visual style variant.                             |
 
 ## Tokens
 
@@ -90,17 +90,20 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 ```jsx
 <Filter
   variant="outline"
-  options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}
+  options={[
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+  ]}
   aria-label="Filter by framework"
 />
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area    | Level    | Note                                                                                            |
+| ------- | -------- | ----------------------------------------------------------------------------------------------- |
 | variant | flexible | pill suits floating filter bars; outline suits embedded filter rows within a bordered container |
-| multi | flexible | single-select for mutually exclusive categories; multi for additive facets |
+| multi   | flexible | single-select for mutually exclusive categories; multi for additive facets                      |
 
 ## AI context prompt
 

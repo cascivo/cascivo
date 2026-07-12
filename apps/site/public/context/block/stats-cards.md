@@ -24,9 +24,9 @@ Each stat card is a labeled figure for screen reader context.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `stats` | `Stat[]` | No | — | KPI stat data |
+| Name    | Type     | Required | Default | Description   |
+| ------- | -------- | -------- | ------- | ------------- |
+| `stats` | `Stat[]` | No       | —       | KPI stat data |
 
 ## Examples
 

@@ -66,7 +66,7 @@
     "ready": "pnpm regen && vp check --fix && pnpm brand:check && pnpm claims:check && pnpm release:check && pnpm meta:check && pnpm i18n:check && pnpm docs-routes:check && pnpm llms:check && vp run -r build && vp run -r check && vp run -r test",
     "ready:ci": "pnpm clean && pnpm regen && vp check --fix && pnpm brand:check && pnpm claims:check && pnpm release:check && pnpm meta:check && pnpm i18n:check && pnpm docs-routes:check && pnpm llms:check && vp run -r --concurrency-limit 1 build && vp run -r check && vp run -r test",
     "changeset": "changeset && pnpm check:fix",
-    "version-packages": "changeset version && pnpm install --no-frozen-lockfile && pnpm regen",
+    "version-packages": "changeset version && pnpm install --no-frozen-lockfile && pnpm regen && vp check --fix",
     "build:release": "vp run --concurrency-limit 1 -F @cascivo/ai -F @cascivo/core -F @cascivo/editor -F @cascivo/flow -F @cascivo/i18n -F @cascivo/icons -F @cascivo/charts -F @cascivo/mcp -F @cascivo/react -F @cascivo/registry -F @cascivo/storage -F @cascivo/themes -F @cascivo/tokens -F cascivo build",
     "release": "pnpm build:release && changeset publish"
   },

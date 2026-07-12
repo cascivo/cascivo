@@ -32,11 +32,11 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | No | — | 0–100. Omit for indeterminate state. |
-| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No | primary | Selects the visual style variant. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Name      | Type                                                       | Required | Default | Description                                           |
+| --------- | ---------------------------------------------------------- | -------- | ------- | ----------------------------------------------------- |
+| `value`   | `number`                                                   | No       | —       | 0–100. Omit for indeterminate state.                  |
+| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                     |
+| `size`    | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 
@@ -78,10 +78,10 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant | flexible | Choose the variant that matches the semantic meaning of the operation |
-| token names | strict | Colors must resolve to --cascivo-* tokens |
+| Area        | Level    | Note                                                                  |
+| ----------- | -------- | --------------------------------------------------------------------- |
+| variant     | flexible | Choose the variant that matches the semantic meaning of the operation |
+| token names | strict   | Colors must resolve to --cascivo-\* tokens                            |
 
 ## AI context prompt
 

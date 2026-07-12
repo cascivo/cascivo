@@ -41,11 +41,11 @@ import { Progress } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | no | — | 0–100. Omit for indeterminate state. |
-| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop      | Type                                                       | Required | Default   | Description                                           |
+| --------- | ---------------------------------------------------------- | -------- | --------- | ----------------------------------------------------- |
+| `value`   | `number`                                                   | no       | —         | 0–100. Omit for indeterminate state.                  |
+| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `primary` | Selects the visual style variant.                     |
+| `size`    | `'sm' \| 'md' \| 'lg'`                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 

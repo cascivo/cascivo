@@ -33,12 +33,12 @@ Renders a native <form> with noValidate so validation messages come from the com
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `form` | `FormStore<T>` | Yes | — | The form store holding values, validation, and submission state. |
-| `onValid` | `(values: T) => void \| Promise<void>` | Yes | — | Called with the values when the form passes validation. |
-| `children` | `ReactNode` | Yes | — | Content rendered inside the component. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name        | Type                                   | Required | Default | Description                                                      |
+| ----------- | -------------------------------------- | -------- | ------- | ---------------------------------------------------------------- |
+| `form`      | `FormStore<T>`                         | Yes      | —       | The form store holding values, validation, and submission state. |
+| `onValid`   | `(values: T) => void \| Promise<void>` | Yes      | —       | Called with the values when the form passes validation.          |
+| `children`  | `ReactNode`                            | Yes      | —       | Content rendered inside the component.                           |
+| `className` | `string`                               | No       | —       | Additional CSS class names merged onto the root element.         |
 
 ## Tokens
 
@@ -52,7 +52,7 @@ Renders a native <form> with noValidate so validation messages come from the com
 function Demo() {
   const form = useForm({
     initialValues: { email: '' },
-    validate: (v) => v.email.includes('@') ? {} : { email: 'Invalid email' },
+    validate: (v) => (v.email.includes('@') ? {} : { email: 'Invalid email' }),
   })
   const email = form.field('email')
   return (
@@ -72,11 +72,11 @@ function Demo() {
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| validation strategy | flexible | Use schema, validate, or both; schema runs first and validate only if the schema passes |
-| field control composition | flexible | Any control can be wired via form.field(name); children are free-form |
-| submit semantics | strict | onValid only fires when validation produces no errors; submission is guarded by the submitting signal |
+| Area                      | Level    | Note                                                                                                  |
+| ------------------------- | -------- | ----------------------------------------------------------------------------------------------------- |
+| validation strategy       | flexible | Use schema, validate, or both; schema runs first and validate only if the schema passes               |
+| field control composition | flexible | Any control can be wired via form.field(name); children are free-form                                 |
+| submit semantics          | strict   | onValid only fires when validation produces no errors; submission is guarded by the submitting signal |
 
 ## AI context prompt
 

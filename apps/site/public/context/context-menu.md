@@ -32,9 +32,9 @@ The menu container is role="menu" and items are role="menuitem" with tabIndex ma
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `React.ReactNode` | Yes | — | The right-click target first, followed by ContextMenuItem children. |
+| Name       | Type              | Required | Default | Description                                                         |
+| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
+| `children` | `React.ReactNode` | Yes      | —       | The right-click target first, followed by ContextMenuItem children. |
 
 ## Tokens
 
@@ -64,16 +64,18 @@ The menu container is role="menu" and items are role="menuitem" with tabIndex ma
 <ContextMenu>
   <FileRow file={file} />
   <ContextMenuItem onSelect={copy}>Copy</ContextMenuItem>
-  <ContextMenuItem onSelect={paste} disabled>Paste</ContextMenuItem>
+  <ContextMenuItem onSelect={paste} disabled>
+    Paste
+  </ContextMenuItem>
 </ContextMenu>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| menu contents | flexible | Accepts arbitrary ContextMenuItem children after the trigger child |
-| anchor position | strict | Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click |
+| Area            | Level    | Note                                                                                           |
+| --------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| menu contents   | flexible | Accepts arbitrary ContextMenuItem children after the trigger child                             |
+| anchor position | strict   | Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click |
 
 ## AI context prompt
 

@@ -33,13 +33,13 @@ The stack is a labelled group; the +N chip carries an i18n-defaulted aria-label 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `max` | `number` | No | — | Cap the number of visible avatars |
-| `total` | `number` | No | — | Override the total count used for the +N chip |
-| `spacing` | `'sm' \| 'md' \| 'lg'` | No | md | Spacing between items. |
-| `isGrid` | `boolean` | No | false | When true, lays the avatars out in a grid instead of an overlapping stack. |
-| `labels` | `AvatarGroupLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| Name      | Type                   | Required | Default | Description                                                                |
+| --------- | ---------------------- | -------- | ------- | -------------------------------------------------------------------------- |
+| `max`     | `number`               | No       | —       | Cap the number of visible avatars                                          |
+| `total`   | `number`               | No       | —       | Override the total count used for the +N chip                              |
+| `spacing` | `'sm' \| 'md' \| 'lg'` | No       | md      | Spacing between items.                                                     |
+| `isGrid`  | `boolean`              | No       | false   | When true, lays the avatars out in a grid instead of an overlapping stack. |
+| `labels`  | `AvatarGroupLabels`    | No       | —       | Overrides for the component’s user-visible strings (i18n).                 |
 
 ## Tokens
 
@@ -53,27 +53,37 @@ The stack is a labelled group; the +N chip carries an i18n-defaulted aria-label 
 ### Basic
 
 ```jsx
-<AvatarGroup><Avatar fallback="A" /><Avatar fallback="B" /><Avatar fallback="C" /></AvatarGroup>
+<AvatarGroup>
+  <Avatar fallback="A" />
+  <Avatar fallback="B" />
+  <Avatar fallback="C" />
+</AvatarGroup>
 ```
 
 ### With max
 
 ```jsx
-<AvatarGroup max={3}>{users.map((u) => <Avatar key={u.id} src={u.src} alt={u.name} />)}</AvatarGroup>
+<AvatarGroup max={3}>
+  {users.map((u) => (
+    <Avatar key={u.id} src={u.src} alt={u.name} />
+  ))}
+</AvatarGroup>
 ```
 
 ### Grid
 
 ```jsx
-<AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>
+<AvatarGroup isGrid max={8}>
+  {avatars}
+</AvatarGroup>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| spacing | flexible | Pick the overlap that fits the surrounding density |
-| overflow label | strict | The +N label must come from i18n (builtin.avatarGroup.more or a labels override) |
+| Area           | Level    | Note                                                                             |
+| -------------- | -------- | -------------------------------------------------------------------------------- |
+| spacing        | flexible | Pick the overlap that fits the surrounding density                               |
+| overflow label | strict   | The +N label must come from i18n (builtin.avatarGroup.more or a labels override) |
 
 ## AI context prompt
 

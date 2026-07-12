@@ -32,10 +32,10 @@ role="separator" when meaningful so screen readers announce the division; settin
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `orientation` | `'horizontal' \| 'vertical'` | No | horizontal | Layout orientation of the component. |
-| `decorative` | `boolean` | No | false | When true, the separator is purely visual and hidden from assistive tech |
+| Name          | Type                         | Required | Default    | Description                                                              |
+| ------------- | ---------------------------- | -------- | ---------- | ------------------------------------------------------------------------ |
+| `orientation` | `'horizontal' \| 'vertical'` | No       | horizontal | Layout orientation of the component.                                     |
+| `decorative`  | `boolean`                    | No       | false      | When true, the separator is purely visual and hidden from assistive tech |
 
 ## Tokens
 
@@ -57,10 +57,10 @@ role="separator" when meaningful so screen readers announce the division; settin
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| decorative | flexible | Mark decorative when the break carries no meaning beyond visuals |
-| token names | strict | Color must resolve to --cascivo-color-border |
+| Area        | Level    | Note                                                             |
+| ----------- | -------- | ---------------------------------------------------------------- |
+| decorative  | flexible | Mark decorative when the break carries no meaning beyond visuals |
+| token names | strict   | Color must resolve to --cascivo-color-border                     |
 
 ## AI context prompt
 

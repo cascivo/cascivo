@@ -23,10 +23,10 @@ Notification items use alert semantics so screen readers announce new entries.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `notifications` | `Notification[]` | No | — | Notification items to display |
-| `onMarkAllRead` | `() => void` | No | — | Mark all read button handler |
+| Name            | Type             | Required | Default | Description                   |
+| --------------- | ---------------- | -------- | ------- | ----------------------------- |
+| `notifications` | `Notification[]` | No       | —       | Notification items to display |
+| `onMarkAllRead` | `() => void`     | No       | —       | Mark all read button handler  |
 
 ## Examples
 

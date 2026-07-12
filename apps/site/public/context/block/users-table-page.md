@@ -23,10 +23,10 @@ Table uses proper row/column semantics and the search field is labeled.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `users` | `User[]` | No | — | User data |
-| `onInvite` | `() => void` | No | — | Invite button handler |
+| Name       | Type         | Required | Default | Description           |
+| ---------- | ------------ | -------- | ------- | --------------------- |
+| `users`    | `User[]`     | No       | —       | User data             |
+| `onInvite` | `() => void` | No       | —       | Invite button handler |
 
 ## Examples
 
