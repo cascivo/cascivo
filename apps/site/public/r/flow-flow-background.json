@@ -9,6 +9,7 @@
   "tags": ["flow", "background", "grid", "dots", "canvas"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "FlowBackground",
     "description": "Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.",

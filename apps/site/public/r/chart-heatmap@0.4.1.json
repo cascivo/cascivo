@@ -9,6 +9,7 @@
   "tags": ["chart", "heatmap", "matrix", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Heatmap",
     "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",

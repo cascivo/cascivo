@@ -9,6 +9,7 @@
   "tags": ["chart", "radar", "spider", "polar", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Radar",
     "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",

@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignalEffect, useSignals, type Signal } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, useRef, type ReactNode } from 'react'
+import { useId, useRef, type CSSProperties, type ReactNode } from 'react'
 import { useChartSize } from './use-chart'
 import styles from './chart-frame.module.css'
 import { defaultFormat, type ChartPoint, type TooltipModel } from './data-point'
@@ -12,6 +12,23 @@ import { CanvasLayer, type CanvasPaint } from './canvas-layer'
 import { isZoomed, panWindow, zoomWindow } from './zoom'
 import { Toolbox, type ToolboxOptions } from '../chrome/toolbox'
 import { download, serializeSvg, svgToPngBlob } from './export'
+
+/**
+ * Visually-hidden but screen-reader-available. Mirrors the `.fallback` rule in
+ * chart-frame.module.css inline so the accessible data-table fallback stays
+ * hidden even when a consumer forgets to import `@cascivo/charts/styles.css` —
+ * without this, that stylesheet is the only thing hiding it and the raw x/y
+ * table renders visibly under every chart (the dashboard-adopter footgun).
+ */
+const SR_ONLY: CSSProperties = {
+  position: 'absolute',
+  insetInlineStart: '-9999px',
+  inlineSize: '1px',
+  blockSize: '1px',
+  overflow: 'hidden',
+  clipPath: 'inset(50%)',
+  whiteSpace: 'nowrap',
+}
 
 /** In-plot zoom-pan config: a shared index window + the total item count. */
 export interface ZoomConfig {
@@ -241,7 +258,11 @@ export function ChartFrame({
           </text>
         )}
       </svg>
-      {fallback && <div className={styles['fallback']}>{fallback}</div>}
+      {fallback && (
+        <div className={styles['fallback']} style={SR_ONLY}>
+          {fallback}
+        </div>
+      )}
       {toolboxOptions && showData.value && fallback && (
         <div data-data-view="" style={{ overflowX: 'auto' }}>
           {fallback}

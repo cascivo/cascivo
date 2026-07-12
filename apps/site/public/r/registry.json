@@ -638,7 +638,8 @@
           ],
           "whenNotToUse": [
             "Marketing/document pages where the whole page should scroll — use a plain Header instead",
-            "A single, always-visible sidebar with no toggle — compose SideNav directly"
+            "A single, always-visible sidebar with no toggle — compose SideNav directly",
+            "You need a persisted collapsible sidebar, a top progress bar, or a right aside — that is the richer copy-paste `layout/app-shell` (different props: `sideNav`/`aside`/`persistKey`/`state`), not this drop-in."
           ],
           "antiPatterns": [
             {
@@ -648,6 +649,11 @@
             }
           ],
           "related": [
+            {
+              "name": "layout/app-shell",
+              "relationship": "alternative",
+              "reason": "A richer, copy-paste-only app shell with a persisted collapsible sidebar, a signal-driven top progress bar, an error strip, and a right aside. Same `AppShell` name, different prop surface (`sideNav`/`aside`/`persistKey`/`state`). Choose this npm drop-in for a simple header + toggleable nav; choose layout/app-shell when you need persistence/progress/aside."
+            },
             {
               "name": "ShellHeader",
               "relationship": "pairs-with",
@@ -2779,6 +2785,7 @@
       "tags": ["chart", "area", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "AreaChart",
         "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
@@ -3021,6 +3028,7 @@
       "tags": ["chart", "bar", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "BarChart",
         "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
@@ -3326,6 +3334,7 @@
       "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Boxplot",
         "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
@@ -3435,6 +3444,7 @@
       "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "BubbleChart",
         "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
@@ -3556,6 +3566,7 @@
       "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Bullet",
         "description": "Bullet chart with background range bands, measure bar, and target tick.",
@@ -3674,6 +3685,7 @@
       "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Calendar",
         "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
@@ -3797,6 +3809,7 @@
       "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Candlestick",
         "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
@@ -3966,6 +3979,7 @@
       "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "ComboChart",
         "description": "Combination bar + line chart on shared or dual y-axes.",
@@ -4095,6 +4109,7 @@
       "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Funnel",
         "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
@@ -4216,6 +4231,7 @@
       "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Gauge",
         "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
@@ -4356,6 +4372,7 @@
       "tags": ["chart", "heatmap", "matrix", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Heatmap",
         "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
@@ -4463,6 +4480,7 @@
       "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Histogram",
         "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
@@ -4575,6 +4593,7 @@
       "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Kpi",
         "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
@@ -4673,6 +4692,7 @@
       "tags": ["chart", "line", "time-series", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "LineChart",
         "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
@@ -4927,6 +4947,7 @@
       "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Meter",
         "description": "Progress meter in bar or gauge variant with threshold coloring.",
@@ -5034,6 +5055,7 @@
       "tags": ["chart", "pie", "donut", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "PieChart",
         "description": "Pie or donut chart with hover segments and optional legend.",
@@ -5274,6 +5296,7 @@
       "tags": ["chart", "polar", "rose", "radial", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Polar",
         "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
@@ -5414,6 +5437,7 @@
       "tags": ["chart", "radar", "spider", "polar", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Radar",
         "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
@@ -5530,6 +5554,7 @@
       "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "RadialBar",
         "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
@@ -5693,6 +5718,7 @@
       "tags": ["chart", "sankey", "flow", "network", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Sankey",
         "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
@@ -5813,6 +5839,7 @@
       "tags": ["chart", "scatter", "plot", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "ScatterChart",
         "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
@@ -5997,6 +6024,7 @@
       "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Sparkline",
         "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
@@ -6091,6 +6119,7 @@
       "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Stream",
         "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
@@ -6231,6 +6260,7 @@
       "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Sunburst",
         "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
@@ -6351,6 +6381,7 @@
       "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
       "category": "chart",
       "install": "@cascivo/charts",
+      "styles": "@cascivo/charts/styles.css",
       "meta": {
         "name": "Treemap",
         "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
@@ -9425,6 +9456,7 @@
       "tags": ["editor", "code", "syntax-highlighting", "textarea", "inputs"],
       "category": "inputs",
       "install": "@cascivo/editor",
+      "styles": "@cascivo/editor/styles.css",
       "meta": {
         "name": "CodeEditor",
         "description": "Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.",
@@ -9654,6 +9686,7 @@
       "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],
       "category": "display",
       "install": "@cascivo/editor",
+      "styles": "@cascivo/editor/styles.css",
       "meta": {
         "name": "Highlight",
         "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",
@@ -10474,6 +10507,7 @@
       "tags": ["flow", "graph", "declarative", "diagram", "ai-first"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "Flow",
         "description": "The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.",
@@ -10645,6 +10679,7 @@
       "tags": ["flow", "background", "grid", "dots", "canvas"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowBackground",
         "description": "Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.",
@@ -10740,6 +10775,7 @@
       "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowCanvas",
         "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
@@ -10860,6 +10896,7 @@
       "tags": ["flow", "controls", "zoom", "chrome"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowControls",
         "description": "Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.",
@@ -10976,6 +11013,7 @@
       "tags": ["flow", "edge", "connector", "animated", "svg"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowEdge",
         "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
@@ -11124,6 +11162,7 @@
       "tags": ["flow", "handle", "port", "connect"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowHandle",
         "description": "A connection port on a node edge — where edges attach and interactive connect starts.",
@@ -11218,6 +11257,7 @@
       "tags": ["flow", "minimap", "overview", "chrome"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowMiniMap",
         "description": "A scaled SVG overview of the graph with a draggable viewport rectangle.",
@@ -11333,6 +11373,7 @@
       "tags": ["flow", "node", "draggable", "graph"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowNode",
         "description": "An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.",
@@ -11473,6 +11514,7 @@
       "tags": ["flow", "panel", "slot", "chrome"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowPanel",
         "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
@@ -11543,6 +11585,7 @@
       "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
       "category": "display",
       "install": "@cascivo/flow",
+      "styles": "@cascivo/flow/styles.css",
       "meta": {
         "name": "FlowStory",
         "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
@@ -13524,10 +13567,16 @@
           ],
           "whenNotToUse": [
             "You want opinionated, prewired sidebar navigation — use SidebarApp",
-            "A simple centered content page — use Section or Center"
+            "A simple centered content page — use Section or Center",
+            "You just need a drop-in header + toggleable nav with no persistence — use the published `AppShell` from @cascivo/react (a `nav` prop, no copy-paste), not this richer copy-paste shell."
           ],
           "antiPatterns": [],
           "related": [
+            {
+              "name": "AppShell (@cascivo/react)",
+              "relationship": "alternative",
+              "reason": "The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside."
+            },
             {
               "name": "SidebarApp",
               "relationship": "alternative",
@@ -14553,10 +14602,22 @@
           ],
           "whenNotToUse": [
             "Two-dimensional layouts — use Grid",
-            "Responsive auto-wrapping card collections — use AutoGrid"
+            "Responsive auto-wrapping card collections — use AutoGrid",
+            "A visual card-pile / overlapping avatars — that is the DIFFERENT `Stack` in @cascivo/react (an `offset` prop), not this flex layout primitive."
           ],
-          "antiPatterns": [],
+          "antiPatterns": [
+            {
+              "bad": "Expecting import { Stack } from '@cascivo/react' to gap items",
+              "good": "Copy this layout Stack in with `npx cascivo add stack`, then import it from your local layouts",
+              "why": "The published `Stack` export is a card-pile that overlaps children; this gap-based flex Stack is copy-paste-only despite sharing the name."
+            }
+          ],
           "related": [
+            {
+              "name": "Stack (card-pile)",
+              "relationship": "alternative",
+              "reason": "The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component that shares this name. Pick by behaviour: gap layout here, visual overlap there."
+            },
             {
               "name": "Grid",
               "relationship": "alternative",
@@ -20606,10 +20667,15 @@
             "Notification stack visualisations"
           ],
           "whenNotToUse": [
-            "Normal vertical lists — use a flex column or VStack instead",
+            "Gap-based vertical/horizontal layout — that is a DIFFERENT component, the flex `layout/stack` (also exported as `Stack`). This `Stack` only overlaps children with an offset.",
             "Independent positioned elements — use CSS position directly"
           ],
           "related": [
+            {
+              "name": "layout/stack",
+              "relationship": "alternative",
+              "reason": "The flex layout primitive for gap-based vertical/horizontal stacking. It shares the `Stack` export name but is copy-paste-only (`npx cascivo add stack`) — not this card-pile component."
+            },
             {
               "name": "Avatar",
               "relationship": "pairs-with",
@@ -20621,7 +20687,13 @@
               "reason": "Card pile visualisations are a common Stack pattern"
             }
           ],
-          "antiPatterns": [],
+          "antiPatterns": [
+            {
+              "bad": "import { Stack } from '@cascivo/react' to space items vertically",
+              "good": "For flex layout use layout/stack (npx cascivo add stack); use this Stack only for a visual card-pile",
+              "why": "The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. The two components share a name; pick by behaviour, not by the name."
+            }
+          ],
           "a11yRationale": "Stack is a layout-only container (role=\"none\"). Each child must carry its own accessible semantics. Stacked cards that are interactive should each have a focusable element and a descriptive label.",
           "flexibility": [
             {
@@ -22763,7 +22835,7 @@
           },
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "description": "Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text.",
             "type": "string",
             "required": false
           },
@@ -22815,6 +22887,11 @@
               "bad": "<Toggle label=\"I accept the terms\" /> inside a submitted form",
               "good": "<Checkbox label=\"I accept the terms\" />",
               "why": "A switch implies an instant on/off setting; agreement that is submitted with the form is a checkbox"
+            },
+            {
+              "bad": "<h3>Dark mode</h3><Toggle label=\"Dark mode\" /> — the label repeats the heading",
+              "good": "<h3>Dark mode</h3><Toggle aria-label=\"Dark mode\" />",
+              "why": "The `label` prop renders visible text and is the accessible name; when a heading already names the control, use aria-label so the name is not shown (and read) twice"
             }
           ],
           "related": [

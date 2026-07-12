@@ -9,6 +9,7 @@
   "tags": ["flow", "edge", "connector", "animated", "svg"],
   "category": "display",
   "install": "@cascivo/flow",
+  "styles": "@cascivo/flow/styles.css",
   "meta": {
     "name": "FlowEdge",
     "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",

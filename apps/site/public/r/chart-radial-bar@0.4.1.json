@@ -9,6 +9,7 @@
   "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "RadialBar",
     "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",

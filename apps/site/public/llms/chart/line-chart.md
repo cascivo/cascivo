@@ -4,7 +4,7 @@ Time-series or numeric line chart with multi-series support, hover tooltip, and 
 
 ## Install
 
-Charts ship in the `@cascivo/charts` package:
+Ships in the `@cascivo/charts` package — install it (no copy-paste):
 
 ```sh
 pnpm add @cascivo/charts
@@ -12,6 +12,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { LineChart } from '@cascivo/charts'
+import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
 ```
 
 ## Category

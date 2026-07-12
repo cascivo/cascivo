@@ -9,6 +9,7 @@
   "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Stream",
     "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",

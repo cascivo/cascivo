@@ -10,6 +10,8 @@ const ACTION_WIDTH = 72
 const PROJECT_MS = 100
 
 export interface SwipeAction {
+  /** Stable React key. Provide when `label` may repeat across actions. */
+  id?: string
   /** Accessible name and visible label. */
   label: string
   icon?: ReactNode
@@ -84,9 +86,9 @@ export function SwipeItem({
 
   const renderPanel = (side: 'leading' | 'trailing', actions: SwipeAction[]): ReactNode => (
     <div className={cn(styles['panel'], styles[side])}>
-      {actions.map((action) => (
+      {actions.map((action, i) => (
         <button
-          key={action.label}
+          key={action.id ?? `${i}-${action.label}`}
           type="button"
           data-destructive={action.destructive ? '' : undefined}
           className={styles['action']}

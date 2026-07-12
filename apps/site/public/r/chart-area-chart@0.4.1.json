@@ -9,6 +9,7 @@
   "tags": ["chart", "area", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "AreaChart",
     "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",

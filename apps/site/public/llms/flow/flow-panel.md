@@ -4,13 +4,16 @@ An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).
 
 ## Install
 
-Copy-paste the source (you own and can edit it):
+Ships in the `@cascivo/flow` package — install it (no copy-paste):
 
-```bash
-npx cascivo add flow/flow-panel
+```sh
+pnpm add @cascivo/flow
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+```tsx
+import { FlowPanel } from '@cascivo/flow'
+import '@cascivo/flow/styles.css' // required stylesheet
+```
 
 ## Category
 

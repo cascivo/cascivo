@@ -22,6 +22,12 @@
 **Good:** `<Checkbox label="I accept the terms" />`  
 **Why:** A switch implies an instant on/off setting; agreement that is submitted with the form is a checkbox
 
+### The `label` prop renders visible text and is the accessible name; when a heading already names the control, use aria-label so the name is not shown (and read) twice
+
+**Bad:** `<h3>Dark mode</h3><Toggle label="Dark mode" /> — the label repeats the heading`  
+**Good:** `<h3>Dark mode</h3><Toggle aria-label="Dark mode" />`  
+**Why:** The `label` prop renders visible text and is the accessible name; when a heading already names the control, use aria-label so the name is not shown (and read) twice
+
 ## Related components
 
 - **Checkbox** (alternative): Use for form selections submitted later rather than instant settings
@@ -33,14 +39,14 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 ## Props
 
-| Name             | Type                         | Required | Default | Description                                                        |
-| ---------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `checked`        | `boolean`                    | No       | —       | Whether the control is checked (controlled).                       |
-| `defaultChecked` | `boolean`                    | No       | false   | Whether the control is checked on first render (uncontrolled).     |
-| `onChange`       | `(checked: boolean) => void` | No       | —       | Called when the value changes.                                     |
-| `label`          | `string`                     | No       | —       | Text label for the control.                                        |
-| `size`           | `'sm' \| 'md'`               | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `disabled`       | `boolean`                    | No       | false   | When true, disables the control and removes it from the tab order. |
+| Name             | Type                         | Required | Default | Description                                                                                                                                                                           |
+| ---------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `checked`        | `boolean`                    | No       | —       | Whether the control is checked (controlled).                                                                                                                                          |
+| `defaultChecked` | `boolean`                    | No       | false   | Whether the control is checked on first render (uncontrolled).                                                                                                                        |
+| `onChange`       | `(checked: boolean) => void` | No       | —       | Called when the value changes.                                                                                                                                                        |
+| `label`          | `string`                     | No       | —       | Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text. |
+| `size`           | `'sm' \| 'md'`               | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                 |
+| `disabled`       | `boolean`                    | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                    |
 
 ## Tokens
 

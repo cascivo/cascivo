@@ -9,6 +9,7 @@
   "tags": ["chart", "pie", "donut", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "PieChart",
     "description": "Pie or donut chart with hover segments and optional legend.",

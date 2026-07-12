@@ -105,6 +105,18 @@ function ToastItem({ toast, onDismiss }: { toast: ToastRecord; onDismiss: () => 
   )
 }
 
+/**
+ * Returns `{ toast }` — an object, not a callable. Destructure it and call
+ * `toast(...)`:
+ *
+ * ```tsx
+ * const { toast } = useToast()
+ * toast({ title: 'Saved' })
+ * ```
+ *
+ * (`useToast()(...)` is a type error — the hook returns the namespace object so
+ * more helpers can be added without changing its shape.)
+ */
 export function useToast() {
   return { toast: enqueue }
 }

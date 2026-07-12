@@ -12,9 +12,11 @@
 
 - You want opinionated, prewired sidebar navigation — use SidebarApp
 - A simple centered content page — use Section or Center
+- You just need a drop-in header + toggleable nav with no persistence — use the published `AppShell` from @cascivo/react (a `nav` prop, no copy-paste), not this richer copy-paste shell.
 
 ## Related components
 
+- **AppShell (@cascivo/react)** (alternative): The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside.
 - **SidebarApp** (alternative): Use the opinionated block when you want prewired sidebar nav
 - **DashboardLayout** (alternative): Use for a stats-strip dashboard page rather than a bare shell
 

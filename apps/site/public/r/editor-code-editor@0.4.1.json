@@ -9,6 +9,7 @@
   "tags": ["editor", "code", "syntax-highlighting", "textarea", "inputs"],
   "category": "inputs",
   "install": "@cascivo/editor",
+  "styles": "@cascivo/editor/styles.css",
   "meta": {
     "name": "CodeEditor",
     "description": "Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.",

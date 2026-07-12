@@ -9,6 +9,7 @@
   "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Sunburst",
     "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",

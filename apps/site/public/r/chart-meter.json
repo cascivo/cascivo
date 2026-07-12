@@ -9,6 +9,7 @@
   "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
   "category": "chart",
   "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
   "meta": {
     "name": "Meter",
     "description": "Progress meter in bar or gauge variant with threshold coloring.",

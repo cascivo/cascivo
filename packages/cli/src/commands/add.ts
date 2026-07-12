@@ -245,11 +245,14 @@ export async function add(
   }
 
   for (const { entry, requested } of resolved) {
-    if (entry.type === 'chart') {
-      const pkg = entry.install ?? '@cascivo/charts'
-      console.log(`Chart "${entry.name}" is distributed as an npm package.`)
+    if (entry.install) {
+      const pkg = entry.install
+      console.log(`"${entry.name}" is distributed as the npm package ${pkg}.`)
       console.log(`Install it with: npm install ${pkg}`)
       console.log(`Then import: import { ${entry.meta.name} } from '${pkg}'`)
+      if (entry.styles) {
+        console.log(`And import its stylesheet once: import '${entry.styles}'`)
+      }
       continue
     }
 

@@ -4,13 +4,16 @@ Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled butto
 
 ## Install
 
-Copy-paste the source (you own and can edit it):
+Ships in the `@cascivo/flow` package — install it (no copy-paste):
 
-```bash
-npx cascivo add flow/flow-controls
+```sh
+pnpm add @cascivo/flow
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+```tsx
+import { FlowControls } from '@cascivo/flow'
+import '@cascivo/flow/styles.css' // required stylesheet
+```
 
 ## Category
 

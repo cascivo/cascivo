@@ -58,9 +58,22 @@ export const meta: ComponentMeta = {
     whenNotToUse: [
       'Two-dimensional layouts — use Grid',
       'Responsive auto-wrapping card collections — use AutoGrid',
+      'A visual card-pile / overlapping avatars — that is the DIFFERENT `Stack` in @cascivo/react (an `offset` prop), not this flex layout primitive.',
     ],
-    antiPatterns: [],
+    antiPatterns: [
+      {
+        bad: "Expecting import { Stack } from '@cascivo/react' to gap items",
+        good: 'Copy this layout Stack in with `npx cascivo add stack`, then import it from your local layouts',
+        why: 'The published `Stack` export is a card-pile that overlaps children; this gap-based flex Stack is copy-paste-only despite sharing the name.',
+      },
+    ],
     related: [
+      {
+        name: 'Stack (card-pile)',
+        relationship: 'alternative',
+        reason:
+          'The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component that shares this name. Pick by behaviour: gap layout here, visual overlap there.',
+      },
       {
         name: 'Grid',
         relationship: 'alternative',

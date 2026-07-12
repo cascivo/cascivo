@@ -4,13 +4,16 @@ Read-only syntax-highlighted code block — the same owned tokenizer as CodeEdit
 
 ## Install
 
-Copy-paste the source (you own and can edit it):
+Ships in the `@cascivo/editor` package — install it (no copy-paste):
 
-```bash
-npx cascivo add editor/highlight
+```sh
+pnpm add @cascivo/editor
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+```tsx
+import { Highlight } from '@cascivo/editor'
+import '@cascivo/editor/styles.css' // required stylesheet
+```
 
 ## Category
 

@@ -2,6 +2,7 @@
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { useRef } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
+import { warnNonFinite } from '../../core/dev-warn'
 import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
 import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
@@ -176,6 +177,7 @@ export function LineChart<Datum = { x: number; y: number }>({
     subset.flatMap((s) => s.data.map((d) => y(d))).filter((v) => Number.isFinite(v))
   const leftY = finiteY(hasRight ? series.filter((s) => s.axis !== 'right') : series)
   const rightY = hasRight ? finiteY(series.filter((s) => s.axis === 'right')) : []
+  warnNonFinite('LineChart', () => series.flatMap((s) => s.data.map((d) => y(d))))
   const hasData = allX.length > 0
 
   const usesDate = hasData && allX[0] instanceof Date
