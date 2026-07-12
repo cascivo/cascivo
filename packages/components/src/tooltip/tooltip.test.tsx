@@ -49,4 +49,24 @@ describe('Tooltip', () => {
     await userEvent.unhover(button)
     expect(screen.getByRole('tooltip')).toHaveAttribute('data-state', 'hidden')
   })
+
+  it('uses stable, colon-free, unique ids (SSR-safe, CSS-anchor-safe)', () => {
+    render(
+      <>
+        <Tooltip content="One">
+          <button type="button">A</button>
+        </Tooltip>
+        <Tooltip content="Two">
+          <button type="button">B</button>
+        </Tooltip>
+      </>,
+    )
+    const [t1, t2] = screen.getAllByRole('tooltip')
+    // No colons — a colon would break the CSS anchor-name custom property.
+    expect(t1!.id).not.toContain(':')
+    expect(t1!.getAttribute('data-anchor')).not.toContain(':')
+    // Distinct per instance so two tooltips don't collide.
+    expect(t1!.id).not.toBe(t2!.id)
+    expect(t1!.getAttribute('data-anchor')).not.toBe(t2!.getAttribute('data-anchor'))
+  })
 })
