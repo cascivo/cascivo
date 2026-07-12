@@ -1,5 +1,14 @@
 # @cascivo/editor
 
+## 0.2.10
+
+### Patch Changes
+
+- e29ad6e: Re-release: publish the packages held back when the previous release run failed its generated-docs gate.
+- Updated dependencies [e29ad6e]
+  - @cascivo/core@0.2.6
+  - @cascivo/i18n@0.2.3
+
 ## 0.2.9
 
 ### Patch Changes

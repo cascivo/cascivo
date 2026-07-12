@@ -1,5 +1,11 @@
 # @cascivo/icons
 
+## 0.2.6
+
+### Patch Changes
+
+- e29ad6e: Re-release: publish the packages held back when the previous release run failed its generated-docs gate.
+
 ## 0.2.5
 
 ### Patch Changes
