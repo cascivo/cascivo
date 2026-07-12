@@ -32,10 +32,10 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ## Props
 
-| Name      | Type                                    | Required | Default | Description                       |
-| --------- | --------------------------------------- | -------- | ------- | --------------------------------- |
-| `variant` | `'default' \| 'outlined' \| 'elevated'` | No       | default | Selects the visual style variant. |
-| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | No       | md      | Inner padding of the component.   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'default' \| 'outlined' \| 'elevated'` | No | default | Selects the visual style variant. |
+| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | No | md | Inner padding of the component. |
 
 ## Tokens
 
@@ -50,19 +50,17 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ```jsx
 <Card>
-  <CardHeader>
-    <CardTitle>Title</CardTitle>
-  </CardHeader>
+  <CardHeader><CardTitle>Title</CardTitle></CardHeader>
   <CardContent>Content here</CardContent>
 </Card>
 ```
 
 ## Boundaries
 
-| Area                | Level    | Note                                                                    |
-| ------------------- | -------- | ----------------------------------------------------------------------- |
-| variant and padding | flexible | Choose elevation and density to fit the surrounding layout              |
-| token names         | strict   | Surface, border, radius, and shadow must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| variant and padding | flexible | Choose elevation and density to fit the surrounding layout |
+| token names | strict | Surface, border, radius, and shadow must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

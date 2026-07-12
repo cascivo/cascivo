@@ -24,21 +24,21 @@ Renders with role="img"; the value and range are in the fallback table.
 
 ## Props
 
-| Name          | Type                                | Required | Default | Description                                                |
-| ------------- | ----------------------------------- | -------- | ------- | ---------------------------------------------------------- |
-| `value`       | `number`                            | Yes      | —       | The value the needle points to.                            |
-| `min`         | `number`                            | No       | 0       | Minimum allowed value.                                     |
-| `max`         | `number`                            | No       | 100     | Maximum allowed value.                                     |
-| `thresholds`  | `{ upTo: number; color: string }[]` | No       | —       | Coloured zones from min upward; the last should reach max. |
-| `unit`        | `string`                            | No       | —       | Suffix after the centre value.                             |
-| `sweep`       | `number`                            | No       | 270     | Total sweep angle in degrees (270 = a speedometer arc).    |
-| `ticks`       | `number`                            | No       | 5       | Major tick count.                                          |
-| `title`       | `string`                            | Yes      | —       | Chart title (also aria-label).                             |
-| `description` | `string`                            | No       | —       | Supporting description text.                               |
-| `width`       | `number`                            | No       | —       | Width of the component.                                    |
-| `height`      | `number`                            | No       | 240     | Height of the component.                                   |
-| `className`   | `string`                            | No       | —       | Additional CSS class names merged onto the root element.   |
-| `plain`       | `boolean`                           | No       | false   | Marks only — no ticks/labels. For micro/inline charts.     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | Yes | — | The value the needle points to. |
+| `min` | `number` | No | 0 | Minimum allowed value. |
+| `max` | `number` | No | 100 | Maximum allowed value. |
+| `thresholds` | `{ upTo: number; color: string }[]` | No | — | Coloured zones from min upward; the last should reach max. |
+| `unit` | `string` | No | — | Suffix after the centre value. |
+| `sweep` | `number` | No | 270 | Total sweep angle in degrees (270 = a speedometer arc). |
+| `ticks` | `number` | No | 5 | Major tick count. |
+| `title` | `string` | Yes | — | Chart title (also aria-label). |
+| `description` | `string` | No | — | Supporting description text. |
+| `width` | `number` | No | — | Width of the component. |
+| `height` | `number` | No | 240 | Height of the component. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | Marks only — no ticks/labels. For micro/inline charts. |
 
 ## Tokens
 
@@ -52,7 +52,8 @@ Renders with role="img"; the value and range are in the fallback table.
 
 ```jsx
 import { Gauge } from '@cascivo/charts'
-;<Gauge
+
+<Gauge
   title="CPU load"
   value={72}
   unit="%"

@@ -24,15 +24,15 @@ Renders with role="figure" and a labeled metric for screen reader context.
 
 ## Props
 
-| Name         | Type               | Required | Default | Description                                              |
-| ------------ | ------------------ | -------- | ------- | -------------------------------------------------------- |
-| `value`      | `string \| number` | Yes      | —       | Primary metric value                                     |
-| `label`      | `string`           | Yes      | —       | Metric label                                             |
-| `delta`      | `number`           | No       | —       | Change value (positive = up, negative = down)            |
-| `deltaLabel` | `string`           | No       | —       | Delta context label (e.g. "vs last week")                |
-| `icon`       | `ReactNode`        | No       | —       | Icon element rendered in the component.                  |
-| `sparkline`  | `number[]`         | No       | —       | Trend data for embedded sparkline                        |
-| `className`  | `string`           | No       | —       | Additional CSS class names merged onto the root element. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string \| number` | Yes | — | Primary metric value |
+| `label` | `string` | Yes | — | Metric label |
+| `delta` | `number` | No | — | Change value (positive = up, negative = down) |
+| `deltaLabel` | `string` | No | — | Delta context label (e.g. "vs last week") |
+| `icon` | `ReactNode` | No | — | Icon element rendered in the component. |
+| `sparkline` | `number[]` | No | — | Trend data for embedded sparkline |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -44,7 +44,8 @@ Renders with role="figure" and a labeled metric for screen reader context.
 
 ```jsx
 import { Kpi } from '@cascivo/charts'
-;<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
+
+<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 
 ## AI context prompt

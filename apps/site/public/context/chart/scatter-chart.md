@@ -24,26 +24,26 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name          | Type                                          | Required | Default | Description                                                                                                                               |
-| ------------- | --------------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `series`      | `ScatterChartSeries[]`                        | Yes      | —       | The data series to plot.                                                                                                                  |
-| `title`       | `string`                                      | Yes      | —       | Title text for the component.                                                                                                             |
-| `description` | `string`                                      | No       | —       | Supporting description text.                                                                                                              |
-| `r`           | `number \| ((d: ScatterDatum) => number)`     | No       | 4       | Point radius or accessor                                                                                                                  |
-| `width`       | `number`                                      | No       | —       | Width of the component.                                                                                                                   |
-| `height`      | `number`                                      | No       | 300     | Height of the component.                                                                                                                  |
-| `xTicks`      | `number`                                      | No       | 5       | Approximate number of ticks on the x-axis.                                                                                                |
-| `yTicks`      | `number`                                      | No       | 5       | Approximate number of ticks on the y-axis.                                                                                                |
-| `legend`      | `boolean`                                     | No       | —       | Whether to show the legend.                                                                                                               |
-| `tooltip`     | `boolean`                                     | No       | —       | Enable hover/keyboard tooltip                                                                                                             |
-| `className`   | `string`                                      | No       | —       | Additional CSS class names merged onto the root element.                                                                                  |
-| `plain`       | `boolean`                                     | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                     |
-| `annotations` | `Annotation[]`                                | No       | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).                                            |
-| `onSelect`    | `(point: ChartPoint) => void`                 | No       | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                                |
-| `glyph`       | `GlyphShape \| ((d, seriesId) => GlyphShape)` | No       | —       | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.                |
-| `renderer`    | `'svg' \| 'canvas' \| 'auto'`                 | No       | svg     | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer. |
-| `visualMap`   | `VisualMapOptions`                            | No       | —       | Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range.                           |
-| `toolbox`     | `boolean \| ToolboxOptions`                   | No       | —       | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).                 |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `ScatterChartSeries[]` | Yes | — | The data series to plot. |
+| `title` | `string` | Yes | — | Title text for the component. |
+| `description` | `string` | No | — | Supporting description text. |
+| `r` | `number \| ((d: ScatterDatum) => number)` | No | 4 | Point radius or accessor |
+| `width` | `number` | No | — | Width of the component. |
+| `height` | `number` | No | 300 | Height of the component. |
+| `xTicks` | `number` | No | 5 | Approximate number of ticks on the x-axis. |
+| `yTicks` | `number` | No | 5 | Approximate number of ticks on the y-axis. |
+| `legend` | `boolean` | No | — | Whether to show the legend. |
+| `tooltip` | `boolean` | No | — | Enable hover/keyboard tooltip |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| `annotations` | `Annotation[]` | No | — | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
+| `onSelect` | `(point: ChartPoint) => void` | No | — | Fired when a point is clicked or activated (Enter/Space) — for drill-down. |
+| `glyph` | `GlyphShape \| ((d, seriesId) => GlyphShape)` | No | — | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
+| `renderer` | `'svg' \| 'canvas' \| 'auto'` | No | svg | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer. |
+| `visualMap` | `VisualMapOptions` | No | — | Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range. |
+| `toolbox` | `boolean \| ToolboxOptions` | No | — | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter). |
 
 ## Tokens
 

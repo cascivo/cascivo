@@ -32,10 +32,10 @@ Rendered as an ordered list (ol/li) to convey sequence; the active item carries 
 
 ## Props
 
-| Name          | Type                                                                                                                                           | Required | Default  | Description                          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | ------------------------------------ |
-| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | Yes      | —        | The items to render.                 |
-| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                   | No       | vertical | Layout orientation of the component. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | Yes | — | The items to render. |
+| `orientation` | `'vertical' \| 'horizontal'` | No | vertical | Layout orientation of the component. |
 
 ## Tokens
 
@@ -62,10 +62,10 @@ Rendered as an ordered list (ol/li) to convey sequence; the active item carries 
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                   |
-| ---------------- | -------- | ---------------------------------------------------------------------- |
-| orientation      | flexible | vertical for feeds, horizontal for compact progress strips             |
-| status semantics | strict   | Use a single current item; status drives marker colour via data-status |
+| Area | Level | Note |
+|------|-------|------|
+| orientation | flexible | vertical for feeds, horizontal for compact progress strips |
+| status semantics | strict | Use a single current item; status drives marker colour via data-status |
 
 ## AI context prompt
 

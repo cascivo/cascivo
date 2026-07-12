@@ -31,19 +31,19 @@ Decorative SVG (aria-hidden); animation is disabled under prefers-reduced-motion
 
 ## Props
 
-| Name          | Type                                     | Required | Default | Description                                                                           |
-| ------------- | ---------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------- |
-| `sourceX`     | `number`                                 | Yes      | —       | Source anchor x (flow coords).                                                        |
-| `sourceY`     | `number`                                 | Yes      | —       | Y coordinate of the edge’s source point.                                              |
-| `targetX`     | `number`                                 | Yes      | —       | X coordinate of the edge’s target point.                                              |
-| `targetY`     | `number`                                 | Yes      | —       | Y coordinate of the edge’s target point.                                              |
-| `type`        | `'bezier' \| 'straight' \| 'smoothstep'` | No       | bezier  | Edge path style ('bezier' \| 'straight' \| 'smoothstep').                             |
-| `animated`    | `boolean`                                | No       | false   | When true, animates the edge path (dashed flow).                                      |
-| `label`       | `ReactNode`                              | No       | —       | Text label for the control.                                                           |
-| `selected`    | `boolean`                                | No       | false   | Whether the edge is rendered as selected.                                             |
-| `markerStart` | `boolean`                                | No       | false   | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
-| `markerEnd`   | `boolean`                                | No       | true    | Arrowhead at the target. Set false for an undirected line.                            |
-| `className`   | `string`                                 | No       | —       | Additional CSS class names merged onto the root element.                              |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `sourceX` | `number` | Yes | — | Source anchor x (flow coords). |
+| `sourceY` | `number` | Yes | — | Y coordinate of the edge’s source point. |
+| `targetX` | `number` | Yes | — | X coordinate of the edge’s target point. |
+| `targetY` | `number` | Yes | — | Y coordinate of the edge’s target point. |
+| `type` | `'bezier' \| 'straight' \| 'smoothstep'` | No | bezier | Edge path style ('bezier' \| 'straight' \| 'smoothstep'). |
+| `animated` | `boolean` | No | false | When true, animates the edge path (dashed flow). |
+| `label` | `ReactNode` | No | — | Text label for the control. |
+| `selected` | `boolean` | No | false | Whether the edge is rendered as selected. |
+| `markerStart` | `boolean` | No | false | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
+| `markerEnd` | `boolean` | No | true | Arrowhead at the target. Set false for an undirected line. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -58,7 +58,7 @@ Decorative SVG (aria-hidden); animation is disabled under prefers-reduced-motion
 Bezier, straight, smoothstep, and an animated edge.
 
 ```jsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 220 }}>
     <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} type="bezier" label="bezier" />
     <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} type="smoothstep" label="step" />
@@ -72,37 +72,22 @@ Bezier, straight, smoothstep, and an animated edge.
 Forward (default), backward, bidirectional, or undirected — via markerStart/markerEnd.
 
 ```jsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 260 }}>
     <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} label="forward" />
-    <FlowEdge
-      sourceX={20}
-      sourceY={90}
-      targetX={260}
-      targetY={90}
-      markerEnd={false}
-      markerStart
-      label="backward"
-    />
+    <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} markerEnd={false} markerStart label="backward" />
     <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} markerStart label="both" />
-    <FlowEdge
-      sourceX={20}
-      sourceY={210}
-      targetX={260}
-      targetY={210}
-      markerEnd={false}
-      label="undirected"
-    />
+    <FlowEdge sourceX={20} sourceY={210} targetX={260} targetY={210} markerEnd={false} label="undirected" />
   </div>
 )
 ```
 
 ## Boundaries
 
-| Area      | Level    | Note                              |
-| --------- | -------- | --------------------------------- |
-| path      | flexible | bezier \| straight \| smoothstep. |
-| animation | flexible | Optional, reduced-motion-safe.    |
+| Area | Level | Note |
+|------|-------|------|
+| path | flexible | bezier \| straight \| smoothstep. |
+| animation | flexible | Optional, reduced-motion-safe. |
 
 ## AI context prompt
 

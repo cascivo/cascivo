@@ -1,5 +1,12 @@
 # @cascivo/themes
 
+## 0.2.10
+
+### Patch Changes
+
+- b49e0ba: Fixed red flags.
+- 6ee2f91: Experience fixes
+
 ## 0.2.9
 
 ### Patch Changes

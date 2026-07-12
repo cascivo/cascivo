@@ -27,14 +27,14 @@ import { HeaderPanel } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type                | Required | Default | Description                                              |
-| ----------- | ------------------- | -------- | ------- | -------------------------------------------------------- |
-| `open`      | `boolean`           | yes      | —       | Controlled open state                                    |
-| `onClose`   | `() => void`        | yes      | —       | Called on close button click or light-dismiss            |
-| `label`     | `string`            | yes      | —       | Accessible label for the region (shown as header title)  |
-| `children`  | `ReactNode`         | yes      | —       | Content rendered inside the component.                   |
-| `labels`    | `HeaderPanelLabels` | no       | —       | i18n overrides                                           |
-| `className` | `string`            | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | yes | — | Controlled open state |
+| `onClose` | `() => void` | yes | — | Called on close button click or light-dismiss |
+| `label` | `string` | yes | — | Accessible label for the region (shown as header title) |
+| `children` | `ReactNode` | yes | — | Content rendered inside the component. |
+| `labels` | `HeaderPanelLabels` | no | — | i18n overrides |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

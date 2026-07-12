@@ -24,19 +24,19 @@ Renders with role="img"; values are in the fallback table.
 
 ## Props
 
-| Name          | Type                        | Required | Default | Description                                               |
-| ------------- | --------------------------- | -------- | ------- | --------------------------------------------------------- |
-| `data`        | `PolarDatum[]`              | Yes      | —       | One entry per category: { label, value, color? }.         |
-| `title`       | `string`                    | Yes      | —       | Chart title (also aria-label).                            |
-| `description` | `string`                    | No       | —       | Supporting description text.                              |
-| `mode`        | `'bar' \| 'line' \| 'area'` | No       | bar     | Bars (rose), a polar line, or a filled polar area.        |
-| `width`       | `number`                    | No       | —       | Width of the component.                                   |
-| `height`      | `number`                    | No       | 320     | Height of the component.                                  |
-| `rings`       | `number`                    | No       | 4       | Radial ring count.                                        |
-| `max`         | `number`                    | No       | —       | Domain top (full radius). Defaults to the largest value.  |
-| `tooltip`     | `boolean`                   | No       | —       | Enable hover tooltip.                                     |
-| `className`   | `string`                    | No       | —       | Additional CSS class names merged onto the root element.  |
-| `plain`       | `boolean`                   | No       | false   | Marks only — no rings or labels. For micro/inline charts. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `PolarDatum[]` | Yes | — | One entry per category: { label, value, color? }. |
+| `title` | `string` | Yes | — | Chart title (also aria-label). |
+| `description` | `string` | No | — | Supporting description text. |
+| `mode` | `'bar' \| 'line' \| 'area'` | No | bar | Bars (rose), a polar line, or a filled polar area. |
+| `width` | `number` | No | — | Width of the component. |
+| `height` | `number` | No | 320 | Height of the component. |
+| `rings` | `number` | No | 4 | Radial ring count. |
+| `max` | `number` | No | — | Domain top (full radius). Defaults to the largest value. |
+| `tooltip` | `boolean` | No | — | Enable hover tooltip. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | Marks only — no rings or labels. For micro/inline charts. |
 
 ## Tokens
 
@@ -56,7 +56,8 @@ Renders with role="img"; values are in the fallback table.
 
 ```jsx
 import { Polar } from '@cascivo/charts'
-;<Polar
+
+<Polar
   title="Wind by direction"
   mode="bar"
   tooltip

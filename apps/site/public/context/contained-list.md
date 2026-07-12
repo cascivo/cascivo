@@ -33,11 +33,11 @@ The container heading labels the ul/li structure; interactive rows must slot a r
 
 ## Props
 
-| Name     | Type                       | Required | Default | Description                                  |
-| -------- | -------------------------- | -------- | ------- | -------------------------------------------- |
-| `label`  | `ReactNode`                | Yes      | —       | Text label for the control.                  |
-| `kind`   | `'on-page' \| 'disclosed'` | No       | on-page | Visual treatment — 'on-page' or 'disclosed'. |
-| `action` | `ReactNode`                | No       | —       | Primary action shown in the component.       |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `ReactNode` | Yes | — | Text label for the control. |
+| `kind` | `'on-page' \| 'disclosed'` | No | on-page | Visual treatment — 'on-page' or 'disclosed'. |
+| `action` | `ReactNode` | No | — | Primary action shown in the component. |
 
 ## Tokens
 
@@ -63,19 +63,17 @@ The container heading labels the ul/li structure; interactive rows must slot a r
 ```jsx
 <ContainedList label="Settings" kind="disclosed">
   <ContainedListItem asChild>
-    <button type="button" onClick={open}>
-      Profile
-    </button>
+    <button type="button" onClick={open}>Profile</button>
   </ContainedListItem>
 </ContainedList>
 ```
 
 ## Boundaries
 
-| Area           | Level    | Note                                                                     |
-| -------------- | -------- | ------------------------------------------------------------------------ |
-| kind           | flexible | on-page sits inline; disclosed adds a header band for menus and popovers |
-| list semantics | strict   | Rows are always ul/li; do not replace with generic divs                  |
+| Area | Level | Note |
+|------|-------|------|
+| kind | flexible | on-page sits inline; disclosed adds a header band for menus and popovers |
+| list semantics | strict | Rows are always ul/li; do not replace with generic divs |
 
 ## AI context prompt
 
