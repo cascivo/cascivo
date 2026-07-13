@@ -27,7 +27,7 @@ export const meta: ComponentMeta = {
   accessibility: {
     role: 'menu',
     wcag: '2.2-AA',
-    keyboard: ['ArrowDown', 'ArrowUp', 'Enter', 'Space', 'Escape'],
+    keyboard: ['ArrowDown', 'ArrowUp', 'Home', 'End', 'Enter', 'Space', 'Escape'],
   },
   examples: [
     {
@@ -78,7 +78,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'The menu container is role="menu" and items are role="menuitem" with tabIndex management and aria-disabled, and it uses popover="auto" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent',
+      'The menu container is role="menu" and items are role="menuitem" with roving keyboard navigation (ArrowDown/ArrowUp/Home/End skip disabled items, Enter/Space activate) and aria-disabled, and it uses popover="auto" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent',
     flexibility: [
       {
         area: 'menu contents',

@@ -1,18 +1,25 @@
 /**
  * Primitive-adoption check.
  *
- * Interactive components must consume the shared @cascivo/core headless primitives
- * (useId, DismissableLayer, useRovingFocus, useTypeahead, FocusScope) instead of
- * hand-rolling accessibility mechanics that drift and break. This check catches the
- * high-signal, unambiguous regressions:
+ * Interactive components consume @cascivo/core primitives, or the sanctioned native
+ * platform APIs (native <dialog> for focus trap, popover="auto" for light-dismiss), or
+ * the DOM-query "enabled items" roving pattern for dynamically-opened menu content —
+ * see CLAUDE.md's "Consume shared headless primitives" table for which shape uses which
+ * approach. This check only mechanically enforces the subset that is unambiguous and
+ * checkable by static analysis:
  *
  *   1. Static aria-labelledby / aria-describedby string literals — hardcoded ids
  *      collide when a component renders more than once on a page. Use useId().
  *   2. Math.random() in component source — non-deterministic ids cause SSR hydration
  *      mismatches (and are never the right tool for an id). Use useId().
  *   3. Raw document.addEventListener('mousedown'|'click'|'pointerdown') for
- *      outside-click dismissal — reimplements DismissableLayer (which also gets
- *      nested-layer, top-first dismissal right). Use DismissableLayer.
+ *      outside-click dismissal — reimplements what native popover="auto" (preferred)
+ *      or DismissableLayer already get right, including nested-layer, top-first
+ *      dismissal. Use one of those instead.
+ *
+ * It does NOT check which of the two roving-focus shapes (useRovingFocus vs. the
+ * DOM-query pattern) a component uses, or whether a native <dialog>/Popover choice was
+ * appropriate — those are judgment calls made at review time.
  *
  * Known-remaining sites are tracked in the allowlists below (debt register), mirroring
  * scripts/checks/breakpoint-allowlist.ts. To clear one: migrate to the primitive and

@@ -5255,6 +5255,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'visual',
+      required: false,
+    },
   ],
   StatsBand: [
     {

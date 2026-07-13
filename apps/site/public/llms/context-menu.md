@@ -69,7 +69,7 @@ import { ContextMenu } from '@cascivo/react'
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `menu`
-- **Keyboard:** ArrowDown, ArrowUp, Enter, Space, Escape
+- **Keyboard:** ArrowDown, ArrowUp, Home, End, Enter, Space, Escape
 
 ## Dependencies
 

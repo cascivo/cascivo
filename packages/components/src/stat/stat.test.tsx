@@ -40,4 +40,14 @@ describe('Stat', () => {
     render(<Stat label="x" value={1} className="custom" data-testid="stat" />)
     expect(screen.getByTestId('stat')).toHaveClass('custom')
   })
+
+  it('renders a trailing visual when provided', () => {
+    render(<Stat label="Requests / min" value="1.2k" visual={<svg data-testid="spark" />} />)
+    expect(screen.getByTestId('spark')).toBeInTheDocument()
+  })
+
+  it('renders no visual wrapper without a visual prop', () => {
+    const { container } = render(<Stat label="x" value={1} />)
+    expect(container.querySelector('svg')).not.toBeInTheDocument()
+  })
 })

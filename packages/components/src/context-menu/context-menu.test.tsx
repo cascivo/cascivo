@@ -50,4 +50,77 @@ describe('ContextMenu', () => {
     screen.getByText('Disabled').click()
     expect(onSelect).not.toHaveBeenCalled()
   })
+
+  it('ArrowDown moves focus to the next enabled item, skipping disabled ones', async () => {
+    render(
+      <ContextMenu>
+        <div>Right click me</div>
+        <ContextMenuItem onSelect={() => {}}>Copy</ContextMenuItem>
+        <ContextMenuItem onSelect={() => {}} disabled>
+          Paste
+        </ContextMenuItem>
+        <ContextMenuItem onSelect={() => {}}>Delete</ContextMenuItem>
+      </ContextMenu>,
+    )
+    const target = screen.getByText('Right click me')
+    await act(async () => {
+      target.dispatchEvent(
+        new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }),
+      )
+    })
+    expect(screen.getByText('Copy')).toHaveFocus()
+
+    await act(async () => {
+      screen
+        .getByText('Copy')
+        .dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }))
+    })
+    expect(screen.getByText('Delete')).toHaveFocus()
+  })
+
+  it('ArrowUp wraps focus from the first item to the last enabled item', async () => {
+    render(
+      <ContextMenu>
+        <div>Right click me</div>
+        <ContextMenuItem onSelect={() => {}}>Copy</ContextMenuItem>
+        <ContextMenuItem onSelect={() => {}}>Delete</ContextMenuItem>
+      </ContextMenu>,
+    )
+    const target = screen.getByText('Right click me')
+    await act(async () => {
+      target.dispatchEvent(
+        new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }),
+      )
+    })
+    expect(screen.getByText('Copy')).toHaveFocus()
+
+    await act(async () => {
+      screen
+        .getByText('Copy')
+        .dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }))
+    })
+    expect(screen.getByText('Delete')).toHaveFocus()
+  })
+
+  it('Enter activates the focused item', async () => {
+    const onSelect = vi.fn()
+    render(
+      <ContextMenu>
+        <div>Right click me</div>
+        <ContextMenuItem onSelect={onSelect}>Copy</ContextMenuItem>
+      </ContextMenu>,
+    )
+    const target = screen.getByText('Right click me')
+    await act(async () => {
+      target.dispatchEvent(
+        new MouseEvent('contextmenu', { bubbles: true, clientX: 100, clientY: 200 }),
+      )
+    })
+    await act(async () => {
+      screen
+        .getByText('Copy')
+        .dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+    })
+    expect(onSelect).toHaveBeenCalledOnce()
+  })
 })

@@ -1,5 +1,21 @@
 # Improvements plan: the "Vercel dashboard" experience report
 
+**Status: implemented.** Track A (Phases 1–2) and Track B (Phases 3–5) are both done —
+see the branch `claude/cascivo-improvements-plan-43r90p` for the diff. Summary of what shipped:
+`context-menu` now has roving keyboard nav with a regression test (Phase 1); CLAUDE.md's
+primitive-adoption table and the check's header comment were rewritten to describe the
+codebase's actual native-platform-first pattern instead of an unenforced aspiration (Phase 2,
+Option A); README/GETTING-STARTED.md/`llms.txt`'s generator now lead with the interactive +
+charts + dashboard-block capabilities instead of reading as layout-only (Phase 3); a new
+`docs/RECIPE-DASHBOARD.md` maps every need in the report to a real component/block, linked from
+GETTING-STARTED.md and from a new step in the `cascivo:design-page` skill (Phase 4); `Stat`
+gained an optional `visual` slot so a `Stat` + `Sparkline` KPI tile composes without a false
+claim about `children` support (Phase 5). Full `pnpm ready` gate (regen, format+lint, all
+`*:check` scripts, build, typecheck, tests across all 27 test files) is green. The open
+questions below were resolved as: Phase 2 → Option A; Track B landed on the same branch as
+Track A rather than splitting; the recipe lives at `docs/RECIPE-DASHBOARD.md` alongside its
+`USING-WITH-*.md` siblings (it has no site route, matching that convention).
+
 **Source:** a hands-on experience report from a developer who built a Vercel-style dashboard
 (project-card grid, project switcher, context menus, usage sparklines) on top of cascivo. The
 report praised setup speed, layer isolation, and the flex/grid primitives, but concluded that

@@ -12,6 +12,26 @@ Either way, one piece of wiring is **not optional**: importing the themes CSS
 and setting `data-theme`. Skip it and components render as correctly-structured
 but uncolored markup — see [What it looks like when you forget](#the-critical-wiring-themes--data-theme).
 
+**This is not layout-only.** Alongside the CSS-native layout system, cascivo ships:
+
+- **Interactive components with the behavior wired in** — `Dropdown`, `Menu`,
+  `ContextMenu`, `Combobox`, `CommandMenu`, `MultiSelect`, and `Tabs` all come
+  with keyboard navigation, focus management, and outside-click dismissal
+  already implemented (native `<dialog>`/Popover APIs plus `@cascivo/core`
+  primitives). You do not need to pair cascivo with a separate headless
+  library or write your own ARIA event handling.
+- **A full charts package** — `@cascivo/charts` (25 chart types: line, area,
+  bar, sparkline, KPI, heatmap, and more), token-scaled to your theme, with
+  live-streaming support.
+- **Pre-built dashboard blocks** — `block/dashboard-charts`, `block/stats-cards`,
+  `layout/console-app`; see them assembled into full apps under
+  [`apps/examples/`](../apps/examples/) (`deploy`, `pulse`, `trade`, `pay`,
+  `track` — Vercel/Datadog/Trade-Republic/Stripe/Linear-style consoles).
+
+If you're building a dashboard/console page specifically, the
+`cascivo:design-page` Claude Code skill and its component recipe are the
+fastest path — see [Where to go next](#where-to-go-next).
+
 ---
 
 ## Path A — copy-paste via the CLI
@@ -152,6 +172,9 @@ export function App() {
 
 ## Where to go next
 
+- [RECIPE-DASHBOARD.md](./RECIPE-DASHBOARD.md) — building a console/dashboard
+  page (project switcher, cards, KPIs, sparklines/charts): the exact
+  component for each need, plus pre-built blocks and reference apps.
 - [THEMING.md](./THEMING.md) — brand it: token tiers, the `data-theme`
   specificity footgun, a starter brand theme.
 - [TOKENS.md](./TOKENS.md) — every `--cascivo-*` custom property.

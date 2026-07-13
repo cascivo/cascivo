@@ -9071,7 +9071,7 @@
             "reason": "Use a general menu when the trigger is not a right-click gesture"
           }
         ],
-        "a11yRationale": "The menu container is role=\"menu\" and items are role=\"menuitem\" with tabIndex management and aria-disabled, and it uses popover=\"auto\" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent",
+        "a11yRationale": "The menu container is role=\"menu\" and items are role=\"menuitem\" with roving keyboard navigation (ArrowDown/ArrowUp/Home/End skip disabled items, Enter/Space activate) and aria-disabled, and it uses popover=\"auto\" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent",
         "flexibility": [
           {
             "area": "menu contents",
@@ -9097,7 +9097,7 @@
         }
       ],
       "contextUrl": "/context/context-menu.md",
-      "aiPrompt": "I am modifying the cascivo ContextMenu component (overlay). Right-click context menu anchored at pointer coordinates via CSS custom properties\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nContextMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-bg-subtle\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): anchor position — Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click\nFlexible: menu contents.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo ContextMenu component (overlay). Right-click context menu anchored at pointer coordinates via CSS custom properties\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nContextMenu is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-md, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-color-bg-subtle\n\nAccessibility: role \"menu\", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Home/End/Enter/Space/Escape. Keep it AA.\n\nDo not change (strict): anchor position — Anchored at pointer coordinates via --cascivo-context-x/y custom properties set on right-click\nFlexible: menu contents.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "CopyButton",
@@ -20056,6 +20056,15 @@
           "description": "Fine print below the value (methodology, time range)",
           "schema": {
             "kind": "string"
+          }
+        },
+        {
+          "name": "visual",
+          "type": "React.ReactNode",
+          "required": false,
+          "description": "Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText",
+          "schema": {
+            "kind": "node"
           }
         }
       ],

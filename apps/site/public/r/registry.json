@@ -8060,7 +8060,7 @@
         "accessibility": {
           "role": "menu",
           "wcag": "2.2-AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
@@ -8093,7 +8093,7 @@
               "reason": "Use a general menu when the trigger is not a right-click gesture"
             }
           ],
-          "a11yRationale": "The menu container is role=\"menu\" and items are role=\"menuitem\" with tabIndex management and aria-disabled, and it uses popover=\"auto\" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent",
+          "a11yRationale": "The menu container is role=\"menu\" and items are role=\"menuitem\" with roving keyboard navigation (ArrowDown/ArrowUp/Home/End skip disabled items, Enter/Space activate) and aria-disabled, and it uses popover=\"auto\" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent",
           "flexibility": [
             {
               "area": "menu contents",
@@ -20760,6 +20760,12 @@
             "type": "string",
             "required": false,
             "description": "Fine print below the value (methodology, time range)"
+          },
+          {
+            "name": "visual",
+            "type": "React.ReactNode",
+            "required": false,
+            "description": "Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText"
           }
         ],
         "tokens": [
