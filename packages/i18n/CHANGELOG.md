@@ -1,5 +1,14 @@
 # @cascivo/i18n
 
+## 0.2.4
+
+### Patch Changes
+
+- 483e30a: Minor improvements
+- Updated dependencies [483e30a]
+- Updated dependencies [dd05e9b]
+  - @cascivo/core@0.3.0
+
 ## 0.2.3
 
 ### Patch Changes

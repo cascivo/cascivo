@@ -1,5 +1,14 @@
 # @cascivo/storage
 
+## 0.1.10
+
+### Patch Changes
+
+- 483e30a: Minor improvements
+- Updated dependencies [483e30a]
+- Updated dependencies [dd05e9b]
+  - @cascivo/core@0.3.0
+
 ## 0.1.9
 
 ### Patch Changes

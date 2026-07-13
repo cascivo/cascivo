@@ -1,5 +1,11 @@
 # @cascivo/mcp
 
+## 0.3.4
+
+### Patch Changes
+
+- 483e30a: Minor improvements
+
 ## 0.3.3
 
 ### Patch Changes
