@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/core",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "private": false,
   "description": "Micro-FSM and Preact Signals primitives powering every cascivo component",
   "keywords": [

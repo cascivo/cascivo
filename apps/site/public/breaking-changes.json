@@ -4,7 +4,7 @@
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,7 +15,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.3.8",
+      "version": "0.3.9",
       "releases": [
         {
           "version": "0.3.0",
@@ -33,7 +33,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.3.4",
+      "version": "0.3.5",
       "releases": [
         {
           "version": "0.3.0",
@@ -56,8 +56,13 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.2.6",
+      "version": "0.3.0",
       "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": ["Add `useTypeahead` and fix duplicate-aria-id bugs in overlay components."]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -74,7 +79,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.10",
+      "version": "0.2.11",
       "releases": [
         {
           "version": "0.2.0",
@@ -94,12 +99,12 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.1.9",
+      "version": "0.1.10",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "releases": [
         {
           "version": "0.2.0",
@@ -115,7 +120,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "releases": [
         {
           "version": "0.2.0",
@@ -131,7 +136,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.3.3",
+      "version": "0.3.4",
       "releases": [
         {
           "version": "0.3.0",
@@ -154,8 +159,13 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.4.3",
+      "version": "0.5.0",
       "releases": [
+        {
+          "version": "0.5.0",
+          "level": "minor",
+          "notes": ["Ship one canonical CSS `@layer` order and a real override escape hatch."]
+        },
         {
           "version": "0.4.0",
           "level": "minor",
@@ -180,7 +190,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.1.9",
+      "version": "0.1.10",
       "releases": [
         {
           "version": "0.1.0",
@@ -191,7 +201,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.9",
+      "version": "0.1.10",
       "releases": [
         {
           "version": "0.1.0",
@@ -202,8 +212,13 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.2.11",
+      "version": "0.3.0",
       "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": ["Ship one canonical CSS `@layer` order and a real override escape hatch."]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -218,8 +233,13 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.3.8",
+      "version": "0.4.0",
       "releases": [
+        {
+          "version": "0.4.0",
+          "level": "minor",
+          "notes": ["Ship one canonical CSS `@layer` order and a real override escape hatch."]
+        },
         {
           "version": "0.3.0",
           "level": "minor",

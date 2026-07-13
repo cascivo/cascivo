@@ -1,5 +1,11 @@
 # @cascivo/registry
 
+## 0.1.10
+
+### Patch Changes
+
+- 483e30a: Minor improvements
+
 ## 0.1.9
 
 ### Patch Changes

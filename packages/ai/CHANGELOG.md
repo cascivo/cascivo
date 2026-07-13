@@ -1,5 +1,17 @@
 # @cascivo/ai
 
+## 0.2.4
+
+### Patch Changes
+
+- 483e30a: Minor improvements
+- Updated dependencies [dd05e9b]
+- Updated dependencies [483e30a]
+- Updated dependencies [dd05e9b]
+  - @cascivo/tokens@0.4.0
+  - @cascivo/core@0.3.0
+  - @cascivo/i18n@0.2.4
+
 ## 0.2.3
 
 ### Patch Changes
