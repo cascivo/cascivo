@@ -1,8 +1,7 @@
 'use client'
-import { createMachine, useMachine, useSignalEffect, useSignals } from '@cascivo/core'
+import { createMachine, useId, useMachine, useSignalEffect, useSignals } from '@cascivo/core'
 import {
   cloneElement,
-  useId,
   useRef,
   type CSSProperties,
   type FocusEvent,
@@ -31,8 +30,9 @@ export interface TooltipProps {
 export function Tooltip({ content, placement = 'top', children, delay = 200 }: TooltipProps) {
   useSignals()
   const [state, send] = useMachine(machine)
-  const tooltipId = useId()
-  const anchorId = useRef(`t${Math.random().toString(36).slice(2)}`)
+  // Stable, colon-stripped ids: SSR-safe and valid inside the CSS anchor-name.
+  const tooltipId = useId('cascivo-tooltip')
+  const anchorId = useId('cascivo-anchor')
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const floatingRef = useRef<HTMLSpanElement>(null)
 
@@ -61,8 +61,8 @@ export function Tooltip({ content, placement = 'top', children, delay = 200 }: T
   const triggerProps = trigger.props
 
   const merged: HTMLAttributes<HTMLElement> = {
-    id: anchorId.current,
-    style: { anchorName: `--tooltip-${anchorId.current}` } as CSSProperties,
+    id: anchorId,
+    style: { anchorName: `--tooltip-${anchorId}` } as CSSProperties,
     onMouseEnter: (event: MouseEvent<HTMLElement>) => {
       triggerProps.onMouseEnter?.(event)
       show()
@@ -92,7 +92,7 @@ export function Tooltip({ content, placement = 'top', children, delay = 200 }: T
         id={tooltipId}
         data-placement={placement}
         data-state={isVisible ? 'visible' : 'hidden'}
-        data-anchor={`--tooltip-${anchorId.current}`}
+        data-anchor={`--tooltip-${anchorId}`}
         className={styles['tooltip']}
       >
         {content}

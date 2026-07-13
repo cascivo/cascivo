@@ -29,13 +29,15 @@ referenced the old layer names in your own `@layer` ordering, rename them:**
 ```css
 /* before */
 @layer cascade.tokens, cascade.theme, cascade.component, app;
-/* after */
-@layer cascivo.base, cascivo.theme, cascivo.component, app;
+/* after — canonical order (see @cascivo/tokens/layers.css) */
+@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, app,
+  cascivo.override;
 ```
 
-If you never wrote `@layer cascade…` yourself, nothing to do. Recommended
-ordering: `cascivo.base < cascivo.theme < cascivo.component`, and **unlayered**
-app CSS still beats every cascivo layer.
+If you never wrote `@layer cascade…` yourself, nothing to do. Canonical ordering:
+`cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme < cascivo.override`
+(theme wins over component); put your own overrides in `@layer cascivo.override`,
+and **unlayered** app CSS still beats every cascivo layer.
 
 ---
 

@@ -2,6 +2,11 @@
 /* cascivo Design System — Primitive Tokens */
 /* These are raw values. Never use directly in components. Use semantic tokens. */
 
+/* Establish the canonical cascade-layer order before any layered rule. Every
+   consumer path imports @cascivo/tokens (directly or via a theme), so this rides
+   along first and dedupes by URL. See ./layers.css for the authoritative order. */
+@import './layers.css';
+
 @layer cascivo.tokens {
   :root {
     /* ── Color Primitives ─────────────────────────────── */

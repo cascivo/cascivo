@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, type KeyboardEvent, type ReactNode } from 'react'
-import { useSignalEffect, useSignals } from '@cascivo/core'
+import { useSignalEffect, useSignals, useTypeahead } from '@cascivo/core'
 import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
 import styles from './menu.module.css'
 
@@ -15,6 +15,33 @@ function MenuPanelInner({ ctx, children }: { ctx: UsePopoverReturn; children: Re
   useSignals()
   const { popoverRef, anchorName, isOpen } = ctx
 
+  // Resolve enabled items from the DOM: skips disabled items AND separators
+  // (role="separator"), which the old nextElementSibling walk did not.
+  const enabledItems = (): HTMLElement[] => {
+    const panel = popoverRef.current
+    if (!panel) return []
+    return Array.from(
+      panel.querySelectorAll<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])'),
+    )
+  }
+
+  const focusItem = (resolve: (items: HTMLElement[], current: number) => number): void => {
+    const items = enabledItems()
+    if (items.length === 0) return
+    const current = items.indexOf(document.activeElement as HTMLElement)
+    items[resolve(items, current)]?.focus()
+  }
+
+  // Type-to-select: jump to the first enabled item whose label starts with the query.
+  const typeahead = useTypeahead({
+    onMatch: (query) => {
+      const match = enabledItems().find((el) =>
+        (el.textContent ?? '').trim().toLowerCase().startsWith(query),
+      )
+      match?.focus()
+    },
+  })
+
   useSignalEffect(() => {
     if (!isOpen.value) return
     const panel = popoverRef.current
@@ -22,6 +49,29 @@ function MenuPanelInner({ ctx, children }: { ctx: UsePopoverReturn; children: Re
     const first = panel.querySelector<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])')
     first?.focus()
   })
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        focusItem((items, i) => (i < 0 ? 0 : (i + 1) % items.length))
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        focusItem((items, i) => (i < 0 ? items.length - 1 : (i - 1 + items.length) % items.length))
+        break
+      case 'Home':
+        e.preventDefault()
+        focusItem(() => 0)
+        break
+      case 'End':
+        e.preventDefault()
+        focusItem((items) => items.length - 1)
+        break
+      default:
+        typeahead.onKeyDown(e)
+    }
+  }
 
   return (
     <div
@@ -33,6 +83,7 @@ function MenuPanelInner({ ctx, children }: { ctx: UsePopoverReturn; children: Re
       data-state={isOpen.value ? 'open' : 'closed'}
       style={{ positionAnchor: anchorName } as React.CSSProperties}
       className={styles.panel}
+      onKeyDown={handleKeyDown}
     >
       {children}
     </div>
@@ -127,20 +178,14 @@ export function MenuItem({ children, onSelect, disabled }: MenuItemProps) {
           close()
         }
         function handleKeyDown(e: KeyboardEvent) {
+          // Activation only. Arrow/Home/End/typeahead navigation is handled by the
+          // menu panel (see MenuPanelInner) so disabled items and separators are
+          // skipped. stopPropagation keeps Space activation from reaching the
+          // panel's typeahead buffer.
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
+            e.stopPropagation()
             handleClick()
-          }
-          if (e.key === 'ArrowDown') {
-            e.preventDefault()
-            const next = (e.currentTarget as HTMLElement).nextElementSibling as HTMLElement | null
-            next?.focus()
-          }
-          if (e.key === 'ArrowUp') {
-            e.preventDefault()
-            const prev = (e.currentTarget as HTMLElement)
-              .previousElementSibling as HTMLElement | null
-            prev?.focus()
           }
         }
         return (

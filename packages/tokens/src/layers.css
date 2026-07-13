@@ -1,0 +1,29 @@
+/* packages/tokens/src/layers.css */
+/* cascivo — canonical @layer order (single source of truth). */
+/*
+ * This statement is the ONE authoritative declaration of cascivo's cascade-layer
+ * order. Every entry path emits it first (via @import of this file, or — for the
+ * @cascivo/react aggregate — by prepending its contents), and identical @layer
+ * statements are idempotent, so the order is deterministic no matter which
+ * cascivo stylesheet a consumer loads first.
+ *
+ * Ordered lowest-priority → highest-priority:
+ *
+ *   cascivo.reset      consumer reset (box-sizing, margin/padding zeroing) — the floor
+ *   cascivo.base       minimal html font/color reset (@cascivo/themes/base.css)
+ *   cascivo.tokens     primitive design tokens (@cascivo/tokens)
+ *   cascivo.component  component + layout styles
+ *   cascivo.theme      semantic token values per [data-theme] (@cascivo/themes/*)
+ *   cascivo.override   consumer escape hatch — beats tokens, components, and themes
+ *
+ * theme > component matches the CLI scaffold and every example app: themes own
+ * the semantic tier, so a theme always wins over component defaults. cascivo.override
+ * sits on top: put brand/one-off overrides in `@layer cascivo.override { … }` and
+ * they beat everything cascivo ships — with no `:root:not([data-theme])` specificity
+ * fight. App-local sublayers (cascivo.example, cascivo.blocks.*) are not shipped by
+ * any package; insert them between cascivo.theme and cascivo.override.
+ *
+ * Guard: scripts/checks/layer-order.test.ts asserts every shipped/scaffolded
+ * @layer statement is an ordered subsequence of this one.
+ */
+@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.override;

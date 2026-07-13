@@ -65,10 +65,37 @@ describe('Modal', () => {
     expect(onClose).toHaveBeenCalledOnce()
   })
 
-  it('has correct aria attributes', () => {
+  it('has correct aria attributes wired to the rendered title/description', () => {
     render(<Modal open title="My Modal" description="My description" />)
     const dialog = screen.getByRole('dialog')
-    expect(dialog).toHaveAttribute('aria-labelledby', 'cascade-modal-title')
-    expect(dialog).toHaveAttribute('aria-describedby', 'cascade-modal-desc')
+    const labelId = dialog.getAttribute('aria-labelledby')
+    const descId = dialog.getAttribute('aria-describedby')
+    expect(labelId).toBeTruthy()
+    expect(descId).toBeTruthy()
+    // The referenced ids must resolve to the actual heading/description elements.
+    expect(document.getElementById(labelId!)).toHaveTextContent('My Modal')
+    expect(document.getElementById(descId!)).toHaveTextContent('My description')
+  })
+
+  it('gives each instance unique aria ids (no duplicate ids across modals)', () => {
+    render(
+      <>
+        <Modal open title="First" description="First desc" />
+        <Modal open title="Second" description="Second desc" />
+      </>,
+    )
+    const [first, second] = screen.getAllByRole('dialog')
+    expect(first!.getAttribute('aria-labelledby')).not.toBe(second!.getAttribute('aria-labelledby'))
+    expect(first!.getAttribute('aria-describedby')).not.toBe(
+      second!.getAttribute('aria-describedby'),
+    )
+    // Every referenced id is unique in the document (aria references unambiguous).
+    const ids = [
+      first!.getAttribute('aria-labelledby'),
+      first!.getAttribute('aria-describedby'),
+      second!.getAttribute('aria-labelledby'),
+      second!.getAttribute('aria-describedby'),
+    ]
+    expect(new Set(ids).size).toBe(4)
   })
 })

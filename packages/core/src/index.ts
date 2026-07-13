@@ -75,6 +75,8 @@ export type {
 } from './intersection-observer.ts'
 export { DismissableLayer } from './dismissable-layer.tsx'
 export type { DismissableLayerProps } from './dismissable-layer.tsx'
+export { useTypeahead } from './typeahead.ts'
+export type { UseTypeaheadOptions, UseTypeaheadReturn } from './typeahead.ts'
 export { useRovingFocus } from './roving-focus.ts'
 export type {
   UseRovingFocusOptions,

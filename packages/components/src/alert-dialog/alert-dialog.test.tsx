@@ -64,6 +64,45 @@ describe('AlertDialog', () => {
     expect(onConfirm).toHaveBeenCalledOnce()
   })
 
+  it('wires aria to the rendered title/description with unique ids per instance', () => {
+    const { container } = render(
+      <>
+        <AlertDialog
+          open
+          title="Delete A"
+          description="Desc A"
+          onConfirm={() => {}}
+          onCancel={() => {}}
+        />
+        <AlertDialog
+          open
+          title="Delete B"
+          description="Desc B"
+          onConfirm={() => {}}
+          onCancel={() => {}}
+        />
+      </>,
+    )
+    const dialogs = container.querySelectorAll('[role="alertdialog"]')
+    expect(dialogs).toHaveLength(2)
+    const [a, b] = Array.from(dialogs)
+    // Each dialog's aria targets resolve to its own title/description.
+    expect(document.getElementById(a!.getAttribute('aria-labelledby')!)).toHaveTextContent(
+      'Delete A',
+    )
+    expect(document.getElementById(b!.getAttribute('aria-labelledby')!)).toHaveTextContent(
+      'Delete B',
+    )
+    // Ids are unique across instances (no duplicate-id aria breakage).
+    const ids = [
+      a!.getAttribute('aria-labelledby'),
+      a!.getAttribute('aria-describedby'),
+      b!.getAttribute('aria-labelledby'),
+      b!.getAttribute('aria-describedby'),
+    ]
+    expect(new Set(ids).size).toBe(4)
+  })
+
   it('supports custom labels', () => {
     render(
       <AlertDialog

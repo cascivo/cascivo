@@ -68,7 +68,20 @@ Apply a theme by setting the attribute on any container:
 }
 ```
 
-Two ways to win, in order of preference:
+Three ways to win, in order of preference:
+
+**0. Use `@layer cascivo.override` (recommended, foolproof).** It is the highest
+cascivo layer, so it beats tokens, components, and themes regardless of
+specificity — a plain `:root` inside it wins with no selector-mirroring and no
+`data-theme` required:
+
+```css
+@layer cascivo.override {
+  :root {
+    --cascivo-color-accent: var(--brand-emerald);
+  }
+}
+```
 
 **1. Mirror the theme's selectors and import your brand file last.** Same layer,
 same selector list — source order inside `@layer cascivo.theme` then decides, and

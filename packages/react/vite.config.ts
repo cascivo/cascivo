@@ -1,4 +1,15 @@
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite-plus'
+
+// The canonical @layer order statement (single source of truth). Prepended to the
+// aggregate styles.css so a consumer who imports only '@cascivo/react/styles.css'
+// still gets a deterministic cascade order; identical statements are idempotent, so
+// this is harmless when @cascivo/themes is also loaded.
+const LAYER_ORDER = readFileSync(
+  fileURLToPath(new URL('../tokens/src/layers.css', import.meta.url)),
+  'utf8',
+).trim()
 
 /**
  * Per-component CSS shipping.
@@ -80,7 +91,11 @@ function cssImportEdges() {
       // users never touch this — their CSS rides along with each component
       // import and tree-shakes. All component CSS lives in @layer
       // cascivo.component, so concatenation order is not significant.
-      this.emitFile({ type: 'asset', fileName: 'styles.css', source: cssSources.join('\n') })
+      this.emitFile({
+        type: 'asset',
+        fileName: 'styles.css',
+        source: `${LAYER_ORDER}\n${cssSources.join('\n')}`,
+      })
       // Collapse the duplicate 'use client' (source directive + banner) in
       // component chunks that did not receive a CSS import above.
       for (const fileName of Object.keys(bundle)) {

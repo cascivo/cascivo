@@ -452,6 +452,24 @@ CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefo
 
 **Browser support context:** As of 2026-06, `@function` is Chrome-only (133+). Cascade uses it as a forward-looking pilot; it becomes the primary form once Safari/Firefox ship.
 
+#### Consume shared headless primitives — don't hand-roll a11y
+
+`@cascivo/core` is the headless/behavior layer. Interactive components **must** use
+its primitives instead of reimplementing accessibility mechanics that drift and break:
+
+| Need                                                            | Use                | Never                                                                                               |
+| --------------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------- |
+| Stable aria ids (`aria-labelledby`/`describedby`, anchor names) | `useId()`          | hardcoded string-literal ids, `Math.random()` — both collide across instances / break SSR hydration |
+| Dismiss on outside pointer / Escape (incl. nested layers)       | `DismissableLayer` | raw `document.addEventListener('mousedown'\|'click'\|'pointerdown')`                                |
+| Arrow/Home/End roving focus in a list                           | `useRovingFocus`   | inline `nextElementSibling` walks or bespoke `onKeyDown` switches per item                          |
+| Type-to-select in a menu/listbox                                | `useTypeahead`     | hand-rolled key buffers                                                                             |
+| Focus trap / return                                             | `FocusScope`       | manual `querySelectorAll` focus cycling                                                             |
+
+The `primitive-adoption:check` script (`pnpm primitives:check`, in CI) enforces the
+first three: no static aria-id literals, no `Math.random()` in component source, no
+new raw outside-click listeners. Known-remaining sites are tracked in its allowlist;
+migrate them, don't add to it.
+
 #### Checklist before committing a component
 
 1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
@@ -461,3 +479,4 @@ CSS `@function` and `if(style())` are available in Chrome 133+ but not in Firefo
 5. The component is exported from `packages/react/src/index.ts` (the prebuilt `@cascivo/react` distribution).
 6. User-visible strings default from the `@cascivo/i18n` built-in catalog (`t(builtin.<component>.<key>)`); a `labels` prop overrides per-instance. Never hardcoded English fallbacks.
 7. Passes the mobile-overflow + touch-target sweep at 320/360/390/414; no off-scale breakpoint literals (`pnpm breakpoint:check`).
+8. Consumes shared `@cascivo/core` primitives for aria ids, dismissal, roving focus, and typeahead — no hand-rolled equivalents (`pnpm primitives:check`).
