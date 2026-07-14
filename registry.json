@@ -1,6 +1,6 @@
 {
   "version": "0.5.0",
-  "generatedAt": "2026-07-13",
+  "generatedAt": "2026-07-14",
   "components": [
     {
       "name": "accordion",
@@ -4047,7 +4047,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/context-menu.module.css"
       ],
       "fileHashes": {
-        "context-menu.tsx": "sha256-ba181810c7f4cc0496ee9499aa3c259f64f6b410bdce80007d1fac084f892528",
+        "context-menu.tsx": "sha256-5624f65f4fb24a1edd35b468005ce56317cf8b04e34a8953946edc2928160265",
         "context-menu.module.css": "sha256-56560bcc3e7c74bf522b5cbbd0e044e04143f35426dbfb003b4db968a5b89e7f"
       },
       "dependencies": ["@cascivo/core"],
