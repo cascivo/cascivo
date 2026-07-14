@@ -9,19 +9,19 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 
 | Package             | Version | Latest feature release                                                                   | Changelog                                   |
 | ------------------- | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------- |
-| `@cascivo/ai`       | 0.2.5   | 0.2.0 — AI-layer delivery (audit wave 3):                                                | [CHANGELOG](packages/ai/CHANGELOG.md)       |
+| `@cascivo/ai`       | 0.2.6   | 0.2.0 — AI-layer delivery (audit wave 3):                                                | [CHANGELOG](packages/ai/CHANGELOG.md)       |
 | `@cascivo/charts`   | 0.3.10  | 0.3.0 — PieChart: donut `centerValue`/`centerLabel` (+ `centerSlot`), `thickness`/`inner | [CHANGELOG](packages/charts/CHANGELOG.md)   |
-| `cascivo`           | 0.3.6   | 0.3.0 — Adoption-audit fixes (waves 1–2):                                                | [CHANGELOG](packages/cli/CHANGELOG.md)      |
+| `cascivo`           | 0.4.0   | 0.4.0 — `cascivo audit` gains two layer-discipline rules (both `warn`, never fail the    | [CHANGELOG](packages/cli/CHANGELOG.md)      |
 | `@cascivo/core`     | 0.3.1   | 0.3.0 — Add `useTypeahead` and fix duplicate-aria-id bugs in overlay components.         | [CHANGELOG](packages/core/CHANGELOG.md)     |
 | `@cascivo/editor`   | 0.2.12  | 0.2.0 — Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-r | [CHANGELOG](packages/editor/CHANGELOG.md)   |
 | `@cascivo/flow`     | 0.1.11  | —                                                                                        | [CHANGELOG](packages/flow/CHANGELOG.md)     |
 | `@cascivo/i18n`     | 0.2.5   | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                | [CHANGELOG](packages/i18n/CHANGELOG.md)     |
 | `@cascivo/icons`    | 0.2.8   | 0.2.0 — Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons    | [CHANGELOG](packages/icons/CHANGELOG.md)    |
-| `@cascivo/mcp`      | 0.3.5   | 0.3.0 — Adoption-audit fixes (waves 1–2):                                                | [CHANGELOG](packages/mcp/CHANGELOG.md)      |
-| `@cascivo/react`    | 0.5.1   | 0.5.0 — Ship one canonical CSS `@layer` order and a real override escape hatch.          | [CHANGELOG](packages/react/CHANGELOG.md)    |
+| `@cascivo/mcp`      | 0.4.0   | 0.4.0 — The MCP server now ships `instructions` carrying the cascivo CSS layer contract, | [CHANGELOG](packages/mcp/CHANGELOG.md)      |
+| `@cascivo/react`    | 0.6.0   | 0.6.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/react/CHANGELOG.md)    |
 | `@cascivo/registry` | 0.1.11  | 0.1.0 — Initial public release of the cascivo design system. Includes:                   | [CHANGELOG](packages/registry/CHANGELOG.md) |
 | `@cascivo/storage`  | 0.1.11  | 0.1.0 — Initial public release of the cascivo design system. Includes:                   | [CHANGELOG](packages/storage/CHANGELOG.md)  |
-| `@cascivo/themes`   | 0.3.1   | 0.3.0 — Ship one canonical CSS `@layer` order and a real override escape hatch.          | [CHANGELOG](packages/themes/CHANGELOG.md)   |
-| `@cascivo/tokens`   | 0.4.1   | 0.4.0 — Ship one canonical CSS `@layer` order and a real override escape hatch.          | [CHANGELOG](packages/tokens/CHANGELOG.md)   |
+| `@cascivo/themes`   | 0.4.0   | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/themes/CHANGELOG.md)   |
+| `@cascivo/tokens`   | 0.5.0   | 0.5.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/tokens/CHANGELOG.md)   |
 
 See [docs/UPGRADING.md](docs/UPGRADING.md) for upgrade guidance.

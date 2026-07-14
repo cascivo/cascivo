@@ -1,5 +1,12 @@
 # @cascivo/ai
 
+## 0.2.6
+
+### Patch Changes
+
+- Updated dependencies [c335ed5]
+  - @cascivo/tokens@0.5.0
+
 ## 0.2.5
 
 ### Patch Changes

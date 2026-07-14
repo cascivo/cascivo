@@ -1,5 +1,31 @@
 # cascivo
 
+## 0.4.0
+
+### Minor Changes
+
+- c335ed5: `cascivo audit` gains two layer-discipline rules (both `warn`, never fail the
+  build): `unlayered-css` flags top-level CSS rules outside any `@layer` block
+  (accessibility-guarantee media queries like `forced-colors` are exempt), and
+  `vendor-css-import` flags bare `*.css` imports from `node_modules` that can't be
+  layered — pointing you at the `@import url(…) layer(vendor)` recipe. A new
+  `pnpm unlayered:check` guards shipped CSS against the same trap in CI.
+- c335ed5: Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`
+  statement (between `cascivo.theme` and `cascivo.override`), and fold the
+  `@function` helpers from the undeclared `cascivo.functions` layer into
+  `cascivo.tokens`.
+
+  Previously the shipped composite blocks (`@layer cascivo.blocks.<name>`) and the
+  `@function` helpers used layer names that no order statement declared, so they were
+  appended **above** `cascivo.override` and silently beat the consumer escape hatch.
+  They now sit in their intended slots: blocks just above themes, functions with the
+  tokens.
+
+  Migration: if you relied on a shipped block's CSS beating your
+  `@layer cascivo.override { … }` rules, that was the bug this fixes — move those
+  overrides to win as intended. The `cascivo create` scaffold and example apps now
+  emit the 7-layer canonical statement.
+
 ## 0.3.6
 
 ### Patch Changes
