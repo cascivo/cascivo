@@ -178,6 +178,8 @@ export function App() {
 - [THEMING.md](./THEMING.md) — brand it: token tiers, the `data-theme`
   specificity footgun, a starter brand theme.
 - [TOKENS.md](./TOKENS.md) — every `--cascivo-*` custom property.
+- [AI-RULES.md](./AI-RULES.md) — house rules for your AI agent: the CSS layer
+  contract + a utility-first (Tailwind) mapping table.
 - [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md) — App Router / RSC setup.
 - [COMPATIBILITY.md](./COMPATIBILITY.md) — frameworks, browsers, package
   version matrix.

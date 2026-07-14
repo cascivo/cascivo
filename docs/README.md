@@ -70,5 +70,6 @@ Task-focused, copy-adaptable recipes in [`cookbooks/`](cookbooks/):
 
 Machine-readable docs for AI agents: [`llms.txt`](https://cascivo.com/llms.txt),
 per-component [`llms/<name>.md`](https://docs.cascivo.com/llms/), and
-[`context.json`](https://cascivo.com/context.json). See the root
-[README](../README.md#ai--context-layer) for the full AI layer.
+[`context.json`](https://cascivo.com/context.json). Give your own agent the house
+rules with [AI-RULES.md](AI-RULES.md) (the CSS layer contract + a utility-first
+mapping). See the root [README](../README.md#ai--context-layer) for the full AI layer.

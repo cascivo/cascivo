@@ -46,15 +46,30 @@ const error = (message: string) => ({
   isError: true,
 })
 
+/**
+ * The cascivo CSS layer contract — surfaced to every MCP client so agents that
+ * generate or edit CSS keep the cascade intact. Kept terse (MCP context budget).
+ */
+const LAYER_CONTRACT = `CSS layer contract (follow when generating or editing CSS):
+1. Every declaration goes inside an @layer block. Unlayered CSS beats all layers regardless of specificity — never emit it.
+2. Never invent layer names. Write only your app slot (e.g. cascivo.example, declared in your order statement) for page styles, and @layer cascivo.override { … } for hotfixes/one-off overrides — it beats everything cascivo ships.
+3. Never nest layers deeper than the shipped cascivo.blocks.<name> pattern. For sub-elements use native CSS nesting inside one layer block, not new sublayers.
+4. Third-party CSS: @import url(…) layer(vendor); with vendor declared before the cascivo layers. Never import vendor CSS from JavaScript.
+5. Style with --cascivo-* tokens, not raw values.
+Canonical order (low→high): @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;`
+
 /** Build a configured McpServer exposing the cascade component registry. */
 export function createServer(options: ServerOptions = {}): McpServer {
   const registry: Registry = loadRegistry(options.registryPath)
   const fetchFn = options.fetchFn
 
-  const server = new McpServer({
-    name: '@cascivo/mcp',
-    version: options.version ?? '0.0.0',
-  })
+  const server = new McpServer(
+    {
+      name: '@cascivo/mcp',
+      version: options.version ?? '0.0.0',
+    },
+    { instructions: LAYER_CONTRACT },
+  )
 
   server.registerTool(
     'list_registries',

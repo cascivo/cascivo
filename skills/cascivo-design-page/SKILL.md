@@ -95,6 +95,25 @@ npx tsc --noEmit
 
 Fix any type errors before presenting the result to the user.
 
+### 6.5. Styling discipline — the layer contract
+
+Any CSS you write for the page must follow cascivo's layer contract (layer order
+beats specificity, so unlayered CSS silently wins):
+
+1. Every declaration goes inside an `@layer` block. Unlayered CSS beats all layers —
+   never emit it.
+2. Never invent layer names. Write only the app's own slot (`cascivo.example`, declared
+   in the order statement) for page styles, and `@layer cascivo.override { … }` for
+   one-off overrides — it beats everything cascivo ships.
+3. Never nest layers deeper than the shipped `cascivo.blocks.<name>` pattern. For
+   sub-elements (a badge in a card, a dot in a badge) use native CSS nesting inside one
+   layer block, not new sublayers.
+4. Third-party CSS: `@import url(…) layer(vendor);` with `vendor` declared before the
+   cascivo layers. Never import vendor CSS from JavaScript.
+5. Style with `--cascivo-*` tokens, not raw values.
+
+Full recipe: `docs/CSS-LAYERS-PITFALL.md` and `docs/THIRD-PARTY-CSS.md`.
+
 ### 7. Present the result
 
 Show the user:

@@ -344,6 +344,54 @@ Add more components with \`npx cascivo add <component>\`.
 `
 }
 
+function agentsMd(opts: ScaffoldOptions): string {
+  return `# Agent instructions — ${opts.name}
+
+This is a [cascivo](https://cascivo.com) app. When generating or editing CSS, follow
+the **layer contract** — cascivo styles live in cascade layers, and layer order beats
+selector specificity.
+
+## CSS layer contract
+
+1. Every declaration goes inside an \`@layer\` block. Unlayered CSS beats all layers
+   regardless of specificity — never emit it.
+2. Never invent layer names. Write only: your app slot \`cascivo.example\` (declared in
+   the order statement in \`index.html\`) for page styles, and
+   \`@layer cascivo.override { … }\` for hotfixes / one-off overrides — it beats
+   everything cascivo ships.
+3. Never nest layers deeper than the shipped \`cascivo.blocks.<name>\` pattern. For
+   sub-elements, use native CSS nesting inside one layer block, not new sublayers.
+4. Third-party CSS: \`@import url('lib/styles.css') layer(vendor);\` with \`vendor\`
+   declared before the cascivo layers. Never import vendor CSS from JavaScript.
+5. Style with \`--cascivo-*\` tokens, not raw values.
+
+This app's declared layer order (in \`index.html\`):
+
+\`\`\`css
+@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
+  cascivo.theme, cascivo.blocks, cascivo.override;
+\`\`\`
+
+### Worked example — nesting, not new layers
+
+\`\`\`css
+@layer cascivo.override {
+  .projectCard {
+    /* Sub-elements nest inside the one block — no cascivo.card.status sublayer. */
+    .statusBadge {
+      color: var(--cascivo-color-text-subtle);
+      .pulseDot {
+        background: var(--cascivo-color-success);
+      }
+    }
+  }
+}
+\`\`\`
+
+More: cascivo's machine-readable guide is at https://cascivo.com/llms.txt.
+`
+}
+
 /** Build the full set of files for a new cascivo app. Pure — no filesystem I/O. */
 export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   const sections = resolveSections(opts.sections)
@@ -355,6 +403,7 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
     { path: 'cascivo.config.ts', contents: cascivoConfig(opts) },
     { path: '.gitignore', contents: gitignore() },
     { path: 'README.md', contents: readme(opts) },
+    { path: 'AGENTS.md', contents: agentsMd(opts) },
     { path: 'src/main.tsx', contents: mainTsx() },
     { path: 'src/vite-env.d.ts', contents: viteEnv() },
     { path: 'src/App.tsx', contents: appTsx(opts, sections) },

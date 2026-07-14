@@ -431,6 +431,40 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
   lines.push('')
+  lines.push('## CSS layer contract (follow when generating or editing CSS)')
+  lines.push('')
+  lines.push('cascivo styles live in cascade layers. Layer order beats selector specificity, so:')
+  lines.push('')
+  lines.push(
+    '1. Every declaration goes inside an `@layer` block. Unlayered CSS beats all layers regardless',
+  )
+  lines.push('   of specificity — never emit it.')
+  lines.push(
+    '2. Never invent layer names. The only layers you write: your app slot (e.g. `cascivo.example`,',
+  )
+  lines.push(
+    '   declared in your order statement) for page styles, and `@layer cascivo.override { … }` for',
+  )
+  lines.push('   hotfixes/one-off overrides — it beats everything cascivo ships.')
+  lines.push(
+    '3. Never nest layers deeper than the shipped `cascivo.blocks.<name>` pattern. For sub-elements',
+  )
+  lines.push(
+    '   (a badge in a card, a dot in a badge) use native CSS nesting inside one layer block, not new',
+  )
+  lines.push('   sublayers.')
+  lines.push(
+    '4. Third-party CSS: `@import url(…) layer(vendor);` with `vendor` declared before the cascivo',
+  )
+  lines.push('   layers. Never import vendor CSS from JavaScript.')
+  lines.push('5. Style with `--cascivo-*` tokens, not raw values.')
+  lines.push('')
+  lines.push('Canonical order (lowest → highest priority):')
+  lines.push(
+    '`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;`',
+  )
+  lines.push(`Full recipe: ${REPO}/blob/main/docs/CSS-LAYERS-PITFALL.md.`)
+  lines.push('')
   lines.push('## Versioning & compatibility')
   lines.push('')
   lines.push(

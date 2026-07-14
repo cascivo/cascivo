@@ -1,6 +1,25 @@
 # Improvements plan — "AI-first Vercel dashboard" experience report (layer discipline)
 
-**Status: proposed — ready for implementation.**
+**Status: implemented.** All four phases shipped on branch
+`claude/cascivo-improvements-plan-amller`. Two decisions deviated from the original
+spec during implementation, both noted inline below and summarized here:
+
+1. **Phase 2.3 vendor-CSS rule landed in `cascivo audit`, not `cascivo doctor`.**
+   `runDoctor` hard-gates on `packages/components/src` and returns early for any
+   consumer cwd, so a doctor rule would never fire for the reported scenario (a
+   consumer importing vendor CSS). `cascivo audit` is the consumer-facing scanner that
+   already walks `.tsx/.ts`, so the `vendor-css-import` rule lives there.
+2. **Phase 2.1's "deliberate exceptions allowlist" became a principled feature-based
+   carve-out.** 38 shipped components place their `@media (forced-colors: active)` /
+   `(prefers-contrast)` / `(prefers-reduced-motion)` accessibility overrides top-level
+   (unlayered) on purpose — those must win over every layer, including a consumer's
+   `cascivo.override`. The scanner exempts exactly those media features (not a file
+   list), so a plain unlayered `.card {}` or a normal top-level `@media (min-width)` is
+   still caught. `packages/themes/src/tailwind.css` remains a file-level allowlist entry.
+
+---
+
+**Original status: proposed — ready for implementation.**
 **Source:** a hands-on experience report from a team that built a Vercel-style dashboard
 (dense project-card grid, team switcher, command palette, multi-pane layout) on cascivo,
 explicitly operating **AI-first**: agents authored the layout/CSS, humans reviewed and

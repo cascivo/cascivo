@@ -11,6 +11,10 @@ token system.
 This is the page the dashboard-integration feedback asked for: a clear answer to
 "do I abandon Tailwind's tokens, override them, or keep both?"
 
+> If your team writes CSS via an AI agent, hand it [AI-RULES.md](./AI-RULES.md) — the
+> CSS layer contract plus a `p-4` → `padding: var(--cascivo-space-4)` mapping table for
+> reviewers institutionalized on utility classes.
+
 ---
 
 ## TL;DR

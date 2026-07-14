@@ -51,6 +51,11 @@ Create a CSS file (e.g. `src/themes/<name>.css`) with the structure:
 
 Derive hover/subtle variants by lightening/darkening the base colors by ~10%.
 
+> A theme sets semantic tokens for a `[data-theme]`. For a **one-off override that must
+> beat everything** (all themes and components, with no `data-theme` needed), use
+> `@layer cascivo.override { :root { … } }` instead — it is the highest cascivo layer.
+> Never write the overrides unlayered.
+
 ### 4. Verify WCAG AA contrast
 
 Run the contrast-check script from the cascivo repo:
