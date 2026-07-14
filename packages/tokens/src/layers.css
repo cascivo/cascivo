@@ -11,19 +11,28 @@
  *
  *   cascivo.reset      consumer reset (box-sizing, margin/padding zeroing) — the floor
  *   cascivo.base       minimal html font/color reset (@cascivo/themes/base.css)
- *   cascivo.tokens     primitive design tokens (@cascivo/tokens)
+ *   cascivo.tokens     primitive design tokens + @function helpers (@cascivo/tokens)
  *   cascivo.component  component + layout styles
  *   cascivo.theme      semantic token values per [data-theme] (@cascivo/themes/*)
- *   cascivo.override   consumer escape hatch — beats tokens, components, and themes
+ *   cascivo.blocks     shipped composite blocks — each block gets its own
+ *                      cascivo.blocks.<name> sublayer (packages/components/src/blocks/*)
+ *   cascivo.override   consumer escape hatch — beats tokens, components, themes, and blocks
  *
  * theme > component matches the CLI scaffold and every example app: themes own
- * the semantic tier, so a theme always wins over component defaults. cascivo.override
- * sits on top: put brand/one-off overrides in `@layer cascivo.override { … }` and
- * they beat everything cascivo ships — with no `:root:not([data-theme])` specificity
- * fight. App-local sublayers (cascivo.example, cascivo.blocks.*) are not shipped by
- * any package; insert them between cascivo.theme and cascivo.override.
+ * the semantic tier, so a theme always wins over component defaults. Shipped blocks
+ * (registry copy-paste source under packages/components/src/blocks/) sit just above
+ * theme so a block can re-tune a component-tier token inside its own subtree; each
+ * declares a `@layer cascivo.blocks.<name> { … }` sublayer of the canonical
+ * cascivo.blocks slot. cascivo.override sits on top of everything: put brand/one-off
+ * overrides in `@layer cascivo.override { … }` and they beat everything cascivo ships,
+ * blocks included — with no `:root:not([data-theme])` specificity fight. App-local
+ * sublayers (cascivo.example) are not shipped by any package; insert them between
+ * cascivo.blocks and cascivo.override.
  *
  * Guard: scripts/checks/layer-order.test.ts asserts every shipped/scaffolded
- * @layer statement is an ordered subsequence of this one.
+ * @layer statement is an ordered subsequence of this one, and that every shipped
+ * `@layer cascivo.* { … }` block uses a canonical name or the cascivo.blocks.<name>
+ * pattern (depth ≤ 3) — no invented layer names.
  */
-@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.override;
+@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks,
+  cascivo.override;

@@ -119,6 +119,14 @@ the printed diff).
 
 Release-specific upgrade guides, newest first:
 
+- **`cascivo.blocks` layer slot** (`@cascivo/tokens` minor) — the canonical
+  `@layer` order gained a declared `cascivo.blocks` slot between `cascivo.theme`
+  and `cascivo.override`, and the `@function` helpers moved from an undeclared
+  `cascivo.functions` layer into `cascivo.tokens`. Shipped blocks and functions
+  now sit **below** `cascivo.override` instead of silently above it. If you relied
+  on a block's CSS beating your `@layer cascivo.override { … }` rules, that was a
+  bug — your override now wins as documented. See
+  [CSS-LAYERS-PITFALL.md](./CSS-LAYERS-PITFALL.md#canonical-layer-ordering).
 - [v37 — Consumer Upgrade Guide](./v37-CONSUMER-CHANGES.md) — migration
   hardening: the `cascade.*` → `cascivo.*` `@layer` rename (the one breaking
   change), `styles.css` export fix, app-shell adoption, token-name stability.

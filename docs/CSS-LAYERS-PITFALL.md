@@ -14,17 +14,22 @@ cascivo ships one authoritative layer order, declared in
 first by every entry path. Ordered lowest-priority → highest:
 
 ```
-cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme < cascivo.override
+cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme < cascivo.blocks < cascivo.override
 ```
 
 - `cascivo.reset` — consumer reset (`box-sizing`, margin/padding zeroing).
 - `cascivo.base` — the base reset (`font-family`, `line-height`, `color` on
   `html`), shipped by `@cascivo/themes`.
-- `cascivo.tokens` — primitive design tokens, shipped by `@cascivo/tokens`.
+- `cascivo.tokens` — primitive design tokens (and `@function` helpers), shipped by
+  `@cascivo/tokens`.
 - `cascivo.component` — component + layout styles.
 - `cascivo.theme` — semantic token values per `[data-theme]`. Ordered **above**
   `cascivo.component` so a theme always wins over component defaults.
-- `cascivo.override` — the consumer escape hatch (see below).
+- `cascivo.blocks` — shipped composite blocks (`packages/components/src/blocks/*`,
+  copied by `cascivo add <block>`). Each block declares its own
+  `@layer cascivo.blocks.<name> { … }` sublayer of this slot, ordered above
+  `cascivo.theme` so a block can re-tune a component-tier token in its own subtree.
+- `cascivo.override` — the consumer escape hatch (see below). Beats blocks too.
 
 **Unlayered** author CSS beats **all** cascivo layers regardless of specificity,
 so a consumer's plain (unlayered) stylesheet always wins. To override cascivo
@@ -44,8 +49,10 @@ there and they beat tokens, components, **and** themes — with no
 }
 ```
 
-App-local sublayers (`cascivo.example`, `cascivo.blocks.*`) are not shipped by any
-package; insert them between `cascivo.theme` and `cascivo.override`.
+`cascivo.blocks.*` sublayers **are** shipped (by the composite blocks under
+`packages/components/src/blocks/`) and live inside the canonical `cascivo.blocks`
+slot. App-local sublayers (`cascivo.example`) are not shipped by any package; insert
+them between `cascivo.blocks` and `cascivo.override`.
 
 ## The Problem
 
@@ -61,7 +68,7 @@ Declare the layer order **before any CSS loads** and wrap the reset inside the l
 <!-- index.html -->
 <style>
   @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.example, cascivo.theme,
-    cascivo.override;
+    cascivo.blocks, cascivo.override;
   @layer cascivo.reset {
     *,
     *::before,

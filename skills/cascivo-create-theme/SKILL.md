@@ -1,6 +1,6 @@
 ---
 name: cascivo:create-theme
-description: Create a custom cascivo theme from brand colors. Generates a @layer cascade.theme stylesheet overriding semantic tokens, then verifies WCAG AA contrast.
+description: Create a custom cascivo theme from brand colors. Generates a @layer cascivo.theme stylesheet overriding semantic tokens, then verifies WCAG AA contrast.
 ---
 
 # cascivo:create-theme
@@ -37,7 +37,7 @@ Create a CSS file (e.g. `src/themes/<name>.css`) with the structure:
 
 ```css
 /* Brand theme for cascivo */
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='<name>'] {
     --cascivo-color-accent: <primary-hex>;
     --cascivo-color-accent-hover: <primary-hex-darker>;
