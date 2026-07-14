@@ -39,8 +39,8 @@ stylesheet into the `vendor` layer, which you ordered dead last, so every casciv
 layer — and your own app CSS — now wins over it. You can still opt individual
 overrides back in with `cascivo.override`.
 
-> The scaffold from `cascivo create` already includes the `vendor` slot (commented)
-> in its layer statement, so new apps only need step 2.
+> The scaffold from `cascivo create` already includes the `vendor` slot in its layer
+> statement (only the example `@import` is commented), so new apps only need step 2.
 
 ## The one caveat: CSS imported from JavaScript can't be layered
 
@@ -51,12 +51,30 @@ JavaScript:
 import 'some-widget/dist/styles.css' // ⚠️ lands unlayered — beats cascivo
 ```
 
-…there is no place to attach `layer()`, so the CSS loads unlayered and wins. Move the
-import into a CSS file and use the recipe above:
+…there is no place to attach `layer()`, so the CSS loads unlayered and wins. You have
+two fixes:
+
+**Option A — route it through a CSS file** (no tooling):
 
 ```ts
 import './vendor.css' // vendor.css contains: @import url('some-widget/...') layer(vendor);
 ```
+
+**Option B — `@cascivo/vite-plugin`** (keep the JS import as-is). The plugin wraps the
+configured node_modules stylesheet in `@layer` at build time:
+
+```ts
+// vite.config.ts
+import { cascivoLayers } from '@cascivo/vite-plugin'
+
+export default defineConfig({
+  plugins: [cascivoLayers({ imports: { 'some-widget/dist/styles.css': 'vendor' } })],
+})
+```
+
+Your app CSS must still declare the `vendor` layer first (the two-line order statement
+above). The plugin is Vite-only and, like the native recipe, can't fix runtime-injected
+`<style>` tags or inline `style=""` — see below.
 
 `cascivo audit` flags bare `*.css` imports from `node_modules` (`vendor-css-import`)
 for exactly this reason.

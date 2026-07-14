@@ -23,7 +23,8 @@ follow these rules whenever you generate or edit CSS:
    sub-elements (a badge in a card, a dot in a badge) use native CSS nesting inside one
    layer block, not new sublayers.
 4. Third-party CSS: `@import url('lib/styles.css') layer(vendor);` with `vendor`
-   declared before the cascivo layers. Never import vendor CSS from JavaScript.
+   declared before the cascivo layers. Don't import vendor CSS from JavaScript — route
+   it through a CSS file, or use `@cascivo/vite-plugin` (`cascivoLayers`) to layer it.
 5. Style with `--cascivo-*` tokens, not raw values.
 
 Canonical layer order (lowest → highest priority):
