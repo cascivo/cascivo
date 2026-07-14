@@ -32,6 +32,29 @@ Canonical layer order (lowest → highest priority):
 The full machine-readable guide is at https://cascivo.com/llms.txt.
 ```
 
+## Overriding styles the sanctioned way
+
+Every cascivo component spreads `{...props}` onto its root element, so `style` and
+`className` **already pass through on every component** — you do not need (and there is
+no) `sx`/`css` styling prop. When a component's props and tokens don't cover a one-off,
+climb this ladder in order and stop at the first rung that works:
+
+1. **Component props + tokens** — the intended path. `variant`, `size`, and setting a
+   `--cascivo-*` component token cover almost everything.
+2. **`className` + a rule in `cascivo.override`** — for a reusable override. The
+   `cascivo.override` layer beats everything cascivo ships.
+3. **Inline `style` with `var(--cascivo-*)` values** — for a fast one-off. This stays
+   `cascivo audit --ai`-clean because the values are tokens.
+4. **`/* cascivo-audit: allow <rule> */`** — the rare remainder. A comment on the same
+   line as, or the line above, a flagged line downgrades that finding so the audit no
+   longer fails on it (e.g. `allow unknown-prop`, `allow hardcoded-value`, or `allow all`).
+   Suppressed findings still print, so nothing is hidden.
+
+`cascivo audit --ai` treats an inline `style` value that happens to equal a token as a
+gentle **warning**, not an error — it never blocks a build on a fast-prototyping override.
+Genuinely invented props (`sx`, `elevation`, …) remain errors; use rung 4 only when you
+mean it.
+
 ## Coming from utility-first (Tailwind)?
 
 cascivo has no utility classes. You express the same intent with plain CSS properties

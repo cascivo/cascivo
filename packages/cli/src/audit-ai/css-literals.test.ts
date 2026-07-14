@@ -51,15 +51,21 @@ describe('findCssLiteralViolations', () => {
     expect(findCssLiteralViolations('a { z-index: 8px; }', 'a.css', contract)).toEqual([])
   })
 
-  it('flags inline TSX style literals', () => {
+  it('flags inline TSX style literals as a warning (not a loop-blocking error)', () => {
     const tsx = `<div style={{ color: '#3b82f6' }} />`
     const out = findCssLiteralViolations(tsx, 'C.tsx', contract)
     expect(out).toHaveLength(1)
     expect(out[0]).toMatchObject({
       property: 'color',
+      level: 'warn',
       suggestedToken: '--cascivo-color-accent',
       line: 1,
     })
+  })
+
+  it('keeps the same value in a .css file at error level', () => {
+    const out = findCssLiteralViolations('a { color: #3b82f6; }', 'a.css', contract)
+    expect(out[0]?.level).toBe('error')
   })
 
   it('reports the correct line number', () => {

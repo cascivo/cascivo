@@ -12,6 +12,8 @@ import type { UnlayeredFinding } from '../audit-ai/unlayered.js'
 import { findUnlayeredViolations } from '../audit-ai/unlayered.js'
 import type { VendorCssFinding } from '../audit-ai/vendor-css.js'
 import { findVendorCssImports } from '../audit-ai/vendor-css.js'
+import type { DirectiveFinding } from '../audit-ai/suppress.js'
+import { applySuppressions, parseDirectives } from '../audit-ai/suppress.js'
 import type { CascadeConfig } from '../utils/config.js'
 import type { Contract } from '../utils/contract.js'
 import { loadContract } from '../utils/contract.js'
@@ -23,6 +25,10 @@ export type Finding =
   | RawStringFinding
   | UnlayeredFinding
   | VendorCssFinding
+  | DirectiveFinding
+
+/** A finding after suppression directives have been applied. */
+export type AuditedFinding = Finding & { suppressed?: boolean }
 
 const SKIP_DIRS = new Set(['node_modules', 'dist', '.git', 'build', '.next', 'coverage'])
 
@@ -77,6 +83,8 @@ function detail(f: Finding): string {
       return `${f.selector} { … } → wrap in @layer`
     case 'vendor-css-import':
       return `import '${f.specifier}' → @import url(…) layer(vendor)`
+    case 'audit-directive':
+      return f.message
   }
 }
 
@@ -84,14 +92,14 @@ function levelLabel(level: Finding['level']): string {
   return level === 'warn' ? 'warn' : level
 }
 
-function renderFindings(findings: Finding[]): void {
+function renderFindings(findings: AuditedFinding[]): void {
   if (findings.length === 0) {
     console.log('cascade audit --ai: no findings.')
     return
   }
   const rows = findings.map((f) => ({
     loc: `${f.file}:${f.line}`,
-    level: levelLabel(f.level),
+    level: f.suppressed ? 'suppressed' : levelLabel(f.level),
     rule: f.rule,
     detail: detail(f),
   }))
@@ -104,14 +112,17 @@ function renderFindings(findings: Finding[]): void {
     )
   }
   console.log('---')
-  const errors = findings.filter((f) => f.level === 'error').length
-  const warnings = findings.filter((f) => f.level === 'warn').length
-  const infos = findings.filter((f) => f.level === 'info').length
+  const active = findings.filter((f) => !f.suppressed)
+  const errors = active.filter((f) => f.level === 'error').length
+  const warnings = active.filter((f) => f.level === 'warn').length
+  const infos = active.filter((f) => f.level === 'info').length
+  const suppressed = findings.filter((f) => f.suppressed).length
   const parts = [
     `${errors} error${errors === 1 ? '' : 's'}`,
     `${warnings} warning${warnings === 1 ? '' : 's'}`,
   ]
   if (infos) parts.push(`${infos} info`)
+  if (suppressed) parts.push(`${suppressed} suppressed`)
   console.log(parts.join(', '))
 }
 
@@ -192,9 +203,12 @@ export async function audit(args: string[], _config: CascadeConfig): Promise<voi
     console.log(`cascade audit --ai --fix: rewrote ${n} literal${n === 1 ? '' : 's'} to tokens.`)
   }
 
-  const allFindings: Finding[] = []
+  const allFindings: AuditedFinding[] = []
   for (const file of files) {
-    allFindings.push(...findingsFor(file, readFileSync(file, 'utf8'), contract))
+    const source = readFileSync(file, 'utf8')
+    const { directives, findings: directiveFindings } = parseDirectives(source, file)
+    allFindings.push(...applySuppressions(findingsFor(file, source, contract), directives))
+    allFindings.push(...directiveFindings)
   }
 
   if (jsonOutput) {
@@ -203,7 +217,9 @@ export async function audit(args: string[], _config: CascadeConfig): Promise<voi
     renderFindings(allFindings)
   }
 
-  const hasErrors = allFindings.some((f) => f.level === 'error')
+  // Suppressed findings never fail the run — that is the escape hatch's whole point.
+  const active = allFindings.filter((f) => !f.suppressed)
+  const hasErrors = active.some((f) => f.level === 'error')
   if (minLevel === 'error' && hasErrors) process.exitCode = 1
-  if (minLevel === 'warn' && allFindings.some((f) => f.level !== 'info')) process.exitCode = 1
+  if (minLevel === 'warn' && active.some((f) => f.level !== 'info')) process.exitCode = 1
 }

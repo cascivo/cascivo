@@ -50,6 +50,21 @@ describe('findJsxPropViolations', () => {
     expect(findJsxPropViolations(src, 'H.tsx', contract)).toEqual([])
   })
 
+  it('accepts standard HTML/DOM attributes not enumerated in the meta contract', () => {
+    const src = `${IMPORT}<Button type="button" name="cta" tabIndex={0} title="Go" disabled>Go</Button>`
+    expect(findJsxPropViolations(src, 'H.tsx', contract)).toEqual([])
+  })
+
+  it('still flags an invented styling prop like sx', () => {
+    const out = findJsxPropViolations(
+      `${IMPORT}<Button sx={{ p: 4 }}>Go</Button>`,
+      'H.tsx',
+      contract,
+    )
+    expect(out).toHaveLength(1)
+    expect(out[0]).toMatchObject({ prop: 'sx', level: 'error', rule: 'unknown-prop' })
+  })
+
   it('emits info and skips checks when a spread is present', () => {
     const out = findJsxPropViolations(`${IMPORT}<Button {...rest} frobnicate />`, 'H.tsx', contract)
     expect(out).toHaveLength(1)

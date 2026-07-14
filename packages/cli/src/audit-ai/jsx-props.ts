@@ -13,8 +13,68 @@ export interface PropFinding {
 /** Props always allowed on any cascade component (DOM passthrough / React intrinsics). */
 const PASSTHROUGH = new Set(['className', 'style', 'id', 'ref', 'key', 'children'])
 
+/**
+ * Standard HTML/React DOM attributes. Every cascade component extends an
+ * `HTMLAttributes` interface and spreads `{...props}` onto its element (verified
+ * in button.tsx, card.tsx, …), so these are valid at runtime even though the
+ * hand-written `*.meta.ts` prop lists (the audit contract) don't enumerate them.
+ * Without this set, a legitimate `type`/`name`/`title`/`tabIndex` on a Button is
+ * a non-suppressible `unknown-prop` error — the audit-loop deadlock.
+ */
+const HTML_PASSTHROUGH = new Set([
+  'type',
+  'name',
+  'value',
+  'defaultValue',
+  'checked',
+  'defaultChecked',
+  'placeholder',
+  'title',
+  'role',
+  'tabIndex',
+  'form',
+  'href',
+  'target',
+  'rel',
+  'download',
+  'src',
+  'alt',
+  'width',
+  'height',
+  'loading',
+  'autoComplete',
+  'autoFocus',
+  'required',
+  'readOnly',
+  'min',
+  'max',
+  'step',
+  'rows',
+  'cols',
+  'wrap',
+  'maxLength',
+  'minLength',
+  'pattern',
+  'multiple',
+  'accept',
+  'size',
+  'dir',
+  'lang',
+  'hidden',
+  'draggable',
+  'spellCheck',
+  'contentEditable',
+  'inputMode',
+  'enterKeyHint',
+  'htmlFor',
+  'slot',
+  'disabled',
+  'open',
+])
+
 function isPassthrough(prop: string): boolean {
   if (PASSTHROUGH.has(prop)) return true
+  if (HTML_PASSTHROUGH.has(prop)) return true
   if (prop.startsWith('data-')) return true
   if (prop.startsWith('aria-')) return true
   if (/^on[A-Z]/.test(prop)) return true
@@ -182,7 +242,10 @@ export function findJsxPropViolations(
           prop: name,
           level: 'error',
           rule: 'unknown-prop',
-          message: `<${comp}> has unknown prop "${name}"`,
+          message:
+            `<${comp}> has unknown prop "${name}". ` +
+            'style/className pass through on every component (see the override ladder in ' +
+            'docs/AI-RULES.md); for an intentional one-off add `/* cascivo-audit: allow unknown-prop */`.',
         })
       }
     }
