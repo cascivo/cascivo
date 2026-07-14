@@ -1,6 +1,6 @@
 'use client'
 import { Alert, Button } from '@cascivo/react'
-import { Stack } from '../../stack/stack'
+import { Flex } from '../../flex/flex'
 
 interface Notification {
   id: string
@@ -44,20 +44,20 @@ export function NotificationCenter({
   onMarkAllRead,
 }: NotificationCenterProps) {
   return (
-    <Stack gap={4}>
+    <Flex gap={4}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 style={{ margin: 0 }}>Notifications</h2>
         <Button variant="ghost" onClick={onMarkAllRead}>
           Mark all read
         </Button>
       </div>
-      <Stack gap={2}>
+      <Flex gap={2}>
         {notifications.map((n) => (
           <Alert key={n.id} variant={n.variant} title={n.title}>
             {n.description}
           </Alert>
         ))}
-      </Stack>
-    </Stack>
+      </Flex>
+    </Flex>
   )
 }

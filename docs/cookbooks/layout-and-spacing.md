@@ -2,8 +2,8 @@
 
 If you reached for `style={{ display: 'flex', gap: 16 }}` while building with
 cascivo, this page is for you. cascivo **does** ship layout primitives and a
-documented spacing scale — they just live under the `layout/` namespace and use
-cascivo names (`Stack`, not `Flex`). This recipe maps the names you expect to the
+documented spacing scale — they just live under the `layout/` namespace. `Flex`
+is the gap-based flex container. This recipe maps the names you expect to the
 ones that exist, and replaces inline-style drift with primitives + tokens.
 
 > **Why no utility classes?** cascivo is deliberately modern-CSS-only — no
@@ -18,15 +18,15 @@ ones that exist, and replaces inline-style drift with primitives + tokens.
 
 | You might look for      | Use in cascivo                       | Install                          |
 | ----------------------- | ------------------------------------ | -------------------------------- |
-| `Flex`, `HStack`/`VStack` | `Stack` (with `direction`)         | `cascivo add stack`              |
-| `Box`, container/wrapper  | `Stack` or `Section`               | `cascivo add stack` / `section`  |
+| `Flex`, `HStack`/`VStack` | `Flex` (with `direction`)          | `cascivo add flex`               |
+| `Box`, container/wrapper  | `Flex` or `Section`                | `cascivo add flex` / `section`   |
 | CSS Grid                  | `Grid`, `AutoGrid`, `Columns`      | `cascivo add grid` / `auto-grid` |
 | Vertical rhythm / `Gap`   | `Spacer`                           | `cascivo add spacer`             |
 | Centered page column      | `Center`                           | `cascivo add center`             |
 
-`cascivo add stack` resolves to `layout/stack` automatically (bare names match
-their namespaced entry). The aliases above also resolve: `cascivo add flex`
-installs `layout/stack`.
+`cascivo add flex` resolves to `layout/flex` automatically (bare names match
+their namespaced entry). The aliases above also resolve: `cascivo add box`
+installs `layout/flex`.
 
 ---
 
@@ -43,15 +43,15 @@ installs `layout/stack`.
 ```
 
 ```tsx
-// ✅ Stack — gap is a spacing-scale step, not a magic number
-import { Stack } from './components/layout/stack' // after: cascivo add stack
-;<Stack direction="horizontal" gap={4} align="center" justify="between">
+// ✅ Flex — gap is a spacing-scale step, not a magic number
+import { Flex } from '@cascivo/react' // or copy in: cascivo add flex
+;<Flex direction="horizontal" gap={4} align="center" justify="between">
   <h2>Deployments</h2>
   <Button>New</Button>
-</Stack>
+</Flex>
 ```
 
-`gap={4}` resolves to `var(--cascivo-space-4)` (1rem). `Stack` props:
+`gap={4}` resolves to `var(--cascivo-space-4)` (1rem). `Flex` props:
 `direction` (`'vertical'` default | `'horizontal'`), `gap` (a space step),
 `align` (`start|center|end|stretch`), `justify` (`start|center|end|between`),
 `wrap`.

@@ -9,7 +9,7 @@
     "./shell-state": "./src/app-shell/shell-state.ts",
     "./blocks/console-app/console-app": "./src/blocks/console-app/console-app.tsx",
     "./grid": "./src/grid/grid.tsx",
-    "./stack": "./src/stack/stack.tsx",
+    "./flex": "./src/flex/flex.tsx",
     "./columns": "./src/columns/columns.tsx",
     "./center": "./src/center/center.tsx",
     "./split-view": "./src/split-view/split-view.tsx",

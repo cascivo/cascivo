@@ -10,13 +10,13 @@
 
 ## When NOT to use
 
-- Stacking children with consistent gaps — use Stack
+- Stacking children with consistent gaps — use Flex
 - Multi-column or grid arrangements — use Columns or Grid
 
 ## Related components
 
 - **Section** (contained-by): Sections use a centered inner width built on the same idea
-- **Stack** (pairs-with): Stack the centered content vertically inside it
+- **Flex** (pairs-with): Stack the centered content vertically inside it with Flex
 
 ## Accessibility rationale
 

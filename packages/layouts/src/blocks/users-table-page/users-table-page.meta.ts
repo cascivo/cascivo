@@ -15,7 +15,7 @@ export const meta: ComponentMeta = {
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<UsersTablePage />', description: 'Demo users table' }],
   dependencies: ['@cascivo/react'],
-  registryDependencies: ['layout/page-header', 'layout/stack'],
+  registryDependencies: ['layout/page-header', 'layout/flex'],
   tags: ['block', 'users', 'table', 'page'],
   intent: {
     whenToUse: [

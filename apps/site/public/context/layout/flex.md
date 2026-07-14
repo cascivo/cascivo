@@ -1,4 +1,4 @@
-# Stack
+# Flex
 
 **Category:** layout  
 **Description:** Flex layout primitive for vertical or horizontal stacking with gap control.
@@ -12,19 +12,19 @@
 
 - Two-dimensional layouts — use Grid
 - Responsive auto-wrapping card collections — use AutoGrid
-- A visual card-pile / overlapping avatars — that is the DIFFERENT `Stack` in @cascivo/react (an `offset` prop), not this flex layout primitive.
+- A visual card-pile / overlapping avatars — that is `Stack` in @cascivo/react (an `offset` prop), a different component.
 
 ## Anti-patterns
 
-### The published `Stack` export is a card-pile that overlaps children; this gap-based flex Stack is copy-paste-only despite sharing the name.
+### The published `Stack` export is a card-pile that overlaps children by an offset — it does not do gap-based layout. Flex is the flex container.
 
 **Bad:** `Expecting import { Stack } from '@cascivo/react' to gap items`  
-**Good:** `Copy this layout Stack in with `npx cascivo add stack`, then import it from your local layouts`  
-**Why:** The published `Stack` export is a card-pile that overlaps children; this gap-based flex Stack is copy-paste-only despite sharing the name.
+**Good:** `Use Flex for gap-based layout (import { Flex } from "@cascivo/react", or `npx cascivo add flex`)`  
+**Why:** The published `Stack` export is a card-pile that overlaps children by an offset — it does not do gap-based layout. Flex is the flex container.
 
 ## Related components
 
-- **Stack (card-pile)** (alternative): The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component that shares this name. Pick by behaviour: gap layout here, visual overlap there.
+- **Stack** (alternative): The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component for visual overlap, not gap-based layout.
 - **Grid** (alternative): Use for two-dimensional row-and-column layouts
 - **Columns** (alternative): Use for equal-width multi-column content
 
@@ -53,10 +53,10 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 Default vertical stack
 
 ```jsx
-<Stack gap={4}>
+<Flex gap={4}>
   <div>A</div>
   <div>B</div>
-</Stack>
+</Flex>
 ```
 
 ### Horizontal
@@ -64,10 +64,10 @@ Default vertical stack
 Row layout
 
 ```jsx
-<Stack direction="horizontal" gap={2}>
+<Flex direction="horizontal" gap={2}>
   <div>A</div>
   <div>B</div>
-</Stack>
+</Flex>
 ```
 
 ## AI context prompt
@@ -75,7 +75,7 @@ Row layout
 Copy this into an LLM context bar before editing this component:
 
 ```text
-I am modifying the cascivo Stack component (layout). Flex layout primitive for vertical or horizontal stacking with gap control.
+I am modifying the cascivo Flex component (layout). Flex layout primitive for vertical or horizontal stacking with gap control.
 
 Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
@@ -84,7 +84,7 @@ Architecture constraints — follow exactly:
 - Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
 - CSS logical properties only (RTL-safe).
 
-Stack is strictly bound to these tokens — use only these, do not invent token names:
+Flex is strictly bound to these tokens — use only these, do not invent token names:
   --cascivo-space-*
 
 Accessibility: role "generic", WCAG 2.1-AA. Keep it AA.

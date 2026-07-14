@@ -206,7 +206,7 @@ function headFor(path: string): { head: RouteHead; index: boolean } {
   if (known) return { head: known, index: true }
 
   // Component slugs can carry a category prefix (`chart/area-chart`,
-  // `layout/stack`), so match the full remainder, not just one path segment.
+  // `layout/flex`), so match the full remainder, not just one path segment.
   const componentMatch = rel.match(/^\/components\/(.+)$/)
   if (componentMatch) {
     const entry = getComponent(decodeURIComponent(componentMatch[1] ?? ''))

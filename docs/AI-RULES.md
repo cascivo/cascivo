@@ -55,6 +55,21 @@ gentle **warning**, not an error — it never blocks a build on a fast-prototypi
 Genuinely invented props (`sx`, `elevation`, …) remain errors; use rung 4 only when you
 mean it.
 
+## Layout primitives — structure with these before writing CSS
+
+Page structure (dashboard shells, toolbars, card grids, multi-column sections) has
+first-class primitives, all exported from `@cascivo/react` — reach for them before
+hand-writing grid/flex CSS or inline `style` layout:
+
+- **`Flex`** — the gap-based flex container (`direction`, `gap`, `align`, `justify`, `wrap`).
+- **`Grid`** / **`GridItem`** — CSS grid with responsive object props:
+  `<Grid cols={{ base: 1, md: 2, lg: 3 }} gap={4}>`, `<GridItem span={{ base: 1, lg: 2 }}>`.
+- **`AutoGrid`** — responsive card grid that fills columns by available width, no media queries.
+- **`Columns`**, **`Center`**, **`Spacer`** — equal columns, centered max-width column, fixed gap.
+
+The published `Stack` is a visual card-pile (overlaps children by an `offset`) — for
+gap-based layout use `Flex`, not `Stack`.
+
 ## Coming from utility-first (Tailwind)?
 
 cascivo has no utility classes. You express the same intent with plain CSS properties

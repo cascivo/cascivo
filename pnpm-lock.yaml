@@ -1356,6 +1356,9 @@ importers:
       '@cascivo/components':
         specifier: workspace:*
         version: link:../components
+      '@cascivo/layouts':
+        specifier: workspace:*
+        version: link:../layouts
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 6.9.1

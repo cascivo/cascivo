@@ -56,15 +56,15 @@ export const meta: ComponentMeta = {
       'Notification stack visualisations',
     ],
     whenNotToUse: [
-      'Gap-based vertical/horizontal layout — that is a DIFFERENT component, the flex `layout/stack` (also exported as `Stack`). This `Stack` only overlaps children with an offset.',
+      'Gap-based vertical/horizontal layout — that is a DIFFERENT component, `Flex` (`layout/flex`). This `Stack` only overlaps children with an offset.',
       'Independent positioned elements — use CSS position directly',
     ],
     related: [
       {
-        name: 'layout/stack',
+        name: 'layout/flex',
         relationship: 'alternative',
         reason:
-          'The flex layout primitive for gap-based vertical/horizontal stacking. It shares the `Stack` export name but is copy-paste-only (`npx cascivo add stack`) — not this card-pile component.',
+          'The flex layout primitive `Flex`, for gap-based vertical/horizontal stacking — a different component from this card-pile Stack.',
       },
       {
         name: 'Avatar',
@@ -80,8 +80,8 @@ export const meta: ComponentMeta = {
     antiPatterns: [
       {
         bad: "import { Stack } from '@cascivo/react' to space items vertically",
-        good: 'For flex layout use layout/stack (npx cascivo add stack); use this Stack only for a visual card-pile',
-        why: 'The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. The two components share a name; pick by behaviour, not by the name.',
+        good: 'For flex layout use Flex (import { Flex } from "@cascivo/react"); use this Stack only for a visual card-pile',
+        why: 'The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. Reach for `Flex` when you want gap-based flex layout.',
       },
     ],
     a11yRationale:

@@ -2316,6 +2316,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "layout-flex",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "layout-flex/flex.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-flex/flex.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["layout"],
+      "meta": {
+        "cascivo": {
+          "type": "layout",
+          "version": "0.6.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "layout-grid",
       "type": "registry:block",
       "files": [
@@ -2473,30 +2497,6 @@
         }
       ],
       "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
-      "dependencies": ["@cascivo/core"],
-      "categories": ["layout"],
-      "meta": {
-        "cascivo": {
-          "type": "layout",
-          "version": "0.6.0"
-        }
-      }
-    },
-    {
-      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-      "name": "layout-stack",
-      "type": "registry:block",
-      "files": [
-        {
-          "path": "layout-stack/stack.tsx",
-          "type": "registry:block"
-        },
-        {
-          "path": "layout-stack/stack.module.css",
-          "type": "registry:block"
-        }
-      ],
-      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
       "dependencies": ["@cascivo/core"],
       "categories": ["layout"],
       "meta": {

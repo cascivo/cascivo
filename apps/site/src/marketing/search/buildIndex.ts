@@ -16,10 +16,10 @@ interface RegEntry {
 
 /**
  * Naming aliases → registry slug: queries for names other libraries use surface
- * the cascivo equivalent (e.g. "flex"/"box" → Stack). Keyed by registry slug.
+ * the cascivo equivalent (e.g. "flex"/"box" → Flex). Keyed by registry slug.
  */
 const ALIASES: Record<string, string> = {
-  'layout/stack': 'flex hstack vstack row column inline cluster',
+  'layout/flex': 'flex hstack vstack row column inline cluster',
   'layout/columns': 'flex grid columns',
   'layout/auto-grid': 'grid responsive autogrid masonry',
   'layout/grid': 'grid flex',

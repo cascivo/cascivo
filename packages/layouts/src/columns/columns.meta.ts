@@ -35,7 +35,7 @@ export const meta: ComponentMeta = {
     ],
     whenNotToUse: [
       'Card grids that auto-fit to width — use AutoGrid',
-      'Single-direction stacking — use Stack',
+      'Single-direction stacking — use Flex',
     ],
     antiPatterns: [],
     related: [

@@ -27,7 +27,7 @@ export const meta: ComponentMeta = {
       'Constraining page or section content to a readable measure',
     ],
     whenNotToUse: [
-      'Stacking children with consistent gaps — use Stack',
+      'Stacking children with consistent gaps — use Flex',
       'Multi-column or grid arrangements — use Columns or Grid',
     ],
     antiPatterns: [],
@@ -38,9 +38,9 @@ export const meta: ComponentMeta = {
         reason: 'Sections use a centered inner width built on the same idea',
       },
       {
-        name: 'Stack',
+        name: 'Flex',
         relationship: 'pairs-with',
-        reason: 'Stack the centered content vertically inside it',
+        reason: 'Stack the centered content vertically inside it with Flex',
       },
     ],
     a11yRationale:

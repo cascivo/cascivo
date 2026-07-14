@@ -10,12 +10,12 @@
 
 ## When NOT to use
 
-- Spacing a series of siblings — use Stack with a gap instead
+- Spacing a series of siblings — use Flex with a gap instead
 - Arbitrary one-off spacing — prefer token-based gap props
 
 ## Related components
 
-- **Stack** (alternative): Use gap on Stack to space multiple siblings consistently
+- **Flex** (alternative): Use gap on Flex to space multiple siblings consistently
 
 ## Accessibility rationale
 

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "layout-flex",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "layout-flex/flex.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './flex.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface FlexProps extends HTMLAttributes<HTMLDivElement> {\n  direction?: 'vertical' | 'horizontal'\n  gap?: SpaceStep\n  align?: 'start' | 'center' | 'end' | 'stretch'\n  justify?: 'start' | 'center' | 'end' | 'between'\n  wrap?: boolean\n}\n\nexport function Flex({\n  direction = 'vertical',\n  gap = 4,\n  align,\n  justify,\n  wrap = false,\n  className,\n  style,\n  ...props\n}: FlexProps) {\n  return (\n    <div\n      className={cn(styles['flex'], className)}\n      data-direction={direction}\n      data-wrap={wrap ? '' : undefined}\n      style={{\n        ['--_flex-gap' as string]: `var(--cascivo-space-${gap})`,\n        ...(align\n          ? { alignItems: align === 'start' || align === 'end' ? `flex-${align}` : align }\n          : {}),\n        ...(justify\n          ? {\n              justifyContent:\n                justify === 'between'\n                  ? 'space-between'\n                  : justify === 'start' || justify === 'end'\n                    ? `flex-${justify}`\n                    : justify,\n            }\n          : {}),\n        ...style,\n      }}\n      {...props}\n    />\n  )\n}\n"
+    },
+    {
+      "path": "layout-flex/flex.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .flex {\n    display: flex;\n    gap: var(--_flex-gap, var(--cascivo-space-4));\n\n    &[data-direction='vertical'] {\n      flex-direction: column;\n    }\n    &[data-direction='horizontal'] {\n      flex-direction: row;\n    }\n    &[data-wrap] {\n      flex-wrap: wrap;\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+  "dependencies": ["@cascivo/core"],
+  "categories": ["layout"],
+  "meta": {
+    "cascivo": {
+      "type": "layout",
+      "version": "0.6.0"
+    }
+  }
+}

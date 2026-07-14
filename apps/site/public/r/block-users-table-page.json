@@ -47,7 +47,7 @@
       }
     ],
     "dependencies": ["@cascivo/react"],
-    "registryDependencies": ["layout/page-header", "layout/stack"],
+    "registryDependencies": ["layout/page-header", "layout/flex"],
     "tags": ["block", "users", "table", "page"],
     "intent": {
       "whenToUse": [

@@ -1,7 +1,7 @@
 'use client'
 import { Badge, Button, type Column, DataTable } from '@cascivo/react'
 import { PageHeader } from '../../page-header/page-header'
-import { Stack } from '../../stack/stack'
+import { Flex } from '../../flex/flex'
 
 interface User {
   id: string
@@ -41,7 +41,7 @@ export function UsersTablePage({ users = demoUsers, onInvite }: UsersTablePagePr
   ]
 
   return (
-    <Stack gap={6}>
+    <Flex gap={6}>
       <PageHeader
         title="Users"
         description="Manage who has access to this workspace."
@@ -56,6 +56,6 @@ export function UsersTablePage({ users = demoUsers, onInvite }: UsersTablePagePr
           pagination={{ pageSize: 10 }}
         />
       </div>
-    </Stack>
+    </Flex>
   )
 }

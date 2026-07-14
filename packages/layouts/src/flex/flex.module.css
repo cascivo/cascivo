@@ -1,7 +1,7 @@
 @layer cascivo.component {
-  .stack {
+  .flex {
     display: flex;
-    gap: var(--_stack-gap, var(--cascivo-space-4));
+    gap: var(--_flex-gap, var(--cascivo-space-4));
 
     &[data-direction='vertical'] {
       flex-direction: column;

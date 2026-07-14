@@ -149,6 +149,7 @@
             "Field",
             "FileUploader",
             "Filter",
+            "Flex",
             "Flow",
             "FlowBackground",
             "FlowCanvas",
@@ -246,7 +247,6 @@
             "Sparkline",
             "Spinner",
             "SplitView",
-            "Stack",
             "Stack",
             "Stat",
             "StatsBand",
@@ -4743,6 +4743,40 @@
           "if": {
             "properties": {
               "component": {
+                "const": "Flex"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "direction": {
+                    "type": "string",
+                    "enum": ["vertical", "horizontal"]
+                  },
+                  "align": {
+                    "type": "string",
+                    "enum": ["start", "center", "end", "stretch"]
+                  },
+                  "justify": {
+                    "type": "string",
+                    "enum": ["start", "center", "end", "between"]
+                  },
+                  "wrap": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Grid"
               }
             },
@@ -4921,40 +4955,6 @@
                   }
                 },
                 "required": ["start", "end"]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "component": {
-                "const": "Stack"
-              }
-            },
-            "required": ["component"]
-          },
-          "then": {
-            "properties": {
-              "props": {
-                "type": "object",
-                "properties": {
-                  "direction": {
-                    "type": "string",
-                    "enum": ["vertical", "horizontal"]
-                  },
-                  "align": {
-                    "type": "string",
-                    "enum": ["start", "center", "end", "stretch"]
-                  },
-                  "justify": {
-                    "type": "string",
-                    "enum": ["start", "center", "end", "between"]
-                  },
-                  "wrap": {
-                    "type": "boolean"
-                  }
-                }
               }
             }
           }
