@@ -1,5 +1,13 @@
 # cascivo
 
+## 0.3.6
+
+### Patch Changes
+
+- 810b8ba: Minor improvements
+- Updated dependencies [810b8ba]
+  - @cascivo/registry@0.1.11
+
 ## 0.3.5
 
 ### Patch Changes

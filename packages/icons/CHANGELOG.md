@@ -1,5 +1,11 @@
 # @cascivo/icons
 
+## 0.2.8
+
+### Patch Changes
+
+- 810b8ba: Minor improvements
+
 ## 0.2.7
 
 ### Patch Changes

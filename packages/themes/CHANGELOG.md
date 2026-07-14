@@ -1,5 +1,11 @@
 # @cascivo/themes
 
+## 0.3.1
+
+### Patch Changes
+
+- 810b8ba: Minor improvements
+
 ## 0.3.0
 
 ### Minor Changes

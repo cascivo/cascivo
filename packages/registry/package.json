@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/registry",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "private": false,
   "description": "Registry schema v2 types, validation, and static build for the cascivo ecosystem",
   "keywords": [
