@@ -1,5 +1,14 @@
 # @cascivo/editor
 
+## 0.2.12
+
+### Patch Changes
+
+- 810b8ba: Minor improvements
+- Updated dependencies [810b8ba]
+  - @cascivo/core@0.3.1
+  - @cascivo/i18n@0.2.5
+
 ## 0.2.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @cascivo/tokens
 
+## 0.4.1
+
+### Patch Changes
+
+- 810b8ba: Minor improvements
+
 ## 0.4.0
 
 ### Minor Changes
