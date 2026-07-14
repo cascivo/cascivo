@@ -31,6 +31,10 @@ ECharts leads on **breadth (3D/geo/network/streaming)**; Chart.js leads on **tin
 need geo/3D/network/streaming breadth and can afford ~1 MB. Pick **Chart.js** for a quick, tiny,
 canvas chart with minimal interaction.
 
+If you adopt Chart.js or ECharts anyway, tame the global CSS they ship so it can't beat your
+cascivo layers — import it into a low-priority `vendor` layer per
+[THIRD-PARTY-CSS.md](./THIRD-PARTY-CSS.md).
+
 ## Recipe gallery
 
 Every recipe below uses deterministic data and the public `@cascivo/charts` API. Each maps to a v53

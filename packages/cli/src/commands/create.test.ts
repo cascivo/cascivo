@@ -56,6 +56,14 @@ describe('buildScaffold', () => {
     expect(map.get('src/App.tsx')).toContain("import '@cascivo/themes/dark.css'")
   })
 
+  it('declares the canonical layer order with a vendor slot for third-party CSS', () => {
+    const html = map.get('index.html')!
+    expect(html).toContain(
+      '@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;',
+    )
+    expect(html).toContain('layer(vendor)')
+  })
+
   it('builds a typed section union and signal-driven switching', () => {
     const app = map.get('src/App.tsx')!
     expect(app).toContain("type Section = 'dashboard' | 'reports' | 'settings'")

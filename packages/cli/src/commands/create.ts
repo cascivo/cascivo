@@ -161,7 +161,9 @@ function indexHtml(opts: ScaffoldOptions): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${opts.name}</title>
     <style>
-      @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;
+      @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;
+      /* Third-party CSS goes in the low-priority vendor layer so it can't beat cascivo:
+         @import url('some-lib/styles.css') layer(vendor); — see docs/THIRD-PARTY-CSS.md */
       @layer cascivo.reset {
         *,
         *::before,
