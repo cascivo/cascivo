@@ -8,11 +8,21 @@ import type { RawStringFinding } from '../audit-ai/raw-strings.js'
 import { findRawStringViolations } from '../audit-ai/raw-strings.js'
 import type { RequiredPropFinding } from '../audit-ai/required-props.js'
 import { findRequiredPropViolations } from '../audit-ai/required-props.js'
+import type { UnlayeredFinding } from '../audit-ai/unlayered.js'
+import { findUnlayeredViolations } from '../audit-ai/unlayered.js'
+import type { VendorCssFinding } from '../audit-ai/vendor-css.js'
+import { findVendorCssImports } from '../audit-ai/vendor-css.js'
 import type { CascadeConfig } from '../utils/config.js'
 import type { Contract } from '../utils/contract.js'
 import { loadContract } from '../utils/contract.js'
 
-export type Finding = LiteralFinding | PropFinding | RequiredPropFinding | RawStringFinding
+export type Finding =
+  | LiteralFinding
+  | PropFinding
+  | RequiredPropFinding
+  | RawStringFinding
+  | UnlayeredFinding
+  | VendorCssFinding
 
 const SKIP_DIRS = new Set(['node_modules', 'dist', '.git', 'build', '.next', 'coverage'])
 
@@ -39,11 +49,13 @@ function findingsFor(file: string, source: string, contract: Contract): Finding[
   const findings: Finding[] = []
   if (ext === '.css') {
     findings.push(...findCssLiteralViolations(source, file, contract))
+    findings.push(...findUnlayeredViolations(source, file))
   } else if (ext === '.tsx' || ext === '.ts') {
     findings.push(...findCssLiteralViolations(source, file, contract))
     findings.push(...findJsxPropViolations(source, file, contract))
     findings.push(...findRequiredPropViolations(source, file, contract))
     findings.push(...findRawStringViolations(source, file, contract))
+    findings.push(...findVendorCssImports(source, file))
   }
   return findings
 }
@@ -61,6 +73,10 @@ function detail(f: Finding): string {
       return `<${f.component}> requires "${f.prop}"`
     case 'raw-string':
       return `"${f.text}" → use labels prop / i18n`
+    case 'unlayered-css':
+      return `${f.selector} { … } → wrap in @layer`
+    case 'vendor-css-import':
+      return `import '${f.specifier}' → @import url(…) layer(vendor)`
   }
 }
 

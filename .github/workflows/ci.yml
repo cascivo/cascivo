@@ -56,6 +56,9 @@ jobs:
       - name: Layer-order guard (one canonical @layer order, no drift)
         run: pnpm run layers:check
 
+      - name: Unlayered-CSS guard (shipped CSS lives inside @layer)
+        run: pnpm run unlayered:check
+
       - name: Primitive-adoption guard (components consume shared headless primitives)
         run: pnpm run primitives:check
 
