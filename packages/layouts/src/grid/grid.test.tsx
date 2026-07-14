@@ -23,11 +23,40 @@ describe('Grid', () => {
       'var(--cascivo-space-6)',
     )
   })
+
+  it('scalar cols does not enter responsive mode', () => {
+    const { container } = render(<Grid cols={3} />)
+    const el = container.firstChild as HTMLElement
+    expect(el.hasAttribute('data-responsive')).toBe(false)
+    expect(el.style.getPropertyValue('--_grid-cols-md')).toBe('')
+  })
+
+  it('responsive cols object sets per-tier vars and marks the element responsive', () => {
+    const { container } = render(<Grid cols={{ base: 1, md: 2, lg: 3 }} />)
+    const el = container.firstChild as HTMLElement
+    expect(el.hasAttribute('data-responsive')).toBe(true)
+    expect(el.style.getPropertyValue('--_grid-cols')).toBe('1')
+    expect(el.style.getPropertyValue('--_grid-cols-md')).toBe('2')
+    expect(el.style.getPropertyValue('--_grid-cols-lg')).toBe('3')
+    // Undeclared tiers are omitted so the CSS fallback chain applies.
+    expect(el.style.getPropertyValue('--_grid-cols-sm')).toBe('')
+    expect(el.style.getPropertyValue('--_grid-cols-xl')).toBe('')
+  })
 })
 
 describe('GridItem', () => {
   it('sets span CSS var', () => {
     const { container } = render(<GridItem span={4} />)
-    expect((container.firstChild as HTMLElement).style.getPropertyValue('--_span')).toBe('4')
+    const el = container.firstChild as HTMLElement
+    expect(el.style.getPropertyValue('--_span')).toBe('4')
+    expect(el.hasAttribute('data-responsive')).toBe(false)
+  })
+
+  it('responsive span object sets per-tier vars', () => {
+    const { container } = render(<GridItem span={{ base: 1, lg: 2 }} />)
+    const el = container.firstChild as HTMLElement
+    expect(el.hasAttribute('data-responsive')).toBe(true)
+    expect(el.style.getPropertyValue('--_span')).toBe('1')
+    expect(el.style.getPropertyValue('--_span-lg')).toBe('2')
   })
 })

@@ -14348,11 +14348,11 @@
       "props": [
         {
           "name": "cols",
-          "type": "number",
+          "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
           "required": false,
-          "description": "Number of grid columns",
+          "description": "Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns",
           "schema": {
-            "kind": "number"
+            "kind": "other"
           }
         },
         {
@@ -14366,11 +14366,11 @@
         },
         {
           "name": "span",
-          "type": "number",
+          "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
           "required": false,
-          "description": "GridItem: column span count",
+          "description": "GridItem: column span — a number, or a per-breakpoint object",
           "schema": {
-            "kind": "number"
+            "kind": "other"
           }
         }
       ],

@@ -24,11 +24,11 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 ## Props
 
-| Name   | Type                          | Required | Default | Description                 |
-| ------ | ----------------------------- | -------- | ------- | --------------------------- |
-| `cols` | `number`                      | No       | —       | Number of grid columns      |
-| `gap`  | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | —       | Spacing token step          |
-| `span` | `number`                      | No       | —       | GridItem: column span count |
+| Name   | Type                                                                              | Required | Default | Description                                                                                   |
+| ------ | --------------------------------------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------- |
+| `cols` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | No       | —       | Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns |
+| `gap`  | `1\|2\|3\|4\|5\|6\|8\|10\|12`                                                     | No       | —       | Spacing token step                                                                            |
+| `span` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | No       | —       | GridItem: column span — a number, or a per-breakpoint object                                  |
 
 ## Tokens
 
@@ -44,6 +44,16 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 <Grid cols={3} gap={4}>
   <GridItem span={1}>A</GridItem>
   <GridItem span={2}>B</GridItem>
+</Grid>
+```
+
+### Responsive dashboard grid
+
+1 column on mobile, 2 on tablet, 3 on desktop; the first item spans 2 on desktop
+
+```jsx
+<Grid cols={{ base: 1, md: 2, lg: 3 }} gap={4}>
+  <GridItem span={{ base: 1, lg: 2 }}>Wide</GridItem>
 </Grid>
 ```
 

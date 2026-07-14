@@ -13995,9 +13995,9 @@
         "props": [
           {
             "name": "cols",
-            "type": "number",
+            "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
-            "description": "Number of grid columns"
+            "description": "Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns"
           },
           {
             "name": "gap",
@@ -14007,9 +14007,9 @@
           },
           {
             "name": "span",
-            "type": "number",
+            "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
-            "description": "GridItem: column span count"
+            "description": "GridItem: column span — a number, or a per-breakpoint object"
           }
         ],
         "tokens": ["--cascivo-space-*"],

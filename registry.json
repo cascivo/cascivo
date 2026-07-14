@@ -18217,8 +18217,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "fileHashes": {
-        "grid.tsx": "sha256-d7d7128003980cc4a21e8ef0ae7f50fb926ae99313e9e79058613547e250656e",
-        "grid.module.css": "sha256-320fba77239841f69b371bc90dacc583e41e7b5861d2c44b1a2ffd780b599d23"
+        "grid.tsx": "sha256-967750673cb080cf2719b09f731831921f128e551f69f0ebb98cfde022ee3446",
+        "grid.module.css": "sha256-122580493f33e0662aeb256580de9f0d138485ef9bab9aa74e13552386a7501c"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -18235,9 +18235,9 @@
         "props": [
           {
             "name": "cols",
-            "type": "number",
+            "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
-            "description": "Number of grid columns"
+            "description": "Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns"
           },
           {
             "name": "gap",
@@ -18247,9 +18247,9 @@
           },
           {
             "name": "span",
-            "type": "number",
+            "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
-            "description": "GridItem: column span count"
+            "description": "GridItem: column span — a number, or a per-breakpoint object"
           }
         ],
         "tokens": ["--cascivo-space-*"],
@@ -18263,6 +18263,11 @@
             "title": "Basic grid",
             "code": "<Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>",
             "description": "3-column grid with spanning item"
+          },
+          {
+            "title": "Responsive dashboard grid",
+            "code": "<Grid cols={{ base: 1, md: 2, lg: 3 }} gap={4}><GridItem span={{ base: 1, lg: 2 }}>Wide</GridItem></Grid>",
+            "description": "1 column on mobile, 2 on tablet, 3 on desktop; the first item spans 2 on desktop"
           }
         ],
         "dependencies": ["@cascivo/core"],

@@ -2693,7 +2693,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'cols',
       required: false,
-      primitives: ['number'],
     },
     {
       name: 'gap',
@@ -2702,7 +2701,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'span',
       required: false,
-      primitives: ['number'],
     },
   ],
   Header: [

@@ -4752,14 +4752,7 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {
-                  "cols": {
-                    "type": "number"
-                  },
-                  "span": {
-                    "type": "number"
-                  }
-                }
+                "properties": {}
               }
             }
           }

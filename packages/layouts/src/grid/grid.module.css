@@ -5,12 +5,60 @@
     gap: var(--_grid-gap, var(--cascivo-space-4));
     container-type: inline-size;
 
-    @container (max-width: 40rem) {
-      grid-template-columns: 1fr;
+    /* Scalar mode — unchanged back-compat collapse to a single column on a narrow slot. */
+    &:not([data-responsive]) {
+      @container (max-width: 40rem) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Responsive mode — each tier falls back to the previous declared tier. */
+    &[data-responsive] {
+      @container (min-width: 30rem) {
+        grid-template-columns: repeat(var(--_grid-cols-sm, var(--_grid-cols, 12)), minmax(0, 1fr));
+      }
+      @container (min-width: 40rem) {
+        grid-template-columns: repeat(
+          var(--_grid-cols-md, var(--_grid-cols-sm, var(--_grid-cols, 12))),
+          minmax(0, 1fr)
+        );
+      }
+      @container (min-width: 64rem) {
+        grid-template-columns: repeat(
+          var(--_grid-cols-lg, var(--_grid-cols-md, var(--_grid-cols-sm, var(--_grid-cols, 12)))),
+          minmax(0, 1fr)
+        );
+      }
+      @container (min-width: 80rem) {
+        grid-template-columns: repeat(
+          var(
+            --_grid-cols-xl,
+            var(--_grid-cols-lg, var(--_grid-cols-md, var(--_grid-cols-sm, var(--_grid-cols, 12))))
+          ),
+          minmax(0, 1fr)
+        );
+      }
     }
   }
 
   .grid-item {
     grid-column: span var(--_span, 1);
+
+    /* Responsive span — same per-tier fallback chain against the grid's inline size. */
+    &[data-responsive] {
+      @container (min-width: 30rem) {
+        grid-column: span var(--_span-sm, var(--_span, 1));
+      }
+      @container (min-width: 40rem) {
+        grid-column: span var(--_span-md, var(--_span-sm, var(--_span, 1)));
+      }
+      @container (min-width: 64rem) {
+        grid-column: span var(--_span-lg, var(--_span-md, var(--_span-sm, var(--_span, 1))));
+      }
+      @container (min-width: 80rem) {
+        grid-column: span
+          var(--_span-xl, var(--_span-lg, var(--_span-md, var(--_span-sm, var(--_span, 1)))));
+      }
+    }
   }
 }
