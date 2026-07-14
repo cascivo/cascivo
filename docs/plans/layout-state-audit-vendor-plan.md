@@ -1,6 +1,11 @@
 # Improvements plan: the "AI dashboard build" experience report (layout, render state, audit loop, vendor CSS)
 
-**Status: proposed — ready for implementation.**
+**Status: implemented.** All five phases shipped on branch
+`claude/cascivo-layout-state-spec-gv6c4t`; full `pnpm ready` gate is green. Open questions
+were resolved to their recommended answers: layouts `Stack` renamed to `Flex` (non-breaking,
+open q1); the seven-primitive export set `Grid/GridItem/Flex/Columns/Center/Spacer/AutoGrid`
+(q2); the dead `view.layout` field removed (q3); the vite plugin built (q4); and the
+`cascivo-audit: allow <rule>` directive spelling adopted (q5).
 
 **Source:** an experience report from an AI developer agent that built a Vercel-style dashboard
 (shell layout with sidebar and sticky header, multi-column card grids, live search filter, tabs,
