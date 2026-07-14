@@ -6,6 +6,7 @@ import { buildContract } from '../utils/contract.js'
 import { findCssLiteralViolations } from './css-literals.js'
 import { findJsxPropViolations } from './jsx-props.js'
 import { findRequiredPropViolations } from './required-props.js'
+import { findUnlayeredViolations } from './unlayered.js'
 import { fixCssLiterals } from '../commands/audit.js'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -73,6 +74,17 @@ describe('integration: dirty fixtures produce findings', () => {
     expect(findings[0]).toMatchObject({ rule: 'hardcoded-value', property: 'color' })
   })
 
+  it('unlayered-css: flags the unlayered .hero rule in Hero.css', () => {
+    const findings = findUnlayeredViolations(dirtyCSS, 'Hero.css')
+    expect(findings).toHaveLength(1)
+    expect(findings[0]).toMatchObject({
+      rule: 'unlayered-css',
+      level: 'warn',
+      line: 1,
+      selector: '.hero',
+    })
+  })
+
   it('jsx-props: flags unknown prop "frobnicate" on <Button>', () => {
     const findings = findJsxPropViolations(dirtyTSX, 'Hero.tsx', contract)
     expect(findings.length).toBeGreaterThan(0)
@@ -97,6 +109,10 @@ describe('integration: clean fixtures produce zero findings (false-positive guar
 
   it('required-props: GoodComponent.tsx has no findings', () => {
     expect(findRequiredPropViolations(cleanTSX, 'GoodComponent.tsx', contract)).toEqual([])
+  })
+
+  it('unlayered-css: GoodComponent.css (wrapped in @layer) has no findings', () => {
+    expect(findUnlayeredViolations(cleanCSS, 'GoodComponent.css')).toEqual([])
   })
 })
 

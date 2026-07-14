@@ -22,6 +22,7 @@ describe('buildScaffold', () => {
       'cascivo.config.ts',
       '.gitignore',
       'README.md',
+      'AGENTS.md',
       'src/main.tsx',
       'src/vite-env.d.ts',
       'src/App.tsx',
@@ -54,6 +55,22 @@ describe('buildScaffold', () => {
   it('wires the chosen theme into html and the entry CSS', () => {
     expect(map.get('index.html')).toContain('data-theme="dark"')
     expect(map.get('src/App.tsx')).toContain("import '@cascivo/themes/dark.css'")
+  })
+
+  it('declares the canonical layer order with a vendor slot for third-party CSS', () => {
+    const html = map.get('index.html')!
+    expect(html).toContain(
+      '@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;',
+    )
+    expect(html).toContain('layer(vendor)')
+  })
+
+  it('scaffolds an AGENTS.md with the CSS layer contract', () => {
+    const agents = map.get('AGENTS.md')!
+    expect(agents).toContain('CSS layer contract')
+    expect(agents).toContain('cascivo.override')
+    expect(agents).toContain('layer(vendor)')
+    expect(agents).toContain('https://cascivo.com/llms.txt')
   })
 
   it('builds a typed section union and signal-driven switching', () => {

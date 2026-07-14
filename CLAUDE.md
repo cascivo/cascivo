@@ -477,6 +477,25 @@ time using the table above. Known-remaining raw-outside-click sites are tracked 
 allowlist; migrate them to `DismissableLayer` (only when they're not already on the native Popover
 path), don't add to it.
 
+#### Layer discipline — every declaration inside a layer, no invented names
+
+CSS `@layer` order beats selector specificity, so an unlayered or mis-named rule silently
+defeats the whole system. Non-negotiable:
+
+- **Component/layout CSS** goes in `@layer cascivo.component { … }`. **Block CSS** goes in
+  `@layer cascivo.blocks.<name> { … }` (a sublayer of the canonical `cascivo.blocks` slot).
+- **Never leave a rule unlayered.** Unlayered author CSS beats every cascivo layer regardless
+  of specificity. The only sanctioned exception is an accessibility-guarantee media query
+  (`@media (forced-colors: active)`, `(prefers-contrast: …)`, `(prefers-reduced-motion: …)`),
+  which is deliberately top-level so it wins over everything — `unlayered:check` exempts exactly
+  those.
+- **Never invent a layer name.** The canonical order is the single source of truth
+  (`packages/tokens/src/layers.css`): `cascivo.reset < base < tokens < component < theme < blocks
+< override`. For sub-elements (a badge in a card, a dot in a badge) use **native CSS nesting
+  inside one layer block**, never a deeper sublayer like `cascivo.card.status`.
+- Enforced by `pnpm layers:check` (canonical order + legal block names, depth ≤ 3) and
+  `pnpm unlayered:check` (no unlayered shipped rules).
+
 #### Checklist before committing a component
 
 1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
@@ -487,3 +506,4 @@ path), don't add to it.
 6. User-visible strings default from the `@cascivo/i18n` built-in catalog (`t(builtin.<component>.<key>)`); a `labels` prop overrides per-instance. Never hardcoded English fallbacks.
 7. Passes the mobile-overflow + touch-target sweep at 320/360/390/414; no off-scale breakpoint literals (`pnpm breakpoint:check`).
 8. Consumes shared `@cascivo/core` primitives for aria ids, dismissal, roving focus, and typeahead — no hand-rolled equivalents (`pnpm primitives:check`).
+9. All CSS is inside a canonical `@layer` (`cascivo.component`, or `cascivo.blocks.<name>` for blocks) with no invented layer names and sub-elements via native nesting (`pnpm layers:check`, `pnpm unlayered:check`).

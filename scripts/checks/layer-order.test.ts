@@ -10,13 +10,17 @@
  * This test extracts every `@layer a, b, c;` ORDER STATEMENT (the comma-list form,
  * not `@layer name { … }` blocks) from the shipped CSS, the example apps, the docs,
  * and the CLI scaffold, and asserts each is an ordered subsequence of the canonical
- * order. App-local layer names (cascivo.example, cascivo.blocks.*) are permitted to
- * be interleaved — only the relative order of the canonical layers is enforced.
+ * order. App-local layer names (e.g. cascivo.example) are not governed and may be
+ * interleaved freely — only the relative order of the canonical layers is enforced.
+ *
+ * It also asserts every shipped `@layer <name> { … }` BLOCK uses a canonical name or
+ * the `cascivo.blocks.<name>` pattern (depth ≤ 3) — so an undeclared layer name can
+ * never be appended above `cascivo.override` and defeat the consumer escape hatch.
  */
 
 import assert from 'node:assert/strict'
 import { readFileSync, readdirSync, statSync } from 'node:fs'
-import { join, extname, relative } from 'node:path'
+import { join, extname, relative, sep } from 'node:path'
 import { describe, it } from 'node:test'
 
 const REPO_ROOT = join(import.meta.dirname, '../..')
@@ -26,6 +30,10 @@ const CANONICAL_FILE = join(REPO_ROOT, 'packages/tokens/src/layers.css')
 // A @layer order statement: `@layer <names>;` with no block `{`. Requires the
 // trailing `;` so `@layer cascivo.component { … }` blocks are not matched.
 const LAYER_STATEMENT_RE = /@layer\s+([a-zA-Z0-9_.\-,\s]+?)\s*;/g
+
+// A @layer BLOCK prelude: a single layer name followed by `{` (no comma list).
+// Matches `@layer cascivo.component {` and `@layer cascivo.blocks.app-shell {`.
+const LAYER_BLOCK_RE = /@layer\s+([a-zA-Z0-9_.-]+)\s*\{/g
 
 function parseLayerNames(statementBody: string): string[] {
   return statementBody
@@ -82,6 +90,39 @@ interface Statement {
   raw: string
 }
 
+interface BlockName {
+  file: string
+  line: number
+  name: string
+}
+
+function scanBlockNames(file: string): BlockName[] {
+  const src = readFileSync(file, 'utf8')
+  const rel = relative(REPO_ROOT, file)
+  const blocks: BlockName[] = []
+  let match: RegExpExecArray | null
+  LAYER_BLOCK_RE.lastIndex = 0
+  while ((match = LAYER_BLOCK_RE.exec(src)) !== null) {
+    const name = (match[1] ?? '').trim()
+    const line = src.slice(0, match.index).split('\n').length
+    blocks.push({ file: rel, line, name })
+  }
+  return blocks
+}
+
+/**
+ * A shipped `@layer <name> { … }` block name is legal iff it is either exactly a
+ * canonical layer name, or a `cascivo.blocks.<block>` sublayer (depth 3, whose
+ * two-segment prefix `cascivo.blocks` is canonical). Anything else — a resurrected
+ * `cascivo.functions`, an invented `cascivo.layout.card.status`, or a foreign layer
+ * root — is a drift/verbosity violation the report warns about.
+ */
+function isLegalBlockName(name: string, canonical: string[]): boolean {
+  if (canonical.includes(name)) return true
+  const segments = name.split('.')
+  return segments.length === 3 && segments[0] === 'cascivo' && segments[1] === 'blocks'
+}
+
 function scanFile(file: string): Statement[] {
   const src = readFileSync(file, 'utf8')
   const rel = relative(REPO_ROOT, file)
@@ -117,6 +158,7 @@ describe('layer-order:check — one canonical @layer order, no drift', () => {
       'cascivo.tokens',
       'cascivo.component',
       'cascivo.theme',
+      'cascivo.blocks',
       'cascivo.override',
     ])
   })
@@ -161,6 +203,39 @@ describe('layer-order:check — one canonical @layer order, no drift', () => {
         )
         .join('\n')
       assert.fail(`@layer statements that contradict the canonical order:\n${msg}`)
+    }
+  })
+
+  // Shipped CSS (packages/*/src) may only open @layer BLOCKS whose name is
+  // canonical or `cascivo.blocks.<name>` — no invented layer names, no depth > 3.
+  // This mechanically enforces the "layer budget": undeclared names append above
+  // cascivo.override and silently defeat the consumer escape hatch.
+  const shippedBlocks: BlockName[] = collectFiles(
+    join(REPO_ROOT, 'packages'),
+    new Set(['.css']),
+    new Set(),
+  )
+    .filter((f) => f.includes(`${sep}src${sep}`))
+    .flatMap(scanBlockNames)
+
+  it('found the shipped @layer blocks', () => {
+    // 171 component + 12 theme + tokens + base + 8 blocks ≫ 50. Guard the scan.
+    assert.ok(
+      shippedBlocks.length >= 50,
+      `expected ≥50 @layer blocks, found ${shippedBlocks.length}`,
+    )
+  })
+
+  it('every shipped @layer block uses a canonical or cascivo.blocks.<name> name', () => {
+    const violations = shippedBlocks.filter((b) => !isLegalBlockName(b.name, canonical))
+    if (violations.length > 0) {
+      const msg = violations
+        .map((v) => `  ${v.file}:${v.line}\n    @layer ${v.name} { … }`)
+        .join('\n')
+      assert.fail(
+        `@layer block names that are not canonical or cascivo.blocks.<name>:\n${msg}\n` +
+          `  allowed: ${canonical.join(', ')} — or cascivo.blocks.<block-name>`,
+      )
     }
   })
 })

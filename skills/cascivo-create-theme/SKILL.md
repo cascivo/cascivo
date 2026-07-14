@@ -1,6 +1,6 @@
 ---
 name: cascivo:create-theme
-description: Create a custom cascivo theme from brand colors. Generates a @layer cascade.theme stylesheet overriding semantic tokens, then verifies WCAG AA contrast.
+description: Create a custom cascivo theme from brand colors. Generates a @layer cascivo.theme stylesheet overriding semantic tokens, then verifies WCAG AA contrast.
 ---
 
 # cascivo:create-theme
@@ -37,7 +37,7 @@ Create a CSS file (e.g. `src/themes/<name>.css`) with the structure:
 
 ```css
 /* Brand theme for cascivo */
-@layer cascade.theme {
+@layer cascivo.theme {
   [data-theme='<name>'] {
     --cascivo-color-accent: <primary-hex>;
     --cascivo-color-accent-hover: <primary-hex-darker>;
@@ -50,6 +50,11 @@ Create a CSS file (e.g. `src/themes/<name>.css`) with the structure:
 ```
 
 Derive hover/subtle variants by lightening/darkening the base colors by ~10%.
+
+> A theme sets semantic tokens for a `[data-theme]`. For a **one-off override that must
+> beat everything** (all themes and components, with no `data-theme` needed), use
+> `@layer cascivo.override { :root { … } }` instead — it is the highest cascivo layer.
+> Never write the overrides unlayered.
 
 ### 4. Verify WCAG AA contrast
 

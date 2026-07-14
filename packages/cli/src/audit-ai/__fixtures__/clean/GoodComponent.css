@@ -1,4 +1,6 @@
-.good {
-  color: var(--cascivo-color-accent);
-  padding: var(--cascivo-space-4);
+@layer cascivo.component {
+  .good {
+    color: var(--cascivo-color-accent);
+    padding: var(--cascivo-space-4);
+  }
 }

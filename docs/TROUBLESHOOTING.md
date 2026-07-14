@@ -68,6 +68,19 @@ component's padding. Wrap resets in a lowest-priority layer. Full recipe:
 
 ---
 
+## A third-party library's CSS is overriding my cascivo styles
+
+**Cause:** the library ships an unlayered global stylesheet, and unlayered author
+CSS beats every cascivo layer regardless of specificity.
+
+**Fix:** import the vendor CSS into a low-priority `vendor` layer declared before the
+cascivo layers — `@import url('lib/styles.css') layer(vendor);`. Native CSS, no build
+tooling. If you're importing the stylesheet from JavaScript
+(`import 'lib/styles.css'`), it can't be layered from there — move it into a CSS file
+first. Full recipe: [THIRD-PARTY-CSS.md](./THIRD-PARTY-CSS.md).
+
+---
+
 ## My `:root` token override doesn't apply until `data-theme` is set
 
 **Cause:** the specificity footgun. Themes ship a

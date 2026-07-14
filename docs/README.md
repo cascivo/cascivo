@@ -38,6 +38,7 @@ guides, references, cookbooks, and specs that ship with the source.
 | [UPGRADING.md](UPGRADING.md) | Upgrade guidance and `cascivo update` for owned component code. |
 | [RELEASING.md](RELEASING.md) | Release runbook — changesets, versioning, trusted publishing. |
 | [CSS-LAYERS-PITFALL.md](CSS-LAYERS-PITFALL.md) | The `@layer` ordering pitfall in example apps and how to avoid it. |
+| [THIRD-PARTY-CSS.md](THIRD-PARTY-CSS.md) | Tame a legacy library's global CSS with the native `@import … layer(vendor)` recipe. |
 
 ## Ecosystem
 
@@ -69,5 +70,6 @@ Task-focused, copy-adaptable recipes in [`cookbooks/`](cookbooks/):
 
 Machine-readable docs for AI agents: [`llms.txt`](https://cascivo.com/llms.txt),
 per-component [`llms/<name>.md`](https://docs.cascivo.com/llms/), and
-[`context.json`](https://cascivo.com/context.json). See the root
-[README](../README.md#ai--context-layer) for the full AI layer.
+[`context.json`](https://cascivo.com/context.json). Give your own agent the house
+rules with [AI-RULES.md](AI-RULES.md) (the CSS layer contract + a utility-first
+mapping). See the root [README](../README.md#ai--context-layer) for the full AI layer.

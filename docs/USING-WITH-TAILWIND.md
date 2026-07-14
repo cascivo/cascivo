@@ -11,6 +11,10 @@ token system.
 This is the page the dashboard-integration feedback asked for: a clear answer to
 "do I abandon Tailwind's tokens, override them, or keep both?"
 
+> If your team writes CSS via an AI agent, hand it [AI-RULES.md](./AI-RULES.md) — the
+> CSS layer contract plus a `p-4` → `padding: var(--cascivo-space-4)` mapping table for
+> reviewers institutionalized on utility classes.
+
 ---
 
 ## TL;DR
@@ -50,7 +54,8 @@ Two practical consequences:
 
 - **Unlayered author CSS still beats every layered rule** — yours and cascivo's
   and Tailwind's utilities-in-a-layer. That's normal CSS cascade; see
-  [`CSS-LAYERS-PITFALL.md`](./CSS-LAYERS-PITFALL.md).
+  [`CSS-LAYERS-PITFALL.md`](./CSS-LAYERS-PITFALL.md). The same technique tames any
+  other library's global CSS — [`THIRD-PARTY-CSS.md`](./THIRD-PARTY-CSS.md).
 - If a Tailwind utility and a cascivo component rule collide on the same element,
   add the utility you want to win as an **unlayered** class, or scope it — don't
   fight specificity.
