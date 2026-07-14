@@ -54,7 +54,12 @@ jobs:
       - name: Regenerate + commit baselines
         if: ${{ inputs.update }}
         run: |
-          pnpm --filter @cascivo/site run test:visual -- --update-snapshots
+          # Playwright writes the new/updated baselines but still exits non-zero
+          # (every created or changed snapshot is reported as a failure so a human
+          # reviews it), so tolerate that and commit whatever PNGs it wrote. `exec`
+          # passes --update-snapshots to Playwright as a flag rather than letting
+          # the npm-script `--` turn it into a positional test filter.
+          pnpm --filter @cascivo/site exec playwright test visual.spec.ts --update-snapshots || true
           if ! git diff --quiet apps/site/test/snapshots; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
