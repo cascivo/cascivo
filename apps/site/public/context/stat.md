@@ -32,13 +32,14 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ## Props
 
-| Name       | Type                       | Required | Default | Description                                                  |
-| ---------- | -------------------------- | -------- | ------- | ------------------------------------------------------------ |
-| `label`    | `string`                   | Yes      | —       | What the metric measures                                     |
-| `value`    | `string \| number`         | Yes      | —       | The metric value                                             |
-| `delta`    | `string`                   | No       | —       | Change indicator rendered next to the trend arrow            |
-| `trend`    | `'up' \| 'down' \| 'flat'` | No       | flat    | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
-| `helpText` | `string`                   | No       | —       | Fine print below the value (methodology, time range)         |
+| Name       | Type                       | Required | Default | Description                                                                                                |
+| ---------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `label`    | `string`                   | Yes      | —       | What the metric measures                                                                                   |
+| `value`    | `string \| number`         | Yes      | —       | The metric value                                                                                           |
+| `delta`    | `string`                   | No       | —       | Change indicator rendered next to the trend arrow                                                          |
+| `trend`    | `'up' \| 'down' \| 'flat'` | No       | flat    | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                               |
+| `helpText` | `string`                   | No       | —       | Fine print below the value (methodology, time range)                                                       |
+| `visual`   | `React.ReactNode`          | No       | —       | Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText |
 
 ## Tokens
 
@@ -66,6 +67,20 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ```jsx
 <Stat label="Axe violations" value={0} helpText="WCAG 2.1 AA, 4 app states" />
+```
+
+### With a trailing sparkline
+
+Sparkline is from @cascivo/charts
+
+```jsx
+<Stat
+  label="Requests / min"
+  value="1.2k"
+  delta="+4.3%"
+  trend="up"
+  visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />}
+/>
 ```
 
 ## Boundaries

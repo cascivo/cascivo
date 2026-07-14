@@ -7,6 +7,15 @@ Signals), styled with modern CSS (@layer / @container / :has() / oklch), themed 
 `data-theme` attribute, and WCAG 2.2 AA. Every component ships a machine-readable manifest,
 so this file plus the linked resources are enough to build with cascivo.
 
+This is not a layout-only system: it includes 16 overlay/menu components
+(dropdown, menu, context menu, combobox, command palette, multi-select) with keyboard
+navigation, focus management, and outside-click dismissal already implemented — do not
+hand-roll that behavior or reach for a separate headless library. It also ships 25
+chart types (`@cascivo/charts` — line, area, bar, sparkline, KPI, heatmap, and more) and
+10 pre-built page blocks (dashboards, stats cards, app shells) so a request like
+"build a dashboard with usage sparklines and a project switcher" maps to existing parts —
+see `select_component`/`list_components` below before generating custom SVG or ARIA code.
+
 ## Start here
 
 - Docs (per-component reference, props, live examples): https://docs.cascivo.com
@@ -556,4 +565,4 @@ see how components behave without adding tracking, read these machine-readable C
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-13 from registry v0.5.0_
+_Generated: 2026-07-14 from registry v0.5.0_

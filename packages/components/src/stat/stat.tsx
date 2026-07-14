@@ -1,14 +1,16 @@
 'use client'
 import { cn } from '@cascivo/core'
-import type { HTMLAttributes } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './stat.module.css'
 
-export interface StatProps extends HTMLAttributes<HTMLDivElement> {
+export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   label: string
   value: string | number
   delta?: string
   trend?: 'up' | 'down' | 'flat'
   helpText?: string
+  /** Trailing visual, e.g. a `Sparkline` from `@cascivo/charts`. Purely decorative — mark it `aria-hidden` yourself if it duplicates the value/delta already announced. */
+  visual?: ReactNode
 }
 
 export function Stat({
@@ -17,6 +19,7 @@ export function Stat({
   delta,
   trend = 'flat',
   helpText,
+  visual,
   className,
   ...props
 }: StatProps) {
@@ -33,6 +36,7 @@ export function Stat({
         </span>
       )}
       {helpText && <span className={styles['help']}>{helpText}</span>}
+      {visual && <span className={styles['visual']}>{visual}</span>}
     </div>
   )
 }

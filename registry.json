@@ -1,6 +1,6 @@
 {
   "version": "0.5.0",
-  "generatedAt": "2026-07-13",
+  "generatedAt": "2026-07-14",
   "components": [
     {
       "name": "accordion",
@@ -4047,7 +4047,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/context-menu.module.css"
       ],
       "fileHashes": {
-        "context-menu.tsx": "sha256-5e4c07735ba02151289e76b15a385b1fc32cf3238a5489a188f554d45b6c6f29",
+        "context-menu.tsx": "sha256-5624f65f4fb24a1edd35b468005ce56317cf8b04e34a8953946edc2928160265",
         "context-menu.module.css": "sha256-56560bcc3e7c74bf522b5cbbd0e044e04143f35426dbfb003b4db968a5b89e7f"
       },
       "dependencies": ["@cascivo/core"],
@@ -4082,7 +4082,7 @@
         "accessibility": {
           "role": "menu",
           "wcag": "2.2-AA",
-          "keyboard": ["ArrowDown", "ArrowUp", "Enter", "Space", "Escape"]
+          "keyboard": ["ArrowDown", "ArrowUp", "Home", "End", "Enter", "Space", "Escape"]
         },
         "examples": [
           {
@@ -4124,7 +4124,7 @@
               "reason": "Use a general menu when the trigger is not a right-click gesture"
             }
           ],
-          "a11yRationale": "The menu container is role=\"menu\" and items are role=\"menuitem\" with tabIndex management and aria-disabled, and it uses popover=\"auto\" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent",
+          "a11yRationale": "The menu container is role=\"menu\" and items are role=\"menuitem\" with roving keyboard navigation (ArrowDown/ArrowUp/Home/End skip disabled items, Enter/Space activate) and aria-disabled, and it uses popover=\"auto\" so it light-dismisses on Escape or outside click; the toggle event syncs that dismissal back into state so focus and open state stay consistent",
           "flexibility": [
             {
               "area": "menu contents",
@@ -14386,8 +14386,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
       ],
       "fileHashes": {
-        "stat.tsx": "sha256-1c29bccb6a1371646b3cee38579f2e6c566153ec851878cf942947c8fbbb8a5b",
-        "stat.module.css": "sha256-5f229c57760e825277c4411df330e9567b235d1af422e8f54fb94abf9db9ba1e"
+        "stat.tsx": "sha256-950f60d97c17efc530541b31ef042e53dc12ce09f4b7fdd8750ee47048472ccc",
+        "stat.module.css": "sha256-c6a041acd7512dab271a1fc347f40baf0446411a8dc895ba5c7753da76f87e28"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -14432,6 +14432,12 @@
             "type": "string",
             "required": false,
             "description": "Fine print below the value (methodology, time range)"
+          },
+          {
+            "name": "visual",
+            "type": "React.ReactNode",
+            "required": false,
+            "description": "Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText"
           }
         ],
         "tokens": [
@@ -14458,6 +14464,11 @@
           {
             "title": "With help text",
             "code": "<Stat label=\"Axe violations\" value={0} helpText=\"WCAG 2.1 AA, 4 app states\" />"
+          },
+          {
+            "title": "With a trailing sparkline",
+            "code": "<Stat label=\"Requests / min\" value=\"1.2k\" delta=\"+4.3%\" trend=\"up\" visual={<Sparkline data={requestsPerMinute} label=\"Requests per minute trend\" />} />",
+            "description": "Sparkline is from @cascivo/charts"
           }
         ],
         "dependencies": ["@cascivo/core"],

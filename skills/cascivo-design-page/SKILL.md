@@ -23,6 +23,22 @@ than generating from zero.
   `npx cascivo add <installSpec>`), and help the user adapt the owned source.
 - If nothing matches, continue with the from-scratch scaffold below.
 
+### 0.5. Dashboard / console pages: known component set
+
+If the request is a dashboard, admin console, or analytics/usage page (sidebar or
+topbar chrome, a project/workspace switcher, a grid of cards with row actions, KPI
+tiles, usage sparklines or time-series charts, a data table) — this maps to an
+already-known set of parts. Read
+[`docs/RECIPE-DASHBOARD.md`](../../docs/RECIPE-DASHBOARD.md) (or
+`https://github.com/cascivo/cascivo/blob/main/docs/RECIPE-DASHBOARD.md`) before
+calling `scaffold_view`: it lists the exact component/registry-id for each need
+(switcher, dropdown, command-menu, context-menu, card, stat, `@cascivo/charts`
+sparkline/line/area/kpi, data-table) and the pre-built blocks that may already cover
+the whole page (`block/dashboard-charts`, `block/stats-cards`, `dashboard-overview`,
+`dashboard-table`, `block/console-app`, `block/sidebar-app`). Prefer naming these
+components in the `scaffold_view` `components` candidate list over generating custom
+SVG for a chart or a hand-rolled keydown handler for a menu — both already exist.
+
 ### 1. Read available components and examples
 
 Before generating anything, read the registry and llms.txt at runtime:

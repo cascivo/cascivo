@@ -29,6 +29,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Fine print below the value (methodology, time range)',
     },
+    {
+      name: 'visual',
+      type: 'React.ReactNode',
+      required: false,
+      description:
+        'Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText',
+    },
   ],
   tokens: [
     '--cascivo-color-text',
@@ -51,6 +58,11 @@ export const meta: ComponentMeta = {
     {
       title: 'With help text',
       code: '<Stat label="Axe violations" value={0} helpText="WCAG 2.1 AA, 4 app states" />',
+    },
+    {
+      title: 'With a trailing sparkline',
+      code: '<Stat label="Requests / min" value="1.2k" delta="+4.3%" trend="up" visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />} />',
+      description: 'Sparkline is from @cascivo/charts',
     },
   ],
   dependencies: ['@cascivo/core'],

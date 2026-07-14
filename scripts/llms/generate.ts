@@ -317,6 +317,10 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
 
   const lines: string[] = []
 
+  const chartCount = entries.filter((e) => e.type === 'chart').length
+  const overlayCount = entries.filter((e) => e.category === 'overlay').length
+  const blockCount = entries.filter((e) => e.type === 'block').length
+
   lines.push('# cascivo — The CSS-native, signal-driven, AI-first React design system')
   lines.push('')
   lines.push('cascivo is a React design system you can consume two ways: copy-paste the source')
@@ -329,6 +333,31 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '`data-theme` attribute, and WCAG 2.2 AA. Every component ships a machine-readable manifest,',
   )
   lines.push('so this file plus the linked resources are enough to build with cascivo.')
+  lines.push('')
+  lines.push(
+    `This is not a layout-only system: it includes ${overlayCount} overlay/menu components`,
+  )
+  lines.push(
+    '(dropdown, menu, context menu, combobox, command palette, multi-select) with keyboard',
+  )
+  lines.push(
+    'navigation, focus management, and outside-click dismissal already implemented — do not',
+  )
+  lines.push(
+    `hand-roll that behavior or reach for a separate headless library. It also ships ${chartCount}`,
+  )
+  lines.push(
+    `chart types (\`@cascivo/charts\` — line, area, bar, sparkline, KPI, heatmap, and more) and`,
+  )
+  lines.push(
+    `${blockCount} pre-built page blocks (dashboards, stats cards, app shells) so a request like`,
+  )
+  lines.push(
+    '"build a dashboard with usage sparklines and a project switcher" maps to existing parts —',
+  )
+  lines.push(
+    'see `select_component`/`list_components` below before generating custom SVG or ARIA code.',
+  )
   lines.push('')
   lines.push('## Start here')
   lines.push('')

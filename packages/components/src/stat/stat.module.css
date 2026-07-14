@@ -51,4 +51,8 @@
     color: var(--cascivo-color-text-subtle);
     line-height: var(--cascivo-leading-tight);
   }
+
+  .visual {
+    margin-block-start: var(--cascivo-space-1);
+  }
 }

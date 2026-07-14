@@ -22,13 +22,14 @@ import { Stat } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                       | Required | Default | Description                                                  |
-| ---------- | -------------------------- | -------- | ------- | ------------------------------------------------------------ |
-| `label`    | `string`                   | yes      | —       | What the metric measures                                     |
-| `value`    | `string \| number`         | yes      | —       | The metric value                                             |
-| `delta`    | `string`                   | no       | —       | Change indicator rendered next to the trend arrow            |
-| `trend`    | `'up' \| 'down' \| 'flat'` | no       | `flat`  | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
-| `helpText` | `string`                   | no       | —       | Fine print below the value (methodology, time range)         |
+| Prop       | Type                       | Required | Default | Description                                                                                                |
+| ---------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `label`    | `string`                   | yes      | —       | What the metric measures                                                                                   |
+| `value`    | `string \| number`         | yes      | —       | The metric value                                                                                           |
+| `delta`    | `string`                   | no       | —       | Change indicator rendered next to the trend arrow                                                          |
+| `trend`    | `'up' \| 'down' \| 'flat'` | no       | `flat`  | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                               |
+| `helpText` | `string`                   | no       | —       | Fine print below the value (methodology, time range)                                                       |
+| `visual`   | `React.ReactNode`          | no       | —       | Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText |
 
 ## Examples
 
@@ -48,6 +49,20 @@ import { Stat } from '@cascivo/react'
 
 ```tsx
 <Stat label="Axe violations" value={0} helpText="WCAG 2.1 AA, 4 app states" />
+```
+
+### With a trailing sparkline
+
+Sparkline is from @cascivo/charts
+
+```tsx
+<Stat
+  label="Requests / min"
+  value="1.2k"
+  delta="+4.3%"
+  trend="up"
+  visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />}
+/>
 ```
 
 ## Design tokens
