@@ -2,11 +2,11 @@
   "name": "@cascivo/vite-plugin",
   "version": "0.0.0",
   "private": false,
-  "description": "Vite plugin — wrap JS-imported third-party stylesheets into a low-priority cascade @layer",
+  "description": "Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer",
   "keywords": [
-    "cascade-layers",
     "cascivo",
     "css",
+    "css-layers",
     "vendor",
     "vite",
     "vite-plugin"

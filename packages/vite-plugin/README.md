@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/vite-plugin</h1>
-  <p><strong>Vite plugin — wrap JS-imported third-party stylesheets into a low-priority cascade @layer</strong></p>
+  <p><strong>Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer</strong></p>
 
 [![npm](https://img.shields.io/npm/v/%40cascivo%2Fvite-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/vite-plugin)
 [![downloads](https://img.shields.io/npm/dm/%40cascivo%2Fvite-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/vite-plugin)
