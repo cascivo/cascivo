@@ -20,14 +20,19 @@ interface ComponentNode {
 }
 
 interface ViewConfig {
+  state?: Record<string, string | number | boolean | null>
   view: {
-    layout?: string
     regions: Record<string, ComponentNode[]>
   }
 }
 
 function isTranslationRef(v: unknown): v is { $t: string } {
   return typeof v === 'object' && v !== null && '$t' in v
+}
+
+/** A JS literal for a state initial value. */
+function serializeInitial(value: string | number | boolean | null): string {
+  return typeof value === 'string' ? `'${value.replace(/'/g, "\\'")}'` : String(value)
 }
 
 function serializeProp(value: unknown): string {
@@ -79,15 +84,25 @@ function renderNode(
 
   if (node.bind) {
     for (const [k, ref] of Object.entries(node.bind)) {
-      const path = ref.replace(/^\$data\./, '').replace(/\./g, '.')
-      propParts.push(`${k}={data.${path}}`)
+      if (ref.startsWith('$state.')) {
+        propParts.push(`${k}={${ref.slice('$state.'.length)}.value}`)
+      } else {
+        propParts.push(`${k}={data.${ref.replace(/^\$data\./, '')}}`)
+      }
     }
   }
 
   if (node.events) {
     for (const [k, ref] of Object.entries(node.events)) {
-      const actionName = ref.replace(/^\$actions\./, '')
-      propParts.push(`${k}={actions.${actionName}}`)
+      if (ref.startsWith('$state.set.')) {
+        const key = ref.slice('$state.set.'.length)
+        propParts.push(`${k}={(e) => (${key}.value = coerceValue(e))}`)
+      } else if (ref.startsWith('$state.toggle.')) {
+        const key = ref.slice('$state.toggle.'.length)
+        propParts.push(`${k}={() => (${key}.value = !${key}.value)}`)
+      } else {
+        propParts.push(`${k}={actions.${ref.replace(/^\$actions\./, '')}}`)
+      }
     }
   }
 
@@ -112,12 +127,14 @@ function collectBindAndEvents(nodes: ComponentNode[]): {
   function walk(node: ComponentNode) {
     if (node.bind) {
       for (const ref of Object.values(node.bind)) {
+        if (ref.startsWith('$state.')) continue // view-local state, not a host-data prop
         const path = ref.replace(/^\$data\./, '')
         if (!boundProps.includes(path)) boundProps.push(path)
       }
     }
     if (node.events) {
       for (const ref of Object.values(node.events)) {
+        if (ref.startsWith('$state.')) continue // state writer, not a host action
         const name = ref.replace(/^\$actions\./, '')
         if (!actionProps.includes(name)) actionProps.push(name)
       }
@@ -130,7 +147,18 @@ function collectBindAndEvents(nodes: ComponentNode[]): {
   return { boundProps, actionProps }
 }
 
-function generateTsx(
+/** True if any node writes state via "$state.set.*" (needs the coerceValue helper). */
+function usesStateSetter(nodes: ComponentNode[]): boolean {
+  const walk = (node: ComponentNode): boolean => {
+    if (node.events && Object.values(node.events).some((r) => r.startsWith('$state.set.'))) {
+      return true
+    }
+    return Array.isArray(node.children) ? node.children.some(walk) : false
+  }
+  return nodes.some(walk)
+}
+
+export function generateTsx(
   config: ViewConfig,
   _propMetas: Map<string, PropMeta[]>,
   componentsPath: string,
@@ -138,6 +166,9 @@ function generateTsx(
   const knownComponents = new Set<string>()
   const allNodes = Object.values(config.view.regions).flat()
   const { boundProps, actionProps } = collectBindAndEvents(allNodes)
+  const stateEntries = Object.entries(config.state ?? {})
+  const hasState = stateEntries.length > 0
+  const needsCoerce = usesStateSetter(allNodes)
 
   const regionBlocks = Object.entries(config.view.regions)
     .map(([regionName, nodes]) => {
@@ -165,13 +196,30 @@ function generateTsx(
   const params = [dataParam, actionsParam].filter(Boolean).join(',\n  ')
   const propsType = params ? `{\n  ${params}\n}` : '{}'
 
-  return `import React from 'react'
-${importLines}
+  const coreImport = hasState ? "\nimport { useSignal, useSignals } from '@cascivo/core'" : ''
+  const coerceHelper = needsCoerce
+    ? `
+/** Unwrap a DOM event into the value a state setter should store. */
+function coerceValue(e: unknown) {
+  const t = (e as { target?: { type?: string; checked?: boolean; value?: unknown } })?.target
+  if (t) return t.type === 'checkbox' || t.type === 'radio' ? t.checked : t.value
+  return e
+}
+`
+    : ''
+  const stateDecls = hasState
+    ? '  useSignals()\n' +
+      stateEntries.map(([k, v]) => `  const ${k} = useSignal(${serializeInitial(v)})`).join('\n') +
+      '\n'
+    : ''
 
+  return `import React from 'react'${coreImport}
+${importLines}
+${coerceHelper}
 interface PageProps ${propsType}
 
 export function GeneratedPage({ ${hasData ? 'data, ' : ''}${hasActions ? 'actions' : ''} }: PageProps) {
-  return (
+${stateDecls}  return (
     <div className="cascade-view">
 ${regionBlocks}
     </div>
