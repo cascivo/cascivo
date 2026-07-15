@@ -11,6 +11,7 @@
   ],
   "description": "A list of notification alerts with a mark-all-read action.",
   "dependencies": ["@cascivo/react"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/layout-flex.json"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

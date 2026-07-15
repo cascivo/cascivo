@@ -16,6 +16,7 @@
   ],
   "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/spinner.json"],
   "categories": ["feedback"],
   "meta": {
     "cascivo": {

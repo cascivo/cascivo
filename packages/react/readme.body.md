@@ -98,6 +98,48 @@ aliases are documented in
 All components are client components (`'use client'` is preserved in the
 bundle), so the package works in Next.js App Router projects out of the box.
 
+## Using with AI tools (v0, Cursor, Claude Code, Gemini)
+
+cascivo is AI-first, but a model can only build with it if the knowledge reaches
+the tool. cascivo has no training-data footprint yet, so **don't rely on a tool
+fetching cascivo.com** — that channel is the least reliable one. Use the channels
+that travel with the package instead:
+
+- **One file, one fetch — paste or link this into any chat/agent:**
+  [`https://cascivo.com/llms-full.txt`](https://cascivo.com/llms-full.txt). It is
+  the entire library — setup, the signals/CSS-layer rules, and every component's
+  props/examples/a11y — inlined, so a single successful fetch is enough. The
+  shorter index is [`llms.txt`](https://cascivo.com/llms.txt).
+- **v0 / shadcn CLI** — components install straight from the
+  [shadcn-compatible registry](https://cascivo.com/r/shadcn/registry.json):
+
+  ```sh
+  npx shadcn@latest add https://cascivo.com/r/shadcn/button.json
+  ```
+
+  Each item inlines its own source and points its dependencies at absolute
+  `https://cascivo.com/r/shadcn/<name>.json` URLs, so the CLI resolves them
+  transitively. Register the whole namespace in `components.json` to use short
+  names (`npx shadcn add @cascivo/button`):
+
+  ```json
+  { "registries": { "@cascivo": "https://cascivo.com/r/shadcn/{name}.json" } }
+  ```
+
+- **MCP-capable agents** (Claude Code, Cursor, Gemini CLI, Windsurf) — point the
+  client at the [`@cascivo/mcp`](https://www.npmjs.com/package/@cascivo/mcp)
+  server so it can query components with no web fetch at all:
+
+  ```json
+  { "mcpServers": { "cascivo": { "command": "npx", "args": ["-y", "@cascivo/mcp"] } } }
+  ```
+
+**One rule to give the model:** cascivo is signal-driven — use `useSignal` /
+`useComputed` / `useSignalEffect` from `@cascivo/core`, never `useState` /
+`useEffect`, and in any app without the Babel signals transform a component that
+reads `signal.value` in render must call `useSignals()` first or it won't
+re-render. `llms-full.txt` carries the full contract.
+
 ## Guides
 
 - [Theming & branding](https://github.com/cascivo/cascivo/blob/main/docs/THEMING.md) — match a brand by overriding tokens (layer cascade, the `data-theme` specificity footgun, per-role radius/control-height tokens, a starter theme).

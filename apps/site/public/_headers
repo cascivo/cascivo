@@ -1,0 +1,33 @@
+# Cloudflare Pages headers.
+# https://developers.cloudflare.com/pages/configuration/headers/
+#
+# The machine-readable / AI surfaces must be fetchable cross-origin: browser-based
+# tools (v0, and any in-page assistant) fetch them with `fetch()` from another
+# origin, which fails without CORS. `X-Robots-Tag: all` reaffirms these files are
+# indexable. Plain-text llms files get an explicit UTF-8 content type.
+
+/llms.txt
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+  Content-Type: text/plain; charset=utf-8
+
+/llms-full.txt
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+  Content-Type: text/plain; charset=utf-8
+
+/llms/*
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+
+/context/*
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+
+/registry.json
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all
+
+/r/*
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: all

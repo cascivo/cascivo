@@ -16,6 +16,7 @@
   ],
   "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/spinner.json"],
   "categories": ["feedback"],
   "meta": {
     "cascivo": {

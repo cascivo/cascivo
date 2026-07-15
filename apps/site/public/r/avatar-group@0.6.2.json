@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/components"],
   "tags": ["avatar", "group", "stack", "overflow", "display"],
   "category": "display",
+  "registryDependencies": ["avatar"],
   "meta": {
     "name": "AvatarGroup",
     "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",

@@ -16,6 +16,7 @@
   ],
   "description": "Drag-and-drop file upload zone with file list and status indicators.",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/spinner.json"],
   "categories": ["inputs"],
   "meta": {
     "cascivo": {

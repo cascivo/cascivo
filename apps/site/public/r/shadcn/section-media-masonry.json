@@ -16,6 +16,10 @@
   ],
   "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/layout-masonry.json",
+    "https://cascivo.com/r/shadcn/layout-section.json"
+  ],
   "categories": ["layout"],
   "meta": {
     "cascivo": {

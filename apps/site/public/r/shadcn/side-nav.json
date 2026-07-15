@@ -16,6 +16,10 @@
   ],
   "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/popover.json",
+    "https://cascivo.com/r/shadcn/tooltip.json"
+  ],
   "categories": ["navigation"],
   "meta": {
     "cascivo": {

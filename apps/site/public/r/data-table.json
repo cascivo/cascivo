@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
   "category": "display",
+  "registryDependencies": ["button", "checkbox"],
   "meta": {
     "name": "DataTable",
     "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",

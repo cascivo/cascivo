@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/react"],
   "tags": ["block", "settings", "form", "page"],
   "category": "display",
+  "registryDependencies": ["layout/settings-layout"],
   "meta": {
     "name": "SettingsFormPage",
     "description": "Settings page with profile form inside a two-column settings layout.",

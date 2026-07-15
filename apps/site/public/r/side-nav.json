@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
   "category": "navigation",
+  "registryDependencies": ["popover", "tooltip"],
   "meta": {
     "name": "SideNav",
     "description": "Collapsible sidebar navigation with optional icons and one level of grouping",

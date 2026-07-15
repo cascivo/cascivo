@@ -16,6 +16,7 @@
   ],
   "description": "Searchable multi-value select with popover listbox",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/popover.json"],
   "categories": ["inputs"],
   "meta": {
     "cascivo": {

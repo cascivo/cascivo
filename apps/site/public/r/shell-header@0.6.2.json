@@ -18,6 +18,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
   "category": "navigation",
+  "registryDependencies": ["popover"],
   "meta": {
     "name": "ShellHeader",
     "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",

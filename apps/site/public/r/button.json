@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core"],
   "tags": ["action", "form", "interactive"],
   "category": "inputs",
+  "registryDependencies": ["spinner"],
   "meta": {
     "name": "Button",
     "description": "Triggers an action or event",

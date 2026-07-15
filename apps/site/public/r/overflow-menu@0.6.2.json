@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["overlay", "menu", "actions", "kebab", "table"],
   "category": "overlay",
+  "registryDependencies": ["dropdown"],
   "meta": {
     "name": "OverflowMenu",
     "description": "Kebab icon button revealing a menu of row-level actions",

@@ -16,6 +16,7 @@
   ],
   "description": "Hover-triggered popover with configurable open/close delay",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/popover.json"],
   "categories": ["overlay"],
   "meta": {
     "cascivo": {

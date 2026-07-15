@@ -11,6 +11,7 @@
   ],
   "description": "Settings page with profile form inside a two-column settings layout.",
   "dependencies": ["@cascivo/react"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/layout-settings-layout.json"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

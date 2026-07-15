@@ -16,6 +16,7 @@
   ],
   "description": "Kebab icon button revealing a menu of row-level actions",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/dropdown.json"],
   "categories": ["overlay"],
   "meta": {
     "cascivo": {

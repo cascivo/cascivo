@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core"],
   "tags": ["form", "layout", "validation", "accessibility"],
   "category": "inputs",
+  "registryDependencies": ["label"],
   "meta": {
     "name": "Field",
     "description": "Form-field wrapper composing label, control, description, and error",

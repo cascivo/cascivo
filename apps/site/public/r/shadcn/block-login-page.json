@@ -11,6 +11,7 @@
   ],
   "description": "Authentication login page with email and password form.",
   "dependencies": ["@cascivo/react"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/layout-auth-layout.json"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["form", "select", "multi", "input", "popover"],
   "category": "inputs",
+  "registryDependencies": ["popover"],
   "meta": {
     "name": "MultiSelect",
     "description": "Searchable multi-value select with popover listbox",

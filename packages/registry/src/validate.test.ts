@@ -112,11 +112,23 @@ describe('parseLegacyRegistry', () => {
     const raw = JSON.parse(await readFile(join(REPO_ROOT, 'registry.json'), 'utf8')) as unknown
     const index = parseLegacyRegistry(raw)
     expect(index.schemaVersion).toBe(2)
+    expect(index.homepage).toBe('https://cascivo.com')
     expect(index.items.length).toBeGreaterThan(0)
     for (const item of index.items) {
       expect(item.schemaVersion).toBe(2)
       expect(typeof item.name).toBe('string')
       expect(Array.isArray(item.files)).toBe(true)
     }
+  })
+
+  it('carries registryDependencies from legacy entries', () => {
+    const raw = {
+      version: '1.0.0',
+      components: [
+        { name: 'dropdown', type: 'component', registryDependencies: ['popover', 'button'] },
+      ],
+    }
+    const index = parseLegacyRegistry(raw)
+    expect(index.items[0]?.registryDependencies).toEqual(['popover', 'button'])
   })
 })

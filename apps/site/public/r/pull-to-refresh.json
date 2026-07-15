@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
   "category": "feedback",
+  "registryDependencies": ["spinner"],
   "meta": {
     "name": "PullToRefresh",
     "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",

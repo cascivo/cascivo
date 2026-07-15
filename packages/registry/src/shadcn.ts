@@ -49,6 +49,13 @@ export interface ShadcnRegistryItem {
 export interface ToShadcnOptions {
   /** Resolve a cascivo file URL to its source text, to inline as `content`. */
   resolveContent?: (fileUrl: string) => string | undefined
+  /**
+   * Base URL of the hosted shadcn registry (e.g. `https://cascivo.com/r/shadcn`).
+   * When set, each `registryDependencies` entry is rewritten to an absolute
+   * `<base>/<name>.json` URL so the shadcn CLI fetches cascivo's own dependency
+   * (not a same-named item from the default shadcn.com registry).
+   */
+  registryBaseUrl?: string
 }
 
 const TYPE_MAP: Record<RegistryItemType, ShadcnItemType> = {
@@ -92,7 +99,10 @@ export function toShadcnItem(item: RegistryItem, opts: ToShadcnOptions = {}): Sh
   if (item.description) out.description = item.description
   if (item.dependencies.length > 0) out.dependencies = [...item.dependencies]
   if (item.registryDependencies && item.registryDependencies.length > 0) {
-    out.registryDependencies = [...item.registryDependencies]
+    const base = opts.registryBaseUrl?.replace(/\/+$/, '')
+    out.registryDependencies = item.registryDependencies.map((dep) =>
+      base ? `${base}/${shadcnName(dep)}.json` : shadcnName(dep),
+    )
   }
   if (item.category) out.categories = [item.category]
   out.meta = { cascivo: { type: item.type, version: item.version } }
@@ -110,8 +120,16 @@ export async function writeShadcnRegistry(
 ): Promise<void> {
   await mkdir(outDir, { recursive: true })
 
+  // Absolute base for cross-item `registryDependencies` URLs. The registry is
+  // served at `<homepage>/r/shadcn/`; fall back to caller-supplied opts if the
+  // index carries no homepage.
+  const registryBaseUrl =
+    opts.registryBaseUrl ??
+    (index.homepage ? `${index.homepage.replace(/\/+$/, '')}/r/shadcn` : undefined)
+  const itemOpts: ToShadcnOptions = registryBaseUrl ? { ...opts, registryBaseUrl } : { ...opts }
+
   const sorted = [...index.items].sort((a, b) => a.name.localeCompare(b.name))
-  const items = sorted.map((it) => toShadcnItem(it, opts))
+  const items = sorted.map((it) => toShadcnItem(it, itemOpts))
 
   for (const item of items) {
     await writeFile(join(outDir, `${item.name}.json`), `${JSON.stringify(item, null, 2)}\n`, 'utf8')

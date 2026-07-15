@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/react"],
   "tags": ["block", "breadcrumb", "page", "navigation"],
   "category": "display",
+  "registryDependencies": ["layout/page-header", "layout/center"],
   "meta": {
     "name": "PageWithBreadcrumb",
     "description": "A centered content page with a breadcrumb navigation and page header.",

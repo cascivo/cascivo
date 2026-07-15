@@ -51,6 +51,24 @@ A **template** is a registry item (`type: "template"`) that bundles a working pa
 
 Because the registry model is open, `add owner/repo/component` installs from any compatible registry, not just the first-party one. See the [registry starter](https://github.com/cascivo/cascivo/tree/main/apps/examples/registry-starter) to publish your own.
 
+## Prefer the shadcn CLI or an AI tool?
+
+cascivo also publishes a [shadcn-compatible registry](https://cascivo.com/r/shadcn/registry.json),
+so you can install the same components with the shadcn CLI or "Open in v0" without
+the `cascivo` binary:
+
+```sh
+npx shadcn@latest add https://cascivo.com/r/shadcn/button.json
+```
+
+Every item inlines its source and resolves its cascivo dependencies transitively.
+
+Building **with an AI assistant?** cascivo has no training-data footprint yet, so
+give the tool the knowledge directly rather than relying on it to browse the site:
+paste or link [`https://cascivo.com/llms-full.txt`](https://cascivo.com/llms-full.txt)
+(the whole library — setup + every component — in one file), or point an MCP-capable
+agent at [`@cascivo/mcp`](https://www.npmjs.com/package/@cascivo/mcp).
+
 ## Install
 
 ```sh

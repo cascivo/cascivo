@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core"],
   "tags": ["section", "features", "grid"],
   "category": "layout",
+  "registryDependencies": ["layout/auto-grid", "layout/section"],
   "meta": {
     "name": "FeatureGrid",
     "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",

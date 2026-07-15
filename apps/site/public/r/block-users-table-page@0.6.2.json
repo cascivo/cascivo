@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/react"],
   "tags": ["block", "users", "table", "page"],
   "category": "display",
+  "registryDependencies": ["layout/page-header", "layout/flex"],
   "meta": {
     "name": "UsersTablePage",
     "description": "Full users management page with table, search, and invite action.",

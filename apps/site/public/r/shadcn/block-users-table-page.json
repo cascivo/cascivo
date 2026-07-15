@@ -11,6 +11,10 @@
   ],
   "description": "Full users management page with table, search, and invite action.",
   "dependencies": ["@cascivo/react"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/layout-page-header.json",
+    "https://cascivo.com/r/shadcn/layout-flex.json"
+  ],
   "categories": ["display"],
   "meta": {
     "cascivo": {

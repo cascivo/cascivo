@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/components"],
   "tags": ["user", "avatar", "identity", "display"],
   "category": "display",
+  "registryDependencies": ["avatar"],
   "meta": {
     "name": "User",
     "description": "Identity composite: an avatar with a name, description, and optional action slot",
