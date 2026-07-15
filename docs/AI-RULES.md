@@ -33,6 +33,41 @@ Canonical layer order (lowest → highest priority):
 The full machine-readable guide is at https://cascivo.com/llms.txt.
 ```
 
+## The reactivity contract (copy-paste)
+
+The CSS contract above keeps the cascade intact; this one keeps the reactivity model
+intact. Drop it into the same agent rules file. Without it, an agent defaults to
+`useState`/`useEffect`/`useContext` and concludes cascivo "has no state story" — the exact
+mistake that makes a signal-native system look layout-only.
+
+```md
+## cascivo reactivity contract
+
+cascivo is signal-driven. Do not mix React state with signals — it causes toggles that
+don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React hook:
+
+1. Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. Never `useState`.
+   The signal IS the state.
+2. Side effects (DOM, listeners, `showModal()`) -> `useSignalEffect(fn)`. Never `useEffect`.
+3. Shared/app-wide state -> a module-level `signal` imported anywhere. Never `useContext`.
+4. A controlled/uncontrolled prop bridged to a signal ->
+   `useControllableSignal({ value, defaultValue, onChange })`.
+5. Avoiding signal leaks across route/tenant changes -> `useScope()` / `createScope()`
+   (disposes owned effects on unmount).
+6. Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): signal store,
+   sync/async + Standard Schema (zod/valibot) validation, optional `validateOnChange`.
+7. Theming (light/dark toggle, SSR no-FOUC) -> `<ThemeProvider>` + `useTheme()` /
+   `setTheme()` + `themePreloadScript()` (`@cascivo/react`). Never a `useEffect` that adds a
+   `.dark` class.
+8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
+   '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
+9. In any app without the Babel signals transform, a component reading `signal.value` in
+   render must call `useSignals()` (from `@cascivo/core`) as its first statement, or it
+   never re-renders.
+
+Full catalogs: docs/HEADLESS.md (primitives) and docs/ENTERPRISE-READINESS.md (friction map).
+```
+
 ## Overriding styles the sanctioned way
 
 Every cascivo component spreads `{...props}` onto its root element, so `style` and

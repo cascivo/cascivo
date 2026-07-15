@@ -86,6 +86,9 @@ import { Grid, GridItem, AutoGrid, Flex } from '@cascivo/react'
 
 // Self-sizing card wall — no breakpoints, tracks wrap at a min width.
 <AutoGrid min="16rem" gap={4}>{cards}</AutoGrid>
+
+// Alignment-sensitive rows (e.g. status badges) — align/justify map to the grid axes.
+<Grid cols={3} gap={2} align="center" justify="start">{statusCells}</Grid>
 ```
 
 `gap` is constrained to the token scale (`1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12` →
@@ -233,6 +236,7 @@ function DomainForm() {
   const form = useForm({
     initialValues: { domain: '' },
     validate: (v) => (v.domain.includes('.') ? {} : { domain: 'Invalid domain format' }),
+    validateOnChange: true, // revalidate the edited field on every keystroke — still zero re-renders
   })
   const domain = form.field('domain') // { value, onChange, onBlur, error }
   return (

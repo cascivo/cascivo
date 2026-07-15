@@ -6,6 +6,33 @@ navigation, aria wiring — lives in a small, reusable **headless layer** in
 for menus, dialogs, and popovers: compose these primitives instead. They are
 unstyled, signal-driven (no `useState`/`useEffect`), and SSR-safe.
 
+## State & reactivity primitives
+
+The catalogue below is the **a11y/behavior** layer; this is the **state** layer. cascivo
+components never use `useState`/`useContext`/`useEffect` — the signal *is* the state. When
+you build on cascivo, reach for these, not the React hook you'd normally use:
+
+| You'd normally reach for… | Use instead | Why |
+| --- | --- | --- |
+| `useState` | `useSignal(initial)` (local) / `useComputed(fn)` (derived) | The signal is the state; fine-grained updates, no subtree re-render. |
+| A controlled/uncontrolled prop wired to state | `useControllableSignal({ value, defaultValue, onChange })` | Codifies the controlled↔uncontrolled bridge once, with no effect. |
+| `useEffect` for a DOM side effect | `useSignalEffect(fn)` | Runs on signal change, SSR-safe; `useEffect` is banned in cascivo components. |
+| `useContext` for shared state | A module-level `signal` imported anywhere | Signals are globally reactive — no provider or prop-drilling needed. |
+| A cleanup registry to avoid leaks on route change | `useScope()` / `createScope()` | Disposes every owned effect on unmount; one scope per tenant/route boundary. |
+| A reducer / explicit state machine | `createMachine` / `useMachine` | A minimal transition-table FSM backed by a signal. |
+| A form library (react-hook-form, Formik) | `createForm` / `useForm` / `<Form>` / `field()` | Signal-backed store; sync/async + Standard Schema (zod/valibot) validation; optional `validateOnChange` validates on keystroke with zero re-renders. |
+| `useEffect` to toggle a `.dark` class | `<ThemeProvider>` + `useTheme()` / `setTheme()` | Persists + drives `data-theme`; pair with `themePreloadScript()` for SSR no-FOUC. |
+| Reading token names out of a CSS file | `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` | Generated union of every `--cascivo-*` property — visible in the type, no file lookup. |
+
+In a React app that does **not** run the Babel signals transform (any consumer app,
+`apps/examples/*`), a component that reads `signal.value` during render must call
+`useSignals()` (from `@cascivo/core`) as its first statement, or it will never re-render
+on a signal write. Symptom: handlers fire but the UI freezes.
+
+For the full friction-to-primitive rationale with code — and why the generic
+React/Tailwind patterns an LLM defaults to are wrong here — see
+[ENTERPRISE-READINESS.md](ENTERPRISE-READINESS.md).
+
 ## Catalogue
 
 | Primitive | What it does |

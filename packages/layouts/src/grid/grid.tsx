@@ -29,13 +29,29 @@ function responsiveVars(prefix: string, value: Responsive<number> | undefined): 
   return out as CSSProperties
 }
 
+/** Grid track alignment keyword (maps directly to `align-items` / `justify-items`). */
+export type GridAlign = 'start' | 'center' | 'end' | 'stretch'
+
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
   /** Column count. A number, or `{ base, sm, md, lg, xl }` for responsive columns. */
   cols?: Responsive<number>
   gap?: SpaceStep
+  /** Block-axis alignment of items within their cells (`align-items`). Defaults to `stretch`. */
+  align?: GridAlign
+  /** Inline-axis alignment of items within their cells (`justify-items`). Defaults to `stretch`. */
+  justify?: GridAlign
 }
 
-export function Grid({ cols = 12, gap = 4, className, style, children, ...props }: GridProps) {
+export function Grid({
+  cols = 12,
+  gap = 4,
+  align,
+  justify,
+  className,
+  style,
+  children,
+  ...props
+}: GridProps) {
   return (
     <div
       className={cn(styles['grid'], className)}
@@ -43,6 +59,8 @@ export function Grid({ cols = 12, gap = 4, className, style, children, ...props 
       style={{
         ...responsiveVars('--_grid-cols', cols),
         ['--_grid-gap' as string]: `var(--cascivo-space-${gap})`,
+        ...(align ? { ['--_grid-align' as string]: align } : {}),
+        ...(justify ? { ['--_grid-justify' as string]: justify } : {}),
         ...style,
       }}
       {...props}

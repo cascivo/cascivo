@@ -4790,7 +4790,16 @@
             "properties": {
               "props": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                  "align": {
+                    "type": "string",
+                    "enum": ["start", "center", "end", "stretch"]
+                  },
+                  "justify": {
+                    "type": "string",
+                    "enum": ["start", "center", "end", "stretch"]
+                  }
+                }
               }
             }
           }

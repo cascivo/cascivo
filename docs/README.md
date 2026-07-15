@@ -11,6 +11,7 @@ guides, references, cookbooks, and specs that ship with the source.
 | ----- | -------------- |
 | [GETTING-STARTED.md](GETTING-STARTED.md) | Zero to a rendered button — both the copy-paste CLI path and the prebuilt `@cascivo/react` path. |
 | [ENTERPRISE-READINESS.md](ENTERPRISE-READINESS.md) | Common enterprise frictions (signal↔state, layout, theming, signal lifecycles, typed tokens, forms) mapped to the shipped primitive that solves each. |
+| [HEADLESS.md](HEADLESS.md) | The `@cascivo/core` behavior + state primitives, and the "React hook → cascivo primitive" mapping (useState/useContext/useEffect and their replacements). |
 | [COMPATIBILITY.md](COMPATIBILITY.md) | Supported React versions, browsers, frameworks, and the support matrix. |
 | [MIGRATING-FROM-SHADCN.md](MIGRATING-FROM-SHADCN.md) | Coming from shadcn/ui — CSS setup delta, component mapping, forms, and app shell. |
 
@@ -72,5 +73,6 @@ Task-focused, copy-adaptable recipes in [`cookbooks/`](cookbooks/):
 Machine-readable docs for AI agents: [`llms.txt`](https://cascivo.com/llms.txt),
 per-component [`llms/<name>.md`](https://docs.cascivo.com/llms/), and
 [`context.json`](https://cascivo.com/context.json). Give your own agent the house
-rules with [AI-RULES.md](AI-RULES.md) (the CSS layer contract + a utility-first
-mapping). See the root [README](../README.md#ai--context-layer) for the full AI layer.
+rules with [AI-RULES.md](AI-RULES.md) (the CSS layer contract, the reactivity
+contract, and a utility-first mapping). See the root
+[README](../README.md#ai--context-layer) for the full AI layer.

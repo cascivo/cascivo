@@ -6409,7 +6409,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.module.css"
       ],
       "fileHashes": {
-        "form.tsx": "sha256-3f45d7e8dd62155d4e34ca6ddba79e325498e7a13cea2999cdfc7d6bf444e065",
+        "form.tsx": "sha256-e4bfaf58da19b9f37f1521273de32f55580c1e9ccd8b07fcaf7471276978eb4e",
         "standard-schema.ts": "sha256-174557b4c4134bad94bc8dc60633d6c784e4d605ed32e7d4ccfec246c8971844",
         "form.module.css": "sha256-522ba6343e1880a683fe540cca1823c61f02299bde71e561762fd1a3ca46d755"
       },
@@ -6500,6 +6500,11 @@
               "area": "validation strategy",
               "level": "flexible",
               "note": "Use schema, validate, or both; schema runs first and validate only if the schema passes"
+            },
+            {
+              "area": "validation timing",
+              "level": "flexible",
+              "note": "Validates on submit by default; set validateOnChange to revalidate the edited field on every keystroke (signal-driven, no re-render)"
             },
             {
               "area": "field control composition",
@@ -18334,8 +18339,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "fileHashes": {
-        "grid.tsx": "sha256-967750673cb080cf2719b09f731831921f128e551f69f0ebb98cfde022ee3446",
-        "grid.module.css": "sha256-122580493f33e0662aeb256580de9f0d138485ef9bab9aa74e13552386a7501c"
+        "grid.tsx": "sha256-ad2583e8d4feed2b6eaa97c0065da63fc72c3004598d7095d226d78b13d6a961",
+        "grid.module.css": "sha256-17b1e5aaf1d86f50bab2d78179c9ec1565d57746f22d654df0e4bce32bcd60bd"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -18361,6 +18366,18 @@
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "description": "Spacing token step"
+          },
+          {
+            "name": "align",
+            "type": "'start' | 'center' | 'end' | 'stretch'",
+            "required": false,
+            "description": "Block-axis alignment of items within their cells (align-items); default stretch"
+          },
+          {
+            "name": "justify",
+            "type": "'start' | 'center' | 'end' | 'stretch'",
+            "required": false,
+            "description": "Inline-axis alignment of items within their cells (justify-items); default stretch"
           },
           {
             "name": "span",

@@ -22,6 +22,20 @@ export const meta: ComponentMeta = {
       description: 'Spacing token step',
     },
     {
+      name: 'align',
+      type: "'start' | 'center' | 'end' | 'stretch'",
+      required: false,
+      description:
+        'Block-axis alignment of items within their cells (align-items); default stretch',
+    },
+    {
+      name: 'justify',
+      type: "'start' | 'center' | 'end' | 'stretch'",
+      required: false,
+      description:
+        'Inline-axis alignment of items within their cells (justify-items); default stretch',
+    },
+    {
       name: 'span',
       type: 'number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }',
       required: false,

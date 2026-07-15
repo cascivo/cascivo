@@ -733,6 +733,11 @@
           "note": "Use schema, validate, or both; schema runs first and validate only if the schema passes"
         },
         {
+          "area": "validation timing",
+          "level": "flexible",
+          "note": "Validates on submit by default; set validateOnChange to revalidate the edited field on every keystroke (signal-driven, no re-render)"
+        },
+        {
           "area": "field control composition",
           "level": "flexible",
           "note": "Any control can be wired via form.field(name); children are free-form"
@@ -12594,6 +12599,11 @@
             "note": "Use schema, validate, or both; schema runs first and validate only if the schema passes"
           },
           {
+            "area": "validation timing",
+            "level": "flexible",
+            "note": "Validates on submit by default; set validateOnChange to revalidate the edited field on every keystroke (signal-driven, no re-render)"
+          },
+          {
             "area": "field control composition",
             "level": "flexible",
             "note": "Any control can be wired via form.field(name); children are free-form"
@@ -12644,7 +12654,7 @@
         }
       ],
       "contextUrl": "/context/form.md",
-      "aiPrompt": "I am modifying the cascivo Form component (inputs). Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nForm is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-space-4\n\nAccessibility: role \"form\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): submit semantics — onValid only fires when validation produces no errors; submission is guarded by the submitting signal\nFlexible: validation strategy, field control composition.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Form component (inputs). Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nForm is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-space-4\n\nAccessibility: role \"form\", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.\n\nDo not change (strict): submit semantics — onValid only fires when validation produces no errors; submission is guarded by the submitting signal\nFlexible: validation strategy, validation timing, field control composition.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Header",
@@ -14456,6 +14466,26 @@
           "description": "Spacing token step",
           "schema": {
             "kind": "other"
+          }
+        },
+        {
+          "name": "align",
+          "type": "'start' | 'center' | 'end' | 'stretch'",
+          "required": false,
+          "description": "Block-axis alignment of items within their cells (align-items); default stretch",
+          "schema": {
+            "kind": "enum",
+            "values": ["start", "center", "end", "stretch"]
+          }
+        },
+        {
+          "name": "justify",
+          "type": "'start' | 'center' | 'end' | 'stretch'",
+          "required": false,
+          "description": "Inline-axis alignment of items within their cells (justify-items); default stretch",
+          "schema": {
+            "kind": "enum",
+            "values": ["start", "center", "end", "stretch"]
           }
         },
         {

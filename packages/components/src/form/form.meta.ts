@@ -105,6 +105,11 @@ export const meta: ComponentMeta = {
         note: 'Use schema, validate, or both; schema runs first and validate only if the schema passes',
       },
       {
+        area: 'validation timing',
+        level: 'flexible',
+        note: 'Validates on submit by default; set validateOnChange to revalidate the edited field on every keystroke (signal-driven, no re-render)',
+      },
+      {
         area: 'field control composition',
         level: 'flexible',
         note: 'Any control can be wired via form.field(name); children are free-form',
