@@ -38,6 +38,9 @@ export const builtin = {
     empty: 'No results found',
     back: 'Back',
     loading: 'Loading…',
+    matches: '{count} matches',
+    scopeLabel: 'Scope',
+    clearScope: 'Clear scope',
   }),
   breadcrumb: defineMessages('cascade.breadcrumb', {
     nav: 'Breadcrumb',
@@ -333,6 +336,9 @@ defineCatalog(builtin.commandMenu, 'de', {
   empty: 'Keine Ergebnisse',
   back: 'Zurück',
   loading: 'Wird geladen…',
+  matches: '{count} Treffer',
+  scopeLabel: 'Bereich',
+  clearScope: 'Bereich löschen',
 })
 defineCatalog(builtin.breadcrumb, 'de', {
   nav: 'Navigationspfad',
