@@ -35,6 +35,9 @@ const ProofTeasers = lazy(() =>
 const Comparison = lazy(() =>
   import('./sections/Comparison').then((m) => ({ default: m.Comparison })),
 )
+const PrimitivesLayer = lazy(() =>
+  import('./sections/PrimitivesLayer').then((m) => ({ default: m.PrimitivesLayer })),
+)
 const ShowcaseStrip = lazy(() =>
   import('./sections/ShowcaseStrip').then((m) => ({ default: m.ShowcaseStrip })),
 )
@@ -151,6 +154,10 @@ function HomePage() {
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <ShowcaseStrip />
+            </Suspense>
+            <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={360} />}>
+              <PrimitivesLayer />
             </Suspense>
             <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
