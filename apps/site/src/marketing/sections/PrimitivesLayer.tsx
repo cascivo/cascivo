@@ -62,6 +62,11 @@ export function PrimitivesLayer() {
           </Card>
         ))}
       </div>
+      <p className="primitives-cta">
+        <a className="proof-link" href="/enterprise">
+          Why cascivo is enterprise-ready and AI-first &rarr;
+        </a>
+      </p>
     </section>
   )
 }

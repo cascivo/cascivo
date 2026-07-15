@@ -84,6 +84,12 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
       'The questions people ask before committing to cascivo — licensing, adopting one component at a time, Next.js/RSC, Tailwind, and how it compares to shadcn/ui.',
     ogTitle: 'Questions before you adopt cascivo',
   },
+  '/enterprise': {
+    title: 'Enterprise-ready & AI-first — cascivo',
+    description:
+      'Why cascivo is safe to bet a product on: you own the copy-pasted source, WCAG 2.2 AA accessibility, signal performance under load, a first-party platform (state, forms, theming, i18n, charts), and an AI-first machine-readable core that keeps quality high whether a human or an agent writes the code.',
+    ogTitle: 'cascivo — enterprise-ready & AI-first',
+  },
   '/modern-css': {
     title: 'Modern CSS — cascivo',
     description:
@@ -165,6 +171,7 @@ export const ROUTE_HEAD: Record<string, RouteHead> = {
 export const PRERENDER_ROUTES = [
   'accessibility',
   'performance',
+  'enterprise',
   'guides',
   'guides/coming-from-shadcn',
   'guides/customization',

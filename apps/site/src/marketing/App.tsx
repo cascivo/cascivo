@@ -60,6 +60,9 @@ const AccessibleComponentPage = lazy(() =>
 const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
 )
+const EnterprisePage = lazy(() =>
+  import('./pages/EnterprisePage').then((m) => ({ default: m.EnterprisePage })),
+)
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
 const ComingFromShadcnPage = lazy(() =>
   import('./pages/guides/ComingFromShadcnPage').then((m) => ({ default: m.ComingFromShadcnPage })),
@@ -196,6 +199,7 @@ const ROUTES: Record<string, Route> = {
     title: ROUTE_HEAD['/accessibility']?.title ?? 'cascivo',
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
+  '/enterprise': { Page: EnterprisePage, title: ROUTE_HEAD['/enterprise']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
   '/blog': { Page: BlogIndexPage, title: ROUTE_HEAD['/blog']?.title ?? 'cascivo' },
   '/guides/coming-from-shadcn': {

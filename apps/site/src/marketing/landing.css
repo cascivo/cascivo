@@ -1418,6 +1418,12 @@ kbd {
   color: var(--cascivo-color-accent-hover);
 }
 
+.primitives-cta {
+  margin: var(--cascivo-space-6) 0 0;
+  font-size: var(--cascivo-text-base);
+  font-weight: var(--cascivo-font-medium);
+}
+
 .proof-chart-wrap {
   padding-inline-start: 3.5rem;
 }
