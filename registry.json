@@ -3580,7 +3580,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "fileHashes": {
-        "command-menu.tsx": "sha256-070c35db8c74973d9afe3c40249a9d2af12dd1abb991b653bb7795a98e349bec",
+        "command-menu.tsx": "sha256-c2cabd7206be58ebc1b9d5903fa8a0767002a8223d97255cfc16c067cbb5e5e8",
         "command-menu.module.css": "sha256-00c3aca20cd16fa9aa0b42959541f46120480085841c6ecaf895940886d33efb"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
