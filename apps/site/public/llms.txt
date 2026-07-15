@@ -585,4 +585,4 @@ see how components behave without adding tracking, read these machine-readable C
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-15 from registry v0.6.0_
+_Generated: 2026-07-15 from registry v0.6.1_

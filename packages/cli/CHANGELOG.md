@@ -1,5 +1,11 @@
 # cascivo
 
+## 0.4.1
+
+### Patch Changes
+
+- 62a02e6: DX improvements
+
 ## 0.4.0
 
 ### Minor Changes
