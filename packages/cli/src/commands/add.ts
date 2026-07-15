@@ -58,14 +58,14 @@ export interface ResolvedBareEntry {
 
 /**
  * Names from other libraries → the cascivo layout primitive that fills the same
- * role, so `cascivo add flex` installs `layout/stack`. Bare names that already
- * resolve (e.g. `stack` → `layout/stack` via suffix match) need no alias.
+ * role, so `cascivo add box` installs `layout/flex`. Bare names that already
+ * resolve (e.g. `flex` → `layout/flex` via suffix match) still list an alias here
+ * for discoverability.
  */
 export const LAYOUT_ALIASES: Record<string, string> = {
-  flex: 'stack',
-  box: 'stack',
-  hstack: 'stack',
-  vstack: 'stack',
+  box: 'layout/flex',
+  hstack: 'layout/flex',
+  vstack: 'layout/flex',
   gap: 'spacer',
 }
 

@@ -76,8 +76,10 @@ const translationRef = {
   additionalProperties: false,
 }
 
-const dataRefPattern = '^\\$data\\.'
-const actionRefPattern = '^\\$actions\\.'
+// bind: "$data.<path>" (host data) or "$state.<key>" (view-local state).
+const bindRefPattern = '^\\$(data|state)\\.'
+// events: "$actions.<name>" (host action) or "$state.set|toggle.<key>" (state writer).
+const eventRefPattern = '^\\$actions\\.|^\\$state\\.(set|toggle)\\.'
 
 const propValue = {
   $anchor: 'PropValue',
@@ -132,10 +134,14 @@ const schema = {
   properties: {
     $schema: { type: 'string' },
     version: { const: 1 },
+    state: {
+      type: 'object',
+      description: 'View-local state: initial primitive values, read via bind "$state.<key>".',
+      additionalProperties: { type: ['string', 'number', 'boolean', 'null'] },
+    },
     view: {
       type: 'object',
       properties: {
-        layout: { type: 'string' },
         regions: {
           type: 'object',
           additionalProperties: {
@@ -158,11 +164,11 @@ const schema = {
         props: { type: 'object', additionalProperties: { $ref: '#/$defs/PropValue' } },
         bind: {
           type: 'object',
-          additionalProperties: { type: 'string', pattern: dataRefPattern },
+          additionalProperties: { type: 'string', pattern: bindRefPattern },
         },
         events: {
           type: 'object',
-          additionalProperties: { type: 'string', pattern: actionRefPattern },
+          additionalProperties: { type: 'string', pattern: eventRefPattern },
         },
         children: {
           oneOf: [

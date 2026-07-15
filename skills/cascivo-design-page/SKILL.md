@@ -95,6 +95,21 @@ npx tsc --noEmit
 
 Fix any type errors before presenting the result to the user.
 
+### 6.4. Structure with layout primitives, not custom CSS
+
+For page structure — shell content areas, toolbars, card grids, multi-column
+sections — use the layout primitives from `@cascivo/react` before writing custom
+grid/flex CSS or inline `style` layout:
+
+- `Flex` — gap-based flex container (`direction`/`gap`/`align`/`justify`/`wrap`).
+- `Grid` / `GridItem` — responsive object props: `cols={{ base: 1, md: 2, lg: 3 }}`,
+  `span={{ base: 1, lg: 2 }}`.
+- `AutoGrid` — responsive card grid, fills columns by width with no media queries.
+- `Columns`, `Center`, `Spacer` — equal columns, centered max-width column, fixed gap.
+
+The published `Stack` is a visual card-pile (overlap by `offset`) — for gap-based
+layout reach for `Flex`. See `docs/cookbooks/layout-and-spacing.md`.
+
 ### 6.5. Styling discipline — the layer contract
 
 Any CSS you write for the page must follow cascivo's layer contract (layer order

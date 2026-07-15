@@ -1,0 +1,52 @@
+Wrap JS-imported third-party stylesheets into a low-priority cascade `@layer` so
+cascivo's tokens and themes always win.
+
+## Why
+
+cascivo ships every rule inside a [cascade layer](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md).
+Layer order beats specificity, so unlayered author CSS — like a charting library's
+global stylesheet — stomps your theme. The native fix is
+`@import url('lib.css') layer(vendor)` from a CSS file (see
+[docs/THIRD-PARTY-CSS.md](https://github.com/cascivo/cascivo/blob/main/docs/THIRD-PARTY-CSS.md)).
+But that only works from CSS — a stylesheet imported from **JavaScript**
+(`import 'lib/styles.css'`, how most JS libraries ship) has nowhere to attach
+`layer()`. This plugin closes that gap.
+
+## Usage
+
+```ts
+// vite.config.ts
+import { cascivoLayers } from '@cascivo/vite-plugin'
+
+export default defineConfig({
+  plugins: [
+    cascivoLayers({
+      imports: {
+        'recharts/styles.css': 'vendor',
+        'some-widget/dist/styles.css': 'vendor',
+      },
+    }),
+  ],
+})
+```
+
+Each key is matched against the tail of the resolved module id; each value is the
+cascade layer to wrap it in. Your app CSS must declare the layer **before** the
+cascivo layers:
+
+```css
+@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
+  cascivo.theme, cascivo.blocks, cascivo.override;
+```
+
+## Scope
+
+- **Vite only.** A webpack/Next.js loader is not included.
+- Cannot fix runtime-injected `<style>` tags or inline `style=""` attributes — those
+  bypass the layer system entirely. Use the library's own theming API or a Shadow DOM
+  boundary there.
+
+## API
+
+- `cascivoLayers({ imports })` — the Vite plugin.
+- `wrapCssInLayer(source, layer?)` — the underlying pure transform, exported for testing.

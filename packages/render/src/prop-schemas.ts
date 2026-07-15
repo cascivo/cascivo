@@ -2136,6 +2136,32 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['pill', 'outline'],
     },
   ],
+  Flex: [
+    {
+      name: 'direction',
+      required: false,
+      enum: ['vertical', 'horizontal'],
+    },
+    {
+      name: 'gap',
+      required: false,
+    },
+    {
+      name: 'align',
+      required: false,
+      enum: ['start', 'center', 'end', 'stretch'],
+    },
+    {
+      name: 'justify',
+      required: false,
+      enum: ['start', 'center', 'end', 'between'],
+    },
+    {
+      name: 'wrap',
+      required: false,
+      primitives: ['boolean'],
+    },
+  ],
   Flow: [
     {
       name: 'nodes',
@@ -2693,7 +2719,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'cols',
       required: false,
-      primitives: ['number'],
     },
     {
       name: 'gap',
@@ -2702,7 +2727,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'span',
       required: false,
-      primitives: ['number'],
     },
   ],
   Header: [

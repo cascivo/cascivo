@@ -1,7 +1,7 @@
 import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
-  name: 'Stack',
+  name: 'Flex',
   description: 'Flex layout primitive for vertical or horizontal stacking with gap control.',
   category: 'layout',
   states: [],
@@ -39,12 +39,12 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Vertical',
-      code: '<Stack gap={4}><div>A</div><div>B</div></Stack>',
+      code: '<Flex gap={4}><div>A</div><div>B</div></Flex>',
       description: 'Default vertical stack',
     },
     {
       title: 'Horizontal',
-      code: '<Stack direction="horizontal" gap={2}><div>A</div><div>B</div></Stack>',
+      code: '<Flex direction="horizontal" gap={2}><div>A</div><div>B</div></Flex>',
       description: 'Row layout',
     },
   ],
@@ -58,21 +58,21 @@ export const meta: ComponentMeta = {
     whenNotToUse: [
       'Two-dimensional layouts — use Grid',
       'Responsive auto-wrapping card collections — use AutoGrid',
-      'A visual card-pile / overlapping avatars — that is the DIFFERENT `Stack` in @cascivo/react (an `offset` prop), not this flex layout primitive.',
+      'A visual card-pile / overlapping avatars — that is `Stack` in @cascivo/react (an `offset` prop), a different component.',
     ],
     antiPatterns: [
       {
         bad: "Expecting import { Stack } from '@cascivo/react' to gap items",
-        good: 'Copy this layout Stack in with `npx cascivo add stack`, then import it from your local layouts',
-        why: 'The published `Stack` export is a card-pile that overlaps children; this gap-based flex Stack is copy-paste-only despite sharing the name.',
+        good: 'Use Flex for gap-based layout (import { Flex } from "@cascivo/react", or `npx cascivo add flex`)',
+        why: 'The published `Stack` export is a card-pile that overlaps children by an offset — it does not do gap-based layout. Flex is the flex container.',
       },
     ],
     related: [
       {
-        name: 'Stack (card-pile)',
+        name: 'Stack',
         relationship: 'alternative',
         reason:
-          'The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component that shares this name. Pick by behaviour: gap layout here, visual overlap there.',
+          'The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component for visual overlap, not gap-based layout.',
       },
       {
         name: 'Grid',

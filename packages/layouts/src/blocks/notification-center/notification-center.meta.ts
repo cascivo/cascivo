@@ -27,7 +27,7 @@ export const meta: ComponentMeta = {
     { title: 'Default', code: '<NotificationCenter />', description: 'Notification center' },
   ],
   dependencies: ['@cascivo/react'],
-  registryDependencies: ['layout/stack'],
+  registryDependencies: ['layout/flex'],
   tags: ['block', 'notifications', 'alerts'],
   intent: {
     whenToUse: [

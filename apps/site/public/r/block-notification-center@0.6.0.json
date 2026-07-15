@@ -47,7 +47,7 @@
       }
     ],
     "dependencies": ["@cascivo/react"],
-    "registryDependencies": ["layout/stack"],
+    "registryDependencies": ["layout/flex"],
     "tags": ["block", "notifications", "alerts"],
     "intent": {
       "whenToUse": [

@@ -70,8 +70,8 @@ export async function list(config: CascadeConfig, options: ListOptions = {}): Pr
 
   console.log(formatList(components))
   console.log(
-    '\nTip: install any entry by its bare name — `cascivo add stack` resolves to ' +
-      '`layout/stack`. Layout primitives (Stack, Grid, AutoGrid, Columns, Spacer, ' +
+    '\nTip: install any entry by its bare name — `cascivo add flex` resolves to ' +
+      '`layout/flex`. Layout primitives (Flex, Grid, AutoGrid, Columns, Spacer, ' +
       'Center) replace inline-style layout; see docs/cookbooks/layout-and-spacing.md.',
   )
 }

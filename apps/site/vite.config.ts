@@ -212,7 +212,7 @@ function loadRegistryComponents(): RegistryComponentEntry[] {
   return registry.components
 }
 
-// Category-prefixed registry slugs (`chart/area-chart`, `layout/stack`) mean a
+// Category-prefixed registry slugs (`chart/area-chart`, `layout/flex`) mean a
 // related-component display name like "AreaChart" can't be slugified straight
 // to its route — try each known prefix in turn. Keep in sync with the root
 // dirs scanned by scripts/registry/generate.ts.

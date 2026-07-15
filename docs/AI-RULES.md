@@ -23,7 +23,8 @@ follow these rules whenever you generate or edit CSS:
    sub-elements (a badge in a card, a dot in a badge) use native CSS nesting inside one
    layer block, not new sublayers.
 4. Third-party CSS: `@import url('lib/styles.css') layer(vendor);` with `vendor`
-   declared before the cascivo layers. Never import vendor CSS from JavaScript.
+   declared before the cascivo layers. Don't import vendor CSS from JavaScript — route
+   it through a CSS file, or use `@cascivo/vite-plugin` (`cascivoLayers`) to layer it.
 5. Style with `--cascivo-*` tokens, not raw values.
 
 Canonical layer order (lowest → highest priority):
@@ -31,6 +32,44 @@ Canonical layer order (lowest → highest priority):
 
 The full machine-readable guide is at https://cascivo.com/llms.txt.
 ```
+
+## Overriding styles the sanctioned way
+
+Every cascivo component spreads `{...props}` onto its root element, so `style` and
+`className` **already pass through on every component** — you do not need (and there is
+no) `sx`/`css` styling prop. When a component's props and tokens don't cover a one-off,
+climb this ladder in order and stop at the first rung that works:
+
+1. **Component props + tokens** — the intended path. `variant`, `size`, and setting a
+   `--cascivo-*` component token cover almost everything.
+2. **`className` + a rule in `cascivo.override`** — for a reusable override. The
+   `cascivo.override` layer beats everything cascivo ships.
+3. **Inline `style` with `var(--cascivo-*)` values** — for a fast one-off. This stays
+   `cascivo audit --ai`-clean because the values are tokens.
+4. **`/* cascivo-audit: allow <rule> */`** — the rare remainder. A comment on the same
+   line as, or the line above, a flagged line downgrades that finding so the audit no
+   longer fails on it (e.g. `allow unknown-prop`, `allow hardcoded-value`, or `allow all`).
+   Suppressed findings still print, so nothing is hidden.
+
+`cascivo audit --ai` treats an inline `style` value that happens to equal a token as a
+gentle **warning**, not an error — it never blocks a build on a fast-prototyping override.
+Genuinely invented props (`sx`, `elevation`, …) remain errors; use rung 4 only when you
+mean it.
+
+## Layout primitives — structure with these before writing CSS
+
+Page structure (dashboard shells, toolbars, card grids, multi-column sections) has
+first-class primitives, all exported from `@cascivo/react` — reach for them before
+hand-writing grid/flex CSS or inline `style` layout:
+
+- **`Flex`** — the gap-based flex container (`direction`, `gap`, `align`, `justify`, `wrap`).
+- **`Grid`** / **`GridItem`** — CSS grid with responsive object props:
+  `<Grid cols={{ base: 1, md: 2, lg: 3 }} gap={4}>`, `<GridItem span={{ base: 1, lg: 2 }}>`.
+- **`AutoGrid`** — responsive card grid that fills columns by available width, no media queries.
+- **`Columns`**, **`Center`**, **`Spacer`** — equal columns, centered max-width column, fixed gap.
+
+The published `Stack` is a visual card-pile (overlaps children by an `offset`) — for
+gap-based layout use `Flex`, not `Stack`.
 
 ## Coming from utility-first (Tailwind)?
 

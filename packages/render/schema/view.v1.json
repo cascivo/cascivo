@@ -11,12 +11,16 @@
     "version": {
       "const": 1
     },
+    "state": {
+      "type": "object",
+      "description": "View-local state: initial primitive values, read via bind \"$state.<key>\".",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      }
+    },
     "view": {
       "type": "object",
       "properties": {
-        "layout": {
-          "type": "string"
-        },
         "regions": {
           "type": "object",
           "additionalProperties": {
@@ -149,6 +153,7 @@
             "Field",
             "FileUploader",
             "Filter",
+            "Flex",
             "Flow",
             "FlowBackground",
             "FlowCanvas",
@@ -247,7 +252,6 @@
             "Spinner",
             "SplitView",
             "Stack",
-            "Stack",
             "Stat",
             "StatsBand",
             "StatsCards",
@@ -290,14 +294,14 @@
           "type": "object",
           "additionalProperties": {
             "type": "string",
-            "pattern": "^\\$data\\."
+            "pattern": "^\\$(data|state)\\."
           }
         },
         "events": {
           "type": "object",
           "additionalProperties": {
             "type": "string",
-            "pattern": "^\\$actions\\."
+            "pattern": "^\\$actions\\.|^\\$state\\.(set|toggle)\\."
           }
         },
         "children": {
@@ -4743,7 +4747,7 @@
           "if": {
             "properties": {
               "component": {
-                "const": "Grid"
+                "const": "Flex"
               }
             },
             "required": ["component"]
@@ -4753,13 +4757,40 @@
               "props": {
                 "type": "object",
                 "properties": {
-                  "cols": {
-                    "type": "number"
+                  "direction": {
+                    "type": "string",
+                    "enum": ["vertical", "horizontal"]
                   },
-                  "span": {
-                    "type": "number"
+                  "align": {
+                    "type": "string",
+                    "enum": ["start", "center", "end", "stretch"]
+                  },
+                  "justify": {
+                    "type": "string",
+                    "enum": ["start", "center", "end", "between"]
+                  },
+                  "wrap": {
+                    "type": "boolean"
                   }
                 }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Grid"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {}
               }
             }
           }
@@ -4928,40 +4959,6 @@
                   }
                 },
                 "required": ["start", "end"]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "component": {
-                "const": "Stack"
-              }
-            },
-            "required": ["component"]
-          },
-          "then": {
-            "properties": {
-              "props": {
-                "type": "object",
-                "properties": {
-                  "direction": {
-                    "type": "string",
-                    "enum": ["vertical", "horizontal"]
-                  },
-                  "align": {
-                    "type": "string",
-                    "enum": ["start", "center", "end", "stretch"]
-                  },
-                  "justify": {
-                    "type": "string",
-                    "enum": ["start", "center", "end", "between"]
-                  },
-                  "wrap": {
-                    "type": "boolean"
-                  }
-                }
               }
             }
           }

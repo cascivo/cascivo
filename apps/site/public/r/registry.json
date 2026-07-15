@@ -1410,7 +1410,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/react"],
-        "registryDependencies": ["layout/stack"],
+        "registryDependencies": ["layout/flex"],
         "tags": ["block", "notifications", "alerts"],
         "intent": {
           "whenToUse": [
@@ -1716,7 +1716,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/react"],
-        "registryDependencies": ["layout/page-header", "layout/stack"],
+        "registryDependencies": ["layout/page-header", "layout/flex"],
         "tags": ["block", "users", "table", "page"],
         "intent": {
           "whenToUse": [
@@ -13793,7 +13793,7 @@
             "Constraining page or section content to a readable measure"
           ],
           "whenNotToUse": [
-            "Stacking children with consistent gaps — use Stack",
+            "Stacking children with consistent gaps — use Flex",
             "Multi-column or grid arrangements — use Columns or Grid"
           ],
           "antiPatterns": [],
@@ -13804,9 +13804,9 @@
               "reason": "Sections use a centered inner width built on the same idea"
             },
             {
-              "name": "Stack",
+              "name": "Flex",
               "relationship": "pairs-with",
-              "reason": "Stack the centered content vertically inside it"
+              "reason": "Stack the centered content vertically inside it with Flex"
             }
           ],
           "a11yRationale": "Pure layout wrapper with no semantic role; does not affect the accessibility tree.",
@@ -13868,7 +13868,7 @@
           ],
           "whenNotToUse": [
             "Card grids that auto-fit to width — use AutoGrid",
-            "Single-direction stacking — use Stack"
+            "Single-direction stacking — use Flex"
           ],
           "antiPatterns": [],
           "related": [
@@ -13970,6 +13970,110 @@
     },
     {
       "schemaVersion": 2,
+      "name": "layout/flex",
+      "type": "layout",
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+      "version": "0.6.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["layout", "flex", "stack", "spacing"],
+      "category": "layout",
+      "meta": {
+        "name": "Flex",
+        "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+        "category": "layout",
+        "states": [],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "direction",
+            "type": "'vertical' | 'horizontal'",
+            "required": false,
+            "description": "Flex direction"
+          },
+          {
+            "name": "gap",
+            "type": "1|2|3|4|5|6|8|10|12",
+            "required": false,
+            "description": "Spacing token step"
+          },
+          {
+            "name": "align",
+            "type": "'start'|'center'|'end'|'stretch'",
+            "required": false,
+            "description": "align-items"
+          },
+          {
+            "name": "justify",
+            "type": "'start'|'center'|'end'|'between'",
+            "required": false,
+            "description": "justify-content"
+          },
+          {
+            "name": "wrap",
+            "type": "boolean",
+            "required": false,
+            "description": "Allow wrapping"
+          }
+        ],
+        "tokens": ["--cascivo-space-*"],
+        "accessibility": {
+          "role": "generic",
+          "wcag": "2.1-AA",
+          "keyboard": []
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["layout", "flex", "stack", "spacing"],
+        "intent": {
+          "whenToUse": [
+            "Arranging children vertically or horizontally with a consistent gap",
+            "The default primitive for spacing a small set of elements in one direction"
+          ],
+          "whenNotToUse": [
+            "Two-dimensional layouts — use Grid",
+            "Responsive auto-wrapping card collections — use AutoGrid",
+            "A visual card-pile / overlapping avatars — that is `Stack` in @cascivo/react (an `offset` prop), a different component."
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Expecting import { Stack } from '@cascivo/react' to gap items",
+              "good": "Use Flex for gap-based layout (import { Flex } from \"@cascivo/react\", or `npx cascivo add flex`)",
+              "why": "The published `Stack` export is a card-pile that overlaps children by an offset — it does not do gap-based layout. Flex is the flex container."
+            }
+          ],
+          "related": [
+            {
+              "name": "Stack",
+              "relationship": "alternative",
+              "reason": "The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component for visual overlap, not gap-based layout."
+            },
+            {
+              "name": "Grid",
+              "relationship": "alternative",
+              "reason": "Use for two-dimensional row-and-column layouts"
+            },
+            {
+              "name": "Columns",
+              "relationship": "alternative",
+              "reason": "Use for equal-width multi-column content"
+            }
+          ],
+          "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
+          "flexibility": []
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "layout/grid",
       "type": "layout",
       "description": "CSS grid layout primitive with responsive column collapsing.",
@@ -13995,9 +14099,9 @@
         "props": [
           {
             "name": "cols",
-            "type": "number",
+            "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
-            "description": "Number of grid columns"
+            "description": "Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns"
           },
           {
             "name": "gap",
@@ -14007,9 +14111,9 @@
           },
           {
             "name": "span",
-            "type": "number",
+            "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
-            "description": "GridItem: column span count"
+            "description": "GridItem: column span — a number, or a per-breakpoint object"
           }
         ],
         "tokens": ["--cascivo-space-*"],
@@ -14421,15 +14525,15 @@
             "Adding deliberate breathing room where margins are awkward"
           ],
           "whenNotToUse": [
-            "Spacing a series of siblings — use Stack with a gap instead",
+            "Spacing a series of siblings — use Flex with a gap instead",
             "Arbitrary one-off spacing — prefer token-based gap props"
           ],
           "antiPatterns": [],
           "related": [
             {
-              "name": "Stack",
+              "name": "Flex",
               "relationship": "alternative",
-              "reason": "Use gap on Stack to space multiple siblings consistently"
+              "reason": "Use gap on Flex to space multiple siblings consistently"
             }
           ],
           "a11yRationale": "Empty presentational spacer with no semantic role; ignored by assistive tech.",
@@ -14526,110 +14630,6 @@
             }
           ],
           "a11yRationale": "Exposes a keyboard-operable separator with role=\"separator\" and aria-valuenow for the split ratio.",
-          "flexibility": []
-        }
-      }
-    },
-    {
-      "schemaVersion": 2,
-      "name": "layout/stack",
-      "type": "layout",
-      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
-      "version": "0.6.0",
-      "files": [
-        {
-          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/stack/stack.tsx"
-        },
-        {
-          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/stack/stack.module.css"
-        }
-      ],
-      "dependencies": ["@cascivo/core"],
-      "tags": ["layout", "flex", "stack", "spacing"],
-      "category": "layout",
-      "meta": {
-        "name": "Stack",
-        "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
-        "category": "layout",
-        "states": [],
-        "variants": [],
-        "sizes": [],
-        "props": [
-          {
-            "name": "direction",
-            "type": "'vertical' | 'horizontal'",
-            "required": false,
-            "description": "Flex direction"
-          },
-          {
-            "name": "gap",
-            "type": "1|2|3|4|5|6|8|10|12",
-            "required": false,
-            "description": "Spacing token step"
-          },
-          {
-            "name": "align",
-            "type": "'start'|'center'|'end'|'stretch'",
-            "required": false,
-            "description": "align-items"
-          },
-          {
-            "name": "justify",
-            "type": "'start'|'center'|'end'|'between'",
-            "required": false,
-            "description": "justify-content"
-          },
-          {
-            "name": "wrap",
-            "type": "boolean",
-            "required": false,
-            "description": "Allow wrapping"
-          }
-        ],
-        "tokens": ["--cascivo-space-*"],
-        "accessibility": {
-          "role": "generic",
-          "wcag": "2.1-AA",
-          "keyboard": []
-        },
-        "examples": [],
-        "dependencies": ["@cascivo/core"],
-        "tags": ["layout", "flex", "stack", "spacing"],
-        "intent": {
-          "whenToUse": [
-            "Arranging children vertically or horizontally with a consistent gap",
-            "The default primitive for spacing a small set of elements in one direction"
-          ],
-          "whenNotToUse": [
-            "Two-dimensional layouts — use Grid",
-            "Responsive auto-wrapping card collections — use AutoGrid",
-            "A visual card-pile / overlapping avatars — that is the DIFFERENT `Stack` in @cascivo/react (an `offset` prop), not this flex layout primitive."
-          ],
-          "antiPatterns": [
-            {
-              "bad": "Expecting import { Stack } from '@cascivo/react' to gap items",
-              "good": "Copy this layout Stack in with `npx cascivo add stack`, then import it from your local layouts",
-              "why": "The published `Stack` export is a card-pile that overlaps children; this gap-based flex Stack is copy-paste-only despite sharing the name."
-            }
-          ],
-          "related": [
-            {
-              "name": "Stack (card-pile)",
-              "relationship": "alternative",
-              "reason": "The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component that shares this name. Pick by behaviour: gap layout here, visual overlap there."
-            },
-            {
-              "name": "Grid",
-              "relationship": "alternative",
-              "reason": "Use for two-dimensional row-and-column layouts"
-            },
-            {
-              "name": "Columns",
-              "relationship": "alternative",
-              "reason": "Use for equal-width multi-column content"
-            }
-          ],
-          "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
           "flexibility": []
         }
       }
@@ -20667,14 +20667,14 @@
             "Notification stack visualisations"
           ],
           "whenNotToUse": [
-            "Gap-based vertical/horizontal layout — that is a DIFFERENT component, the flex `layout/stack` (also exported as `Stack`). This `Stack` only overlaps children with an offset.",
+            "Gap-based vertical/horizontal layout — that is a DIFFERENT component, `Flex` (`layout/flex`). This `Stack` only overlaps children with an offset.",
             "Independent positioned elements — use CSS position directly"
           ],
           "related": [
             {
-              "name": "layout/stack",
+              "name": "layout/flex",
               "relationship": "alternative",
-              "reason": "The flex layout primitive for gap-based vertical/horizontal stacking. It shares the `Stack` export name but is copy-paste-only (`npx cascivo add stack`) — not this card-pile component."
+              "reason": "The flex layout primitive `Flex`, for gap-based vertical/horizontal stacking — a different component from this card-pile Stack."
             },
             {
               "name": "Avatar",
@@ -20690,8 +20690,8 @@
           "antiPatterns": [
             {
               "bad": "import { Stack } from '@cascivo/react' to space items vertically",
-              "good": "For flex layout use layout/stack (npx cascivo add stack); use this Stack only for a visual card-pile",
-              "why": "The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. The two components share a name; pick by behaviour, not by the name."
+              "good": "For flex layout use Flex (import { Flex } from \"@cascivo/react\"); use this Stack only for a visual card-pile",
+              "why": "The npm `Stack` overlaps its children by an offset — it does not do gap-based layout. Reach for `Flex` when you want gap-based flex layout."
             }
           ],
           "a11yRationale": "Stack is a layout-only container (role=\"none\"). Each child must carry its own accessible semantics. Stacked cards that are interactive should each have a focusable element and a descriptive label.",

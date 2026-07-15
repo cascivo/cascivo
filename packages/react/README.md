@@ -310,6 +310,7 @@ routing break after adding one of these, check that the import resolves to
 - **Cta** — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
 - **DashboardLayout** — Dashboard page layout with stats strip, main content area, and optional aside.
 - **FeatureGrid** — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.
+- **Flex** — Flex layout primitive for vertical or horizontal stacking with gap control.
 - **Grid** — CSS grid layout primitive with responsive column collapsing.
 - **Hero** — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.
 - **Indicator** — Positions an overlay element (badge, dot, count) at a corner of its child
@@ -325,7 +326,6 @@ routing break after adding one of these, check that the import resolves to
 - **Spacer** — Fixed-height spacing block using design token steps.
 - **SplitView** — Resizable two-pane split layout with keyboard and pointer drag support.
 - **Stack** — Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect
-- **Stack** — Flex layout primitive for vertical or horizontal stacking with gap control.
 - **StatsBand** — KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.
 
 ### Feedback

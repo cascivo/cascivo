@@ -18,8 +18,8 @@ const SCHEMA_DOC = `A ViewConfig is a JSON object:
 
 {
   "version": 1,
+  "state": { "<key>": <string | number | boolean | null> },
   "view": {
-    "layout": "<optional layout name, e.g. dashboard | settings | auth>",
     "regions": {
       "<regionName>": [ <ComponentNode>, ... ]
     }
@@ -31,16 +31,19 @@ A ComponentNode is:
 {
   "component": "<one of the registered component names below>",
   "props": { "<propName>": <value> },
-  "bind": { "<propName>": "$data.<path>" },
-  "events": { "<eventPropName>": "$actions.<name>" },
+  "bind": { "<propName>": "$data.<path>" | "$state.<key>" },
+  "events": { "<eventPropName>": "$actions.<name>" | "$state.set.<key>" | "$state.toggle.<key>" },
   "children": <ComponentNode[] | string | { "$t": "<i18n.key>" }>
 }
 
 Rules:
 - "component" MUST be one of the registered components listed below — never invent one.
 - Only use props listed for that component; enum props MUST use one of the listed values.
-- "bind" values are host-data references and MUST start with "$data.".
-- "events" values are host-action references and MUST start with "$actions.".
+- "state" (optional) declares view-local state — initial primitive values. Read a value with
+  bind "$state.<key>"; write it with events "$state.set.<key>" (stores the emitted/DOM value) or
+  "$state.toggle.<key>" (flips a boolean). Every "$state.*" ref MUST name a declared state key.
+- "bind" values are host-data references ("$data.<path>") or state reads ("$state.<key>").
+- "events" values are host-action references ("$actions.<name>") or state writers ("$state.set.<key>" / "$state.toggle.<key>").
 - "children" is an array of nodes, a plain string, or an i18n ref { "$t": "key" }.
 - Output ONLY the JSON ViewConfig — no prose, no markdown fences.`
 

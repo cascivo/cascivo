@@ -1,10 +1,11 @@
 import { signal } from '@cascivo/core'
 import { createLocale, defineCatalog, defineMessages } from '@cascivo/i18n'
-import { cleanup, render } from '@testing-library/react'
+import { cleanup, fireEvent, render } from '@testing-library/react'
 import React from 'react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { CascadeView } from './cascade-view'
 import { getPath } from './cascade-view'
+import { validateView } from './validate'
 
 afterEach(() => cleanup())
 
@@ -104,6 +105,91 @@ describe('<CascadeView />', () => {
       />,
     )
     expect(container.querySelector('[role="alert"]')).toBeTruthy()
+  })
+
+  it('renders an initial $state value into a bound prop', () => {
+    const config = {
+      state: { query: 'hello' },
+      view: {
+        regions: { main: [{ component: 'Input', bind: { value: '$state.query' } }] },
+      },
+    }
+    const { container } = render(<CascadeView config={config} />)
+    expect(container.querySelector('input')?.value).toBe('hello')
+  })
+
+  it('closes the two-way loop: writing $state.set updates the bound value', () => {
+    const config = {
+      state: { query: '' },
+      view: {
+        regions: {
+          main: [
+            {
+              component: 'Input',
+              bind: { value: '$state.query' },
+              events: { onChange: '$state.set.query' },
+            },
+          ],
+        },
+      },
+    }
+    const { container } = render(<CascadeView config={config} />)
+    const input = container.querySelector('input')!
+    fireEvent.change(input, { target: { value: 'vercel' } })
+    expect(container.querySelector('input')?.value).toBe('vercel')
+  })
+
+  it('flips a boolean via $state.toggle', () => {
+    const config = {
+      state: { off: false },
+      view: {
+        regions: {
+          main: [
+            {
+              component: 'Button',
+              bind: { disabled: '$state.off' },
+              events: { onClick: '$state.toggle.off' },
+              children: 'Toggle',
+            },
+          ],
+        },
+      },
+    }
+    const { container } = render(<CascadeView config={config} />)
+    const btn = container.querySelector('button')!
+    expect(btn.disabled).toBe(false)
+    fireEvent.click(btn)
+    expect(container.querySelector('button')?.disabled).toBe(true)
+  })
+
+  it('rejects a $state ref to an undeclared key', () => {
+    const { valid, errors } = validateView({
+      state: { query: '' },
+      view: { regions: { main: [{ component: 'Input', bind: { value: '$state.qeury' } }] } },
+    })
+    expect(valid).toBe(false)
+    expect(errors[0]?.message).toContain('Unknown state key "qeury"')
+    expect(errors[0]?.message).toContain('Did you mean "query"?')
+  })
+
+  it('rejects $state.toggle on a non-boolean key', () => {
+    const { valid, errors } = validateView({
+      state: { query: '' },
+      view: {
+        regions: { main: [{ component: 'Button', events: { onClick: '$state.toggle.query' } }] },
+      },
+    })
+    expect(valid).toBe(false)
+    expect(errors[0]?.message).toContain('requires a boolean initial value')
+  })
+
+  it('rejects a non-primitive state value', () => {
+    const { valid, errors } = validateView({
+      state: { bad: { nested: true } },
+      view: { regions: { main: [] } },
+    })
+    expect(valid).toBe(false)
+    expect(errors[0]?.path).toBe('state.bad')
   })
 
   it('live-patches when signal config changes', async () => {

@@ -706,7 +706,7 @@ function FindingRow({
 }: {
   file: string
   line: number
-  level: 'error' | 'info'
+  level: 'error' | 'warn' | 'info'
   rule: string
   detail: string
 }) {

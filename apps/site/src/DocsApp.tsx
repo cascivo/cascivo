@@ -128,7 +128,7 @@ function pageFor(path: string) {
   if (Static) return <Static />
   if (path.startsWith('/docs/components/')) {
     // Registry names can contain a category prefix (e.g. `chart/area-chart`,
-    // `layout/stack`, `block/login-page`), so the full remainder after the
+    // `layout/flex`, `block/login-page`), so the full remainder after the
     // prefix IS the name — do not split on `/` or slashed entries 404.
     const name = decodeURIComponent(path.slice('/docs/components/'.length).replace(/\/+$/, ''))
     return <ComponentPage name={name} />

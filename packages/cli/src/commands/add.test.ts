@@ -96,15 +96,15 @@ describe('resolveBareClosure (transitive registry dependencies)', () => {
   })
 
   it('resolves a bare name to its namespaced entry via suffix match', () => {
-    const registry = makeRegistry(comp('layout/stack'))
-    const { resolved } = resolveBareClosure(registry, ['stack'])
-    expect(resolved.map((r) => r.entry.name)).toEqual(['layout/stack'])
+    const registry = makeRegistry(comp('layout/flex'))
+    const { resolved } = resolveBareClosure(registry, ['flex'])
+    expect(resolved.map((r) => r.entry.name)).toEqual(['layout/flex'])
   })
 
-  it('resolves naming aliases to the layout primitive (flex/box → layout/stack)', () => {
-    const registry = makeRegistry(comp('layout/stack'), comp('layout/spacer'))
-    expect(resolveBareClosure(registry, ['flex']).resolved[0]?.entry.name).toBe('layout/stack')
-    expect(resolveBareClosure(registry, ['box']).resolved[0]?.entry.name).toBe('layout/stack')
+  it('resolves naming aliases to the layout primitive (box → layout/flex)', () => {
+    const registry = makeRegistry(comp('layout/flex'), comp('layout/spacer'))
+    expect(resolveBareClosure(registry, ['box']).resolved[0]?.entry.name).toBe('layout/flex')
+    expect(resolveBareClosure(registry, ['hstack']).resolved[0]?.entry.name).toBe('layout/flex')
     expect(resolveBareClosure(registry, ['gap']).resolved[0]?.entry.name).toBe('layout/spacer')
   })
 })

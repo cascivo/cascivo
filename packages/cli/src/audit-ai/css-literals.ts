@@ -6,7 +6,7 @@ export interface LiteralFinding {
   line: number
   property: string
   value: string
-  level: 'error' | 'info'
+  level: 'error' | 'warn' | 'info'
   rule: 'hardcoded-value'
   /** only when exactly one catalog match */
   suggestedToken?: string
@@ -121,13 +121,17 @@ export function findCssLiteralViolations(
       if (seen.has(key)) continue
       const cls = classify(rawValue, contract)
       if (!cls) continue
+      // Inline TSX `style={{…}}` overrides are a sanctioned fast-prototyping escape
+      // hatch — surface a gentle `warn` (not a loop-blocking `error`) so an agent can
+      // finish. `.css`-file literals stay `error`: there the fix is mechanical (`--fix`).
+      const inlineCls = cls.level === 'error' ? { ...cls, level: 'warn' as const } : cls
       findings.push({
         file: filename,
         line: i + 1,
         property: prop,
         value: rawValue,
         rule: 'hardcoded-value',
-        ...cls,
+        ...inlineCls,
       })
     }
   }

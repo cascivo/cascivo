@@ -31,6 +31,43 @@ describe('view.v1.json schema artifact', () => {
     )
   })
 
+  it('declares a top-level state property with primitive values', () => {
+    const schema = JSON.parse(readFileSync(SCHEMA_PATH, 'utf-8')) as {
+      properties: { state?: { additionalProperties?: { type?: unknown } } }
+    }
+    expect(schema.properties.state).toBeDefined()
+    expect(schema.properties.state?.additionalProperties?.type).toEqual([
+      'string',
+      'number',
+      'boolean',
+      'null',
+    ])
+  })
+
+  it('allows $state refs in bind and $state.set/toggle in events', () => {
+    const schema = JSON.parse(readFileSync(SCHEMA_PATH, 'utf-8')) as {
+      $defs: {
+        ComponentNode: {
+          properties: {
+            bind: { additionalProperties: { pattern: string } }
+            events: { additionalProperties: { pattern: string } }
+          }
+        }
+      }
+    }
+    const bindRe = new RegExp(
+      schema.$defs.ComponentNode.properties.bind.additionalProperties.pattern,
+    )
+    const eventRe = new RegExp(
+      schema.$defs.ComponentNode.properties.events.additionalProperties.pattern,
+    )
+    expect(bindRe.test('$state.query')).toBe(true)
+    expect(bindRe.test('$data.users')).toBe(true)
+    expect(eventRe.test('$state.set.query')).toBe(true)
+    expect(eventRe.test('$state.toggle.open')).toBe(true)
+    expect(eventRe.test('$actions.save')).toBe(true)
+  })
+
   it('contains Badge variant enum as spot-check', () => {
     const schema = JSON.parse(readFileSync(SCHEMA_PATH, 'utf-8')) as {
       $defs: {

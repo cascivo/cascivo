@@ -332,6 +332,7 @@ see how components behave without adding tracking, read these machine-readable C
 - [layout/center](https://docs.cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(copy-paste)_
 - [layout/columns](https://docs.cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(copy-paste)_
 - [layout/dashboard-layout](https://docs.cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
+- [layout/flex](https://docs.cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. _(copy-paste)_
 - [layout/grid](https://docs.cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. _(copy-paste)_
 - [layout/masonry](https://docs.cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
 - [layout/page-header](https://docs.cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(copy-paste)_
@@ -339,7 +340,6 @@ see how components behave without adding tracking, read these machine-readable C
 - [layout/settings-layout](https://docs.cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
 - [layout/spacer](https://docs.cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(copy-paste)_
 - [layout/split-view](https://docs.cascivo.com/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support. _(copy-paste)_
-- [layout/stack](https://docs.cascivo.com/llms/layout/stack.md) — Flex layout primitive for vertical or horizontal stacking with gap control. _(copy-paste)_
 - [resizable](https://docs.cascivo.com/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space _(npm @cascivo/react · or copy-paste)_
 - [scroll-area](https://docs.cascivo.com/llms/scroll-area.md) — A scroll container with styled, slim scrollbars and overflow shadows _(npm @cascivo/react · or copy-paste)_
 - [section/cta](https://docs.cascivo.com/llms/section/cta.md) — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping. _(copy-paste)_
@@ -503,6 +503,7 @@ see how components behave without adding tracking, read these machine-readable C
 - [Center](https://docs.cascivo.com/context/layout/center.md) — Use when: Horizontally centering content within a configurable max-width
 - [Columns](https://docs.cascivo.com/context/layout/columns.md) — Use when: Equal-width multi-column content that collapses to one column when narrow
 - [DashboardLayout](https://docs.cascivo.com/context/layout/dashboard-layout.md) — Use when: A dashboard page with a stats strip, main content area, and optional aside
+- [Flex](https://docs.cascivo.com/context/layout/flex.md) — Use when: Arranging children vertically or horizontally with a consistent gap
 - [Grid](https://docs.cascivo.com/context/layout/grid.md) — Use when: Two-dimensional layouts with an explicit column count
 - [Masonry](https://docs.cascivo.com/context/layout/masonry.md) — Use when: Galleries of variable-height items packed into balanced columns
 - [PageHeader](https://docs.cascivo.com/context/layout/page-header.md) — Use when: A page-level header with title, description, breadcrumb, and action slots
@@ -510,7 +511,6 @@ see how components behave without adding tracking, read these machine-readable C
 - [SettingsLayout](https://docs.cascivo.com/context/layout/settings-layout.md) — Use when: A two-column settings page with a fixed-width menu and fluid content
 - [Spacer](https://docs.cascivo.com/context/layout/spacer.md) — Use when: Inserting a fixed vertical gap between blocks using spacing token steps
 - [SplitView](https://docs.cascivo.com/context/layout/split-view.md) — Use when: Two side-by-side panes the user can resize via pointer or keyboard
-- [Stack](https://docs.cascivo.com/context/layout/stack.md) — Use when: Arranging children vertically or horizontally with a consistent gap
 - [Link](https://docs.cascivo.com/context/link.md) — Use when: Navigating to another page, view, or resource via a real href
 - [List](https://docs.cascivo.com/context/list.md) — Use when: Presenting a set of related items as a bulleted or numbered list
 - [LogViewer](https://docs.cascivo.com/context/log-viewer.md) — Use when: Rendering continuous, high-volume log or stream output (build/deploy logs, server output)
@@ -585,4 +585,4 @@ see how components behave without adding tracking, read these machine-readable C
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-14 from registry v0.6.0_
+_Generated: 2026-07-15 from registry v0.6.0_

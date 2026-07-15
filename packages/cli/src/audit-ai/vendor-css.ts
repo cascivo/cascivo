@@ -21,7 +21,8 @@ function isBareSpecifier(spec: string): boolean {
 const MESSAGE =
   'CSS imported from a package through JS/TS cannot be wrapped in an @layer, so if this ' +
   'package ships unlayered global CSS it beats every cascivo layer. Route it through a CSS ' +
-  'file instead: `@import url("<pkg>/styles.css") layer(vendor);`. See docs/THIRD-PARTY-CSS.md.'
+  'file (`@import url("<pkg>/styles.css") layer(vendor);`) or add @cascivo/vite-plugin ' +
+  '(`cascivoLayers({ imports: { "<pkg>/styles.css": "vendor" } })`). See docs/THIRD-PARTY-CSS.md.'
 
 /**
  * Warn on bare (node_modules) `*.css` imports in JS/TS. Relative imports (the

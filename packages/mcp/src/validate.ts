@@ -17,14 +17,22 @@ export interface ComponentNode {
 export interface ViewConfig {
   $schema?: string
   version?: 1
+  state?: Record<string, string | number | boolean | null>
   view: {
-    layout?: string
     regions: Record<string, ComponentNode[]>
   }
 }
 
 const DATA_REF_RE = /^\$data\./
+const STATE_REF_RE = /^\$state\./
 const ACTION_REF_RE = /^\$actions\./
+const STATE_SET_RE = /^\$state\.set\./
+const STATE_TOGGLE_RE = /^\$state\.toggle\./
+
+interface StateInfo {
+  keys: Set<string>
+  booleans: Set<string>
+}
 
 function closestName(name: string, candidates: string[]): string | undefined {
   const target = name.toLowerCase()
@@ -62,6 +70,7 @@ function validateNode(
   path: string,
   errors: ValidationError[],
   componentNames: Set<string>,
+  state: StateInfo,
 ): void {
   if (typeof node !== 'object' || node === null) {
     errors.push({ path, message: 'Expected a component node object' })
@@ -85,21 +94,41 @@ function validateNode(
 
   const nodeBind = (n['bind'] ?? {}) as Record<string, string>
   for (const [key, value] of Object.entries(nodeBind)) {
-    if (typeof value !== 'string' || !DATA_REF_RE.test(value)) {
+    if (typeof value !== 'string' || (!DATA_REF_RE.test(value) && !STATE_REF_RE.test(value))) {
       errors.push({
         path: `${path}.bind.${key}`,
-        message: `bind values must start with "$data." — got "${value}"`,
+        message: `bind values must start with "$data." or "$state." — got "${value}"`,
+      })
+    } else if (STATE_REF_RE.test(value) && !state.keys.has(value.slice('$state.'.length))) {
+      errors.push({
+        path: `${path}.bind.${key}`,
+        message: `Unknown state key "${value.slice('$state.'.length)}" — declare it in the top-level "state" object.`,
       })
     }
   }
 
   const nodeEvents = (n['events'] ?? {}) as Record<string, string>
   for (const [key, value] of Object.entries(nodeEvents)) {
-    if (typeof value !== 'string' || !ACTION_REF_RE.test(value)) {
+    const isSet = typeof value === 'string' && STATE_SET_RE.test(value)
+    const isToggle = typeof value === 'string' && STATE_TOGGLE_RE.test(value)
+    if (typeof value !== 'string' || (!ACTION_REF_RE.test(value) && !isSet && !isToggle)) {
       errors.push({
         path: `${path}.events.${key}`,
-        message: `events values must start with "$actions." — got "${value}"`,
+        message: `events values must start with "$actions.", "$state.set." or "$state.toggle." — got "${value}"`,
       })
+    } else if (isSet || isToggle) {
+      const stateKey = value.slice((isToggle ? '$state.toggle.' : '$state.set.').length)
+      if (!state.keys.has(stateKey)) {
+        errors.push({
+          path: `${path}.events.${key}`,
+          message: `Unknown state key "${stateKey}" — declare it in the top-level "state" object.`,
+        })
+      } else if (isToggle && !state.booleans.has(stateKey)) {
+        errors.push({
+          path: `${path}.events.${key}`,
+          message: `"$state.toggle.${stateKey}" requires a boolean initial value in "state".`,
+        })
+      }
     }
   }
 
@@ -110,6 +139,7 @@ function validateNode(
         `${path}.children[${i}]`,
         errors,
         componentNames,
+        state,
       )
     }
   }
@@ -127,10 +157,36 @@ export function validateView(
   }
 
   const c = config as Record<string, unknown>
+
+  // View-local state: optional object of primitive initial values.
+  const state: StateInfo = { keys: new Set(), booleans: new Set() }
+  const rawState = c['state']
+  if (rawState !== undefined) {
+    if (typeof rawState !== 'object' || rawState === null || Array.isArray(rawState)) {
+      errors.push({ path: 'state', message: 'state must be an object of primitive values' })
+    } else {
+      for (const [key, value] of Object.entries(rawState as Record<string, unknown>)) {
+        const t = value === null ? 'null' : typeof value
+        if (t !== 'string' && t !== 'number' && t !== 'boolean' && t !== 'null') {
+          errors.push({
+            path: `state.${key}`,
+            message: `state values must be string, number, boolean, or null — got ${t}.`,
+          })
+          continue
+        }
+        state.keys.add(key)
+        if (t === 'boolean') state.booleans.add(key)
+      }
+    }
+  }
+
   const view = c['view']
 
   if (typeof view !== 'object' || view === null) {
-    return { valid: false, errors: [{ path: 'view', message: 'view must be an object' }] }
+    return {
+      valid: false,
+      errors: [...errors, { path: 'view', message: 'view must be an object' }],
+    }
   }
 
   const v = view as Record<string, unknown>
@@ -155,6 +211,7 @@ export function validateView(
         `view.regions.${regionName}[${i}]`,
         errors,
         componentNames,
+        state,
       )
     }
   }

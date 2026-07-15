@@ -1,4 +1,4 @@
-# Stack
+# Flex
 
 Flex layout primitive for vertical or horizontal stacking with gap control.
 
@@ -7,7 +7,7 @@ Flex layout primitive for vertical or horizontal stacking with gap control.
 Copy-paste the source (you own and can edit it):
 
 ```bash
-npx cascivo add layout/stack
+npx cascivo add layout/flex
 ```
 
 _Copy-paste only — this block/layout is not published as an importable package._
@@ -33,10 +33,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 Default vertical stack
 
 ```tsx
-<Stack gap={4}>
+<Flex gap={4}>
   <div>A</div>
   <div>B</div>
-</Stack>
+</Flex>
 ```
 
 ### Horizontal
@@ -44,10 +44,10 @@ Default vertical stack
 Row layout
 
 ```tsx
-<Stack direction="horizontal" gap={2}>
+<Flex direction="horizontal" gap={2}>
   <div>A</div>
   <div>B</div>
-</Stack>
+</Flex>
 ```
 
 ## Design tokens
