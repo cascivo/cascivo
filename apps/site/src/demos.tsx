@@ -73,7 +73,7 @@ import {
   Edit,
   Plus,
   Search as SearchIcon,
-  Globe,
+  Folder,
   Zap,
 } from '@cascivo/icons'
 import { Blockquote } from '@cascivo/components/blockquote'
@@ -187,8 +187,8 @@ function DataTableDemo() {
 }
 
 const commandScopes: CommandScope[] = [
-  { id: 'clusters', label: 'Clusters', prefix: 'c' },
-  { id: 'orgs', label: 'Orgs', prefix: 'o' },
+  { id: 'projects', label: 'Projects', prefix: 'p' },
+  { id: 'workspaces', label: 'Workspaces', prefix: 'w' },
   { id: 'users', label: 'Users', prefix: 'u' },
   { id: 'commands', label: 'Commands', prefix: '>' },
 ]
@@ -205,72 +205,72 @@ function buildCommandGroups(run: (message: string) => void): CommandGroup[] {
   ]
   return [
     {
-      heading: 'Clusters',
-      scope: 'clusters',
+      heading: 'Projects',
+      scope: 'projects',
       items: [
         {
-          id: 'prod-eu',
-          label: 'prod-eu-central-1',
-          description: 'eu-central-1 · Enterprise · c9f21a04',
-          icon: <Server size={16} />,
-          keywords: ['production', 'europe'],
-          status: { label: 'Healthy', tone: 'healthy' },
-          actions: openActions('prod-eu-central-1'),
+          id: 'web-dashboard',
+          label: 'web-dashboard',
+          description: 'production · Next.js · prj_9f21a04',
+          icon: <Folder size={16} />,
+          keywords: ['frontend', 'app'],
+          status: { label: 'Live', tone: 'healthy' },
+          actions: openActions('web-dashboard'),
         },
         {
-          id: 'prod-us',
-          label: 'prod-us-east-2',
-          description: 'us-east-2 · Enterprise · a1b2c3d4',
-          icon: <Server size={16} />,
-          keywords: ['production'],
-          status: { label: 'Healthy', tone: 'healthy' },
-          actions: openActions('prod-us-east-2'),
+          id: 'mobile-api',
+          label: 'mobile-api',
+          description: 'production · Node.js · prj_a1b2c3d4',
+          icon: <Folder size={16} />,
+          keywords: ['backend', 'service'],
+          status: { label: 'Live', tone: 'healthy' },
+          actions: openActions('mobile-api'),
         },
         {
-          id: 'prod-ap',
-          label: 'prod-ap-southeast-1',
-          description: 'ap-southeast-1 · Team · e5f6a7b8',
-          icon: <Server size={16} />,
-          keywords: ['production', 'asia'],
-          status: { label: 'Degraded', tone: 'degraded' },
-          actions: openActions('prod-ap-southeast-1'),
+          id: 'marketing-site',
+          label: 'marketing-site',
+          description: 'preview · Astro · prj_e5f6a7b8',
+          icon: <Folder size={16} />,
+          keywords: ['landing'],
+          status: { label: 'Building', tone: 'degraded' },
+          actions: openActions('marketing-site'),
         },
         {
-          id: 'staging-eu',
-          label: 'staging-eu-west-1',
-          description: 'eu-west-1 · Team · b7c8d9e0',
-          icon: <Server size={16} />,
-          keywords: ['staging'],
-          status: { label: 'Healthy', tone: 'healthy' },
-          actions: openActions('staging-eu-west-1'),
+          id: 'design-system',
+          label: 'design-system',
+          description: 'archived · Storybook · prj_b7c8d9e0',
+          icon: <Folder size={16} />,
+          keywords: ['components', 'ui'],
+          status: { label: 'Archived', tone: 'neutral' },
+          actions: openActions('design-system'),
         },
       ],
     },
     {
-      heading: 'Organizations',
-      scope: 'orgs',
+      heading: 'Workspaces',
+      scope: 'workspaces',
       items: [
         {
           id: 'acme',
-          label: 'acme-industries',
-          description: 'Enterprise · 12 clusters · 148 members',
-          icon: <Globe size={16} />,
+          label: 'Acme Inc',
+          description: 'Pro plan · 12 projects · 148 members',
+          icon: <Grid size={16} />,
           status: { label: 'Active', tone: 'healthy' },
-          actions: openActions('acme-industries'),
+          actions: openActions('Acme Inc'),
         },
         {
           id: 'globex',
-          label: 'globex-corp',
-          description: 'Enterprise · 8 clusters · 96 members',
-          icon: <Globe size={16} />,
-          actions: openActions('globex-corp'),
+          label: 'Globex',
+          description: 'Pro plan · 8 projects · 96 members',
+          icon: <Grid size={16} />,
+          actions: openActions('Globex'),
         },
         {
           id: 'initech',
-          label: 'initech-llc',
-          description: 'Starter · 1 cluster · 4 members',
-          icon: <Globe size={16} />,
-          actions: openActions('initech-llc'),
+          label: 'Initech',
+          description: 'Free plan · 1 project · 4 members',
+          icon: <Grid size={16} />,
+          actions: openActions('Initech'),
         },
       ],
     },
@@ -299,24 +299,24 @@ function buildCommandGroups(run: (message: string) => void): CommandGroup[] {
       scope: 'commands',
       items: [
         {
-          id: 'create-cluster',
-          label: 'Create cluster…',
-          description: 'Provision a new cluster',
+          id: 'create-project',
+          label: 'Create project…',
+          description: 'Start from a template',
           icon: <Plus size={16} />,
           shortcut: ['C'],
-          onSelect: () => run('Started: create cluster'),
+          onSelect: () => run('Started: create project'),
         },
         {
           id: 'invite',
-          label: 'Invite teammate…',
+          label: 'Invite member…',
           icon: <Users size={16} />,
-          onSelect: () => run('Started: invite teammate'),
+          onSelect: () => run('Started: invite member'),
         },
         {
-          id: 'restart',
-          label: 'Restart all degraded clusters',
+          id: 'deploy',
+          label: 'Deploy latest to production',
           icon: <Zap size={16} />,
-          onSelect: () => run('Restarted all degraded clusters'),
+          onSelect: () => run('Deployed latest to production'),
         },
       ],
     },
@@ -413,7 +413,7 @@ function CommandTrigger({ onClick }: { onClick: () => void }) {
           textOverflow: 'ellipsis',
         }}
       >
-        Search clusters, orgs, commands…
+        Search projects, workspaces, commands…
       </span>
       <span style={{ display: 'inline-flex', gap: '0.25rem', flexShrink: 0 }}>
         <Kbd size="sm">⌘</Kbd>
@@ -441,7 +441,7 @@ function CommandMenuDemo() {
           </>
         ) : (
           <>
-            Try <code>c:</code> for clusters, <code>&gt;</code> for commands, or{' '}
+            Try <code>p:</code> for projects, <code>&gt;</code> for commands, or{' '}
             <Kbd size="sm">Tab</Kbd> to switch scope.
           </>
         )}
@@ -452,8 +452,8 @@ function CommandMenuDemo() {
         groups={groups}
         scopes={commandScopes}
         hotkey={false}
-        label="Console command palette"
-        placeholder="Search… (try c:name, o:name, u:name, > for commands)"
+        label="Workspace command palette"
+        placeholder="Search… (try p:name, w:name, u:name, > for commands)"
       />
     </div>
   )
