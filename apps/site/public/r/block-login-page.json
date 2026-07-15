@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/react"],
   "tags": ["block", "login", "auth", "form", "page"],
   "category": "display",
+  "registryDependencies": ["layout/auth-layout"],
   "meta": {
     "name": "LoginPage",
     "description": "Authentication login page with email and password form.",

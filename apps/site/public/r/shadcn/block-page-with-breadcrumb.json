@@ -11,6 +11,10 @@
   ],
   "description": "A centered content page with a breadcrumb navigation and page header.",
   "dependencies": ["@cascivo/react"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/layout-page-header.json",
+    "https://cascivo.com/r/shadcn/layout-center.json"
+  ],
   "categories": ["display"],
   "meta": {
     "cascivo": {

@@ -16,6 +16,7 @@
   ],
   "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
   "dependencies": ["@cascivo/core", "@cascivo/charts"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/layout-auto-grid.json"],
   "categories": ["layout"],
   "meta": {
     "cascivo": {

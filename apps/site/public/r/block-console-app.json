@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/react", "@cascivo/icons"],
   "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
   "category": "display",
+  "registryDependencies": ["layout/app-shell", "layout/page-header"],
   "meta": {
     "name": "ConsoleApp",
     "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",

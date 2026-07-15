@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/react"],
   "tags": ["block", "notifications", "alerts"],
   "category": "display",
+  "registryDependencies": ["layout/flex"],
   "meta": {
     "name": "NotificationCenter",
     "description": "A list of notification alerts with a mark-all-read action.",

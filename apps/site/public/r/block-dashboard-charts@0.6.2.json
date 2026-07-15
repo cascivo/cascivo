@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/charts", "@cascivo/react"],
   "tags": ["block", "dashboard", "charts", "kpi"],
   "category": "display",
+  "registryDependencies": ["layout/dashboard-layout"],
   "meta": {
     "name": "DashboardCharts",
     "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",

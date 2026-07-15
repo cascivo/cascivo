@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard", "scope", "fuzzy"],
   "category": "overlay",
+  "registryDependencies": ["kbd", "spinner"],
   "meta": {
     "name": "CommandMenu",
     "description": "Cmd+K command palette with fuzzy search over grouped commands",

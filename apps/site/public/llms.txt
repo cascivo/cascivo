@@ -18,6 +18,7 @@ see `select_component`/`list_components` below before generating custom SVG or A
 
 ## Start here
 
+- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** https://cascivo.com/llms-full.txt
 - Docs (per-component reference, props, live examples): https://docs.cascivo.com
 - Storybook (every variant, interactive): https://storybook.cascivo.com
 - Source (MIT): https://github.com/cascivo/cascivo
@@ -25,7 +26,9 @@ see `select_component`/`list_components` below before generating custom SVG or A
 
 ## Machine-readable resources (AI-first)
 
+- Full text bundle — this file with every component reference inlined (single fetch): https://cascivo.com/llms-full.txt
 - Registry — index of every component (JSON): https://cascivo.com/registry.json
+- shadcn/v0-compatible registry (install with the shadcn CLI or "Open in v0"): https://cascivo.com/r/shadcn/registry.json
 - Per-component AI docs (props, examples, a11y, tokens): https://docs.cascivo.com/llms/<name>.md
 - Per-component context (intent, when-to-use, boundaries): https://docs.cascivo.com/context/<name>.md
 - Context bundle (all intent + boundaries + rules): https://docs.cascivo.com/context.json
@@ -73,6 +76,22 @@ Charts, the code editor, and flow ship their own stylesheet: when you use them, 
 matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
 `@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
 common mistake: the chart's screen-reader data-table fallback then renders visibly.
+
+C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:
+
+```sh
+npx shadcn@latest add https://cascivo.com/r/shadcn/button.json
+```
+
+Every registry item inlines its own source and lists its cascivo dependencies as absolute
+`https://cascivo.com/r/shadcn/<name>.json` URLs, so the shadcn CLI resolves them transitively. To add
+cascivo as a named registry in `components.json` (then `npx shadcn add @cascivo/<name>`):
+
+```json
+{ "registries": { "@cascivo": "https://cascivo.com/r/shadcn/{name}.json" } }
+```
+
+The registry index (all items) is https://cascivo.com/r/shadcn/registry.json.
 
 ## CSS layer contract (follow when generating or editing CSS)
 

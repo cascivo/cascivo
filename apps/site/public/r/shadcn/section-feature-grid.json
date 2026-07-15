@@ -16,6 +16,10 @@
   ],
   "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/layout-auto-grid.json",
+    "https://cascivo.com/r/shadcn/layout-section.json"
+  ],
   "categories": ["layout"],
   "meta": {
     "cascivo": {

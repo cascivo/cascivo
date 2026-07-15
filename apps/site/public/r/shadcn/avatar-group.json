@@ -16,6 +16,7 @@
   ],
   "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
   "dependencies": ["@cascivo/core", "@cascivo/components"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/avatar.json"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

@@ -11,6 +11,7 @@
   ],
   "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
   "dependencies": ["@cascivo/charts", "@cascivo/react"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/layout-dashboard-layout.json"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

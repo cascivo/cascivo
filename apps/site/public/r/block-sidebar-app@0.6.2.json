@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/react"],
   "tags": ["block", "sidebar", "navigation", "app-shell"],
   "category": "display",
+  "registryDependencies": ["layout/app-shell"],
   "meta": {
     "name": "SidebarApp",
     "description": "Full app shell with collapsible side navigation and top header.",

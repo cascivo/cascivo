@@ -16,6 +16,10 @@
   ],
   "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/button.json",
+    "https://cascivo.com/r/shadcn/checkbox.json"
+  ],
   "categories": ["display"],
   "meta": {
     "cascivo": {

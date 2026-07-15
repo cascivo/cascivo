@@ -16,6 +16,7 @@
   ],
   "description": "Identity composite: an avatar with a name, description, and optional action slot",
   "dependencies": ["@cascivo/core", "@cascivo/components"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/avatar.json"],
   "categories": ["display"],
   "meta": {
     "cascivo": {

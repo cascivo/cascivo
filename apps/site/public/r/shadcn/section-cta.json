@@ -16,6 +16,7 @@
   ],
   "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/layout-section.json"],
   "categories": ["layout"],
   "meta": {
     "cascivo": {

@@ -107,6 +107,7 @@ export interface LegacyRegistryEntry {
   install?: string
   styles?: string
   dependencies: string[]
+  registryDependencies?: string[]
   tags: string[]
   meta?: unknown
 }

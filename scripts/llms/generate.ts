@@ -361,6 +361,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push('## Start here')
   lines.push('')
+  lines.push(
+    `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt`,
+  )
   lines.push(`- Docs (per-component reference, props, live examples): ${DOCS}`)
   lines.push(`- Storybook (every variant, interactive): https://storybook.cascivo.com`)
   lines.push(`- Source (MIT): ${REPO}`)
@@ -368,7 +371,13 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push('## Machine-readable resources (AI-first)')
   lines.push('')
+  lines.push(
+    `- Full text bundle — this file with every component reference inlined (single fetch): ${SITE}/llms-full.txt`,
+  )
   lines.push(`- Registry — index of every component (JSON): ${SITE}/registry.json`)
+  lines.push(
+    `- shadcn/v0-compatible registry (install with the shadcn CLI or "Open in v0"): ${SITE}/r/shadcn/registry.json`,
+  )
   lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
   lines.push(`- Per-component context (intent, when-to-use, boundaries): ${DOCS}/context/<name>.md`)
   lines.push(`- Context bundle (all intent + boundaries + rules): ${DOCS}/context.json`)
@@ -430,6 +439,28 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a',
   )
   lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
+  lines.push('')
+  lines.push('C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:')
+  lines.push('')
+  lines.push('```sh')
+  lines.push(`npx shadcn@latest add ${SITE}/r/shadcn/button.json`)
+  lines.push('```')
+  lines.push('')
+  lines.push(
+    'Every registry item inlines its own source and lists its cascivo dependencies as absolute',
+  )
+  lines.push(
+    `\`${SITE}/r/shadcn/<name>.json\` URLs, so the shadcn CLI resolves them transitively. To add`,
+  )
+  lines.push(
+    'cascivo as a named registry in `components.json` (then `npx shadcn add @cascivo/<name>`):',
+  )
+  lines.push('')
+  lines.push('```json')
+  lines.push(`{ "registries": { "@cascivo": "${SITE}/r/shadcn/{name}.json" } }`)
+  lines.push('```')
+  lines.push('')
+  lines.push(`The registry index (all items) is ${SITE}/r/shadcn/registry.json.`)
   lines.push('')
   lines.push('## CSS layer contract (follow when generating or editing CSS)')
   lines.push('')
@@ -670,6 +701,41 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   return lines.join('\n')
 }
 
+/**
+ * llms-full.txt — the llms.txt overview concatenated with every per-component
+ * reference inlined, so an agent that can only make a single successful fetch
+ * (the common case for v0 / hosted tools, and the failure mode when the docs
+ * host challenges follow-up requests) gets the whole library in one document.
+ */
+function generateLlmsFullTxt(
+  registry: Registry,
+  llmsTxt: string,
+  markdownByName: Map<string, string>,
+): string {
+  const sorted = [...registry.components].sort((a, b) => a.name.localeCompare(b.name))
+  const parts: string[] = [llmsTxt.trimEnd(), '']
+  parts.push('---')
+  parts.push('')
+  parts.push('# Full component reference (inlined)')
+  parts.push('')
+  parts.push(
+    'Every entry below is the same content as the per-component `llms/<name>.md` files, inlined',
+  )
+  parts.push('here so no additional fetches are required.')
+  parts.push('')
+  for (const entry of sorted) {
+    const md = markdownByName.get(entry.name)
+    if (!md) continue
+    parts.push('---')
+    parts.push('')
+    parts.push(md.trimEnd())
+    parts.push('')
+  }
+  parts.push(`_Generated: ${registry.generatedAt} from registry v${registry.version}_`)
+  parts.push('')
+  return parts.join('\n')
+}
+
 function main() {
   const registry: Registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf8'))
   const entries = registry.components
@@ -678,8 +744,10 @@ function main() {
 
   // Generate per-component markdown
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
+  const markdownByName = new Map<string, string>()
   for (const entry of sorted) {
     const md = componentMarkdown(entry)
+    markdownByName.set(entry.name, md)
     const outPath = join(LLMS_DIR, `${entry.name}.md`)
     mkdirSync(dirname(outPath), { recursive: true })
     writeFileSync(outPath, md, 'utf8')
@@ -690,7 +758,11 @@ function main() {
   const llmsTxt = generateLlmsTxt(registry, entries)
   writeFileSync(join(OUT_DIR, 'llms.txt'), llmsTxt, 'utf8')
 
-  console.log(`Generated llms.txt + ${sorted.length} component markdown files`)
+  // Generate llms-full.txt — one self-contained file (overview + every reference).
+  const llmsFullTxt = generateLlmsFullTxt(registry, llmsTxt, markdownByName)
+  writeFileSync(join(OUT_DIR, 'llms-full.txt'), llmsFullTxt, 'utf8')
+
+  console.log(`Generated llms.txt, llms-full.txt + ${sorted.length} component markdown files`)
 }
 
 main()

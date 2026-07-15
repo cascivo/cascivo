@@ -12,6 +12,7 @@
   "dependencies": ["@cascivo/react"],
   "tags": ["block", "dashboard", "empty-state", "page"],
   "category": "display",
+  "registryDependencies": ["layout/dashboard-layout"],
   "meta": {
     "name": "EmptyDashboard",
     "description": "Dashboard page showing an empty state with a call-to-action button.",

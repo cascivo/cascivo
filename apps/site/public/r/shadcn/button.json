@@ -16,6 +16,7 @@
   ],
   "description": "Triggers an action or event",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/spinner.json"],
   "categories": ["inputs"],
   "meta": {
     "cascivo": {

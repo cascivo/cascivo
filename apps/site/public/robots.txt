@@ -1,4 +1,47 @@
+# cascivo is an AI-first library — AI crawlers and assistants are explicitly
+# welcome. Naming them individually (a named group overrides the `*` group for
+# that agent) makes the grant unambiguous for bots that look for a named record.
+
 User-agent: *
 Allow: /
+
+# AI answer engines / assistant crawlers
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: GoogleOther
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: Amazonbot
+Allow: /
+User-agent: cohere-ai
+Allow: /
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Machine-readable entry points (also linked from every page + llms.txt)
+# Full library in one file:  https://cascivo.com/llms-full.txt
+# Overview + index:          https://cascivo.com/llms.txt
+# shadcn/v0 registry:        https://cascivo.com/r/shadcn/registry.json
 
 Sitemap: https://cascivo.com/sitemap.xml

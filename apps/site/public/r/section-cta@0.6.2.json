@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core"],
   "tags": ["section", "cta", "marketing"],
   "category": "layout",
+  "registryDependencies": ["layout/section"],
   "meta": {
     "name": "Cta",
     "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",

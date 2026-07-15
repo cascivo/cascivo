@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core"],
   "tags": ["overlay", "menu", "dropdown", "floating"],
   "category": "overlay",
+  "registryDependencies": ["popover"],
   "meta": {
     "name": "Menu",
     "description": "Dropdown menu with keyboard navigation, built on usePopover",

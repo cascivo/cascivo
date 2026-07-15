@@ -16,6 +16,7 @@
   ],
   "description": "Dropdown menu with keyboard navigation, built on usePopover",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/popover.json"],
   "categories": ["overlay"],
   "meta": {
     "cascivo": {

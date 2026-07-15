@@ -16,6 +16,10 @@
   ],
   "description": "Cmd+K command palette with fuzzy search over grouped commands",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/kbd.json",
+    "https://cascivo.com/r/shadcn/spinner.json"
+  ],
   "categories": ["overlay"],
   "meta": {
     "cascivo": {

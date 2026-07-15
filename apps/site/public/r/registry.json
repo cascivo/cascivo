@@ -1,6 +1,7 @@
 {
   "schemaVersion": 2,
   "name": "cascivo",
+  "homepage": "https://cascivo.com",
   "items": [
     {
       "schemaVersion": 2,
@@ -886,6 +887,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/components"],
       "tags": ["avatar", "group", "stack", "overflow", "display"],
       "category": "display",
+      "registryDependencies": ["avatar"],
       "meta": {
         "name": "AvatarGroup",
         "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
@@ -1125,6 +1127,7 @@
       "dependencies": ["@cascivo/react", "@cascivo/icons"],
       "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
       "category": "display",
+      "registryDependencies": ["layout/app-shell", "layout/page-header"],
       "meta": {
         "name": "ConsoleApp",
         "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
@@ -1193,6 +1196,7 @@
       "dependencies": ["@cascivo/charts", "@cascivo/react"],
       "tags": ["block", "dashboard", "charts", "kpi"],
       "category": "display",
+      "registryDependencies": ["layout/dashboard-layout"],
       "meta": {
         "name": "DashboardCharts",
         "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
@@ -1259,6 +1263,7 @@
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "dashboard", "empty-state", "page"],
       "category": "display",
+      "registryDependencies": ["layout/dashboard-layout"],
       "meta": {
         "name": "EmptyDashboard",
         "description": "Dashboard page showing an empty state with a call-to-action button.",
@@ -1320,6 +1325,7 @@
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "login", "auth", "form", "page"],
       "category": "display",
+      "registryDependencies": ["layout/auth-layout"],
       "meta": {
         "name": "LoginPage",
         "description": "Authentication login page with email and password form.",
@@ -1381,6 +1387,7 @@
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "notifications", "alerts"],
       "category": "display",
+      "registryDependencies": ["layout/flex"],
       "meta": {
         "name": "NotificationCenter",
         "description": "A list of notification alerts with a mark-all-read action.",
@@ -1448,6 +1455,7 @@
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "breadcrumb", "page", "navigation"],
       "category": "display",
+      "registryDependencies": ["layout/page-header", "layout/center"],
       "meta": {
         "name": "PageWithBreadcrumb",
         "description": "A centered content page with a breadcrumb navigation and page header.",
@@ -1502,6 +1510,7 @@
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "settings", "form", "page"],
       "category": "display",
+      "registryDependencies": ["layout/settings-layout"],
       "meta": {
         "name": "SettingsFormPage",
         "description": "Settings page with profile form inside a two-column settings layout.",
@@ -1563,6 +1572,7 @@
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "sidebar", "navigation", "app-shell"],
       "category": "display",
+      "registryDependencies": ["layout/app-shell"],
       "meta": {
         "name": "SidebarApp",
         "description": "Full app shell with collapsible side navigation and top header.",
@@ -1687,6 +1697,7 @@
       "dependencies": ["@cascivo/react"],
       "tags": ["block", "users", "table", "page"],
       "category": "display",
+      "registryDependencies": ["layout/page-header", "layout/flex"],
       "meta": {
         "name": "UsersTablePage",
         "description": "Full users management page with table, search, and invite action.",
@@ -2130,6 +2141,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["action", "form", "interactive"],
       "category": "inputs",
+      "registryDependencies": ["spinner"],
       "meta": {
         "name": "Button",
         "description": "Triggers an action or event",
@@ -7602,6 +7614,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard", "scope", "fuzzy"],
       "category": "overlay",
+      "registryDependencies": ["kbd", "spinner"],
       "meta": {
         "name": "CommandMenu",
         "description": "Cmd+K command palette with fuzzy search over grouped commands",
@@ -8382,6 +8395,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
       "category": "display",
+      "registryDependencies": ["button", "checkbox"],
       "meta": {
         "name": "DataTable",
         "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
@@ -8793,6 +8807,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["date", "range", "calendar", "picker", "input", "form"],
       "category": "inputs",
+      "registryDependencies": ["calendar"],
       "meta": {
         "name": "DateRangePicker",
         "description": "A dual-calendar picker for selecting a contiguous date range.",
@@ -10105,6 +10120,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["form", "layout", "validation", "accessibility"],
       "category": "inputs",
+      "registryDependencies": ["label"],
       "meta": {
         "name": "Field",
         "description": "Form-field wrapper composing label, control, description, and error",
@@ -10246,6 +10262,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["upload", "file", "drop", "drag", "input", "form"],
       "category": "inputs",
+      "registryDependencies": ["spinner"],
       "meta": {
         "name": "FileUploader",
         "description": "Drag-and-drop file upload zone with file list and status indicators.",
@@ -12255,6 +12272,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "hover", "preview", "floating"],
       "category": "overlay",
+      "registryDependencies": ["popover"],
       "meta": {
         "name": "HoverCard",
         "description": "Hover-triggered popover with configurable open/close delay",
@@ -12750,6 +12768,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["loading", "status", "progress", "feedback", "spinner"],
       "category": "feedback",
+      "registryDependencies": ["spinner"],
       "meta": {
         "name": "InlineLoading",
         "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -15068,6 +15087,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["overlay", "menu", "dropdown", "floating"],
       "category": "overlay",
+      "registryDependencies": ["popover"],
       "meta": {
         "name": "Menu",
         "description": "Dropdown menu with keyboard navigation, built on usePopover",
@@ -15601,6 +15621,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["form", "select", "multi", "input", "popover"],
       "category": "inputs",
+      "registryDependencies": ["popover"],
       "meta": {
         "name": "MultiSelect",
         "description": "Searchable multi-value select with popover listbox",
@@ -16471,6 +16492,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
       "category": "overlay",
+      "registryDependencies": ["dropdown"],
       "meta": {
         "name": "OverflowMenu",
         "description": "Kebab icon button revealing a menu of row-level actions",
@@ -17603,6 +17625,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
       "category": "feedback",
+      "registryDependencies": ["spinner"],
       "meta": {
         "name": "PullToRefresh",
         "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
@@ -18864,6 +18887,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "cta", "marketing"],
       "category": "layout",
+      "registryDependencies": ["layout/section"],
       "meta": {
         "name": "Cta",
         "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
@@ -18960,6 +18984,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "features", "grid"],
       "category": "layout",
+      "registryDependencies": ["layout/auto-grid", "layout/section"],
       "meta": {
         "name": "FeatureGrid",
         "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
@@ -19065,6 +19090,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "hero", "marketing"],
       "category": "layout",
+      "registryDependencies": ["layout/section"],
       "meta": {
         "name": "Hero",
         "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
@@ -19180,6 +19206,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "gallery", "masonry"],
       "category": "layout",
+      "registryDependencies": ["layout/masonry", "layout/section"],
       "meta": {
         "name": "MediaMasonry",
         "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
@@ -19283,6 +19310,7 @@
       "dependencies": ["@cascivo/core"],
       "tags": ["section", "footer", "navigation"],
       "category": "layout",
+      "registryDependencies": ["layout/auto-grid"],
       "meta": {
         "name": "PageFooter",
         "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
@@ -19368,6 +19396,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
       "tags": ["section", "stats", "kpi", "charts"],
       "category": "layout",
+      "registryDependencies": ["layout/auto-grid"],
       "meta": {
         "name": "StatsBand",
         "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
@@ -19921,6 +19950,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
       "category": "navigation",
+      "registryDependencies": ["popover"],
       "meta": {
         "name": "ShellHeader",
         "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
@@ -20064,6 +20094,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
       "category": "navigation",
+      "registryDependencies": ["popover", "tooltip"],
       "meta": {
         "name": "SideNav",
         "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
@@ -23588,6 +23619,7 @@
       "dependencies": ["@cascivo/core", "@cascivo/components"],
       "tags": ["user", "avatar", "identity", "display"],
       "category": "display",
+      "registryDependencies": ["avatar"],
       "meta": {
         "name": "User",
         "description": "Identity composite: an avatar with a name, description, and optional action slot",

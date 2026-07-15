@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["upload", "file", "drop", "drag", "input", "form"],
   "category": "inputs",
+  "registryDependencies": ["spinner"],
   "meta": {
     "name": "FileUploader",
     "description": "Drag-and-drop file upload zone with file list and status indicators.",

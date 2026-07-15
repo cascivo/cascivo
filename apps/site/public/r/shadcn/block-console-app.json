@@ -16,6 +16,10 @@
   ],
   "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
   "dependencies": ["@cascivo/react", "@cascivo/icons"],
+  "registryDependencies": [
+    "https://cascivo.com/r/shadcn/layout-app-shell.json",
+    "https://cascivo.com/r/shadcn/layout-page-header.json"
+  ],
   "categories": ["display"],
   "meta": {
     "cascivo": {

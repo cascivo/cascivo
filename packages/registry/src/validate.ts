@@ -156,6 +156,7 @@ export function parseLegacyRegistry(raw: unknown): RegistryIndex {
   return {
     schemaVersion: 2,
     name: 'cascivo',
+    homepage: 'https://cascivo.com',
     items: (components as Record<string, unknown>[]).map((c) => {
       const item: RegistryItem = {
         schemaVersion: 2,
@@ -170,6 +171,13 @@ export function parseLegacyRegistry(raw: unknown): RegistryIndex {
       if (typeof c['category'] === 'string') item.category = c['category']
       if (typeof c['install'] === 'string') item.install = c['install']
       if (typeof c['styles'] === 'string') item.styles = c['styles']
+      // Carry the sibling-component dependency graph so the shadcn projection can
+      // turn it into resolvable install URLs (`npx shadcn add <url>` fetches these
+      // transitively). Without this, an item like `dropdown` would install without
+      // its `popover`/`use-popover` deps.
+      if (Array.isArray(c['registryDependencies'])) {
+        item.registryDependencies = c['registryDependencies'] as string[]
+      }
       if (c['meta']) item.meta = c['meta'] as RegistryItem['meta']
       return item
     }),

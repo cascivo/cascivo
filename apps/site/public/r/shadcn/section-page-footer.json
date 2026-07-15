@@ -16,6 +16,7 @@
   ],
   "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/layout-auto-grid.json"],
   "categories": ["layout"],
   "meta": {
     "cascivo": {

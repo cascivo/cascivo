@@ -16,6 +16,7 @@
   ],
   "description": "Form-field wrapper composing label, control, description, and error",
   "dependencies": ["@cascivo/core"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/label.json"],
   "categories": ["inputs"],
   "meta": {
     "cascivo": {

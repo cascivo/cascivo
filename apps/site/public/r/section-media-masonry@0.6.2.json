@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core"],
   "tags": ["section", "gallery", "masonry"],
   "category": "layout",
+  "registryDependencies": ["layout/masonry", "layout/section"],
   "meta": {
     "name": "MediaMasonry",
     "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",

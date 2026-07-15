@@ -55,6 +55,24 @@ describe('toShadcnItem', () => {
   it('is deterministic for the same input', () => {
     expect(JSON.stringify(toShadcnItem(sample))).toBe(JSON.stringify(toShadcnItem(sample)))
   })
+
+  it('rewrites registryDependencies to absolute URLs when a base is given', () => {
+    const withDeps: RegistryItem = {
+      ...sample,
+      name: 'dropdown',
+      registryDependencies: ['popover', 'layout/flex'],
+    }
+    const out = toShadcnItem(withDeps, { registryBaseUrl: 'https://cascivo.com/r/shadcn' })
+    expect(out.registryDependencies).toEqual([
+      'https://cascivo.com/r/shadcn/popover.json',
+      'https://cascivo.com/r/shadcn/layout-flex.json',
+    ])
+  })
+
+  it('leaves registryDependencies as bare names when no base is given', () => {
+    const withDeps: RegistryItem = { ...sample, registryDependencies: ['popover'] }
+    expect(toShadcnItem(withDeps).registryDependencies).toEqual(['popover'])
+  })
 })
 
 describe('shadcnName', () => {

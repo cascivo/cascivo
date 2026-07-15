@@ -16,6 +16,7 @@
   ],
   "description": "A dual-calendar picker for selecting a contiguous date range.",
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/calendar.json"],
   "categories": ["inputs"],
   "meta": {
     "cascivo": {

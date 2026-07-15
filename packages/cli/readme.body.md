@@ -32,3 +32,21 @@ A **template** is a registry item (`type: "template"`) that bundles a working pa
 `create` scaffolds a complete Vite + React + TypeScript app — pre-wired with the cascivo app shell, side navigation, header, and your chosen theme. It asks for a project name, theme, and the nav sections you want, then generates a section component for each. Pass `--theme`, `--sections "Dashboard, Reports"`, or `--yes` to skip the prompts. `init` detects npm / pnpm / yarn / bun, writes `cascivo.config.ts`, and wires up the token and theme imports. `add` resolves each component from [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json), fetches its source (TSX + CSS module + manifest) from GitHub raw URLs, and drops it into the path from your config — pulling in any dependencies it needs.
 
 Because the registry model is open, `add owner/repo/component` installs from any compatible registry, not just the first-party one. See the [registry starter](https://github.com/cascivo/cascivo/tree/main/apps/examples/registry-starter) to publish your own.
+
+## Prefer the shadcn CLI or an AI tool?
+
+cascivo also publishes a [shadcn-compatible registry](https://cascivo.com/r/shadcn/registry.json),
+so you can install the same components with the shadcn CLI or "Open in v0" without
+the `cascivo` binary:
+
+```sh
+npx shadcn@latest add https://cascivo.com/r/shadcn/button.json
+```
+
+Every item inlines its source and resolves its cascivo dependencies transitively.
+
+Building **with an AI assistant?** cascivo has no training-data footprint yet, so
+give the tool the knowledge directly rather than relying on it to browse the site:
+paste or link [`https://cascivo.com/llms-full.txt`](https://cascivo.com/llms-full.txt)
+(the whole library — setup + every component — in one file), or point an MCP-capable
+agent at [`@cascivo/mcp`](https://www.npmjs.com/package/@cascivo/mcp).

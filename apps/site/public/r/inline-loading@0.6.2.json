@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["loading", "status", "progress", "feedback", "spinner"],
   "category": "feedback",
+  "registryDependencies": ["spinner"],
   "meta": {
     "name": "InlineLoading",
     "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",

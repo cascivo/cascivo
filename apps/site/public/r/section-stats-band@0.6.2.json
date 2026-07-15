@@ -15,6 +15,7 @@
   "dependencies": ["@cascivo/core", "@cascivo/charts"],
   "tags": ["section", "stats", "kpi", "charts"],
   "category": "layout",
+  "registryDependencies": ["layout/auto-grid"],
   "meta": {
     "name": "StatsBand",
     "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
