@@ -155,3 +155,12 @@ export * from '../../layouts/src/columns/columns' // Columns
 export * from '../../layouts/src/center/center' // Center
 export * from '../../layouts/src/spacer/spacer' // Spacer
 export * from '../../layouts/src/auto-grid/auto-grid' // AutoGrid
+// Reusable, SSR-safe theme runtime (ThemeProvider / useTheme / setTheme /
+// themePreloadScript). Packages the data-theme wiring apps otherwise hand-roll.
+export {
+  ThemeProvider,
+  useTheme,
+  setTheme,
+  themePreloadScript,
+  type ThemeProviderProps,
+} from './theme'
