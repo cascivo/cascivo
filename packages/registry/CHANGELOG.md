@@ -1,5 +1,11 @@
 # @cascivo/registry
 
+## 0.1.12
+
+### Patch Changes
+
+- 6cb3327: Shadcn compat registry, llms-full.txt
+
 ## 0.1.11
 
 ### Patch Changes

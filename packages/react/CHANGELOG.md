@@ -1,5 +1,11 @@
 # @cascivo/react
 
+## 0.6.3
+
+### Patch Changes
+
+- 6cb3327: Shadcn compat registry, llms-full.txt
+
 ## 0.6.2
 
 ### Patch Changes
