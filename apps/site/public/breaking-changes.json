@@ -33,7 +33,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "releases": [
         {
           "version": "0.4.0",
@@ -174,7 +174,7 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.6.2",
+      "version": "0.6.3",
       "releases": [
         {
           "version": "0.6.0",
@@ -210,7 +210,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.1.11",
+      "version": "0.1.12",
       "releases": [
         {
           "version": "0.1.0",
