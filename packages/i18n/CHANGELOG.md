@@ -1,5 +1,11 @@
 # @cascivo/i18n
 
+## 0.2.6
+
+### Patch Changes
+
+- 3b784e1: Minor improvements
+
 ## 0.2.5
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @cascivo/react
 
+## 0.6.2
+
+### Patch Changes
+
+- 2aba8dc: Layout fixes
+- Updated dependencies [3b784e1]
+  - @cascivo/i18n@0.2.6
+
 ## 0.6.1
 
 ### Patch Changes

@@ -112,7 +112,7 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.5",
+      "version": "0.2.6",
       "releases": [
         {
           "version": "0.2.0",
@@ -174,7 +174,7 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "releases": [
         {
           "version": "0.6.0",
