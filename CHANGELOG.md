@@ -15,10 +15,10 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | `@cascivo/core`        | 0.3.1   | 0.3.0 — Add `useTypeahead` and fix duplicate-aria-id bugs in overlay components.         | [CHANGELOG](packages/core/CHANGELOG.md)        |
 | `@cascivo/editor`      | 0.2.12  | 0.2.0 — Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-r | [CHANGELOG](packages/editor/CHANGELOG.md)      |
 | `@cascivo/flow`        | 0.1.11  | —                                                                                        | [CHANGELOG](packages/flow/CHANGELOG.md)        |
-| `@cascivo/i18n`        | 0.2.5   | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                | [CHANGELOG](packages/i18n/CHANGELOG.md)        |
+| `@cascivo/i18n`        | 0.2.6   | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                | [CHANGELOG](packages/i18n/CHANGELOG.md)        |
 | `@cascivo/icons`       | 0.2.8   | 0.2.0 — Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons    | [CHANGELOG](packages/icons/CHANGELOG.md)       |
 | `@cascivo/mcp`         | 0.4.1   | 0.4.0 — The MCP server now ships `instructions` carrying the cascivo CSS layer contract, | [CHANGELOG](packages/mcp/CHANGELOG.md)         |
-| `@cascivo/react`       | 0.6.1   | 0.6.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/react/CHANGELOG.md)       |
+| `@cascivo/react`       | 0.6.2   | 0.6.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/react/CHANGELOG.md)       |
 | `@cascivo/registry`    | 0.1.11  | 0.1.0 — Initial public release of the cascivo design system. Includes:                   | [CHANGELOG](packages/registry/CHANGELOG.md)    |
 | `@cascivo/storage`     | 0.1.11  | 0.1.0 — Initial public release of the cascivo design system. Includes:                   | [CHANGELOG](packages/storage/CHANGELOG.md)     |
 | `@cascivo/themes`      | 0.4.0   | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/themes/CHANGELOG.md)      |
