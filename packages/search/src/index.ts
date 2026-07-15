@@ -1,3 +1,5 @@
+import type { CommandGroup, CommandItem, CommandScope } from '@cascivo/components/command-menu'
+
 export interface SearchItem {
   id: string
   title: string
@@ -53,4 +55,59 @@ export class SearchIndex {
       .slice(0, limit)
       .map(({ item }) => item)
   }
+}
+
+/** Filter scopes for the search dialog: components (`c:`) and pages (`p:`). */
+export const searchScopes: CommandScope[] = [
+  { id: 'components', label: 'Components', prefix: 'c' },
+  { id: 'pages', label: 'Pages', prefix: 'p' },
+]
+
+/**
+ * Build CommandMenu groups from search items: a "Pages" group first (scope
+ * `pages`), then components grouped by category (scope `components`). Each row
+ * shows the item description as a mono metadata line and reveals Open (↵) /
+ * New tab (⌘↵) inline actions. CommandMenu handles fuzzy filtering + match
+ * highlighting, keyboard navigation, focus, and the overlay panel.
+ */
+export function toGroups(
+  items: SearchItem[],
+  onOpen: (href: string) => void,
+  onOpenNewTab: (href: string) => void,
+): CommandGroup[] {
+  const toItem = (item: SearchItem): CommandItem => ({
+    id: item.id,
+    label: item.title,
+    ...(item.description ? { description: item.description } : {}),
+    keywords: [item.section, item.description, item.category, item.keywords].filter(
+      (k): k is string => Boolean(k),
+    ),
+    actions: [
+      { id: `${item.id}-open`, label: 'Open', shortcut: ['↵'], onSelect: () => onOpen(item.href) },
+      {
+        id: `${item.id}-tab`,
+        label: 'New tab',
+        shortcut: ['⌘', '↵'],
+        onSelect: () => onOpenNewTab(item.href),
+      },
+    ],
+  })
+
+  const pages = items.filter((i) => i.type === 'page')
+  const components = items.filter((i) => i.type === 'component')
+
+  const byCategory = new Map<string, SearchItem[]>()
+  for (const c of components) {
+    const cat = c.category ?? 'Components'
+    const list = byCategory.get(cat)
+    if (list) list.push(c)
+    else byCategory.set(cat, [c])
+  }
+
+  const groups: CommandGroup[] = []
+  if (pages.length > 0) groups.push({ heading: 'Pages', scope: 'pages', items: pages.map(toItem) })
+  for (const [cat, list] of byCategory) {
+    groups.push({ heading: cat, scope: 'components', items: list.map(toItem) })
+  }
+  return groups
 }

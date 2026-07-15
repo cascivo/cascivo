@@ -1454,6 +1454,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'scopes',
+      required: false,
+    },
+    {
       name: 'className',
       required: false,
       primitives: ['string'],

@@ -27,18 +27,19 @@ import { CommandMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default                     | Description                                                           |
-| --------------- | ------------------------- | -------- | --------------------------- | --------------------------------------------------------------------- |
-| `open`          | `boolean`                 | yes      | —                           | Whether the component is open (controlled).                           |
-| `onOpenChange`  | `(open: boolean) => void` | yes      | —                           | Called with the next open state when it changes.                      |
-| `groups`        | `CommandGroup[]`          | yes      | —                           | The grouped commands to display.                                      |
-| `placeholder`   | `string`                  | no       | `Type a command or search…` | Placeholder text shown when the field is empty.                       |
-| `emptyLabel`    | `string`                  | no       | `No results found`          | Text shown when no commands match the query.                          |
-| `hotkey`        | `boolean`                 | no       | `true`                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                   |
-| `label`         | `string`                  | no       | `Command menu`              | Text label for the control.                                           |
-| `loading`       | `boolean`                 | no       | `false`                     | Shows a loading spinner in place of the empty state (for async items) |
-| `onQueryChange` | `(query: string) => void` | no       | —                           | Fires on every query keystroke — use to fetch async items             |
-| `className`     | `string`                  | no       | —                           | Additional CSS class names merged onto the root element.              |
+| Prop            | Type                      | Required | Default                     | Description                                                                                                                                                                                                              |
+| --------------- | ------------------------- | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `open`          | `boolean`                 | yes      | —                           | Whether the component is open (controlled).                                                                                                                                                                              |
+| `onOpenChange`  | `(open: boolean) => void` | yes      | —                           | Called with the next open state when it changes.                                                                                                                                                                         |
+| `groups`        | `CommandGroup[]`          | yes      | —                           | The grouped commands to display.                                                                                                                                                                                         |
+| `placeholder`   | `string`                  | no       | `Type a command or search…` | Placeholder text shown when the field is empty.                                                                                                                                                                          |
+| `emptyLabel`    | `string`                  | no       | `No results found`          | Text shown when no commands match the query.                                                                                                                                                                             |
+| `hotkey`        | `boolean`                 | no       | `true`                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                                                                                                                                                                      |
+| `label`         | `string`                  | no       | `Command menu`              | Text label for the control.                                                                                                                                                                                              |
+| `loading`       | `boolean`                 | no       | `false`                     | Shows a loading spinner in place of the empty state (for async items)                                                                                                                                                    |
+| `onQueryChange` | `(query: string) => void` | no       | —                           | Fires on every query keystroke — use to fetch async items                                                                                                                                                                |
+| `scopes`        | `CommandScope[]`          | no       | —                           | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
+| `className`     | `string`                  | no       | —                           | Additional CSS class names merged onto the root element.                                                                                                                                                                 |
 
 ## Examples
 
@@ -60,6 +61,45 @@ import { CommandMenu } from '@cascivo/react'
 />
 ```
 
+### Scoped search with rich rows and inline actions
+
+A scope chip filters to Clusters, matched glyphs are highlighted, each row carries a mono metadata line + status pill, and the selected row reveals Open (↵) / New tab (⌘↵) inline actions.
+
+```tsx
+<CommandMenu
+  open={open}
+  onOpenChange={setOpen}
+  scopes={[
+    { id: 'clusters', label: 'Clusters', prefix: 'c' },
+    { id: 'orgs', label: 'Orgs', prefix: 'o' },
+    { id: 'commands', label: 'Commands', prefix: '>' },
+  ]}
+  groups={[
+    {
+      heading: 'Clusters',
+      scope: 'clusters',
+      items: [
+        {
+          id: 'prod-eu',
+          label: 'prod-eu-central-1',
+          description: 'eu-central-1 · Enterprise · c9f21a04',
+          status: { label: 'Healthy', tone: 'healthy' },
+          actions: [
+            { id: 'open', label: 'Open', shortcut: ['↵'], onSelect: () => open('prod-eu') },
+            {
+              id: 'tab',
+              label: 'New tab',
+              shortcut: ['⌘', '↵'],
+              onSelect: () => openInTab('prod-eu'),
+            },
+          ],
+        },
+      ],
+    },
+  ]}
+/>
+```
+
 ## Design tokens
 
 - `--cascivo-color-surface-overlay`
@@ -68,6 +108,14 @@ import { CommandMenu } from '@cascivo/react'
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
 - `--cascivo-color-text-subtle`
+- `--cascivo-color-accent-content`
+- `--cascivo-color-accent-muted`
+- `--cascivo-color-accent-subtle`
+- `--cascivo-color-success-subtle`
+- `--cascivo-color-success-foreground`
+- `--cascivo-color-warning-subtle`
+- `--cascivo-color-warning-foreground`
+- `--cascivo-font-mono`
 - `--cascivo-radius-modal`
 - `--cascivo-radius-sm`
 - `--cascivo-shadow-xl`
@@ -78,7 +126,7 @@ import { CommandMenu } from '@cascivo/react'
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `combobox`
-- **Keyboard:** Cmd/Ctrl+K, ArrowDown, ArrowUp, Home, End, Enter, Escape
+- **Keyboard:** Cmd/Ctrl+K, ArrowDown, ArrowUp, Home, End, Enter, Cmd/Ctrl+Enter, Tab, Backspace, Escape
 
 ## Dependencies
 
@@ -87,4 +135,4 @@ import { CommandMenu } from '@cascivo/react'
 
 ## Tags
 
-overlay, command, palette, search, cmdk, keyboard
+overlay, command, palette, search, cmdk, keyboard, scope, fuzzy

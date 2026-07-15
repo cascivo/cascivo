@@ -82,6 +82,44 @@
     color: var(--cascivo-color-text-muted);
   }
 
+  .scopeChip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    flex-shrink: 0;
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
+    border: 1px solid var(--cascivo-color-accent-subtle);
+    border-radius: var(--cascivo-radius-item);
+    background-color: var(--cascivo-color-accent-muted);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+    color: var(--cascivo-color-accent-content);
+    white-space: nowrap;
+
+    .scopeClear {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      @media (pointer: coarse) {
+        min-inline-size: var(--cascivo-space-6);
+        min-block-size: var(--cascivo-space-6);
+      }
+    }
+  }
+
   .input {
     flex: 1;
     block-size: 3rem;
@@ -101,6 +139,63 @@
     }
   }
 
+  .scopes {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-4);
+    padding-block: var(--cascivo-space-2);
+    border-block-end: 1px solid var(--cascivo-color-border);
+    background-color: var(--cascivo-color-bg-subtle);
+    overflow-x: auto;
+  }
+
+  .scopesLabel {
+    flex-shrink: 0;
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--cascivo-color-text-subtle);
+  }
+
+  .scopePill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    flex-shrink: 0;
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-item);
+    background: transparent;
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-muted);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--cascivo-color-text);
+    }
+
+    &[data-active] {
+      border-color: var(--cascivo-color-accent-subtle);
+      background-color: var(--cascivo-color-accent-muted);
+      color: var(--cascivo-color-accent-content);
+    }
+
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .scopePrefix {
+    font-family: var(--cascivo-font-mono);
+    font-weight: var(--cascivo-font-medium);
+    opacity: 0.85;
+  }
+
   .list {
     overflow-y: auto;
     max-block-size: 20rem;
@@ -112,12 +207,22 @@
   }
 
   .heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--cascivo-space-2);
     padding-inline: var(--cascivo-space-2);
     padding-block: var(--cascivo-space-1);
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-xs);
     font-weight: var(--cascivo-font-medium);
     color: var(--cascivo-color-text-subtle);
+  }
+
+  .count {
+    font-family: var(--cascivo-font-mono);
+    font-weight: var(--cascivo-font-normal);
+    color: var(--cascivo-color-text-muted);
   }
 
   .option {
@@ -152,17 +257,136 @@
     color: var(--cascivo-color-text-muted);
   }
 
-  .label {
+  .text {
+    display: flex;
     flex: 1;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-inline-size: 0;
+  }
+
+  .label {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
+  .match {
+    background: transparent;
+    color: var(--cascivo-color-accent-content);
+    font-weight: var(--cascivo-font-semibold);
+  }
+
+  .description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--cascivo-font-mono);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text-muted);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    padding-inline: var(--cascivo-space-2);
+    padding-block: 0.125rem;
+    border-radius: var(--cascivo-radius-pill, 9999px);
+    font-size: var(--cascivo-text-xs);
+    font-weight: var(--cascivo-font-medium);
+
+    &[data-tone='healthy'] {
+      background-color: var(--cascivo-color-success-subtle);
+      color: var(--cascivo-color-success-foreground);
+    }
+
+    &[data-tone='degraded'] {
+      background-color: var(--cascivo-color-warning-subtle);
+      color: var(--cascivo-color-warning-foreground);
+    }
+
+    &[data-tone='neutral'] {
+      background-color: var(--cascivo-color-bg-subtle);
+      color: var(--cascivo-color-text-muted);
+    }
+
+    .statusDot {
+      inline-size: 0.375rem;
+      block-size: 0.375rem;
+      border-radius: 9999px;
+      background-color: currentColor;
+    }
+  }
+
+  /* Inline actions reveal on the active/hovered row only */
+  .actions {
+    display: inline-flex;
+    gap: var(--cascivo-space-1);
+    flex-shrink: 0;
+    margin-inline-start: auto;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--cascivo-motion-enter);
+
+    /* A status pill already claims the auto margin; sit snug after it */
+    .status + & {
+      margin-inline-start: var(--cascivo-space-2);
+    }
+  }
+
+  .option[data-state='active'] .actions,
+  .option:hover .actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-item);
+    background-color: var(--cascivo-color-surface-overlay);
+    font-family: var(--cascivo-font-sans);
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-text);
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--cascivo-color-accent-subtle);
+    }
+
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .actionKeys {
+    display: inline-flex;
+    gap: var(--cascivo-space-1);
+  }
+
   .shortcut {
     display: inline-flex;
     gap: var(--cascivo-space-1);
+    flex-shrink: 0;
     margin-inline-start: auto;
+  }
+
+  /* When actions are present they own the trailing edge; the static shortcut sits before them */
+  .actions ~ .shortcut {
+    margin-inline-start: var(--cascivo-space-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .actions {
+      transition: none;
+    }
   }
 
   .empty {

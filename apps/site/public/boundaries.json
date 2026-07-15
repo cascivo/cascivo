@@ -372,6 +372,16 @@
         "note": "onQueryChange + loading allow fetching items per keystroke"
       },
       {
+        "area": "scopes",
+        "level": "flexible",
+        "note": "Optional scopes prop adds a filter bar/chip + typed prefixes; groups opt in via a scope id, untagged groups stay visible under any scope"
+      },
+      {
+        "area": "inline actions",
+        "level": "flexible",
+        "note": "Items may declare actions[]; the first is Enter, the second Cmd/Ctrl+Enter, and each is clickable. Rows also support a description metadata line and a status pill"
+      },
+      {
         "area": "token names",
         "level": "strict",
         "note": "Palette styling resolves to semantic --cascivo-color-* / --cascivo-radius-modal tokens"
