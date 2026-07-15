@@ -128,3 +128,31 @@ pnpm changeset
 ```
 
 Commit the generated `.changeset/<random-name>.md` alongside your PR.
+
+## Troubleshooting
+
+### Release fails with `TypeError: Cannot read properties of undefined (reading 'includes')`
+
+Stack trace points at `isAlreadyPublishedError` / `internalPublish` inside
+`@changesets/cli`. This happens during the publish step when `changeset publish`
+re-attempts a version that is **already on npm** (its own `npm info` pre-check can
+read stale registry data, so it tries to publish a version that already exists).
+npm rejects the duplicate with an `E403`, and changesets is supposed to detect
+"cannot publish over the previously published version" and skip it — but on the
+npm versions used here the `E403` JSON body has no `error.summary`, so the
+unguarded `output.includes(...)` throws instead of skipping. One crashed publish
+leaves versions half-published, so every subsequent run hits the same
+already-published package first and crashes again (a partial-publish loop).
+
+This is an upstream bug in `@changesets/cli@2.31.0` (the latest release). We carry
+a `pnpm patch` (`patches/@changesets__cli@2.31.0.patch`, wired in
+`pnpm-workspace.yaml` under `patchedDependencies`) that:
+
+- guards `isAlreadyPublishedError` against a non-string argument, and
+- detects the "already published" message from `error.summary`, `error.detail`,
+  **or** the raw publish `stderr` — so an already-published version is skipped
+  gracefully and the release continues publishing the packages that are behind.
+
+When bumping `@changesets/cli`, re-check whether the upstream `isAlreadyPublishedError`
+crash is fixed; if so, drop the patch. Otherwise regenerate it with
+`pnpm patch @changesets/cli@<version>`.
