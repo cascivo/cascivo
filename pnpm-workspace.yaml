@@ -88,3 +88,6 @@ minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-win32-arm64-msvc@0.2.1'
   - '@voidzero-dev/vite-plus-win32-x64-msvc@0.2.1'
   - vite-plus@0.2.1
+
+patchedDependencies:
+  '@changesets/cli@2.31.0': patches/@changesets__cli@2.31.0.patch
