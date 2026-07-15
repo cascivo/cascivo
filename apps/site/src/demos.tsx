@@ -38,7 +38,7 @@ import { EmptyState } from '@cascivo/components/empty-state'
 import { OverflowMenu } from '@cascivo/components/overflow-menu'
 import { NumberInput } from '@cascivo/components/number-input'
 import { DataTable, type Column } from '@cascivo/components/data-table'
-import { CommandMenu, type CommandGroup } from '@cascivo/components/command-menu'
+import { CommandMenu, type CommandGroup, type CommandScope } from '@cascivo/components/command-menu'
 import { Form, useForm } from '@cascivo/components/form'
 import { Combobox } from '@cascivo/components/combobox'
 import { TimePicker } from '@cascivo/components/time-picker'
@@ -63,7 +63,19 @@ import { Switcher } from '@cascivo/components/switcher'
 import { Editable } from '@cascivo/components/editable'
 import { RadioCard, RadioCardGroup } from '@cascivo/components/radio-card'
 import { CheckboxCard } from '@cascivo/components/checkbox-card'
-import { Home, BarChart, Settings, Users, Server, Grid, Edit, Plus } from '@cascivo/icons'
+import {
+  Home,
+  BarChart,
+  Settings,
+  Users,
+  Server,
+  Grid,
+  Edit,
+  Plus,
+  Search as SearchIcon,
+  Globe,
+  Zap,
+} from '@cascivo/icons'
 import { Blockquote } from '@cascivo/components/blockquote'
 import { Code } from '@cascivo/components/code'
 import { CodeSnippet } from '@cascivo/components/code-snippet'
@@ -174,30 +186,276 @@ function DataTableDemo() {
   )
 }
 
-const commandGroups: CommandGroup[] = [
-  {
-    heading: 'Components',
-    items: [
-      { id: 'button', label: 'Button', keywords: ['click'], onSelect: () => {} },
-      { id: 'input', label: 'Input', keywords: ['form', 'text'], onSelect: () => {} },
-      { id: 'modal', label: 'Modal', onSelect: () => {} },
-    ],
-  },
-  {
-    heading: 'Actions',
-    items: [{ id: 'theme', label: 'Toggle theme', shortcut: ['⌘', 'T'], onSelect: () => {} }],
-  },
+const commandScopes: CommandScope[] = [
+  { id: 'clusters', label: 'Clusters', prefix: 'c' },
+  { id: 'orgs', label: 'Orgs', prefix: 'o' },
+  { id: 'users', label: 'Users', prefix: 'u' },
+  { id: 'commands', label: 'Commands', prefix: '>' },
 ]
+
+function buildCommandGroups(run: (message: string) => void): CommandGroup[] {
+  const openActions = (name: string) => [
+    { id: `open-${name}`, label: 'Open', shortcut: ['↵'], onSelect: () => run(`Opened ${name}`) },
+    {
+      id: `tab-${name}`,
+      label: 'New tab',
+      shortcut: ['⌘', '↵'],
+      onSelect: () => run(`Opened ${name} in a new tab`),
+    },
+  ]
+  return [
+    {
+      heading: 'Clusters',
+      scope: 'clusters',
+      items: [
+        {
+          id: 'prod-eu',
+          label: 'prod-eu-central-1',
+          description: 'eu-central-1 · Enterprise · c9f21a04',
+          icon: <Server size={16} />,
+          keywords: ['production', 'europe'],
+          status: { label: 'Healthy', tone: 'healthy' },
+          actions: openActions('prod-eu-central-1'),
+        },
+        {
+          id: 'prod-us',
+          label: 'prod-us-east-2',
+          description: 'us-east-2 · Enterprise · a1b2c3d4',
+          icon: <Server size={16} />,
+          keywords: ['production'],
+          status: { label: 'Healthy', tone: 'healthy' },
+          actions: openActions('prod-us-east-2'),
+        },
+        {
+          id: 'prod-ap',
+          label: 'prod-ap-southeast-1',
+          description: 'ap-southeast-1 · Team · e5f6a7b8',
+          icon: <Server size={16} />,
+          keywords: ['production', 'asia'],
+          status: { label: 'Degraded', tone: 'degraded' },
+          actions: openActions('prod-ap-southeast-1'),
+        },
+        {
+          id: 'staging-eu',
+          label: 'staging-eu-west-1',
+          description: 'eu-west-1 · Team · b7c8d9e0',
+          icon: <Server size={16} />,
+          keywords: ['staging'],
+          status: { label: 'Healthy', tone: 'healthy' },
+          actions: openActions('staging-eu-west-1'),
+        },
+      ],
+    },
+    {
+      heading: 'Organizations',
+      scope: 'orgs',
+      items: [
+        {
+          id: 'acme',
+          label: 'acme-industries',
+          description: 'Enterprise · 12 clusters · 148 members',
+          icon: <Globe size={16} />,
+          status: { label: 'Active', tone: 'healthy' },
+          actions: openActions('acme-industries'),
+        },
+        {
+          id: 'globex',
+          label: 'globex-corp',
+          description: 'Enterprise · 8 clusters · 96 members',
+          icon: <Globe size={16} />,
+          actions: openActions('globex-corp'),
+        },
+        {
+          id: 'initech',
+          label: 'initech-llc',
+          description: 'Starter · 1 cluster · 4 members',
+          icon: <Globe size={16} />,
+          actions: openActions('initech-llc'),
+        },
+      ],
+    },
+    {
+      heading: 'Users',
+      scope: 'users',
+      items: [
+        {
+          id: 'ada',
+          label: 'Ada Lovelace',
+          description: 'ada@acme.io · Admin',
+          icon: <Users size={16} />,
+          actions: openActions("Ada Lovelace's profile"),
+        },
+        {
+          id: 'alan',
+          label: 'Alan Turing',
+          description: 'alan@acme.io · Developer',
+          icon: <Users size={16} />,
+          actions: openActions("Alan Turing's profile"),
+        },
+      ],
+    },
+    {
+      heading: 'Actions',
+      scope: 'commands',
+      items: [
+        {
+          id: 'create-cluster',
+          label: 'Create cluster…',
+          description: 'Provision a new cluster',
+          icon: <Plus size={16} />,
+          shortcut: ['C'],
+          onSelect: () => run('Started: create cluster'),
+        },
+        {
+          id: 'invite',
+          label: 'Invite teammate…',
+          icon: <Users size={16} />,
+          onSelect: () => run('Started: invite teammate'),
+        },
+        {
+          id: 'restart',
+          label: 'Restart all degraded clusters',
+          icon: <Zap size={16} />,
+          onSelect: () => run('Restarted all degraded clusters'),
+        },
+      ],
+    },
+    {
+      // Unscoped: stays visible under every scope as contextual navigation.
+      heading: 'Navigation',
+      items: [
+        {
+          id: 'overview',
+          label: 'Go to Overview',
+          icon: <Home size={16} />,
+          shortcut: ['G', 'H'],
+          onSelect: () => run('Navigated to Overview'),
+        },
+        {
+          id: 'settings',
+          label: 'Open settings',
+          icon: <Settings size={16} />,
+          page: {
+            placeholder: 'Search settings…',
+            groups: [
+              {
+                heading: 'Settings',
+                items: [
+                  {
+                    id: 'theme',
+                    label: 'Change theme',
+                    icon: <Settings size={16} />,
+                    onSelect: () => run('Opened theme settings'),
+                  },
+                  {
+                    id: 'usage',
+                    label: 'Usage & billing',
+                    icon: <BarChart size={16} />,
+                    onSelect: () => run('Opened usage & billing'),
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  ]
+}
+
+/** Polished search-field-style trigger — the recommended way to invoke the palette. */
+function CommandTrigger({ onClick }: { onClick: () => void }) {
+  const [hover, setHover] = useState(false)
+  const [focus, setFocus] = useState(false)
+  const active = hover || focus
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
+      aria-keyshortcuts="Meta+K Control+K"
+      aria-label="Open command palette"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '0.625rem',
+        inlineSize: 'min(24rem, 100%)',
+        minBlockSize: '2.75rem',
+        paddingInline: '0.75rem',
+        border: `1px solid ${active ? 'var(--cascivo-color-border-strong)' : 'var(--cascivo-color-border)'}`,
+        borderRadius: 'var(--cascivo-radius-lg)',
+        background: 'var(--cascivo-color-surface)',
+        color: 'var(--cascivo-color-text-muted)',
+        font: 'inherit',
+        fontSize: 'var(--cascivo-text-sm)',
+        cursor: 'pointer',
+        boxShadow: focus
+          ? '0 0 0 3px var(--cascivo-color-accent-muted)'
+          : 'var(--cascivo-shadow-sm)',
+        transition: 'border-color 120ms ease, box-shadow 120ms ease',
+        outline: 'none',
+      }}
+    >
+      <SearchIcon
+        size={16}
+        aria-hidden
+        style={{ flexShrink: 0, color: 'var(--cascivo-color-text-subtle)' }}
+      />
+      <span
+        style={{
+          flex: 1,
+          textAlign: 'start',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}
+      >
+        Search clusters, orgs, commands…
+      </span>
+      <span style={{ display: 'inline-flex', gap: '0.25rem', flexShrink: 0 }}>
+        <Kbd size="sm">⌘</Kbd>
+        <Kbd size="sm">K</Kbd>
+      </span>
+    </button>
+  )
+}
 
 function CommandMenuDemo() {
   const [open, setOpen] = useState(false)
+  const [last, setLast] = useState<string | null>(null)
+  const groups = buildCommandGroups(setLast)
   return (
-    <Row>
-      <button type="button" onClick={() => setOpen(true)}>
-        Open CommandMenu <kbd>⌘K</kbd>
-      </button>
-      <CommandMenu open={open} onOpenChange={setOpen} groups={commandGroups} hotkey={false} />
-    </Row>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'flex-start' }}
+    >
+      <CommandTrigger onClick={() => setOpen(true)} />
+      <span
+        style={{ fontSize: 'var(--cascivo-text-sm)', color: 'var(--cascivo-color-text-muted)' }}
+      >
+        {last ? (
+          <>
+            Last action: <strong style={{ color: 'var(--cascivo-color-text)' }}>{last}</strong>
+          </>
+        ) : (
+          <>
+            Try <code>c:</code> for clusters, <code>&gt;</code> for commands, or{' '}
+            <Kbd size="sm">Tab</Kbd> to switch scope.
+          </>
+        )}
+      </span>
+      <CommandMenu
+        open={open}
+        onOpenChange={setOpen}
+        groups={groups}
+        scopes={commandScopes}
+        hotkey={false}
+        label="Console command palette"
+        placeholder="Search… (try c:name, o:name, u:name, > for commands)"
+      />
+    </div>
   )
 }
 
