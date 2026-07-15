@@ -27,7 +27,7 @@ guides, references, cookbooks, and specs that ship with the source.
 
 | Guide | What it covers |
 | ----- | -------------- |
-| [THEMING.md](THEMING.md) | The `data-theme` model, the specificity footgun, and authoring a brand theme. |
+| [THEMING.md](THEMING.md) | The `data-theme` model, runtime switching (`ThemeProvider`/`useTheme`, SSR no-FOUC), the specificity footgun, and authoring a brand theme. |
 | [TOKENS.md](TOKENS.md) | The three-tier token catalog (primitive → semantic → component), by group. |
 | [BRAND.md](BRAND.md) | cascivo's own brand reference — colours, voice, and usage. |
 

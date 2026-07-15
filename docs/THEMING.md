@@ -50,6 +50,47 @@ Apply a theme by setting the attribute on any container:
 <main data-theme="dark">…</main>
 ```
 
+## Switching themes at runtime
+
+`data-theme` is the *what*; `ThemeProvider` (from `@cascivo/react`) is the *how* — it
+persists the choice, drives the attribute, and is SSR-safe, so you never hand-wire a theme
+toggle (and never write a `useEffect` that toggles a `.dark` class):
+
+```tsx
+import { ThemeProvider, useTheme } from '@cascivo/react'
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="dark">
+      <ThemeToggle />
+    </ThemeProvider>
+  )
+}
+
+function ThemeToggle() {
+  const [theme, setTheme] = useTheme() // reactive [signal, setter]; calls useSignals() for you
+  return (
+    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>{theme.value}</button>
+  )
+}
+```
+
+- **Uncontrolled + persisted** by default (localStorage). Pass `value` to control it from
+  server state, `storageKey` to rename the key, `attribute` for a non-default attribute.
+- **Scope a subtree** with `target` (a ref): the provider writes the attribute to that element
+  instead of `<html>`, so a panel can theme independently of the page.
+- **`useTheme()` / `setTheme()` work from any component** — no React context, no prop-drilling
+  (the active theme is a module-level signal).
+- **No flash on reload / SSR:** inline `themePreloadScript()` in your document `<head>`, before
+  the app bundle, so the persisted theme paints on the first byte:
+
+```tsx
+import { themePreloadScript } from '@cascivo/react'
+;<script dangerouslySetInnerHTML={{ __html: themePreloadScript() }} />
+```
+
+See [HEADLESS.md](./HEADLESS.md) for the reactivity model behind this.
+
 ---
 
 > **Using Tailwind v4?** See [`USING-WITH-TAILWIND.md`](./USING-WITH-TAILWIND.md)

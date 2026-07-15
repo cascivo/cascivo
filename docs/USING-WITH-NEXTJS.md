@@ -37,6 +37,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 `data-theme` on `<html>` themes the whole app; it can also scope any subtree
 (`<aside data-theme="dark">`). See [THEMING.md](./THEMING.md).
 
+## Theme switching without a flash (SSR)
+
+The static `data-theme="light"` above is a fine default. For a user-toggleable theme
+that survives reload with **no flash of the wrong theme**, use the theme runtime from
+`@cascivo/react`: inline `themePreloadScript()` in the root layout so the persisted theme
+paints on the first byte, then toggle from a client component with `useTheme()`.
+
+```tsx
+// app/layout.tsx — Server Component. The pre-paint script sets data-theme before the
+// app bundle runs, so there is no flash; the client then owns toggling.
+import '@cascivo/themes/all'
+import { themePreloadScript } from '@cascivo/react'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themePreloadScript() }} />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+Wrap your client tree in `<ThemeProvider>` and toggle with `useTheme()` (a `'use client'`
+component). Full API in [THEMING.md](./THEMING.md#switching-themes-at-runtime).
+
 ## Component CSS is bundled automatically
 
 Each component pulls in its own stylesheet when you import it — Next.js
