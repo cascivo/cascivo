@@ -33,7 +33,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "releases": [
         {
           "version": "0.4.0",
@@ -144,7 +144,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "releases": [
         {
           "version": "0.4.0",
@@ -174,7 +174,7 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.6.0",
+      "version": "0.6.1",
       "releases": [
         {
           "version": "0.6.0",
@@ -286,6 +286,11 @@
           "notes": ["Initial public release of the cascivo design system. Includes:"]
         }
       ]
+    },
+    {
+      "name": "@cascivo/vite-plugin",
+      "version": "0.0.1",
+      "releases": []
     }
   ]
 }
