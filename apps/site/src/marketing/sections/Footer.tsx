@@ -47,6 +47,7 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
   {
     label: 'Proof',
     links: [
+      { label: 'Enterprise & AI-first', href: '/enterprise' },
       { label: 'Why cascivo', href: '/docs/why' },
       { label: 'Built on the platform', href: '/docs/platform' },
       { label: 'Upgrading', href: '/docs/upgrading' },

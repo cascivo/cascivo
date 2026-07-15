@@ -16,6 +16,13 @@ export interface FormConfig<T extends Record<string, unknown>> {
   validate?: (values: T) => Errors<T> | Promise<Errors<T>>
   /** Standard Schema V1 compatible schema (zod, valibot, arktype, …). Runs before validate(). */
   schema?: StandardSchemaV1
+  /**
+   * Revalidate on every `setValue`/`field().onChange`, updating only the changed
+   * field's error (other fields' errors are left untouched until submit). Off by
+   * default — validation runs on submit only. Because updates flow through
+   * signals, keystroke-frequency revalidation triggers no React re-render.
+   */
+  validateOnChange?: boolean
 }
 
 export interface FormStore<T extends Record<string, unknown>> {
@@ -68,8 +75,31 @@ export function createForm<T extends Record<string, unknown>>(config: FormConfig
   const touched = signal<Touched<T>>({})
   const submitting = signal(false)
 
+  // Schema first, then validate() — the same order submit() and validateOnChange share.
+  const validateValues = async (vals: T): Promise<Errors<T>> => {
+    let result: Errors<T> = {}
+    if (config.schema) result = await runSchema(config.schema, vals)
+    if (Object.keys(result).length === 0 && config.validate) {
+      result = await config.validate(vals)
+    }
+    return result
+  }
+
+  // Guards against out-of-order async validations: only the latest change applies.
+  let validateSeq = 0
+
   const setValue = <K extends keyof T>(name: K, value: T[K]) => {
     values.value = { ...values.value, [name]: value }
+    if (!config.validateOnChange) return
+    const seq = ++validateSeq
+    void validateValues(values.value).then((result) => {
+      if (seq !== validateSeq) return
+      const next = { ...errors.value }
+      const message = result[name]
+      if (message !== undefined) next[name] = message
+      else delete next[name]
+      errors.value = next
+    })
   }
 
   return {
@@ -95,16 +125,7 @@ export function createForm<T extends Record<string, unknown>>(config: FormConfig
     async submit(onValid) {
       submitting.value = true
       try {
-        let result: Errors<T> = {}
-
-        if (config.schema) {
-          result = await runSchema(config.schema, values.value)
-        }
-
-        if (Object.keys(result).length === 0 && config.validate) {
-          const validateResult = await config.validate(values.value)
-          result = validateResult
-        }
+        const result = await validateValues(values.value)
 
         const allTouched = Object.fromEntries(
           Object.keys(config.initialValues).map((k) => [k, true]),

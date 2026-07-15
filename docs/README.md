@@ -10,6 +10,8 @@ guides, references, cookbooks, and specs that ship with the source.
 | Guide | What it covers |
 | ----- | -------------- |
 | [GETTING-STARTED.md](GETTING-STARTED.md) | Zero to a rendered button — both the copy-paste CLI path and the prebuilt `@cascivo/react` path. |
+| [ENTERPRISE-READINESS.md](ENTERPRISE-READINESS.md) | Common enterprise frictions (signal↔state, layout, theming, signal lifecycles, typed tokens, forms) mapped to the shipped primitive that solves each. |
+| [HEADLESS.md](HEADLESS.md) | The `@cascivo/core` behavior + state primitives, and the "React hook → cascivo primitive" mapping (useState/useContext/useEffect and their replacements). |
 | [COMPATIBILITY.md](COMPATIBILITY.md) | Supported React versions, browsers, frameworks, and the support matrix. |
 | [MIGRATING-FROM-SHADCN.md](MIGRATING-FROM-SHADCN.md) | Coming from shadcn/ui — CSS setup delta, component mapping, forms, and app shell. |
 
@@ -25,7 +27,7 @@ guides, references, cookbooks, and specs that ship with the source.
 
 | Guide | What it covers |
 | ----- | -------------- |
-| [THEMING.md](THEMING.md) | The `data-theme` model, the specificity footgun, and authoring a brand theme. |
+| [THEMING.md](THEMING.md) | The `data-theme` model, runtime switching (`ThemeProvider`/`useTheme`, SSR no-FOUC), the specificity footgun, and authoring a brand theme. |
 | [TOKENS.md](TOKENS.md) | The three-tier token catalog (primitive → semantic → component), by group. |
 | [BRAND.md](BRAND.md) | cascivo's own brand reference — colours, voice, and usage. |
 
@@ -71,5 +73,6 @@ Task-focused, copy-adaptable recipes in [`cookbooks/`](cookbooks/):
 Machine-readable docs for AI agents: [`llms.txt`](https://cascivo.com/llms.txt),
 per-component [`llms/<name>.md`](https://docs.cascivo.com/llms/), and
 [`context.json`](https://cascivo.com/context.json). Give your own agent the house
-rules with [AI-RULES.md](AI-RULES.md) (the CSS layer contract + a utility-first
-mapping). See the root [README](../README.md#ai--context-layer) for the full AI layer.
+rules with [AI-RULES.md](AI-RULES.md) (the CSS layer contract, the reactivity
+contract, and a utility-first mapping). See the root
+[README](../README.md#ai--context-layer) for the full AI layer.

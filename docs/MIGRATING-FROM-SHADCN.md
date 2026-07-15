@@ -176,6 +176,7 @@ subtree**, not just the document root.
 | `--border` | `--cascivo-color-border` |
 | `--radius` | `--cascivo-radius-*` (control/surface/full) |
 | `.dark { … }` | `[data-theme="dark"]` (or `warm`, plus 9 more) |
+| `next-themes` `ThemeProvider` / `useTheme` | `@cascivo/react` `ThemeProvider` / `useTheme` |
 
 ```css
 /* shadcn: override the flat variables under .dark */
@@ -184,6 +185,11 @@ subtree**, not just the document root.
 /* cascivo: retint by scope — no rebuild, works on any element */
 [data-theme="dark"] { --cascivo-color-accent: oklch(0.7 0.15 250); }
 ```
+
+The runtime switcher maps 1:1: swap `next-themes`' `ThemeProvider`/`useTheme` for the ones
+in `@cascivo/react` — same shape, but signal-backed, plus `themePreloadScript()` for the
+SSR pre-paint script you'd otherwise hand-write. See
+[THEMING.md](THEMING.md#switching-themes-at-runtime).
 
 Full catalog in [TOKENS.md](TOKENS.md); brand a single component by overriding
 its component-tier tokens (see [THEMING.md](THEMING.md)).

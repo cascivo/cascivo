@@ -315,6 +315,31 @@ export const meta: ComponentMeta = {
 | Data-driven docs   | `apps/site/` (docs routes)     | Hand-authored TSX pages render props/tokens/examples live from `registry.json` at runtime — no markdown/HTML is pre-generated |
 | Registry manifest  | `registry.json`                | Machine-readable index — CLI + MCP + docs all read from this                                                                  |
 
+### Keeping the AI docs in sync — every shipped feature must be discoverable
+
+cascivo is AI-first for its **consumers and its contributors**. An adopter or agent that
+can't discover a primitive hand-rolls an inferior version — so a shipped-but-undocumented
+feature is a defect, not just a doc omission. Two update paths, by what you changed:
+
+- **A component / block / chart / layout** (has a `.meta.ts`): update the manifest, then
+  run `pnpm regen`. Every AI surface — `registry.json`, `llms/<name>.md`, `context/<name>.md`,
+  render prop-schemas, `boundaries.json` — is **generated** from the manifest and cannot
+  drift (CI regenerates and diffs). Commit the regenerated artifacts.
+- **A cross-cutting primitive** — a new `@cascivo/core` hook/primitive, or a `@cascivo/react`
+  runtime primitive (theme, forms) — has **no manifest**, so its concept docs are the source
+  of truth and you update them by hand:
+  1. Catalogue it in `docs/HEADLESS.md` (the primitive catalogue + the "React hook → cascivo
+     primitive" table). This is required.
+  2. If it changes the reactivity guidance an agent needs, also update the reactivity contract
+     in `docs/AI-RULES.md` and the "Reactivity & state" section in the `llms.txt` generator
+     (`scripts/llms/generate.ts`), then `pnpm regen`.
+
+**Enforced, not just requested:** `pnpm meta:check` runs `scripts/checks/primitive-docs.test.ts`,
+which fails if any public `@cascivo/core` export (or the named `@cascivo/react` theme/form
+primitives) is absent from the concept docs. Ship a new primitive → document it in `HEADLESS.md`,
+or add an `ALLOWLIST` entry with a reason. This is the analogue of `meta:check`'s
+`meta-coverage` guard for the (manifest-less) concept layer.
+
 ### Dark Factory Pipeline
 
 Tiered automation:

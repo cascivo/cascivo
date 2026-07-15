@@ -2725,6 +2725,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'align',
+      required: false,
+      enum: ['start', 'center', 'end', 'stretch'],
+    },
+    {
+      name: 'justify',
+      required: false,
+      enum: ['start', 'center', 'end', 'stretch'],
+    },
+    {
       name: 'span',
       required: false,
     },

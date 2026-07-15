@@ -35,6 +35,9 @@ const ProofTeasers = lazy(() =>
 const Comparison = lazy(() =>
   import('./sections/Comparison').then((m) => ({ default: m.Comparison })),
 )
+const PrimitivesLayer = lazy(() =>
+  import('./sections/PrimitivesLayer').then((m) => ({ default: m.PrimitivesLayer })),
+)
 const ShowcaseStrip = lazy(() =>
   import('./sections/ShowcaseStrip').then((m) => ({ default: m.ShowcaseStrip })),
 )
@@ -56,6 +59,9 @@ const AccessibleComponentPage = lazy(() =>
 )
 const PerformancePage = lazy(() =>
   import('./pages/PerformancePage').then((m) => ({ default: m.PerformancePage })),
+)
+const EnterprisePage = lazy(() =>
+  import('./pages/EnterprisePage').then((m) => ({ default: m.EnterprisePage })),
 )
 const GuidesPage = lazy(() => import('./pages/GuidesPage').then((m) => ({ default: m.GuidesPage })))
 const ComingFromShadcnPage = lazy(() =>
@@ -153,6 +159,10 @@ function HomePage() {
               <ShowcaseStrip />
             </Suspense>
             <hr className="flow-divider" />
+            <Suspense fallback={<SectionFallback height={360} />}>
+              <PrimitivesLayer />
+            </Suspense>
+            <hr className="flow-divider" />
             <Suspense fallback={<SectionFallback height={420} />}>
               <QuickStart />
             </Suspense>
@@ -189,6 +199,7 @@ const ROUTES: Record<string, Route> = {
     title: ROUTE_HEAD['/accessibility']?.title ?? 'cascivo',
   },
   '/performance': { Page: PerformancePage, title: ROUTE_HEAD['/performance']?.title ?? 'cascivo' },
+  '/enterprise': { Page: EnterprisePage, title: ROUTE_HEAD['/enterprise']?.title ?? 'cascivo' },
   '/guides': { Page: GuidesPage, title: ROUTE_HEAD['/guides']?.title ?? 'cascivo' },
   '/blog': { Page: BlogIndexPage, title: ROUTE_HEAD['/blog']?.title ?? 'cascivo' },
   '/guides/coming-from-shadcn': {

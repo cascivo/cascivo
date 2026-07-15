@@ -465,6 +465,50 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(`Full recipe: ${REPO}/blob/main/docs/CSS-LAYERS-PITFALL.md.`)
   lines.push('')
+  lines.push('## Reactivity & state (signals, not React hooks)')
+  lines.push('')
+  lines.push(
+    'cascivo is signal-driven. Do NOT reach for `useState`/`useContext`/`useEffect` — mixing React',
+  )
+  lines.push(
+    'state with signals causes the exact "state fights the DOM / toggle does nothing" bugs adopters',
+  )
+  lines.push(
+    'hit. In any app WITHOUT the Babel signals transform (every consumer app), a component that reads',
+  )
+  lines.push(
+    '`signal.value` in render MUST call `useSignals()` (from `@cascivo/core`) as its first statement,',
+  )
+  lines.push('or it never re-renders. Use these instead:')
+  lines.push('')
+  lines.push(
+    '- Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. The signal IS the state.',
+  )
+  lines.push(
+    '- Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.',
+  )
+  lines.push('- Side effects (DOM, listeners) -> `useSignalEffect(fn)`, never `useEffect`.')
+  lines.push(
+    '- Shared/app-wide state -> a module-level signal, imported anywhere. No React context needed.',
+  )
+  lines.push(
+    '- Per-route / per-tenant effect disposal -> `useScope()` / `createScope()` (disposes on unmount; prevents signal leaks across navigation).',
+  )
+  lines.push('- Genuine internal state machine -> `createMachine` / `useMachine`.')
+  lines.push(
+    '- Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.',
+  )
+  lines.push(
+    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Never write a `useEffect` that toggles a `.dark` class.',
+  )
+  lines.push(
+    "- Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).",
+  )
+  lines.push('')
+  lines.push(
+    `Full behavior/headless catalog: ${REPO}/blob/main/docs/HEADLESS.md. Enterprise friction -> primitive map: ${REPO}/blob/main/docs/ENTERPRISE-READINESS.md.`,
+  )
+  lines.push('')
   lines.push('## Versioning & compatibility')
   lines.push('')
   lines.push(
@@ -486,6 +530,10 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push('## Guides')
   lines.push('')
+  lines.push(`- Reactivity & headless behavior primitives: ${REPO}/blob/main/docs/HEADLESS.md`)
+  lines.push(
+    `- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): ${REPO}/blob/main/docs/ENTERPRISE-READINESS.md`,
+  )
   lines.push(`- Theming & branding: ${REPO}/blob/main/docs/THEMING.md`)
   lines.push(`- Using cascivo with Preact: ${REPO}/blob/main/docs/USING-WITH-PREACT.md`)
   lines.push(`- Compatibility & support matrix: ${REPO}/blob/main/docs/COMPATIBILITY.md`)

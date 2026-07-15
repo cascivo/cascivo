@@ -175,11 +175,18 @@ export function App() {
 - [RECIPE-DASHBOARD.md](./RECIPE-DASHBOARD.md) — building a console/dashboard
   page (project switcher, cards, KPIs, sparklines/charts): the exact
   component for each need, plus pre-built blocks and reference apps.
+- [HEADLESS.md](./HEADLESS.md) — the reactivity model: state with signals (not
+  `useState`/`useEffect`/`useContext`), the behavior primitives, and the
+  "React hook → cascivo primitive" mapping. Read this before writing any state.
+- [ENTERPRISE-READINESS.md](./ENTERPRISE-READINESS.md) — signal↔state, layout,
+  theming, signal lifecycles, typed tokens, and forms, each mapped to its
+  shipped primitive with code.
 - [THEMING.md](./THEMING.md) — brand it: token tiers, the `data-theme`
   specificity footgun, a starter brand theme.
 - [TOKENS.md](./TOKENS.md) — every `--cascivo-*` custom property.
 - [AI-RULES.md](./AI-RULES.md) — house rules for your AI agent: the CSS layer
-  contract + a utility-first (Tailwind) mapping table.
+  contract, the reactivity contract (signals, not React hooks), and a
+  utility-first (Tailwind) mapping table.
 - [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md) — App Router / RSC setup.
 - [COMPATIBILITY.md](./COMPATIBILITY.md) — frameworks, browsers, package
   version matrix.

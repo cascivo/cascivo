@@ -56,6 +56,21 @@ describe('createForm', () => {
     expect(form.errors.value.email).toBe('Already taken')
   })
 
+  it('validateOnChange revalidates only the changed field on setValue', async () => {
+    const form = createForm<Values>({
+      initialValues: { email: '', age: 0 },
+      validate: (v) => (v.email.includes('@') ? {} : { email: 'Invalid email' }),
+      validateOnChange: true,
+    })
+    // A pre-existing error on another field must survive a change to `email`.
+    form.errors.value = { age: 'Too young' }
+    form.setValue('email', 'nope')
+    await vi.waitFor(() => expect(form.errors.value.email).toBe('Invalid email'))
+    expect(form.errors.value.age).toBe('Too young')
+    form.setValue('email', 'a@b.c')
+    await vi.waitFor(() => expect(form.errors.value.email).toBeUndefined())
+  })
+
   it('reset restores initial values and clears errors/touched', async () => {
     const form = createForm<Values>({
       initialValues: { email: '', age: 0 },
