@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from 'react'
-import { signal, useSignalEffect } from './signals.ts'
+import { signal, useSignalEffect, useSignals } from './signals.ts'
 import type { ReadonlySignal } from './signals.ts'
 
 export interface StreamBufferOptions {
@@ -136,6 +136,9 @@ export function createStreamBuffer<T>(options: StreamBufferOptions): StreamBuffe
  * render to subscribe the component to the stream.
  */
 export function useStreamBuffer<T>(options: StreamBufferOptions): StreamBuffer<T> {
+  // Self-subscribe so a plain React consumer that reads the buffer's signal in
+  // render re-renders on new chunks without calling useSignals() itself.
+  useSignals()
   const ref = useRef<StreamBuffer<T> | null>(null)
   ref.current ??= createStreamBuffer<T>(options)
 

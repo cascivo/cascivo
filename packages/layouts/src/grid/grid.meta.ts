@@ -20,7 +20,8 @@ export const meta: ComponentMeta = {
       name: 'gap',
       type: '1|2|3|4|5|6|8|10|12',
       required: false,
-      description: 'Spacing token step',
+      description:
+        'Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8.',
     },
     {
       name: 'align',

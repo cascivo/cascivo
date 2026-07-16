@@ -35,9 +35,10 @@ Components ship with `'use client'` preserved in the bundle, so they work inside
 RSC without any extra wrapper.
 
 > **No bundler? (CDN, import maps, plain `<link>`)** Import the aggregate sheet
-> `@cascivo/react/styles.css` — it contains every component's CSS in one file.
-> With a bundler you don't need it; import it only if you prefer one explicit
-> stylesheet over per-component tree-shaking.
+> `@cascivo/react/styles.css` — every component's CSS in one file (~273 KB /
+> ~37 KB gzip, not tree-shaken). With a bundler (CSR) you don't need it; import it
+> only if you prefer one explicit stylesheet over per-component tree-shaking, or
+> for Vite SSR (below), where it is required.
 
 > **Vite SSR / TanStack Start / Remix / workerd?** Those per-component `.css`
 > imports need a bundler to resolve them; a bare server-side ESM loader throws
@@ -343,7 +344,7 @@ routing break after adding one of these, check that the import resolves to
 - **DashboardLayout** — Dashboard page layout with stats strip, main content area, and optional aside.
 - **FeatureGrid** — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.
 - **Flex** — Flex layout primitive for vertical or horizontal stacking with gap control.
-- **Grid** — CSS grid layout primitive with responsive column collapsing.
+- **Grid** — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.
 - **Hero** — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.
 - **Indicator** — Positions an overlay element (badge, dot, count) at a corner of its child
 - **Join** — Groups adjacent children into a seamless joined element by removing interior borders and radii

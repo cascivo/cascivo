@@ -14,7 +14,7 @@
   "Sidebar": ["PanelLeft", "LayoutSidebar"],
   "Server": ["ServerCog", "Backend"],
   "Database": ["Db", "Storage", "Datastore"],
-  "GitBranch": ["Branch"],
+  "GitBranch": ["Branch", "fork", "git-fork", "gitfork"],
   "GitPullRequest": ["PullRequest", "PR"],
   "BarChart": ["BarChart3", "BarChartBig"],
   "PieChart": ["ChartPie"],

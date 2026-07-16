@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignalEffect, type ReadonlySignal } from './signals.ts'
+import { useSignal, useSignalEffect, useSignals, type ReadonlySignal } from './signals.ts'
 
 function initialMatch(query: string): boolean {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false
@@ -12,6 +12,9 @@ function initialMatch(query: string): boolean {
  * inside `useSignalEffect`; the listener is cleaned up on teardown.
  */
 export function useMediaQuery(query: string): ReadonlySignal<boolean> {
+  // Self-subscribe so a plain React consumer that reads the returned signal in
+  // render re-renders on match changes without calling useSignals() itself.
+  useSignals()
   const matches = useSignal(initialMatch(query))
 
   useSignalEffect(() => {

@@ -105,7 +105,57 @@ export const Route = createRootRoute({
 
 No `<ClientOnly>` wrappers are needed: cascivo components ship `'use client'` and
 render their server HTML normally; only their signal-driven interactivity runs in
-the browser, after hydration.
+the browser, after hydration. Charts (including `PieChart`/donut) server-render and
+hydrate cleanly — no client-only boundary required.
+
+### Charts are a separate install
+
+`@cascivo/react` exports no charts. For dashboards, add `@cascivo/charts` and import
+its stylesheet once:
+
+```sh
+pnpm add @cascivo/charts
+```
+
+```tsx
+import '@cascivo/charts/styles.css' // once, alongside @cascivo/react/styles.css
+import { AreaChart, BarChart, PieChart } from '@cascivo/charts'
+```
+
+The code editor (`@cascivo/editor`) and flow canvas (`@cascivo/flow`) are likewise
+separate installs with their own stylesheet, all covered by the `/^@cascivo\//`
+`noExternal` pattern.
+
+### Router-aware nav links
+
+cascivo's config-driven nav components (SideNav, ShellHeader, Header, Breadcrumb,
+Switcher, Dock) render plain `<a href>` by default. Register your router's `Link`
+once at startup so they navigate client-side and hover-preload — no `onClick`
+interception:
+
+```tsx
+import { setLinkComponent } from '@cascivo/core'
+import { Link } from '@tanstack/react-router'
+
+// TanStack's Link takes `to`, so map href → to. Call once at app start.
+setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
+```
+
+The registered component receives the full computed prop bag (`href`, `aria-current`,
+active `data-state`, `className`, …), so active styling and accessibility carry over.
+
+### Timestamps (`RelativeTime`)
+
+`RelativeTime` is hydration-safe by default: relative text is clock-dependent, so the
+server text is kept on hydration and corrected on the client (no mismatch warning).
+Pass a serialized server timestamp via `now` when you want byte-identical server/client
+output with no post-hydration correction.
+
+### Tailwind
+
+TanStack Start installs Tailwind v4 by default. cascivo is CSS-native and coexists with
+Tailwind's preflight — leaving it installed is safe; removing it is optional. See
+[USING-WITH-TAILWIND.md](./USING-WITH-TAILWIND.md) if you keep both.
 
 ## Cloudflare / workerd targets
 

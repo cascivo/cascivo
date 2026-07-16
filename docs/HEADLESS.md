@@ -26,9 +26,16 @@ you build on cascivo, reach for these, not the React hook you'd normally use:
 | Reading token names out of a CSS file | `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` | Generated union of every `--cascivo-*` property — visible in the type, no file lookup. |
 
 In a React app that does **not** run the Babel signals transform (any consumer app,
-`apps/examples/*`), a component that reads `signal.value` during render must call
+`apps/examples/*`), a component that reads a **raw** `signal.value` during render must call
 `useSignals()` (from `@cascivo/core`) as its first statement, or it will never re-render
 on a signal write. Symptom: handlers fire but the UI freezes.
+
+You do **not** need `useSignals()` when the signal comes from a cascivo hook — `useSignal`,
+`useComputed`, `useControllableSignal`, `useDisclosure`, `useMediaQuery`, `useMachine`,
+`useRovingFocus`, `useStreamBuffer`, `useScope`, `useTheme`, `useForm`, `useAnchorPosition`
+all call `useSignals()` for you, so reading their returned signal in render is reactive on
+its own. The one exception is `currentLocale()` from `@cascivo/i18n` (a plain function, not
+a hook): call `useSignals()` yourself if you read it in render.
 
 For the full friction-to-primitive rationale with code — and why the generic
 React/Tailwind patterns an LLM defaults to are wrong here — see

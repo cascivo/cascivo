@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from 'react'
-import { useSignal, type Signal } from './signals.ts'
+import { useSignal, useSignals, type Signal } from './signals.ts'
 
 export interface UseControllableSignalOptions<T> {
   /** Controlled value. When provided, the component is controlled for its whole life. */
@@ -27,6 +27,9 @@ export interface UseControllableSignalOptions<T> {
 export function useControllableSignal<T>(
   options: UseControllableSignalOptions<T>,
 ): [Signal<T>, (next: T) => void] {
+  // Self-subscribe so a plain React consumer that reads the returned signal in
+  // render re-renders on writes without calling useSignals() itself.
+  useSignals()
   const { value, defaultValue, onChange } = options
   const isControlled = value !== undefined
 

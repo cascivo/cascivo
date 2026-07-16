@@ -6,12 +6,12 @@
     {
       "path": "layout-columns/columns.tsx",
       "type": "registry:block",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './columns.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface ColumnsProps extends HTMLAttributes<HTMLDivElement> {\n  count?: 2 | 3 | 4\n  gap?: SpaceStep\n}\n\nexport function Columns({ count = 2, gap = 4, className, style, ...props }: ColumnsProps) {\n  return (\n    <div\n      className={cn(styles['columns'], className)}\n      style={{\n        ['--_cols' as string]: String(count),\n        ['--_gap' as string]: `var(--cascivo-space-${gap})`,\n        ...style,\n      }}\n      {...props}\n    />\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './columns.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface ColumnsProps extends HTMLAttributes<HTMLDivElement> {\n  count?: 2 | 3 | 4\n  gap?: SpaceStep\n}\n\nexport function Columns({\n  count = 2,\n  gap = 4,\n  className,\n  style,\n  children,\n  ...props\n}: ColumnsProps) {\n  // Outer element establishes the query container; the inner `.columns` grid hosts the\n  // `@container` collapse rule, which can only resolve against an ancestor container.\n  return (\n    <div\n      className={cn(styles['columns-container'], className)}\n      style={{\n        ['--_cols' as string]: String(count),\n        ['--_gap' as string]: `var(--cascivo-space-${gap})`,\n        ...style,\n      }}\n      {...props}\n    >\n      <div className={styles['columns']}>{children}</div>\n    </div>\n  )\n}\n"
     },
     {
       "path": "layout-columns/columns.module.css",
       "type": "registry:block",
-      "content": "@layer cascivo.component {\n  .columns {\n    display: grid;\n    grid-template-columns: repeat(var(--_cols, 2), minmax(0, 1fr));\n    gap: var(--_gap, var(--cascivo-space-4));\n    container-type: inline-size;\n\n    @container (max-width: 40rem) {\n      grid-template-columns: 1fr;\n    }\n  }\n}\n"
+      "content": "@layer cascivo.component {\n  .columns-container {\n    display: grid;\n    container-type: inline-size;\n  }\n\n  .columns {\n    display: grid;\n    grid-template-columns: repeat(var(--_cols, 2), minmax(0, 1fr));\n    gap: var(--_gap, var(--cascivo-space-4));\n    min-inline-size: 0;\n\n    @container (max-width: 40rem) {\n      grid-template-columns: 1fr;\n    }\n  }\n}\n"
     }
   ],
   "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",

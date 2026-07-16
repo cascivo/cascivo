@@ -37,7 +37,10 @@ function polarPoints(
   return values.map((v, i) => {
     const angle = (i / n) * 2 * Math.PI - Math.PI / 2
     const radius = (v / maxVal) * r
-    return { x: quantize(cx + Math.cos(angle) * radius), y: quantize(cy + Math.sin(angle) * radius) }
+    return {
+      x: quantize(cx + Math.cos(angle) * radius),
+      y: quantize(cy + Math.sin(angle) * radius),
+    }
   })
 }
 

@@ -5,6 +5,12 @@ import type { ReadonlySignal } from '@cascivo/core'
 // so components need no provider — zero-config means default locale ('en').
 const activeLocale = signal('en')
 
+/**
+ * The active locale string. This is a plain function (not a hook), so it cannot
+ * self-subscribe: a React component that reads it during render must call
+ * `useSignals()` (from `@cascivo/core`) as its first statement to re-render when the
+ * locale changes — unlike cascivo's `use*` hooks, which subscribe for you.
+ */
 export function currentLocale(): string {
   return activeLocale.value
 }
