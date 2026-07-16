@@ -204,5 +204,6 @@ export function App() {
 - [TESTING.md](./TESTING.md) — testing signal-driven components with Vitest.
 - [MIGRATING-FROM-SHADCN.md](./MIGRATING-FROM-SHADCN.md) — coming from shadcn/ui.
 - Example apps: [`apps/examples/react-vite`](../apps/examples/react-vite/) (Vite),
+  [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/) (Vite SSR),
   [`apps/examples/react-next`](../apps/examples/react-next/) (Next.js App
   Router), plus full demo dashboards under [`apps/examples/`](../apps/examples/).

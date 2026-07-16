@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cascivo — Vite SSR example</title>
+    <style>
+      /* Declare layer order — cascivo.reset is lowest priority so component layers win */
+      @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.example, cascivo.theme, cascivo.blocks, cascivo.override;
+
+      @layer cascivo.reset {
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      html,
+      body {
+        min-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"><!--ssr-outlet--></div>
+    <script type="module" src="/src/entry-client.tsx"></script>
+  </body>
+</html>

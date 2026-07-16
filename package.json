@@ -33,11 +33,12 @@
     "primitives:check": "node --experimental-strip-types --test scripts/checks/primitive-adoption.test.ts",
     "claims:check": "node --experimental-strip-types --test scripts/checks/claims.test.ts scripts/checks/bench-stats.test.ts scripts/checks/md-tables.test.ts",
     "release:check": "node --experimental-strip-types --test scripts/checks/release-filter.test.ts",
-    "meta:check": "node --experimental-strip-types --test scripts/checks/meta-coverage.test.ts scripts/checks/manifest-completeness.test.ts scripts/checks/primitive-docs.test.ts",
+    "meta:check": "node --experimental-strip-types --test scripts/checks/meta-coverage.test.ts scripts/checks/manifest-completeness.test.ts scripts/checks/primitive-docs.test.ts scripts/checks/props-parity.test.ts",
     "primitive-docs:check": "node --experimental-strip-types --test scripts/checks/primitive-docs.test.ts",
     "i18n:check": "node --experimental-strip-types --test scripts/checks/i18n-keys.test.ts",
     "docs-routes:check": "node --experimental-strip-types --test scripts/checks/docs-routes.test.ts",
     "llms:check": "node --experimental-strip-types --test scripts/checks/llms-channels.test.ts",
+    "ssr:check": "node --experimental-strip-types --test scripts/checks/ssr-import.test.ts",
     "brand:check": "node scripts/brand-guard.mjs",
     "demos:storage:check": "node --experimental-strip-types --test scripts/checks/demo-storage-keys.test.ts",
     "deps:check": "node scripts/registry/deps-check.ts",
@@ -67,8 +68,8 @@
     "dev:landing": "vp run @cascivo/site#dev",
     "dev:landing:full": "vp run -F @cascivo/example-deploy -F @cascivo/example-pay -F @cascivo/example-flow -F @cascivo/example-track -F @cascivo/example-pulse -F @cascivo/example-trade build && vp run @cascivo/site#dev",
     "clean": "find packages apps -maxdepth 3 -name dist -type d -not -path '*/node_modules/*' -exec rm -rf {} + ; vp cache clean",
-    "ready": "pnpm regen && vp check --fix && pnpm brand:check && pnpm claims:check && pnpm release:check && pnpm meta:check && pnpm i18n:check && pnpm docs-routes:check && pnpm llms:check && pnpm layers:check && pnpm unlayered:check && pnpm primitives:check && vp run -r build && vp run -r check && vp run -r test",
-    "ready:ci": "pnpm clean && pnpm regen && vp check --fix && pnpm brand:check && pnpm claims:check && pnpm release:check && pnpm meta:check && pnpm i18n:check && pnpm docs-routes:check && pnpm llms:check && pnpm layers:check && pnpm unlayered:check && pnpm primitives:check && vp run -r --concurrency-limit 1 build && vp run -r check && vp run -r test",
+    "ready": "pnpm regen && vp check --fix && pnpm brand:check && pnpm claims:check && pnpm release:check && pnpm meta:check && pnpm i18n:check && pnpm docs-routes:check && pnpm llms:check && pnpm layers:check && pnpm unlayered:check && pnpm primitives:check && vp run -r build && pnpm ssr:check && vp run -r check && vp run -r test",
+    "ready:ci": "pnpm clean && pnpm regen && vp check --fix && pnpm brand:check && pnpm claims:check && pnpm release:check && pnpm meta:check && pnpm i18n:check && pnpm docs-routes:check && pnpm llms:check && pnpm layers:check && pnpm unlayered:check && pnpm primitives:check && vp run -r --concurrency-limit 1 build && pnpm ssr:check && vp run -r check && vp run -r test",
     "changeset": "changeset && pnpm check:fix",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile && pnpm regen && vp check --fix",
     "build:release": "vp run --concurrency-limit 1 -F @cascivo/ai -F @cascivo/core -F @cascivo/editor -F @cascivo/flow -F @cascivo/i18n -F @cascivo/icons -F @cascivo/charts -F @cascivo/mcp -F @cascivo/react -F @cascivo/registry -F @cascivo/storage -F @cascivo/themes -F @cascivo/tokens -F @cascivo/vite-plugin -F cascivo build",
@@ -77,6 +78,7 @@
   "devDependencies": {
     "@changesets/cli": "catalog:",
     "@playwright/test": "catalog:",
+    "ts-morph": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {

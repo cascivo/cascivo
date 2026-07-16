@@ -92,6 +92,12 @@ jobs:
       - name: Build (vp run -r build)
         run: pnpm exec vp run -r build
 
+      # Must run AFTER the build: the guard reads packages/react/dist and
+      # skips (vacuously) when it is absent, so wiring it with the pre-build
+      # *:check steps would make it silently no-op on every CI run.
+      - name: SSR-import guard (published dist ships bare CSS imports)
+        run: pnpm run ssr:check
+
       - name: Bundle budgets
         run: pnpm run audit:bundle
 

@@ -1,0 +1,29 @@
+{
+  "name": "@cascivo/example-react-vite-ssr",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Vite SSR (TanStack Start / Remix / workerd) example — server-renders cascivo through the built dist",
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build && vp build --ssr src/entry-server.tsx",
+    "preview": "vp preview",
+    "test": "node ./test/ssr-smoke.mjs",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cascivo/react": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "@cascivo/tokens": "workspace:*",
+    "@preact/signals-react": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@cascivo/vite-plugin": "workspace:*",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

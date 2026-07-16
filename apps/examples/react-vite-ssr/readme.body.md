@@ -1,0 +1,65 @@
+Server-renders cascivo through a real Vite SSR build — the living proof behind the "Vite SSR /
+TanStack Start" row in [`docs/COMPATIBILITY.md`](../../../docs/COMPATIBILITY.md). It renders a
+`Menubar`, `Card`, and `Button` with `renderToString` on the server and hydrates on the client,
+consuming the **prebuilt** `@cascivo/react` dist — no copy-paste, no source alias.
+
+## The one line that makes SSR work
+
+The published `@cascivo/react` bundle ships each component's CSS as a bare side-effect import
+(`import './button.css'`). A bundler resolves these, but a raw server-side ESM loader (Node native,
+workerd) does not and throws `Unknown file extension ".css"`. The fix is to tell Vite to process
+`@cascivo/*` during SSR:
+
+```ts
+// vite.config.ts
+import { cascivoSsr } from '@cascivo/vite-plugin'
+
+export default defineConfig({
+  plugins: [cascivoSsr()], // === ssr: { noExternal: [/^@cascivo\//] }
+})
+```
+
+Then import the aggregate stylesheet and a theme once (`src/App.tsx`):
+
+```ts
+import '@cascivo/react/styles.css'
+import '@cascivo/themes/all'
+```
+
+## Run
+
+```sh
+# From the monorepo root
+pnpm install
+
+# From this directory — builds client + server, then the SSR smoke test
+pnpm exec vp build
+pnpm exec vp test
+```
+
+## Why this consumes the built dist (and why that matters)
+
+The CSR starter ([`apps/examples/react-vite`](../react-vite/)) aliases `@cascivo/react` to workspace
+**source** in its `vite.config.ts`, so it never imports the `.css` side-effect edges that only exist
+in the built dist — it cannot reproduce or verify the SSR path. This example deliberately does **not**
+alias `@cascivo/react`: it resolves to the built dist via the package `exports` map, so the SSR build
+exercises the real published artifact. Its `test` script (`test/ssr-smoke.mjs`) imports the built
+server bundle and asserts it renders without the `.css` error and that the component markup is
+present.
+
+The `@cascivo/core` and `@cascivo/i18n` aliases are fine — those are pure JS with no CSS path.
+
+## What proves the fix is load-bearing
+
+In this monorepo `@cascivo/react` is a workspace symlink, and Vite treats linked dependencies as
+`noExternal` by default — so toggling the plugin here changes nothing, and an in-repo negative
+control cannot fail. The mechanism is proven at the levels where it is reproducible:
+
+- **The problem is real in the dist** — [`scripts/checks/ssr-import.test.ts`](../../../scripts/checks/ssr-import.test.ts)
+  imports a dist chunk with a raw Node loader and asserts it throws `Unknown file extension ".css"`.
+- **The plugin emits the documented fix** — [`packages/vite-plugin/src/index.test.ts`](../../../packages/vite-plugin/src/index.test.ts)
+  asserts `cascivoSsr()` returns `ssr.noExternal` covering every `@cascivo/*` package.
+- **The dist server-renders end to end** — this example (positive proof).
+
+For the full recipe (TanStack Start `__root.tsx`, workerd notes), see
+[`docs/USING-WITH-VITE-SSR.md`](../../../docs/USING-WITH-VITE-SSR.md).
