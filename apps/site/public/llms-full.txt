@@ -85,6 +85,17 @@ matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
 `@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
 common mistake: the chart's screen-reader data-table fallback then renders visibly.
 
+SSR SETUP (Vite SSR / TanStack Start / Remix / workerd — READ THIS if you server-render): the
+prebuilt package imports per-component CSS as static `.css` side-effect imports, which a bare
+server ESM loader cannot load — an unconfigured SSR build throws `Unknown file extension ".css"`
+and silently falls back to client-only. Two required steps:
+  1. In vite.config: `ssr: { noExternal: [/^@cascivo\//] }` (or add the `cascivoSsr()`
+     plugin from `@cascivo/vite-plugin`) so Vite processes the CSS instead of the runtime.
+  2. Import `@cascivo/react/styles.css` once in the root route/entry (do NOT rely on the
+     per-component imports server-side). Full recipe: USING-WITH-VITE-SSR.md.
+Next.js App Router does NOT need this (its recipe imports the aggregate sheet in a Server
+Component); plain Vite CSR/SPA does NOT need it either. Only Vite *SSR* runtimes do.
+
 C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:
 
 ```sh

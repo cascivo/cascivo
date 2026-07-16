@@ -533,6 +533,31 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
   lines.push('')
+  lines.push(
+    'SSR SETUP (Vite SSR / TanStack Start / Remix / workerd — READ THIS if you server-render): the',
+  )
+  lines.push(
+    'prebuilt package imports per-component CSS as static `.css` side-effect imports, which a bare',
+  )
+  lines.push(
+    'server ESM loader cannot load — an unconfigured SSR build throws `Unknown file extension ".css"`',
+  )
+  lines.push('and silently falls back to client-only. Two required steps:')
+  lines.push(
+    '  1. In vite.config: `ssr: { noExternal: [/^@cascivo\\//] }` (or add the `cascivoSsr()`',
+  )
+  lines.push(
+    '     plugin from `@cascivo/vite-plugin`) so Vite processes the CSS instead of the runtime.',
+  )
+  lines.push(
+    '  2. Import `@cascivo/react/styles.css` once in the root route/entry (do NOT rely on the',
+  )
+  lines.push('     per-component imports server-side). Full recipe: USING-WITH-VITE-SSR.md.')
+  lines.push(
+    'Next.js App Router does NOT need this (its recipe imports the aggregate sheet in a Server',
+  )
+  lines.push('Component); plain Vite CSR/SPA does NOT need it either. Only Vite *SSR* runtimes do.')
+  lines.push('')
   lines.push('C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:')
   lines.push('')
   lines.push('```sh')

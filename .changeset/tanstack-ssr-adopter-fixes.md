@@ -5,6 +5,7 @@
 '@cascivo/icons': minor
 '@cascivo/charts': patch
 '@cascivo/themes': patch
+'@cascivo/react': patch
 ---
 
 Adopter-friction fixes (TanStack Start / Vite SSR report):
