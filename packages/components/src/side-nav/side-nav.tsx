@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignals } from '@cascivo/core'
+import { cn, getLinkComponent, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import {
   Fragment,
@@ -15,6 +15,23 @@ import { usePopover } from '../popover/use-popover'
 import styles from './side-nav.module.css'
 
 export type SideNavTone = 'default' | 'danger' | 'warning' | 'success'
+
+/**
+ * The anchor props cascivo computes for a nav item — the exact bag it spreads onto
+ * the link element. Passed to a `render` hatch so a custom link (e.g. a router
+ * `<Link>`) can carry the same active-state and accessibility attributes.
+ */
+export interface SideNavLinkProps {
+  href?: string | undefined
+  className?: string | undefined
+  'aria-current'?: 'page' | undefined
+  'aria-label'?: string | undefined
+  'aria-disabled'?: boolean | undefined
+  'data-state'?: 'active' | undefined
+  'data-tone'?: Exclude<SideNavTone, 'default'> | undefined
+  tabIndex?: number | undefined
+  onClick: (e: MouseEvent<HTMLAnchorElement>) => void
+}
 
 /** A selectable/navigable sub-item (link when `href` is set, action when `onSelect` is set). */
 export interface SideNavLinkSubItem {
@@ -54,8 +71,18 @@ export interface SideNavItem {
   /**
    * Escape hatch: render arbitrary content inside the item's shell so it inherits
    * alignment and the collapse context. When set, the item's own fields are ignored.
+   *
+   * `children` is the computed icon + label + trailing node (so a custom link keeps
+   * the default layout), and `linkProps` is the anchor prop bag cascivo would spread
+   * onto the `<a>` (including active-state and a11y attributes) — spread it onto your
+   * router `<Link>` to preserve them. For a global router integration prefer
+   * `setLinkComponent` from `@cascivo/core` over a per-item hatch.
    */
-  render?: (ctx: { collapsed: boolean }) => ReactNode
+  render?: (ctx: {
+    collapsed: boolean
+    children: ReactNode
+    linkProps: SideNavLinkProps
+  }) => ReactNode
 }
 
 export interface SideNavGroup {
@@ -150,8 +177,9 @@ function renderSubControl(
     )
   }
 
+  const LinkComponent = getLinkComponent()
   return (
-    <a
+    <LinkComponent
       href={sub.disabled ? undefined : sub.href}
       role={role}
       aria-current={sub.active ? 'page' : undefined}
@@ -160,7 +188,7 @@ function renderSubControl(
       data-state={sub.active ? 'active' : undefined}
       data-selected={sub.selected || undefined}
       className={className}
-      onClick={(e) => {
+      onClick={(e: MouseEvent<HTMLAnchorElement>) => {
         if (sub.disabled) {
           e.preventDefault()
           return
@@ -170,7 +198,7 @@ function renderSubControl(
       }}
     >
       {inner}
-    </a>
+    </LinkComponent>
   )
 }
 
@@ -426,14 +454,6 @@ export function SideNav({
                   )
                 }
 
-                if (item.render) {
-                  return (
-                    <li key={item.id ?? globalIndex} className={styles['customItem']}>
-                      {item.render({ collapsed: rail })}
-                    </li>
-                  )
-                }
-
                 const inner = (
                   <>
                     {item.icon ? (
@@ -461,6 +481,37 @@ export function SideNav({
                 )
 
                 const tone = item.tone && item.tone !== 'default' ? item.tone : undefined
+                const linkProps: SideNavLinkProps = {
+                  href: item.disabled ? undefined : item.href,
+                  'aria-current': item.active ? 'page' : undefined,
+                  'aria-label': rail ? item.label : undefined,
+                  'aria-disabled': item.disabled || undefined,
+                  tabIndex: item.disabled ? -1 : undefined,
+                  'data-state': item.active ? 'active' : undefined,
+                  'data-tone': tone,
+                  className: styles['link'],
+                  onClick: (e) => {
+                    if (item.disabled) {
+                      e.preventDefault()
+                      return
+                    }
+                    item.onClick?.(e)
+                  },
+                }
+
+                if (item.render) {
+                  return (
+                    <li key={item.id ?? globalIndex} className={styles['customItem']}>
+                      {item.render({ collapsed: rail, children: inner, linkProps })}
+                    </li>
+                  )
+                }
+
+                // Renders through the app-registered link component (see
+                // `setLinkComponent`), defaulting to a plain `<a>`. Passing the full
+                // computed prop bag keeps active-state (`aria-current`/`data-state`)
+                // and layout intact for a router `<Link>`.
+                const LinkComponent = getLinkComponent()
                 const link =
                   item.onClick && !item.href ? (
                     <button
@@ -476,25 +527,7 @@ export function SideNav({
                       {inner}
                     </button>
                   ) : (
-                    <a
-                      href={item.disabled ? undefined : item.href}
-                      aria-current={item.active ? 'page' : undefined}
-                      aria-label={rail ? item.label : undefined}
-                      aria-disabled={item.disabled || undefined}
-                      tabIndex={item.disabled ? -1 : undefined}
-                      data-state={item.active ? 'active' : undefined}
-                      data-tone={tone}
-                      className={styles['link']}
-                      onClick={(e) => {
-                        if (item.disabled) {
-                          e.preventDefault()
-                          return
-                        }
-                        item.onClick?.(e)
-                      }}
-                    >
-                      {inner}
-                    </a>
+                    <LinkComponent {...linkProps}>{inner}</LinkComponent>
                   )
 
                 return (

@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignals } from '@cascivo/core'
+import { cn, getLinkComponent, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './header.module.css'
@@ -34,6 +34,7 @@ export function Header({
   ...props
 }: HeaderProps) {
   useSignals()
+  const LinkComponent = getLinkComponent()
   const navLabel = labels?.nav ?? t(builtin.header.nav)
   return (
     <header
@@ -48,14 +49,14 @@ export function Header({
           <ul className={styles['list']}>
             {links.map((link, i) => (
               <li key={link.id ?? `${i}-${link.href}`}>
-                <a
+                <LinkComponent
                   href={link.href}
                   aria-current={link.active ? 'page' : undefined}
                   data-state={link.active ? 'active' : undefined}
                   className={styles['link']}
                 >
                   {link.label}
-                </a>
+                </LinkComponent>
               </li>
             ))}
           </ul>

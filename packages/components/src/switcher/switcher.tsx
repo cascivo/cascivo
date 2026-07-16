@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignals } from '@cascivo/core'
+import { cn, getLinkComponent, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import type { ReactNode } from 'react'
 import styles from './switcher.module.css'
@@ -21,6 +21,7 @@ export interface SwitcherProps {
 
 export function Switcher({ items, label, className }: SwitcherProps) {
   useSignals()
+  const LinkComponent = getLinkComponent()
   return (
     <ul
       aria-label={label ?? t(builtin.switcher.label)}
@@ -36,7 +37,7 @@ export function Switcher({ items, label, className }: SwitcherProps) {
           </li>
         ) : (
           <li key={entry.href}>
-            <a
+            <LinkComponent
               href={entry.href}
               aria-current={entry.active ? 'page' : undefined}
               data-state={entry.active ? 'active' : undefined}
@@ -48,7 +49,7 @@ export function Switcher({ items, label, className }: SwitcherProps) {
                 </span>
               )}
               {entry.label}
-            </a>
+            </LinkComponent>
           </li>
         ),
       )}

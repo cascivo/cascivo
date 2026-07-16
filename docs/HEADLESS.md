@@ -22,6 +22,7 @@ you build on cascivo, reach for these, not the React hook you'd normally use:
 | A reducer / explicit state machine | `createMachine` / `useMachine` | A minimal transition-table FSM backed by a signal. |
 | A form library (react-hook-form, Formik) | `createForm` / `useForm` / `<Form>` / `field()` | Signal-backed store; sync/async + Standard Schema (zod/valibot) validation; optional `validateOnChange` validates on keystroke with zero re-renders. |
 | `useEffect` to toggle a `.dark` class | `<ThemeProvider>` + `useTheme()` / `setTheme()` | Persists + drives `data-theme`; pair with `themePreloadScript()` for SSR no-FOUC. |
+| Intercepting nav-item `onClick` to route client-side | `setLinkComponent(YourLink)` / `getLinkComponent()` | Config-driven nav (SideNav, ShellHeader, Header, Breadcrumb, Switcher, Dock, NavigationMenu) renders links through the registered component — a real router `<Link>`, so hover-preloading works and no click interception is needed. |
 | Reading token names out of a CSS file | `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` | Generated union of every `--cascivo-*` property — visible in the type, no file lookup. |
 
 In a React app that does **not** run the Babel signals transform (any consumer app,
@@ -49,6 +50,30 @@ React/Tailwind patterns an LLM defaults to are wrong here — see
 | `useScrollLock` | Lock body scroll while an overlay is open. |
 | `VisuallyHidden` | Visually hide content while keeping it in the a11y tree. |
 | `Slot` / `composeRefs` / `mergeProps` | Merge props/refs when forwarding to a child element. |
+| `setLinkComponent` / `getLinkComponent` | Register the component config-driven nav renders links through. Call `setLinkComponent(...)` once at app start so SideNav/ShellHeader/Header/Breadcrumb/Switcher/Dock/NavigationMenu render your framework's router `<Link>` (preserving `href`, `aria-current`, active `data-state`), instead of a plain `<a>`. The Link must forward `ref` to its anchor for roving-focus navs. |
+
+## Router integration — client-side nav links
+
+cascivo's config-driven nav components render plain `<a href>` by default. To make
+them navigate through your framework's router (keeping client-side transitions and
+hover-preloading) register a link component once at startup — a module singleton, so
+no provider or per-item wiring:
+
+```tsx
+// TanStack Router — its Link takes `to`, so map href → to:
+import { setLinkComponent } from '@cascivo/core'
+import { Link } from '@tanstack/react-router'
+setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
+
+// Next.js — its Link takes `href` directly:
+import Link from 'next/link'
+setLinkComponent(Link)
+```
+
+The registered component receives the full computed prop bag (`href`, `className`,
+`aria-current`, `data-state`, `onClick`, …), so active styling and accessibility carry
+over unchanged. For a one-off custom item, `SideNavItem.render({ children, linkProps })`
+gives you the same bag plus the default icon/label node.
 
 ## Recipe: an accessible menu from primitives
 

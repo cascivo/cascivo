@@ -1,7 +1,31 @@
-import { describe, it, expect, vi } from 'vitest'
+import { afterEach, describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { setLinkComponent } from '@cascivo/core'
 import { SideNav, type SideNavItem } from './side-nav'
+
+describe('SideNav router link integration', () => {
+  afterEach(() => setLinkComponent('a'))
+
+  it('renders items through a registered link component, preserving href and aria-current', () => {
+    const calls: Record<string, unknown>[] = []
+    function StubLink({ children, ...props }: { children?: React.ReactNode }) {
+      calls.push(props as Record<string, unknown>)
+      return (
+        <a data-stub {...(props as Record<string, unknown>)}>
+          {children}
+        </a>
+      )
+    }
+    setLinkComponent(StubLink)
+    render(<SideNav items={[{ label: 'Deployments', href: '/deploys', active: true }]} />)
+    const link = screen.getByText('Deployments').closest('a')!
+    expect(link.hasAttribute('data-stub')).toBe(true)
+    expect(link.getAttribute('href')).toBe('/deploys')
+    expect(link.getAttribute('aria-current')).toBe('page')
+    expect(calls.some((c) => c['href'] === '/deploys')).toBe(true)
+  })
+})
 
 describe('SideNav groups prop', () => {
   it('renders section headers when groups are provided', () => {
