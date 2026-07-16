@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/vite-plugin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": false,
   "description": "Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer",
   "keywords": [

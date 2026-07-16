@@ -1,5 +1,12 @@
 # cascivo
 
+## 0.4.3
+
+### Patch Changes
+
+- Updated dependencies [2945720]
+  - @cascivo/registry@0.2.0
+
 ## 0.4.2
 
 ### Patch Changes
