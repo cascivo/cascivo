@@ -1,10 +1,19 @@
 @layer cascivo.component {
+  /* Establishes the query container the `.grid` column rules resolve against, and a
+     single implicit cell so `.grid` fills it on both axes (preserving the pre-wrapper
+     behaviour where the grid element was the layout box). */
+  .grid-container {
+    display: grid;
+    container-type: inline-size;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(var(--_grid-cols, 12), minmax(0, 1fr));
     gap: var(--_grid-gap, var(--cascivo-space-4));
     align-items: var(--_grid-align, stretch);
     justify-items: var(--_grid-justify, stretch);
+    min-inline-size: 0;
     container-type: inline-size;
 
     /* Scalar mode — unchanged back-compat collapse to a single column on a narrow slot. */

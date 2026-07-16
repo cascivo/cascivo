@@ -2,6 +2,7 @@
 import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
+import { quantize } from '../../engine/shape'
 
 export interface RadarSeries {
   id: string
@@ -36,7 +37,7 @@ function polarPoints(
   return values.map((v, i) => {
     const angle = (i / n) * 2 * Math.PI - Math.PI / 2
     const radius = (v / maxVal) * r
-    return { x: cx + Math.cos(angle) * radius, y: cy + Math.sin(angle) * radius }
+    return { x: quantize(cx + Math.cos(angle) * radius), y: quantize(cy + Math.sin(angle) * radius) }
   })
 }
 
@@ -99,8 +100,8 @@ export function Radar({
         const radius = (v / maxVal) * r
         return {
           id: `${s.id}-${i}`,
-          cx: cx + Math.cos(angle) * radius,
-          cy: cy + Math.sin(angle) * radius,
+          cx: quantize(cx + Math.cos(angle) * radius),
+          cy: quantize(cy + Math.sin(angle) * radius),
           label: axes[i] ?? String(i),
           value: v,
           seriesId: s.id,
@@ -132,14 +133,14 @@ export function Radar({
         // Spoke endpoints
         const spokeEnds = Array.from({ length: n }, (_, i) => {
           const angle = (i / n) * 2 * Math.PI - Math.PI / 2
-          return { x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r }
+          return { x: quantize(cx + Math.cos(angle) * r), y: quantize(cy + Math.sin(angle) * r) }
         })
 
         // Ring polygons
         const ringPolygons = rings.map((ringR) => {
           const pts = Array.from({ length: n }, (_, i) => {
             const angle = (i / n) * 2 * Math.PI - Math.PI / 2
-            return `${cx + Math.cos(angle) * ringR},${cy + Math.sin(angle) * ringR}`
+            return `${quantize(cx + Math.cos(angle) * ringR)},${quantize(cy + Math.sin(angle) * ringR)}`
           })
           return pts.join(' ')
         })
@@ -174,8 +175,8 @@ export function Radar({
             {!plain &&
               spokeEnds.map((pt, i) => {
                 const angle = (i / n) * 2 * Math.PI - Math.PI / 2
-                const lx = cx + Math.cos(angle) * (r + 18)
-                const ly = cy + Math.sin(angle) * (r + 18)
+                const lx = quantize(cx + Math.cos(angle) * (r + 18))
+                const ly = quantize(cy + Math.sin(angle) * (r + 18))
                 return (
                   <text
                     key={i}

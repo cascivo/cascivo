@@ -10,7 +10,11 @@
     inline-size: min(24rem, calc(100vw - var(--cascivo-space-8)));
     pointer-events: none;
 
-    @container (max-width: 30rem) {
+    /* Fixed-position viewport-level overlay: it responds to the viewport, not to a
+       containing element, so this must be a viewport @media query. As an unnamed
+       @container query it never matched (nothing establishes containment around the
+       portal root), so the narrow-screen edge-to-edge layout never applied. */
+    @media (max-width: 30rem) {
       inset-inline: var(--cascivo-space-4);
       inline-size: auto;
     }

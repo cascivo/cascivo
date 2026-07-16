@@ -1,7 +1,7 @@
 'use client'
 import { useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { arcPath } from '../../engine/shape'
+import { arcPath, quantize } from '../../engine/shape'
 import { partition, maxDepth, sumValue, type HierNode } from '../../engine/hierarchy'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
@@ -84,8 +84,8 @@ export function Sunburst({
         const r = (n.depth - 0.5) * ring
         return {
           id: `${n.node.label}-${i}`,
-          cx: cx + Math.sin(mid) * r,
-          cy: cy - Math.cos(mid) * r,
+          cx: quantize(cx + Math.sin(mid) * r),
+          cy: quantize(cy - Math.cos(mid) * r),
           label: n.node.label,
           value: n.value,
           percent: total > 0 ? (n.value / total) * 100 : 0,

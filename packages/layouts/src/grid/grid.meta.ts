@@ -2,7 +2,8 @@ import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Grid',
-  description: 'CSS grid layout primitive with responsive column collapsing.',
+  description:
+    'CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.',
   category: 'layout',
   states: [],
   variants: [],

@@ -20,8 +20,11 @@
     color: var(--cascivo-color-foreground-muted);
   }
 
-  .grid {
+  .gridOuter {
     container-type: inline-size;
+  }
+
+  .grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--cascivo-space-4);

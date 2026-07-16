@@ -3,7 +3,7 @@ import { useSignal, useSignals } from '@cascivo/core'
 import type { ReactNode } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
 import { Legend } from '../../chrome/legend'
-import { arcPath } from '../../engine/shape'
+import { arcPath, quantize } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface RadialBarDatum {
@@ -101,8 +101,8 @@ export function RadialBar({
       const endAngle = startAngle + sweepRad * Math.min(1, d.value / domainMax)
       return {
         id: d.id,
-        cx: cx + Math.sin(endAngle) * midR,
-        cy: cy - Math.cos(endAngle) * midR,
+        cx: quantize(cx + Math.sin(endAngle) * midR),
+        cy: quantize(cy - Math.cos(endAngle) * midR),
         label: d.label,
         value: d.value,
         seriesId: d.id,

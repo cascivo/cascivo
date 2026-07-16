@@ -52,10 +52,14 @@ export function Grid({
   children,
   ...props
 }: GridProps) {
+  // The outer element establishes the query container (`container-type`); the inner
+  // `.grid` hosts the `@container` column rules, which resolve against that outer
+  // element. An element can never be its own query container, so a self-contained
+  // Grid needs this wrapper — without it responsive `cols` silently collapse to the
+  // base count wherever no ancestor happens to establish containment.
   return (
     <div
-      className={cn(styles['grid'], className)}
-      data-responsive={isResponsive(cols) ? '' : undefined}
+      className={cn(styles['grid-container'], className)}
       style={{
         ...responsiveVars('--_grid-cols', cols),
         ['--_grid-gap' as string]: `var(--cascivo-space-${gap})`,
@@ -65,7 +69,9 @@ export function Grid({
       }}
       {...props}
     >
-      {children}
+      <div className={styles['grid']} data-responsive={isResponsive(cols) ? '' : undefined}>
+        {children}
+      </div>
     </div>
   )
 }

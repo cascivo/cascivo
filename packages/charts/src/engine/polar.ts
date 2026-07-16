@@ -4,15 +4,22 @@
  * convention as `arcPath`: 0 points up (north) and increases clockwise, in radians.
  */
 import { linearScale, type LinearScale } from './scale'
+import { quantize } from './shape'
 
-/** Convert a polar (radius, angle) around a centre to cartesian (x, y). */
+/**
+ * Convert a polar (radius, angle) around a centre to cartesian (x, y).
+ *
+ * The result is quantized (see `quantize` in ./shape) because it is built from
+ * `Math.sin`/`Math.cos`, which are not bit-reproducible across JS engines — this
+ * keeps SSR and client renders of gauge/polar/radar coordinates identical.
+ */
 export function polarPoint(
   cx: number,
   cy: number,
   radius: number,
   angle: number,
 ): [number, number] {
-  return [cx + radius * Math.sin(angle), cy - radius * Math.cos(angle)]
+  return [quantize(cx + radius * Math.sin(angle)), quantize(cy - radius * Math.cos(angle))]
 }
 
 export interface AngleBand<T extends string = string> {

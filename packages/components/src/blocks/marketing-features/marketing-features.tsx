@@ -53,16 +53,18 @@ export function MarketingFeatures() {
         </p>
       </div>
 
-      <div className={styles.grid}>
-        {FEATURES.map((f) => (
-          <article key={f.title} className={styles.cell} data-testid="feature-cell">
-            <div className={styles.cellIcon} aria-hidden="true">
-              {f.icon}
-            </div>
-            <h3 className={styles.cellTitle}>{f.title}</h3>
-            <p className={styles.cellDescription}>{f.description}</p>
-          </article>
-        ))}
+      <div className={styles.gridOuter}>
+        <div className={styles.grid}>
+          {FEATURES.map((f) => (
+            <article key={f.title} className={styles.cell} data-testid="feature-cell">
+              <div className={styles.cellIcon} aria-hidden="true">
+                {f.icon}
+              </div>
+              <h3 className={styles.cellTitle}>{f.title}</h3>
+              <p className={styles.cellDescription}>{f.description}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   )
