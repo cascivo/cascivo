@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-auth-login",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-auth-login/auth-login.tsx",
+      "type": "registry:block",
+      "content": "import { useSignal, useSignals } from '@cascivo/core'\nimport { Button } from '../../button/button'\nimport { Card } from '../../card/card'\nimport { Checkbox } from '../../checkbox/checkbox'\nimport { Input } from '../../input/input'\nimport styles from './auth-login.module.css'\n\nexport function AuthLogin() {\n  useSignals()\n  const email = useSignal('')\n  const password = useSignal('')\n  const remember = useSignal(false)\n\n  return (\n    <div className={styles.root}>\n      <div className={styles.card}>\n        <Card>\n          <h1 className={styles.heading}>Sign in</h1>\n          <p className={styles.subheading}>Enter your credentials to continue</p>\n          <form className={styles.form} onSubmit={(e) => e.preventDefault()}>\n            <div className={styles.field}>\n              <label htmlFor=\"login-email\" className={styles.label}>\n                Email\n              </label>\n              <Input\n                id=\"login-email\"\n                type=\"email\"\n                placeholder=\"you@example.com\"\n                autoComplete=\"email\"\n                value={email.value}\n                onChange={(e) => {\n                  email.value = e.target.value\n                }}\n              />\n            </div>\n\n            <div className={styles.field}>\n              <div className={styles.passwordRow}>\n                <label htmlFor=\"login-password\" className={styles.label}>\n                  Password\n                </label>\n                <a href=\"/forgot-password\" className={styles.forgotLink}>\n                  Forgot password?\n                </a>\n              </div>\n              <Input\n                id=\"login-password\"\n                type=\"password\"\n                placeholder=\"••••••••\"\n                autoComplete=\"current-password\"\n                value={password.value}\n                onChange={(e) => {\n                  password.value = e.target.value\n                }}\n              />\n            </div>\n\n            <div className={styles.rememberRow}>\n              <Checkbox\n                id=\"login-remember\"\n                label=\"Remember me\"\n                checked={remember.value}\n                onChange={(e) => {\n                  remember.value = e.target.checked\n                }}\n              />\n            </div>\n\n            <Button type=\"submit\" variant=\"primary\" style={{ inlineSize: '100%' }}>\n              Sign in\n            </Button>\n          </form>\n\n          <p className={styles.footer}>\n            Don&apos;t have an account?{' '}\n            <a href=\"/signup\" className={styles.footerLink}>\n              Create an account\n            </a>\n          </p>\n        </Card>\n      </div>\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "block-auth-login/auth-login.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.blocks.auth-login {\n  .root {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    min-block-size: 100vh;\n    padding: var(--cascivo-space-6);\n    background: var(--cascivo-color-surface);\n  }\n\n  .card {\n    inline-size: 100%;\n    max-inline-size: 24rem;\n  }\n\n  .heading {\n    font-size: var(--cascivo-text-2xl);\n    font-weight: var(--cascivo-font-bold);\n    text-align: center;\n    margin-block-end: var(--cascivo-space-1);\n  }\n\n  .subheading {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-foreground-muted);\n    text-align: center;\n    margin-block-end: var(--cascivo-space-6);\n  }\n\n  .form {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-4);\n  }\n\n  .field {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-1-5);\n  }\n\n  .label {\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-medium);\n  }\n\n  .passwordRow {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n  }\n\n  .forgotLink {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-accent);\n    text-decoration: none;\n  }\n\n  .forgotLink:hover {\n    text-decoration: underline;\n  }\n\n  .rememberRow {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    font-size: var(--cascivo-text-sm);\n  }\n\n  .footer {\n    margin-block-start: var(--cascivo-space-2);\n    text-align: center;\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-foreground-muted);\n  }\n\n  .footerLink {\n    color: var(--cascivo-color-accent);\n    text-decoration: none;\n    font-weight: var(--cascivo-font-medium);\n  }\n\n  .footerLink:hover {\n    text-decoration: underline;\n  }\n}\n"
+    }
+  ],
+  "description": "Email + password login with remember-me checkbox and forgot-password link.",
+  "dependencies": ["@cascivo/react"],
+  "categories": ["auth"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.6.3"
+    }
+  }
+}

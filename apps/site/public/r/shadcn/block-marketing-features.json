@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-marketing-features",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-marketing-features/marketing-features.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport styles from './marketing-features.module.css'\n\ntype Feature = { icon: string; title: string; description: string }\n\nconst FEATURES: Feature[] = [\n  {\n    icon: '⚡',\n    title: 'Signal-driven',\n    description:\n      'Preact Signals power every component. No useState, no re-renders, zero unnecessary DOM updates.',\n  },\n  {\n    icon: '🎨',\n    title: 'CSS-native',\n    description:\n      'Modern CSS only — @layer, @container, :has(), custom properties. No Tailwind, no CSS-in-JS.',\n  },\n  {\n    icon: '♿',\n    title: 'WCAG 2.1 AA',\n    description:\n      'Every component ships with correct ARIA roles, keyboard navigation, and focus management.',\n  },\n  {\n    icon: '📋',\n    title: 'Copy-paste model',\n    description:\n      'Components live in your project. You own the code. No vendor lock-in, no version surprises.',\n  },\n  {\n    icon: '🤖',\n    title: 'AI-first',\n    description:\n      'Machine-readable component manifests, MCP server, and Claude Code skills included out of the box.',\n  },\n  {\n    icon: '🌗',\n    title: 'Beautiful themes',\n    description:\n      'Light, dark, and warm themes ship as pure CSS. Scope any theme to any container with data-theme.',\n  },\n]\n\nexport function MarketingFeatures() {\n  return (\n    <section className={styles.root}>\n      <div className={styles.header}>\n        <h2 className={styles.heading}>Everything you need</h2>\n        <p className={styles.subtitle}>\n          cascivo is designed for developers who care about quality, performance, and\n          maintainability.\n        </p>\n      </div>\n\n      <div className={styles.grid}>\n        {FEATURES.map((f) => (\n          <article key={f.title} className={styles.cell} data-testid=\"feature-cell\">\n            <div className={styles.cellIcon} aria-hidden=\"true\">\n              {f.icon}\n            </div>\n            <h3 className={styles.cellTitle}>{f.title}</h3>\n            <p className={styles.cellDescription}>{f.description}</p>\n          </article>\n        ))}\n      </div>\n    </section>\n  )\n}\n"
+    },
+    {
+      "path": "block-marketing-features/marketing-features.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.blocks.marketing-features {\n  .root {\n    padding-block: var(--cascivo-space-20);\n    padding-inline: var(--cascivo-space-6);\n    background: var(--cascivo-color-surface-raised);\n  }\n\n  .header {\n    text-align: center;\n    margin-block-end: var(--cascivo-space-12);\n  }\n\n  .heading {\n    font-size: var(--cascivo-text-3xl);\n    font-weight: var(--cascivo-font-bold);\n    margin-block-end: var(--cascivo-space-3);\n  }\n\n  .subtitle {\n    font-size: var(--cascivo-text-lg);\n    color: var(--cascivo-color-foreground-muted);\n    max-inline-size: 36rem;\n    margin-inline: auto;\n  }\n\n  .grid {\n    container-type: inline-size;\n    display: grid;\n    grid-template-columns: 1fr;\n    gap: var(--cascivo-space-8);\n    max-inline-size: 72rem;\n    margin-inline: auto;\n  }\n\n  @container (min-inline-size: 40rem) {\n    .grid {\n      grid-template-columns: repeat(2, 1fr);\n    }\n  }\n\n  @container (min-inline-size: 64rem) {\n    .grid {\n      grid-template-columns: repeat(3, 1fr);\n    }\n  }\n\n  .cell {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-3);\n  }\n\n  .cellIcon {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    inline-size: 3rem;\n    block-size: 3rem;\n    border-radius: var(--cascivo-radius-md);\n    background: var(--cascivo-color-accent-subtle);\n    font-size: 1.5rem;\n  }\n\n  .cellTitle {\n    font-size: var(--cascivo-text-lg);\n    font-weight: var(--cascivo-font-semibold);\n  }\n\n  .cellDescription {\n    font-size: var(--cascivo-text-sm);\n    color: var(--cascivo-color-foreground-muted);\n    line-height: var(--cascivo-leading-relaxed);\n  }\n}\n"
+    }
+  ],
+  "description": "Three-column responsive feature grid with icon, title, and description per cell.",
+  "dependencies": ["@cascivo/react"],
+  "categories": ["marketing"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.6.3"
+    }
+  }
+}

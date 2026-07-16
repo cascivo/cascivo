@@ -27,6 +27,42 @@ See [GETTING-STARTED.md](./GETTING-STARTED.md#the-critical-wiring-themes--data-t
 
 ---
 
+## SSR crash: `Unknown file extension ".css"` (TanStack Start, Vite SSR, Remix, workerd)
+
+**Symptom:** a server-rendered page throws
+`Error: Unknown file extension ".css" for …/@cascivo/react/dist/<component>/<component>.css`,
+and the app silently falls back to client-only rendering.
+
+**Cause:** the published `@cascivo/react` bundle ships per-component CSS as
+**static side-effect imports** (`import './button.css'` inside each component
+chunk). A bundler resolves those at build time, but a bare server-side ESM loader
+— Node's native loader, or a workerd/Cloudflare runtime — has no loader for `.css`
+and throws. (Next.js App Router never hits this because its recipe imports the
+aggregate stylesheet in a Server Component; the plain Vite CSR/SPA path never hits
+it because the browser bundler resolves the imports.)
+
+**Fix:** tell Vite to **process** the cascivo packages during SSR instead of
+leaving them for the runtime to load raw, and import the aggregate stylesheet once:
+
+```ts
+// vite.config.ts
+export default defineConfig({
+  ssr: { noExternal: [/^@cascivo\//] }, // ← the fix
+})
+```
+
+```tsx
+// your root route / server entry — once
+import '@cascivo/react/styles.css'
+import '@cascivo/themes/all'
+```
+
+Prefer not to hand-write the config? Add the `cascivoSsr()` plugin from
+`@cascivo/vite-plugin`, which sets `ssr.noExternal` for every `@cascivo/*`
+package. Full recipe (TanStack Start, Remix, workerd): [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md).
+
+---
+
 ## Handlers fire but the UI never updates (toggles don't toggle, modals don't open)
 
 **Cause:** a component of **yours** reads a signal's `.value` during render
@@ -158,6 +194,12 @@ Tailwind v4 *alongside* cascivo works too: [USING-WITH-TAILWIND.md](./USING-WITH
 
 **Does it work with Next.js / React Server Components?** Yes — components ship
 `'use client'` preserved. Setup in [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
+
+**Does it work with Vite SSR / TanStack Start / Remix / workerd?** Yes — add one
+line, `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin), and import
+`@cascivo/react/styles.css` once. Without it the server loader throws
+`Unknown file extension ".css"` (see the entry above). Full recipe:
+[USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md).
 
 **How is this different from shadcn/ui?** Same ownership model (you own copied
 source), plus signal reactivity, a closed token system, twelve themes, built-in

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/dashboard-overview",
+  "type": "block",
+  "description": "Welcome header with four KPI stat cards (revenue, users, orders, conversion).",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["dashboard", "stats", "kpi", "cards", "overview"],
+  "category": "dashboard"
+}

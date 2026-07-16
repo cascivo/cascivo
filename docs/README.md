@@ -20,6 +20,7 @@ guides, references, cookbooks, and specs that ship with the source.
 | Guide | What it covers |
 | ----- | -------------- |
 | [USING-WITH-NEXTJS.md](USING-WITH-NEXTJS.md) | Next.js App Router / RSC — client boundaries, serialization caveats, naming collisions. |
+| [USING-WITH-VITE-SSR.md](USING-WITH-VITE-SSR.md) | Vite SSR / TanStack Start / Remix / workerd — the one-line `ssr.noExternal` fix for the `Unknown file extension ".css"` crash. |
 | [USING-WITH-PREACT.md](USING-WITH-PREACT.md) | Preact + `preact/compat`, where signals are natively reactive. |
 | [USING-WITH-TAILWIND.md](USING-WITH-TAILWIND.md) | Interop with an existing Tailwind v4 setup. |
 

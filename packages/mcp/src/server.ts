@@ -20,6 +20,7 @@ import { scaffoldView } from './scaffold-view.js'
 import { buildGrammar, formatGrammar } from './grammar.js'
 import { buildGenerationPrompt } from './prompt.js'
 import { loadTokenCatalog } from './tokens.js'
+import { loadIconCatalog, searchIcons } from './icons.js'
 import { loadVariantMatrix } from './variants.js'
 import { validateComponentSource } from './validate-component.js'
 import { loadContext, loadComponentMarkdown } from './context.js'
@@ -500,6 +501,40 @@ export function Diagram() {
         return json({ count: tokens.length, tokens })
       } catch (e) {
         return error(`Token catalog unavailable: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    },
+  )
+
+  server.registerTool(
+    'search_icons',
+    {
+      title: 'Search icons',
+      description:
+        'Resolve an icon by intent. cascivo icon export names differ from Lucide/Radix (e.g. LayoutDashboard→Dashboard, Rocket→Spaceship), so guessing an import name wastes a compile. Pass a concept, a familiar foreign name, or an intent word ("deploy", "git branch") and get the matching @cascivo/icons exports ranked by relevance. Omit the query to list every icon name.',
+      inputSchema: {
+        query: z
+          .string()
+          .optional()
+          .describe(
+            'What you want, in any vocabulary: a concept ("dashboard"), a Lucide/Radix name ("GitBranch", "LayoutDashboard"), or an intent word ("deploy", "trash"). Omit to list all.',
+          ),
+        limit: z.number().int().positive().optional().describe('Max results (default 25).'),
+      },
+    },
+    async ({ query, limit }) => {
+      try {
+        const catalog = await loadIconCatalog(fetchFn)
+        const matches = query ? searchIcons(catalog.icons, query) : catalog.icons
+        const results = matches.slice(0, limit ?? 25).map((i) => ({
+          pascalName: i.pascalName,
+          name: i.name,
+          category: i.category,
+          aliases: i.aliases ?? [],
+          import: `import { ${i.pascalName} } from '@cascivo/icons'`,
+        }))
+        return json({ count: results.length, total: matches.length, icons: results })
+      } catch (e) {
+        return error(`Icon catalog unavailable: ${e instanceof Error ? e.message : String(e)}`)
       }
     },
   )

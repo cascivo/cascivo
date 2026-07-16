@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-testimonials",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-testimonials/testimonials.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Avatar } from '../../avatar/avatar'\nimport { Card, CardContent } from '../../card/card'\nimport styles from './testimonials.module.css'\n\ntype Quote = { quote: string; name: string; role: string; initials: string }\n\nconst QUOTES: Quote[] = [\n  {\n    quote:\n      'We deleted thousands of lines of bespoke CSS and never looked back. The token system just works.',\n    name: 'Ada Okonkwo',\n    role: 'Staff Engineer, Northwind',\n    initials: 'AO',\n  },\n  {\n    quote:\n      'The signal-driven components removed an entire class of re-render bugs from our dashboard.',\n    name: 'Marco Bianchi',\n    role: 'Frontend Lead, Vela',\n    initials: 'MB',\n  },\n  {\n    quote:\n      'Our AI agents build real UIs against the manifests. It is the first design system that ships for machines too.',\n    name: 'Priya Nair',\n    role: 'Founder, Loophole',\n    initials: 'PN',\n  },\n]\n\nexport function Testimonials() {\n  return (\n    <section className={styles['root']} aria-label=\"Customer testimonials\">\n      <div className={styles['header']}>\n        <h2 className={styles['heading']}>Loved by developers</h2>\n        <p className={styles['subtitle']}>\n          Teams ship faster on a quality floor they do not have to maintain.\n        </p>\n      </div>\n      <div className={styles['grid']}>\n        {QUOTES.map((item) => (\n          <Card key={item.name} variant=\"outlined\" className={styles['card']}>\n            <CardContent>\n              <blockquote className={styles['quote']}>{`“${item.quote}”`}</blockquote>\n              <div className={styles['person']}>\n                <Avatar fallback={item.initials} size=\"sm\" />\n                <div className={styles['meta']}>\n                  <span className={styles['name']}>{item.name}</span>\n                  <span className={styles['role']}>{item.role}</span>\n                </div>\n              </div>\n            </CardContent>\n          </Card>\n        ))}\n      </div>\n    </section>\n  )\n}\n"
+    },
+    {
+      "path": "block-testimonials/testimonials.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .root {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-8);\n    padding-block: var(--cascivo-space-12);\n  }\n\n  .header {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-2);\n    text-align: center;\n  }\n\n  .heading {\n    margin: 0;\n    font-family: var(--cascivo-font-display);\n    font-size: var(--cascivo-text-3xl);\n    font-weight: var(--cascivo-font-bold);\n    color: var(--cascivo-color-text);\n  }\n\n  .subtitle {\n    margin: 0;\n    color: var(--cascivo-color-text-muted);\n  }\n\n  .grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));\n    gap: var(--cascivo-space-6);\n  }\n\n  .card {\n    height: 100%;\n  }\n\n  .quote {\n    margin: 0;\n    color: var(--cascivo-color-text);\n    line-height: var(--cascivo-leading-relaxed);\n  }\n\n  .person {\n    display: flex;\n    align-items: center;\n    gap: var(--cascivo-space-3);\n    margin-block-start: var(--cascivo-space-4);\n  }\n\n  .meta {\n    display: flex;\n    flex-direction: column;\n  }\n\n  .name {\n    font-weight: var(--cascivo-font-semibold);\n    color: var(--cascivo-color-text);\n    font-size: var(--cascivo-text-sm);\n  }\n\n  .role {\n    color: var(--cascivo-color-text-muted);\n    font-size: var(--cascivo-text-xs);\n  }\n}\n"
+    }
+  ],
+  "description": "Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.",
+  "dependencies": ["@cascivo/react"],
+  "categories": ["marketing"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.6.3"
+    }
+  }
+}

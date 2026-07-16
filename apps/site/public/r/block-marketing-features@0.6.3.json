@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/marketing-features",
+  "type": "block",
+  "description": "Three-column responsive feature grid with icon, title, and description per cell.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["marketing", "features", "grid", "icons"],
+  "category": "marketing"
+}

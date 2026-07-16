@@ -1742,5 +1742,21 @@
   "ZoomOut": {
     "keywords": "magnify minus",
     "categories": ["ui"]
+  },
+  "GitBranch": {
+    "keywords": "git branch version control vcs fork develop",
+    "categories": ["ui"]
+  },
+  "GitCommit": {
+    "keywords": "git commit version control vcs hash revision",
+    "categories": ["ui"]
+  },
+  "GitMerge": {
+    "keywords": "git merge version control vcs combine integrate",
+    "categories": ["ui"]
+  },
+  "GitPullRequest": {
+    "keywords": "git pull request pr version control vcs review merge",
+    "categories": ["ui"]
   }
 }

@@ -130,6 +130,7 @@
     --cascivo-chart-8: oklch(0.5 0.12 200);
     --cascivo-chart-grid: oklch(0.85 0 0);
     --cascivo-chart-axis: oklch(0.55 0 0);
+    --cascivo-chart-fill-opacity: 0.25;
 
     /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

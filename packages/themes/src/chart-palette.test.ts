@@ -229,6 +229,52 @@ describe('chart palette', () => {
     }
   })
 
+  // A solid area fill is drawn at --cascivo-chart-fill-opacity over the surface.
+  // The original defect: on the dark theme a 0.25-opacity fill desaturated into a
+  // muddy near-surface neutral. This guard composites each series color over the
+  // theme background at the theme's fill-opacity and asserts the tinted area stays
+  // perceptibly distinct from the background (not invisible). Deterministic math.
+  describe('fill presence — composited area fill is perceptible over the surface', () => {
+    const MIN_FILL_CONTRAST = 1.1
+    for (const theme of THEMES) {
+      it(`${theme}: every chart fill is distinguishable from the background`, () => {
+        const css = readFileSync(join(SRC, `${theme}.css`), 'utf8')
+        const foMatch = css.match(/--cascivo-chart-fill-opacity\s*:\s*([\d.]+)/)
+        // Themes without an override inherit the 0.25 base from @cascivo/tokens.
+        const alpha = foMatch ? parseFloat(foMatch[1]!) : 0.25
+        const tokens = parseChartTokens(theme)
+        const bg = themeBackground(theme)
+        const failures: string[] = []
+
+        for (let i = 1; i <= 8; i++) {
+          const raw = tokens.get(i)
+          if (!raw) continue
+          let fg: RGB
+          try {
+            fg = parseOklch(raw)
+          } catch {
+            failures.push(`chart-${i}: cannot parse "${raw}"`)
+            continue
+          }
+          // Alpha-composite fg over bg in linear sRGB (both are linear here).
+          const comp: RGB = [
+            fg[0] * alpha + bg[0] * (1 - alpha),
+            fg[1] * alpha + bg[1] * (1 - alpha),
+            fg[2] * alpha + bg[2] * (1 - alpha),
+          ]
+          const ratio = contrastRatio(comp, bg)
+          if (ratio < MIN_FILL_CONTRAST) {
+            failures.push(
+              `chart-${i} fill @${alpha} contrast ${ratio.toFixed(3)} < ${MIN_FILL_CONTRAST}`,
+            )
+          }
+        }
+
+        expect(failures, `${theme} fill-presence failures:\n  ${failures.join('\n  ')}`).toEqual([])
+      })
+    }
+  })
+
   describe('CVD distinguishability — adjacent pairs distinguishable under protan/deutan/tritan', () => {
     const CVD_TYPES = ['protan', 'deutan', 'tritan'] as const
 

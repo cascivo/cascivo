@@ -131,4 +131,35 @@ describe('parseLegacyRegistry', () => {
     const index = parseLegacyRegistry(raw)
     expect(index.items[0]?.registryDependencies).toEqual(['popover', 'button'])
   })
+
+  it('folds the blocks array into items with a block/ name prefix', () => {
+    const raw = {
+      version: '1.0.0',
+      components: [{ name: 'button', type: 'component' }],
+      blocks: [
+        {
+          name: 'dashboard-overview',
+          type: 'block',
+          description: 'KPI stat cards',
+          files: ['https://example.com/dashboard-overview.tsx'],
+        },
+      ],
+    }
+    const index = parseLegacyRegistry(raw)
+    const block = index.items.find((i) => i.name === 'block/dashboard-overview')
+    expect(block).toBeDefined()
+    expect(block?.type).toBe('block')
+    expect(block?.description).toBe('KPI stat cards')
+    expect(block?.files).toEqual([{ url: 'https://example.com/dashboard-overview.tsx' }])
+  })
+
+  it('does not double-prefix a block name that already carries block/', () => {
+    const raw = {
+      version: '1.0.0',
+      components: [],
+      blocks: [{ name: 'block/console-app', type: 'block' }],
+    }
+    const index = parseLegacyRegistry(raw)
+    expect(index.items.map((i) => i.name)).toEqual(['block/console-app'])
+  })
 })

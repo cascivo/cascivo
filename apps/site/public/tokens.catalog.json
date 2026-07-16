@@ -1,8 +1,8 @@
 {
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
-  "generatedAt": "2026-07-15",
-  "count": 262,
+  "generatedAt": "2026-07-16",
+  "count": 263,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1459,6 +1459,15 @@
       "layer": "semantic",
       "group": "chart",
       "resolvedDefault": "oklch(0.5 0.016 264)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-chart-fill-opacity",
+      "value": "0.25",
+      "layer": "semantic",
+      "group": "chart",
+      "resolvedDefault": "0.25",
       "resolvesPerTheme": false,
       "canonical": true
     },

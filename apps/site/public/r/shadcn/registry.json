@@ -222,6 +222,78 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-app-shell",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-app-shell/app-shell.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-app-shell/app-shell.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Two-column layout with collapsible sidebar, nav links, and content area.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["shell"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-auth-login",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-auth-login/auth-login.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-auth-login/auth-login.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Email + password login with remember-me checkbox and forgot-password link.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["auth"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-auth-signup",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-auth-signup/auth-signup.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-auth-signup/auth-signup.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Full-name, email, password, confirm-password sign-up form with terms checkbox.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["auth"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "block-console-app",
       "type": "registry:block",
       "files": [
@@ -271,6 +343,54 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-dashboard-overview",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-dashboard-overview/dashboard-overview.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-dashboard-overview/dashboard-overview.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Welcome header with four KPI stat cards (revenue, users, orders, conversion).",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["dashboard"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-dashboard-table",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-dashboard-table/dashboard-table.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-dashboard-table/dashboard-table.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Searchable, sortable, paginated data table with export button.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["dashboard"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "block-empty-dashboard",
       "type": "registry:block",
       "files": [
@@ -292,6 +412,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-faq",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-faq/faq.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-faq/faq.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["marketing"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "block-login-page",
       "type": "registry:block",
       "files": [
@@ -304,6 +448,54 @@
       "dependencies": ["@cascivo/react"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/layout-auth-layout.json"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-marketing-features",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-marketing-features/marketing-features.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-marketing-features/marketing-features.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Three-column responsive feature grid with icon, title, and description per cell.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["marketing"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-marketing-hero",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-marketing-hero/marketing-hero.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-marketing-hero/marketing-hero.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Full-width hero with headline, subtitle, CTA pair, and trust badges.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["marketing"],
       "meta": {
         "cascivo": {
           "type": "block",
@@ -358,6 +550,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-pricing",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-pricing/pricing.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-pricing/pricing.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["marketing"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "block-settings-form-page",
       "type": "registry:block",
       "files": [
@@ -370,6 +586,30 @@
       "dependencies": ["@cascivo/react"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/layout-settings-layout.json"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-settings-profile",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-settings-profile/settings-profile.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-settings-profile/settings-profile.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Two-section settings form: personal info fields + preference toggles.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["shell"],
       "meta": {
         "cascivo": {
           "type": "block",
@@ -400,6 +640,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-site-footer",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-site-footer/site-footer.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-site-footer/site-footer.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["marketing"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "block-stats-cards",
       "type": "registry:block",
       "files": [
@@ -411,6 +675,30 @@
       "description": "Grid of KPI stat cards with trend badges.",
       "dependencies": ["@cascivo/react"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "block",
+          "version": "0.6.3"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "block-testimonials",
+      "type": "registry:block",
+      "files": [
+        {
+          "path": "block-testimonials/testimonials.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "block-testimonials/testimonials.module.css",
+          "type": "registry:block"
+        }
+      ],
+      "description": "Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.",
+      "dependencies": ["@cascivo/react"],
+      "categories": ["marketing"],
       "meta": {
         "cascivo": {
           "type": "block",

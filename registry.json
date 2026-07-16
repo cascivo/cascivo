@@ -1,6 +1,6 @@
 {
   "version": "0.6.3",
-  "generatedAt": "2026-07-15",
+  "generatedAt": "2026-07-16",
   "components": [
     {
       "name": "accordion",
@@ -2144,7 +2144,7 @@
       ],
       "fileHashes": {
         "card.tsx": "sha256-01a7aa2c599f1d782fd5cf9e3ebc56c9bbdc6b32ef23928b86f8df191fb6510b",
-        "card.module.css": "sha256-4254f5771afae924202d923a7f8e667aa340c3c34d5c54e88215b8f7df425264"
+        "card.module.css": "sha256-761c14406b253b696e935465aabd14c06f122b061c86a382b7b953f3ab49c5d5"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -12788,7 +12788,7 @@
       ],
       "fileHashes": {
         "search.tsx": "sha256-282ffd6d782ae6f12c93836f74a316b5add5aed8366ac51b6e27d7f57d5e157a",
-        "search.module.css": "sha256-7efba1f7d8c215435bc8292d07924113889f412c50068c01c022f8450971c003"
+        "search.module.css": "sha256-129444d231e86bcea559666363ce3d75ce635697142687e5fca843451505807b"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -12893,7 +12893,8 @@
           "--cascivo-color-text-muted",
           "--cascivo-color-bg-subtle",
           "--cascivo-radius-input",
-          "--cascivo-focus-ring"
+          "--cascivo-focus-ring",
+          "--cascivo-search-width"
         ],
         "accessibility": {
           "role": "searchbox",

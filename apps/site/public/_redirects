@@ -1,1 +1,9 @@
 /installation  /docs/installation  301
+
+# Machine-readable surfaces return a real 404 (not the SPA HTML shell) for a
+# wrong/guessed name, so an agent gets a parseable "not found" instead of silently
+# reading HTML as markdown/JSON. Static assets take precedence over these rules, so
+# every real .md/.json still serves 200 — only missing paths fall through here.
+/llms/*     /llms-404.md   404
+/context/*  /llms-404.md   404
+/r/*        /r-404.json    404

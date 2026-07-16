@@ -114,6 +114,15 @@ import a component — your bundler includes styles only for the components you
 use. There is no component-CSS import to add. (No bundler at all? Import the
 aggregate `@cascivo/react/styles.css` instead.)
 
+> **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** Those
+> per-component `.css` imports are resolved by a bundler, but a bare server-side ESM
+> loader is not — so an unconfigured SSR build throws
+> `Unknown file extension ".css"`. Add one line —
+> `ssr: { noExternal: [/^@cascivo\//] }` (or the `cascivoSsr()` plugin from
+> `@cascivo/vite-plugin`) — and import `@cascivo/react/styles.css` once in your root
+> entry. Full recipe: [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md). Next.js App
+> Router needs none of this — see [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
+
 Trade-off vs Path A: you cannot edit component internals, but you upgrade with a
 version bump instead of a merge. Full details in the
 [`@cascivo/react` README](../packages/react/README.md).
@@ -188,6 +197,8 @@ export function App() {
   contract, the reactivity contract (signals, not React hooks), and a
   utility-first (Tailwind) mapping table.
 - [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md) — App Router / RSC setup.
+- [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md) — TanStack Start / Vite SSR /
+  Remix / workerd: the one-line `ssr.noExternal` fix for the `.css` loader.
 - [COMPATIBILITY.md](./COMPATIBILITY.md) — frameworks, browsers, package
   version matrix.
 - [TESTING.md](./TESTING.md) — testing signal-driven components with Vitest.

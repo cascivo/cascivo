@@ -12,7 +12,7 @@ This is not a layout-only system: it includes 16 overlay/menu components
 navigation, focus management, and outside-click dismissal already implemented — do not
 hand-roll that behavior or reach for a separate headless library. It also ships 25
 chart types (`@cascivo/charts` — line, area, bar, sparkline, KPI, heatmap, and more) and
-10 pre-built page blocks (dashboards, stats cards, app shells) so a request like
+22 pre-built page blocks (dashboards, stats cards, app shells) so a request like
 "build a dashboard with usage sparklines and a project switcher" maps to existing parts —
 see `select_component`/`list_components` below before generating custom SVG or ARIA code.
 
@@ -30,6 +30,9 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - Registry — index of every component (JSON): https://cascivo.com/registry.json
 - shadcn/v0-compatible registry (install with the shadcn CLI or "Open in v0"): https://cascivo.com/r/shadcn/registry.json
 - Per-component AI docs (props, examples, a11y, tokens): https://docs.cascivo.com/llms/<name>.md
+- Page-block AI docs are namespaced: https://docs.cascivo.com/llms/block/<name>.md
+- A wrong/guessed name under /llms/*, /context/*, or /r/* returns HTTP 404 with a short hint
+  body (not the HTML SPA) — trust the 404, then look up the real name in the index below.
 - Per-component context (intent, when-to-use, boundaries): https://docs.cascivo.com/context/<name>.md
 - Context bundle (all intent + boundaries + rules): https://docs.cascivo.com/context.json
 - Token catalog (closed set, every --cascivo-* + layer + default): https://docs.cascivo.com/tokens.catalog.json
@@ -38,10 +41,15 @@ see `select_component`/`list_components` below before generating custom SVG or A
 
 ## Icons
 
-439 stroked 24×24 `currentColor` SVG icons ship as tree-shakeable named exports
+443 stroked 24×24 `currentColor` SVG icons ship as tree-shakeable named exports
 from `@cascivo/icons` (e.g. `import { Camera, Anchor } from '@cascivo/icons'`).
 Browse and search them at https://docs.cascivo.com/icons; the full machine-readable list (names,
-keywords, categories) is https://docs.cascivo.com/icons.catalog.json.
+keywords, aliases, categories) is https://docs.cascivo.com/icons.catalog.json.
+
+Names differ from Lucide/Radix — resolve intent via the catalog `keywords` + `aliases` fields
+rather than guessing an export name (a wrong guess is a wasted compile).
+Common mappings: LayoutDashboard→Dashboard, Rocket→Spaceship, Settings2→Settings, Trash2→Trash, Bolt→Zap, Branch→GitBranch. Version-control icons exist:
+`GitBranch`, `GitCommit`, `GitMerge`, `GitPullRequest`.
 
 ## How to use it
 
@@ -76,6 +84,17 @@ Charts, the code editor, and flow ship their own stylesheet: when you use them, 
 matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
 `@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
 common mistake: the chart's screen-reader data-table fallback then renders visibly.
+
+SSR SETUP (Vite SSR / TanStack Start / Remix / workerd — READ THIS if you server-render): the
+prebuilt package imports per-component CSS as static `.css` side-effect imports, which a bare
+server ESM loader cannot load — an unconfigured SSR build throws `Unknown file extension ".css"`
+and silently falls back to client-only. Two required steps:
+  1. In vite.config: `ssr: { noExternal: [/^@cascivo\//] }` (or add the `cascivoSsr()`
+     plugin from `@cascivo/vite-plugin`) so Vite processes the CSS instead of the runtime.
+  2. Import `@cascivo/react/styles.css` once in the root route/entry (do NOT rely on the
+     per-component imports server-side). Full recipe: USING-WITH-VITE-SSR.md.
+Next.js App Router does NOT need this (its recipe imports the aggregate sheet in a Server
+Component); plain Vite CSR/SPA does NOT need it either. Only Vite *SSR* runtimes do.
 
 C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:
 
@@ -115,11 +134,17 @@ Full recipe: https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFAL
 
 ## Reactivity & state (signals, not React hooks)
 
-cascivo is signal-driven. Do NOT reach for `useState`/`useContext`/`useEffect` — mixing React
-state with signals causes the exact "state fights the DOM / toggle does nothing" bugs adopters
-hit. In any app WITHOUT the Babel signals transform (every consumer app), a component that reads
-`signal.value` in render MUST call `useSignals()` (from `@cascivo/core`) as its first statement,
-or it never re-renders. Use these instead:
+**Consuming components requires no signals.** Pass plain props, use `useState` in YOUR own code,
+and render `<Button onClick={…}>` / `<Modal open={…}>` like any React library — you never need
+`useSignals()` unless your own component body reads a `signal.value` during render. Signals are
+how cascivo works INTERNALLY; they are not a precondition for using it.
+
+The rules below apply when you OWN reactive state — authoring a cascivo-style component, or opting
+into cascivo's reactive store. There, prefer signals over React hooks: mixing the two (mirroring a
+signal into `useState`, or vice-versa) causes the "state fights the DOM / toggle does nothing"
+bugs. And in any app WITHOUT the Babel signals transform (every consumer app), a component that
+reads `signal.value` in render MUST call `useSignals()` (from `@cascivo/core`) as its first
+statement, or it never re-renders. When you do own reactive state, use these:
 
 - Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. The signal IS the state.
 - Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.
@@ -148,13 +173,19 @@ installed peer that is older than a copied component needs. Watch https://docs.c
 - Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): https://github.com/cascivo/cascivo/blob/main/docs/ENTERPRISE-READINESS.md
 - Theming & branding: https://github.com/cascivo/cascivo/blob/main/docs/THEMING.md
 - Using cascivo with Preact: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-PREACT.md
+- Using cascivo with Next.js (App Router / RSC): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-NEXTJS.md
+- Using cascivo with Vite SSR / TanStack Start: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md
+- Using cascivo with Tailwind v4 (@layer order + dark bridge): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-TAILWIND.md
 - Compatibility & support matrix: https://github.com/cascivo/cascivo/blob/main/docs/COMPATIBILITY.md
 - Migrating from shadcn/ui: https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md
 - Token reference: https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md
 
 ## Frameworks & browsers (summary; full matrix in COMPATIBILITY.md)
 
-- React 18/19, Next.js App Router (RSC), Vite, Astro islands, Preact 10 (preact/compat — verified).
+- React 18/19, Next.js App Router (RSC), Vite (CSR), Astro islands, Preact 10 (preact/compat — verified).
+- Vite SSR / TanStack Start / Remix / workerd: supported, but add `ssr.noExternal: [/^@cascivo\//]`
+  (or the `cascivoSsr()` plugin) + import `@cascivo/react/styles.css` once. Without it the server
+  loader throws `Unknown file extension ".css"`. See USING-WITH-VITE-SSR.md.
 - Last 2 versions of Chrome/Firefox/Safari (requires @layer, @container, :has(), oklch()).
 - CSS @function is opt-in (`import '@cascivo/tokens/functions.css'`); not auto-loaded, so
   lightningcss / Tailwind v4 pipelines work by default.
@@ -172,6 +203,7 @@ Tools:
 - `get_component` — full manifest for one component
 - `get_context` — intent + boundaries + tokens for one component
 - `get_tokens` — closed-set token catalog (filter by group/layer)
+- `search_icons` — resolve an icon by intent/foreign name (LayoutDashboard→Dashboard)
 - `select_component` — rank components by a natural-language need
 - `scaffold_view` — natural language -> JSON view config
 - `validate_view` — validate a view config against the schema
@@ -181,6 +213,9 @@ To pick a component without MCP, read the intent summaries below (grouped by nee
 fetch https://docs.cascivo.com/context/<name>.md for the full when-to-use / when-not-to-use of each.
 
 ## Component authoring rules (for cascivo:extend / custom components)
+
+These constrain code you write INSIDE a component you author or copy-paste-and-edit — not the app
+code that merely renders cascivo components (that code uses React normally).
 
 - Signals only: `useSignal`, `useComputed`, `useSignalEffect` from `@cascivo/core`
 - No `useState`, `useEffect`, `useContext`, `useLayoutEffect`, `useReducer`
@@ -216,7 +251,12 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (192 components)
+## Component index (204 components)
+
+### auth
+
+- [block/auth-login](https://docs.cascivo.com/llms/block/auth-login.md) — Email + password login with remember-me checkbox and forgot-password link. _(copy-paste)_
+- [block/auth-signup](https://docs.cascivo.com/llms/block/auth-signup.md) — Full-name, email, password, confirm-password sign-up form with terms checkbox. _(copy-paste)_
 
 ### chart
 
@@ -245,6 +285,11 @@ see how components behave without adding tracking, read these machine-readable C
 - [chart/stream](https://docs.cascivo.com/llms/chart/stream.md) — Streamgraph — stacked areas on a centered (silhouette) flowing baseline. _(npm @cascivo/charts)_
 - [chart/sunburst](https://docs.cascivo.com/llms/chart/sunburst.md) — Radial hierarchy — concentric rings where each node is an annular segment sized by value. _(npm @cascivo/charts)_
 - [chart/treemap](https://docs.cascivo.com/llms/chart/treemap.md) — Squarified treemap for visualizing part-to-whole hierarchical data. _(npm @cascivo/charts)_
+
+### dashboard
+
+- [block/dashboard-overview](https://docs.cascivo.com/llms/block/dashboard-overview.md) — Welcome header with four KPI stat cards (revenue, users, orders, conversion). _(copy-paste)_
+- [block/dashboard-table](https://docs.cascivo.com/llms/block/dashboard-table.md) — Searchable, sortable, paginated data table with export button. _(copy-paste)_
 
 ### display
 
@@ -391,6 +436,15 @@ see how components behave without adding tracking, read these machine-readable C
 - [section/stats-band](https://docs.cascivo.com/llms/section/stats-band.md) — KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility. _(copy-paste)_
 - [stack](https://docs.cascivo.com/llms/stack.md) — Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect _(npm @cascivo/react · or copy-paste)_
 
+### marketing
+
+- [block/faq](https://docs.cascivo.com/llms/block/faq.md) — Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure. _(copy-paste)_
+- [block/marketing-features](https://docs.cascivo.com/llms/block/marketing-features.md) — Three-column responsive feature grid with icon, title, and description per cell. _(copy-paste)_
+- [block/marketing-hero](https://docs.cascivo.com/llms/block/marketing-hero.md) — Full-width hero with headline, subtitle, CTA pair, and trust badges. _(copy-paste)_
+- [block/pricing](https://docs.cascivo.com/llms/block/pricing.md) — Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan. _(copy-paste)_
+- [block/site-footer](https://docs.cascivo.com/llms/block/site-footer.md) — Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row. _(copy-paste)_
+- [block/testimonials](https://docs.cascivo.com/llms/block/testimonials.md) — Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card. _(copy-paste)_
+
 ### navigation
 
 - [accordion](https://docs.cascivo.com/llms/accordion.md) — Vertically stacked, collapsible content sections _(npm @cascivo/react · or copy-paste)_
@@ -431,6 +485,11 @@ see how components behave without adding tracking, read these machine-readable C
 - [toggletip](https://docs.cascivo.com/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content _(npm @cascivo/react · or copy-paste)_
 - [tooltip](https://docs.cascivo.com/llms/tooltip.md) — Contextual label shown on hover or focus _(npm @cascivo/react · or copy-paste)_
 
+### shell
+
+- [block/app-shell](https://docs.cascivo.com/llms/block/app-shell.md) — Two-column layout with collapsible sidebar, nav links, and content area. _(copy-paste)_
+- [block/settings-profile](https://docs.cascivo.com/llms/block/settings-profile.md) — Two-section settings form: personal info fields + preference toggles. _(copy-paste)_
+
 ## Component intent summaries (use when…)
 
 - [Accordion](https://docs.cascivo.com/context/accordion.md) — Use when: Progressively disclosing sections of related content the user reads top to bottom
@@ -442,15 +501,27 @@ see how components behave without adding tracking, read these machine-readable C
 - [Avatar](https://docs.cascivo.com/context/avatar.md) — Use when: Representing a person or entity with a thumbnail image and initials fallback
 - [AvatarGroup](https://docs.cascivo.com/context/avatar-group.md) — Use when: Showing several people compactly as an overlapping stack (collaborators, attendees, reviewers)
 - [Badge](https://docs.cascivo.com/context/badge.md) — Use when: Labeling an item with a short, static status or category (e.g. "New", "Beta")
+- [App Shell](https://docs.cascivo.com/context/block/app-shell.md) — Use when: Frame for an authenticated app: persistent sidebar nav on desktop, drawer nav on mobile
+- [Login Form](https://docs.cascivo.com/context/block/auth-login.md) — Use when: Sign-in page for returning users with email + password credentials
+- [Sign Up Form](https://docs.cascivo.com/context/block/auth-signup.md) — Use when: Registration page collecting name, email, and password with confirmation
 - [ConsoleApp](https://docs.cascivo.com/context/block/console-app.md) — Use when: A Carbon-parity console shell with icon-rail nav, header panels, and aside
 - [DashboardCharts](https://docs.cascivo.com/context/block/dashboard-charts.md) — Use when: A prebuilt dashboard with KPI tiles, line, bar, and pie charts
+- [Dashboard Overview](https://docs.cascivo.com/context/block/dashboard-overview.md) — Use when: Landing view of a dashboard summarizing headline KPIs (revenue, users, orders, conversion) at a glance
+- [Dashboard Table](https://docs.cascivo.com/context/block/dashboard-table.md) — Use when: Admin views listing records (customers, orders) with text search, column sorting, and pagination
 - [EmptyDashboard](https://docs.cascivo.com/context/block/empty-dashboard.md) — Use when: A first-run or zero-data dashboard with an empty state and primary CTA
+- [FAQ Accordion](https://docs.cascivo.com/context/block/faq.md) — Use when: Pre-sales or support question sections on marketing and pricing pages
 - [LoginPage](https://docs.cascivo.com/context/block/login-page.md) — Use when: A complete login page with email and password form
+- [Feature Grid](https://docs.cascivo.com/context/block/marketing-features.md) — Use when: Landing-page section detailing product capabilities right after the hero
+- [Hero Section](https://docs.cascivo.com/context/block/marketing-hero.md) — Use when: The opening section of a landing page: headline, supporting subtitle, and a primary/secondary CTA pair
 - [NotificationCenter](https://docs.cascivo.com/context/block/notification-center.md) — Use when: A list of notification alerts with a mark-all-read action
 - [PageWithBreadcrumb](https://docs.cascivo.com/context/block/page-with-breadcrumb.md) — Use when: A centered content page with breadcrumb navigation and a page header
+- [Pricing Tiers](https://docs.cascivo.com/context/block/pricing.md) — Use when: Subscription products with a small number of tiers, each with a price, feature list, and its own CTA
 - [SettingsFormPage](https://docs.cascivo.com/context/block/settings-form-page.md) — Use when: A settings page with a profile form inside a two-column settings layout
+- [Settings — Profile](https://docs.cascivo.com/context/block/settings-profile.md) — Use when: Account settings page combining editable profile fields (name, email, bio) with notification toggles
 - [SidebarApp](https://docs.cascivo.com/context/block/sidebar-app.md) — Use when: A ready-made app shell with opinionated collapsible sidebar and top header
+- [Site Footer](https://docs.cascivo.com/context/block/site-footer.md) — Use when: Global footer for a marketing or docs site with grouped secondary navigation columns
 - [StatsCards](https://docs.cascivo.com/context/block/stats-cards.md) — Use when: A grid of KPI stat cards with trend badges
+- [Testimonials](https://docs.cascivo.com/context/block/testimonials.md) — Use when: Social-proof section on a landing or pricing page with short customer quotes
 - [UsersTablePage](https://docs.cascivo.com/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
 - [Blockquote](https://docs.cascivo.com/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
 - [BottomSheet](https://docs.cascivo.com/context/bottom-sheet.md) — Use when: A mobile surface that rises from the bottom and can be resized between detents by dragging
@@ -626,4 +697,4 @@ see how components behave without adding tracking, read these machine-readable C
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-15 from registry v0.6.3_
+_Generated: 2026-07-16 from registry v0.6.3_

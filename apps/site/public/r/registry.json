@@ -1112,6 +1112,60 @@
     },
     {
       "schemaVersion": 2,
+      "name": "block/app-shell",
+      "type": "block",
+      "description": "Two-column layout with collapsible sidebar, nav links, and content area.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/app-shell/app-shell.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/app-shell/app-shell.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["shell", "layout", "sidebar", "navigation", "responsive"],
+      "category": "shell"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "block/auth-login",
+      "type": "block",
+      "description": "Email + password login with remember-me checkbox and forgot-password link.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["auth", "login", "form", "email", "password"],
+      "category": "auth"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "block/auth-signup",
+      "type": "block",
+      "description": "Full-name, email, password, confirm-password sign-up form with terms checkbox.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["auth", "signup", "register", "form"],
+      "category": "auth"
+    },
+    {
+      "schemaVersion": 2,
       "name": "block/console-app",
       "type": "block",
       "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
@@ -1251,6 +1305,42 @@
     },
     {
       "schemaVersion": 2,
+      "name": "block/dashboard-overview",
+      "type": "block",
+      "description": "Welcome header with four KPI stat cards (revenue, users, orders, conversion).",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["dashboard", "stats", "kpi", "cards", "overview"],
+      "category": "dashboard"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "block/dashboard-table",
+      "type": "block",
+      "description": "Searchable, sortable, paginated data table with export button.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["dashboard", "table", "data", "search", "sort", "pagination"],
+      "category": "dashboard"
+    },
+    {
+      "schemaVersion": 2,
       "name": "block/empty-dashboard",
       "type": "block",
       "description": "Dashboard page showing an empty state with a call-to-action button.",
@@ -1313,6 +1403,24 @@
     },
     {
       "schemaVersion": 2,
+      "name": "block/faq",
+      "type": "block",
+      "description": "Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/faq/faq.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/faq/faq.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "faq", "accordion", "questions"],
+      "category": "marketing"
+    },
+    {
+      "schemaVersion": 2,
       "name": "block/login-page",
       "type": "block",
       "description": "Authentication login page with email and password form.",
@@ -1372,6 +1480,42 @@
           "flexibility": []
         }
       }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "block/marketing-features",
+      "type": "block",
+      "description": "Three-column responsive feature grid with icon, title, and description per cell.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "features", "grid", "icons"],
+      "category": "marketing"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "block/marketing-hero",
+      "type": "block",
+      "description": "Full-width hero with headline, subtitle, CTA pair, and trust badges.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "hero", "landing", "cta"],
+      "category": "marketing"
     },
     {
       "schemaVersion": 2,
@@ -1498,6 +1642,24 @@
     },
     {
       "schemaVersion": 2,
+      "name": "block/pricing",
+      "type": "block",
+      "description": "Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/pricing/pricing.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/pricing/pricing.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "pricing", "plans", "cards"],
+      "category": "marketing"
+    },
+    {
+      "schemaVersion": 2,
       "name": "block/settings-form-page",
       "type": "block",
       "description": "Settings page with profile form inside a two-column settings layout.",
@@ -1560,6 +1722,24 @@
     },
     {
       "schemaVersion": 2,
+      "name": "block/settings-profile",
+      "type": "block",
+      "description": "Two-section settings form: personal info fields + preference toggles.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["settings", "profile", "form", "toggles", "preferences"],
+      "category": "shell"
+    },
+    {
+      "schemaVersion": 2,
       "name": "block/sidebar-app",
       "type": "block",
       "description": "Full app shell with collapsible side navigation and top header.",
@@ -1617,6 +1797,24 @@
           "flexibility": []
         }
       }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "block/site-footer",
+      "type": "block",
+      "description": "Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/site-footer/site-footer.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/site-footer/site-footer.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "footer", "navigation", "links"],
+      "category": "marketing"
     },
     {
       "schemaVersion": 2,
@@ -1682,6 +1880,24 @@
           "flexibility": []
         }
       }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "block/testimonials",
+      "type": "block",
+      "description": "Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.",
+      "version": "0.6.3",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/testimonials/testimonials.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/testimonials/testimonials.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/react"],
+      "tags": ["marketing", "testimonials", "social-proof", "cards"],
+      "category": "marketing"
     },
     {
       "schemaVersion": 2,
@@ -18811,7 +19027,8 @@
           "--cascivo-color-text-muted",
           "--cascivo-color-bg-subtle",
           "--cascivo-radius-input",
-          "--cascivo-focus-ring"
+          "--cascivo-focus-ring",
+          "--cascivo-search-width"
         ],
         "accessibility": {
           "role": "searchbox",

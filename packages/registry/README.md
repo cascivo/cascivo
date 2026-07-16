@@ -52,6 +52,8 @@ npx shadcn add https://<host>/r/shadcn/button.json
 
 Each `r/shadcn/<name>.json` is a shadcn `registry:component` item with the source files inlined as `content`. This is purely additive — `npx cascivo add` and cascivo's own `registry.json` schema are unchanged.
 
+Both components **and** page blocks are projected: a component is `r/shadcn/<name>.json` (`registry:component`), a block is `r/shadcn/block-<name>.json` (`registry:block`). The `block-` slug is the flattened form of the block's `block/<name>` registry name.
+
 **CSS-native caveat:** cascivo components are `.tsx` + `.module.css` and rely on the `@cascivo/core` peer plus a `@cascivo/themes` stylesheet import — there is no Tailwind config or `cssVars` block to merge. After adding a component via the shadcn CLI, install `@cascivo/core` and import a theme (e.g. `@cascivo/themes/light.css`).
 
 ## Install

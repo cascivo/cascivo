@@ -57,6 +57,14 @@ RSC without any extra wrapper.
 > With a bundler you don't need it; import it only if you prefer one explicit
 > stylesheet over per-component tree-shaking.
 
+> **Vite SSR / TanStack Start / Remix / workerd?** Those per-component `.css`
+> imports need a bundler to resolve them; a bare server-side ESM loader throws
+> `Unknown file extension ".css"`. Add `ssr: { noExternal: [/^@cascivo\//] }` (or
+> the `cascivoSsr()` plugin from `@cascivo/vite-plugin`) and import
+> `@cascivo/react/styles.css` once in your root entry. Full recipe:
+> [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md).
+> Next.js App Router needs none of this.
+
 ## Use
 
 ```tsx

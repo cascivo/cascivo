@@ -128,6 +128,9 @@
     --cascivo-chart-8: oklch(0.72 0.08 200);
     --cascivo-chart-grid: oklch(1 0 0 / 0.06);
     --cascivo-chart-axis: oklch(0.707 0.015 264);
+    /* Raised from the 0.25 base: a low-opacity fill over the dark surface (L≈0.185)
+       desaturates into a muddy neutral, so give area fills more presence on dark. */
+    --cascivo-chart-fill-opacity: 0.4;
 
     /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

@@ -133,8 +133,29 @@ Two habit changes:
   [`https://cascivo.com/tokens.catalog.json`](https://cascivo.com/tokens.catalog.json)
   and documented in [TOKENS.md](./TOKENS.md).
 
+## Server-rendering setup (Vite SSR / TanStack Start / Remix / workerd)
+
+If you scaffold an app that server-renders through **Vite** (TanStack Start,
+vite-ssr, Remix on Vite, or a workerd/Cloudflare target), do two things or the
+build throws `Unknown file extension ".css"` and silently falls back to
+client-only rendering:
+
+1. Add `ssr: { noExternal: [/^@cascivo\//] }` to `vite.config.ts` — or add the
+   `cascivoSsr()` plugin from `@cascivo/vite-plugin`. This makes Vite process the
+   packages' per-component CSS imports instead of leaving them for the server
+   runtime to load raw.
+2. Import `@cascivo/react/styles.css` once in the root route/entry. Don't rely on
+   per-component CSS imports server-side.
+
+No `<ClientOnly>` wrappers are needed — components ship `'use client'` and render
+their server HTML normally. **Next.js App Router needs none of this** (its recipe
+imports the aggregate sheet in a Server Component), and plain **Vite CSR/SPA**
+needs none of it either — only Vite *SSR* runtimes do. Full recipe:
+[USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md).
+
 ## See also
 
+- [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md) — the SSR `ssr.noExternal` recipe.
 - [CSS-LAYERS-PITFALL.md](./CSS-LAYERS-PITFALL.md) — the canonical order and the
   `cascivo.override` escape hatch.
 - [THIRD-PARTY-CSS.md](./THIRD-PARTY-CSS.md) — the `layer(vendor)` recipe.

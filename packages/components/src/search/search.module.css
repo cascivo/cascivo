@@ -3,7 +3,10 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    inline-size: 100%;
+    /* Defaults to filling its container; constrain per-instance by setting
+       --cascivo-search-width (e.g. `style={{ '--cascivo-search-width': '20rem' }}`
+       or via className) — e.g. a fixed-width search box in a header row. */
+    inline-size: var(--cascivo-search-width, 100%);
 
     &[data-size='sm'] {
       --_search-height: 2rem;

@@ -62,6 +62,9 @@ npx shadcn@latest add https://cascivo.com/r/shadcn/button.json
 ```
 
 Every item inlines its source and resolves its cascivo dependencies transitively.
+Page **blocks** are in the shadcn registry too, under a `block-` slug — install
+`block/dashboard-overview` as `https://cascivo.com/r/shadcn/block-dashboard-overview.json`
+(the `cascivo` binary addresses the same block as `npx cascivo add block/dashboard-overview`).
 
 Building **with an AI assistant?** cascivo has no training-data footprint yet, so
 give the tool the knowledge directly rather than relying on it to browse the site:

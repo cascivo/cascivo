@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/pricing",
+  "type": "block",
+  "description": "Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/pricing/pricing.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/pricing/pricing.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["marketing", "pricing", "plans", "cards"],
+  "category": "marketing"
+}

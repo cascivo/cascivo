@@ -59,6 +59,7 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 - `--cascivo-color-bg-subtle`
 - `--cascivo-radius-input`
 - `--cascivo-focus-ring`
+- `--cascivo-search-width`
 
 ## Examples
 
@@ -102,7 +103,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Search is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-focus-ring
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-focus-ring, --cascivo-search-width
 
 Accessibility: role "searchbox", WCAG 2.2-AA, keyboard: Enter. Keep it AA.
 

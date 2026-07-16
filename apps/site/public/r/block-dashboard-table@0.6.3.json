@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/dashboard-table",
+  "type": "block",
+  "description": "Searchable, sortable, paginated data table with export button.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["dashboard", "table", "data", "search", "sort", "pagination"],
+  "category": "dashboard"
+}

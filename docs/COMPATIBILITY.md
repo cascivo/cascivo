@@ -11,10 +11,19 @@ baseline. If an integration surprises you, start here.
 | -------------------------- | --------- | --------------------------------------------------------------------------------------- |
 | React 18 / 19              | ✅ Yes    | Primary target. Components ship `'use client'` preserved.                                |
 | Next.js App Router (RSC)   | ✅ Yes    | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. |
-| Vite + React               | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
+| Vite + React (CSR/SPA)     | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
+| Vite SSR / TanStack Start  | ✅ Yes¹   | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). See [`USING-WITH-VITE-SSR.md`](./USING-WITH-VITE-SSR.md). |
 | Preact 10 (`preact/compat`) | ✅ Yes    | Verified in production. See [`USING-WITH-PREACT.md`](./USING-WITH-PREACT.md).            |
 | Astro (React islands)      | ✅ Yes    | Works as a React island; import CSS in a shared layout.                                  |
 | Vue / Svelte / Angular     | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React. |
+
+¹ The published `@cascivo/react` bundle ships per-component CSS as static
+side-effect imports. Bundlers resolve these; a bare server-side ESM loader
+(Node native, workerd) does not and throws `Unknown file extension ".css"`.
+Marking `@cascivo/*` `ssr.noExternal` makes Vite process those imports during
+SSR. The [Vite SSR guide](./USING-WITH-VITE-SSR.md) has the full recipe (one
+config line + the aggregate `styles.css`). Next.js RSC never hits this because
+its recipe imports the aggregate stylesheet in a Server Component.
 
 ## Browsers
 

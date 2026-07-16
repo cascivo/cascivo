@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/marketing-hero",
+  "type": "block",
+  "description": "Full-width hero with headline, subtitle, CTA pair, and trust badges.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["marketing", "hero", "landing", "cta"],
+  "category": "marketing"
+}
