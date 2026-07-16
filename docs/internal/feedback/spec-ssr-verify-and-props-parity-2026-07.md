@@ -4,6 +4,12 @@
 (Opus) in a follow-up PR. Every item carries file:line pointers, effort (S/M/L), the
 exact algorithm, and a verification gate.
 
+**Pointer audit (2026-07-16, commit `2945720`):** every file:line reference below was
+re-verified against the working tree, and the empirical claims were re-tested (built
+`@cascivo/react` dist layout, the raw-Node `.css` import error, `vp build --ssr`
+support, `vp run -r test` script pickup). Facts confirmed in that audit are marked
+**✅ verified**; corrections from it are folded into the text.
+
 **Origin:** the two deliberately-deferred items from the TanStack Start / Vite SSR
 adopter report (`feedback-tanstack-ssr-adopter-2026-07.md` /
 `fix-plan-tanstack-ssr-adopter-2026-07.md`). Everything else in that report shipped on
@@ -42,13 +48,16 @@ test server-renders a real component through the dist.**
 ### The critical subtlety — do NOT source-alias `@cascivo/react`
 
 The existing CSR example does **not** reproduce the bug and could NOT verify the fix.
-`apps/examples/react-vite/vite.config.ts:18-23` aliases `@cascivo/react` →
-`packages/react/src/index.ts` (source), so it imports the `.tsx`/`.module.css` source,
-never the **built dist** whose chunks carry the injected `import './x.css'`
+`apps/examples/react-vite/vite.config.ts:18-25` aliases `@cascivo/react` →
+`packages/react/src/index.ts` (source, line 24), so it imports the `.tsx`/`.module.css`
+source, never the **built dist** whose chunks carry the injected `import './x.css'`
 (`packages/react/vite.config.ts:87`). The SSR failure is a property of the *published
 dist*, not the source. **The SSR verification harness must consume the built
 `@cascivo/react` dist via the package `exports` map — no `resolve.alias` for
-`@cascivo/react`.** If the implementer copies the react-vite config verbatim, the test
+`@cascivo/react`.** (✅ verified: the package's root export resolves to
+`./dist/react/src/index.js` — `packages/react/package.json:33-41` — so a plain
+workspace dependency genuinely exercises the dist; `apps/examples/react-next` already
+consumes it this way.) If the implementer copies the react-vite config verbatim, the test
 passes while proving nothing. This is the single most important instruction in this spec.
 
 Consequence: the harness can only build/run **after** `@cascivo/react` is built (its
@@ -64,20 +73,37 @@ Lands first; no Vite build, fast, and it locks the contract the docs describe.
 
 - New `scripts/checks/ssr-import.test.ts` (node:test harness — mirror
   `scripts/checks/meta-coverage.test.ts:1-13`; wire into a new `pnpm ssr:check` script in
-  `package.json` and add it to `.github/workflows/ci.yml` alongside `llms:check`).
+  `package.json`, following the `node --experimental-strip-types --test` pattern of
+  `llms:check` at `package.json:40`).
+- **CI wiring — order matters.** In `.github/workflows/ci.yml` the `*:check` steps
+  (lines 32–87) run **before** the Build step (line 92). Do NOT add `ssr:check`
+  alongside `llms:check` — with the dist-absent skip guard (next bullet), that placement
+  makes the check silently vacuous on every CI run. Add the step **after** "Build
+  (vp run -r build)" (`ci.yml:92-93`), e.g. next to "Bundle budgets" (line 95). Same
+  trap in the local gates: in `package.json`'s `ready` and `ready:ci` scripts (lines
+  70–71), insert `pnpm ssr:check` **after** `vp run -r build`, not with the other
+  `*:check` calls (which all run pre-build).
 - It requires `@cascivo/react` to be built. Guard: if `packages/react/dist` is absent,
   `it.skip` with a message ("run pnpm build first") so a cold `node --test` doesn't fail
-  spuriously; CI always builds before checks in the same job.
+  spuriously. This guard is exactly why the CI step must come after the build step —
+  see the previous bullet.
 - Assertion (proves the documented failure mode is real): pick a representative built
   chunk (e.g. `packages/react/dist/menubar/menubar.module.js`) and assert its **source
-  text contains a bare `import './menubar.css'`** (the injected edge). This is the
-  contract the SSR docs are written against; if a future dist change removes it (e.g.
-  someone lands "Option A" from the parent plan), this test fails and forces the docs to
-  be updated in lockstep. Keep it resilient: scan `dist/**/*.module.js` and assert *at
-  least one* carries a bare `import './*.css'`.
+  text contains a bare `import './menubar.css'`** (the injected edge). ✅ verified:
+  after `vp run @cascivo/react#build`, that exact chunk exists and begins
+  `"use client";` followed by `import './menubar.css';` — the import sits *after* the
+  directive prologue, so match on source text, not on line 1. The built dist carries
+  131 `*.module.js` shims. This is the contract the SSR docs are written against; if a
+  future dist change removes it (e.g. someone lands "Option A" from the parent plan),
+  this test fails and forces the docs to be updated in lockstep. Keep it resilient:
+  scan `dist/**/*.module.js` and assert *at least one* carries a bare `import './*.css'`.
 - Optional stronger assertion (raw-loader repro): via `node:child_process`, run
   `node --input-type=module -e "import('<abs path to a dist chunk>')"` and assert it
   exits non-zero with `ERR_UNKNOWN_FILE_EXTENSION` / `Unknown file extension ".css"`.
+  ✅ verified against `dist/menubar/menubar.module.js`: it throws
+  `TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension ".css" for
+  …/dist/menubar/menubar.css` — note the error names the imported *stylesheet*, not the
+  chunk, so assert on the error code or the `Unknown file extension ".css"` substring.
   This is the literal adopter error. Gate it behind the same dist-exists skip. Note it
   proves the *problem*, not the *fix* (the fix is a Vite-build-time behavior — see A.2).
 - **Verify:** `pnpm build && pnpm ssr:check` green; deleting the injected import in a
@@ -94,34 +120,41 @@ The living proof `COMPATIBILITY.md` should point at.
   `@preact/signals-react`, `react`, `react-dom` (all `workspace:*`/`catalog:` as in
   react-vite's package.json). **Do not** add a `@cascivo/react` source alias.
 - `vite.config.ts`: `ssr: { noExternal: [/^@cascivo\//] }` **or**
-  `plugins: [cascivoSsr()]` (prefer the plugin — it's the thing we're validating). A
+  `plugins: [cascivoSsr()]` (prefer the plugin — it's the thing we're validating). If
+  using the plugin, also add `"@cascivo/vite-plugin": "workspace:*"` to
+  `devDependencies`: its `exports` resolve to `./dist/index.mjs`
+  (`packages/vite-plugin/package.json:28-34`), and the workspace dep edge is what makes
+  `vp run -r build` build the plugin before this example's config is loaded. A
   `@cascivo/core`/`i18n` source alias is fine (those are pure JS, not the CSS path); the
   point is `@cascivo/react` resolves to **dist**.
 - `src/entry-server.tsx`: `renderToString(<App/>)` from `react-dom/server`, where `App`
   imports and renders a couple of CSS-bearing components (`Button`, `Card`, `Menubar` —
   Menubar is the one from the report) plus `import '@cascivo/react/styles.css'` and a
   theme. `src/entry-client.tsx`: `hydrateRoot`.
-- `scripts`: `"build": "vite build && vite build --ssr src/entry-server.tsx"`,
-  `"test": "node ./test/ssr-smoke.mjs"`. The smoke test imports the built SSR bundle (or
-  runs it via `node`), calls the server render, and asserts (a) it does **not** throw
-  `Unknown file extension ".css"`, and (b) the returned HTML string contains expected
-  component markup (e.g. a `role="menubar"` / the button label). Exit non-zero on
-  failure.
+- `scripts`: `"build": "vp build && vp build --ssr src/entry-server.tsx"`,
+  `"test": "node ./test/ssr-smoke.mjs"`. Use `vp`, not `vite` — there is no `vite`
+  binary in this workspace (all examples build with `vp`, and the root
+  `pnpm-workspace.yaml` `overrides` maps `vite` to `@voidzero-dev/vite-plus-core`).
+  ✅ verified: `vp build --help` lists `--ssr [entry] — build specified entry for
+  server-side rendering` (vite-plus 0.2.1). The smoke test imports the built SSR bundle
+  (or runs it via `node`), calls the server render, and asserts (a) it does **not**
+  throw `Unknown file extension ".css"`, and (b) the returned HTML string contains
+  expected component markup (e.g. a `role="menubar"` / the button label). Exit non-zero
+  on failure.
 - **Negative control (recommended):** a second config/build with `noExternal` removed
   that asserts the SSR build **fails** with the `.css` error — proving the plugin is
   load-bearing, not decorative. Keep it in the same `test` script (spawn a build, expect
   non-zero + the error string). If flaky/slow, downgrade to a documented manual step.
 - CI: it builds under `vp run -r build` (after react) and its `test` runs under
   `pnpm run test` (`ci.yml:102`), which is after the build step (`ci.yml:92`) — so dist
-  exists. Confirm `vp run -r test` picks up the example's `node`-based test script (the
-  other examples use `vp test`; a raw `node` test script is fine as long as `vp run`
-  invokes the package's `test` script — verify, and if `vp run -r test` only runs vitest
-  projects, express the smoke test as a `*.test.ts` using vitest's SSR-capable
-  environment instead).
-- Update `docs/COMPATIBILITY.md:14-15` and `apps/examples/*` references to point the
-  "Vite SSR / TanStack Start" row at this example (replacing the "verified only against
-  CSR" caveat). Add it to the example list in `docs/GETTING-STARTED.md` and
-  `docs/USING-WITH-VITE-SSR.md` ("Where's a working example?").
+  exists. ✅ verified: `vp run -r test` invokes each package's `test` script whatever it
+  is, not only vitest projects — `@cascivo/example-react-next`'s `test` script is a
+  plain `echo` and runs under it today — so a raw `node ./test/ssr-smoke.mjs` script is
+  fine.
+- Update the "Vite SSR / TanStack Start" row at `docs/COMPATIBILITY.md:15` (footnote ¹
+  at lines 20–26) to point at this example. Add it to the example list at
+  `docs/GETTING-STARTED.md:206-208` and to `docs/USING-WITH-VITE-SSR.md` ("Where's a
+  working example?").
 - **Verify:** `pnpm build && pnpm exec vp run @cascivo/example-react-vite-ssr#test`
   green; temporarily removing `cascivoSsr()`/`noExternal` makes the smoke test fail with
   the `.css` error (negative control). `pnpm ready:ci` green (build-order rule — this
@@ -161,7 +194,9 @@ Nothing reconciles it with the component's actual TypeScript prop interface
 A source-heuristic probe on current `main` (recorded during the parent session):
 - **"interface member missing from meta"** flags **60 / 150** components — nearly all
   legitimate: `className`/`children` passthrough, and internal sub-component `*Props`
-  interfaces in the same file (e.g. `MenubarItemProps`) that the regex wrongly picked up.
+  interfaces in the same file (e.g. the non-exported `MenubarTriggerProps` /
+  `MenubarPanelProps`, `packages/components/src/menubar/menubar.tsx:56,138`) that the
+  regex wrongly picked up.
 - **"meta prop absent from source text"** flags **20** — all HTML-attribute passthrough
   via `...ComponentProps<'button'>` spreads (`onClick`, `checked`, `href`): the prop is
   real and correctly documented, it just isn't a literal identifier in the source.
@@ -174,8 +209,12 @@ nor `ts-morph` is currently resolvable from `scripts/` (the repo type-checks via
 
 ### B.1 — Add `ts-morph` and a type resolver — S
 
-- Add `ts-morph` to root `devDependencies` (via the catalog if the repo pins tool
-  versions there; otherwise latest stable). It bundles its own TS, sidestepping the
+- Add `ts-morph` (latest stable) to the `catalog:` section of `pnpm-workspace.yaml`
+  (the repo pins tool versions there — `typescript`, `vitest`, …) and reference it from
+  root `package.json` `devDependencies` as `"ts-morph": "catalog:"`. Root
+  devDependencies today are only `@changesets/cli` / `@playwright/test` / `vite-plus`
+  (`package.json:77-81`), which confirms neither `typescript` nor `ts-morph` is
+  currently resolvable from `scripts/`. ts-morph bundles its own TS, sidestepping the
   "typescript not importable from scripts" problem.
 - Helper `scripts/checks/lib/component-props.ts`: given a component's `.tsx` path and its
   expected `<Pascal>Props` name, return two sets:
@@ -193,12 +232,14 @@ New `scripts/checks/props-parity.test.ts` (node:test; wire into `meta:check` at
 `package.json:36`). For each registry entry that has a `.tsx` + a `<Pascal>Props`:
 
 - **Resolve the right files, keyed by directory, not display name.** Walk from each
-  `<name>.meta.ts` to its sibling `<name>.tsx` (the same directory the registry generator
-  uses, `scripts/registry/generate.ts:~228-231`). This is what prevents the exact mistake
-  the human reporter made — `layout/app-shell` and `app-shell` are different files and
-  must be checked independently. Pick the **exported** props type whose name matches the
-  component's export (`<Pascal>Props`), not the first `*Props` in the file (skips
-  `MenubarItemProps` etc.).
+  `<name>.meta.ts` to its sibling `<name>.tsx` — the same `join(root.dir, localName)`
+  convention the registry generator's `buildEntry()` uses
+  (`scripts/registry/generate.ts:223-231`; the source-root list is `ROOTS` at line 42).
+  This is what prevents the exact mistake the human reporter made — `layout/app-shell`
+  and `app-shell` are different files and must be checked independently. Derive the
+  Pascal name from `meta.name` and pick the **exported** props type matching it
+  (`<Pascal>Props`, e.g. `MenubarProps` at `menubar.tsx:28`), not the first `*Props` in
+  the file (skips the non-exported `MenubarTriggerProps`/`MenubarPanelProps` etc.).
 - **Direction A — "the manifest documents a prop that doesn't exist" (ERROR):**
   for each `meta.props[].name`, if it is **not** in `resolvedAll` → fail. This is the
   `sideNav`→`nav` bug. Using `resolvedAll` (incl. inherited) means `onClick` documented
