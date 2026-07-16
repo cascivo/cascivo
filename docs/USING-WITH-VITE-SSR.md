@@ -64,6 +64,11 @@ You still import `@cascivo/react/styles.css` + a theme once. `cascivoSsr()` only
 handles the SSR externalization; it composes with `cascivoLayers()` (the vendor
 CSS-layering plugin) in the same `plugins` array.
 
+**Where's a working example?** [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/)
+is a complete Vite SSR app that server-renders a `Menubar`, `Card`, and `Button`
+through the built `@cascivo/react` dist with `cascivoSsr()`. Its `test` script
+imports the built server bundle and asserts it renders without the `.css` error.
+
 ## Why import the aggregate `styles.css`?
 
 The per-component CSS imports work great in a **client** bundle: each component
@@ -131,6 +136,8 @@ byte, then toggle from a client component with `useTheme()`. Full API in
 
 ## See also
 
+- [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/) — a runnable
+  Vite SSR example that verifies this recipe end to end.
 - [COMPATIBILITY.md](./COMPATIBILITY.md) — framework and browser matrix.
 - [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md) — the RSC recipe (Next.js already
   imports the aggregate stylesheet in a Server Component, so it never hits this).

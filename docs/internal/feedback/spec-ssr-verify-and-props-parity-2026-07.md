@@ -141,10 +141,19 @@ The living proof `COMPATIBILITY.md` should point at.
   throw `Unknown file extension ".css"`, and (b) the returned HTML string contains
   expected component markup (e.g. a `role="menubar"` / the button label). Exit non-zero
   on failure.
-- **Negative control (recommended):** a second config/build with `noExternal` removed
-  that asserts the SSR build **fails** with the `.css` error — proving the plugin is
-  load-bearing, not decorative. Keep it in the same `test` script (spawn a build, expect
-  non-zero + the error string). If flaky/slow, downgrade to a documented manual step.
+- **Negative control** — ⚠️ **implementation finding (2026-07-16): not achievable in-repo,
+  dropped.** The recommended "remove `noExternal`, watch it fail" control *cannot fail*
+  inside this monorepo: `@cascivo/react` is a workspace **symlink**, and Vite/Rolldown
+  treats linked dependencies as `noExternal` by default — so `cascivoSsr()` is redundant
+  in-repo and toggling it changes nothing. Forcing `ssr.external: ['@cascivo/react']` to
+  simulate the npm-install condition does not reproduce the `.css` error cleanly either:
+  the externalized `react` dist fails first on its own transitive `@cascivo/core` bare
+  import (`ERR_MODULE_NOT_FOUND`), and in vite-plus an explicit `ssr.external` *beats* the
+  plugin's `noExternal`, mischaracterizing the mechanism. The negative proof therefore
+  lives where it *is* reproducible, which is sufficient: **A.1's raw-Node guard** (the dist
+  `.css` imports crash a bare loader) + **the vite-plugin unit test** (`cascivoSsr()` emits
+  the documented `noExternal` config). The example provides the positive end-to-end proof.
+  This reasoning is documented in the example's `readme.body.md` and the smoke-test header.
 - CI: it builds under `vp run -r build` (after react) and its `test` runs under
   `pnpm run test` (`ci.yml:102`), which is after the build step (`ci.yml:92`) — so dist
   exists. ✅ verified: `vp run -r test` invokes each package's `test` script whatever it
@@ -156,9 +165,10 @@ The living proof `COMPATIBILITY.md` should point at.
   `docs/GETTING-STARTED.md:206-208` and to `docs/USING-WITH-VITE-SSR.md` ("Where's a
   working example?").
 - **Verify:** `pnpm build && pnpm exec vp run @cascivo/example-react-vite-ssr#test`
-  green; temporarily removing `cascivoSsr()`/`noExternal` makes the smoke test fail with
-  the `.css` error (negative control). `pnpm ready:ci` green (build-order rule — this
-  example is the exact case that rule protects).
+  green (server-renders ~898 bytes incl. `role="menubar"` + the button label). The
+  in-repo negative control was dropped (see the Negative-control note above); the
+  mechanism's negative proof is A.1 + the vite-plugin unit test. `pnpm ready:ci` green
+  (build-order rule — this example is the exact case that rule protects).
 
 ### A.3 — TanStack Start note (optional, XS)
 

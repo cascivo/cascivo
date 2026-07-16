@@ -20,6 +20,7 @@ catalog:
   react-dom: ^19.2.7
   next: ^16
   typescript: ^5
+  ts-morph: ^28
   vite-plus: ^0.2.1
   '@modelcontextprotocol/sdk': ^1.29.0
   zod: ^4.4.3
