@@ -152,34 +152,49 @@ export function parseLegacyRegistry(raw: unknown): RegistryIndex {
   const obj = raw as Record<string, unknown>
   const topVersion = typeof obj['version'] === 'string' ? obj['version'] : '0.0.0'
   const components = Array.isArray(obj['components']) ? obj['components'] : []
+  // Blocks live in a separate top-level `blocks` array (the page blocks under
+  // packages/components/src/blocks/*). Fold them into items so they get a
+  // `/r/<name>.json` and `/r/shadcn/<name>.json` like every component — without
+  // this they are installable only via `npx cascivo add block/<name>` and are
+  // invisible to the shadcn CLI. Bare block names are prefixed `block/` so the
+  // flattened slug is `block-<name>`, matching the older layouts blocks (which
+  // already carry that prefix) and the CLI's `block/<name>` addressing.
+  const blocks = Array.isArray(obj['blocks']) ? obj['blocks'] : []
+
+  const toItem = (c: Record<string, unknown>, namePrefix = ''): RegistryItem => {
+    const rawName = typeof c['name'] === 'string' ? c['name'] : ''
+    const name = namePrefix && !rawName.startsWith(namePrefix) ? `${namePrefix}${rawName}` : rawName
+    const item: RegistryItem = {
+      schemaVersion: 2,
+      name,
+      type: (c['type'] as RegistryItem['type']) ?? 'component',
+      description: typeof c['description'] === 'string' ? c['description'] : '',
+      version: topVersion,
+      files: Array.isArray(c['files']) ? (c['files'] as string[]).map((url) => ({ url })) : [],
+      dependencies: Array.isArray(c['dependencies']) ? (c['dependencies'] as string[]) : [],
+      tags: Array.isArray(c['tags']) ? (c['tags'] as string[]) : [],
+    }
+    if (typeof c['category'] === 'string') item.category = c['category']
+    if (typeof c['install'] === 'string') item.install = c['install']
+    if (typeof c['styles'] === 'string') item.styles = c['styles']
+    // Carry the sibling-component dependency graph so the shadcn projection can
+    // turn it into resolvable install URLs (`npx shadcn add <url>` fetches these
+    // transitively). Without this, an item like `dropdown` would install without
+    // its `popover`/`use-popover` deps.
+    if (Array.isArray(c['registryDependencies'])) {
+      item.registryDependencies = c['registryDependencies'] as string[]
+    }
+    if (c['meta']) item.meta = c['meta'] as RegistryItem['meta']
+    return item
+  }
 
   return {
     schemaVersion: 2,
     name: 'cascivo',
     homepage: 'https://cascivo.com',
-    items: (components as Record<string, unknown>[]).map((c) => {
-      const item: RegistryItem = {
-        schemaVersion: 2,
-        name: typeof c['name'] === 'string' ? c['name'] : '',
-        type: (c['type'] as RegistryItem['type']) ?? 'component',
-        description: typeof c['description'] === 'string' ? c['description'] : '',
-        version: topVersion,
-        files: Array.isArray(c['files']) ? (c['files'] as string[]).map((url) => ({ url })) : [],
-        dependencies: Array.isArray(c['dependencies']) ? (c['dependencies'] as string[]) : [],
-        tags: Array.isArray(c['tags']) ? (c['tags'] as string[]) : [],
-      }
-      if (typeof c['category'] === 'string') item.category = c['category']
-      if (typeof c['install'] === 'string') item.install = c['install']
-      if (typeof c['styles'] === 'string') item.styles = c['styles']
-      // Carry the sibling-component dependency graph so the shadcn projection can
-      // turn it into resolvable install URLs (`npx shadcn add <url>` fetches these
-      // transitively). Without this, an item like `dropdown` would install without
-      // its `popover`/`use-popover` deps.
-      if (Array.isArray(c['registryDependencies'])) {
-        item.registryDependencies = c['registryDependencies'] as string[]
-      }
-      if (c['meta']) item.meta = c['meta'] as RegistryItem['meta']
-      return item
-    }),
+    items: [
+      ...(components as Record<string, unknown>[]).map((c) => toItem(c)),
+      ...(blocks as Record<string, unknown>[]).map((c) => toItem(c, 'block/')),
+    ],
   }
 }

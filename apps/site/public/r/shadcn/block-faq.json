@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-faq",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-faq/faq.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport {\n  Accordion,\n  AccordionContent,\n  AccordionItem,\n  AccordionTrigger,\n} from '../../accordion/accordion'\nimport styles from './faq.module.css'\n\ntype QA = { question: string; answer: string }\n\nconst FAQS: QA[] = [\n  {\n    question: 'Do I own the code I add?',\n    answer:\n      'Yes. Components are copy-pasted into your project — you own every line and can edit it freely. There is no runtime dependency on a component library.',\n  },\n  {\n    question: 'Does it work with my framework?',\n    answer:\n      'Components are React (18+) and RSC-compatible. The signals layer works in any React app; the docs are built with Preact via preact/compat.',\n  },\n  {\n    question: 'How is theming handled?',\n    answer:\n      'Themes are pure CSS applied via a data-theme attribute on any container. Twelve first-party themes ship, and you can override the semantic token layer for your brand.',\n  },\n  {\n    question: 'Can I change my plan later?',\n    answer:\n      'Yes — upgrade, downgrade, or cancel at any time. Changes take effect on your next billing cycle.',\n  },\n  {\n    question: 'Is there an AI integration?',\n    answer:\n      'Every component ships a machine-readable manifest that powers an MCP server, Claude Code skills, and auto-generated docs.',\n  },\n]\n\nexport function Faq() {\n  return (\n    <section className={styles['root']} aria-label=\"Frequently asked questions\">\n      <div className={styles['header']}>\n        <h2 className={styles['heading']}>Frequently asked questions</h2>\n        <p className={styles['subtitle']}>\n          Everything you need to know about the product and billing.\n        </p>\n      </div>\n      <div className={styles['list']}>\n        <Accordion type=\"single\">\n          {FAQS.map((item, index) => (\n            <AccordionItem key={item.question} value={`faq-${index}`}>\n              <AccordionTrigger>{item.question}</AccordionTrigger>\n              <AccordionContent>{item.answer}</AccordionContent>\n            </AccordionItem>\n          ))}\n        </Accordion>\n      </div>\n    </section>\n  )\n}\n"
+    },
+    {
+      "path": "block-faq/faq.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .root {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-8);\n    padding-block: var(--cascivo-space-12);\n  }\n\n  .header {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-2);\n    text-align: center;\n  }\n\n  .heading {\n    margin: 0;\n    font-family: var(--cascivo-font-display);\n    font-size: var(--cascivo-text-3xl);\n    font-weight: var(--cascivo-font-bold);\n    color: var(--cascivo-color-text);\n  }\n\n  .subtitle {\n    margin: 0;\n    color: var(--cascivo-color-text-muted);\n  }\n\n  /* Constrain the accordion to a readable measure and center it. */\n  .list {\n    inline-size: 100%;\n    max-inline-size: 42rem;\n    margin-inline: auto;\n  }\n}\n"
+    }
+  ],
+  "description": "Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.",
+  "dependencies": ["@cascivo/react"],
+  "categories": ["marketing"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.6.3"
+    }
+  }
+}

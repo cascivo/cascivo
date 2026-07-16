@@ -1,0 +1,10 @@
+{
+  "error": "not_found",
+  "message": "No registry item at this path. This is a real 404, not the docs SPA.",
+  "hints": [
+    "Valid item names are listed in https://cascivo.com/registry.json",
+    "shadcn-format index: https://cascivo.com/r/shadcn/registry.json",
+    "Page blocks use the block- prefix, e.g. /r/shadcn/block-dashboard-overview.json",
+    "Component names have no block-/layout- prefix, e.g. /r/shadcn/button.json"
+  ]
+}

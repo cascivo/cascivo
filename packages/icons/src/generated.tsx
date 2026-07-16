@@ -594,6 +594,40 @@ export const Gift = createIcon(
   'Gift',
   <path d="M19.2,12v9H4.8V12M3,7.5H21V12H3ZM12,21V7.5m0,0H7.95a2.25,2.25,0,1,1,0-4.5C11.1,3,12,7.5,12,7.5Zm0,0h4.05a2.25,2.25,0,0,0,0-4.5C12.9,3,12,7.5,12,7.5Z" />,
 )
+export const GitBranch = createIcon(
+  'GitBranch',
+  <>
+    <line x1="6" y1="3" x2="6" y2="15" />
+    <circle cx="18" cy="6" r="3" />
+    <circle cx="6" cy="18" r="3" />
+    <path d="M18 9a9 9 0 0 1-9 9" />
+  </>,
+)
+export const GitCommit = createIcon(
+  'GitCommit',
+  <>
+    <circle cx="12" cy="12" r="4" />
+    <line x1="1.05" y1="12" x2="7" y2="12" />
+    <line x1="17.01" y1="12" x2="22.96" y2="12" />
+  </>,
+)
+export const GitMerge = createIcon(
+  'GitMerge',
+  <>
+    <circle cx="18" cy="18" r="3" />
+    <circle cx="6" cy="6" r="3" />
+    <path d="M6 21V9a9 9 0 0 0 9 9" />
+  </>,
+)
+export const GitPullRequest = createIcon(
+  'GitPullRequest',
+  <>
+    <circle cx="18" cy="18" r="3" />
+    <circle cx="6" cy="6" r="3" />
+    <path d="M13 6h3a2 2 0 0 1 2 2v7" />
+    <line x1="6" y1="9" x2="6" y2="21" />
+  </>,
+)
 export const GlassStraw = createIcon(
   'GlassStraw',
   <path d="M18.536,14.4a15.41,15.41,0,0,1-6.9.446,20.031,20.031,0,0,0-3.772-.525,18.5,18.5,0,0,0-2.483.079M6.748,7.354,4.759,7.348,5.925,21H17.856L19.241,7.391,6.748,7.354m8.4-.006.035,7.646m-.035-7.646L19.822,3" />,

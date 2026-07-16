@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { cascivoLayers, wrapCssInLayer } from './index.js'
+import { CASCIVO_PACKAGE_RE, cascivoLayers, cascivoSsr, wrapCssInLayer } from './index.js'
 
 describe('wrapCssInLayer', () => {
   it('wraps plain rules in the given layer', () => {
@@ -66,5 +66,24 @@ describe('cascivoLayers plugin', () => {
 
   it('runs enforce: pre', () => {
     expect(plugin.enforce).toBe('pre')
+  })
+})
+
+describe('cascivoSsr plugin', () => {
+  it('returns ssr.noExternal covering every @cascivo/* package', () => {
+    const partial = cascivoSsr().config?.()
+    expect(partial).toEqual({ ssr: { noExternal: [CASCIVO_PACKAGE_RE] } })
+  })
+
+  it('is named so it is identifiable in the plugin pipeline', () => {
+    expect(cascivoSsr().name).toBe('cascivo:ssr-no-external')
+  })
+
+  it('the pattern matches package roots and deep subpaths but not bare react', () => {
+    expect(CASCIVO_PACKAGE_RE.test('@cascivo/react')).toBe(true)
+    expect(CASCIVO_PACKAGE_RE.test('@cascivo/react/styles.css')).toBe(true)
+    expect(CASCIVO_PACKAGE_RE.test('@cascivo/charts')).toBe(true)
+    expect(CASCIVO_PACKAGE_RE.test('react')).toBe(false)
+    expect(CASCIVO_PACKAGE_RE.test('not-@cascivo/react')).toBe(false)
   })
 })

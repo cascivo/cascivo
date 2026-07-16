@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-15",
+  "generatedAt": "2026-07-16",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -109,7 +109,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-07-15",
+    "generatedAt": "2026-07-16",
     "global": {
       "strict": [
         {
@@ -1783,7 +1783,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-07-15",
+    "generatedAt": "2026-07-16",
     "exceptions": [
       {
         "id": "EXC-001",
@@ -18463,7 +18463,7 @@
         }
       ],
       "contextUrl": "/context/search.md",
-      "aiPrompt": "I am modifying the cascivo Search component (inputs). Search input with debounced search callback and clear button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSearch is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"searchbox\", WCAG 2.2-AA, keyboard: Enter. Keep it AA.\n\nDo not change (strict): token names — Field and control styling must resolve to the listed --cascivo-* tokens\nFlexible: debounce and copy.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Search component (inputs). Search input with debounced search callback and clear button\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nSearch is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-input, --cascivo-focus-ring, --cascivo-search-width\n\nAccessibility: role \"searchbox\", WCAG 2.2-AA, keyboard: Enter. Keep it AA.\n\nDo not change (strict): token names — Field and control styling must resolve to the listed --cascivo-* tokens\nFlexible: debounce and copy.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Cta",

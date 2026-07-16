@@ -38,6 +38,9 @@
     display: flex;
     flex-direction: column;
     gap: var(--cascivo-space-1);
+    /* Allow this flex section to shrink inside the card instead of forcing its
+       content past the card's clipping edge (overflow: hidden above). */
+    min-inline-size: 0;
   }
 
   .title {
@@ -63,5 +66,13 @@
     display: flex;
     align-items: center;
     gap: var(--cascivo-space-2);
+    min-inline-size: 0;
+
+    /* Let direct children (e.g. a label beside a status Badge) shrink below their
+       intrinsic width so a long label doesn't push a trailing item past the card's
+       clipping edge. A child that must not shrink can set flex-shrink: 0 itself. */
+    & > * {
+      min-inline-size: 0;
+    }
   }
 }

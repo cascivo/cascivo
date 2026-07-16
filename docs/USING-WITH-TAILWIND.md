@@ -47,8 +47,13 @@ bridge last:
 
 ```
 tailwind (base, components, utilities)   ← Tailwind's own layers
-cascivo.tokens  <  cascivo.base  <  cascivo.theme  <  cascivo.component
+cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme < cascivo.blocks < cascivo.override
 ```
+
+This is the canonical cascivo layer order — the single source of truth is
+[`packages/tokens/src/layers.css`](../packages/tokens/src/layers.css); note
+`cascivo.theme` sits **after** `cascivo.component` so a theme can override
+component defaults.
 
 Two practical consequences:
 

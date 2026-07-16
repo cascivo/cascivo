@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/settings-profile",
+  "type": "block",
+  "description": "Two-section settings form: personal info fields + preference toggles.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["settings", "profile", "form", "toggles", "preferences"],
+  "category": "shell"
+}

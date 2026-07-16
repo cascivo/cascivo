@@ -27,6 +27,7 @@ chmodSync(entry, 0o755)
 const DATA_FILES = [
   ['registry.json', join(REPO_ROOT, 'registry.json')],
   ['tokens.catalog.json', join(REPO_ROOT, 'apps', 'site', 'public', 'tokens.catalog.json')],
+  ['icons.catalog.json', join(REPO_ROOT, 'apps', 'site', 'public', 'icons.catalog.json')],
   ['tokens.variants.json', join(REPO_ROOT, 'apps', 'site', 'public', 'tokens.variants.json')],
   ['context.json', join(REPO_ROOT, 'apps', 'site', 'public', 'context.json')],
   ['marketplace.json', join(REPO_ROOT, 'apps', 'site', 'public', 'marketplace.json')],

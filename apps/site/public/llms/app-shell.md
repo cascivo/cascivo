@@ -2,6 +2,11 @@
 
 Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
 
+> ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
+> This page documents `app-shell` (npm @cascivo/react · or copy-paste). Others:
+>
+> - `layout/app-shell` — copy-paste — /llms/layout/app-shell.md
+
 ## Install
 
 Copy-paste the source (you own and can edit it):

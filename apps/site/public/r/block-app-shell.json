@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/app-shell",
+  "type": "block",
+  "description": "Two-column layout with collapsible sidebar, nav links, and content area.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/app-shell/app-shell.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/app-shell/app-shell.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["shell", "layout", "sidebar", "navigation", "responsive"],
+  "category": "shell"
+}

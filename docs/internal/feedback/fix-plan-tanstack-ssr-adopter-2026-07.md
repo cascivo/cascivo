@@ -1,7 +1,18 @@
 # Fix plan — TanStack Start / Vite SSR adopter report (2026-07)
 
-**Status:** Planning artifact only — no code changes. Written for an implementing agent
-(Opus); every item carries file:line pointers, effort (S/M/L), and a verification gate.
+> **IMPLEMENTATION STATUS (2026-07-16):** Waves 1.1, 1.2, 2, 3 (except 3.1), 4, and 5
+> are **implemented and verified** on this branch (`pnpm regen` idempotent, all package
+> tests + CSS/meta/llms checks green, full build passes). **Deferred:**
+> **Wave 1.3** (the dist per-component-CSS change) — it regresses CSS tree-shaking
+> for every consumer and is a genuine product tradeoff; the SSR blocker is already
+> fixed for the supported path by 1.2 + docs, so this is left as a maintainer
+> decision (Option A vs B). **Wave 3.1** (props-parity CI gate) — deferred with a
+> burn-down probe recorded in that section: it needs the TS type checker (a new
+> devDep) to avoid ~60-component false-positive noise, and the reported bug was a
+> false positive. Everything else in Wave 3 shipped.
+
+**Status:** Planning artifact — the plan below is the spec; see the status banner above
+for what landed. Every item carries file:line pointers, effort (S/M/L), and a gate.
 **Source:** `feedback-tanstack-ssr-adopter-2026-07.md` (same directory) — an AI agent
 that built a deployments dashboard on TanStack Start (Vite SSR) against the published
 packages. Verdict positive ("best AI-onboarding surface I've used") with two claimed
@@ -197,6 +208,21 @@ Present the tradeoff to the maintainer in the PR description; recommended defaul
 ## Wave 3 — AI-docs truth hardening (P1)
 
 ### 3.1 Props-parity check: `.meta.ts` vs TypeScript interface — M
+
+> **STATUS (2026-07-16): DEFERRED — implemented investigation, not the gate.** A
+> source-heuristic version was probed against the repo and is unshippable: the
+> "interface member missing from meta" direction flags **60/150** components (nearly
+> all legitimate — `className`/`children` passthrough, and internal sub-component
+> `*Props` interfaces in the same file), and the reverse "meta prop absent from
+> source" direction still flags **20** (all HTML-attribute passthrough via
+> `...ComponentProps<'button'>` spreads — `onClick`, `checked`, `href`, …). A reliable
+> check genuinely requires the TS **type checker** to resolve inherited/spread members,
+> which is not importable from `scripts/` today (neither `typescript` nor `ts-morph`
+> resolves — the repo type-checks via bundled `vp`/tsc). Since the reported bug was a
+> false positive and the same-name confusion is fully addressed by **3.2** (shipped),
+> a noisy or toothless gate is net-negative. Revisit as its own PR: add `ts-morph` as a
+> devDep, diff only *own* interface members, seed an allowlist for the passthrough
+> cases above. Burn-down evidence saved during the implementation session.
 
 The reporter's bug was a false positive, but nothing prevents the real thing. New
 `scripts/checks/props-parity.test.ts`, wired into `pnpm meta:check` (package.json:36):

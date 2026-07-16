@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/testimonials",
+  "type": "block",
+  "description": "Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/testimonials/testimonials.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/testimonials/testimonials.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["marketing", "testimonials", "social-proof", "cards"],
+  "category": "marketing"
+}

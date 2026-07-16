@@ -39,6 +39,27 @@ cascivo layers:
   cascivo.theme, cascivo.blocks, cascivo.override;
 ```
 
+## SSR: `cascivoSsr()`
+
+The published `@cascivo/react` bundle ships per-component CSS as static
+side-effect imports. Bundlers resolve these; a bare server-side ESM loader (Node
+native, workerd) does not and throws `Unknown file extension ".css"` during SSR.
+`cascivoSsr()` marks every `@cascivo/*` package `ssr.noExternal`, so Vite
+processes their CSS imports instead of the runtime loading them raw:
+
+```ts
+// vite.config.ts — for TanStack Start, vite-ssr, Remix on Vite, workerd, …
+import { cascivoSsr } from '@cascivo/vite-plugin'
+
+export default defineConfig({
+  plugins: [cascivoSsr()],
+})
+```
+
+You still import `@cascivo/react/styles.css` + a theme once in your root entry.
+`cascivoSsr()` composes with `cascivoLayers()` in the same `plugins` array. Full
+recipe: [docs/USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md).
+
 ## Scope
 
 - **Vite only.** A webpack/Next.js loader is not included.
@@ -48,5 +69,6 @@ cascivo layers:
 
 ## API
 
-- `cascivoLayers({ imports })` — the Vite plugin.
+- `cascivoLayers({ imports })` — the vendor CSS-layering plugin.
+- `cascivoSsr()` — sets `ssr.noExternal` for every `@cascivo/*` package (SSR/workerd).
 - `wrapCssInLayer(source, layer?)` — the underlying pure transform, exported for testing.

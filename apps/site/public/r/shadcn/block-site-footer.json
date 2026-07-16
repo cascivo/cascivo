@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "block-site-footer",
+  "type": "registry:block",
+  "files": [
+    {
+      "path": "block-site-footer/site-footer.tsx",
+      "type": "registry:block",
+      "content": "'use client'\nimport { Link } from '../../link/link'\nimport { Separator } from '../../separator/separator'\nimport styles from './site-footer.module.css'\n\ntype Column = { title: string; links: { label: string; href: string }[] }\n\nconst COLUMNS: Column[] = [\n  {\n    title: 'Product',\n    links: [\n      { label: 'Components', href: '#' },\n      { label: 'Themes', href: '#' },\n      { label: 'Pricing', href: '#' },\n      { label: 'Changelog', href: '#' },\n    ],\n  },\n  {\n    title: 'Resources',\n    links: [\n      { label: 'Docs', href: '#' },\n      { label: 'Guides', href: '#' },\n      { label: 'Storybook', href: '#' },\n      { label: 'GitHub', href: '#' },\n    ],\n  },\n  {\n    title: 'Company',\n    links: [\n      { label: 'About', href: '#' },\n      { label: 'Blog', href: '#' },\n      { label: 'Careers', href: '#' },\n      { label: 'Contact', href: '#' },\n    ],\n  },\n]\n\nexport function SiteFooter() {\n  const year = new Date().getFullYear()\n  return (\n    <footer className={styles['root']}>\n      <div className={styles['top']}>\n        <div className={styles['brand']}>\n          <span className={styles['logo']}>cascivo</span>\n          <p className={styles['tagline']}>\n            The CSS-native, signal-driven, AI-first design system.\n          </p>\n        </div>\n        <nav className={styles['columns']} aria-label=\"Footer\">\n          {COLUMNS.map((column) => (\n            <div key={column.title} className={styles['column']}>\n              <h3 className={styles['columnTitle']}>{column.title}</h3>\n              <ul className={styles['links']}>\n                {column.links.map((link) => (\n                  <li key={link.label}>\n                    <Link href={link.href}>{link.label}</Link>\n                  </li>\n                ))}\n              </ul>\n            </div>\n          ))}\n        </nav>\n      </div>\n      <Separator />\n      <div className={styles['bottom']}>\n        <span className={styles['copyright']}>© {year} cascivo. All rights reserved.</span>\n        <div className={styles['legal']}>\n          <Link href=\"#\">Privacy</Link>\n          <Link href=\"#\">Terms</Link>\n        </div>\n      </div>\n    </footer>\n  )\n}\n"
+    },
+    {
+      "path": "block-site-footer/site-footer.module.css",
+      "type": "registry:block",
+      "content": "@layer cascivo.component {\n  .root {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-6);\n    padding-block: var(--cascivo-space-10);\n    color: var(--cascivo-color-text);\n  }\n\n  .top {\n    display: flex;\n    flex-wrap: wrap;\n    gap: var(--cascivo-space-10);\n    justify-content: space-between;\n  }\n\n  .brand {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-2);\n    max-inline-size: 20rem;\n  }\n\n  .logo {\n    font-family: var(--cascivo-font-display);\n    font-weight: var(--cascivo-font-bold);\n    font-size: var(--cascivo-text-lg);\n  }\n\n  .tagline {\n    margin: 0;\n    color: var(--cascivo-color-text-muted);\n    font-size: var(--cascivo-text-sm);\n  }\n\n  .columns {\n    display: flex;\n    flex-wrap: wrap;\n    gap: var(--cascivo-space-10);\n  }\n\n  .column {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-3);\n  }\n\n  .columnTitle {\n    margin: 0;\n    font-size: var(--cascivo-text-sm);\n    font-weight: var(--cascivo-font-semibold);\n    color: var(--cascivo-color-text);\n  }\n\n  .links {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-2);\n    margin: 0;\n    padding: 0;\n    list-style: none;\n    font-size: var(--cascivo-text-sm);\n  }\n\n  .bottom {\n    display: flex;\n    flex-wrap: wrap;\n    gap: var(--cascivo-space-4);\n    align-items: center;\n    justify-content: space-between;\n  }\n\n  .copyright {\n    color: var(--cascivo-color-text-muted);\n    font-size: var(--cascivo-text-sm);\n  }\n\n  .legal {\n    display: flex;\n    gap: var(--cascivo-space-4);\n    font-size: var(--cascivo-text-sm);\n  }\n}\n"
+    }
+  ],
+  "description": "Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row.",
+  "dependencies": ["@cascivo/react"],
+  "categories": ["marketing"],
+  "meta": {
+    "cascivo": {
+      "type": "block",
+      "version": "0.6.3"
+    }
+  }
+}

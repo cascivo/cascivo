@@ -61,6 +61,7 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-chart-7`** | `oklch(0.62 0.12 350)` |  |
 | **`--cascivo-chart-8`** | `oklch(0.5 0.12 200)` |  |
 | **`--cascivo-chart-axis`** | `oklch(0.5 0.016 264)` |  |
+| **`--cascivo-chart-fill-opacity`** | `0.25` |  |
 | **`--cascivo-chart-grid`** | `var(--cascivo-gray-200)` |  |
 | **`--cascivo-color-accent`** | `oklch(0.52 0.2 250)` |  |
 | **`--cascivo-color-accent-active`** | `var(--cascivo-blue-800)` |  |

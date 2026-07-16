@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/faq",
+  "type": "block",
+  "description": "Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/faq/faq.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/faq/faq.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["marketing", "faq", "accordion", "questions"],
+  "category": "marketing"
+}

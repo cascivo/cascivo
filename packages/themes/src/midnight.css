@@ -126,6 +126,7 @@
     --cascivo-chart-8: oklch(0.75 0.03 265);
     --cascivo-chart-grid: oklch(1 0 0 / 0.06);
     --cascivo-chart-axis: oklch(0.68 0.02 285);
+    --cascivo-chart-fill-opacity: 0.4;
 
     /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

@@ -1,6 +1,6 @@
 {
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/*.css"],
-  "generatedAt": "2026-07-15",
+  "generatedAt": "2026-07-16",
   "themes": [
     "arcade",
     "brutalist",
@@ -295,6 +295,26 @@
         "tailwind": "oklch(0.707 0.015 264)",
         "terminal": "oklch(0.65 0.05 148)",
         "warm": "oklch(0.64 0.025 65)"
+      }
+    },
+    {
+      "name": "--cascivo-chart-fill-opacity",
+      "layer": "semantic",
+      "group": "chart",
+      "byTheme": {
+        "arcade": "0.25",
+        "brutalist": "0.25",
+        "corporate": "0.25",
+        "cyberpunk": "0.4",
+        "dark": "0.4",
+        "flat": "0.25",
+        "light": "0.25",
+        "midnight": "0.4",
+        "minimal": "0.25",
+        "pastel": "0.25",
+        "tailwind": "0.25",
+        "terminal": "0.4",
+        "warm": "0.25"
       }
     },
     {

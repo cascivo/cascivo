@@ -25,7 +25,24 @@ const SVG_DIR = join(ROOT, 'packages/icons/svg')
 const OUT_TSX = join(ROOT, 'packages/icons/src/generated.tsx')
 const INDEX_TSX = join(ROOT, 'packages/icons/src/index.tsx')
 const META_JSON = join(SVG_DIR, 'metadata.json')
+const ALIASES_JSON = join(SVG_DIR, 'aliases.json')
 const OUT_CATALOG = join(ROOT, 'apps/site/public/icons.catalog.json')
+
+/**
+ * Foreign/common names (Lucide/Radix/Heroicons/intent words) → cascivo pascalName.
+ * Keyed by pascalName; the `_comment` key is skipped. Folded into keywords and
+ * surfaced as a catalog `aliases` field so an agent guessing `LayoutDashboard`
+ * finds `Dashboard`, `Rocket` finds `Spaceship`, etc.
+ */
+function loadAliases() {
+  const raw = JSON.parse(readFileSync(ALIASES_JSON, 'utf8'))
+  const out = {}
+  for (const [pascal, list] of Object.entries(raw)) {
+    if (pascal === '_comment' || !Array.isArray(list)) continue
+    out[pascal] = list
+  }
+  return out
+}
 
 /**
  * The 60 hand-authored Feather-derived icons already exported from index.tsx.
@@ -202,8 +219,15 @@ function pickCategory(categories) {
   return 'app-ui'
 }
 
-/** Build the deduped keyword list for an icon. */
-function buildKeywords(kebab, metaKeywords) {
+/** Search tokens an alias expands to: the lowercased whole + camelCase/kebab parts. */
+function aliasTokens(alias) {
+  const spaced = alias.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/[-_]/g, ' ')
+  const parts = spaced.split(/\s+/).filter(Boolean)
+  return [alias.toLowerCase(), ...parts.map((p) => p.toLowerCase())]
+}
+
+/** Build the deduped keyword list for an icon (name tokens + synonyms + aliases). */
+function buildKeywords(kebab, metaKeywords, aliases = []) {
   const tokens = new Set(kebab.split('-').filter(Boolean))
   if (metaKeywords) {
     for (const w of metaKeywords.split(/\s+/).filter(Boolean)) tokens.add(w.toLowerCase())
@@ -212,6 +236,9 @@ function buildKeywords(kebab, metaKeywords) {
   const seeds = Array.from(tokens)
   for (const token of seeds) {
     for (const syn of SYNONYMS[token] ?? []) tokens.add(syn)
+  }
+  for (const alias of aliases) {
+    for (const t of aliasTokens(alias)) tokens.add(t)
   }
   return [...tokens].sort()
 }
@@ -245,6 +272,7 @@ function parseExistingIcons(src) {
 
 function main() {
   const metadata = JSON.parse(readFileSync(META_JSON, 'utf8'))
+  const aliases = loadAliases()
   const files = readdirSync(SVG_DIR)
     .filter((f) => f.endsWith('.svg'))
     .sort()
@@ -266,7 +294,8 @@ function main() {
       elements,
       tags: meta.categories ?? ['ui'],
       category: pickCategory(meta.categories),
-      keywords: buildKeywords(kebab, meta.keywords),
+      keywords: buildKeywords(kebab, meta.keywords, aliases[pascal]),
+      aliases: aliases[pascal] ?? [],
     })
   }
   icons.sort((a, b) => a.pascal.localeCompare(b.pascal))
@@ -296,9 +325,10 @@ function main() {
   //      pascalName: string   // export name from @cascivo/icons ('AlertCircle')
   //      category: string     // 'general' (Feather) | 'app-ui' | 'health' | 'science'
   //      tags: string[]       // source grouping ('feather' | 'ui' | 'health' | …)
-  //      keywords: string[]   // search terms: name tokens + synonyms + source keywords
+  //      keywords: string[]   // search terms: name tokens + synonyms + aliases + source keywords
+  //      aliases: string[]    // foreign/common names this icon answers to (Lucide/Radix/intent)
   //      svg: string          // inner geometry markup (no <svg> wrapper)
-  //    }> }  — consumed by apps/site IconsPage + global search + llms.txt.
+  //    }> }  — consumed by apps/site IconsPage + global search + llms.txt + MCP search_icons.
   const existing = parseExistingIcons(readFileSync(INDEX_TSX, 'utf8')).map(({ pascal, svg }) => {
     const kebab = toKebabCase(pascal)
     return {
@@ -306,18 +336,22 @@ function main() {
       pascalName: pascal,
       category: 'general',
       tags: ['feather'],
-      keywords: buildKeywords(kebab),
+      keywords: buildKeywords(kebab, undefined, aliases[pascal]),
+      aliases: aliases[pascal] ?? [],
       svg,
     }
   })
-  const generated = icons.map(({ kebab, pascal, elements, tags, category, keywords }) => ({
-    name: kebab,
-    pascalName: pascal,
-    category,
-    tags,
-    keywords,
-    svg: elements.join(''),
-  }))
+  const generated = icons.map(
+    ({ kebab, pascal, elements, tags, category, keywords, aliases: al }) => ({
+      name: kebab,
+      pascalName: pascal,
+      category,
+      tags,
+      keywords,
+      aliases: al,
+      svg: elements.join(''),
+    }),
+  )
   const all = [...existing, ...generated].sort((a, b) => a.name.localeCompare(b.name))
   const catalog = {
     generatedFrom:

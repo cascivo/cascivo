@@ -20,6 +20,11 @@ import { areaPath, linePath, stackSeries } from '../../engine/shape'
 import type { Point, Curve } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
+// Area body opacity for solid fills. Themes tune it via --cascivo-chart-fill-opacity
+// (the dark theme raises it, since a low-opacity fill over the dark surface reads as
+// a muddy neutral). Static 0.25 fallback keeps non-supporting paths correct.
+const SOLID_FILL_STYLE = { fillOpacity: 'var(--cascivo-chart-fill-opacity, 0.25)' }
+
 export interface AreaDecimateOptions {
   method?: DecimateMethod
   threshold?: number
@@ -354,7 +359,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                         <path
                           d={d}
                           fill={fillFor(defsId, s.id, fill, color)}
-                          fillOpacity={fill === 'solid' ? 0.25 : 1}
+                          style={fill === 'solid' ? SOLID_FILL_STYLE : undefined}
                           stroke="none"
                         />
                         <path
@@ -387,7 +392,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                           <path
                             d={areaPath(decPts, baseline, curve)}
                             fill={fillFor(defsId, s.id, fill, color)}
-                            fillOpacity={fill === 'solid' ? 0.25 : 1}
+                            style={fill === 'solid' ? SOLID_FILL_STYLE : undefined}
                             stroke="none"
                           />
                           <path
@@ -404,7 +409,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                         <path
                           d={areaPath(points, baseline, curve)}
                           fill={fillFor(defsId, s.id, fill, color)}
-                          fillOpacity={fill === 'solid' ? 0.25 : 1}
+                          style={fill === 'solid' ? SOLID_FILL_STYLE : undefined}
                           stroke="none"
                         />
                         <path

@@ -238,6 +238,10 @@
     --cascivo-chart-8: oklch(0.55 0.02 280); /* neutral grey (screen adaptation) */
     --cascivo-chart-grid: var(--cascivo-gray-200);
     --cascivo-chart-axis: var(--cascivo-gray-400);
+    /* Opacity of a solid area-chart fill over the surface. Light/warm surfaces are
+       near-white, so 0.25 reads as a clean tint; the dark theme raises this so the
+       fill keeps its hue instead of muddying into the dark surface. */
+    --cascivo-chart-fill-opacity: 0.25;
 
     /* ── Code Editor (@cascivo/editor) ──────────────────────────
        Defined once here, not per-theme, to keep theme token parity. Chrome and

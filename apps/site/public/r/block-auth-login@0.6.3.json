@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 2,
+  "name": "block/auth-login",
+  "type": "block",
+  "description": "Email + password login with remember-me checkbox and forgot-password link.",
+  "version": "0.6.3",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/react"],
+  "tags": ["auth", "login", "form", "email", "password"],
+  "category": "auth"
+}

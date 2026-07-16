@@ -93,6 +93,7 @@ export const meta: ComponentMeta = {
     '--cascivo-color-bg-subtle',
     '--cascivo-radius-input',
     '--cascivo-focus-ring',
+    '--cascivo-search-width',
   ],
   accessibility: {
     role: 'searchbox',
