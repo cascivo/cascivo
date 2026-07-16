@@ -712,6 +712,14 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Migrating from shadcn/ui: ${REPO}/blob/main/docs/MIGRATING-FROM-SHADCN.md`)
   lines.push(`- Token reference: ${REPO}/blob/main/docs/TOKENS.md`)
   lines.push('')
+  lines.push('## Reference apps (runnable, in-repo — copy these setups)')
+  lines.push('')
+  lines.push(`- Vite + React (CSR/SPA): ${REPO}/tree/main/apps/examples/react-vite`)
+  lines.push(
+    `- Vite SSR (TanStack Start / Remix / workerd — server-renders through the built dist with \`cascivoSsr()\`): ${REPO}/tree/main/apps/examples/react-vite-ssr`,
+  )
+  lines.push(`- Next.js App Router (RSC): ${REPO}/tree/main/apps/examples/react-next`)
+  lines.push('')
   lines.push('## Frameworks & browsers (summary; full matrix in COMPATIBILITY.md)')
   lines.push('')
   lines.push(

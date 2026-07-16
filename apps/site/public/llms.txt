@@ -180,6 +180,12 @@ installed peer that is older than a copied component needs. Watch https://docs.c
 - Migrating from shadcn/ui: https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md
 - Token reference: https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md
 
+## Reference apps (runnable, in-repo — copy these setups)
+
+- Vite + React (CSR/SPA): https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite
+- Vite SSR (TanStack Start / Remix / workerd — server-renders through the built dist with `cascivoSsr()`): https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite-ssr
+- Next.js App Router (RSC): https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next
+
 ## Frameworks & browsers (summary; full matrix in COMPATIBILITY.md)
 
 - React 18/19, Next.js App Router (RSC), Vite (CSR), Astro islands, Preact 10 (preact/compat — verified).
