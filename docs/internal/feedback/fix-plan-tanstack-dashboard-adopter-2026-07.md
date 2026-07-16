@@ -1,7 +1,37 @@
 # Fix plan — "Vercel-like dashboard on TanStack Start" adopter report (2026-07)
 
-**Status:** Planning artifact only — no code changes. Written for an implementing agent
-(Opus). Every item carries file:line pointers, effort (S/M/L), and a verification gate.
+> **IMPLEMENTATION STATUS (2026-07-16):** Waves 1–5 are **implemented and verified**
+> on branch `claude/cascivo-experience-report-analysis-yazt6i` (`pnpm ready` green:
+> regen idempotent, format+lint, build, typecheck, all package tests + CSS/meta/llms
+> checks pass). Notes on decisions taken during implementation:
+> - **Wave 1.3 (AppShell `.main` container) — SKIPPED by design.** `container-type`
+>   makes an element the containing block for `position: fixed` descendants, which
+>   would trap consumer overlays rendered inside the main region. Grid/Columns/
+>   SettingsLayout/blocks now self-contain (the real fix), so the defense-in-depth
+>   wasn't worth that regression. The toast `@container`→`@media` correction shipped
+>   independently (it's a standalone bug: the fixed-position viewport never matched
+>   its `@container` query).
+> - **Wave 1.4 (dev-time warning) — SKIPPED.** With the components self-containing,
+>   the misconfiguration it guarded against is no longer reachable through the public
+>   API; adding a getComputedStyle ancestor-walk would be speculative complexity.
+> - **Wave 1.1 browser regression — deferred as a follow-up.** The site Playwright
+>   suite runs as a separate CI job with no reachable bare-responsive-Grid page, and
+>   adding one expands scope into the site app. The structural unit test now guards the
+>   containment contract; a real-browser column-count assertion is a tracked follow-up.
+> - **Wave 3 `SideNavItem.render` — shipped enriched** (`{ collapsed, children, linkProps }`);
+>   the per-component `renderLink` override prop was intentionally **not** added (the
+>   global `setLinkComponent` covers the reported need — Simplicity First).
+> - **Wave 4.3 (`useTheme`) — no change**, as triaged (the reactivity claim was refuted).
+>   The optional `useThemeValue`/`useLocaleValue` convenience hooks were **not** added
+>   (default-skip decision); the eight unmitigated hooks are now self-subscribing.
+> - **Wave 6 (dist CSS strategy) — not implemented here**; it remains the maintainer
+>   escalation described below.
+>
+> Everything else in Waves 1–5 shipped as specified.
+
+**Status:** Planning artifact — the plan below is the spec; see the status banner above
+for what landed. Written for an implementing agent. Every item carries file:line
+pointers, effort (S/M/L), and a verification gate.
 **Source:** `feedback-tanstack-dashboard-adopter-2026-07.md` (same directory) — an AI
 agent that one-shot built a Vercel-style dashboard (Overview / Deployments / Analytics,
 AppShell + SideNav, KPI tiles, area/bar/donut charts, DataTable) on TanStack Start
