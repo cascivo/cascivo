@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-16",
+  "generatedAt": "2026-07-17",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
@@ -15,7 +15,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.3.10",
+      "version": "0.3.11",
       "releases": [
         {
           "version": "0.3.0",
@@ -33,7 +33,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.4.2",
+      "version": "0.4.3",
       "releases": [
         {
           "version": "0.4.0",
@@ -128,8 +128,13 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.2.8",
+      "version": "0.3.0",
       "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -144,8 +149,13 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "releases": [
+        {
+          "version": "0.5.0",
+          "level": "minor",
+          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+        },
         {
           "version": "0.4.0",
           "level": "minor",
@@ -174,7 +184,7 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "releases": [
         {
           "version": "0.6.0",
@@ -210,8 +220,13 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.1.12",
+      "version": "0.2.0",
       "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+        },
         {
           "version": "0.1.0",
           "level": "minor",
@@ -232,7 +247,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "releases": [
         {
           "version": "0.4.0",
@@ -289,8 +304,14 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.0.1",
-      "releases": []
+      "version": "0.1.0",
+      "releases": [
+        {
+          "version": "0.1.0",
+          "level": "minor",
+          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+        }
+      ]
     }
   ]
 }
