@@ -8,7 +8,8 @@ import {
   useSignalEffect,
   useSignals,
 } from '@cascivo/core'
-import { useId, useRef, type KeyboardEvent, type ReactNode } from 'react'
+import { useId, useRef } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 import styles from './menu-button.module.css'
 
 export interface MenuButtonItem {

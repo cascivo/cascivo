@@ -9,7 +9,8 @@ import {
   useSignals,
 } from '@cascivo/core'
 import { builtin, currentLocale, t } from '@cascivo/i18n'
-import { useId, useRef, type KeyboardEvent } from 'react'
+import { useId, useRef } from 'react'
+import type { KeyboardEvent } from 'react'
 import styles from './date-picker.module.css'
 
 const machine = createMachine({
@@ -32,8 +33,8 @@ function getWeekStart(locale: string): number {
 function getMonthGrid(year: number, month: number, weekStart: number): (Date | null)[][] {
   const first = new Date(Date.UTC(year, month, 1))
   const last = new Date(Date.UTC(year, month + 1, 0))
-  let startDow = first.getUTCDay()
-  let offset = (startDow - weekStart + 7) % 7
+  const startDow = first.getUTCDay()
+  const offset = (startDow - weekStart + 7) % 7
   const days: (Date | null)[] = []
   for (let i = 0; i < offset; i++) days.push(null)
   for (let d = 1; d <= last.getUTCDate(); d++) days.push(new Date(Date.UTC(year, month, d)))
@@ -215,8 +216,8 @@ export function DatePicker({
       if (max && nextISO > max) return
       activeISO.value = nextISO
       batch(() => {
-        viewYear.value = next!.getUTCFullYear()
-        viewMonth.value = next!.getUTCMonth()
+        viewYear.value = next.getUTCFullYear()
+        viewMonth.value = next.getUTCMonth()
       })
     }
   }

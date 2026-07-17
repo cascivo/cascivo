@@ -1,5 +1,5 @@
 ---
-"cascivo": minor
+'cascivo': minor
 ---
 
 CLI adopter-friction fixes from the TanStack Start experience report:
@@ -20,5 +20,9 @@ CLI adopter-friction fixes from the TanStack Start experience report:
   adding nothing. `--no-install` restores print-only.
 - **`cascivo add stack`** prints a note clarifying that `Stack` is a z-axis
   card-pile, not a vertical spacing layout (use `Flex`).
+- **`cascivo doctor`** in an adopter project now verifies the runtime
+  dependencies copied source needs (including the `@preact/signals-react` peer)
+  are declared, turning an opaque "cannot find module" build failure into a
+  diagnosed condition with a fix.
 - All install hints now use the detected package manager instead of hardcoded
   `npm install`.

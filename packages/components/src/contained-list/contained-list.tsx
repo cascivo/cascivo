@@ -18,11 +18,7 @@ export function ContainedList({
   ...props
 }: ContainedListProps) {
   return (
-    <div
-      data-kind={kind}
-      className={cn(styles['root'], className as string | undefined)}
-      {...props}
-    >
+    <div data-kind={kind} className={cn(styles['root'], className)} {...props}>
       <div className={styles['header']}>
         <h3 className={styles['label']}>{label}</h3>
         {action ? <div className={styles['action']}>{action}</div> : null}
@@ -47,11 +43,7 @@ export function ContainedListItem({
   const Comp = asChild ? Slot : 'div'
   return (
     <li className={styles['item']} data-interactive={interactive ? '' : undefined}>
-      <Comp
-        className={cn(styles['itemContent'], className as string | undefined)}
-        onClick={onClick}
-        {...(props as Record<string, unknown>)}
-      >
+      <Comp className={cn(styles['itemContent'], className)} onClick={onClick} {...props}>
         {children}
       </Comp>
     </li>

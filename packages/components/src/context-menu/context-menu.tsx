@@ -1,11 +1,7 @@
 'use client'
 
-import {
-  useRef,
-  type KeyboardEvent,
-  type ReactNode,
-  type MouseEvent as ReactMouseEvent,
-} from 'react'
+import { useRef } from 'react'
+import type { KeyboardEvent, ReactNode, MouseEvent as ReactMouseEvent } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './context-menu.module.css'
 
@@ -108,7 +104,6 @@ export function ContextMenu({ children }: ContextMenuProps) {
       {trigger}
       <div
         ref={menuRef}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore — popover is a valid HTML attribute not yet in React types
         popover="auto"
         role="menu"

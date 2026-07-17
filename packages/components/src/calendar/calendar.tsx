@@ -1,7 +1,7 @@
 'use client'
 import { batch, cn, useSignal, useSignals } from '@cascivo/core'
 import { builtin, currentLocale, t } from '@cascivo/i18n'
-import { type KeyboardEvent } from 'react'
+import type { KeyboardEvent } from 'react'
 import styles from './calendar.module.css'
 
 function getWeekStart(locale: string): number {

@@ -1,7 +1,7 @@
 'use client'
 import { cn, getLinkComponent, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { type KeyboardEvent, type MouseEvent, type ReactNode, type RefObject } from 'react'
+import type { KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
 import { usePopover } from '../popover/use-popover'
 import styles from './shell-header.module.css'
 
@@ -117,7 +117,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
       items[(index - 1 + items.length) % items.length]?.focus()
     } else if (e.key === 'Escape') {
       close()
-      ;(triggerRef.current as HTMLElement | null)?.focus()
+      triggerRef.current?.focus()
     }
   }
 
@@ -129,7 +129,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
         aria-haspopup="menu"
         aria-expanded={isOpen.value}
         data-state={hasActiveChild ? 'active' : undefined}
-        style={{ anchorName } as React.CSSProperties}
+        style={{ anchorName }}
         className={styles['navMenuTrigger']}
         onClick={toggle}
         onKeyDown={handleTriggerKeyDown}
@@ -158,7 +158,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
         role="menu"
         aria-label={item.label}
         data-state={isOpen.value ? 'open' : 'closed'}
-        style={{ positionAnchor: anchorName } as React.CSSProperties}
+        style={{ positionAnchor: anchorName }}
         className={styles['navMenuPanel']}
         onKeyDown={handlePanelKeyDown}
       >

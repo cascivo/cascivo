@@ -6,7 +6,7 @@
     {
       "path": "status/status.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './status.module.css'\n\nexport interface StatusProps extends HTMLAttributes<HTMLSpanElement> {\n  status?: 'success' | 'warning' | 'error' | 'info' | 'neutral'\n  /** Pulses the dot — only when the user allows motion. */\n  pulse?: boolean\n}\n\nexport function Status({\n  status = 'neutral',\n  pulse = false,\n  className,\n  children,\n  ...props\n}: StatusProps) {\n  return (\n    <span\n      data-status={status}\n      data-pulse={pulse ? '' : undefined}\n      className={cn(styles['status'], className as string | undefined)}\n      {...props}\n    >\n      <span aria-hidden=\"true\" className={styles['dot']} />\n      {children}\n    </span>\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './status.module.css'\n\nexport interface StatusProps extends HTMLAttributes<HTMLSpanElement> {\n  status?: 'success' | 'warning' | 'error' | 'info' | 'neutral'\n  /** Pulses the dot — only when the user allows motion. */\n  pulse?: boolean\n}\n\nexport function Status({\n  status = 'neutral',\n  pulse = false,\n  className,\n  children,\n  ...props\n}: StatusProps) {\n  return (\n    <span\n      data-status={status}\n      data-pulse={pulse ? '' : undefined}\n      className={cn(styles['status'], className)}\n      {...props}\n    >\n      <span aria-hidden=\"true\" className={styles['dot']} />\n      {children}\n    </span>\n  )\n}\n"
     },
     {
       "path": "status/status.module.css",

@@ -7,7 +7,8 @@ import {
   useSignals,
 } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, useRef, type ReactNode } from 'react'
+import { useId, useRef } from 'react'
+import type { ReactNode } from 'react'
 import styles from './carousel.module.css'
 
 export interface CarouselLabels {
@@ -164,7 +165,7 @@ export function Carousel({
           return (
             <button
               key={i}
-              ref={itemProps.ref as (el: HTMLButtonElement | null) => void}
+              ref={itemProps.ref}
               type="button"
               className={styles['dot']}
               aria-label={t(builtin.carousel.goTo, { n: i + 1 })}

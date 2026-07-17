@@ -1,7 +1,8 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type ChangeEvent, type KeyboardEvent } from 'react'
+import { useRef } from 'react'
+import type { ChangeEvent, KeyboardEvent } from 'react'
 import styles from './search.module.css'
 
 let idCounter = 0

@@ -1,6 +1,7 @@
 'use client'
 import { cn, Slot } from '@cascivo/core'
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { forwardRef } from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import styles from './icon-button.module.css'
 
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -25,9 +26,9 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       aria-label={label}
       data-size={size}
       data-variant={variant}
-      className={cn(styles['iconButton'], className as string | undefined)}
-      ref={ref as never}
-      {...(props as Record<string, unknown>)}
+      className={cn(styles['iconButton'], className)}
+      ref={ref}
+      {...props}
     >
       {children ?? icon}
     </Comp>

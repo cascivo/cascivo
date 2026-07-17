@@ -1,6 +1,7 @@
 'use client'
 
-import { useId, useRef, type ReactNode } from 'react'
+import { useId, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { useSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './sheet.module.css'
@@ -43,7 +44,6 @@ export function Sheet({ open, onClose, title, children, side = 'end' }: SheetPro
   return (
     <div
       ref={sheetRef}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore — popover is a valid HTML attribute not yet in React types
       popover="manual"
       role="dialog"

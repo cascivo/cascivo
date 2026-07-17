@@ -1,14 +1,13 @@
 'use client'
 import { createMachine, useId, useMachine, useSignalEffect, useSignals } from '@cascivo/core'
-import {
-  cloneElement,
-  useRef,
-  type CSSProperties,
-  type FocusEvent,
-  type HTMLAttributes,
-  type MouseEvent,
-  type ReactElement,
-  type ReactNode,
+import { cloneElement, useRef } from 'react'
+import type {
+  CSSProperties,
+  FocusEvent,
+  HTMLAttributes,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
 } from 'react'
 import styles from './tooltip.module.css'
 
@@ -62,7 +61,7 @@ export function Tooltip({ content, placement = 'top', children, delay = 200 }: T
 
   const merged: HTMLAttributes<HTMLElement> = {
     id: anchorId,
-    style: { anchorName: `--tooltip-${anchorId}` } as CSSProperties,
+    style: { anchorName: `--tooltip-${anchorId}` },
     onMouseEnter: (event: MouseEvent<HTMLElement>) => {
       triggerProps.onMouseEnter?.(event)
       show()

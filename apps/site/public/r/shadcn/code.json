@@ -6,7 +6,7 @@
     {
       "path": "code/code.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './code.module.css'\n\nexport interface CodeProps extends HTMLAttributes<HTMLElement> {\n  size?: 'sm' | 'md'\n}\n\nexport function Code({ size = 'md', className, children, ...props }: CodeProps) {\n  return (\n    <code\n      data-size={size}\n      className={cn(styles['code'], className as string | undefined)}\n      {...props}\n    >\n      {children}\n    </code>\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './code.module.css'\n\nexport interface CodeProps extends HTMLAttributes<HTMLElement> {\n  size?: 'sm' | 'md'\n}\n\nexport function Code({ size = 'md', className, children, ...props }: CodeProps) {\n  return (\n    <code data-size={size} className={cn(styles['code'], className)} {...props}>\n      {children}\n    </code>\n  )\n}\n"
     },
     {
       "path": "code/code.module.css",

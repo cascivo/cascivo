@@ -20,7 +20,7 @@ export function Status({
     <span
       data-status={status}
       data-pulse={pulse ? '' : undefined}
-      className={cn(styles['status'], className as string | undefined)}
+      className={cn(styles['status'], className)}
       {...props}
     >
       <span aria-hidden="true" className={styles['dot']} />

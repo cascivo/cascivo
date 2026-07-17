@@ -1,8 +1,10 @@
 'use client'
 
-import { createContext, useRef, type ReactNode } from 'react'
+import { createContext, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { useSignalEffect, useSignals } from '@cascivo/core'
-import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
+import { usePopover } from '../popover/use-popover'
+import type { UsePopoverReturn } from '../popover/use-popover'
 import styles from './hover-card.module.css'
 
 const HoverCardContext = createContext<UsePopoverReturn | null>(null)
@@ -59,8 +61,8 @@ function HoverCardTriggerInner({ ctx, children }: { ctx: UsePopoverReturn; child
   const { triggerRef, anchorName, open, close } = ctx
   return (
     <span
-      ref={triggerRef as React.RefObject<HTMLSpanElement>}
-      style={{ anchorName } as React.CSSProperties}
+      ref={triggerRef}
+      style={{ anchorName }}
       onMouseEnter={open}
       onMouseLeave={close}
       onFocus={open}
@@ -102,12 +104,11 @@ function HoverCardContentInner({
   return (
     <div
       ref={popoverRef as React.RefObject<HTMLDivElement>}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore — popover is a valid HTML attribute not yet in React types
       popover="auto"
       role="complementary"
       data-state={isOpen.value ? 'open' : 'closed'}
-      style={{ positionAnchor: anchorName } as React.CSSProperties}
+      style={{ positionAnchor: anchorName }}
       onMouseEnter={open}
       onMouseLeave={close}
       className={[styles.content, className].filter(Boolean).join(' ')}

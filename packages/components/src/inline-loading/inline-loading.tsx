@@ -86,7 +86,7 @@ export function InlineLoading({ status, label, labels, className, ...props }: In
       role="status"
       aria-live="polite"
       data-status={status}
-      className={cn(styles['inline-loading'], className as string | undefined)}
+      className={cn(styles['inline-loading'], className)}
       {...props}
     >
       <span className={styles['indicator']} aria-hidden="true">

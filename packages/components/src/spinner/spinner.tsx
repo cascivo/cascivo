@@ -17,7 +17,7 @@ export function Spinner({ size = 'md', label, className, ...props }: SpinnerProp
       role="status"
       aria-label={resolvedLabel}
       data-size={size}
-      className={cn(styles['spinner'], className as string | undefined)}
+      className={cn(styles['spinner'], className)}
       {...props}
     />
   )

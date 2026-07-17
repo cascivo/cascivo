@@ -1,5 +1,5 @@
 ---
-"@cascivo/react": patch
+'@cascivo/react': patch
 ---
 
 DataTable: adjacent auto-width columns no longer visually touch. Long unbroken

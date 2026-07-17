@@ -1,7 +1,7 @@
 'use client'
 
 import { cn, useDraggable, useSignal, useSignals } from '@cascivo/core'
-import { type ReactNode, type Ref } from 'react'
+import type { ReactNode, Ref } from 'react'
 import styles from './swipe-item.module.css'
 
 /** Width (px) of one revealed action. Must match `.action { inline-size }` in the CSS. */

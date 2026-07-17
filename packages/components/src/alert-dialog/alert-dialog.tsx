@@ -63,7 +63,6 @@ export function AlertDialog({
   return (
     <div
       ref={dialogRef}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore — popover is a valid HTML attribute not yet in React types
       popover="manual"
       role="alertdialog"

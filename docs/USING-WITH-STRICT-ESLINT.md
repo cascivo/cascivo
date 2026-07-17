@@ -28,17 +28,30 @@ export default [
     // Scope host stylistic rules off it; keep correctness rules on.
     files: ['src/components/ui/**'],
     rules: {
-      // Naming: cascivo uses readable generic params (`Row`, not `TRow`).
+      // Style: `T[]` vs `Array<T>`, import ordering, generic-param naming
+      // (`Row` vs `TRow`), method-signature style — cascivo does not adopt these.
+      '@typescript-eslint/array-type': 'off',
       '@typescript-eslint/naming-convention': 'off',
+      '@typescript-eslint/method-signature-style': 'off',
+      'sort-imports': 'off',
+      'import/order': 'off',
+      // Opinionated / misfires on legitimate cascivo patterns:
+      'react/no-array-index-key': 'off', // stable-content lists key by index intentionally
+      'no-shadow': 'off', // false-positives on TS declaration-merging (compound components)
+      'no-control-regex': 'off', // e.g. the log viewer strips ANSI escapes (\x1b) on purpose
     },
     linterOptions: {
-      // cascivo's rule-scoped `eslint-disable` directives target Oxlint rule ids,
-      // which your config may not define — don't report them as "unused".
+      // cascivo's rule-scoped `eslint-disable` directives may target rule ids
+      // your config doesn't define — don't report them as "unused".
       reportUnusedDisableDirectives: 'off',
     },
   },
 ]
 ```
+
+cascivo's CI runs `@tanstack/eslint-config` over its component source with exactly
+this block applied (`pnpm lint:host-strict`), so the copied source stays clean
+against a real strict host config for every rule outside this list.
 
 ### `.eslintrc` (legacy) equivalent
 
@@ -47,7 +60,16 @@ export default [
   "overrides": [
     {
       "files": ["src/components/ui/**"],
-      "rules": { "@typescript-eslint/naming-convention": "off" },
+      "rules": {
+        "@typescript-eslint/array-type": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/method-signature-style": "off",
+        "sort-imports": "off",
+        "import/order": "off",
+        "react/no-array-index-key": "off",
+        "no-shadow": "off",
+        "no-control-regex": "off"
+      },
       "linterOptions": { "reportUnusedDisableDirectives": false }
     }
   ]
@@ -56,10 +78,11 @@ export default [
 
 ## Why not just fix the source?
 
-cascivo does keep the **objective** classes clean at the source — unnecessary type
-assertions, always-true conditions, variable shadowing, and stale/broad
-`eslint-disable` directives are treated as defects in the component library itself.
-What this page scopes off is the **stylistic** layer that is one config's opinion:
+cascivo keeps the **objective** classes clean at the source — inline vs top-level
+type specifiers, unnecessary type assertions, `prefer-const`, and stale
+`eslint-disable` directives are treated as defects in the component library
+itself and are enforced in CI by `pnpm lint:host-strict`. What this page scopes
+off is the **stylistic** layer that is one config's opinion:
 generic-parameter naming (`Row` vs `TRow`), import ordering nuances, and unused-
 directive reporting for rule ids your config doesn't share. Those are not worth
 editing vendored files for, because:

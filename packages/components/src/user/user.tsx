@@ -1,7 +1,8 @@
 'use client'
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes, ReactNode } from 'react'
-import { Avatar, type AvatarProps } from '../avatar/avatar'
+import { Avatar } from '../avatar/avatar'
+import type { AvatarProps } from '../avatar/avatar'
 import styles from './user.module.css'
 
 export interface UserProps extends HTMLAttributes<HTMLDivElement> {

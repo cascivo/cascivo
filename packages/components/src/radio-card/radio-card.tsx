@@ -1,6 +1,7 @@
 'use client'
 import { cn } from '@cascivo/core'
-import { createContext, type InputHTMLAttributes, type ReactNode } from 'react'
+import { createContext } from 'react'
+import type { InputHTMLAttributes, ReactNode } from 'react'
 import styles from './radio-card.module.css'
 
 interface RadioCardCtx {

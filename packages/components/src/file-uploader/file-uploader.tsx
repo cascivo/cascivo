@@ -1,7 +1,8 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type ChangeEvent, type DragEvent } from 'react'
+import { useRef } from 'react'
+import type { ChangeEvent, DragEvent } from 'react'
 import { Spinner } from '../spinner/spinner'
 import styles from './file-uploader.module.css'
 

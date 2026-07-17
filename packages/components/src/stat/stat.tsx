@@ -24,7 +24,7 @@ export function Stat({
   ...props
 }: StatProps) {
   return (
-    <div className={cn(styles['stat'], className as string | undefined)} {...props}>
+    <div className={cn(styles['stat'], className)} {...props}>
       <span className={styles['label']}>{label}</span>
       <span className={styles['value']}>{value}</span>
       {delta && (

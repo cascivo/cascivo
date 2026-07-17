@@ -1,8 +1,10 @@
 'use client'
 
-import { createContext, type ReactNode } from 'react'
+import { createContext } from 'react'
+import type { ReactNode } from 'react'
 import { useSignals } from '@cascivo/core'
-import { usePopover, type UsePopoverOptions, type UsePopoverReturn } from './use-popover'
+import { usePopover } from './use-popover'
+import type { UsePopoverOptions, UsePopoverReturn } from './use-popover'
 import styles from './popover.module.css'
 
 const PopoverContext = createContext<UsePopoverReturn | null>(null)
@@ -34,7 +36,7 @@ export function PopoverTrigger({ children }: PopoverTriggerProps) {
             type="button"
             aria-expanded={isOpen.value}
             aria-haspopup="dialog"
-            style={{ anchorName } as React.CSSProperties}
+            style={{ anchorName }}
             onClick={toggle}
             className={styles.trigger}
           >
@@ -61,12 +63,11 @@ export function PopoverContent({ children, className }: PopoverContentProps) {
         return (
           <div
             ref={popoverRef as React.RefObject<HTMLDivElement>}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore — popover is a valid HTML attribute not yet in React types
             popover="auto"
             role="dialog"
             data-state={isOpen.value ? 'open' : 'closed'}
-            style={{ positionAnchor: anchorName } as React.CSSProperties}
+            style={{ positionAnchor: anchorName }}
             className={[styles.content, className].filter(Boolean).join(' ')}
           >
             {children}

@@ -1,7 +1,8 @@
 'use client'
 import { cn, Presence, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type HTMLAttributes, type ReactNode } from 'react'
+import { useRef } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './notification.module.css'
 
 export type NotificationVariant = 'info' | 'success' | 'warning' | 'error'
@@ -108,7 +109,7 @@ export function Notification({
       <div
         role={assertiveVariants.has(variant) ? 'alert' : 'status'}
         data-variant={variant}
-        className={cn(styles['notification'], className as string | undefined)}
+        className={cn(styles['notification'], className)}
         {...props}
       >
         <span className={styles['icon']} aria-hidden="true">

@@ -1,7 +1,8 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type ReactNode } from 'react'
+import { useRef } from 'react'
+import type { ReactNode } from 'react'
 import styles from './header-panel.module.css'
 
 export interface HeaderPanelLabels {

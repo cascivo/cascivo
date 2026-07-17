@@ -9,7 +9,7 @@ export interface BlockquoteProps extends HTMLAttributes<HTMLQuoteElement> {
 
 export function Blockquote({ cite, className, children, ...props }: BlockquoteProps) {
   return (
-    <blockquote className={cn(styles['blockquote'], className as string | undefined)} {...props}>
+    <blockquote className={cn(styles['blockquote'], className)} {...props}>
       {children}
       {cite ? (
         <footer className={styles['footer']}>

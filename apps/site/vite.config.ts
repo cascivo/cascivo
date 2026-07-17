@@ -158,6 +158,50 @@ function renderMarketingBody(head: {
   )
 }
 
+// Shared install snippet, rendered into the static docs entry-point pages so an
+// agent / curl / crawler reads real install steps with JS disabled — the body
+// that used to be an empty SPA shell (the report's #8). Kept in sync with
+// docs/GETTING-STARTED.md by hand; the full guide is linked and also served as
+// fetchable markdown at /docs/getting-started.md.
+const DOCS_INSTALL_BODY =
+  '<h2>Copy-paste via the CLI (you own the source)</h2>' +
+  '<pre><code>npx cascivo init\nnpx cascivo add button card</code></pre>' +
+  '<p><code>cascivo init</code> writes <code>cascivo.config.ts</code> and installs the runtime ' +
+  'dependencies — <code>@cascivo/core</code>, <code>@cascivo/tokens</code>, ' +
+  '<code>@cascivo/themes</code>, and the <code>@preact/signals-react</code> peer — plus ' +
+  '<code>cascivo</code> as a dev dependency for the config types. It auto-detects your package ' +
+  'manager (pnpm / yarn / npm / bun), including inside a workspace.</p>' +
+  '<h2>Prebuilt package (no copying)</h2>' +
+  '<pre><code>pnpm add @cascivo/react @cascivo/themes @preact/signals-react</code></pre>' +
+  '<p>Charts are a separate install: <code>pnpm add @cascivo/charts</code>.</p>' +
+  '<p>Full guide (fetchable markdown): <a href="/docs/getting-started.md">/docs/getting-started.md</a>.</p>'
+
+/** Static docs entry-point routes to prerender with a real, install-focused body. */
+const DOCS_STATIC_PRERENDER: { path: string; title: string; description: string; body: string }[] =
+  [
+    {
+      path: '/docs',
+      title: 'cascivo docs',
+      description:
+        'Documentation for cascivo — install it, browse components, and build with AI. Copy-paste component source with the CLI or use the prebuilt @cascivo/react package.',
+      body: `<main><h1>cascivo documentation</h1><p>The CSS-native, signal-driven, AI-first React design system.</p>${DOCS_INSTALL_BODY}</main>`,
+    },
+    {
+      path: '/docs/installation',
+      title: 'Installation — cascivo docs',
+      description:
+        'Install cascivo: scaffold a new app, use the prebuilt @cascivo/react package, or copy component source into your repo with the CLI.',
+      body: `<main><h1>Installing cascivo</h1><p>Two ways to adopt cascivo — they share the same tokens and themes and can coexist.</p>${DOCS_INSTALL_BODY}</main>`,
+    },
+    {
+      path: '/docs/getting-started',
+      title: 'Getting started — cascivo docs',
+      description:
+        'The fastest path into cascivo — scaffold an app, install the prebuilt package, or copy-paste components with the CLI, plus theming and framework setup.',
+      body: `<main><h1>Getting started with cascivo</h1>${DOCS_INSTALL_BODY}</main>`,
+    },
+  ]
+
 interface RegistryPropMeta {
   name: string
   type: string
@@ -611,6 +655,25 @@ function prerenderPages(): Plugin {
           resolve(outDir, 'index.html'),
           injectBody(html, renderCategoryBody(category, items)),
         )
+      }
+
+      // Static docs entry points (/docs, /docs/installation,
+      // /docs/getting-started) — real SPA routes whose body was an empty shell,
+      // so the apex host served no readable content (and 404'd on a plain
+      // fetch). Prerender a real install-focused body; the SPA still hydrates
+      // over it client-side.
+      for (const doc of DOCS_STATIC_PRERENDER) {
+        const canonical = canonicalFor(doc.path)
+        const html = rewriteHead(shell, {
+          title: doc.title,
+          description: doc.description,
+          canonical,
+          ogTitle: doc.title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, doc.path.replace(/^\//, ''))
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(resolve(outDir, 'index.html'), injectBody(html, doc.body))
       }
 
       // Per-component accessibility guides (/accessibility/<name>) — one per

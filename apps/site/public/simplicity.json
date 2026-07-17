@@ -4,7 +4,7 @@
       "name": "radio",
       "label": "Radio",
       "primitive": "Native <input type=\"radio\">",
-      "loc": 166,
+      "loc": 160,
       "files": 2,
       "deps": 0
     },
@@ -12,7 +12,7 @@
       "name": "checkbox",
       "label": "Checkbox",
       "primitive": "Native <input type=\"checkbox\">",
-      "loc": 122,
+      "loc": 123,
       "files": 2,
       "deps": 0
     },
@@ -28,7 +28,7 @@
       "name": "modal",
       "label": "Dialog",
       "primitive": "Native <dialog> + showModal()",
-      "loc": 284,
+      "loc": 285,
       "files": 2,
       "deps": 0
     },
@@ -36,7 +36,7 @@
       "name": "popover",
       "label": "Popover",
       "primitive": "Popover API + CSS anchor positioning",
-      "loc": 233,
+      "loc": 234,
       "files": 4,
       "deps": 0
     }

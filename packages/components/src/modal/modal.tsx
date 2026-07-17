@@ -1,7 +1,8 @@
 'use client'
 import { cn, useDraggable, useId, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type CSSProperties, type ReactNode } from 'react'
+import { useRef } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import styles from './modal.module.css'
 
 export interface ModalProps {

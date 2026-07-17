@@ -1,6 +1,7 @@
 'use client'
 import { cn, useControllableSignal, useRovingFocus, useSignals } from '@cascivo/core'
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './toggle-group.module.css'
 
 export interface ToggleGroupItem {
@@ -73,7 +74,7 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function
       role={type === 'single' ? 'radiogroup' : 'group'}
       data-orientation={orientation}
       data-size={size}
-      className={cn(styles['toggleGroup'], className as string | undefined)}
+      className={cn(styles['toggleGroup'], className)}
       ref={ref}
       {...props}
     >

@@ -2,7 +2,12 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { runDoctor, stripCommentsAndStrings } from './doctor.js'
+import {
+  checkProjectDependencies,
+  isAdopterProject,
+  runDoctor,
+  stripCommentsAndStrings,
+} from './doctor.js'
 
 describe('stripCommentsAndStrings', () => {
   it('blanks line comments', () => {
@@ -74,5 +79,65 @@ describe('runDoctor', () => {
     )
     const result = await runDoctor(root)
     expect(result.violations.some((v) => v.rule === 'no-hardcoded-strings')).toBe(true)
+  })
+})
+
+describe('checkProjectDependencies', () => {
+  let dir: string
+  afterEach(() => rmSync(dir, { recursive: true, force: true }))
+
+  function project(pkg: Record<string, unknown>): string {
+    dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-deps-'))
+    writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg))
+    return dir
+  }
+
+  it('flags every missing runtime dependency (incl. the signals peer)', () => {
+    const root = project({ dependencies: {} })
+    const findings = checkProjectDependencies(root)
+    const required = findings.filter((f) => f.required).map((f) => f.package)
+    expect(required).toContain('@cascivo/core')
+    expect(required).toContain('@preact/signals-react')
+    expect(required).toContain('@cascivo/themes')
+  })
+
+  it('marks @cascivo/i18n and @cascivo/charts as advisory, not required', () => {
+    const root = project({
+      dependencies: {
+        '@cascivo/core': '^0.4.0',
+        '@cascivo/tokens': '^0.5.0',
+        '@cascivo/themes': '^0.4.0',
+        '@preact/signals-react': '^3.0.0',
+      },
+    })
+    const findings = checkProjectDependencies(root)
+    expect(findings.every((f) => !f.required)).toBe(true)
+    expect(findings.map((f) => f.package).sort()).toEqual(['@cascivo/charts', '@cascivo/i18n'])
+  })
+
+  it('returns nothing when the full set is present', () => {
+    const root = project({
+      dependencies: {
+        '@cascivo/core': '^0.4.0',
+        '@cascivo/tokens': '^0.5.0',
+        '@cascivo/themes': '^0.4.0',
+        '@cascivo/i18n': '^0.2.0',
+        '@cascivo/charts': '^0.3.0',
+        '@preact/signals-react': '^3.0.0',
+      },
+    })
+    expect(checkProjectDependencies(root)).toEqual([])
+  })
+})
+
+describe('isAdopterProject', () => {
+  let dir: string
+  afterEach(() => rmSync(dir, { recursive: true, force: true }))
+
+  it('is true only when a cascivo.config exists', () => {
+    dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-adopter-'))
+    expect(isAdopterProject(dir)).toBe(false)
+    writeFileSync(join(dir, 'cascivo.config.ts'), 'export default {}\n')
+    expect(isAdopterProject(dir)).toBe(true)
   })
 })

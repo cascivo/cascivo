@@ -1,7 +1,8 @@
 'use client'
 import { cn } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { Children, type HTMLAttributes, type ReactNode } from 'react'
+import { Children } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import { Avatar } from '../avatar/avatar'
 import styles from './avatar-group.module.css'
 

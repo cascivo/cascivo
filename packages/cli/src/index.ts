@@ -137,10 +137,13 @@ Options:
   doctor: `Usage: cascivo doctor [options]
 
 Check components in this repo for cascivo rule violations (banned React hooks,
-hardcoded strings, missing @cascivo/react exports).
+hardcoded strings, missing @cascivo/react exports). In an adopter project (one
+with a cascivo.config), also verifies the runtime dependencies copied source
+needs — @cascivo/core, @cascivo/tokens, @cascivo/themes, and the
+@preact/signals-react peer — are declared in package.json.
 
 Options:
-  --ci     Exit non-zero when violations are found
+  --ci     Exit non-zero when violations or missing runtime deps are found
   --drift  Compare installed components against the registry (copy-paste drift)`,
   audit: `Usage: cascivo audit --ai <paths...> [options]
 
@@ -277,14 +280,31 @@ export async function run(args: string[]): Promise<void> {
         const { runDoctorDrift } = await import('./commands/drift.js')
         await runDoctorDrift(await loadConfig())
       } else {
-        const result = await runDoctor(process.cwd())
-        if (result.passed) {
+        const cwd = process.cwd()
+        const result = await runDoctor(cwd)
+        const { checkProjectDependencies, isAdopterProject } = await import('./commands/doctor.js')
+        const deps = isAdopterProject(cwd) ? checkProjectDependencies(cwd) : []
+        const missingRequired = deps.filter((d) => d.required)
+
+        if (result.passed && deps.length === 0) {
           console.log('No violations found.')
         } else {
           for (const v of result.violations) {
             console.error(`[${v.rule}] ${v.detail}\n  ${v.file}`)
           }
-          if (ci) process.exitCode = 1
+          for (const d of missingRequired) {
+            console.error(
+              `[missing-dependency] ${d.package} is not in package.json — copied cascivo source needs it. Install: ${d.hint}`,
+            )
+          }
+          for (const d of deps.filter((x) => !x.required)) {
+            console.log(
+              `[optional] ${d.package} is not installed; add it when a component or chart needs it: ${d.hint}`,
+            )
+          }
+          if (ci && (result.violations.length > 0 || missingRequired.length > 0)) {
+            process.exitCode = 1
+          }
         }
       }
       break

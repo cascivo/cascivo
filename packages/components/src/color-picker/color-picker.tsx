@@ -1,7 +1,8 @@
 'use client'
 import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, useRef, type KeyboardEvent } from 'react'
+import { useId, useRef } from 'react'
+import type { KeyboardEvent } from 'react'
 import styles from './color-picker.module.css'
 
 export interface ColorPickerLabels {
@@ -256,7 +257,7 @@ export function ColorPicker({
           aria-label={resolved.hue}
           onChange={(e) =>
             commit({
-              h: Number((e.target as HTMLInputElement).value),
+              h: Number(e.target.value),
               s: hsl.s,
               l: hsl.l,
               a: hsl.a,
@@ -285,7 +286,7 @@ export function ColorPicker({
                   h: hsl.h,
                   s: hsl.s,
                   l: hsl.l,
-                  a: Number((e.target as HTMLInputElement).value),
+                  a: Number(e.target.value),
                 })
               }
             />
@@ -331,7 +332,7 @@ export function ColorPicker({
           value={color.value}
           disabled={disabled}
           aria-label={label ?? resolved.colorArea}
-          onChange={(e) => setColor((e.target as HTMLInputElement).value)}
+          onChange={(e) => setColor(e.target.value)}
         />
         {eyeDropper && (
           <button

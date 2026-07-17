@@ -31,7 +31,6 @@ export function Switcher({ items, label, className }: SwitcherProps) {
         'divider' in entry ? (
           // Keep the <li> a real listitem (a <ul> may only contain listitems);
           // the separator role lives on an inner element.
-          // eslint-disable-next-line react/no-array-index-key
           <li key={`divider-${i}`}>
             <span role="separator" aria-orientation="horizontal" className={styles['divider']} />
           </li>

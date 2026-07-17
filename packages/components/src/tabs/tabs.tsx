@@ -1,13 +1,8 @@
 'use client'
-import { cn, useSignal, useSignals, type Signal } from '@cascivo/core'
-import {
-  createContext,
-  useId,
-  useRef,
-  type HTMLAttributes,
-  type KeyboardEvent,
-  type ReactNode,
-} from 'react'
+import { cn, useSignal, useSignals } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
+import { createContext, useId, useRef } from 'react'
+import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
 import styles from './tabs.module.css'
 
 interface TabsStore {
