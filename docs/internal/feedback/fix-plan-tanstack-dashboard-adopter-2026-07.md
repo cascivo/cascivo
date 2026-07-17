@@ -24,8 +24,9 @@
 > - **Wave 4.3 (`useTheme`) — no change**, as triaged (the reactivity claim was refuted).
 >   The optional `useThemeValue`/`useLocaleValue` convenience hooks were **not** added
 >   (default-skip decision); the eight unmitigated hooks are now self-subscribing.
-> - **Wave 6 (dist CSS strategy) — not implemented here**; it remains the maintainer
->   escalation described below.
+> - **Wave 6 (dist CSS strategy) — RESOLVED as WON'T DO** (2026-07-16): keep the current
+>   per-component-CSS + `ssr.noExternal` design; both Option A and Option B are net-negative.
+>   Full rationale in the Wave 6 section below.
 >
 > Everything else in Waves 1–5 shipped as specified.
 
@@ -492,18 +493,62 @@ never `apps/site/public/llms.txt` / `README.md` / `icons.catalog.json` directly.
 
 ---
 
-## Wave 6 — The dist CSS strategy decision (P1 → maintainer)
+## Wave 6 — The dist CSS strategy decision (RESOLVED 2026-07-16: keep the current design)
 
-Not a new plan — an escalation. `fix-plan-tanstack-ssr-adopter-2026-07.md` Wave 1.3
-deferred the per-component-vs-aggregate dist CSS decision (Option A: drop injected CSS
-edges, aggregate becomes the single sanctioned entry; Option B: `.css.js` shims). This
-report is the **second independent adopter** to hit the consequence (297 KB
-un-tree-shaken aggregate as the only reliable TanStack path). Action for the
-implementer: surface this to the maintainer in the Wave 5 PR description with a link to
-that plan's Wave 1.3 section and this report's finding #2, recommending Option A
-executed together with `spec-ssr-verify-and-props-parity-2026-07.md` Track A (the
-harness that proves whichever option lands). Do **not** implement 1.3 inside this
-plan's PRs.
+**Decision: do not change the dist. Keep per-component CSS + `ssr.noExternal`, and make
+`cascivoSsr()` the one-line SSR setup.** Neither Option A nor Option B is worth shipping;
+both trade a one-line config cost for a worse regression. This closes the item that
+`fix-plan-tanstack-ssr-adopter-2026-07.md` Wave 1.3 deferred — do not re-open it without
+new evidence.
+
+### The mechanism (what the debate is actually about)
+
+`packages/react/vite.config.ts`'s `cssImportEdges` plugin (`:39-109`, injection at `:87`)
+splices `import './<name>.css';` into each component chunk. A **bundler** resolves that
+static import; a bare Node/workerd ESM loader has no `.css` handler and throws
+`Unknown file extension ".css"`. That is the *only* defect. `ssr.noExternal: [/^@cascivo\//]`
+(or the shipped `cascivoSsr()` plugin) makes Vite process the CSS instead of Node, which
+**preserves per-component tree-shaking and build-time CSS extraction** (a real, cacheable,
+preloadable `<link>` — no flash) while fixing SSR. The current design's total cost is one
+config line.
+
+### Why both alternatives are rejected
+
+- **Option A (drop the injected edges; aggregate `styles.css` becomes the only entry).**
+  Fixes SSR config-free, but forces every consumer to ship the full ~273 KB / ~37 KB gzip
+  sheet with **no tree-shaking** — it directly sacrifices the bundle-size win the split
+  exists for. Rejected.
+- **Option B (`.css.js` injection shims).** Replace `import './x.css'` with
+  `import './x.css.js'`, where the shim no-ops on the server (`typeof document === 'undefined'`)
+  and injects the CSS at runtime on the client. It *does* keep per-component tree-shaking
+  and is config-free for SSR — but it pays for removing one config line with regressions
+  that hit **every** consumer on **every** page load:
+  1. **SSR flash of unstyled content (decisive).** The shim no-ops on the server, so
+     server HTML ships unstyled; CSS arrives only after client JS runs post-hydration.
+     Today the CSS is extractable and can be `<link>`ed into the SSR head; moving it into
+     JS forfeits that. This trades a **loud, once-fixed build error** for a **silent FOUC
+     for all end users** — a worse failure mode.
+  2. **Worse client delivery even in CSR** — runtime `<style>` injection isn't
+     preloadable or separately cacheable, bloats the JS, and blocks CSS parse behind JS.
+  3. **CSP** — runtime injection needs `style-src 'unsafe-inline'` or a threaded nonce;
+     strict-CSP consumers break or need extra config.
+  4. **Dedup + `@layer` ordering** — needs a marker registry to inject-once and to avoid
+     double-loading against the aggregate, and runtime injection order is less
+     deterministic than static `<link>`s, which cascivo's `@layer` discipline relies on.
+  Rejected.
+
+### What actually ships instead (already done)
+
+- `ssr.noExternal` recipe + honest compatibility matrix — shipped (prior plan Wave 1.1).
+- `cascivoSsr()` plugin that sets it for every `@cascivo/*` package — shipped (Wave 1.2),
+  so the "config line" is dropping one plugin into `plugins: []`.
+- TanStack Start setup section documenting the tradeoff — shipped (this plan, Wave 5.2).
+
+If a future adopter presents a hard requirement for **zero-config** SSR (cannot add even a
+plugin), revisit — but the answer is not Option B; the least-bad path would be package
+`exports` conditions, which still ultimately need a bundler that honours them (i.e.
+`noExternal` territory). `spec-ssr-verify-and-props-parity-2026-07.md` Track A remains the
+harness that guards the SSR contract whichever way this ever goes.
 
 ---
 
