@@ -29,24 +29,26 @@ export function DashboardOverview() {
         <p className={styles.date}>Today&apos;s overview</p>
       </header>
 
-      <div className={styles.grid}>
-        {STATS.map((stat) => (
-          <div key={stat.label} data-testid="stat-card">
-            <Card className={styles.statCard}>
-              <div className={styles.statIcon} aria-hidden="true">
-                {stat.icon}
-              </div>
-              <p className={styles.statLabel}>{stat.label}</p>
-              <p className={styles.statValue}>{stat.value}</p>
-              <div className={styles.statDelta}>
-                <Badge variant={stat.trend === 'up' ? 'success' : 'destructive'}>
-                  {stat.delta}
-                </Badge>
-                <span className={styles.statTrend}>vs last month</span>
-              </div>
-            </Card>
-          </div>
-        ))}
+      <div className={styles.gridOuter}>
+        <div className={styles.grid}>
+          {STATS.map((stat) => (
+            <div key={stat.label} data-testid="stat-card">
+              <Card className={styles.statCard}>
+                <div className={styles.statIcon} aria-hidden="true">
+                  {stat.icon}
+                </div>
+                <p className={styles.statLabel}>{stat.label}</p>
+                <p className={styles.statValue}>{stat.value}</p>
+                <div className={styles.statDelta}>
+                  <Badge variant={stat.trend === 'up' ? 'success' : 'destructive'}>
+                    {stat.delta}
+                  </Badge>
+                  <span className={styles.statTrend}>vs last month</span>
+                </div>
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )

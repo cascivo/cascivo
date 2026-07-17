@@ -6,12 +6,12 @@
     {
       "path": "layout-settings-layout/settings-layout.tsx",
       "type": "registry:block",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './settings-layout.module.css'\n\nexport interface SettingsLayoutProps {\n  menu: ReactNode\n  children: ReactNode\n  className?: string\n}\n\nexport function SettingsLayout({ menu, children, className }: SettingsLayoutProps) {\n  return (\n    <div className={cn(styles['layout'], className)}>\n      <div className={styles['menu']}>{menu}</div>\n      <div className={styles['content']}>{children}</div>\n    </div>\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './settings-layout.module.css'\n\nexport interface SettingsLayoutProps {\n  menu: ReactNode\n  children: ReactNode\n  className?: string\n}\n\nexport function SettingsLayout({ menu, children, className }: SettingsLayoutProps) {\n  // Outer element establishes the query container; the inner `.layout` grid hosts the\n  // `@container` collapse rule, which can only resolve against an ancestor container.\n  return (\n    <div className={cn(styles['layout-container'], className)}>\n      <div className={styles['layout']}>\n        <div className={styles['menu']}>{menu}</div>\n        <div className={styles['content']}>{children}</div>\n      </div>\n    </div>\n  )\n}\n"
     },
     {
       "path": "layout-settings-layout/settings-layout.module.css",
       "type": "registry:block",
-      "content": "@layer cascivo.component {\n  .layout {\n    display: grid;\n    grid-template-columns: 14rem minmax(0, 1fr);\n    gap: var(--cascivo-space-8);\n    align-items: start;\n    container-type: inline-size;\n\n    @container (max-width: 40rem) {\n      grid-template-columns: 1fr;\n    }\n  }\n\n  .menu {\n    min-inline-size: 0;\n  }\n\n  .content {\n    min-inline-size: 0;\n  }\n}\n"
+      "content": "@layer cascivo.component {\n  .layout-container {\n    display: grid;\n    container-type: inline-size;\n  }\n\n  .layout {\n    display: grid;\n    grid-template-columns: 14rem minmax(0, 1fr);\n    gap: var(--cascivo-space-8);\n    align-items: start;\n    min-inline-size: 0;\n\n    @container (max-width: 40rem) {\n      grid-template-columns: 1fr;\n    }\n  }\n\n  .menu {\n    min-inline-size: 0;\n  }\n\n  .content {\n    min-inline-size: 0;\n  }\n}\n"
     }
   ],
   "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",

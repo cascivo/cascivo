@@ -26,12 +26,12 @@ import { RelativeTime } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                             | Required | Default | Description                                             |
-| -------- | -------------------------------- | -------- | ------- | ------------------------------------------------------- |
-| `date`   | `Date \| number \| string`       | yes      | —       | The date to render relative to now.                     |
-| `sync`   | `boolean`                        | no       | `true`  | When true, updates the relative time as it elapses.     |
-| `now`    | `number`                         | no       | —       | Override "now" (ms); disables the interval              |
-| `format` | `Intl.RelativeTimeFormatOptions` | no       | —       | Intl.RelativeTimeFormat options controlling the output. |
+| Prop     | Type                             | Required | Default | Description                                                                                                               |
+| -------- | -------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `date`   | `Date \| number \| string`       | yes      | —       | The date to render relative to now.                                                                                       |
+| `sync`   | `boolean`                        | no       | `true`  | When true, updates the relative time as it elapses.                                                                       |
+| `now`    | `number`                         | no       | —       | Override "now" (ms); disables the interval. Pass a serialized server timestamp under SSR for a byte-deterministic render. |
+| `format` | `Intl.RelativeTimeFormatOptions` | no       | —       | Intl.RelativeTimeFormat options controlling the output.                                                                   |
 
 ## Examples
 
@@ -51,6 +51,14 @@ import { RelativeTime } from '@cascivo/react'
 
 ```tsx
 <RelativeTime date={date} sync={false} />
+```
+
+### SSR deterministic
+
+Relative text is clock-dependent, so it is hydration-safe by default (the server text is kept and corrected on the client). Pass a serialized server timestamp via `now` when you need identical server/client output with no post-hydration correction.
+
+```tsx
+<RelativeTime date={date} now={serverNow} />
 ```
 
 ## Accessibility

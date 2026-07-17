@@ -59,11 +59,16 @@ export function RelativeTime({
   const now = useSignal(nowProp ?? Date.now())
   if (isControlled) now.value = nowProp as number
 
-  // Tick on an interval whose cadence scales with the magnitude. Reading
-  // `now.value` re-subscribes the effect so the cadence adapts as time grows.
-  // SSR/no-DOM safe; skipped when controlled (tests drive `now`) or sync is off.
+  // Correct the server-rendered text against the client clock once on mount, then
+  // (when `sync`) tick on an interval whose cadence scales with the magnitude —
+  // reading `now.value` re-subscribes the effect so the cadence adapts as time
+  // grows. The one-time write matters when `sync` is off: without it the server's
+  // relative string would stay frozen after hydration. SSR/no-DOM safe; skipped
+  // when controlled (tests drive `now`).
   useSignalEffect(() => {
-    if (!sync || isControlled || typeof window === 'undefined') return
+    if (isControlled || typeof window === 'undefined') return
+    now.value = Date.now()
+    if (!sync) return
     const { nextUpdateMs } = selectUnit(target - now.value)
     const id = window.setInterval(() => {
       now.value = Date.now()
@@ -81,6 +86,12 @@ export function RelativeTime({
       dateTime={iso}
       title={absolute}
       className={cn(styles['relativeTime'], className)}
+      // Relative text depends on the render-time clock, so server and client
+      // differ by the elapsed time. Suppress the expected text mismatch (React
+      // keeps the server text and the effect above corrects it post-hydration)
+      // rather than discarding the server markup. Pass a fixed `now` for a fully
+      // deterministic render.
+      suppressHydrationWarning
       {...props}
     >
       {text}

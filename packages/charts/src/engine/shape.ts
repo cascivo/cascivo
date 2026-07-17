@@ -1,6 +1,22 @@
 export type Point = readonly [x: number, y: number]
 
 /**
+ * Quantize a coordinate to 2 decimal places for SVG emission.
+ *
+ * Paths built from `Math.sin`/`Math.cos` (arcs, polar points) are not
+ * bit-reproducible across JavaScript engines — the server (Node) and the browser
+ * can differ in the last floating-point digits, so an SSR-rendered `d`/`x`/`y`
+ * attribute won't match the client's first render and React discards the markup
+ * ("a tree hydrated but some attributes…"). Arithmetic-only paths (line/area/bar
+ * via linear/band scales) are exact everywhere and never need this. Rounding to
+ * sub-pixel precision is visually irrelevant and makes the trig chart family
+ * (pie, donut, gauge, meter, radial-bar, radar, sunburst, polar) hydrate cleanly.
+ */
+export function quantize(n: number): number {
+  return Math.round(n * 100) / 100
+}
+
+/**
  * Split a list of points (where `null` marks a gap / missing value) into
  * contiguous defined runs. With `connectNulls`, drops the gaps and returns one
  * run bridging them. A series `[a, null, b]` yields `[[a], [b]]` by default,
@@ -258,20 +274,24 @@ export function arcPath(
     const p2 = arcPath(cx, cy, outerRadius, innerRadius, mid, startAngle + TWO_PI - 1e-9)
     return p1 + p2
   }
+  // Quantize the trig-derived endpoints so server and client emit identical `d`
+  // strings (see `quantize`). The radii are integer inputs, left as-is.
   const point = (r: number, angle: number): Point => [
-    cx + r * Math.sin(angle),
-    cy - r * Math.cos(angle),
+    quantize(cx + r * Math.sin(angle)),
+    quantize(cy - r * Math.cos(angle)),
   ]
   const sweep = endAngle - startAngle
   const large = sweep > Math.PI ? 1 : 0
+  const oR = quantize(outerRadius)
+  const iR = quantize(innerRadius)
   const [ox0, oy0] = point(outerRadius, startAngle)
   const [ox1, oy1] = point(outerRadius, endAngle)
   if (innerRadius <= 0) {
-    return `M${cx},${cy}L${ox0},${oy0}A${outerRadius},${outerRadius} 0 ${large} 1 ${ox1},${oy1}Z`
+    return `M${quantize(cx)},${quantize(cy)}L${ox0},${oy0}A${oR},${oR} 0 ${large} 1 ${ox1},${oy1}Z`
   }
   const [ix0, iy0] = point(innerRadius, endAngle)
   const [ix1, iy1] = point(innerRadius, startAngle)
-  return `M${ox0},${oy0}A${outerRadius},${outerRadius} 0 ${large} 1 ${ox1},${oy1}L${ix0},${iy0}A${innerRadius},${innerRadius} 0 ${large} 0 ${ix1},${iy1}Z`
+  return `M${ox0},${oy0}A${oR},${oR} 0 ${large} 1 ${ox1},${oy1}L${ix0},${iy0}A${iR},${iR} 0 ${large} 0 ${ix1},${iy1}Z`
 }
 
 export function stackSeries(series: readonly (readonly number[])[]): [number, number][][] {

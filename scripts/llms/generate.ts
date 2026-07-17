@@ -509,6 +509,24 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push("import { Button, Card } from '@cascivo/react'")
   lines.push('```')
   lines.push('')
+  lines.push(
+    '   CSS note: with a bundler (CSR) per-component CSS auto-includes and tree-shakes, so the',
+  )
+  lines.push(
+    '   `@cascivo/react/styles.css` line above is optional; under Vite SSR / TanStack Start it is',
+  )
+  lines.push('   required (see SSR SETUP below) and ships the full sheet (~273 KB / ~37 KB gzip).')
+  lines.push('')
+  lines.push(
+    '   Dashboards / data viz: charts are a SEPARATE install — `pnpm add @cascivo/charts`, then',
+  )
+  lines.push(
+    "   `import { AreaChart } from '@cascivo/charts'`. `@cascivo/react` exports no charts. The code",
+  )
+  lines.push(
+    '   editor (`@cascivo/editor`) and flow canvas (`@cascivo/flow`) are separate installs too.',
+  )
+  lines.push('')
   lines.push('   Trade-offs: smallest setup, updates via npm; you do not edit component internals.')
   lines.push('')
   lines.push('B. Copy-paste source — own and customize the code (shadcn model):')
@@ -834,8 +852,27 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   const categories = [...new Set(sorted.map((e) => e.category))].sort()
 
-  lines.push(`## Component index (${sorted.length} components)`)
+  // Break the count out by distribution channel so the total isn't read as "all of
+  // these are @cascivo/react exports" — charts/editor/flow are separate installs and
+  // blocks are copy-paste only (finding #1 from the TanStack dashboard adopter report).
+  const separateInstalls = new Map<string, number>()
+  for (const e of sorted) {
+    if (e.install && e.install !== '@cascivo/react') {
+      separateInstalls.set(e.install, (separateInstalls.get(e.install) ?? 0) + 1)
+    }
+  }
+  const breakdown = [...separateInstalls.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([pkg, n]) => `${n} in ${pkg}`)
+    .join(', ')
+  lines.push(`## Component index (${sorted.length} entries)`)
   lines.push('')
+  if (breakdown) {
+    lines.push(
+      `Not all ship in \`@cascivo/react\`: ${breakdown} — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.`,
+    )
+    lines.push('')
+  }
   for (const category of categories) {
     lines.push(`### ${category}`)
     lines.push('')

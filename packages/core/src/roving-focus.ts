@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from 'react'
-import { useSignal, type ReadonlySignal } from './signals.ts'
+import { useSignal, useSignals, type ReadonlySignal } from './signals.ts'
 
 export type RovingOrientation = 'horizontal' | 'vertical' | 'both'
 
@@ -28,10 +28,13 @@ export interface UseRovingFocusReturn {
 /**
  * Roving tabindex without context. The parent calls `useRovingFocus(...)` and spreads
  * `getItemProps(i)` onto each item. Only the active item is tabbable (`tabIndex={0}`); arrow keys
- * move focus (Home/End jump; `loop` wraps). State lives in a signal — the consuming component reads
- * it during render, so React apps must call `useSignals()` (per the project rule).
+ * move focus (Home/End jump; `loop` wraps). State lives in a signal; this hook calls `useSignals()`
+ * for you, so a plain React consumer that reads the active index in render stays reactive.
  */
 export function useRovingFocus(options: UseRovingFocusOptions = {}): UseRovingFocusReturn {
+  // Self-subscribe so the consuming component re-renders on focus moves without
+  // calling useSignals() itself.
+  useSignals()
   const { orientation = 'horizontal', loop = false, defaultIndex = 0 } = options
   const activeIndex = useSignal(defaultIndex)
   const itemsRef = useRef<(HTMLElement | null)[]>([])

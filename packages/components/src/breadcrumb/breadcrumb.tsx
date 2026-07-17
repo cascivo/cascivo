@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignals } from '@cascivo/core'
+import { cn, getLinkComponent, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './breadcrumb.module.css'
 
@@ -18,6 +18,7 @@ export interface BreadcrumbProps {
 
 export function Breadcrumb({ items, maxVisible, className, ariaLabel }: BreadcrumbProps) {
   useSignals()
+  const LinkComponent = getLinkComponent()
   const resolvedAriaLabel = ariaLabel ?? t(builtin.breadcrumb.nav)
   let visible = items
   const first = items[0]
@@ -35,7 +36,7 @@ export function Breadcrumb({ items, maxVisible, className, ariaLabel }: Breadcru
               {isLast ? (
                 <span aria-current="page">{item.label}</span>
               ) : item.href !== undefined ? (
-                <a href={item.href}>{item.label}</a>
+                <LinkComponent href={item.href}>{item.label}</LinkComponent>
               ) : (
                 <span>{item.label}</span>
               )}

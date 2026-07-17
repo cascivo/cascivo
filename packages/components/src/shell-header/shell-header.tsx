@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, getLinkComponent, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { type KeyboardEvent, type MouseEvent, type ReactNode, type RefObject } from 'react'
 import { usePopover } from '../popover/use-popover'
@@ -75,6 +75,7 @@ function isNavMenu(item: ShellHeaderNavItem): item is ShellHeaderNavMenu {
 
 function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
   useSignals()
+  const LinkComponent = getLinkComponent()
   const { triggerRef, popoverRef, isOpen, anchorName, toggle, close } = usePopover()
   const hasActiveChild = item.items.some((sub) => sub.active)
   const focusFirstOnOpen = useSignal(false)
@@ -162,7 +163,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
         onKeyDown={handlePanelKeyDown}
       >
         {item.items.map((sub, i) => (
-          <a
+          <LinkComponent
             key={sub.id ?? `${i}-${sub.href}`}
             href={sub.href}
             role="menuitem"
@@ -172,7 +173,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
             onClick={close}
           >
             {sub.label}
-          </a>
+          </LinkComponent>
         ))}
       </div>
     </li>
@@ -191,6 +192,7 @@ export function ShellHeader({
   className,
 }: ShellHeaderProps) {
   useSignals()
+  const LinkComponent = getLinkComponent()
   const navLabel = labels?.nav ?? t(builtin.shellHeader.nav)
   const menuLabel = menuExpanded
     ? (labels?.closeMenu ?? t(builtin.shellHeader.closeMenu))
@@ -223,14 +225,14 @@ export function ShellHeader({
       )}
       {brand != null &&
         (isBrandObject(brand) ? (
-          <a
+          <LinkComponent
             href={brand.href ?? '/'}
             aria-label={[brand.prefix, brand.name].filter(Boolean).join(' ')}
             className={styles['brand']}
           >
             {brand.prefix && <span className={styles['brandPrefix']}>{brand.prefix}</span>}
             <span className={styles['brandName']}>{brand.name}</span>
-          </a>
+          </LinkComponent>
         ) : (
           <div className={styles['brand']}>{brand}</div>
         ))}
@@ -242,7 +244,7 @@ export function ShellHeader({
                 <NavMenu key={item.id ?? `${i}-${item.label}`} item={item} />
               ) : (
                 <li key={item.id ?? `${i}-${item.href}`}>
-                  <a
+                  <LinkComponent
                     href={item.href}
                     aria-current={item.active ? 'page' : undefined}
                     data-state={item.active ? 'active' : undefined}
@@ -250,7 +252,7 @@ export function ShellHeader({
                     {...(item.onClick ? { onClick: item.onClick } : {})}
                   >
                     {item.label}
-                  </a>
+                  </LinkComponent>
                 </li>
               ),
             )}

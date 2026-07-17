@@ -3,6 +3,7 @@
 import {
   cn,
   DismissableLayer,
+  getLinkComponent,
   Presence,
   useAnchorPosition,
   useRovingFocus,
@@ -84,17 +85,20 @@ function NavigationMenuEntry({ item, baseId, openId, itemProps }: NavigationMenu
   const { ref: rovingRef, onKeyDown: rovingKeyDown, ...rovingRest } = itemProps
 
   if (!hasContent) {
+    // A registered link component must forward `ref` to its underlying anchor so
+    // roving focus can move to it (TanStack/Next Link both do); defaults to `<a>`.
+    const LinkComponent = getLinkComponent()
     return (
       <li className={styles['item']}>
-        <a
-          ref={(el) => rovingRef(el)}
+        <LinkComponent
+          ref={(el: HTMLAnchorElement | null) => rovingRef(el)}
           href={item.href}
           className={styles['link']}
           onKeyDown={rovingKeyDown}
           {...rovingRest}
         >
           {item.label}
-        </a>
+        </LinkComponent>
       </li>
     )
   }

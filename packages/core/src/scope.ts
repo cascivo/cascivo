@@ -5,6 +5,7 @@ import {
   effect as coreEffect,
   signal as coreSignal,
   useSignalEffect,
+  useSignals,
   type ReadonlySignal,
   type Signal,
 } from './signals.ts'
@@ -66,6 +67,9 @@ export function createScope(): SignalScope {
  * disposed on unmount. The scope's effects stop when the component unmounts.
  */
 export function useScope(): SignalScope {
+  // Self-subscribe so a plain React consumer that reads a scope-owned signal in
+  // render re-renders on writes without calling useSignals() itself.
+  useSignals()
   const ref = useRef<SignalScope | null>(null)
   ref.current ??= createScope()
 

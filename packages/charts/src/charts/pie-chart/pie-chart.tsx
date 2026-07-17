@@ -4,7 +4,7 @@ import type { ReactNode } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
 import { Legend } from '../../chrome/legend'
 import { DataLabel, resolveLabels, type LabelOptions } from '../../chrome/data-label'
-import { arcPath } from '../../engine/shape'
+import { arcPath, quantize } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
 export interface PieChartDatum {
@@ -107,8 +107,8 @@ export function PieChart({
       // arcPath uses sin for x, -cos for y (0 = top, clockwise)
       return {
         id: d.id,
-        cx: chartCx + Math.sin(midAngle) * outerR * 0.65,
-        cy: chartCy - Math.cos(midAngle) * outerR * 0.65,
+        cx: quantize(chartCx + Math.sin(midAngle) * outerR * 0.65),
+        cy: quantize(chartCy - Math.cos(midAngle) * outerR * 0.65),
         label: d.label,
         value: d.value,
         seriesId: String(i),
@@ -206,8 +206,8 @@ export function PieChart({
                     />
                     {showLabel && (
                       <DataLabel
-                        x={cx + Math.sin(midAngle) * labelR}
-                        y={cy - Math.cos(midAngle) * labelR + 4}
+                        x={quantize(cx + Math.sin(midAngle) * labelR)}
+                        y={quantize(cy - Math.cos(midAngle) * labelR + 4)}
                         text={labelsCustom ? resolvedLabels.format(d.value) : `${Math.round(pct)}%`}
                         tone="muted"
                       />

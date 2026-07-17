@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignalEffect, type Signal } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals, type Signal } from '@cascivo/core'
 import type { RefObject } from 'react'
 import type { TocItem } from './toc'
 
@@ -18,6 +18,9 @@ export function useTocFromRegion(
   ref: RefObject<HTMLElement | null>,
   options: UseTocFromRegionOptions = {},
 ): Signal<TocItem[]> {
+  // Self-subscribe so a plain React consumer that reads the returned signal in
+  // render re-renders as headings are collected without calling useSignals() itself.
+  useSignals()
   const selector = options.selector ?? 'h2, h3, h4'
   const items = useSignal<TocItem[]>([])
 

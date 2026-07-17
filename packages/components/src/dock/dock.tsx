@@ -1,5 +1,5 @@
 'use client'
-import { useSignals } from '@cascivo/core'
+import { getLinkComponent, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './dock.module.css'
 
@@ -28,7 +28,7 @@ export function Dock({ items, activeIndex, className, ariaLabel }: DockProps) {
     >
       {items.map((item, i) => {
         const isActive = i === activeIndex
-        const Tag = item.href ? 'a' : 'button'
+        const Tag = item.href ? getLinkComponent() : 'button'
         return (
           <Tag
             key={i}

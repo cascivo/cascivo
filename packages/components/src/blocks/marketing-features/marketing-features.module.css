@@ -23,13 +23,16 @@
     margin-inline: auto;
   }
 
-  .grid {
+  .gridOuter {
     container-type: inline-size;
+    max-inline-size: 72rem;
+    margin-inline: auto;
+  }
+
+  .grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--cascivo-space-8);
-    max-inline-size: 72rem;
-    margin-inline: auto;
   }
 
   @container (min-inline-size: 40rem) {

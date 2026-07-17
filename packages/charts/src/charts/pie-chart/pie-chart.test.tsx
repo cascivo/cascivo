@@ -110,11 +110,12 @@ describe('PieChart', () => {
       expect(path).toContain('A40,40')
     })
 
-    it('default donut inner radius stays the 0.6 ratio (pixel-identical)', () => {
+    it('default donut inner radius stays the 0.6 ratio (quantized for SSR)', () => {
       const { container } = render(<PieChart data={data} title="Donut" donut size={200} />)
       const path = container.querySelector('path[data-series]')!.getAttribute('d')!
-      // 92 * 0.6 = 55.199999…
-      expect(path).toContain('A55.199')
+      // 92 * 0.6 = 55.199999… → quantized to 2 decimals so SSR/client emit an
+      // identical `d` string (see `quantize` in engine/shape.ts).
+      expect(path).toContain('A55.2,55.2')
     })
 
     it('clamps oversized thickness without inverting the arc (no NaN)', () => {

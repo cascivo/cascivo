@@ -2,7 +2,8 @@ import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Grid',
-  description: 'CSS grid layout primitive with responsive column collapsing.',
+  description:
+    'CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.',
   category: 'layout',
   states: [],
   variants: [],
@@ -19,7 +20,8 @@ export const meta: ComponentMeta = {
       name: 'gap',
       type: '1|2|3|4|5|6|8|10|12',
       required: false,
-      description: 'Spacing token step',
+      description:
+        'Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8.',
     },
     {
       name: 'align',

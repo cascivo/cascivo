@@ -127,7 +127,7 @@ cascivo/
 | Tool                                 | Version                   |
 | ------------------------------------ | ------------------------- |
 | [Node.js](https://nodejs.org/)       | 22.12+                    |
-| [pnpm](https://pnpm.io/)             | 11+                       |
+| [pnpm](https://pnpm.io/)             | 10+ (repo pins 11.8.0)    |
 | [vite+ (`vp`)](https://viteplus.dev) | bundled toolchain (alpha) |
 
 ### Setup

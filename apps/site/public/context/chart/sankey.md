@@ -77,6 +77,7 @@ Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
 - Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.
 - Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.
+- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.
 - Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
 - CSS logical properties only (RTL-safe).
 

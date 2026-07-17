@@ -67,6 +67,14 @@ import '@cascivo/themes/all'       // tokens (once) + base typography + light & 
 import { Button, Card } from '@cascivo/react'
 ```
 
+   CSS note: with a bundler (CSR) per-component CSS auto-includes and tree-shakes, so the
+   `@cascivo/react/styles.css` line above is optional; under Vite SSR / TanStack Start it is
+   required (see SSR SETUP below) and ships the full sheet (~273 KB / ~37 KB gzip).
+
+   Dashboards / data viz: charts are a SEPARATE install — `pnpm add @cascivo/charts`, then
+   `import { AreaChart } from '@cascivo/charts'`. `@cascivo/react` exports no charts. The code
+   editor (`@cascivo/editor`) and flow canvas (`@cascivo/flow`) are separate installs too.
+
    Trade-offs: smallest setup, updates via npm; you do not edit component internals.
 
 B. Copy-paste source — own and customize the code (shadcn model):
@@ -257,7 +265,9 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (204 components)
+## Component index (204 entries)
+
+Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
 ### auth
 
@@ -425,7 +435,7 @@ see how components behave without adding tracking, read these machine-readable C
 - [layout/columns](https://docs.cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(copy-paste)_
 - [layout/dashboard-layout](https://docs.cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
 - [layout/flex](https://docs.cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. _(copy-paste)_
-- [layout/grid](https://docs.cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. _(copy-paste)_
+- [layout/grid](https://docs.cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(copy-paste)_
 - [layout/masonry](https://docs.cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
 - [layout/page-header](https://docs.cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(copy-paste)_
 - [layout/section](https://docs.cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
@@ -703,7 +713,7 @@ see how components behave without adding tracking, read these machine-readable C
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-16 from registry v0.6.4_
+_Generated: 2026-07-17 from registry v0.6.4_
 
 ---
 
@@ -9978,7 +9988,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `min` | `string` | no | `"16rem"` | Minimum track width before items wrap to fewer columns |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8. |
 
 ## Examples
 
@@ -10239,7 +10249,7 @@ layout, flex, stack, spacing
 
 # Grid
 
-CSS grid layout primitive with responsive column collapsing.
+CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.
 
 ## Install
 
@@ -10260,7 +10270,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `cols` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no | — | Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | — | Spacing token step |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | — | Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8. |
 | `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | no | — | Block-axis alignment of items within their cells (align-items); default stretch |
 | `justify` | `'start' \| 'center' \| 'end' \| 'stretch'` | no | — | Inline-axis alignment of items within their cells (justify-items); default stretch |
 | `span` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no | — | GridItem: column span — a number, or a per-breakpoint object |
@@ -13075,7 +13085,7 @@ import { RelativeTime } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `date` | `Date \| number \| string` | yes | — | The date to render relative to now. |
 | `sync` | `boolean` | no | `true` | When true, updates the relative time as it elapses. |
-| `now` | `number` | no | — | Override "now" (ms); disables the interval |
+| `now` | `number` | no | — | Override "now" (ms); disables the interval. Pass a serialized server timestamp under SSR for a byte-deterministic render. |
 | `format` | `Intl.RelativeTimeFormatOptions` | no | — | Intl.RelativeTimeFormat options controlling the output. |
 
 ## Examples
@@ -13096,6 +13106,14 @@ import { RelativeTime } from '@cascivo/react'
 
 ```tsx
 <RelativeTime date={date} sync={false} />
+```
+
+### SSR deterministic
+
+Relative text is clock-dependent, so it is hydration-safe by default (the server text is kept and corrected on the client). Pass a serialized server timestamp via `now` when you need identical server/client output with no post-hydration correction.
+
+```tsx
+<RelativeTime date={date} now={serverNow} />
 ```
 
 ## Accessibility
@@ -16638,4 +16656,4 @@ Gives an icon-only control an accessible name
 
 accessibility, screen-reader, sr-only, hidden
 
-_Generated: 2026-07-16 from registry v0.6.4_
+_Generated: 2026-07-17 from registry v0.6.4_

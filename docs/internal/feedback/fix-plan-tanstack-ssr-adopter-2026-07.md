@@ -6,7 +6,12 @@
 > **Wave 1.3** (the dist per-component-CSS change) — it regresses CSS tree-shaking
 > for every consumer and is a genuine product tradeoff; the SSR blocker is already
 > fixed for the supported path by 1.2 + docs, so this is left as a maintainer
-> decision (Option A vs B). **Wave 3.1** (props-parity CI gate) — deferred with a
+> decision (Option A vs B). **RESOLVED 2026-07-16 — WON'T DO:** keep the current
+> per-component-CSS + `ssr.noExternal` design; both Option A (loses tree-shaking) and
+> Option B (`.css.js` shims — SSR flash of unstyled content, CSP, worse client delivery)
+> are net-negative versus a one-line/one-plugin config. Full rationale in
+> `fix-plan-tanstack-dashboard-adopter-2026-07.md` → "Wave 6". Do not re-open without new
+> evidence. **Wave 3.1** (props-parity CI gate) — deferred with a
 > burn-down probe recorded in that section: it needs the TS type checker (a new
 > devDep) to avoid ~60-component false-positive noise, and the reported bug was a
 > false positive. Everything else in Wave 3 shipped.

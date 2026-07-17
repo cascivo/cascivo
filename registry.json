@@ -1,6 +1,6 @@
 {
   "version": "0.6.4",
-  "generatedAt": "2026-07-16",
+  "generatedAt": "2026-07-17",
   "components": [
     {
       "name": "accordion",
@@ -1525,7 +1525,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.module.css"
       ],
       "fileHashes": {
-        "breadcrumb.tsx": "sha256-02dc37a2f0e1667d9f919a57e70d923529d0fba0e49941fb7a0b88fbaccb2f0d",
+        "breadcrumb.tsx": "sha256-2db0efc4decdd98e1d12ef026e82b469ebe31d09f923a582b8d88690c05bcd50",
         "breadcrumb.module.css": "sha256-f75bb68385f2664591666d0cfa8017ce32440ffb9bef2e9d42ef5f512d46637d"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -5071,7 +5071,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.module.css"
       ],
       "fileHashes": {
-        "dock.tsx": "sha256-7d59f34ebab4af1085952e3d692173a5d831e1f06226f6dd43ffe750a0cd0ce2",
+        "dock.tsx": "sha256-cd3fa5b8c31cf479458ef7c06eae07b38fbb97474f6e92637250037a23441bfb",
         "dock.module.css": "sha256-181c821754d69a349531b945047e28daf17e981d6a20addfdd19c97122574503"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -6571,7 +6571,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/header.module.css"
       ],
       "fileHashes": {
-        "header.tsx": "sha256-410e33a0ad2a4d8e0a1bb43a2ce003736094998693c2e443e44b7c78c1d44146",
+        "header.tsx": "sha256-5c691ba6d25dab56b236568610eb4e502836ae20ee3acc26a02684cd7194a8f7",
         "header.module.css": "sha256-b9881e5799d65035192bafa5d933a89c8039918e5c5f1084cc08311a148c74a2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9707,7 +9707,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
       ],
       "fileHashes": {
-        "navigation-menu.tsx": "sha256-fb7b5c00f41b9ed2e87e9598ae2fdf7149346de6fdfbdd910cae7bf76f2d0e37",
+        "navigation-menu.tsx": "sha256-7f6a5b8205bb7854693443b0b3be13024ca54ede7e9dce52ab6f9f038569e1ee",
         "navigation-menu.module.css": "sha256-27871a11da58d30b376d8194b52813d9c6b608b7bbd4b2fd053496d38a102f04"
       },
       "dependencies": ["@cascivo/core"],
@@ -12405,7 +12405,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.module.css"
       ],
       "fileHashes": {
-        "relative-time.tsx": "sha256-188bc76b950d792111bea2d663a12b9c5ebfcf92cbfce221395d3cd2917cb617",
+        "relative-time.tsx": "sha256-e6ac71f3a75b86d7965d33e9c416920939c895e100087e144258b03f78facf79",
         "relative-time.module.css": "sha256-c25d05f5dceeb217bfc60eb61d6ba451c2c63e17843f853c46a0a925dbe185f1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -12439,7 +12439,7 @@
             "name": "now",
             "type": "number",
             "required": false,
-            "description": "Override \"now\" (ms); disables the interval"
+            "description": "Override \"now\" (ms); disables the interval. Pass a serialized server timestamp under SSR for a byte-deterministic render."
           },
           {
             "name": "format",
@@ -12466,6 +12466,11 @@
           {
             "title": "Static (no ticking)",
             "code": "<RelativeTime date={date} sync={false} />"
+          },
+          {
+            "title": "SSR deterministic",
+            "code": "<RelativeTime date={date} now={serverNow} />",
+            "description": "Relative text is clock-dependent, so it is hydration-safe by default (the server text is kept and corrected on the client). Pass a serialized server timestamp via `now` when you need identical server/client output with no post-hydration correction."
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -13484,7 +13489,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
       ],
       "fileHashes": {
-        "shell-header.tsx": "sha256-e7296b79455a6b832e4b3d50d266c680d5c109bc42b599e1e857093578a439e2",
+        "shell-header.tsx": "sha256-d6eb95b681ec04229fa92d9b19bcd3b048a30b71f896eed0efe8dfb9baf03fe2",
         "index.ts": "sha256-331ae306f93610807dbedf315036e545e7d6c49358dda073d71cfcc19b4a8e7e",
         "shell-header.module.css": "sha256-39038f94cc518efafab29d85f59c8b97628af931a1cf8232690d29e62c64e484"
       },
@@ -13638,7 +13643,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-204d98cb0a1d9924f193e8835fb21123ddb7022f5bd0ecde9f403525809e2e80",
+        "side-nav.tsx": "sha256-36e90c3378f7c3c5a456b60f50f055bf487a461c5d8b1fc1e214d54ed61b5574",
         "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15242,7 +15247,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-424a80a12116ab1a4abb7631c1371a4aa80e3e3a53b65cd5086bd40d6b3f03c6",
+        "switcher.tsx": "sha256-eccd8a30f626ca1a56bb99a37ea665f97a983c28fbde849e0ec5e4a7bc41363e",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
         "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
@@ -16464,7 +16469,7 @@
       ],
       "fileHashes": {
         "toast.tsx": "sha256-6c2083c209984d52a1f6d757b0d54512553ef02eceb6bb635768812509f63e23",
-        "toast.module.css": "sha256-82684d36074adddec92890257efda3de42777822cea867a43b56db003f195ec9"
+        "toast.module.css": "sha256-8cc1a7d641bfa6f572dd2592df41743520cf557d0380c9ab16770b421115b369"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -16592,7 +16597,7 @@
       ],
       "fileHashes": {
         "toc.tsx": "sha256-14ec3dce4f2ed081a6b51fb20b5716245af810c0220c4d96c63e924c358b0d98",
-        "use-toc-from-region.ts": "sha256-8f97a041f7554ab4e5194d0cedacf6d709385676c53b3924290cf1c6ca7b0e83",
+        "use-toc-from-region.ts": "sha256-aee13ab650f678aaae5f14a7846273dfb39df9097e3bbd61bef89fbdbfa89993",
         "toc.module.css": "sha256-52e93175cedcbe261dc2093c7f30d68dd294640599e0bb2a0e54ca505f5198d4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -17966,7 +17971,7 @@
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "default": "4",
-            "description": "Spacing token step"
+            "description": "Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8."
           }
         ],
         "tokens": ["--cascivo-space-*"],
@@ -18093,8 +18098,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.module.css"
       ],
       "fileHashes": {
-        "columns.tsx": "sha256-d1136b933fcf293cef35e8b1f37b63dd73a4e8edefb22f35c5f78b2c41408340",
-        "columns.module.css": "sha256-8915e325ee410ce1e86080721abc847aeaf0a8dff13904fc0a4acbf2ceaf4414"
+        "columns.tsx": "sha256-234bed96294d79bbab600fca4b0ec020ec0a73fd38f9c17e7a4e5bc4f998d9b6",
+        "columns.module.css": "sha256-b13c6d5993a498e14b560c09bcc02cb2139deadf3ef47ff44bb83f0cfcef2ad1"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -18372,7 +18377,7 @@
     {
       "name": "layout/grid",
       "type": "layout",
-      "description": "CSS grid layout primitive with responsive column collapsing.",
+      "description": "CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.",
       "category": "layout",
       "version": "0.6.4",
       "files": [
@@ -18380,8 +18385,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "fileHashes": {
-        "grid.tsx": "sha256-ad2583e8d4feed2b6eaa97c0065da63fc72c3004598d7095d226d78b13d6a961",
-        "grid.module.css": "sha256-17b1e5aaf1d86f50bab2d78179c9ec1565d57746f22d654df0e4bce32bcd60bd"
+        "grid.tsx": "sha256-ef2da4076bce7d200cfc631988a286cad2d49a43671f18ff10b5c174bc416c3d",
+        "grid.module.css": "sha256-5d51fec5a0b0f52866e5d78f515261f98384f071cbf3c0eaf2a683fa08f196a8"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -18390,7 +18395,7 @@
       "tags": ["layout", "grid", "columns"],
       "meta": {
         "name": "Grid",
-        "description": "CSS grid layout primitive with responsive column collapsing.",
+        "description": "CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -18406,7 +18411,7 @@
             "name": "gap",
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
-            "description": "Spacing token step"
+            "description": "Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8."
           },
           {
             "name": "align",
@@ -18761,8 +18766,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.module.css"
       ],
       "fileHashes": {
-        "settings-layout.tsx": "sha256-72b18abcdc9564a84cc56cc4a9cf4f3baed167ec03948377c52c2831f6c09923",
-        "settings-layout.module.css": "sha256-f73f09016cf7f1aa1d2820f5b62863baa6741b776a8913f7f842d92488907fd0"
+        "settings-layout.tsx": "sha256-2210943472c4f541ef324409e77cb99c836987391cb3550f0bc3c0bb7a620a0e",
+        "settings-layout.module.css": "sha256-f8056bc2aa0d3ba25fca1b4834a6261b3c54d2c719a4253c885d131f07f283c4"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {

@@ -24,11 +24,22 @@ describe('Grid', () => {
     )
   })
 
+  it('wraps the grid in a containment element that carries the column vars', () => {
+    const { container } = render(<Grid cols={3} />)
+    const outer = container.firstChild as HTMLElement
+    const grid = outer.firstChild as HTMLElement
+    // Outer element establishes the query container and carries the vars.
+    expect(outer.style.getPropertyValue('--_grid-cols')).toBe('3')
+    // Inner grid is a distinct element (needed so its @container column rules can
+    // resolve against the outer element).
+    expect(grid).not.toBe(outer)
+  })
+
   it('scalar cols does not enter responsive mode', () => {
     const { container } = render(<Grid cols={3} />)
-    const el = container.firstChild as HTMLElement
-    expect(el.hasAttribute('data-responsive')).toBe(false)
-    expect(el.style.getPropertyValue('--_grid-cols-md')).toBe('')
+    const grid = (container.firstChild as HTMLElement).firstChild as HTMLElement
+    expect(grid.hasAttribute('data-responsive')).toBe(false)
+    expect((container.firstChild as HTMLElement).style.getPropertyValue('--_grid-cols-md')).toBe('')
   })
 
   it('sets align/justify CSS vars only when provided', () => {
@@ -42,16 +53,19 @@ describe('Grid', () => {
     expect(aligned.style.getPropertyValue('--_grid-justify')).toBe('end')
   })
 
-  it('responsive cols object sets per-tier vars and marks the element responsive', () => {
+  it('responsive cols object sets per-tier vars and marks the grid responsive', () => {
     const { container } = render(<Grid cols={{ base: 1, md: 2, lg: 3 }} />)
-    const el = container.firstChild as HTMLElement
-    expect(el.hasAttribute('data-responsive')).toBe(true)
-    expect(el.style.getPropertyValue('--_grid-cols')).toBe('1')
-    expect(el.style.getPropertyValue('--_grid-cols-md')).toBe('2')
-    expect(el.style.getPropertyValue('--_grid-cols-lg')).toBe('3')
+    const outer = container.firstChild as HTMLElement
+    const grid = outer.firstChild as HTMLElement
+    // The responsive-mode flag lives on the inner grid (where the @container rules are).
+    expect(grid.hasAttribute('data-responsive')).toBe(true)
+    // Column vars live on the outer element and inherit into the grid.
+    expect(outer.style.getPropertyValue('--_grid-cols')).toBe('1')
+    expect(outer.style.getPropertyValue('--_grid-cols-md')).toBe('2')
+    expect(outer.style.getPropertyValue('--_grid-cols-lg')).toBe('3')
     // Undeclared tiers are omitted so the CSS fallback chain applies.
-    expect(el.style.getPropertyValue('--_grid-cols-sm')).toBe('')
-    expect(el.style.getPropertyValue('--_grid-cols-xl')).toBe('')
+    expect(outer.style.getPropertyValue('--_grid-cols-sm')).toBe('')
+    expect(outer.style.getPropertyValue('--_grid-cols-xl')).toBe('')
   })
 })
 

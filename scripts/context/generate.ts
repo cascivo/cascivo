@@ -227,6 +227,9 @@ export function buildContextPrompt(entry: RegistryEntry): string {
   lines.push(
     '- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.',
   )
+  lines.push(
+    '- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.',
+  )
   lines.push('- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.')
   lines.push('- CSS logical properties only (RTL-safe).')
   lines.push('')

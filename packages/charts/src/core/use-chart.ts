@@ -21,21 +21,38 @@ export function useChartSize(
   useSignalEffect(() => {
     const el = ref.current
     if (!el) return
+
+    // Skip no-op writes so an unchanged measurement can't re-trigger the observer.
+    // `.peek()` reads without subscribing the effect to its own writes.
+    const apply = (w: number, h: number) => {
+      if (w > 0 && w !== width.peek()) width.value = w
+      if (h > 0 && h !== height.peek()) height.value = h
+    }
+
     if (typeof ResizeObserver === 'undefined') {
       const rect = el.getBoundingClientRect()
-      if (rect.width > 0) width.value = rect.width
-      if (rect.height > 0) height.value = rect.height
+      apply(rect.width, rect.height)
       return
     }
+
+    let raf = 0
     const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const { contentRect } = entry
-        if (contentRect.width > 0) width.value = contentRect.width
-        if (contentRect.height > 0) height.value = contentRect.height
-      }
+      // Defer the signal writes out of the observer callback. Writing synchronously
+      // re-renders the observed subtree (the SVG box lives inside the observed div),
+      // which the browser reports as "ResizeObserver loop completed with undelivered
+      // notifications". Hopping to the next frame breaks that same-frame
+      // observe → write → relayout → observe cycle.
+      const entry = entries[entries.length - 1]
+      if (!entry) return
+      const { width: w, height: h } = entry.contentRect
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(() => apply(w, h))
     })
     ro.observe(el)
-    return () => ro.disconnect()
+    return () => {
+      cancelAnimationFrame(raf)
+      ro.disconnect()
+    }
   })
 
   return { ref, width, height }

@@ -25,7 +25,8 @@ export const meta: ComponentMeta = {
       name: 'now',
       type: 'number',
       required: false,
-      description: 'Override "now" (ms); disables the interval',
+      description:
+        'Override "now" (ms); disables the interval. Pass a serialized server timestamp under SSR for a byte-deterministic render.',
     },
     {
       name: 'format',
@@ -47,6 +48,12 @@ export const meta: ComponentMeta = {
       code: '<RelativeTime date={date} format={{ numeric: "auto" }} />',
     },
     { title: 'Static (no ticking)', code: '<RelativeTime date={date} sync={false} />' },
+    {
+      title: 'SSR deterministic',
+      code: '<RelativeTime date={date} now={serverNow} />',
+      description:
+        'Relative text is clock-dependent, so it is hydration-safe by default (the server text is kept and corrected on the client). Pass a serialized server timestamp via `now` when you need identical server/client output with no post-hydration correction.',
+    },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
   tags: ['time', 'date', 'relative', 'i18n', 'display'],
