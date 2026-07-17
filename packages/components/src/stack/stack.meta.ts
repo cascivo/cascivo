@@ -48,7 +48,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: [],
-  tags: ['stack', 'pile', 'overlap', 'layout'],
+  tags: ['stack', 'pile', 'overlap', 'layered', 'z-axis', 'card-pile', 'layout'],
   intent: {
     whenToUse: [
       'Card pile UI where depth and layering should be visible',

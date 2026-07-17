@@ -55,6 +55,7 @@ Renders role="img" with a title and a fallback data table.
 
 ```jsx
 import { Stream } from '@cascivo/charts'
+
 ;<Stream
   title="Topics over time"
   categories={['Jan', 'Feb', 'Mar', 'Apr']}

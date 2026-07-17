@@ -151,6 +151,7 @@ export const meta: ComponentMeta = {
     '--cascivo-space-3',
     '--cascivo-space-4',
     '--cascivo-data-table-max-height',
+    '--cascivo-data-table-cell-gap',
     '--cascivo-duration-150',
     '--cascivo-duration-500',
     '--cascivo-ease-out',

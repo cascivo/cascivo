@@ -441,6 +441,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt`,
   )
+  lines.push(
+    `- Getting started, fetchable as plain markdown (install steps, no browser needed): ${SITE}/docs/getting-started.md`,
+  )
   lines.push(`- Docs (per-component reference, props, live examples): ${DOCS}`)
   lines.push(`- Storybook (every variant, interactive): https://storybook.cascivo.com`)
   lines.push(`- Source (MIT): ${REPO}`)
@@ -534,6 +537,16 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('```sh')
   lines.push('npx cascivo add button card')
   lines.push('```')
+  lines.push('')
+  lines.push(
+    '   Runtime deps for copied source: `@cascivo/core`, `@cascivo/tokens`, `@cascivo/themes`, and the',
+  )
+  lines.push(
+    '   `@preact/signals-react` peer. `cascivo init` installs all of them (plus `cascivo` as a dev dep',
+  )
+  lines.push(
+    '   for the generated config); `cascivo add` installs any extra a component declares (e.g. @cascivo/i18n).',
+  )
   lines.push('')
   lines.push('   Trade-offs: full control over internals; updates are a manual re-add.')
   lines.push('')
@@ -726,6 +739,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `- Using cascivo with Tailwind v4 (@layer order + dark bridge): ${REPO}/blob/main/docs/USING-WITH-TAILWIND.md`,
   )
+  lines.push(
+    `- Strict host ESLint (copied source vs @tanstack/airbnb configs — scope stylistic rules off your components dir): ${REPO}/blob/main/docs/USING-WITH-STRICT-ESLINT.md`,
+  )
   lines.push(`- Compatibility & support matrix: ${REPO}/blob/main/docs/COMPATIBILITY.md`)
   lines.push(`- Migrating from shadcn/ui: ${REPO}/blob/main/docs/MIGRATING-FROM-SHADCN.md`)
   lines.push(`- Token reference: ${REPO}/blob/main/docs/TOKENS.md`)
@@ -873,6 +889,11 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     )
     lines.push('')
   }
+  lines.push(
+    'Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical spacing — for a ' +
+      'vertical/horizontal spacing layout use `Flex` (`layout/flex`; the aliases `vstack`/`hstack` resolve to it).',
+  )
+  lines.push('')
   for (const category of categories) {
     lines.push(`### ${category}`)
     lines.push('')

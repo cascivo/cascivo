@@ -1,12 +1,17 @@
+<!--
+  Generated from docs/GETTING-STARTED.md — do not edit here; run `pnpm regen`.
+  Canonical: https://cascivo.com/docs/getting-started.md
+-->
+
 # Getting started with cascivo
 
 There are two ways to adopt cascivo. Both consume the same tokens and themes,
 and they can coexist in one project.
 
-| Path                            | You get                                            | Choose it when                                                        |
-| ------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
-| **A. Copy-paste (CLI)**         | Component source (TSX + CSS) copied into your repo | You want to own and edit the code — the shadcn model                   |
-| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 192 components      | You just want to *use* the system; upgrades via `pnpm up`             |
+| Path                               | You get                                            | Choose it when                                            |
+| ---------------------------------- | -------------------------------------------------- | --------------------------------------------------------- |
+| **A. Copy-paste (CLI)**            | Component source (TSX + CSS) copied into your repo | You want to own and edit the code — the shadcn model      |
+| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 192 components        | You just want to _use_ the system; upgrades via `pnpm up` |
 
 Either way, one piece of wiring is **not optional**: importing the themes CSS
 and setting `data-theme`. Skip it and components render as correctly-structured
@@ -93,7 +98,7 @@ export default config
 
 **`cascivo.lock`** — written by `cascivo add`. Records, per installed component,
 the registry it came from, the version, and a sha256 hash of every copied file.
-Commit it: it is what lets the CLI later tell *your* edits apart from upstream
+Commit it: it is what lets the CLI later tell _your_ edits apart from upstream
 changes.
 
 ### Tracking upstream changes
@@ -105,7 +110,7 @@ npx cascivo update --check   # lists outdated components, exits 1 if any
 npx cascivo update button    # three-way merge of upstream changes into your copy
 ```
 
-`update` merges upstream changes *around* your local edits using the lockfile's
+`update` merges upstream changes _around_ your local edits using the lockfile's
 recorded base version; genuine collisions get standard conflict markers to
 resolve by hand. See [UPGRADING.md](./UPGRADING.md) for the full story.
 
@@ -159,7 +164,7 @@ plain markup uses the sans stack, not browser serif), and ships both the `light`
 and `dark` themes. À-la-carte imports (`@cascivo/themes/base` +
 `@cascivo/themes/light`, …) also work.
 
-**If you forget the import:** components render *unstyled* — correct structure,
+**If you forget the import:** components render _unstyled_ — correct structure,
 no colors, wrong fonts, missing padding rhythm. Component CSS only references
 `var(--cascivo-*)` custom properties; those properties do not exist until the
 tokens + a theme are loaded. Unstyled-looking components are almost always this,

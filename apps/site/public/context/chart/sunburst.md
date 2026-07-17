@@ -52,6 +52,7 @@ Renders role="img" with a title and a fallback path/value table.
 
 ```jsx
 import { Sunburst } from '@cascivo/charts'
+
 ;<Sunburst
   title="Disk usage"
   data={{

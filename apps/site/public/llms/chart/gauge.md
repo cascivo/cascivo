@@ -43,6 +43,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Gauge } from '@cascivo/charts'
+
 ;<Gauge
   title="CPU load"
   value={72}

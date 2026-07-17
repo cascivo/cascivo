@@ -123,7 +123,7 @@
 
   .table thead th {
     padding-block: var(--cascivo-space-2);
-    padding-inline: var(--cascivo-space-4);
+    padding-inline: var(--cascivo-data-table-cell-gap, var(--cascivo-space-4));
     text-align: start;
     font-weight: var(--cascivo-font-semibold);
     font-size: var(--cascivo-text-xs);
@@ -141,11 +141,15 @@
 
   .table td {
     padding-block: 0;
-    padding-inline: var(--cascivo-space-4);
+    padding-inline: var(--cascivo-data-table-cell-gap, var(--cascivo-space-4));
     block-size: var(--_row-height);
     vertical-align: middle;
     border-block-end: 1px solid var(--cascivo-color-border);
     color: var(--cascivo-color-text);
+    /* Long unbroken tokens (commit hashes, branch names) wrap inside the cell
+       instead of spilling past the padding into the adjacent column — the cause
+       of adjacent columns visually touching under table-layout: fixed. */
+    overflow-wrap: anywhere;
   }
 
   .table td[data-align='end'] {

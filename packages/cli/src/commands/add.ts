@@ -1,6 +1,11 @@
 import { readFileSync } from 'node:fs'
 import { join, resolve as resolvePath } from 'node:path'
-import type { CascadeConfig } from '../utils/config.js'
+import {
+  detectPackageManager,
+  installHint,
+  type CascadeConfig,
+  type PackageManager,
+} from '../utils/config.js'
 import { installPackages } from '../utils/exec.js'
 import { resolveOutputPath, writeFileSafe } from '../utils/fs.js'
 import { fetchTextRetry } from '../utils/http.js'
@@ -20,27 +25,32 @@ import { isTemplateItem, type RegistryItem } from '@cascivo/registry'
 /** Dependencies always present in a cascade project — never auto-installed. */
 const ASSUMED_DEPS = new Set(['react', 'react-dom'])
 
-/**
- * Copied components read `--cascivo-*` custom properties; without
- * @cascivo/tokens or @cascivo/themes imported somewhere, they render unstyled.
- * Print the wiring once after a successful install if neither is a dependency.
- */
-function hintThemesIfMissing(cwd: string): void {
-  let deps: Record<string, unknown> = {}
+/** Merged dependencies + devDependencies from the project's package.json (empty if none). */
+function readProjectDeps(cwd: string): Record<string, unknown> {
   try {
     const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as {
       dependencies?: Record<string, unknown>
       devDependencies?: Record<string, unknown>
     }
-    deps = { ...pkg.dependencies, ...pkg.devDependencies }
+    return { ...pkg.dependencies, ...pkg.devDependencies }
   } catch {
-    // No package.json — still worth printing the hint.
+    // No package.json — treat as no deps installed.
+    return {}
   }
+}
+
+/**
+ * Copied components read `--cascivo-*` custom properties; without
+ * @cascivo/tokens or @cascivo/themes imported somewhere, they render unstyled.
+ * Print the wiring once after a successful install if neither is a dependency.
+ */
+function hintThemesIfMissing(cwd: string, pm: PackageManager): void {
+  const deps = readProjectDeps(cwd)
   if (deps['@cascivo/themes'] !== undefined || deps['@cascivo/tokens'] !== undefined) return
   console.log(
     '\nStyling: cascivo components read --cascivo-* tokens, which this project does not import yet.',
   )
-  console.log('  npm install @cascivo/themes')
+  console.log(`  ${installHint(pm, ['@cascivo/themes'])}`)
   console.log("  import '@cascivo/themes/all'   // once, in your entry file")
   console.log('  <html data-theme="light">      // or any container')
 }
@@ -67,6 +77,18 @@ export const LAYOUT_ALIASES: Record<string, string> = {
   hstack: 'layout/flex',
   vstack: 'layout/flex',
   gap: 'spacer',
+}
+
+/**
+ * Disambiguation printed when a requested bare name is a real cascivo component
+ * whose meaning differs from the same name elsewhere, so an adopter who grabbed
+ * it by name alone learns the right primitive. Keyed by lowercased bare name.
+ */
+export const NAME_NOTES: Record<string, string> = {
+  stack:
+    "Note: cascivo's Stack overlaps children into a card-pile (z-axis), not a " +
+    'vertical spacing layout. For vertical spacing use Flex direction="vertical" ' +
+    '(cascivo add flex; aliases: vstack, hstack).',
 }
 
 /**
@@ -130,7 +152,13 @@ function isMultiRegistrySpec(name: string): boolean {
 export async function add(
   names: string[],
   config: CascadeConfig,
-  opts: { dryRun?: boolean; yes?: boolean; cwd?: string } = {},
+  opts: {
+    dryRun?: boolean
+    yes?: boolean
+    cwd?: string
+    pm?: PackageManager
+    noInstall?: boolean
+  } = {},
 ): Promise<void> {
   if (names.length === 0) {
     console.error('Usage: cascivo add <component...>')
@@ -138,6 +166,7 @@ export async function add(
   }
 
   const cwd = opts.cwd ?? process.cwd()
+  const pm = opts.pm ?? detectPackageManager(cwd)
   const multiSpecs = names.filter(isMultiRegistrySpec)
   let bareSpecs = names.filter((n) => !isMultiRegistrySpec(n))
 
@@ -188,7 +217,10 @@ export async function add(
 
       let fileHashes: Record<string, string>
       try {
-        fileHashes = await installItem(item, config, cwd)
+        fileHashes = await installItem(item, config, cwd, {
+          pm,
+          ...(opts.noInstall ? { noInstall: true } : {}),
+        })
       } catch (e) {
         // Nothing was written for this item (fetch-all-then-write), so the
         // lockfile must not record it either.
@@ -205,7 +237,7 @@ export async function add(
     }
     await writeLock(lock, cwd)
     if (bareSpecs.length === 0) {
-      hintThemesIfMissing(cwd)
+      hintThemesIfMissing(cwd, pm)
       return
     }
   }
@@ -220,6 +252,9 @@ export async function add(
   const registryBase = config.registry.replace(/\/registry\.json$/, '').replace(/\/r$/, '')
 
   for (const spec of bareSpecs) {
+    const note = NAME_NOTES[spec.toLowerCase()]
+    if (note) console.log(note)
+
     const alias = LAYOUT_ALIASES[spec.toLowerCase()]
     if (!alias) continue
     const target = findComponent(registry, alias)
@@ -244,14 +279,23 @@ export async function add(
     }
   }
 
+  // npm-distributed entries (charts/flow/editor) are a runtime package, not
+  // copied source. Collect their package + import lines here so N chart entries
+  // produce ONE `@cascivo/charts` install rather than N, then install once below.
+  const npmPackages = new Set<string>()
+  const importLines: string[] = []
+
   for (const { entry, requested } of resolved) {
     if (entry.install) {
       const pkg = entry.install
-      console.log(`"${entry.name}" is distributed as the npm package ${pkg}.`)
-      console.log(`Install it with: npm install ${pkg}`)
-      console.log(`Then import: import { ${entry.meta.name} } from '${pkg}'`)
+      npmPackages.add(pkg)
+      console.log(
+        `"${entry.name}" is distributed as the npm package ${pkg} — a runtime dependency, ` +
+          `not copied source (updates come via your package manager).`,
+      )
+      importLines.push(`  import { ${entry.meta.name} } from '${pkg}'`)
       if (entry.styles) {
-        console.log(`And import its stylesheet once: import '${entry.styles}'`)
+        importLines.push(`  import '${entry.styles}'   // once, in your entry file`)
       }
       continue
     }
@@ -293,8 +337,33 @@ export async function add(
     console.log(`Added ${entry.name} to ${config.outputDir}/${outputName}/${suffix}`)
   }
 
-  if (missingDeps.size > 0) {
-    installPackages([...missingDeps])
+  // Install npm-distributed packages (charts/flow/editor) once, deduped, skipping
+  // any already in the project. `--no-install`/`--dry-run` fall back to printing.
+  if (npmPackages.size > 0) {
+    const deps = readProjectDeps(cwd)
+    const needed = [...npmPackages].filter((p) => deps[p] === undefined)
+    if (opts.dryRun) {
+      console.log(`Dry run — would install npm package(s): ${[...npmPackages].join(', ')}`)
+    } else if (needed.length > 0) {
+      if (opts.noInstall) {
+        console.log(`\nSkipped install (--no-install). Install with:\n  ${installHint(pm, needed)}`)
+      } else if (!installPackages(needed, cwd, { pm })) {
+        process.exitCode = 1
+      }
+    }
+    if (importLines.length > 0) {
+      console.log(`\nImport it:\n${importLines.join('\n')}`)
+    }
+  }
+
+  if (missingDeps.size > 0 && !opts.dryRun) {
+    if (opts.noInstall) {
+      console.log(
+        `\nSkipped install (--no-install). Install with:\n  ${installHint(pm, [...missingDeps])}`,
+      )
+    } else {
+      installPackages([...missingDeps], cwd, { pm })
+    }
   }
 
   if (Object.keys(peerFloors).length > 0) {
@@ -303,14 +372,14 @@ export async function add(
       console.error(
         `\nWarning: ${v.pkg} ${v.installed ? `${v.installed} is` : 'is not'} installed, but ` +
           `the copied component source needs ${v.pkg} ${v.required}. ` +
-          `Run: npm install ${v.pkg}@latest`,
+          `Run: ${installHint(pm, [`${v.pkg}@latest`])}`,
       )
       process.exitCode = 1
     }
   }
 
   await writeLock(lock, cwd)
-  hintThemesIfMissing(cwd)
+  hintThemesIfMissing(cwd, pm)
 }
 
 /**
@@ -324,6 +393,7 @@ async function installItem(
   item: RegistryItem,
   config: CascadeConfig,
   cwd: string,
+  opts: { pm?: PackageManager; noInstall?: boolean } = {},
 ): Promise<Record<string, string>> {
   const fileHashes: Record<string, string> = {}
   const missingDeps = new Set<string>()
@@ -352,7 +422,13 @@ async function installItem(
   }
 
   if (missingDeps.size > 0) {
-    installPackages([...missingDeps])
+    if (opts.noInstall) {
+      console.log(
+        `\nSkipped install (--no-install). Install with:\n  ${installHint(opts.pm ?? detectPackageManager(cwd), [...missingDeps])}`,
+      )
+    } else {
+      installPackages([...missingDeps], cwd, opts.pm ? { pm: opts.pm } : {})
+    }
   }
 
   if (template) {

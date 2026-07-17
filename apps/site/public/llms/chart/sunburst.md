@@ -39,6 +39,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Sunburst } from '@cascivo/charts'
+
 ;<Sunburst
   title="Disk usage"
   data={{

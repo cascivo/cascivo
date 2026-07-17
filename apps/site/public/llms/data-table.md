@@ -112,6 +112,7 @@ import { DataTable } from '@cascivo/react'
 - `--cascivo-space-3`
 - `--cascivo-space-4`
 - `--cascivo-data-table-max-height`
+- `--cascivo-data-table-cell-gap`
 - `--cascivo-duration-150`
 - `--cascivo-duration-500`
 - `--cascivo-ease-out`

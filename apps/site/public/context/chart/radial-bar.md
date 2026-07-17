@@ -60,6 +60,7 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ```jsx
 import { RadialBar } from '@cascivo/charts'
+
 ;<RadialBar
   title="Quarterly goals"
   max={100}

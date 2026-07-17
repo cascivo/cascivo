@@ -1,5 +1,5 @@
-import { existsSync } from 'node:fs'
-import { join } from 'node:path'
+import { existsSync, readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 /**
@@ -96,16 +96,103 @@ export async function loadConfig(cwd: string = process.cwd()): Promise<CascadeCo
 
 export type PackageManager = 'pnpm' | 'yarn' | 'npm' | 'bun'
 
-/** Detect the package manager in use from lock files, defaulting to npm. */
-export function detectPackageManager(cwd: string = process.cwd()): PackageManager {
-  if (existsSync(join(cwd, 'pnpm-lock.yaml'))) return 'pnpm'
-  if (existsSync(join(cwd, 'yarn.lock'))) return 'yarn'
-  if (existsSync(join(cwd, 'bun.lockb'))) return 'bun'
+/** Narrow an arbitrary string to a known PackageManager. */
+export function isPackageManager(value: string | undefined): value is PackageManager {
+  return value === 'pnpm' || value === 'yarn' || value === 'npm' || value === 'bun'
+}
+
+/**
+ * Lock files in probe order. `bun.lock` (bun ≥ 1.2 text lockfile) sits beside the
+ * legacy binary `bun.lockb`; `package-lock.json` is npm's marker so a walk that
+ * reaches an npm workspace root still resolves to npm rather than the default.
+ */
+const PM_LOCKFILES: readonly [string, PackageManager][] = [
+  ['pnpm-lock.yaml', 'pnpm'],
+  ['yarn.lock', 'yarn'],
+  ['bun.lockb', 'bun'],
+  ['bun.lock', 'bun'],
+  ['package-lock.json', 'npm'],
+]
+
+/** The package manager that invoked this process, from `npm_config_user_agent`. */
+function pmFromUserAgent(ua: string | undefined): PackageManager | undefined {
+  if (!ua) return undefined
+  const name = ua.split('/')[0]
+  return isPackageManager(name) ? name : undefined
+}
+
+/** The `packageManager` corepack field of a package.json, if it names a known PM. */
+function pmFromPackageJson(dir: string): PackageManager | undefined {
+  try {
+    const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8')) as {
+      packageManager?: string
+    }
+    const name = pkg.packageManager?.split('@')[0]
+    return isPackageManager(name) ? name : undefined
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * Detect the package manager in use. Precedence, highest first:
+ *   1. explicit override (the `--package-manager`/`--pm` flag)
+ *   2. `CASCIVO_PACKAGE_MANAGER` env var
+ *   3. `npm_config_user_agent` (the PM that spawned the CLI, e.g. `pnpm dlx`)
+ *   4. an upward walk from `cwd` for a lock file or `packageManager` field —
+ *      this is what makes detection work inside a workspace, where the lock
+ *      file lives at the repo root, not in the app subdirectory the user runs
+ *      the CLI from. The walk stops after a directory containing `.git`.
+ *   5. default `npm`.
+ */
+export function detectPackageManager(
+  cwd: string = process.cwd(),
+  opts: { override?: string; env?: NodeJS.ProcessEnv } = {},
+): PackageManager {
+  const env = opts.env ?? process.env
+
+  if (isPackageManager(opts.override)) return opts.override
+
+  const envPm = env.CASCIVO_PACKAGE_MANAGER
+  if (isPackageManager(envPm)) return envPm
+
+  const uaPm = pmFromUserAgent(env.npm_config_user_agent)
+  if (uaPm) return uaPm
+
+  let current = cwd
+  for (;;) {
+    for (const [file, pm] of PM_LOCKFILES) {
+      if (existsSync(join(current, file))) return pm
+    }
+    const fromField = pmFromPackageJson(current)
+    if (fromField) return fromField
+    // A `.git` directory marks the repo root — do not walk past it.
+    if (existsSync(join(current, '.git'))) break
+    const parent = dirname(current)
+    if (parent === current) break
+    current = parent
+  }
+
   return 'npm'
 }
 
 /** The install subcommand each package manager uses to add dependencies. */
-export function installCommand(pm: PackageManager, packages: string[]): [string, string[]] {
+export function installCommand(
+  pm: PackageManager,
+  packages: string[],
+  opts: { dev?: boolean } = {},
+): [string, string[]] {
   const verb = pm === 'npm' ? 'install' : 'add'
-  return [pm, [verb, ...packages]]
+  const devFlag = opts.dev ? [pm === 'npm' ? '--save-dev' : '-D'] : []
+  return [pm, [verb, ...devFlag, ...packages]]
+}
+
+/** Human-readable install command a user can copy-paste, e.g. `pnpm add -D cascivo`. */
+export function installHint(
+  pm: PackageManager,
+  packages: string[],
+  opts: { dev?: boolean } = {},
+): string {
+  const [cmd, args] = installCommand(pm, packages, opts)
+  return `${cmd} ${args.join(' ')}`
 }

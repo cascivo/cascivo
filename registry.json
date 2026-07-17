@@ -4441,7 +4441,7 @@
       ],
       "fileHashes": {
         "data-table.tsx": "sha256-b321b942f6c9b2ee041f107e6818e9007c530770dde7efd6d41ea8b87aba16d9",
-        "data-table.module.css": "sha256-b8ee42c3de6fce6c038186833ea60cccf5da7460cc223d06c8fd1df43e8cb788"
+        "data-table.module.css": "sha256-4ce9daaed0be52aa5b3960a6800c6074c102c93425239f2b2a5d1f0dc9ef6cb3"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -4609,6 +4609,7 @@
           "--cascivo-space-3",
           "--cascivo-space-4",
           "--cascivo-data-table-max-height",
+          "--cascivo-data-table-cell-gap",
           "--cascivo-duration-150",
           "--cascivo-duration-500",
           "--cascivo-ease-out",
@@ -14332,7 +14333,7 @@
         "stack.module.css": "sha256-b6dfb65ef871476c58e3ee646b2a4e63ad68c9b954996fa182ff4118d1625974"
       },
       "dependencies": [],
-      "tags": ["stack", "pile", "overlap", "layout"],
+      "tags": ["stack", "pile", "overlap", "layered", "z-axis", "card-pile", "layout"],
       "meta": {
         "name": "Stack",
         "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
@@ -14380,7 +14381,7 @@
           }
         ],
         "dependencies": [],
-        "tags": ["stack", "pile", "overlap", "layout"],
+        "tags": ["stack", "pile", "overlap", "layered", "z-axis", "card-pile", "layout"],
         "intent": {
           "whenToUse": [
             "Card pile UI where depth and layering should be visible",

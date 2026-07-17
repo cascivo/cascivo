@@ -61,4 +61,4 @@ Overlapping avatar group with minimal offset
 
 ## Tags
 
-stack, pile, overlap, layout
+stack, pile, overlap, layered, z-axis, card-pile, layout

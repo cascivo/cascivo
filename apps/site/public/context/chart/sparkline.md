@@ -43,6 +43,7 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ```jsx
 import { Sparkline } from '@cascivo/charts'
+
 ;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 

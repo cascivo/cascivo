@@ -44,6 +44,7 @@ Renders with role="figure" and a labeled metric for screen reader context.
 
 ```jsx
 import { Kpi } from '@cascivo/charts'
+
 ;<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 
