@@ -4,7 +4,7 @@
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,7 +15,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.3.11",
+      "version": "0.3.12",
       "releases": [
         {
           "version": "0.3.0",
@@ -64,8 +64,15 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.3.1",
+      "version": "0.4.0",
       "releases": [
+        {
+          "version": "0.4.0",
+          "level": "minor",
+          "notes": [
+            "Fixes from the TanStack Start dashboard adopter report (SSR + framework integration):"
+          ]
+        },
         {
           "version": "0.3.0",
           "level": "minor",
@@ -87,7 +94,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.12",
+      "version": "0.2.13",
       "releases": [
         {
           "version": "0.2.0",
@@ -107,12 +114,12 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.1.11",
+      "version": "0.1.12",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "releases": [
         {
           "version": "0.2.0",
@@ -184,8 +191,15 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.6.4",
+      "version": "0.7.0",
       "releases": [
+        {
+          "version": "0.7.0",
+          "level": "minor",
+          "notes": [
+            "Fixes from the TanStack Start dashboard adopter report (SSR + framework integration):"
+          ]
+        },
         {
           "version": "0.6.0",
           "level": "minor",
@@ -236,7 +250,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.11",
+      "version": "0.1.12",
       "releases": [
         {
           "version": "0.1.0",
