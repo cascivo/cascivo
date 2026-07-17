@@ -1,6 +1,7 @@
 export const VERSION = '0.0.0'
 
 export { createIcon, type IconProps } from './create-icon'
+export { Glyph, type GlyphProps, type GlyphName, type MorphName } from './glyph'
 import { createIcon } from './create-icon'
 
 /* Geometry adapted from Feather Icons (MIT). Stroked, 24×24, currentColor. */
