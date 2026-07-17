@@ -51,6 +51,16 @@ rather than guessing an export name (a wrong guess is a wasted compile).
 Common mappings: LayoutDashboard→Dashboard, Rocket→Spaceship, Settings2→Settings, Trash2→Trash, Bolt→Zap, Branch→GitBranch. Version-control icons exist:
 `GitBranch`, `GitCommit`, `GitMerge`, `GitPullRequest`.
 
+Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
+`clip-path: shape()` and no SVG — color via `currentColor`, size via
+`--cascivo-glyph-size`, plus zero-JS state morphs via `transition: clip-path`.
+Use `import { Glyph } from '@cascivo/icons'` with `import '@cascivo/icons/glyphs.css'`,
+or the class form `<span class="cascivo-glyph" data-glyph="chevron-down">`. Glyphs:
+`chevron-{down,up,left,right}`, `x`, `check`, `plus`, `minus`, `menu`,
+`arrow-{right,left,up,down}`, and the `chevron-toggle` morph. Baseline-2026 only
+(Chrome 135+, Safari 18.4+, Firefox 148+) — painting is gated behind `@supports`;
+prefer the SVG icons for a wider browser floor or for print.
+
 ## How to use it
 
 Two consumption paths — they share the same tokens/themes and can coexist:
