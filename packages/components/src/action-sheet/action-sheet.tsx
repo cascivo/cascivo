@@ -116,7 +116,7 @@ export function ActionSheet({
                     return (
                       <button
                         key={index}
-                        ref={itemProps.ref}
+                        ref={itemProps.ref as React.Ref<HTMLButtonElement>}
                         type="button"
                         role="menuitem"
                         tabIndex={itemProps.tabIndex}
@@ -138,7 +138,7 @@ export function ActionSheet({
                       const itemProps = roving.getItemProps(cancelIndex)
                       return (
                         <button
-                          ref={itemProps.ref}
+                          ref={itemProps.ref as React.Ref<HTMLButtonElement>}
                           type="button"
                           role="menuitem"
                           tabIndex={itemProps.tabIndex}

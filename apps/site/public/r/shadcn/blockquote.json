@@ -6,7 +6,7 @@
     {
       "path": "blockquote/blockquote.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './blockquote.module.css'\n\nexport interface BlockquoteProps extends HTMLAttributes<HTMLQuoteElement> {\n  cite?: string\n}\n\nexport function Blockquote({ cite, className, children, ...props }: BlockquoteProps) {\n  return (\n    <blockquote className={cn(styles['blockquote'], className)} {...props}>\n      {children}\n      {cite ? (\n        <footer className={styles['footer']}>\n          <cite>{cite}</cite>\n        </footer>\n      ) : null}\n    </blockquote>\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './blockquote.module.css'\n\nexport interface BlockquoteProps extends HTMLAttributes<HTMLQuoteElement> {\n  cite?: string\n}\n\nexport function Blockquote({ cite, className, children, ...props }: BlockquoteProps) {\n  return (\n    <blockquote className={cn(styles['blockquote'], className as string | undefined)} {...props}>\n      {children}\n      {cite ? (\n        <footer className={styles['footer']}>\n          <cite>{cite}</cite>\n        </footer>\n      ) : null}\n    </blockquote>\n  )\n}\n"
     },
     {
       "path": "blockquote/blockquote.module.css",

@@ -117,7 +117,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
       items[(index - 1 + items.length) % items.length]?.focus()
     } else if (e.key === 'Escape') {
       close()
-      triggerRef.current?.focus()
+      ;(triggerRef.current as HTMLElement | null)?.focus()
     }
   }
 
@@ -129,7 +129,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
         aria-haspopup="menu"
         aria-expanded={isOpen.value}
         data-state={hasActiveChild ? 'active' : undefined}
-        style={{ anchorName }}
+        style={{ anchorName } as React.CSSProperties}
         className={styles['navMenuTrigger']}
         onClick={toggle}
         onKeyDown={handleTriggerKeyDown}
@@ -158,7 +158,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
         role="menu"
         aria-label={item.label}
         data-state={isOpen.value ? 'open' : 'closed'}
-        style={{ positionAnchor: anchorName }}
+        style={{ positionAnchor: anchorName } as React.CSSProperties}
         className={styles['navMenuPanel']}
         onKeyDown={handlePanelKeyDown}
       >

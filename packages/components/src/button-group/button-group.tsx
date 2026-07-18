@@ -63,7 +63,7 @@ export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(function
       role="group"
       data-orientation={orientation}
       data-size={size}
-      className={cn(styles['buttonGroup'], className)}
+      className={cn(styles['buttonGroup'], className as string | undefined)}
       ref={ref}
       onKeyDown={handleKeyDown}
       {...props}

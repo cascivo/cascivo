@@ -6,7 +6,7 @@
     {
       "path": "prose/prose.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './prose.module.css'\n\nexport type ProseProps = HTMLAttributes<HTMLDivElement>\n\nexport function Prose({ className, children, ...props }: ProseProps) {\n  return (\n    <div className={cn(styles['prose'], className)} {...props}>\n      {children}\n    </div>\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './prose.module.css'\n\nexport type ProseProps = HTMLAttributes<HTMLDivElement>\n\nexport function Prose({ className, children, ...props }: ProseProps) {\n  return (\n    <div className={cn(styles['prose'], className as string | undefined)} {...props}>\n      {children}\n    </div>\n  )\n}\n"
     },
     {
       "path": "prose/prose.module.css",

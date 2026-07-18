@@ -257,7 +257,7 @@ export function ColorPicker({
           aria-label={resolved.hue}
           onChange={(e) =>
             commit({
-              h: Number(e.target.value),
+              h: Number((e.target as HTMLInputElement).value),
               s: hsl.s,
               l: hsl.l,
               a: hsl.a,
@@ -286,7 +286,7 @@ export function ColorPicker({
                   h: hsl.h,
                   s: hsl.s,
                   l: hsl.l,
-                  a: Number(e.target.value),
+                  a: Number((e.target as HTMLInputElement).value),
                 })
               }
             />
@@ -332,7 +332,7 @@ export function ColorPicker({
           value={color.value}
           disabled={disabled}
           aria-label={label ?? resolved.colorArea}
-          onChange={(e) => setColor(e.target.value)}
+          onChange={(e) => setColor((e.target as HTMLInputElement).value)}
         />
         {eyeDropper && (
           <button

@@ -6,7 +6,7 @@
     {
       "path": "spinner/spinner.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport type { HTMLAttributes } from 'react'\nimport styles from './spinner.module.css'\n\nexport interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {\n  size?: 'sm' | 'md' | 'lg'\n  label?: string\n}\n\nexport function Spinner({ size = 'md', label, className, ...props }: SpinnerProps) {\n  useSignals()\n  const resolvedLabel = label ?? t(builtin.spinner.label)\n  return (\n    <span\n      role=\"status\"\n      aria-label={resolvedLabel}\n      data-size={size}\n      className={cn(styles['spinner'], className)}\n      {...props}\n    />\n  )\n}\n"
+      "content": "'use client'\nimport { cn, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport type { HTMLAttributes } from 'react'\nimport styles from './spinner.module.css'\n\nexport interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {\n  size?: 'sm' | 'md' | 'lg'\n  label?: string\n}\n\nexport function Spinner({ size = 'md', label, className, ...props }: SpinnerProps) {\n  useSignals()\n  const resolvedLabel = label ?? t(builtin.spinner.label)\n  return (\n    <span\n      role=\"status\"\n      aria-label={resolvedLabel}\n      data-size={size}\n      className={cn(styles['spinner'], className as string | undefined)}\n      {...props}\n    />\n  )\n}\n"
     },
     {
       "path": "spinner/spinner.module.css",

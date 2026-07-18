@@ -57,7 +57,7 @@ export function RelativeTime({
   const target = toTimestamp(date)
   const isControlled = nowProp !== undefined
   const now = useSignal(nowProp ?? Date.now())
-  if (isControlled) now.value = nowProp
+  if (isControlled) now.value = nowProp as number
 
   // Correct the server-rendered text against the client clock once on mount, then
   // (when `sync`) tick on an interval whose cadence scales with the magnitude —

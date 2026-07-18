@@ -40,8 +40,8 @@ export function Label({
   return (
     <Comp
       data-disabled={disabled ? '' : undefined}
-      className={cn(styles['label'], className)}
-      {...props}
+      className={cn(styles['label'], className as string | undefined)}
+      {...(props as Record<string, unknown>)}
     >
       {marker ? (
         <>

@@ -74,7 +74,7 @@ export const ToggleGroup = forwardRef<HTMLDivElement, ToggleGroupProps>(function
       role={type === 'single' ? 'radiogroup' : 'group'}
       data-orientation={orientation}
       data-size={size}
-      className={cn(styles['toggleGroup'], className)}
+      className={cn(styles['toggleGroup'], className as string | undefined)}
       ref={ref}
       {...props}
     >

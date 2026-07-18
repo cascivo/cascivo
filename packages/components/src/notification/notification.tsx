@@ -109,7 +109,7 @@ export function Notification({
       <div
         role={assertiveVariants.has(variant) ? 'alert' : 'status'}
         data-variant={variant}
-        className={cn(styles['notification'], className)}
+        className={cn(styles['notification'], className as string | undefined)}
         {...props}
       >
         <span className={styles['icon']} aria-hidden="true">

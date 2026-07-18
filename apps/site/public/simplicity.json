@@ -36,7 +36,7 @@
       "name": "popover",
       "label": "Popover",
       "primitive": "Popover API + CSS anchor positioning",
-      "loc": 234,
+      "loc": 235,
       "files": 4,
       "deps": 0
     }

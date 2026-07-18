@@ -62,6 +62,7 @@ async function runSchema<T extends Record<string, unknown>>(
   for (const issue of result.issues) {
     const key = issue.path && issue.path.length > 0 ? pathHead(issue.path) : ''
     if (key && !(key in errs)) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ;(errs as any)[key] = issue.message
     }
   }

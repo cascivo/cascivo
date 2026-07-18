@@ -116,7 +116,7 @@ export function MultiSelect({
         aria-haspopup="listbox"
         aria-expanded={popover.isOpen.value}
         disabled={disabled}
-        style={{ anchorName: popover.anchorName }}
+        style={{ anchorName: popover.anchorName } as React.CSSProperties}
         onClick={() => popover.toggle()}
       >
         <span className={styles['trigger-label']}>{triggerLabel}</span>
@@ -127,9 +127,11 @@ export function MultiSelect({
         ref={popover.popoverRef as React.RefObject<HTMLDivElement>}
         popover="auto"
         className={styles['panel']}
-        style={{
-          positionAnchor: popover.anchorName,
-        }}
+        style={
+          {
+            positionAnchor: popover.anchorName,
+          } as React.CSSProperties
+        }
         tabIndex={-1}
       >
         <div className={styles['search-row']}>

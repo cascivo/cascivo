@@ -132,13 +132,19 @@ export function Fab({
     >
       <div className={cn(styles['root'], className)} data-position={position}>
         <Presence present={isOpen}>
-          <menu ref={dialRef} id={menuId} role="menu" aria-label={label} className={styles['dial']}>
+          <menu
+            ref={dialRef as React.Ref<HTMLMenuElement>}
+            id={menuId}
+            role="menu"
+            aria-label={label}
+            className={styles['dial']}
+          >
             {actions.map((action, index) => {
               const itemProps = roving.getItemProps(index)
               return (
                 <li key={action.id ?? index} role="presentation" className={styles['dialItem']}>
                   <button
-                    ref={itemProps.ref}
+                    ref={itemProps.ref as React.Ref<HTMLButtonElement>}
                     type="button"
                     role="menuitem"
                     tabIndex={itemProps.tabIndex}

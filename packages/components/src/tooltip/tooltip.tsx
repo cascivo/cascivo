@@ -61,7 +61,7 @@ export function Tooltip({ content, placement = 'top', children, delay = 200 }: T
 
   const merged: HTMLAttributes<HTMLElement> = {
     id: anchorId,
-    style: { anchorName: `--tooltip-${anchorId}` },
+    style: { anchorName: `--tooltip-${anchorId}` } as CSSProperties,
     onMouseEnter: (event: MouseEvent<HTMLElement>) => {
       triggerProps.onMouseEnter?.(event)
       show()

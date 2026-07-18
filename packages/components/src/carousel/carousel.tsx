@@ -165,7 +165,7 @@ export function Carousel({
           return (
             <button
               key={i}
-              ref={itemProps.ref}
+              ref={itemProps.ref as (el: HTMLButtonElement | null) => void}
               type="button"
               className={styles['dot']}
               aria-label={t(builtin.carousel.goTo, { n: i + 1 })}

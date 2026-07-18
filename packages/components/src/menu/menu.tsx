@@ -78,11 +78,12 @@ function MenuPanelInner({ ctx, children }: { ctx: UsePopoverReturn; children: Re
   return (
     <div
       ref={popoverRef as React.RefObject<HTMLDivElement>}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore — popover is a valid HTML attribute not yet in React types
       popover="auto"
       role="menu"
       data-state={isOpen.value ? 'open' : 'closed'}
-      style={{ positionAnchor: anchorName }}
+      style={{ positionAnchor: anchorName } as React.CSSProperties}
       className={styles.panel}
       onKeyDown={handleKeyDown}
     >
@@ -137,7 +138,7 @@ function MenuTriggerInner({
       aria-haspopup="menu"
       aria-expanded={isOpen.value}
       aria-label={ariaLabel}
-      style={{ anchorName }}
+      style={{ anchorName } as React.CSSProperties}
       onClick={toggle}
       className={styles.trigger}
     >

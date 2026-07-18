@@ -254,7 +254,7 @@ function RailGroupFlyout({ item }: RailGroupFlyoutProps) {
         aria-expanded={isOpen.value}
         aria-label={item.label}
         data-state={isOpen.value ? 'open' : 'closed'}
-        style={{ anchorName }}
+        style={{ anchorName } as CSSProperties}
         className={styles['groupTrigger']}
         onClick={() => toggle()}
         onKeyDown={handleKeyDown}
@@ -274,7 +274,7 @@ function RailGroupFlyout({ item }: RailGroupFlyoutProps) {
         popover="auto"
         role="menu"
         aria-label={item.label}
-        style={{ positionAnchor: anchorName }}
+        style={{ positionAnchor: anchorName } as CSSProperties}
         className={styles['railFlyout']}
         onKeyDown={handlePanelKeyDown}
       >

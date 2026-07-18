@@ -61,8 +61,8 @@ function HoverCardTriggerInner({ ctx, children }: { ctx: UsePopoverReturn; child
   const { triggerRef, anchorName, open, close } = ctx
   return (
     <span
-      ref={triggerRef}
-      style={{ anchorName }}
+      ref={triggerRef as React.RefObject<HTMLSpanElement>}
+      style={{ anchorName } as React.CSSProperties}
       onMouseEnter={open}
       onMouseLeave={close}
       onFocus={open}
@@ -104,11 +104,12 @@ function HoverCardContentInner({
   return (
     <div
       ref={popoverRef as React.RefObject<HTMLDivElement>}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore — popover is a valid HTML attribute not yet in React types
       popover="auto"
       role="complementary"
       data-state={isOpen.value ? 'open' : 'closed'}
-      style={{ positionAnchor: anchorName }}
+      style={{ positionAnchor: anchorName } as React.CSSProperties}
       onMouseEnter={open}
       onMouseLeave={close}
       className={[styles.content, className].filter(Boolean).join(' ')}

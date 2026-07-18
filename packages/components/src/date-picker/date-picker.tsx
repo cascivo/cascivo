@@ -216,8 +216,8 @@ export function DatePicker({
       if (max && nextISO > max) return
       activeISO.value = nextISO
       batch(() => {
-        viewYear.value = next.getUTCFullYear()
-        viewMonth.value = next.getUTCMonth()
+        viewYear.value = next!.getUTCFullYear()
+        viewMonth.value = next!.getUTCMonth()
       })
     }
   }

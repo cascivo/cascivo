@@ -234,7 +234,7 @@ export function LogViewer({
   const query = querySig.value.trim()
 
   return (
-    <div className={cn(styles['root'], className)} {...props}>
+    <div className={cn(styles['root'], className as string | undefined)} {...props}>
       <div className={styles['toolbar']}>
         <input
           type="search"
