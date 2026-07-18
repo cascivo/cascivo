@@ -41,7 +41,6 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Polar } from '@cascivo/charts'
-
 ;<Polar
   title="Wind by direction"
   mode="bar"

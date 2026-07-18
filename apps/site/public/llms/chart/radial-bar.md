@@ -45,7 +45,6 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { RadialBar } from '@cascivo/charts'
-
 ;<RadialBar
   title="Quarterly goals"
   max={100}

@@ -45,7 +45,6 @@ Renders with role="meter" exposing min, max, and current value to assistive tech
 
 ```jsx
 import { Meter } from '@cascivo/charts'
-
 ;<Meter value={72} label="CPU usage" />
 ```
 

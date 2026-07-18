@@ -46,7 +46,6 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Calendar } from '@cascivo/charts'
-
 ;<Calendar
   title="Activity"
   data={[

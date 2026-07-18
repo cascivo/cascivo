@@ -43,7 +43,6 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Meter } from '@cascivo/charts'
-
 ;<Meter value={72} label="CPU usage" />
 ```
 

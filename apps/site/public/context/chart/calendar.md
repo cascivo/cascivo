@@ -47,7 +47,6 @@ Renders role="img" with a title and a fallback day/value table.
 
 ```jsx
 import { Calendar } from '@cascivo/charts'
-
 ;<Calendar
   title="Activity"
   data={[

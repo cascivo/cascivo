@@ -52,7 +52,6 @@ Renders role="img" with a title and a fallback from/to/value table.
 
 ```jsx
 import { Sankey } from '@cascivo/charts'
-
 ;<Sankey
   title="Traffic flow"
   nodes={[

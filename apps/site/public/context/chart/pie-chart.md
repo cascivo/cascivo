@@ -63,7 +63,6 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ```jsx
 import { PieChart } from '@cascivo/charts'
-
 ;<PieChart
   data={[
     { label: 'A', value: 60 },
@@ -77,7 +76,6 @@ import { PieChart } from '@cascivo/charts'
 
 ```jsx
 import { PieChart } from '@cascivo/charts'
-
 ;<PieChart
   donut
   size={220}

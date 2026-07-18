@@ -49,7 +49,6 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ```jsx
 import { Bullet } from '@cascivo/charts'
-
 ;<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
 
