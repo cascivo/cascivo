@@ -1,5 +1,6 @@
 'use client'
-import { useSignal, useSignalEffect, useSignals, type Signal } from '@cascivo/core'
+import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
 import type { RefObject } from 'react'
 import type { TocItem } from './toc'
 

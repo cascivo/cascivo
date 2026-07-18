@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascivo/i18n'
 import { createRenderProbe } from '../test-utils/render-count'
+import { readFileSync } from 'node:fs'
 import { DataTable, type Column } from './data-table'
 import styles from './data-table.module.css'
 
@@ -314,5 +315,27 @@ describe('DataTable re-render budget', () => {
     const base = commits()
     await user.click(screen.getByRole('button', { name: /age/i }))
     expect(commits() - base).toBeLessThanOrEqual(1)
+  })
+})
+
+// Column-gutter guarantees (WS7). Assert on CSS source: JSDOM does not apply
+// CSS-module styles, so computed padding is unavailable, but the source is the
+// contract — an overridable inter-column gutter token plus content-wrapping so
+// long unbroken tokens (commit hashes) can never spill into the next column.
+describe('DataTable column gutter (CSS source)', () => {
+  // vp runs package tests with cwd at the package root.
+  const css = readFileSync('src/data-table/data-table.module.css', 'utf8')
+
+  it('cells derive their inline padding from the overridable cell-gap token', () => {
+    const matches = css.match(
+      /padding-inline: var\(--cascivo-data-table-cell-gap, var\(--cascivo-space-4\)\)/g,
+    )
+    // Applied to both the header cells (th) and the body cells (td).
+    expect(matches?.length).toBe(2)
+  })
+
+  it('body cells wrap long unbroken content instead of overflowing', () => {
+    const tdBlock = css.slice(css.indexOf('.table td {'))
+    expect(tdBlock).toMatch(/overflow-wrap: anywhere/)
   })
 })

@@ -1,6 +1,7 @@
 'use client'
 import { cn, useControllableSignal, useRovingFocus, useSignals } from '@cascivo/core'
-import { useId, type ReactNode } from 'react'
+import { useId } from 'react'
+import type { ReactNode } from 'react'
 import styles from './structured-list.module.css'
 
 export interface StructuredListItem {

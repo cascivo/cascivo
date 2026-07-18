@@ -11,7 +11,8 @@ import {
   useSignals,
 } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, type ReactNode } from 'react'
+import { useId } from 'react'
+import type { ReactNode } from 'react'
 import styles from './action-sheet.module.css'
 
 export interface ActionSheetAction {
@@ -114,7 +115,6 @@ export function ActionSheet({
                     const itemProps = roving.getItemProps(index)
                     return (
                       <button
-                        // eslint-disable-next-line react/no-array-index-key
                         key={index}
                         ref={itemProps.ref as React.Ref<HTMLButtonElement>}
                         type="button"

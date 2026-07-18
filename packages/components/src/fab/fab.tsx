@@ -9,7 +9,8 @@ import {
   useSignalEffect,
   useSignals,
 } from '@cascivo/core'
-import { useId, useRef, type ReactNode } from 'react'
+import { useId, useRef } from 'react'
+import type { ReactNode } from 'react'
 import styles from './fab.module.css'
 
 export interface FabAction {

@@ -7,15 +7,8 @@ import {
   useSignalEffect,
   useSignals,
 } from '@cascivo/core'
-import {
-  cloneElement,
-  useRef,
-  type KeyboardEvent,
-  type MouseEvent,
-  type ReactElement,
-  type ReactNode,
-  type Ref,
-} from 'react'
+import { cloneElement, useRef } from 'react'
+import type { KeyboardEvent, MouseEvent, ReactElement, ReactNode, Ref } from 'react'
 import styles from './dropdown.module.css'
 
 const machine = createMachine({

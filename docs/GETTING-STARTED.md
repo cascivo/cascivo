@@ -54,15 +54,26 @@ npx cascivo init
 npx cascivo add button card dialog
 ```
 
-`init` installs `@cascivo/core` + `@cascivo/tokens` and writes
-`cascivo.config.ts`. Flags: `--theme <name>` (one of the twelve first-party
-themes) and `--yes` / `-y` to accept defaults without prompting (implied when
-stdin is not a TTY, so it is safe in CI).
+`init` writes `cascivo.config.ts` and installs everything copied source needs in
+one step: the runtime packages `@cascivo/core`, `@cascivo/tokens`,
+`@cascivo/themes`, and the `@preact/signals-react` peer, plus `cascivo` as a dev
+dependency (the generated config imports its `CascadeConfig` type). Flags:
+`--theme <name>` (one of the twelve first-party themes); `--package-manager <pm>`
+(alias `--pm`) to force `pnpm`/`yarn`/`npm`/`bun` — otherwise it auto-detects
+from your lock file, `packageManager` field, or the PM that launched it, so it
+works inside a pnpm/yarn workspace where the lock file lives at the repo root;
+`--no-install` to write files and print the install commands instead of running
+them; and `--yes` / `-y` to accept defaults without prompting (implied when stdin
+is not a TTY, so it is safe in CI).
 
 `add` copies the component source — TSX plus its CSS module — from the registry
 into your project, resolving component dependencies (adding `dialog` also brings
-anything it composes). `--dry-run` shows what would be written; `--yes` skips
-confirmation.
+anything it composes) and installing any extra runtime package a component
+declares (e.g. `@cascivo/i18n`). Charts are the exception: `cascivo add
+chart/area-chart` installs the `@cascivo/charts` npm package (a runtime
+dependency, not copied source) and prints the import lines. `--dry-run` shows
+what would happen; `--package-manager`/`--pm` and `--no-install` work here too;
+`--yes` skips confirmation.
 
 ### The files the CLI manages
 

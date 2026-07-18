@@ -13,7 +13,7 @@
     }
   ],
   "dependencies": [],
-  "tags": ["stack", "pile", "overlap", "layout"],
+  "tags": ["stack", "pile", "overlap", "layered", "z-axis", "card-pile", "layout"],
   "category": "layout",
   "meta": {
     "name": "Stack",
@@ -62,7 +62,7 @@
       }
     ],
     "dependencies": [],
-    "tags": ["stack", "pile", "overlap", "layout"],
+    "tags": ["stack", "pile", "overlap", "layered", "z-axis", "card-pile", "layout"],
     "intent": {
       "whenToUse": [
         "Card pile UI where depth and layering should be visible",

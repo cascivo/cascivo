@@ -8,7 +8,8 @@ import {
   useSignals,
 } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, useRef, type KeyboardEvent } from 'react'
+import { useId, useRef } from 'react'
+import type { KeyboardEvent } from 'react'
 import styles from './combobox.module.css'
 
 const machine = createMachine({

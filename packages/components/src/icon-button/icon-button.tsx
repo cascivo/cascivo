@@ -1,6 +1,7 @@
 'use client'
 import { cn, Slot } from '@cascivo/core'
-import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { forwardRef } from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import styles from './icon-button.module.css'
 
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

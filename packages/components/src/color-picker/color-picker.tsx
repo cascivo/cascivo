@@ -1,7 +1,8 @@
 'use client'
 import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, useRef, type KeyboardEvent } from 'react'
+import { useId, useRef } from 'react'
+import type { KeyboardEvent } from 'react'
 import styles from './color-picker.module.css'
 
 export interface ColorPickerLabels {

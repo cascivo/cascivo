@@ -9,9 +9,10 @@ import {
   useRovingFocus,
   useSignal,
   useSignals,
-  type RovingOrientation,
 } from '@cascivo/core'
-import { useId, useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react'
+import type { RovingOrientation } from '@cascivo/core'
+import { useId, useRef } from 'react'
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 import styles from './navigation-menu.module.css'
 
 export interface NavigationMenuItem {

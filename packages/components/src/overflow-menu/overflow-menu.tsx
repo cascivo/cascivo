@@ -6,7 +6,8 @@
 import { cn, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import type { ReactNode } from 'react'
-import { Dropdown, type DropdownItem } from '../dropdown/dropdown'
+import { Dropdown } from '../dropdown/dropdown'
+import type { DropdownItem } from '../dropdown/dropdown'
 import styles from './overflow-menu.module.css'
 
 export interface OverflowMenuItem {

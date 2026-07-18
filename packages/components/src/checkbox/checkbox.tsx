@@ -1,6 +1,7 @@
 'use client'
 import { cn, useSignal, useSignalEffect } from '@cascivo/core'
-import { useRef, type InputHTMLAttributes } from 'react'
+import { useRef } from 'react'
+import type { InputHTMLAttributes } from 'react'
 import styles from './checkbox.module.css'
 
 export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {

@@ -1,7 +1,8 @@
 'use client'
 import { cn, useClipboard, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { type CodeLang, tokenize } from './highlight'
+import { tokenize } from './highlight'
+import type { CodeLang } from './highlight'
 import styles from './code-snippet.module.css'
 
 export type { CodeLang }
@@ -37,10 +38,8 @@ function Highlighted({ code, language }: { code: string; language: CodeLang }) {
     <code className={styles['code']}>
       {tokenize(code, language).map((tok, i) =>
         tok.type === 'text' ? (
-          // eslint-disable-next-line react/no-array-index-key
           <span key={i}>{tok.value}</span>
         ) : (
-          // eslint-disable-next-line react/no-array-index-key
           <span key={i} data-tok={tok.type}>
             {tok.value}
           </span>
@@ -148,7 +147,6 @@ export function CodeSnippet({
         {withNumbers ? (
           <code className={styles['code']}>
             {lines.map((line, i) => (
-              // eslint-disable-next-line react/no-array-index-key
               <span key={i} className={styles['line']}>
                 <span aria-hidden="true" className={styles['lineNumber']}>
                   {i + 1}

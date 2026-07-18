@@ -10,6 +10,20 @@
     />
     <link rel="canonical" href="https://cascivo.com/" />
     <meta name="robots" content="index, follow" />
+    <!-- Agents: this is a client-rendered SPA. For install steps and the full
+         component reference without a browser, fetch the plain-text docs below. -->
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="/llms.txt"
+      title="LLM-readable docs (install + component index)"
+    />
+    <link
+      rel="alternate"
+      type="text/markdown"
+      href="/docs/getting-started.md"
+      title="Getting started (markdown)"
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -104,6 +118,11 @@
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      cascivo docs render with JavaScript. Without a browser, read
+      <a href="/docs/getting-started.md">/docs/getting-started.md</a> or
+      <a href="/llms.txt">/llms.txt</a> for install steps and the component index.
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -13,6 +13,7 @@ import { theme } from './commands/theme.js'
 import { update } from './commands/update.js'
 import { view } from './commands/view.js'
 import { loadConfig, THEMES } from './utils/config.js'
+import { positionalArgs, resolvePackageManagerFlag } from './utils/args.js'
 
 // Read at runtime: this file lives one level below the package root both in
 // src/ (dev, tests) and in dist/ (published bundle), so ../package.json is
@@ -56,18 +57,22 @@ Scaffold a new ready-to-run app — Vite + React + TypeScript, pre-wired with th
 cascivo app shell, side navigation, header, and a theme.
 
 Options:
-  --template <spec>     Start from a marketplace template (@ns/name or owner/repo/name)
-  --theme <name>        Theme to install (${THEME_LIST})
-  --sections "<a, b>"   Comma-separated nav section labels (one component each)
-  --yes, -y             Accept defaults, never prompt`,
+  --template <spec>         Start from a marketplace template (@ns/name or owner/repo/name)
+  --theme <name>            Theme to install (${THEME_LIST})
+  --sections "<a, b>"       Comma-separated nav section labels (one component each)
+  --package-manager <pm>    Package manager for README/next-steps (alias --pm; default: auto-detect)
+  --yes, -y                 Accept defaults, never prompt`,
   init: `Usage: cascivo init [options]
 
-Set up cascivo in the current project: installs @cascivo/core + @cascivo/tokens
-and writes cascivo.config.ts.
+Set up cascivo in the current project: writes cascivo.config.ts and installs the
+runtime dependencies (@cascivo/core, @cascivo/tokens, @cascivo/themes, the
+@preact/signals-react peer) plus cascivo as a dev dependency for the config's types.
 
 Options:
-  --theme <name>  Theme to configure (${THEME_LIST})
-  --yes, -y       Accept defaults, never prompt (implied when stdin is not a TTY)`,
+  --theme <name>            Theme to configure (${THEME_LIST})
+  --package-manager <pm>    Force pnpm | yarn | npm | bun (alias --pm; default: auto-detect)
+  --no-install              Write files only; print the install commands to run yourself
+  --yes, -y                 Accept defaults, never prompt (implied when stdin is not a TTY)`,
   add: `Usage: cascivo add <component...> [options]
 
 Copy component source (TSX + CSS module) from the registry into your project,
@@ -75,8 +80,10 @@ resolving component dependencies. Also installs templates (@ns/name) and
 third-party components (owner/repo/name).
 
 Options:
-  --dry-run  Show what would be written without writing
-  --yes, -y  Skip confirmation prompts`,
+  --dry-run                 Show what would be written without writing
+  --package-manager <pm>    Force pnpm | yarn | npm | bun (alias --pm; default: auto-detect)
+  --no-install              Don't install npm-distributed entries or deps; print the commands instead
+  --yes, -y                 Skip confirmation prompts`,
   list: `Usage: cascivo list [options]
 
 List components available in the configured registry.
@@ -130,10 +137,13 @@ Options:
   doctor: `Usage: cascivo doctor [options]
 
 Check components in this repo for cascivo rule violations (banned React hooks,
-hardcoded strings, missing @cascivo/react exports).
+hardcoded strings, missing @cascivo/react exports). In an adopter project (one
+with a cascivo.config), also verifies the runtime dependencies copied source
+needs — @cascivo/core, @cascivo/tokens, @cascivo/themes, and the
+@preact/signals-react peer — are declared in package.json.
 
 Options:
-  --ci     Exit non-zero when violations are found
+  --ci     Exit non-zero when violations or missing runtime deps are found
   --drift  Compare installed components against the registry (copy-paste drift)`,
   audit: `Usage: cascivo audit --ai <paths...> [options]
 
@@ -184,12 +194,21 @@ export async function run(args: string[]): Promise<void> {
     case 'init':
       await init(rest)
       break
-    case 'add':
-      await add(rest, await loadConfig(), {
+    case 'add': {
+      const pmFlag = resolvePackageManagerFlag(rest)
+      if ('error' in pmFlag) {
+        console.error(pmFlag.error)
+        process.exitCode = 1
+        break
+      }
+      await add(positionalArgs(rest, ['pm', 'package-manager']), await loadConfig(), {
         dryRun: rest.includes('--dry-run'),
         yes: rest.includes('--yes'),
+        noInstall: rest.includes('--no-install'),
+        ...(pmFlag.pm ? { pm: pmFlag.pm } : {}),
       })
       break
+    }
     case 'list':
       await list(await loadConfig(), { installed: rest.includes('--installed') })
       break
@@ -261,14 +280,31 @@ export async function run(args: string[]): Promise<void> {
         const { runDoctorDrift } = await import('./commands/drift.js')
         await runDoctorDrift(await loadConfig())
       } else {
-        const result = await runDoctor(process.cwd())
-        if (result.passed) {
+        const cwd = process.cwd()
+        const result = await runDoctor(cwd)
+        const { checkProjectDependencies, isAdopterProject } = await import('./commands/doctor.js')
+        const deps = isAdopterProject(cwd) ? checkProjectDependencies(cwd) : []
+        const missingRequired = deps.filter((d) => d.required)
+
+        if (result.passed && deps.length === 0) {
           console.log('No violations found.')
         } else {
           for (const v of result.violations) {
             console.error(`[${v.rule}] ${v.detail}\n  ${v.file}`)
           }
-          if (ci) process.exitCode = 1
+          for (const d of missingRequired) {
+            console.error(
+              `[missing-dependency] ${d.package} is not in package.json — copied cascivo source needs it. Install: ${d.hint}`,
+            )
+          }
+          for (const d of deps.filter((x) => !x.required)) {
+            console.log(
+              `[optional] ${d.package} is not installed; add it when a component or chart needs it: ${d.hint}`,
+            )
+          }
+          if (ci && (result.violations.length > 0 || missingRequired.length > 0)) {
+            process.exitCode = 1
+          }
         }
       }
       break

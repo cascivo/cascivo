@@ -2,11 +2,28 @@ import { existsSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline/promises'
-import { CASCIVO_HOST, THEMES, type ThemeName } from '../utils/config.js'
+import {
+  CASCIVO_HOST,
+  detectPackageManager,
+  THEMES,
+  type PackageManager,
+  type ThemeName,
+} from '../utils/config.js'
+import { flagValue, positionalArgs, resolvePackageManagerFlag } from '../utils/args.js'
 import { writeFileSafe } from '../utils/fs.js'
 
 /** Version specifier used for every `@cascivo/*` dependency in generated apps. */
 const CASCIVO_DEP = 'latest'
+
+/** Install-everything command for a package manager (`pnpm install`, `yarn`, …). */
+function installAllCommand(pm: PackageManager): string {
+  return pm === 'yarn' ? 'yarn' : `${pm} install`
+}
+
+/** Run-a-script command for a package manager (`npm run dev` vs `pnpm dev`). */
+function runScriptCommand(pm: PackageManager, script: string): string {
+  return pm === 'npm' ? `npm run ${script}` : `${pm} ${script}`
+}
 
 export interface ScaffoldOptions {
   /** Project directory + package name. */
@@ -15,6 +32,8 @@ export interface ScaffoldOptions {
   theme: ThemeName
   /** Display labels for the side-nav sections (one section component each). */
   sections: string[]
+  /** Package manager for the generated README's commands (default npm). */
+  pm?: PackageManager
 }
 
 export interface ScaffoldFile {
@@ -323,6 +342,7 @@ dist
 }
 
 function readme(opts: ScaffoldOptions): string {
+  const pm = opts.pm ?? 'npm'
   return `# ${opts.name}
 
 A [cascivo](https://cascivo.com) app — Vite + React + TypeScript, pre-wired with
@@ -331,8 +351,8 @@ the cascivo app shell, side navigation, and the \`${opts.theme}\` theme.
 ## Develop
 
 \`\`\`sh
-npm install
-npm run dev
+${installAllCommand(pm)}
+${runScriptCommand(pm, 'dev')}
 \`\`\`
 
 ## Structure
@@ -415,21 +435,31 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
   ]
 }
 
-function flagValue(args: string[], key: string): string | undefined {
-  const eq = args.find((a) => a.startsWith(`--${key}=`))
-  if (eq) return eq.slice(key.length + 3)
-  const idx = args.indexOf(`--${key}`)
-  const next = idx !== -1 ? args[idx + 1] : undefined
-  return next && !next.startsWith('--') ? next : undefined
-}
-
 const DEFAULT_SECTIONS = ['Dashboard', 'Reports', 'Settings']
 
 export async function create(args: string[], cwd: string = process.cwd()): Promise<void> {
   const yes = args.includes('--yes') || args.includes('-y')
-  const nameArg = args.find((a) => !a.startsWith('-'))
+  // Skip flag values (e.g. `bun` in `--pm bun`) so the project name is the first
+  // real positional, not a flag's argument.
+  const nameArg = positionalArgs(args, [
+    'pm',
+    'package-manager',
+    'theme',
+    'sections',
+    'template',
+  ])[0]
   const themeArg = flagValue(args, 'theme')
   const sectionsArg = flagValue(args, 'sections')
+
+  const pmFlag = resolvePackageManagerFlag(args)
+  if ('error' in pmFlag) {
+    console.error(pmFlag.error)
+    process.exitCode = 1
+    return
+  }
+  // A brand-new project has no lock file yet, so detection leans on the PM that
+  // invoked the CLI (npm_config_user_agent) via detectPackageManager.
+  const pm = detectPackageManager(cwd, pmFlag.pm ? { override: pmFlag.pm } : {})
 
   const interactive = !yes && stdin.isTTY
   const rl = interactive ? createInterface({ input: stdin, output: stdout }) : null
@@ -464,6 +494,7 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       name,
       theme: resolvedTheme,
       sections: sections.length > 0 ? sections : DEFAULT_SECTIONS,
+      pm,
     }
 
     const targetDir = join(cwd, name)
@@ -485,13 +516,13 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
       const { add } = await import('./add.js')
       const { loadConfig } = await import('../utils/config.js')
       console.log(`\nInstalling template "${templateSpec}"…`)
-      await add([templateSpec], await loadConfig(), { cwd: targetDir })
+      await add([templateSpec], await loadConfig(), { cwd: targetDir, pm })
     }
 
     console.log('\nNext steps:')
     console.log(`  cd ${name}`)
-    console.log('  npm install')
-    console.log('  npm run dev')
+    console.log(`  ${installAllCommand(pm)}`)
+    console.log(`  ${runScriptCommand(pm, 'dev')}`)
   } finally {
     rl?.close()
   }

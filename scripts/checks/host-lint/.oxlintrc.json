@@ -1,0 +1,25 @@
+{
+  // Config for `pnpm lint:host-strict` — run by scripts/checks/host-lint/run.mjs
+  // against the real oxlint binary (vp's `vp lint` injects its own -c and can't
+  // take this one). Enforces, in oxlint, the objective classes a strict host
+  // ESLint config (@tanstack/eslint-config) flags, so the source `cascivo add`
+  // copies never ships lint failures adopters didn't write. `correctness` is off
+  // so only these rules run (vp's own lint covers the rest). Stylistic classes
+  // are documented as scope-off in docs/USING-WITH-STRICT-ESLINT.md.
+  "categories": { "correctness": "off" },
+  // Only source `cascivo add` copies is in scope — tests, stories, and generated
+  // metas are never vendored into an adopter project.
+  "ignorePatterns": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.contract.test.tsx",
+    "**/*.stories.tsx",
+    "**/test-utils/**",
+    "**/_all-metas.ts"
+  ],
+  "plugins": ["import"],
+  "rules": {
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+    "prefer-const": "error"
+  }
+}

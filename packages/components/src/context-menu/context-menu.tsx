@@ -1,11 +1,7 @@
 'use client'
 
-import {
-  useRef,
-  type KeyboardEvent,
-  type ReactNode,
-  type MouseEvent as ReactMouseEvent,
-} from 'react'
+import { useRef } from 'react'
+import type { KeyboardEvent, ReactNode, MouseEvent as ReactMouseEvent } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './context-menu.module.css'
 

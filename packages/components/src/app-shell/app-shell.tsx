@@ -1,6 +1,7 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
-import { cloneElement, isValidElement, useRef, type ReactElement, type ReactNode } from 'react'
+import { cloneElement, isValidElement, useRef } from 'react'
+import type { ReactElement, ReactNode } from 'react'
 import styles from './app-shell.module.css'
 
 /** Props AppShell injects into a {@link ShellHeader}-shaped header element. */

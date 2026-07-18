@@ -1,8 +1,10 @@
 'use client'
 
-import { createContext, type ReactNode } from 'react'
+import { createContext } from 'react'
+import type { ReactNode } from 'react'
 import { useSignals } from '@cascivo/core'
-import { usePopover, type UsePopoverOptions, type UsePopoverReturn } from './use-popover'
+import { usePopover } from './use-popover'
+import type { UsePopoverOptions, UsePopoverReturn } from './use-popover'
 import styles from './popover.module.css'
 
 const PopoverContext = createContext<UsePopoverReturn | null>(null)

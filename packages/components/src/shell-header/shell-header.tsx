@@ -1,7 +1,7 @@
 'use client'
 import { cn, getLinkComponent, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { type KeyboardEvent, type MouseEvent, type ReactNode, type RefObject } from 'react'
+import type { KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
 import { usePopover } from '../popover/use-popover'
 import styles from './shell-header.module.css'
 

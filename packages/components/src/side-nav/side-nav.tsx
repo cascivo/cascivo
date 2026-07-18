@@ -1,15 +1,8 @@
 'use client'
 import { cn, getLinkComponent, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import {
-  Fragment,
-  useId,
-  type CSSProperties,
-  type KeyboardEvent,
-  type MouseEvent,
-  type ReactNode,
-  type RefObject,
-} from 'react'
+import { Fragment, useId } from 'react'
+import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
 import { Tooltip } from '../tooltip/tooltip'
 import { usePopover } from '../popover/use-popover'
 import styles from './side-nav.module.css'

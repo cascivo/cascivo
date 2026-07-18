@@ -2,7 +2,8 @@
 import { cn, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import type { HTMLAttributes } from 'react'
-import { encode, type ErrorCorrection } from './encode'
+import { encode } from './encode'
+import type { ErrorCorrection } from './encode'
 import styles from './qr-code.module.css'
 
 export interface QrCodeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {

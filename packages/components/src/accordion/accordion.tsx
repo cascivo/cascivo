@@ -1,6 +1,8 @@
 'use client'
-import { cn, useSignal, useSignals, type Signal } from '@cascivo/core'
-import { createContext, useId, type HTMLAttributes, type ReactNode } from 'react'
+import { cn, useSignal, useSignals } from '@cascivo/core'
+import type { Signal } from '@cascivo/core'
+import { createContext, useId } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './accordion.module.css'
 
 interface AccordionStore {

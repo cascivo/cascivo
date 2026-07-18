@@ -1,7 +1,8 @@
 'use client'
 import { cn, Presence, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type HTMLAttributes, type ReactNode } from 'react'
+import { useRef } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './notification.module.css'
 
 export type NotificationVariant = 'info' | 'success' | 'warning' | 'error'

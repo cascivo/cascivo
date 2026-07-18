@@ -1,8 +1,10 @@
 'use client'
 
-import { createContext, useRef, type ReactNode } from 'react'
+import { createContext, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { useSignalEffect, useSignals } from '@cascivo/core'
-import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
+import { usePopover } from '../popover/use-popover'
+import type { UsePopoverReturn } from '../popover/use-popover'
 import styles from './hover-card.module.css'
 
 const HoverCardContext = createContext<UsePopoverReturn | null>(null)

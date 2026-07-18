@@ -9,7 +9,8 @@ import {
   useSignal,
   useSignals,
 } from '@cascivo/core'
-import { useId, useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react'
+import { useId, useRef } from 'react'
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 import styles from './menubar.module.css'
 
 export interface MenubarItem {

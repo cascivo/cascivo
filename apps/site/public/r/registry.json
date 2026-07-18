@@ -8772,6 +8772,7 @@
           "--cascivo-space-3",
           "--cascivo-space-4",
           "--cascivo-data-table-max-height",
+          "--cascivo-data-table-cell-gap",
           "--cascivo-duration-150",
           "--cascivo-duration-500",
           "--cascivo-ease-out",
@@ -20921,7 +20922,7 @@
         }
       ],
       "dependencies": [],
-      "tags": ["stack", "pile", "overlap", "layout"],
+      "tags": ["stack", "pile", "overlap", "layered", "z-axis", "card-pile", "layout"],
       "category": "layout",
       "meta": {
         "name": "Stack",
@@ -20959,7 +20960,7 @@
         },
         "examples": [],
         "dependencies": [],
-        "tags": ["stack", "pile", "overlap", "layout"],
+        "tags": ["stack", "pile", "overlap", "layered", "z-axis", "card-pile", "layout"],
         "intent": {
           "whenToUse": [
             "Card pile UI where depth and layering should be visible",

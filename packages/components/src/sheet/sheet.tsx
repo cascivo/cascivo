@@ -1,6 +1,7 @@
 'use client'
 
-import { useId, useRef, type ReactNode } from 'react'
+import { useId, useRef } from 'react'
+import type { ReactNode } from 'react'
 import { useSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './sheet.module.css'

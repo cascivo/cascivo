@@ -1,7 +1,8 @@
 'use client'
 import { cn, useControllableSignal, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react'
+import { useRef } from 'react'
+import type { CSSProperties, KeyboardEvent, ReactNode } from 'react'
 import styles from './tree-view.module.css'
 
 export interface TreeNode {

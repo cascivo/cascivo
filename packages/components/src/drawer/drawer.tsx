@@ -12,7 +12,8 @@ import {
   useSignals,
 } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useId, type CSSProperties, type ReactNode, type Ref } from 'react'
+import { useId } from 'react'
+import type { CSSProperties, ReactNode, Ref } from 'react'
 import styles from './drawer.module.css'
 
 /** Drag distance (px) past which a swipe dismisses the drawer. */

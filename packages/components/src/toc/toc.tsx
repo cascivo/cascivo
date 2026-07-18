@@ -1,7 +1,8 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type CSSProperties } from 'react'
+import { useRef } from 'react'
+import type { CSSProperties } from 'react'
 import styles from './toc.module.css'
 
 export interface TocItem {

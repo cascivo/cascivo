@@ -1,8 +1,10 @@
 'use client'
 
-import { createContext, type KeyboardEvent, type ReactNode } from 'react'
+import { createContext } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 import { useSignalEffect, useSignals, useTypeahead } from '@cascivo/core'
-import { usePopover, type UsePopoverReturn } from '../popover/use-popover'
+import { usePopover } from '../popover/use-popover'
+import type { UsePopoverReturn } from '../popover/use-popover'
 import styles from './menu.module.css'
 
 const MenuContext = createContext<UsePopoverReturn | null>(null)

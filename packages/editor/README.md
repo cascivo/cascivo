@@ -112,6 +112,6 @@ pnpm add @cascivo/editor
 
 ---
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
 
 <div align="center"><a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="28" height="28" alt="cascivo"></a></div>

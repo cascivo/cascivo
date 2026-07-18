@@ -1,6 +1,7 @@
 'use client'
 import { cn } from '@cascivo/core'
-import { forwardRef, type HTMLAttributes, type KeyboardEvent } from 'react'
+import { forwardRef } from 'react'
+import type { HTMLAttributes, KeyboardEvent } from 'react'
 import styles from './button-group.module.css'
 
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {

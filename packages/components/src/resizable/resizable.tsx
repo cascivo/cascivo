@@ -1,7 +1,8 @@
 'use client'
 import { cn, useControllableSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { Children, useRef, type KeyboardEvent, type ReactNode } from 'react'
+import { Children, useRef } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 import styles from './resizable.module.css'
 
 export interface ResizableProps {

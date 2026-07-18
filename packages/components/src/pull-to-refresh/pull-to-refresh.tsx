@@ -2,7 +2,8 @@
 
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
-import { useRef, type CSSProperties, type ReactNode } from 'react'
+import { useRef } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Spinner } from '../spinner/spinner'
 import styles from './pull-to-refresh.module.css'
 

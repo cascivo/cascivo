@@ -9,7 +9,8 @@ import {
 } from '@cascivo/core'
 import { builtin, currentLocale, t } from '@cascivo/i18n'
 import { useRef } from 'react'
-import { Calendar, type CalendarProps } from '../calendar/calendar'
+import { Calendar } from '../calendar/calendar'
+import type { CalendarProps } from '../calendar/calendar'
 import styles from './date-range-picker.module.css'
 
 export interface DateRange {

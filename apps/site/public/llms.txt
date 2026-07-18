@@ -19,6 +19,7 @@ see `select_component`/`list_components` below before generating custom SVG or A
 ## Start here
 
 - **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** https://cascivo.com/llms-full.txt
+- Getting started, fetchable as plain markdown (install steps, no browser needed): https://cascivo.com/docs/getting-started.md
 - Docs (per-component reference, props, live examples): https://docs.cascivo.com
 - Storybook (every variant, interactive): https://storybook.cascivo.com
 - Source (MIT): https://github.com/cascivo/cascivo
@@ -92,6 +93,10 @@ B. Copy-paste source — own and customize the code (shadcn model):
 ```sh
 npx cascivo add button card
 ```
+
+   Runtime deps for copied source: `@cascivo/core`, `@cascivo/tokens`, `@cascivo/themes`, and the
+   `@preact/signals-react` peer. `cascivo init` installs all of them (plus `cascivo` as a dev dep
+   for the generated config); `cascivo add` installs any extra a component declares (e.g. @cascivo/i18n).
 
    Trade-offs: full control over internals; updates are a manual re-add.
 
@@ -194,6 +199,7 @@ installed peer that is older than a copied component needs. Watch https://docs.c
 - Using cascivo with Next.js (App Router / RSC): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-NEXTJS.md
 - Using cascivo with Vite SSR / TanStack Start: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md
 - Using cascivo with Tailwind v4 (@layer order + dark bridge): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-TAILWIND.md
+- Strict host ESLint (copied source vs @tanstack/airbnb configs — scope stylistic rules off your components dir): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-STRICT-ESLINT.md
 - Compatibility & support matrix: https://github.com/cascivo/cascivo/blob/main/docs/COMPATIBILITY.md
 - Migrating from shadcn/ui: https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md
 - Token reference: https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md
@@ -278,6 +284,8 @@ see how components behave without adding tracking, read these machine-readable C
 ## Component index (204 entries)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
+
+Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical spacing — for a vertical/horizontal spacing layout use `Flex` (`layout/flex`; the aliases `vstack`/`hstack` resolve to it).
 
 ### auth
 
@@ -723,4 +731,4 @@ Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-17 from registry v0.7.0_
+_Generated: 2026-07-18 from registry v0.7.0_

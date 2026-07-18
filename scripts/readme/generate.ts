@@ -25,7 +25,7 @@ const SITE_LINKS =
 
 const FOOTER = `---
 
-${SITE_LINKS} · AI agents: use [\`@cascivo/mcp\`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [\`registry.json\`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
+${SITE_LINKS} · AI agents: read [\`llms.txt\`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [\`@cascivo/mcp\`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [\`registry.json\`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
 
 <div align="center"><a href="https://cascivo.com"><img src="${LOGO}" width="28" height="28" alt="cascivo"></a></div>
 `

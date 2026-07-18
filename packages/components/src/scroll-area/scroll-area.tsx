@@ -1,6 +1,7 @@
 'use client'
 import { cn, useSignalEffect, useSignals } from '@cascivo/core'
-import { useRef, type CSSProperties, type HTMLAttributes, type ReactNode } from 'react'
+import { useRef } from 'react'
+import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import styles from './scroll-area.module.css'
 
 export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {

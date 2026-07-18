@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
+import { detectPackageManager, installHint } from '../utils/config.js'
 
 export interface DoctorViolation {
   file: string
@@ -10,6 +11,65 @@ export interface DoctorViolation {
 export interface DoctorResult {
   violations: DoctorViolation[]
   passed: boolean
+}
+
+/** Runtime packages copied cascivo source needs; the last is @cascivo/core's peer. */
+const REQUIRED_RUNTIME_DEPS = [
+  '@cascivo/core',
+  '@cascivo/tokens',
+  '@cascivo/themes',
+  '@preact/signals-react',
+]
+
+/** Installed on demand by `cascivo add` when a component/chart declares them. */
+const ON_DEMAND_DEPS = ['@cascivo/i18n', '@cascivo/charts']
+
+export interface DependencyFinding {
+  package: string
+  /** true = a runtime dep whose absence breaks the build; false = advisory. */
+  required: boolean
+  hint: string
+}
+
+const CONFIG_FILES = ['cascivo.config.ts', 'cascivo.config.js', 'cascivo.config.mjs']
+
+/** Whether cwd looks like a cascivo adopter project (has a generated config). */
+export function isAdopterProject(cwd: string): boolean {
+  return CONFIG_FILES.some((f) => existsSync(join(cwd, f)))
+}
+
+/**
+ * Advisory check that the runtime dependencies copied source needs are declared
+ * in the project's package.json. Turns the opaque "cannot find module
+ * '@preact/signals-react'" build failure — the report's #4, where the peer was
+ * invisible — into a diagnosed condition with a fix. Adopter-only (gated on a
+ * cascivo.config by the caller); `@cascivo/i18n`/`@cascivo/charts` are advisory
+ * since not every project uses them.
+ */
+export function checkProjectDependencies(cwd: string): DependencyFinding[] {
+  let deps: Record<string, unknown> = {}
+  try {
+    const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as {
+      dependencies?: Record<string, unknown>
+      devDependencies?: Record<string, unknown>
+    }
+    deps = { ...pkg.dependencies, ...pkg.devDependencies }
+  } catch {
+    return [] // No readable package.json — nothing reliable to advise on.
+  }
+  const pm = detectPackageManager(cwd)
+  const findings: DependencyFinding[] = []
+  for (const pkg of REQUIRED_RUNTIME_DEPS) {
+    if (deps[pkg] === undefined) {
+      findings.push({ package: pkg, required: true, hint: installHint(pm, [pkg]) })
+    }
+  }
+  for (const pkg of ON_DEMAND_DEPS) {
+    if (deps[pkg] === undefined) {
+      findings.push({ package: pkg, required: false, hint: installHint(pm, [pkg]) })
+    }
+  }
+  return findings
 }
 
 const BANNED_HOOKS = ['useState', 'useEffect', 'useLayoutEffect', 'useContext', 'useReducer']

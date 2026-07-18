@@ -1,6 +1,7 @@
 'use client'
 import { cn, useControllableSignal, useRovingFocus, useSignals } from '@cascivo/core'
-import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './toggle-group.module.css'
 
 export interface ToggleGroupItem {

@@ -1,14 +1,13 @@
 'use client'
 import { createMachine, useId, useMachine, useSignalEffect, useSignals } from '@cascivo/core'
-import {
-  cloneElement,
-  useRef,
-  type CSSProperties,
-  type FocusEvent,
-  type HTMLAttributes,
-  type MouseEvent,
-  type ReactElement,
-  type ReactNode,
+import { cloneElement, useRef } from 'react'
+import type {
+  CSSProperties,
+  FocusEvent,
+  HTMLAttributes,
+  MouseEvent,
+  ReactElement,
+  ReactNode,
 } from 'react'
 import styles from './tooltip.module.css'
 
