@@ -1,5 +1,24 @@
 # @cascivo/react
 
+## 0.7.1
+
+### Patch Changes
+
+- 0a3d756: DataTable: adjacent auto-width columns no longer visually touch. Long unbroken
+  cell content (commit hashes, branch names) now wraps inside its cell instead of
+  spilling past the padding into the next column under `table-layout: fixed`
+  (paginated tables), and the inter-column gutter is exposed as an overridable
+  `--cascivo-data-table-cell-gap` component token.
+- 0a3d756: Component source hygiene so vendored/copied source stays clean under strict host
+  ESLint configs (e.g. `@tanstack/eslint-config`) without adopters inheriting lint
+  failures in code they didn't write: inline type specifiers converted to
+  top-level `import type`, provably-unnecessary type assertions removed,
+  `prefer-const` applied, and stale `eslint-disable` directives dropped.
+  Behavior-neutral — all component tests pass unchanged. A `pnpm lint:host-strict`
+  CI guard (oxlint, no ESLint dependency) keeps the objective classes clean, and
+  docs/USING-WITH-STRICT-ESLINT.md documents scoping the remaining stylistic rules
+  off your components directory.
+
 ## 0.7.0
 
 ### Minor Changes
