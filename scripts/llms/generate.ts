@@ -496,6 +496,18 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     lines.push('`GitBranch`, `GitCommit`, `GitMerge`, `GitPullRequest`.')
   }
   lines.push('')
+  lines.push('Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with')
+  lines.push('`clip-path: shape()` and no SVG — color via `currentColor`, size via')
+  lines.push('`--cascivo-glyph-size`, plus zero-JS state morphs via `transition: clip-path`.')
+  lines.push(
+    "Use `import { Glyph } from '@cascivo/icons'` with `import '@cascivo/icons/glyphs.css'`,",
+  )
+  lines.push('or the class form `<span class="cascivo-glyph" data-glyph="chevron-down">`. Glyphs:')
+  lines.push('`chevron-{down,up,left,right}`, `x`, `check`, `plus`, `minus`, `menu`,')
+  lines.push('`arrow-{right,left,up,down}`, and the `chevron-toggle` morph. Baseline-2026 only')
+  lines.push('(Chrome 135+, Safari 18.4+, Firefox 148+) — painting is gated behind `@supports`;')
+  lines.push('prefer the SVG icons for a wider browser floor or for print.')
+  lines.push('')
   lines.push('## How to use it')
   lines.push('')
   lines.push('Two consumption paths — they share the same tokens/themes and can coexist:')

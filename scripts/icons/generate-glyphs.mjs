@@ -1,0 +1,211 @@
+/**
+ * Pure-CSS glyph generator.
+ *
+ * Reads the typed centerline geometry in packages/icons/src/glyphs/spec.ts and
+ * emits packages/icons/src/glyphs.css: one `clip-path: shape()` rule per glyph,
+ * plus `[data-state]` transitions for each morph pair. Each stroke is expanded to
+ * its filled outline (miter joins, round caps as arcs) so a monochrome
+ * `background: currentColor` element clipped to the shape reproduces the stroked
+ * icon without any SVG.
+ *
+ * Sibling of scripts/icons/generate.mjs (the SVG-component generator).
+ * Deterministic + idempotent: a second run produces no diff, and the output is
+ * emitted pre-formatted so `vp check --fix` leaves it untouched.
+ *
+ * Run with: `pnpm glyphs:generate`
+ */
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { writeFileSync } from 'node:fs'
+import { GLYPHS, MORPHS } from '../../packages/icons/src/glyphs/spec.ts'
+
+const HERE = dirname(fileURLToPath(import.meta.url))
+const ROOT = join(HERE, '..', '..')
+const OUT_CSS = join(ROOT, 'packages/icons/src/glyphs.css')
+
+const BOX = 24
+const STROKE_WIDTH = 2
+
+// --- vector helpers ---
+const sub = (a, b) => [a[0] - b[0], a[1] - b[1]]
+const add = (a, b) => [a[0] + b[0], a[1] + b[1]]
+const mul = (a, s) => [a[0] * s, a[1] * s]
+const hyp = (a) => Math.hypot(a[0], a[1])
+const norm = (a) => {
+  const l = hyp(a)
+  return [a[0] / l, a[1] / l]
+}
+// left normal of a direction (rotate +90° in screen coordinates)
+const leftNormal = (d) => [-d[1], d[0]]
+
+const pct = (v) => `${+((v / BOX) * 100).toFixed(3)}%`
+const P = (p) => `${pct(p[0])} ${pct(p[1])}`
+
+/** Offset one side of an open polyline, mitering interior vertices. */
+function offsetChain(pts, sideNormals, r) {
+  const n = pts.length
+  const out = []
+  for (let i = 0; i < n; i++) {
+    if (i === 0) {
+      out.push(add(pts[0], mul(sideNormals[0], r)))
+    } else if (i === n - 1) {
+      out.push(add(pts[i], mul(sideNormals[i - 1], r)))
+    } else {
+      const m = norm(add(sideNormals[i - 1], sideNormals[i]))
+      const cosHalf = m[0] * sideNormals[i - 1][0] + m[1] * sideNormals[i - 1][1]
+      const scale = r / Math.max(cosHalf, 0.2) // clamp miter length on sharp turns
+      out.push(add(pts[i], mul(m, scale)))
+    }
+  }
+  return out
+}
+
+/**
+ * One stroke → an ordered token list for a single closed subpath. Tokens are
+ * `{ lit }` literals and `{ num }` box-unit coordinates; rendering the list
+ * reproduces the outline and comparing two lists' literals validates that a morph
+ * pair shares command structure.
+ */
+function strokeTokens(pts, first) {
+  const r = STROKE_WIDTH / 2
+  const n = pts.length
+  const L = []
+  for (let i = 0; i < n - 1; i++) {
+    const seg = sub(pts[i + 1], pts[i])
+    if (hyp(seg) < 1e-6) {
+      throw new Error(`degenerate zero-length segment at point ${i} — glyphs must be real strokes`)
+    }
+    L.push(leftNormal(norm(seg)))
+  }
+  const R = L.map((v) => mul(v, -1))
+  const left = offsetChain(pts, L, r)
+  const right = offsetChain(pts, R, r)
+
+  const t = []
+  const NUM = (v) => t.push({ num: v })
+  const LIT = (s) => t.push({ lit: s })
+  const PT = (p) => {
+    NUM(p[0])
+    LIT(' ')
+    NUM(p[1])
+  }
+  LIT(first ? 'from ' : 'move to ')
+  PT(left[0])
+  for (let i = 1; i < n; i++) {
+    LIT(', line to ')
+    PT(left[i])
+  }
+  LIT(', arc to ')
+  PT(right[n - 1])
+  LIT(` of ${pct(r)} ${pct(r)} cw`)
+  for (let i = n - 2; i >= 0; i--) {
+    LIT(', line to ')
+    PT(right[i])
+  }
+  LIT(', arc to ')
+  PT(left[0])
+  LIT(` of ${pct(r)} ${pct(r)} cw, close`)
+  return t
+}
+
+/** All strokes of a glyph → one token list (multi-subpath). */
+function glyphTokens(strokes) {
+  const t = []
+  strokes.forEach((pts, i) => {
+    if (i > 0) t.push({ lit: ', ' })
+    t.push(...strokeTokens(pts, i === 0))
+  })
+  return t
+}
+
+function renderTokens(tokens) {
+  return `shape(${tokens.map((x) => (x.lit !== undefined ? x.lit : pct(x.num))).join('')})`
+}
+
+const shapeOf = (strokes) => renderTokens(glyphTokens(strokes))
+
+/** Fail generation unless both glyphs share command structure (Phase 0 rule). */
+function validateMorph(morph, byName) {
+  const from = byName.get(morph.from)
+  const to = byName.get(morph.to)
+  if (!from || !to) {
+    throw new Error(`morph "${morph.name}" references unknown glyph`)
+  }
+  const a = glyphTokens(from.strokes)
+  const b = glyphTokens(to.strokes)
+  if (a.length !== b.length) {
+    throw new Error(
+      `morph "${morph.name}": ${morph.from}/${morph.to} differ in command count (${a.length} vs ${b.length}) — clip-path cannot interpolate them`,
+    )
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].lit !== b[i].lit) {
+      throw new Error(
+        `morph "${morph.name}": command mismatch at token ${i} ("${a[i].lit}" vs "${b[i].lit}")`,
+      )
+    }
+  }
+  return { from, to }
+}
+
+function build() {
+  const byName = new Map(GLYPHS.map((g) => [g.name, g]))
+  const L = []
+  L.push('/* GENERATED by scripts/icons/generate-glyphs.mjs — do not edit by hand. */')
+  L.push(
+    '/* Pure-CSS glyphs via clip-path: shape(). Geometry: packages/icons/src/glyphs/spec.ts. */',
+  )
+  L.push('/* Run `pnpm glyphs:generate` to refresh. */')
+  L.push('')
+  L.push('@layer cascivo.component {')
+  // Paint is gated on shape() support so unsupported browsers get an empty inline
+  // element, not a solid currentColor square.
+  L.push('  @supports (clip-path: shape(from 0 0, close)) {')
+  L.push('    .cascivo-glyph {')
+  L.push('      display: inline-block;')
+  L.push('      inline-size: var(--cascivo-glyph-size, 1.5rem);')
+  L.push('      block-size: var(--cascivo-glyph-size, 1.5rem);')
+  L.push('      flex-shrink: 0;')
+  L.push('      background: currentColor;')
+  L.push('    }')
+  for (const g of GLYPHS) {
+    L.push('')
+    L.push(`    .cascivo-glyph[data-glyph='${g.name}'] {`)
+    L.push(`      clip-path: ${shapeOf(g.strokes)};`)
+    L.push('    }')
+  }
+  for (const m of MORPHS) {
+    const { from, to } = validateMorph(m, byName)
+    L.push('')
+    L.push(`    .cascivo-glyph[data-glyph='${m.name}'] {`)
+    L.push(`      clip-path: ${shapeOf(from.strokes)};`)
+    L.push('      transition: clip-path 200ms ease;')
+    L.push('    }')
+    L.push(`    .cascivo-glyph[data-glyph='${m.name}'][data-state='open'] {`)
+    L.push(`      clip-path: ${shapeOf(to.strokes)};`)
+    L.push('    }')
+  }
+  L.push('  }')
+  L.push('}')
+  L.push('')
+  L.push('/* Accessibility guarantees — top-level so they win over every layer. */')
+  L.push('@media (prefers-reduced-motion: reduce) {')
+  L.push('  .cascivo-glyph {')
+  L.push('    transition: none;')
+  L.push('  }')
+  L.push('}')
+  L.push('')
+  L.push('/* Forced-colors mode overrides background-color; repaint the silhouette */')
+  L.push('/* with the system foreground so the glyph stays visible. */')
+  L.push('@media (forced-colors: active) {')
+  L.push('  .cascivo-glyph {')
+  L.push('    background: CanvasText;')
+  L.push('  }')
+  L.push('}')
+  return L.join('\n') + '\n'
+}
+
+writeFileSync(OUT_CSS, build())
+console.log(
+  `Wrote ${GLYPHS.length} glyphs + ${MORPHS.length} morph(s) to packages/icons/src/glyphs.css`,
+)

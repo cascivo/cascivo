@@ -8,7 +8,8 @@ import { Check, ChevronDown, X } from './index'
 /** Every named export that is a renderable icon component. */
 function iconComponents(): [string, ComponentType<Record<string, unknown>>][] {
   return Object.entries(icons).filter(
-    ([name, v]) => typeof v === 'function' && name !== 'createIcon' && name !== 'VERSION',
+    ([name, v]) =>
+      typeof v === 'function' && name !== 'createIcon' && name !== 'VERSION' && name !== 'Glyph',
   ) as [string, ComponentType<Record<string, unknown>>][]
 }
 

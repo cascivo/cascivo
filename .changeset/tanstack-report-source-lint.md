@@ -1,5 +1,5 @@
 ---
-"@cascivo/react": patch
+'@cascivo/react': patch
 ---
 
 Component source hygiene so vendored/copied source stays clean under strict host
