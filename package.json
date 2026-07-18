@@ -35,7 +35,7 @@
     "release:check": "node --experimental-strip-types --test scripts/checks/release-filter.test.ts",
     "meta:check": "node --experimental-strip-types --test scripts/checks/meta-coverage.test.ts scripts/checks/manifest-completeness.test.ts scripts/checks/primitive-docs.test.ts scripts/checks/props-parity.test.ts",
     "primitive-docs:check": "node --experimental-strip-types --test scripts/checks/primitive-docs.test.ts",
-    "lint:host-strict": "eslint --no-config-lookup --config scripts/checks/host-lint/eslint.config.mjs \"packages/components/src/**/*.{ts,tsx}\"",
+    "lint:host-strict": "node scripts/checks/host-lint/run.mjs",
     "i18n:check": "node --experimental-strip-types --test scripts/checks/i18n-keys.test.ts",
     "docs-routes:check": "node --experimental-strip-types --test scripts/checks/docs-routes.test.ts",
     "llms:check": "node --experimental-strip-types --test scripts/checks/llms-channels.test.ts",
@@ -80,10 +80,7 @@
   "devDependencies": {
     "@changesets/cli": "catalog:",
     "@playwright/test": "catalog:",
-    "@tanstack/eslint-config": "catalog:",
-    "eslint": "catalog:",
     "ts-morph": "catalog:",
-    "typescript-eslint": "catalog:",
     "vite-plus": "catalog:"
   },
   "engines": {

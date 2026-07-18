@@ -32,7 +32,7 @@ jobs:
       - name: Format + lint (vp check)
         run: pnpm exec vp check
 
-      - name: Host-strict lint (copied source passes a strict host ESLint config)
+      - name: Host-strict lint (copied source stays clean under strict host configs)
         run: pnpm run lint:host-strict
 
       - name: Brand guard (no cascade→cascivo regression)

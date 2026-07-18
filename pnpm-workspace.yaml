@@ -40,9 +40,6 @@ catalog:
   '@lhci/cli': ^0.15.1
   '@axe-core/playwright': ^4.11.3
   vite-imagetools: ^10.0.1
-  '@tanstack/eslint-config': ^0.4.0
-  eslint: ^10.7.0
-  typescript-eslint: ^8.64.0
 
 overrides:
   vite: 'npm:@voidzero-dev/vite-plus-core@0.2.1'
@@ -80,7 +77,6 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   sharp: true
-  unrs-resolver: true
 
 minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-core@0.2.1'

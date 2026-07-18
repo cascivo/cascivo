@@ -49,9 +49,9 @@ export default [
 ]
 ```
 
-cascivo's CI runs `@tanstack/eslint-config` over its component source with exactly
-this block applied (`pnpm lint:host-strict`), so the copied source stays clean
-against a real strict host config for every rule outside this list.
+cascivo enforces the objective classes below in its own linter (oxlint) via
+`pnpm lint:host-strict`, so the copied source stays clean against a strict host
+config for every rule outside the scope-off list above.
 
 ### `.eslintrc` (legacy) equivalent
 
@@ -81,8 +81,9 @@ against a real strict host config for every rule outside this list.
 cascivo keeps the **objective** classes clean at the source — inline vs top-level
 type specifiers, unnecessary type assertions, `prefer-const`, and stale
 `eslint-disable` directives are treated as defects in the component library
-itself and are enforced in CI by `pnpm lint:host-strict`. What this page scopes
-off is the **stylistic** layer that is one config's opinion:
+itself; the syntactic ones are enforced in CI by `pnpm lint:host-strict` (which
+runs oxlint, no ESLint dependency). What this page scopes off is the
+**stylistic** layer that is one config's opinion:
 generic-parameter naming (`Row` vs `TRow`), import ordering nuances, and unused-
 directive reporting for rule ids your config doesn't share. Those are not worth
 editing vendored files for, because:
