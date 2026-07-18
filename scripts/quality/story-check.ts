@@ -35,6 +35,9 @@ const NON_COMPONENT_STORIES = new Set([
   'streaming-text',
   'terminal',
   'plain-charts',
+  // Glyph ships from @cascivo/icons (packages/icons), not the copy-paste
+  // component registry — its story is a showcase, not a registry component.
+  'glyph',
 ])
 
 /**
