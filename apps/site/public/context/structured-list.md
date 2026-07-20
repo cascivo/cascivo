@@ -35,6 +35,7 @@ Static lists use table/row/cell roles so columns are announced; selectable lists
 
 | Name           | Type                                                       | Required | Default | Description                          |
 | -------------- | ---------------------------------------------------------- | -------- | ------- | ------------------------------------ |
+| `aria-label`   | `string`                                                   | No       | —       | Accessible label for the list table. |
 | `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | Yes      | —       | The items to render.                 |
 | `headers`      | `ReactNode[]`                                              | No       | —       | The column header cells.             |
 | `selectable`   | `boolean`                                                  | No       | false   | When true, rows can be selected.     |

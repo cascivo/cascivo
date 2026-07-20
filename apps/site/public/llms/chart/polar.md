@@ -79,3 +79,7 @@ import { Polar } from '@cascivo/charts'
 ## Tags
 
 chart, polar, rose, radial, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

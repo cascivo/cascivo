@@ -111,3 +111,7 @@ Forward (default), backward, bidirectional, or undirected — via markerStart/ma
 ## Tags
 
 flow, edge, connector, animated, svg
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

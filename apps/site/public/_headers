@@ -24,7 +24,7 @@
   Access-Control-Allow-Origin: *
   X-Robots-Tag: all
 
-/docs/getting-started.md
+/docs/*.md
   Access-Control-Allow-Origin: *
   X-Robots-Tag: all
   Content-Type: text/markdown; charset=utf-8

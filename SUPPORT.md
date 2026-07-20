@@ -4,7 +4,7 @@ Thanks for using cascivo. Here's where to go, depending on what you need.
 
 ## Questions & help
 
-- **Documentation** — [docs.cascivo.com](https://docs.cascivo.com): component
+- **Documentation** — [cascivo.com](https://cascivo.com): component
   reference, adopter guides, theming, and the AI/MCP layer. Start here.
 - **Getting started** — [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md) and
   the [docs index](docs/README.md).

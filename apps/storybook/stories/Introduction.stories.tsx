@@ -27,8 +27,7 @@ function Introduction() {
           showcase
         </li>
         <li>
-          <a href="https://docs.cascivo.com">docs.cascivo.com</a> — component reference, props, and
-          tokens
+          <a href="https://cascivo.com">cascivo.com</a> — component reference, props, and tokens
         </li>
         <li>
           <a href="https://github.com/cascivo/cascivo">github.com/cascivo/cascivo</a> — source code

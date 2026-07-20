@@ -9,6 +9,12 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'aria-label',
+      type: 'string',
+      required: false,
+      description: 'Accessible label for the filter group.',
+    },
+    {
       name: 'options',
       type: 'FilterOption[]',
       required: true,

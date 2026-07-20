@@ -26,6 +26,7 @@
   "type": "module",
   "types": "./dist/index.d.mts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.mts",

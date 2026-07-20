@@ -136,3 +136,7 @@ A scope chip filters to Clusters, matched glyphs are highlighted, each row carri
 ## Tags
 
 overlay, command, palette, search, cmdk, keyboard, scope, fuzzy
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

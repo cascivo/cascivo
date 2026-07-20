@@ -37,7 +37,7 @@ for (const c of components) {
 }
 
 let body = `## Component index\n\n`
-body += `${components.length} components, exported from \`@cascivo/react\`. Full props, examples, and live demos at [docs.cascivo.com](https://docs.cascivo.com).\n`
+body += `${components.length} components, exported from \`@cascivo/react\`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).\n`
 for (const [key, label] of CATEGORIES) {
   const list = (grouped.get(key) ?? []).sort((a, b) =>
     (a.meta?.name ?? a.name).localeCompare(b.meta?.name ?? b.name),

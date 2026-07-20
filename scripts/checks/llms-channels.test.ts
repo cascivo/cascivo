@@ -93,4 +93,29 @@ describe('llms channel + stylesheet guard', () => {
     }
     assert.deepEqual(failures, [], `Regenerate docs (\`pnpm regen\`):\n${failures.join('\n')}`)
   })
+
+  // Docs freshness invariant (WS-A): every served artifact carries a version stamp,
+  // so a stale deployed copy is detectable (by a reader and by the post-deploy probe).
+  it('llms.txt carries a top-of-file registry-version stamp', () => {
+    const txt = readFileSync(LLMS_TXT_PATH, 'utf8')
+    const version = (JSON.parse(readFileSync(REGISTRY_PATH, 'utf8')) as { version: string }).version
+    const head = txt.split('\n').slice(0, 6).join('\n')
+    assert.ok(
+      head.includes(`registry v${version}`),
+      `llms.txt is missing the top-of-file "registry v${version}" stamp (run \`pnpm regen\`)`,
+    )
+  })
+
+  it('every per-component markdown ends with a freshness stamp', () => {
+    const version = (JSON.parse(readFileSync(REGISTRY_PATH, 'utf8')) as { version: string }).version
+    const failures: string[] = []
+    for (const e of registry()) {
+      const md = join(LLMS_DIR, `${e.name}.md`)
+      if (!existsSync(md)) continue
+      if (!readFileSync(md, 'utf8').includes(`registry v${version}`)) {
+        failures.push(`${e.name}: markdown lacks the "registry v${version}" stamp`)
+      }
+    }
+    assert.deepEqual(failures, [], `Regenerate docs (\`pnpm regen\`):\n${failures.join('\n')}`)
+  })
 })

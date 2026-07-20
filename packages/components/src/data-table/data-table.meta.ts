@@ -10,12 +10,45 @@ export const meta: ComponentMeta = {
   sizes: ['compact', 'normal', 'relaxed'],
   props: [
     {
+      name: 'virtualized',
+      type: 'boolean',
+      required: false,
+      description: 'Render only the visible row window for large datasets.',
+      default: 'false',
+    },
+    {
+      name: 'rowHeight',
+      type: 'number',
+      required: false,
+      description: 'Fixed row height in px, used to compute the virtualized window.',
+      default: '40',
+    },
+    {
+      name: 'windowSize',
+      type: 'number',
+      required: false,
+      description: 'Number of rows rendered in the virtualized window.',
+      default: '20',
+    },
+    {
+      name: 'overscan',
+      type: 'number',
+      required: false,
+      description: 'Extra rows rendered above/below the window to smooth scrolling.',
+      default: '3',
+    },
+    {
       name: 'columns',
       description: 'The column definitions describing each table column.',
       type: 'Column<Row>[]',
       required: true,
     },
-    { name: 'rows', description: 'Number of visible text rows.', type: 'Row[]', required: true },
+    {
+      name: 'rows',
+      description: 'The row objects to render — one table row per array element.',
+      type: 'Row[]',
+      required: true,
+    },
     {
       name: 'getRowId',
       description: 'Returns a stable unique id for a row.',

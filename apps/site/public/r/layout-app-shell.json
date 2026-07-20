@@ -27,6 +27,19 @@
     "sizes": [],
     "props": [
       {
+        "name": "footer",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Optional sticky footer rendered below the content area."
+      },
+      {
+        "name": "sideNavMode",
+        "type": "'push' | 'overlay'",
+        "required": false,
+        "description": "push (default): sidebar takes grid space; overlay: sidebar floats over content.",
+        "default": "push"
+      },
+      {
         "name": "header",
         "type": "ReactNode",
         "required": true,

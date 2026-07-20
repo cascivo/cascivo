@@ -41,11 +41,13 @@ import { Progress } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                                       | Required | Default   | Description                                           |
-| --------- | ---------------------------------------------------------- | -------- | --------- | ----------------------------------------------------- |
-| `value`   | `number`                                                   | no       | —         | 0–100. Omit for indeterminate state.                  |
-| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `primary` | Selects the visual style variant.                     |
-| `size`    | `'sm' \| 'md' \| 'lg'`                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop               | Type                                                       | Required | Default   | Description                                           |
+| ------------------ | ---------------------------------------------------------- | -------- | --------- | ----------------------------------------------------- |
+| `aria-label`       | `string`                                                   | no       | —         | Accessible label when no visible label is present.    |
+| `aria-describedby` | `string`                                                   | no       | —         | Id of an element describing the progress bar.         |
+| `value`            | `number`                                                   | no       | —         | 0–100. Omit for indeterminate state.                  |
+| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `primary` | Selects the visual style variant.                     |
+| `size`             | `'sm' \| 'md' \| 'lg'`                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -97,3 +99,7 @@ import { Progress } from '@cascivo/react'
 ## Tags
 
 progress, loading, upload, bar
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

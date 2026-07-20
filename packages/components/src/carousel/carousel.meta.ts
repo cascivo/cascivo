@@ -8,6 +8,12 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    {
+      name: 'labels',
+      type: 'CarouselLabels',
+      required: false,
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+    },
     { name: 'children', type: 'ReactNode', required: false, description: 'Slides as children' },
     { name: 'slides', type: 'ReactNode[]', required: false, description: 'Slides as an array' },
     { name: 'index', type: 'number', required: false, description: 'Controlled active index' },

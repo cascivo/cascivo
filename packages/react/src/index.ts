@@ -66,6 +66,12 @@ export * from '../../components/src/context-menu/context-menu'
 export * from '../../components/src/comparison/comparison'
 export * from '../../components/src/hover-card/hover-card'
 export { ErrorBoundary, SuspenseBoundary, Portal, FocusScope } from '@cascivo/core'
+// Router-link integration: config-driven navs (SideNav, ShellHeader, Breadcrumb, …)
+// render links through the component registered here. Re-exported from @cascivo/react
+// so prebuilt-package (Path B) users need not add @cascivo/core as a direct dep (it is
+// only a transitive dep, so `import … from '@cascivo/core'` is a phantom-dependency
+// error under pnpm). Copied-source (Path A) projects can import it from either package.
+export { setLinkComponent, getLinkComponent, type LinkComponent } from '@cascivo/core'
 export * from '../../components/src/password-input/password-input'
 export * from '../../components/src/multi-select/multi-select'
 export * from '../../components/src/tags-input/tags-input'

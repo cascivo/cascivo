@@ -10,7 +10,7 @@
 [![license](https://img.shields.io/npm/l/%40cascivo%2Ficons?style=flat-square&color=0079bf)](https://github.com/cascivo/cascivo/blob/main/LICENSE)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
-[npm](https://www.npmjs.com/package/@cascivo/icons) · [cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[npm](https://www.npmjs.com/package/@cascivo/icons) · [cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 </div>
 
@@ -18,7 +18,7 @@
 
 A set of **~440** React SVG icon components that inherit the cascivo token system — stroked 24×24 `currentColor` geometry, token-driven sizing, and tree-shakeable named exports.
 
-Browse and search the full catalog — with click-to-copy imports and live size/color/theme previews — in the **[/icons gallery](https://docs.cascivo.com/icons)**.
+Browse and search the full catalog — with click-to-copy imports and live size/color/theme previews — in the **[/icons gallery](https://cascivo.com/icons)**.
 
 ## Usage
 
@@ -86,6 +86,6 @@ pnpm add @cascivo/icons
 
 ---
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
 
 <div align="center"><a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="28" height="28" alt="cascivo"></a></div>

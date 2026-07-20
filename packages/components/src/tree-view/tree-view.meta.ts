@@ -9,6 +9,12 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'aria-label',
+      type: 'string',
+      required: false,
+      description: 'Accessible label for the tree.',
+    },
+    {
       name: 'items',
       description: 'The items to render.',
       type: '{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]',

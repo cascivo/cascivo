@@ -2,7 +2,7 @@
 
 The curated index for everything under `docs/`. Start here, then follow the path
 that matches what you're doing. The full, interactive docs live at
-[docs.cascivo.com](https://docs.cascivo.com); this directory holds the adopter
+[cascivo.com](https://cascivo.com); this directory holds the adopter
 guides, references, cookbooks, and specs that ship with the source.
 
 ## Start here
@@ -72,7 +72,7 @@ Task-focused, copy-adaptable recipes in [`cookbooks/`](cookbooks/):
 ---
 
 Machine-readable docs for AI agents: [`llms.txt`](https://cascivo.com/llms.txt),
-per-component [`llms/<name>.md`](https://docs.cascivo.com/llms/), and
+per-component [`llms/<name>.md`](https://cascivo.com/llms/), and
 [`context.json`](https://cascivo.com/context.json). Give your own agent the house
 rules with [AI-RULES.md](AI-RULES.md) (the CSS layer contract, the reactivity
 contract, and a utility-first mapping). See the root

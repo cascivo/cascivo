@@ -24,6 +24,7 @@ import { Resizable } from '@cascivo/react'
 
 | Prop            | Type                         | Required | Default      | Description                                      |
 | --------------- | ---------------------------- | -------- | ------------ | ------------------------------------------------ |
+| `label`         | `string`                     | no       | —            | Accessible label for the resize handle.          |
 | `children`      | `ReactNode`                  | yes      | —            | Exactly two panes                                |
 | `orientation`   | `'horizontal' \| 'vertical'` | no       | `horizontal` | Layout orientation of the component.             |
 | `defaultRatio`  | `number`                     | no       | `0.5`        | The initial split ratio when uncontrolled.       |
@@ -73,3 +74,7 @@ import { Resizable } from '@cascivo/react'
 ## Tags
 
 splitter, panes, layout, resize, divider
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

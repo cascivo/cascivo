@@ -36,6 +36,7 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 
 | Name           | Type                           | Required | Default | Description                                                   |
 | -------------- | ------------------------------ | -------- | ------- | ------------------------------------------------------------- |
+| `aria-label`   | `string`                       | No       | —       | Accessible label for the filter group.                        |
 | `options`      | `FilterOption[]`               | Yes      | —       | Array of { label, value } objects to render as filter buttons |
 | `value`        | `string[]`                     | No       | —       | Controlled selected values                                    |
 | `defaultValue` | `string[]`                     | No       | []      | Initial selected values for uncontrolled use                  |

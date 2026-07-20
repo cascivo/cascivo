@@ -1,6 +1,6 @@
 {
   "version": "0.7.1",
-  "generatedAt": "2026-07-18",
+  "generatedAt": "2026-07-20",
   "components": [
     {
       "name": "accordion",
@@ -840,7 +840,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.module.css"
       ],
       "fileHashes": {
-        "avatar.tsx": "sha256-c7ffd5cc74dd093164877973879d414612d82aff00e1329a53a2d15be27b6893",
+        "avatar.tsx": "sha256-b8a528eb3319fd685eedb485b48b39ee7fe846bcf36d88296df63deb0d0f5e01",
         "avatar.module.css": "sha256-e0f5b3e477d8a6b541293d9966e530c235ddb3df57fabf55955c17f62847d13f"
       },
       "dependencies": ["@cascivo/core"],
@@ -869,10 +869,16 @@
             "required": false
           },
           {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "description": "Full name — used to derive initials for the fallback and as the accessible label."
+          },
+          {
             "name": "fallback",
             "type": "string",
             "required": false,
-            "description": "Initials shown when no image is available"
+            "description": "Explicit fallback text (initials/glyph); overrides initials derived from name."
           },
           {
             "name": "size",
@@ -905,12 +911,17 @@
             "code": "<Avatar src=\"/jane.jpg\" alt=\"Jane Doe\" />"
           },
           {
-            "title": "Fallback",
+            "title": "Initials from name",
+            "code": "<Avatar name=\"Ada Lovelace\" /> // renders \"AL\"",
+            "description": "Derives initials automatically; also sets the accessible label."
+          },
+          {
+            "title": "Explicit fallback",
             "code": "<Avatar fallback=\"JD\" alt=\"Jane Doe\" />"
           },
           {
             "title": "With status",
-            "code": "<Avatar fallback=\"JD\" status=\"online\" />"
+            "code": "<Avatar name=\"Jane Doe\" status=\"online\" />"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -1961,6 +1972,30 @@
         "sizes": ["sm", "md", "lg"],
         "props": [
           {
+            "name": "isInRange",
+            "type": "(date: Date) => boolean",
+            "required": false,
+            "description": "Highlight predicate for range previews (used by DateRangePicker)."
+          },
+          {
+            "name": "isRangeStart",
+            "type": "(date: Date) => boolean",
+            "required": false,
+            "description": "Predicate marking the range's start date for styling."
+          },
+          {
+            "name": "isRangeEnd",
+            "type": "(date: Date) => boolean",
+            "required": false,
+            "description": "Predicate marking the range's end date for styling."
+          },
+          {
+            "name": "onDayHover",
+            "type": "(date: Date | null) => void",
+            "required": false,
+            "description": "Called with the hovered day (or null on leave) to drive range previews."
+          },
+          {
             "name": "value",
             "type": "Date | null",
             "required": false,
@@ -2261,6 +2296,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "labels",
+            "type": "CarouselLabels",
+            "required": false,
+            "description": "Overrides for the component’s user-visible strings (i18n)."
+          },
           {
             "name": "children",
             "type": "ReactNode",
@@ -3244,6 +3285,12 @@
         "sizes": ["sm", "md", "lg"],
         "props": [
           {
+            "name": "labels",
+            "type": "ColorPickerLabels",
+            "required": false,
+            "description": "Overrides for the component’s user-visible strings (i18n)."
+          },
+          {
             "name": "value",
             "type": "string",
             "required": false,
@@ -3396,6 +3443,12 @@
         "variants": [],
         "sizes": ["sm", "md", "lg"],
         "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "description": "Base id for the input and its listbox/aria wiring; auto-generated when omitted."
+          },
           {
             "name": "options",
             "description": "The selectable options.",
@@ -4458,6 +4511,34 @@
         "sizes": ["compact", "normal", "relaxed"],
         "props": [
           {
+            "name": "virtualized",
+            "type": "boolean",
+            "required": false,
+            "description": "Render only the visible row window for large datasets.",
+            "default": "false"
+          },
+          {
+            "name": "rowHeight",
+            "type": "number",
+            "required": false,
+            "description": "Fixed row height in px, used to compute the virtualized window.",
+            "default": "40"
+          },
+          {
+            "name": "windowSize",
+            "type": "number",
+            "required": false,
+            "description": "Number of rows rendered in the virtualized window.",
+            "default": "20"
+          },
+          {
+            "name": "overscan",
+            "type": "number",
+            "required": false,
+            "description": "Extra rows rendered above/below the window to smooth scrolling.",
+            "default": "3"
+          },
+          {
             "name": "columns",
             "description": "The column definitions describing each table column.",
             "type": "Column<Row>[]",
@@ -4465,7 +4546,7 @@
           },
           {
             "name": "rows",
-            "description": "Number of visible text rows.",
+            "description": "The row objects to render — one table row per array element.",
             "type": "Row[]",
             "required": true
           },
@@ -4707,6 +4788,12 @@
         "variants": [],
         "sizes": ["sm", "md", "lg"],
         "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "description": "Base id for the input and its popover/aria wiring; auto-generated when omitted."
+          },
           {
             "name": "value",
             "type": "string",
@@ -5089,6 +5176,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the dock navigation; defaults to the built-in i18n string."
+          },
           {
             "name": "items",
             "type": "DockItem[]",
@@ -6316,6 +6409,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the filter group."
+          },
+          {
             "name": "options",
             "type": "FilterOption[]",
             "required": true,
@@ -6589,6 +6688,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "labels",
+            "type": "HeaderLabels",
+            "required": false,
+            "description": "Overrides for the component’s user-visible strings (i18n)."
+          },
           {
             "name": "brand",
             "type": "React.ReactNode",
@@ -10956,6 +11061,18 @@
         "sizes": ["sm", "md", "lg"],
         "props": [
           {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label when no visible label is present."
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string",
+            "required": false,
+            "description": "Id of an element describing the progress bar."
+          },
+          {
             "name": "value",
             "type": "number",
             "required": false,
@@ -12159,6 +12276,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "hideIndicator",
+            "type": "boolean",
+            "required": false,
+            "description": "Hide the radio indicator glyph, showing only the card content."
+          },
+          {
             "name": "value",
             "type": "string",
             "required": true,
@@ -12544,6 +12667,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the resize handle."
+          },
           {
             "name": "children",
             "type": "ReactNode",
@@ -13644,7 +13773,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-2026b2326957c10bdc78cab459f98c371e50752b276814871167ae6531083a03",
+        "side-nav.tsx": "sha256-f557348e1fad7873a679692f293f742d9ab9f3e439a6b83881dd0a808e73708e",
         "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -13661,6 +13790,18 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "groups",
+            "type": "SideNavGroup[]",
+            "required": false,
+            "description": "Grouped navigation items rendered under optional group labels."
+          },
+          {
+            "name": "showCollapseToggle",
+            "type": "boolean",
+            "required": false,
+            "description": "Show the collapse/expand toggle control."
+          },
           {
             "name": "items",
             "type": "SideNavItem[]",
@@ -13970,6 +14111,7 @@
       "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
       "meta": {
         "name": "SkipNav",
+        "importSymbols": "SkipNavLink, SkipNavTarget",
         "description": "Skip link that jumps keyboard users past the navigation to the main content",
         "category": "navigation",
         "states": [],
@@ -14720,6 +14862,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the steps navigation; defaults to the built-in i18n string."
+          },
+          {
             "name": "steps",
             "type": "Step[]",
             "required": true,
@@ -14858,6 +15006,12 @@
         "variants": ["static", "selectable"],
         "sizes": [],
         "props": [
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the list table."
+          },
           {
             "name": "items",
             "description": "The items to render.",
@@ -16480,6 +16634,7 @@
       "tags": ["overlay", "notification", "feedback"],
       "meta": {
         "name": "Toast",
+        "importSymbols": "ToastProvider, useToast",
         "description": "Transient notification surfaced via the useToast hook",
         "category": "overlay",
         "states": ["visible", "dismissing", "gone"],
@@ -17359,6 +17514,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the tree."
+          },
+          {
             "name": "items",
             "description": "The items to render.",
             "type": "{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]",
@@ -17510,7 +17671,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.module.css"
       ],
       "fileHashes": {
-        "user.tsx": "sha256-3e894ac957fe01aba3a8deb5f62cc1289a7a094f3276dbe585e4f64a36fb337f",
+        "user.tsx": "sha256-35cd93fcff5f4bfe00c78d4df59d59463aa89672f3d811a5972e06343d3b8dbb",
         "user.module.css": "sha256-d94f57f12e1784e025f85c00e31de446bd532de9f13e49b14928d72d8053a8f7"
       },
       "dependencies": ["@cascivo/core", "@cascivo/components"],
@@ -17745,6 +17906,19 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "footer",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Optional sticky footer rendered below the content area."
+          },
+          {
+            "name": "sideNavMode",
+            "type": "'push' | 'overlay'",
+            "required": false,
+            "description": "push (default): sidebar takes grid space; overlay: sidebar floats over content.",
+            "default": "push"
+          },
           {
             "name": "header",
             "type": "ReactNode",

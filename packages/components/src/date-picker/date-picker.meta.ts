@@ -9,6 +9,13 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md', 'lg'],
   props: [
     {
+      name: 'id',
+      type: 'string',
+      required: false,
+      description:
+        'Base id for the input and its popover/aria wiring; auto-generated when omitted.',
+    },
+    {
       name: 'value',
       type: 'string',
       required: false,

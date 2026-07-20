@@ -16,7 +16,7 @@
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 </div>
 
@@ -77,8 +77,8 @@ Prefer a prebuilt dependency? `pnpm add @cascivo/react @cascivo/themes @preact/s
 
 cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent, boundaries, anti-patterns) so agents select from closed sets and their output is checkable:
 
-- **`llms.txt`** — start here. [`https://cascivo.com/llms.txt`](https://cascivo.com/llms.txt) is the AI entry point: how to install (both paths + trade-offs), the guides, the MCP tools, and a categorized index linking each component's machine-readable docs. Mirrored at `https://docs.cascivo.com/llms.txt`.
-- **Per-component AI docs** — `https://docs.cascivo.com/llms/<name>.md` (props, examples, a11y, tokens) and `…/context/<name>.md` (when-to-use / when-not-to-use).
+- **`llms.txt`** — start here. [`https://cascivo.com/llms.txt`](https://cascivo.com/llms.txt) is the AI entry point: how to install (both paths + trade-offs), the guides, the MCP tools, and a categorized index linking each component's machine-readable docs. Mirrored at `https://cascivo.com/llms.txt`.
+- **Per-component AI docs** — `https://cascivo.com/llms/<name>.md` (props, examples, a11y, tokens) and `…/context/<name>.md` (when-to-use / when-not-to-use).
 - **`context.json`** — intent, design boundaries, specs, and authoring rules in one machine-readable bundle.
 - **`tokens.catalog.json`** — closed-set token catalog; every `--cascivo-*` property with its layer and resolved default.
 - **`cascivo audit --ai`** — flags hard-coded values, invented props, and missing required wiring in generated code.
@@ -135,7 +135,7 @@ cascivo/
 │   ├── cli/          # cascivo CLI — init / add / list / update / audit
 │   └── mcp/          # @cascivo/mcp     — MCP server over the registry
 ├── apps/
-│   ├── site/         # cascivo.com + docs.cascivo.com — landing + docs, generated from manifests (dogfood)
+│   ├── site/         # cascivo.com + cascivo.com — landing + docs, generated from manifests (dogfood)
 │   ├── storybook/    # storybook.cascivo.com — stories from manifests
 │   ├── bench/        # performance benchmarks
 │   └── examples/     # runnable example apps (Vite, Next.js, registry starter, demos)
@@ -309,6 +309,6 @@ Browse the full catalog with live previews at [cascivo.com/docs/components](http
 
 ---
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
 
 <div align="center"><a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="28" height="28" alt="cascivo"></a></div>

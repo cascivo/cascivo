@@ -35,6 +35,7 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 
 | Name               | Type                                                                          | Required | Default | Description                                                          |
 | ------------------ | ----------------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------- |
+| `aria-label`       | `string`                                                                      | No       | —       | Accessible label for the tree.                                       |
 | `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | Yes      | —       | The items to render.                                                 |
 | `selectionMode`    | `'single' \| 'multi'`                                                         | No       | single  | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
 | `selected`         | `string \| string[]`                                                          | No       | —       | The controlled selected node id(s).                                  |

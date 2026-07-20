@@ -24,6 +24,12 @@
     "sizes": [],
     "props": [
       {
+        "name": "labels",
+        "type": "CarouselLabels",
+        "required": false,
+        "description": "Overrides for the component’s user-visible strings (i18n)."
+      },
+      {
         "name": "children",
         "type": "ReactNode",
         "required": false,

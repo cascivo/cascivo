@@ -61,3 +61,7 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 ## Tags
 
 section, gallery, masonry
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

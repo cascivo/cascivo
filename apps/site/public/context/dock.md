@@ -33,11 +33,12 @@ Wrapped in <nav> with aria-label; active item carries aria-current="page"; rende
 
 ## Props
 
-| Name          | Type         | Required | Default | Description                                                             |
-| ------------- | ------------ | -------- | ------- | ----------------------------------------------------------------------- |
-| `items`       | `DockItem[]` | Yes      | —       | Navigation items, each with a label, icon, and optional href or onClick |
-| `activeIndex` | `number`     | No       | —       | Index of the currently active item (0-based)                            |
-| `className`   | `string`     | No       | —       | Additional CSS class names merged onto the root element.                |
+| Name          | Type         | Required | Default | Description                                                                     |
+| ------------- | ------------ | -------- | ------- | ------------------------------------------------------------------------------- |
+| `ariaLabel`   | `string`     | No       | —       | Accessible label for the dock navigation; defaults to the built-in i18n string. |
+| `items`       | `DockItem[]` | Yes      | —       | Navigation items, each with a label, icon, and optional href or onClick         |
+| `activeIndex` | `number`     | No       | —       | Index of the currently active item (0-based)                                    |
+| `className`   | `string`     | No       | —       | Additional CSS class names merged onto the root element.                        |
 
 ## Tokens
 

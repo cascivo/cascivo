@@ -1,0 +1,71 @@
+name: Docs freshness
+
+# Layer 4 of the docs freshness invariant: catch out-of-band rot BETWEEN deploys
+# (a domain rebound to an old Pages project, a deleted deployment, a stale CDN,
+# an expired cert, or the retired docs.cascivo.com redirect breaking). Post-deploy
+# verification only fires when we deploy; this runs daily against production so a
+# stale canonical host — the 2026-07-18 report's failure mode — can never go
+# unnoticed for more than a day.
+
+on:
+  schedule:
+    - cron: '17 6 * * *' # daily, 06:17 UTC
+  workflow_dispatch: {}
+
+# Only one freshness probe at a time.
+concurrency:
+  group: docs-freshness
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write # open/update the pinned alert issue on failure
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Probe production hosts for freshness
+        id: probe
+        run: bash scripts/checks/deployed-freshness.sh
+        env:
+          FRESHNESS_RETRIES: '5'
+          FRESHNESS_SLEEP: '10'
+          # Remove once the docs.cascivo.com → cascivo.com 301 is configured
+          # (docs/internal/OPS-HOSTS.md). Until then only the canonical host is asserted.
+          FRESHNESS_SKIP_REDIRECT: '1'
+
+      # Scheduled-run failures are easy to miss — surface them as a single pinned
+      # issue, updated in place (not one per run).
+      - name: Open or update the docs-freshness alert issue
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Docs freshness probe failing'
+            const body = [
+              'The scheduled docs-freshness probe failed — production is not serving the',
+              'current registry version on at least one host.',
+              '',
+              `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'Likely causes: a custom-domain binding points at an old Pages project, the',
+              'last deploy did not propagate, or the CDN is serving stale bytes. See',
+              'docs/internal/OPS-HOSTS.md.',
+            ].join('\n')
+            const { owner, repo } = context.repo
+            const existing = await github.rest.issues.listForRepo({
+              owner, repo, state: 'open', labels: 'docs-freshness',
+            })
+            if (existing.data.length > 0) {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number: existing.data[0].number, body,
+              })
+            } else {
+              await github.rest.issues.create({
+                owner, repo, title, body, labels: ['docs-freshness'],
+              })
+            }

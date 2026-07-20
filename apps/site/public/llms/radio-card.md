@@ -28,12 +28,13 @@ import { RadioCard } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type        | Required | Default | Description          |
-| ------------- | ----------- | -------- | ------- | -------------------- |
-| `value`       | `string`    | yes      | —       | Radio value          |
-| `title`       | `ReactNode` | yes      | —       | Card title           |
-| `description` | `ReactNode` | no       | —       | Optional description |
-| `disabled`    | `boolean`   | no       | —       | Disables the card    |
+| Prop            | Type        | Required | Default | Description                                                    |
+| --------------- | ----------- | -------- | ------- | -------------------------------------------------------------- |
+| `hideIndicator` | `boolean`   | no       | —       | Hide the radio indicator glyph, showing only the card content. |
+| `value`         | `string`    | yes      | —       | Radio value                                                    |
+| `title`         | `ReactNode` | yes      | —       | Card title                                                     |
+| `description`   | `ReactNode` | no       | —       | Optional description                                           |
+| `disabled`      | `boolean`   | no       | —       | Disables the card                                              |
 
 ## Examples
 
@@ -69,3 +70,7 @@ Single-select plan picker
 ## Tags
 
 radio, card, selectable, form
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

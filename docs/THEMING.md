@@ -50,6 +50,11 @@ Apply a theme by setting the attribute on any container:
 <main data-theme="dark">…</main>
 ```
 
+**The theme export name is the `data-theme` value:** import `@cascivo/themes/<name>`
+and set `data-theme="<name>"` (e.g. `@cascivo/themes/midnight` ↔
+`data-theme="midnight"`). The full import→value table for all twelve first-party
+themes is in [GETTING-STARTED.md](./GETTING-STARTED.md#theme-export--data-theme-value).
+
 ## Switching themes at runtime
 
 `data-theme` is the *what*; `ThemeProvider` (from `@cascivo/react`) is the *how* — it

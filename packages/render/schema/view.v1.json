@@ -536,6 +536,9 @@
                   "alt": {
                     "type": "string"
                   },
+                  "name": {
+                    "type": "string"
+                  },
                   "fallback": {
                     "type": "string"
                   },
@@ -871,6 +874,10 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "labels": {
+                    "type": "string",
+                    "enum": ["CarouselLabels"]
+                  },
                   "children": {
                     "type": "string",
                     "enum": ["ReactNode"]
@@ -1110,6 +1117,10 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "labels": {
+                    "type": "string",
+                    "enum": ["ColorPickerLabels"]
+                  },
                   "value": {
                     "type": "string"
                   },
@@ -1148,6 +1159,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "id": {
+                    "type": "string"
+                  },
                   "value": {
                     "type": "string"
                   },
@@ -1397,6 +1411,18 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "virtualized": {
+                    "type": "boolean"
+                  },
+                  "rowHeight": {
+                    "type": "number"
+                  },
+                  "windowSize": {
+                    "type": "number"
+                  },
+                  "overscan": {
+                    "type": "number"
+                  },
                   "sort": {
                     "type": "string",
                     "enum": ["SortState"]
@@ -1462,6 +1488,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "id": {
+                    "type": "string"
+                  },
                   "value": {
                     "type": "string"
                   },
@@ -1557,6 +1586,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "activeIndex": {
                     "type": "number"
                   },
@@ -1844,6 +1876,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "aria-label": {
+                    "type": "string"
+                  },
                   "multi": {
                     "type": "boolean"
                   },
@@ -1898,6 +1933,10 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "labels": {
+                    "type": "string",
+                    "enum": ["HeaderLabels"]
+                  },
                   "sticky": {
                     "type": "boolean"
                   },
@@ -2936,6 +2975,12 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "aria-label": {
+                    "type": "string"
+                  },
+                  "aria-describedby": {
+                    "type": "string"
+                  },
                   "value": {
                     "type": "number"
                   },
@@ -3232,6 +3277,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "hideIndicator": {
+                    "type": "boolean"
+                  },
                   "value": {
                     "type": "string"
                   },
@@ -3336,6 +3384,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "children": {
                     "type": "string",
                     "enum": ["ReactNode"]
@@ -3623,6 +3674,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "showCollapseToggle": {
+                    "type": "boolean"
+                  },
                   "collapsed": {
                     "type": "boolean"
                   },
@@ -3884,6 +3938,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "activeStep": {
                     "type": "number"
                   },
@@ -3914,6 +3971,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "aria-label": {
+                    "type": "string"
+                  },
                   "selectable": {
                     "type": "boolean"
                   },
@@ -4511,6 +4571,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "aria-label": {
+                    "type": "string"
+                  },
                   "selectionMode": {
                     "type": "string",
                     "enum": ["single", "multi"]
@@ -4591,6 +4654,14 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "footer": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "sideNavMode": {
+                    "type": "string",
+                    "enum": ["push", "overlay"]
+                  },
                   "header": {
                     "type": "string",
                     "enum": ["ReactNode"]

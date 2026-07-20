@@ -108,6 +108,22 @@ render their server HTML normally; only their signal-driven interactivity runs i
 the browser, after hydration. Charts (including `PieChart`/donut) server-render and
 hydrate cleanly — no client-only boundary required.
 
+> **TanStack Start specifics (not cascivo — but you'll hit them right here).** Two
+> framework potholes show up around, not inside, this recipe. As of TanStack Start
+> **1.170**:
+>
+> - **The router module must export `getRouter`.** Newer TanStack Start expects your
+>   `src/router.tsx` to export a `getRouter` function; an older `export function
+>   createRouter()` name fails the build. See the
+>   [TanStack Start docs](https://tanstack.com/start/latest).
+> - **`vite build` emits an SSR _handler_, not a server.** The default build output
+>   (`dist/server/server.js`) is a request handler, not a self-listening process;
+>   production serving needs a server preset/adapter (Node, Netlify, Cloudflare, …).
+>   Pick one via TanStack Start's server-preset configuration.
+>
+> Neither is a cascivo issue; both are worth knowing before you deploy. Delete this
+> note once TanStack Start's API settles.
+
 ### Charts are a separate install
 
 `@cascivo/react` exports no charts. For dashboards, add `@cascivo/charts` and import
@@ -134,15 +150,18 @@ once at startup so they navigate client-side and hover-preload — no `onClick`
 interception:
 
 ```tsx
-import { setLinkComponent } from '@cascivo/core'
+import { setLinkComponent } from '@cascivo/react'
 import { Link } from '@tanstack/react-router'
 
 // TanStack's Link takes `to`, so map href → to. Call once at app start.
 setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
 ```
 
-The registered component receives the full computed prop bag (`href`, `aria-current`,
-active `data-state`, `className`, …), so active styling and accessibility carry over.
+Import it from `@cascivo/react` (where it is re-exported) on the prebuilt path — that
+way you never add `@cascivo/core` as a direct dependency (under pnpm, importing it
+directly would be a phantom-dependency error, since it is only a transitive dep). The
+registered component receives the full computed prop bag (`href`, `aria-current`, active
+`data-state`, `className`, …), so active styling and accessibility carry over.
 
 ### Timestamps (`RelativeTime`)
 

@@ -8,7 +8,7 @@
 ![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 </div>
 
@@ -51,6 +51,6 @@ See [Contributing a Template](../../../docs/CONTRIBUTING-TEMPLATES.md) for the f
 
 ---
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
 
 <div align="center"><a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="28" height="28" alt="cascivo"></a></div>

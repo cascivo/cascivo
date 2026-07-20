@@ -10,6 +10,13 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md', 'lg'],
   props: [
     {
+      name: 'id',
+      type: 'string',
+      required: false,
+      description:
+        'Base id for the input and its listbox/aria wiring; auto-generated when omitted.',
+    },
+    {
       name: 'options',
       description: 'The selectable options.',
       type: 'ComboboxOption[]',

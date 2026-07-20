@@ -32,21 +32,25 @@ Renders an APG-compliant role="grid" table with role="row"/role="gridcell"; a ro
 
 ## Props
 
-| Name            | Type                                              | Required | Default | Description                                              |
-| --------------- | ------------------------------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `value`         | `Date \| null`                                    | No       | —       | Controlled selected date                                 |
-| `defaultValue`  | `Date`                                            | No       | —       | Uncontrolled initial selected date                       |
-| `onValueChange` | `(date: Date) => void`                            | No       | —       | Called when a day is selected                            |
-| `min`           | `Date`                                            | No       | —       | Earliest selectable date                                 |
-| `max`           | `Date`                                            | No       | —       | Latest selectable date                                   |
-| `disabled`      | `(date: Date) => boolean`                         | No       | —       | Predicate to disable individual days                     |
-| `locale`        | `string`                                          | No       | —       | BCP-47 locale; defaults to the current i18n locale       |
-| `size`          | `'sm' \| 'md' \| 'lg'`                            | No       | —       | Grid cell size                                           |
-| `labels`        | `CalendarLabels`                                  | No       | —       | i18n label overrides for the nav buttons                 |
-| `month`         | `number`                                          | No       | —       | Controlled view month (0-11)                             |
-| `year`          | `number`                                          | No       | —       | Controlled view year                                     |
-| `onViewChange`  | `(view: { month: number; year: number }) => void` | No       | —       | Called when the visible month changes                    |
-| `hideNav`       | `boolean`                                         | No       | —       | Hides the prev/next nav so a parent can drive navigation |
+| Name            | Type                                              | Required | Default | Description                                                             |
+| --------------- | ------------------------------------------------- | -------- | ------- | ----------------------------------------------------------------------- |
+| `isInRange`     | `(date: Date) => boolean`                         | No       | —       | Highlight predicate for range previews (used by DateRangePicker).       |
+| `isRangeStart`  | `(date: Date) => boolean`                         | No       | —       | Predicate marking the range's start date for styling.                   |
+| `isRangeEnd`    | `(date: Date) => boolean`                         | No       | —       | Predicate marking the range's end date for styling.                     |
+| `onDayHover`    | `(date: Date \| null) => void`                    | No       | —       | Called with the hovered day (or null on leave) to drive range previews. |
+| `value`         | `Date \| null`                                    | No       | —       | Controlled selected date                                                |
+| `defaultValue`  | `Date`                                            | No       | —       | Uncontrolled initial selected date                                      |
+| `onValueChange` | `(date: Date) => void`                            | No       | —       | Called when a day is selected                                           |
+| `min`           | `Date`                                            | No       | —       | Earliest selectable date                                                |
+| `max`           | `Date`                                            | No       | —       | Latest selectable date                                                  |
+| `disabled`      | `(date: Date) => boolean`                         | No       | —       | Predicate to disable individual days                                    |
+| `locale`        | `string`                                          | No       | —       | BCP-47 locale; defaults to the current i18n locale                      |
+| `size`          | `'sm' \| 'md' \| 'lg'`                            | No       | —       | Grid cell size                                                          |
+| `labels`        | `CalendarLabels`                                  | No       | —       | i18n label overrides for the nav buttons                                |
+| `month`         | `number`                                          | No       | —       | Controlled view month (0-11)                                            |
+| `year`          | `number`                                          | No       | —       | Controlled view year                                                    |
+| `onViewChange`  | `(view: { month: number; year: number }) => void` | No       | —       | Called when the visible month changes                                   |
+| `hideNav`       | `boolean`                                         | No       | —       | Hides the prev/next nav so a parent can drive navigation                |
 
 ## Tokens
 

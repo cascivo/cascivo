@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18",
+  "generatedAt": "2026-07-20",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -109,7 +109,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-07-18",
+    "generatedAt": "2026-07-20",
     "global": {
       "strict": [
         {
@@ -1783,7 +1783,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-07-18",
+    "generatedAt": "2026-07-20",
     "exceptions": [
       {
         "id": "EXC-001",
@@ -2504,10 +2504,19 @@
           }
         },
         {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "description": "Full name — used to derive initials for the fallback and as the accessible label.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "fallback",
           "type": "string",
           "required": false,
-          "description": "Initials shown when no image is available",
+          "description": "Explicit fallback text (initials/glyph); overrides initials derived from name.",
           "schema": {
             "kind": "string"
           }
@@ -3698,6 +3707,42 @@
       },
       "props": [
         {
+          "name": "isInRange",
+          "type": "(date: Date) => boolean",
+          "required": false,
+          "description": "Highlight predicate for range previews (used by DateRangePicker).",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "isRangeStart",
+          "type": "(date: Date) => boolean",
+          "required": false,
+          "description": "Predicate marking the range's start date for styling.",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "isRangeEnd",
+          "type": "(date: Date) => boolean",
+          "required": false,
+          "description": "Predicate marking the range's end date for styling.",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "onDayHover",
+          "type": "(date: Date | null) => void",
+          "required": false,
+          "description": "Called with the hovered day (or null on leave) to drive range previews.",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "value",
           "type": "Date | null",
           "required": false,
@@ -3931,6 +3976,15 @@
         ]
       },
       "props": [
+        {
+          "name": "labels",
+          "type": "CarouselLabels",
+          "required": false,
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "schema": {
+            "kind": "other"
+          }
+        },
         {
           "name": "children",
           "type": "ReactNode",
@@ -8411,6 +8465,15 @@
       },
       "props": [
         {
+          "name": "labels",
+          "type": "ColorPickerLabels",
+          "required": false,
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
           "name": "value",
           "type": "string",
           "required": false,
@@ -8553,6 +8616,15 @@
         ]
       },
       "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": "Base id for the input and its listbox/aria wiring; auto-generated when omitted.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "options",
           "description": "The selectable options.",
@@ -9354,6 +9426,46 @@
       },
       "props": [
         {
+          "name": "virtualized",
+          "type": "boolean",
+          "required": false,
+          "description": "Render only the visible row window for large datasets.",
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "rowHeight",
+          "type": "number",
+          "required": false,
+          "description": "Fixed row height in px, used to compute the virtualized window.",
+          "default": "40",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "windowSize",
+          "type": "number",
+          "required": false,
+          "description": "Number of rows rendered in the virtualized window.",
+          "default": "20",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "overscan",
+          "type": "number",
+          "required": false,
+          "description": "Extra rows rendered above/below the window to smooth scrolling.",
+          "default": "3",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
           "name": "columns",
           "description": "The column definitions describing each table column.",
           "type": "Column<Row>[]",
@@ -9364,7 +9476,7 @@
         },
         {
           "name": "rows",
-          "description": "Number of visible text rows.",
+          "description": "The row objects to render — one table row per array element.",
           "type": "Row[]",
           "required": true,
           "schema": {
@@ -9611,6 +9723,15 @@
         ]
       },
       "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "description": "Base id for the input and its popover/aria wiring; auto-generated when omitted.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "value",
           "type": "string",
@@ -9928,6 +10049,15 @@
         ]
       },
       "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label for the dock navigation; defaults to the built-in i18n string.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "items",
           "type": "DockItem[]",
@@ -11275,6 +11405,15 @@
         ]
       },
       "props": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label for the filter group.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "options",
           "type": "FilterOption[]",
@@ -12729,6 +12868,15 @@
       },
       "props": [
         {
+          "name": "labels",
+          "type": "HeaderLabels",
+          "required": false,
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
           "name": "brand",
           "type": "React.ReactNode",
           "required": false,
@@ -14040,6 +14188,26 @@
         "flexibility": []
       },
       "props": [
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Optional sticky footer rendered below the content area.",
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "sideNavMode",
+          "type": "'push' | 'overlay'",
+          "required": false,
+          "description": "push (default): sidebar takes grid space; overlay: sidebar floats over content.",
+          "default": "push",
+          "schema": {
+            "kind": "enum",
+            "values": ["push", "overlay"]
+          }
+        },
         {
           "name": "header",
           "type": "ReactNode",
@@ -16938,6 +17106,24 @@
       },
       "props": [
         {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label when no visible label is present.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string",
+          "required": false,
+          "description": "Id of an element describing the progress bar.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "value",
           "type": "number",
           "required": false,
@@ -17839,6 +18025,15 @@
       },
       "props": [
         {
+          "name": "hideIndicator",
+          "type": "boolean",
+          "required": false,
+          "description": "Hide the radio indicator glyph, showing only the card content.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
           "name": "value",
           "type": "string",
           "required": true,
@@ -18125,6 +18320,15 @@
         ]
       },
       "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label for the resize handle.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "children",
           "type": "ReactNode",
@@ -19473,6 +19677,24 @@
       },
       "props": [
         {
+          "name": "groups",
+          "type": "SideNavGroup[]",
+          "required": false,
+          "description": "Grouped navigation items rendered under optional group labels.",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "showCollapseToggle",
+          "type": "boolean",
+          "required": false,
+          "description": "Show the collapse/expand toggle control.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
           "name": "items",
           "type": "SideNavItem[]",
           "required": true,
@@ -20257,6 +20479,15 @@
       },
       "props": [
         {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label for the steps navigation; defaults to the built-in i18n string.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "steps",
           "type": "Step[]",
           "required": true,
@@ -20347,6 +20578,15 @@
         ]
       },
       "props": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label for the list table.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "items",
           "description": "The items to render.",
@@ -22303,6 +22543,15 @@
         ]
       },
       "props": [
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label for the tree.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "items",
           "description": "The items to render.",

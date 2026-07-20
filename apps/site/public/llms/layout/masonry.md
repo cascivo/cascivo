@@ -53,3 +53,7 @@ Variable-height cards laid out in a masonry pattern; falls back to CSS columns
 ## Tags
 
 layout, masonry, gallery
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
