@@ -28,6 +28,7 @@ import { Header } from '@cascivo/react'
 
 | Prop        | Type                                                  | Required | Default | Description                                                    |
 | ----------- | ----------------------------------------------------- | -------- | ------- | -------------------------------------------------------------- |
+| `labels`    | `HeaderLabels`                                        | no       | —       | Overrides for the component’s user-visible strings (i18n).     |
 | `brand`     | `React.ReactNode`                                     | no       | —       | Product name or logo area, typically wraps a link              |
 | `links`     | `{ label: string; href: string; active?: boolean }[]` | no       | —       | Primary navigation links; active link gets aria-current="page" |
 | `actions`   | `React.ReactNode`                                     | no       | —       | Right-aligned slot for buttons or an avatar                    |
@@ -79,3 +80,7 @@ import { Header } from '@cascivo/react'
 ## Tags
 
 navigation, app-shell, top-bar, banner
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

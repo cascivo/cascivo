@@ -9,6 +9,12 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      description: 'Accessible label for the resize handle.',
+    },
     { name: 'children', type: 'ReactNode', required: true, description: 'Exactly two panes' },
     {
       name: 'orientation',

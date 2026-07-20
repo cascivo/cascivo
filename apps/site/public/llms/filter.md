@@ -36,6 +36,7 @@ import { Filter } from '@cascivo/react'
 
 | Prop           | Type                           | Required | Default | Description                                                   |
 | -------------- | ------------------------------ | -------- | ------- | ------------------------------------------------------------- |
+| `aria-label`   | `string`                       | no       | —       | Accessible label for the filter group.                        |
 | `options`      | `FilterOption[]`               | yes      | —       | Array of { label, value } objects to render as filter buttons |
 | `value`        | `string[]`                     | no       | —       | Controlled selected values                                    |
 | `defaultValue` | `string[]`                     | no       | `[]`    | Initial selected values for uncontrolled use                  |
@@ -111,3 +112,7 @@ import { Filter } from '@cascivo/react'
 ## Tags
 
 filter, chip, tag, pill, facet, category
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

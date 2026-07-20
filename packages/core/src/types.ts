@@ -105,6 +105,13 @@ export interface ComponentMeta {
    * `dependencies` (npm packages).
    */
   registryDependencies?: string[]
+  /**
+   * Symbols to import in the generated Install example, when the display `name`
+   * is not itself an export (compound/imperative modules — e.g. SkipNav ships
+   * `SkipNavLink`/`SkipNavTarget`, Toast ships `ToastProvider`/`useToast`).
+   * Rendered verbatim inside `import { … }`. Defaults to `name`.
+   */
+  importSymbols?: string
   tags: string[]
   intent?: ComponentIntent
 }

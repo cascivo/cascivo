@@ -86,3 +86,7 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 ## Tags
 
 chart, area, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

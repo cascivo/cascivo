@@ -1,11 +1,37 @@
 # Fix plan — TanStack Start adopter report (2026-07-18, published 0.7.1 packages)
 
-**Status: planned — not implemented.** This document is the handoff spec for fixing
-every actionable item in the third TanStack Start experience report
-(`feedback-tanstack-start-adopter-2026-07-18.md`, same directory). It is written to be
-handed to an implementing agent as-is: every claim is triaged against current `main`
-(2026-07-20, HEAD `e1a4263`) with file:line evidence, and every workstream carries a
-spec, tests, and acceptance criteria.
+**Status: IMPLEMENTED on branch `claude/ui-library-report-analysis-8yng1q`.** All eight
+workstreams (WS-A through WS-H) landed with tests/gates green (`vp check`, full build,
+`vp run -r check` typecheck, package tests, and the manifest/docs guards all pass).
+This document remains the spec of record; see the per-workstream "Implemented" notes.
+It is written to be handed to an implementing agent as-is: every claim is triaged
+against `main` (2026-07-20, HEAD `e1a4263`) with file:line evidence, and every
+workstream carries a spec, tests, and acceptance criteria.
+
+Implementation summary (what shipped):
+- **WS-A** freshness: version stamps on `llms.txt` (top), every per-component `.md`
+  (trailing), and `docs/getting-started.md`; deploy-trigger filter closed
+  (`docs/**`, `scripts/**`, `registry.json`); `verify-site` post-deploy job +
+  `scripts/checks/deployed-freshness.sh`; daily `docs-freshness.yml` probe with a
+  pinned-issue alert; `docs/internal/OPS-HOSTS.md`; main-vs-published skew banner.
+- **WS-B** `setLinkComponent`/`getLinkComponent`/`LinkComponent` re-exported from
+  `@cascivo/react`; docs flipped; llms.txt bullet added.
+- **WS-C** `rows` description fixed; prose sweep (only `rows` was wrong); props-parity
+  Direction B flipped WARN→ERROR with all 26 undocumented props documented; new
+  `docs-imports` + `docs-links` gates (they caught two real generator bugs —
+  `import { SkipNav }`/`{ Toast }` — fixed via a new `importSymbols` manifest field).
+- **WS-D** `./package.json` export added to all 14 published packages + `pkg-exports` gate.
+- **WS-E** 404-hint namespaces; registry-driven alias 301s into `_redirects`;
+  `/docs/*.md` mirror (`scripts/docs-md/generate.ts`) + `components.md` index;
+  `_headers` `/docs/*.md`; llms.txt guide links now point at fetchable `/docs/*.md`.
+- **WS-F** theme quick-start restructured (two recipes with measured sizes, 12-theme
+  mapping table, runtime-switching/SSR subsection, 0.x pin note); llms.txt + THEMING updated.
+- **WS-G** `Avatar name` initials + `User` forwarding.
+- **WS-H** TanStack Start `getRouter`/server-preset call-out.
+
+Deferred (documented in WS-A.3): the actual Cloudflare custom-domain binding for
+`docs.cascivo.com` is an ops action that cannot be done from the repo; `OPS-HOSTS.md`
+records it and the `docs-freshness` probe enforces it once fixed.
 
 **Context that shapes this plan.** This is the *third* report from a TanStack Start
 adopter, and the first against the fixed surface: the previous two reports

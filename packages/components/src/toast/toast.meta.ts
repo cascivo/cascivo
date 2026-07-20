@@ -2,6 +2,8 @@ import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Toast',
+  // Imperative module: no single `Toast` export — mount the provider, call useToast().
+  importSymbols: 'ToastProvider, useToast',
   description: 'Transient notification surfaced via the useToast hook',
   category: 'overlay',
   states: ['visible', 'dismissing', 'gone'],

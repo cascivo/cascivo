@@ -35,8 +35,12 @@ Built on a native <table> with proper header semantics; sortable headers expose 
 
 | Name                | Type                                                                                     | Required | Default  | Description                                                                     |
 | ------------------- | ---------------------------------------------------------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------- |
+| `virtualized`       | `boolean`                                                                                | No       | false    | Render only the visible row window for large datasets.                          |
+| `rowHeight`         | `number`                                                                                 | No       | 40       | Fixed row height in px, used to compute the virtualized window.                 |
+| `windowSize`        | `number`                                                                                 | No       | 20       | Number of rows rendered in the virtualized window.                              |
+| `overscan`          | `number`                                                                                 | No       | 3        | Extra rows rendered above/below the window to smooth scrolling.                 |
 | `columns`           | `Column<Row>[]`                                                                          | Yes      | —        | The column definitions describing each table column.                            |
-| `rows`              | `Row[]`                                                                                  | Yes      | —        | Number of visible text rows.                                                    |
+| `rows`              | `Row[]`                                                                                  | Yes      | —        | The row objects to render — one table row per array element.                    |
 | `getRowId`          | `(row: Row) => string`                                                                   | No       | —        | Returns a stable unique id for a row.                                           |
 | `sort`              | `SortState`                                                                              | No       | —        | The controlled sort state.                                                      |
 | `defaultSort`       | `SortState`                                                                              | No       | —        | The initial sort state when uncontrolled.                                       |

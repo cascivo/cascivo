@@ -87,3 +87,7 @@ Override the built-in copy/copied strings per instance
 ## Tags
 
 clipboard, copy, button, snippet
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

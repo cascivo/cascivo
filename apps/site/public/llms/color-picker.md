@@ -30,6 +30,7 @@ import { ColorPicker } from '@cascivo/react'
 
 | Prop            | Type                      | Required | Default   | Description                                                        |
 | --------------- | ------------------------- | -------- | --------- | ------------------------------------------------------------------ |
+| `labels`        | `ColorPickerLabels`       | no       | —         | Overrides for the component’s user-visible strings (i18n).         |
 | `value`         | `string`                  | no       | —         | Controlled hex color value                                         |
 | `defaultValue`  | `string`                  | no       | `#3b82f6` | The initial value when uncontrolled.                               |
 | `onValueChange` | `(value: string) => void` | no       | —         | Called with the new value when it changes.                         |
@@ -77,3 +78,7 @@ import { ColorPicker } from '@cascivo/react'
 ## Tags
 
 color, input, form, picker, hue, alpha
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -17,6 +17,7 @@
   "category": "overlay",
   "meta": {
     "name": "Toast",
+    "importSymbols": "ToastProvider, useToast",
     "description": "Transient notification surfaced via the useToast hook",
     "category": "overlay",
     "states": ["visible", "dismissing", "gone"],

@@ -9,6 +9,12 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['sm', 'md', 'lg'],
   props: [
+    {
+      name: 'labels',
+      type: 'ColorPickerLabels',
+      required: false,
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+    },
     { name: 'value', type: 'string', required: false, description: 'Controlled hex color value' },
     {
       name: 'defaultValue',

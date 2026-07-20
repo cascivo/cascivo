@@ -79,3 +79,7 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 ## Tags
 
 typography, prose, content, markdown, article
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

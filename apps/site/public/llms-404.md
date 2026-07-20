@@ -10,5 +10,13 @@ To find valid names:
 - Machine-readable registry (JSON): https://cascivo.com/registry.json
 
 Doc URLs follow the registry `name` exactly, e.g. `stat` → `/llms/stat.md` (there
-is no `stat-card`). Page blocks are namespaced: `/llms/block/<name>.md` (e.g.
-`/llms/block/dashboard-overview.md`).
+is no `stat-card`). Several entry types are **namespaced** — the flat name does not
+resolve, use the prefixed path:
+
+- Charts: `/llms/chart/<name>.md` — e.g. `/llms/chart/area-chart.md` (there is no
+  `/llms/area-chart.md`). Also `line-chart`, `bar-chart`, `sparkline`, `pie-chart`, …
+- Page blocks: `/llms/block/<name>.md` — e.g. `/llms/block/dashboard-overview.md`.
+- Layouts: `/llms/layout/<name>.md` — e.g. `/llms/layout/app-shell.md`.
+
+Find the exact `name` for any entry in the registry (`/registry.json`) or the
+component index in `/llms.txt`.

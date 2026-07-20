@@ -68,3 +68,7 @@ const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }
 ## Tags
 
 chart, bubble, scatter, three-dimensional, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

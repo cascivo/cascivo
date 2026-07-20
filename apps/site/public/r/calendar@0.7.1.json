@@ -24,6 +24,30 @@
     "sizes": ["sm", "md", "lg"],
     "props": [
       {
+        "name": "isInRange",
+        "type": "(date: Date) => boolean",
+        "required": false,
+        "description": "Highlight predicate for range previews (used by DateRangePicker)."
+      },
+      {
+        "name": "isRangeStart",
+        "type": "(date: Date) => boolean",
+        "required": false,
+        "description": "Predicate marking the range's start date for styling."
+      },
+      {
+        "name": "isRangeEnd",
+        "type": "(date: Date) => boolean",
+        "required": false,
+        "description": "Predicate marking the range's end date for styling."
+      },
+      {
+        "name": "onDayHover",
+        "type": "(date: Date | null) => void",
+        "required": false,
+        "description": "Called with the hovered day (or null on leave) to drive range previews."
+      },
+      {
         "name": "value",
         "type": "Date | null",
         "required": false,

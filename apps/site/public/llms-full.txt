@@ -1,5 +1,7 @@
 # cascivo — The CSS-native, signal-driven, AI-first React design system
 
+_registry v0.7.1 · generated 2026-07-20 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://docs.cascivo.com/breaking-changes.json for installed-vs-documented API drift._
+
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
 `@cascivo/react` package (use without copying). Components are signal-driven (Preact
@@ -32,6 +34,7 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - shadcn/v0-compatible registry (install with the shadcn CLI or "Open in v0"): https://cascivo.com/r/shadcn/registry.json
 - Per-component AI docs (props, examples, a11y, tokens): https://docs.cascivo.com/llms/<name>.md
 - Page-block AI docs are namespaced: https://docs.cascivo.com/llms/block/<name>.md
+- Component index (every entry + channel + doc URL, plain markdown): https://cascivo.com/docs/components.md
 - A wrong/guessed name under /llms/*, /context/*, or /r/* returns HTTP 404 with a short hint
   body (not the HTML SPA) — trust the 404, then look up the real name in the index below.
 - Per-component context (intent, when-to-use, boundaries): https://docs.cascivo.com/context/<name>.md
@@ -87,6 +90,16 @@ import { Button, Card } from '@cascivo/react'
    editor (`@cascivo/editor`) and flow canvas (`@cascivo/flow`) are separate installs too.
 
    Trade-offs: smallest setup, updates via npm; you do not edit component internals.
+
+   Themes: two recipes. `@cascivo/themes/all` = tokens + base + light + dark
+   (~41 KB / ~9 KB gzip). Shipping ONE theme? Import `@cascivo/themes/base` +
+   `@cascivo/themes/<name>` instead (~28 KB / ~7 KB gzip). The export name IS the
+   attribute value: import `@cascivo/themes/dark` and set `data-theme="dark"`. Twelve
+   first-party themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist,
+   corporate, terminal, cyberpunk, arcade (`base` = required scaffold, not a theme;
+   `tailwind` = a bridge stylesheet). For a user-switchable theme use `<ThemeProvider>`
+   + `themePreloadScript()` (no-FOUC SSR); for a fixed theme hard-code `data-theme`
+   on `<html>`. Full table + SSR recipe: docs/getting-started.md.
 
 B. Copy-paste source — own and customize the code (shadcn model):
 
@@ -178,6 +191,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.
 - Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
+- Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import it from `@cascivo/core`.
 
 Full behavior/headless catalog: https://github.com/cascivo/cascivo/blob/main/docs/HEADLESS.md. Enterprise friction -> primitive map: https://github.com/cascivo/cascivo/blob/main/docs/ENTERPRISE-READINESS.md.
 
@@ -192,17 +206,21 @@ installed peer that is older than a copied component needs. Watch https://docs.c
 
 ## Guides
 
-- Reactivity & headless behavior primitives: https://github.com/cascivo/cascivo/blob/main/docs/HEADLESS.md
-- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): https://github.com/cascivo/cascivo/blob/main/docs/ENTERPRISE-READINESS.md
-- Theming & branding: https://github.com/cascivo/cascivo/blob/main/docs/THEMING.md
-- Using cascivo with Preact: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-PREACT.md
-- Using cascivo with Next.js (App Router / RSC): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-NEXTJS.md
-- Using cascivo with Vite SSR / TanStack Start: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md
-- Using cascivo with Tailwind v4 (@layer order + dark bridge): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-TAILWIND.md
-- Strict host ESLint (copied source vs @tanstack/airbnb configs — scope stylistic rules off your components dir): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-STRICT-ESLINT.md
-- Compatibility & support matrix: https://github.com/cascivo/cascivo/blob/main/docs/COMPATIBILITY.md
-- Migrating from shadcn/ui: https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md
-- Token reference: https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md
+All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md (no browser needed):
+
+- Getting started (install, themes, SSR): https://cascivo.com/docs/getting-started.md
+- Reactivity & headless behavior primitives: https://cascivo.com/docs/headless.md
+- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): https://cascivo.com/docs/enterprise-readiness.md
+- Theming & branding: https://cascivo.com/docs/theming.md
+- Using cascivo with Preact: https://cascivo.com/docs/using-with-preact.md
+- Using cascivo with Next.js (App Router / RSC): https://cascivo.com/docs/using-with-nextjs.md
+- Using cascivo with Vite SSR / TanStack Start: https://cascivo.com/docs/using-with-vite-ssr.md
+- Using cascivo with Tailwind v4 (@layer order + dark bridge): https://cascivo.com/docs/using-with-tailwind.md
+- Strict host ESLint (scope stylistic rules off your components dir): https://cascivo.com/docs/using-with-strict-eslint.md
+- Compatibility & support matrix: https://cascivo.com/docs/compatibility.md
+- Migrating from shadcn/ui: https://cascivo.com/docs/migrating-from-shadcn.md
+- Token reference: https://cascivo.com/docs/tokens.md
+- Troubleshooting: https://cascivo.com/docs/troubleshooting.md
 
 ## Reference apps (runnable, in-repo — copy these setups)
 
@@ -731,7 +749,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-18 from registry v0.7.1_
+_Generated: 2026-07-20 from registry v0.7.1_
 
 ---
 
@@ -807,6 +825,10 @@ import { Accordion } from '@cascivo/react'
 ## Tags
 
 navigation, collapse, disclosure
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -907,6 +929,10 @@ overlay, action-sheet, menu, mobile, sheet
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Alert
 
 Highlights a short, important message inline
@@ -990,6 +1016,10 @@ import { Alert } from '@cascivo/react'
 ## Tags
 
 notification, message, feedback
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1093,6 +1123,10 @@ overlay, dialog, confirm, destructive
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # AppShell
 
 Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
@@ -1185,6 +1219,10 @@ shell, layout, sidebar, navigation, drawer, responsive, sticky
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # AspectRatio
 
 Constrains content to a fixed width-to-height ratio
@@ -1251,6 +1289,10 @@ layout, ratio, image, video, responsive
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Avatar
 
 Displays a user image with initials fallback
@@ -1293,7 +1335,8 @@ import { Avatar } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `src` | `string` | no | — | Image source URL. |
 | `alt` | `string` | no | — | Alternative text describing the image. |
-| `fallback` | `string` | no | — | Initials shown when no image is available |
+| `name` | `string` | no | — | Full name — used to derive initials for the fallback and as the accessible label. |
+| `fallback` | `string` | no | — | Explicit fallback text (initials/glyph); overrides initials derived from name. |
 | `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `status` | `'online' \| 'offline' \| 'busy'` | no | — | Status state. |
 
@@ -1305,7 +1348,15 @@ import { Avatar } from '@cascivo/react'
 <Avatar src="/jane.jpg" alt="Jane Doe" />
 ```
 
-### Fallback
+### Initials from name
+
+Derives initials automatically; also sets the accessible label.
+
+```tsx
+<Avatar name="Ada Lovelace" /> // renders "AL"
+```
+
+### Explicit fallback
 
 ```tsx
 <Avatar fallback="JD" alt="Jane Doe" />
@@ -1314,7 +1365,7 @@ import { Avatar } from '@cascivo/react'
 ### With status
 
 ```tsx
-<Avatar fallback="JD" status="online" />
+<Avatar name="Jane Doe" status="online" />
 ```
 
 ## Design tokens
@@ -1336,6 +1387,10 @@ import { Avatar } from '@cascivo/react'
 ## Tags
 
 user, profile, image
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1415,6 +1470,10 @@ import { AvatarGroup } from '@cascivo/react'
 ## Tags
 
 avatar, group, stack, overflow, display
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1525,6 +1584,10 @@ label, status, tag
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # App Shell
 
 Two-column layout with collapsible sidebar, nav links, and content area.
@@ -1554,6 +1617,10 @@ _No props._
 ## Tags
 
 shell, layout, sidebar, navigation, responsive
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1589,6 +1656,10 @@ auth, login, form, email, password
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Sign Up Form
 
 Full-name, email, password, confirm-password sign-up form with terms checkbox.
@@ -1618,6 +1689,10 @@ _No props._
 ## Tags
 
 auth, signup, register, form
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1681,6 +1756,10 @@ block, console, shell, navigation, carbon-parity
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # DashboardCharts
 
 Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.
@@ -1731,6 +1810,10 @@ block, dashboard, charts, kpi
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Dashboard Overview
 
 Welcome header with four KPI stat cards (revenue, users, orders, conversion).
@@ -1763,6 +1846,10 @@ dashboard, stats, kpi, cards, overview
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Dashboard Table
 
 Searchable, sortable, paginated data table with export button.
@@ -1792,6 +1879,10 @@ _No props._
 ## Tags
 
 dashboard, table, data, search, sort, pagination
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1844,6 +1935,10 @@ block, dashboard, empty-state, page
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # FAQ Accordion
 
 Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.
@@ -1873,6 +1968,10 @@ _No props._
 ## Tags
 
 marketing, faq, accordion, questions
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -1925,6 +2024,10 @@ block, login, auth, form, page
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Feature Grid
 
 Three-column responsive feature grid with icon, title, and description per cell.
@@ -1957,6 +2060,10 @@ marketing, features, grid, icons
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Hero Section
 
 Full-width hero with headline, subtitle, CTA pair, and trust badges.
@@ -1986,6 +2093,10 @@ _No props._
 ## Tags
 
 marketing, hero, landing, cta
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2039,6 +2150,10 @@ block, notifications, alerts
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # PageWithBreadcrumb
 
 A centered content page with a breadcrumb navigation and page header.
@@ -2086,6 +2201,10 @@ block, breadcrumb, page, navigation
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Pricing Tiers
 
 Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan.
@@ -2115,6 +2234,10 @@ _No props._
 ## Tags
 
 marketing, pricing, plans, cards
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2167,6 +2290,10 @@ block, settings, form, page
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Settings — Profile
 
 Two-section settings form: personal info fields + preference toggles.
@@ -2196,6 +2323,10 @@ _No props._
 ## Tags
 
 settings, profile, form, toggles, preferences
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2246,6 +2377,10 @@ block, sidebar, navigation, app-shell
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Site Footer
 
 Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row.
@@ -2275,6 +2410,10 @@ _No props._
 ## Tags
 
 marketing, footer, navigation, links
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2327,6 +2466,10 @@ block, stats, kpi, cards
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Testimonials
 
 Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.
@@ -2356,6 +2499,10 @@ _No props._
 ## Tags
 
 marketing, testimonials, social-proof, cards
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2406,6 +2553,10 @@ Demo users table
 ## Tags
 
 block, users, table, page
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2476,6 +2627,10 @@ Attribution renders as <footer><cite>
 ## Tags
 
 typography, quote, blockquote, citation
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2572,6 +2727,10 @@ overlay, sheet, bottom-sheet, mobile, drag, detent, gesture
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Breadcrumb
 
 Shows the current page location within a navigation hierarchy
@@ -2641,6 +2800,10 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 ## Tags
 
 breadcrumb, navigation, hierarchy
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -2752,6 +2915,10 @@ action, form, interactive
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # ButtonGroup
 
 Visually joins a set of related buttons into a single segmented control
@@ -2830,6 +2997,10 @@ action, segmented, toolbar, layout
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Calendar
 
 An accessible standalone month-grid date picker.
@@ -2873,6 +3044,10 @@ import { Calendar } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `isInRange` | `(date: Date) => boolean` | no | — | Highlight predicate for range previews (used by DateRangePicker). |
+| `isRangeStart` | `(date: Date) => boolean` | no | — | Predicate marking the range's start date for styling. |
+| `isRangeEnd` | `(date: Date) => boolean` | no | — | Predicate marking the range's end date for styling. |
+| `onDayHover` | `(date: Date \| null) => void` | no | — | Called with the hovered day (or null on leave) to drive range previews. |
 | `value` | `Date \| null` | no | — | Controlled selected date |
 | `defaultValue` | `Date` | no | — | Uncontrolled initial selected date |
 | `onValueChange` | `(date: Date) => void` | no | — | Called when a day is selected |
@@ -2937,6 +3112,10 @@ Predicate disables individual days
 ## Tags
 
 calendar, date, month, grid, picker, input
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3008,6 +3187,10 @@ container, layout, surface
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Carousel
 
 Scroll-snap slide deck with previous/next controls and dot indicators
@@ -3034,6 +3217,7 @@ import { Carousel } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `labels` | `CarouselLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 | `children` | `ReactNode` | no | — | Slides as children |
 | `slides` | `ReactNode[]` | no | — | Slides as an array |
 | `index` | `number` | no | — | Controlled active index |
@@ -3082,6 +3266,10 @@ import { Carousel } from '@cascivo/react'
 ## Tags
 
 slider, gallery, slideshow, deck, scroll-snap
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3173,6 +3361,10 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 ## Tags
 
 chart, area, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3330,6 +3522,10 @@ chart, bar, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Boxplot
 
 Box-and-whisker plot with five-number summary and outlier dots per series.
@@ -3400,6 +3596,10 @@ const series = [
 ## Tags
 
 chart, boxplot, box-whisker, statistics, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3476,6 +3676,10 @@ chart, bubble, scatter, three-dimensional, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Bullet
 
 Bullet chart with background range bands, measure bar, and target tick.
@@ -3540,6 +3744,10 @@ import { Bullet } from '@cascivo/charts'
 ## Tags
 
 chart, bullet, kpi, progress, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3614,6 +3822,10 @@ import { Calendar } from '@cascivo/charts'
 ## Tags
 
 chart, calendar, heatmap, time, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3715,6 +3927,10 @@ chart, candlestick, ohlc, financial, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # ComboChart
 
 Combination bar + line chart on shared or dual y-axes.
@@ -3782,6 +3998,10 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 ## Tags
 
 chart, combo, bar, line, dual-axis, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -3866,6 +4086,10 @@ chart, funnel, conversion, flow, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Gauge
 
 A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.
@@ -3946,6 +4170,10 @@ chart, gauge, speedometer, kpi, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Heatmap
 
 Two-dimensional heatmap with band scales and color-mix cell interpolation.
@@ -4015,6 +4243,10 @@ chart, heatmap, matrix, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Histogram
 
 Frequency histogram using Freedman–Diaconis binning with hover tooltips.
@@ -4080,6 +4312,10 @@ chart, histogram, distribution, frequency, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Kpi
 
 KPI card showing a primary metric with optional delta indicator, icon, and sparkline.
@@ -4139,6 +4375,10 @@ import { Kpi } from '@cascivo/charts'
 ## Tags
 
 chart, kpi, metric, dashboard, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4247,6 +4487,10 @@ chart, line, time-series, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Meter
 
 Progress meter in bar or gauge variant with threshold coloring.
@@ -4312,6 +4556,10 @@ import { Meter } from '@cascivo/charts'
 ## Tags
 
 chart, meter, gauge, progress, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4457,6 +4705,10 @@ chart, pie, donut, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Polar
 
 A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.
@@ -4542,6 +4794,10 @@ chart, polar, rose, radial, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Radar
 
 Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.
@@ -4612,6 +4868,10 @@ const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 ## Tags
 
 chart, radar, spider, polar, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4704,6 +4964,10 @@ chart, radial, gauge, progress, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Sankey
 
 Flow diagram — ranked nodes connected by throughput-sized link ribbons.
@@ -4777,6 +5041,10 @@ import { Sankey } from '@cascivo/charts'
 ## Tags
 
 chart, sankey, flow, network, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -4862,6 +5130,10 @@ chart, scatter, plot, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Sparkline
 
 Compact inline sparkline for embedding trend data in dashboards or KPI cards.
@@ -4920,6 +5192,10 @@ import { Sparkline } from '@cascivo/charts'
 ## Tags
 
 chart, sparkline, inline, trend, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5005,6 +5281,10 @@ chart, stream, streamgraph, area, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Sunburst
 
 Radial hierarchy — concentric rings where each node is an annular segment sized by value.
@@ -5083,6 +5363,10 @@ chart, sunburst, hierarchy, radial, data-viz
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Treemap
 
 Squarified treemap for visualizing part-to-whole hierarchical data.
@@ -5155,6 +5439,10 @@ const data = [
 ## Tags
 
 chart, treemap, hierarchy, part-to-whole, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5244,6 +5532,10 @@ chat, message, conversation, messaging
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Checkbox
 
 Binary toggle for forms, with indeterminate support
@@ -5321,6 +5613,10 @@ form, toggle, boolean
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # CheckboxCard
 
 Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.
@@ -5393,6 +5689,10 @@ Multi-select feature toggles
 ## Tags
 
 checkbox, card, selectable, form
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5473,6 +5773,10 @@ Sits inline with surrounding text
 ## Tags
 
 typography, code, inline, mono
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5579,6 +5883,10 @@ display, code, snippet, copy, pre, syntax-highlighting, terminal, bash, css, js,
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Collapsible
 
 A single disclosure region toggled open and closed by its trigger
@@ -5663,6 +5971,10 @@ disclosure, collapse, expand, toggle, show-hide
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # ColorPicker
 
 Interactive color selection widget with saturation/lightness area, hue and alpha sliders
@@ -5695,6 +6007,7 @@ import { ColorPicker } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `labels` | `ColorPickerLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 | `value` | `string` | no | — | Controlled hex color value |
 | `defaultValue` | `string` | no | `#3b82f6` | The initial value when uncontrolled. |
 | `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
@@ -5745,6 +6058,10 @@ color, input, form, picker, hue, alpha
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Combobox
 
 Filterable single-select with an animated custom listbox, built on the dropdown open/close machine
@@ -5783,6 +6100,7 @@ import { Combobox } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `id` | `string` | no | — | Base id for the input and its listbox/aria wiring; auto-generated when omitted. |
 | `options` | `ComboboxOption[]` | yes | — | The selectable options. |
 | `value` | `string` | no | — | The controlled value. |
 | `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
@@ -5846,6 +6164,10 @@ import { Combobox } from '@cascivo/react'
 ## Tags
 
 select, combobox, dropdown, filter, search
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -5985,6 +6307,10 @@ overlay, command, palette, search, cmdk, keyboard, scope, fuzzy
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Comparison
 
 Reveals the difference between two layers with a draggable divider
@@ -6071,6 +6397,10 @@ comparison, before-after, image, slider, display
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # ContainedList
 
 Labelled list of rows inside a bordered container
@@ -6148,6 +6478,10 @@ import { ContainedList } from '@cascivo/react'
 ## Tags
 
 list, container, rows, group
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6229,6 +6563,10 @@ import { ContextMenu } from '@cascivo/react'
 ## Tags
 
 overlay, menu, context, right-click
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6324,6 +6662,10 @@ clipboard, copy, button, snippet
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # DataList
 
 Key-value pairs rendered as a description list
@@ -6411,6 +6753,10 @@ key-value, description, metadata, details
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # DataTable
 
 Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets
@@ -6449,8 +6795,12 @@ import { DataTable } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `virtualized` | `boolean` | no | `false` | Render only the visible row window for large datasets. |
+| `rowHeight` | `number` | no | `40` | Fixed row height in px, used to compute the virtualized window. |
+| `windowSize` | `number` | no | `20` | Number of rows rendered in the virtualized window. |
+| `overscan` | `number` | no | `3` | Extra rows rendered above/below the window to smooth scrolling. |
 | `columns` | `Column<Row>[]` | yes | — | The column definitions describing each table column. |
-| `rows` | `Row[]` | yes | — | Number of visible text rows. |
+| `rows` | `Row[]` | yes | — | The row objects to render — one table row per array element. |
 | `getRowId` | `(row: Row) => string` | no | — | Returns a stable unique id for a row. |
 | `sort` | `SortState` | no | — | The controlled sort state. |
 | `defaultSort` | `SortState` | no | — | The initial sort state when uncontrolled. |
@@ -6548,6 +6898,10 @@ table, data, grid, sort, filter, pagination, selection
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # DatePicker
 
 An accessible date-picker with a calendar popover.
@@ -6587,6 +6941,7 @@ import { DatePicker } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `id` | `string` | no | — | Base id for the input and its popover/aria wiring; auto-generated when omitted. |
 | `value` | `string` | no | — | Controlled ISO date value (YYYY-MM-DD) |
 | `defaultValue` | `string` | no | — | Uncontrolled default value |
 | `onChange` | `(value: string \| undefined) => void` | no | — | Called on date selection or clear |
@@ -6648,6 +7003,10 @@ Date range constraint
 ## Tags
 
 date, calendar, picker, input, form
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6751,6 +7110,10 @@ date, range, calendar, picker, input, form
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Dock
 
 Fixed bottom navigation bar for mobile app shells with up to 5 items
@@ -6782,6 +7145,7 @@ import { Dock } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Accessible label for the dock navigation; defaults to the built-in i18n string. |
 | `items` | `DockItem[]` | yes | — | Navigation items, each with a label, icon, and optional href or onClick |
 | `activeIndex` | `number` | no | — | Index of the currently active item (0-based) |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -6845,6 +7209,10 @@ Link-based dock items for standard navigation
 ## Tags
 
 dock, tab-bar, bottom-nav, mobile, navigation, app-shell
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -6937,6 +7305,10 @@ overlay, drawer, panel, slide, dialog
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Dropdown
 
 Menu of actions revealed from a trigger
@@ -7004,6 +7376,10 @@ import { Dropdown } from '@cascivo/react'
 ## Tags
 
 overlay, menu, actions
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7084,6 +7460,10 @@ import { Editable } from '@cascivo/react'
 ## Tags
 
 form, editable, inline, input, text
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7211,6 +7591,10 @@ editor, code, syntax-highlighting, textarea, inputs
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Highlight
 
 Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.
@@ -7277,6 +7661,10 @@ import '@cascivo/editor/styles.css'
 ## Tags
 
 editor, code, syntax-highlighting, display, read-only
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7351,6 +7739,10 @@ import { EmptyState } from '@cascivo/react'
 ## Tags
 
 empty, placeholder, zero-state, no-data
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7456,6 +7848,10 @@ inputs, fab, floating-action-button, mobile, speed-dial
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Field
 
 Form-field wrapper composing label, control, description, and error
@@ -7539,6 +7935,10 @@ Sets aria-invalid on the control and announces the error via role="alert".
 ## Tags
 
 form, layout, validation, accessibility
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7640,6 +8040,10 @@ upload, file, drop, drag, input, form
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Filter
 
 A group of toggleable pill or outline buttons for filtering content by category
@@ -7678,6 +8082,7 @@ import { Filter } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `aria-label` | `string` | no | — | Accessible label for the filter group. |
 | `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
 | `value` | `string[]` | no | — | Controlled selected values |
 | `defaultValue` | `string[]` | no | `[]` | Initial selected values for uncontrolled use |
@@ -7750,6 +8155,10 @@ import { Filter } from '@cascivo/react'
 ## Tags
 
 filter, chip, tag, pill, facet, category
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -7866,6 +8275,10 @@ flow, graph, declarative, diagram, ai-first
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # FlowBackground
 
 Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.
@@ -7953,6 +8366,10 @@ flow, background, grid, dots, canvas
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # FlowCanvas
 
 The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.
@@ -8021,6 +8438,10 @@ flow, canvas, viewport, pan, zoom
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # FlowControls
 
 Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.
@@ -8086,6 +8507,10 @@ import '@cascivo/flow/styles.css' // required stylesheet
 ## Tags
 
 flow, controls, zoom, chrome
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8190,6 +8615,10 @@ flow, edge, connector, animated, svg
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # FlowHandle
 
 A connection port on a node edge — where edges attach and interactive connect starts.
@@ -8270,6 +8699,10 @@ flow, handle, port, connect
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # FlowMiniMap
 
 A scaled SVG overview of the graph with a draggable viewport rectangle.
@@ -8342,6 +8775,10 @@ import '@cascivo/flow/styles.css' // required stylesheet
 ## Tags
 
 flow, minimap, overview, chrome
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8424,6 +8861,10 @@ flow, node, draggable, graph
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # FlowPanel
 
 An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).
@@ -8481,6 +8922,10 @@ import '@cascivo/flow/styles.css' // required stylesheet
 ## Tags
 
 flow, panel, slot, chrome
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8605,6 +9050,10 @@ flow, animation, storyline, walkthrough, sequence
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Form
 
 Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper
@@ -8687,6 +9136,10 @@ form, validation, signals, input
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Header
 
 App top bar with brand, primary navigation links, and an actions slot
@@ -8717,6 +9170,7 @@ import { Header } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `labels` | `HeaderLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 | `brand` | `React.ReactNode` | no | — | Product name or logo area, typically wraps a link |
 | `links` | `{ label: string; href: string; active?: boolean }[]` | no | — | Primary navigation links; active link gets aria-current="page" |
 | `actions` | `React.ReactNode` | no | — | Right-aligned slot for buttons or an avatar |
@@ -8768,6 +9222,10 @@ import { Header } from '@cascivo/react'
 ## Tags
 
 navigation, app-shell, top-bar, banner
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8844,6 +9302,10 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 ## Tags
 
 navigation, panel, shell, console, overlay, notifications
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -8934,6 +9396,10 @@ typography, heading, title
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # HoverCard
 
 Hover-triggered popover with configurable open/close delay
@@ -9014,6 +9480,10 @@ import { HoverCard } from '@cascivo/react'
 ## Tags
 
 overlay, hover, preview, floating
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9117,6 +9587,10 @@ action, icon, compact, toolbar
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Image
 
 Image with load state, blur-up placeholder, graceful fallback, and optional zoom
@@ -9211,6 +9685,10 @@ image, media, display, loading
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Indicator
 
 Positions an overlay element (badge, dot, count) at a corner of its child
@@ -9276,6 +9754,10 @@ Indicator positioned at the bottom-start corner
 ## Tags
 
 badge, indicator, overlay, notification, layout
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9357,6 +9839,10 @@ import { InlineLoading } from '@cascivo/react'
 ## Tags
 
 loading, status, progress, feedback, spinner
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9444,6 +9930,10 @@ form, text, input
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # InputGroup
 
 Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders
@@ -9519,6 +10009,10 @@ import { InputGroup } from '@cascivo/react'
 ## Tags
 
 form, input, addon, group, layout
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9610,6 +10104,10 @@ row, primitive, list-item, layout
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Join
 
 Groups adjacent children into a seamless joined element by removing interior borders and radii
@@ -9674,6 +10172,10 @@ Vertically joined button group
 ## Tags
 
 group, join, segmented, layout
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9752,6 +10254,10 @@ Compose multiple keys to show a shortcut
 ## Tags
 
 keyboard, shortcut, hotkey
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9842,6 +10348,10 @@ form, caption, accessibility
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # AppShell
 
 Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
@@ -9875,6 +10385,8 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `footer` | `ReactNode` | no | — | Optional sticky footer rendered below the content area. |
+| `sideNavMode` | `'push' \| 'overlay'` | no | `push` | push (default): sidebar takes grid space; overlay: sidebar floats over content. |
 | `header` | `ReactNode` | yes | — | Top header slot |
 | `sideNav` | `ReactNode` | no | — | Side navigation slot |
 | `aside` | `ReactNode` | no | — | Right aside slot |
@@ -9921,6 +10433,10 @@ App shell with collapsible nav
 ## Tags
 
 layout, shell, sidebar, navigation
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -9984,6 +10500,10 @@ layout, auth, login, page
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # AutoGrid
 
 Media-query-free responsive grid — columns auto-fill based on available space.
@@ -10038,6 +10558,10 @@ layout, grid, responsive
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Center
 
 Horizontally centered container with a configurable max-width.
@@ -10088,6 +10612,10 @@ Centered container with custom max-width
 ## Tags
 
 layout, center, wrapper
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10145,6 +10673,10 @@ layout, grid, columns
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # DashboardLayout
 
 Dashboard page layout with stats strip, main content area, and optional aside.
@@ -10198,6 +10730,10 @@ Stats + main layout
 ## Tags
 
 layout, dashboard, page
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10266,6 +10802,10 @@ layout, flex, stack, spacing
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Grid
 
 CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.
@@ -10331,6 +10871,10 @@ layout, grid, columns
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Masonry
 
 Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).
@@ -10382,6 +10926,10 @@ Variable-height cards laid out in a masonry pattern; falls back to CSS columns
 ## Tags
 
 layout, masonry, gallery
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10448,6 +10996,10 @@ layout, header, page
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Section
 
 Page-section shell with block padding, centered inner width, and stack gap.
@@ -10499,6 +11051,10 @@ Centered 72rem content column with 2rem block padding
 ## Tags
 
 layout, section, page
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10556,6 +11112,10 @@ layout, settings, page
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Spacer
 
 Fixed-height spacing block using design token steps.
@@ -10606,6 +11166,10 @@ Adds vertical space between elements
 ## Tags
 
 layout, spacer, spacing
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10667,6 +11231,10 @@ Two-pane split with draggable divider
 ## Tags
 
 layout, split, resizable, pane
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10760,6 +11328,10 @@ link, anchor, navigation
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # List
 
 Styled unordered or ordered list with ListItem
@@ -10838,6 +11410,10 @@ Keeps list semantics without visual markers
 ## Tags
 
 typography, list, ul, ol
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -10939,6 +11515,10 @@ log, stream, virtual, console, terminal, monospace
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Menu
 
 Dropdown menu with keyboard navigation, built on usePopover
@@ -11018,6 +11598,10 @@ import { Menu } from '@cascivo/react'
 ## Tags
 
 overlay, menu, dropdown, floating
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11139,6 +11723,10 @@ navigation, menu, actions, dropdown, floating
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Menubar
 
 Horizontal application menu bar with keyboard-navigable dropdown menus
@@ -11205,6 +11793,10 @@ import { Menubar } from '@cascivo/react'
 ## Tags
 
 navigation, menubar, menu, application
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11287,6 +11879,10 @@ overlay, dialog, popup
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # MultiSelect
 
 Searchable multi-value select with popover listbox
@@ -11358,6 +11954,10 @@ import { MultiSelect } from '@cascivo/react'
 ## Tags
 
 form, select, multi, input, popover
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11468,6 +12068,10 @@ inputs, select, native, form, dropdown
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # NavigationMenu
 
 Site navigation bar with links and dropdown flyout panels
@@ -11535,6 +12139,10 @@ import { NavigationMenu } from '@cascivo/react'
 ## Tags
 
 navigation, menu, flyout, site-nav
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11625,6 +12233,10 @@ import { Notification } from '@cascivo/react'
 ## Tags
 
 notification, banner, message, feedback, actionable
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11730,6 +12342,10 @@ form, number, input, spinbutton, stepper
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # OtpInput
 
 Segmented one-time code input
@@ -11806,6 +12422,10 @@ import { OtpInput } from '@cascivo/react'
 ## Tags
 
 form, otp, code, input, verification
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -11894,6 +12514,10 @@ overlay, menu, actions, kebab, table
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Pagination
 
 Controls for navigating paged data sets, with page size selection
@@ -11977,6 +12601,10 @@ import { Pagination } from '@cascivo/react'
 ## Tags
 
 pagination, navigation, table, data, pages
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12067,6 +12695,10 @@ form, password, input, security
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Popover
 
 Anchored floating panel built on CSS Anchor Positioning + Popover API
@@ -12151,6 +12783,10 @@ overlay, floating, anchor, popover
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Progress
 
 Horizontal bar showing the completion progress of a tracked operation
@@ -12196,6 +12832,8 @@ import { Progress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `aria-label` | `string` | no | — | Accessible label when no visible label is present. |
+| `aria-describedby` | `string` | no | — | Id of an element describing the progress bar. |
 | `value` | `number` | no | — | 0–100. Omit for indeterminate state. |
 | `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -12250,6 +12888,10 @@ import { Progress } from '@cascivo/react'
 ## Tags
 
 progress, loading, upload, bar
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12348,6 +12990,10 @@ progress, loading, status, feedback
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # ProgressCircle
 
 Circular determinate progress indicator rendered as an SVG arc
@@ -12424,6 +13070,10 @@ import { ProgressCircle } from '@cascivo/react'
 ## Tags
 
 progress, loading, circle, feedback
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12510,6 +13160,10 @@ steps, wizard, stepper, progress, navigation
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Prose
 
 Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables
@@ -12586,6 +13240,10 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 ## Tags
 
 typography, prose, content, markdown, article
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12672,6 +13330,10 @@ feedback, pull-to-refresh, mobile, gesture, scroll, refresh
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # QrCode
 
 Encodes a URL or short text into a scannable SVG QR code
@@ -12747,6 +13409,10 @@ import { QrCode } from '@cascivo/react'
 ## Tags
 
 qr, qr-code, barcode, encode, display
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -12846,6 +13512,10 @@ progress, circular, gauge, meter, kpi, dashboard
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Radio
 
 Single choice from a set, grouped with RadioGroup
@@ -12915,6 +13585,10 @@ form, choice, group
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # RadioCard
 
 Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
@@ -12947,6 +13621,7 @@ import { RadioCard } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `hideIndicator` | `boolean` | no | — | Hide the radio indicator glyph, showing only the card content. |
 | `value` | `string` | yes | — | Radio value |
 | `title` | `ReactNode` | yes | — | Card title |
 | `description` | `ReactNode` | no | — | Optional description |
@@ -12986,6 +13661,10 @@ Single-select plan picker
 ## Tags
 
 radio, card, selectable, form
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13072,6 +13751,10 @@ form, rating, stars, input, feedback
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # RelativeTime
 
 Displays a date as a localized phrase relative to now, auto-updating
@@ -13151,6 +13834,10 @@ time, date, relative, i18n, display
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Resizable
 
 Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space
@@ -13177,6 +13864,7 @@ import { Resizable } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Accessible label for the resize handle. |
 | `children` | `ReactNode` | yes | — | Exactly two panes |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
 | `defaultRatio` | `number` | no | `0.5` | The initial split ratio when uncontrolled. |
@@ -13226,6 +13914,10 @@ import { Resizable } from '@cascivo/react'
 ## Tags
 
 splitter, panes, layout, resize, divider
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13302,6 +13994,10 @@ import { ScrollArea } from '@cascivo/react'
 ## Tags
 
 scroll, overflow, scrollbar, container, layout
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13405,6 +14101,10 @@ search, input, filter, form
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Cta
 
 Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
@@ -13464,6 +14164,10 @@ Quiet bordered band with centered heading, description, and action buttons
 ## Tags
 
 section, cta, marketing
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13538,6 +14242,10 @@ Four-item text-only feature grid with section heading
 ## Tags
 
 section, features, grid
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13619,6 +14327,10 @@ section, hero, marketing
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # MediaMasonry
 
 Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.
@@ -13678,6 +14390,10 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 ## Tags
 
 section, gallery, masonry
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13751,6 +14467,10 @@ section, footer, navigation
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # StatsBand
 
 KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.
@@ -13818,6 +14538,10 @@ Four KPI cells — three with sparkline trends and signed deltas
 ## Tags
 
 section, stats, kpi, charts
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13896,6 +14620,10 @@ import { SegmentedControl } from '@cascivo/react'
 ## Tags
 
 form, toggle, group, segmented, input
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -13984,6 +14712,10 @@ form, dropdown, menu
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Separator
 
 Visual or semantic divider between content
@@ -14043,6 +14775,10 @@ import { Separator } from '@cascivo/react'
 ## Tags
 
 divider, rule, layout
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14123,6 +14859,10 @@ import { Sheet } from '@cascivo/react'
 ## Tags
 
 overlay, drawer, panel, slide
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14209,6 +14949,10 @@ navigation, header, shell, console, menu, app-shell
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # SideNav
 
 Collapsible sidebar navigation with optional icons and one level of grouping
@@ -14240,6 +14984,8 @@ import { SideNav } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `groups` | `SideNavGroup[]` | no | — | Grouped navigation items rendered under optional group labels. |
+| `showCollapseToggle` | `boolean` | no | — | Show the collapse/expand toggle control. |
 | `items` | `SideNavItem[]` | yes | — | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
 | `collapsed` | `boolean` | no | — | Controlled collapsed state (rail mode) |
 | `defaultCollapsed` | `boolean` | no | `false` | Whether the rail is collapsed on first render (uncontrolled). |
@@ -14316,6 +15062,10 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 ## Tags
 
 navigation, sidebar, app-shell, collapsible
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14399,6 +15149,10 @@ loading, placeholder, shimmer
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # SkipNav
 
 Skip link that jumps keyboard users past the navigation to the main content
@@ -14414,7 +15168,7 @@ npx cascivo add skip-nav
 Or use it from the prebuilt package without copying:
 
 ```tsx
-import { SkipNav } from '@cascivo/react'
+import { SkipNavLink, SkipNavTarget } from '@cascivo/react'
 ```
 
 ## Category
@@ -14467,6 +15221,10 @@ SkipNavLink must be the first focusable element on the page
 ## Tags
 
 accessibility, skip-link, keyboard, navigation
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14542,6 +15300,10 @@ form, range, input
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Spinner
 
 Indeterminate loading indicator
@@ -14611,6 +15373,10 @@ loading, progress, feedback
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Stack
 
 Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect
@@ -14667,6 +15433,10 @@ Overlapping avatar group with minimal offset
 ## Tags
 
 stack, pile, overlap, layered, z-axis, card-pile, layout
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -14754,6 +15524,10 @@ stat, kpi, metric, number
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Status
 
 Colored dot with a label communicating the state of a system or entity
@@ -14838,6 +15612,10 @@ status, indicator, dot, badge
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Steps
 
 Visual progress indicator for multi-step flows with horizontal and vertical orientations
@@ -14871,6 +15649,7 @@ import { Steps } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Accessible label for the steps navigation; defaults to the built-in i18n string. |
 | `steps` | `Step[]` | yes | — | Array of step objects with label and optional explicit state |
 | `activeStep` | `number` | no | `0` | Index of the currently active step (0-based) |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `'horizontal'` | Layout direction of the steps |
@@ -14957,6 +15736,10 @@ steps, wizard, stepper, progress, navigation, onboarding, checkout
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # StructuredList
 
 Tabular row list for scannable data, optionally single-selectable
@@ -14993,6 +15776,7 @@ import { StructuredList } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `aria-label` | `string` | no | — | Accessible label for the list table. |
 | `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes | — | The items to render. |
 | `headers` | `ReactNode[]` | no | — | The column header cells. |
 | `selectable` | `boolean` | no | `false` | When true, rows can be selected. |
@@ -15037,6 +15821,10 @@ import { StructuredList } from '@cascivo/react'
 ## Tags
 
 display, list, table, data
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15122,6 +15910,10 @@ Heart icon that flips to filled on activation
 ## Tags
 
 toggle, icon, animate, switch, flip, rotate
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15214,6 +16006,10 @@ display, swipe, list, mobile, gesture, actions
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Switcher
 
 App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
@@ -15291,6 +16087,10 @@ navigation, switcher, shell, console, app-switcher
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Tabs
 
 Switch between related panels of content
@@ -15355,6 +16155,10 @@ import { Tabs } from '@cascivo/react'
 ## Tags
 
 navigation, tabs, sections
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15456,6 +16260,10 @@ chip, label, filter, category
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # TagsInput
 
 Free-form multi-value chip input
@@ -15528,6 +16336,10 @@ import { TagsInput } from '@cascivo/react'
 ## Tags
 
 form, tags, chips, multi, input
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15624,6 +16436,10 @@ typography, text, paragraph, body
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Textarea
 
 Multi-line text input with optional label, hint, and error state
@@ -15699,6 +16515,10 @@ import { Textarea } from '@cascivo/react'
 ## Tags
 
 form, text, multiline
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -15799,6 +16619,10 @@ inputs, tile, card, selectable, choice
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # TimePicker
 
 Native time input wrapper with label, hint, error, and size variants
@@ -15887,6 +16711,10 @@ time, input, form
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Timeline
 
 Ordered sequence of events with status markers and a connector line
@@ -15965,6 +16793,10 @@ timeline, steps, history, progress, events
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Toast
 
 Transient notification surfaced via the useToast hook
@@ -15980,7 +16812,7 @@ npx cascivo add toast
 Or use it from the prebuilt package without copying:
 
 ```tsx
-import { Toast } from '@cascivo/react'
+import { ToastProvider, useToast } from '@cascivo/react'
 ```
 
 ## Category
@@ -16041,6 +16873,10 @@ toast({ title: "Saved", variant: "success" })
 ## Tags
 
 overlay, notification, feedback
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16115,6 +16951,10 @@ Pass activeId to drive the highlight yourself; scroll-spy is disabled.
 ## Tags
 
 toc, table-of-contents, navigation, scroll-spy, anchor
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16196,6 +17036,10 @@ import { Toggle } from '@cascivo/react'
 ## Tags
 
 switch, form, boolean
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16290,6 +17134,10 @@ import { ToggleGroup } from '@cascivo/react'
 ## Tags
 
 selection, segmented, toolbar, choice
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16389,6 +17237,10 @@ overlay, toggletip, info, popover, floating
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Tooltip
 
 Contextual label shown on hover or focus
@@ -16456,6 +17308,10 @@ overlay, hint, popover
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # TreeView
 
 Hierarchical, expandable tree of nodes with keyboard navigation and selection
@@ -16494,6 +17350,7 @@ import { TreeView } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `aria-label` | `string` | no | — | Accessible label for the tree. |
 | `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes | — | The items to render. |
 | `selectionMode` | `'single' \| 'multi'` | no | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
 | `selected` | `string \| string[]` | no | — | The controlled selected node id(s). |
@@ -16543,6 +17400,10 @@ import { TreeView } from '@cascivo/react'
 ## Tags
 
 display, tree, hierarchy, navigation, files
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
 
 ---
 
@@ -16618,6 +17479,10 @@ user, avatar, identity, display
 
 ---
 
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # VisuallyHidden
 
 Hides content visually while keeping it available to screen readers
@@ -16675,4 +17540,8 @@ Gives an icon-only control an accessible name
 
 accessibility, screen-reader, sr-only, hidden
 
-_Generated: 2026-07-18 from registry v0.7.1_
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+_Generated: 2026-07-20 from registry v0.7.1_

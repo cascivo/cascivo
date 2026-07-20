@@ -9,6 +9,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Accessible label for the dock navigation; defaults to the built-in i18n string.',
+    },
+    {
       name: 'items',
       type: 'DockItem[]',
       required: true,

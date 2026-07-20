@@ -34,6 +34,7 @@ role="banner" marks the page header landmark; the active link is marked aria-cur
 
 | Name        | Type                                                  | Required | Default | Description                                                    |
 | ----------- | ----------------------------------------------------- | -------- | ------- | -------------------------------------------------------------- |
+| `labels`    | `HeaderLabels`                                        | No       | —       | Overrides for the component’s user-visible strings (i18n).     |
 | `brand`     | `React.ReactNode`                                     | No       | —       | Product name or logo area, typically wraps a link              |
 | `links`     | `{ label: string; href: string; active?: boolean }[]` | No       | —       | Primary navigation links; active link gets aria-current="page" |
 | `actions`   | `React.ReactNode`                                     | No       | —       | Right-aligned slot for buttons or an avatar                    |

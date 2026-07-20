@@ -2,6 +2,8 @@ import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'SkipNav',
+  // Compound module: no single `SkipNav` export — ships a link + its target.
+  importSymbols: 'SkipNavLink, SkipNavTarget',
   description: 'Skip link that jumps keyboard users past the navigation to the main content',
   category: 'navigation',
   states: [],

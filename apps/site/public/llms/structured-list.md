@@ -34,6 +34,7 @@ import { StructuredList } from '@cascivo/react'
 
 | Prop           | Type                                                       | Required | Default | Description                          |
 | -------------- | ---------------------------------------------------------- | -------- | ------- | ------------------------------------ |
+| `aria-label`   | `string`                                                   | no       | —       | Accessible label for the list table. |
 | `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes      | —       | The items to render.                 |
 | `headers`      | `ReactNode[]`                                              | no       | —       | The column header cells.             |
 | `selectable`   | `boolean`                                                  | no       | `false` | When true, rows can be selected.     |
@@ -86,3 +87,7 @@ import { StructuredList } from '@cascivo/react'
 ## Tags
 
 display, list, table, data
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

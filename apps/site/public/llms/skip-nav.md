@@ -13,7 +13,7 @@ npx cascivo add skip-nav
 Or use it from the prebuilt package without copying:
 
 ```tsx
-import { SkipNav } from '@cascivo/react'
+import { SkipNavLink, SkipNavTarget } from '@cascivo/react'
 ```
 
 ## Category
@@ -74,3 +74,7 @@ SkipNavLink must be the first focusable element on the page
 ## Tags
 
 accessibility, skip-link, keyboard, navigation
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

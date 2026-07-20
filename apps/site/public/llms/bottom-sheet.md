@@ -88,3 +88,7 @@ Snaps between three detents by dragging the handle; opens at half height.
 ## Tags
 
 overlay, sheet, bottom-sheet, mobile, drag, detent, gesture
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

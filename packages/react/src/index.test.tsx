@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Badge, Button, Kbd, Spinner } from './index'
+import { setLinkComponent as coreSetLink } from '@cascivo/core'
+import { Badge, Button, getLinkComponent, Kbd, setLinkComponent, Spinner } from './index'
 
 describe('@cascivo/react', () => {
   it('renders Button from the bundled entry', () => {
@@ -22,5 +23,15 @@ describe('@cascivo/react', () => {
     )
     expect(screen.getByText('Esc')).toBeInTheDocument()
     expect(screen.getByRole('status')).toBeInTheDocument()
+  })
+
+  it('re-exports the link API so Path-B users need not depend on @cascivo/core', () => {
+    // Same singleton as @cascivo/core: setting via the react re-export is observable
+    // through the core setter's effect, proving it is not a separate copy.
+    expect(setLinkComponent).toBe(coreSetLink)
+    const Stub = () => null
+    setLinkComponent(Stub)
+    expect(getLinkComponent()).toBe(Stub)
+    setLinkComponent('a')
   })
 })

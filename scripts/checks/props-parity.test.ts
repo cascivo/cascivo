@@ -113,25 +113,22 @@ describe('props-parity — manifest props match the TypeScript interface', () =>
     )
   })
 
-  it('Direction B — own declared props are documented (warn-only)', () => {
-    const warnings: string[] = []
+  it('Direction B — every own declared prop is documented in the manifest', () => {
+    const errors: string[] = []
     for (const c of checkable) {
       const documented = new Set(c.metaProps.map((p) => p.name))
       for (const own of c.sets.declaredOwn) {
         if (documented.has(own) || SKIP_OWN.has(own)) continue
         if (ALLOWLIST[`${c.name}.${own}`] !== undefined) continue
-        warnings.push(`  ${c.name}: own prop '${own}' is undocumented`)
+        errors.push(`  ${c.name}: own prop '${own}' is undocumented`)
       }
     }
-    // Warn-only: print for future burn-down, never fail. Promote to an assertion
-    // once the manifests are swept.
-    if (warnings.length > 0) {
-      console.log(
-        `\n[props-parity] Direction B — ${warnings.length} undocumented own prop(s) (warn-only):\n` +
-          warnings.join('\n'),
-      )
-    }
-    assert.ok(true)
+    assert.deepEqual(
+      errors,
+      [],
+      `These own props are declared on the component's TypeScript interface but not in ` +
+        `its .meta.ts (document them + \`pnpm regen\`, or allowlist with a reason):\n${errors.join('\n')}`,
+    )
   })
 
   it('allowlist has no stale entries', () => {

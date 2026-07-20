@@ -34,12 +34,13 @@ Each card is a <label> wrapping a native <input type="radio"> and RadioCardGroup
 
 ## Props
 
-| Name          | Type        | Required | Default | Description          |
-| ------------- | ----------- | -------- | ------- | -------------------- |
-| `value`       | `string`    | Yes      | —       | Radio value          |
-| `title`       | `ReactNode` | Yes      | —       | Card title           |
-| `description` | `ReactNode` | No       | —       | Optional description |
-| `disabled`    | `boolean`   | No       | —       | Disables the card    |
+| Name            | Type        | Required | Default | Description                                                    |
+| --------------- | ----------- | -------- | ------- | -------------------------------------------------------------- |
+| `hideIndicator` | `boolean`   | No       | —       | Hide the radio indicator glyph, showing only the card content. |
+| `value`         | `string`    | Yes      | —       | Radio value                                                    |
+| `title`         | `ReactNode` | Yes      | —       | Card title                                                     |
+| `description`   | `ReactNode` | No       | —       | Optional description                                           |
+| `disabled`      | `boolean`   | No       | —       | Disables the card                                              |
 
 ## Tokens
 

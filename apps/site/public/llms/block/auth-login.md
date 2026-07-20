@@ -27,3 +27,7 @@ _No props._
 ## Tags
 
 auth, login, form, email, password
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

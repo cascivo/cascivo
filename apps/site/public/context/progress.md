@@ -32,11 +32,13 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 
 ## Props
 
-| Name      | Type                                                       | Required | Default | Description                                           |
-| --------- | ---------------------------------------------------------- | -------- | ------- | ----------------------------------------------------- |
-| `value`   | `number`                                                   | No       | —       | 0–100. Omit for indeterminate state.                  |
-| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                     |
-| `size`    | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Name               | Type                                                       | Required | Default | Description                                           |
+| ------------------ | ---------------------------------------------------------- | -------- | ------- | ----------------------------------------------------- |
+| `aria-label`       | `string`                                                   | No       | —       | Accessible label when no visible label is present.    |
+| `aria-describedby` | `string`                                                   | No       | —       | Id of an element describing the progress bar.         |
+| `value`            | `number`                                                   | No       | —       | 0–100. Omit for indeterminate state.                  |
+| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                     |
+| `size`             | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 

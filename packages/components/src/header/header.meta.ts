@@ -9,6 +9,12 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'labels',
+      type: 'HeaderLabels',
+      required: false,
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+    },
+    {
       name: 'brand',
       type: 'React.ReactNode',
       required: false,

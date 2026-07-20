@@ -68,3 +68,7 @@ const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 ## Tags
 
 chart, radar, spider, polar, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

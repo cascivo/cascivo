@@ -1,5 +1,7 @@
 # cascivo — The CSS-native, signal-driven, AI-first React design system
 
+_registry v0.7.1 · generated 2026-07-20 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://docs.cascivo.com/breaking-changes.json for installed-vs-documented API drift._
+
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
 `@cascivo/react` package (use without copying). Components are signal-driven (Preact
@@ -32,6 +34,7 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - shadcn/v0-compatible registry (install with the shadcn CLI or "Open in v0"): https://cascivo.com/r/shadcn/registry.json
 - Per-component AI docs (props, examples, a11y, tokens): https://docs.cascivo.com/llms/<name>.md
 - Page-block AI docs are namespaced: https://docs.cascivo.com/llms/block/<name>.md
+- Component index (every entry + channel + doc URL, plain markdown): https://cascivo.com/docs/components.md
 - A wrong/guessed name under /llms/*, /context/*, or /r/* returns HTTP 404 with a short hint
   body (not the HTML SPA) — trust the 404, then look up the real name in the index below.
 - Per-component context (intent, when-to-use, boundaries): https://docs.cascivo.com/context/<name>.md
@@ -87,6 +90,16 @@ import { Button, Card } from '@cascivo/react'
    editor (`@cascivo/editor`) and flow canvas (`@cascivo/flow`) are separate installs too.
 
    Trade-offs: smallest setup, updates via npm; you do not edit component internals.
+
+   Themes: two recipes. `@cascivo/themes/all` = tokens + base + light + dark
+   (~41 KB / ~9 KB gzip). Shipping ONE theme? Import `@cascivo/themes/base` +
+   `@cascivo/themes/<name>` instead (~28 KB / ~7 KB gzip). The export name IS the
+   attribute value: import `@cascivo/themes/dark` and set `data-theme="dark"`. Twelve
+   first-party themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist,
+   corporate, terminal, cyberpunk, arcade (`base` = required scaffold, not a theme;
+   `tailwind` = a bridge stylesheet). For a user-switchable theme use `<ThemeProvider>`
+   + `themePreloadScript()` (no-FOUC SSR); for a fixed theme hard-code `data-theme`
+   on `<html>`. Full table + SSR recipe: docs/getting-started.md.
 
 B. Copy-paste source — own and customize the code (shadcn model):
 
@@ -178,6 +191,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.
 - Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
+- Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import it from `@cascivo/core`.
 
 Full behavior/headless catalog: https://github.com/cascivo/cascivo/blob/main/docs/HEADLESS.md. Enterprise friction -> primitive map: https://github.com/cascivo/cascivo/blob/main/docs/ENTERPRISE-READINESS.md.
 
@@ -192,17 +206,21 @@ installed peer that is older than a copied component needs. Watch https://docs.c
 
 ## Guides
 
-- Reactivity & headless behavior primitives: https://github.com/cascivo/cascivo/blob/main/docs/HEADLESS.md
-- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): https://github.com/cascivo/cascivo/blob/main/docs/ENTERPRISE-READINESS.md
-- Theming & branding: https://github.com/cascivo/cascivo/blob/main/docs/THEMING.md
-- Using cascivo with Preact: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-PREACT.md
-- Using cascivo with Next.js (App Router / RSC): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-NEXTJS.md
-- Using cascivo with Vite SSR / TanStack Start: https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md
-- Using cascivo with Tailwind v4 (@layer order + dark bridge): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-TAILWIND.md
-- Strict host ESLint (copied source vs @tanstack/airbnb configs — scope stylistic rules off your components dir): https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-STRICT-ESLINT.md
-- Compatibility & support matrix: https://github.com/cascivo/cascivo/blob/main/docs/COMPATIBILITY.md
-- Migrating from shadcn/ui: https://github.com/cascivo/cascivo/blob/main/docs/MIGRATING-FROM-SHADCN.md
-- Token reference: https://github.com/cascivo/cascivo/blob/main/docs/TOKENS.md
+All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md (no browser needed):
+
+- Getting started (install, themes, SSR): https://cascivo.com/docs/getting-started.md
+- Reactivity & headless behavior primitives: https://cascivo.com/docs/headless.md
+- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): https://cascivo.com/docs/enterprise-readiness.md
+- Theming & branding: https://cascivo.com/docs/theming.md
+- Using cascivo with Preact: https://cascivo.com/docs/using-with-preact.md
+- Using cascivo with Next.js (App Router / RSC): https://cascivo.com/docs/using-with-nextjs.md
+- Using cascivo with Vite SSR / TanStack Start: https://cascivo.com/docs/using-with-vite-ssr.md
+- Using cascivo with Tailwind v4 (@layer order + dark bridge): https://cascivo.com/docs/using-with-tailwind.md
+- Strict host ESLint (scope stylistic rules off your components dir): https://cascivo.com/docs/using-with-strict-eslint.md
+- Compatibility & support matrix: https://cascivo.com/docs/compatibility.md
+- Migrating from shadcn/ui: https://cascivo.com/docs/migrating-from-shadcn.md
+- Token reference: https://cascivo.com/docs/tokens.md
+- Troubleshooting: https://cascivo.com/docs/troubleshooting.md
 
 ## Reference apps (runnable, in-repo — copy these setups)
 
@@ -731,4 +749,4 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [User](https://docs.cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://docs.cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-18 from registry v0.7.1_
+_Generated: 2026-07-20 from registry v0.7.1_

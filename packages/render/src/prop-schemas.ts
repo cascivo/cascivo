@@ -352,6 +352,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'name',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'fallback',
       required: false,
       primitives: ['string'],
@@ -785,6 +790,22 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Calendar: [
     {
+      name: 'isInRange',
+      required: false,
+    },
+    {
+      name: 'isRangeStart',
+      required: false,
+    },
+    {
+      name: 'isRangeEnd',
+      required: false,
+    },
+    {
+      name: 'onDayHover',
+      required: false,
+    },
+    {
       name: 'value',
       required: false,
     },
@@ -945,6 +966,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Carousel: [
+    {
+      name: 'labels',
+      required: false,
+    },
     {
       name: 'children',
       required: false,
@@ -1244,6 +1269,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   ColorPicker: [
     {
+      name: 'labels',
+      required: false,
+    },
+    {
       name: 'value',
       required: false,
       primitives: ['string'],
@@ -1347,6 +1376,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Combobox: [
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'options',
       required: true,
@@ -1602,6 +1636,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   DataTable: [
     {
+      name: 'virtualized',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'rowHeight',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'windowSize',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'overscan',
+      required: false,
+      primitives: ['number'],
+    },
+    {
       name: 'columns',
       required: true,
     },
@@ -1696,6 +1750,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   DatePicker: [
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'value',
       required: false,
@@ -1805,6 +1864,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Dock: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'items',
       required: true,
@@ -2113,6 +2177,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Filter: [
+    {
+      name: 'aria-label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'options',
       required: true,
@@ -2744,6 +2813,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Header: [
+    {
+      name: 'labels',
+      required: false,
+    },
     {
       name: 'brand',
       required: false,
@@ -4212,6 +4285,16 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Progress: [
     {
+      name: 'aria-label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'value',
       required: false,
       primitives: ['number'],
@@ -4563,6 +4646,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   RadioCard: [
     {
+      name: 'hideIndicator',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'value',
       required: true,
       primitives: ['string'],
@@ -4637,6 +4725,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Resizable: [
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'children',
       required: true,
@@ -5045,6 +5138,15 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   SideNav: [
     {
+      name: 'groups',
+      required: false,
+    },
+    {
+      name: 'showCollapseToggle',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'items',
       required: true,
     },
@@ -5329,6 +5431,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Steps: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'steps',
       required: true,
     },
@@ -5408,6 +5515,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   StructuredList: [
+    {
+      name: 'aria-label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'items',
       required: true,
@@ -5970,6 +6082,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   TreeView: [
+    {
+      name: 'aria-label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'items',
       required: true,

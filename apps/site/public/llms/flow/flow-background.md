@@ -82,3 +82,7 @@ The grid and cross variants.
 ## Tags
 
 flow, background, grid, dots, canvas
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

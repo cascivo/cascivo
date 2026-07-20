@@ -100,3 +100,7 @@ Multi-line shell transcript with terminal-window chrome.
 ## Tags
 
 display, code, snippet, copy, pre, syntax-highlighting, terminal, bash, css, js, ts
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

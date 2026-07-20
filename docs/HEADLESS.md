@@ -57,7 +57,7 @@ React/Tailwind patterns an LLM defaults to are wrong here — see
 | `useScrollLock` | Lock body scroll while an overlay is open. |
 | `VisuallyHidden` | Visually hide content while keeping it in the a11y tree. |
 | `Slot` / `composeRefs` / `mergeProps` | Merge props/refs when forwarding to a child element. |
-| `setLinkComponent` / `getLinkComponent` | Register the component config-driven nav renders links through. Call `setLinkComponent(...)` once at app start so SideNav/ShellHeader/Header/Breadcrumb/Switcher/Dock/NavigationMenu render your framework's router `<Link>` (preserving `href`, `aria-current`, active `data-state`), instead of a plain `<a>`. The Link must forward `ref` to its anchor for roving-focus navs. |
+| `setLinkComponent` / `getLinkComponent` | Register the component config-driven nav renders links through. Call `setLinkComponent(...)` once at app start so SideNav/ShellHeader/Header/Breadcrumb/Switcher/Dock/NavigationMenu render your framework's router `<Link>` (preserving `href`, `aria-current`, active `data-state`), instead of a plain `<a>`. The Link must forward `ref` to its anchor for roving-focus navs. Re-exported from `@cascivo/react` (Path B) as well as `@cascivo/core` (Path A). |
 
 ## Router integration — client-side nav links
 
@@ -68,7 +68,7 @@ no provider or per-item wiring:
 
 ```tsx
 // TanStack Router — its Link takes `to`, so map href → to:
-import { setLinkComponent } from '@cascivo/core'
+import { setLinkComponent } from '@cascivo/react'
 import { Link } from '@tanstack/react-router'
 setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
 
@@ -76,6 +76,12 @@ setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
 import Link from 'next/link'
 setLinkComponent(Link)
 ```
+
+Import `setLinkComponent`/`getLinkComponent` from `@cascivo/react` on the prebuilt path
+(Path B) — it is re-exported there, so you never add `@cascivo/core` as a direct
+dependency. On the copy-paste path (Path A), `cascivo init` installs `@cascivo/core`, so
+`import { setLinkComponent } from '@cascivo/core'` works too; both resolve the same
+singleton.
 
 The registered component receives the full computed prop bag (`href`, `className`,
 `aria-current`, `data-state`, `onClick`, …), so active styling and accessibility carry

@@ -9,6 +9,18 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'groups',
+      type: 'SideNavGroup[]',
+      required: false,
+      description: 'Grouped navigation items rendered under optional group labels.',
+    },
+    {
+      name: 'showCollapseToggle',
+      type: 'boolean',
+      required: false,
+      description: 'Show the collapse/expand toggle control.',
+    },
+    {
       name: 'items',
       type: 'SideNavItem[]',
       required: true,

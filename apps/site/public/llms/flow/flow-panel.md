@@ -57,3 +57,7 @@ import '@cascivo/flow/styles.css' // required stylesheet
 ## Tags
 
 flow, panel, slot, chrome
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -18,9 +18,19 @@ export interface UserProps extends HTMLAttributes<HTMLDivElement> {
 
 /** Identity composite: an Avatar with a name + optional description and trailing action. */
 export function User({ name, description, avatarProps, className, children, ...rest }: UserProps) {
+  // Forward the string name to the Avatar so it derives initials (and labels the
+  // image), unless the caller already set name/fallback via avatarProps. Spread
+  // conditionally so we never pass an explicit `undefined` (exactOptionalPropertyTypes).
+  const nameProp =
+    typeof name === 'string' &&
+    avatarProps?.name === undefined &&
+    avatarProps?.fallback === undefined
+      ? { name }
+      : {}
+
   return (
     <div role="group" className={cn(styles['user'], className)} {...rest}>
-      <Avatar {...avatarProps} />
+      <Avatar {...nameProp} {...avatarProps} />
       <span className={styles['text']}>
         <span className={styles['name']}>{name}</span>
         {description != null && <span className={styles['description']}>{description}</span>}

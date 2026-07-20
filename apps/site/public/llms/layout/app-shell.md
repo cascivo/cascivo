@@ -30,14 +30,16 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop         | Type              | Required | Default | Description                                                                    |
-| ------------ | ----------------- | -------- | ------- | ------------------------------------------------------------------------------ |
-| `header`     | `ReactNode`       | yes      | —       | Top header slot                                                                |
-| `sideNav`    | `ReactNode`       | no       | —       | Side navigation slot                                                           |
-| `aside`      | `ReactNode`       | no       | —       | Right aside slot                                                               |
-| `children`   | `ReactNode`       | yes      | —       | Main content                                                                   |
-| `persistKey` | `string \| false` | no       | —       | localStorage key prefix. Pass false to disable persistence.                    |
-| `state`      | `ShellState`      | no       | —       | External shell state from createShellState(). Created internally when omitted. |
+| Prop          | Type                  | Required | Default | Description                                                                     |
+| ------------- | --------------------- | -------- | ------- | ------------------------------------------------------------------------------- |
+| `footer`      | `ReactNode`           | no       | —       | Optional sticky footer rendered below the content area.                         |
+| `sideNavMode` | `'push' \| 'overlay'` | no       | `push`  | push (default): sidebar takes grid space; overlay: sidebar floats over content. |
+| `header`      | `ReactNode`           | yes      | —       | Top header slot                                                                 |
+| `sideNav`     | `ReactNode`           | no       | —       | Side navigation slot                                                            |
+| `aside`       | `ReactNode`           | no       | —       | Right aside slot                                                                |
+| `children`    | `ReactNode`           | yes      | —       | Main content                                                                    |
+| `persistKey`  | `string \| false`     | no       | —       | localStorage key prefix. Pass false to disable persistence.                     |
+| `state`       | `ShellState`          | no       | —       | External shell state from createShellState(). Created internally when omitted.  |
 
 ## Examples
 
@@ -80,3 +82,7 @@ App shell with collapsible nav
 ## Tags
 
 layout, shell, sidebar, navigation
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

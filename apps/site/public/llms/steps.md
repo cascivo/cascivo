@@ -29,12 +29,13 @@ import { Steps } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                         | Required | Default        | Description                                                  |
-| ------------- | ---------------------------- | -------- | -------------- | ------------------------------------------------------------ |
-| `steps`       | `Step[]`                     | yes      | —              | Array of step objects with label and optional explicit state |
-| `activeStep`  | `number`                     | no       | `0`            | Index of the currently active step (0-based)                 |
-| `orientation` | `'horizontal' \| 'vertical'` | no       | `'horizontal'` | Layout direction of the steps                                |
-| `className`   | `string`                     | no       | —              | Additional CSS class names merged onto the root element.     |
+| Prop          | Type                         | Required | Default        | Description                                                                      |
+| ------------- | ---------------------------- | -------- | -------------- | -------------------------------------------------------------------------------- |
+| `ariaLabel`   | `string`                     | no       | —              | Accessible label for the steps navigation; defaults to the built-in i18n string. |
+| `steps`       | `Step[]`                     | yes      | —              | Array of step objects with label and optional explicit state                     |
+| `activeStep`  | `number`                     | no       | `0`            | Index of the currently active step (0-based)                                     |
+| `orientation` | `'horizontal' \| 'vertical'` | no       | `'horizontal'` | Layout direction of the steps                                                    |
+| `className`   | `string`                     | no       | —              | Additional CSS class names merged onto the root element.                         |
 
 ## Examples
 
@@ -101,3 +102,7 @@ Override derived state on a specific step
 ## Tags
 
 steps, wizard, stepper, progress, navigation, onboarding, checkout
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

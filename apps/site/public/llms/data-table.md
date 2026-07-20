@@ -36,8 +36,12 @@ import { DataTable } from '@cascivo/react'
 
 | Prop                | Type                                                                                     | Required | Default    | Description                                                                     |
 | ------------------- | ---------------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------------------------------------------------- |
+| `virtualized`       | `boolean`                                                                                | no       | `false`    | Render only the visible row window for large datasets.                          |
+| `rowHeight`         | `number`                                                                                 | no       | `40`       | Fixed row height in px, used to compute the virtualized window.                 |
+| `windowSize`        | `number`                                                                                 | no       | `20`       | Number of rows rendered in the virtualized window.                              |
+| `overscan`          | `number`                                                                                 | no       | `3`        | Extra rows rendered above/below the window to smooth scrolling.                 |
 | `columns`           | `Column<Row>[]`                                                                          | yes      | —          | The column definitions describing each table column.                            |
-| `rows`              | `Row[]`                                                                                  | yes      | —          | Number of visible text rows.                                                    |
+| `rows`              | `Row[]`                                                                                  | yes      | —          | The row objects to render — one table row per array element.                    |
 | `getRowId`          | `(row: Row) => string`                                                                   | no       | —          | Returns a stable unique id for a row.                                           |
 | `sort`              | `SortState`                                                                              | no       | —          | The controlled sort state.                                                      |
 | `defaultSort`       | `SortState`                                                                              | no       | —          | The initial sort state when uncontrolled.                                       |
@@ -132,3 +136,7 @@ import { DataTable } from '@cascivo/react'
 ## Tags
 
 table, data, grid, sort, filter, pagination, selection
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

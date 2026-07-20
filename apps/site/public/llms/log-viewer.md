@@ -98,3 +98,7 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 ## Tags
 
 log, stream, virtual, console, terminal, monospace
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

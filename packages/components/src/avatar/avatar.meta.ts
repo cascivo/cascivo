@@ -16,10 +16,17 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'name',
+      type: 'string',
+      required: false,
+      description:
+        'Full name — used to derive initials for the fallback and as the accessible label.',
+    },
+    {
       name: 'fallback',
       type: 'string',
       required: false,
-      description: 'Initials shown when no image is available',
+      description: 'Explicit fallback text (initials/glyph); overrides initials derived from name.',
     },
     {
       name: 'size',
@@ -48,8 +55,13 @@ export const meta: ComponentMeta = {
   },
   examples: [
     { title: 'Image', code: '<Avatar src="/jane.jpg" alt="Jane Doe" />' },
-    { title: 'Fallback', code: '<Avatar fallback="JD" alt="Jane Doe" />' },
-    { title: 'With status', code: '<Avatar fallback="JD" status="online" />' },
+    {
+      title: 'Initials from name',
+      code: '<Avatar name="Ada Lovelace" /> // renders "AL"',
+      description: 'Derives initials automatically; also sets the accessible label.',
+    },
+    { title: 'Explicit fallback', code: '<Avatar fallback="JD" alt="Jane Doe" />' },
+    { title: 'With status', code: '<Avatar name="Jane Doe" status="online" />' },
   ],
   dependencies: ['@cascivo/core'],
   tags: ['user', 'profile', 'image'],

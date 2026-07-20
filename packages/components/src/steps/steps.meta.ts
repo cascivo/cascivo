@@ -10,6 +10,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Accessible label for the steps navigation; defaults to the built-in i18n string.',
+    },
+    {
       name: 'steps',
       type: 'Step[]',
       required: true,

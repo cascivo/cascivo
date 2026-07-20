@@ -34,6 +34,7 @@ The divider is a focusable role="separator" with aria-orientation and aria-value
 
 | Name            | Type                         | Required | Default    | Description                                      |
 | --------------- | ---------------------------- | -------- | ---------- | ------------------------------------------------ |
+| `label`         | `string`                     | No       | —          | Accessible label for the resize handle.          |
 | `children`      | `ReactNode`                  | Yes      | —          | Exactly two panes                                |
 | `orientation`   | `'horizontal' \| 'vertical'` | No       | horizontal | Layout orientation of the component.             |
 | `defaultRatio`  | `number`                     | No       | 0.5        | The initial split ratio when uncontrolled.       |

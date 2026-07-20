@@ -60,6 +60,8 @@ interface ComponentMeta {
   accessibility?: AccessibilityMeta
   examples?: ExampleMeta[]
   dependencies?: string[]
+  /** Import symbols when the display name isn't itself an export (see core types). */
+  importSymbols?: string
   tags?: string[]
 }
 
@@ -202,7 +204,11 @@ function displayNameOf(entry: RegistryEntry): string {
   return entry.meta?.name ?? entry.name
 }
 
-function componentMarkdown(entry: RegistryEntry, siblings: RegistryEntry[] = []): string {
+function componentMarkdown(
+  entry: RegistryEntry,
+  siblings: RegistryEntry[] = [],
+  stamp = '',
+): string {
   const meta = entry.meta
   const lines: string[] = []
 
@@ -227,7 +233,10 @@ function componentMarkdown(entry: RegistryEntry, siblings: RegistryEntry[] = [])
     lines.push('')
   }
 
-  const exportName = meta?.name ?? entry.name
+  // The symbol(s) to import. For compound/imperative modules whose display name
+  // is not itself an export (SkipNav → SkipNavLink/SkipNavTarget), the manifest
+  // overrides via `importSymbols`; otherwise the display name is the export.
+  const exportName = meta?.importSymbols ?? meta?.name ?? entry.name
   const pkg = packageFor(entry)
 
   lines.push('## Install')
@@ -357,6 +366,15 @@ function componentMarkdown(entry: RegistryEntry, siblings: RegistryEntry[] = [])
     lines.push('')
   }
 
+  // Freshness stamp — lets a reader (or the post-deploy check) tell which registry
+  // version produced this served doc. A stale deployed copy is otherwise invisible.
+  if (stamp) {
+    lines.push('---')
+    lines.push('')
+    lines.push(stamp)
+    lines.push('')
+  }
+
   return lines.join('\n')
 }
 
@@ -399,6 +417,15 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   const blockCount = entries.filter((e) => e.type === 'block').length
 
   lines.push('# cascivo — The CSS-native, signal-driven, AI-first React design system')
+  lines.push('')
+  // Top-of-file freshness stamp — a reader that truncates a large file still sees the
+  // version. Docs describe the repo's `main`; the installed package versions may lag,
+  // so diff API deltas via breaking-changes.json before assuming a documented symbol
+  // exists in your installed version.
+  lines.push(
+    `_registry v${registry.version} · generated ${registry.generatedAt} · docs track \`main\`; ` +
+      `compare with ${SITE}/registry.json \`.version\` for staleness, and ${DOCS}/breaking-changes.json for installed-vs-documented API drift._`,
+  )
   lines.push('')
   lines.push('cascivo is a React design system you can consume two ways: copy-paste the source')
   lines.push('(`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt')
@@ -460,6 +487,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
   lines.push(`- Page-block AI docs are namespaced: ${DOCS}/llms/block/<name>.md`)
+  lines.push(
+    `- Component index (every entry + channel + doc URL, plain markdown): ${SITE}/docs/components.md`,
+  )
   lines.push(
     `- A wrong/guessed name under /llms/*, /context/*, or /r/* returns HTTP 404 with a short hint`,
   )
@@ -543,6 +573,22 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push('')
   lines.push('   Trade-offs: smallest setup, updates via npm; you do not edit component internals.')
+  lines.push('')
+  lines.push('   Themes: two recipes. `@cascivo/themes/all` = tokens + base + light + dark')
+  lines.push('   (~41 KB / ~9 KB gzip). Shipping ONE theme? Import `@cascivo/themes/base` +')
+  lines.push('   `@cascivo/themes/<name>` instead (~28 KB / ~7 KB gzip). The export name IS the')
+  lines.push(
+    '   attribute value: import `@cascivo/themes/dark` and set `data-theme="dark"`. Twelve',
+  )
+  lines.push(
+    '   first-party themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist,',
+  )
+  lines.push('   corporate, terminal, cyberpunk, arcade (`base` = required scaffold, not a theme;')
+  lines.push(
+    '   `tailwind` = a bridge stylesheet). For a user-switchable theme use `<ThemeProvider>`',
+  )
+  lines.push('   + `themePreloadScript()` (no-FOUC SSR); for a fixed theme hard-code `data-theme`')
+  lines.push('   on `<html>`. Full table + SSR recipe: docs/getting-started.md.')
   lines.push('')
   lines.push('B. Copy-paste source — own and customize the code (shadcn model):')
   lines.push('')
@@ -710,6 +756,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     "- Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).",
   )
+  lines.push(
+    '- Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import it from `@cascivo/core`.',
+  )
   lines.push('')
   lines.push(
     `Full behavior/headless catalog: ${REPO}/blob/main/docs/HEADLESS.md. Enterprise friction -> primitive map: ${REPO}/blob/main/docs/ENTERPRISE-READINESS.md.`,
@@ -736,27 +785,29 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push('## Guides')
   lines.push('')
-  lines.push(`- Reactivity & headless behavior primitives: ${REPO}/blob/main/docs/HEADLESS.md`)
   lines.push(
-    `- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): ${REPO}/blob/main/docs/ENTERPRISE-READINESS.md`,
+    `All guides are fetchable as plain markdown at ${SITE}/docs/<slug>.md (no browser needed):`,
   )
-  lines.push(`- Theming & branding: ${REPO}/blob/main/docs/THEMING.md`)
-  lines.push(`- Using cascivo with Preact: ${REPO}/blob/main/docs/USING-WITH-PREACT.md`)
+  lines.push('')
+  lines.push(`- Getting started (install, themes, SSR): ${SITE}/docs/getting-started.md`)
+  lines.push(`- Reactivity & headless behavior primitives: ${SITE}/docs/headless.md`)
   lines.push(
-    `- Using cascivo with Next.js (App Router / RSC): ${REPO}/blob/main/docs/USING-WITH-NEXTJS.md`,
+    `- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): ${SITE}/docs/enterprise-readiness.md`,
+  )
+  lines.push(`- Theming & branding: ${SITE}/docs/theming.md`)
+  lines.push(`- Using cascivo with Preact: ${SITE}/docs/using-with-preact.md`)
+  lines.push(`- Using cascivo with Next.js (App Router / RSC): ${SITE}/docs/using-with-nextjs.md`)
+  lines.push(`- Using cascivo with Vite SSR / TanStack Start: ${SITE}/docs/using-with-vite-ssr.md`)
+  lines.push(
+    `- Using cascivo with Tailwind v4 (@layer order + dark bridge): ${SITE}/docs/using-with-tailwind.md`,
   )
   lines.push(
-    `- Using cascivo with Vite SSR / TanStack Start: ${REPO}/blob/main/docs/USING-WITH-VITE-SSR.md`,
+    `- Strict host ESLint (scope stylistic rules off your components dir): ${SITE}/docs/using-with-strict-eslint.md`,
   )
-  lines.push(
-    `- Using cascivo with Tailwind v4 (@layer order + dark bridge): ${REPO}/blob/main/docs/USING-WITH-TAILWIND.md`,
-  )
-  lines.push(
-    `- Strict host ESLint (copied source vs @tanstack/airbnb configs — scope stylistic rules off your components dir): ${REPO}/blob/main/docs/USING-WITH-STRICT-ESLINT.md`,
-  )
-  lines.push(`- Compatibility & support matrix: ${REPO}/blob/main/docs/COMPATIBILITY.md`)
-  lines.push(`- Migrating from shadcn/ui: ${REPO}/blob/main/docs/MIGRATING-FROM-SHADCN.md`)
-  lines.push(`- Token reference: ${REPO}/blob/main/docs/TOKENS.md`)
+  lines.push(`- Compatibility & support matrix: ${SITE}/docs/compatibility.md`)
+  lines.push(`- Migrating from shadcn/ui: ${SITE}/docs/migrating-from-shadcn.md`)
+  lines.push(`- Token reference: ${SITE}/docs/tokens.md`)
+  lines.push(`- Troubleshooting: ${SITE}/docs/troubleshooting.md`)
   lines.push('')
   lines.push('## Reference apps (runnable, in-repo — copy these setups)')
   lines.push('')
@@ -989,11 +1040,12 @@ function main() {
   }
 
   // Generate per-component markdown
+  const perDocStamp = `_Generated from registry v${registry.version} on ${registry.generatedAt}. Docs track \`main\`; compare with https://cascivo.com/registry.json \`.version\`._`
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   const markdownByName = new Map<string, string>()
   for (const entry of sorted) {
     const siblings = (byDisplayName.get(displayNameOf(entry)) ?? []).filter((e) => e !== entry)
-    const md = componentMarkdown(entry, siblings)
+    const md = componentMarkdown(entry, siblings, perDocStamp)
     markdownByName.set(entry.name, md)
     const outPath = join(LLMS_DIR, `${entry.name}.md`)
     mkdirSync(dirname(outPath), { recursive: true })
@@ -1009,7 +1061,58 @@ function main() {
   const llmsFullTxt = generateLlmsFullTxt(registry, entries, llmsTxt, markdownByName)
   writeFileSync(join(OUT_DIR, 'llms-full.txt'), llmsFullTxt, 'utf8')
 
+  writeAliasRedirects(entries)
+
   console.log(`Generated llms.txt, llms-full.txt + ${sorted.length} component markdown files`)
+}
+
+/**
+ * Emit flat-name → namespaced-doc 301 redirects into apps/site/public/_redirects,
+ * between the `# BEGIN/END generated aliases` markers. For every namespaced entry
+ * (`chart/<n>`, `block/<n>`, `layout/<n>`) whose bare `<n>` does NOT collide with
+ * another entry's name, `/llms/<n>.md` and `/context/<n>.md` 301 to the real
+ * namespaced path — so a guessed flat name resolves instead of 404ing (2026-07-18
+ * report F7). Collisions (e.g. `calendar` the component vs `chart/calendar`) are
+ * skipped so the flat name keeps resolving to its own doc.
+ */
+function writeAliasRedirects(entries: RegistryEntry[]): void {
+  const REDIRECTS = join(OUT_DIR, '_redirects')
+  const BEGIN = '# BEGIN generated aliases'
+  const END = '# END generated aliases'
+
+  const allNames = new Set(entries.map((e) => e.name))
+  const rules: string[] = []
+  for (const e of [...entries].sort((a, b) => a.name.localeCompare(b.name))) {
+    const slash = e.name.indexOf('/')
+    if (slash === -1) continue // not namespaced
+    const bare = e.name.slice(slash + 1)
+    if (allNames.has(bare)) continue // flat name is a real entry — never shadow it
+    rules.push(`/llms/${bare}.md  /llms/${e.name}.md  301`)
+    rules.push(`/context/${bare}.md  /context/${e.name}.md  301`)
+  }
+
+  let text: string
+  try {
+    text = readFileSync(REDIRECTS, 'utf8')
+  } catch {
+    console.warn('llms:generate — _redirects not found; skipping alias generation')
+    return
+  }
+  const begin = text.indexOf(BEGIN)
+  const end = text.indexOf(END)
+  if (begin === -1 || end === -1 || end < begin) {
+    console.warn('llms:generate — _redirects is missing BEGIN/END alias markers; skipping')
+    return
+  }
+  const header = [
+    BEGIN,
+    '# Flat-name → namespaced-doc 301s for unambiguous guesses (e.g. /llms/area-chart.md →',
+    '# /llms/chart/area-chart.md). Real files win over these rules, so collisions are safe.',
+    ...rules,
+    END,
+  ].join('\n')
+  const next = text.slice(0, begin) + header + text.slice(end + END.length)
+  writeFileSync(REDIRECTS, next, 'utf8')
 }
 
 main()

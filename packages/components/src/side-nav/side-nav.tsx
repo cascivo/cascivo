@@ -69,7 +69,8 @@ export interface SideNavItem {
    * the default layout), and `linkProps` is the anchor prop bag cascivo would spread
    * onto the `<a>` (including active-state and a11y attributes) — spread it onto your
    * router `<Link>` to preserve them. For a global router integration prefer
-   * `setLinkComponent` from `@cascivo/core` over a per-item hatch.
+   * `setLinkComponent` (from `@cascivo/react`, or `@cascivo/core` for copied source)
+   * over a per-item hatch.
    */
   render?: (ctx: {
     collapsed: boolean

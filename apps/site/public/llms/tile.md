@@ -96,3 +96,7 @@ Multi tiles toggle on and off like a checkbox.
 ## Tags
 
 inputs, tile, card, selectable, choice
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

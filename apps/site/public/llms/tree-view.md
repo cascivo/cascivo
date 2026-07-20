@@ -36,6 +36,7 @@ import { TreeView } from '@cascivo/react'
 
 | Prop               | Type                                                                          | Required | Default  | Description                                                          |
 | ------------------ | ----------------------------------------------------------------------------- | -------- | -------- | -------------------------------------------------------------------- |
+| `aria-label`       | `string`                                                                      | no       | —        | Accessible label for the tree.                                       |
 | `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes      | —        | The items to render.                                                 |
 | `selectionMode`    | `'single' \| 'multi'`                                                         | no       | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
 | `selected`         | `string \| string[]`                                                          | no       | —        | The controlled selected node id(s).                                  |
@@ -88,3 +89,7 @@ import { TreeView } from '@cascivo/react'
 ## Tags
 
 display, tree, hierarchy, navigation, files
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

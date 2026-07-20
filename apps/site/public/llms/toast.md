@@ -13,7 +13,7 @@ npx cascivo add toast
 Or use it from the prebuilt package without copying:
 
 ```tsx
-import { Toast } from '@cascivo/react'
+import { ToastProvider, useToast } from '@cascivo/react'
 ```
 
 ## Category
@@ -74,3 +74,7 @@ toast({ title: 'Saved', variant: 'success' })
 ## Tags
 
 overlay, notification, feedback
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

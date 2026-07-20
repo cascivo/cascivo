@@ -65,3 +65,7 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 ## Tags
 
 chart, combo, bar, line, dual-axis, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

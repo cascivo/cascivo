@@ -62,3 +62,7 @@ import { Meter } from '@cascivo/charts'
 ## Tags
 
 chart, meter, gauge, progress, data-viz
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

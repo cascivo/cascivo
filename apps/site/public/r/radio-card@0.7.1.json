@@ -27,6 +27,12 @@
     "sizes": [],
     "props": [
       {
+        "name": "hideIndicator",
+        "type": "boolean",
+        "required": false,
+        "description": "Hide the radio indicator glyph, showing only the card content."
+      },
+      {
         "name": "value",
         "type": "string",
         "required": true,

@@ -29,6 +29,7 @@
     "!src/**/*.test.ts"
   ],
   "exports": {
+    "./package.json": "./package.json",
     ".": "./src/index.css",
     "./layers": "./src/layers.css",
     "./layers.css": "./src/layers.css",

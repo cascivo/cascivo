@@ -84,3 +84,7 @@ Dragging the header past a threshold toward the edge dismisses the panel.
 ## Tags
 
 overlay, drawer, panel, slide, dialog
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

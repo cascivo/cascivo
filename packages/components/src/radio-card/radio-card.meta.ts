@@ -9,6 +9,12 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    {
+      name: 'hideIndicator',
+      type: 'boolean',
+      required: false,
+      description: 'Hide the radio indicator glyph, showing only the card content.',
+    },
     { name: 'value', type: 'string', required: true, description: 'Radio value' },
     { name: 'title', type: 'ReactNode', required: true, description: 'Card title' },
     {

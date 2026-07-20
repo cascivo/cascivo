@@ -159,9 +159,17 @@ git diff --exit-code
 
 # Breakpoint literal check (off-scale @media/@container widths)
 pnpm breakpoint:check
+
+# Manifest + docs guards (props-parity, pkg-exports, docs-imports, doc-links, …)
+pnpm meta:check
+
+# Deployed-docs freshness probe (run against production; also runs post-deploy + daily)
+bash scripts/checks/deployed-freshness.sh
 ```
 
 All must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
+
+`pnpm meta:check` bundles the manifest/docs guards: `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
 
 ### Workspace package aliases — keep in sync
 

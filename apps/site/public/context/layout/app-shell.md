@@ -26,14 +26,16 @@ Provides landmark structure with header and navigation regions for screen reader
 
 ## Props
 
-| Name         | Type              | Required | Default | Description                                                                    |
-| ------------ | ----------------- | -------- | ------- | ------------------------------------------------------------------------------ |
-| `header`     | `ReactNode`       | Yes      | —       | Top header slot                                                                |
-| `sideNav`    | `ReactNode`       | No       | —       | Side navigation slot                                                           |
-| `aside`      | `ReactNode`       | No       | —       | Right aside slot                                                               |
-| `children`   | `ReactNode`       | Yes      | —       | Main content                                                                   |
-| `persistKey` | `string \| false` | No       | —       | localStorage key prefix. Pass false to disable persistence.                    |
-| `state`      | `ShellState`      | No       | —       | External shell state from createShellState(). Created internally when omitted. |
+| Name          | Type                  | Required | Default | Description                                                                     |
+| ------------- | --------------------- | -------- | ------- | ------------------------------------------------------------------------------- |
+| `footer`      | `ReactNode`           | No       | —       | Optional sticky footer rendered below the content area.                         |
+| `sideNavMode` | `'push' \| 'overlay'` | No       | push    | push (default): sidebar takes grid space; overlay: sidebar floats over content. |
+| `header`      | `ReactNode`           | Yes      | —       | Top header slot                                                                 |
+| `sideNav`     | `ReactNode`           | No       | —       | Side navigation slot                                                            |
+| `aside`       | `ReactNode`           | No       | —       | Right aside slot                                                                |
+| `children`    | `ReactNode`           | Yes      | —       | Main content                                                                    |
+| `persistKey`  | `string \| false`     | No       | —       | localStorage key prefix. Pass false to disable persistence.                     |
+| `state`       | `ShellState`          | No       | —       | External shell state from createShellState(). Created internally when omitted.  |
 
 ## Tokens
 

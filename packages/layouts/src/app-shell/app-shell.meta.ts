@@ -9,6 +9,20 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    {
+      name: 'footer',
+      type: 'ReactNode',
+      required: false,
+      description: 'Optional sticky footer rendered below the content area.',
+    },
+    {
+      name: 'sideNavMode',
+      type: "'push' | 'overlay'",
+      required: false,
+      description:
+        'push (default): sidebar takes grid space; overlay: sidebar floats over content.',
+      default: 'push',
+    },
     { name: 'header', type: 'ReactNode', required: true, description: 'Top header slot' },
     { name: 'sideNav', type: 'ReactNode', required: false, description: 'Side navigation slot' },
     { name: 'aside', type: 'ReactNode', required: false, description: 'Right aside slot' },

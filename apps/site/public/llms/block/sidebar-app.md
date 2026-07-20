@@ -42,3 +42,7 @@ App with sidebar navigation
 ## Tags
 
 block, sidebar, navigation, app-shell
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -35,6 +35,7 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 
 | Name            | Type                      | Required | Default | Description                                                        |
 | --------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `labels`        | `ColorPickerLabels`       | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
 | `value`         | `string`                  | No       | —       | Controlled hex color value                                         |
 | `defaultValue`  | `string`                  | No       | #3b82f6 | The initial value when uncontrolled.                               |
 | `onValueChange` | `(value: string) => void` | No       | —       | Called with the new value when it changes.                         |

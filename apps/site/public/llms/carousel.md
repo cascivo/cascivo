@@ -22,14 +22,15 @@ import { Carousel } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default | Description                                           |
-| --------------- | ------------------------- | -------- | ------- | ----------------------------------------------------- |
-| `children`      | `ReactNode`               | no       | —       | Slides as children                                    |
-| `slides`        | `ReactNode[]`             | no       | —       | Slides as an array                                    |
-| `index`         | `number`                  | no       | —       | Controlled active index                               |
-| `defaultIndex`  | `number`                  | no       | `0`     | The initial slide index when uncontrolled.            |
-| `onIndexChange` | `(index: number) => void` | no       | —       | Called with the new slide index when it changes.      |
-| `loop`          | `boolean`                 | no       | `false` | When true, navigation wraps around from end to start. |
+| Prop            | Type                      | Required | Default | Description                                                |
+| --------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------- |
+| `labels`        | `CarouselLabels`          | no       | —       | Overrides for the component’s user-visible strings (i18n). |
+| `children`      | `ReactNode`               | no       | —       | Slides as children                                         |
+| `slides`        | `ReactNode[]`             | no       | —       | Slides as an array                                         |
+| `index`         | `number`                  | no       | —       | Controlled active index                                    |
+| `defaultIndex`  | `number`                  | no       | `0`     | The initial slide index when uncontrolled.                 |
+| `onIndexChange` | `(index: number) => void` | no       | —       | Called with the new slide index when it changes.           |
+| `loop`          | `boolean`                 | no       | `false` | When true, navigation wraps around from end to start.      |
 
 ## Examples
 
@@ -72,3 +73,7 @@ import { Carousel } from '@cascivo/react'
 ## Tags
 
 slider, gallery, slideshow, deck, scroll-snap
+
+---
+
+_Generated from registry v0.7.1 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

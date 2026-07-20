@@ -9,6 +9,18 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md', 'lg'],
   props: [
     {
+      name: 'aria-label',
+      type: 'string',
+      required: false,
+      description: 'Accessible label when no visible label is present.',
+    },
+    {
+      name: 'aria-describedby',
+      type: 'string',
+      required: false,
+      description: 'Id of an element describing the progress bar.',
+    },
+    {
       name: 'value',
       type: 'number',
       required: false,

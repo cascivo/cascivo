@@ -27,6 +27,7 @@
     "!src/**/*.test.ts"
   ],
   "exports": {
+    "./package.json": "./package.json",
     "./all": "./src/all.css",
     "./all.css": "./src/all.css",
     "./base": "./src/base.css",
