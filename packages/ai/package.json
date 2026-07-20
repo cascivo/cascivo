@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/ai",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "AI-native components for cascivo — StreamingText, AiLabel, Terminal, AiChat",
   "keywords": [
     "ai",

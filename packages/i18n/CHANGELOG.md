@@ -1,5 +1,17 @@
 # @cascivo/i18n
 
+## 0.2.8
+
+### Patch Changes
+
+- 958fd6f: Every published package now exports `./package.json`, so
+  `require.resolve('@cascivo/<pkg>/package.json')` resolves instead of throwing
+  `ERR_PACKAGE_PATH_NOT_EXPORTED`. Previously only `@cascivo/react` exposed it, which
+  tripped version probes, bundler plugins, and inspection tooling on the other packages.
+- Updated dependencies [958fd6f]
+- Updated dependencies [958fd6f]
+  - @cascivo/core@0.4.1
+
 ## 0.2.7
 
 ### Patch Changes
