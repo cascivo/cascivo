@@ -92,9 +92,13 @@ for HOST in "${HOSTS[@]}"; do
   assert_contains "$HOST/llms/chart/area-chart.md" '`series`'
   # Fetchable getting-started markdown.
   assert_contains "$HOST/docs/getting-started.md" "registry v$VERSION"
-  # A guessed-wrong name is a real 404 with the hint body (not the HTML SPA shell).
+  # A guessed-wrong name must be a real HTTP 404, not a 200 SPA shell — an agent that
+  # gets 200 would read the HTML as if it were the doc. Cloudflare Pages serves the
+  # built 404.html here, so the *status* is the contract we can enforce. We do NOT
+  # assert a machine-readable 404 *body*: `_redirects` cannot set a 404 status (it
+  # supports only 200 proxying + 3xx redirects — "rewrites (other status codes)" are
+  # unsupported), so a hint-body 404 would need a Pages Function, not a redirect rule.
   assert_404 "$HOST/llms/definitely-not-a-component.md"
-  assert_contains "$HOST/llms/definitely-not-a-component.md" "no cascivo doc at this path"
 done
 
 # Retired subdomain must 301 to the canonical host (not serve stale content). Skippable
