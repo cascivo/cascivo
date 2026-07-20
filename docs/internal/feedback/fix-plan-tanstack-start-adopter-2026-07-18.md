@@ -81,7 +81,43 @@ Priority order: **WS-A** (it explains three findings and protects every future d
 
 ---
 
-## WS-A (P0) — Deployed-docs freshness: stamping, post-deploy verification, host audit
+## The freshness invariant (governs WS-A and WS-C)
+
+This plan's owner requirement is stronger than "fix the stale files the report hit":
+**docs must never be stale, by construction.** State it as an invariant and enforce it
+at every layer where staleness can enter, so no future report can open with "the docs
+lied":
+
+> **Invariant.** Anything reachable on the docs hosts (`cascivo.com`,
+> `docs.cascivo.com`) is generated from the current `main` HEAD; every doc claim about
+> the API is mechanically tied to the source it describes; and any violation of either
+> property turns a CI signal red within 24 hours without human vigilance.
+
+Staleness has exactly four entry points, each with its own enforcement layer:
+
+| Layer | Staleness mode | Enforcement (existing → added by this plan) |
+| --- | --- | --- |
+| 1. Generation | Generated artifacts drift from manifests/source | `pnpm regen` + CI drift job (`ci.yml:116-149`) — **already sound**; nothing to add |
+| 2. Authoring | Hand-written prose drifts from code (wrong props, phantom imports, dead links) | props-parity, primitive-docs, claims, docs-routes checks → **WS-C adds**: prose sweep, Direction-B ERROR, docs-imports check, doc link check |
+| 3. Delivery | `main` is correct but production serves old bytes (this report's failure) | nothing today → **WS-A adds**: stamps, deploy-trigger closure, post-deploy verification, host-binding audit |
+| 4. Operation | Production rots out-of-band (domain rebinding, CDN cache, expired deploy) | nothing today → **WS-A adds**: scheduled daily production probe |
+
+Two consequences the implementer must honor throughout:
+
+- **No unverifiable doc content.** Every new doc surface added by any workstream
+  (WS-E's `/docs/*.md` mirror, WS-F's theme table) must be regen-generated (layer 1)
+  or covered by a layer-2 check — hand-maintained copies with no gate are how the next
+  staleness bug ships. If a piece of content can't be generated or checked, it doesn't
+  ship.
+- **"Docs track main" must be visible.** Docs on the hosts describe `main`, which can
+  be *ahead* of the published 0.x packages an adopter installs — the inverse staleness.
+  The stamps (WS-A.1) plus an explicit "docs track the repo; installed versions may
+  lag — diff via breaking-changes.json" line in llms.txt make this skew inspectable
+  instead of silent.
+
+---
+
+## WS-A (P0) — Docs freshness guarantee: stamping, deploy-trigger closure, post-deploy verification, continuous probe, host audit
 
 ### Problem
 
@@ -113,7 +149,18 @@ doesn't compile") is the direct consequence.
   existing generated-header comment block.
 - Run `pnpm regen`; commit regenerated artifacts (drift gate).
 
-**2. Post-deploy smoke verification in `cf-pages.yml`.**
+**2. Close the deploy-trigger gaps (belt-and-braces on layer 3).**
+
+The `deploy-site` path filter (`cf-pages.yml:26-40`) does not list `docs/**`,
+`registry.json` (repo root), or `scripts/**` (the generators). Today this is *mostly*
+saved by the drift gate — content changes force committed regen artifacts under
+`apps/site/public/**`, which is in the filter — but "mostly" is not an invariant: a
+future generator whose output lands outside `apps/site/`, or a hand edit to a served
+static file outside the filter, would merge without a redeploy. Add `docs/**`,
+`registry.json`, and `scripts/**` to the `site` filter. A spurious extra deploy is
+free; a missed one is this report.
+
+**3. Post-deploy smoke verification in `cf-pages.yml`.**
 
 Add a `verify-site` job to `.github/workflows/cf-pages.yml`, `needs: deploy-site`,
 running only for `--branch=main` deploys (production). For **each** host in
@@ -136,7 +183,31 @@ need. Keep the script inline in the workflow or as
 `scripts/checks/deployed-freshness.sh` (implementer's choice; prefer a script so it can
 be run manually against prod at any time).
 
-**3. Host mapping audit (ops task — document, then verify).**
+**4. Scheduled production probe (layer 4 — catches out-of-band rot).**
+
+Post-deploy verification only fires when we deploy; the docs.cascivo.com staleness
+this report hit could equally arise *between* deploys (a domain rebound to an old
+Pages project, a deleted deployment, aggressive CDN caching, cert breakage). Add a
+scheduled workflow (`.github/workflows/docs-freshness.yml`, daily cron +
+`workflow_dispatch`) that checks out `main` and runs the same
+`scripts/checks/deployed-freshness.sh` from item 3 against both production hosts:
+
+- Asserts the served stamp version equals `registry.json` `.version` at `main` HEAD.
+- Asserts the canary files, 404 behavior, and `Access-Control-Allow-Origin` headers
+  (the `_headers` rules are part of the served contract — an agent blocked by CORS is
+  as stale-blind as one reading old bytes).
+- Sends cache-busting requests (`Cache-Control: no-cache` + a throwaway query param)
+  *and* plain requests, so a CDN serving stale cached bytes to normal clients is
+  detected, not masked.
+- On failure the workflow goes red (and, since scheduled-run failures are easy to
+  miss, also opens/updates a pinned issue labeled `docs-freshness` via
+  `gh issue` — one issue updated in place, not one per run).
+
+One deliberate redundancy: the probe runs even on days with deploys. The two signals
+(post-deploy, scheduled) fail independently, so a broken verify step can't silently
+disable the guarantee.
+
+**5. Host mapping audit (ops task — document, then verify).**
 
 The repo deploys ONE Cloudflare Pages project for the unified site
 (`cf-pages.yml:83-88`, project `cascade-ui-landing`); `docs.cascivo.com` is asserted to
@@ -147,8 +218,21 @@ says otherwise. An implementing agent cannot fix DNS/Pages bindings from this re
   and docs subdomain → the `cascade-ui-landing` Pages project, production branch
   `main`) and the manual steps to verify/fix custom-domain bindings in the Cloudflare
   dashboard.
-- The WS-A.2 smoke job is the ongoing enforcement: once bindings are fixed, a stale
-  docs.cascivo.com can never again go unnoticed.
+- The WS-A.3 post-deploy job and WS-A.4 scheduled probe are the ongoing enforcement:
+  once bindings are fixed, a stale docs.cascivo.com can never again go unnoticed for
+  more than a day.
+
+**6. Make the main-vs-published skew visible.**
+
+Docs on the hosts describe `main`; adopters run published 0.x packages that may lag
+(the inverse of the staleness in this report, and just as capable of producing "the
+docs lied"). In `scripts/llms/generate.ts`, add one line to the top-of-file stamp
+block (WS-A.1) and to the "Versioning & compatibility" section: docs track the repo's
+`main`; the currently-published version of each package is in its CHANGELOG and API
+deltas are enumerated in `breaking-changes.json` — check it before assuming a
+documented prop exists in your installed version. No new machinery: the
+breaking-changes surface already exists (`generate.ts:478`, `:733`); this makes the
+skew *inspectable* at the exact place an agent reads first. `pnpm regen`.
 
 ### Tests / acceptance
 
@@ -160,6 +244,14 @@ says otherwise. An implementing agent cannot fix DNS/Pages bindings from this re
   output in CI is acceptable as a pre-deploy self-test; the real curl assertions run
   post-deploy).
 - After the first production deploy: both hosts pass the smoke script manually.
+- Trigger-closure proof: a commit touching only `docs/GETTING-STARTED.md` (or only
+  `registry.json`) queues a `deploy-site` run.
+- Probe-effectiveness proof: run `deployed-freshness.sh` once against a deliberately
+  wrong target (e.g. an old preview deployment URL) and confirm it fails — a
+  freshness check that cannot fail is decoration.
+- The scheduled workflow appears in the Actions tab with a next-run time, and a
+  forced failure (temporarily assert an impossible version via `workflow_dispatch`
+  input, or equivalent) opens/updates the pinned `docs-freshness` issue.
 
 ---
 
@@ -210,7 +302,7 @@ nothing tells the adopter to install it. The report worked around it via the per
 
 ---
 
-## WS-C (P1) — Manifest prose accuracy: fix the `rows` description, sweep, and harden the gate
+## WS-C (P1) — Doc↔code drift prevention: fix the `rows` description, sweep, and harden the gates (prose, imports, links)
 
 ### Problem
 
@@ -236,12 +328,43 @@ able to trust. This is the live instance of R1 that we *can* fix mechanically.
    remaining warnings (the sweep above will surface them) and flip Direction B from
    WARN to ERROR, extending the existing `ALLOWLIST` (with reasons) for genuinely
    intentional omissions.
+4. **Docs-imports check (layer 2 of the freshness invariant — new gate).** The F3
+   defect class — a doc teaching `import { setLinkComponent } from '@cascivo/core'`
+   for an audience that can't resolve it — is mechanically checkable and currently
+   unchecked. New `scripts/checks/docs-imports.test.ts` (node:test, wired into
+   `meta:check` alongside its siblings):
+   - Extract every `import { A, B } from '@cascivo/<pkg>'` (and `import '<pkg>/x.css'`
+     side-effect form) from fenced code blocks in `docs/**/*.md` (excluding
+     `docs/internal/` and `docs/plans/` — plans legitimately show not-yet-existing
+     APIs) and in the generator-emitted strings of `scripts/llms/generate.ts`.
+   - Assert each named import exists in that package's public export surface, and
+     each subpath (`/styles.css`, `/all`, …) exists in its `exports` map. Reuse the
+     resolution approach of `scripts/checks/lib/component-props.ts` /
+     `ssr-import.test.ts` rather than inventing one.
+   - Allowlist-with-reasons for intentional forward references, same pattern and
+     stale-entry test as props-parity.
+   - This check retroactively covers WS-B (once the react re-export lands, the
+     HEADLESS/VITE-SSR snippets pass; before it, the check would have caught F3) and
+     permanently guards every snippet WS-E publishes to `/docs/*.md`.
+5. **Doc link check (layer 2 — new gate, small).** Every relative link in
+   `docs/*.md` (again excluding `internal/` and `plans/`) must resolve to an existing
+   file in the repo, and every `/llms/…`, `/context/…`, `/docs/…` absolute path
+   emitted by the generators must correspond to a generated file in
+   `apps/site/public/`. The existing `docs-routes.test.ts` covers part of the second
+   half — extend it rather than adding a parallel check if the fit is natural;
+   otherwise a sibling `docs-links.test.ts`. This is what keeps WS-E's link-rewritten
+   mirror honest forever, not just at introduction.
 
 ### Tests / acceptance
 
 - `pnpm meta:check` green with Direction B as ERROR; allowlist entries all carry
   reasons and pass the existing stale-entry test.
 - Regenerated `llms/data-table.md` row for `rows` reads correctly (drift gate).
+- `docs-imports` check: demonstrably capable of failing — verified by temporarily
+  reverting the WS-B re-export (the check must then flag `docs/HEADLESS.md` /
+  `docs/USING-WITH-VITE-SSR.md`) or by a bad fixture; document which in the PR.
+- Doc link check: green over `docs/*.md` after fixing whatever the first run
+  surfaces; a synthetic dead link fails it.
 - Changeset: none needed for meta-only changes unless the repo convention versions
   `@cascivo/react` for doc-surface changes — follow `packages/react/CHANGELOG.md`
   precedent (previous meta fixes shipped as patches; if so, **patch**).
@@ -518,16 +641,24 @@ publishes `using-with-vite-ssr.md`, in which case regen picks it up automaticall
   repo's precedent versions meta-only changes; check `packages/react/CHANGELOG.md`) ·
   WS-G react minor. Docs/site/workflow-only changes (WS-A, WS-E, WS-F, WS-H) need no
   changeset unless repo convention says otherwise.
-- New checks (WS-D `pkg-exports`, WS-A stamp assertions) get added to the CLAUDE.md
-  "reproduce individual CI steps" list per house convention.
+- New checks (WS-D `pkg-exports`, WS-A stamp assertions, WS-C `docs-imports` and
+  doc-link checks) get added to the CLAUDE.md "reproduce individual CI steps" list per
+  house convention.
+- **Freshness invariant applies to this plan's own output**: any doc surface a
+  workstream introduces must be either regen-generated (drift-gated) or covered by a
+  layer-2 check before its PR merges — no hand-maintained, ungated doc content
+  anywhere in the deliverables (see "The freshness invariant" above).
 
 ## Suggested PR breakdown
 
 1. **PR 1 (WS-B + WS-D)** — react link re-export + exports-map sweep + guard check.
    Small, pure-code, immediately unblocks the documented router happy path.
-2. **PR 2 (WS-A)** — generator stamps + `verify-site` workflow job + OPS-HOSTS note.
-   Land early so every subsequent docs PR is provably delivered.
-3. **PR 3 (WS-C)** — `rows` description fix + prose sweep + Direction-B WARN→ERROR.
+2. **PR 2 (WS-A)** — generator stamps + deploy-trigger filter closure +
+   `verify-site` post-deploy job + scheduled `docs-freshness` probe + skew banner +
+   OPS-HOSTS note. Land early so every subsequent docs PR is provably delivered.
+3. **PR 3 (WS-C)** — `rows` description fix + prose sweep + Direction-B WARN→ERROR +
+   `docs-imports` check + doc link check. (Sequenced after PR 1 so the docs-imports
+   check passes on the flipped HEADLESS/VITE-SSR snippets.)
 4. **PR 4 (WS-E)** — 404 hint namespaces + alias redirects generator + `/docs/*.md`
    mirror + `components.md` index + llms.txt link updates.
 5. **PR 5 (WS-F + WS-H)** — theme quick-start restructure (with measured sizes),
@@ -549,3 +680,12 @@ publishes `using-with-vite-ssr.md`, in which case regen picks it up automaticall
 4. **WS-G**: should `User` derive initials itself instead of forwarding `name`?
    **Default: forward** — one derivation implementation, in Avatar, keeps the
    behavior identical everywhere.
+5. **WS-A.4**: probe cadence — daily enough? **Default: daily** (the invariant
+   promises red-within-24h; hourly buys little against this failure mode and burns
+   Actions minutes). Revisit only if a *third* delivery-layer incident occurs.
+6. **WS-C.4**: if extracting imports from generator-emitted strings
+   (`scripts/llms/generate.ts`) proves too noisy to parse reliably, is checking the
+   *generated* `apps/site/public/llms.txt` / `llms-full.txt` output instead
+   acceptable? **Default: yes** — the generated files are the shipped artifact and
+   are easier to scan; checking them still fails CI before merge because regen runs
+   in the drift job.
