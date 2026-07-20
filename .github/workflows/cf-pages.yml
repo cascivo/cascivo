@@ -86,8 +86,12 @@ jobs:
       # apps/site/dist/demos/<slug>/ so one deploy serves the marketing front
       # door, the docs, the /examples/* pages, and every live demo.
       - run: pnpm run build:landing-demos
-      - run: >
-          npx wrangler pages deploy apps/site/dist
+      # Deploy from apps/site so Wrangler picks up apps/site/functions/ (it resolves
+      # the Functions directory relative to its working directory, not the assets arg).
+      # The Functions serve machine-readable 404s for /llms/*, /context/*, /r/*.
+      - working-directory: apps/site
+        run: >
+          npx wrangler pages deploy dist
           --project-name=${{ vars.CF_PROJECT_SITE || 'cascade-ui-landing' }}
           ${{ github.event_name == 'pull_request' && format('--branch=pr-{0}', github.event.number) || '--branch=main' }}
         env:
