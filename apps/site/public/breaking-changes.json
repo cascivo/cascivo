@@ -4,7 +4,7 @@
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,7 +15,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.3.12",
+      "version": "0.3.13",
       "releases": [
         {
           "version": "0.3.0",
@@ -33,7 +33,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "releases": [
         {
           "version": "0.5.0",
@@ -69,7 +69,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "releases": [
         {
           "version": "0.4.0",
@@ -99,7 +99,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.13",
+      "version": "0.2.14",
       "releases": [
         {
           "version": "0.2.0",
@@ -119,12 +119,12 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.1.12",
+      "version": "0.1.13",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "releases": [
         {
           "version": "0.2.0",
@@ -140,7 +140,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.0",
+      "version": "0.3.1",
       "releases": [
         {
           "version": "0.3.0",
@@ -161,7 +161,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "releases": [
         {
           "version": "0.5.0",
@@ -196,8 +196,16 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.7.1",
+      "version": "0.8.0",
       "releases": [
+        {
+          "version": "0.8.0",
+          "level": "minor",
+          "notes": [
+            "`Avatar` accepts a `name` prop and derives initials from it (grapheme-safe, first +",
+            "Re-export the router-link API (`setLinkComponent`, `getLinkComponent`, and the"
+          ]
+        },
         {
           "version": "0.7.0",
           "level": "minor",
@@ -239,7 +247,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "releases": [
         {
           "version": "0.2.0",
@@ -255,7 +263,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.12",
+      "version": "0.1.13",
       "releases": [
         {
           "version": "0.1.0",
@@ -266,7 +274,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "releases": [
         {
           "version": "0.4.0",
@@ -292,7 +300,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "releases": [
         {
           "version": "0.5.0",
@@ -323,7 +331,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "releases": [
         {
           "version": "0.1.0",

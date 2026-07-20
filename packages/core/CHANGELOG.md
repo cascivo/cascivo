@@ -1,5 +1,21 @@
 # @cascivo/core
 
+## 0.4.1
+
+### Patch Changes
+
+- 958fd6f: Add an optional `importSymbols` field to `ComponentMeta` so a component whose display
+  `name` is not itself an export (compound/imperative modules — `SkipNav` ships
+  `SkipNavLink`/`SkipNavTarget`, `Toast` ships `ToastProvider`/`useToast`) renders a
+  correct `import { … }` line in its generated docs instead of a broken
+  `import { SkipNav }`. Also corrects the DataTable `rows` prop description (was a
+  pasted "Number of visible text rows.") and documents 26 previously-undocumented props
+  across the manifests, now enforced by the props-parity Direction-B gate.
+- 958fd6f: Every published package now exports `./package.json`, so
+  `require.resolve('@cascivo/<pkg>/package.json')` resolves instead of throwing
+  `ERR_PACKAGE_PATH_NOT_EXPORTED`. Previously only `@cascivo/react` exposed it, which
+  tripped version probes, bundler plugins, and inspection tooling on the other packages.
+
 ## 0.4.0
 
 ### Minor Changes

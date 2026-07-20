@@ -1,5 +1,28 @@
 # @cascivo/react
 
+## 0.8.0
+
+### Minor Changes
+
+- 958fd6f: `Avatar` accepts a `name` prop and derives initials from it (grapheme-safe, first +
+  last word), so `<Avatar name="Ada Lovelace" />` renders "AL" and is labeled "Ada
+  Lovelace" — no need to pre-compute `fallback`. Explicit `fallback` still wins, and
+  `name` also supplies the image `alt` when `src` is set without an explicit `alt`. The
+  `User` composite forwards its string `name` to the Avatar automatically.
+- 958fd6f: Re-export the router-link API (`setLinkComponent`, `getLinkComponent`, and the
+  `LinkComponent` type) from `@cascivo/react`. Prebuilt-package (Path B) users can now
+  register their framework's router `<Link>` without adding `@cascivo/core` as a direct
+  dependency — importing it directly was a phantom-dependency error under pnpm, since
+  `@cascivo/core` is only a transitive dep. Copied-source (Path A) projects can still
+  import it from `@cascivo/core`; both resolve the same module singleton.
+
+### Patch Changes
+
+- Updated dependencies [958fd6f]
+- Updated dependencies [958fd6f]
+  - @cascivo/core@0.4.1
+  - @cascivo/i18n@0.2.8
+
 ## 0.7.1
 
 ### Patch Changes

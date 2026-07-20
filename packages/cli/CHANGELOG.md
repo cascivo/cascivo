@@ -1,5 +1,16 @@
 # cascivo
 
+## 0.5.1
+
+### Patch Changes
+
+- 958fd6f: Every published package now exports `./package.json`, so
+  `require.resolve('@cascivo/<pkg>/package.json')` resolves instead of throwing
+  `ERR_PACKAGE_PATH_NOT_EXPORTED`. Previously only `@cascivo/react` exposed it, which
+  tripped version probes, bundler plugins, and inspection tooling on the other packages.
+- Updated dependencies [958fd6f]
+  - @cascivo/registry@0.2.1
+
 ## 0.5.0
 
 ### Minor Changes
