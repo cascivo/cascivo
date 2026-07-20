@@ -3,9 +3,9 @@ import { dirname, join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
 /**
- * Canonical host for hosted cascivo artifacts (registry.json, per-item
- * r/<name>.json, marketplace.json). docs.cascivo.com mirrors the same tree.
- * Keep in sync with CASCIVO_HOST in packages/mcp.
+ * Canonical (and only) host for hosted cascivo artifacts (registry.json, per-item
+ * r/<name>.json, marketplace.json, /llms/*, /context/*). The legacy docs.cascivo.com
+ * subdomain is retired and 301s here. Keep in sync with CASCIVO_HOST in packages/mcp.
  */
 export const CASCIVO_HOST = 'https://cascivo.com'
 

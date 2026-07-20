@@ -21,7 +21,9 @@ set -uo pipefail
 
 HOSTS=("$@")
 if [[ ${#HOSTS[@]} -eq 0 ]]; then
-  HOSTS=("https://cascivo.com" "https://docs.cascivo.com")
+  # cascivo.com is the single canonical host. docs.cascivo.com is retired (301 →
+  # cascivo.com); pass it explicitly if you want to probe the redirect separately.
+  HOSTS=("https://cascivo.com")
 fi
 
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -94,6 +96,17 @@ for HOST in "${HOSTS[@]}"; do
   assert_404 "$HOST/llms/definitely-not-a-component.md"
   assert_contains "$HOST/llms/definitely-not-a-component.md" "no cascivo doc at this path"
 done
+
+# Retired subdomain must 301 to the canonical host (not serve stale content). Skippable
+# via FRESHNESS_SKIP_REDIRECT=1 while the DNS/Cloudflare redirect is still being set up.
+if [[ -z "${FRESHNESS_SKIP_REDIRECT:-}" ]]; then
+  echo "── Checking docs.cascivo.com redirects to the canonical host ──"
+  loc="$(curl -s -o /dev/null -w '%{redirect_url}' "https://docs.cascivo.com/llms.txt")"
+  if [[ "$loc" != https://cascivo.com/* ]]; then
+    echo "::error::https://docs.cascivo.com/llms.txt does not 301 to cascivo.com (got: '${loc:-<none>}'). See docs/internal/OPS-HOSTS.md."
+    FAILED=1
+  fi
+fi
 
 if [[ "$FAILED" -ne 0 ]]; then
   echo "::error::deployed-docs freshness check FAILED — production is not serving registry v$VERSION"

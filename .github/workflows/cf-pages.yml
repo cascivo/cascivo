@@ -95,9 +95,10 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
 
   # ── Verify the production deploy actually serves the current registry version ──
-  # The 2026-07-18 adopter report read docs 4 days stale from docs.cascivo.com. This
-  # job fails the workflow if either production host does not serve content generated
-  # from the just-deployed registry.json, on BOTH cascivo.com and docs.cascivo.com.
+  # The 2026-07-18 adopter report read docs 4 days stale from the (now retired)
+  # docs.cascivo.com. cascivo.com is the single canonical host; this job fails the
+  # workflow unless it serves content generated from the just-deployed registry.json,
+  # and confirms docs.cascivo.com 301s to it.
   verify-site:
     needs: deploy-site
     if: needs.changes.outputs.site == 'true' && github.event_name != 'pull_request'
@@ -107,11 +108,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Probe both production hosts for freshness
+      - name: Probe the canonical host for freshness
         run: bash scripts/checks/deployed-freshness.sh
         env:
           FRESHNESS_RETRIES: '20' # ~5 min of CDN-propagation tolerance
           FRESHNESS_SLEEP: '15'
+          # Remove this once the docs.cascivo.com → cascivo.com 301 is configured in
+          # Cloudflare (docs/internal/OPS-HOSTS.md). Until then, only the canonical-host
+          # freshness assertion runs; the redirect assertion is skipped.
+          FRESHNESS_SKIP_REDIRECT: '1'
 
   deploy-storybook:
     needs: changes

@@ -21,7 +21,7 @@ const AI = '8b5cf6'
 const TAGLINE = 'The CSS-native, signal-driven, AI-first React design system'
 
 const SITE_LINKS =
-  '[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)'
+  '[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)'
 
 const FOOTER = `---
 

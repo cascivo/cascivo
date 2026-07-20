@@ -22,7 +22,7 @@ const ROOT = join(import.meta.dirname, '../..')
 const PARITY = join(ROOT, 'apps/site/public/parity.json')
 const REGISTRY = join(ROOT, 'registry.json')
 const GUIDE = join(ROOT, 'docs/MIGRATING-FROM-SHADCN.md')
-const DOCS = 'https://docs.cascivo.com/docs/components'
+const DOCS = 'https://cascivo.com/docs/components'
 
 const esc = (s: string) => s.replace(/\|/g, '\\|')
 
@@ -52,7 +52,7 @@ function buildTable(): string {
   const lines: string[] = []
 
   lines.push(
-    `_Generated from the [parity matrix](https://docs.cascivo.com/docs/parity) — ${shadcn.covered} of ${shadcn.total} shadcn/ui components have a cascivo equivalent. Each cascivo link carries the exact \`cascivo add\` command._`,
+    `_Generated from the [parity matrix](https://cascivo.com/docs/parity) — ${shadcn.covered} of ${shadcn.total} shadcn/ui components have a cascivo equivalent. Each cascivo link carries the exact \`cascivo add\` command._`,
   )
   lines.push('')
   lines.push('| shadcn/ui | cascivo | Notes |')

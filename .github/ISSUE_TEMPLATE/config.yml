@@ -1,7 +1,7 @@
 blank_issues_enabled: false
 contact_links:
   - name: Documentation
-    url: https://docs.cascivo.com
+    url: https://cascivo.com
     about: Component reference, guides, and the AI/MCP layer.
   - name: Discussions & questions
     url: https://github.com/cascivo/cascivo/discussions

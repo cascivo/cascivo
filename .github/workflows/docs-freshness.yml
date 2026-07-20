@@ -2,9 +2,10 @@ name: Docs freshness
 
 # Layer 4 of the docs freshness invariant: catch out-of-band rot BETWEEN deploys
 # (a domain rebound to an old Pages project, a deleted deployment, a stale CDN,
-# an expired cert). Post-deploy verification only fires when we deploy; this runs
-# daily against production so a docs.cascivo.com that silently goes stale — the
-# 2026-07-18 report's failure mode — can never go unnoticed for more than a day.
+# an expired cert, or the retired docs.cascivo.com redirect breaking). Post-deploy
+# verification only fires when we deploy; this runs daily against production so a
+# stale canonical host — the 2026-07-18 report's failure mode — can never go
+# unnoticed for more than a day.
 
 on:
   schedule:
@@ -33,6 +34,9 @@ jobs:
         env:
           FRESHNESS_RETRIES: '5'
           FRESHNESS_SLEEP: '10'
+          # Remove once the docs.cascivo.com → cascivo.com 301 is configured
+          # (docs/internal/OPS-HOSTS.md). Until then only the canonical host is asserted.
+          FRESHNESS_SKIP_REDIRECT: '1'
 
       # Scheduled-run failures are easy to miss — surface them as a single pinned
       # issue, updated in place (not one per run).

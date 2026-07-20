@@ -1,50 +1,58 @@
-# Ops — docs host mapping (cascivo.com / docs.cascivo.com)
+# Ops — docs hosting (cascivo.com) and the retired docs.cascivo.com
 
-Internal runbook for the two hostnames that serve the docs, and how to keep them
-fresh. Context: a 2026-07-18 adopter read docs from `docs.cascivo.com` that were ~4
-days stale (a fix committed 07-14 was not being served on 07-18), which no automated
-signal caught. This note records the intended mapping; the automated enforcement is
-`.github/workflows/docs-freshness.yml` + the `verify-site` job in `cf-pages.yml`.
+Internal runbook for where the docs are served and how they stay fresh.
 
-## Intended mapping
+## Decision (2026-07): one canonical host
 
-Both hostnames serve the **same** built tree — the `apps/site` Cloudflare Pages
-project (`cf-pages.yml` → `wrangler pages deploy apps/site/dist`, project
-`cascade-ui-landing`, production branch `main`):
+**`cascivo.com` is the single canonical host for everything** — marketing, the docs
+SPA (`/docs/*`), the machine-readable surfaces (`/llms/*`, `/context/*`, the catalogs),
+the shadcn registry (`/r/*`), and the fetchable guide mirror (`/docs/*.md`). It is the
+only site this repo deploys (`.github/workflows/cf-pages.yml` → the `cascade-ui-landing`
+Pages project). All generated URLs point here (`scripts/llms/generate.ts` `DOCS = SITE`;
+`CASCIVO_HOST` in `packages/cli` and `packages/mcp`).
 
-| Hostname            | Serves                                  | Cloudflare binding                          |
-| ------------------- | --------------------------------------- | ------------------------------------------- |
-| `cascivo.com`       | marketing + docs + `/llms/*` + `/r/*`   | custom domain on the `cascade-ui-landing` Pages project, `main` |
-| `docs.cascivo.com`  | the same tree (mirror)                  | custom domain on the **same** Pages project, `main` |
+**`docs.cascivo.com` is retired.** It used to be a separate docs deployment; the docs
+now live on the main site, and nothing in this repo builds or deploys that subdomain.
+A stale/independent `docs.cascivo.com` was the root cause of the 2026-07-18 adopter
+reading 4-day-old docs.
 
-Both must point at the same project's **production** deployment. If `docs.cascivo.com`
-is bound to a different project, a stale branch, or an old preview, it will serve stale
-bytes while `cascivo.com` is current — exactly the reported failure.
+## Required ops action — redirect docs.cascivo.com → cascivo.com
 
-## Verify / fix (manual, Cloudflare dashboard)
+Set a **301 redirect** from `docs.cascivo.com/*` to `https://cascivo.com/:splat` so the
+many already-published `docs.cascivo.com/...` links (npm READMEs shipped in prior
+releases, blog posts, search-index entries) keep resolving. In Cloudflare:
 
-An agent cannot change DNS/Pages bindings from this repo. To verify or fix:
+1. Dashboard → the zone for `cascivo.com` → **Rules → Redirect Rules** (or Bulk
+   Redirects). Add: when hostname equals `docs.cascivo.com`, 301 to
+   `https://cascivo.com${uri.path}` (preserve path + query).
+2. Ensure `docs.cascivo.com` is **not** attached as a custom domain to any old/other
+   Pages project (that would serve stale content instead of redirecting). Remove any
+   such binding first.
+3. Confirm: `curl -sI https://docs.cascivo.com/llms.txt` returns `301` with
+   `location: https://cascivo.com/llms.txt`.
 
-1. Cloudflare dashboard → Pages → `cascade-ui-landing` → **Custom domains**.
-2. Confirm **both** `cascivo.com` and `docs.cascivo.com` are listed and **Active**,
-   and that the production branch is `main`.
-3. If `docs.cascivo.com` is missing or attached elsewhere, add it here (and remove the
-   stale binding from the other project).
-4. Trigger a redeploy (`cf-pages.yml` → *Run workflow*, or push to `main`) and confirm
-   the `verify-site` job passes for both hosts.
+Alternative if you'd rather not keep the subdomain at all: drop the `docs.cascivo.com`
+DNS record entirely. Downside: existing external links to `docs.cascivo.com/...` break
+with no redirect. The redirect above is preferred.
 
 ## Ongoing enforcement (automated — do not remove)
 
-- **`verify-site`** (in `cf-pages.yml`, `needs: deploy-site`): after every production
-  deploy, `scripts/checks/deployed-freshness.sh` curls both hosts and fails the
-  workflow unless they serve the just-deployed `registry.json` `.version`.
+- **`verify-site`** (`cf-pages.yml`, `needs: deploy-site`): after every production
+  deploy, `scripts/checks/deployed-freshness.sh` asserts `cascivo.com` serves the
+  just-deployed `registry.json` `.version`, and that `docs.cascivo.com` 301s to it.
 - **`docs-freshness.yml`** (daily cron): the same probe, to catch rot **between**
-  deploys. On failure it opens/updates a pinned issue labeled `docs-freshness`.
+  deploys (including the redirect breaking). On failure it opens/updates a pinned
+  issue labeled `docs-freshness`.
 
-To run the probe manually against production:
+Run the probe manually:
 
 ```sh
 bash scripts/checks/deployed-freshness.sh
-# or a single host:
-bash scripts/checks/deployed-freshness.sh https://docs.cascivo.com
+# skip the redirect assertion while the 301 is still being set up:
+FRESHNESS_SKIP_REDIRECT=1 bash scripts/checks/deployed-freshness.sh
 ```
+
+Until the redirect is configured, the `verify-site` / `docs-freshness` jobs will fail
+on the redirect assertion — that is intended (it is the reminder to finish the ops
+step). Set `FRESHNESS_SKIP_REDIRECT=1` on the job temporarily if you need to land other
+changes first.

@@ -8,7 +8,7 @@
 ![workspace](https://img.shields.io/badge/workspace-private-64748b?style=flat-square)
 ![types](https://img.shields.io/badge/types-included-0079bf?style=flat-square&logo=typescript&logoColor=white)
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
+[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo)
 
 </div>
 
@@ -22,10 +22,10 @@ Storybook for cascivo — **stories generated from the component manifests**, sh
 pnpm exec vp run @cascivo/storybook#dev
 ```
 
-Because stories are derived from each component's `component.meta.ts`, adding a variant or size to a component automatically surfaces it in Storybook — there is nothing to keep in sync by hand. Use it for visual review across all 14 themes; the docs site ([docs.cascivo.com](https://docs.cascivo.com)) covers prose, API tables, and accessibility.
+Because stories are derived from each component's `component.meta.ts`, adding a variant or size to a component automatically surfaces it in Storybook — there is nothing to keep in sync by hand. Use it for visual review across all 14 themes; the docs site ([cascivo.com](https://cascivo.com)) covers prose, API tables, and accessibility.
 
 ---
 
-[cascivo.com](https://cascivo.com) · [Docs](https://docs.cascivo.com) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
+[cascivo.com](https://cascivo.com) · [Docs](https://cascivo.com/docs) · [Storybook](https://storybook.cascivo.com) · [GitHub](https://github.com/cascivo/cascivo) · AI agents: read [`llms.txt`](https://cascivo.com/llms.txt) (install steps + component index, plain text) or use [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp) and [`registry.json`](https://github.com/cascivo/cascivo/blob/main/registry.json) · MIT
 
 <div align="center"><a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="28" height="28" alt="cascivo"></a></div>

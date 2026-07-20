@@ -1,6 +1,6 @@
 A set of **~440** React SVG icon components that inherit the cascivo token system — stroked 24×24 `currentColor` geometry, token-driven sizing, and tree-shakeable named exports.
 
-Browse and search the full catalog — with click-to-copy imports and live size/color/theme previews — in the **[/icons gallery](https://docs.cascivo.com/icons)**.
+Browse and search the full catalog — with click-to-copy imports and live size/color/theme previews — in the **[/icons gallery](https://cascivo.com/icons)**.
 
 ## Usage
 
