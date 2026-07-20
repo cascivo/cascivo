@@ -157,10 +157,8 @@
 /context/stats-band.md  /context/section/stats-band.md  301
 # END generated aliases
 
-# Machine-readable surfaces return a real 404 (not the SPA HTML shell) for a
-# wrong/guessed name, so an agent gets a parseable "not found" instead of silently
-# reading HTML as markdown/JSON. Static assets take precedence over these rules, so
-# every real .md/.json still serves 200 — only missing paths fall through here.
-/llms/*     /llms-404.md   404
-/context/*  /llms-404.md   404
-/r/*        /r-404.json    404
+# Machine-readable 404s for /llms/*, /context/*, and /r/* (a wrong/guessed name
+# serves the parseable hint body, not the HTML SPA shell) are handled by the Pages
+# Function in apps/site/functions/ — NOT here. Cloudflare Pages `_redirects` supports
+# only 200 proxying and 3xx redirects; a rewrite to a 404 status is unsupported and
+# silently ignored, so those rules would be dead. See functions/_lib/not-found.ts.

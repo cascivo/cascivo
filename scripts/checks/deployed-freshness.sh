@@ -71,15 +71,29 @@ assert_contains() {
   done
 }
 
-# assert_404 URL — a guessed-name miss must be a real 404, not the SPA shell.
-assert_404() {
+# assert_404_body URL NEEDLE... — a guessed-name miss must return HTTP 404 AND a body
+# containing every needle (the machine-readable hint, not the SPA HTML shell). Retries
+# to absorb CDN propagation. Unlike assert_contains this must NOT use `curl -f`, which
+# aborts on 404 before the body is read — so it reads status and body separately.
+assert_404_body() {
   local url="$1"
-  local code
-  code="$(curl -s -o /dev/null -w '%{http_code}' "$url")"
-  if [[ "$code" != "404" ]]; then
-    echo "::error::$url returned HTTP $code, expected 404 (machine-readable 404 rules not live on this host?)"
-    FAILED=1
-  fi
+  shift
+  local i code body needle ok
+  for ((i = 1; i <= RETRIES; i++)); do
+    code="$(curl -s -o /dev/null -w '%{http_code}' "${url}?_cb=$i")"
+    body="$(curl -s -H 'Cache-Control: no-cache' "${url}?_cb=$i")"
+    ok=1
+    [[ "$code" == "404" ]] || ok=0
+    for needle in "$@"; do
+      grep -qF -- "$needle" <<<"$body" || ok=0
+    done
+    if [[ "$ok" -eq 1 ]]; then
+      return 0
+    fi
+    sleep "$SLEEP"
+  done
+  echo "::error::$url did not serve a machine-readable 404 (last HTTP ${code:-none}) with expected body after $RETRIES attempts"
+  FAILED=1
 }
 
 for HOST in "${HOSTS[@]}"; do
@@ -92,13 +106,13 @@ for HOST in "${HOSTS[@]}"; do
   assert_contains "$HOST/llms/chart/area-chart.md" '`series`'
   # Fetchable getting-started markdown.
   assert_contains "$HOST/docs/getting-started.md" "registry v$VERSION"
-  # A guessed-wrong name must be a real HTTP 404, not a 200 SPA shell — an agent that
-  # gets 200 would read the HTML as if it were the doc. Cloudflare Pages serves the
-  # built 404.html here, so the *status* is the contract we can enforce. We do NOT
-  # assert a machine-readable 404 *body*: `_redirects` cannot set a 404 status (it
-  # supports only 200 proxying + 3xx redirects — "rewrites (other status codes)" are
-  # unsupported), so a hint-body 404 would need a Pages Function, not a redirect rule.
-  assert_404 "$HOST/llms/definitely-not-a-component.md"
+  # A guessed-wrong name must be a real 404 whose BODY is the machine-readable hint
+  # (llms-404.md / r-404.json), not the HTML SPA shell — an agent that gets a 200 (or
+  # an HTML 404) would read the shell as if it were the doc. Served by the Pages
+  # Function in apps/site/functions/, since Cloudflare `_redirects` can't set a 404
+  # status. This is the "empty shell" symptom the 2026-07-18 report hit.
+  assert_404_body "$HOST/llms/definitely-not-a-component.md" "no cascivo doc at this path"
+  assert_404_body "$HOST/r/definitely-not-a-component.json" "not_found"
 done
 
 # Retired subdomain must 301 to the canonical host (not serve stale content). Skippable
