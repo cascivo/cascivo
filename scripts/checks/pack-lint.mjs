@@ -28,8 +28,14 @@ const ATTW_IGNORE = {
   // Packages are ESM-only (`"type":"module"`); CJS consumers use dynamic import.
   CJSResolvesToESM: 'packages are ESM-only by design',
 }
-// attw can't type-check non-JS entrypoints (CSS side-effect stylesheets).
-const NON_JS_ENTRYPOINT = /\.css$/
+// Legacy pre-`exports` resolution — modern ESM packages don't target Node 10
+// (attw's own `esm-only` profile ignores it). We floor at `moduleResolution:
+// bundler`/`node16`, so a node10 miss is expected, not a defect.
+const ATTW_IGNORE_RESOLUTIONKIND = new Set(['node10'])
+// attw type-resolution doesn't apply to non-JS entrypoints (CSS stylesheets, raw
+// JSON/token assets). Matched by the entrypoint name AND by the resolved target
+// extension, since a subpath like `./layers` maps to a `.css` file.
+const NON_JS_TARGET = /\.(css|json)$/
 
 function publishedPackages() {
   const out = []
@@ -63,7 +69,20 @@ function runPublint(dir) {
   )
 }
 
-function runAttw(dir) {
+/** Map every exports subpath to the file it resolves to, so a `.css`/`.json`
+ * asset entrypoint (possibly named without an extension, e.g. `./layers`) can be
+ * recognized. Reads the `default`/`import`/`types` condition or a string value. */
+function entrypointTargets(pkg) {
+  const map = {}
+  for (const [key, val] of Object.entries(pkg.exports ?? {})) {
+    const target =
+      typeof val === 'string' ? val : (val?.default ?? val?.import ?? val?.types ?? null)
+    if (typeof target === 'string') map[key] = target
+  }
+  return map
+}
+
+function runAttw(dir, pkg) {
   // attw exits non-zero when it finds problems, but still writes the JSON report
   // to stdout — capture it from the thrown error rather than treating exit≠0 as
   // a run failure. A genuinely broken invocation has no parseable stdout.
@@ -76,9 +95,15 @@ function runAttw(dir) {
   }
   const parsed = JSON.parse(raw)
   const problems = parsed.analysis?.problems ?? parsed.problems ?? []
+  const targets = entrypointTargets(pkg)
+  const isAsset = (entrypoint) => {
+    const target = targets[entrypoint]
+    return NON_JS_TARGET.test(entrypoint) || (target && NON_JS_TARGET.test(target))
+  }
   return problems
     .filter((p) => !(p.kind in ATTW_IGNORE))
-    .filter((p) => !(p.entrypoint && NON_JS_ENTRYPOINT.test(p.entrypoint)))
+    .filter((p) => !ATTW_IGNORE_RESOLUTIONKIND.has(p.resolutionKind))
+    .filter((p) => !(p.entrypoint && isAsset(p.entrypoint)))
     .map((p) => `attw ${p.kind} @ ${p.entrypoint ?? '?'} (${p.resolutionKind ?? '?'})`)
 }
 
@@ -108,7 +133,7 @@ async function main() {
       failed = true
       continue
     }
-    const problems = [...(await runPublint(entry.dir)), ...runAttw(entry.dir)]
+    const problems = [...(await runPublint(entry.dir)), ...runAttw(entry.dir, entry.pkg)]
     if (problems.length === 0) {
       console.log(`✓ ${entry.name}`)
     } else {
