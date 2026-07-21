@@ -4,7 +4,7 @@
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.8",
+      "version": "0.2.9",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,7 +15,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.3.13",
+      "version": "0.3.14",
       "releases": [
         {
           "version": "0.3.0",
@@ -33,7 +33,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "releases": [
         {
           "version": "0.5.0",
@@ -69,8 +69,13 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "releases": [
+        {
+          "version": "0.5.0",
+          "level": "minor",
+          "notes": ["Expose the router-link contract as a named, documented type."]
+        },
         {
           "version": "0.4.0",
           "level": "minor",
@@ -99,7 +104,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.14",
+      "version": "0.2.15",
       "releases": [
         {
           "version": "0.2.0",
@@ -119,12 +124,12 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.1.13",
+      "version": "0.1.14",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.8",
+      "version": "0.2.9",
       "releases": [
         {
           "version": "0.2.0",
@@ -196,8 +201,16 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.8.0",
+      "version": "0.9.0",
       "releases": [
+        {
+          "version": "0.9.0",
+          "level": "minor",
+          "notes": [
+            "Standardize change-handler naming on `onValueChange` for value-carrying callbacks.",
+            "Theme: an explicit `defaultTheme` now wins over the visitor's OS `prefers-color-scheme`."
+          ]
+        },
         {
           "version": "0.8.0",
           "level": "minor",
@@ -263,7 +276,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.13",
+      "version": "0.1.14",
       "releases": [
         {
           "version": "0.1.0",
@@ -274,7 +287,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.2",
+      "version": "0.4.3",
       "releases": [
         {
           "version": "0.4.0",
