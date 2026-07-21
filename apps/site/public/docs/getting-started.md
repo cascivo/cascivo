@@ -3,15 +3,16 @@
   Canonical: https://cascivo.com/docs/getting-started.md
   registry v0.8.0 · generated 2026-07-21
 -->
+
 # Getting started with cascivo
 
 There are two ways to adopt cascivo. Both consume the same tokens and themes,
 and they can coexist in one project.
 
-| Path                            | You get                                            | Choose it when                                                        |
-| ------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
-| **A. Copy-paste (CLI)**         | Component source (TSX + CSS) copied into your repo | You want to own and edit the code — the shadcn model                   |
-| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 192 components      | You just want to *use* the system; upgrades via `pnpm up`             |
+| Path                               | You get                                            | Choose it when                                            |
+| ---------------------------------- | -------------------------------------------------- | --------------------------------------------------------- |
+| **A. Copy-paste (CLI)**            | Component source (TSX + CSS) copied into your repo | You want to own and edit the code — the shadcn model      |
+| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 192 components        | You just want to _use_ the system; upgrades via `pnpm up` |
 
 Either way, one piece of wiring is **not optional**: importing the themes CSS
 and setting `data-theme`. Skip it and components render as correctly-structured
@@ -98,7 +99,7 @@ export default config
 
 **`cascivo.lock`** — written by `cascivo add`. Records, per installed component,
 the registry it came from, the version, and a sha256 hash of every copied file.
-Commit it: it is what lets the CLI later tell *your* edits apart from upstream
+Commit it: it is what lets the CLI later tell _your_ edits apart from upstream
 changes.
 
 ### Tracking upstream changes
@@ -110,7 +111,7 @@ npx cascivo update --check   # lists outdated components, exits 1 if any
 npx cascivo update button    # three-way merge of upstream changes into your copy
 ```
 
-`update` merges upstream changes *around* your local edits using the lockfile's
+`update` merges upstream changes _around_ your local edits using the lockfile's
 recorded base version; genuine collisions get standard conflict markers to
 resolve by hand. See [UPGRADING.md](https://github.com/cascivo/cascivo/blob/main/docs/UPGRADING.md) for the full story.
 
@@ -200,20 +201,20 @@ themes bundle.)
 **The export name _is_ the attribute value:** import `@cascivo/themes/<name>` and
 set `data-theme="<name>"`. The twelve first-party themes:
 
-| Import                        | `data-theme` value | Base scheme |
-| ----------------------------- | ------------------ | ----------- |
-| `@cascivo/themes/light`       | `light`            | light       |
-| `@cascivo/themes/dark`        | `dark`             | dark        |
-| `@cascivo/themes/warm`        | `warm`             | light       |
-| `@cascivo/themes/flat`        | `flat`             | light       |
-| `@cascivo/themes/minimal`     | `minimal`          | light       |
-| `@cascivo/themes/midnight`    | `midnight`         | dark        |
-| `@cascivo/themes/pastel`      | `pastel`           | light       |
-| `@cascivo/themes/brutalist`   | `brutalist`        | light       |
-| `@cascivo/themes/corporate`   | `corporate`        | light       |
-| `@cascivo/themes/terminal`    | `terminal`         | dark        |
-| `@cascivo/themes/cyberpunk`   | `cyberpunk`        | dark        |
-| `@cascivo/themes/arcade`      | `arcade`           | light       |
+| Import                      | `data-theme` value | Base scheme |
+| --------------------------- | ------------------ | ----------- |
+| `@cascivo/themes/light`     | `light`            | light       |
+| `@cascivo/themes/dark`      | `dark`             | dark        |
+| `@cascivo/themes/warm`      | `warm`             | light       |
+| `@cascivo/themes/flat`      | `flat`             | light       |
+| `@cascivo/themes/minimal`   | `minimal`          | light       |
+| `@cascivo/themes/midnight`  | `midnight`         | dark        |
+| `@cascivo/themes/pastel`    | `pastel`           | light       |
+| `@cascivo/themes/brutalist` | `brutalist`        | light       |
+| `@cascivo/themes/corporate` | `corporate`        | light       |
+| `@cascivo/themes/terminal`  | `terminal`         | dark        |
+| `@cascivo/themes/cyberpunk` | `cyberpunk`        | dark        |
+| `@cascivo/themes/arcade`    | `arcade`           | light       |
 
 `@cascivo/themes/base` is required scaffolding (tokens + typography), **not** a
 theme — always load it (directly, or transitively via `all`). `@cascivo/themes/tailwind`
@@ -246,7 +247,7 @@ avoid a hydration mismatch and a flash of the wrong theme. Two correct options:
 Never write a `useEffect` that toggles a `.dark` class — that is the pattern
 `ThemeProvider` + `themePreloadScript()` exists to replace.
 
-**If you forget the theme import entirely:** components render *unstyled* — correct
+**If you forget the theme import entirely:** components render _unstyled_ — correct
 structure, no colors, wrong fonts, missing padding rhythm. Component CSS only
 references `var(--cascivo-*)` custom properties; those properties do not exist until
 the tokens + a theme are loaded. Unstyled-looking components are almost always this,

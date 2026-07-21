@@ -41,7 +41,12 @@ describe('Combobox', () => {
     const onValueChange = vi.fn()
     const onChange = vi.fn()
     render(
-      <Combobox label="Country" options={options} onValueChange={onValueChange} onChange={onChange} />,
+      <Combobox
+        label="Country"
+        options={options}
+        onValueChange={onValueChange}
+        onChange={onChange}
+      />,
     )
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Germany' }))

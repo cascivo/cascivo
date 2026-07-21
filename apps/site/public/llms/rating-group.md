@@ -34,15 +34,15 @@ import { RatingGroup } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | yes | — | The controlled value. |
-| `onValueChange` | `(v: number) => void` | no | — | Called with the new value when it changes. |
-| `max` | `number` | no | `5` | Maximum allowed value. |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `readOnly` | `boolean` | no | `false` | When true, the value is shown but cannot be edited. |
-| `labels` | `RatingGroupLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| Prop            | Type                   | Required | Default | Description                                                        |
+| --------------- | ---------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `value`         | `number`               | yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: number) => void`  | no       | —       | Called with the new value when it changes.                         |
+| `max`           | `number`               | no       | `5`     | Maximum allowed value.                                             |
+| `size`          | `'sm' \| 'md' \| 'lg'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `disabled`      | `boolean`              | no       | `false` | When true, disables the control and removes it from the tab order. |
+| `readOnly`      | `boolean`              | no       | `false` | When true, the value is shown but cannot be edited.                |
+| `labels`        | `RatingGroupLabels`    | no       | —       | Overrides for the component’s user-visible strings (i18n).         |
 
 ## Examples
 

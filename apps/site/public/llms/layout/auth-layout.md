@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `ReactNode` | yes | — | Auth form content |
-| `logo` | `ReactNode` | no | — | Optional logo displayed above the form |
+| Prop       | Type        | Required | Default | Description                            |
+| ---------- | ----------- | -------- | ------- | -------------------------------------- |
+| `children` | `ReactNode` | yes      | —       | Auth form content                      |
+| `logo`     | `ReactNode` | no       | —       | Optional logo displayed above the form |
 
 ## Examples
 
@@ -30,7 +30,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 Centered auth card with logo
 
 ```tsx
-<AuthLayout logo={<img src="/logo.svg" alt="Logo" />}><form>...</form></AuthLayout>
+<AuthLayout logo={<img src="/logo.svg" alt="Logo" />}>
+  <form>...</form>
+</AuthLayout>
 ```
 
 ## Design tokens

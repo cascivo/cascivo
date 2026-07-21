@@ -34,14 +34,14 @@ The gesture is a touch-only enhancement: it arms only at scrollTop 0 and uses to
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `onRefresh` | `() => Promise<unknown> \| unknown` | Yes | — | Called when the pull passes the threshold; the spinner shows until it settles |
-| `children` | `React.ReactNode` | Yes | — | Content rendered inside the component. |
-| `threshold` | `number` | No | 64 | Pull distance (px) required to trigger a refresh. |
-| `disabled` | `boolean` | No | — | When true, disables the control and removes it from the tab order. |
-| `labels` | `{ pull?: string; release?: string; refreshing?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name        | Type                                                       | Required | Default | Description                                                                   |
+| ----------- | ---------------------------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
+| `onRefresh` | `() => Promise<unknown> \| unknown`                        | Yes      | —       | Called when the pull passes the threshold; the spinner shows until it settles |
+| `children`  | `React.ReactNode`                                          | Yes      | —       | Content rendered inside the component.                                        |
+| `threshold` | `number`                                                   | No       | 64      | Pull distance (px) required to trigger a refresh.                             |
+| `disabled`  | `boolean`                                                  | No       | —       | When true, disables the control and removes it from the tab order.            |
+| `labels`    | `{ pull?: string; release?: string; refreshing?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                    |
+| `className` | `string`                                                   | No       | —       | Additional CSS class names merged onto the root element.                      |
 
 ## Tokens
 
@@ -72,10 +72,10 @@ Requires a longer pull before a refresh is triggered.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area      | Level    | Note                                                             |
+| --------- | -------- | ---------------------------------------------------------------- |
 | threshold | flexible | Pull distance required to trigger is configurable (default 64px) |
-| onRefresh | flexible | May return a promise; the spinner persists until it settles |
+| onRefresh | flexible | May return a promise; the spinner persists until it settles      |
 
 ## AI context prompt
 

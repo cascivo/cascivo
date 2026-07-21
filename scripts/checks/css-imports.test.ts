@@ -74,7 +74,9 @@ describe('css-imports — cross-package CSS @import targets are direct dependenc
         const css = stripCssComments(readFileSync(file, 'utf8'))
         for (const target of importedCascadePackages(css, selfName)) {
           if (deps[target] === undefined) {
-            offenders.push(`${relative(REPO_ROOT, file)} imports ${target}, not in ${selfName}'s dependencies`)
+            offenders.push(
+              `${relative(REPO_ROOT, file)} imports ${target}, not in ${selfName}'s dependencies`,
+            )
           }
         }
       }

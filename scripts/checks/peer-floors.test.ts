@@ -54,6 +54,9 @@ describe('peer-floors — signals-react floored at 3.x', () => {
   it('finds the expected set of signals-peered packages (guards against silent skips)', () => {
     // Published only — `@cascivo/render` also peers signals but is private.
     const count = packagesWithSignalsPeer().length
-    assert.ok(count >= 8, `expected at least 8 published packages peer-depending on ${SIGNALS}, found ${count}`)
+    assert.ok(
+      count >= 8,
+      `expected at least 8 published packages peer-depending on ${SIGNALS}, found ${count}`,
+    )
   })
 })

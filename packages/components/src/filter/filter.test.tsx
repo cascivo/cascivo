@@ -62,7 +62,12 @@ describe('Filter', () => {
     const onValueChange = vi.fn()
     const onChange = vi.fn()
     render(
-      <Filter options={OPTIONS} onValueChange={onValueChange} onChange={onChange} aria-label="Filter" />,
+      <Filter
+        options={OPTIONS}
+        onValueChange={onValueChange}
+        onChange={onChange}
+        aria-label="Filter"
+      />,
     )
     await userEvent.click(screen.getByRole('button', { name: 'Active' }))
     expect(onValueChange).toHaveBeenCalledWith(['active'])

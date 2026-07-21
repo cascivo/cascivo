@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/using-with-strict-eslint.md
   registry v0.8.0 · generated 2026-07-21
 -->
+
 # Using cascivo with a strict host ESLint config
 
 **Short version: scope your host's stylistic rules off the directory cascivo

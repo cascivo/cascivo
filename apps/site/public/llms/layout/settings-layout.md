@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `menu` | `ReactNode` | yes | — | Side navigation menu |
-| `children` | `ReactNode` | yes | — | Settings content area |
+| Prop       | Type        | Required | Default | Description           |
+| ---------- | ----------- | -------- | ------- | --------------------- |
+| `menu`     | `ReactNode` | yes      | —       | Side navigation menu  |
+| `children` | `ReactNode` | yes      | —       | Settings content area |
 
 ## Examples
 
@@ -30,7 +30,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 Menu + content layout
 
 ```tsx
-<SettingsLayout menu={<nav>Menu</nav>}><div>Settings</div></SettingsLayout>
+<SettingsLayout menu={<nav>Menu</nav>}>
+  <div>Settings</div>
+</SettingsLayout>
 ```
 
 ## Design tokens

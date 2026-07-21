@@ -27,13 +27,13 @@ import { EmptyState } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `icon` | `ReactNode` | no | — | Icon element rendered in the component. |
-| `title` | `string` | yes | — | Title text for the component. |
-| `description` | `string` | no | — | Supporting description text. |
-| `action` | `ReactNode` | no | — | Primary action shown in the component. |
-| `size` | `'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop          | Type           | Required | Default | Description                                           |
+| ------------- | -------------- | -------- | ------- | ----------------------------------------------------- |
+| `icon`        | `ReactNode`    | no       | —       | Icon element rendered in the component.               |
+| `title`       | `string`       | yes      | —       | Title text for the component.                         |
+| `description` | `string`       | no       | —       | Supporting description text.                          |
+| `action`      | `ReactNode`    | no       | —       | Primary action shown in the component.                |
+| `size`        | `'md' \| 'lg'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -46,7 +46,12 @@ import { EmptyState } from '@cascivo/react'
 ### With action
 
 ```tsx
-<EmptyState icon="📄" title="No documents yet" description="Create your first document to get started." action={<Button>New document</Button>} />
+<EmptyState
+  icon="📄"
+  title="No documents yet"
+  description="Create your first document to get started."
+  action={<Button>New document</Button>}
+/>
 ```
 
 ## Design tokens

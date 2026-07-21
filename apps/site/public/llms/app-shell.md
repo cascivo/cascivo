@@ -4,6 +4,7 @@ Sticky-header + full-height side-nav + single-scroll-container layout with an an
 
 > ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
 > This page documents `app-shell` (npm @cascivo/react · or copy-paste). Others:
+>
 > - `layout/app-shell` — copy-paste — /llms/layout/app-shell.md
 
 ## Install
@@ -31,15 +32,15 @@ import { AppShell } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `header` | `ReactNode` | yes | — | Top bar (typically a ShellHeader). If a React element, its onMenuClick/menuExpanded are bound to the nav toggle. |
-| `nav` | `ReactNode` | no | — | Side navigation (typically a SideNav). Fills full height and scrolls internally. |
-| `children` | `ReactNode` | yes | — | Main content, rendered inside the single scroll container. |
-| `footer` | `ReactNode` | no | — | Optional footer pinned below the content area. |
-| `open` | `boolean` | no | — | Controlled nav open/visible state. Omit for uncontrolled. |
-| `defaultOpen` | `boolean` | no | — | Initial open state when uncontrolled. Defaults open on desktop, closed on small screens. |
-| `onOpenChange` | `(open: boolean) => void` | no | — | Fired when the nav requests open/close (burger, Escape, scrim). |
+| Prop           | Type                      | Required | Default | Description                                                                                                      |
+| -------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------- |
+| `header`       | `ReactNode`               | yes      | —       | Top bar (typically a ShellHeader). If a React element, its onMenuClick/menuExpanded are bound to the nav toggle. |
+| `nav`          | `ReactNode`               | no       | —       | Side navigation (typically a SideNav). Fills full height and scrolls internally.                                 |
+| `children`     | `ReactNode`               | yes      | —       | Main content, rendered inside the single scroll container.                                                       |
+| `footer`       | `ReactNode`               | no       | —       | Optional footer pinned below the content area.                                                                   |
+| `open`         | `boolean`                 | no       | —       | Controlled nav open/visible state. Omit for uncontrolled.                                                        |
+| `defaultOpen`  | `boolean`                 | no       | —       | Initial open state when uncontrolled. Defaults open on desktop, closed on small screens.                         |
+| `onOpenChange` | `(open: boolean) => void` | no       | —       | Fired when the nav requests open/close (burger, Escape, scrim).                                                  |
 
 ## Examples
 
@@ -48,10 +49,7 @@ import { AppShell } from '@cascivo/react'
 The burger in ShellHeader toggles the SideNav automatically.
 
 ```tsx
-<AppShell
-  header={<ShellHeader brand={{ name: 'Acme' }} />}
-  nav={<SideNav items={items} />}
->
+<AppShell header={<ShellHeader brand={{ name: 'Acme' }} />} nav={<SideNav items={items} />}>
   <h1>Dashboard</h1>
 </AppShell>
 ```

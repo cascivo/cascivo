@@ -33,11 +33,11 @@ The composite is a labelled group; the name provides the accessible identity and
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `name` | `ReactNode` | Yes | — | The user’s display name. |
-| `description` | `ReactNode` | No | — | Supporting description text. |
-| `avatarProps` | `AvatarProps` | No | — | Forwarded to the composed <Avatar> |
+| Name          | Type          | Required | Default | Description                        |
+| ------------- | ------------- | -------- | ------- | ---------------------------------- |
+| `name`        | `ReactNode`   | Yes      | —       | The user’s display name.           |
+| `description` | `ReactNode`   | No       | —       | Supporting description text.       |
+| `avatarProps` | `AvatarProps` | No       | —       | Forwarded to the composed <Avatar> |
 
 ## Tokens
 
@@ -52,21 +52,27 @@ The composite is a labelled group; the name provides the accessible identity and
 ### Basic
 
 ```jsx
-<User name="Jane Doe" description="jane@acme.com" avatarProps={{ src: "/jane.jpg", alt: "Jane Doe" }} />
+<User
+  name="Jane Doe"
+  description="jane@acme.com"
+  avatarProps={{ src: '/jane.jpg', alt: 'Jane Doe' }}
+/>
 ```
 
 ### With action
 
 ```jsx
-<User name="Jane Doe" description="Admin"><IconButton aria-label="More" /></User>
+<User name="Jane Doe" description="Admin">
+  <IconButton aria-label="More" />
+</User>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| description | flexible | Any ReactNode — email, role, or a status line |
-| token names | strict | Name and description colors must resolve to --cascivo-* tokens |
+| Area        | Level    | Note                                                            |
+| ----------- | -------- | --------------------------------------------------------------- |
+| description | flexible | Any ReactNode — email, role, or a status line                   |
+| token names | strict   | Name and description colors must resolve to --cascivo-\* tokens |
 
 ## AI context prompt
 

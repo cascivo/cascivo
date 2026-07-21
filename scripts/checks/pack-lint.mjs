@@ -94,7 +94,9 @@ async function main() {
       : published.filter((p) => p.name === '@cascivo/react')
 
   if (targets.length === 0) {
-    console.error(`pack-lint: no matching published packages for ${names.join(', ') || '(default)'}`)
+    console.error(
+      `pack-lint: no matching published packages for ${names.join(', ') || '(default)'}`,
+    )
     process.exit(1)
   }
 

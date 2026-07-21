@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/using-with-nextjs.md
   registry v0.8.0 · generated 2026-07-21
 -->
+
 # Using cascivo with Next.js (App Router / RSC)
 
 cascivo works in Next.js App Router projects out of the box: components ship

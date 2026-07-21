@@ -18,9 +18,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `className` | `string` | no | — | Additional CSS class names merged onto the root DashboardLayout element. |
+| Prop        | Type     | Required | Default | Description                                                              |
+| ----------- | -------- | -------- | ------- | ------------------------------------------------------------------------ |
+| `className` | `string` | no       | —       | Additional CSS class names merged onto the root DashboardLayout element. |
 
 ## Examples
 

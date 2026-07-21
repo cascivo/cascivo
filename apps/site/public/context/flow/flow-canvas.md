@@ -23,17 +23,17 @@ role="application" — the pane is an interactive canvas with pointer gestures.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `ReactNode` | No | — | Background, nodes, edges. |
-| `viewport` | `{ x: number; y: number; zoom: number }` | No | — | Controlled viewport. |
-| `onViewportChange` | `(viewport: Viewport) => void` | No | — | Viewport change callback. |
-| `minZoom` | `number` | No | 0.2 | Lower bound for the viewport zoom level. |
-| `maxZoom` | `number` | No | 2 | Upper bound for the viewport zoom level. |
-| `panOnDrag` | `boolean` | No | true | Drag the empty pane to pan the viewport. |
-| `zoomOnScroll` | `boolean` | No | true | Wheel or pinch to zoom the viewport. |
-| `fitView` | `boolean` | No | false | Frame the whole graph once on mount. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name               | Type                                     | Required | Default | Description                                              |
+| ------------------ | ---------------------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `children`         | `ReactNode`                              | No       | —       | Background, nodes, edges.                                |
+| `viewport`         | `{ x: number; y: number; zoom: number }` | No       | —       | Controlled viewport.                                     |
+| `onViewportChange` | `(viewport: Viewport) => void`           | No       | —       | Viewport change callback.                                |
+| `minZoom`          | `number`                                 | No       | 0.2     | Lower bound for the viewport zoom level.                 |
+| `maxZoom`          | `number`                                 | No       | 2       | Upper bound for the viewport zoom level.                 |
+| `panOnDrag`        | `boolean`                                | No       | true    | Drag the empty pane to pan the viewport.                 |
+| `zoomOnScroll`     | `boolean`                                | No       | true    | Wheel or pinch to zoom the viewport.                     |
+| `fitView`          | `boolean`                                | No       | false   | Frame the whole graph once on mount.                     |
+| `className`        | `string`                                 | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -45,7 +45,7 @@ role="application" — the pane is an interactive canvas with pointer gestures.
 ### Empty canvas with a background
 
 ```jsx
-() => (
+;() => (
   <FlowCanvas style={{ height: 240 }}>
     <FlowBackground />
   </FlowCanvas>
@@ -54,8 +54,8 @@ role="application" — the pane is an interactive canvas with pointer gestures.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area     | Level    | Note                               |
+| -------- | -------- | ---------------------------------- |
 | viewport | flexible | Controllable; pan/zoom toggleable. |
 
 ## AI context prompt

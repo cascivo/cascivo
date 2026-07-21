@@ -28,10 +28,10 @@ import { Card } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'outlined' \| 'elevated'` | no | `default` | Selects the visual style variant. |
-| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | no | `md` | Inner padding of the component. |
+| Prop      | Type                                    | Required | Default   | Description                       |
+| --------- | --------------------------------------- | -------- | --------- | --------------------------------- |
+| `variant` | `'default' \| 'outlined' \| 'elevated'` | no       | `default` | Selects the visual style variant. |
+| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | no       | `md`      | Inner padding of the component.   |
 
 ## Examples
 
@@ -39,7 +39,9 @@ import { Card } from '@cascivo/react'
 
 ```tsx
 <Card>
-  <CardHeader><CardTitle>Title</CardTitle></CardHeader>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+  </CardHeader>
   <CardContent>Content here</CardContent>
 </Card>
 ```

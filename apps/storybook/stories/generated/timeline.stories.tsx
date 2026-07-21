@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Timeline } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/Timeline",
+  title: 'Display/Timeline',
 }
 export default meta
 type Story = StoryObj
 
 export const VerticalTimelineWithStatuses: Story = {
-  name: "Vertical timeline with statuses",
+  name: 'Vertical timeline with statuses',
   render: () => (
     <Timeline
       items={[
@@ -20,4 +20,3 @@ export const VerticalTimelineWithStatuses: Story = {
     />
   ),
 }
-

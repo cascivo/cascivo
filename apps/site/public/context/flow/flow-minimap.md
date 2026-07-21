@@ -22,17 +22,17 @@ role="img" with an i18n-defaulted label describing the overview.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `nodes` | `FlowNode[]` | Yes | — | The nodes to render. |
-| `viewport` | `Viewport` | Yes | — | The current pan/zoom viewport to reflect in the minimap. |
-| `containerWidth` | `number` | No | — | Width of the flow container, used to scale the minimap. |
-| `containerHeight` | `number` | No | — | Height of the flow container, used to scale the minimap. |
-| `width` | `number` | No | 200 | Width of the component. |
-| `height` | `number` | No | 150 | Height of the component. |
-| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | No | bottom-right | Position of the component. |
-| `onViewportChange` | `(viewport: Viewport) => void` | No | — | Called with the new viewport when the minimap is dragged. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name               | Type                                                           | Required | Default      | Description                                               |
+| ------------------ | -------------------------------------------------------------- | -------- | ------------ | --------------------------------------------------------- |
+| `nodes`            | `FlowNode[]`                                                   | Yes      | —            | The nodes to render.                                      |
+| `viewport`         | `Viewport`                                                     | Yes      | —            | The current pan/zoom viewport to reflect in the minimap.  |
+| `containerWidth`   | `number`                                                       | No       | —            | Width of the flow container, used to scale the minimap.   |
+| `containerHeight`  | `number`                                                       | No       | —            | Height of the flow container, used to scale the minimap.  |
+| `width`            | `number`                                                       | No       | 200          | Width of the component.                                   |
+| `height`           | `number`                                                       | No       | 150          | Height of the component.                                  |
+| `position`         | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | No       | bottom-right | Position of the component.                                |
+| `onViewportChange` | `(viewport: Viewport) => void`                                 | No       | —            | Called with the new viewport when the minimap is dragged. |
+| `className`        | `string`                                                       | No       | —            | Additional CSS class names merged onto the root element.  |
 
 ## Tokens
 
@@ -45,7 +45,7 @@ role="img" with an i18n-defaulted label describing the overview.
 ### Graph overview
 
 ```jsx
-() => (
+;() => (
   <FlowMiniMap
     nodes={[
       { id: 'a', position: { x: 0, y: 0 } },
@@ -61,8 +61,8 @@ role="img" with an i18n-defaulted label describing the overview.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area | Level    | Note                       |
+| ---- | -------- | -------------------------- |
 | size | flexible | Configurable width/height. |
 
 ## AI context prompt

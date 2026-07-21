@@ -3,27 +3,27 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { CodeSnippet } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Display/CodeSnippet",
+  title: 'Display/CodeSnippet',
 }
 export default meta
 type Story = StoryObj
 
 export const InstallCommand: Story = {
-  name: "Install command",
-  render: () => (
-    <CodeSnippet code="npx cascivo add button" language="bash" />
-  ),
+  name: 'Install command',
+  render: () => <CodeSnippet code="npx cascivo add button" language="bash" />,
 }
 
 export const Inline: Story = {
-  name: "Inline",
+  name: 'Inline',
   render: () => (
-    <p>Run <CodeSnippet variant="inline" code="pnpm build" /> first.</p>
+    <p>
+      Run <CodeSnippet variant="inline" code="pnpm build" /> first.
+    </p>
   ),
 }
 
 export const TerminalBlock: Story = {
-  name: "Terminal block",
+  name: 'Terminal block',
   render: () => (
     <CodeSnippet
       variant="multi"
@@ -34,4 +34,3 @@ export const TerminalBlock: Story = {
     />
   ),
 }
-

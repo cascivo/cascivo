@@ -6,7 +6,7 @@ Theme: an explicit `defaultTheme` now wins over the visitor's OS `prefers-color-
 
 Previously both `ThemeProvider` and `themePreloadScript()` resolved the initial theme as
 `persisted > OS preference > defaultTheme`, so a "dark by default" (`defaultTheme="dark"`)
-app rendered *light* for a light-OS visitor, and a custom `defaultTheme="midnight"` was
+app rendered _light_ for a light-OS visitor, and a custom `defaultTheme="midnight"` was
 replaced by `'light'`/`'dark'` from the OS (2026-07-20 adopter report). The precedence is
 now **persisted value > `defaultTheme` (if you passed one) > OS `prefers-color-scheme` >
 `'light'`**. Omit `defaultTheme` to keep the old OS-following behavior.

@@ -27,19 +27,19 @@ import { CommandMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | yes | — | Whether the component is open (controlled). |
-| `onOpenChange` | `(open: boolean) => void` | yes | — | Called with the next open state when it changes. |
-| `groups` | `CommandGroup[]` | yes | — | The grouped commands to display. |
-| `placeholder` | `string` | no | `Type a command or search…` | Placeholder text shown when the field is empty. |
-| `emptyLabel` | `string` | no | `No results found` | Text shown when no commands match the query. |
-| `hotkey` | `boolean` | no | `true` | Global Cmd/Ctrl+K toggles the menu via onOpenChange |
-| `label` | `string` | no | `Command menu` | Text label for the control. |
-| `loading` | `boolean` | no | `false` | Shows a loading spinner in place of the empty state (for async items) |
-| `onQueryChange` | `(query: string) => void` | no | — | Fires on every query keystroke — use to fetch async items |
-| `scopes` | `CommandScope[]` | no | — | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop            | Type                      | Required | Default                     | Description                                                                                                                                                                                                              |
+| --------------- | ------------------------- | -------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `open`          | `boolean`                 | yes      | —                           | Whether the component is open (controlled).                                                                                                                                                                              |
+| `onOpenChange`  | `(open: boolean) => void` | yes      | —                           | Called with the next open state when it changes.                                                                                                                                                                         |
+| `groups`        | `CommandGroup[]`          | yes      | —                           | The grouped commands to display.                                                                                                                                                                                         |
+| `placeholder`   | `string`                  | no       | `Type a command or search…` | Placeholder text shown when the field is empty.                                                                                                                                                                          |
+| `emptyLabel`    | `string`                  | no       | `No results found`          | Text shown when no commands match the query.                                                                                                                                                                             |
+| `hotkey`        | `boolean`                 | no       | `true`                      | Global Cmd/Ctrl+K toggles the menu via onOpenChange                                                                                                                                                                      |
+| `label`         | `string`                  | no       | `Command menu`              | Text label for the control.                                                                                                                                                                                              |
+| `loading`       | `boolean`                 | no       | `false`                     | Shows a loading spinner in place of the empty state (for async items)                                                                                                                                                    |
+| `onQueryChange` | `(query: string) => void` | no       | —                           | Fires on every query keystroke — use to fetch async items                                                                                                                                                                |
+| `scopes`        | `CommandScope[]`          | no       | —                           | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
+| `className`     | `string`                  | no       | —                           | Additional CSS class names merged onto the root element.                                                                                                                                                                 |
 
 ## Examples
 
@@ -86,7 +86,12 @@ A scope chip filters to Clusters, matched glyphs are highlighted, each row carri
           status: { label: 'Healthy', tone: 'healthy' },
           actions: [
             { id: 'open', label: 'Open', shortcut: ['↵'], onSelect: () => open('prod-eu') },
-            { id: 'tab', label: 'New tab', shortcut: ['⌘', '↵'], onSelect: () => openInTab('prod-eu') },
+            {
+              id: 'tab',
+              label: 'New tab',
+              shortcut: ['⌘', '↵'],
+              onSelect: () => openInTab('prod-eu'),
+            },
           ],
         },
       ],

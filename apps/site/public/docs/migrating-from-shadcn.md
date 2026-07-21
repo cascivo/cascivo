@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/migrating-from-shadcn.md
   registry v0.8.0 · generated 2026-07-21
 -->
+
 # Migrating from shadcn/ui to cascivo
 
 cascivo's component and prop API is close to shadcn/ui, so most JSX ports over
@@ -20,67 +21,67 @@ examples.
 
 _Generated from the [parity matrix](https://cascivo.com/docs/parity) — 58 of 59 shadcn/ui components have a cascivo equivalent. Each cascivo link carries the exact `cascivo add` command._
 
-| shadcn/ui | cascivo | Notes |
-| --------- | ------- | ----- |
-| Accordion | [`accordion`](https://cascivo.com/docs/components/accordion) |  |
-| Alert | [`alert`](https://cascivo.com/docs/components/alert) |  |
-| Alert Dialog | [`alert-dialog`](https://cascivo.com/docs/components/alert-dialog) |  |
-| Aspect Ratio | [`aspect-ratio`](https://cascivo.com/docs/components/aspect-ratio) | Queued (v18-t5) |
-| Avatar | [`avatar`](https://cascivo.com/docs/components/avatar) |  |
-| Badge | [`badge`](https://cascivo.com/docs/components/badge) |  |
-| Breadcrumb | [`breadcrumb`](https://cascivo.com/docs/components/breadcrumb) |  |
-| Button | [`button`](https://cascivo.com/docs/components/button) |  |
-| Button Group | [`button-group`](https://cascivo.com/docs/components/button-group) | Queued (v18-t5) |
-| Calendar | [`calendar`](https://cascivo.com/docs/components/calendar) | Queued (v18-t6) |
-| Card | [`card`](https://cascivo.com/docs/components/card) |  |
-| Carousel | [`carousel`](https://cascivo.com/docs/components/carousel) | Queued (v18-t6) |
-| Chart | `chart` | chart family via @cascivo/charts |
-| Checkbox | [`checkbox`](https://cascivo.com/docs/components/checkbox) |  |
-| Collapsible | [`collapsible`](https://cascivo.com/docs/components/collapsible) | Queued (v18-t5) |
-| Combobox | [`combobox`](https://cascivo.com/docs/components/combobox) |  |
-| Command | [`command-menu`](https://cascivo.com/docs/components/command-menu) |  |
-| Context Menu | [`context-menu`](https://cascivo.com/docs/components/context-menu) |  |
-| Data Table | [`data-table`](https://cascivo.com/docs/components/data-table) |  |
-| Date Picker | [`date-picker`](https://cascivo.com/docs/components/date-picker) |  |
-| Dialog | [`modal`](https://cascivo.com/docs/components/modal) |  |
-| Direction | _by convention_ | RTL via CSS logical properties throughout; no JS provider |
-| Drawer | [`sheet`](https://cascivo.com/docs/components/sheet) | sheet covers the panel; no mobile swipe gesture. drawer queued (v18-t6) |
-| Dropdown Menu | [`dropdown`](https://cascivo.com/docs/components/dropdown) |  |
-| Empty | [`empty-state`](https://cascivo.com/docs/components/empty-state) |  |
-| Field | [`field`](https://cascivo.com/docs/components/field) | Queued (v18-t5) |
-| Hover Card | [`hover-card`](https://cascivo.com/docs/components/hover-card) |  |
-| Input | [`input`](https://cascivo.com/docs/components/input) |  |
-| Input Group | [`input-group`](https://cascivo.com/docs/components/input-group) |  |
-| Input OTP | [`otp-input`](https://cascivo.com/docs/components/otp-input) |  |
-| Item | [`item`](https://cascivo.com/docs/components/item) | Queued (v18-t6) |
-| Kbd | [`kbd`](https://cascivo.com/docs/components/kbd) |  |
-| Label | [`label`](https://cascivo.com/docs/components/label) | Queued (v18-t5) |
-| Menubar | [`menubar`](https://cascivo.com/docs/components/menubar) | Queued (v18-t6) |
-| Native Select | [`native-select`](https://cascivo.com/docs/components/native-select) | cascivo select is a custom listbox, not the native control. Queued (v18-t6) |
-| Navigation Menu | [`navigation-menu`](https://cascivo.com/docs/components/navigation-menu) | Queued (v18-t6) |
-| Pagination | [`pagination`](https://cascivo.com/docs/components/pagination) |  |
-| Popover | [`popover`](https://cascivo.com/docs/components/popover) |  |
-| Progress | [`progress-bar`](https://cascivo.com/docs/components/progress-bar) | progress-bar + progress-circle |
-| Radio Group | [`radio`](https://cascivo.com/docs/components/radio) |  |
-| Resizable | [`resizable`](https://cascivo.com/docs/components/resizable) | Queued (v18-t6, a.k.a. splitter) |
-| Scroll Area | [`scroll-area`](https://cascivo.com/docs/components/scroll-area) | Queued (v18-t5) |
-| Select | [`select`](https://cascivo.com/docs/components/select) |  |
-| Separator | [`separator`](https://cascivo.com/docs/components/separator) |  |
-| Sheet | [`sheet`](https://cascivo.com/docs/components/sheet) |  |
-| Sidebar | [`side-nav`](https://cascivo.com/docs/components/side-nav) |  |
-| Skeleton | [`skeleton`](https://cascivo.com/docs/components/skeleton) |  |
-| Slider | [`slider`](https://cascivo.com/docs/components/slider) |  |
-| Sonner | [`toast`](https://cascivo.com/docs/components/toast) |  |
-| Spinner | [`spinner`](https://cascivo.com/docs/components/spinner) |  |
-| Switch | [`toggle`](https://cascivo.com/docs/components/toggle) |  |
-| Table | [`data-table`](https://cascivo.com/docs/components/data-table) |  |
-| Tabs | [`tabs`](https://cascivo.com/docs/components/tabs) |  |
-| Textarea | [`textarea`](https://cascivo.com/docs/components/textarea) |  |
-| Toast | [`toast`](https://cascivo.com/docs/components/toast) |  |
-| Toggle | [`toggle`](https://cascivo.com/docs/components/toggle) |  |
-| Toggle Group | [`toggle-group`](https://cascivo.com/docs/components/toggle-group) | Queued (v18-t5) |
-| Tooltip | [`tooltip`](https://cascivo.com/docs/components/tooltip) |  |
-| Typography | [`prose`](https://cascivo.com/docs/components/prose) | prose + text + heading |
+| shadcn/ui       | cascivo                                                                  | Notes                                                                       |
+| --------------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
+| Accordion       | [`accordion`](https://cascivo.com/docs/components/accordion)             |                                                                             |
+| Alert           | [`alert`](https://cascivo.com/docs/components/alert)                     |                                                                             |
+| Alert Dialog    | [`alert-dialog`](https://cascivo.com/docs/components/alert-dialog)       |                                                                             |
+| Aspect Ratio    | [`aspect-ratio`](https://cascivo.com/docs/components/aspect-ratio)       | Queued (v18-t5)                                                             |
+| Avatar          | [`avatar`](https://cascivo.com/docs/components/avatar)                   |                                                                             |
+| Badge           | [`badge`](https://cascivo.com/docs/components/badge)                     |                                                                             |
+| Breadcrumb      | [`breadcrumb`](https://cascivo.com/docs/components/breadcrumb)           |                                                                             |
+| Button          | [`button`](https://cascivo.com/docs/components/button)                   |                                                                             |
+| Button Group    | [`button-group`](https://cascivo.com/docs/components/button-group)       | Queued (v18-t5)                                                             |
+| Calendar        | [`calendar`](https://cascivo.com/docs/components/calendar)               | Queued (v18-t6)                                                             |
+| Card            | [`card`](https://cascivo.com/docs/components/card)                       |                                                                             |
+| Carousel        | [`carousel`](https://cascivo.com/docs/components/carousel)               | Queued (v18-t6)                                                             |
+| Chart           | `chart`                                                                  | chart family via @cascivo/charts                                            |
+| Checkbox        | [`checkbox`](https://cascivo.com/docs/components/checkbox)               |                                                                             |
+| Collapsible     | [`collapsible`](https://cascivo.com/docs/components/collapsible)         | Queued (v18-t5)                                                             |
+| Combobox        | [`combobox`](https://cascivo.com/docs/components/combobox)               |                                                                             |
+| Command         | [`command-menu`](https://cascivo.com/docs/components/command-menu)       |                                                                             |
+| Context Menu    | [`context-menu`](https://cascivo.com/docs/components/context-menu)       |                                                                             |
+| Data Table      | [`data-table`](https://cascivo.com/docs/components/data-table)           |                                                                             |
+| Date Picker     | [`date-picker`](https://cascivo.com/docs/components/date-picker)         |                                                                             |
+| Dialog          | [`modal`](https://cascivo.com/docs/components/modal)                     |                                                                             |
+| Direction       | _by convention_                                                          | RTL via CSS logical properties throughout; no JS provider                   |
+| Drawer          | [`sheet`](https://cascivo.com/docs/components/sheet)                     | sheet covers the panel; no mobile swipe gesture. drawer queued (v18-t6)     |
+| Dropdown Menu   | [`dropdown`](https://cascivo.com/docs/components/dropdown)               |                                                                             |
+| Empty           | [`empty-state`](https://cascivo.com/docs/components/empty-state)         |                                                                             |
+| Field           | [`field`](https://cascivo.com/docs/components/field)                     | Queued (v18-t5)                                                             |
+| Hover Card      | [`hover-card`](https://cascivo.com/docs/components/hover-card)           |                                                                             |
+| Input           | [`input`](https://cascivo.com/docs/components/input)                     |                                                                             |
+| Input Group     | [`input-group`](https://cascivo.com/docs/components/input-group)         |                                                                             |
+| Input OTP       | [`otp-input`](https://cascivo.com/docs/components/otp-input)             |                                                                             |
+| Item            | [`item`](https://cascivo.com/docs/components/item)                       | Queued (v18-t6)                                                             |
+| Kbd             | [`kbd`](https://cascivo.com/docs/components/kbd)                         |                                                                             |
+| Label           | [`label`](https://cascivo.com/docs/components/label)                     | Queued (v18-t5)                                                             |
+| Menubar         | [`menubar`](https://cascivo.com/docs/components/menubar)                 | Queued (v18-t6)                                                             |
+| Native Select   | [`native-select`](https://cascivo.com/docs/components/native-select)     | cascivo select is a custom listbox, not the native control. Queued (v18-t6) |
+| Navigation Menu | [`navigation-menu`](https://cascivo.com/docs/components/navigation-menu) | Queued (v18-t6)                                                             |
+| Pagination      | [`pagination`](https://cascivo.com/docs/components/pagination)           |                                                                             |
+| Popover         | [`popover`](https://cascivo.com/docs/components/popover)                 |                                                                             |
+| Progress        | [`progress-bar`](https://cascivo.com/docs/components/progress-bar)       | progress-bar + progress-circle                                              |
+| Radio Group     | [`radio`](https://cascivo.com/docs/components/radio)                     |                                                                             |
+| Resizable       | [`resizable`](https://cascivo.com/docs/components/resizable)             | Queued (v18-t6, a.k.a. splitter)                                            |
+| Scroll Area     | [`scroll-area`](https://cascivo.com/docs/components/scroll-area)         | Queued (v18-t5)                                                             |
+| Select          | [`select`](https://cascivo.com/docs/components/select)                   |                                                                             |
+| Separator       | [`separator`](https://cascivo.com/docs/components/separator)             |                                                                             |
+| Sheet           | [`sheet`](https://cascivo.com/docs/components/sheet)                     |                                                                             |
+| Sidebar         | [`side-nav`](https://cascivo.com/docs/components/side-nav)               |                                                                             |
+| Skeleton        | [`skeleton`](https://cascivo.com/docs/components/skeleton)               |                                                                             |
+| Slider          | [`slider`](https://cascivo.com/docs/components/slider)                   |                                                                             |
+| Sonner          | [`toast`](https://cascivo.com/docs/components/toast)                     |                                                                             |
+| Spinner         | [`spinner`](https://cascivo.com/docs/components/spinner)                 |                                                                             |
+| Switch          | [`toggle`](https://cascivo.com/docs/components/toggle)                   |                                                                             |
+| Table           | [`data-table`](https://cascivo.com/docs/components/data-table)           |                                                                             |
+| Tabs            | [`tabs`](https://cascivo.com/docs/components/tabs)                       |                                                                             |
+| Textarea        | [`textarea`](https://cascivo.com/docs/components/textarea)               |                                                                             |
+| Toast           | [`toast`](https://cascivo.com/docs/components/toast)                     |                                                                             |
+| Toggle          | [`toggle`](https://cascivo.com/docs/components/toggle)                   |                                                                             |
+| Toggle Group    | [`toggle-group`](https://cascivo.com/docs/components/toggle-group)       | Queued (v18-t5)                                                             |
+| Tooltip         | [`tooltip`](https://cascivo.com/docs/components/tooltip)                 |                                                                             |
+| Typography      | [`prose`](https://cascivo.com/docs/components/prose)                     | prose + text + heading                                                      |
 
 <!-- END shadcn-map -->
 
@@ -115,13 +116,13 @@ import '@cascivo/themes/all' // tokens once + base typography + light & dark
 
 cascivo's Button variants are **not** shadcn's. There is **no `outline`**.
 
-| shadcn variant | cascivo variant | Notes                                   |
-| -------------- | --------------- | --------------------------------------- |
-| `default`      | `primary`       | the filled, primary action              |
-| `secondary`    | `secondary`     | same name                               |
-| `outline`      | `secondary`     | no bordered-only variant — use secondary |
-| `ghost`        | `ghost`         | same name                               |
-| `destructive`  | `destructive`   | same name                               |
+| shadcn variant | cascivo variant  | Notes                                     |
+| -------------- | ---------------- | ----------------------------------------- |
+| `default`      | `primary`        | the filled, primary action                |
+| `secondary`    | `secondary`      | same name                                 |
+| `outline`      | `secondary`      | no bordered-only variant — use secondary  |
+| `ghost`        | `ghost`          | same name                                 |
+| `destructive`  | `destructive`    | same name                                 |
 | `link`         | `ghost` + `Link` | use the `Link` component for link styling |
 
 ```tsx
@@ -173,22 +174,26 @@ three-tier token system — primitive → semantic → component — and scopes 
 with a `data-theme` attribute instead of a class, so a theme can apply to **any
 subtree**, not just the document root.
 
-| shadcn | cascivo |
-| ------ | ------- |
-| `--background` / `--foreground` | `--cascivo-color-bg` / `--cascivo-color-text` |
-| `--primary` / `--primary-foreground` | `--cascivo-color-accent` / `--cascivo-color-accent-foreground` |
-| `--muted` / `--muted-foreground` | `--cascivo-color-surface` / `--cascivo-color-text-subtle` |
-| `--border` | `--cascivo-color-border` |
-| `--radius` | `--cascivo-radius-*` (control/surface/full) |
-| `.dark { … }` | `[data-theme="dark"]` (or `warm`, plus 9 more) |
-| `next-themes` `ThemeProvider` / `useTheme` | `@cascivo/react` `ThemeProvider` / `useTheme` |
+| shadcn                                     | cascivo                                                        |
+| ------------------------------------------ | -------------------------------------------------------------- |
+| `--background` / `--foreground`            | `--cascivo-color-bg` / `--cascivo-color-text`                  |
+| `--primary` / `--primary-foreground`       | `--cascivo-color-accent` / `--cascivo-color-accent-foreground` |
+| `--muted` / `--muted-foreground`           | `--cascivo-color-surface` / `--cascivo-color-text-subtle`      |
+| `--border`                                 | `--cascivo-color-border`                                       |
+| `--radius`                                 | `--cascivo-radius-*` (control/surface/full)                    |
+| `.dark { … }`                              | `[data-theme="dark"]` (or `warm`, plus 9 more)                 |
+| `next-themes` `ThemeProvider` / `useTheme` | `@cascivo/react` `ThemeProvider` / `useTheme`                  |
 
 ```css
 /* shadcn: override the flat variables under .dark */
-.dark { --primary: 210 40% 98%; }
+.dark {
+  --primary: 210 40% 98%;
+}
 
 /* cascivo: retint by scope — no rebuild, works on any element */
-[data-theme="dark"] { --cascivo-color-accent: oklch(0.7 0.15 250); }
+[data-theme='dark'] {
+  --cascivo-color-accent: oklch(0.7 0.15 250);
+}
 ```
 
 The runtime switcher maps 1:1: swap `next-themes`' `ThemeProvider`/`useTheme` for the ones
@@ -254,7 +259,7 @@ shadcn charts wrap Recharts (an SVG React chart lib you install as a dependency)
 // shadcn: <ChartContainer> around Recharts <AreaChart>/<Area>
 // cascivo:
 import { AreaChart } from '@cascivo/charts'
-<AreaChart series={series} x={(d) => d.date} y={(d) => d.value} />
+;<AreaChart series={series} x={(d) => d.date} y={(d) => d.value} />
 ```
 
 The chart families map closely (area, bar, line, pie, radar, radial); cascivo adds

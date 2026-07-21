@@ -490,7 +490,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
   lines.push(`- Page-block AI docs are namespaced: ${DOCS}/llms/block/<name>.md`)
   lines.push(
-    "- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a self-contained, flat",
+    '- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a self-contained, flat',
   )
   lines.push(
     '  rollup — every component `…Props` interface is real, documentation-grade API reference.',
@@ -596,7 +596,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '   `tailwind` = a bridge stylesheet). For a user-switchable theme use `<ThemeProvider>`',
   )
   lines.push('   + `themePreloadScript()` (no-FOUC SSR); for a fixed theme hard-code `data-theme`')
-  lines.push('   on `<html>`. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS')
+  lines.push(
+    '   on `<html>`. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS',
+  )
   lines.push('   `prefers-color-scheme` > light — pass `defaultTheme` to keep a dark app dark on a')
   lines.push('   light-OS visitor. Under SSR add `suppressHydrationWarning` to the `<html>` the')
   lines.push('   preload script writes to. Full table + SSR recipe: docs/getting-started.md.')

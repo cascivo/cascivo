@@ -35,14 +35,14 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Text label for the control. |
-| `hint` | `string` | No | — | Supplementary hint text shown with the control. |
-| `error` | `string` | No | — | Error message shown when the value is invalid. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `placeholder` | `string` | No | — | Placeholder text shown when the field is empty. |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| Name          | Type                   | Required | Default | Description                                                        |
+| ------------- | ---------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `label`       | `string`               | No       | —       | Text label for the control.                                        |
+| `hint`        | `string`               | No       | —       | Supplementary hint text shown with the control.                    |
+| `error`       | `string`               | No       | —       | Error message shown when the value is invalid.                     |
+| `size`        | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `placeholder` | `string`               | No       | —       | Placeholder text shown when the field is empty.                    |
+| `disabled`    | `boolean`              | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 
@@ -69,11 +69,11 @@ The label is associated to the input via htmlFor/id, error text is linked throug
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-* tokens |
-| label / hint / error copy | flexible | Free, within content tone guidance |
-| size | flexible | sm \| md \| lg, defaulting to md |
+| Area                      | Level    | Note                                                                                                        |
+| ------------------------- | -------- | ----------------------------------------------------------------------------------------------------------- |
+| token names               | strict   | Surface, border, accent, destructive, radius, and focus-ring must resolve to the listed --cascivo-\* tokens |
+| label / hint / error copy | flexible | Free, within content tone guidance                                                                          |
+| size                      | flexible | sm \| md \| lg, defaulting to md                                                                            |
 
 ## AI context prompt
 

@@ -23,19 +23,19 @@ Renders role="img" with a title and a fallback day/value table.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `CalendarDatum[]` | Yes | — | Days: { day: string \| Date, value }. |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `description` | `string` | No | — | Supporting description text. |
-| `from` | `string \| Date` | No | — | Range start (defaults to min day). |
-| `to` | `string \| Date` | No | — | Range end (defaults to max day). |
-| `width` | `number` | No | — | Width of the component. |
-| `height` | `number` | No | 160 | Height of the component. |
-| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
-| `visualMap` | `VisualMapOptions` | No | — | Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range. |
+| Name          | Type               | Required | Default | Description                                                                                                              |
+| ------------- | ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `data`        | `CalendarDatum[]`  | Yes      | —       | Days: { day: string \| Date, value }.                                                                                    |
+| `title`       | `string`           | Yes      | —       | Title text for the component.                                                                                            |
+| `description` | `string`           | No       | —       | Supporting description text.                                                                                             |
+| `from`        | `string \| Date`   | No       | —       | Range start (defaults to min day).                                                                                       |
+| `to`          | `string \| Date`   | No       | —       | Range end (defaults to max day).                                                                                         |
+| `width`       | `number`           | No       | —       | Width of the component.                                                                                                  |
+| `height`      | `number`           | No       | 160     | Height of the component.                                                                                                 |
+| `tooltip`     | `boolean`          | No       | —       | Whether to show tooltips on hover.                                                                                       |
+| `className`   | `string`           | No       | —       | Additional CSS class names merged onto the root element.                                                                 |
+| `plain`       | `boolean`          | No       | false   | When true, renders a minimal variant without chart chrome.                                                               |
+| `visualMap`   | `VisualMapOptions` | No       | —       | Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range. |
 
 ## Tokens
 
@@ -47,10 +47,12 @@ Renders role="img" with a title and a fallback day/value table.
 
 ```jsx
 import { Calendar } from '@cascivo/charts'
-
-<Calendar
+;<Calendar
   title="Activity"
-  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}
+  data={[
+    { day: '2026-01-01', value: 3 },
+    { day: '2026-01-02', value: 7 },
+  ]}
 />
 ```
 

@@ -45,9 +45,7 @@ describe('Toggle', () => {
   it('onValueChange takes precedence over the deprecated onChange', async () => {
     const onValueChange = vi.fn()
     const onChange = vi.fn()
-    render(
-      <Toggle label="N" checked={false} onValueChange={onValueChange} onChange={onChange} />,
-    )
+    render(<Toggle label="N" checked={false} onValueChange={onValueChange} onChange={onChange} />)
     await userEvent.click(screen.getByRole('switch'))
     expect(onValueChange).toHaveBeenCalledWith(true)
     expect(onChange).not.toHaveBeenCalled()

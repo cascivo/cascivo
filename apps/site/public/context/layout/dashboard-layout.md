@@ -24,11 +24,11 @@ Provides landmark regions for main content and complementary aside.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `stats` | `ReactNode` | No | — | Stats/KPI row (auto-fit grid) |
-| `main` | `ReactNode` | Yes | — | Main content area |
-| `aside` | `ReactNode` | No | — | Optional aside panel (20rem) |
+| Name    | Type        | Required | Default | Description                   |
+| ------- | ----------- | -------- | ------- | ----------------------------- |
+| `stats` | `ReactNode` | No       | —       | Stats/KPI row (auto-fit grid) |
+| `main`  | `ReactNode` | Yes      | —       | Main content area             |
+| `aside` | `ReactNode` | No       | —       | Optional aside panel (20rem)  |
 
 ## Tokens
 

@@ -33,18 +33,18 @@ Exposes role="radio" (single) or role="checkbox" (multi) with aria-checked refle
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | Yes | — | Identifies this tile within a group. |
-| `selected` | `boolean` | No | — | Controlled selected state. |
-| `defaultSelected` | `boolean` | No | — | Initial selected state for uncontrolled use. |
-| `onSelect` | `(value: string) => void` | No | — | Called with this tile's value whenever it is toggled on (or off for multi). |
-| `selectable` | `'single' \| 'multi'` | No | single | Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off). |
-| `disabled` | `boolean` | No | — | When true, disables the control and removes it from the tab order. |
-| `icon` | `React.ReactNode` | No | — | Optional leading icon/visual. |
-| `asChild` | `boolean` | No | — | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `children` | `React.ReactNode` | No | — | Content rendered inside the component. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name              | Type                      | Required | Default | Description                                                                                       |
+| ----------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `value`           | `string`                  | Yes      | —       | Identifies this tile within a group.                                                              |
+| `selected`        | `boolean`                 | No       | —       | Controlled selected state.                                                                        |
+| `defaultSelected` | `boolean`                 | No       | —       | Initial selected state for uncontrolled use.                                                      |
+| `onSelect`        | `(value: string) => void` | No       | —       | Called with this tile's value whenever it is toggled on (or off for multi).                       |
+| `selectable`      | `'single' \| 'multi'`     | No       | single  | Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off).                 |
+| `disabled`        | `boolean`                 | No       | —       | When true, disables the control and removes it from the tab order.                                |
+| `icon`            | `React.ReactNode`         | No       | —       | Optional leading icon/visual.                                                                     |
+| `asChild`         | `boolean`                 | No       | —       | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `children`        | `React.ReactNode`         | No       | —       | Content rendered inside the component.                                                            |
+| `className`       | `string`                  | No       | —       | Additional CSS class names merged onto the root element.                                          |
 
 ## Tokens
 
@@ -63,8 +63,12 @@ Exposes role="radio" (single) or role="checkbox" (multi) with aria-checked refle
 
 ```jsx
 <div role="radiogroup" aria-label="Plan">
-  <Tile value="starter" selected={plan === 'starter'} onSelect={setPlan}>Starter</Tile>
-  <Tile value="pro" selected={plan === 'pro'} onSelect={setPlan}>Pro</Tile>
+  <Tile value="starter" selected={plan === 'starter'} onSelect={setPlan}>
+    Starter
+  </Tile>
+  <Tile value="pro" selected={plan === 'pro'} onSelect={setPlan}>
+    Pro
+  </Tile>
 </div>
 ```
 
@@ -80,11 +84,11 @@ Multi tiles toggle on and off like a checkbox.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| selectable | strict | single (radio, select-only) \| multi (checkbox, toggle) |
+| Area           | Level    | Note                                                             |
+| -------------- | -------- | ---------------------------------------------------------------- |
+| selectable     | strict   | single (radio, select-only) \| multi (checkbox, toggle)          |
 | selected state | flexible | Controlled (selected/onSelect) or uncontrolled (defaultSelected) |
-| element | flexible | asChild renders onto a custom element via Slot |
+| element        | flexible | asChild renders onto a custom element via Slot                   |
 
 ## AI context prompt
 
