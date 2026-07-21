@@ -40,12 +40,20 @@ RSC without any extra wrapper.
 > only if you prefer one explicit stylesheet over per-component tree-shaking, or
 > for Vite SSR (below), where it is required.
 
-> **Vite SSR / TanStack Start / Remix / workerd?** Those per-component `.css`
-> imports need a bundler to resolve them; a bare server-side ESM loader throws
-> `Unknown file extension ".css"`. Add `ssr: { noExternal: [/^@cascivo\//] }` (or
-> the `cascivoSsr()` plugin from `@cascivo/vite-plugin`) and import
-> `@cascivo/react/styles.css` once in your root entry. Full recipe:
-> [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md).
+> **Vite SSR / TanStack Start / Remix / workerd?** The 4-line SSR checklist (full
+> recipe: [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md)):
+>
+> 1. **`ssr: { noExternal: [/^@cascivo\//] }`** in `vite.config` (or the
+>    `cascivoSsr()` plugin from `@cascivo/vite-plugin`). Without it a bare
+>    server-side ESM loader can't resolve the per-component `.css` side-effect
+>    imports and throws `Unknown file extension ".css"`.
+> 2. **`@preact/signals-react` 3.x** — on React 19 the 2.x line fails to load. The
+>    peer range enforces `>=3`.
+> 3. **Import the CSS once** in your root entry: `@cascivo/react/styles.css` +
+>    `@cascivo/themes/all` (+ `@cascivo/charts/styles.css` if you use charts).
+> 4. **Theme without a mismatch:** inline `themePreloadScript()` in `<head>` and add
+>    `suppressHydrationWarning` to `<html>`, or hard-code `data-theme` for a fixed theme.
+>
 > Next.js App Router needs none of this.
 
 ## Use

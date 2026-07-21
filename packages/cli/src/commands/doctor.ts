@@ -125,6 +125,49 @@ export async function checkSignalsCompat(cwd: string): Promise<SignalsCompatFind
   }
 }
 
+/** Vite SSR frameworks whose default setup needs `ssr.noExternal` for cascivo. */
+const VITE_SSR_MARKERS = ['@tanstack/react-start', 'vite-ssr', '@remix-run/dev']
+const VITE_CONFIG_FILES = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs', 'vite.config.mts']
+
+/**
+ * Advisory: on a Vite SSR framework, cascivo's per-component `.css` side-effect
+ * imports crash a bare server-side ESM loader unless the packages are marked
+ * `ssr.noExternal` (or the `cascivoSsr()` plugin is used). This warns when a known
+ * Vite SSR framework is present but no vite config mentions either — the exact
+ * cliff the 2026-07-20 report hit (blocker #1). A text match, not a gate. Returns
+ * null when there's no Vite SSR framework or the config already handles it.
+ */
+export function checkSsrConfig(cwd: string): string | null {
+  let deps: Record<string, unknown> = {}
+  try {
+    const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as {
+      dependencies?: Record<string, unknown>
+      devDependencies?: Record<string, unknown>
+    }
+    deps = { ...pkg.dependencies, ...pkg.devDependencies }
+  } catch {
+    return null
+  }
+  const framework = VITE_SSR_MARKERS.find((m) => deps[m] !== undefined)
+  if (framework === undefined) return null
+
+  for (const file of VITE_CONFIG_FILES) {
+    const path = join(cwd, file)
+    if (!existsSync(path)) continue
+    const config = readFileSync(path, 'utf8')
+    // Either the manual noExternal entry or the cascivoSsr() plugin counts.
+    if (/noExternal/.test(config) && /@cascivo/.test(config)) return null
+    if (/cascivoSsr/.test(config)) return null
+  }
+  return (
+    `${framework} is a Vite SSR framework, but no vite config marks the cascivo ` +
+    `packages ssr.noExternal — an unconfigured SSR build crashes with ` +
+    `\`Unknown file extension ".css"\`. Add \`ssr: { noExternal: [/^@cascivo\\//] }\` ` +
+    `(or the cascivoSsr() plugin from @cascivo/vite-plugin). ` +
+    `Recipe: https://cascivo.com/docs/using-with-vite-ssr.md`
+  )
+}
+
 const BANNED_HOOKS = ['useState', 'useEffect', 'useLayoutEffect', 'useContext', 'useReducer']
 
 /**

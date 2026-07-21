@@ -18,10 +18,13 @@ Remix on Vite, Astro SSR, and Cloudflare/workerd targets).
 Prerequisite reading: [GETTING-STARTED.md](./GETTING-STARTED.md) for the install
 paths. Snippets use the prebuilt `@cascivo/react` package.
 
-## TL;DR
+## TL;DR — the 4-line SSR checklist
 
-Two lines. Add the aggregate stylesheet once in your root route/layout, and mark
-the cascivo packages `ssr.noExternal` so Vite bundles their CSS imports:
+Copy-paste these four things and SSR works end to end. Items 1–3 are load-bearing;
+item 4 applies only if you switch themes at runtime.
+
+**1. Mark the cascivo packages `ssr.noExternal`** so Vite bundles their CSS imports
+instead of the server runtime trying to `import` a `.css` file:
 
 ```ts
 // vite.config.ts
@@ -29,21 +32,31 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   ssr: {
-    // Vite processes these packages' CSS imports instead of the server runtime
-    // trying to load `.css` as an ESM module. Add charts/editor/flow if you use them.
+    // Add charts/editor/flow if you use them — the pattern already covers them.
     noExternal: [/^@cascivo\//],
   },
 })
 ```
 
+**2. Use `@preact/signals-react` 3.x.** On React 19 the 2.x line fails to load
+(`SyntaxError: … '__SECRET_INTERNALS…'`); the peer range enforces `>=3`. If a
+lockfile pinned 2.x, run `cascivo doctor`.
+
+**3. Import the CSS once** in your root route / server entry:
+
 ```tsx
-// your root route / server entry — imported once
 import '@cascivo/react/styles.css' // all component structure, one stylesheet
 import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/charts/styles.css' // only if you use @cascivo/charts
 ```
 
-That's it. `noExternal` fixes the crash; the aggregate `styles.css` guarantees
-every component is styled on the server-rendered first paint (see below).
+**4. Theme without a hydration mismatch** (runtime theme switching only): inline
+`themePreloadScript()` in `<head>` and add `suppressHydrationWarning` to `<html>`,
+or hard-code `data-theme` for a fixed theme. See
+[Theme switching without a flash](#theme-switching-without-a-flash-ssr) below.
+
+`noExternal` (1) fixes the crash; the aggregate `styles.css` (3) guarantees every
+component is styled on the server-rendered first paint (see below).
 
 ## Zero-config with the cascivo Vite plugin
 

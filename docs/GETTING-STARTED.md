@@ -132,14 +132,13 @@ import a component — your bundler includes styles only for the components you
 use. There is no component-CSS import to add. (No bundler at all? Import the
 aggregate `@cascivo/react/styles.css` instead.)
 
-> **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** Those
-> per-component `.css` imports are resolved by a bundler, but a bare server-side ESM
-> loader is not — so an unconfigured SSR build throws
-> `Unknown file extension ".css"`. Add one line —
-> `ssr: { noExternal: [/^@cascivo\//] }` (or the `cascivoSsr()` plugin from
-> `@cascivo/vite-plugin`) — and import `@cascivo/react/styles.css` once in your root
-> entry. Full recipe: [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md). Next.js App
-> Router needs none of this — see [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
+> **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** Follow
+> the **4-line SSR checklist** — `ssr: { noExternal: [/^@cascivo\//] }` (or the
+> `cascivoSsr()` plugin), `@preact/signals-react` 3.x, the CSS import set, and
+> `themePreloadScript()` + `suppressHydrationWarning`. Without the first line an
+> unconfigured SSR build throws `Unknown file extension ".css"`. Full recipe:
+> [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md). Next.js App Router needs none of
+> this — see [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
 
 Trade-off vs Path A: you cannot edit component internals, but you upgrade with a
 version bump instead of a merge. Full details in the

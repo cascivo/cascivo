@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import {
   checkProjectDependencies,
   checkSignalsCompat,
+  checkSsrConfig,
   isAdopterProject,
   runDoctor,
   stripCommentsAndStrings,
@@ -166,6 +167,46 @@ describe('checkSignalsCompat', () => {
   it('is silent when signals is absent', async () => {
     const root = project({ react: '19.2.0' })
     expect(await checkSignalsCompat(root)).toBeNull()
+  })
+})
+
+describe('checkSsrConfig', () => {
+  let dir: string
+  afterEach(() => rmSync(dir, { recursive: true, force: true }))
+
+  function project(pkg: Record<string, unknown>, viteConfig?: string): string {
+    dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-ssr-'))
+    writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg))
+    if (viteConfig !== undefined) writeFileSync(join(dir, 'vite.config.ts'), viteConfig)
+    return dir
+  }
+
+  it('warns on a Vite SSR framework with no noExternal config', () => {
+    const root = project({ dependencies: { '@tanstack/react-start': '1.170.0' } })
+    const hint = checkSsrConfig(root)
+    expect(hint).toContain('ssr.noExternal')
+    expect(hint).toContain('@tanstack/react-start')
+  })
+
+  it('is silent when noExternal already covers cascivo', () => {
+    const root = project(
+      { dependencies: { '@tanstack/react-start': '1.170.0' } },
+      `export default { ssr: { noExternal: [/^@cascivo\\//] } }`,
+    )
+    expect(checkSsrConfig(root)).toBeNull()
+  })
+
+  it('is silent when the cascivoSsr plugin is used', () => {
+    const root = project(
+      { dependencies: { 'vite-ssr': '1.0.0' } },
+      `import { cascivoSsr } from '@cascivo/vite-plugin'\nexport default { plugins: [cascivoSsr()] }`,
+    )
+    expect(checkSsrConfig(root)).toBeNull()
+  })
+
+  it('is silent when no Vite SSR framework is present', () => {
+    const root = project({ dependencies: { next: '15.0.0' } })
+    expect(checkSsrConfig(root)).toBeNull()
   })
 })
 

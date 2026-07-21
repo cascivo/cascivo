@@ -243,6 +243,20 @@ its README — don't carry the recipe.
 
 ### Spec
 
+> **Implementation note (spike outcome — fallback taken).** The CSS-free `node`-condition
+> variant was **not** shipped. The repo already carries a deliberate, tested commitment to
+> the `noExternal` design: `scripts/checks/ssr-import.test.ts` asserts the per-component
+> `.css` edges exist and its own header calls out that landing "Option A" (this variant)
+> must fail it in lockstep, `apps/examples/react-vite-ssr` is a full end-to-end SSR proof of
+> the `cascivoSsr()` path, and `packages/vite-plugin` tests pin the emitted config. Adding a
+> second `node`-condition build would fight all three and requires validating a
+> multi-bundler matrix (webpack/Next `react-server`, workerd) that can't be exercised in-repo
+> — exactly the footgun the plan's fallback clause names. Per that clause, `noExternal`
+> stays the blessed path and the residual work (items 2–4 below) shipped: the README SSR
+> checklist, the consolidated 4-item TL;DR, and a `cascivo doctor` heuristic that turns the
+> cryptic runtime crash into an up-front diagnosis. Revisit the variant only if a future
+> report shows `noExternal` is an adoption blocker despite these.
+
 **1. Structural investigation (the real fix): a CSS-import-free server condition.**
 Goal: `import '@cascivo/react'` under bare Node succeeds with zero consumer config.
 Approach to evaluate — publish a second, CSS-free build variant selected by the `node`
