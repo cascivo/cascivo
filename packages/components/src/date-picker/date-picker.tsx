@@ -67,6 +67,9 @@ export interface DatePickerLabels {
 export interface DatePickerProps {
   value?: string
   defaultValue?: string
+  /** Called with the selected ISO date string (or undefined when cleared). */
+  onValueChange?: (value: string | undefined) => void
+  /** @deprecated Use `onValueChange` — it receives the same ISO `string | undefined`. */
   onChange?: (value: string | undefined) => void
   min?: string
   max?: string
@@ -84,6 +87,7 @@ export interface DatePickerProps {
 export function DatePicker({
   value,
   defaultValue,
+  onValueChange,
   onChange,
   min,
   max,
@@ -142,18 +146,20 @@ export function DatePicker({
 
   const close = () => send('CLOSE')
 
+  const emitValue = onValueChange ?? onChange
+
   const select = (iso: string) => {
     if (min && iso < min) return
     if (max && iso > max) return
     if (value === undefined) selectedISO.value = iso
-    onChange?.(iso)
+    emitValue?.(iso)
     close()
   }
 
   const clear = (e: React.MouseEvent) => {
     e.stopPropagation()
     if (value === undefined) selectedISO.value = undefined
-    onChange?.(undefined)
+    emitValue?.(undefined)
   }
 
   const prevMonth = () => {

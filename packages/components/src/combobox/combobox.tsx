@@ -37,6 +37,9 @@ export interface ComboboxProps {
   options: ComboboxOption[]
   value?: string
   defaultValue?: string
+  /** Called with the selected option value (or undefined when cleared). */
+  onValueChange?: (value: string | undefined) => void
+  /** @deprecated Use `onValueChange` — it receives the same `string | undefined`. */
   onChange?: (value: string | undefined) => void
   clearable?: boolean
   searchable?: boolean
@@ -54,6 +57,7 @@ export function Combobox({
   options,
   value,
   defaultValue,
+  onValueChange,
   onChange,
   clearable = false,
   searchable = true,
@@ -117,15 +121,17 @@ export function Combobox({
     query.value = ''
   }
 
+  const emitValue = onValueChange ?? onChange
+
   const select = (optValue: string) => {
     if (value === undefined) selectedSignal.value = optValue
-    onChange?.(optValue)
+    emitValue?.(optValue)
     close()
   }
 
   const clear = () => {
     if (value === undefined) selectedSignal.value = undefined
-    onChange?.(undefined)
+    emitValue?.(undefined)
   }
 
   const enabledIndexes = filtered.flatMap((opt, i) => (opt.disabled ? [] : [i]))

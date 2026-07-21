@@ -17,8 +17,14 @@ export const meta: ComponentMeta = {
       default: "''",
     },
     {
+      name: 'onValueChange',
+      description: 'Called with the current text on every keystroke.',
+      type: '(value: string) => void',
+      required: false,
+    },
+    {
       name: 'onChange',
-      description: 'Called when the value changes.',
+      description: 'Deprecated: use onValueChange (same string).',
       type: '(value: string) => void',
       required: false,
     },

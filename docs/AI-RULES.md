@@ -68,6 +68,23 @@ don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React
 Full catalogs: docs/HEADLESS.md (primitives) and docs/ENTERPRISE-READINESS.md (friction map).
 ```
 
+## Event-handler naming
+
+cascivo names change/activation callbacks by **what the handler receives**, so you can
+predict the prop without checking the types:
+
+| Handler receives | Prop name | Examples |
+| --- | --- | --- |
+| The component's **value** (string / number / array / boolean / Date — not a DOM event) | **`onValueChange(value)`** | `Tabs`, `SegmentedControl`, `Select`, `Combobox`, `Slider`, `MultiSelect`, `Toggle`, `Search`, `NumberInput`, `DatePicker` |
+| A raw **DOM `ChangeEvent`** from a real underlying element | **`onChange(event)`** | `Checkbox`, `NativeSelect`, `PasswordInput` |
+| **Activation / selection** of a discrete item | **`onSelect(value)`** | `Dropdown`, `Menu`, `ContextMenu`, `OverflowMenu`, chart point clicks |
+| A raw DOM click passthrough | **`onClick(event)`** | nav items, buttons |
+
+Rule of thumb when authoring or generating: **if your handler's first argument is a value,
+name it `onValueChange`; if it's a DOM event, name it `onChange`.** A few components still
+accept a deprecated value-carrying `onChange` alias for backward compatibility — prefer
+`onValueChange`; the alias will be removed in a future major.
+
 ## Overriding styles the sanctioned way
 
 Every cascivo component spreads `{...props}` onto its root element, so `style` and

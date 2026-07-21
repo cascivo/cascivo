@@ -34,8 +34,14 @@ export const meta: ComponentMeta = {
       description: 'Initial selected values for uncontrolled use',
     },
     {
+      name: 'onValueChange',
+      description: 'Called with the selected values whenever the selection changes.',
+      type: '(selected: string[]) => void',
+      required: false,
+    },
+    {
       name: 'onChange',
-      description: 'Called when the value changes.',
+      description: 'Deprecated: use onValueChange (same string[]).',
       type: '(selected: string[]) => void',
       required: false,
     },

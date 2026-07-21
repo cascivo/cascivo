@@ -6,6 +6,9 @@ import styles from './toggle.module.css'
 export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked?: boolean
   defaultChecked?: boolean
+  /** Called with the new checked state when the switch is toggled. */
+  onValueChange?: (checked: boolean) => void
+  /** @deprecated Use `onValueChange` — it receives the same `checked` boolean. */
   onChange?: (checked: boolean) => void
   /**
    * Renders a **visible** text label beside the switch that also becomes its
@@ -20,6 +23,7 @@ export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 export function Toggle({
   checked,
   defaultChecked = false,
+  onValueChange,
   onChange,
   label,
   size = 'md',
@@ -42,7 +46,7 @@ export function Toggle({
 
   const handleClick = () => {
     if (!isControlled) send('TOGGLE')
-    onChange?.(!isOn)
+    ;(onValueChange ?? onChange)?.(!isOn)
   }
 
   return (

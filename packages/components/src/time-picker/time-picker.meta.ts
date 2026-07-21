@@ -16,8 +16,14 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'onValueChange',
+      description: 'Called with the new HH:MM time string when the value changes.',
+      type: '(value: string) => void',
+      required: false,
+    },
+    {
       name: 'onChange',
-      description: 'Called when the value changes.',
+      description: 'Deprecated: use onValueChange (same time string).',
       type: '(value: string) => void',
       required: false,
     },

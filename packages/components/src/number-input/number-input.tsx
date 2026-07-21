@@ -18,6 +18,9 @@ export interface NumberInputProps extends Omit<
 > {
   value?: number | null
   defaultValue?: number
+  /** Called with the new numeric value (or null when cleared). */
+  onValueChange?: (value: number | null) => void
+  /** @deprecated Use `onValueChange` — it receives the same `number | null`. */
   onChange?: (value: number | null) => void
   min?: number
   max?: number
@@ -60,6 +63,7 @@ function parseText(text: string): number | null {
 export function NumberInput({
   value,
   defaultValue,
+  onValueChange,
   onChange,
   min,
   max,
@@ -95,7 +99,7 @@ export function NumberInput({
   const setValue = (next: number | null) => {
     if (!isControlled) committed.value = next
     text.value = next == null ? '' : String(next)
-    if (next !== current) onChange?.(next)
+    if (next !== current) (onValueChange ?? onChange)?.(next)
   }
 
   const commitText = () => {

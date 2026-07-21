@@ -532,6 +532,23 @@ defeats the whole system. Non-negotiable:
 - Enforced by `pnpm layers:check` (canonical order + legal block names, depth ≤ 3) and
   `pnpm unlayered:check` (no unlayered shipped rules).
 
+#### Event-handler naming — name the callback by what it receives
+
+Predictability across the catalog matters more than any single component's taste. Name a
+change/activation callback by its **argument**, not the component:
+
+- Handler receives the component's **value** (string/number/array/boolean/Date — not a DOM
+  event): **`onValueChange(value)`**. This is the default for composite/custom-value
+  components (Tabs, Select, Combobox, Slider, Toggle, …).
+- Handler receives a raw **DOM `ChangeEvent`** from a real underlying element:
+  **`onChange(event)`** (native-wrapper components: Checkbox, NativeSelect, PasswordInput).
+- **Activation/selection** of a discrete item: **`onSelect(value)`** (menus, chart points).
+
+Never give a new component a value-carrying `onChange` — that name is reserved for the DOM
+event. The `docs/AI-RULES.md` "Event-handler naming" table is the published contract; keep
+it in sync. (A handful of pre-existing components still accept a deprecated value-carrying
+`onChange` alias alongside `onValueChange`; do not add more.)
+
 #### Checklist before committing a component
 
 1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.

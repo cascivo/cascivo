@@ -16,10 +16,16 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
-      name: 'onChange',
+      name: 'onValueChange',
       type: '(value: number | null) => void',
       required: false,
       description: 'Fired on commit (blur, Enter, stepping); null when empty or unparseable',
+    },
+    {
+      name: 'onChange',
+      type: '(value: number | null) => void',
+      required: false,
+      description: 'Deprecated: use onValueChange (same number | null)',
     },
     { name: 'min', description: 'Minimum allowed value.', type: 'number', required: false },
     { name: 'max', description: 'Maximum allowed value.', type: 'number', required: false },

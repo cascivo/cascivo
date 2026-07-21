@@ -36,6 +36,19 @@ describe('Combobox', () => {
     expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
   })
 
+  it('calls onValueChange on selection, taking precedence over onChange', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    const onChange = vi.fn()
+    render(
+      <Combobox label="Country" options={options} onValueChange={onValueChange} onChange={onChange} />,
+    )
+    await user.click(screen.getByRole('combobox'))
+    await user.click(screen.getByRole('option', { name: 'Germany' }))
+    expect(onValueChange).toHaveBeenCalledWith('de')
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
   it('filters options when typing in the search field', async () => {
     const user = userEvent.setup()
     render(<Combobox label="Country" options={options} />)

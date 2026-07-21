@@ -58,6 +58,17 @@ describe('Filter', () => {
     expect(onChange).toHaveBeenCalledWith(['active'])
   })
 
+  it('calls onValueChange with the new array, taking precedence over onChange', async () => {
+    const onValueChange = vi.fn()
+    const onChange = vi.fn()
+    render(
+      <Filter options={OPTIONS} onValueChange={onValueChange} onChange={onChange} aria-label="Filter" />,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Active' }))
+    expect(onValueChange).toHaveBeenCalledWith(['active'])
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
   it('controlled: value prop drives selected state', () => {
     render(<Filter options={OPTIONS} value={['active']} aria-label="Filter" />)
     expect(screen.getByRole('button', { name: 'Active' })).toHaveAttribute('aria-pressed', 'true')

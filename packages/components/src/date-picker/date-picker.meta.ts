@@ -28,10 +28,16 @@ export const meta: ComponentMeta = {
       description: 'Uncontrolled default value',
     },
     {
+      name: 'onValueChange',
+      type: '(value: string | undefined) => void',
+      required: false,
+      description: 'Called with the selected ISO date string (or undefined when cleared)',
+    },
+    {
       name: 'onChange',
       type: '(value: string | undefined) => void',
       required: false,
-      description: 'Called on date selection or clear',
+      description: 'Deprecated: use onValueChange (same ISO string | undefined)',
     },
     { name: 'min', type: 'string', required: false, description: 'Minimum ISO date' },
     { name: 'max', type: 'string', required: false, description: 'Maximum ISO date' },

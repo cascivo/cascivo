@@ -28,8 +28,14 @@ export const meta: ComponentMeta = {
       default: 'false',
     },
     {
+      name: 'onValueChange',
+      description: 'Called with the new checked state when the swap is toggled.',
+      type: '(checked: boolean) => void',
+      required: false,
+    },
+    {
       name: 'onChange',
-      description: 'Called when the value changes.',
+      description: 'Deprecated: use onValueChange (same checked boolean).',
       type: '(checked: boolean) => void',
       required: false,
     },

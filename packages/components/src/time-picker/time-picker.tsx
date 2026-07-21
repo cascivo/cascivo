@@ -17,6 +17,9 @@ export interface TimePickerProps extends Omit<
 > {
   value?: string
   defaultValue?: string
+  /** Called with the new `HH:MM` time string when the value changes. */
+  onValueChange?: (value: string) => void
+  /** @deprecated Use `onValueChange` — it receives the same time string. */
   onChange?: (value: string) => void
   min?: string
   max?: string
@@ -30,6 +33,7 @@ export interface TimePickerProps extends Omit<
 export function TimePicker({
   value,
   defaultValue,
+  onValueChange,
   onChange,
   min,
   max,
@@ -71,7 +75,7 @@ export function TimePicker({
         step={step}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={(e) => (onValueChange ?? onChange)?.(e.target.value)}
         onFocus={(e) => {
           send('FOCUS')
           onFocus?.(e)
