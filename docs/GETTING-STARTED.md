@@ -291,7 +291,8 @@ export function App() {
   utility-first (Tailwind) mapping table.
 - [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md) — App Router / RSC setup.
 - [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md) — TanStack Start / Vite SSR /
-  Remix / workerd: the one-line `ssr.noExternal` fix for the `.css` loader.
+  Remix / workerd: the 4-line SSR checklist, and wiring your router's `<Link>` into
+  the shipped nav/shell with `setLinkComponent` (the `LinkComponentProps` contract).
 - [COMPATIBILITY.md](./COMPATIBILITY.md) — frameworks, browsers, package
   version matrix.
 - [TESTING.md](./TESTING.md) — testing signal-driven components with Vitest.

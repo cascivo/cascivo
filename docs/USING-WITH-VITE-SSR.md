@@ -163,18 +163,22 @@ once at startup so they navigate client-side and hover-preload — no `onClick`
 interception:
 
 ```tsx
-import { setLinkComponent } from '@cascivo/react'
+import { setLinkComponent, type LinkComponentProps } from '@cascivo/react'
 import { Link } from '@tanstack/react-router'
 
-// TanStack's Link takes `to`, so map href → to. Call once at app start.
-setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
+// TanStack's Link takes `to`, so map href → to and spread the rest. Call once at start.
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)
 ```
 
-Import it from `@cascivo/react` (where it is re-exported) on the prebuilt path — that
-way you never add `@cascivo/core` as a direct dependency (under pnpm, importing it
-directly would be a phantom-dependency error, since it is only a transitive dep). The
-registered component receives the full computed prop bag (`href`, `aria-current`, active
-`data-state`, `className`, …), so active styling and accessibility carry over.
+Import `setLinkComponent` and the `LinkComponentProps` contract type from
+`@cascivo/react` (both re-exported) on the prebuilt path — that way you never add
+`@cascivo/core` as a direct dependency (under pnpm, importing it directly would be a
+phantom-dependency error, since it is only a transitive dep). `LinkComponentProps`
+documents the full computed bag (`href`, `aria-current`, active `data-state`,
+`className`, `onClick`, …), so active styling and accessibility carry over, and — because
+the link stays a real `<a>` — middle-click / open-in-new-tab keep working with no
+`onClick` interception. `SideNavItem.render` is the per-item escape hatch; prefer the
+global `setLinkComponent` for whole-app router wiring.
 
 ### Timestamps (`RelativeTime`)
 
