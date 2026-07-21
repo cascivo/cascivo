@@ -160,8 +160,11 @@ git diff --exit-code
 # Breakpoint literal check (off-scale @media/@container widths)
 pnpm breakpoint:check
 
-# Manifest + docs guards (props-parity, pkg-exports, docs-imports, doc-links, …)
+# Manifest + docs guards (props-parity, pkg-exports, peer-floors, css-imports, docs-imports, doc-links, …)
 pnpm meta:check
+
+# Packaging gate — publint + attw over packed artifacts (release/CI only; needs a prior build)
+pnpm pack:check           # all published packages; `node scripts/checks/pack-lint.mjs <pkg>` to scope
 
 # Deployed-docs freshness probe (run against production; also runs post-deploy + daily)
 bash scripts/checks/deployed-freshness.sh
