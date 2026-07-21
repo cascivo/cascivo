@@ -38,7 +38,8 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 | ---------------- | --------------------------------- | -------- | --------- | ----------------------------------------------------------------------- |
 | `value`          | `number \| null`                  | No       | —         | The controlled value.                                                   |
 | `defaultValue`   | `number`                          | No       | —         | The initial value when uncontrolled.                                    |
-| `onChange`       | `(value: number \| null) => void` | No       | —         | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
+| `onValueChange`  | `(value: number \| null) => void` | No       | —         | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
+| `onChange`       | `(value: number \| null) => void` | No       | —         | Deprecated: use onValueChange (same number \| null)                     |
 | `min`            | `number`                          | No       | —         | Minimum allowed value.                                                  |
 | `max`            | `number`                          | No       | —         | Maximum allowed value.                                                  |
 | `step`           | `number`                          | No       | 1         | Increment between allowed values.                                       |

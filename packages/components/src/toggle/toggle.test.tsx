@@ -35,6 +35,22 @@ describe('Toggle', () => {
     expect(toggle).toHaveAttribute('aria-checked', 'false')
   })
 
+  it('calls onValueChange with the new checked state', async () => {
+    const onValueChange = vi.fn()
+    render(<Toggle label="Notifications" checked={false} onValueChange={onValueChange} />)
+    await userEvent.click(screen.getByRole('switch'))
+    expect(onValueChange).toHaveBeenCalledWith(true)
+  })
+
+  it('onValueChange takes precedence over the deprecated onChange', async () => {
+    const onValueChange = vi.fn()
+    const onChange = vi.fn()
+    render(<Toggle label="N" checked={false} onValueChange={onValueChange} onChange={onChange} />)
+    await userEvent.click(screen.getByRole('switch'))
+    expect(onValueChange).toHaveBeenCalledWith(true)
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
   it('does not toggle when disabled', async () => {
     render(<Toggle label="Notifications" disabled />)
     const toggle = screen.getByRole('switch')

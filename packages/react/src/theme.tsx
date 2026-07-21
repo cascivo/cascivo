@@ -12,6 +12,8 @@ const DEFAULT_ATTR = 'data-theme'
 interface ThemeConfig {
   storageKey: string
   defaultTheme: string
+  /** Whether `defaultTheme` was explicitly provided (vs. defaulted to 'light'). */
+  explicit: boolean
 }
 
 // Single source of truth for the whole app, mirroring the module-level `theme`
@@ -20,7 +22,7 @@ interface ThemeConfig {
 // (a header toggle, a settings page) with no provider prop-drilling, and keeps
 // the reactivity signal-based per CLAUDE.md (`useContext` is banned).
 let store: Signal<string> | null = null
-let config: ThemeConfig = { storageKey: DEFAULT_KEY, defaultTheme: 'light' }
+let config: ThemeConfig = { storageKey: DEFAULT_KEY, defaultTheme: 'light', explicit: false }
 
 function osPreference(fallback: string): string {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return fallback
@@ -29,8 +31,19 @@ function osPreference(fallback: string): string {
   return fallback
 }
 
+/**
+ * The initial theme before anything is persisted. Precedence:
+ * explicit `defaultTheme` (if the author passed one) > OS `prefers-color-scheme`
+ * > `'light'`. An explicit default wins over OS so a "dark by default" (or custom
+ * `'midnight'`) app is honored; OS only ever resolves to `'light'`/`'dark'`, so it
+ * must not clobber a custom theme name.
+ */
+function initialDefault(): string {
+  return config.explicit ? config.defaultTheme : osPreference(config.defaultTheme)
+}
+
 function themeStore(): Signal<string> {
-  store ??= persistedSignal<string>(config.storageKey, osPreference(config.defaultTheme))
+  store ??= persistedSignal<string>(config.storageKey, initialDefault())
   return store
 }
 
@@ -61,8 +74,11 @@ export function useTheme(): readonly [Signal<string>, (next: string) => void] {
 
 export interface ThemeProviderProps {
   /**
-   * Theme to use when nothing is persisted yet. Falls back to the visitor's OS
-   * `prefers-color-scheme` (light/dark), then to `'light'`.
+   * Theme to use when nothing is persisted yet. When set, it **wins over** the
+   * visitor's OS `prefers-color-scheme` — pass it for a "dark by default" or
+   * custom-theme (`'midnight'`, …) app. Omit it to follow the OS (light/dark),
+   * falling back to `'light'`. Precedence: persisted value > `defaultTheme` (if
+   * set) > OS preference > `'light'`.
    */
   defaultTheme?: string
   /**
@@ -111,7 +127,11 @@ export function ThemeProvider({
   if (!configured.current) {
     configured.current = true
     if (store === null || config.storageKey !== storageKey) {
-      config = { storageKey, defaultTheme: defaultTheme ?? 'light' }
+      config = {
+        storageKey,
+        defaultTheme: defaultTheme ?? 'light',
+        explicit: defaultTheme !== undefined,
+      }
       store = null
     }
   }
@@ -145,11 +165,23 @@ export function ThemeProvider({
  * SSR or a hard reload. Pass the same `storageKey`/`attribute`/`defaultTheme`
  * you give {@link ThemeProvider}.
  *
+ * Precedence matches {@link ThemeProvider}: persisted value > `defaultTheme`
+ * (if set) > OS `prefers-color-scheme` > `'light'`. Passing `defaultTheme`
+ * suppresses the OS check, so a "dark by default" app stays dark on a light-OS
+ * visitor.
+ *
+ * The script sets `data-theme` **before** React hydrates, so add
+ * `suppressHydrationWarning` to the element that carries the attribute (usually
+ * `<html>`) — the mutation is intentional, and without the flag React 19 logs a
+ * hydration mismatch.
+ *
  * ```tsx
  * // Next.js app/layout.tsx
- * <head>
- *   <script dangerouslySetInnerHTML={{ __html: themePreloadScript() }} />
- * </head>
+ * <html suppressHydrationWarning>
+ *   <head>
+ *     <script dangerouslySetInnerHTML={{ __html: themePreloadScript({ defaultTheme: 'dark' }) }} />
+ *   </head>
+ * </html>
  * ```
  */
 export function themePreloadScript(
@@ -158,13 +190,20 @@ export function themePreloadScript(
   const key = JSON.stringify(options.storageKey ?? DEFAULT_KEY)
   const attr = JSON.stringify(options.attribute ?? DEFAULT_ATTR)
   const fallback = JSON.stringify(options.defaultTheme ?? 'light')
+  // OS preference is consulted only when no explicit defaultTheme was given; an
+  // explicit default (especially a custom theme like 'midnight') must win over OS.
+  // The persisted value is read last, so it always wins.
+  const osBlock =
+    options.defaultTheme === undefined
+      ? `if(typeof matchMedia==='function'){` +
+        `if(matchMedia('(prefers-color-scheme: dark)').matches)v='dark';` +
+        `else if(matchMedia('(prefers-color-scheme: light)').matches)v='light';}`
+      : ''
   // Reads the persistedSignal envelope ({"v":1,"value":"dark"}) and the bare
   // string form, matching decode() in @cascivo/storage.
   return (
     `(function(){try{var v=${fallback};` +
-    `if(typeof matchMedia==='function'){` +
-    `if(matchMedia('(prefers-color-scheme: dark)').matches)v='dark';` +
-    `else if(matchMedia('(prefers-color-scheme: light)').matches)v='light';}` +
+    osBlock +
     `var raw=localStorage.getItem(${key});` +
     `if(raw){v=raw;try{var e=JSON.parse(raw);if(e&&typeof e==='object'&&'value'in e)v=e.value;}catch(_){}}` +
     `document.documentElement.setAttribute(${attr},v);}catch(_){}})();`

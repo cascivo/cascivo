@@ -71,7 +71,12 @@ export { ErrorBoundary, SuspenseBoundary, Portal, FocusScope } from '@cascivo/co
 // so prebuilt-package (Path B) users need not add @cascivo/core as a direct dep (it is
 // only a transitive dep, so `import … from '@cascivo/core'` is a phantom-dependency
 // error under pnpm). Copied-source (Path A) projects can import it from either package.
-export { setLinkComponent, getLinkComponent, type LinkComponent } from '@cascivo/core'
+export {
+  setLinkComponent,
+  getLinkComponent,
+  type LinkComponent,
+  type LinkComponentProps,
+} from '@cascivo/core'
 export * from '../../components/src/password-input/password-input'
 export * from '../../components/src/multi-select/multi-select'
 export * from '../../components/src/tags-input/tags-input'

@@ -30,8 +30,14 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'onValueChange',
+      description: 'Called with the selected option value (or undefined when cleared).',
+      type: '(value: string | undefined) => void',
+      required: false,
+    },
+    {
       name: 'onChange',
-      description: 'Called when the value changes.',
+      description: 'Deprecated: use onValueChange (same string | undefined).',
       type: '(value: string | undefined) => void',
       required: false,
     },

@@ -7,7 +7,9 @@ forking components. This page is the end-to-end recipe.
 
 For the underlying cascade-layer rules see
 [`CSS-LAYERS-PITFALL.md`](./CSS-LAYERS-PITFALL.md); for the full token list see
-[`TOKENS.md`](./TOKENS.md).
+[`TOKENS.md`](./TOKENS.md). For the full list of the twelve first-party themes with their
+import path ↔ `data-theme` value mapping, see
+[GETTING-STARTED.md → Theme export → `data-theme` value](./GETTING-STARTED.md#theme-export--data-theme-value).
 
 ---
 
@@ -86,13 +88,34 @@ function ThemeToggle() {
   instead of `<html>`, so a panel can theme independently of the page.
 - **`useTheme()` / `setTheme()` work from any component** — no React context, no prop-drilling
   (the active theme is a module-level signal).
+- **Initial-theme precedence** (before anything is persisted): **persisted value > `defaultTheme`
+  (if you passed one) > OS `prefers-color-scheme` > `'light'`.** Pass `defaultTheme` for a
+  "dark by default" or custom-theme app — it wins over the visitor's OS. Omit it to follow the
+  OS. OS preference only ever resolves to `'light'`/`'dark'`, so it never clobbers a custom
+  theme name like `'midnight'`.
+- **Controlled** (parent owns the state, no persistence): pass `value`. This is the report's
+  `<ThemeProvider value="dark">` pattern — correct when server state, not the visitor, decides
+  the theme.
 - **No flash on reload / SSR:** inline `themePreloadScript()` in your document `<head>`, before
-  the app bundle, so the persisted theme paints on the first byte:
+  the app bundle, so the theme paints on the first byte. It follows the same precedence, and it
+  sets `data-theme` *before* React hydrates — so add `suppressHydrationWarning` to the element
+  carrying the attribute (usually `<html>`), or React 19 logs a hydration mismatch:
 
 ```tsx
 import { themePreloadScript } from '@cascivo/react'
-;<script dangerouslySetInnerHTML={{ __html: themePreloadScript() }} />
+
+// server-rendered document
+<html suppressHydrationWarning>
+  <head>
+    {/* defaultTheme:'dark' keeps a light-OS visitor dark; omit it to follow the OS */}
+    <script dangerouslySetInnerHTML={{ __html: themePreloadScript({ defaultTheme: 'dark' }) }} />
+  </head>
+</html>
 ```
+
+For a **fixed, non-switchable** theme you don't need the script at all — hard-code
+`data-theme="dark"` on the server-rendered `<html>`. That never mismatches and is the right
+answer for a single-theme app (see [GETTING-STARTED.md](./GETTING-STARTED.md#runtime-switching--ssr-no-flash)).
 
 See [HEADLESS.md](./HEADLESS.md) for the reactivity model behind this.
 

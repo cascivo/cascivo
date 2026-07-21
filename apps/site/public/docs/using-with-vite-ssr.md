@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-vite-ssr.md
-  registry v0.8.0 · generated 2026-07-20
+  registry v0.8.0 · generated 2026-07-21
 -->
 
 # Using cascivo with Vite SSR (TanStack Start, vite-ssr, Remix, workerd)
@@ -24,10 +24,13 @@ Remix on Vite, Astro SSR, and Cloudflare/workerd targets).
 Prerequisite reading: [GETTING-STARTED.md](/docs/getting-started.md) for the install
 paths. Snippets use the prebuilt `@cascivo/react` package.
 
-## TL;DR
+## TL;DR — the 4-line SSR checklist
 
-Two lines. Add the aggregate stylesheet once in your root route/layout, and mark
-the cascivo packages `ssr.noExternal` so Vite bundles their CSS imports:
+Copy-paste these four things and SSR works end to end. Items 1–3 are load-bearing;
+item 4 applies only if you switch themes at runtime.
+
+**1. Mark the cascivo packages `ssr.noExternal`** so Vite bundles their CSS imports
+instead of the server runtime trying to `import` a `.css` file:
 
 ```ts
 // vite.config.ts
@@ -35,21 +38,31 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   ssr: {
-    // Vite processes these packages' CSS imports instead of the server runtime
-    // trying to load `.css` as an ESM module. Add charts/editor/flow if you use them.
+    // Add charts/editor/flow if you use them — the pattern already covers them.
     noExternal: [/^@cascivo\//],
   },
 })
 ```
 
+**2. Use `@preact/signals-react` 3.x.** On React 19 the 2.x line fails to load
+(`SyntaxError: … '__SECRET_INTERNALS…'`); the peer range enforces `>=3`. If a
+lockfile pinned 2.x, run `cascivo doctor`.
+
+**3. Import the CSS once** in your root route / server entry:
+
 ```tsx
-// your root route / server entry — imported once
 import '@cascivo/react/styles.css' // all component structure, one stylesheet
 import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/charts/styles.css' // only if you use @cascivo/charts
 ```
 
-That's it. `noExternal` fixes the crash; the aggregate `styles.css` guarantees
-every component is styled on the server-rendered first paint (see below).
+**4. Theme without a hydration mismatch** (runtime theme switching only): inline
+`themePreloadScript()` in `<head>` and add `suppressHydrationWarning` to `<html>`,
+or hard-code `data-theme` for a fixed theme. See
+[Theme switching without a flash](#theme-switching-without-a-flash-ssr) below.
+
+`noExternal` (1) fixes the crash; the aggregate `styles.css` (3) guarantees every
+component is styled on the server-rendered first paint (see below).
 
 ## Zero-config with the cascivo Vite plugin
 
@@ -156,18 +169,22 @@ once at startup so they navigate client-side and hover-preload — no `onClick`
 interception:
 
 ```tsx
-import { setLinkComponent } from '@cascivo/react'
+import { setLinkComponent, type LinkComponentProps } from '@cascivo/react'
 import { Link } from '@tanstack/react-router'
 
-// TanStack's Link takes `to`, so map href → to. Call once at app start.
-setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
+// TanStack's Link takes `to`, so map href → to and spread the rest. Call once at start.
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)
 ```
 
-Import it from `@cascivo/react` (where it is re-exported) on the prebuilt path — that
-way you never add `@cascivo/core` as a direct dependency (under pnpm, importing it
-directly would be a phantom-dependency error, since it is only a transitive dep). The
-registered component receives the full computed prop bag (`href`, `aria-current`, active
-`data-state`, `className`, …), so active styling and accessibility carry over.
+Import `setLinkComponent` and the `LinkComponentProps` contract type from
+`@cascivo/react` (both re-exported) on the prebuilt path — that way you never add
+`@cascivo/core` as a direct dependency (under pnpm, importing it directly would be a
+phantom-dependency error, since it is only a transitive dep). `LinkComponentProps`
+documents the full computed bag (`href`, `aria-current`, active `data-state`,
+`className`, `onClick`, …), so active styling and accessibility carry over, and — because
+the link stays a real `<a>` — middle-click / open-in-new-tab keep working with no
+`onClick` interception. `SideNavItem.render` is the per-item escape hatch; prefer the
+global `setLinkComponent` for whole-app router wiring.
 
 ### Timestamps (`RelativeTime`)
 
@@ -193,7 +210,25 @@ they are covered by the `/^@cascivo\//` pattern; import each package's
 
 Same as every SSR target: inline `themePreloadScript()` (from `@cascivo/react`) in
 your server-rendered document `<head>` so the persisted theme paints on the first
-byte, then toggle from a client component with `useTheme()`. Full API in
+byte, then toggle from a client component with `useTheme()`. Two SSR specifics:
+
+- **Add `suppressHydrationWarning`** to the element the script writes to (usually
+  `<html>`). The script sets `data-theme` before React hydrates, so without the flag
+  React 19 logs a hydration mismatch.
+- **Pass `defaultTheme`** for a "dark by default" app — it wins over the visitor's OS
+  `prefers-color-scheme`, so a light-OS visitor still gets your dark default. Precedence:
+  persisted value > `defaultTheme` > OS > `'light'`.
+
+```tsx
+<html suppressHydrationWarning>
+  <head>
+    <script dangerouslySetInnerHTML={{ __html: themePreloadScript({ defaultTheme: 'dark' }) }} />
+  </head>
+</html>
+```
+
+For a **fixed** theme, skip the script and hard-code `data-theme="dark"` on the
+server-rendered `<html>` — it never mismatches. Full API in
 [THEMING.md](/docs/theming.md#switching-themes-at-runtime).
 
 ## Troubleshooting

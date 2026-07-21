@@ -490,6 +490,12 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
   lines.push(`- Page-block AI docs are namespaced: ${DOCS}/llms/block/<name>.md`)
   lines.push(
+    '- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a self-contained, flat',
+  )
+  lines.push(
+    '  rollup — every component `…Props` interface is real, documentation-grade API reference.',
+  )
+  lines.push(
     `- Component index (every entry + channel + doc URL, plain markdown): ${SITE}/docs/components.md`,
   )
   lines.push(
@@ -590,7 +596,12 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '   `tailwind` = a bridge stylesheet). For a user-switchable theme use `<ThemeProvider>`',
   )
   lines.push('   + `themePreloadScript()` (no-FOUC SSR); for a fixed theme hard-code `data-theme`')
-  lines.push('   on `<html>`. Full table + SSR recipe: docs/getting-started.md.')
+  lines.push(
+    '   on `<html>`. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS',
+  )
+  lines.push('   `prefers-color-scheme` > light — pass `defaultTheme` to keep a dark app dark on a')
+  lines.push('   light-OS visitor. Under SSR add `suppressHydrationWarning` to the `<html>` the')
+  lines.push('   preload script writes to. Full table + SSR recipe: docs/getting-started.md.')
   lines.push('')
   lines.push('B. Copy-paste source — own and customize the code (shadcn model):')
   lines.push('')
@@ -753,13 +764,16 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.',
   )
   lines.push(
-    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Never write a `useEffect` that toggles a `.dark` class.',
+    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Under SSR add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.',
   )
   lines.push(
     "- Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).",
   )
   lines.push(
-    '- Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import it from `@cascivo/core`.',
+    '- Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.',
+  )
+  lines.push(
+    '- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, Select, Combobox, Slider, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput); activating an item -> `onSelect(value)` (Dropdown, Menu, chart points). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.',
   )
   lines.push('')
   lines.push(

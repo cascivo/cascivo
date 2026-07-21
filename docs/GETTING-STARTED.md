@@ -117,22 +117,28 @@ resolve by hand. See [UPGRADING.md](./UPGRADING.md) for the full story.
 pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 ```
 
+(`@cascivo/tokens` comes with `@cascivo/themes` automatically — it is a direct
+dependency, not a peer, so you never install it by hand.)
+
 Peer dependencies: `react >=18`, `react-dom >=18`, and `@preact/signals-react`
 (cascivo components are signal-driven, so the signals runtime is required).
+**On React 19 the signals runtime must be 3.x** — the peer range enforces `>=3`
+(3.x still supports React 16.14+/17/18), because signals-react 2.x imports a React
+internal that React 19 removed. If a lockfile pinned 2.x from an earlier install,
+`cascivo doctor` flags it with the upgrade command.
 
 Component CSS ships **per component** and is pulled in automatically when you
 import a component — your bundler includes styles only for the components you
 use. There is no component-CSS import to add. (No bundler at all? Import the
 aggregate `@cascivo/react/styles.css` instead.)
 
-> **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** Those
-> per-component `.css` imports are resolved by a bundler, but a bare server-side ESM
-> loader is not — so an unconfigured SSR build throws
-> `Unknown file extension ".css"`. Add one line —
-> `ssr: { noExternal: [/^@cascivo\//] }` (or the `cascivoSsr()` plugin from
-> `@cascivo/vite-plugin`) — and import `@cascivo/react/styles.css` once in your root
-> entry. Full recipe: [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md). Next.js App
-> Router needs none of this — see [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
+> **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** Follow
+> the **4-line SSR checklist** — `ssr: { noExternal: [/^@cascivo\//] }` (or the
+> `cascivoSsr()` plugin), `@preact/signals-react` 3.x, the CSS import set, and
+> `themePreloadScript()` + `suppressHydrationWarning`. Without the first line an
+> unconfigured SSR build throws `Unknown file extension ".css"`. Full recipe:
+> [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md). Next.js App Router needs none of
+> this — see [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
 
 Trade-off vs Path A: you cannot edit component internals, but you upgrade with a
 version bump instead of a merge. Full details in the
@@ -226,7 +232,10 @@ avoid a hydration mismatch and a flash of the wrong theme. Two correct options:
   single-theme app — it is not a workaround, and it never mismatches.
 - **Persisted / switchable theme:** inline `themePreloadScript()` (from
   `@cascivo/react`) in your document `<head>` **before** the app renders, so the
-  attribute is set from storage before first paint. See
+  attribute is set from storage before first paint, and add `suppressHydrationWarning`
+  to the `<html>` it writes to (the script mutates `data-theme` pre-hydration; without
+  the flag React 19 logs a mismatch). Pass `defaultTheme` to keep a "dark by default"
+  app dark for light-OS visitors — it wins over `prefers-color-scheme`. See
   [THEMING.md](./THEMING.md#switching-themes-at-runtime) for the full recipe.
 
 Never write a `useEffect` that toggles a `.dark` class — that is the pattern
@@ -282,7 +291,8 @@ export function App() {
   utility-first (Tailwind) mapping table.
 - [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md) — App Router / RSC setup.
 - [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md) — TanStack Start / Vite SSR /
-  Remix / workerd: the one-line `ssr.noExternal` fix for the `.css` loader.
+  Remix / workerd: the 4-line SSR checklist, and wiring your router's `<Link>` into
+  the shipped nav/shell with `setLinkComponent` (the `LinkComponentProps` contract).
 - [COMPATIBILITY.md](./COMPATIBILITY.md) — frameworks, browsers, package
   version matrix.
 - [TESTING.md](./TESTING.md) — testing signal-driven components with Vitest.

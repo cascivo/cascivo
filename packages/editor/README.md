@@ -46,6 +46,12 @@ The editor is CSS-token-themed: drop it inside any element carrying a `data-them
 theme stylesheet) and it picks up the same palette, radii, and typography as the rest of cascivo —
 including the syntax colors, which map onto the `--cascivo-editor-syntax-*` palette.
 
+> **Vite SSR (TanStack Start, Remix, vite-ssr, workerd)?** The editor CSS ships as side-effect
+> imports a bare server loader can't resolve — mark `ssr: { noExternal: [/^@cascivo\//] }` (the
+> pattern already covers `@cascivo/editor`) and import `@cascivo/editor/styles.css` once in your
+> root entry. Full recipe:
+> [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md).
+
 ### Read-only highlighting
 
 ```tsx

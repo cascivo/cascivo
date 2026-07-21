@@ -282,11 +282,16 @@ export async function run(args: string[]): Promise<void> {
       } else {
         const cwd = process.cwd()
         const result = await runDoctor(cwd)
-        const { checkProjectDependencies, isAdopterProject } = await import('./commands/doctor.js')
-        const deps = isAdopterProject(cwd) ? checkProjectDependencies(cwd) : []
+        const { checkProjectDependencies, checkSignalsCompat, checkSsrConfig, isAdopterProject } =
+          await import('./commands/doctor.js')
+        const adopter = isAdopterProject(cwd)
+        const deps = adopter ? checkProjectDependencies(cwd) : []
         const missingRequired = deps.filter((d) => d.required)
+        const signalsCompat = adopter ? await checkSignalsCompat(cwd) : null
+        const signalsError = signalsCompat?.severity === 'error'
+        const ssrHint = adopter ? checkSsrConfig(cwd) : null
 
-        if (result.passed && deps.length === 0) {
+        if (result.passed && deps.length === 0 && signalsCompat === null && ssrHint === null) {
           console.log('No violations found.')
         } else {
           for (const v of result.violations) {
@@ -297,12 +302,20 @@ export async function run(args: string[]): Promise<void> {
               `[missing-dependency] ${d.package} is not in package.json — copied cascivo source needs it. Install: ${d.hint}`,
             )
           }
+          if (signalsCompat) {
+            const tag = signalsError ? 'signals-incompatible' : 'signals-outdated'
+            const log = signalsError ? console.error : console.log
+            log(`[${tag}] ${signalsCompat.detail} Upgrade: ${signalsCompat.hint}`)
+          }
+          if (ssrHint) {
+            console.log(`[ssr-config] ${ssrHint}`)
+          }
           for (const d of deps.filter((x) => !x.required)) {
             console.log(
               `[optional] ${d.package} is not installed; add it when a component or chart needs it: ${d.hint}`,
             )
           }
-          if (ci && (result.violations.length > 0 || missingRequired.length > 0)) {
+          if (ci && (result.violations.length > 0 || missingRequired.length > 0 || signalsError)) {
             process.exitCode = 1
           }
         }

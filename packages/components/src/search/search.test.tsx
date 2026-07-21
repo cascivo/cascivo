@@ -33,6 +33,15 @@ describe('Search', () => {
     expect(onChange).toHaveBeenLastCalledWith('abc')
   })
 
+  it('fires onValueChange on every keystroke, taking precedence over onChange', async () => {
+    const onValueChange = vi.fn()
+    const onChange = vi.fn()
+    render(<Search onValueChange={onValueChange} onChange={onChange} />)
+    await userEvent.type(screen.getByRole('searchbox'), 'abc')
+    expect(onValueChange).toHaveBeenLastCalledWith('abc')
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
   it('reflects a controlled value', () => {
     const { rerender } = render(<Search value="foo" onChange={() => {}} />)
     expect(screen.getByRole('searchbox')).toHaveValue('foo')

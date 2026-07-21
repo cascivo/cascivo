@@ -7712,8 +7712,14 @@
             "required": false
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the selected option value (or undefined when cleared).",
+            "type": "(value: string | undefined) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same string | undefined).",
             "type": "(value: string | undefined) => void",
             "required": false
           },
@@ -8952,10 +8958,16 @@
             "description": "Uncontrolled default value"
           },
           {
+            "name": "onValueChange",
+            "type": "(value: string | undefined) => void",
+            "required": false,
+            "description": "Called with the selected ISO date string (or undefined when cleared)"
+          },
+          {
             "name": "onChange",
             "type": "(value: string | undefined) => void",
             "required": false,
-            "description": "Called on date selection or clear"
+            "description": "Deprecated: use onValueChange (same ISO string | undefined)"
           },
           {
             "name": "min",
@@ -10769,8 +10781,14 @@
             "description": "Initial selected values for uncontrolled use"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the selected values whenever the selection changes.",
+            "type": "(selected: string[]) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same string[]).",
             "type": "(selected: string[]) => void",
             "required": false
           },
@@ -16532,10 +16550,16 @@
             "required": false
           },
           {
-            "name": "onChange",
+            "name": "onValueChange",
             "type": "(value: number | null) => void",
             "required": false,
             "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable"
+          },
+          {
+            "name": "onChange",
+            "type": "(value: number | null) => void",
+            "required": false,
+            "description": "Deprecated: use onValueChange (same number | null)"
           },
           {
             "name": "min",
@@ -19090,8 +19114,14 @@
             "default": "''"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the current text on every keystroke.",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same string).",
             "type": "(value: string) => void",
             "required": false
           },
@@ -21689,8 +21719,14 @@
             "default": "false"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new checked state when the swap is toggled.",
+            "type": "(checked: boolean) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same checked boolean).",
             "type": "(checked: boolean) => void",
             "required": false
           },
@@ -22795,8 +22831,14 @@
             "required": false
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new HH:MM time string when the value changes.",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same time string).",
             "type": "(value: string) => void",
             "required": false
           },
@@ -23298,8 +23340,14 @@
             "default": "false"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new checked state when the switch is toggled.",
+            "type": "(checked: boolean) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same checked boolean).",
             "type": "(checked: boolean) => void",
             "required": false
           },

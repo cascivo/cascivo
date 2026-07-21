@@ -67,15 +67,21 @@ hover-preloading) register a link component once at startup — a module singlet
 no provider or per-item wiring:
 
 ```tsx
-// TanStack Router — its Link takes `to`, so map href → to:
-import { setLinkComponent } from '@cascivo/react'
+// TanStack Router — its Link takes `to`, so map href → to and spread the rest:
+import { setLinkComponent, type LinkComponentProps } from '@cascivo/react'
 import { Link } from '@tanstack/react-router'
-setLinkComponent(({ href, ...rest }) => <Link to={href} {...rest} />)
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)
 
 // Next.js — its Link takes `href` directly:
 import Link from 'next/link'
 setLinkComponent(Link)
 ```
+
+`LinkComponentProps` (re-exported from `@cascivo/react`, also in `@cascivo/core`) is the
+computed prop bag — `href`, `className`, `onClick`, `aria-current`, active `data-state`,
+`tabIndex`, and any `data-*`. Spread it whole so active styling and a11y carry over; the
+`onClick` only `preventDefault`s a disabled item, so a router keeps middle-click /
+open-in-new-tab.
 
 Import `setLinkComponent`/`getLinkComponent` from `@cascivo/react` on the prebuilt path
 (Path B) — it is re-exported there, so you never add `@cascivo/core` as a direct

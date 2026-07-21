@@ -25,6 +25,65 @@ describe('SideNav router link integration', () => {
     expect(link.getAttribute('aria-current')).toBe('page')
     expect(calls.some((c) => c['href'] === '/deploys')).toBe(true)
   })
+
+  it('render hatch: spreading linkProps leaves an enabled click un-prevented', async () => {
+    const user = userEvent.setup()
+    let enabledDefaultPrevented: boolean | null = null
+    render(
+      <SideNav
+        items={[
+          {
+            label: 'Deployments',
+            href: '/deploys',
+            render: ({ children, linkProps }) => (
+              // The onClick is optional and safe to spread onto a router <Link>.
+              <a
+                {...linkProps}
+                onClick={(e) => {
+                  linkProps.onClick?.(e)
+                  enabledDefaultPrevented = e.defaultPrevented
+                }}
+              >
+                {children}
+              </a>
+            ),
+          },
+        ]}
+      />,
+    )
+    await user.click(screen.getByText('Deployments').closest('a')!)
+    // cascivo's handler is inert for an enabled item — the router keeps the click.
+    expect(enabledDefaultPrevented).toBe(false)
+  })
+
+  it('render hatch: a disabled item still prevents navigation', async () => {
+    const user = userEvent.setup()
+    let disabledDefaultPrevented: boolean | null = null
+    render(
+      <SideNav
+        items={[
+          {
+            label: 'Locked',
+            href: '/locked',
+            disabled: true,
+            render: ({ children, linkProps }) => (
+              <a
+                {...linkProps}
+                onClick={(e) => {
+                  linkProps.onClick?.(e)
+                  disabledDefaultPrevented = e.defaultPrevented
+                }}
+              >
+                {children}
+              </a>
+            ),
+          },
+        ]}
+      />,
+    )
+    await user.click(screen.getByText('Locked').closest('a')!)
+    expect(disabledDefaultPrevented).toBe(true)
+  })
 })
 
 describe('SideNav groups prop', () => {

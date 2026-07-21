@@ -10,6 +10,9 @@ let idCounter = 0
 export interface SearchProps {
   value?: string
   defaultValue?: string
+  /** Called with the current text on every keystroke. */
+  onValueChange?: (value: string) => void
+  /** @deprecated Use `onValueChange` — it receives the same string. */
   onChange?: (value: string) => void
   onSearch?: (value: string) => void
   debounceMs?: number
@@ -43,6 +46,7 @@ function MagnifierIcon() {
 export function Search({
   value,
   defaultValue = '',
+  onValueChange,
   onChange,
   onSearch,
   debounceMs = 300,
@@ -88,7 +92,7 @@ export function Search({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const next = event.target.value
     if (!isControlled) current.value = next
-    onChange?.(next)
+    ;(onValueChange ?? onChange)?.(next)
     clearTimer()
     timerRef.current = setTimeout(() => {
       timerRef.current = null
@@ -106,7 +110,7 @@ export function Search({
   const handleClear = () => {
     clearTimer()
     if (!isControlled) current.value = ''
-    onChange?.('')
+    ;(onValueChange ?? onChange)?.('')
     onSearch?.('')
     inputRef.current?.focus()
   }

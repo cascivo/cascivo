@@ -38,7 +38,8 @@ import { NumberInput } from '@cascivo/react'
 | ---------------- | --------------------------------- | -------- | ----------- | ----------------------------------------------------------------------- |
 | `value`          | `number \| null`                  | no       | —           | The controlled value.                                                   |
 | `defaultValue`   | `number`                          | no       | —           | The initial value when uncontrolled.                                    |
-| `onChange`       | `(value: number \| null) => void` | no       | —           | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
+| `onValueChange`  | `(value: number \| null) => void` | no       | —           | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
+| `onChange`       | `(value: number \| null) => void` | no       | —           | Deprecated: use onValueChange (same number \| null)                     |
 | `min`            | `number`                          | no       | —           | Minimum allowed value.                                                  |
 | `max`            | `number`                          | no       | —           | Maximum allowed value.                                                  |
 | `step`           | `number`                          | no       | `1`         | Increment between allowed values.                                       |
@@ -100,4 +101,4 @@ form, number, input, spinbutton, stepper
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

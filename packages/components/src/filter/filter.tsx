@@ -13,6 +13,9 @@ export interface FilterProps {
   options: FilterOption[]
   value?: string[]
   defaultValue?: string[]
+  /** Called with the selected values whenever the selection changes. */
+  onValueChange?: (selected: string[]) => void
+  /** @deprecated Use `onValueChange` — it receives the same `string[]`. */
   onChange?: (selected: string[]) => void
   multi?: boolean
   variant?: FilterVariant
@@ -24,6 +27,7 @@ export function Filter({
   options,
   value,
   defaultValue = [],
+  onValueChange,
   onChange,
   multi = false,
   variant = 'pill',
@@ -34,7 +38,7 @@ export function Filter({
   const [selected, setSelected] = useControllableSignal<string[]>({
     value,
     defaultValue,
-    onChange,
+    onChange: onValueChange ?? onChange,
   })
 
   function toggle(val: string) {

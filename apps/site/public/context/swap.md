@@ -34,15 +34,16 @@ Renders a <button role="switch"> with aria-checked reflecting state. Both on/off
 
 ## Props
 
-| Name         | Type                         | Required | Default | Description                                              |
-| ------------ | ---------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `on`         | `React.ReactNode`            | Yes      | —       | Content shown in the active (on) state.                  |
-| `off`        | `React.ReactNode`            | Yes      | —       | Content shown in the inactive (off) state.               |
-| `checked`    | `boolean`                    | No       | false   | Whether the control is checked (controlled).             |
-| `onChange`   | `(checked: boolean) => void` | No       | —       | Called when the value changes.                           |
-| `mode`       | `'rotate' \| 'flip'`         | No       | rotate  | Transition between states ('rotate' \| 'flip').          |
-| `aria-label` | `string`                     | No       | —       | Accessible label used when no visible label is present.  |
-| `className`  | `string`                     | No       | —       | Additional CSS class names merged onto the root element. |
+| Name            | Type                         | Required | Default | Description                                                 |
+| --------------- | ---------------------------- | -------- | ------- | ----------------------------------------------------------- |
+| `on`            | `React.ReactNode`            | Yes      | —       | Content shown in the active (on) state.                     |
+| `off`           | `React.ReactNode`            | Yes      | —       | Content shown in the inactive (off) state.                  |
+| `checked`       | `boolean`                    | No       | false   | Whether the control is checked (controlled).                |
+| `onValueChange` | `(checked: boolean) => void` | No       | —       | Called with the new checked state when the swap is toggled. |
+| `onChange`      | `(checked: boolean) => void` | No       | —       | Deprecated: use onValueChange (same checked boolean).       |
+| `mode`          | `'rotate' \| 'flip'`         | No       | rotate  | Transition between states ('rotate' \| 'flip').             |
+| `aria-label`    | `string`                     | No       | —       | Accessible label used when no visible label is present.     |
+| `className`     | `string`                     | No       | —       | Additional CSS class names merged onto the root element.    |
 
 ## Tokens
 

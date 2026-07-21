@@ -33,20 +33,21 @@ import { Search } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                      | Required | Default        | Description                                                        |
-| -------------- | ------------------------- | -------- | -------------- | ------------------------------------------------------------------ |
-| `value`        | `string`                  | no       | —              | The controlled value.                                              |
-| `defaultValue` | `string`                  | no       | `''`           | The initial value when uncontrolled.                               |
-| `onChange`     | `(value: string) => void` | no       | —              | Called when the value changes.                                     |
-| `onSearch`     | `(value: string) => void` | no       | —              | Called with the query, debounced, as the user types.               |
-| `debounceMs`   | `number`                  | no       | `300`          | Debounce delay (ms) before onSearch fires.                         |
-| `placeholder`  | `string`                  | no       | `Search`       | Placeholder text shown when the field is empty.                    |
-| `size`         | `'sm' \| 'md' \| 'lg'`    | no       | `md`           | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `label`        | `string`                  | no       | `Search`       | Text label for the control.                                        |
-| `disabled`     | `boolean`                 | no       | `false`        | When true, disables the control and removes it from the tab order. |
-| `clearLabel`   | `string`                  | no       | `Clear search` | Accessible label for the clear button.                             |
-| `id`           | `string`                  | no       | —              | Id applied to the root element (auto-generated when omitted).      |
-| `className`    | `string`                  | no       | —              | Additional CSS class names merged onto the root element.           |
+| Prop            | Type                      | Required | Default        | Description                                                        |
+| --------------- | ------------------------- | -------- | -------------- | ------------------------------------------------------------------ |
+| `value`         | `string`                  | no       | —              | The controlled value.                                              |
+| `defaultValue`  | `string`                  | no       | `''`           | The initial value when uncontrolled.                               |
+| `onValueChange` | `(value: string) => void` | no       | —              | Called with the current text on every keystroke.                   |
+| `onChange`      | `(value: string) => void` | no       | —              | Deprecated: use onValueChange (same string).                       |
+| `onSearch`      | `(value: string) => void` | no       | —              | Called with the query, debounced, as the user types.               |
+| `debounceMs`    | `number`                  | no       | `300`          | Debounce delay (ms) before onSearch fires.                         |
+| `placeholder`   | `string`                  | no       | `Search`       | Placeholder text shown when the field is empty.                    |
+| `size`          | `'sm' \| 'md' \| 'lg'`    | no       | `md`           | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `label`         | `string`                  | no       | `Search`       | Text label for the control.                                        |
+| `disabled`      | `boolean`                 | no       | `false`        | When true, disables the control and removes it from the tab order. |
+| `clearLabel`    | `string`                  | no       | `Clear search` | Accessible label for the clear button.                             |
+| `id`            | `string`                  | no       | —              | Id applied to the root element (auto-generated when omitted).      |
+| `className`     | `string`                  | no       | —              | Additional CSS class names merged onto the root element.           |
 
 ## Examples
 
@@ -98,4 +99,4 @@ search, input, filter, form
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

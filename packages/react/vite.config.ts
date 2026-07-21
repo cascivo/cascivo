@@ -96,6 +96,17 @@ function cssImportEdges() {
         fileName: 'styles.css',
         source: `${LAYER_ORDER}\n${cssSources.join('\n')}`,
       })
+      // Flat package entry. preserveModulesRoot ('../components/src') pushes the
+      // real entry to dist/react/src/index.js, outside the dist root — a subtree
+      // that doesn't parallel the flat dist/index.d.ts and trips publint/attw. A
+      // one-line re-export at dist/index.js lets the exports map point import and
+      // types at parallel, top-level files. No default export exists, so `export *`
+      // is complete.
+      this.emitFile({
+        type: 'asset',
+        fileName: 'index.js',
+        source: "'use client';\nexport * from './react/src/index.js';\n",
+      })
       // Collapse the duplicate 'use client' (source directive + banner) in
       // component chunks that did not receive a CSS import above.
       for (const fileName of Object.keys(bundle)) {

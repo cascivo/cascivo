@@ -160,8 +160,11 @@ git diff --exit-code
 # Breakpoint literal check (off-scale @media/@container widths)
 pnpm breakpoint:check
 
-# Manifest + docs guards (props-parity, pkg-exports, docs-imports, doc-links, …)
+# Manifest + docs guards (props-parity, pkg-exports, peer-floors, css-imports, docs-imports, doc-links, …)
 pnpm meta:check
+
+# Packaging gate — publint + attw over packed artifacts (release/CI only; needs a prior build)
+pnpm pack:check           # all published packages; `node scripts/checks/pack-lint.mjs <pkg>` to scope
 
 # Deployed-docs freshness probe (run against production; also runs post-deploy + daily)
 bash scripts/checks/deployed-freshness.sh
@@ -169,7 +172,7 @@ bash scripts/checks/deployed-freshness.sh
 
 All must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
 
-`pnpm meta:check` bundles the manifest/docs guards: `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
+`pnpm meta:check` bundles the manifest/docs guards: `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `peer-floors` (every published package flooring the `@preact/signals-react` peer requires `>=3.0.0`, so React 19 support can't silently regress), `css-imports` (every cross-package `@import '@cascivo/…'` in shipped CSS is a real `dependencies` entry, not a peer), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
 
 ### Workspace package aliases — keep in sync
 
@@ -528,6 +531,23 @@ defeats the whole system. Non-negotiable:
   inside one layer block**, never a deeper sublayer like `cascivo.card.status`.
 - Enforced by `pnpm layers:check` (canonical order + legal block names, depth ≤ 3) and
   `pnpm unlayered:check` (no unlayered shipped rules).
+
+#### Event-handler naming — name the callback by what it receives
+
+Predictability across the catalog matters more than any single component's taste. Name a
+change/activation callback by its **argument**, not the component:
+
+- Handler receives the component's **value** (string/number/array/boolean/Date — not a DOM
+  event): **`onValueChange(value)`**. This is the default for composite/custom-value
+  components (Tabs, Select, Combobox, Slider, Toggle, …).
+- Handler receives a raw **DOM `ChangeEvent`** from a real underlying element:
+  **`onChange(event)`** (native-wrapper components: Checkbox, NativeSelect, PasswordInput).
+- **Activation/selection** of a discrete item: **`onSelect(value)`** (menus, chart points).
+
+Never give a new component a value-carrying `onChange` — that name is reserved for the DOM
+event. The `docs/AI-RULES.md` "Event-handler naming" table is the published contract; keep
+it in sync. (A handful of pre-existing components still accept a deprecated value-carrying
+`onChange` alias alongside `onValueChange`; do not add more.)
 
 #### Checklist before committing a component
 

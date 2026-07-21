@@ -7,6 +7,9 @@ export interface SwapProps {
   on: React.ReactNode
   off: React.ReactNode
   checked?: boolean
+  /** Called with the new checked state when the swap is toggled. */
+  onValueChange?: (checked: boolean) => void
+  /** @deprecated Use `onValueChange` — it receives the same `checked` boolean. */
   onChange?: (checked: boolean) => void
   mode?: SwapMode
   'aria-label'?: string
@@ -17,6 +20,7 @@ export function Swap({
   on,
   off,
   checked = false,
+  onValueChange,
   onChange,
   mode = 'rotate',
   className,
@@ -28,7 +32,7 @@ export function Swap({
 
   function handleClick() {
     const next = !isChecked.value
-    onChange?.(next)
+    ;(onValueChange ?? onChange)?.(next)
   }
 
   return (

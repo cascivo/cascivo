@@ -76,15 +76,22 @@ the set verified by the integration migrations is:
 
 | Package           | Version | Peer requirements                                  |
 | ----------------- | ------- | -------------------------------------------------- |
-| `@cascivo/core`   | 0.1.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=2` |
+| `@cascivo/core`   | 0.1.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=3` |
 | `@cascivo/tokens` | 0.2.x   | none (CSS only)                                    |
-| `@cascivo/themes` | 0.2.x   | `@cascivo/tokens` (peer) — themes `@import` it     |
-| `@cascivo/react`  | 0.2.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=2` |
+| `@cascivo/themes` | 0.2.x   | `@cascivo/tokens` (direct dep) — themes `@import` it |
+| `@cascivo/react`  | 0.2.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=3` |
 | `@cascivo/icons`  | 0.1.x   | `react >=18`                                       |
 | `@cascivo/charts` | 0.1.x   | `react >=18`, `@cascivo/core`                      |
 | `@cascivo/i18n`   | 0.1.x   | `@preact/signals-react`                            |
 | `@cascivo/storage` | 0.1.x  | `@preact/signals-react`                            |
 | `@cascivo/mcp`    | 0.1.x   | (server; run via `npx`)                            |
+
+> **React 19 requires `@preact/signals-react` 3.x.** React 19 removed the internal
+> that signals-react 2.x imports, so a 2.x runtime fails to load under React 19
+> (`SyntaxError: … does not provide an export named '__SECRET_INTERNALS…'`). The
+> peer range (`>=3`) enforces this; signals-react 3.x still supports React 16.14+/17/18,
+> so the floor costs React-18 users nothing. If a lockfile from an earlier install
+> pins 2.x, run `cascivo doctor` — it flags the mismatch with the upgrade command.
 
 ### Minimal install
 
@@ -92,9 +99,9 @@ the set verified by the integration migrations is:
 pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 ```
 
-`@cascivo/tokens` arrives transitively through `@cascivo/themes`. If you install
-`@cascivo/themes` standalone (without the components), also add `@cascivo/tokens`
-explicitly, since the theme CSS `@import`s it.
+`@cascivo/tokens` arrives transitively through `@cascivo/themes` — it is a direct
+dependency of themes (the theme CSS `@import`s it), so it installs automatically on
+every package manager, with or without `auto-install-peers`.
 
 ### Required CSS import order
 

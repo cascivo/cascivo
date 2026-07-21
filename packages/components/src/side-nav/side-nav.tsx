@@ -23,7 +23,13 @@ export interface SideNavLinkProps {
   'data-state'?: 'active' | undefined
   'data-tone'?: Exclude<SideNavTone, 'default'> | undefined
   tabIndex?: number | undefined
-  onClick: (e: MouseEvent<HTMLAnchorElement>) => void
+  /**
+   * Always provided by cascivo when it builds the bag; only calls
+   * `preventDefault()` for a disabled item, otherwise inert. Optional on the type
+   * so it composes cleanly — spread it onto a router `<Link>`, which layers its own
+   * click handling on top.
+   */
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void
 }
 
 /** A selectable/navigable sub-item (link when `href` is set, action when `onSelect` is set). */

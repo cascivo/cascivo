@@ -1396,6 +1396,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
       name: 'onChange',
       required: false,
     },
@@ -1764,6 +1768,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'defaultValue',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'onValueChange',
+      required: false,
     },
     {
       name: 'onChange',
@@ -2192,6 +2200,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'defaultValue',
+      required: false,
+    },
+    {
+      name: 'onValueChange',
       required: false,
     },
     {
@@ -3873,6 +3885,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
       name: 'onChange',
       required: false,
     },
@@ -4932,6 +4948,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
       name: 'onChange',
       required: false,
     },
@@ -5609,6 +5629,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
       name: 'onChange',
       required: false,
     },
@@ -5844,6 +5868,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'onValueChange',
+      required: false,
+    },
+    {
       name: 'onChange',
       required: false,
     },
@@ -5960,6 +5988,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'defaultChecked',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'onValueChange',
+      required: false,
     },
     {
       name: 'onChange',

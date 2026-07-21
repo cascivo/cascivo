@@ -1,6 +1,6 @@
 {
   "version": "0.8.0",
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-21",
   "components": [
     {
       "name": "accordion",
@@ -3426,7 +3426,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
       ],
       "fileHashes": {
-        "combobox.tsx": "sha256-14f72125cf5c35d952d0600a2bca2a2fe37c80bee41456693c65ef99d9db32b0",
+        "combobox.tsx": "sha256-32087b9f2cf2ab0e62da88b124d0b1d4580e3ff7a7eabc951f69a2521e640c80",
         "combobox.module.css": "sha256-42d3d49f6069242254d52d7334f7c3ec25f901c341112aa9c9c6736193870930"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3468,8 +3468,14 @@
             "required": false
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the selected option value (or undefined when cleared).",
+            "type": "(value: string | undefined) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same string | undefined).",
             "type": "(value: string | undefined) => void",
             "required": false
           },
@@ -4771,7 +4777,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "fileHashes": {
-        "date-picker.tsx": "sha256-3d4cdb7fb07e2915c23af7d9f357ca5eb8e0e548411af6db356a1101b513aa9f",
+        "date-picker.tsx": "sha256-0379149a0e9eb10cea35f07c72cc8d5164a841948274475c86eb8adc9892658d",
         "date-picker.module.css": "sha256-01d78074b9b1f4f729b370afac818cf930a65207ea2a11f7d40ec260062d74a8"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -4807,10 +4813,16 @@
             "description": "Uncontrolled default value"
           },
           {
+            "name": "onValueChange",
+            "type": "(value: string | undefined) => void",
+            "required": false,
+            "description": "Called with the selected ISO date string (or undefined when cleared)"
+          },
+          {
             "name": "onChange",
             "type": "(value: string | undefined) => void",
             "required": false,
-            "description": "Called on date selection or clear"
+            "description": "Deprecated: use onValueChange (same ISO string | undefined)"
           },
           {
             "name": "min",
@@ -6392,7 +6404,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
       ],
       "fileHashes": {
-        "filter.tsx": "sha256-36a721b1e0d3ba60ff6b966c01ed9a4ca08d181ece319ea0e9a7358441b69ed1",
+        "filter.tsx": "sha256-de4a109bdef654381c447729f66bf637731c7be8e04c31b152b7d7b0472d5d29",
         "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
       },
       "dependencies": ["@cascivo/core"],
@@ -6434,8 +6446,14 @@
             "description": "Initial selected values for uncontrolled use"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the selected values whenever the selection changes.",
+            "type": "(selected: string[]) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same string[]).",
             "type": "(selected: string[]) => void",
             "required": false
           },
@@ -10103,7 +10121,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.module.css"
       ],
       "fileHashes": {
-        "number-input.tsx": "sha256-5ae48cdb8201c7268c4d77f06fe220ca6f4e4fcb57d3ce4a4e2b94c20f7b598c",
+        "number-input.tsx": "sha256-53e54bd542665bd665e3f0263c5fe704f113e97ef6f36490fb32f6eb2b377088",
         "number-input.module.css": "sha256-9cde02d5c3628757a62aa5bc0fdade19e5fd2705b0a3cedfccc7767f5b57e53c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10133,10 +10151,16 @@
             "required": false
           },
           {
-            "name": "onChange",
+            "name": "onValueChange",
             "type": "(value: number | null) => void",
             "required": false,
             "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable"
+          },
+          {
+            "name": "onChange",
+            "type": "(value: number | null) => void",
+            "required": false,
+            "description": "Deprecated: use onValueChange (same number | null)"
           },
           {
             "name": "min",
@@ -12922,7 +12946,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-1199da2448e406475243166926c0257628262809e7c377668d83f27ed34752fa",
+        "search.tsx": "sha256-a3985b314d8c8db8ca77b400d173dd8e03e4acece4ff10bcb7d4b370711560c1",
         "search.module.css": "sha256-129444d231e86bcea559666363ce3d75ce635697142687e5fca843451505807b"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -12953,8 +12977,14 @@
             "default": "''"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the current text on every keystroke.",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same string).",
             "type": "(value: string) => void",
             "required": false
           },
@@ -13773,7 +13803,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-f557348e1fad7873a679692f293f742d9ab9f3e439a6b83881dd0a808e73708e",
+        "side-nav.tsx": "sha256-c0ab584be79262788030f0a697bdbda8698abf972a487a0a4b698a4d090d634c",
         "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15134,7 +15164,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
       ],
       "fileHashes": {
-        "swap.tsx": "sha256-1490c77ebc888dcad131f9543461d3d39cf81925012d7d1fe4d29c95175c0f29",
+        "swap.tsx": "sha256-b34aac256ad65db180827b37fa10f00a8480c7ccf881d70f95ee9b62e0fe642a",
         "swap.module.css": "sha256-69738c9cf9a9f3da5d4da1d17ab6229af3f45772739251bfa39dcc447e3984b1"
       },
       "dependencies": ["@cascivo/core"],
@@ -15170,8 +15200,14 @@
             "default": "false"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new checked state when the swap is toggled.",
+            "type": "(checked: boolean) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same checked boolean).",
             "type": "(checked: boolean) => void",
             "required": false
           },
@@ -16350,7 +16386,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
       ],
       "fileHashes": {
-        "time-picker.tsx": "sha256-cef9bd6d64e2fb3472b84aa4771f9e2ce413f277c29ebd242442367bd0fe0c43",
+        "time-picker.tsx": "sha256-0b4b65798dcfcbf0950d40093327c1f3b6870912154ab0fb098e916a1b4731fd",
         "time-picker.module.css": "sha256-4ab7b2fa853a8dfd7456ac1c395dedd46567566fc56a0c16a08c77eb10a39842"
       },
       "dependencies": ["@cascivo/core"],
@@ -16379,8 +16415,14 @@
             "required": false
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new HH:MM time string when the value changes.",
+            "type": "(value: string) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same time string).",
             "type": "(value: string) => void",
             "required": false
           },
@@ -16886,7 +16928,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.module.css"
       ],
       "fileHashes": {
-        "toggle.tsx": "sha256-d6f7caf49ced2be9a01fe075ee0a1634e7505efad92ba75f5d72a190a0546702",
+        "toggle.tsx": "sha256-7c02b2fc5097c6697728aee77c0919ea582f82ecae242e6bdc093ceac5a9ee3b",
         "toggle.module.css": "sha256-9c452a066e05bdcf11ffe10f5245ec08d99a4eb36d00bada9fa53de0460572bf"
       },
       "dependencies": ["@cascivo/core"],
@@ -16916,8 +16958,14 @@
             "default": "false"
           },
           {
+            "name": "onValueChange",
+            "description": "Called with the new checked state when the switch is toggled.",
+            "type": "(checked: boolean) => void",
+            "required": false
+          },
+          {
             "name": "onChange",
-            "description": "Called when the value changes.",
+            "description": "Deprecated: use onValueChange (same checked boolean).",
             "type": "(checked: boolean) => void",
             "required": false
           },
@@ -16964,7 +17012,7 @@
           },
           {
             "title": "Controlled",
-            "code": "<Toggle checked={enabled} onChange={setEnabled} label=\"Dark mode\" />"
+            "code": "<Toggle checked={enabled} onValueChange={setEnabled} label=\"Dark mode\" />"
           }
         ],
         "dependencies": ["@cascivo/core"],
