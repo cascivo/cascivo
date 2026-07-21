@@ -1,6 +1,6 @@
 'use client'
 import { useRef } from 'react'
-import { signal, useSignalEffect, useSignals } from './signals.ts'
+import { computed, signal, useSignalEffect, useSignals } from './signals.ts'
 import type { ReadonlySignal } from './signals.ts'
 
 export interface StreamBufferOptions {
@@ -55,7 +55,10 @@ export function createStreamBuffer<T>(options: StreamBufferOptions): StreamBuffe
   let head = 0 // index of the oldest item
   let length = 0 // number of live items
 
-  const view = signal<readonly T[]>([])
+  // Publishing bumps a version counter; the window materializes lazily when the
+  // computed is read. This keeps append O(1) even under `'sync'` flush — a burst
+  // of N appends is N cheap counter writes, not N O(capacity) array rebuilds.
+  const version = signal(0)
   let frame: number | null = null
   let scheduled = false
 
@@ -67,10 +70,15 @@ export function createStreamBuffer<T>(options: StreamBufferOptions): StreamBuffe
     return out
   }
 
+  const view = computed<readonly T[]>(() => {
+    void version.value // dependency: recompute only after a publish
+    return materialize()
+  })
+
   function publish(): void {
     scheduled = false
     frame = null
-    view.value = materialize()
+    version.value++
   }
 
   // A `scheduled` flag (not just `frame === null`) keeps coalescing correct even

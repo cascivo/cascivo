@@ -3639,7 +3639,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "fileHashes": {
-        "command-menu.tsx": "sha256-ce86963fe2fe4f053b1c54b913882cff59e98dfe2b37dc188f4fe95042de4ac0",
+        "command-menu.tsx": "sha256-cd56231c67694eb8b79694d37f925b7f782d3c96f28a6ec5a83320123f40ab2d",
         "command-menu.module.css": "sha256-00c3aca20cd16fa9aa0b42959541f46120480085841c6ecaf895940886d33efb"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],

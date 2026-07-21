@@ -515,7 +515,10 @@ export function CommandMenu({
           </div>
         )}
         <div className={styles['list']}>
-          <div role="listbox" id={listboxId} aria-label={label}>
+          {/* tabIndex keeps the scrollable listbox keyboard-reachable (axe
+              scrollable-region-focusable). Arrow keys on the combobox drive
+              selection via aria-activedescendant; this only adds direct scroll. */}
+          <div role="listbox" id={listboxId} aria-label={label} tabIndex={0}>
             {filteredGroups.map((group, groupIndex) => (
               <div
                 key={group.heading ?? `group-${groupIndex}`}
@@ -577,32 +580,36 @@ export function CommandMenu({
                           {item.status.label}
                         </span>
                       )}
-                      {item.actions && item.actions.length > 0 && (
-                        <span className={styles['actions']}>
-                          {item.actions.map((action) => (
-                            <button
-                              key={action.id}
-                              type="button"
-                              className={styles['action']}
-                              onClick={(event) => {
-                                event.stopPropagation()
-                                runAction(action)
-                              }}
-                            >
-                              {action.label}
-                              {action.shortcut && (
-                                <span className={styles['actionKeys']} aria-hidden="true">
-                                  {action.shortcut.map((key, keyIndex) => (
-                                    <Kbd key={keyIndex} size="sm">
-                                      {key}
-                                    </Kbd>
-                                  ))}
-                                </span>
-                              )}
-                            </button>
-                          ))}
-                        </span>
-                      )}
+                      {item.actions &&
+                        item.actions.length > 0 && (
+                          // Presentational: a `role="option"` must not nest interactive
+                          // controls (axe nested-interactive). These mirror the keyboard
+                          // shortcuts — Enter runs the primary action, Cmd/Ctrl+Enter the
+                          // secondary — and stay clickable for mouse users.
+                          <span className={styles['actions']}>
+                            {item.actions.map((action) => (
+                              <span
+                                key={action.id}
+                                className={styles['action']}
+                                onClick={(event) => {
+                                  event.stopPropagation()
+                                  runAction(action)
+                                }}
+                              >
+                                {action.label}
+                                {action.shortcut && (
+                                  <span className={styles['actionKeys']} aria-hidden="true">
+                                    {action.shortcut.map((key, keyIndex) => (
+                                      <Kbd key={keyIndex} size="sm">
+                                        {key}
+                                      </Kbd>
+                                    ))}
+                                  </span>
+                                )}
+                              </span>
+                            ))}
+                          </span>
+                        )}
                       {item.shortcut && (
                         <span className={styles['shortcut']} aria-hidden="true">
                           {item.shortcut.map((key, keyIndex) => (
