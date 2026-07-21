@@ -1,9 +1,24 @@
-import { describe, expect, it, beforeEach } from 'vitest'
+import { describe, expect, it, beforeEach, afterEach } from 'vitest'
 import { act, render } from '@testing-library/react'
 import { ThemeProvider, setTheme, themePreloadScript, useTheme } from './theme'
 
 function currentTheme(): string | null {
   return document.documentElement.getAttribute('data-theme')
+}
+
+let keySeq = 0
+/** A fresh storageKey per test so the module theme singleton rebuilds (the same
+ * mechanism ThemeProvider uses when the key changes). */
+function freshKey(): string {
+  return `theme-test-${keySeq++}`
+}
+
+type MediaMock = (query: string) => Pick<MediaQueryList, 'matches' | 'media'>
+function mockMatchMedia(scheme: 'dark' | 'light' | 'none'): void {
+  ;(window as unknown as { matchMedia?: MediaMock }).matchMedia = (query: string) => ({
+    matches: scheme !== 'none' && query.includes(`prefers-color-scheme: ${scheme}`),
+    media: query,
+  })
 }
 
 describe('ThemeProvider', () => {
@@ -60,6 +75,43 @@ describe('ThemeProvider', () => {
   })
 })
 
+describe('ThemeProvider initial-theme precedence', () => {
+  const original = (window as unknown as { matchMedia?: unknown }).matchMedia
+  beforeEach(() => {
+    localStorage.clear()
+    document.documentElement.removeAttribute('data-theme')
+  })
+  afterEach(() => {
+    ;(window as unknown as { matchMedia?: unknown }).matchMedia = original
+  })
+
+  it('persisted value beats an explicit defaultTheme', () => {
+    const key = freshKey()
+    localStorage.setItem(key, JSON.stringify({ v: 1, value: 'warm' }))
+    mockMatchMedia('dark')
+    render(<ThemeProvider storageKey={key} defaultTheme="dark" />)
+    expect(currentTheme()).toBe('warm')
+  })
+
+  it('an explicit defaultTheme beats OS preference (custom theme kept)', () => {
+    mockMatchMedia('dark')
+    render(<ThemeProvider storageKey={freshKey()} defaultTheme="midnight" />)
+    expect(currentTheme()).toBe('midnight')
+  })
+
+  it('follows OS preference when no defaultTheme is given', () => {
+    mockMatchMedia('dark')
+    render(<ThemeProvider storageKey={freshKey()} />)
+    expect(currentTheme()).toBe('dark')
+  })
+
+  it('falls back to light with no defaultTheme and no OS signal', () => {
+    mockMatchMedia('none')
+    render(<ThemeProvider storageKey={freshKey()} />)
+    expect(currentTheme()).toBe('light')
+  })
+})
+
 describe('themePreloadScript', () => {
   it('references the configured key and attribute', () => {
     const script = themePreloadScript({
@@ -78,5 +130,46 @@ describe('themePreloadScript', () => {
     const script = themePreloadScript()
     expect(script).toContain('"cascivo-theme"')
     expect(script).toContain('"data-theme"')
+  })
+
+  it('omits the OS check when an explicit defaultTheme is given', () => {
+    expect(themePreloadScript({ defaultTheme: 'dark' })).not.toContain('prefers-color-scheme')
+  })
+
+  it('includes the OS check when no defaultTheme is given', () => {
+    expect(themePreloadScript()).toContain('prefers-color-scheme')
+  })
+
+  describe('evaluated in the document', () => {
+    const original = (window as unknown as { matchMedia?: unknown }).matchMedia
+    beforeEach(() => {
+      localStorage.clear()
+      document.documentElement.removeAttribute('data-theme')
+    })
+    afterEach(() => {
+      ;(window as unknown as { matchMedia?: unknown }).matchMedia = original
+    })
+    const run = (script: string): void => {
+      new Function(script)()
+    }
+
+    it('explicit defaultTheme wins over OS on a fresh visit', () => {
+      mockMatchMedia('light')
+      run(themePreloadScript({ defaultTheme: 'dark' }))
+      expect(currentTheme()).toBe('dark')
+    })
+
+    it('follows OS when no defaultTheme and nothing persisted', () => {
+      mockMatchMedia('dark')
+      run(themePreloadScript())
+      expect(currentTheme()).toBe('dark')
+    })
+
+    it('persisted envelope wins over everything', () => {
+      localStorage.setItem('cascivo-theme', JSON.stringify({ v: 1, value: 'warm' }))
+      mockMatchMedia('dark')
+      run(themePreloadScript({ defaultTheme: 'dark' }))
+      expect(currentTheme()).toBe('warm')
+    })
   })
 })

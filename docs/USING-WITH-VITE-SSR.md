@@ -187,7 +187,25 @@ they are covered by the `/^@cascivo\//` pattern; import each package's
 
 Same as every SSR target: inline `themePreloadScript()` (from `@cascivo/react`) in
 your server-rendered document `<head>` so the persisted theme paints on the first
-byte, then toggle from a client component with `useTheme()`. Full API in
+byte, then toggle from a client component with `useTheme()`. Two SSR specifics:
+
+- **Add `suppressHydrationWarning`** to the element the script writes to (usually
+  `<html>`). The script sets `data-theme` before React hydrates, so without the flag
+  React 19 logs a hydration mismatch.
+- **Pass `defaultTheme`** for a "dark by default" app — it wins over the visitor's OS
+  `prefers-color-scheme`, so a light-OS visitor still gets your dark default. Precedence:
+  persisted value > `defaultTheme` > OS > `'light'`.
+
+```tsx
+<html suppressHydrationWarning>
+  <head>
+    <script dangerouslySetInnerHTML={{ __html: themePreloadScript({ defaultTheme: 'dark' }) }} />
+  </head>
+</html>
+```
+
+For a **fixed** theme, skip the script and hard-code `data-theme="dark"` on the
+server-rendered `<html>` — it never mismatches. Full API in
 [THEMING.md](./THEMING.md#switching-themes-at-runtime).
 
 ## Troubleshooting

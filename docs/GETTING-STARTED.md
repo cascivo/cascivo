@@ -233,7 +233,10 @@ avoid a hydration mismatch and a flash of the wrong theme. Two correct options:
   single-theme app — it is not a workaround, and it never mismatches.
 - **Persisted / switchable theme:** inline `themePreloadScript()` (from
   `@cascivo/react`) in your document `<head>` **before** the app renders, so the
-  attribute is set from storage before first paint. See
+  attribute is set from storage before first paint, and add `suppressHydrationWarning`
+  to the `<html>` it writes to (the script mutates `data-theme` pre-hydration; without
+  the flag React 19 logs a mismatch). Pass `defaultTheme` to keep a "dark by default"
+  app dark for light-OS visitors — it wins over `prefers-color-scheme`. See
   [THEMING.md](./THEMING.md#switching-themes-at-runtime) for the full recipe.
 
 Never write a `useEffect` that toggles a `.dark` class — that is the pattern

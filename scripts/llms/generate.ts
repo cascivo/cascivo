@@ -590,7 +590,10 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '   `tailwind` = a bridge stylesheet). For a user-switchable theme use `<ThemeProvider>`',
   )
   lines.push('   + `themePreloadScript()` (no-FOUC SSR); for a fixed theme hard-code `data-theme`')
-  lines.push('   on `<html>`. Full table + SSR recipe: docs/getting-started.md.')
+  lines.push('   on `<html>`. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS')
+  lines.push('   `prefers-color-scheme` > light — pass `defaultTheme` to keep a dark app dark on a')
+  lines.push('   light-OS visitor. Under SSR add `suppressHydrationWarning` to the `<html>` the')
+  lines.push('   preload script writes to. Full table + SSR recipe: docs/getting-started.md.')
   lines.push('')
   lines.push('B. Copy-paste source — own and customize the code (shadcn model):')
   lines.push('')
@@ -753,7 +756,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.',
   )
   lines.push(
-    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Never write a `useEffect` that toggles a `.dark` class.',
+    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Under SSR add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.',
   )
   lines.push(
     "- Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).",
