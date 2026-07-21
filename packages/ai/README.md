@@ -20,7 +20,7 @@ AI-native components for cascivo — the presentation layer for AI features: str
 
 > Newly published — first release on npm as of `0.1.0`.
 
-**Peer dependencies:** `react >=18` and `@preact/signals-react >=2` (the components are signal-driven). Styles ship as CSS modules bundled with the components — no stylesheet import needed. Pair with `@cascivo/themes` for tokens.
+**Peer dependencies:** `react >=18` and `@preact/signals-react >=3` (the components are signal-driven). Styles ship as CSS modules bundled with the components — no stylesheet import needed. Pair with `@cascivo/themes` for tokens.
 
 ```sh
 pnpm add @cascivo/ai @preact/signals-react

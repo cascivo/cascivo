@@ -169,7 +169,7 @@ bash scripts/checks/deployed-freshness.sh
 
 All must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
 
-`pnpm meta:check` bundles the manifest/docs guards: `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
+`pnpm meta:check` bundles the manifest/docs guards: `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `peer-floors` (every published package flooring the `@preact/signals-react` peer requires `>=3.0.0`, so React 19 support can't silently regress), `css-imports` (every cross-package `@import '@cascivo/…'` in shipped CSS is a real `dependencies` entry, not a peer), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
 
 ### Workspace package aliases — keep in sync
 

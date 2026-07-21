@@ -1002,7 +1002,7 @@ importers:
         specifier: workspace:^
         version: link:../tokens
       '@preact/signals-react':
-        specifier: '>=2.0.0'
+        specifier: '>=3.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
       '@testing-library/jest-dom':
@@ -1036,7 +1036,7 @@ importers:
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
-        specifier: '>=2.0.0'
+        specifier: '>=3.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
       '@preact/signals':
@@ -1185,7 +1185,7 @@ importers:
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
-        specifier: '>=2.0.0'
+        specifier: '>=3.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
       '@testing-library/jest-dom':
@@ -1231,7 +1231,7 @@ importers:
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
-        specifier: '>=2.0.0'
+        specifier: '>=3.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
       '@testing-library/jest-dom':
@@ -1396,7 +1396,7 @@ importers:
         specifier: workspace:^
         version: link:../i18n
       '@preact/signals-react':
-        specifier: '>=2.0.0'
+        specifier: '>=3.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
       '@cascivo/components':
@@ -1457,7 +1457,7 @@ importers:
         specifier: workspace:^
         version: link:../react
       '@preact/signals-react':
-        specifier: '>=2.0.0'
+        specifier: '>=3.0.0'
         version: 3.10.1(react@19.2.7)
     devDependencies:
       '@testing-library/react':
@@ -1533,10 +1533,11 @@ importers:
         version: 0.2.1(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1)(sass@1.100.0)(terser@5.48.0)(typescript@5.9.3)(vite@8.0.16(@types/node@25.9.2)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.100.0)(terser@5.48.0))
 
   packages/themes:
-    devDependencies:
+    dependencies:
       '@cascivo/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
+    devDependencies:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.2

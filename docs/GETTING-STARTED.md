@@ -117,8 +117,15 @@ resolve by hand. See [UPGRADING.md](./UPGRADING.md) for the full story.
 pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 ```
 
+(`@cascivo/tokens` comes with `@cascivo/themes` automatically — it is a direct
+dependency, not a peer, so you never install it by hand.)
+
 Peer dependencies: `react >=18`, `react-dom >=18`, and `@preact/signals-react`
 (cascivo components are signal-driven, so the signals runtime is required).
+**On React 19 the signals runtime must be 3.x** — the peer range enforces `>=3`
+(3.x still supports React 16.14+/17/18), because signals-react 2.x imports a React
+internal that React 19 removed. If a lockfile pinned 2.x from an earlier install,
+`cascivo doctor` flags it with the upgrade command.
 
 Component CSS ships **per component** and is pulled in automatically when you
 import a component — your bundler includes styles only for the components you

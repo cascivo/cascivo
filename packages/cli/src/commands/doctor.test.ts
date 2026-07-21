@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import {
   checkProjectDependencies,
+  checkSignalsCompat,
   isAdopterProject,
   runDoctor,
   stripCommentsAndStrings,
@@ -127,6 +128,44 @@ describe('checkProjectDependencies', () => {
       },
     })
     expect(checkProjectDependencies(root)).toEqual([])
+  })
+})
+
+describe('checkSignalsCompat', () => {
+  let dir: string
+  afterEach(() => rmSync(dir, { recursive: true, force: true }))
+
+  function project(versions: Record<string, string>): string {
+    dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-signals-'))
+    for (const [pkg, version] of Object.entries(versions)) {
+      const pkgDir = join(dir, 'node_modules', pkg)
+      mkdirSync(pkgDir, { recursive: true })
+      writeFileSync(join(pkgDir, 'package.json'), JSON.stringify({ name: pkg, version }))
+    }
+    return dir
+  }
+
+  it('errors on signals 2.x with React 19', async () => {
+    const root = project({ '@preact/signals-react': '2.3.0', react: '19.2.0' })
+    const finding = await checkSignalsCompat(root)
+    expect(finding?.severity).toBe('error')
+    expect(finding?.hint).toContain('@preact/signals-react@^3')
+  })
+
+  it('warns on signals 2.x with React 18', async () => {
+    const root = project({ '@preact/signals-react': '2.3.0', react: '18.3.0' })
+    const finding = await checkSignalsCompat(root)
+    expect(finding?.severity).toBe('warning')
+  })
+
+  it('is clean on signals 3.x', async () => {
+    const root = project({ '@preact/signals-react': '3.10.1', react: '19.2.0' })
+    expect(await checkSignalsCompat(root)).toBeNull()
+  })
+
+  it('is silent when signals is absent', async () => {
+    const root = project({ react: '19.2.0' })
+    expect(await checkSignalsCompat(root)).toBeNull()
   })
 })
 
