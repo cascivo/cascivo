@@ -1,5 +1,77 @@
 # @cascivo/react
 
+## 0.9.0
+
+### Minor Changes
+
+- 21e7ddb: Standardize change-handler naming on `onValueChange` for value-carrying callbacks.
+
+  cascivo now documents one rule (in `docs/AI-RULES.md`, `CLAUDE.md`, and llms.txt): a
+  handler that receives the component's **value** is `onValueChange`; one that receives a
+  raw DOM `ChangeEvent` is `onChange`; item activation is `onSelect`. This makes the prop
+  predictable instead of a per-component guess (2026-07-20 report, #7).
+
+  Eight components that exposed a value-carrying `onChange` gain an `onValueChange` prop and
+  mark `onChange` `@deprecated` (it still works, and takes lower precedence than
+  `onValueChange`): `Toggle`, `Swap`, `Search`, `TimePicker`, `NumberInput`, `Combobox`,
+  `DatePicker`, `Filter`. No behavior change for existing code; migrate to `onValueChange`
+  before the deprecated alias is removed in a future major.
+
+- 21e7ddb: Theme: an explicit `defaultTheme` now wins over the visitor's OS `prefers-color-scheme`.
+
+  Previously both `ThemeProvider` and `themePreloadScript()` resolved the initial theme as
+  `persisted > OS preference > defaultTheme`, so a "dark by default" (`defaultTheme="dark"`)
+  app rendered _light_ for a light-OS visitor, and a custom `defaultTheme="midnight"` was
+  replaced by `'light'`/`'dark'` from the OS (2026-07-20 adopter report). The precedence is
+  now **persisted value > `defaultTheme` (if you passed one) > OS `prefers-color-scheme` >
+  `'light'`**. Omit `defaultTheme` to keep the old OS-following behavior.
+
+  `themePreloadScript()`'s JSDoc and the theming docs now spell out that the script sets
+  `data-theme` before hydration — add `suppressHydrationWarning` to the `<html>` it writes
+  to, or React 19 logs a hydration mismatch.
+
+  Migration: if you passed `defaultTheme` AND relied on the OS overriding it, drop
+  `defaultTheme` to follow the OS. Apps that passed nothing are unaffected.
+
+### Patch Changes
+
+- 21e7ddb: Expose the router-link contract as a named, documented type.
+
+  `setLinkComponent` shipped, but the prop bag it hands a custom link was an opaque
+  `ElementType` — an adopter reading the shipped `.d.ts` as documentation couldn't see
+  `href`/`aria-current`/`onClick`/… or the `href → to` mapping idiom (2026-07-20 report, #6).
+  `@cascivo/core` now exports a JSDoc'd `LinkComponentProps` interface, re-exported from
+  `@cascivo/react`, and `setLinkComponent`'s docs show the TanStack adapter inline.
+
+  `SideNavLinkProps.onClick` is now optional: cascivo always provides it and it only
+  `preventDefault`s a disabled item, so it composes cleanly when spread onto a router
+  `<Link>` (which keeps middle-click / open-in-new-tab).
+
+- 21e7ddb: Fix the `exports` map so `import` and `types` resolve to parallel, top-level files.
+
+  `preserveModulesRoot` pushed the real entry to `dist/react/src/index.js` — a subtree
+  that didn't parallel the flat `dist/index.d.ts`, which `publint`/`arethetypeswrong`
+  flag (2026-07-20 report, #8). The build now emits a one-line re-export at
+  `dist/index.js`, and `exports["."]` points `import`/`default`/`types` at parallel
+  top-level files. A new `pack:check` release gate (publint + attw) guards against
+  exports-map regressions across all published packages.
+
+- 21e7ddb: Raise the `@preact/signals-react` peer floor from `>=2.0.0` to `>=3.0.0`.
+
+  React 19 removed the internal export that signals-react 2.x imports, so a 2.x
+  runtime fails to load under React 19 (`SyntaxError: … '__SECRET_INTERNALS…'`). The
+  old `>=2` floor let a resolver pick that broken build. signals-react 3.x still
+  supports React 16.14+/17/18, so the new floor costs React-18 users nothing.
+
+  If a lockfile carried over from an earlier install pins signals-react 2.x, run
+  `cascivo doctor` — it now flags the mismatch (error on React 19, warning on React 18)
+  with the exact upgrade command.
+
+- Updated dependencies [21e7ddb]
+- Updated dependencies [21e7ddb]
+  - @cascivo/core@0.5.0
+  - @cascivo/i18n@0.2.9
+
 ## 0.8.0
 
 ### Minor Changes

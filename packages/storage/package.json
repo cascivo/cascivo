@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/storage",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "private": false,
   "description": "Persisted signals over localStorage/IndexedDB for cascivo — SSR-safe",
   "keywords": [

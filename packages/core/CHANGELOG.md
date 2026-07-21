@@ -1,5 +1,34 @@
 # @cascivo/core
 
+## 0.5.0
+
+### Minor Changes
+
+- 21e7ddb: Expose the router-link contract as a named, documented type.
+
+  `setLinkComponent` shipped, but the prop bag it hands a custom link was an opaque
+  `ElementType` — an adopter reading the shipped `.d.ts` as documentation couldn't see
+  `href`/`aria-current`/`onClick`/… or the `href → to` mapping idiom (2026-07-20 report, #6).
+  `@cascivo/core` now exports a JSDoc'd `LinkComponentProps` interface, re-exported from
+  `@cascivo/react`, and `setLinkComponent`'s docs show the TanStack adapter inline.
+
+  `SideNavLinkProps.onClick` is now optional: cascivo always provides it and it only
+  `preventDefault`s a disabled item, so it composes cleanly when spread onto a router
+  `<Link>` (which keeps middle-click / open-in-new-tab).
+
+### Patch Changes
+
+- 21e7ddb: Raise the `@preact/signals-react` peer floor from `>=2.0.0` to `>=3.0.0`.
+
+  React 19 removed the internal export that signals-react 2.x imports, so a 2.x
+  runtime fails to load under React 19 (`SyntaxError: … '__SECRET_INTERNALS…'`). The
+  old `>=2` floor let a resolver pick that broken build. signals-react 3.x still
+  supports React 16.14+/17/18, so the new floor costs React-18 users nothing.
+
+  If a lockfile carried over from an earlier install pins signals-react 2.x, run
+  `cascivo doctor` — it now flags the mismatch (error on React 19, warning on React 18)
+  with the exact upgrade command.
+
 ## 0.4.1
 
 ### Patch Changes
