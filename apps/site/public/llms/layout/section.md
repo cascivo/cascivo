@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop    | Type                            | Required | Default     | Description                                           |
-| ------- | ------------------------------- | -------- | ----------- | ----------------------------------------------------- |
-| `width` | `"content" \| "wide" \| "full"` | no       | `"content"` | Max inline size: content=72rem, wide=90rem, full=none |
-| `gap`   | `1\|2\|3\|4\|5\|6\|8\|10\|12`   | no       | `8`         | Stack gap between children (spacing token step)       |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `width` | `"content" \| "wide" \| "full"` | no | `"content"` | Max inline size: content=72rem, wide=90rem, full=none |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `8` | Stack gap between children (spacing token step) |
 
 ## Examples
 
@@ -30,10 +30,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 Centered 72rem content column with 2rem block padding
 
 ```tsx
-<Section width="content" gap={8}>
-  <h2>Heading</h2>
-  <p>Body copy.</p>
-</Section>
+<Section width="content" gap={8}><h2>Heading</h2><p>Body copy.</p></Section>
 ```
 
 ## Design tokens
@@ -55,4 +52,4 @@ layout, section, page
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

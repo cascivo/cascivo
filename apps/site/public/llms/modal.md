@@ -33,14 +33,14 @@ import { Modal } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                   | Required | Default | Description                                           |
-| ------------- | ---------------------- | -------- | ------- | ----------------------------------------------------- |
-| `open`        | `boolean`              | no       | `false` | Whether the component is open (controlled).           |
-| `onClose`     | `() => void`           | no       | —       | Called when the component is closed.                  |
-| `title`       | `string`               | no       | —       | Title text for the component.                         |
-| `description` | `string`               | no       | —       | Supporting description text.                          |
-| `size`        | `'sm' \| 'md' \| 'lg'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `draggable`   | `boolean`              | no       | `false` | Allow dragging the dialog by its header               |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | no | `false` | Whether the component is open (controlled). |
+| `onClose` | `() => void` | no | — | Called when the component is closed. |
+| `title` | `string` | no | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `draggable` | `boolean` | no | `false` | Allow dragging the dialog by its header |
 
 ## Examples
 
@@ -77,4 +77,4 @@ overlay, dialog, popup
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

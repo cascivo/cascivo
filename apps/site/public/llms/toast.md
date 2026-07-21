@@ -35,12 +35,12 @@ import { ToastProvider, useToast } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                   | Required | Default   | Description                                                |
-| ------------- | ------------------------------------------------------ | -------- | --------- | ---------------------------------------------------------- |
-| `title`       | `string`                                               | yes      | —         | Title text for the component.                              |
-| `description` | `string`                                               | no       | —         | Supporting description text.                               |
-| `variant`     | `'default' \| 'success' \| 'warning' \| 'destructive'` | no       | `default` | Selects the visual style variant.                          |
-| `duration`    | `number`                                               | no       | `5000`    | How long (ms) the toast stays visible before auto-dismiss. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `variant` | `'default' \| 'success' \| 'warning' \| 'destructive'` | no | `default` | Selects the visual style variant. |
+| `duration` | `number` | no | `5000` | How long (ms) the toast stays visible before auto-dismiss. |
 
 ## Examples
 
@@ -48,7 +48,7 @@ import { ToastProvider, useToast } from '@cascivo/react'
 
 ```tsx
 const { toast } = useToast()
-toast({ title: 'Saved', variant: 'success' })
+toast({ title: "Saved", variant: "success" })
 ```
 
 ## Design tokens
@@ -77,4 +77,4 @@ overlay, notification, feedback
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

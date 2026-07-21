@@ -34,22 +34,22 @@ import { Select } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                     | Required | Default | Description                                                        |
-| ------------- | -------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `string`                                                 | no       | —       | Text label for the control.                                        |
-| `hint`        | `string`                                                 | no       | —       | Supplementary hint text shown with the control.                    |
-| `error`       | `string`                                                 | no       | —       | Error message shown when the value is invalid.                     |
-| `placeholder` | `string`                                                 | no       | —       | Placeholder text shown when the field is empty.                    |
-| `options`     | `{ value: string; label: string; disabled?: boolean }[]` | yes      | —       | The selectable options.                                            |
-| `size`        | `'sm' \| 'md' \| 'lg'`                                   | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `disabled`    | `boolean`                                                | no       | `false` | When true, disables the control and removes it from the tab order. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Text label for the control. |
+| `hint` | `string` | no | — | Supplementary hint text shown with the control. |
+| `error` | `string` | no | — | Error message shown when the value is invalid. |
+| `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
+| `options` | `{ value: string; label: string; disabled?: boolean }[]` | yes | — | The selectable options. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Select label="Role" options={[{ value: 'admin', label: 'Admin' }]} />
+<Select label="Role" options={[{ value: "admin", label: "Admin" }]} />
 ```
 
 ### With placeholder
@@ -83,4 +83,4 @@ form, dropdown, menu
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

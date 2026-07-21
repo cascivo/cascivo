@@ -27,28 +27,21 @@ import { MultiSelect } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                    | Required | Default | Description                                                        |
-| --------------- | ----------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `options`       | `MultiSelectOption[]`   | yes      | —       | The selectable options.                                            |
-| `value`         | `string[]`              | yes      | —       | The controlled value.                                              |
-| `onValueChange` | `(v: string[]) => void` | yes      | —       | Called with the new value when it changes.                         |
-| `placeholder`   | `string`                | no       | —       | Placeholder text shown when the field is empty.                    |
-| `disabled`      | `boolean`               | no       | `false` | When true, disables the control and removes it from the tab order. |
-| `labels`        | `MultiSelectLabels`     | no       | —       | Overrides for the component’s user-visible strings (i18n).         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `MultiSelectOption[]` | yes | — | The selectable options. |
+| `value` | `string[]` | yes | — | The controlled value. |
+| `onValueChange` | `(v: string[]) => void` | yes | — | Called with the new value when it changes. |
+| `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `labels` | `MultiSelectLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<MultiSelect
-  options={[
-    { label: 'One', value: '1' },
-    { label: 'Two', value: '2' },
-  ]}
-  value={[]}
-  onValueChange={() => {}}
-/>
+<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />
 ```
 
 ## Design tokens
@@ -79,4 +72,4 @@ form, select, multi, input, popover
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

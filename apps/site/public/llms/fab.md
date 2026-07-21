@@ -28,26 +28,24 @@ import { Fab } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                             | Required | Default      | Description                                                                 |
-| -------------- | -------------------------------- | -------- | ------------ | --------------------------------------------------------------------------- |
-| `children`     | `React.ReactNode`                | yes      | —            | The main icon                                                               |
-| `label`        | `string`                         | yes      | —            | Accessible name for the button                                              |
-| `onClick`      | `() => void`                     | no       | —            | Called when the element is clicked.                                         |
-| `actions`      | `FabAction[]`                    | no       | —            | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
-| `position`     | `'bottom-end' \| 'bottom-start'` | no       | `bottom-end` | Position of the component.                                                  |
-| `open`         | `boolean`                        | no       | —            | Whether the component is open (controlled).                                 |
-| `defaultOpen`  | `boolean`                        | no       | —            | Whether the component is open on first render (uncontrolled).               |
-| `onOpenChange` | `(open: boolean) => void`        | no       | —            | Called with the next open state when it changes.                            |
-| `className`    | `string`                         | no       | —            | Additional CSS class names merged onto the root element.                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | The main icon |
+| `label` | `string` | yes | — | Accessible name for the button |
+| `onClick` | `() => void` | no | — | Called when the element is clicked. |
+| `actions` | `FabAction[]` | no | — | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
+| `position` | `'bottom-end' \| 'bottom-start'` | no | `bottom-end` | Position of the component. |
+| `open` | `boolean` | no | — | Whether the component is open (controlled). |
+| `defaultOpen` | `boolean` | no | — | Whether the component is open on first render (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Single action
 
 ```tsx
-<Fab label="Compose" onClick={compose}>
-  <PlusIcon />
-</Fab>
+<Fab label="Compose" onClick={compose}><PlusIcon /></Fab>
 ```
 
 ### Speed dial
@@ -69,9 +67,7 @@ The main button toggles a menu of secondary actions.
 ### Start corner
 
 ```tsx
-<Fab label="Help" position="bottom-start" onClick={openHelp}>
-  <HelpIcon />
-</Fab>
+<Fab label="Help" position="bottom-start" onClick={openHelp}><HelpIcon /></Fab>
 ```
 
 ## Design tokens
@@ -104,4 +100,4 @@ inputs, fab, floating-action-button, mobile, speed-dial
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

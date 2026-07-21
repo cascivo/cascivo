@@ -51,6 +51,12 @@ export function Pipeline() {
 }
 ```
 
+> **Vite SSR (TanStack Start, Remix, vite-ssr, workerd)?** The flow CSS ships as side-effect
+> imports a bare server loader can't resolve — mark `ssr: { noExternal: [/^@cascivo\//] }` (the
+> pattern already covers `@cascivo/flow`) and import `@cascivo/flow/styles.css` once in your root
+> entry. Full recipe:
+> [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md).
+
 ### Scripted storylines
 
 `<FlowStory>` walks the viewer through a graph step by step with fade-in

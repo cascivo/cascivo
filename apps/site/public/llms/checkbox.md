@@ -28,13 +28,13 @@ import { Checkbox } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                                         | Required | Default | Description                                                        |
-| --------------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`         | `string`                                     | no       | —       | Text label for the control.                                        |
-| `checked`       | `boolean`                                    | no       | —       | Whether the control is checked (controlled).                       |
-| `indeterminate` | `boolean`                                    | no       | `false` | When true, renders the mixed/indeterminate state.                  |
-| `disabled`      | `boolean`                                    | no       | `false` | When true, disables the control and removes it from the tab order. |
-| `onChange`      | `React.ChangeEventHandler<HTMLInputElement>` | no       | —       | Called when the value changes.                                     |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Text label for the control. |
+| `checked` | `boolean` | no | — | Whether the control is checked (controlled). |
+| `indeterminate` | `boolean` | no | `false` | When true, renders the mixed/indeterminate state. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `onChange` | `React.ChangeEventHandler<HTMLInputElement>` | no | — | Called when the value changes. |
 
 ## Examples
 
@@ -75,4 +75,4 @@ form, toggle, boolean
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

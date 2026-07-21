@@ -32,14 +32,14 @@ role="img" with alt names the person; on image error it falls back to initials s
 
 ## Props
 
-| Name       | Type                                   | Required | Default | Description                                                                       |
-| ---------- | -------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
-| `src`      | `string`                               | No       | —       | Image source URL.                                                                 |
-| `alt`      | `string`                               | No       | —       | Alternative text describing the image.                                            |
-| `name`     | `string`                               | No       | —       | Full name — used to derive initials for the fallback and as the accessible label. |
-| `fallback` | `string`                               | No       | —       | Explicit fallback text (initials/glyph); overrides initials derived from name.    |
-| `size`     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                             |
-| `status`   | `'online' \| 'offline' \| 'busy'`      | No       | —       | Status state.                                                                     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `src` | `string` | No | — | Image source URL. |
+| `alt` | `string` | No | — | Alternative text describing the image. |
+| `name` | `string` | No | — | Full name — used to derive initials for the fallback and as the accessible label. |
+| `fallback` | `string` | No | — | Explicit fallback text (initials/glyph); overrides initials derived from name. |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `status` | `'online' \| 'offline' \| 'busy'` | No | — | Status state. |
 
 ## Tokens
 
@@ -78,10 +78,10 @@ Derives initials automatically; also sets the accessible label.
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                    |
-| ----------- | -------- | ----------------------------------------------------------------------- |
-| size        | flexible | Pick the size that fits the surrounding density                         |
-| token names | strict   | Fallback and status colors must resolve to --cascivo-\* semantic tokens |
+| Area | Level | Note |
+|------|-------|------|
+| size | flexible | Pick the size that fits the surrounding density |
+| token names | strict | Fallback and status colors must resolve to --cascivo-* semantic tokens |
 
 ## AI context prompt
 

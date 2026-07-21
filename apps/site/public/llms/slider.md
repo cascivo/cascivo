@@ -22,15 +22,15 @@ import { Slider } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type      | Required | Default | Description                                                        |
-| -------------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`        | `string`  | no       | —       | Text label for the control.                                        |
-| `min`          | `number`  | no       | `0`     | Minimum allowed value.                                             |
-| `max`          | `number`  | no       | `100`   | Maximum allowed value.                                             |
-| `step`         | `number`  | no       | `1`     | Increment between allowed values.                                  |
-| `value`        | `number`  | no       | —       | The controlled value.                                              |
-| `defaultValue` | `number`  | no       | —       | The initial value when uncontrolled.                               |
-| `disabled`     | `boolean` | no       | `false` | When true, disables the control and removes it from the tab order. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Text label for the control. |
+| `min` | `number` | no | `0` | Minimum allowed value. |
+| `max` | `number` | no | `100` | Maximum allowed value. |
+| `step` | `number` | no | `1` | Increment between allowed values. |
+| `value` | `number` | no | — | The controlled value. |
+| `defaultValue` | `number` | no | — | The initial value when uncontrolled. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 
@@ -70,4 +70,4 @@ form, range, input
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

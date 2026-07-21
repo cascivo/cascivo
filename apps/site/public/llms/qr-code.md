@@ -26,15 +26,15 @@ import { QrCode } from '@cascivo/react'
 
 ## Props
 
-| Prop              | Type                       | Required | Default        | Description                                           |
-| ----------------- | -------------------------- | -------- | -------------- | ----------------------------------------------------- |
-| `value`           | `string`                   | yes      | —              | Text or URL to encode                                 |
-| `size`            | `number`                   | no       | `128`          | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `errorCorrection` | `'L' \| 'M' \| 'Q' \| 'H'` | no       | `M`            | Higher levels tolerate more damage but hold less data |
-| `radius`          | `string`                   | no       | —              | CSS length rounding the corners                       |
-| `fill`            | `string`                   | no       | `currentColor` | Foreground color of the QR modules.                   |
-| `background`      | `string`                   | no       | `transparent`  | Background color behind the QR code.                  |
-| `label`           | `string`                   | no       | —              | Text label for the control.                           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | yes | — | Text or URL to encode |
+| `size` | `number` | no | `128` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `errorCorrection` | `'L' \| 'M' \| 'Q' \| 'H'` | no | `M` | Higher levels tolerate more damage but hold less data |
+| `radius` | `string` | no | — | CSS length rounding the corners |
+| `fill` | `string` | no | `currentColor` | Foreground color of the QR modules. |
+| `background` | `string` | no | `transparent` | Background color behind the QR code. |
+| `label` | `string` | no | — | Text label for the control. |
 
 ## Examples
 
@@ -53,11 +53,7 @@ import { QrCode } from '@cascivo/react'
 ### Custom colors
 
 ```tsx
-<QrCode
-  value="cascivo"
-  fill="var(--cascivo-color-accent)"
-  background="var(--cascivo-color-surface)"
-/>
+<QrCode value="cascivo" fill="var(--cascivo-color-accent)" background="var(--cascivo-color-surface)" />
 ```
 
 ## Design tokens
@@ -80,4 +76,4 @@ qr, qr-code, barcode, encode, display
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

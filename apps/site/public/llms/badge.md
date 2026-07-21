@@ -36,10 +36,10 @@ import { Badge } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                                                               | Required | Default   | Description                                           |
-| --------- | ---------------------------------------------------------------------------------- | -------- | --------- | ----------------------------------------------------- |
-| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no       | `default` | Selects the visual style variant.                     |
-| `size`    | `'sm' \| 'md'`                                                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no | `default` | Selects the visual style variant. |
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -105,4 +105,4 @@ label, status, tag
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

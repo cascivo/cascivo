@@ -29,11 +29,11 @@ import { InlineLoading } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                                     | Required | Default | Description                                                |
-| -------- | -------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------- |
-| `status` | `'inactive' \| 'active' \| 'finished' \| 'error'`        | yes      | —       | Status state.                                              |
-| `label`  | `ReactNode`                                              | no       | —       | Text label for the control.                                |
-| `labels` | `{ active?: string; finished?: string; error?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `status` | `'inactive' \| 'active' \| 'finished' \| 'error'` | yes | — | Status state. |
+| `label` | `ReactNode` | no | — | Text label for the control. |
+| `labels` | `{ active?: string; finished?: string; error?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
 
@@ -79,4 +79,4 @@ loading, status, progress, feedback, spinner
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -27,14 +27,14 @@ import { Collapsible } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                      | Required | Default | Description                                         |
-| -------------- | ------------------------- | -------- | ------- | --------------------------------------------------- |
-| `open`         | `boolean`                 | no       | —       | Controlled open state                               |
-| `defaultOpen`  | `boolean`                 | no       | `false` | Initial open state for uncontrolled use             |
-| `onOpenChange` | `(open: boolean) => void` | no       | —       | Called whenever the open state should change        |
-| `trigger`      | `ReactNode`               | yes      | —       | Content rendered inside the built-in trigger button |
-| `disabled`     | `boolean`                 | no       | `false` | Disables the trigger button                         |
-| `children`     | `ReactNode`               | no       | —       | Content of the collapsible region                   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | no | — | Controlled open state |
+| `defaultOpen` | `boolean` | no | `false` | Initial open state for uncontrolled use |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called whenever the open state should change |
+| `trigger` | `ReactNode` | yes | — | Content rendered inside the built-in trigger button |
+| `disabled` | `boolean` | no | `false` | Disables the trigger button |
+| `children` | `ReactNode` | no | — | Content of the collapsible region |
 
 ## Examples
 
@@ -82,4 +82,4 @@ disclosure, collapse, expand, toggle, show-hide
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

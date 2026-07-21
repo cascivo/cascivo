@@ -32,12 +32,12 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 
 ## Props
 
-| Name            | Type                                  | Required | Default | Description                                                                    |
-| --------------- | ------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------ |
-| `type`          | `'single' \| 'multiple'`              | No       | single  | Whether one or multiple sections can be open at once ('single' \| 'multiple'). |
-| `defaultValue`  | `string \| string[]`                  | No       | —       | The initial value when uncontrolled.                                           |
-| `value`         | `string \| string[]`                  | No       | —       | The controlled value.                                                          |
-| `onValueChange` | `(value: string \| string[]) => void` | No       | —       | Called with the new value when it changes.                                     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `type` | `'single' \| 'multiple'` | No | single | Whether one or multiple sections can be open at once ('single' \| 'multiple'). |
+| `defaultValue` | `string \| string[]` | No | — | The initial value when uncontrolled. |
+| `value` | `string \| string[]` | No | — | The controlled value. |
+| `onValueChange` | `(value: string \| string[]) => void` | No | — | Called with the new value when it changes. |
 
 ## Tokens
 
@@ -52,20 +52,15 @@ Each trigger is a native <button> exposing aria-expanded and controlling its pan
 ### Single
 
 ```jsx
-<Accordion type="single" defaultValue="a">
-  <AccordionItem value="a">
-    <AccordionTrigger>Section</AccordionTrigger>
-    <AccordionContent>…</AccordionContent>
-  </AccordionItem>
-</Accordion>
+<Accordion type="single" defaultValue="a"><AccordionItem value="a"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>
 ```
 
 ## Boundaries
 
-| Area               | Level    | Note                                                                      |
-| ------------------ | -------- | ------------------------------------------------------------------------- |
-| single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive       |
-| token names        | strict   | Borders, surfaces, and radii must resolve to --cascivo-\* semantic tokens |
+| Area | Level | Note |
+|------|-------|------|
+| single vs multiple | flexible | type prop is free to choose based on whether sections are exclusive |
+| token names | strict | Borders, surfaces, and radii must resolve to --cascivo-* semantic tokens |
 
 ## AI context prompt
 

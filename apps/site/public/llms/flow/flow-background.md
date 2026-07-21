@@ -27,13 +27,13 @@ import '@cascivo/flow/styles.css' // required stylesheet
 
 ## Props
 
-| Prop        | Type                          | Required | Default | Description                                              |
-| ----------- | ----------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `variant`   | `'dots' \| 'grid' \| 'cross'` | no       | `dots`  | Pattern style.                                           |
-| `gap`       | `number`                      | no       | `20`    | Cell spacing (px).                                       |
-| `size`      | `number`                      | no       | `1`     | Dot radius / line thickness (px).                        |
-| `color`     | `string`                      | no       | —       | Pattern color (defaults to the border token).            |
-| `className` | `string`                      | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'dots' \| 'grid' \| 'cross'` | no | `dots` | Pattern style. |
+| `gap` | `number` | no | `20` | Cell spacing (px). |
+| `size` | `number` | no | `1` | Dot radius / line thickness (px). |
+| `color` | `string` | no | — | Pattern color (defaults to the border token). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -42,7 +42,7 @@ import '@cascivo/flow/styles.css' // required stylesheet
 A dotted grid behind a flow canvas.
 
 ```tsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 220, overflow: 'hidden' }}>
     <FlowBackground variant="dots" gap={24} />
   </div>
@@ -54,7 +54,7 @@ A dotted grid behind a flow canvas.
 The grid and cross variants.
 
 ```tsx
-;() => (
+() => (
   <div style={{ display: 'grid', gap: 16, gridTemplateColumns: '1fr 1fr' }}>
     <div style={{ position: 'relative', height: 180, overflow: 'hidden' }}>
       <FlowBackground variant="grid" gap={28} />
@@ -85,4 +85,4 @@ flow, background, grid, dots, canvas
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

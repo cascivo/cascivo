@@ -27,25 +27,19 @@ import { NavigationMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                   | Required | Default | Description                                              |
-| ------------- | -------------------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `items`       | `NavigationMenuItem[]`                 | yes      | —       | The items to render.                                     |
-| `aria-label`  | `string`                               | no       | —       | Accessible label used when no visible label is present.  |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no       | —       | Layout orientation of the component.                     |
-| `className`   | `string`                               | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
+| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | — | Layout orientation of the component. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<NavigationMenu
-  aria-label="Main"
-  items={[
-    { id: 'home', label: 'Home', href: '/' },
-    { id: 'products', label: 'Products', content: <ul>…</ul> },
-  ]}
-/>
+<NavigationMenu aria-label="Main" items={[{ id: "home", label: "Home", href: "/" }, { id: "products", label: "Products", content: <ul>…</ul> }]} />
 ```
 
 ## Design tokens
@@ -74,4 +68,4 @@ navigation, menu, flyout, site-nav
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

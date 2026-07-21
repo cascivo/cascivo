@@ -34,12 +34,12 @@ import { Text } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                 | Required | Default  | Description                                           |
-| -------- | ------------------------------------ | -------- | -------- | ----------------------------------------------------- |
-| `as`     | `'p' \| 'span' \| 'div'`             | no       | `p`      | The HTML element to render as.                        |
-| `size`   | `'sm' \| 'md' \| 'lg'`               | no       | `md`     | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `weight` | `'normal' \| 'medium' \| 'semibold'` | no       | `normal` | Font weight ('normal' \| 'medium' \| 'semibold').     |
-| `muted`  | `boolean`                            | no       | `false`  | When true, renders in a muted/subtle color.           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `as` | `'p' \| 'span' \| 'div'` | no | `p` | The HTML element to render as. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `weight` | `'normal' \| 'medium' \| 'semibold'` | no | `normal` | Font weight ('normal' \| 'medium' \| 'semibold'). |
+| `muted` | `boolean` | no | `false` | When true, renders in a muted/subtle color. |
 
 ## Examples
 
@@ -52,9 +52,7 @@ import { Text } from '@cascivo/react'
 ### Muted helper
 
 ```tsx
-<Text size="sm" muted>
-  Secondary information
-</Text>
+<Text size="sm" muted>Secondary information</Text>
 ```
 
 ### Inline span
@@ -62,9 +60,7 @@ import { Text } from '@cascivo/react'
 Use as="span" inside other flow content
 
 ```tsx
-<Text as="span" weight="semibold">
-  emphasis
-</Text>
+<Text as="span" weight="semibold">emphasis</Text>
 ```
 
 ## Design tokens
@@ -95,4 +91,4 @@ typography, text, paragraph, body
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

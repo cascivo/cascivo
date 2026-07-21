@@ -18,9 +18,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type         | Required | Default | Description                |
-| -------------- | ------------ | -------- | ------- | -------------------------- |
-| `onCreateItem` | `() => void` | no       | —       | Create item button handler |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onCreateItem` | `() => void` | no | — | Create item button handler |
 
 ## Examples
 
@@ -47,4 +47,4 @@ block, dashboard, empty-state, page
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

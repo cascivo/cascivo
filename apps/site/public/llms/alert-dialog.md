@@ -32,15 +32,15 @@ import { AlertDialog } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                         | Required | Default   | Description                                                |
-| ------------- | ---------------------------- | -------- | --------- | ---------------------------------------------------------- |
-| `open`        | `boolean`                    | yes      | —         | Whether the component is open (controlled).                |
-| `title`       | `string`                     | yes      | —         | Title text for the component.                              |
-| `description` | `string`                     | yes      | —         | Supporting description text.                               |
-| `onConfirm`   | `() => void`                 | yes      | —         | Called when the confirm button is activated.               |
-| `onCancel`    | `() => void`                 | yes      | —         | Called when the cancel button is activated.                |
-| `labels`      | `AlertDialogLabels`          | no       | —         | Overrides for the component’s user-visible strings (i18n). |
-| `variant`     | `'destructive' \| 'default'` | no       | `default` | Selects the visual style variant.                          |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | yes | — | Whether the component is open (controlled). |
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | yes | — | Supporting description text. |
+| `onConfirm` | `() => void` | yes | — | Called when the confirm button is activated. |
+| `onCancel` | `() => void` | yes | — | Called when the cancel button is activated. |
+| `labels` | `AlertDialogLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `variant` | `'destructive' \| 'default'` | no | `default` | Selects the visual style variant. |
 
 ## Examples
 
@@ -98,4 +98,4 @@ overlay, dialog, confirm, destructive
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

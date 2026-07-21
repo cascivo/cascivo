@@ -33,10 +33,10 @@ import { Timeline } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                                                                                                           | Required | Default    | Description                          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------ |
-| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | yes      | —          | The items to render.                 |
-| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                   | no       | `vertical` | Layout orientation of the component. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | yes | — | The items to render. |
+| `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Layout orientation of the component. |
 
 ## Examples
 
@@ -76,4 +76,4 @@ timeline, steps, history, progress, events
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

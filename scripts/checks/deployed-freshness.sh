@@ -104,8 +104,15 @@ for HOST in "${HOSTS[@]}"; do
   # area-chart is namespaced (guessed flat name 404s); both must serve current content.
   assert_contains "$HOST/llms/stat.md" '`visual`' "registry v$VERSION"
   assert_contains "$HOST/llms/chart/area-chart.md" '`series`'
-  # Fetchable getting-started markdown.
-  assert_contains "$HOST/docs/getting-started.md" "registry v$VERSION"
+  # A second per-component API canary + a theme surface (2026-07-20 report: the adopter
+  # couldn't find per-component/per-theme reference docs on the deployed host).
+  assert_contains "$HOST/llms/data-table.md" '`searchable`'
+  assert_contains "$HOST/docs/theming.md" 'data-theme'
+  # Fetchable getting-started markdown — must carry the SSR call-out (noExternal) and the
+  # aggregate-stylesheet story (styles.css), the two things this adopter went looking for.
+  assert_contains "$HOST/docs/getting-started.md" "registry v$VERSION" "noExternal" "styles.css"
+  # The SSR recipe must be reachable and carry the hydration guidance (WS3/WS4).
+  assert_contains "$HOST/docs/using-with-vite-ssr.md" "noExternal" "suppressHydrationWarning"
   # A guessed-wrong name must be a real 404 whose BODY is the machine-readable hint
   # (llms-404.md / r-404.json), not the HTML SPA shell — an agent that gets a 200 (or
   # an HTML 404) would read the shell as if it were the doc. Served by the Pages

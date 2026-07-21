@@ -18,14 +18,14 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type                          | Required | Default | Description                                                               |
-| -------------- | ----------------------------- | -------- | ------- | ------------------------------------------------------------------------- |
-| `children`     | `ReactNode`                   | yes      | —       | Tile elements (images, cards, quotes) — consumer-provided and self-styled |
-| `title`        | `ReactNode`                   | no       | —       | Section heading above the gallery                                         |
-| `description`  | `ReactNode`                   | no       | —       | Subheading below the section title                                        |
-| `headingLevel` | `1 \| 2 \| 3`                 | no       | `2`     | HTML heading level for the section title                                  |
-| `cols`         | `number`                      | no       | `3`     | Number of masonry columns                                                 |
-| `gap`          | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | `4`     | Gap between tiles (spacing token step)                                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | yes | — | Tile elements (images, cards, quotes) — consumer-provided and self-styled |
+| `title` | `ReactNode` | no | — | Section heading above the gallery |
+| `description` | `ReactNode` | no | — | Subheading below the section title |
+| `headingLevel` | `1 \| 2 \| 3` | no | `2` | HTML heading level for the section title |
+| `cols` | `number` | no | `3` | Number of masonry columns |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Gap between tiles (spacing token step) |
 
 ## Examples
 
@@ -34,11 +34,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 Masonry gallery with three image tiles; falls back to CSS columns in unsupported browsers
 
 ```tsx
-<MediaMasonry title="Customer stories" cols={3} gap={4}>
-  <img src="/photo-1.jpg" alt="Team at desk" />
-  <img src="/photo-2.jpg" alt="Product screenshot" />
-  <img src="/photo-3.jpg" alt="Dashboard view" />
-</MediaMasonry>
+<MediaMasonry title="Customer stories" cols={3} gap={4}><img src="/photo-1.jpg" alt="Team at desk" /><img src="/photo-2.jpg" alt="Product screenshot" /><img src="/photo-3.jpg" alt="Dashboard view" /></MediaMasonry>
 ```
 
 ## Design tokens
@@ -64,4 +60,4 @@ section, gallery, masonry
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

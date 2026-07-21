@@ -30,10 +30,10 @@ import { Status } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                                       | Required | Default   | Description                                                         |
-| -------- | ---------------------------------------------------------- | -------- | --------- | ------------------------------------------------------------------- |
-| `status` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | no       | `neutral` | Status state.                                                       |
-| `pulse`  | `boolean`                                                  | no       | `false`   | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `status` | `'success' \| 'warning' \| 'error' \| 'info' \| 'neutral'` | no | `neutral` | Status state. |
+| `pulse` | `boolean` | no | `false` | Pulses the dot — gated behind prefers-reduced-motion: no-preference |
 
 ## Examples
 
@@ -54,9 +54,7 @@ import { Status } from '@cascivo/react'
 The pulse animation respects prefers-reduced-motion
 
 ```tsx
-<Status status="info" pulse>
-  Deploying
-</Status>
+<Status status="info" pulse>Deploying</Status>
 ```
 
 ## Design tokens
@@ -84,4 +82,4 @@ status, indicator, dot, badge
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

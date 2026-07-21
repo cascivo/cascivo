@@ -28,12 +28,12 @@ import { SwipeItem } from '@cascivo/react'
 
 ## Props
 
-| Prop              | Type              | Required | Default | Description                                                                |
-| ----------------- | ----------------- | -------- | ------- | -------------------------------------------------------------------------- |
-| `children`        | `React.ReactNode` | yes      | —       | The row content                                                            |
-| `leadingActions`  | `SwipeAction[]`   | no       | —       | Actions revealed by dragging toward the end edge (shown on the start edge) |
-| `trailingActions` | `SwipeAction[]`   | no       | —       | Actions revealed by dragging toward the start edge (shown on the end edge) |
-| `className`       | `string`          | no       | —       | Additional CSS class names merged onto the root element.                   |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | The row content |
+| `leadingActions` | `SwipeAction[]` | no | — | Actions revealed by dragging toward the end edge (shown on the start edge) |
+| `trailingActions` | `SwipeAction[]` | no | — | Actions revealed by dragging toward the start edge (shown on the end edge) |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -87,4 +87,4 @@ display, swipe, list, mobile, gesture, actions
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

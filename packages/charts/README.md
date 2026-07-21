@@ -49,6 +49,12 @@ export function Traffic() {
 Charts are CSS-token-themed: drop them inside any element carrying a `data-theme` (or import a
 theme stylesheet) and they pick up the same palette, radii, and typography as the rest of cascivo.
 
+> **Vite SSR (TanStack Start, Remix, vite-ssr, workerd)?** Like the rest of cascivo, the
+> chart CSS ships as side-effect imports a bare server loader can't resolve — mark
+> `ssr: { noExternal: [/^@cascivo\//] }` (the pattern already covers `@cascivo/charts`) and
+> import `@cascivo/charts/styles.css` once in your root entry. Full recipe:
+> [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md).
+
 ### React apps must subscribe to signals
 
 The charts are signal-driven. In a plain React app (no Babel signals transform), call `useSignals()`

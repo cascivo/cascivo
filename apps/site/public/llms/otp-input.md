@@ -29,13 +29,13 @@ import { OtpInput } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                          | Required | Default   | Description                                                        |
-| --------------- | ----------------------------- | -------- | --------- | ------------------------------------------------------------------ |
-| `length`        | `number`                      | no       | `6`       | Number of input cells.                                             |
-| `value`         | `string`                      | yes      | —         | The controlled value.                                              |
-| `onValueChange` | `(v: string) => void`         | yes      | —         | Called with the new value when it changes.                         |
-| `disabled`      | `boolean`                     | no       | `false`   | When true, disables the control and removes it from the tab order. |
-| `type`          | `'numeric' \| 'alphanumeric'` | no       | `numeric` | Accepted characters ('numeric' \| 'alphanumeric').                 |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `length` | `number` | no | `6` | Number of input cells. |
+| `value` | `string` | yes | — | The controlled value. |
+| `onValueChange` | `(v: string) => void` | yes | — | Called with the new value when it changes. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `type` | `'numeric' \| 'alphanumeric'` | no | `numeric` | Accepted characters ('numeric' \| 'alphanumeric'). |
 
 ## Examples
 
@@ -77,4 +77,4 @@ form, otp, code, input, verification
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

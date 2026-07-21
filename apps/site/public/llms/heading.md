@@ -30,10 +30,10 @@ import { Heading } from '@cascivo/react'
 
 ## Props
 
-| Prop    | Type                                    | Required | Default                                                    | Description                                           |
-| ------- | --------------------------------------- | -------- | ---------------------------------------------------------- | ----------------------------------------------------- |
-| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6`            | no       | `2`                                                        | Heading level (1–6) mapping to h1–h6.                 |
-| `size`  | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | no       | `derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | no | `2` | Heading level (1–6) mapping to h1–h6. |
+| `size` | `'sm' \| 'md' \| 'lg' \| 'xl' \| '2xl'` | no | `derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -54,9 +54,7 @@ import { Heading } from '@cascivo/react'
 Keep the document outline correct while controlling the visual scale
 
 ```tsx
-<Heading level={2} size="2xl">
-  Visually large, semantically h2
-</Heading>
+<Heading level={2} size="2xl">Visually large, semantically h2</Heading>
 ```
 
 ## Design tokens
@@ -87,4 +85,4 @@ typography, heading, title
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

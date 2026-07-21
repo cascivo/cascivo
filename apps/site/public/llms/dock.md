@@ -27,12 +27,12 @@ import { Dock } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type         | Required | Default | Description                                                                     |
-| ------------- | ------------ | -------- | ------- | ------------------------------------------------------------------------------- |
-| `ariaLabel`   | `string`     | no       | —       | Accessible label for the dock navigation; defaults to the built-in i18n string. |
-| `items`       | `DockItem[]` | yes      | —       | Navigation items, each with a label, icon, and optional href or onClick         |
-| `activeIndex` | `number`     | no       | —       | Index of the currently active item (0-based)                                    |
-| `className`   | `string`     | no       | —       | Additional CSS class names merged onto the root element.                        |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Accessible label for the dock navigation; defaults to the built-in i18n string. |
+| `items` | `DockItem[]` | yes | — | Navigation items, each with a label, icon, and optional href or onClick |
+| `activeIndex` | `number` | no | — | Index of the currently active item (0-based) |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -96,4 +96,4 @@ dock, tab-bar, bottom-nav, mobile, navigation, app-shell
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

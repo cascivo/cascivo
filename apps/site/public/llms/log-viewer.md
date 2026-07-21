@@ -28,17 +28,17 @@ import { LogViewer } from '@cascivo/react'
 
 ## Props
 
-| Prop             | Type                                                       | Required | Default   | Description                                                     |
-| ---------------- | ---------------------------------------------------------- | -------- | --------- | --------------------------------------------------------------- |
-| `lines`          | `ReadonlySignal<readonly LogLine[]> \| readonly LogLine[]` | yes      | —         | The log lines to display (a signal or array).                   |
-| `rowHeight`      | `number`                                                   | no       | `20`      | Height of each row in pixels, used for virtualization.          |
-| `overscan`       | `number`                                                   | no       | `8`       | Number of extra rows rendered above and below the viewport.     |
-| `follow`         | `boolean`                                                  | no       | —         | Whether the view auto-scrolls to follow new lines (controlled). |
-| `onFollowChange` | `(follow: boolean) => void`                                | no       | —         | Called with the new follow state when it changes.               |
-| `ansi`           | `boolean`                                                  | no       | `false`   | When true, parses ANSI color escape codes into colored spans.   |
-| `search`         | `string`                                                   | no       | —         | Query used to filter and highlight matching lines.              |
-| `maxHeight`      | `string`                                                   | no       | `'24rem'` | Maximum height of the scroll viewport (CSS length).             |
-| `labels`         | `LogViewerLabels`                                          | no       | —         | Overrides for the component’s user-visible strings (i18n).      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `lines` | `ReadonlySignal<readonly LogLine[]> \| readonly LogLine[]` | yes | — | The log lines to display (a signal or array). |
+| `rowHeight` | `number` | no | `20` | Height of each row in pixels, used for virtualization. |
+| `overscan` | `number` | no | `8` | Number of extra rows rendered above and below the viewport. |
+| `follow` | `boolean` | no | — | Whether the view auto-scrolls to follow new lines (controlled). |
+| `onFollowChange` | `(follow: boolean) => void` | no | — | Called with the new follow state when it changes. |
+| `ansi` | `boolean` | no | `false` | When true, parses ANSI color escape codes into colored spans. |
+| `search` | `string` | no | — | Query used to filter and highlight matching lines. |
+| `maxHeight` | `string` | no | `'24rem'` | Maximum height of the scroll viewport (CSS length). |
+| `labels` | `LogViewerLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
 
@@ -55,12 +55,7 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 ### Static log with levels
 
 ```tsx
-<LogViewer
-  lines={[
-    { id: 1, text: 'Build started', level: 'info' },
-    { id: 2, text: 'Type error', level: 'error' },
-  ]}
-/>
+<LogViewer lines={[{ id: 1, text: "Build started", level: "info" }, { id: 2, text: "Type error", level: "error" }]} />
 ```
 
 ### ANSI colored output
@@ -101,4 +96,4 @@ log, stream, virtual, console, terminal, monospace
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

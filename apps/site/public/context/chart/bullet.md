@@ -24,17 +24,17 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ## Props
 
-| Name        | Type       | Required | Default | Description                                              |
-| ----------- | ---------- | -------- | ------- | -------------------------------------------------------- |
-| `value`     | `number`   | Yes      | —       | Current measure value                                    |
-| `target`    | `number`   | Yes      | —       | Target marker value                                      |
-| `ranges`    | `number[]` | Yes      | —       | Qualitative range breakpoints (sorted ascending)         |
-| `label`     | `string`   | Yes      | —       | Text label for the control.                              |
-| `min`       | `number`   | No       | 0       | Minimum allowed value.                                   |
-| `max`       | `number`   | No       | —       | Domain maximum (defaults to last range)                  |
-| `width`     | `number`   | No       | 300     | Width of the component.                                  |
-| `height`    | `number`   | No       | 40      | Height of the component.                                 |
-| `className` | `string`   | No       | —       | Additional CSS class names merged onto the root element. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | Yes | — | Current measure value |
+| `target` | `number` | Yes | — | Target marker value |
+| `ranges` | `number[]` | Yes | — | Qualitative range breakpoints (sorted ascending) |
+| `label` | `string` | Yes | — | Text label for the control. |
+| `min` | `number` | No | 0 | Minimum allowed value. |
+| `max` | `number` | No | — | Domain maximum (defaults to last range) |
+| `width` | `number` | No | 300 | Width of the component. |
+| `height` | `number` | No | 40 | Height of the component. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -49,7 +49,8 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 
 ```jsx
 import { Bullet } from '@cascivo/charts'
-;<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
+
+<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
 
 ## AI context prompt

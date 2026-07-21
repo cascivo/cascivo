@@ -27,11 +27,11 @@ import { ContainedList } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                       | Required | Default   | Description                                  |
-| -------- | -------------------------- | -------- | --------- | -------------------------------------------- |
-| `label`  | `ReactNode`                | yes      | —         | Text label for the control.                  |
-| `kind`   | `'on-page' \| 'disclosed'` | no       | `on-page` | Visual treatment — 'on-page' or 'disclosed'. |
-| `action` | `ReactNode`                | no       | —         | Primary action shown in the component.       |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `ReactNode` | yes | — | Text label for the control. |
+| `kind` | `'on-page' \| 'disclosed'` | no | `on-page` | Visual treatment — 'on-page' or 'disclosed'. |
+| `action` | `ReactNode` | no | — | Primary action shown in the component. |
 
 ## Examples
 
@@ -49,9 +49,7 @@ import { ContainedList } from '@cascivo/react'
 ```tsx
 <ContainedList label="Settings" kind="disclosed">
   <ContainedListItem asChild>
-    <button type="button" onClick={open}>
-      Profile
-    </button>
+    <button type="button" onClick={open}>Profile</button>
   </ContainedListItem>
 </ContainedList>
 ```
@@ -80,4 +78,4 @@ list, container, rows, group
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

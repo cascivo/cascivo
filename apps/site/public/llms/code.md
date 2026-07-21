@@ -27,9 +27,9 @@ import { Code } from '@cascivo/react'
 
 ## Props
 
-| Prop   | Type           | Required | Default | Description                                           |
-| ------ | -------------- | -------- | ------- | ----------------------------------------------------- |
-| `size` | `'sm' \| 'md'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -44,9 +44,7 @@ import { Code } from '@cascivo/react'
 Sits inline with surrounding text
 
 ```tsx
-<Text>
-  Run <Code>vp check</Code> before committing.
-</Text>
+<Text>Run <Code>vp check</Code> before committing.</Text>
 ```
 
 ### Small
@@ -80,4 +78,4 @@ typography, code, inline, mono
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

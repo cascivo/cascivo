@@ -22,13 +22,13 @@ import { ScrollArea } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                   | Required | Default    | Description                                             |
-| ------------- | -------------------------------------- | -------- | ---------- | ------------------------------------------------------- |
-| `height`      | `string`                               | no       | —          | Max block size of the container (any CSS length)        |
-| `width`       | `string`                               | no       | —          | Max inline size of the container (any CSS length)       |
-| `orientation` | `'vertical' \| 'horizontal' \| 'both'` | no       | `vertical` | Which axes may scroll                                   |
-| `edges`       | `'shadow' \| 'mask' \| 'none'`         | no       | `shadow`   | Edge affordance: box-shadow, a mask-image fade, or none |
-| `children`    | `ReactNode`                            | no       | —          | Scrollable content                                      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `height` | `string` | no | — | Max block size of the container (any CSS length) |
+| `width` | `string` | no | — | Max inline size of the container (any CSS length) |
+| `orientation` | `'vertical' \| 'horizontal' \| 'both'` | no | `vertical` | Which axes may scroll |
+| `edges` | `'shadow' \| 'mask' \| 'none'` | no | `shadow` | Edge affordance: box-shadow, a mask-image fade, or none |
+| `children` | `ReactNode` | no | — | Scrollable content |
 
 ## Examples
 
@@ -74,4 +74,4 @@ scroll, overflow, scrollbar, container, layout
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

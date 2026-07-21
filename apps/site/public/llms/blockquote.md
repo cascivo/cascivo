@@ -22,9 +22,9 @@ import { Blockquote } from '@cascivo/react'
 
 ## Props
 
-| Prop   | Type     | Required | Default     | Description                                               |
-| ------ | -------- | -------- | ----------- | --------------------------------------------------------- |
-| `cite` | `string` | no       | `undefined` | URL of the quote’s source (sets the HTML cite attribute). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `cite` | `string` | no | `undefined` | URL of the quote’s source (sets the HTML cite attribute). |
 
 ## Examples
 
@@ -68,4 +68,4 @@ typography, quote, blockquote, citation
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

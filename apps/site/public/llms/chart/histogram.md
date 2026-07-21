@@ -21,17 +21,17 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop          | Type       | Required | Default | Description                                                           |
-| ------------- | ---------- | -------- | ------- | --------------------------------------------------------------------- |
-| `data`        | `number[]` | yes      | —       | Array of numeric values to bin                                        |
-| `bins`        | `number`   | no       | —       | Explicit bin count (defaults to Freedman–Diaconis)                    |
-| `title`       | `string`   | yes      | —       | Title text for the component.                                         |
-| `label`       | `string`   | yes      | —       | X-axis label                                                          |
-| `description` | `string`   | no       | —       | Supporting description text.                                          |
-| `width`       | `number`   | no       | —       | Width of the component.                                               |
-| `height`      | `number`   | no       | `300`   | Height of the component.                                              |
-| `className`   | `string`   | no       | —       | Additional CSS class names merged onto the root element.              |
-| `plain`       | `boolean`  | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `number[]` | yes | — | Array of numeric values to bin |
+| `bins` | `number` | no | — | Explicit bin count (defaults to Freedman–Diaconis) |
+| `title` | `string` | yes | — | Title text for the component. |
+| `label` | `string` | yes | — | X-axis label |
+| `description` | `string` | no | — | Supporting description text. |
+| `width` | `number` | no | — | Width of the component. |
+| `height` | `number` | no | `300` | Height of the component. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -63,4 +63,4 @@ chart, histogram, distribution, frequency, data-viz
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

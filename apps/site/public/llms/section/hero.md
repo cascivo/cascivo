@@ -23,15 +23,15 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type                    | Required | Default      | Description                                                     |
-| -------------- | ----------------------- | -------- | ------------ | --------------------------------------------------------------- |
-| `variant`      | `"centered" \| "split"` | no       | `"centered"` | Layout variant: centered (single column) or split (two columns) |
-| `title`        | `ReactNode`             | yes      | —            | Primary heading content                                         |
-| `eyebrow`      | `ReactNode`             | no       | —            | Small monospace label above the title                           |
-| `description`  | `ReactNode`             | no       | —            | Supporting paragraph below the title                            |
-| `actions`      | `ReactNode`             | no       | —            | Buttons or links rendered in a row below the description        |
-| `media`        | `ReactNode`             | no       | —            | Right-hand slot in the split variant (image, demo, code block)  |
-| `headingLevel` | `1 \| 2 \| 3`           | no       | `1`          | HTML heading level for document outline control                 |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `"centered" \| "split"` | no | `"centered"` | Layout variant: centered (single column) or split (two columns) |
+| `title` | `ReactNode` | yes | — | Primary heading content |
+| `eyebrow` | `ReactNode` | no | — | Small monospace label above the title |
+| `description` | `ReactNode` | no | — | Supporting paragraph below the title |
+| `actions` | `ReactNode` | no | — | Buttons or links rendered in a row below the description |
+| `media` | `ReactNode` | no | — | Right-hand slot in the split variant (image, demo, code block) |
+| `headingLevel` | `1 \| 2 \| 3` | no | `1` | HTML heading level for document outline control |
 
 ## Examples
 
@@ -40,17 +40,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 Single-column hero with eyebrow, headline, description, and CTA buttons
 
 ```tsx
-<Hero
-  eyebrow="v8 — Assembly Included"
-  title="Ship the dashboard your ops team deserves"
-  description="Cascade gives you charts, layouts and sections — fully composed, copy-paste ready."
-  actions={
-    <>
-      <Button>Get started</Button>
-      <Button variant="ghost">View docs</Button>
-    </>
-  }
-/>
+<Hero eyebrow="v8 — Assembly Included" title="Ship the dashboard your ops team deserves" description="Cascade gives you charts, layouts and sections — fully composed, copy-paste ready." actions={<><Button>Get started</Button><Button variant="ghost">View docs</Button></>} />
 ```
 
 ### Split hero
@@ -58,13 +48,7 @@ Single-column hero with eyebrow, headline, description, and CTA buttons
 Two-column layout with copy on the left and media on the right
 
 ```tsx
-<Hero
-  variant="split"
-  title="Signal-driven, CSS-native"
-  description="Fine-grained reactivity with zero re-renders. Beautiful by default."
-  actions={<Button>Start building</Button>}
-  media={<img src="/preview.png" alt="Dashboard preview" />}
-/>
+<Hero variant="split" title="Signal-driven, CSS-native" description="Fine-grained reactivity with zero re-renders. Beautiful by default." actions={<Button>Start building</Button>} media={<img src="/preview.png" alt="Dashboard preview" />} />
 ```
 
 ## Design tokens
@@ -92,4 +76,4 @@ section, hero, marketing
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -27,17 +27,17 @@ import { ActionSheet } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                                  | Required | Default | Description                                                                   |
-| -------------- | ------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
-| `open`         | `boolean`                             | no       | —       | Whether the component is open (controlled).                                   |
-| `defaultOpen`  | `boolean`                             | no       | —       | Whether the component is open on first render (uncontrolled).                 |
-| `onOpenChange` | `(open: boolean) => void`             | no       | —       | Called with the next open state when it changes.                              |
-| `actions`      | `ActionSheetAction[]`                 | yes      | —       | Choices, each with a label, onSelect, and optional destructive/disabled flags |
-| `title`        | `React.ReactNode`                     | no       | —       | Title text for the component.                                                 |
-| `description`  | `React.ReactNode`                     | no       | —       | Supporting description text.                                                  |
-| `showCancel`   | `boolean`                             | no       | `true`  | When true, shows a cancel button below the actions.                           |
-| `labels`       | `{ cancel?: string; label?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                    |
-| `className`    | `string`                              | no       | —       | Additional CSS class names merged onto the root element.                      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | no | — | Whether the component is open (controlled). |
+| `defaultOpen` | `boolean` | no | — | Whether the component is open on first render (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
+| `actions` | `ActionSheetAction[]` | yes | — | Choices, each with a label, onSelect, and optional destructive/disabled flags |
+| `title` | `React.ReactNode` | no | — | Title text for the component. |
+| `description` | `React.ReactNode` | no | — | Supporting description text. |
+| `showCancel` | `boolean` | no | `true` | When true, shows a cancel button below the actions. |
+| `labels` | `{ cancel?: string; label?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -60,7 +60,7 @@ import { ActionSheet } from '@cascivo/react'
 Escape and outside press still dismiss the sheet.
 
 ```tsx
-<ActionSheet defaultOpen showCancel={false} actions={[{ label: 'Archive', onSelect: archive }]} />
+<ActionSheet defaultOpen showCancel={false} actions={[{ label: "Archive", onSelect: archive }]} />
 ```
 
 ## Design tokens
@@ -95,4 +95,4 @@ overlay, action-sheet, menu, mobile, sheet
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

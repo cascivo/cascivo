@@ -32,11 +32,11 @@ import { Item } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                   | Required | Default   | Description                                                                                       |
-| --------- | ---------------------- | -------- | --------- | ------------------------------------------------------------------------------------------------- |
-| `asChild` | `boolean`              | no       | `false`   | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `variant` | `'default' \| 'muted'` | no       | `default` | Selects the visual style variant.                                                                 |
-| `size`    | `'sm' \| 'md'`         | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                             |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `variant` | `'default' \| 'muted'` | no | `default` | Selects the visual style variant. |
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -44,16 +44,12 @@ import { Item } from '@cascivo/react'
 
 ```tsx
 <Item>
-  <ItemMedia>
-    <Avatar />
-  </ItemMedia>
+  <ItemMedia><Avatar /></ItemMedia>
   <ItemContent>
     <ItemTitle>Ada Lovelace</ItemTitle>
     <ItemDescription>Mathematician</ItemDescription>
   </ItemContent>
-  <ItemActions>
-    <Button size="sm">Edit</Button>
-  </ItemActions>
+  <ItemActions><Button size="sm">Edit</Button></ItemActions>
 </Item>
 ```
 
@@ -62,9 +58,7 @@ import { Item } from '@cascivo/react'
 ```tsx
 <Item asChild>
   <a href="/profile">
-    <ItemContent>
-      <ItemTitle>Profile</ItemTitle>
-    </ItemContent>
+    <ItemContent><ItemTitle>Profile</ItemTitle></ItemContent>
   </a>
 </Item>
 ```
@@ -92,4 +86,4 @@ row, primitive, list-item, layout
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

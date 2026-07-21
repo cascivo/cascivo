@@ -27,23 +27,18 @@ import { Tabs } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default | Description                                |
-| --------------- | ------------------------- | -------- | ------- | ------------------------------------------ |
-| `defaultValue`  | `string`                  | no       | —       | The initial value when uncontrolled.       |
-| `value`         | `string`                  | no       | —       | The controlled value.                      |
-| `onValueChange` | `(value: string) => void` | no       | —       | Called with the new value when it changes. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
+| `value` | `string` | no | — | The controlled value. |
+| `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Tabs defaultValue="account">
-  <TabsList>
-    <TabsTrigger value="account">Account</TabsTrigger>
-  </TabsList>
-  <TabsContent value="account">…</TabsContent>
-</Tabs>
+<Tabs defaultValue="account"><TabsList><TabsTrigger value="account">Account</TabsTrigger></TabsList><TabsContent value="account">…</TabsContent></Tabs>
 ```
 
 ## Design tokens
@@ -70,4 +65,4 @@ navigation, tabs, sections
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

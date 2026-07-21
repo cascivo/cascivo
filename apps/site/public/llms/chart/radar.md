@@ -21,17 +21,17 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop          | Type                                                | Required | Default | Description                                                           |
-| ------------- | --------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------- |
-| `axes`        | `string[]`                                          | yes      | —       | Axis labels (one per dimension)                                       |
-| `series`      | `{ id: string; label: string; values: number[] }[]` | yes      | —       | One value per axis per series                                         |
-| `max`         | `number`                                            | no       | —       | Maximum value (defaults to data max)                                  |
-| `title`       | `string`                                            | yes      | —       | Title text for the component.                                         |
-| `description` | `string`                                            | no       | —       | Supporting description text.                                          |
-| `width`       | `number`                                            | no       | —       | Width of the component.                                               |
-| `height`      | `number`                                            | no       | `320`   | Height of the component.                                              |
-| `className`   | `string`                                            | no       | —       | Additional CSS class names merged onto the root element.              |
-| `plain`       | `boolean`                                           | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `axes` | `string[]` | yes | — | Axis labels (one per dimension) |
+| `series` | `{ id: string; label: string; values: number[] }[]` | yes | — | One value per axis per series |
+| `max` | `number` | no | — | Maximum value (defaults to data max) |
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `width` | `number` | no | — | Width of the component. |
+| `height` | `number` | no | `320` | Height of the component. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 
@@ -71,4 +71,4 @@ chart, radar, spider, polar, data-viz
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -20,7 +20,7 @@
       "name": "toggle",
       "label": "Switch",
       "primitive": "Accessible <button> + :has()",
-      "loc": 142,
+      "loc": 146,
       "files": 2,
       "deps": 0
     },

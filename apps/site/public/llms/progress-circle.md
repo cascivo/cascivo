@@ -28,13 +28,13 @@ import { ProgressCircle } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type                   | Required | Default | Description                                                              |
-| ----------- | ---------------------- | -------- | ------- | ------------------------------------------------------------------------ |
-| `value`     | `number`               | yes      | —       | Current value from 0 to max — clamped                                    |
-| `max`       | `number`               | no       | `100`   | Maximum allowed value.                                                   |
-| `size`      | `'sm' \| 'md' \| 'lg'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').                    |
-| `showValue` | `boolean`              | no       | `false` | Renders the rounded percentage in the center — pairs best with md and lg |
-| `label`     | `string`               | no       | —       | Accessible name announced by screen readers                              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | yes | — | Current value from 0 to max — clamped |
+| `max` | `number` | no | `100` | Maximum allowed value. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `showValue` | `boolean` | no | `false` | Renders the rounded percentage in the center — pairs best with md and lg |
+| `label` | `string` | no | — | Accessible name announced by screen readers |
 
 ## Examples
 
@@ -77,4 +77,4 @@ progress, loading, circle, feedback
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

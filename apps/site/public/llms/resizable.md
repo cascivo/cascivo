@@ -22,16 +22,16 @@ import { Resizable } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                         | Required | Default      | Description                                      |
-| --------------- | ---------------------------- | -------- | ------------ | ------------------------------------------------ |
-| `label`         | `string`                     | no       | —            | Accessible label for the resize handle.          |
-| `children`      | `ReactNode`                  | yes      | —            | Exactly two panes                                |
-| `orientation`   | `'horizontal' \| 'vertical'` | no       | `horizontal` | Layout orientation of the component.             |
-| `defaultRatio`  | `number`                     | no       | `0.5`        | The initial split ratio when uncontrolled.       |
-| `ratio`         | `number`                     | no       | —            | Controlled ratio (0–1)                           |
-| `minRatio`      | `number`                     | no       | `0.1`        | Minimum allowed split ratio.                     |
-| `maxRatio`      | `number`                     | no       | `0.9`        | Maximum allowed split ratio.                     |
-| `onRatioChange` | `(ratio: number) => void`    | no       | —            | Called with the new split ratio when it changes. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Accessible label for the resize handle. |
+| `children` | `ReactNode` | yes | — | Exactly two panes |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `defaultRatio` | `number` | no | `0.5` | The initial split ratio when uncontrolled. |
+| `ratio` | `number` | no | — | Controlled ratio (0–1) |
+| `minRatio` | `number` | no | `0.1` | Minimum allowed split ratio. |
+| `maxRatio` | `number` | no | `0.9` | Maximum allowed split ratio. |
+| `onRatioChange` | `(ratio: number) => void` | no | — | Called with the new split ratio when it changes. |
 
 ## Examples
 
@@ -77,4 +77,4 @@ splitter, panes, layout, resize, divider
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

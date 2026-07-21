@@ -38,24 +38,22 @@ import { IconButton } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                                         | Required | Default | Description                                                                                       |
-| ---------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
-| `label`    | `string`                                     | yes      | —       | Text label for the control.                                                                       |
-| `icon`     | `React.ReactNode`                            | no       | —       | Icon element rendered in the component.                                                           |
-| `variant`  | `'ghost' \| 'outline' \| 'filled'`           | no       | `ghost` | Selects the visual style variant.                                                                 |
-| `size`     | `'sm' \| 'md' \| 'lg'`                       | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').                                             |
-| `asChild`  | `boolean`                                    | no       | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `disabled` | `boolean`                                    | no       | `false` | When true, disables the control and removes it from the tab order.                                |
-| `onClick`  | `React.MouseEventHandler<HTMLButtonElement>` | no       | —       | Called when the element is clicked.                                                               |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | yes | — | Text label for the control. |
+| `icon` | `React.ReactNode` | no | — | Icon element rendered in the component. |
+| `variant` | `'ghost' \| 'outline' \| 'filled'` | no | `ghost` | Selects the visual style variant. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | no | — | Called when the element is clicked. |
 
 ## Examples
 
 ### Ghost
 
 ```tsx
-<IconButton label="Settings">
-  <GearIcon />
-</IconButton>
+<IconButton label="Settings"><GearIcon /></IconButton>
 ```
 
 ### Filled
@@ -67,11 +65,7 @@ import { IconButton } from '@cascivo/react'
 ### As link
 
 ```tsx
-<IconButton label="Home" asChild>
-  <a href="/">
-    <HomeIcon />
-  </a>
-</IconButton>
+<IconButton label="Home" asChild><a href="/"><HomeIcon /></a></IconButton>
 ```
 
 ## Design tokens
@@ -104,4 +98,4 @@ action, icon, compact, toolbar
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

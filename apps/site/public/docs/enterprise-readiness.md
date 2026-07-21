@@ -1,15 +1,14 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/enterprise-readiness.md
-  registry v0.8.0 · generated 2026-07-20
+  registry v0.8.0 · generated 2026-07-21
 -->
-
 # Enterprise readiness: frictions → shipped primitives
 
 This guide answers an "enterprise-readiness" report that proposed six architectural
 additions after a Vercel-style dashboard dry run. The valuable part of that report is
 the list of **frictions** — the recurring pain points an enterprise team (or an LLM
-generating their code) hits. The proposed _code_, however, was written against a
+generating their code) hits. The proposed *code*, however, was written against a
 generic React/Tailwind mental model, not against cascivo: it reached for `useState`,
 `useEffect`, `useContext`, Tailwind utility classes, a `data-cascivo-theme` attribute,
 a `@cascivo/theme` package, and dot-notation tokens like `color.background.primary` —
@@ -21,14 +20,14 @@ the sixth (a reusable theme runtime) now ships too. This page maps each friction
 real primitive, shows the idiomatic code, and calls out the misconception so an agent
 reading it never regenerates the banned pattern.
 
-| #   | Friction from the report                        | Real answer in cascivo                                                 |
-| --- | ----------------------------------------------- | ---------------------------------------------------------------------- |
-| 1   | Signal vs. React-state cognitive split          | `useControllableSignal` + `useSignals` (`@cascivo/core`)               |
-| 2   | No layout primitives for dense grids            | `Grid` / `AutoGrid` / `Flex` / `Columns` / `Center` / `Stack`          |
-| 3   | Theme switching flashes / fights the cascade    | `ThemeProvider` / `useTheme` / `themePreloadScript` (`@cascivo/react`) |
-| 4   | Signal leaks across route changes               | `useScope` / `createScope` (`@cascivo/core`)                           |
-| 5   | Token names invisible to the LLM context window | `CascivoToken` / `CascivoColorToken` (`@cascivo/tokens/tokens`)        |
-| 6   | Forms fight signal reactivity                   | `createForm` / `useForm` / `Form` / `field` (`@cascivo/components`)    |
+| # | Friction from the report | Real answer in cascivo |
+| - | ------------------------ | ---------------------- |
+| 1 | Signal vs. React-state cognitive split | `useControllableSignal` + `useSignals` (`@cascivo/core`) |
+| 2 | No layout primitives for dense grids | `Grid` / `AutoGrid` / `Flex` / `Columns` / `Center` / `Stack` |
+| 3 | Theme switching flashes / fights the cascade | `ThemeProvider` / `useTheme` / `themePreloadScript` (`@cascivo/react`) |
+| 4 | Signal leaks across route changes | `useScope` / `createScope` (`@cascivo/core`) |
+| 5 | Token names invisible to the LLM context window | `CascivoToken` / `CascivoColorToken` (`@cascivo/tokens/tokens`) |
+| 6 | Forms fight signal reactivity | `createForm` / `useForm` / `Form` / `field` (`@cascivo/components`) |
 
 ---
 
@@ -39,11 +38,10 @@ controlled/uncontrolled prop pattern onto a signal every time, and a raw React
 `useState` next to a signal does cause double reactivity.
 
 **The report's fix was wrong for cascivo:** its `useSignalState` is built on `useState`
-
-- `useEffect` + a `forceUpdate({})` — all three hooks are banned in cascivo components,
-  and it re-introduces the very React render cycle it claims to avoid. The `$isActive={signal}`
-  JSX directive it proposes doesn't exist and contradicts the owned-code model (there is no
-  compiler intercepting your JSX).
++ `useEffect` + a `forceUpdate({})` — all three hooks are banned in cascivo components,
+and it re-introduces the very React render cycle it claims to avoid. The `$isActive={signal}`
+JSX directive it proposes doesn't exist and contradicts the owned-code model (there is no
+compiler intercepting your JSX).
 
 **The shipped answer** is [`useControllableSignal`](https://github.com/cascivo/cascivo/blob/main/packages/core/src/controllable.ts) —
 it codifies the controlled/uncontrolled bridge once, with no effect:
@@ -62,7 +60,7 @@ function Toggle({ pressed, defaultPressed, onPressedChange }: ToggleProps) {
 }
 ```
 
-The rule an agent must internalize: **the signal _is_ the state.** You never pair a
+The rule an agent must internalize: **the signal *is* the state.** You never pair a
 signal with `useState`. In React apps that don't run the Babel signals transform
 (`apps/examples/*`, any consumer app), a component that reads `signal.value` during
 render calls `useSignals()` as its first statement — that is the entire "bridge."
@@ -167,7 +165,7 @@ stale state when the user navigates back.
 
 **The report's fix was wrong for cascivo:** its `useComponentSignals` registry disposes
 inside `useEffect` (banned), and Preact signals have no `.dispose()`/`.reset()` — only
-_effects_ hold subscriptions worth tearing down, and a plain signal is garbage-collected
+*effects* hold subscriptions worth tearing down, and a plain signal is garbage-collected
 with the component that owns it.
 
 **The shipped answer** is [`useScope` / `createScope`](https://github.com/cascivo/cascivo/blob/main/packages/core/src/scope.ts) — a

@@ -23,15 +23,15 @@ Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an op
 
 ## Props
 
-| Name          | Type      | Required | Default   | Description                                                                |
-| ------------- | --------- | -------- | --------- | -------------------------------------------------------------------------- |
-| `value`       | `string`  | Yes      | —         | Code to render                                                             |
-| `language`    | `string`  | No       | plaintext | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash) |
-| `lineNumbers` | `boolean` | No       | false     | Show the line-number gutter                                                |
-| `wrap`        | `boolean` | No       | false     | Soft-wrap long lines                                                       |
-| `tabSize`     | `number`  | No       | 2         | Spaces per tab stop                                                        |
-| `label`       | `string`  | No       | —         | Accessible label for the code block                                        |
-| `className`   | `string`  | No       | —         | Additional CSS class names merged onto the root element.                   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | Yes | — | Code to render |
+| `language` | `string` | No | plaintext | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash) |
+| `lineNumbers` | `boolean` | No | false | Show the line-number gutter |
+| `wrap` | `boolean` | No | false | Soft-wrap long lines |
+| `tabSize` | `number` | No | 2 | Spaces per tab stop |
+| `label` | `string` | No | — | Accessible label for the code block |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -48,7 +48,8 @@ Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an op
 ```jsx
 import { Highlight } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
-;<Highlight language="json" value={'{ "ok": true }'} />
+
+<Highlight language="json" value={'{ "ok": true }'} />
 ```
 
 ## AI context prompt

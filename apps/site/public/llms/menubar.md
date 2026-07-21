@@ -27,21 +27,18 @@ import { Menubar } from '@cascivo/react'
 
 ## Props
 
-| Prop         | Type            | Required | Default | Description                                              |
-| ------------ | --------------- | -------- | ------- | -------------------------------------------------------- |
-| `menus`      | `MenubarMenu[]` | yes      | —       | The top-level menus to render.                           |
-| `aria-label` | `string`        | yes      | —       | Accessible label used when no visible label is present.  |
-| `className`  | `string`        | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `menus` | `MenubarMenu[]` | yes | — | The top-level menus to render. |
+| `aria-label` | `string` | yes | — | Accessible label used when no visible label is present. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Menubar
-  aria-label="Main"
-  menus={[{ id: 'file', label: 'File', items: [{ id: 'new', label: 'New', onSelect: () => {} }] }]}
-/>
+<Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />
 ```
 
 ## Design tokens
@@ -70,4 +67,4 @@ navigation, menubar, menu, application
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

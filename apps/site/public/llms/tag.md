@@ -35,12 +35,12 @@ import { Tag } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                                                       | Required | Default   | Description                                                     |
-| -------------- | ---------------------------------------------------------- | -------- | --------- | --------------------------------------------------------------- |
-| `variant`      | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `default` | Selects the visual style variant.                               |
-| `size`         | `'sm' \| 'md'`                                             | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').           |
-| `onDismiss`    | `() => void`                                               | no       | —         | When provided, renders a trailing remove button inside the chip |
-| `dismissLabel` | `string`                                                   | no       | `Remove`  | Accessible label for the dismiss button.                        |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `default` | Selects the visual style variant. |
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `onDismiss` | `() => void` | no | — | When provided, renders a trailing remove button inside the chip |
+| `dismissLabel` | `string` | no | `Remove` | Accessible label for the dismiss button. |
 
 ## Examples
 
@@ -96,4 +96,4 @@ chip, label, filter, category
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

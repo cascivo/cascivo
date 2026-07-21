@@ -7,7 +7,9 @@ forking components. This page is the end-to-end recipe.
 
 For the underlying cascade-layer rules see
 [`CSS-LAYERS-PITFALL.md`](./CSS-LAYERS-PITFALL.md); for the full token list see
-[`TOKENS.md`](./TOKENS.md).
+[`TOKENS.md`](./TOKENS.md). For the full list of the twelve first-party themes with their
+import path ↔ `data-theme` value mapping, see
+[GETTING-STARTED.md → Theme export → `data-theme` value](./GETTING-STARTED.md#theme-export--data-theme-value).
 
 ---
 

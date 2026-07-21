@@ -1,9 +1,8 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/troubleshooting.md
-  registry v0.8.0 · generated 2026-07-20
+  registry v0.8.0 · generated 2026-07-21
 -->
-
 # Troubleshooting cascivo
 
 The failures adopters actually hit, in FAQ form. Each entry: symptom → cause →
@@ -96,12 +95,12 @@ function MyPanel() {
 
 **Cause:** cascivo ships everything in cascade layers
 (`cascivo.base < cascivo.theme < cascivo.component`). If your override is
-_inside a layer_ that is ordered before `cascivo.component`, it loses no matter
+*inside a layer* that is ordered before `cascivo.component`, it loses no matter
 how specific it is.
 
 **Fix:** unlayered author CSS beats **every** cascivo layer regardless of
 specificity — a plain stylesheet override just wins. To override from within a
-layer, declare your layer ordered _after_ `cascivo.component`.
+layer, declare your layer ordered *after* `cascivo.component`.
 
 The inverse pitfall also exists: a global reset like `* { margin: 0; padding: 0 }`
 written **outside** any layer beats all cascivo layers too, zeroing out every
@@ -139,11 +138,11 @@ CSS. The recommended pattern (a brand indirection variable) is in
 
 ## `cascivo add` / `cascivo list` fails offline or the registry is unreachable
 
-**Behavior:** the registry _index_ is fetched network-first with an offline
+**Behavior:** the registry *index* is fetched network-first with an offline
 fallback — the CLI caches every fetched copy under `~/.cascivo/cache` and, when
 the network fails, falls back to the last cached copy with a
-`Could not reach … — using the last cached copy.` notice. Component _file
-payloads_ are never cached (they must be fresh, and a truncated install must
+`Could not reach … — using the last cached copy.` notice. Component *file
+payloads* are never cached (they must be fresh, and a truncated install must
 fail), so `cascivo add` itself needs a working connection.
 
 **Fix:** check connectivity and the `registry` URL in `cascivo.config.ts`
@@ -196,7 +195,7 @@ provider, nothing to buy into. Start with a single button.
 
 **Do I need Tailwind?** No. Styling is modern platform CSS — `@layer`, custom
 properties, container queries — driven by a three-tier token system. Using
-Tailwind v4 _alongside_ cascivo works too: [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md).
+Tailwind v4 *alongside* cascivo works too: [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md).
 
 **Does it work with Next.js / React Server Components?** Yes — components ship
 `'use client'` preserved. Setup in [USING-WITH-NEXTJS.md](/docs/using-with-nextjs.md).

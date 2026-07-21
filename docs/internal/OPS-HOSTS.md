@@ -2,6 +2,17 @@
 
 Internal runbook for where the docs are served and how they stay fresh.
 
+> **Addendum (2026-07-20).** A fourth TanStack Start adopter report again described
+> per-component / per-theme reference docs as unreachable on the deployed host — the same
+> delivery-layer symptom, not a repo-content defect (the source docs are correct). If the
+> `docs.cascivo.com` → `cascivo.com` 301 and the custom-domain unbinding below are still
+> outstanding, that is the standing cause; finish them, and confirm the daily
+> `docs-freshness` workflow is green (check its recent runs — a persistently red or
+> skipped run is the process gap to escalate). New freshness canaries added for this report:
+> `/docs/getting-started.md` must carry `noExternal` + `styles.css`,
+> `/docs/using-with-vite-ssr.md` must carry `suppressHydrationWarning`, plus
+> `/llms/data-table.md` and `/docs/theming.md` surfaces.
+
 ## Decision (2026-07): one canonical host
 
 **`cascivo.com` is the single canonical host for everything** — marketing, the docs

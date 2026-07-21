@@ -21,17 +21,17 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop          | Type                                        | Required | Default | Description                                                                                                               |
-| ------------- | ------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `data`        | `{ x: string; y: string; value: number }[]` | yes      | —       | Array of x/y/value triples                                                                                                |
-| `title`       | `string`                                    | yes      | —       | Title text for the component.                                                                                             |
-| `description` | `string`                                    | no       | —       | Supporting description text.                                                                                              |
-| `width`       | `number`                                    | no       | —       | Width of the component.                                                                                                   |
-| `height`      | `number`                                    | no       | `320`   | Height of the component.                                                                                                  |
-| `className`   | `string`                                    | no       | —       | Additional CSS class names merged onto the root element.                                                                  |
-| `plain`       | `boolean`                                   | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                     |
-| `visualMap`   | `VisualMapOptions`                          | no       | —       | Map cell value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range. |
-| `toolbox`     | `boolean \| ToolboxOptions`                 | no       | —       | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `{ x: string; y: string; value: number }[]` | yes | — | Array of x/y/value triples |
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `width` | `number` | no | — | Width of the component. |
+| `height` | `number` | no | `320` | Height of the component. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| `visualMap` | `VisualMapOptions` | no | — | Map cell value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range. |
+| `toolbox` | `boolean \| ToolboxOptions` | no | — | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter). |
 
 ## Examples
 
@@ -67,4 +67,4 @@ chart, heatmap, matrix, data-viz
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

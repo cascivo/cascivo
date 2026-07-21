@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop   | Type                          | Required | Default | Description        |
-| ------ | ----------------------------- | -------- | ------- | ------------------ |
-| `cols` | `number`                      | no       | `3`     | Number of columns  |
-| `gap`  | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | `4`     | Spacing token step |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `cols` | `number` | no | `3` | Number of columns |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
 
 ## Examples
 
@@ -30,11 +30,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 Variable-height cards laid out in a masonry pattern; falls back to CSS columns
 
 ```tsx
-<Masonry cols={3} gap={4}>
-  {items.map((item) => (
-    <Card key={item.id}>{item.content}</Card>
-  ))}
-</Masonry>
+<Masonry cols={3} gap={4}>{items.map(item => <Card key={item.id}>{item.content}</Card>)}</Masonry>
 ```
 
 ## Design tokens
@@ -56,4 +52,4 @@ layout, masonry, gallery
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

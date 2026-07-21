@@ -34,28 +34,20 @@ import { SegmentedControl } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                       | Required | Default | Description                                                        |
-| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `options`       | `SegmentedControlOption[]` | yes      | —       | The selectable options.                                            |
-| `value`         | `string`                   | yes      | —       | The controlled value.                                              |
-| `onValueChange` | `(v: string) => void`      | yes      | —       | Called with the new value when it changes.                         |
-| `size`          | `'sm' \| 'md' \| 'lg'`     | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `disabled`      | `boolean`                  | no       | `false` | When true, disables the control and removes it from the tab order. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `SegmentedControlOption[]` | yes | — | The selectable options. |
+| `value` | `string` | yes | — | The controlled value. |
+| `onValueChange` | `(v: string) => void` | yes | — | Called with the new value when it changes. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<SegmentedControl
-  options={[
-    { label: 'Day', value: 'day' },
-    { label: 'Week', value: 'week' },
-    { label: 'Month', value: 'month' },
-  ]}
-  value="day"
-  onValueChange={() => {}}
-/>
+<SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value="day" onValueChange={() => {}} />
 ```
 
 ## Design tokens
@@ -84,4 +76,4 @@ form, toggle, group, segmented, input
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

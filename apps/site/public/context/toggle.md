@@ -39,14 +39,15 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 
 ## Props
 
-| Name             | Type                         | Required | Default | Description                                                                                                                                                                           |
-| ---------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `checked`        | `boolean`                    | No       | —       | Whether the control is checked (controlled).                                                                                                                                          |
-| `defaultChecked` | `boolean`                    | No       | false   | Whether the control is checked on first render (uncontrolled).                                                                                                                        |
-| `onChange`       | `(checked: boolean) => void` | No       | —       | Called when the value changes.                                                                                                                                                        |
-| `label`          | `string`                     | No       | —       | Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text. |
-| `size`           | `'sm' \| 'md'`               | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                 |
-| `disabled`       | `boolean`                    | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                    |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `checked` | `boolean` | No | — | Whether the control is checked (controlled). |
+| `defaultChecked` | `boolean` | No | false | Whether the control is checked on first render (uncontrolled). |
+| `onValueChange` | `(checked: boolean) => void` | No | — | Called with the new checked state when the switch is toggled. |
+| `onChange` | `(checked: boolean) => void` | No | — | Deprecated: use onValueChange (same checked boolean). |
+| `label` | `string` | No | — | Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text. |
+| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 
@@ -67,15 +68,15 @@ Renders a <button role="switch"> with aria-checked reflecting state, so assistiv
 ### Controlled
 
 ```jsx
-<Toggle checked={enabled} onChange={setEnabled} label="Dark mode" />
+<Toggle checked={enabled} onValueChange={setEnabled} label="Dark mode" />
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                                   |
-| ----------- | -------- | -------------------------------------------------------------------------------------- |
-| token names | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
-| label copy  | flexible | Optional label describing the setting being toggled                                    |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens |
+| label copy | flexible | Optional label describing the setting being toggled |
 
 ## AI context prompt
 

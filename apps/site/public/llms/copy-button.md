@@ -32,11 +32,11 @@ import { CopyButton } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                 | Required | Default | Description                                           |
-| -------- | ------------------------------------ | -------- | ------- | ----------------------------------------------------- |
-| `value`  | `string`                             | yes      | —       | The text written to the clipboard on click            |
-| `size`   | `'sm' \| 'md'`                       | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `labels` | `{ copy?: string; copied?: string }` | no       | —       | Overrides the built-in i18n labels per instance       |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | yes | — | The text written to the clipboard on click |
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `labels` | `{ copy?: string; copied?: string }` | no | — | Overrides the built-in i18n labels per instance |
 
 ## Examples
 
@@ -90,4 +90,4 @@ clipboard, copy, button, snippet
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

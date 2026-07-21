@@ -27,9 +27,9 @@ import { Menu } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type              | Required | Default | Description                                                         |
-| ---------- | ----------------- | -------- | ------- | ------------------------------------------------------------------- |
-| `children` | `React.ReactNode` | yes      | —       | The MenuTrigger first, followed by MenuItem/MenuSeparator children. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | The MenuTrigger first, followed by MenuItem/MenuSeparator children. |
 
 ## Examples
 
@@ -50,9 +50,7 @@ import { Menu } from '@cascivo/react'
   <MenuTrigger aria-label="More actions">…</MenuTrigger>
   <MenuItem onSelect={share}>Share</MenuItem>
   <MenuSeparator />
-  <MenuItem onSelect={remove} disabled>
-    Delete
-  </MenuItem>
+  <MenuItem onSelect={remove} disabled>Delete</MenuItem>
 </Menu>
 ```
 
@@ -82,4 +80,4 @@ overlay, menu, dropdown, floating
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -22,9 +22,9 @@ import { VisuallyHidden } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type        | Required | Default | Description                                               |
-| ---------- | ----------- | -------- | ------- | --------------------------------------------------------- |
-| `children` | `ReactNode` | yes      | —       | Content announced by assistive technology but not painted |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `ReactNode` | yes | — | Content announced by assistive technology but not painted |
 
 ## Examples
 
@@ -33,18 +33,13 @@ import { VisuallyHidden } from '@cascivo/react'
 Gives an icon-only control an accessible name
 
 ```tsx
-<button type="button">
-  <CloseIcon />
-  <VisuallyHidden>Close dialog</VisuallyHidden>
-</button>
+<button type="button"><CloseIcon /><VisuallyHidden>Close dialog</VisuallyHidden></button>
 ```
 
 ### Table context
 
 ```tsx
-<th>
-  Price <VisuallyHidden>(in euros)</VisuallyHidden>
-</th>
+<th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>
 ```
 
 ## Accessibility
@@ -62,4 +57,4 @@ accessibility, screen-reader, sr-only, hidden
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

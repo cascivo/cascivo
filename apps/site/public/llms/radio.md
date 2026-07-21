@@ -27,22 +27,19 @@ import { Radio } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type      | Required | Default | Description                                                        |
-| ---------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`    | `string`  | no       | —       | Text label for the control.                                        |
-| `value`    | `string`  | yes      | —       | The controlled value.                                              |
-| `disabled` | `boolean` | no       | `false` | When true, disables the control and removes it from the tab order. |
-| `name`     | `string`  | no       | —       | Form field name shared by the radio group.                         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Text label for the control. |
+| `value` | `string` | yes | — | The controlled value. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `name` | `string` | no | — | Form field name shared by the radio group. |
 
 ## Examples
 
 ### Group
 
 ```tsx
-<RadioGroup name="plan" defaultValue="pro">
-  <Radio value="pro" label="Pro" />
-  <Radio value="team" label="Team" />
-</RadioGroup>
+<RadioGroup name="plan" defaultValue="pro"><Radio value="pro" label="Pro" /><Radio value="team" label="Team" /></RadioGroup>
 ```
 
 ## Design tokens
@@ -70,4 +67,4 @@ form, choice, group
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

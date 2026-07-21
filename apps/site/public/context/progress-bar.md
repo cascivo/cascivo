@@ -34,14 +34,14 @@ role="progressbar" with value/max exposes completion to assistive tech; the labe
 
 ## Props
 
-| Name         | Type                               | Required | Default | Description                                                    |
-| ------------ | ---------------------------------- | -------- | ------- | -------------------------------------------------------------- |
-| `value`      | `number`                           | No       | —       | Current value from 0 to max; omit for an indeterminate bar     |
-| `max`        | `number`                           | No       | 100     | Maximum allowed value.                                         |
-| `label`      | `string`                           | No       | —       | Visible label above the track, wired via aria-labelledby       |
-| `helperText` | `string`                           | No       | —       | Supplementary text shown with the progress bar.                |
-| `size`       | `'sm' \| 'md'`                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').          |
-| `status`     | `'active' \| 'success' \| 'error'` | No       | active  | success/error tint the fill and show a glyph next to the label |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | No | — | Current value from 0 to max; omit for an indeterminate bar |
+| `max` | `number` | No | 100 | Maximum allowed value. |
+| `label` | `string` | No | — | Visible label above the track, wired via aria-labelledby |
+| `helperText` | `string` | No | — | Supplementary text shown with the progress bar. |
+| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `status` | `'active' \| 'success' \| 'error'` | No | active | success/error tint the fill and show a glyph next to the label |
 
 ## Tokens
 
@@ -76,10 +76,10 @@ role="progressbar" with value/max exposes completion to assistive tech; the labe
 
 ## Boundaries
 
-| Area                         | Level    | Note                                                       |
-| ---------------------------- | -------- | ---------------------------------------------------------- |
-| determinate vs indeterminate | flexible | Presence of value selects the mode                         |
-| token names                  | strict   | Fill and status colors must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| determinate vs indeterminate | flexible | Presence of value selects the mode |
+| token names | strict | Fill and status colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

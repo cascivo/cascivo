@@ -34,23 +34,24 @@ import { NumberInput } from '@cascivo/react'
 
 ## Props
 
-| Prop             | Type                              | Required | Default     | Description                                                             |
-| ---------------- | --------------------------------- | -------- | ----------- | ----------------------------------------------------------------------- |
-| `value`          | `number \| null`                  | no       | —           | The controlled value.                                                   |
-| `defaultValue`   | `number`                          | no       | —           | The initial value when uncontrolled.                                    |
-| `onChange`       | `(value: number \| null) => void` | no       | —           | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
-| `min`            | `number`                          | no       | —           | Minimum allowed value.                                                  |
-| `max`            | `number`                          | no       | —           | Maximum allowed value.                                                  |
-| `step`           | `number`                          | no       | `1`         | Increment between allowed values.                                       |
-| `precision`      | `number`                          | no       | —           | Decimal places applied on commit                                        |
-| `formatOptions`  | `Intl.NumberFormatOptions`        | no       | —           | Display formatting applied on blur; raw editable string while focused   |
-| `label`          | `string`                          | no       | —           | Text label for the control.                                             |
-| `hint`           | `string`                          | no       | —           | Supplementary hint text shown with the control.                         |
-| `error`          | `string`                          | no       | —           | Error message shown when the value is invalid.                          |
-| `size`           | `'sm' \| 'md' \| 'lg'`            | no       | `md`        | Visual size of the component (e.g. 'sm', 'md', 'lg').                   |
-| `disabled`       | `boolean`                         | no       | `false`     | When true, disables the control and removes it from the tab order.      |
-| `incrementLabel` | `string`                          | no       | `Increment` | Accessible label for the increment button.                              |
-| `decrementLabel` | `string`                          | no       | `Decrement` | Accessible label for the decrement button.                              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number \| null` | no | — | The controlled value. |
+| `defaultValue` | `number` | no | — | The initial value when uncontrolled. |
+| `onValueChange` | `(value: number \| null) => void` | no | — | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
+| `onChange` | `(value: number \| null) => void` | no | — | Deprecated: use onValueChange (same number \| null) |
+| `min` | `number` | no | — | Minimum allowed value. |
+| `max` | `number` | no | — | Maximum allowed value. |
+| `step` | `number` | no | `1` | Increment between allowed values. |
+| `precision` | `number` | no | — | Decimal places applied on commit |
+| `formatOptions` | `Intl.NumberFormatOptions` | no | — | Display formatting applied on blur; raw editable string while focused |
+| `label` | `string` | no | — | Text label for the control. |
+| `hint` | `string` | no | — | Supplementary hint text shown with the control. |
+| `error` | `string` | no | — | Error message shown when the value is invalid. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `incrementLabel` | `string` | no | `Increment` | Accessible label for the increment button. |
+| `decrementLabel` | `string` | no | `Decrement` | Accessible label for the decrement button. |
 
 ## Examples
 
@@ -63,7 +64,7 @@ import { NumberInput } from '@cascivo/react'
 ### Currency
 
 ```tsx
-<NumberInput label="Price" precision={2} formatOptions={{ style: 'currency', currency: 'USD' }} />
+<NumberInput label="Price" precision={2} formatOptions={{ style: "currency", currency: "USD" }} />
 ```
 
 ### Stepped
@@ -100,4 +101,4 @@ form, number, input, spinbutton, stepper
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

@@ -34,19 +34,19 @@ import { DateRangePicker } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                                                     | Required | Default | Description                                        |
-| --------------- | -------------------------------------------------------- | -------- | ------- | -------------------------------------------------- |
-| `value`         | `{ start: Date; end: Date } \| null`                     | no       | —       | Controlled selected range                          |
-| `defaultValue`  | `{ start: Date; end: Date }`                             | no       | —       | Uncontrolled initial range                         |
-| `onValueChange` | `(range: { start: Date; end: Date }) => void`            | no       | —       | Called when a complete range is selected           |
-| `min`           | `Date`                                                   | no       | —       | Earliest selectable date                           |
-| `max`           | `Date`                                                   | no       | —       | Latest selectable date                             |
-| `disabled`      | `(date: Date) => boolean`                                | no       | —       | Predicate to disable individual days               |
-| `presets`       | `{ label: string; range: { start: Date; end: Date } }[]` | no       | —       | Quick-select preset ranges shown in a side column  |
-| `locale`        | `string`                                                 | no       | —       | BCP-47 locale; defaults to the current i18n locale |
-| `placeholder`   | `string`                                                 | no       | —       | Empty-state trigger text                           |
-| `size`          | `'sm' \| 'md' \| 'lg'`                                   | no       | —       | Field/grid size                                    |
-| `labels`        | `DateRangePickerLabels`                                  | no       | —       | i18n label overrides                               |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `{ start: Date; end: Date } \| null` | no | — | Controlled selected range |
+| `defaultValue` | `{ start: Date; end: Date }` | no | — | Uncontrolled initial range |
+| `onValueChange` | `(range: { start: Date; end: Date }) => void` | no | — | Called when a complete range is selected |
+| `min` | `Date` | no | — | Earliest selectable date |
+| `max` | `Date` | no | — | Latest selectable date |
+| `disabled` | `(date: Date) => boolean` | no | — | Predicate to disable individual days |
+| `presets` | `{ label: string; range: { start: Date; end: Date } }[]` | no | — | Quick-select preset ranges shown in a side column |
+| `locale` | `string` | no | — | BCP-47 locale; defaults to the current i18n locale |
+| `placeholder` | `string` | no | — | Empty-state trigger text |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | — | Field/grid size |
+| `labels` | `DateRangePickerLabels` | no | — | i18n label overrides |
 
 ## Examples
 
@@ -63,7 +63,7 @@ Uncontrolled dual-calendar range picker
 Quick-select common ranges
 
 ```tsx
-<DateRangePicker presets={[{ label: 'Last 7 days', range: last7 }]} />
+<DateRangePicker presets={[{ label: "Last 7 days", range: last7 }]} />
 ```
 
 ### Constrained
@@ -98,4 +98,4 @@ date, range, calendar, picker, input, form
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

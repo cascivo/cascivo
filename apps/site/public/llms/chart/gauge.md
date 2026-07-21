@@ -21,21 +21,21 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop          | Type                                | Required | Default | Description                                                |
-| ------------- | ----------------------------------- | -------- | ------- | ---------------------------------------------------------- |
-| `value`       | `number`                            | yes      | —       | The value the needle points to.                            |
-| `min`         | `number`                            | no       | `0`     | Minimum allowed value.                                     |
-| `max`         | `number`                            | no       | `100`   | Maximum allowed value.                                     |
-| `thresholds`  | `{ upTo: number; color: string }[]` | no       | —       | Coloured zones from min upward; the last should reach max. |
-| `unit`        | `string`                            | no       | —       | Suffix after the centre value.                             |
-| `sweep`       | `number`                            | no       | `270`   | Total sweep angle in degrees (270 = a speedometer arc).    |
-| `ticks`       | `number`                            | no       | `5`     | Major tick count.                                          |
-| `title`       | `string`                            | yes      | —       | Chart title (also aria-label).                             |
-| `description` | `string`                            | no       | —       | Supporting description text.                               |
-| `width`       | `number`                            | no       | —       | Width of the component.                                    |
-| `height`      | `number`                            | no       | `240`   | Height of the component.                                   |
-| `className`   | `string`                            | no       | —       | Additional CSS class names merged onto the root element.   |
-| `plain`       | `boolean`                           | no       | `false` | Marks only — no ticks/labels. For micro/inline charts.     |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | yes | — | The value the needle points to. |
+| `min` | `number` | no | `0` | Minimum allowed value. |
+| `max` | `number` | no | `100` | Maximum allowed value. |
+| `thresholds` | `{ upTo: number; color: string }[]` | no | — | Coloured zones from min upward; the last should reach max. |
+| `unit` | `string` | no | — | Suffix after the centre value. |
+| `sweep` | `number` | no | `270` | Total sweep angle in degrees (270 = a speedometer arc). |
+| `ticks` | `number` | no | `5` | Major tick count. |
+| `title` | `string` | yes | — | Chart title (also aria-label). |
+| `description` | `string` | no | — | Supporting description text. |
+| `width` | `number` | no | — | Width of the component. |
+| `height` | `number` | no | `240` | Height of the component. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | Marks only — no ticks/labels. For micro/inline charts. |
 
 ## Examples
 
@@ -43,7 +43,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Gauge } from '@cascivo/charts'
-;<Gauge
+
+<Gauge
   title="CPU load"
   value={72}
   unit="%"
@@ -77,4 +78,4 @@ chart, gauge, speedometer, kpi, data-viz
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

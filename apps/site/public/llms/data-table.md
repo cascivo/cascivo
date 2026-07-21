@@ -34,33 +34,33 @@ import { DataTable } from '@cascivo/react'
 
 ## Props
 
-| Prop                | Type                                                                                     | Required | Default    | Description                                                                     |
-| ------------------- | ---------------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------------------------------------------------- |
-| `virtualized`       | `boolean`                                                                                | no       | `false`    | Render only the visible row window for large datasets.                          |
-| `rowHeight`         | `number`                                                                                 | no       | `40`       | Fixed row height in px, used to compute the virtualized window.                 |
-| `windowSize`        | `number`                                                                                 | no       | `20`       | Number of rows rendered in the virtualized window.                              |
-| `overscan`          | `number`                                                                                 | no       | `3`        | Extra rows rendered above/below the window to smooth scrolling.                 |
-| `columns`           | `Column<Row>[]`                                                                          | yes      | —          | The column definitions describing each table column.                            |
-| `rows`              | `Row[]`                                                                                  | yes      | —          | The row objects to render — one table row per array element.                    |
-| `getRowId`          | `(row: Row) => string`                                                                   | no       | —          | Returns a stable unique id for a row.                                           |
-| `sort`              | `SortState`                                                                              | no       | —          | The controlled sort state.                                                      |
-| `defaultSort`       | `SortState`                                                                              | no       | —          | The initial sort state when uncontrolled.                                       |
-| `sortMode`          | `'client' \| 'server'`                                                                   | no       | `'client'` | Whether sorting is handled client-side or by the server ('client' \| 'server'). |
-| `onSortChange`      | `(sort: SortState \| undefined) => void`                                                 | no       | —          | Called with the new sort state when it changes.                                 |
-| `searchable`        | `boolean`                                                                                | no       | `false`    | When true, shows a search/filter input.                                         |
-| `pagination`        | `{ pageSize: number; pageSizeOptions?: number[] }`                                       | no       | —          | Pagination configuration (page size and options).                               |
-| `selection`         | `{ mode: 'single' \| 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no       | —          | Row-selection configuration (mode and selected ids).                            |
-| `batchActions`      | `{ label: string; onClick: (selectedIds: string[]) => void }[]`                          | no       | —          | Actions applied to the currently selected rows.                                 |
-| `renderExpandedRow` | `(row: Row) => ReactNode`                                                                | no       | —          | Renders the expanded content for a row.                                         |
-| `density`           | `'compact' \| 'normal' \| 'relaxed'`                                                     | no       | `'normal'` | Row density — 'compact', 'normal', or 'relaxed'.                                |
-| `zebra`             | `boolean`                                                                                | no       | `false`    | When true, applies alternating row striping.                                    |
-| `stickyHeader`      | `boolean`                                                                                | no       | `false`    | When true, the header stays fixed while the body scrolls.                       |
-| `loading`           | `boolean`                                                                                | no       | `false`    | When true, shows a loading state.                                               |
-| `emptyState`        | `ReactNode`                                                                              | no       | —          | Content shown when there are no rows.                                           |
-| `title`             | `string`                                                                                 | no       | —          | Title text for the component.                                                   |
-| `description`       | `string`                                                                                 | no       | —          | Supporting description text.                                                    |
-| `labels`            | `DataTableLabels`                                                                        | no       | —          | Overrides for the component’s user-visible strings (i18n).                      |
-| `className`         | `string`                                                                                 | no       | —          | Additional CSS class names merged onto the root element.                        |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `virtualized` | `boolean` | no | `false` | Render only the visible row window for large datasets. |
+| `rowHeight` | `number` | no | `40` | Fixed row height in px, used to compute the virtualized window. |
+| `windowSize` | `number` | no | `20` | Number of rows rendered in the virtualized window. |
+| `overscan` | `number` | no | `3` | Extra rows rendered above/below the window to smooth scrolling. |
+| `columns` | `Column<Row>[]` | yes | — | The column definitions describing each table column. |
+| `rows` | `Row[]` | yes | — | The row objects to render — one table row per array element. |
+| `getRowId` | `(row: Row) => string` | no | — | Returns a stable unique id for a row. |
+| `sort` | `SortState` | no | — | The controlled sort state. |
+| `defaultSort` | `SortState` | no | — | The initial sort state when uncontrolled. |
+| `sortMode` | `'client' \| 'server'` | no | `'client'` | Whether sorting is handled client-side or by the server ('client' \| 'server'). |
+| `onSortChange` | `(sort: SortState \| undefined) => void` | no | — | Called with the new sort state when it changes. |
+| `searchable` | `boolean` | no | `false` | When true, shows a search/filter input. |
+| `pagination` | `{ pageSize: number; pageSizeOptions?: number[] }` | no | — | Pagination configuration (page size and options). |
+| `selection` | `{ mode: 'single' \| 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no | — | Row-selection configuration (mode and selected ids). |
+| `batchActions` | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | no | — | Actions applied to the currently selected rows. |
+| `renderExpandedRow` | `(row: Row) => ReactNode` | no | — | Renders the expanded content for a row. |
+| `density` | `'compact' \| 'normal' \| 'relaxed'` | no | `'normal'` | Row density — 'compact', 'normal', or 'relaxed'. |
+| `zebra` | `boolean` | no | `false` | When true, applies alternating row striping. |
+| `stickyHeader` | `boolean` | no | `false` | When true, the header stays fixed while the body scrolls. |
+| `loading` | `boolean` | no | `false` | When true, shows a loading state. |
+| `emptyState` | `ReactNode` | no | — | Content shown when there are no rows. |
+| `title` | `string` | no | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `labels` | `DataTableLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -139,4 +139,4 @@ table, data, grid, sort, filter, pagination, selection
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

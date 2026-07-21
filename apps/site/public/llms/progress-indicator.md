@@ -33,32 +33,25 @@ import { ProgressIndicator } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                                        | Required | Default | Description                                              |
-| -------------- | ------------------------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `steps`        | `{ label: string; description?: string }[]` | yes      | —       | Ordered list of steps                                    |
-| `currentIndex` | `number`                                    | yes      | —       | Index of the current step (0-based)                      |
-| `vertical`     | `boolean`                                   | no       | `false` | When true, lays the steps out vertically.                |
-| `className`    | `string`                                    | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `steps` | `{ label: string; description?: string }[]` | yes | — | Ordered list of steps |
+| `currentIndex` | `number` | yes | — | Index of the current step (0-based) |
+| `vertical` | `boolean` | no | `false` | When true, lays the steps out vertically. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Horizontal
 
 ```tsx
-<ProgressIndicator
-  steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }]}
-  currentIndex={1}
-/>
+<ProgressIndicator steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }]} currentIndex={1} />
 ```
 
 ### Vertical with descriptions
 
 ```tsx
-<ProgressIndicator
-  vertical
-  steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]}
-  currentIndex={0}
-/>
+<ProgressIndicator vertical steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]} currentIndex={0} />
 ```
 
 ## Design tokens
@@ -88,4 +81,4 @@ steps, wizard, stepper, progress, navigation
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

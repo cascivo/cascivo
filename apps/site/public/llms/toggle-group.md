@@ -38,44 +38,29 @@ import { ToggleGroup } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                                                                              | Required | Default      | Description                                                                    |
-| --------------- | --------------------------------------------------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------ |
-| `type`          | `'single' \| 'multiple'`                                                          | yes      | —            | Whether one or multiple items can be pressed at once ('single' \| 'multiple'). |
-| `value`         | `string \| string[]`                                                              | no       | —            | The controlled value.                                                          |
-| `defaultValue`  | `string \| string[]`                                                              | no       | —            | The initial value when uncontrolled.                                           |
-| `onValueChange` | `(value: string \| string[]) => void`                                             | no       | —            | Called with the new value when it changes.                                     |
-| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | yes      | —            | The items to render.                                                           |
-| `orientation`   | `'horizontal' \| 'vertical'`                                                      | no       | `horizontal` | Layout orientation of the component.                                           |
-| `size`          | `'sm' \| 'md' \| 'lg'`                                                            | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg').                          |
-| `disabled`      | `boolean`                                                                         | no       | `false`      | When true, disables the control and removes it from the tab order.             |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `type` | `'single' \| 'multiple'` | yes | — | Whether one or multiple items can be pressed at once ('single' \| 'multiple'). |
+| `value` | `string \| string[]` | no | — | The controlled value. |
+| `defaultValue` | `string \| string[]` | no | — | The initial value when uncontrolled. |
+| `onValueChange` | `(value: string \| string[]) => void` | no | — | Called with the new value when it changes. |
+| `items` | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | yes | — | The items to render. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 
 ### Single selection
 
 ```tsx
-<ToggleGroup
-  type="single"
-  defaultValue="left"
-  items={[
-    { value: 'left', label: 'Left' },
-    { value: 'center', label: 'Center' },
-    { value: 'right', label: 'Right' },
-  ]}
-/>
+<ToggleGroup type="single" defaultValue="left" items={[{ value: "left", label: "Left" }, { value: "center", label: "Center" }, { value: "right", label: "Right" }]} />
 ```
 
 ### Multiple selection
 
 ```tsx
-<ToggleGroup
-  type="multiple"
-  defaultValue={['bold']}
-  items={[
-    { value: 'bold', label: 'Bold' },
-    { value: 'italic', label: 'Italic' },
-  ]}
-/>
+<ToggleGroup type="multiple" defaultValue={["bold"]} items={[{ value: "bold", label: "Bold" }, { value: "italic", label: "Italic" }]} />
 ```
 
 ## Design tokens
@@ -107,4 +92,4 @@ selection, segmented, toolbar, choice
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

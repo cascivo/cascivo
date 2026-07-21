@@ -24,23 +24,23 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name          | Type               | Required | Default | Description                                                                    |
-| ------------- | ------------------ | -------- | ------- | ------------------------------------------------------------------------------ |
-| `data`        | `RadialBarDatum[]` | Yes      | —       | One ring per datum: { id, label, value, color? }.                              |
-| `title`       | `string`           | Yes      | —       | Chart title (also used as aria-label).                                         |
-| `description` | `string`           | No       | —       | Subtitle below the title.                                                      |
-| `size`        | `number`           | No       | —       | Square shorthand (width === height). Explicit width/height win.                |
-| `width`       | `number`           | No       | —       | Width of the component.                                                        |
-| `height`      | `number`           | No       | 300     | Height of the component.                                                       |
-| `max`         | `number`           | No       | —       | Domain top — the value a full sweep represents. Defaults to the largest datum. |
-| `sweep`       | `number`           | No       | 270     | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring).                 |
-| `centerValue` | `string`           | No       | —       | Text in the hole.                                                              |
-| `centerLabel` | `string`           | No       | —       | Caption below centerValue.                                                     |
-| `centerSlot`  | `ReactNode`        | No       | —       | Arbitrary hole content; wins over centerValue/centerLabel.                     |
-| `tooltip`     | `boolean`          | No       | —       | Enable hover tooltip.                                                          |
-| `legend`      | `boolean`          | No       | —       | Show ring legend.                                                              |
-| `className`   | `string`           | No       | —       | Additional CSS class names merged onto the root element.                       |
-| `plain`       | `boolean`          | No       | false   | Marks only — no legend. For micro/inline charts.                               |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `RadialBarDatum[]` | Yes | — | One ring per datum: { id, label, value, color? }. |
+| `title` | `string` | Yes | — | Chart title (also used as aria-label). |
+| `description` | `string` | No | — | Subtitle below the title. |
+| `size` | `number` | No | — | Square shorthand (width === height). Explicit width/height win. |
+| `width` | `number` | No | — | Width of the component. |
+| `height` | `number` | No | 300 | Height of the component. |
+| `max` | `number` | No | — | Domain top — the value a full sweep represents. Defaults to the largest datum. |
+| `sweep` | `number` | No | 270 | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring). |
+| `centerValue` | `string` | No | — | Text in the hole. |
+| `centerLabel` | `string` | No | — | Caption below centerValue. |
+| `centerSlot` | `ReactNode` | No | — | Arbitrary hole content; wins over centerValue/centerLabel. |
+| `tooltip` | `boolean` | No | — | Enable hover tooltip. |
+| `legend` | `boolean` | No | — | Show ring legend. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | Marks only — no legend. For micro/inline charts. |
 
 ## Tokens
 
@@ -60,7 +60,8 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ```jsx
 import { RadialBar } from '@cascivo/charts'
-;<RadialBar
+
+<RadialBar
   title="Quarterly goals"
   max={100}
   centerValue="72%"

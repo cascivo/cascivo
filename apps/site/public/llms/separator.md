@@ -22,10 +22,10 @@ import { Separator } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                         | Required | Default      | Description                                                              |
-| ------------- | ---------------------------- | -------- | ------------ | ------------------------------------------------------------------------ |
-| `orientation` | `'horizontal' \| 'vertical'` | no       | `horizontal` | Layout orientation of the component.                                     |
-| `decorative`  | `boolean`                    | no       | `false`      | When true, the separator is purely visual and hidden from assistive tech |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `decorative` | `boolean` | no | `false` | When true, the separator is purely visual and hidden from assistive tech |
 
 ## Examples
 
@@ -60,4 +60,4 @@ divider, rule, layout
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

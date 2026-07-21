@@ -33,12 +33,12 @@ import { Link } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                       | Required | Default      | Description                                                                  |
-| ---------- | -------------------------- | -------- | ------------ | ---------------------------------------------------------------------------- |
-| `variant`  | `'standalone' \| 'inline'` | no       | `standalone` | Selects the visual style variant.                                            |
-| `size`     | `'sm' \| 'md' \| 'lg'`     | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg').                        |
-| `external` | `boolean`                  | no       | `false`      | When true, treats the link as external (opens in a new tab with rel safety). |
-| `href`     | `string`                   | no       | —            | The destination URL.                                                         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'standalone' \| 'inline'` | no | `standalone` | Selects the visual style variant. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `external` | `boolean` | no | `false` | When true, treats the link as external (opens in a new tab with rel safety). |
+| `href` | `string` | no | — | The destination URL. |
 
 ## Examples
 
@@ -53,13 +53,7 @@ import { Link } from '@cascivo/react'
 Inline links inherit the surrounding font size and stay underlined.
 
 ```tsx
-<p>
-  Read the{' '}
-  <Link variant="inline" href="/guide">
-    guide
-  </Link>{' '}
-  first.
-</p>
+<p>Read the <Link variant="inline" href="/guide">guide</Link> first.</p>
 ```
 
 ### External
@@ -67,9 +61,7 @@ Inline links inherit the surrounding font size and stay underlined.
 Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ```tsx
-<Link external href="https://example.com">
-  Example
-</Link>
+<Link external href="https://example.com">Example</Link>
 ```
 
 ## Design tokens
@@ -96,4 +88,4 @@ link, anchor, navigation
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

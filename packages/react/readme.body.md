@@ -18,6 +18,11 @@ supplies the tokens and themes the components read.
 Charts live in a separate package — add [`@cascivo/charts`](https://github.com/cascivo/cascivo/tree/main/packages/charts)
 for `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and more.
 
+> **Types are the reference.** The shipped `dist/index.d.ts` is a self-contained, flat
+> rollup — every component's `…Props` interface is real, documentation-grade API. Reading
+> it (or the per-component [`/llms/<name>.md`](https://cascivo.com/llms.txt)) is the fastest
+> way to learn a component's props with no web access.
+
 ### Framework setup (Next.js App Router)
 
 In a Server Component file (e.g. `app/layout.tsx`), import the themes once:

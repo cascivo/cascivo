@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20",
+  "generatedAt": "2026-07-21",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -109,7 +109,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-07-20",
+    "generatedAt": "2026-07-21",
     "global": {
       "strict": [
         {
@@ -1783,7 +1783,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-07-20",
+    "generatedAt": "2026-07-21",
     "exceptions": [
       {
         "id": "EXC-001",
@@ -1845,7 +1845,10 @@
           "default": "single",
           "schema": {
             "kind": "enum",
-            "values": ["single", "multiple"]
+            "values": [
+              "single",
+              "multiple"
+            ]
           }
         },
         {
@@ -2079,7 +2082,13 @@
           "default": "default",
           "schema": {
             "kind": "enum",
-            "values": ["default", "info", "success", "warning", "destructive"]
+            "values": [
+              "default",
+              "info",
+              "success",
+              "warning",
+              "destructive"
+            ]
           }
         },
         {
@@ -2259,7 +2268,10 @@
           "default": "default",
           "schema": {
             "kind": "enum",
-            "values": ["destructive", "default"]
+            "values": [
+              "destructive",
+              "default"
+            ]
           }
         }
       ],
@@ -2529,7 +2541,13 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["xs", "sm", "md", "lg", "xl"]
+            "values": [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl"
+            ]
           }
         },
         {
@@ -2539,7 +2557,11 @@
           "required": false,
           "schema": {
             "kind": "enum",
-            "values": ["online", "offline", "busy"]
+            "values": [
+              "online",
+              "offline",
+              "busy"
+            ]
           }
         }
       ],
@@ -2620,7 +2642,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -2701,7 +2727,14 @@
           "default": "default",
           "schema": {
             "kind": "enum",
-            "values": ["default", "secondary", "success", "warning", "destructive", "outline"]
+            "values": [
+              "default",
+              "secondary",
+              "success",
+              "warning",
+              "destructive",
+              "outline"
+            ]
           }
         },
         {
@@ -2712,7 +2745,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         }
       ],
@@ -3482,7 +3518,12 @@
           "default": "primary",
           "schema": {
             "kind": "enum",
-            "values": ["primary", "secondary", "ghost", "destructive"]
+            "values": [
+              "primary",
+              "secondary",
+              "ghost",
+              "destructive"
+            ]
           }
         },
         {
@@ -3493,7 +3534,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -3598,7 +3643,10 @@
           "default": "horizontal",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -3609,7 +3657,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -3812,7 +3864,11 @@
           "description": "Grid cell size",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -3915,7 +3971,11 @@
           "default": "default",
           "schema": {
             "kind": "enum",
-            "values": ["default", "outlined", "elevated"]
+            "values": [
+              "default",
+              "outlined",
+              "elevated"
+            ]
           }
         },
         {
@@ -3926,7 +3986,12 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["none", "sm", "md", "lg"]
+            "values": [
+              "none",
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         }
       ],
@@ -4158,7 +4223,11 @@
           "description": "Area fill style — solid, a top→bottom gradient, or a pattern.",
           "schema": {
             "kind": "enum",
-            "values": ["solid", "gradient", "pattern"]
+            "values": [
+              "solid",
+              "gradient",
+              "pattern"
+            ]
           }
         },
         {
@@ -4168,7 +4237,11 @@
           "description": "Pattern motif when fill=\"pattern\".",
           "schema": {
             "kind": "enum",
-            "values": ["dots", "lines", "cross"]
+            "values": [
+              "dots",
+              "lines",
+              "cross"
+            ]
           }
         },
         {
@@ -4321,7 +4394,10 @@
           "description": "Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x).",
           "schema": {
             "kind": "enum",
-            "values": ["item", "axis"]
+            "values": [
+              "item",
+              "axis"
+            ]
           }
         },
         {
@@ -4429,7 +4505,10 @@
           "default": "vertical",
           "schema": {
             "kind": "enum",
-            "values": ["vertical", "horizontal"]
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
           }
         },
         {
@@ -4440,7 +4519,11 @@
           "description": "'percent' stacks each category and normalizes it to 100%.",
           "schema": {
             "kind": "enum",
-            "values": ["grouped", "stacked", "percent"]
+            "values": [
+              "grouped",
+              "stacked",
+              "percent"
+            ]
           }
         },
         {
@@ -4571,7 +4654,11 @@
           "description": "Bar fill style — solid, a gradient, or a pattern.",
           "schema": {
             "kind": "enum",
-            "values": ["solid", "gradient", "pattern"]
+            "values": [
+              "solid",
+              "gradient",
+              "pattern"
+            ]
           }
         },
         {
@@ -4581,7 +4668,11 @@
           "description": "Pattern motif when fill=\"pattern\".",
           "schema": {
             "kind": "enum",
-            "values": ["dots", "lines", "cross"]
+            "values": [
+              "dots",
+              "lines",
+              "cross"
+            ]
           }
         }
       ],
@@ -5237,7 +5328,10 @@
           "description": "item (nearest candle) or axis (crosshair + OHLC at the hovered x).",
           "schema": {
             "kind": "enum",
-            "values": ["item", "axis"]
+            "values": [
+              "item",
+              "axis"
+            ]
           }
         }
       ],
@@ -6240,7 +6334,10 @@
           "description": "Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x).",
           "schema": {
             "kind": "enum",
-            "values": ["item", "axis"]
+            "values": [
+              "item",
+              "axis"
+            ]
           }
         },
         {
@@ -6368,7 +6465,10 @@
           "default": "bar",
           "schema": {
             "kind": "enum",
-            "values": ["bar", "gauge"]
+            "values": [
+              "bar",
+              "gauge"
+            ]
           }
         },
         {
@@ -6674,7 +6774,11 @@
           "description": "Bars (rose), a polar line, or a filled polar area.",
           "schema": {
             "kind": "enum",
-            "values": ["bar", "line", "area"]
+            "values": [
+              "bar",
+              "line",
+              "area"
+            ]
           }
         },
         {
@@ -7321,7 +7425,11 @@
           "description": "Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer.",
           "schema": {
             "kind": "enum",
-            "values": ["svg", "canvas", "auto"]
+            "values": [
+              "svg",
+              "canvas",
+              "auto"
+            ]
           }
         },
         {
@@ -7505,7 +7613,10 @@
           "description": "silhouette centers the stack (streamgraph); zero is a baseline stack.",
           "schema": {
             "kind": "enum",
-            "values": ["silhouette", "zero"]
+            "values": [
+              "silhouette",
+              "zero"
+            ]
           }
         },
         {
@@ -7854,7 +7965,10 @@
           "default": "start",
           "schema": {
             "kind": "enum",
-            "values": ["start", "end"]
+            "values": [
+              "start",
+              "end"
+            ]
           }
         },
         {
@@ -8174,7 +8288,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         }
       ],
@@ -8241,7 +8358,11 @@
           "default": "single",
           "schema": {
             "kind": "enum",
-            "values": ["inline", "single", "multi"]
+            "values": [
+              "inline",
+              "single",
+              "multi"
+            ]
           }
         },
         {
@@ -8251,7 +8372,12 @@
           "required": false,
           "schema": {
             "kind": "enum",
-            "values": ["bash", "css", "js", "ts"]
+            "values": [
+              "bash",
+              "css",
+              "js",
+              "ts"
+            ]
           }
         },
         {
@@ -8547,7 +8673,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         }
       ],
@@ -8653,8 +8783,17 @@
           }
         },
         {
+          "name": "onValueChange",
+          "description": "Called with the selected option value (or undefined when cleared).",
+          "type": "(value: string | undefined) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "onChange",
-          "description": "Called when the value changes.",
+          "description": "Deprecated: use onValueChange (same string | undefined).",
           "type": "(value: string | undefined) => void",
           "required": false,
           "schema": {
@@ -8716,7 +8855,11 @@
           "default": "'md'",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -9038,7 +9181,10 @@
           "default": "horizontal",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -9129,7 +9275,10 @@
           "default": "on-page",
           "schema": {
             "kind": "enum",
-            "values": ["on-page", "disclosed"]
+            "values": [
+              "on-page",
+              "disclosed"
+            ]
           }
         },
         {
@@ -9273,7 +9422,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         },
         {
@@ -9349,7 +9501,10 @@
           "default": "horizontal",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -9370,7 +9525,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         }
       ],
@@ -9518,7 +9676,10 @@
           "default": "'client'",
           "schema": {
             "kind": "enum",
-            "values": ["client", "server"]
+            "values": [
+              "client",
+              "server"
+            ]
           }
         },
         {
@@ -9584,7 +9745,11 @@
           "default": "'normal'",
           "schema": {
             "kind": "enum",
-            "values": ["compact", "normal", "relaxed"]
+            "values": [
+              "compact",
+              "normal",
+              "relaxed"
+            ]
           }
         },
         {
@@ -9751,10 +9916,19 @@
           }
         },
         {
+          "name": "onValueChange",
+          "type": "(value: string | undefined) => void",
+          "required": false,
+          "description": "Called with the selected ISO date string (or undefined when cleared)",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "onChange",
           "type": "(value: string | undefined) => void",
           "required": false,
-          "description": "Called on date selection or clear",
+          "description": "Deprecated: use onValueChange (same ISO string | undefined)",
           "schema": {
             "kind": "function"
           }
@@ -9820,7 +9994,11 @@
           "description": "Field size",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -9985,7 +10163,11 @@
           "description": "Field/grid size",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -10178,7 +10360,12 @@
           "default": "end",
           "schema": {
             "kind": "enum",
-            "values": ["start", "end", "top", "bottom"]
+            "values": [
+              "start",
+              "end",
+              "top",
+              "bottom"
+            ]
           }
         },
         {
@@ -10341,7 +10528,10 @@
           "default": "bottom-start",
           "schema": {
             "kind": "enum",
-            "values": ["bottom-start", "bottom-end"]
+            "values": [
+              "bottom-start",
+              "bottom-end"
+            ]
           }
         },
         {
@@ -10914,7 +11104,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["md", "lg"]
+            "values": [
+              "md",
+              "lg"
+            ]
           }
         }
       ],
@@ -11019,7 +11212,10 @@
           "default": "bottom-end",
           "schema": {
             "kind": "enum",
-            "values": ["bottom-end", "bottom-start"]
+            "values": [
+              "bottom-end",
+              "bottom-start"
+            ]
           }
         },
         {
@@ -11443,8 +11639,17 @@
           }
         },
         {
+          "name": "onValueChange",
+          "description": "Called with the selected values whenever the selection changes.",
+          "type": "(selected: string[]) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "onChange",
-          "description": "Called when the value changes.",
+          "description": "Deprecated: use onValueChange (same string[]).",
           "type": "(selected: string[]) => void",
           "required": false,
           "schema": {
@@ -11469,7 +11674,10 @@
           "default": "pill",
           "schema": {
             "kind": "enum",
-            "values": ["pill", "outline"]
+            "values": [
+              "pill",
+              "outline"
+            ]
           }
         }
       ],
@@ -11703,7 +11911,11 @@
           "description": "Pattern style.",
           "schema": {
             "kind": "enum",
-            "values": ["dots", "grid", "cross"]
+            "values": [
+              "dots",
+              "grid",
+              "cross"
+            ]
           }
         },
         {
@@ -11878,8 +12090,12 @@
       "category": "display",
       "description": "Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.",
       "intent": {
-        "whenToUse": ["Giving users explicit zoom/fit controls on a flow canvas"],
-        "whenNotToUse": ["When the canvas is static/non-interactive"],
+        "whenToUse": [
+          "Giving users explicit zoom/fit controls on a flow canvas"
+        ],
+        "whenNotToUse": [
+          "When the canvas is static/non-interactive"
+        ],
         "antiPatterns": [],
         "related": [
           {
@@ -11916,7 +12132,12 @@
           "default": "bottom-left",
           "schema": {
             "kind": "enum",
-            "values": ["top-left", "top-right", "bottom-left", "bottom-right"]
+            "values": [
+              "top-left",
+              "top-right",
+              "bottom-left",
+              "bottom-right"
+            ]
           }
         },
         {
@@ -12078,7 +12299,11 @@
           "default": "bezier",
           "schema": {
             "kind": "enum",
-            "values": ["bezier", "straight", "smoothstep"]
+            "values": [
+              "bezier",
+              "straight",
+              "smoothstep"
+            ]
           }
         },
         {
@@ -12152,7 +12377,9 @@
           "Marking where edges connect to a node",
           "Enabling interactive connect (drag from a source to a target)"
         ],
-        "whenNotToUse": ["On nodes that are never connected"],
+        "whenNotToUse": [
+          "On nodes that are never connected"
+        ],
         "antiPatterns": [],
         "related": [
           {
@@ -12183,7 +12410,10 @@
           "required": true,
           "schema": {
             "kind": "enum",
-            "values": ["source", "target"]
+            "values": [
+              "source",
+              "target"
+            ]
           }
         },
         {
@@ -12193,7 +12423,12 @@
           "description": "Edge of the node (defaults: source→right, target→left).",
           "schema": {
             "kind": "enum",
-            "values": ["top", "right", "bottom", "left"]
+            "values": [
+              "top",
+              "right",
+              "bottom",
+              "left"
+            ]
           }
         },
         {
@@ -12237,7 +12472,9 @@
           "Orienting users in a large graph",
           "Letting users jump around by dragging the view rect"
         ],
-        "whenNotToUse": ["Tiny graphs that fit on screen"],
+        "whenNotToUse": [
+          "Tiny graphs that fit on screen"
+        ],
         "antiPatterns": [],
         "related": [
           {
@@ -12320,7 +12557,12 @@
           "default": "bottom-right",
           "schema": {
             "kind": "enum",
-            "values": ["top-left", "top-right", "bottom-left", "bottom-right"]
+            "values": [
+              "top-left",
+              "top-right",
+              "bottom-left",
+              "bottom-right"
+            ]
           }
         },
         {
@@ -12354,7 +12596,9 @@
           "Representing a unit in a graph that holds arbitrary themed content",
           "When you hand-compose a flow and need draggable, selectable boxes"
         ],
-        "whenNotToUse": ["For the common case — the declarative <Flow> renders nodes for you"],
+        "whenNotToUse": [
+          "For the common case — the declarative <Flow> renders nodes for you"
+        ],
         "antiPatterns": [
           {
             "bad": "Rendering node content into an SVG",
@@ -12492,8 +12736,12 @@
       "category": "display",
       "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
       "intent": {
-        "whenToUse": ["Overlaying custom UI (a legend, a toolbar) on a flow canvas"],
-        "whenNotToUse": ["For zoom/fit controls — use FlowControls"],
+        "whenToUse": [
+          "Overlaying custom UI (a legend, a toolbar) on a flow canvas"
+        ],
+        "whenNotToUse": [
+          "For zoom/fit controls — use FlowControls"
+        ],
         "antiPatterns": [],
         "related": [
           {
@@ -13101,7 +13349,13 @@
           "default": "derived from level (1→2xl, 2→xl, 3→lg, 4→md, 5→sm, 6→sm)",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg", "xl", "2xl"]
+            "values": [
+              "sm",
+              "md",
+              "lg",
+              "xl",
+              "2xl"
+            ]
           }
         }
       ],
@@ -13272,7 +13526,11 @@
           "default": "ghost",
           "schema": {
             "kind": "enum",
-            "values": ["ghost", "outline", "filled"]
+            "values": [
+              "ghost",
+              "outline",
+              "filled"
+            ]
           }
         },
         {
@@ -13283,7 +13541,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -13420,7 +13682,13 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["none", "sm", "md", "lg", "full"]
+            "values": [
+              "none",
+              "sm",
+              "md",
+              "lg",
+              "full"
+            ]
           }
         },
         {
@@ -13462,7 +13730,10 @@
       "category": "layout",
       "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
       "intent": {
-        "whenToUse": ["Notification counts on icon buttons", "Status dots on avatars"],
+        "whenToUse": [
+          "Notification counts on icon buttons",
+          "Status dots on avatars"
+        ],
         "whenNotToUse": [
           "Inline badges within text — use Badge directly",
           "Status messages below a field — use a form hint or Alert"
@@ -13516,7 +13787,12 @@
           "default": "top-end",
           "schema": {
             "kind": "enum",
-            "values": ["top-start", "top-end", "bottom-start", "bottom-end"]
+            "values": [
+              "top-start",
+              "top-end",
+              "bottom-start",
+              "bottom-end"
+            ]
           }
         },
         {
@@ -13592,7 +13868,12 @@
           "required": true,
           "schema": {
             "kind": "enum",
-            "values": ["inactive", "active", "finished", "error"]
+            "values": [
+              "inactive",
+              "active",
+              "finished",
+              "error"
+            ]
           }
         },
         {
@@ -13715,7 +13996,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -13891,7 +14176,10 @@
           "default": "default",
           "schema": {
             "kind": "enum",
-            "values": ["default", "muted"]
+            "values": [
+              "default",
+              "muted"
+            ]
           }
         },
         {
@@ -13902,7 +14190,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         }
       ],
@@ -13962,7 +14253,10 @@
           "default": "horizontal",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -14028,7 +14322,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         }
       ],
@@ -14205,7 +14502,10 @@
           "default": "push",
           "schema": {
             "kind": "enum",
-            "values": ["push", "overlay"]
+            "values": [
+              "push",
+              "overlay"
+            ]
           }
         },
         {
@@ -14572,7 +14872,10 @@
           "description": "Flex direction",
           "schema": {
             "kind": "enum",
-            "values": ["vertical", "horizontal"]
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
           }
         },
         {
@@ -14591,7 +14894,12 @@
           "description": "align-items",
           "schema": {
             "kind": "enum",
-            "values": ["start", "center", "end", "stretch"]
+            "values": [
+              "start",
+              "center",
+              "end",
+              "stretch"
+            ]
           }
         },
         {
@@ -14601,7 +14909,12 @@
           "description": "justify-content",
           "schema": {
             "kind": "enum",
-            "values": ["start", "center", "end", "between"]
+            "values": [
+              "start",
+              "center",
+              "end",
+              "between"
+            ]
           }
         },
         {
@@ -14672,7 +14985,12 @@
           "description": "Block-axis alignment of items within their cells (align-items); default stretch",
           "schema": {
             "kind": "enum",
-            "values": ["start", "center", "end", "stretch"]
+            "values": [
+              "start",
+              "center",
+              "end",
+              "stretch"
+            ]
           }
         },
         {
@@ -14682,7 +15000,12 @@
           "description": "Inline-axis alignment of items within their cells (justify-items); default stretch",
           "schema": {
             "kind": "enum",
-            "values": ["start", "center", "end", "stretch"]
+            "values": [
+              "start",
+              "center",
+              "end",
+              "stretch"
+            ]
           }
         },
         {
@@ -14869,7 +15192,11 @@
           "description": "Max inline size: content=72rem, wide=90rem, full=none",
           "schema": {
             "kind": "enum",
-            "values": ["content", "wide", "full"]
+            "values": [
+              "content",
+              "wide",
+              "full"
+            ]
           }
         },
         {
@@ -15114,7 +15441,10 @@
           "default": "standalone",
           "schema": {
             "kind": "enum",
-            "values": ["standalone", "inline"]
+            "values": [
+              "standalone",
+              "inline"
+            ]
           }
         },
         {
@@ -15125,7 +15455,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -15202,7 +15536,10 @@
           "default": "ul",
           "schema": {
             "kind": "enum",
-            "values": ["ul", "ol"]
+            "values": [
+              "ul",
+              "ol"
+            ]
           }
         },
         {
@@ -15213,7 +15550,11 @@
           "default": "derived from as (ul→disc, ol→decimal)",
           "schema": {
             "kind": "enum",
-            "values": ["disc", "decimal", "none"]
+            "values": [
+              "disc",
+              "decimal",
+              "none"
+            ]
           }
         }
       ],
@@ -15531,7 +15872,11 @@
           "description": "Trigger visual variant",
           "schema": {
             "kind": "enum",
-            "values": ["primary", "secondary", "ghost"]
+            "values": [
+              "primary",
+              "secondary",
+              "ghost"
+            ]
           }
         },
         {
@@ -15542,7 +15887,11 @@
           "description": "Trigger size",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -15563,7 +15912,10 @@
           "description": "Aligns the menu to the start or end edge of the trigger",
           "schema": {
             "kind": "enum",
-            "values": ["start", "end"]
+            "values": [
+              "start",
+              "end"
+            ]
           }
         },
         {
@@ -15766,7 +16118,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -15979,7 +16335,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -16122,7 +16482,11 @@
           "required": false,
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical", "both"]
+            "values": [
+              "horizontal",
+              "vertical",
+              "both"
+            ]
           }
         },
         {
@@ -16222,7 +16586,12 @@
           "default": "info",
           "schema": {
             "kind": "enum",
-            "values": ["info", "success", "warning", "error"]
+            "values": [
+              "info",
+              "success",
+              "warning",
+              "error"
+            ]
           }
         },
         {
@@ -16348,10 +16717,19 @@
           }
         },
         {
-          "name": "onChange",
+          "name": "onValueChange",
           "type": "(value: number | null) => void",
           "required": false,
           "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "onChange",
+          "type": "(value: number | null) => void",
+          "required": false,
+          "description": "Deprecated: use onValueChange (same number | null)",
           "schema": {
             "kind": "function"
           }
@@ -16437,7 +16815,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -16569,7 +16951,10 @@
           "default": "numeric",
           "schema": {
             "kind": "enum",
-            "values": ["numeric", "alphanumeric"]
+            "values": [
+              "numeric",
+              "alphanumeric"
+            ]
           }
         }
       ],
@@ -16659,7 +17044,10 @@
           "default": "bottom-end",
           "schema": {
             "kind": "enum",
-            "values": ["bottom-start", "bottom-end"]
+            "values": [
+              "bottom-start",
+              "bottom-end"
+            ]
           }
         },
         {
@@ -16680,7 +17068,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         },
         {
@@ -16900,7 +17291,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -17041,7 +17436,12 @@
           "default": "bottom",
           "schema": {
             "kind": "enum",
-            "values": ["top", "bottom", "left", "right"]
+            "values": [
+              "top",
+              "bottom",
+              "left",
+              "right"
+            ]
           }
         },
         {
@@ -17140,7 +17540,13 @@
           "default": "primary",
           "schema": {
             "kind": "enum",
-            "values": ["primary", "info", "success", "warning", "error"]
+            "values": [
+              "primary",
+              "info",
+              "success",
+              "warning",
+              "error"
+            ]
           }
         },
         {
@@ -17151,7 +17557,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         }
       ],
@@ -17252,7 +17662,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         },
         {
@@ -17263,7 +17676,11 @@
           "description": "success/error tint the fill and show a glyph next to the label",
           "schema": {
             "kind": "enum",
-            "values": ["active", "success", "error"]
+            "values": [
+              "active",
+              "success",
+              "error"
+            ]
           }
         }
       ],
@@ -17346,7 +17763,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -17716,7 +18137,12 @@
           "description": "Higher levels tolerate more damage but hold less data",
           "schema": {
             "kind": "enum",
-            "values": ["L", "M", "Q", "H"]
+            "values": [
+              "L",
+              "M",
+              "Q",
+              "H"
+            ]
           }
         },
         {
@@ -17832,7 +18258,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -17843,7 +18273,13 @@
           "default": "primary",
           "schema": {
             "kind": "enum",
-            "values": ["primary", "info", "success", "warning", "error"]
+            "values": [
+              "primary",
+              "info",
+              "success",
+              "warning",
+              "error"
+            ]
           }
         },
         {
@@ -18157,7 +18593,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -18346,7 +18786,10 @@
           "default": "horizontal",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -18470,7 +18913,11 @@
           "description": "Which axes may scroll",
           "schema": {
             "kind": "enum",
-            "values": ["vertical", "horizontal", "both"]
+            "values": [
+              "vertical",
+              "horizontal",
+              "both"
+            ]
           }
         },
         {
@@ -18481,7 +18928,11 @@
           "description": "Edge affordance: box-shadow, a mask-image fade, or none",
           "schema": {
             "kind": "enum",
-            "values": ["shadow", "mask", "none"]
+            "values": [
+              "shadow",
+              "mask",
+              "none"
+            ]
           }
         },
         {
@@ -18569,8 +19020,17 @@
           }
         },
         {
+          "name": "onValueChange",
+          "description": "Called with the current text on every keystroke.",
+          "type": "(value: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "onChange",
-          "description": "Called when the value changes.",
+          "description": "Deprecated: use onValueChange (same string).",
           "type": "(value: string) => void",
           "required": false,
           "schema": {
@@ -18614,7 +19074,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -18859,7 +19323,10 @@
           "description": "Layout variant: centered (single column) or split (two columns)",
           "schema": {
             "kind": "enum",
-            "values": ["centered", "split"]
+            "values": [
+              "centered",
+              "split"
+            ]
           }
         },
         {
@@ -19204,7 +19671,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -19328,7 +19799,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -19396,7 +19871,10 @@
           "default": "horizontal",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -19496,7 +19974,12 @@
           "default": "end",
           "schema": {
             "kind": "enum",
-            "values": ["start", "end", "top", "bottom"]
+            "values": [
+              "start",
+              "end",
+              "top",
+              "bottom"
+            ]
           }
         }
       ],
@@ -19858,7 +20341,11 @@
           "default": "text",
           "schema": {
             "kind": "enum",
-            "values": ["text", "circle", "rect"]
+            "values": [
+              "text",
+              "circle",
+              "rect"
+            ]
           }
         },
         {
@@ -20148,7 +20635,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -20327,7 +20818,11 @@
           "default": "flat",
           "schema": {
             "kind": "enum",
-            "values": ["up", "down", "flat"]
+            "values": [
+              "up",
+              "down",
+              "flat"
+            ]
           }
         },
         {
@@ -20412,7 +20907,13 @@
           "default": "neutral",
           "schema": {
             "kind": "enum",
-            "values": ["success", "warning", "error", "info", "neutral"]
+            "values": [
+              "success",
+              "warning",
+              "error",
+              "info",
+              "neutral"
+            ]
           }
         },
         {
@@ -20514,7 +21015,10 @@
           "description": "Layout direction of the steps",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -20724,8 +21228,17 @@
           }
         },
         {
+          "name": "onValueChange",
+          "description": "Called with the new checked state when the swap is toggled.",
+          "type": "(checked: boolean) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "onChange",
-          "description": "Called when the value changes.",
+          "description": "Deprecated: use onValueChange (same checked boolean).",
           "type": "(checked: boolean) => void",
           "required": false,
           "schema": {
@@ -20740,7 +21253,10 @@
           "default": "rotate",
           "schema": {
             "kind": "enum",
-            "values": ["rotate", "flip"]
+            "values": [
+              "rotate",
+              "flip"
+            ]
           }
         },
         {
@@ -21068,7 +21584,13 @@
           "default": "default",
           "schema": {
             "kind": "enum",
-            "values": ["default", "info", "success", "warning", "error"]
+            "values": [
+              "default",
+              "info",
+              "success",
+              "warning",
+              "error"
+            ]
           }
         },
         {
@@ -21079,7 +21601,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         },
         {
@@ -21271,7 +21796,11 @@
           "default": "p",
           "schema": {
             "kind": "enum",
-            "values": ["p", "span", "div"]
+            "values": [
+              "p",
+              "span",
+              "div"
+            ]
           }
         },
         {
@@ -21282,7 +21811,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -21293,7 +21826,11 @@
           "default": "normal",
           "schema": {
             "kind": "enum",
-            "values": ["normal", "medium", "semibold"]
+            "values": [
+              "normal",
+              "medium",
+              "semibold"
+            ]
           }
         },
         {
@@ -21407,7 +21944,11 @@
           "default": "vertical",
           "schema": {
             "kind": "enum",
-            "values": ["none", "vertical", "both"]
+            "values": [
+              "none",
+              "vertical",
+              "both"
+            ]
           }
         },
         {
@@ -21521,7 +22062,10 @@
           "default": "single",
           "schema": {
             "kind": "enum",
-            "values": ["single", "multi"]
+            "values": [
+              "single",
+              "multi"
+            ]
           }
         },
         {
@@ -21640,8 +22184,17 @@
           }
         },
         {
+          "name": "onValueChange",
+          "description": "Called with the new HH:MM time string when the value changes.",
+          "type": "(value: string) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "onChange",
-          "description": "Called when the value changes.",
+          "description": "Deprecated: use onValueChange (same time string).",
           "type": "(value: string) => void",
           "required": false,
           "schema": {
@@ -21710,7 +22263,11 @@
           "default": "'md'",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -21795,7 +22352,10 @@
           "default": "vertical",
           "schema": {
             "kind": "enum",
-            "values": ["vertical", "horizontal"]
+            "values": [
+              "vertical",
+              "horizontal"
+            ]
           }
         }
       ],
@@ -21880,7 +22440,12 @@
           "default": "default",
           "schema": {
             "kind": "enum",
-            "values": ["default", "success", "warning", "destructive"]
+            "values": [
+              "default",
+              "success",
+              "warning",
+              "destructive"
+            ]
           }
         },
         {
@@ -22070,8 +22635,17 @@
           }
         },
         {
+          "name": "onValueChange",
+          "description": "Called with the new checked state when the switch is toggled.",
+          "type": "(checked: boolean) => void",
+          "required": false,
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "onChange",
-          "description": "Called when the value changes.",
+          "description": "Deprecated: use onValueChange (same checked boolean).",
           "type": "(checked: boolean) => void",
           "required": false,
           "schema": {
@@ -22095,7 +22669,10 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md"]
+            "values": [
+              "sm",
+              "md"
+            ]
           }
         },
         {
@@ -22170,7 +22747,10 @@
           "required": true,
           "schema": {
             "kind": "enum",
-            "values": ["single", "multiple"]
+            "values": [
+              "single",
+              "multiple"
+            ]
           }
         },
         {
@@ -22217,7 +22797,10 @@
           "default": "horizontal",
           "schema": {
             "kind": "enum",
-            "values": ["horizontal", "vertical"]
+            "values": [
+              "horizontal",
+              "vertical"
+            ]
           }
         },
         {
@@ -22228,7 +22811,11 @@
           "default": "md",
           "schema": {
             "kind": "enum",
-            "values": ["sm", "md", "lg"]
+            "values": [
+              "sm",
+              "md",
+              "lg"
+            ]
           }
         },
         {
@@ -22464,7 +23051,12 @@
           "default": "top",
           "schema": {
             "kind": "enum",
-            "values": ["top", "right", "bottom", "left"]
+            "values": [
+              "top",
+              "right",
+              "bottom",
+              "left"
+            ]
           }
         },
         {
@@ -22569,7 +23161,10 @@
           "default": "single",
           "schema": {
             "kind": "enum",
-            "values": ["single", "multi"]
+            "values": [
+              "single",
+              "multi"
+            ]
           }
         },
         {

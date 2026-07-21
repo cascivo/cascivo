@@ -490,6 +490,12 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
   lines.push(`- Page-block AI docs are namespaced: ${DOCS}/llms/block/<name>.md`)
   lines.push(
+    "- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a self-contained, flat",
+  )
+  lines.push(
+    '  rollup — every component `…Props` interface is real, documentation-grade API reference.',
+  )
+  lines.push(
     `- Component index (every entry + channel + doc URL, plain markdown): ${SITE}/docs/components.md`,
   )
   lines.push(

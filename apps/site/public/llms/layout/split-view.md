@@ -18,14 +18,14 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type        | Required | Default | Description                  |
-| -------------- | ----------- | -------- | ------- | ---------------------------- |
-| `start`        | `ReactNode` | yes      | —       | Left pane content            |
-| `end`          | `ReactNode` | yes      | —       | Right pane content           |
-| `defaultRatio` | `number`    | no       | —       | Initial split ratio (0–1)    |
-| `min`          | `number`    | no       | —       | Minimum ratio for start pane |
-| `max`          | `number`    | no       | —       | Maximum ratio for start pane |
-| `aria-label`   | `string`    | no       | —       | Label for the separator      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `start` | `ReactNode` | yes | — | Left pane content |
+| `end` | `ReactNode` | yes | — | Right pane content |
+| `defaultRatio` | `number` | no | — | Initial split ratio (0–1) |
+| `min` | `number` | no | — | Minimum ratio for start pane |
+| `max` | `number` | no | — | Maximum ratio for start pane |
+| `aria-label` | `string` | no | — | Label for the separator |
 
 ## Examples
 
@@ -59,4 +59,4 @@ layout, split, resizable, pane
 
 ---
 
-_Generated from registry v0.8.0 on 2026-07-20. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.8.0 on 2026-07-21. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
