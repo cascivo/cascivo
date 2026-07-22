@@ -269,12 +269,14 @@ describe('CommandMenu rich rows', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false)
   })
 
-  it('clicking an inline action button runs that action', async () => {
+  it('clicking an inline action runs that action', async () => {
     const user = userEvent.setup()
     openAction.mockReset()
     tabAction.mockReset()
     render(<CommandMenu open={true} onOpenChange={vi.fn()} groups={richGroups} />)
-    await user.click(screen.getByRole('button', { name: /New tab/ }))
+    // Inline actions are presentational (not buttons) so the listbox option
+    // has no nested interactive controls; they stay clickable for mouse users.
+    await user.click(screen.getByText('New tab'))
     expect(tabAction).toHaveBeenCalledTimes(1)
     expect(openAction).not.toHaveBeenCalled()
   })
