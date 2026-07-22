@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/ai-rules.md
-  registry v0.9.0 · generated 2026-07-21
+  registry v0.9.0 · generated 2026-07-22
 -->
 
 # AI rules for building with cascivo
