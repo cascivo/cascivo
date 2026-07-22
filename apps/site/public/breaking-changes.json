@@ -15,8 +15,15 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.3.14",
+      "version": "0.4.0",
       "releases": [
+        {
+          "version": "0.4.0",
+          "level": "minor",
+          "notes": [
+            "`AreaChart`, `LineChart`, and `BarChart` series accept a per-series `y` accessor."
+          ]
+        },
         {
           "version": "0.3.0",
           "level": "minor",
@@ -69,7 +76,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "releases": [
         {
           "version": "0.5.0",
@@ -201,8 +208,16 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.9.0",
+      "version": "0.10.0",
       "releases": [
+        {
+          "version": "0.10.0",
+          "level": "minor",
+          "notes": [
+            "SSR now works with zero Vite config — `@cascivo/react` ships a CSS-free server build.",
+            "A controlled `<ThemeProvider value={…}>` is now SSR-safe on its own."
+          ]
+        },
         {
           "version": "0.9.0",
           "level": "minor",

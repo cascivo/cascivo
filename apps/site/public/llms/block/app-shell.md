@@ -30,4 +30,4 @@ shell, layout, sidebar, navigation, responsive
 
 ---
 
-_Generated from registry v0.9.0 on 2026-07-22. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.10.0 on 2026-07-22. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
