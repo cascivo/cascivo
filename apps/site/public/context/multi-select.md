@@ -35,14 +35,14 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `options` | `MultiSelectOption[]` | Yes | — | The selectable options. |
-| `value` | `string[]` | Yes | — | The controlled value. |
-| `onValueChange` | `(v: string[]) => void` | Yes | — | Called with the new value when it changes. |
-| `placeholder` | `string` | No | — | Placeholder text shown when the field is empty. |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `labels` | `MultiSelectLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| Name            | Type                    | Required | Default | Description                                                        |
+| --------------- | ----------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `options`       | `MultiSelectOption[]`   | Yes      | —       | The selectable options.                                            |
+| `value`         | `string[]`              | Yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: string[]) => void` | Yes      | —       | Called with the new value when it changes.                         |
+| `placeholder`   | `string`                | No       | —       | Placeholder text shown when the field is empty.                    |
+| `disabled`      | `boolean`               | No       | false   | When true, disables the control and removes it from the tab order. |
+| `labels`        | `MultiSelectLabels`     | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
 
 ## Tokens
 
@@ -60,16 +60,23 @@ The trigger advertises aria-haspopup="listbox" and aria-expanded, the panel is r
 ### Basic
 
 ```jsx
-<MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />
+<MultiSelect
+  options={[
+    { label: 'One', value: '1' },
+    { label: 'Two', value: '2' },
+  ]}
+  value={[]}
+  onValueChange={() => {}}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-* tokens |
-| labels | flexible | placeholder, selected(count), search, and noResults are overridable |
-| options | flexible | Caller supplies the option list and may mark individual options disabled |
+| Area        | Level    | Note                                                                                                           |
+| ----------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| token names | strict   | Surface, border, accent, radius, shadow, focus-ring, and motion must resolve to the listed --cascivo-\* tokens |
+| labels      | flexible | placeholder, selected(count), search, and noResults are overridable                                            |
+| options     | flexible | Caller supplies the option list and may mark individual options disabled                                       |
 
 ## AI context prompt
 

@@ -33,21 +33,21 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | No | — | The controlled value. |
-| `defaultValue` | `string` | No | '' | The initial value when uncontrolled. |
-| `onValueChange` | `(value: string) => void` | No | — | Called with the current text on every keystroke. |
-| `onChange` | `(value: string) => void` | No | — | Deprecated: use onValueChange (same string). |
-| `onSearch` | `(value: string) => void` | No | — | Called with the query, debounced, as the user types. |
-| `debounceMs` | `number` | No | 300 | Debounce delay (ms) before onSearch fires. |
-| `placeholder` | `string` | No | Search | Placeholder text shown when the field is empty. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `label` | `string` | No | Search | Text label for the control. |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `clearLabel` | `string` | No | Clear search | Accessible label for the clear button. |
-| `id` | `string` | No | — | Id applied to the root element (auto-generated when omitted). |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name            | Type                      | Required | Default      | Description                                                        |
+| --------------- | ------------------------- | -------- | ------------ | ------------------------------------------------------------------ |
+| `value`         | `string`                  | No       | —            | The controlled value.                                              |
+| `defaultValue`  | `string`                  | No       | ''           | The initial value when uncontrolled.                               |
+| `onValueChange` | `(value: string) => void` | No       | —            | Called with the current text on every keystroke.                   |
+| `onChange`      | `(value: string) => void` | No       | —            | Deprecated: use onValueChange (same string).                       |
+| `onSearch`      | `(value: string) => void` | No       | —            | Called with the query, debounced, as the user types.               |
+| `debounceMs`    | `number`                  | No       | 300          | Debounce delay (ms) before onSearch fires.                         |
+| `placeholder`   | `string`                  | No       | Search       | Placeholder text shown when the field is empty.                    |
+| `size`          | `'sm' \| 'md' \| 'lg'`    | No       | md           | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `label`         | `string`                  | No       | Search       | Text label for the control.                                        |
+| `disabled`      | `boolean`                 | No       | false        | When true, disables the control and removes it from the tab order. |
+| `clearLabel`    | `string`                  | No       | Clear search | Accessible label for the clear button.                             |
+| `id`            | `string`                  | No       | —            | Id applied to the root element (auto-generated when omitted).      |
+| `className`     | `string`                  | No       | —            | Additional CSS class names merged onto the root element.           |
 
 ## Tokens
 
@@ -84,9 +84,9 @@ Renders a native <input type="search"> associated with a <label> (defaulting fro
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Field and control styling must resolve to the listed --cascivo-* tokens |
+| Area              | Level    | Note                                                                         |
+| ----------------- | -------- | ---------------------------------------------------------------------------- |
+| token names       | strict   | Field and control styling must resolve to the listed --cascivo-\* tokens     |
 | debounce and copy | flexible | debounceMs and the placeholder/label/clear copy are free to suit the context |
 
 ## AI context prompt

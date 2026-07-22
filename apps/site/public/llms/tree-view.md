@@ -34,24 +34,27 @@ import { TreeView } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `aria-label` | `string` | no | — | Accessible label for the tree. |
-| `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes | — | The items to render. |
-| `selectionMode` | `'single' \| 'multi'` | no | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
-| `selected` | `string \| string[]` | no | — | The controlled selected node id(s). |
-| `defaultSelected` | `string \| string[]` | no | — | The initially selected node id(s) when uncontrolled. |
-| `onSelectChange` | `(selected: string \| string[]) => void` | no | — | Called with the new selection when it changes. |
-| `expanded` | `string[]` | no | — | The controlled set of expanded node ids. |
-| `defaultExpanded` | `string[]` | no | — | The initially expanded node ids when uncontrolled. |
-| `onExpandedChange` | `(expanded: string[]) => void` | no | — | Called with the new expanded set when it changes. |
+| Prop               | Type                                                                          | Required | Default  | Description                                                          |
+| ------------------ | ----------------------------------------------------------------------------- | -------- | -------- | -------------------------------------------------------------------- |
+| `aria-label`       | `string`                                                                      | no       | —        | Accessible label for the tree.                                       |
+| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes      | —        | The items to render.                                                 |
+| `selectionMode`    | `'single' \| 'multi'`                                                         | no       | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
+| `selected`         | `string \| string[]`                                                          | no       | —        | The controlled selected node id(s).                                  |
+| `defaultSelected`  | `string \| string[]`                                                          | no       | —        | The initially selected node id(s) when uncontrolled.                 |
+| `onSelectChange`   | `(selected: string \| string[]) => void`                                      | no       | —        | Called with the new selection when it changes.                       |
+| `expanded`         | `string[]`                                                                    | no       | —        | The controlled set of expanded node ids.                             |
+| `defaultExpanded`  | `string[]`                                                                    | no       | —        | The initially expanded node ids when uncontrolled.                   |
+| `onExpandedChange` | `(expanded: string[]) => void`                                                | no       | —        | Called with the new expanded set when it changes.                    |
 
 ## Examples
 
 ### Single select
 
 ```tsx
-<TreeView defaultExpanded={["src"]} items={[{ id: "src", label: "src", children: [{ id: "index", label: "index.ts" }] }]} />
+<TreeView
+  defaultExpanded={['src']}
+  items={[{ id: 'src', label: 'src', children: [{ id: 'index', label: 'index.ts' }] }]}
+/>
 ```
 
 ### Multi select

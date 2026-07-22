@@ -17,11 +17,12 @@ export default meta
 type Story = StoryObj
 
 export const ALegendPanel: Story = {
-  name: "A legend panel",
+  name: 'A legend panel',
   render: () => (
-  <div style={{ position: 'relative', height: 160, border: '1px solid var(--cascivo-color-border)' }}>
-    <FlowPanel position="top-right">Legend</FlowPanel>
-  </div>
-),
+    <div
+      style={{ position: 'relative', height: 160, border: '1px solid var(--cascivo-color-border)' }}
+    >
+      <FlowPanel position="top-right">Legend</FlowPanel>
+    </div>
+  ),
 }
-

@@ -27,14 +27,14 @@ import { Label } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `htmlFor` | `string` | no | — | Id of the form control this label is associated with. |
-| `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `required` | `boolean` | no | `false` | When true, marks the field as required. |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `children` | `ReactNode` | yes | — | Content rendered inside the component. |
-| `labels` | `{ required?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| Prop       | Type                    | Required | Default | Description                                                                                       |
+| ---------- | ----------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `htmlFor`  | `string`                | no       | —       | Id of the form control this label is associated with.                                             |
+| `asChild`  | `boolean`               | no       | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
+| `required` | `boolean`               | no       | `false` | When true, marks the field as required.                                                           |
+| `disabled` | `boolean`               | no       | `false` | When true, disables the control and removes it from the tab order.                                |
+| `children` | `ReactNode`             | yes      | —       | Content rendered inside the component.                                                            |
+| `labels`   | `{ required?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                                        |
 
 ## Examples
 
@@ -47,7 +47,9 @@ import { Label } from '@cascivo/react'
 ### Required
 
 ```tsx
-<Label htmlFor="email" required>Email</Label>
+<Label htmlFor="email" required>
+  Email
+</Label>
 ```
 
 ### asChild
@@ -55,7 +57,9 @@ import { Label } from '@cascivo/react'
 Render the label semantics onto a custom element via Slot.
 
 ```tsx
-<Label asChild htmlFor="email"><span>Email</span></Label>
+<Label asChild htmlFor="email">
+  <span>Email</span>
+</Label>
 ```
 
 ## Design tokens

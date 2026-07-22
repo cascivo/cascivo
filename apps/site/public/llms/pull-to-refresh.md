@@ -29,14 +29,14 @@ import { PullToRefresh } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `onRefresh` | `() => Promise<unknown> \| unknown` | yes | — | Called when the pull passes the threshold; the spinner shows until it settles |
-| `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
-| `threshold` | `number` | no | `64` | Pull distance (px) required to trigger a refresh. |
-| `disabled` | `boolean` | no | — | When true, disables the control and removes it from the tab order. |
-| `labels` | `{ pull?: string; release?: string; refreshing?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop        | Type                                                       | Required | Default | Description                                                                   |
+| ----------- | ---------------------------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
+| `onRefresh` | `() => Promise<unknown> \| unknown`                        | yes      | —       | Called when the pull passes the threshold; the spinner shows until it settles |
+| `children`  | `React.ReactNode`                                          | yes      | —       | Content rendered inside the component.                                        |
+| `threshold` | `number`                                                   | no       | `64`    | Pull distance (px) required to trigger a refresh.                             |
+| `disabled`  | `boolean`                                                  | no       | —       | When true, disables the control and removes it from the tab order.            |
+| `labels`    | `{ pull?: string; release?: string; refreshing?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).                    |
+| `className` | `string`                                                   | no       | —       | Additional CSS class names merged onto the root element.                      |
 
 ## Examples
 

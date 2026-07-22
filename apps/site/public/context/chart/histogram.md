@@ -24,17 +24,17 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `number[]` | Yes | — | Array of numeric values to bin |
-| `bins` | `number` | No | — | Explicit bin count (defaults to Freedman–Diaconis) |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `label` | `string` | Yes | — | X-axis label |
-| `description` | `string` | No | — | Supporting description text. |
-| `width` | `number` | No | — | Width of the component. |
-| `height` | `number` | No | 300 | Height of the component. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Name          | Type       | Required | Default | Description                                                           |
+| ------------- | ---------- | -------- | ------- | --------------------------------------------------------------------- |
+| `data`        | `number[]` | Yes      | —       | Array of numeric values to bin                                        |
+| `bins`        | `number`   | No       | —       | Explicit bin count (defaults to Freedman–Diaconis)                    |
+| `title`       | `string`   | Yes      | —       | Title text for the component.                                         |
+| `label`       | `string`   | Yes      | —       | X-axis label                                                          |
+| `description` | `string`   | No       | —       | Supporting description text.                                          |
+| `width`       | `number`   | No       | —       | Width of the component.                                               |
+| `height`      | `number`   | No       | 300     | Height of the component.                                              |
+| `className`   | `string`   | No       | —       | Additional CSS class names merged onto the root element.              |
+| `plain`       | `boolean`  | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Tokens
 

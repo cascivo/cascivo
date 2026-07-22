@@ -29,13 +29,13 @@ import { Steps } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Accessible label for the steps navigation; defaults to the built-in i18n string. |
-| `steps` | `Step[]` | yes | — | Array of step objects with label and optional explicit state |
-| `activeStep` | `number` | no | `0` | Index of the currently active step (0-based) |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `'horizontal'` | Layout direction of the steps |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop          | Type                         | Required | Default        | Description                                                                      |
+| ------------- | ---------------------------- | -------- | -------------- | -------------------------------------------------------------------------------- |
+| `ariaLabel`   | `string`                     | no       | —              | Accessible label for the steps navigation; defaults to the built-in i18n string. |
+| `steps`       | `Step[]`                     | yes      | —              | Array of step objects with label and optional explicit state                     |
+| `activeStep`  | `number`                     | no       | `0`            | Index of the currently active step (0-based)                                     |
+| `orientation` | `'horizontal' \| 'vertical'` | no       | `'horizontal'` | Layout direction of the steps                                                    |
+| `className`   | `string`                     | no       | —              | Additional CSS class names merged onto the root element.                         |
 
 ## Examples
 
@@ -45,12 +45,7 @@ Standard checkout or onboarding progress tracker
 
 ```tsx
 <Steps
-  steps={[
-    { label: 'Cart' },
-    { label: 'Shipping' },
-    { label: 'Payment' },
-    { label: 'Confirm' },
-  ]}
+  steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }, { label: 'Confirm' }]}
   activeStep={1}
 />
 ```
@@ -62,11 +57,7 @@ Sidebar-style progress for tall forms
 ```tsx
 <Steps
   orientation="vertical"
-  steps={[
-    { label: 'Account info' },
-    { label: 'Profile details' },
-    { label: 'Preferences' },
-  ]}
+  steps={[{ label: 'Account info' }, { label: 'Profile details' }, { label: 'Preferences' }]}
   activeStep={0}
 />
 ```
@@ -77,11 +68,7 @@ Override derived state on a specific step
 
 ```tsx
 <Steps
-  steps={[
-    { label: 'Upload' },
-    { label: 'Validate', state: 'error' },
-    { label: 'Process' },
-  ]}
+  steps={[{ label: 'Upload' }, { label: 'Validate', state: 'error' }, { label: 'Process' }]}
   activeStep={1}
 />
 ```

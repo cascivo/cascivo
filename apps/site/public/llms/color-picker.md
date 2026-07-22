@@ -28,17 +28,17 @@ import { ColorPicker } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `labels` | `ColorPickerLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
-| `value` | `string` | no | — | Controlled hex color value |
-| `defaultValue` | `string` | no | `#3b82f6` | The initial value when uncontrolled. |
-| `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
-| `presets` | `string[]` | no | — | Preset swatch colors |
-| `alpha` | `boolean` | no | `true` | When true, enables alpha (opacity) selection. |
-| `label` | `string` | no | — | Text label for the control. |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop            | Type                      | Required | Default   | Description                                                        |
+| --------------- | ------------------------- | -------- | --------- | ------------------------------------------------------------------ |
+| `labels`        | `ColorPickerLabels`       | no       | —         | Overrides for the component’s user-visible strings (i18n).         |
+| `value`         | `string`                  | no       | —         | Controlled hex color value                                         |
+| `defaultValue`  | `string`                  | no       | `#3b82f6` | The initial value when uncontrolled.                               |
+| `onValueChange` | `(value: string) => void` | no       | —         | Called with the new value when it changes.                         |
+| `presets`       | `string[]`                | no       | —         | Preset swatch colors                                               |
+| `alpha`         | `boolean`                 | no       | `true`    | When true, enables alpha (opacity) selection.                      |
+| `label`         | `string`                  | no       | —         | Text label for the control.                                        |
+| `disabled`      | `boolean`                 | no       | `false`   | When true, disables the control and removes it from the tab order. |
+| `size`          | `'sm' \| 'md' \| 'lg'`    | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 
 ## Examples
 
@@ -51,7 +51,7 @@ import { ColorPicker } from '@cascivo/react'
 ### With presets
 
 ```tsx
-<ColorPicker presets={["#ef4444", "#3b82f6", "#10b981"]} alpha={false} />
+<ColorPicker presets={['#ef4444', '#3b82f6', '#10b981']} alpha={false} />
 ```
 
 ## Design tokens

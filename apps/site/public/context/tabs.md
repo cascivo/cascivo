@@ -33,11 +33,11 @@ Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `defaultValue` | `string` | No | — | The initial value when uncontrolled. |
-| `value` | `string` | No | — | The controlled value. |
-| `onValueChange` | `(value: string) => void` | No | — | Called with the new value when it changes. |
+| Name            | Type                      | Required | Default | Description                                |
+| --------------- | ------------------------- | -------- | ------- | ------------------------------------------ |
+| `defaultValue`  | `string`                  | No       | —       | The initial value when uncontrolled.       |
+| `value`         | `string`                  | No       | —       | The controlled value.                      |
+| `onValueChange` | `(value: string) => void` | No       | —       | Called with the new value when it changes. |
 
 ## Tokens
 
@@ -52,15 +52,20 @@ Implements the WAI-ARIA tabs pattern: tablist/tab/tabpanel roles with arrow-key 
 ### Basic
 
 ```jsx
-<Tabs defaultValue="account"><TabsList><TabsTrigger value="account">Account</TabsTrigger></TabsList><TabsContent value="account">…</TabsContent></Tabs>
+<Tabs defaultValue="account">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">…</TabsContent>
+</Tabs>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| controlled vs uncontrolled | flexible | Use value or defaultValue depending on control needs |
-| token names | strict | Accent, borders, and focus ring must resolve to --cascivo-* tokens |
+| Area                       | Level    | Note                                                                |
+| -------------------------- | -------- | ------------------------------------------------------------------- |
+| controlled vs uncontrolled | flexible | Use value or defaultValue depending on control needs                |
+| token names                | strict   | Accent, borders, and focus ring must resolve to --cascivo-\* tokens |
 
 ## AI context prompt
 

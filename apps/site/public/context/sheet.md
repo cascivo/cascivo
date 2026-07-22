@@ -33,12 +33,12 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | Yes | — | Whether the component is open (controlled). |
-| `onClose` | `() => void` | Yes | — | Called when the component is closed. |
-| `title` | `React.ReactNode` | No | — | Title text for the component. |
-| `side` | `'start' \| 'end' \| 'top' \| 'bottom'` | No | end | Edge the component is anchored to. |
+| Name      | Type                                    | Required | Default | Description                                 |
+| --------- | --------------------------------------- | -------- | ------- | ------------------------------------------- |
+| `open`    | `boolean`                               | Yes      | —       | Whether the component is open (controlled). |
+| `onClose` | `() => void`                            | Yes      | —       | Called when the component is closed.        |
+| `title`   | `React.ReactNode`                       | No       | —       | Title text for the component.               |
+| `side`    | `'start' \| 'end' \| 'top' \| 'bottom'` | No       | end     | Edge the component is anchored to.          |
 
 ## Tokens
 
@@ -69,10 +69,10 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| side | strict | Limited to start \| end \| top \| bottom — drives the slide direction and animation |
-| body content | flexible | Any children; consumer owns the panel contents |
+| Area         | Level    | Note                                                                                |
+| ------------ | -------- | ----------------------------------------------------------------------------------- |
+| side         | strict   | Limited to start \| end \| top \| bottom — drives the slide direction and animation |
+| body content | flexible | Any children; consumer owns the panel contents                                      |
 
 ## AI context prompt
 

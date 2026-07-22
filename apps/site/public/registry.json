@@ -6059,7 +6059,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
       ],
       "fileHashes": {
-        "field.tsx": "sha256-2b9b42d31a704fe1d9c204889d5dd10d2faac3c51e3bd71d050aee6bbad1badf",
+        "field.tsx": "sha256-8949f7babd5e654b710dd8fada81aae98c191e75d4b422504063e75c2493efd5",
         "field.module.css": "sha256-0aeb9ff8562b462d119eef97fec7766d80452366edc87eeee633d1ca24ea9468"
       },
       "dependencies": ["@cascivo/core"],

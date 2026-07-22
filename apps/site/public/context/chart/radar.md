@@ -23,17 +23,17 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `axes` | `string[]` | Yes | — | Axis labels (one per dimension) |
-| `series` | `{ id: string; label: string; values: number[] }[]` | Yes | — | One value per axis per series |
-| `max` | `number` | No | — | Maximum value (defaults to data max) |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `description` | `string` | No | — | Supporting description text. |
-| `width` | `number` | No | — | Width of the component. |
-| `height` | `number` | No | 320 | Height of the component. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Name          | Type                                                | Required | Default | Description                                                           |
+| ------------- | --------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------- |
+| `axes`        | `string[]`                                          | Yes      | —       | Axis labels (one per dimension)                                       |
+| `series`      | `{ id: string; label: string; values: number[] }[]` | Yes      | —       | One value per axis per series                                         |
+| `max`         | `number`                                            | No       | —       | Maximum value (defaults to data max)                                  |
+| `title`       | `string`                                            | Yes      | —       | Title text for the component.                                         |
+| `description` | `string`                                            | No       | —       | Supporting description text.                                          |
+| `width`       | `number`                                            | No       | —       | Width of the component.                                               |
+| `height`      | `number`                                            | No       | 320     | Height of the component.                                              |
+| `className`   | `string`                                            | No       | —       | Additional CSS class names merged onto the root element.              |
+| `plain`       | `boolean`                                           | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Tokens
 

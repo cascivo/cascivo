@@ -36,10 +36,10 @@ import { Badge } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no | `default` | Selects the visual style variant. |
-| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop      | Type                                                                               | Required | Default   | Description                                           |
+| --------- | ---------------------------------------------------------------------------------- | -------- | --------- | ----------------------------------------------------- |
+| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no       | `default` | Selects the visual style variant.                     |
+| `size`    | `'sm' \| 'md'`                                                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 

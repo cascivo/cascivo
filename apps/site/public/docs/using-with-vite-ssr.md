@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/using-with-vite-ssr.md
   registry v0.9.0 · generated 2026-07-22
 -->
+
 # Using cascivo with Vite SSR (TanStack Start, vite-ssr, Remix, workerd)
 
 **As of `@cascivo/react` 0.10, SSR works with zero Vite config.** The package
@@ -140,7 +141,7 @@ hydrate cleanly — no client-only boundary required.
 >
 > - **The router module must export `getRouter`.** Newer TanStack Start expects your
 >   `src/router.tsx` to export a `getRouter` function; an older `export function
->   createRouter()` name fails the build. See the
+createRouter()` name fails the build. See the
 >   [TanStack Start docs](https://tanstack.com/start/latest).
 > - **`vite build` emits an SSR _handler_, not a server.** The default build output
 >   (`dist/server/server.js`) is a request handler, not a self-listening process;

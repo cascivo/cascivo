@@ -34,16 +34,16 @@ import { Filter } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `aria-label` | `string` | no | — | Accessible label for the filter group. |
-| `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
-| `value` | `string[]` | no | — | Controlled selected values |
-| `defaultValue` | `string[]` | no | `[]` | Initial selected values for uncontrolled use |
-| `onValueChange` | `(selected: string[]) => void` | no | — | Called with the selected values whenever the selection changes. |
-| `onChange` | `(selected: string[]) => void` | no | — | Deprecated: use onValueChange (same string[]). |
-| `multi` | `boolean` | no | `false` | Allow multiple items to be selected simultaneously |
-| `variant` | `'pill' \| 'outline'` | no | `pill` | Selects the visual style variant. |
+| Prop            | Type                           | Required | Default | Description                                                     |
+| --------------- | ------------------------------ | -------- | ------- | --------------------------------------------------------------- |
+| `aria-label`    | `string`                       | no       | —       | Accessible label for the filter group.                          |
+| `options`       | `FilterOption[]`               | yes      | —       | Array of { label, value } objects to render as filter buttons   |
+| `value`         | `string[]`                     | no       | —       | Controlled selected values                                      |
+| `defaultValue`  | `string[]`                     | no       | `[]`    | Initial selected values for uncontrolled use                    |
+| `onValueChange` | `(selected: string[]) => void` | no       | —       | Called with the selected values whenever the selection changes. |
+| `onChange`      | `(selected: string[]) => void` | no       | —       | Deprecated: use onValueChange (same string[]).                  |
+| `multi`         | `boolean`                      | no       | `false` | Allow multiple items to be selected simultaneously              |
+| `variant`       | `'pill' \| 'outline'`          | no       | `pill`  | Selects the visual style variant.                               |
 
 ## Examples
 
@@ -79,7 +79,10 @@ import { Filter } from '@cascivo/react'
 ```tsx
 <Filter
   variant="outline"
-  options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}
+  options={[
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+  ]}
   aria-label="Filter by framework"
 />
 ```

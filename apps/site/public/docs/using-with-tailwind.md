@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/using-with-tailwind.md
   registry v0.9.0 · generated 2026-07-22
 -->
+
 # Using cascivo with Tailwind v4
 
 **Short version: they coexist.** cascivo ships real stylesheets and themes via CSS
@@ -27,15 +28,15 @@ This is the page the dashboard-integration feedback asked for: a clear answer to
 ```css
 /* app.css — processed by Tailwind v4 */
 @import 'tailwindcss';
-@import '@cascivo/tokens';            /* primitive tokens */
-@import '@cascivo/themes/light.css';  /* @imports tokens + light semantics */
-@import '@cascivo/themes/dark.css';   /* dark semantics, keyed [data-theme='dark'] */
+@import '@cascivo/tokens'; /* primitive tokens */
+@import '@cascivo/themes/light.css'; /* @imports tokens + light semantics */
+@import '@cascivo/themes/dark.css'; /* dark semantics, keyed [data-theme='dark'] */
 @import '@cascivo/themes/tailwind.css'; /* the bridge — LAST */
 ```
 
 ```html
 <!-- One attribute drives BOTH cascivo and Tailwind dark: utilities -->
-<html data-theme="dark">
+<html data-theme="dark"></html>
 ```
 
 That's it. cascivo components are themed by `data-theme`; Tailwind's `dark:`
@@ -123,7 +124,7 @@ utilities pick it up:
 }
 ```
 
-**Don't** maintain two divergent palettes (a Tailwind `@theme` block *and*
+**Don't** maintain two divergent palettes (a Tailwind `@theme` block _and_
 cascivo tokens with different values) — that is the "two parallel token layers"
 pain the feedback hit. Bridge one into the other instead.
 

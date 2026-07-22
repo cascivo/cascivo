@@ -36,14 +36,14 @@ import { RadialProgress } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `number` | yes | — | The controlled value. |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
-| `children` | `React.ReactNode` | no | — | Content rendered inside the component. |
-| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop         | Type                                                       | Required | Default   | Description                                              |
+| ------------ | ---------------------------------------------------------- | -------- | --------- | -------------------------------------------------------- |
+| `value`      | `number`                                                   | yes      | —         | The controlled value.                                    |
+| `size`       | `'sm' \| 'md' \| 'lg'`                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').    |
+| `variant`    | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `primary` | Selects the visual style variant.                        |
+| `children`   | `React.ReactNode`                                          | no       | —         | Content rendered inside the component.                   |
+| `aria-label` | `string`                                                   | no       | —         | Accessible label used when no visible label is present.  |
+| `className`  | `string`                                                   | no       | —         | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -68,7 +68,9 @@ Completed state with success color at large size
 Override the default percentage label with custom content
 
 ```tsx
-<RadialProgress value={45} variant="warning">45 GB</RadialProgress>
+<RadialProgress value={45} variant="warning">
+  45 GB
+</RadialProgress>
 ```
 
 ## Design tokens

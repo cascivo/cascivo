@@ -31,18 +31,18 @@ Focusable group; Enter/Space select. Visual states (hover/focus/selected) are CS
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `id` | `string` | Yes | — | Stable node id. |
-| `position` | `{ x: number; y: number }` | No | — | Position in flow coords (controllable). |
-| `onPositionChange` | `(position: XYPosition) => void` | No | — | Fired while dragging. |
-| `zoom` | `number` | No | 1 | Current zoom (drag deltas are divided by it). |
-| `selected` | `boolean` | No | false | Whether the node is rendered as selected. |
-| `draggable` | `boolean` | No | true | Whether the node can be dragged. |
-| `interactive` | `boolean` | No | true | When false, the node is view-only: not draggable, selectable, or focusable. |
-| `onSelect` | `(id: string) => void` | No | — | Called with the selected value. |
-| `children` | `ReactNode` | No | — | Any cascivo content. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name               | Type                             | Required | Default | Description                                                                 |
+| ------------------ | -------------------------------- | -------- | ------- | --------------------------------------------------------------------------- |
+| `id`               | `string`                         | Yes      | —       | Stable node id.                                                             |
+| `position`         | `{ x: number; y: number }`       | No       | —       | Position in flow coords (controllable).                                     |
+| `onPositionChange` | `(position: XYPosition) => void` | No       | —       | Fired while dragging.                                                       |
+| `zoom`             | `number`                         | No       | 1       | Current zoom (drag deltas are divided by it).                               |
+| `selected`         | `boolean`                        | No       | false   | Whether the node is rendered as selected.                                   |
+| `draggable`        | `boolean`                        | No       | true    | Whether the node can be dragged.                                            |
+| `interactive`      | `boolean`                        | No       | true    | When false, the node is view-only: not draggable, selectable, or focusable. |
+| `onSelect`         | `(id: string) => void`           | No       | —       | Called with the selected value.                                             |
+| `children`         | `ReactNode`                      | No       | —       | Any cascivo content.                                                        |
+| `className`        | `string`                         | No       | —       | Additional CSS class names merged onto the root element.                    |
 
 ## Tokens
 
@@ -57,18 +57,20 @@ Focusable group; Enter/Space select. Visual states (hover/focus/selected) are CS
 ### A draggable node
 
 ```jsx
-() => (
+;() => (
   <div style={{ position: 'relative', height: 160 }}>
-    <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>Service A</FlowNode>
+    <FlowNode id="a" defaultPosition={{ x: 40, y: 50 }}>
+      Service A
+    </FlowNode>
   </div>
 )
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| content | flexible | Renders any children. |
+| Area     | Level    | Note                                |
+| -------- | -------- | ----------------------------------- |
+| content  | flexible | Renders any children.               |
 | position | flexible | Controllable; draggable toggleable. |
 
 ## AI context prompt

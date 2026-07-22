@@ -27,19 +27,24 @@ import { Accordion } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `type` | `'single' \| 'multiple'` | no | `single` | Whether one or multiple sections can be open at once ('single' \| 'multiple'). |
-| `defaultValue` | `string \| string[]` | no | — | The initial value when uncontrolled. |
-| `value` | `string \| string[]` | no | — | The controlled value. |
-| `onValueChange` | `(value: string \| string[]) => void` | no | — | Called with the new value when it changes. |
+| Prop            | Type                                  | Required | Default  | Description                                                                    |
+| --------------- | ------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------ |
+| `type`          | `'single' \| 'multiple'`              | no       | `single` | Whether one or multiple sections can be open at once ('single' \| 'multiple'). |
+| `defaultValue`  | `string \| string[]`                  | no       | —        | The initial value when uncontrolled.                                           |
+| `value`         | `string \| string[]`                  | no       | —        | The controlled value.                                                          |
+| `onValueChange` | `(value: string \| string[]) => void` | no       | —        | Called with the new value when it changes.                                     |
 
 ## Examples
 
 ### Single
 
 ```tsx
-<Accordion type="single" defaultValue="a"><AccordionItem value="a"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>
+<Accordion type="single" defaultValue="a">
+  <AccordionItem value="a">
+    <AccordionTrigger>Section</AccordionTrigger>
+    <AccordionContent>…</AccordionContent>
+  </AccordionItem>
+</Accordion>
 ```
 
 ## Design tokens
