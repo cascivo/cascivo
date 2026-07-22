@@ -9,16 +9,16 @@ First-party themes for cascivo — {{count.themes}} of them, applied with a sing
 **Everything (recommended starting point):**
 
 ```ts
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 ```
 
 **À la carte** — each theme sheet self-imports `@cascivo/tokens` (deduped by URL, so multiple themes load tokens once). Import only what you ship:
 
 ```ts
-import '@cascivo/themes/base' // base typography layer (font, line-height, color)
-import '@cascivo/themes/light'
-import '@cascivo/themes/dark'
-import '@cascivo/themes/midnight' // …any of the {{count.themes}} themes by name
+import '@cascivo/themes/base.css' // base typography layer (font, line-height, color)
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/midnight.css' // …any of the {{count.themes}} themes by name
 ```
 
 Every export also works with an explicit `.css` suffix (`@cascivo/themes/light.css`) for tooling that requires it.

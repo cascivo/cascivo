@@ -12,9 +12,9 @@ import { Alerts } from './sections/Alerts'
 import { Logs } from './sections/Logs'
 import { msg } from './i18n'
 
-import '@cascivo/themes/dark'
-import '@cascivo/themes/light'
-import '@cascivo/themes/warm'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/warm.css'
 import '@cascivo/tokens'
 
 type Section = 'overview' | 'metrics' | 'alerts' | 'logs'

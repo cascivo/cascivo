@@ -2,9 +2,9 @@
    `dark` plus light/warm). The other nine themes load on demand via a JS
    dynamic import (see theme.ts → themes-extra.css), keeping them off the
    critical path. */
-@import '@cascivo/themes/light';
-@import '@cascivo/themes/dark';
-@import '@cascivo/themes/warm';
+@import '@cascivo/themes/light.css';
+@import '@cascivo/themes/dark.css';
+@import '@cascivo/themes/warm.css';
 
 *,
 *::before,

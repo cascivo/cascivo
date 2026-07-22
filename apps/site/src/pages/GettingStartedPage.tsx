@@ -54,7 +54,7 @@ export function GettingStartedPage() {
         <CodeBlock
           lang="tsx"
           code={`// once, in your app entry
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 
 // anywhere — component CSS rides along, no styles.css to import
 import { Button, Card, CardContent } from '@cascivo/react'
@@ -96,7 +96,7 @@ npx cascivo add button    # copy button.tsx + button.module.css into your repo`}
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import '@cascivo/themes/all'
+          code={`import '@cascivo/themes/all.css'
 import { Button } from './components/ui/button/button'`}
         />
       </section>
@@ -110,9 +110,9 @@ import { Button } from './components/ui/button/button'`}
         </p>
         <CodeBlock
           lang="tsx"
-          code={`import '@cascivo/themes/base'  // base typography
-import '@cascivo/themes/light'
-import '@cascivo/themes/dark'`}
+          code={`import '@cascivo/themes/base.css'  // base typography
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/dark.css'`}
         />
         <p style={subtle}>
           Scope a theme with <code>data-theme="light" | "dark" | "warm"</code> on any container.
@@ -133,7 +133,7 @@ import '@cascivo/themes/dark'`}
         <CodeBlock
           lang="tsx"
           code={`// app/layout.tsx
-import '@cascivo/themes/all'`}
+import '@cascivo/themes/all.css'`}
         />
       </section>
     </article>

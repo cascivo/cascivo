@@ -15,6 +15,12 @@
 
 ## Anti-patterns
 
+### Field owns the label; a labelled child (Input, Textarea, NativeSelect, …) renders a SECOND <label> for the same control. Omit the child's label inside a Field (dev builds warn).
+
+**Bad:** `<Field label="Email"><Input label="Email" /></Field>`  
+**Good:** `<Field label="Email"><Input /></Field>`  
+**Why:** Field owns the label; a labelled child (Input, Textarea, NativeSelect, …) renders a SECOND <label> for the same control. Omit the child's label inside a Field (dev builds warn).
+
 ### Field clones exactly one child control to inject its id and aria wiring; multiple children break the association
 
 **Bad:** `<Field label="Email"><Input /><Input /></Field>`  

@@ -1,30 +1,64 @@
 # Using cascivo with Vite SSR (TanStack Start, vite-ssr, Remix, workerd)
 
-cascivo renders on the server, but the **published `@cascivo/react` bundle ships
-per-component CSS as static side-effect imports** (`import './button.css'` inside
-each component chunk). A bundler resolves those imports at build time; a bare
+**As of `@cascivo/react` 0.10, SSR works with zero Vite config.** The package
+ships a CSS-free server build selected by the `node` export condition, so a bare
 server-side ESM loader — Node's native loader, or a workerd/Cloudflare runtime —
-does not, and throws:
+imports it cleanly. You just install, import the stylesheet once, and render.
 
-```
-Error: Unknown file extension ".css" for /…/@cascivo/react/dist/button/button.css
-```
+Historically (`@cascivo/react` **< 0.10**) the published bundle shipped
+per-component CSS as static side-effect imports (`import './button.css'` inside
+each component chunk). A bundler resolved those at build time; a bare server
+loader did not, and threw `Error: Unknown file extension ".css"` — HTTP 500 on
+every route. The fix was one line of Vite config (`ssr.noExternal`). If you are
+pinned below 0.10, that recipe is documented under
+[Older versions (< 0.10)](#older-versions--010-the-ssrnoexternal-recipe) below; on
+0.10+ you no longer need it.
 
-The fix is one line of Vite config: tell Vite to **process** `@cascivo/react`
-during SSR instead of leaving it for the runtime to `require`/`import` raw. This
-page is the recipe for any Vite-driven SSR framework (TanStack Start, `vite-ssr`,
-Remix on Vite, Astro SSR, and Cloudflare/workerd targets).
+This page covers any Vite-driven SSR framework (TanStack Start, `vite-ssr`, Remix
+on Vite, Astro SSR, and Cloudflare/workerd targets).
 
 Prerequisite reading: [GETTING-STARTED.md](./GETTING-STARTED.md) for the install
 paths. Snippets use the prebuilt `@cascivo/react` package.
 
-## TL;DR — the 4-line SSR checklist
+## TL;DR — the SSR checklist
 
-Copy-paste these four things and SSR works end to end. Items 1–3 are load-bearing;
-item 4 applies only if you switch themes at runtime.
+Copy-paste these and SSR works end to end. On `@cascivo/react` 0.10+ there is **no
+Vite config to add** — the three items below are all that's left.
 
-**1. Mark the cascivo packages `ssr.noExternal`** so Vite bundles their CSS imports
-instead of the server runtime trying to `import` a `.css` file:
+**1. Use `@preact/signals-react` 3.x.** On React 19 the 2.x line fails to load
+(`SyntaxError: … '__SECRET_INTERNALS…'`); the peer range enforces `>=3`. If a
+lockfile pinned 2.x, run `cascivo doctor`.
+
+**2. Import the CSS once** in your root route / server entry — this is what styles
+the server-rendered first paint (the CSS-free server build carries no per-component
+CSS, by design, so the aggregate stylesheet is how the server HTML gets styled):
+
+```tsx
+import '@cascivo/react/styles.css' // all component structure, one stylesheet
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/charts/styles.css' // only if you use @cascivo/charts
+```
+
+**3. Theme without a hydration mismatch** (runtime theme switching only): inline
+`themePreloadScript()` in `<head>` and add `suppressHydrationWarning` to `<html>`,
+or hard-code `data-theme` for a fixed theme. For a controlled `<ThemeProvider
+value=…>` the provider is SSR-safe on its own (it emits an inline attribute setter
+during render). See [Theme switching without a flash](#theme-switching-without-a-flash-ssr)
+below.
+
+> **On `@cascivo/react` < 0.10** add one more item — mark the package
+> `ssr.noExternal` — see [Older versions](#older-versions--010-the-ssrnoexternal-recipe).
+
+**Where's a working example?** [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/)
+is a complete Vite SSR app that server-renders a `Menubar`, `Card`, and `Button`
+through the built `@cascivo/react` dist. Its `test` script imports the built
+server bundle and asserts it renders without the `.css` error.
+
+## Older versions (< 0.10): the `ssr.noExternal` recipe
+
+If you are pinned to `@cascivo/react` **< 0.10** (before the CSS-free server
+build), add one line so Vite bundles the per-component CSS imports during SSR
+instead of leaving them for the server runtime to `import` raw:
 
 ```ts
 // vite.config.ts
@@ -32,36 +66,12 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   ssr: {
-    // Add charts/editor/flow if you use them — the pattern already covers them.
     noExternal: [/^@cascivo\//],
   },
 })
 ```
 
-**2. Use `@preact/signals-react` 3.x.** On React 19 the 2.x line fails to load
-(`SyntaxError: … '__SECRET_INTERNALS…'`); the peer range enforces `>=3`. If a
-lockfile pinned 2.x, run `cascivo doctor`.
-
-**3. Import the CSS once** in your root route / server entry:
-
-```tsx
-import '@cascivo/react/styles.css' // all component structure, one stylesheet
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
-import '@cascivo/charts/styles.css' // only if you use @cascivo/charts
-```
-
-**4. Theme without a hydration mismatch** (runtime theme switching only): inline
-`themePreloadScript()` in `<head>` and add `suppressHydrationWarning` to `<html>`,
-or hard-code `data-theme` for a fixed theme. See
-[Theme switching without a flash](#theme-switching-without-a-flash-ssr) below.
-
-`noExternal` (1) fixes the crash; the aggregate `styles.css` (3) guarantees every
-component is styled on the server-rendered first paint (see below).
-
-## Zero-config with the cascivo Vite plugin
-
-If you'd rather not hand-write the `noExternal` entry, `@cascivo/vite-plugin`
-exports `cascivoSsr()`, which sets it for every `@cascivo/*` package:
+Or use the plugin, which sets the same thing for every `@cascivo/*` package:
 
 ```ts
 // vite.config.ts
@@ -73,21 +83,19 @@ export default defineConfig({
 })
 ```
 
-You still import `@cascivo/react/styles.css` + a theme once. `cascivoSsr()` only
-handles the SSR externalization; it composes with `cascivoLayers()` (the vendor
-CSS-layering plugin) in the same `plugins` array.
-
-**Where's a working example?** [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/)
-is a complete Vite SSR app that server-renders a `Menubar`, `Card`, and `Button`
-through the built `@cascivo/react` dist with `cascivoSsr()`. Its `test` script
-imports the built server bundle and asserts it renders without the `.css` error.
+`cascivoSsr()` remains available and harmless on 0.10+ (it composes with
+`cascivoLayers()`, the vendor CSS-layering plugin, in the same `plugins` array),
+but it is no longer required — the `node` export condition handles the server
+build. Upgrading to 0.10+ lets you delete the config entirely.
 
 ## Why import the aggregate `styles.css`?
 
 The per-component CSS imports work great in a **client** bundle: each component
-pulls only its own stylesheet and unused component CSS tree-shakes away. On the
-server that same mechanism is what needs `noExternal`. Importing
-`@cascivo/react/styles.css` once is the belt-and-suspenders move:
+pulls only its own stylesheet and unused component CSS tree-shakes away. The
+server build carries no per-component CSS at all (that's what makes it load under a
+bare Node loader), so importing `@cascivo/react/styles.css` once is how the
+server-rendered HTML gets styled on first paint — it is required, not optional,
+under SSR:
 
 - It carries the canonical `@layer` order statement, so the cascade is
   deterministic even before a theme loads.
@@ -108,7 +116,7 @@ config in the app's `vite.config.ts` and the imports in your root route
 ```tsx
 // app/routes/__root.tsx
 import '@cascivo/react/styles.css'
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 import { createRootRoute } from '@tanstack/react-router'
 
 export const Route = createRootRoute({
@@ -195,10 +203,14 @@ Tailwind's preflight — leaving it installed is safe; removing it is optional. 
 
 ## Cloudflare / workerd targets
 
-The workerd runtime has no `.css` loader either, so the same `noExternal` entry is
-required. If you also use `@cascivo/charts`, `@cascivo/editor`, or `@cascivo/flow`,
-they are covered by the `/^@cascivo\//` pattern; import each package's
-`styles.css` once as well (`@cascivo/charts/styles.css`, etc.).
+The workerd runtime has no `.css` loader either, but on `@cascivo/react` 0.10+ the
+`node`-condition server build carries no `.css` imports, so it loads there with no
+extra config. `@cascivo/charts`, `@cascivo/editor`, and `@cascivo/flow` each ship a
+single aggregate stylesheet (not per-component side-effect imports), so they never
+hit the loader either — just import each package's `styles.css` once
+(`@cascivo/charts/styles.css`, etc.) so their server HTML is styled. On
+`@cascivo/react` < 0.10, add the `noExternal` entry from
+[Older versions](#older-versions--010-the-ssrnoexternal-recipe).
 
 ## Theme switching without a flash (SSR)
 
@@ -227,10 +239,18 @@ server-rendered `<html>` — it never mismatches. Full API in
 
 ## Troubleshooting
 
-- **`Unknown file extension ".css"` still thrown** — the `noExternal` entry isn't
-  reaching the SSR build. Confirm it's in the config the SSR build actually loads
-  (some frameworks split client/server config), and that the pattern matches the
-  package you import (`/^@cascivo\//` covers all of them).
+- **`Unknown file extension ".css"` thrown** — you're on `@cascivo/react` < 0.10.
+  Either upgrade to 0.10+ (the server build is CSS-free, no config needed) or add
+  the `noExternal` entry from
+  [Older versions](#older-versions--010-the-ssrnoexternal-recipe). If you're already
+  on 0.10+ and still see it, confirm your SSR resolver honors the `node` export
+  condition (custom loaders that force `import`/`browser` conditions server-side
+  would pick the CSS-bearing build — use the default Node/Vite SSR conditions, or
+  add `noExternal` as a fallback).
+- **`Cannot find module or type declarations for side-effect import` (TS2882)** on
+  `import '@cascivo/themes/all.css'` — your tsconfig enables
+  `noUncheckedSideEffectImports` (the TanStack Start scaffold does). Use the
+  `.css`-suffixed specifier: `import '@cascivo/themes/all.css'`.
 - **Components render but are unstyled on the server** — you skipped
   `@cascivo/react/styles.css`, or imported it after a component rendered. Import it
   once, at the top of your root entry, before any brand overrides.

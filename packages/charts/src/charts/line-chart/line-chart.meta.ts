@@ -21,7 +21,13 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'X-value accessor',
     },
-    { name: 'y', type: '(d: Datum) => number', required: true, description: 'Y-value accessor' },
+    {
+      name: 'y',
+      type: '(d: Datum) => number',
+      required: true,
+      description:
+        'Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row.',
+    },
     {
       name: 'title',
       type: 'string',

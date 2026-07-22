@@ -37,6 +37,7 @@ const DOCS_STATIC_ROUTES: { path: string; priority: string }[] = [
   { path: '/docs', priority: '0.9' },
   { path: '/docs/installation', priority: '0.9' },
   { path: '/docs/getting-started', priority: '0.9' },
+  { path: '/docs/components', priority: '0.9' },
   { path: '/docs/api', priority: '0.8' },
   { path: '/docs/why', priority: '0.8' },
   { path: '/docs/faq', priority: '0.7' },

@@ -97,7 +97,7 @@ There is **no Tailwind dependency and no `tailwind.config`** to port:
 ```tsx
 // shadcn: Tailwind directives + utility classes in markup
 // cascivo: one themes import, then plain components
-import '@cascivo/themes/all' // tokens once + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens once + base typography + light & dark
 // component CSS (@layer cascivo.component) auto-included on import
 ```
 
@@ -196,10 +196,16 @@ subtree**, not just the document root.
 }
 ```
 
-The runtime switcher maps 1:1: swap `next-themes`' `ThemeProvider`/`useTheme` for the ones
-in `@cascivo/react` — same shape, but signal-backed, plus `themePreloadScript()` for the
-SSR pre-paint script you'd otherwise hand-write. See
-[THEMING.md](/docs/theming.md#switching-themes-at-runtime).
+The runtime switcher maps 1:1 in concept, but **the hook shape differs** — don't copy
+next-themes' destructuring:
+
+| next-themes                                                            | cascivo                                                                                    |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `const { theme, setTheme } = useTheme()` (object; `theme` is a string) | `const [theme, setTheme] = useTheme()` (tuple; `theme` is a `Signal` — read `theme.value`) |
+
+cascivo's `useTheme()` is signal-backed, so it returns a `[Signal<string>, setter]` tuple,
+not a `{ theme, setTheme }` object. `themePreloadScript()` covers the SSR pre-paint script
+you'd otherwise hand-write. See [THEMING.md](/docs/theming.md#switching-themes-at-runtime).
 
 Full catalog in [TOKENS.md](/docs/tokens.md); brand a single component by overriding
 its component-tier tokens (see [THEMING.md](/docs/theming.md)).

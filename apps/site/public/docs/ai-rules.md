@@ -63,7 +63,10 @@ don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React
 6. Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): signal store,
    sync/async + Standard Schema (zod/valibot) validation, optional `validateOnChange`.
 7. Theming (light/dark toggle, SSR no-FOUC) -> `<ThemeProvider>` + `useTheme()` /
-   `setTheme()` + `themePreloadScript()` (`@cascivo/react`). Never a `useEffect` that adds a
+   `setTheme()` + `themePreloadScript()` (`@cascivo/react`). `useTheme()` returns a **tuple**
+   `[Signal<string>, setTheme]` — read `theme.value`; never destructure `{ theme, setTheme }`
+   (that is next-themes' shape, not cascivo's). A controlled `<ThemeProvider value=…>` is
+   SSR-safe by itself (emits an inline attribute setter). Never a `useEffect` that adds a
    `.dark` class.
 8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
 '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).

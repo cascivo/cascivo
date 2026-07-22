@@ -18,9 +18,9 @@ import { TimeAndSales } from './sections/TimeAndSales'
 import { OrdersTable } from './sections/OrdersTable'
 import styles from './App.module.css'
 
-import '@cascivo/themes/dark'
-import '@cascivo/themes/light'
-import '@cascivo/themes/warm'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/warm.css'
 import '@cascivo/tokens'
 
 export default function App() {

@@ -71,6 +71,40 @@ assert_contains() {
   done
 }
 
+# assert_absent URL NEEDLE... — fetch URL once, assert NONE of the needles is present.
+assert_absent() {
+  local url="$1"
+  shift
+  local body
+  if ! body="$(fetch "$url")"; then
+    echo "::error::$url did not return 200 after $RETRIES attempts"
+    FAILED=1
+    return
+  fi
+  local needle
+  for needle in "$@"; do
+    if grep -qF -- "$needle" <<<"$body"; then
+      echo "::error::$url unexpectedly contains '$needle' (stale deploy?)"
+      FAILED=1
+    fi
+  done
+}
+
+# assert_http_ok URL — assert the URL returns HTTP 200 (retries for CDN propagation).
+# Used for SPA routes whose body is the app shell (no stable prerendered needle), where
+# the fix under test is "resolves instead of 404".
+assert_http_ok() {
+  local url="$1"
+  local i code
+  for ((i = 1; i <= RETRIES; i++)); do
+    code="$(curl -s -o /dev/null -w '%{http_code}' "${url}?_cb=$i")"
+    [[ "$code" == "200" ]] && return 0
+    sleep "$SLEEP"
+  done
+  echo "::error::$url did not return HTTP 200 (last ${code:-none}) after $RETRIES attempts"
+  FAILED=1
+}
+
 # assert_404_body URL NEEDLE... — a guessed-name miss must return HTTP 404 AND a body
 # containing every needle (the machine-readable hint, not the SPA HTML shell). Retries
 # to absorb CDN propagation. Unlike assert_contains this must NOT use `curl -f`, which
@@ -110,9 +144,20 @@ for HOST in "${HOSTS[@]}"; do
   assert_contains "$HOST/docs/theming.md" 'data-theme'
   # Fetchable getting-started markdown — must carry the SSR call-out (noExternal) and the
   # aggregate-stylesheet story (styles.css), the two things this adopter went looking for.
-  assert_contains "$HOST/docs/getting-started.md" "registry v$VERSION" "noExternal" "styles.css"
-  # The SSR recipe must be reachable and carry the hydration guidance (WS3/WS4).
-  assert_contains "$HOST/docs/using-with-vite-ssr.md" "noExternal" "suppressHydrationWarning"
+  # Plus the 2026-07-22 report's surfaces: the .css-suffixed theme import (TS2882-safe) and
+  # the useTheme tuple shape (adopters kept guessing next-themes' object destructuring).
+  assert_contains "$HOST/docs/getting-started.md" \
+    "registry v$VERSION" "noExternal" "styles.css" "themes/all.css" "[theme, setTheme]"
+  # The SSR recipe must be reachable, carry the hydration guidance, and the 0.10
+  # version boundary (zero-config SSR via the node export condition, WS-A).
+  assert_contains "$HOST/docs/using-with-vite-ssr.md" \
+    "noExternal" "suppressHydrationWarning" "0.10"
+  # The layout llms doc is copy-paste-only and must NOT advertise a phantom
+  # `@cascivo/layout/…` package import (2026-07-22 report finding #6, stale-deploy class).
+  assert_contains "$HOST/llms/layout/dashboard-layout.md" "Copy-paste only"
+  assert_absent "$HOST/llms/layout/dashboard-layout.md" "@cascivo/layout/"
+  # The most-guessable components URL must resolve, not 404 (2026-07-22 report finding #10).
+  assert_http_ok "$HOST/docs/components"
   # A guessed-wrong name must be a real 404 whose BODY is the machine-readable hint
   # (llms-404.md / r-404.json), not the HTML SPA shell — an agent that gets a 200 (or
   # an HTML 404) would read the shell as if it were the doc. Served by the Pages

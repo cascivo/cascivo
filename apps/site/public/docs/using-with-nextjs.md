@@ -29,7 +29,7 @@ theme out of every client bundle:
 
 ```tsx
 // app/layout.tsx — a Server Component (no 'use client')
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -53,7 +53,7 @@ paints on the first byte, then toggle from a client component with `useTheme()`.
 ```tsx
 // app/layout.tsx — Server Component. The pre-paint script sets data-theme before the
 // app bundle runs, so there is no flash; the client then owns toggling.
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 import { themePreloadScript } from '@cascivo/react'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

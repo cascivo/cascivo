@@ -14,9 +14,9 @@ import { msg } from './i18n'
 import { USERS } from './data/seed'
 import { newIssueOpen, editingIssueId } from './commands'
 
-import '@cascivo/themes/dark'
-import '@cascivo/themes/light'
-import '@cascivo/themes/warm'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/warm.css'
 import '@cascivo/tokens'
 
 type View = 'board' | 'list'

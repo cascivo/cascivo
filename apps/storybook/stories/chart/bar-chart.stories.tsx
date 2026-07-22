@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BarChart, toStackedSeries } from '@cascivo/charts'
+import { BarChart, toStackedSeries, type BarChartSeries } from '@cascivo/charts'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -68,7 +68,10 @@ const rows = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((label, i) => ({
 
 export const StackedFromRows: Story = {
   args: {
-    series: toStackedSeries(rows).series,
+    // toStackedSeries pre-shapes each series to {x,y} with its own `y` accessor;
+    // Storybook widens the chart's Datum to `unknown`, so bridge through unknown
+    // (the per-series accessor is contravariant in Datum). Runtime is correct.
+    series: toStackedSeries(rows).series as unknown as readonly BarChartSeries<unknown>[],
     x: (d) => (d as Pt).x,
     y: (d) => (d as Pt).y,
     title: 'Throughput by day (from row data)',

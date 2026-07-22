@@ -98,7 +98,22 @@ export interface ThemeProviderProps {
   target?: RefObject<HTMLElement | null>
   /** Called whenever the active theme changes. */
   onChange?: (theme: string) => void
+  /**
+   * CSP nonce forwarded to the inline attribute-setter script emitted for the
+   * controlled ({@link ThemeProviderProps.value}) SSR flow. Set it to match your
+   * Content-Security-Policy `script-src 'nonce-…'`.
+   */
+  nonce?: string
   children?: ReactNode
+}
+
+/**
+ * Serialize a value for safe interpolation into an inline `<script>` body.
+ * `JSON.stringify` handles quoting/escaping; escaping `<` additionally prevents a
+ * `</script>` (or `<!--`) sequence in the value from breaking out of the element.
+ */
+function scriptSafe(value: string): string {
+  return JSON.stringify(value).replace(/</g, '\\u003c')
 }
 
 /**
@@ -110,6 +125,12 @@ export interface ThemeProviderProps {
  * - No banned React hooks: the DOM write happens in `useSignalEffect`, not
  *   `useEffect`; there is no `useState`/`useContext`.
  * - Uncontrolled by default (persists to localStorage); pass `value` to control.
+ * - SSR-safe when controlled: with a `value` (and no scoped `target`), the
+ *   provider renders a tiny inline script that sets `data-theme` during HTML
+ *   parsing, so the server-rendered first paint is themed — no flash, no
+ *   hydration mismatch (the same markup renders on both sides; the client effect
+ *   owns every update after hydration). For the uncontrolled/persisted flow, pair
+ *   with {@link themePreloadScript} in `<head>` instead.
  */
 export function ThemeProvider({
   defaultTheme,
@@ -118,6 +139,7 @@ export function ThemeProvider({
   attribute = DEFAULT_ATTR,
   target,
   onChange,
+  nonce,
   children,
 }: ThemeProviderProps): ReactNode {
   // Configure the singleton on this provider's first render. Rebuild the store
@@ -155,6 +177,27 @@ export function ThemeProvider({
     el?.setAttribute(attribute, next)
     onChangeRef.current?.(next)
   })
+
+  // Controlled + document-scoped: emit an inline setter so the attribute is
+  // present during HTML parsing (server-rendered first paint) and on the client's
+  // initial render alike. The browser runs it while parsing the SSR'd HTML; on
+  // hydration React matches the existing node and does not re-run it, so there is
+  // no mismatch. `target`-scoped providers can't be addressed before their ref
+  // mounts, so they rely on the effect above (unchanged). Uncontrolled providers
+  // use themePreloadScript() in <head>.
+  if (value !== undefined && !target) {
+    return (
+      <>
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.setAttribute(${scriptSafe(attribute)},${scriptSafe(value)})`,
+          }}
+        />
+        {children}
+      </>
+    )
+  }
 
   return <>{children}</>
 }

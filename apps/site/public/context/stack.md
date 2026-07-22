@@ -34,11 +34,11 @@ Stack is a layout-only container (role="none"). Each child must carry its own ac
 
 ## Props
 
-| Name        | Type              | Required | Default | Description                                              |
-| ----------- | ----------------- | -------- | ------- | -------------------------------------------------------- |
-| `children`  | `React.ReactNode` | Yes      | —       | Content rendered inside the component.                   |
-| `offset`    | `number`          | No       | 4       | Pixel offset applied per layer in both axes              |
-| `className` | `string`          | No       | —       | Additional CSS class names merged onto the root element. |
+| Name        | Type              | Required | Default | Description                                                                                                                                                            |
+| ----------- | ----------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `React.ReactNode` | Yes      | —       | Content rendered inside the component.                                                                                                                                 |
+| `offset`    | `number`          | No       | 4       | Pixel offset applied per overlapped layer in both axes. This is NOT a spacing `gap` — for gap-based vertical/horizontal layout use `Flex`/`Grid` and their `gap` prop. |
+| `className` | `string`          | No       | —       | Additional CSS class names merged onto the root element.                                                                                                               |
 
 ## Examples
 

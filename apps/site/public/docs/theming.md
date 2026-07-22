@@ -101,9 +101,14 @@ function ThemeToggle() {
   "dark by default" or custom-theme app — it wins over the visitor's OS. Omit it to follow the
   OS. OS preference only ever resolves to `'light'`/`'dark'`, so it never clobbers a custom
   theme name like `'midnight'`.
-- **Controlled** (parent owns the state, no persistence): pass `value`. This is the report's
-  `<ThemeProvider value="dark">` pattern — correct when server state, not the visitor, decides
-  the theme.
+- **Controlled** (parent owns the state, no persistence): pass `value`. Correct when server
+  state, not the visitor, decides the theme (e.g. a per-account theme from your DB). It is
+  **SSR-safe on its own**: the provider renders a tiny inline script that sets `data-theme`
+  during HTML parsing, so the server-rendered first paint is themed with no flash and no
+  hydration mismatch — you do **not** need `themePreloadScript()` or a hard-coded `<html>`
+  attribute for the controlled flow. (Pass `nonce` if your CSP requires it. A `target`-scoped
+  controlled provider can't run before its ref mounts, so it themes on the client effect
+  instead.)
 - **No flash on reload / SSR:** inline `themePreloadScript()` in your document `<head>`, before
   the app bundle, so the theme paints on the first byte. It follows the same precedence, and it
   sets `data-theme` _before_ React hydrates — so add `suppressHydrationWarning` to the element
@@ -301,7 +306,7 @@ Import order (see also the [`@cascivo/react` README](https://github.com/cascivo/
 
 ```ts
 import '@cascivo/react/styles.css' // components
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 import './my-theme.css' // brand overrides — MUST be last
 ```
 

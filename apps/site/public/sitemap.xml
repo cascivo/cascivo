@@ -105,6 +105,10 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/api</loc>
     <priority>0.8</priority>
   </url>

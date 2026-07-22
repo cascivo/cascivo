@@ -33,11 +33,23 @@ export interface LineChartSeries<Datum> {
   color?: string
   /** Which y-axis this series is measured against. Default 'left'. */
   axis?: 'left' | 'right'
+  /**
+   * Per-series Y accessor. Overrides the chart-level `y` for this series only —
+   * use it to plot two series from one shared `data` row against different fields
+   * (e.g. `y: (d) => d.requests` on one series, `y: (d) => d.errors` on another).
+   * Defaults to the chart-level `y`.
+   */
+  y?: (d: Datum) => number
 }
 
 export interface LineChartProps<Datum = { x: number; y: number }> {
   series: readonly LineChartSeries<Datum>[]
   x: (d: Datum) => number | Date
+  /**
+   * Y-value accessor, applied to **every** series' data unless a series provides
+   * its own `y`. There is one x-domain per chart, so `x` is chart-level only; to
+   * plot multiple fields from one row, give each series its own `y`.
+   */
   y: (d: Datum) => number
   title: string
   description?: string
@@ -171,13 +183,17 @@ export function LineChart<Datum = { x: number; y: number }>({
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
+  // Per-series Y accessor: a series may override the chart-level `y` (e.g. to plot
+  // a different field from a shared data row). Falls back to the chart-level `y`.
+  const yFor = (s: LineChartSeries<Datum>) => s.y ?? y
+
   const allX = series.flatMap((s) => s.data.map((d) => x(d)))
   // Drop non-finite y (gaps) so the domain isn't poisoned by NaN.
   const finiteY = (subset: readonly LineChartSeries<Datum>[]) =>
-    subset.flatMap((s) => s.data.map((d) => y(d))).filter((v) => Number.isFinite(v))
+    subset.flatMap((s) => s.data.map((d) => yFor(s)(d))).filter((v) => Number.isFinite(v))
   const leftY = finiteY(hasRight ? series.filter((s) => s.axis !== 'right') : series)
   const rightY = hasRight ? finiteY(series.filter((s) => s.axis === 'right')) : []
-  warnNonFinite('LineChart', () => series.flatMap((s) => s.data.map((d) => y(d))))
+  warnNonFinite('LineChart', () => series.flatMap((s) => s.data.map((d) => yFor(s)(d))))
   const hasData = allX.length > 0
 
   const usesDate = hasData && allX[0] instanceof Date
@@ -198,7 +214,7 @@ export function LineChart<Datum = { x: number; y: number }>({
           <tr key={i}>
             <td>{String(series[0] ? x(series[0].data[i]!) : '')}</td>
             {series.map((s) => (
-              <td key={s.id}>{s.data[i] != null ? y(s.data[i]!) : ''}</td>
+              <td key={s.id}>{s.data[i] != null ? yFor(s)(s.data[i]!) : ''}</td>
             ))}
           </tr>
         ))}
@@ -252,7 +268,7 @@ export function LineChart<Datum = { x: number; y: number }>({
           if (hidden.value.has(s.id)) return
           const d = s.data[i]
           if (d === undefined) return
-          const yv = y(d)
+          const yv = yFor(s)(d)
           if (!Number.isFinite(yv)) return
           const xv = x(d)
           cxSum += xPosOf(xv)
@@ -283,7 +299,7 @@ export function LineChart<Datum = { x: number; y: number }>({
     const points: ChartPoint[] = series.flatMap((s) => {
       if (hidden.value.has(s.id)) return []
       return s.data.flatMap((d, i) => {
-        const yv = y(d)
+        const yv = yFor(s)(d)
         if (!Number.isFinite(yv)) return [] // gap — no focusable point
         const xv = x(d)
         const xPos = usesDate
@@ -296,7 +312,7 @@ export function LineChart<Datum = { x: number; y: number }>({
           cx: margins.left + xPos,
           cy: margins.top + yPos,
           label,
-          value: y(d),
+          value: yFor(s)(d),
           seriesId: s.id,
         } satisfies ChartPoint
       })
@@ -384,7 +400,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                   if (decConf && s.data.length > decConf.threshold) {
                     const finite: Pt[] = []
                     for (const d of s.data) {
-                      const yv = y(d)
+                      const yv = yFor(s)(d)
                       if (Number.isFinite(yv)) finite.push([xPos(x(d)), ys.map(yv)])
                     }
                     const dec = decimatePoints(finite, decConf.threshold, decConf.method)
@@ -407,7 +423,7 @@ export function LineChart<Datum = { x: number; y: number }>({
 
                   // null marks a gap (missing / non-finite y) so the line breaks there.
                   const rawPts: (Point | null)[] = s.data.map((d) => {
-                    const yv = y(d)
+                    const yv = yFor(s)(d)
                     if (!Number.isFinite(yv)) return null
                     return [xPos(x(d)), ys.map(yv)] as Point
                   })
@@ -435,7 +451,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                               key={di}
                               x={p[0]}
                               y={p[1] - 8}
-                              text={resolvedLabels.format(y(d))}
+                              text={resolvedLabels.format(yFor(s)(d))}
                             />
                           )
                         })}

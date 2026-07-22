@@ -6059,7 +6059,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
       ],
       "fileHashes": {
-        "field.tsx": "sha256-c1d6df9908eb3c4014fa99b3e79fdbdd4f3e3a401ecdfa978b4da1bdec4bbf99",
+        "field.tsx": "sha256-8949f7babd5e654b710dd8fada81aae98c191e75d4b422504063e75c2493efd5",
         "field.module.css": "sha256-0aeb9ff8562b462d119eef97fec7766d80452366edc87eeee633d1ca24ea9468"
       },
       "dependencies": ["@cascivo/core"],
@@ -6162,6 +6162,11 @@
             "Grouping multiple related controls — use a <fieldset> with a <legend>"
           ],
           "antiPatterns": [
+            {
+              "bad": "<Field label=\"Email\"><Input label=\"Email\" /></Field>",
+              "good": "<Field label=\"Email\"><Input /></Field>",
+              "why": "Field owns the label; a labelled child (Input, Textarea, NativeSelect, …) renders a SECOND <label> for the same control. Omit the child's label inside a Field (dev builds warn)."
+            },
             {
               "bad": "<Field label=\"Email\"><Input /><Input /></Field>",
               "good": "<Field label=\"Email\"><Input /></Field>",
@@ -7787,7 +7792,7 @@
         "props": [
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "description": "Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
           },
@@ -14525,7 +14530,7 @@
             "type": "number",
             "required": false,
             "default": "4",
-            "description": "Pixel offset applied per layer in both axes"
+            "description": "Pixel offset applied per overlapped layer in both axes. This is NOT a spacing `gap` — for gap-based vertical/horizontal layout use `Flex`/`Grid` and their `gap` prop."
           },
           {
             "name": "className",
@@ -16094,7 +16099,7 @@
         "props": [
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "description": "Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
           },
@@ -20000,7 +20005,7 @@
             "name": "y",
             "type": "(d: Datum) => number",
             "required": true,
-            "description": "Y-value accessor"
+            "description": "Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row."
           },
           {
             "name": "title",
@@ -20181,6 +20186,11 @@
           {
             "title": "Basic area chart",
             "code": "import { AreaChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+          },
+          {
+            "title": "Multiple fields from one row (per-series y)",
+            "description": "The chart-level x/y apply to every series. To plot two fields from the same rows, give each series its own y — no need to reshape the data into separate {x,y} arrays.",
+            "code": "import { AreaChart } from '@cascivo/charts'\n\nconst rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors: 9 }]\n<AreaChart\n  title=\"Traffic\"\n  series={[\n    { id: 'req', label: 'Requests', data: rows, y: d => d.requests },\n    { id: 'err', label: 'Errors', data: rows, y: d => d.errors },\n  ]}\n  x={d => d.t}\n  y={d => d.requests}\n/>"
           }
         ],
         "dependencies": ["@cascivo/charts"],
@@ -20248,7 +20258,7 @@
           },
           {
             "name": "y",
-            "description": "Accessor returning the numeric value for a datum.",
+            "description": "Accessor returning the numeric value for a datum, applied to every series unless a series sets its own `y`. One category (x) domain per chart; give each series a `y` to plot different fields from one shared data row.",
             "type": "(d: Datum) => number",
             "required": true
           },
@@ -22006,7 +22016,7 @@
             "name": "y",
             "type": "(d: Datum) => number",
             "required": true,
-            "description": "Y-value accessor"
+            "description": "Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row."
           },
           {
             "name": "title",

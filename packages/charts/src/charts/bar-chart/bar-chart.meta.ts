@@ -24,7 +24,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'y',
-      description: 'Accessor returning the numeric value for a datum.',
+      description:
+        'Accessor returning the numeric value for a datum, applied to every series unless a series sets its own `y`. One category (x) domain per chart; give each series a `y` to plot different fields from one shared data row.',
       type: '(d: Datum) => number',
       required: true,
     },

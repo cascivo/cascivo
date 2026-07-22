@@ -79,7 +79,7 @@ pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 
 ```tsx
 import '@cascivo/react/styles.css' // component styles (structure only)
-import '@cascivo/themes/all'       // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css'       // tokens (once) + base typography + light & dark
 import { Button, Card } from '@cascivo/react'
 ```
 
@@ -194,7 +194,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Per-route / per-tenant effect disposal -> `useScope()` / `createScope()` (disposes on unmount; prevents signal leaks across navigation).
 - Genuine internal state machine -> `createMachine` / `useMachine`.
 - Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.
-- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Under SSR add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
+- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[Signal<string>, setTheme]` — read `theme.value`; never destructure `{ theme, setTheme }` (that is next-themes’ shape). Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, Select, Combobox, Slider, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput); activating an item -> `onSelect(value)` (Dropdown, Menu, chart points). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
@@ -3306,7 +3306,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 |------|------|----------|---------|-------------|
 | `series` | `AreaChartSeries<Datum>[]` | yes | — | Array of data series |
 | `x` | `(d: Datum) => number` | yes | — | X-value accessor |
-| `y` | `(d: Datum) => number` | yes | — | Y-value accessor |
+| `y` | `(d: Datum) => number` | yes | — | Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `stacked` | `boolean` | no | — | Stack series areas |
@@ -3341,6 +3341,25 @@ import { AreaChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 <AreaChart series={series} x={d => d.x} y={d => d.y} title="Revenue" />
+```
+
+### Multiple fields from one row (per-series y)
+
+The chart-level x/y apply to every series. To plot two fields from the same rows, give each series its own y — no need to reshape the data into separate {x,y} arrays.
+
+```tsx
+import { AreaChart } from '@cascivo/charts'
+
+const rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors: 9 }]
+<AreaChart
+  title="Traffic"
+  series={[
+    { id: 'req', label: 'Requests', data: rows, y: d => d.requests },
+    { id: 'err', label: 'Errors', data: rows, y: d => d.errors },
+  ]}
+  x={d => d.t}
+  y={d => d.requests}
+/>
 ```
 
 ## Design tokens
@@ -3407,7 +3426,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 |------|------|----------|---------|-------------|
 | `series` | `BarChartSeries<Datum>[]` | yes | — | Series array. Each series accepts an optional `color` (any CSS color) overriding the positional palette for that series/stacked layer. |
 | `x` | `(d: Datum) => string` | yes | — | Accessor returning the category label for a datum. |
-| `y` | `(d: Datum) => number` | yes | — | Accessor returning the numeric value for a datum. |
+| `y` | `(d: Datum) => number` | yes | — | Accessor returning the numeric value for a datum, applied to every series unless a series sets its own `y`. One category (x) domain per chart; give each series a `y` to plot different fields from one shared data row. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Layout orientation of the component. |
@@ -4415,7 +4434,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 |------|------|----------|---------|-------------|
 | `series` | `LineChartSeries<Datum>[]` | yes | — | Array of data series |
 | `x` | `(d: Datum) => number \| Date` | yes | — | X-value accessor |
-| `y` | `(d: Datum) => number` | yes | — | Y-value accessor |
+| `y` | `(d: Datum) => number` | yes | — | Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row. |
 | `title` | `string` | yes | — | Chart title (also used as aria-label) |
 | `description` | `string` | no | — | Subtitle shown below title |
 | `curve` | `'linear' \| 'monotone' \| 'step' \| 'stepBefore' \| 'stepAfter' \| 'natural' \| 'basis' \| 'cardinal' \| 'catmullRom'` | no | `monotone` | Line interpolation curve |
@@ -9893,7 +9912,7 @@ import { Input } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -15415,7 +15434,7 @@ import { Stack } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
-| `offset` | `number` | no | `4` | Pixel offset applied per layer in both axes |
+| `offset` | `number` | no | `4` | Pixel offset applied per overlapped layer in both axes. This is NOT a spacing `gap` — for gap-based vertical/horizontal layout use `Flex`/`Grid` and their `gap` prop. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -16484,7 +16503,7 @@ import { Textarea } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `rows` | `number` | no | `4` | Number of visible text rows. |

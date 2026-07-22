@@ -104,7 +104,7 @@ pnpm add -D react react-dom
 ```ts
 // entry
 import '@cascivo/react/styles.css'
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 ```
 
 ```tsx

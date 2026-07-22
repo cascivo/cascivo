@@ -27,6 +27,29 @@ const x = (d: { x: number; y: number }) => d.x
 const y = (d: { x: number; y: number }) => d.y
 
 describe('LineChart', () => {
+  it('honors a per-series y accessor over the chart-level y', () => {
+    type Row = { t: number; requests: number; errors: number }
+    const rows: Row[] = [
+      { t: 0, requests: 100, errors: 5 },
+      { t: 1, requests: 120, errors: 9 },
+    ]
+    const { container } = render(
+      <LineChart
+        title="Multi-field"
+        series={[
+          { id: 'req', label: 'Requests', data: rows, y: (d) => d.requests },
+          { id: 'err', label: 'Errors', data: rows, y: (d) => d.errors },
+        ]}
+        x={(d: Row) => d.t}
+        y={(d: Row) => d.requests}
+      />,
+    )
+    const cells = [...container.querySelectorAll('tbody tr:first-child td')].map(
+      (c) => c.textContent,
+    )
+    expect(cells).toEqual(['0', '100', '5'])
+  })
+
   it('renders one path per series', () => {
     const { container } = render(<LineChart series={series} x={x} y={y} title="Test Chart" />)
     const paths = container.querySelectorAll('path[data-series]')

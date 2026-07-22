@@ -34,7 +34,7 @@
         "name": "y",
         "type": "(d: Datum) => number",
         "required": true,
-        "description": "Y-value accessor"
+        "description": "Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row."
       },
       {
         "name": "title",
@@ -215,6 +215,11 @@
       {
         "title": "Basic area chart",
         "code": "import { AreaChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]\n<AreaChart series={series} x={d => d.x} y={d => d.y} title=\"Revenue\" />"
+      },
+      {
+        "title": "Multiple fields from one row (per-series y)",
+        "description": "The chart-level x/y apply to every series. To plot two fields from the same rows, give each series its own y — no need to reshape the data into separate {x,y} arrays.",
+        "code": "import { AreaChart } from '@cascivo/charts'\n\nconst rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors: 9 }]\n<AreaChart\n  title=\"Traffic\"\n  series={[\n    { id: 'req', label: 'Requests', data: rows, y: d => d.requests },\n    { id: 'err', label: 'Errors', data: rows, y: d => d.errors },\n  ]}\n  x={d => d.t}\n  y={d => d.requests}\n/>"
       }
     ],
     "dependencies": ["@cascivo/charts"],

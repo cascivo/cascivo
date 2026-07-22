@@ -37,11 +37,23 @@ export interface AreaChartSeries<Datum> {
   color?: string
   /** Which y-axis this series is measured against (ignored when `stacked`). Default 'left'. */
   axis?: 'left' | 'right'
+  /**
+   * Per-series Y accessor. Overrides the chart-level `y` for this series only —
+   * use it to plot two series from one shared `data` row against different fields
+   * (e.g. `y: (d) => d.requests` on one series, `y: (d) => d.errors` on another).
+   * Defaults to the chart-level `y`.
+   */
+  y?: (d: Datum) => number
 }
 
 export interface AreaChartProps<Datum = { x: number; y: number }> {
   series: readonly AreaChartSeries<Datum>[]
   x: (d: Datum) => number
+  /**
+   * Y-value accessor, applied to **every** series' data unless a series provides
+   * its own `y`. There is one x-domain per chart, so `x` is chart-level only; to
+   * plot multiple fields from one row, give each series its own `y`.
+   */
   y: (d: Datum) => number
   title: string
   description?: string
@@ -164,12 +176,16 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
+  // Per-series Y accessor: a series may override the chart-level `y` (e.g. to plot
+  // a different field from a shared data row). Falls back to the chart-level `y`.
+  const yFor = (s: AreaChartSeries<Datum>) => s.y ?? y
+
   const allX = (series[0]?.data ?? []).map((d) => x(d))
   const leftYvals = (hasRight ? series.filter((s) => s.axis !== 'right') : series).flatMap((s) =>
-    s.data.map((d) => y(d)),
+    s.data.map((d) => yFor(s)(d)),
   )
   const rightYvals = hasRight
-    ? series.filter((s) => s.axis === 'right').flatMap((s) => s.data.map((d) => y(d)))
+    ? series.filter((s) => s.axis === 'right').flatMap((s) => s.data.map((d) => yFor(s)(d)))
     : []
   warnNonFinite('AreaChart', () => [...leftYvals, ...rightYvals])
   const hasData = allX.length > 0
@@ -179,7 +195,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const yMin = stacked ? 0 : Math.min(0, ...leftYvals)
   const yMax = stacked
     ? Math.max(
-        ...(series[0]?.data ?? []).map((_, i) => series.reduce((sum, s) => sum + y(s.data[i]!), 0)),
+        ...(series[0]?.data ?? []).map((_, i) =>
+          series.reduce((sum, s) => sum + yFor(s)(s.data[i]!), 0),
+        ),
       )
     : Math.max(...leftYvals)
   const yMinR = hasRight ? Math.min(0, ...rightYvals) : yMin
@@ -201,7 +219,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
           <tr key={i}>
             <td>{series[0] ? String(x(series[0].data[i]!)) : ''}</td>
             {series.map((s) => (
-              <td key={s.id}>{s.data[i] != null ? y(s.data[i]!) : ''}</td>
+              <td key={s.id}>{s.data[i] != null ? yFor(s)(s.data[i]!) : ''}</td>
             ))}
           </tr>
         ))}
@@ -239,7 +257,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
           if (hidden.value.has(s.id)) return
           const d = s.data[i]
           if (d === undefined) return
-          const yv = y(d)
+          const yv = yFor(s)(d)
           if (!Number.isFinite(yv)) return
           cx = margins.left + xScale.map(x(d))
           cyTop = Math.min(cyTop, yOf(s).map(yv))
@@ -270,9 +288,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
       return s.data.map((d, i) => ({
         id: `${s.id}-${i}`,
         cx: margins.left + xScale.map(x(d)),
-        cy: margins.top + yOf(s).map(y(d)),
+        cy: margins.top + yOf(s).map(yFor(s)(d)),
         label: String(x(d)),
-        value: y(d),
+        value: yFor(s)(d),
         seriesId: s.id,
       }))
     })
@@ -312,7 +330,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
 
           let stackedOffsets: [number, number][][] = []
           if (stacked) {
-            const values = series.map((s) => s.data.map((d) => y(d)))
+            const values = series.map((s) => s.data.map((d) => yFor(s)(d)))
             stackedOffsets = stackSeries(values)
           }
 
@@ -374,14 +392,14 @@ export function AreaChart<Datum = { x: number; y: number }>({
                               key={i}
                               x={p[0]}
                               y={p[1] - 8}
-                              text={resolvedLabels.format(y(s.data[i]!))}
+                              text={resolvedLabels.format(yFor(s)(s.data[i]!))}
                             />
                           ))}
                       </g>
                     )
                   } else {
                     const ys = s.axis === 'right' ? yScaleRight : yScale
-                    points = s.data.map((d) => [xScale.map(x(d)), ys.map(y(d))])
+                    points = s.data.map((d) => [xScale.map(x(d)), ys.map(yFor(s)(d))])
                     baseline = ys.map(0)
                     // Dense, non-stacked series: downsample for a fast, crisp path.
                     if (decConf && points.length > decConf.threshold) {
@@ -424,7 +442,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                               key={i}
                               x={p[0]}
                               y={p[1] - 8}
-                              text={resolvedLabels.format(y(s.data[i]!))}
+                              text={resolvedLabels.format(yFor(s)(s.data[i]!))}
                             />
                           ))}
                       </g>

@@ -30,6 +30,7 @@ import { ChartsPage } from './pages/ChartsPage'
 import { EditorPage } from './pages/EditorPage'
 import { FlowPage } from './pages/FlowPage'
 import { ComponentPage } from './pages/ComponentPage'
+import { ComponentsIndexPage } from './pages/ComponentsIndexPage'
 import { CategoryPage } from './pages/CategoryPage'
 import { ThemePage } from './pages/ThemePage'
 import { ApiReferencePage } from './pages/ApiReferencePage'
@@ -60,6 +61,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
   '/docs': Home,
   '/docs/installation': InstallationPage,
   '/docs/getting-started': GettingStartedPage,
+  '/docs/components': ComponentsIndexPage,
   '/docs/api': ApiReferencePage,
   '/docs/keyboard': KeyboardReferencePage,
   '/docs/platform': PlatformPage,
@@ -88,6 +90,7 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
 const exploreItems = [
   { label: 'Installation', href: '/docs/installation', icon: <Zap size={16} /> },
   { label: 'Getting Started', href: '/docs/getting-started', icon: <Zap size={16} /> },
+  { label: 'All components', href: '/docs/components', icon: <Grid size={16} /> },
   { label: 'FAQ', href: '/docs/faq', icon: <Check size={16} /> },
   { label: 'API reference', href: '/docs/api', icon: <Grid size={16} /> },
   { label: 'Keyboard reference', href: '/docs/keyboard', icon: <Grid size={16} /> },

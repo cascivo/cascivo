@@ -20,7 +20,8 @@ export const meta: ComponentMeta = {
       type: 'number',
       required: false,
       default: '4',
-      description: 'Pixel offset applied per layer in both axes',
+      description:
+        'Pixel offset applied per overlapped layer in both axes. This is NOT a spacing `gap` — for gap-based vertical/horizontal layout use `Flex`/`Grid` and their `gap` prop.',
     },
     {
       name: 'className',
