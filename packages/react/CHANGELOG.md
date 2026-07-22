@@ -1,5 +1,57 @@
 # @cascivo/react
 
+## 0.10.0
+
+### Minor Changes
+
+- e81a0a7: SSR now works with zero Vite config — `@cascivo/react` ships a CSS-free server build.
+
+  The published bundle shipped per-component CSS as static side-effect imports
+  (`import './button.css'`), which a bare server-side ESM loader (Node's native loader,
+  workerd) cannot resolve — so every externalized Vite SSR framework (TanStack Start,
+  Remix, vite-ssr) threw `Unknown file extension ".css"` on the first request unless the
+  adopter added `ssr: { noExternal: [/^@cascivo\//] }`. Three adopter reports hit this.
+
+  The build now also emits a CSS-free twin under `dist/node/`, selected by the `node`
+  export condition. A bare Node loader imports it cleanly; client bundles still reach the
+  CSS-bearing build via `import`/`browser`, so per-component CSS tree-shaking is unchanged.
+  Import `@cascivo/react/styles.css` once for the server-rendered first paint (the server
+  build carries no per-component CSS by design). `cascivoSsr()` / `ssr.noExternal` are no
+  longer required (they remain harmless, and stay documented for pinned versions < 0.10).
+
+- e81a0a7: A controlled `<ThemeProvider value={…}>` is now SSR-safe on its own.
+
+  Previously the provider wrote `data-theme` only in a client effect, so a controlled
+  provider emitted no theme attribute during SSR and the first paint was unthemed until
+  hydration (a FOUC). When the theme is decided by server state, the provider now renders a
+  tiny inline script that sets `data-theme` during HTML parsing — themed first paint, no
+  hydration mismatch (the same markup renders on both sides; the client effect owns every
+  update after hydration). Values are escaped against `</script>` breakout, and a new
+  `nonce` prop forwards a CSP nonce to the script. The uncontrolled/persisted flow still
+  uses `themePreloadScript()` in `<head>`, and `target`-scoped providers are unchanged.
+
+### Patch Changes
+
+- e81a0a7: `Field` warns in dev when it and its child control both define a `label`.
+
+  Wrapping a labelled control (`<Field label="Email"><Input label="Email" /></Field>`)
+  renders two `<label>` elements for the same control. Dev builds now emit a one-time
+  `console.warn` naming the collision; production is unaffected. The fix is to omit the
+  child's `label` inside a `Field` — the `Field` owns it. Docs and the `Field`/`Input`/
+  `Textarea` manifests now call this out.
+
+- e81a0a7: `setLinkComponent` now infers `LinkComponentProps` for an inline adapter.
+
+  An inline router adapter like `setLinkComponent(({ href, ...rest }) => <Link to={href}
+{...rest} />)` previously got no parameter types (the parameter was `ElementType`), so
+  `href` was untyped — the exact seam where a router integration is most error-prone. An
+  added overload contextually types an inline function adapter as `LinkComponentProps`, so
+  `href` is inferred with no annotation. Every existing call still compiles (`'a'`, a
+  Next.js `Link`, a class component) via the `ElementType` fallback overload.
+
+- Updated dependencies [e81a0a7]
+  - @cascivo/core@0.5.1
+
 ## 0.9.0
 
 ### Minor Changes
