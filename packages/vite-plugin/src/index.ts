@@ -101,17 +101,23 @@ export const CASCIVO_PACKAGE_RE = /^@cascivo\//
 /**
  * Vite plugin that marks all `@cascivo/*` packages `ssr.noExternal`.
  *
- * The published `@cascivo/react` bundle ships per-component CSS as static
- * side-effect imports (`import './button.css'`). A bundler resolves those at
- * build time, but a bare server-side ESM loader (Node native, workerd) does not
- * and throws `Unknown file extension ".css"`. Setting `ssr.noExternal` tells
- * Vite to process these packages — CSS imports included — during SSR instead of
- * leaving them for the runtime to load raw.
+ * **No longer required as of `@cascivo/react` 0.10+**, which ships a CSS-free
+ * server build selected by the `node` export condition — a bare server-side ESM
+ * loader imports it cleanly with zero config. This plugin remains available and
+ * harmless (useful for pinned pre-0.10 versions, and it composes with
+ * {@link cascivoLayers}), but new SSR apps on 0.10+ don't need it.
+ *
+ * Historically (`@cascivo/react` < 0.10) the published bundle shipped
+ * per-component CSS as static side-effect imports (`import './button.css'`). A
+ * bundler resolved those at build time, but a bare server-side ESM loader (Node
+ * native, workerd) did not and threw `Unknown file extension ".css"`. Setting
+ * `ssr.noExternal` told Vite to process these packages — CSS imports included —
+ * during SSR instead of leaving them for the runtime to load raw.
  *
  * The returned partial config is deep-merged by Vite (which concatenates
  * `ssr.noExternal` arrays), so this composes with any existing `noExternal` the
- * user set. Use for TanStack Start, vite-ssr, Remix on Vite, Astro SSR, and
- * workerd/Cloudflare targets. See docs/USING-WITH-VITE-SSR.md.
+ * user set. Use for pre-0.10 TanStack Start, vite-ssr, Remix on Vite, Astro SSR,
+ * and workerd/Cloudflare targets. See docs/USING-WITH-VITE-SSR.md.
  */
 export function cascivoSsr(): VitePlugin {
   return {

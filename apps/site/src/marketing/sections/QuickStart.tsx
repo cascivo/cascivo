@@ -13,7 +13,7 @@ const STEPS = [
   },
   {
     title: 'Use them',
-    code: "import '@cascivo/themes/all'\nimport { Button } from './components/ui/button/button'",
+    code: "import '@cascivo/themes/all.css'\nimport { Button } from './components/ui/button/button'",
     note: 'Import a theme once; each component brings its own CSS. No provider, no wrapper.',
   },
 ]
@@ -54,7 +54,7 @@ export function QuickStart() {
           </div>
           <div>
             <CopyCommand
-              command={`import '@cascivo/themes/all'\nimport { Button } from '@cascivo/react'`}
+              command={`import '@cascivo/themes/all.css'\nimport { Button } from '@cascivo/react'`}
             />
             <p className="quickstart-note">
               Import a theme once. Each component&apos;s CSS is bundled with it — no stylesheet to

@@ -1,5 +1,5 @@
 'use client'
-import type { ElementType, MouseEvent, ReactNode } from 'react'
+import type { ElementType, MouseEvent, ReactElement, ReactNode } from 'react'
 
 /**
  * The prop bag cascivo's config-driven nav components spread onto the link they
@@ -70,6 +70,15 @@ let linkComponent: LinkComponent = 'a'
  * setLinkComponent(Link)
  * ```
  */
+// Overload 1: an inline function adapter. The parameter is contextually typed as
+// LinkComponentProps, so `({ href, ...rest }) => <Link to={href} {...rest} />`
+// infers `href: string | undefined` with no manual annotation — the exact ergonomic
+// gap a TanStack adopter hit. Overload 2 keeps every other legal call compiling
+// (`'a'`, a Next.js `Link`, class components) by falling back to ElementType.
+export function setLinkComponent(
+  component: (props: LinkComponentProps) => ReactElement | null,
+): void
+export function setLinkComponent(component: LinkComponent): void
 export function setLinkComponent(component: LinkComponent): void {
   linkComponent = component
 }

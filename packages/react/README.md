@@ -46,7 +46,7 @@ for `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and more.
 In a Server Component file (e.g. `app/layout.tsx`), import the themes once:
 
 ```tsx
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 ```
 
 Component CSS ships **per component** and is pulled in automatically when you
@@ -83,7 +83,7 @@ RSC without any extra wrapper.
 
 ```tsx
 // once, in your entry file — themes are the only global import
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 
 // anywhere — each component brings its own CSS along
 import { Button, Card, CardContent, Toggle } from '@cascivo/react'
@@ -110,9 +110,9 @@ Prefer à-la-carte? Import only the themes you need — each self-imports the to
 (deduped by URL, so light + dark load tokens once):
 
 ```tsx
-import '@cascivo/themes/base' // base typography (font/line-height/color)
-import '@cascivo/themes/light'
-import '@cascivo/themes/dark'
+import '@cascivo/themes/base.css' // base typography (font/line-height/color)
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/dark.css'
 ```
 
 Scope a theme with `data-theme="light" | "dark" | "warm"` on any container. Brand

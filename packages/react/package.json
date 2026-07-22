@@ -33,6 +33,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "node": "./dist/node/index.js",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },

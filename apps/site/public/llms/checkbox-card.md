@@ -28,14 +28,14 @@ import { CheckboxCard } from '@cascivo/react'
 
 ## Props
 
-| Prop              | Type                         | Required | Default | Description              |
-| ----------------- | ---------------------------- | -------- | ------- | ------------------------ |
-| `title`           | `ReactNode`                  | yes      | —       | Card title               |
-| `description`     | `ReactNode`                  | no       | —       | Optional description     |
-| `checked`         | `boolean`                    | no       | —       | Controlled checked state |
-| `defaultChecked`  | `boolean`                    | no       | —       | Uncontrolled default     |
-| `onCheckedChange` | `(checked: boolean) => void` | no       | —       | Change callback          |
-| `disabled`        | `boolean`                    | no       | —       | Disables the card        |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `ReactNode` | yes | — | Card title |
+| `description` | `ReactNode` | no | — | Optional description |
+| `checked` | `boolean` | no | — | Controlled checked state |
+| `defaultChecked` | `boolean` | no | — | Uncontrolled default |
+| `onCheckedChange` | `(checked: boolean) => void` | no | — | Change callback |
+| `disabled` | `boolean` | no | — | Disables the card |
 
 ## Examples
 
@@ -45,11 +45,7 @@ Multi-select feature toggles
 
 ```tsx
 <div style={{ display: 'grid', gap: 12 }}>
-  <CheckboxCard
-    title="Automated backups"
-    description="Daily snapshots, 30-day retention"
-    defaultChecked
-  />
+  <CheckboxCard title="Automated backups" description="Daily snapshots, 30-day retention" defaultChecked />
   <CheckboxCard title="Monitoring" description="Metrics + alerting" />
   <CheckboxCard title="Audit log" description="Requires Team plan" disabled />
 </div>

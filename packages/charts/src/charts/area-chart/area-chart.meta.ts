@@ -15,7 +15,13 @@ export const meta: ComponentMeta = {
       description: 'Array of data series',
     },
     { name: 'x', type: '(d: Datum) => number', required: true, description: 'X-value accessor' },
-    { name: 'y', type: '(d: Datum) => number', required: true, description: 'Y-value accessor' },
+    {
+      name: 'y',
+      type: '(d: Datum) => number',
+      required: true,
+      description:
+        'Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row.',
+    },
     { name: 'title', description: 'Title text for the component.', type: 'string', required: true },
     {
       name: 'description',
@@ -192,6 +198,23 @@ export const meta: ComponentMeta = {
 
 const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20}] }]
 <AreaChart series={series} x={d => d.x} y={d => d.y} title="Revenue" />`,
+    },
+    {
+      title: 'Multiple fields from one row (per-series y)',
+      description:
+        'The chart-level x/y apply to every series. To plot two fields from the same rows, give each series its own y — no need to reshape the data into separate {x,y} arrays.',
+      code: `import { AreaChart } from '@cascivo/charts'
+
+const rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors: 9 }]
+<AreaChart
+  title="Traffic"
+  series={[
+    { id: 'req', label: 'Requests', data: rows, y: d => d.requests },
+    { id: 'err', label: 'Errors', data: rows, y: d => d.errors },
+  ]}
+  x={d => d.t}
+  y={d => d.requests}
+/>`,
     },
   ],
   dependencies: ['@cascivo/charts'],

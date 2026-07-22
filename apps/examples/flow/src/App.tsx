@@ -11,9 +11,9 @@ import { Tasklist } from './sections/Tasklist'
 import { CatalogShell } from './sections/catalog/CatalogShell'
 import { msg } from './i18n'
 
-import '@cascivo/themes/dark'
-import '@cascivo/themes/light'
-import '@cascivo/themes/warm'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/warm.css'
 import '@cascivo/tokens'
 
 type Section = 'instances' | 'incidents' | 'tasklist' | 'catalog'

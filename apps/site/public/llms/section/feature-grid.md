@@ -18,13 +18,13 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type            | Required | Default   | Description                                                             |
-| -------------- | --------------- | -------- | --------- | ----------------------------------------------------------------------- |
-| `items`        | `FeatureItem[]` | yes      | —         | Array of feature items with title, optional description, icon, and href |
-| `title`        | `ReactNode`     | no       | —         | Section heading above the grid                                          |
-| `description`  | `ReactNode`     | no       | —         | Subheading below the section title                                      |
-| `headingLevel` | `1 \| 2 \| 3`   | no       | `2`       | Heading level for the section title (items use headingLevel + 1)        |
-| `min`          | `string`        | no       | `"16rem"` | Minimum track width forwarded to AutoGrid                               |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `FeatureItem[]` | yes | — | Array of feature items with title, optional description, icon, and href |
+| `title` | `ReactNode` | no | — | Section heading above the grid |
+| `description` | `ReactNode` | no | — | Subheading below the section title |
+| `headingLevel` | `1 \| 2 \| 3` | no | `2` | Heading level for the section title (items use headingLevel + 1) |
+| `min` | `string` | no | `"16rem"` | Minimum track width forwarded to AutoGrid |
 
 ## Examples
 
@@ -37,22 +37,10 @@ Four-item text-only feature grid with section heading
   title="Built for production"
   description="Everything you need to ship a polished product."
   items={[
-    {
-      title: 'Zero config',
-      description: 'Copy a component and it works — no providers, no wrappers.',
-    },
-    {
-      title: 'Token-first',
-      description: 'Every color, size and radius is a CSS custom property you own.',
-    },
-    {
-      title: 'Signal-driven',
-      description: 'Fine-grained reactivity with @preact/signals-react — zero re-renders.',
-    },
-    {
-      title: 'Accessible by default',
-      description: 'WCAG 2.1 AA, keyboard navigable, logical CSS properties for RTL.',
-    },
+    { title: 'Zero config', description: 'Copy a component and it works — no providers, no wrappers.' },
+    { title: 'Token-first', description: 'Every color, size and radius is a CSS custom property you own.' },
+    { title: 'Signal-driven', description: 'Fine-grained reactivity with @preact/signals-react — zero re-renders.' },
+    { title: 'Accessible by default', description: 'WCAG 2.1 AA, keyboard navigable, logical CSS properties for RTL.' },
   ]}
 />
 ```

@@ -33,6 +33,11 @@ const ROUTE_HEAD: Record<string, RouteHead> = {
     description:
       'The fastest path into cascivo — scaffold an app, install the prebuilt package, or copy-paste components with the CLI, plus theming and Next.js setup.',
   },
+  '/components': {
+    title: `All components${SUFFIX}`,
+    description:
+      'Every cascivo component, grouped by category, each linking to its full API docs. The machine-readable index is /docs/components.md and /llms.txt.',
+  },
   '/editor': {
     title: `Editor${SUFFIX}`,
     description:

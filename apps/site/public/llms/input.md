@@ -34,14 +34,14 @@ import { Input } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                   | Required | Default | Description                                                        |
-| ------------- | ---------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `string`               | no       | —       | Text label for the control.                                        |
-| `hint`        | `string`               | no       | —       | Supplementary hint text shown with the control.                    |
-| `error`       | `string`               | no       | —       | Error message shown when the value is invalid.                     |
-| `size`        | `'sm' \| 'md' \| 'lg'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `placeholder` | `string`               | no       | —       | Placeholder text shown when the field is empty.                    |
-| `disabled`    | `boolean`              | no       | `false` | When true, disables the control and removes it from the tab order. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control. |
+| `hint` | `string` | no | — | Supplementary hint text shown with the control. |
+| `error` | `string` | no | — | Error message shown when the value is invalid. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
 ## Examples
 

@@ -21,15 +21,15 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop          | Type                                                | Required | Default | Description                                                           |
-| ------------- | --------------------------------------------------- | -------- | ------- | --------------------------------------------------------------------- |
-| `series`      | `{ id: string; label: string; values: number[] }[]` | yes      | —       | Array of series each with raw numeric values                          |
-| `title`       | `string`                                            | yes      | —       | Title text for the component.                                         |
-| `description` | `string`                                            | no       | —       | Supporting description text.                                          |
-| `width`       | `number`                                            | no       | —       | Width of the component.                                               |
-| `height`      | `number`                                            | no       | `320`   | Height of the component.                                              |
-| `className`   | `string`                                            | no       | —       | Additional CSS class names merged onto the root element.              |
-| `plain`       | `boolean`                                           | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `{ id: string; label: string; values: number[] }[]` | yes | — | Array of series each with raw numeric values |
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `width` | `number` | no | — | Width of the component. |
+| `height` | `number` | no | `320` | Height of the component. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
 ## Examples
 

@@ -4,7 +4,6 @@ Full-page application shell with persisted collapsible sidebar. Includes a signa
 
 > ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
 > This page documents `layout/app-shell` (copy-paste). Others:
->
 > - `app-shell` — npm @cascivo/react · or copy-paste — /llms/app-shell.md
 
 ## Install
@@ -30,16 +29,16 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop          | Type                  | Required | Default | Description                                                                     |
-| ------------- | --------------------- | -------- | ------- | ------------------------------------------------------------------------------- |
-| `footer`      | `ReactNode`           | no       | —       | Optional sticky footer rendered below the content area.                         |
-| `sideNavMode` | `'push' \| 'overlay'` | no       | `push`  | push (default): sidebar takes grid space; overlay: sidebar floats over content. |
-| `header`      | `ReactNode`           | yes      | —       | Top header slot                                                                 |
-| `sideNav`     | `ReactNode`           | no       | —       | Side navigation slot                                                            |
-| `aside`       | `ReactNode`           | no       | —       | Right aside slot                                                                |
-| `children`    | `ReactNode`           | yes      | —       | Main content                                                                    |
-| `persistKey`  | `string \| false`     | no       | —       | localStorage key prefix. Pass false to disable persistence.                     |
-| `state`       | `ShellState`          | no       | —       | External shell state from createShellState(). Created internally when omitted.  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `footer` | `ReactNode` | no | — | Optional sticky footer rendered below the content area. |
+| `sideNavMode` | `'push' \| 'overlay'` | no | `push` | push (default): sidebar takes grid space; overlay: sidebar floats over content. |
+| `header` | `ReactNode` | yes | — | Top header slot |
+| `sideNav` | `ReactNode` | no | — | Side navigation slot |
+| `aside` | `ReactNode` | no | — | Right aside slot |
+| `children` | `ReactNode` | yes | — | Main content |
+| `persistKey` | `string \| false` | no | — | localStorage key prefix. Pass false to disable persistence. |
+| `state` | `ShellState` | no | — | External shell state from createShellState(). Created internally when omitted. |
 
 ## Examples
 
@@ -48,9 +47,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 App shell with collapsible nav
 
 ```tsx
-<AppShell header={<Header />} sideNav={<Nav />}>
-  content
-</AppShell>
+<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>
 ```
 
 ## Design tokens

@@ -10,9 +10,9 @@ import { Transactions } from './sections/Transactions'
 import { msg } from './i18n'
 import type { Range } from './api'
 
-import '@cascivo/themes/dark'
-import '@cascivo/themes/light'
-import '@cascivo/themes/warm'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/warm.css'
 import '@cascivo/tokens'
 
 export const rangeSignal = persistedSignal<Range>('pay-range', '30d')

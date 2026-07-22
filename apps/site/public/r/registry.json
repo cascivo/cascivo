@@ -3074,7 +3074,7 @@
             "name": "y",
             "type": "(d: Datum) => number",
             "required": true,
-            "description": "Y-value accessor"
+            "description": "Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row."
           },
           {
             "name": "title",
@@ -3315,7 +3315,7 @@
           },
           {
             "name": "y",
-            "description": "Accessor returning the numeric value for a datum.",
+            "description": "Accessor returning the numeric value for a datum, applied to every series unless a series sets its own `y`. One category (x) domain per chart; give each series a `y` to plot different fields from one shared data row.",
             "type": "(d: Datum) => number",
             "required": true
           },
@@ -4981,7 +4981,7 @@
             "name": "y",
             "type": "(d: Datum) => number",
             "required": true,
-            "description": "Y-value accessor"
+            "description": "Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row."
           },
           {
             "name": "title",
@@ -10520,6 +10520,11 @@
           ],
           "antiPatterns": [
             {
+              "bad": "<Field label=\"Email\"><Input label=\"Email\" /></Field>",
+              "good": "<Field label=\"Email\"><Input /></Field>",
+              "why": "Field owns the label; a labelled child (Input, Textarea, NativeSelect, …) renders a SECOND <label> for the same control. Omit the child's label inside a Field (dev builds warn)."
+            },
+            {
               "bad": "<Field label=\"Email\"><Input /><Input /></Field>",
               "good": "<Field label=\"Email\"><Input /></Field>",
               "why": "Field clones exactly one child control to inject its id and aria wiring; multiple children break the association"
@@ -13226,7 +13231,7 @@
         "props": [
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "description": "Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
           },
@@ -21123,7 +21128,7 @@
             "type": "number",
             "required": false,
             "default": "4",
-            "description": "Pixel offset applied per layer in both axes"
+            "description": "Pixel offset applied per overlapped layer in both axes. This is NOT a spacing `gap` — for gap-based vertical/horizontal layout use `Flex`/`Grid` and their `gap` prop."
           },
           {
             "name": "className",
@@ -22533,7 +22538,7 @@
         "props": [
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "description": "Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
           },

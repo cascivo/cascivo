@@ -32,36 +32,28 @@ import { StructuredList } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                                                       | Required | Default | Description                          |
-| -------------- | ---------------------------------------------------------- | -------- | ------- | ------------------------------------ |
-| `aria-label`   | `string`                                                   | no       | —       | Accessible label for the list table. |
-| `items`        | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes      | —       | The items to render.                 |
-| `headers`      | `ReactNode[]`                                              | no       | —       | The column header cells.             |
-| `selectable`   | `boolean`                                                  | no       | `false` | When true, rows can be selected.     |
-| `value`        | `string`                                                   | no       | —       | The controlled value.                |
-| `defaultValue` | `string`                                                   | no       | —       | The initial value when uncontrolled. |
-| `onSelect`     | `(id: string) => void`                                     | no       | —       | Called with the selected value.      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `aria-label` | `string` | no | — | Accessible label for the list table. |
+| `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes | — | The items to render. |
+| `headers` | `ReactNode[]` | no | — | The column header cells. |
+| `selectable` | `boolean` | no | `false` | When true, rows can be selected. |
+| `value` | `string` | no | — | The controlled value. |
+| `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
+| `onSelect` | `(id: string) => void` | no | — | Called with the selected value. |
 
 ## Examples
 
 ### Static
 
 ```tsx
-<StructuredList headers={['Name', 'Role']} items={[{ id: 'a', cells: ['Ada', 'Engineer'] }]} />
+<StructuredList headers={["Name", "Role"]} items={[{ id: "a", cells: ["Ada", "Engineer"] }]} />
 ```
 
 ### Selectable
 
 ```tsx
-<StructuredList
-  selectable
-  defaultValue="a"
-  items={[
-    { id: 'a', cells: ['Ada'] },
-    { id: 'b', cells: ['Grace'] },
-  ]}
-  onSelect={(id) => set(id)}
-/>
+<StructuredList selectable defaultValue="a" items={[{ id: "a", cells: ["Ada"] }, { id: "b", cells: ["Grace"] }]} onSelect={(id) => set(id)} />
 ```
 
 ## Design tokens

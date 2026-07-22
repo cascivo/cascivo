@@ -2,7 +2,7 @@
 // `ssr.noExternal` (the cascivoSsr() plugin), Vite processes these CSS imports
 // during the server build instead of leaving them for the raw Node loader.
 import '@cascivo/react/styles.css'
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 import { Button, Card, CardContent, CardHeader, CardTitle, Menubar } from '@cascivo/react'
 import './app.css'
 

@@ -34,13 +34,13 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 
 ## Props
 
-| Name           | Type                                     | Required | Default | Description                                      |
-| -------------- | ---------------------------------------- | -------- | ------- | ------------------------------------------------ |
-| `children`     | `React.ReactNode`                        | Yes      | —       | A PopoverTrigger and PopoverContent pair.        |
-| `open`         | `boolean`                                | No       | —       | Whether the component is open (controlled).      |
-| `onOpenChange` | `(open: boolean) => void`                | No       | —       | Called with the next open state when it changes. |
-| `placement`    | `'top' \| 'bottom' \| 'left' \| 'right'` | No       | bottom  | Placement relative to the trigger.               |
-| `offset`       | `number`                                 | No       | 4       | Distance (px) between the trigger and the panel. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | Yes | — | A PopoverTrigger and PopoverContent pair. |
+| `open` | `boolean` | No | — | Whether the component is open (controlled). |
+| `onOpenChange` | `(open: boolean) => void` | No | — | Called with the next open state when it changes. |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | No | bottom | Placement relative to the trigger. |
+| `offset` | `number` | No | 4 | Distance (px) between the trigger and the panel. |
 
 ## Tokens
 
@@ -69,18 +69,16 @@ The trigger is a real <button> with aria-haspopup="dialog" and aria-expanded ref
 ```jsx
 <Popover open={isOpen} onOpenChange={setIsOpen} placement="top">
   <PopoverTrigger>Filters</PopoverTrigger>
-  <PopoverContent>
-    <FilterForm />
-  </PopoverContent>
+  <PopoverContent><FilterForm /></PopoverContent>
 </Popover>
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                      |
-| ----------- | -------- | ------------------------------------------------------------------------- |
-| token names | strict   | Panel styling must resolve to the listed --cascivo-\* tokens              |
-| content     | flexible | Trigger and panel content are arbitrary children supplied by the consumer |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Panel styling must resolve to the listed --cascivo-* tokens |
+| content | flexible | Trigger and panel content are arbitrary children supplied by the consumer |
 
 ## AI context prompt
 

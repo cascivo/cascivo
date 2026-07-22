@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-with-preact.md
   registry v0.9.0 · generated 2026-07-22
 -->
-
 # Using cascivo with Preact
 
 **Short version: it works.** `@cascivo/react` runs inside a Preact app via the
@@ -104,7 +103,7 @@ pnpm add -D react react-dom
 ```ts
 // entry
 import '@cascivo/react/styles.css'
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 ```
 
 ```tsx

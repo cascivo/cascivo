@@ -27,13 +27,13 @@ import { Popover } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                                     | Required | Default  | Description                                      |
-| -------------- | ---------------------------------------- | -------- | -------- | ------------------------------------------------ |
-| `children`     | `React.ReactNode`                        | yes      | —        | A PopoverTrigger and PopoverContent pair.        |
-| `open`         | `boolean`                                | no       | —        | Whether the component is open (controlled).      |
-| `onOpenChange` | `(open: boolean) => void`                | no       | —        | Called with the next open state when it changes. |
-| `placement`    | `'top' \| 'bottom' \| 'left' \| 'right'` | no       | `bottom` | Placement relative to the trigger.               |
-| `offset`       | `number`                                 | no       | `4`      | Distance (px) between the trigger and the panel. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | A PopoverTrigger and PopoverContent pair. |
+| `open` | `boolean` | no | — | Whether the component is open (controlled). |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | no | `bottom` | Placement relative to the trigger. |
+| `offset` | `number` | no | `4` | Distance (px) between the trigger and the panel. |
 
 ## Examples
 
@@ -53,9 +53,7 @@ import { Popover } from '@cascivo/react'
 ```tsx
 <Popover open={isOpen} onOpenChange={setIsOpen} placement="top">
   <PopoverTrigger>Filters</PopoverTrigger>
-  <PopoverContent>
-    <FilterForm />
-  </PopoverContent>
+  <PopoverContent><FilterForm /></PopoverContent>
 </Popover>
 ```
 

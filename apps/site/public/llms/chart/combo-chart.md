@@ -21,19 +21,19 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop          | Type                                 | Required | Default | Description                                                                                    |
-| ------------- | ------------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------- |
-| `bars`        | `{ label: string; value: number }[]` | yes      | —       | Bar series data                                                                                |
-| `line`        | `{ x: number; y: number }[]`         | yes      | —       | Line series data points                                                                        |
-| `title`       | `string`                             | yes      | —       | Title text for the component.                                                                  |
-| `description` | `string`                             | no       | —       | Supporting description text.                                                                   |
-| `secondAxis`  | `boolean`                            | no       | —       | Render line on a secondary right y-axis                                                        |
-| `width`       | `number`                             | no       | —       | Width of the component.                                                                        |
-| `height`      | `number`                             | no       | `320`   | Height of the component.                                                                       |
-| `tooltip`     | `boolean`                            | no       | —       | Enable hover/keyboard tooltip                                                                  |
-| `className`   | `string`                             | no       | —       | Additional CSS class names merged onto the root element.                                       |
-| `plain`       | `boolean`                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                          |
-| `annotations` | `Annotation[]`                       | no       | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `bars` | `{ label: string; value: number }[]` | yes | — | Bar series data |
+| `line` | `{ x: number; y: number }[]` | yes | — | Line series data points |
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `secondAxis` | `boolean` | no | — | Render line on a secondary right y-axis |
+| `width` | `number` | no | — | Width of the component. |
+| `height` | `number` | no | `320` | Height of the component. |
+| `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
+| `annotations` | `Annotation[]` | no | — | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
 
 ## Examples
 

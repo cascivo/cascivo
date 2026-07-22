@@ -22,14 +22,14 @@ import { Stat } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                       | Required | Default | Description                                                                                                |
-| ---------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------- |
-| `label`    | `string`                   | yes      | —       | What the metric measures                                                                                   |
-| `value`    | `string \| number`         | yes      | —       | The metric value                                                                                           |
-| `delta`    | `string`                   | no       | —       | Change indicator rendered next to the trend arrow                                                          |
-| `trend`    | `'up' \| 'down' \| 'flat'` | no       | `flat`  | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                               |
-| `helpText` | `string`                   | no       | —       | Fine print below the value (methodology, time range)                                                       |
-| `visual`   | `React.ReactNode`          | no       | —       | Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | yes | — | What the metric measures |
+| `value` | `string \| number` | yes | — | The metric value |
+| `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
+| `trend` | `'up' \| 'down' \| 'flat'` | no | `flat` | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
+| `helpText` | `string` | no | — | Fine print below the value (methodology, time range) |
+| `visual` | `React.ReactNode` | no | — | Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText |
 
 ## Examples
 
@@ -56,13 +56,7 @@ import { Stat } from '@cascivo/react'
 Sparkline is from @cascivo/charts
 
 ```tsx
-<Stat
-  label="Requests / min"
-  value="1.2k"
-  delta="+4.3%"
-  trend="up"
-  visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />}
-/>
+<Stat label="Requests / min" value="1.2k" delta="+4.3%" trend="up" visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />} />
 ```
 
 ## Design tokens

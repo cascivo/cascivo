@@ -18,11 +18,23 @@ export interface BarChartSeries<Datum> {
   label: string
   data: readonly Datum[]
   color?: string
+  /**
+   * Per-series Y accessor. Overrides the chart-level `y` for this series only —
+   * use it to plot two series from one shared `data` row against different fields
+   * (e.g. `y: (d) => d.requests` on one series, `y: (d) => d.errors` on another).
+   * Defaults to the chart-level `y`.
+   */
+  y?: (d: Datum) => number
 }
 
 export interface BarChartProps<Datum = { x: string; y: number }> {
   series: readonly BarChartSeries<Datum>[]
   x: (d: Datum) => string
+  /**
+   * Y-value accessor, applied to **every** series' data unless a series provides
+   * its own `y`. There is one category (x) domain per chart, so `x` is chart-level
+   * only; to plot multiple fields from one row, give each series its own `y`.
+   */
   y: (d: Datum) => number
   title: string
   description?: string
@@ -99,17 +111,23 @@ export function BarChart<Datum = { x: string; y: number }>({
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
+  // Per-series Y accessor: a series may override the chart-level `y` (e.g. to plot
+  // a different field from a shared data row). Falls back to the chart-level `y`.
+  const yFor = (s: BarChartSeries<Datum>) => s.y ?? y
+
   const categories = (series[0]?.data ?? []).map((d) => x(d))
-  const allY = series.flatMap((s) => s.data.map((d) => y(d)))
+  const allY = series.flatMap((s) => s.data.map((d) => yFor(s)(d)))
   const hasData = categories.length > 0
 
   // 'stacked' and 'percent' both stack; 'percent' normalizes each category to 1.
   const isStackLike = mode === 'stacked' || mode === 'percent'
-  const categoryTotals = categories.map((_, i) => series.reduce((sum, s) => sum + y(s.data[i]!), 0))
+  const categoryTotals = categories.map((_, i) =>
+    series.reduce((sum, s) => sum + yFor(s)(s.data[i]!), 0),
+  )
 
   /** Stacked [y0, y1] offsets per series/category; normalized to [0,1] in percent mode. */
   const computeOffsets = (): [number, number][][] => {
-    const raw = stackSeries(series.map((s) => s.data.map((d) => y(d))))
+    const raw = stackSeries(series.map((s) => s.data.map((d) => yFor(s)(d))))
     if (mode !== 'percent') return raw
     return raw.map((seriesOffsets) =>
       seriesOffsets.map(([y0, y1], i) => {
@@ -145,7 +163,7 @@ export function BarChart<Datum = { x: string; y: number }>({
           <tr key={cat}>
             <td>{cat}</td>
             {series.map((s) => (
-              <td key={s.id}>{s.data[i] != null ? y(s.data[i]!) : ''}</td>
+              <td key={s.id}>{s.data[i] != null ? yFor(s)(s.data[i]!) : ''}</td>
             ))}
           </tr>
         ))}
@@ -179,7 +197,7 @@ export function BarChart<Datum = { x: string; y: number }>({
     const breakdownByCat = categories.map((_, di) => {
       const segs = visibleSeries.map((s) => ({
         label: s.label,
-        value: y(s.data[di]!),
+        value: yFor(s)(s.data[di]!),
         color: s.color ?? COLORS[series.indexOf(s) % COLORS.length]!,
       }))
       return { segs, total: segs.reduce((sum, seg) => sum + seg.value, 0) }
@@ -198,7 +216,7 @@ export function BarChart<Datum = { x: string; y: number }>({
           val = offset[1]
           baseVal = offset[0]
         } else {
-          val = y(d)
+          val = yFor(s)(d)
           baseVal = yMin
         }
         const siInVisible = visibleSeries.indexOf(s)
@@ -212,7 +230,7 @@ export function BarChart<Datum = { x: string; y: number }>({
           cx: margins.left + (isVertical ? barCenter : valMid),
           cy: margins.top + (isVertical ? valMid : barCenter),
           label: x(d),
-          value: useStackedDefault ? breakdownByCat[di]!.total : y(d),
+          value: useStackedDefault ? breakdownByCat[di]!.total : yFor(s)(d),
           seriesId: s.id,
           ...(useStackedDefault && { segments: breakdownByCat[di]!.segs }),
         }
@@ -298,7 +316,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       val = offset[1]
                       baseVal = offset[0]
                     } else {
-                      val = y(d)
+                      val = yFor(s)(d)
                       baseVal = yMin
                     }
                     const barStart = catPos + (mode === 'grouped' ? si * subBandW : 0)
@@ -309,7 +327,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                     // inside when there's no room (short bar or stacked segment).
                     let label: React.ReactNode = null
                     if (resolvedLabels) {
-                      const text = resolvedLabels.format(y(d))
+                      const text = resolvedLabels.format(yFor(s)(d))
                       const center = barStart + subBandW / 2
                       const inside = isStackLike || valLen < 18 || valStart < 14
                       if (isVertical) {

@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/troubleshooting.md
   registry v0.9.0 · generated 2026-07-22
 -->
-
 # Troubleshooting cascivo
 
 The failures adopters actually hit, in FAQ form. Each entry: symptom → cause →
@@ -22,7 +21,7 @@ but uncolored components.
 set `data-theme`:
 
 ```tsx
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 ```
 
 ```tsx
@@ -39,33 +38,61 @@ See [GETTING-STARTED.md](/docs/getting-started.md#the-critical-wiring-themes--da
 `Error: Unknown file extension ".css" for …/@cascivo/react/dist/<component>/<component>.css`,
 and the app silently falls back to client-only rendering.
 
-**Cause:** the published `@cascivo/react` bundle ships per-component CSS as
-**static side-effect imports** (`import './button.css'` inside each component
-chunk). A bundler resolves those at build time, but a bare server-side ESM loader
-— Node's native loader, or a workerd/Cloudflare runtime — has no loader for `.css`
-and throws. (Next.js App Router never hits this because its recipe imports the
-aggregate stylesheet in a Server Component; the plain Vite CSR/SPA path never hits
-it because the browser bundler resolves the imports.)
+**Cause:** you're on `@cascivo/react` **< 0.10**, whose bundle ships per-component
+CSS as **static side-effect imports** (`import './button.css'` inside each
+component chunk). A bundler resolves those at build time, but a bare server-side
+ESM loader — Node's native loader, or a workerd/Cloudflare runtime — has no loader
+for `.css` and throws.
 
-**Fix:** tell Vite to **process** the cascivo packages during SSR instead of
-leaving them for the runtime to load raw, and import the aggregate stylesheet once:
-
-```ts
-// vite.config.ts
-export default defineConfig({
-  ssr: { noExternal: [/^@cascivo\//] }, // ← the fix
-})
-```
+**Fix — upgrade:** `@cascivo/react` **0.10+** ships a CSS-free `node`-condition
+server build, so a bare server loader imports it with **zero config**. Upgrading
+makes the crash go away with no `vite.config.ts` change. Still import the aggregate
+stylesheet once so the server HTML is styled:
 
 ```tsx
 // your root route / server entry — once
 import '@cascivo/react/styles.css'
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 ```
 
-Prefer not to hand-write the config? Add the `cascivoSsr()` plugin from
-`@cascivo/vite-plugin`, which sets `ssr.noExternal` for every `@cascivo/*`
-package. Full recipe (TanStack Start, Remix, workerd): [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md).
+**Fix — if pinned to < 0.10:** tell Vite to **process** the cascivo packages
+during SSR instead of leaving them for the runtime to load raw:
+
+```ts
+// vite.config.ts
+export default defineConfig({
+  ssr: { noExternal: [/^@cascivo\//] }, // ← the < 0.10 fix
+})
+```
+
+Or add the `cascivoSsr()` plugin from `@cascivo/vite-plugin`, which sets
+`ssr.noExternal` for every `@cascivo/*` package. Full recipe (TanStack Start,
+Remix, workerd): [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md).
+
+---
+
+## Build error: `Cannot find module or type declarations for side-effect import` (TS2882)
+
+**Symptom:** TypeScript errors on a theme CSS import —
+`error TS2882: Cannot find module or type declarations for side-effect import` on
+`import '@cascivo/themes/all'`. Common in the TanStack Start scaffold, which enables
+`noUncheckedSideEffectImports` by default.
+
+**Cause:** the extensionless `@cascivo/themes/all` subpath resolves to a `.css`
+file, and under `noUncheckedSideEffectImports` TS won't accept a side-effect import
+whose specifier lacks a recognized module/extension.
+
+**Fix:** use the `.css`-suffixed specifier — every theme export has a `.css` twin:
+
+```tsx
+import '@cascivo/themes/all.css' // not '@cascivo/themes/all'
+import '@cascivo/react/styles.css'
+```
+
+The `.css` form works in every bundler and every tsconfig, so it's the form all
+cascivo docs use. (Related tooling note: `@tanstack/cli create` may drop a nested
+`pnpm-workspace.yaml` inside the app; inside an existing pnpm monorepo, delete it so
+pnpm doesn't treat the app as its own workspace root.)
 
 ---
 
@@ -96,12 +123,12 @@ function MyPanel() {
 
 **Cause:** cascivo ships everything in cascade layers
 (`cascivo.base < cascivo.theme < cascivo.component`). If your override is
-_inside a layer_ that is ordered before `cascivo.component`, it loses no matter
+*inside a layer* that is ordered before `cascivo.component`, it loses no matter
 how specific it is.
 
 **Fix:** unlayered author CSS beats **every** cascivo layer regardless of
 specificity — a plain stylesheet override just wins. To override from within a
-layer, declare your layer ordered _after_ `cascivo.component`.
+layer, declare your layer ordered *after* `cascivo.component`.
 
 The inverse pitfall also exists: a global reset like `* { margin: 0; padding: 0 }`
 written **outside** any layer beats all cascivo layers too, zeroing out every
@@ -139,11 +166,11 @@ CSS. The recommended pattern (a brand indirection variable) is in
 
 ## `cascivo add` / `cascivo list` fails offline or the registry is unreachable
 
-**Behavior:** the registry _index_ is fetched network-first with an offline
+**Behavior:** the registry *index* is fetched network-first with an offline
 fallback — the CLI caches every fetched copy under `~/.cascivo/cache` and, when
 the network fails, falls back to the last cached copy with a
-`Could not reach … — using the last cached copy.` notice. Component _file
-payloads_ are never cached (they must be fresh, and a truncated install must
+`Could not reach … — using the last cached copy.` notice. Component *file
+payloads* are never cached (they must be fresh, and a truncated install must
 fail), so `cascivo add` itself needs a working connection.
 
 **Fix:** check connectivity and the `registry` URL in `cascivo.config.ts`
@@ -196,7 +223,7 @@ provider, nothing to buy into. Start with a single button.
 
 **Do I need Tailwind?** No. Styling is modern platform CSS — `@layer`, custom
 properties, container queries — driven by a three-tier token system. Using
-Tailwind v4 _alongside_ cascivo works too: [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md).
+Tailwind v4 *alongside* cascivo works too: [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md).
 
 **Does it work with Next.js / React Server Components?** Yes — components ship
 `'use client'` preserved. Setup in [USING-WITH-NEXTJS.md](/docs/using-with-nextjs.md).

@@ -17,14 +17,15 @@ export default meta
 type Story = StoryObj
 
 export const SourceAndTargetPorts: Story = {
-  name: 'Source and target ports',
+  name: "Source and target ports",
   render: () => (
-    <div style={{ position: 'relative', height: 160 }}>
-      <FlowNode id="api" defaultPosition={{ x: 70, y: 55 }}>
-        API
-        <FlowHandle type="target" position="left" />
-        <FlowHandle type="source" position="right" />
-      </FlowNode>
-    </div>
-  ),
+  <div style={{ position: 'relative', height: 160 }}>
+    <FlowNode id="api" defaultPosition={{ x: 70, y: 55 }}>
+      API
+      <FlowHandle type="target" position="left" />
+      <FlowHandle type="source" position="right" />
+    </FlowNode>
+  </div>
+),
 }
+

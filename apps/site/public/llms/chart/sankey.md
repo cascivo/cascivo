@@ -21,17 +21,17 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop          | Type           | Required | Default | Description                                                |
-| ------------- | -------------- | -------- | ------- | ---------------------------------------------------------- |
-| `nodes`       | `SankeyNode[]` | yes      | —       | Nodes: { id, label, color? }.                              |
-| `links`       | `SankeyLink[]` | yes      | —       | Links: { source, target, value }.                          |
-| `title`       | `string`       | yes      | —       | Title text for the component.                              |
-| `description` | `string`       | no       | —       | Supporting description text.                               |
-| `width`       | `number`       | no       | —       | Width of the component.                                    |
-| `height`      | `number`       | no       | `320`   | Height of the component.                                   |
-| `tooltip`     | `boolean`      | no       | —       | Whether to show tooltips on hover.                         |
-| `className`   | `string`       | no       | —       | Additional CSS class names merged onto the root element.   |
-| `plain`       | `boolean`      | no       | `false` | When true, renders a minimal variant without chart chrome. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `nodes` | `SankeyNode[]` | yes | — | Nodes: { id, label, color? }. |
+| `links` | `SankeyLink[]` | yes | — | Links: { source, target, value }. |
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `width` | `number` | no | — | Width of the component. |
+| `height` | `number` | no | `320` | Height of the component. |
+| `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | When true, renders a minimal variant without chart chrome. |
 
 ## Examples
 
@@ -39,17 +39,11 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Sankey } from '@cascivo/charts'
-;<Sankey
+
+<Sankey
   title="Traffic flow"
-  nodes={[
-    { id: 'a', label: 'Search' },
-    { id: 'b', label: 'Home' },
-    { id: 'c', label: 'Signup' },
-  ]}
-  links={[
-    { source: 'a', target: 'b', value: 30 },
-    { source: 'b', target: 'c', value: 12 },
-  ]}
+  nodes={[{ id: 'a', label: 'Search' }, { id: 'b', label: 'Home' }, { id: 'c', label: 'Signup' }]}
+  links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}
 />
 ```
 

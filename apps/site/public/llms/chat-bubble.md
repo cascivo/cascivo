@@ -27,14 +27,14 @@ import { ChatBubble } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type               | Required | Default | Description                                              |
-| ----------- | ------------------ | -------- | ------- | -------------------------------------------------------- |
-| `children`  | `React.ReactNode`  | yes      | —       | Content rendered inside the component.                   |
-| `side`      | `'start' \| 'end'` | no       | `start` | Edge the component is anchored to.                       |
-| `avatar`    | `React.ReactNode`  | no       | —       | Avatar element shown beside the message.                 |
-| `name`      | `string`           | no       | —       | Display name of the message sender.                      |
-| `time`      | `string`           | no       | —       | Timestamp text shown with the message.                   |
-| `className` | `string`           | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
+| `side` | `'start' \| 'end'` | no | `start` | Edge the component is anchored to. |
+| `avatar` | `React.ReactNode` | no | — | Avatar element shown beside the message. |
+| `name` | `string` | no | — | Display name of the message sender. |
+| `time` | `string` | no | — | Timestamp text shown with the message. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -43,9 +43,7 @@ import { ChatBubble } from '@cascivo/react'
 Message from another user, aligned to the start
 
 ```tsx
-<ChatBubble side="start" name="Alice" time="10:42 AM">
-  Hey, how are you?
-</ChatBubble>
+<ChatBubble side="start" name="Alice" time="10:42 AM">Hey, how are you?</ChatBubble>
 ```
 
 ### Outgoing message
@@ -53,9 +51,7 @@ Message from another user, aligned to the start
 Current user message, aligned to the end with accent background
 
 ```tsx
-<ChatBubble side="end" time="10:43 AM">
-  Doing great, thanks!
-</ChatBubble>
+<ChatBubble side="end" time="10:43 AM">Doing great, thanks!</ChatBubble>
 ```
 
 ### With avatar
@@ -63,9 +59,7 @@ Current user message, aligned to the end with accent background
 Message with an avatar beside the bubble
 
 ```tsx
-<ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">
-  See you tomorrow!
-</ChatBubble>
+<ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">See you tomorrow!</ChatBubble>
 ```
 
 ## Design tokens

@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/theming.md
   registry v0.9.0 · generated 2026-07-22
 -->
-
 # Theming & branding cascivo
 
 cascivo is a token-driven design system: every component reads CSS custom
@@ -65,7 +64,7 @@ themes is in [GETTING-STARTED.md](/docs/getting-started.md#theme-export--data-th
 
 ## Switching themes at runtime
 
-`data-theme` is the _what_; `ThemeProvider` (from `@cascivo/react`) is the _how_ — it
+`data-theme` is the *what*; `ThemeProvider` (from `@cascivo/react`) is the *how* — it
 persists the choice, drives the attribute, and is SSR-safe, so you never hand-wire a theme
 toggle (and never write a `useEffect` that toggles a `.dark` class):
 
@@ -83,9 +82,7 @@ function App() {
 function ThemeToggle() {
   const [theme, setTheme] = useTheme() // reactive [signal, setter]; calls useSignals() for you
   return (
-    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>
-      {theme.value}
-    </button>
+    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>{theme.value}</button>
   )
 }
 ```
@@ -101,19 +98,24 @@ function ThemeToggle() {
   "dark by default" or custom-theme app — it wins over the visitor's OS. Omit it to follow the
   OS. OS preference only ever resolves to `'light'`/`'dark'`, so it never clobbers a custom
   theme name like `'midnight'`.
-- **Controlled** (parent owns the state, no persistence): pass `value`. This is the report's
-  `<ThemeProvider value="dark">` pattern — correct when server state, not the visitor, decides
-  the theme.
+- **Controlled** (parent owns the state, no persistence): pass `value`. Correct when server
+  state, not the visitor, decides the theme (e.g. a per-account theme from your DB). It is
+  **SSR-safe on its own**: the provider renders a tiny inline script that sets `data-theme`
+  during HTML parsing, so the server-rendered first paint is themed with no flash and no
+  hydration mismatch — you do **not** need `themePreloadScript()` or a hard-coded `<html>`
+  attribute for the controlled flow. (Pass `nonce` if your CSP requires it. A `target`-scoped
+  controlled provider can't run before its ref mounts, so it themes on the client effect
+  instead.)
 - **No flash on reload / SSR:** inline `themePreloadScript()` in your document `<head>`, before
   the app bundle, so the theme paints on the first byte. It follows the same precedence, and it
-  sets `data-theme` _before_ React hydrates — so add `suppressHydrationWarning` to the element
+  sets `data-theme` *before* React hydrates — so add `suppressHydrationWarning` to the element
   carrying the attribute (usually `<html>`), or React 19 logs a hydration mismatch:
 
 ```tsx
 import { themePreloadScript } from '@cascivo/react'
 
 // server-rendered document
-;<html suppressHydrationWarning>
+<html suppressHydrationWarning>
   <head>
     {/* defaultTheme:'dark' keeps a light-OS visitor dark; omit it to follow the OS */}
     <script dangerouslySetInnerHTML={{ __html: themePreloadScript({ defaultTheme: 'dark' }) }} />
@@ -301,7 +303,7 @@ Import order (see also the [`@cascivo/react` README](https://github.com/cascivo/
 
 ```ts
 import '@cascivo/react/styles.css' // components
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 import './my-theme.css' // brand overrides — MUST be last
 ```
 
@@ -334,7 +336,7 @@ computed `color-scheme`. cascivo ships **twelve** themes
 terminal, cyberpunk, arcade`) and scopes them to **any container** via the
 `[data-theme]` attribute. `light-dark()` cannot express `warm` vs `brutalist`,
 and keying on `color-scheme` would collapse container-scoped multi-theming to a
-binary — so cascivo keeps `[data-theme]`. `light-dark()` _could_ be used narrowly
+binary — so cascivo keeps `[data-theme]`. `light-dark()` *could* be used narrowly
 inside the light/dark pair, but it buys little over the attribute system already
 in place, so the first-party themes do not use it.
 
@@ -352,5 +354,5 @@ build on.
 
 Every cascivo color — primitive and semantic — is already OKLCH (see
 `packages/tokens/src/index.css`). The common "use OKLCH so machines can derive
-in-system shades" advice is therefore already satisfied; the _derivation_ layer
+in-system shades" advice is therefore already satisfied; the *derivation* layer
 (relative color, `contrast-color()`) is built on top of it.

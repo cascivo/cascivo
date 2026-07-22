@@ -16,7 +16,7 @@ but uncolored components.
 set `data-theme`:
 
 ```tsx
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 ```
 
 ```tsx
@@ -33,33 +33,61 @@ See [GETTING-STARTED.md](./GETTING-STARTED.md#the-critical-wiring-themes--data-t
 `Error: Unknown file extension ".css" for …/@cascivo/react/dist/<component>/<component>.css`,
 and the app silently falls back to client-only rendering.
 
-**Cause:** the published `@cascivo/react` bundle ships per-component CSS as
-**static side-effect imports** (`import './button.css'` inside each component
-chunk). A bundler resolves those at build time, but a bare server-side ESM loader
-— Node's native loader, or a workerd/Cloudflare runtime — has no loader for `.css`
-and throws. (Next.js App Router never hits this because its recipe imports the
-aggregate stylesheet in a Server Component; the plain Vite CSR/SPA path never hits
-it because the browser bundler resolves the imports.)
+**Cause:** you're on `@cascivo/react` **< 0.10**, whose bundle ships per-component
+CSS as **static side-effect imports** (`import './button.css'` inside each
+component chunk). A bundler resolves those at build time, but a bare server-side
+ESM loader — Node's native loader, or a workerd/Cloudflare runtime — has no loader
+for `.css` and throws.
 
-**Fix:** tell Vite to **process** the cascivo packages during SSR instead of
-leaving them for the runtime to load raw, and import the aggregate stylesheet once:
-
-```ts
-// vite.config.ts
-export default defineConfig({
-  ssr: { noExternal: [/^@cascivo\//] }, // ← the fix
-})
-```
+**Fix — upgrade:** `@cascivo/react` **0.10+** ships a CSS-free `node`-condition
+server build, so a bare server loader imports it with **zero config**. Upgrading
+makes the crash go away with no `vite.config.ts` change. Still import the aggregate
+stylesheet once so the server HTML is styled:
 
 ```tsx
 // your root route / server entry — once
 import '@cascivo/react/styles.css'
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 ```
 
-Prefer not to hand-write the config? Add the `cascivoSsr()` plugin from
-`@cascivo/vite-plugin`, which sets `ssr.noExternal` for every `@cascivo/*`
-package. Full recipe (TanStack Start, Remix, workerd): [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md).
+**Fix — if pinned to < 0.10:** tell Vite to **process** the cascivo packages
+during SSR instead of leaving them for the runtime to load raw:
+
+```ts
+// vite.config.ts
+export default defineConfig({
+  ssr: { noExternal: [/^@cascivo\//] }, // ← the < 0.10 fix
+})
+```
+
+Or add the `cascivoSsr()` plugin from `@cascivo/vite-plugin`, which sets
+`ssr.noExternal` for every `@cascivo/*` package. Full recipe (TanStack Start,
+Remix, workerd): [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md).
+
+---
+
+## Build error: `Cannot find module or type declarations for side-effect import` (TS2882)
+
+**Symptom:** TypeScript errors on a theme CSS import —
+`error TS2882: Cannot find module or type declarations for side-effect import` on
+`import '@cascivo/themes/all'`. Common in the TanStack Start scaffold, which enables
+`noUncheckedSideEffectImports` by default.
+
+**Cause:** the extensionless `@cascivo/themes/all` subpath resolves to a `.css`
+file, and under `noUncheckedSideEffectImports` TS won't accept a side-effect import
+whose specifier lacks a recognized module/extension.
+
+**Fix:** use the `.css`-suffixed specifier — every theme export has a `.css` twin:
+
+```tsx
+import '@cascivo/themes/all.css' // not '@cascivo/themes/all'
+import '@cascivo/react/styles.css'
+```
+
+The `.css` form works in every bundler and every tsconfig, so it's the form all
+cascivo docs use. (Related tooling note: `@tanstack/cli create` may drop a nested
+`pnpm-workspace.yaml` inside the app; inside an existing pnpm monorepo, delete it so
+pnpm doesn't treat the app as its own workspace root.)
 
 ---
 

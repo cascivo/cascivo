@@ -33,14 +33,14 @@ Pure layout component with role="none". Wrap a list of ChatBubble elements in an
 
 ## Props
 
-| Name        | Type               | Required | Default | Description                                              |
-| ----------- | ------------------ | -------- | ------- | -------------------------------------------------------- |
-| `children`  | `React.ReactNode`  | Yes      | —       | Content rendered inside the component.                   |
-| `side`      | `'start' \| 'end'` | No       | start   | Edge the component is anchored to.                       |
-| `avatar`    | `React.ReactNode`  | No       | —       | Avatar element shown beside the message.                 |
-| `name`      | `string`           | No       | —       | Display name of the message sender.                      |
-| `time`      | `string`           | No       | —       | Timestamp text shown with the message.                   |
-| `className` | `string`           | No       | —       | Additional CSS class names merged onto the root element. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | Yes | — | Content rendered inside the component. |
+| `side` | `'start' \| 'end'` | No | start | Edge the component is anchored to. |
+| `avatar` | `React.ReactNode` | No | — | Avatar element shown beside the message. |
+| `name` | `string` | No | — | Display name of the message sender. |
+| `time` | `string` | No | — | Timestamp text shown with the message. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -60,9 +60,7 @@ Pure layout component with role="none". Wrap a list of ChatBubble elements in an
 Message from another user, aligned to the start
 
 ```jsx
-<ChatBubble side="start" name="Alice" time="10:42 AM">
-  Hey, how are you?
-</ChatBubble>
+<ChatBubble side="start" name="Alice" time="10:42 AM">Hey, how are you?</ChatBubble>
 ```
 
 ### Outgoing message
@@ -70,9 +68,7 @@ Message from another user, aligned to the start
 Current user message, aligned to the end with accent background
 
 ```jsx
-<ChatBubble side="end" time="10:43 AM">
-  Doing great, thanks!
-</ChatBubble>
+<ChatBubble side="end" time="10:43 AM">Doing great, thanks!</ChatBubble>
 ```
 
 ### With avatar
@@ -80,16 +76,14 @@ Current user message, aligned to the end with accent background
 Message with an avatar beside the bubble
 
 ```jsx
-<ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">
-  See you tomorrow!
-</ChatBubble>
+<ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">See you tomorrow!</ChatBubble>
 ```
 
 ## Boundaries
 
-| Area         | Level    | Note                                                                      |
-| ------------ | -------- | ------------------------------------------------------------------------- |
-| avatar slot  | flexible | Accepts any ReactNode — Avatar, initials, icon, or nothing                |
+| Area | Level | Note |
+|------|-------|------|
+| avatar slot | flexible | Accepts any ReactNode — Avatar, initials, icon, or nothing |
 | body content | flexible | children accepts rich content including images, links, and formatted text |
 
 ## AI context prompt

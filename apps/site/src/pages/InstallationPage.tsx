@@ -44,7 +44,7 @@ export function InstallationPage() {
         <CodeBlock
           lang="tsx"
           code={`// once, in your app entry
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 
 import { Button } from '@cascivo/react'`}
         />

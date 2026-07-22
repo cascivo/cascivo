@@ -22,23 +22,18 @@ import { Prose } from '@cascivo/react'
 
 ## Props
 
-| Prop                      | Type                 | Required | Default | Description                                                                 |
-| ------------------------- | -------------------- | -------- | ------- | --------------------------------------------------------------------------- |
-| `children`                | `React.ReactNode`    | no       | —       | Authored flow content (headings, paragraphs, lists, code, tables) to style. |
-| `dangerouslySetInnerHTML` | `{ __html: string }` | no       | —       | Rendered HTML you do not control (CMS, markdown pipelines). Sanitize first. |
-| `className`               | `string`             | no       | —       | Additional CSS class names merged onto the root element.                    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | no | — | Authored flow content (headings, paragraphs, lists, code, tables) to style. |
+| `dangerouslySetInnerHTML` | `{ __html: string }` | no | — | Rendered HTML you do not control (CMS, markdown pipelines). Sanitize first. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Authored content
 
 ```tsx
-<Prose>
-  <h2>Install</h2>
-  <p>
-    Run <code>npx cascivo init</code>.
-  </p>
-</Prose>
+<Prose><h2>Install</h2><p>Run <code>npx cascivo init</code>.</p></Prose>
 ```
 
 ### Rendered markdown

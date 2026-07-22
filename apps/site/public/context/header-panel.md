@@ -33,14 +33,14 @@ role="region" with the label prop names the panel as a landmark; Escape closes i
 
 ## Props
 
-| Name        | Type                | Required | Default | Description                                              |
-| ----------- | ------------------- | -------- | ------- | -------------------------------------------------------- |
-| `open`      | `boolean`           | Yes      | —       | Controlled open state                                    |
-| `onClose`   | `() => void`        | Yes      | —       | Called on close button click or light-dismiss            |
-| `label`     | `string`            | Yes      | —       | Accessible label for the region (shown as header title)  |
-| `children`  | `ReactNode`         | Yes      | —       | Content rendered inside the component.                   |
-| `labels`    | `HeaderPanelLabels` | No       | —       | i18n overrides                                           |
-| `className` | `string`            | No       | —       | Additional CSS class names merged onto the root element. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | Yes | — | Controlled open state |
+| `onClose` | `() => void` | Yes | — | Called on close button click or light-dismiss |
+| `label` | `string` | Yes | — | Accessible label for the region (shown as header title) |
+| `children` | `ReactNode` | Yes | — | Content rendered inside the component. |
+| `labels` | `HeaderPanelLabels` | No | — | i18n overrides |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -65,10 +65,10 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                  |
-| ----------- | -------- | --------------------------------------------------------------------- |
-| content     | flexible | Children are arbitrary panel content                                  |
-| token names | strict   | Surface, shadow, and sizing must resolve to --cascivo-\* shell tokens |
+| Area | Level | Note |
+|------|-------|------|
+| content | flexible | Children are arbitrary panel content |
+| token names | strict | Surface, shadow, and sizing must resolve to --cascivo-* shell tokens |
 
 ## AI context prompt
 

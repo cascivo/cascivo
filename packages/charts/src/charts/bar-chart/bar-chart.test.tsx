@@ -25,6 +25,30 @@ const x = (d: { x: string; y: number }) => d.x
 const y = (d: { x: string; y: number }) => d.y
 
 describe('BarChart', () => {
+  it('honors a per-series y accessor over the chart-level y', () => {
+    type Row = { cat: string; requests: number; errors: number }
+    const rows: Row[] = [
+      { cat: 'A', requests: 100, errors: 5 },
+      { cat: 'B', requests: 120, errors: 9 },
+    ]
+    const { container } = render(
+      <BarChart
+        title="Multi-field"
+        series={[
+          { id: 'req', label: 'Requests', data: rows, y: (d) => d.requests },
+          { id: 'err', label: 'Errors', data: rows, y: (d) => d.errors },
+        ]}
+        x={(d: Row) => d.cat}
+        y={(d: Row) => d.requests}
+      />,
+    )
+    // Fallback table first row: [category, requests, errors].
+    const cells = [...container.querySelectorAll('tbody tr:first-child td')].map(
+      (c) => c.textContent,
+    )
+    expect(cells).toEqual(['A', '100', '5'])
+  })
+
   it('renders without crash', () => {
     render(<BarChart series={series} x={x} y={y} title="Bar" />)
     expect(screen.getByRole('img', { name: 'Bar' })).toBeTruthy()

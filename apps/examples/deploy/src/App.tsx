@@ -24,9 +24,9 @@ import { BuildMonitor } from './sections/builds/BuildMonitor'
 import { FlagsView } from './sections/flags/FlagsView'
 import styles from './App.module.css'
 
-import '@cascivo/themes/dark'
-import '@cascivo/themes/light'
-import '@cascivo/themes/warm'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/warm.css'
 import '@cascivo/tokens'
 
 type View = 'projects' | 'deployments' | 'builds' | 'flags'

@@ -15,6 +15,12 @@
 
 ## Anti-patterns
 
+### Field owns the label; a labelled child (Input, Textarea, NativeSelect, …) renders a SECOND <label> for the same control. Omit the child's label inside a Field (dev builds warn).
+
+**Bad:** `<Field label="Email"><Input label="Email" /></Field>`  
+**Good:** `<Field label="Email"><Input /></Field>`  
+**Why:** Field owns the label; a labelled child (Input, Textarea, NativeSelect, …) renders a SECOND <label> for the same control. Omit the child's label inside a Field (dev builds warn).
+
 ### Field clones exactly one child control to inject its id and aria wiring; multiple children break the association
 
 **Bad:** `<Field label="Email"><Input /><Input /></Field>`  
@@ -38,15 +44,15 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 
 ## Props
 
-| Name          | Type           | Required | Default | Description                                                        |
-| ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `ReactNode`    | No       | —       | Text label for the control.                                        |
-| `description` | `ReactNode`    | No       | —       | Supporting description text.                                       |
-| `error`       | `ReactNode`    | No       | —       | Error message shown when the value is invalid.                     |
-| `required`    | `boolean`      | No       | false   | When true, marks the field as required.                            |
-| `disabled`    | `boolean`      | No       | false   | When true, disables the control and removes it from the tab order. |
-| `id`          | `string`       | No       | —       | Id applied to the root element (auto-generated when omitted).      |
-| `children`    | `ReactElement` | Yes      | —       | Content rendered inside the component.                             |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `ReactNode` | No | — | Text label for the control. |
+| `description` | `ReactNode` | No | — | Supporting description text. |
+| `error` | `ReactNode` | No | — | Error message shown when the value is invalid. |
+| `required` | `boolean` | No | false | When true, marks the field as required. |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `id` | `string` | No | — | Id applied to the root element (auto-generated when omitted). |
+| `children` | `ReactElement` | Yes | — | Content rendered inside the component. |
 
 ## Tokens
 
@@ -62,17 +68,13 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 ### Basic
 
 ```jsx
-<Field label="Email">
-  <Input type="email" />
-</Field>
+<Field label="Email"><Input type="email" /></Field>
 ```
 
 ### With description
 
 ```jsx
-<Field label="Email" description="We never share it.">
-  <Input />
-</Field>
+<Field label="Email" description="We never share it."><Input /></Field>
 ```
 
 ### With error
@@ -80,17 +82,15 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 Sets aria-invalid on the control and announces the error via role="alert".
 
 ```jsx
-<Field label="Email" error="Email is required" required>
-  <Input />
-</Field>
+<Field label="Email" error="Email is required" required><Input /></Field>
 ```
 
 ## Boundaries
 
-| Area            | Level    | Note                                                                   |
-| --------------- | -------- | ---------------------------------------------------------------------- |
-| token names     | strict   | Spacing and color must resolve to --cascivo-\* semantic tokens         |
-| control element | flexible | Any single element accepting id/aria-\* props can be the child control |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Spacing and color must resolve to --cascivo-* semantic tokens |
+| control element | flexible | Any single element accepting id/aria-* props can be the child control |
 
 ## AI context prompt
 

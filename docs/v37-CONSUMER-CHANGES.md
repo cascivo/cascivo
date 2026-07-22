@@ -73,10 +73,10 @@ and **unlayered** app CSS still beats every cascivo layer.
 
   ```diff
   - @import '@cascivo/react/styles.css';
-  - @import '@cascivo/themes/light';
-  - @import '@cascivo/themes/dark';
+  - @import '@cascivo/themes/light.css';
+  - @import '@cascivo/themes/dark.css';
   + @import '@cascivo/react/styles.css';
-  + @import '@cascivo/themes/all';
+  + @import '@cascivo/themes/all.css';
   ```
 
   À-la-carte still works (`@cascivo/themes/base` + the themes you need).

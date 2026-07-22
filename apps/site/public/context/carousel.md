@@ -32,15 +32,15 @@ The container is a labelled region with aria-roledescription="carousel"; each sl
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description                                                |
-| --------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------- |
-| `labels`        | `CarouselLabels`          | No       | —       | Overrides for the component’s user-visible strings (i18n). |
-| `children`      | `ReactNode`               | No       | —       | Slides as children                                         |
-| `slides`        | `ReactNode[]`             | No       | —       | Slides as an array                                         |
-| `index`         | `number`                  | No       | —       | Controlled active index                                    |
-| `defaultIndex`  | `number`                  | No       | 0       | The initial slide index when uncontrolled.                 |
-| `onIndexChange` | `(index: number) => void` | No       | —       | Called with the new slide index when it changes.           |
-| `loop`          | `boolean`                 | No       | false   | When true, navigation wraps around from end to start.      |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `labels` | `CarouselLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `children` | `ReactNode` | No | — | Slides as children |
+| `slides` | `ReactNode[]` | No | — | Slides as an array |
+| `index` | `number` | No | — | Controlled active index |
+| `defaultIndex` | `number` | No | 0 | The initial slide index when uncontrolled. |
+| `onIndexChange` | `(index: number) => void` | No | — | Called with the new slide index when it changes. |
+| `loop` | `boolean` | No | false | When true, navigation wraps around from end to start. |
 
 ## Tokens
 
@@ -71,10 +71,10 @@ The container is a labelled region with aria-roledescription="carousel"; each sl
 
 ## Boundaries
 
-| Area          | Level    | Note                                                                             |
-| ------------- | -------- | -------------------------------------------------------------------------------- |
-| transition    | strict   | Paging uses native CSS scroll-snap, not transform math — no custom easing config |
-| slide content | flexible | Any ReactNode may be a slide; pass via children or the slides array              |
+| Area | Level | Note |
+|------|-------|------|
+| transition | strict | Paging uses native CSS scroll-snap, not transform math — no custom easing config |
+| slide content | flexible | Any ReactNode may be a slide; pass via children or the slides array |
 
 ## AI context prompt
 

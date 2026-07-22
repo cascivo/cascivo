@@ -22,26 +22,20 @@ import { Toc } from '@cascivo/react'
 
 ## Props
 
-| Prop             | Type                                              | Required | Default | Description                                                      |
-| ---------------- | ------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------- |
-| `items`          | `{ id: string; label: string; level?: number }[]` | yes      | —       | The items to render.                                             |
-| `activeId`       | `string`                                          | no       | —       | Controlled active item id; disables built-in scroll-spy when set |
-| `onActiveChange` | `(id: string) => void`                            | no       | —       | Called with the id of the active section when it changes.        |
-| `labels`         | `{ nav?: string }`                                | no       | —       | Overrides for the component’s user-visible strings (i18n).       |
-| `className`      | `string`                                          | no       | —       | Additional CSS class names merged onto the root element.         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id: string; label: string; level?: number }[]` | yes | — | The items to render. |
+| `activeId` | `string` | no | — | Controlled active item id; disables built-in scroll-spy when set |
+| `onActiveChange` | `(id: string) => void` | no | — | Called with the id of the active section when it changes. |
+| `labels` | `{ nav?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Toc
-  items={[
-    { id: 'intro', label: 'Introduction' },
-    { id: 'usage', label: 'Usage' },
-    { id: 'api', label: 'API', level: 3 },
-  ]}
-/>
+<Toc items={[{ id: 'intro', label: 'Introduction' }, { id: 'usage', label: 'Usage' }, { id: 'api', label: 'API', level: 3 }]} />
 ```
 
 ### Controlled active item
@@ -49,13 +43,7 @@ import { Toc } from '@cascivo/react'
 Pass activeId to drive the highlight yourself; scroll-spy is disabled.
 
 ```tsx
-<Toc
-  activeId="usage"
-  items={[
-    { id: 'intro', label: 'Introduction' },
-    { id: 'usage', label: 'Usage' },
-  ]}
-/>
+<Toc activeId="usage" items={[{ id: 'intro', label: 'Introduction' }, { id: 'usage', label: 'Usage' }]} />
 ```
 
 ## Design tokens

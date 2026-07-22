@@ -95,6 +95,18 @@ function isPlaceholder(spec: string): boolean {
   return /[<>*]/.test(spec)
 }
 
+/** Recursively collect `*.md` files under `dir` (used for the per-entry llms/context docs). */
+function collectMdFiles(dir: string): string[] {
+  if (!existsSync(dir)) return []
+  const out: string[] = []
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name)
+    if (entry.isDirectory()) out.push(...collectMdFiles(full))
+    else if (entry.name.endsWith('.md')) out.push(full)
+  }
+  return out
+}
+
 function collectDocFiles(): string[] {
   const files: string[] = []
   // Top-level guides only (exclude internal/, plans/, cookbooks/).
@@ -106,6 +118,12 @@ function collectDocFiles(): string[] {
     const p = join(PUBLIC_DIR, gen)
     if (existsSync(p)) files.push(p)
   }
+  // Per-entry machine-readable docs (llms/<name>.md, context/<name>.md). These
+  // are shipped too, and were previously only covered via the llms-full.txt
+  // roll-up — a bad import in a single entry doc (e.g. a phantom
+  // `@cascivo/layout/…` package import) would otherwise be invisible.
+  files.push(...collectMdFiles(join(PUBLIC_DIR, 'llms')))
+  files.push(...collectMdFiles(join(PUBLIC_DIR, 'context')))
   return files
 }
 
@@ -165,6 +183,28 @@ describe('docs-imports — every @cascivo import in the guides resolves', () => 
       }
     }
     assert.deepEqual(bad, [], `Docs import symbols that don't exist:\n  ${bad.join('\n  ')}`)
+  })
+
+  it('theme CSS imports use the `.css`-suffixed specifier (TS2882-safe)', () => {
+    // `@cascivo/themes/all` (extensionless) resolves to a .css file, which fails
+    // TS2882 under `noUncheckedSideEffectImports` (the TanStack Start scaffold's
+    // default). The `.css` twin works in every bundler and tsconfig, so all docs
+    // must use it. Enforce the form on theme side-effect imports.
+    const bad: string[] = []
+    for (const im of imports) {
+      if (im.names.length > 0) continue // side-effect imports only
+      const { pkg } = splitSpec(im.spec)
+      if (pkg !== '@cascivo/themes') continue
+      if (isPlaceholder(im.spec)) continue
+      if (!im.spec.endsWith('.css')) {
+        bad.push(`${rel(im.file)}: '${im.spec}' → use the .css form ('${im.spec}.css')`)
+      }
+    }
+    assert.deepEqual(
+      bad,
+      [],
+      `Theme CSS imports must use the .css-suffixed specifier (TS2882-safe):\n  ${bad.join('\n  ')}`,
+    )
   })
 
   it('allowlist has no stale entries', () => {

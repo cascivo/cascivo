@@ -40,13 +40,13 @@ Renders a native <input type="checkbox"> wrapped in a <label>, so role, checked/
 
 ## Props
 
-| Name            | Type                                         | Required | Default | Description                                                        |
-| --------------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`         | `string`                                     | No       | —       | Text label for the control.                                        |
-| `checked`       | `boolean`                                    | No       | —       | Whether the control is checked (controlled).                       |
-| `indeterminate` | `boolean`                                    | No       | false   | When true, renders the mixed/indeterminate state.                  |
-| `disabled`      | `boolean`                                    | No       | false   | When true, disables the control and removes it from the tab order. |
-| `onChange`      | `React.ChangeEventHandler<HTMLInputElement>` | No       | —       | Called when the value changes.                                     |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | No | — | Text label for the control. |
+| `checked` | `boolean` | No | — | Whether the control is checked (controlled). |
+| `indeterminate` | `boolean` | No | false | When true, renders the mixed/indeterminate state. |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `onChange` | `React.ChangeEventHandler<HTMLInputElement>` | No | — | Called when the value changes. |
 
 ## Tokens
 
@@ -73,10 +73,10 @@ Renders a native <input type="checkbox"> wrapped in a <label>, so role, checked/
 
 ## Boundaries
 
-| Area               | Level    | Note                                                                                    |
-| ------------------ | -------- | --------------------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | native input props | flexible | Spreads InputHTMLAttributes — name, value, required, checked, onChange all pass through |
-| token names        | strict   | Control styling resolves to semantic --cascivo-color-\* / --cascivo-radius-sm tokens    |
+| token names | strict | Control styling resolves to semantic --cascivo-color-* / --cascivo-radius-sm tokens |
 
 ## AI context prompt
 

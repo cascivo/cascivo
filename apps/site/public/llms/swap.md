@@ -32,16 +32,16 @@ import { Swap } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                         | Required | Default  | Description                                                 |
-| --------------- | ---------------------------- | -------- | -------- | ----------------------------------------------------------- |
-| `on`            | `React.ReactNode`            | yes      | —        | Content shown in the active (on) state.                     |
-| `off`           | `React.ReactNode`            | yes      | —        | Content shown in the inactive (off) state.                  |
-| `checked`       | `boolean`                    | no       | `false`  | Whether the control is checked (controlled).                |
-| `onValueChange` | `(checked: boolean) => void` | no       | —        | Called with the new checked state when the swap is toggled. |
-| `onChange`      | `(checked: boolean) => void` | no       | —        | Deprecated: use onValueChange (same checked boolean).       |
-| `mode`          | `'rotate' \| 'flip'`         | no       | `rotate` | Transition between states ('rotate' \| 'flip').             |
-| `aria-label`    | `string`                     | no       | —        | Accessible label used when no visible label is present.     |
-| `className`     | `string`                     | no       | —        | Additional CSS class names merged onto the root element.    |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `on` | `React.ReactNode` | yes | — | Content shown in the active (on) state. |
+| `off` | `React.ReactNode` | yes | — | Content shown in the inactive (off) state. |
+| `checked` | `boolean` | no | `false` | Whether the control is checked (controlled). |
+| `onValueChange` | `(checked: boolean) => void` | no | — | Called with the new checked state when the swap is toggled. |
+| `onChange` | `(checked: boolean) => void` | no | — | Deprecated: use onValueChange (same checked boolean). |
+| `mode` | `'rotate' \| 'flip'` | no | `rotate` | Transition between states ('rotate' \| 'flip'). |
+| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 

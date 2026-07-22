@@ -107,7 +107,7 @@ every package manager, with or without `auto-install-peers`.
 
 ```ts
 import '@cascivo/react/styles.css' // components (no tokens/colors on their own)
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 import './my-theme.css' // optional brand overrides — always LAST
 ```
 

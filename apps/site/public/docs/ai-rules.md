@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/ai-rules.md
   registry v0.9.0 · generated 2026-07-22
 -->
-
 # AI rules for building with cascivo
 
 Drop this into your AI agent's system prompt, Cursor rules (`.cursor/rules`), or
@@ -63,10 +62,13 @@ don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React
 6. Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): signal store,
    sync/async + Standard Schema (zod/valibot) validation, optional `validateOnChange`.
 7. Theming (light/dark toggle, SSR no-FOUC) -> `<ThemeProvider>` + `useTheme()` /
-   `setTheme()` + `themePreloadScript()` (`@cascivo/react`). Never a `useEffect` that adds a
+   `setTheme()` + `themePreloadScript()` (`@cascivo/react`). `useTheme()` returns a **tuple**
+   `[Signal<string>, setTheme]` — read `theme.value`; never destructure `{ theme, setTheme }`
+   (that is next-themes' shape, not cascivo's). A controlled `<ThemeProvider value=…>` is
+   SSR-safe by itself (emits an inline attribute setter). Never a `useEffect` that adds a
    `.dark` class.
 8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
-'@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
+   '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
 9. In any app without the Babel signals transform, a component reading `signal.value` in
    render must call `useSignals()` (from `@cascivo/core`) as its first statement, or it
    never re-renders.
@@ -79,12 +81,12 @@ Full catalogs: docs/HEADLESS.md (primitives) and docs/ENTERPRISE-READINESS.md (f
 cascivo names change/activation callbacks by **what the handler receives**, so you can
 predict the prop without checking the types:
 
-| Handler receives                                                                       | Prop name                  | Examples                                                                                                                   |
-| -------------------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Handler receives | Prop name | Examples |
+| --- | --- | --- |
 | The component's **value** (string / number / array / boolean / Date — not a DOM event) | **`onValueChange(value)`** | `Tabs`, `SegmentedControl`, `Select`, `Combobox`, `Slider`, `MultiSelect`, `Toggle`, `Search`, `NumberInput`, `DatePicker` |
-| A raw **DOM `ChangeEvent`** from a real underlying element                             | **`onChange(event)`**      | `Checkbox`, `NativeSelect`, `PasswordInput`                                                                                |
-| **Activation / selection** of a discrete item                                          | **`onSelect(value)`**      | `Dropdown`, `Menu`, `ContextMenu`, `OverflowMenu`, chart point clicks                                                      |
-| A raw DOM click passthrough                                                            | **`onClick(event)`**       | nav items, buttons                                                                                                         |
+| A raw **DOM `ChangeEvent`** from a real underlying element | **`onChange(event)`** | `Checkbox`, `NativeSelect`, `PasswordInput` |
+| **Activation / selection** of a discrete item | **`onSelect(value)`** | `Dropdown`, `Menu`, `ContextMenu`, `OverflowMenu`, chart point clicks |
+| A raw DOM click passthrough | **`onClick(event)`** | nav items, buttons |
 
 Rule of thumb when authoring or generating: **if your handler's first argument is a value,
 name it `onValueChange`; if it's a DOM event, name it `onChange`.** A few components still
@@ -134,18 +136,18 @@ gap-based layout use `Flex`, not `Stack`.
 cascivo has no utility classes. You express the same intent with plain CSS properties
 reading `--cascivo-*` tokens, inside a layer. The mapping is mechanical:
 
-| Tailwind utility          | cascivo CSS (inside `@layer …`)                                    |
-| ------------------------- | ------------------------------------------------------------------ |
-| `p-4`                     | `padding: var(--cascivo-space-4);`                                 |
-| `px-2`                    | `padding-inline: var(--cascivo-space-2);`                          |
-| `gap-2`                   | `gap: var(--cascivo-space-2);`                                     |
-| `flex items-center`       | `display: flex; align-items: center;`                              |
+| Tailwind utility | cascivo CSS (inside `@layer …`) |
+| ---------------- | ------------------------------- |
+| `p-4` | `padding: var(--cascivo-space-4);` |
+| `px-2` | `padding-inline: var(--cascivo-space-2);` |
+| `gap-2` | `gap: var(--cascivo-space-2);` |
+| `flex items-center` | `display: flex; align-items: center;` |
 | `flex items-center gap-2` | `display: flex; align-items: center; gap: var(--cascivo-space-2);` |
-| `text-sm`                 | `font-size: var(--cascivo-text-sm);`                               |
-| `text-muted-foreground`   | `color: var(--cascivo-color-text-subtle);`                         |
-| `font-semibold`           | `font-weight: var(--cascivo-font-semibold);`                       |
-| `rounded-md`              | `border-radius: var(--cascivo-radius-md);`                         |
-| `bg-card`                 | `background: var(--cascivo-color-surface);`                        |
+| `text-sm` | `font-size: var(--cascivo-text-sm);` |
+| `text-muted-foreground` | `color: var(--cascivo-color-text-subtle);` |
+| `font-semibold` | `font-weight: var(--cascivo-font-semibold);` |
+| `rounded-md` | `border-radius: var(--cascivo-radius-md);` |
+| `bg-card` | `background: var(--cascivo-color-surface);` |
 
 Two habit changes:
 
@@ -173,7 +175,7 @@ client-only rendering:
 No `<ClientOnly>` wrappers are needed — components ship `'use client'` and render
 their server HTML normally. **Next.js App Router needs none of this** (its recipe
 imports the aggregate sheet in a Server Component), and plain **Vite CSR/SPA**
-needs none of it either — only Vite _SSR_ runtimes do. Full recipe:
+needs none of it either — only Vite *SSR* runtimes do. Full recipe:
 [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md).
 
 ## See also

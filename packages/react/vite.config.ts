@@ -35,9 +35,32 @@ const LAYER_ORDER = readFileSync(
  * Because the shim is imported by the component and `sideEffects: ["**\/*.css"]`
  * is set, a consumer's bundler pulls in CSS only for the components actually
  * imported — and tree-shakes the rest. No manual stylesheet import required.
+ *
+ * SSR-safe twin (`dist/node/`). The per-component `.css` side-effect imports
+ * make the browser build unloadable by a bare Node ESM loader — the default
+ * state of an externalized dependency in every Vite SSR framework, which throws
+ * `ERR_UNKNOWN_FILE_EXTENSION` on the first request. To make `import
+ * '@cascivo/react'` work under bare Node with zero consumer config, this plugin
+ * also emits a second, CSS-free copy of the whole module graph under
+ * `dist/node/`, selected by the `node` export condition (see package.json). It
+ * is byte-identical to the browser build minus the injected `.css` edges, so the
+ * server renders correct HTML (CSS never applies server-side anyway) while the
+ * client build — reached via the `import`/`browser` conditions — still carries
+ * per-component CSS and tree-shakes it. The relative import graph is preserved,
+ * so the copied tree resolves within itself.
  */
 function cssImportEdges() {
   const directive = /^\s*(['"])use [\w-]+\1;?\s*$/
+  // A bare relative CSS side-effect import, e.g. `import './spinner.css';`.
+  const cssImportLine = /^\s*import\s+['"][^'"]*\.css['"];?\s*$/
+
+  /** Drop every bare `.css` side-effect import line — the node twin has no CSS. */
+  function stripCssImports(code: string): string {
+    return code
+      .split('\n')
+      .filter((line) => !cssImportLine.test(line))
+      .join('\n')
+  }
 
   // Re-emit the leading directive prologue with duplicates collapsed, then
   // splice `inject` in immediately after it. Directives ('use client') must
@@ -115,6 +138,26 @@ function cssImportEdges() {
         if (!chunk.code.includes('use client')) continue
         chunk.code = spliceAfterDirectives(chunk.code, '').replace(/\n\n\n+/g, '\n\n')
       }
+      // SSR-safe twin under dist/node/: every chunk copied verbatim with its
+      // `.css` side-effect imports stripped, plus a matching flat entry. The
+      // node build is selected by the `node` export condition and can be loaded
+      // by a bare Node ESM loader (no `.css` specifiers to choke on). Emitted
+      // after the browser chunks are finalized so the two builds differ only by
+      // the CSS edges.
+      for (const fileName of Object.keys(bundle)) {
+        const chunk = bundle[fileName]
+        if (chunk.type !== 'chunk' || typeof chunk.code !== 'string') continue
+        this.emitFile({
+          type: 'asset',
+          fileName: `node/${fileName}`,
+          source: stripCssImports(chunk.code),
+        })
+      }
+      this.emitFile({
+        type: 'asset',
+        fileName: 'node/index.js',
+        source: "'use client';\nexport * from './react/src/index.js';\n",
+      })
     },
   }
 }

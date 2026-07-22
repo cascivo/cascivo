@@ -36,14 +36,14 @@ import { Avatar } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                                   | Required | Default | Description                                                                       |
-| ---------- | -------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
-| `src`      | `string`                               | no       | —       | Image source URL.                                                                 |
-| `alt`      | `string`                               | no       | —       | Alternative text describing the image.                                            |
-| `name`     | `string`                               | no       | —       | Full name — used to derive initials for the fallback and as the accessible label. |
-| `fallback` | `string`                               | no       | —       | Explicit fallback text (initials/glyph); overrides initials derived from name.    |
-| `size`     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').                             |
-| `status`   | `'online' \| 'offline' \| 'busy'`      | no       | —       | Status state.                                                                     |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `src` | `string` | no | — | Image source URL. |
+| `alt` | `string` | no | — | Alternative text describing the image. |
+| `name` | `string` | no | — | Full name — used to derive initials for the fallback and as the accessible label. |
+| `fallback` | `string` | no | — | Explicit fallback text (initials/glyph); overrides initials derived from name. |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `status` | `'online' \| 'offline' \| 'busy'` | no | — | Status state. |
 
 ## Examples
 

@@ -34,12 +34,12 @@ The action buttons are always rendered in the DOM and the accessibility tree, ne
 
 ## Props
 
-| Name              | Type              | Required | Default | Description                                                                |
-| ----------------- | ----------------- | -------- | ------- | -------------------------------------------------------------------------- |
-| `children`        | `React.ReactNode` | Yes      | —       | The row content                                                            |
-| `leadingActions`  | `SwipeAction[]`   | No       | —       | Actions revealed by dragging toward the end edge (shown on the start edge) |
-| `trailingActions` | `SwipeAction[]`   | No       | —       | Actions revealed by dragging toward the start edge (shown on the end edge) |
-| `className`       | `string`          | No       | —       | Additional CSS class names merged onto the root element.                   |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | Yes | — | The row content |
+| `leadingActions` | `SwipeAction[]` | No | — | Actions revealed by dragging toward the end edge (shown on the start edge) |
+| `trailingActions` | `SwipeAction[]` | No | — | Actions revealed by dragging toward the start edge (shown on the end edge) |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -79,10 +79,10 @@ The action buttons are always rendered in the DOM and the accessibility tree, ne
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                             |
-| ---------------- | -------- | -------------------------------------------------------------------------------- |
-| actions          | flexible | Any number of leading and/or trailing actions; each may be destructive           |
-| reveal direction | strict   | Leading reveals on the start edge, trailing on the end edge (physical-axis drag) |
+| Area | Level | Note |
+|------|-------|------|
+| actions | flexible | Any number of leading and/or trailing actions; each may be destructive |
+| reveal direction | strict | Leading reveals on the start edge, trailing on the end edge (physical-axis drag) |
 
 ## AI context prompt
 

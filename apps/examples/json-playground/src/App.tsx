@@ -5,9 +5,9 @@ import type { ViewConfig } from '@cascivo/render'
 import React, { useRef } from 'react'
 import { exampleConfigJson } from './example-config'
 
-import '@cascivo/themes/light'
-import '@cascivo/themes/dark'
-import '@cascivo/themes/warm'
+import '@cascivo/themes/light.css'
+import '@cascivo/themes/dark.css'
+import '@cascivo/themes/warm.css'
 
 const configSignal = signal<ViewConfig | null>(null)
 const parseErrorSignal = signal<string | null>(null)

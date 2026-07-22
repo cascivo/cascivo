@@ -132,13 +132,16 @@ import a component — your bundler includes styles only for the components you
 use. There is no component-CSS import to add. (No bundler at all? Import the
 aggregate `@cascivo/react/styles.css` instead.)
 
-> **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** Follow
-> the **4-line SSR checklist** — `ssr: { noExternal: [/^@cascivo\//] }` (or the
-> `cascivoSsr()` plugin), `@preact/signals-react` 3.x, the CSS import set, and
-> `themePreloadScript()` + `suppressHydrationWarning`. Without the first line an
-> unconfigured SSR build throws `Unknown file extension ".css"`. Full recipe:
-> [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md). Next.js App Router needs none of
-> this — see [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
+> **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** On
+> `@cascivo/react` **0.10+** SSR works with **zero Vite config** — the package ships
+> a CSS-free `node`-condition build that a bare server loader imports cleanly. The
+> only SSR checklist left: `@preact/signals-react` 3.x, import the CSS set
+> (`@cascivo/react/styles.css` + `@cascivo/themes/all.css`), and — for runtime theme
+> switching — `themePreloadScript()` + `suppressHydrationWarning`. On
+> `@cascivo/react` **< 0.10** you additionally need `ssr: { noExternal: [/^@cascivo\//] }`
+> (or `cascivoSsr()`), or an unconfigured build throws `Unknown file extension ".css"`.
+> Full recipe: [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md). Next.js App Router
+> needs none of this — see [USING-WITH-NEXTJS.md](./USING-WITH-NEXTJS.md).
 
 Trade-off vs Path A: you cannot edit component internals, but you upgrade with a
 version bump instead of a merge. Full details in the
@@ -161,7 +164,7 @@ matches what you ship.
 **Recipe A — light + dark with a system default** (the common case):
 
 ```tsx
-import '@cascivo/themes/all' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
 ```
 
 ```tsx
@@ -176,8 +179,8 @@ plain markup uses the sans stack, not browser serif), and ships both `light` and
 `base` scaffold plus your one theme, and set that theme's name:
 
 ```tsx
-import '@cascivo/themes/base' // tokens + base typography (required scaffold)
-import '@cascivo/themes/dark' // your one theme
+import '@cascivo/themes/base.css' // tokens + base typography (required scaffold)
+import '@cascivo/themes/dark.css' // your one theme
 ```
 
 ```tsx
@@ -221,21 +224,39 @@ For a user-selectable theme, use the runtime from `@cascivo/react`:
 
 ```tsx
 import { ThemeProvider, useTheme } from '@cascivo/react'
+
+function ThemeToggle() {
+  // useTheme() returns a TUPLE [themeSignal, setTheme] — the first element is a
+  // signal, so read `theme.value`. It is NOT a `{ theme, setTheme }` object
+  // (that's next-themes' shape). The hook calls useSignals() for you.
+  const [theme, setTheme] = useTheme()
+  return (
+    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>
+      {theme.value}
+    </button>
+  )
+}
 ```
 
 `ThemeProvider` persists the choice and drives `data-theme` for you; `useTheme()`
-reads/sets it. The persisted choice is **client state**, so under SSR you must
-avoid a hydration mismatch and a flash of the wrong theme. Two correct options:
+reads/sets it via that tuple. Under
+SSR you must avoid a hydration mismatch and a flash of the wrong theme. Three
+correct options, by how the theme is decided:
 
 - **Static theme** (fixed for the whole app): hard-code `data-theme="dark"` on your
   `<html>` in the server-rendered document. This is the right answer for a
   single-theme app — it is not a workaround, and it never mismatches.
-- **Persisted / switchable theme:** inline `themePreloadScript()` (from
-  `@cascivo/react`) in your document `<head>` **before** the app renders, so the
-  attribute is set from storage before first paint, and add `suppressHydrationWarning`
-  to the `<html>` it writes to (the script mutates `data-theme` pre-hydration; without
-  the flag React 19 logs a mismatch). Pass `defaultTheme` to keep a "dark by default"
-  app dark for light-OS visitors — it wins over `prefers-color-scheme`. See
+- **Controlled by server state** (e.g. a per-account theme from your DB): pass it as
+  `<ThemeProvider value={serverTheme}>`. The provider is **SSR-safe on its own** — it
+  emits an inline attribute setter during render, so the first paint is themed with no
+  flash and no extra `<head>` script. (Pass `nonce` for a strict CSP.)
+- **Persisted / user-switchable theme** (client `localStorage`): inline
+  `themePreloadScript()` (from `@cascivo/react`) in your document `<head>` **before**
+  the app renders, so the attribute is set from storage before first paint, and add
+  `suppressHydrationWarning` to the `<html>` it writes to (the script mutates
+  `data-theme` pre-hydration; without the flag React 19 logs a mismatch). Pass
+  `defaultTheme` to keep a "dark by default" app dark for light-OS visitors — it wins
+  over `prefers-color-scheme`. See
   [THEMING.md](./THEMING.md#switching-themes-at-runtime) for the full recipe.
 
 Never write a `useEffect` that toggles a `.dark` class — that is the pattern
@@ -252,7 +273,7 @@ not a broken install. See [TROUBLESHOOTING.md](./TROUBLESHOOTING.md).
 ## First component
 
 ```tsx
-import '@cascivo/themes/all'
+import '@cascivo/themes/all.css'
 // Path A: import from your copied source
 import { Button, Card, CardContent } from '@/components/ui'
 // Path B: import { Button, Card, CardContent } from '@cascivo/react'

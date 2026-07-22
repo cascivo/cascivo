@@ -8,7 +8,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'label',
+      description:
+        'Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'hint',
       description: 'Supplementary hint text shown with the control.',

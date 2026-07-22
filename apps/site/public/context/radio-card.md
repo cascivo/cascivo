@@ -34,13 +34,13 @@ Each card is a <label> wrapping a native <input type="radio"> and RadioCardGroup
 
 ## Props
 
-| Name            | Type        | Required | Default | Description                                                    |
-| --------------- | ----------- | -------- | ------- | -------------------------------------------------------------- |
-| `hideIndicator` | `boolean`   | No       | —       | Hide the radio indicator glyph, showing only the card content. |
-| `value`         | `string`    | Yes      | —       | Radio value                                                    |
-| `title`         | `ReactNode` | Yes      | —       | Card title                                                     |
-| `description`   | `ReactNode` | No       | —       | Optional description                                           |
-| `disabled`      | `boolean`   | No       | —       | Disables the card                                              |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `hideIndicator` | `boolean` | No | — | Hide the radio indicator glyph, showing only the card content. |
+| `value` | `string` | Yes | — | Radio value |
+| `title` | `ReactNode` | Yes | — | Card title |
+| `description` | `ReactNode` | No | — | Optional description |
+| `disabled` | `boolean` | No | — | Disables the card |
 
 ## Tokens
 
@@ -65,10 +65,10 @@ Single-select plan picker
 
 ## Boundaries
 
-| Area                  | Level    | Note                                                                      |
-| --------------------- | -------- | ------------------------------------------------------------------------- |
-| token names           | strict   | Card and indicator styling must resolve to the listed --cascivo-\* tokens |
-| title and description | flexible | title and description accept arbitrary ReactNode content                  |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Card and indicator styling must resolve to the listed --cascivo-* tokens |
+| title and description | flexible | title and description accept arbitrary ReactNode content |
 
 ## AI context prompt
 

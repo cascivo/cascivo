@@ -18,9 +18,9 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop           | Type         | Required | Default | Description                |
-| -------------- | ------------ | -------- | ------- | -------------------------- |
-| `onCreateItem` | `() => void` | no       | —       | Create item button handler |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onCreateItem` | `() => void` | no | — | Create item button handler |
 
 ## Examples
 

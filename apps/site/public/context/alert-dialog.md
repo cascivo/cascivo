@@ -39,15 +39,15 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 
 ## Props
 
-| Name          | Type                         | Required | Default | Description                                                |
-| ------------- | ---------------------------- | -------- | ------- | ---------------------------------------------------------- |
-| `open`        | `boolean`                    | Yes      | —       | Whether the component is open (controlled).                |
-| `title`       | `string`                     | Yes      | —       | Title text for the component.                              |
-| `description` | `string`                     | Yes      | —       | Supporting description text.                               |
-| `onConfirm`   | `() => void`                 | Yes      | —       | Called when the confirm button is activated.               |
-| `onCancel`    | `() => void`                 | Yes      | —       | Called when the cancel button is activated.                |
-| `labels`      | `AlertDialogLabels`          | No       | —       | Overrides for the component’s user-visible strings (i18n). |
-| `variant`     | `'destructive' \| 'default'` | No       | default | Selects the visual style variant.                          |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | Yes | — | Whether the component is open (controlled). |
+| `title` | `string` | Yes | — | Title text for the component. |
+| `description` | `string` | Yes | — | Supporting description text. |
+| `onConfirm` | `() => void` | Yes | — | Called when the confirm button is activated. |
+| `onCancel` | `() => void` | Yes | — | Called when the cancel button is activated. |
+| `labels` | `AlertDialogLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `variant` | `'destructive' \| 'default'` | No | default | Selects the visual style variant. |
 
 ## Tokens
 
@@ -90,11 +90,11 @@ Uses role="alertdialog" with aria-modal and labelled/described-by wiring so assi
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                                                                |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| dismiss behavior | strict   | No light-dismiss — closing must go through onConfirm/onCancel                                                       |
-| action labels    | flexible | confirm/cancel copy overridable via labels; defaults come from the i18n catalog                                     |
-| token names      | strict   | Visual styling resolves to semantic --cascivo-color-\* tokens; destructive variant uses --cascivo-color-destructive |
+| Area | Level | Note |
+|------|-------|------|
+| dismiss behavior | strict | No light-dismiss — closing must go through onConfirm/onCancel |
+| action labels | flexible | confirm/cancel copy overridable via labels; defaults come from the i18n catalog |
+| token names | strict | Visual styling resolves to semantic --cascivo-color-* tokens; destructive variant uses --cascivo-color-destructive |
 
 ## AI context prompt
 

@@ -27,21 +27,19 @@ import { Tooltip } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type                                     | Required | Default | Description                               |
-| ----------- | ---------------------------------------- | -------- | ------- | ----------------------------------------- |
-| `content`   | `ReactNode`                              | yes      | —       | The tooltip content shown on hover/focus. |
-| `placement` | `'top' \| 'right' \| 'bottom' \| 'left'` | no       | `top`   | Placement relative to the trigger.        |
-| `children`  | `ReactElement`                           | yes      | —       | Content rendered inside the component.    |
-| `delay`     | `number`                                 | no       | `200`   | Milliseconds to wait before showing       |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `content` | `ReactNode` | yes | — | The tooltip content shown on hover/focus. |
+| `placement` | `'top' \| 'right' \| 'bottom' \| 'left'` | no | `top` | Placement relative to the trigger. |
+| `children` | `ReactElement` | yes | — | Content rendered inside the component. |
+| `delay` | `number` | no | `200` | Milliseconds to wait before showing |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Tooltip content="Copy to clipboard">
-  <Button>Copy</Button>
-</Tooltip>
+<Tooltip content="Copy to clipboard"><Button>Copy</Button></Tooltip>
 ```
 
 ## Design tokens

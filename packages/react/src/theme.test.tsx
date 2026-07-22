@@ -1,5 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach } from 'vitest'
+import { createRef } from 'react'
 import { act, render } from '@testing-library/react'
+import { renderToString } from 'react-dom/server'
 import { ThemeProvider, setTheme, themePreloadScript, useTheme } from './theme'
 
 function currentTheme(): string | null {
@@ -109,6 +111,39 @@ describe('ThemeProvider initial-theme precedence', () => {
     mockMatchMedia('none')
     render(<ThemeProvider storageKey={freshKey()} />)
     expect(currentTheme()).toBe('light')
+  })
+})
+
+describe('ThemeProvider SSR (controlled value emits an attribute-setter script)', () => {
+  it('renders an inline setter for a controlled value on the server', () => {
+    const html = renderToString(<ThemeProvider value="dark">app</ThemeProvider>)
+    expect(html).toContain('<script')
+    expect(html).toContain('document.documentElement.setAttribute("data-theme","dark")')
+    expect(html).toContain('app')
+  })
+
+  it('honors a custom attribute in the emitted script', () => {
+    const html = renderToString(<ThemeProvider value="dark" attribute="data-mode" />)
+    expect(html).toContain('setAttribute("data-mode","dark")')
+  })
+
+  it('escapes a hostile value so it cannot break out of the script element', () => {
+    const html = renderToString(<ThemeProvider value={'"/><script>alert(1)</script>'} />)
+    // No raw closing tag from the injected value; `<` is unicode-escaped.
+    expect(html).not.toContain('</script>alert')
+    expect(html).toContain('\\u003c')
+  })
+
+  it('emits NO script for the uncontrolled (persisted) flow', () => {
+    const html = renderToString(<ThemeProvider defaultTheme="dark">app</ThemeProvider>)
+    expect(html).not.toContain('<script')
+    expect(html).toContain('app')
+  })
+
+  it('emits NO script for a target-scoped controlled provider', () => {
+    const ref = createRef<HTMLDivElement>()
+    const html = renderToString(<ThemeProvider value="dark" target={ref} />)
+    expect(html).not.toContain('<script')
   })
 })
 
