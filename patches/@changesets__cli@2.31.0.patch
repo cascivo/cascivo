@@ -1,5 +1,5 @@
 diff --git a/dist/changesets-cli.cjs.js b/dist/changesets-cli.cjs.js
-index 9f0bd6c5f96011be225269a71365a878cb822bb7..bfeb32b5ee99dfbaf5936cced1269400181e5a15 100644
+index 9f0bd6c5f96011be225269a71365a878cb822bb7..d0293dedfb2bc8f2cf71681a7c83aa2866d78467 100644
 --- a/dist/changesets-cli.cjs.js
 +++ b/dist/changesets-cli.cjs.js
 @@ -870,7 +870,7 @@ async function infoAllow404(packageJson) {
@@ -16,7 +16,7 @@ index 9f0bd6c5f96011be225269a71365a878cb822bb7..bfeb32b5ee99dfbaf5936cced1269400
      if (json !== null && json !== void 0 && json.error) {
        var _json$error$detail;
 -      if (json.error.code === "E403" && isAlreadyPublishedError(json.error.summary)) {
-+      if (json.error.code === "E403" && isAlreadyPublishedError([json.error.summary, json.error.detail, stderr.toString()].filter(Boolean).join("\n"))) {
++      if (json.error.code === "E403" && isAlreadyPublishedError([json.error.summary, json.error.detail, json.error.message, stderr.toString(), stdout.toString()].filter(Boolean).join("\n"))) {
          // we don't need to log anything here, it just turned out the version was already published so we gracefully exit the publish process
          return {
            result: "skipped"

@@ -112,7 +112,7 @@ overrides:
   axe-core: 4.11.4
 
 patchedDependencies:
-  '@changesets/cli@2.31.0': 4a9256d14aa536f2fa817752de04be9c6b484b066a07c3f1e1e896db634e9fee
+  '@changesets/cli@2.31.0': 0079e2a50a41e1201b37d0999195c059d29aff8ad5a6bf31426dd4a3c6c55c2d
 
 importers:
 
@@ -123,7 +123,7 @@ importers:
         version: 0.18.5
       '@changesets/cli':
         specifier: 'catalog:'
-        version: 2.31.0(patch_hash=4a9256d14aa536f2fa817752de04be9c6b484b066a07c3f1e1e896db634e9fee)(@types/node@25.9.2)
+        version: 2.31.0(patch_hash=0079e2a50a41e1201b37d0999195c059d29aff8ad5a6bf31426dd4a3c6c55c2d)(@types/node@25.9.2)
       '@playwright/test':
         specifier: 'catalog:'
         version: 1.61.0
@@ -8476,7 +8476,7 @@ snapshots:
     dependencies:
       '@changesets/types': 6.1.0
 
-  '@changesets/cli@2.31.0(patch_hash=4a9256d14aa536f2fa817752de04be9c6b484b066a07c3f1e1e896db634e9fee)(@types/node@25.9.2)':
+  '@changesets/cli@2.31.0(patch_hash=0079e2a50a41e1201b37d0999195c059d29aff8ad5a6bf31426dd4a3c6c55c2d)(@types/node@25.9.2)':
     dependencies:
       '@changesets/apply-release-plan': 7.1.1
       '@changesets/assemble-release-plan': 6.0.10
