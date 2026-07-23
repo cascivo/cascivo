@@ -84,6 +84,41 @@ describe('AreaChart', () => {
     expect(screen.getByRole('application')).toBeTruthy()
   })
 
+  describe('time axis (Date x)', () => {
+    const dated = [
+      {
+        id: 's',
+        label: 'Signups',
+        data: [
+          { day: new Date('2026-07-10T00:00:00Z'), y: 120 },
+          { day: new Date('2026-07-20T00:00:00Z'), y: 180 },
+          { day: new Date('2026-07-30T00:00:00Z'), y: 150 },
+        ],
+      },
+    ]
+    const dx = (d: { day: Date; y: number }) => d.day
+    const dy = (d: { day: Date; y: number }) => d.y
+
+    it('renders a Date x-axis with locale-formatted tick text', () => {
+      const { container } = render(<AreaChart series={dated} x={dx} y={dy} title="Signups" />)
+      const text = container.textContent ?? ''
+      // A time scale formats ticks via toLocaleDateString(); at least one tick label
+      // is a formatted date, not a raw epoch-ms number.
+      const expected = new Date('2026-07-20T00:00:00Z').toLocaleDateString()
+      const anyDateLabel = [...container.querySelectorAll('text')].some((t) =>
+        /\d{1,4}[/.-]\d{1,2}/.test(t.textContent ?? ''),
+      )
+      expect(anyDateLabel || text.includes(expected)).toBe(true)
+      // And no giant epoch-ms integer leaked into a tick.
+      expect(text).not.toMatch(/17\d{11}/)
+    })
+
+    it('renders numeric x unchanged (regression)', () => {
+      const { container } = render(<AreaChart series={series} x={x} y={y} title="Numeric" />)
+      expect(container.querySelector('svg')).toBeTruthy()
+    })
+  })
+
   describe('plain mode', () => {
     it('renders no Axis or GridLines elements', () => {
       const { container } = render(<AreaChart series={series} x={x} y={y} title="Plain" plain />)

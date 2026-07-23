@@ -14,7 +14,13 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Array of data series',
     },
-    { name: 'x', type: '(d: Datum) => number', required: true, description: 'X-value accessor' },
+    {
+      name: 'x',
+      type: '(d: Datum) => number | Date',
+      required: true,
+      description:
+        'X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart).',
+    },
     {
       name: 'y',
       type: '(d: Datum) => number',
@@ -214,6 +220,24 @@ const rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors:
   ]}
   x={d => d.t}
   y={d => d.requests}
+/>`,
+    },
+    {
+      title: 'Time axis (Date x)',
+      description:
+        'Return a Date from x for a time axis — ticks render as dates (e.g. "Jul 10"), no need to encode day-of-month as an integer.',
+      code: `import { AreaChart } from '@cascivo/charts'
+
+const data = [
+  { day: new Date('2026-07-10'), y: 120 },
+  { day: new Date('2026-07-20'), y: 180 },
+  { day: new Date('2026-07-30'), y: 150 },
+]
+<AreaChart
+  title="Daily signups"
+  series={[{ id: 's', label: 'Signups', data }]}
+  x={d => d.day}
+  y={d => d.y}
 />`,
     },
   ],

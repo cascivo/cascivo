@@ -1,3 +1,23 @@
+/**
+ * @cascivo/charts — signal-driven, dependency-free chart components for cascivo.
+ *
+ * Quickstart:
+ * ```tsx
+ * import { LineChart } from '@cascivo/charts'
+ * import '@cascivo/charts/styles.css'   // required
+ * import '@cascivo/themes/dark.css'     // any cascivo theme drives the colors
+ * <LineChart data={data} />             // responsive by default — omit width; height defaults to 300
+ * ```
+ * Charts fill their container (a `ResizeObserver` tracks the slot); an explicit
+ * `width` is clamped to the container so it can't overflow. Colors come from the
+ * active cascivo theme (`@cascivo/themes`); components from `@cascivo/react`.
+ *
+ * Signals: in a React app without the Babel transform, call `useSignals()`
+ * (`@cascivo/core`) first in any component reading a signal during render.
+ *
+ * Docs: https://cascivo.com/llms.txt — offline: `npx -y @cascivo/docs`.
+ */
+
 // ── Composable primitives toolkit ────────────────────────────────────────────
 // Build a custom chart by assembling these with <ChartFrame>: scales + shapes/
 // curves + chrome (axes, grids, glyphs, gradients, text, brush, annotations) +

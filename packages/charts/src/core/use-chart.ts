@@ -6,6 +6,20 @@ export interface ChartSize {
   height: number
 }
 
+/**
+ * Measure a container and track its size in signals. **Every cascivo chart already
+ * uses this internally** — charts are responsive by default and fill their
+ * container, so you do NOT need this to make a chart responsive (just omit the
+ * chart's `width`). Reach for it only to size *another* element to match a chart,
+ * or to build a custom chart on the same measurement primitive.
+ *
+ * Returns `{ ref, width, height }`: spread `ref` onto the element to measure; read
+ * `width.value` / `height.value` (they update on resize via a `ResizeObserver`,
+ * deferred one frame to avoid the "ResizeObserver loop" warning). Under SSR (no
+ * `ResizeObserver`) it falls back to a single `getBoundingClientRect()` read, so
+ * the first paint has a sensible size. `defaultWidth` seeds the signal only until
+ * the first real measurement lands.
+ */
 export function useChartSize(
   defaultWidth = 400,
   defaultHeight = 300,
