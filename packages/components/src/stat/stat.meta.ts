@@ -34,7 +34,7 @@ export const meta: ComponentMeta = {
       type: 'React.ReactNode',
       required: false,
       description:
-        'Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText',
+        'Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText',
     },
   ],
   tokens: [

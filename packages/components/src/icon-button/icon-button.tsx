@@ -7,7 +7,8 @@ import styles from './icon-button.module.css'
 export interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Accessible name for the icon-only control. Required — there is no visible text. */
   label: string
-  /** The icon to render. Alias for `children`. */
+  /** The icon to render. Alias for `children`. Any ReactNode — `@cascivo/icons`
+   * ships ~440 ready-made SVG icon components, or pass your own. */
   icon?: ReactNode
   size?: 'sm' | 'md' | 'lg'
   variant?: 'ghost' | 'outline' | 'filled'

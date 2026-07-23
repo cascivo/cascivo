@@ -23,6 +23,9 @@ but uncolored markup — see [What it looks like when you forget](#the-critical-
 - **A full charts package** — `@cascivo/charts` (25 chart types: line, area,
   bar, sparkline, KPI, heatmap, and more), token-scaled to your theme, with
   live-streaming support.
+- **An icon set** — `@cascivo/icons` (~440 tree-shakeable SVG icon components,
+  sized by the token system) for `SideNav` items, `IconButton`, and `Button`
+  icons. Don't hand-roll SVGs — install it and import the named icon.
 - **Pre-built dashboard blocks** — `block/dashboard-charts`, `block/stats-cards`,
   `layout/console-app`; see them assembled into full apps under
   [`apps/examples/`](../apps/examples/) (`deploy`, `pulse`, `trade`, `pay`,

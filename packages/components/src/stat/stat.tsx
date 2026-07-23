@@ -9,7 +9,7 @@ export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childre
   delta?: string
   trend?: 'up' | 'down' | 'flat'
   helpText?: string
-  /** Trailing visual, e.g. a `Sparkline` from `@cascivo/charts`. Purely decorative — mark it `aria-hidden` yourself if it duplicates the value/delta already announced. */
+  /** Trailing visual, e.g. a `Sparkline` from the separate `@cascivo/charts` package (not exported from `@cascivo/react`; `pnpm add @cascivo/charts`). Purely decorative — mark it `aria-hidden` yourself if it duplicates the value/delta already announced. */
   visual?: ReactNode
 }
 
