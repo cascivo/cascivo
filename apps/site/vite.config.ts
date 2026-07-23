@@ -420,6 +420,39 @@ function renderCategoryBody(
 }
 
 /**
+ * Static SEO body for the `/docs/components` index — every component grouped by
+ * category, mirrors ComponentsIndexPage.tsx. This is the most-guessable
+ * components URL (humans and agents both try it), so it must resolve rather than
+ * 404; individual pages live at `/docs/components/<name>`.
+ */
+function renderComponentsIndexBody(components: RegistryComponentEntry[]): string {
+  const e = escapeHtml
+  const sections = CATEGORY_ORDER.map((category) => {
+    const items = components
+      .filter((c) => c.category === category)
+      .slice()
+      .sort((a, b) => a.meta.name.localeCompare(b.meta.name))
+    if (items.length === 0) return ''
+    const rows = items
+      .map((c) => `<li><a href="/docs/components/${e(c.name)}">${e(c.meta.name)}</a></li>`)
+      .join('')
+    return (
+      `<section><h2><a href="/docs/categories/${e(category)}">${e(CATEGORY_LABELS[category])}</a></h2>` +
+      `<ul>${rows}</ul></section>`
+    )
+  }).join('')
+  return (
+    `<article>` +
+    `<h1>All components</h1>` +
+    `<p>${components.length} components, grouped by category. The machine-readable index is ` +
+    `<a href="/docs/components.md">/docs/components.md</a> and <a href="/llms.txt">/llms.txt</a>.</p>` +
+    sections +
+    `<p><a href="/docs">← Back to docs</a></p>` +
+    `</article>`
+  )
+}
+
+/**
  * Static SEO body for a `/accessibility/<name>` guide page — leads with the
  * intent/a11y narrative (when to use, keyboard, common mistakes), not the
  * props table, so it doesn't read as a near-duplicate of the component
@@ -632,6 +665,30 @@ function prerenderPages(): Plugin {
         const body =
           renderComponentBody(entry, knownSlugs) + renderComponentJsonLd(entry, canonical)
         writeFileSync(resolve(outDir, 'index.html'), injectBody(html, body))
+      }
+
+      // Docs components index (/docs/components) — the most-guessable components
+      // URL. It's a real SPA route (ComponentsIndexPage) but was never
+      // prerendered, so the apex host 404'd on a plain fetch. Emit a real index
+      // body listing every component; the SPA still hydrates over it.
+      {
+        const path = '/docs/components'
+        const canonical = canonicalFor(path)
+        const title = 'All components — cascivo docs'
+        const description = `Browse all ${components.length} cascivo components, grouped by category. Copy-paste the source with the CLI or use the prebuilt @cascivo/react package.`
+        const html = rewriteHead(shell, {
+          title,
+          description,
+          canonical,
+          ogTitle: title,
+          robots: 'index, follow',
+        })
+        const outDir = resolve(dist, 'docs', 'components')
+        mkdirSync(outDir, { recursive: true })
+        writeFileSync(
+          resolve(outDir, 'index.html'),
+          injectBody(html, renderComponentsIndexBody(components)),
+        )
       }
 
       // Docs category pages (/docs/categories/<category>) — one per registry
