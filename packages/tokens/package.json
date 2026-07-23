@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/tokens",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": false,
   "description": "Three-level CSS design tokens (primitive → semantic → component)",
   "keywords": [

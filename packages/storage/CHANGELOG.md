@@ -1,5 +1,19 @@
 # @cascivo/storage
 
+## 0.1.15
+
+### Patch Changes
+
+- 0b6b44e: Force a version bump across every published package to verify the changesets
+  publish patch fix (see the release workflow fix in PR #168): several packages
+  had been stuck re-publishing their already-released version on every release
+  run and failing with a spurious E403, because the "already published" error
+  detection missed pnpm's actual error shape. This changeset gives every
+  package a real new version so the next release run exercises a genuine
+  publish for all of them, not just the ones with substantive changes.
+- Updated dependencies [0b6b44e]
+  - @cascivo/core@0.5.2
+
 ## 0.1.14
 
 ### Patch Changes

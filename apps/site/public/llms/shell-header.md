@@ -81,4 +81,4 @@ navigation, header, shell, console, menu, app-shell
 
 ---
 
-_Generated from registry v0.10.0 on 2026-07-23. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.10.1 on 2026-07-23. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
