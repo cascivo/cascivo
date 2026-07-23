@@ -28,7 +28,6 @@ import { after, before, describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 
 const REPO_ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..')
-const DOCS_PKG = join(REPO_ROOT, 'packages', 'docs')
 
 let work: string
 let extracted: string // <tmp>/package
