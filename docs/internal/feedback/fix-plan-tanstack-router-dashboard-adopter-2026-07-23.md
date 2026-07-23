@@ -1,16 +1,20 @@
 # Fix plan — TanStack Router dashboard adopter report (2026-07-23, published 0.10.1 packages)
 
-**Status: implemented on `claude/ui-library-report-analysis-3j9eht` (WS-J pending); not yet
-published.** Per-workstream: **WS-A** ✅ (complete `styles.css`, `@cascivo/themes` dependency,
+**Status: implemented on `claude/ui-library-report-analysis-3j9eht`; not yet published.**
+Per-workstream: **WS-A** ✅ (complete `styles.css`, `@cascivo/themes` dependency,
 `ThemeProvider` dev warning) · **WS-B** ✅ (`dist/index.d.ts` quickstart banner + package
 descriptions + guard) · **WS-C** ✅ (sizing JSDoc + overflow clamp) · **WS-D** ✅ (AreaChart
 `Date` x-axis) · **WS-E** ✅ (`useTheme` returns a string + `themeSignal()`) · **WS-F** ✅
 (single `SpaceStep` in `@cascivo/core`, `$N`-alias guard) · **WS-G** ✅ / **WS-H** ✅ (grep-proof
 Sparkline attribution + icons discoverability) · **WS-K** ✅ (this status pass + the
 `docs/internal/feedback/README.md` rule) · **WS-L** ✅ (`@cascivo/docs` package + CLI + MCP
-`get_guide` + reference guard) · **WS-J** ⏳ (cold-adopter tarball canary — not yet wired).
-Remaining to reach the definition of done: publish the release train, then WS-J green against
-the packed artifacts. Spec for fixing every item in the sixth cold-adopter
+`get_guide` + reference guard) · **WS-J** ◑ (offline-docs leg done — `pnpm cold-adopter:check`
+packs the `@cascivo/docs` tarball and verifies it is self-sufficient offline incl. the
+`versions.json` freshness invariant; the browser leg — styled app / dev warning / chart clamp
+via a full tarball-install + Playwright app — remains as follow-up, its assertions currently
+covered by per-package unit tests).
+Remaining to reach the definition of done: publish the release train, then run the canaries
+against the published artifacts. Spec for fixing every item in the sixth cold-adopter
 report (`docs/internal/feedback/feedback-tanstack-router-dashboard-adopter-2026-07-23.md` —
 a Vercel-style dashboard on TanStack Router + TanStack Query / React 19 / Vite 7, CSR,
 against published `@cascivo/react@0.10.1`, `@cascivo/charts@0.4.1`,

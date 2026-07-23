@@ -41,6 +41,7 @@
     "docs-routes:check": "node --experimental-strip-types --test scripts/checks/docs-routes.test.ts",
     "llms:check": "node --experimental-strip-types --test scripts/checks/llms-channels.test.ts",
     "ssr:check": "node --experimental-strip-types --test scripts/checks/ssr-import.test.ts",
+    "cold-adopter:check": "node --experimental-strip-types --test scripts/checks/cold-adopter.test.ts",
     "brand:check": "node scripts/brand-guard.mjs",
     "demos:storage:check": "node --experimental-strip-types --test scripts/checks/demo-storage-keys.test.ts",
     "deps:check": "node scripts/registry/deps-check.ts",
