@@ -48,4 +48,13 @@ if (!existsSync(contextDir)) {
 }
 cpSync(contextDir, join(DIST, 'context'), { recursive: true })
 
-console.log(`Bundled ${DATA_FILES.length} data files + context/ into dist/`)
+// Concept guides, so the offline `get_guide` MCP tool works with no repo checkout
+// and no network (the loader probes dist/guides among its candidates).
+const guidesDir = join(REPO_ROOT, 'apps', 'site', 'public', 'docs')
+if (!existsSync(guidesDir)) {
+  console.error(`postbuild: missing ${guidesDir} — run \`pnpm regen\` first`)
+  process.exit(1)
+}
+cpSync(guidesDir, join(DIST, 'guides'), { recursive: true })
+
+console.log(`Bundled ${DATA_FILES.length} data files + context/ + guides/ into dist/`)

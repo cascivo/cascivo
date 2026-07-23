@@ -2,7 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { CSSProperties, HTMLAttributes } from 'react'
 import styles from './grid.module.css'
-import type { SpaceStep } from '../space'
+import type { SpaceStep } from '@cascivo/core'
 
 /** A scalar value, or a per-breakpoint object keyed by the canonical scale. */
 export type Responsive<T> = T | Partial<Record<'base' | 'sm' | 'md' | 'lg' | 'xl', T>>

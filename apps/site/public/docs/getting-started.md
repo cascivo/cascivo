@@ -18,6 +18,11 @@ Either way, one piece of wiring is **not optional**: importing the themes CSS
 and setting `data-theme`. Skip it and components render as correctly-structured
 but uncolored markup — see [What it looks like when you forget](#the-critical-wiring-themes--data-theme).
 
+> **Reading this offline, or can't reach the docs site?** The whole reference is
+> also an npm package: `npx -y @cascivo/docs` (index), `npx @cascivo/docs <component>`
+> (one reference), `npx @cascivo/docs guide getting-started`. No website needed —
+> it comes through the same registry that installs the packages.
+
 **This is not layout-only.** Alongside the CSS-native layout system, cascivo ships:
 
 - **Interactive components with the behavior wired in** — `Dropdown`, `Menu`,
@@ -29,6 +34,9 @@ but uncolored markup — see [What it looks like when you forget](#the-critical-
 - **A full charts package** — `@cascivo/charts` (25 chart types: line, area,
   bar, sparkline, KPI, heatmap, and more), token-scaled to your theme, with
   live-streaming support.
+- **An icon set** — `@cascivo/icons` (~440 tree-shakeable SVG icon components,
+  sized by the token system) for `SideNav` items, `IconButton`, and `Button`
+  icons. Don't hand-roll SVGs — install it and import the named icon.
 - **Pre-built dashboard blocks** — `block/dashboard-charts`, `block/stats-cards`,
   `layout/console-app`; see them assembled into full apps under
   [`apps/examples/`](https://github.com/cascivo/cascivo/tree/main/apps/examples) (`deploy`, `pulse`, `trade`, `pay`,

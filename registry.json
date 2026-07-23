@@ -7215,7 +7215,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
       ],
       "fileHashes": {
-        "icon-button.tsx": "sha256-5aca6e952b730725e6cb5ace11b12d8bed2d5b551e578890c9a95b7c92c569b4",
+        "icon-button.tsx": "sha256-790f2e5de3043f8fd951dde35e37f35cb96a375003e444724c275b3ddccf8c8a",
         "icon-button.module.css": "sha256-9c1b9c3fde386758f4969adc4b5231e8d6e3d276813b443ba30838cec7b049ff"
       },
       "dependencies": ["@cascivo/core"],
@@ -8660,7 +8660,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.module.css"
       ],
       "fileHashes": {
-        "list.tsx": "sha256-270a516783300376c3b9855ccdfa7e3f457a422c3d9c66a21ebdcdcba3b57f76",
+        "list.tsx": "sha256-7a9f2511538bc94107cf50db5cfcb020713c7deab4f0ff79df6459147ec0e7aa",
         "list.module.css": "sha256-04cff38d1581297fbc1bf783c65c2f3525bd2ad12986a45fd173004173186fae"
       },
       "dependencies": ["@cascivo/core"],
@@ -13808,7 +13808,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-c0ab584be79262788030f0a697bdbda8698abf972a487a0a4b698a4d090d634c",
+        "side-nav.tsx": "sha256-c87536b652f0d910b48c12f4c0099d7de96ebef64419c934c17d81a31e76d6f7",
         "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -14615,7 +14615,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
       ],
       "fileHashes": {
-        "stat.tsx": "sha256-950f60d97c17efc530541b31ef042e53dc12ce09f4b7fdd8750ee47048472ccc",
+        "stat.tsx": "sha256-e236328c43034b9ea20f4883b89aad1071a49547c4fa4a7b623b19237f71b39b",
         "stat.module.css": "sha256-c6a041acd7512dab271a1fc347f40baf0446411a8dc895ba5c7753da76f87e28"
       },
       "dependencies": ["@cascivo/core"],
@@ -14666,7 +14666,7 @@
             "name": "visual",
             "type": "React.ReactNode",
             "required": false,
-            "description": "Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText"
+            "description": "Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText"
           }
         ],
         "tokens": [
@@ -15947,7 +15947,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.module.css"
       ],
       "fileHashes": {
-        "text.tsx": "sha256-cacca5d28521a1847e8753deb5174ce64953601e200ba54396b6b91eb3d140a3",
+        "text.tsx": "sha256-be6d034f5bef4ee41ace3d0dca0b7d20afb5dc2435eb277c93d9a96ff8a9be30",
         "text.module.css": "sha256-5d7d11e88320100b61c66160ec1bb43006a1c5e995280e47aa4a73dd8788c24e"
       },
       "dependencies": ["@cascivo/core"],
@@ -18171,7 +18171,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.module.css"
       ],
       "fileHashes": {
-        "auto-grid.tsx": "sha256-c233f495fb6cffe9b76701ea9fdb98caef55a303ca0dc50a3be96731b58668e8",
+        "auto-grid.tsx": "sha256-75ec64f4e6a3d012f5f6d0873e5ccc91413c508d19b8e1bd57edc211bd148bdb",
         "auto-grid.module.css": "sha256-c4ddabc261c6f0ae4292d463dd92647c5bb91a67bc137bf56cfcfd47e9603082"
       },
       "dependencies": ["@cascivo/core"],
@@ -18326,7 +18326,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.module.css"
       ],
       "fileHashes": {
-        "columns.tsx": "sha256-234bed96294d79bbab600fca4b0ec020ec0a73fd38f9c17e7a4e5bc4f998d9b6",
+        "columns.tsx": "sha256-91e582d7e3a4a32786e26b79a31379e15c6f68ad511b793e21795421c36b182d",
         "columns.module.css": "sha256-b13c6d5993a498e14b560c09bcc02cb2139deadf3ef47ff44bb83f0cfcef2ad1"
       },
       "dependencies": ["@cascivo/core"],
@@ -18496,7 +18496,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
       ],
       "fileHashes": {
-        "flex.tsx": "sha256-c2a1793f804a9d21ed4af2ad3f936f60135c051667202b9a3265b1bd900e9797",
+        "flex.tsx": "sha256-aad7aa51fe63464ead604a0c9caf37ad9392a487a3562de8d9445e79b652bb09",
         "flex.module.css": "sha256-0dc986fb37d2cb6a657d40f879f26ee28a1795f1b626e4fd32052528994ea090"
       },
       "dependencies": ["@cascivo/core"],
@@ -18613,7 +18613,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "fileHashes": {
-        "grid.tsx": "sha256-ef2da4076bce7d200cfc631988a286cad2d49a43671f18ff10b5c174bc416c3d",
+        "grid.tsx": "sha256-16ba50403ac8f0ec7bbf13481fd50cc3fab23d0415a18e45c76ac63001f276f5",
         "grid.module.css": "sha256-5d51fec5a0b0f52866e5d78f515261f98384f071cbf3c0eaf2a683fa08f196a8"
       },
       "dependencies": ["@cascivo/core"],
@@ -18718,7 +18718,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.module.css"
       ],
       "fileHashes": {
-        "masonry.tsx": "sha256-b6f98c809d7d36fbab83ddd85681de04fb4ebdc3eb01d08e89362555664f795d",
+        "masonry.tsx": "sha256-3de5ee806473ad739627ac36160b681fa547363b7e687640ee65abf5b8cc3dec",
         "masonry.module.css": "sha256-6d4dff2b18d3b3db045e24372c7cfa352a4fecb930bd9f94a2364c025d775793"
       },
       "dependencies": ["@cascivo/core"],
@@ -18910,7 +18910,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.module.css"
       ],
       "fileHashes": {
-        "section.tsx": "sha256-b8aac4d59ff9a88a3a5487d692a81ffb55e4f810948c038e0fd9c35ec0a02dc1",
+        "section.tsx": "sha256-c7792348ae571f4512ad49e1d130ddf98b8f120eaddea320c9beb09d460581d3",
         "section.module.css": "sha256-94d60eef5a1a659f3455da858f1dd311a1524c06565cd718c65e1f616b5b2001"
       },
       "dependencies": ["@cascivo/core"],
@@ -19076,7 +19076,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
       ],
       "fileHashes": {
-        "spacer.tsx": "sha256-1acb47752bd68b8be135e8626b2216d0bbe066865fc857d281a940f278f4ef12",
+        "spacer.tsx": "sha256-7b176387ceb5c6afc365dcce07eb025c845907739f96794bf024d07848cdcf71",
         "spacer.module.css": "sha256-b958a185559596febc9b8f7be84fea0da37cba494e8e096eb24cefce645836ca"
       },
       "dependencies": ["@cascivo/core"],
@@ -19997,9 +19997,9 @@
           },
           {
             "name": "x",
-            "type": "(d: Datum) => number",
+            "type": "(d: Datum) => number | Date",
             "required": true,
-            "description": "X-value accessor"
+            "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart)."
           },
           {
             "name": "y",
@@ -20191,6 +20191,11 @@
             "title": "Multiple fields from one row (per-series y)",
             "description": "The chart-level x/y apply to every series. To plot two fields from the same rows, give each series its own y — no need to reshape the data into separate {x,y} arrays.",
             "code": "import { AreaChart } from '@cascivo/charts'\n\nconst rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors: 9 }]\n<AreaChart\n  title=\"Traffic\"\n  series={[\n    { id: 'req', label: 'Requests', data: rows, y: d => d.requests },\n    { id: 'err', label: 'Errors', data: rows, y: d => d.errors },\n  ]}\n  x={d => d.t}\n  y={d => d.requests}\n/>"
+          },
+          {
+            "title": "Time axis (Date x)",
+            "description": "Return a Date from x for a time axis — ticks render as dates (e.g. \"Jul 10\"), no need to encode day-of-month as an integer.",
+            "code": "import { AreaChart } from '@cascivo/charts'\n\nconst data = [\n  { day: new Date('2026-07-10'), y: 120 },\n  { day: new Date('2026-07-20'), y: 180 },\n  { day: new Date('2026-07-30'), y: 150 },\n]\n<AreaChart\n  title=\"Daily signups\"\n  series={[{ id: 's', label: 'Signups', data }]}\n  x={d => d.day}\n  y={d => d.y}\n/>"
           }
         ],
         "dependencies": ["@cascivo/charts"],
@@ -24597,7 +24602,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
       ],
       "fileHashes": {
-        "media-masonry.tsx": "sha256-9ee517f30048b48c7e3ea67f1039ca8ab0dfdb82811413443d844be6790f4d21",
+        "media-masonry.tsx": "sha256-67b125fcf466330597f10c8040989ed753ed9409dc9edabc470a7a8f809bf13b",
         "media-masonry.module.css": "sha256-002c56f1e7a23af38eb79d397b5298b51575535677282ecc826f8b73f9adf18c"
       },
       "dependencies": ["@cascivo/core"],

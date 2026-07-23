@@ -2,7 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { CSSProperties, HTMLAttributes } from 'react'
 import styles from './auto-grid.module.css'
-import type { SpaceStep } from '../space'
+import type { SpaceStep } from '@cascivo/core'
 
 export interface AutoGridProps extends HTMLAttributes<HTMLDivElement> {
   /** Minimum track size before items wrap to fewer columns. */

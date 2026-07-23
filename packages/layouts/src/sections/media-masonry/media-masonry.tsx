@@ -4,7 +4,7 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import { Masonry } from '../../masonry/masonry'
 import { Section } from '../../section/section'
 import styles from './media-masonry.module.css'
-import type { SpaceStep } from '../../space'
+import type { SpaceStep } from '@cascivo/core'
 
 export interface MediaMasonryProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   title?: ReactNode

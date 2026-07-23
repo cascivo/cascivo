@@ -2,7 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { CSSProperties, HTMLAttributes } from 'react'
 import styles from './masonry.module.css'
-import type { SpaceStep } from '../space'
+import type { SpaceStep } from '@cascivo/core'
 
 export interface MasonryProps extends HTMLAttributes<HTMLDivElement> {
   cols?: number

@@ -24,6 +24,7 @@ import { loadIconCatalog, searchIcons } from './icons.js'
 import { loadVariantMatrix } from './variants.js'
 import { validateComponentSource } from './validate-component.js'
 import { loadContext, loadComponentMarkdown } from './context.js'
+import { listGuides, loadGuide } from './guides.js'
 import { selectComponent } from './select.js'
 import { loadCatalog, listTemplates, getTemplate } from './templates.js'
 
@@ -615,6 +616,37 @@ export function Diagram() {
         },
       )
       return json(result)
+    },
+  )
+
+  server.registerTool(
+    'list_guides',
+    {
+      title: 'List guides',
+      description:
+        'List the cascivo concept guides available to get_guide (getting-started, theming, tokens, troubleshooting, …).',
+      inputSchema: {},
+    },
+    () => json({ guides: listGuides() }),
+  )
+
+  server.registerTool(
+    'get_guide',
+    {
+      title: 'Get guide',
+      description:
+        'Get the full markdown of one cascivo concept guide by slug (e.g. "getting-started", "theming", "troubleshooting"). Use list_guides for the slugs.',
+      inputSchema: {
+        slug: z.string().describe('Guide slug, e.g. "theming"'),
+      },
+    },
+    async ({ slug }) => {
+      const md = await loadGuide(slug, fetchFn)
+      if (!md) {
+        const available = listGuides().join(', ')
+        return error(`Guide "${slug}" not found.${available ? ` Available: ${available}` : ''}`)
+      }
+      return text(md)
     },
   )
 

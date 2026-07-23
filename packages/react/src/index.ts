@@ -195,10 +195,13 @@ export * from '../../layouts/src/columns/columns' // Columns
 export * from '../../layouts/src/center/center' // Center
 export * from '../../layouts/src/spacer/spacer' // Spacer
 export * from '../../layouts/src/auto-grid/auto-grid' // AutoGrid
-// The spacing-scale type shared by every layout primitive's `gap`/spacing props.
-// Exported under its public name so compiler errors read `SpaceStep`, not the dts
-// bundler's deduped `SpaceStep$N`.
-export type { SpaceStep } from '../../layouts/src/space'
+// The spacing-scale type shared by every layout primitive's `gap`/spacing props
+// lives in @cascivo/core (a direct dependency of this package). Importing it there
+// — `import type { SpaceStep } from '@cascivo/core'` — keeps it a single external
+// binding, so the layout Props reference a clean `SpaceStep` in the published
+// types (never the dts bundler's deduped `SpaceStep$N`) and `gap={7}` errors name
+// it plainly. Not re-exported here: a separate re-export makes the bundler mint a
+// second `SpaceStep$1` binding for the same external type.
 // Reusable, SSR-safe theme runtime (ThemeProvider / useTheme / setTheme /
 // themePreloadScript / themeSignal). Packages the data-theme wiring apps
 // otherwise hand-roll.

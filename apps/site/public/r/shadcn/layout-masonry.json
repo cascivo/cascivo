@@ -6,7 +6,7 @@
     {
       "path": "layout-masonry/masonry.tsx",
       "type": "registry:block",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes } from 'react'\nimport styles from './masonry.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface MasonryProps extends HTMLAttributes<HTMLDivElement> {\n  cols?: number\n  gap?: SpaceStep\n  className?: string | undefined\n}\n\nexport function Masonry({ cols = 3, gap = 4, className, style, ...props }: MasonryProps) {\n  return (\n    <div\n      className={cn(styles['masonry'], className)}\n      style={{\n        ['--_cols' as string]: String(cols),\n        ['--_gap' as string]: `var(--cascivo-space-${gap})`,\n        ...(style as CSSProperties | undefined),\n      }}\n      {...props}\n    />\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes } from 'react'\nimport styles from './masonry.module.css'\nimport type { SpaceStep } from '@cascivo/core'\n\nexport interface MasonryProps extends HTMLAttributes<HTMLDivElement> {\n  cols?: number\n  gap?: SpaceStep\n  className?: string | undefined\n}\n\nexport function Masonry({ cols = 3, gap = 4, className, style, ...props }: MasonryProps) {\n  return (\n    <div\n      className={cn(styles['masonry'], className)}\n      style={{\n        ['--_cols' as string]: String(cols),\n        ['--_gap' as string]: `var(--cascivo-space-${gap})`,\n        ...(style as CSSProperties | undefined),\n      }}\n      {...props}\n    />\n  )\n}\n"
     },
     {
       "path": "layout-masonry/masonry.module.css",

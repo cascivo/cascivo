@@ -468,7 +468,13 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('## Start here')
   lines.push('')
   lines.push(
-    `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt`,
+    "- **Can't reach this site? The whole docs surface is also an npm package — no web access needed:** " +
+      '`npx -y @cascivo/docs` prints this index; `npx @cascivo/docs <component>` prints one reference; ' +
+      '`npx @cascivo/docs --full` prints the entire library. It reaches you through the same npm registry ' +
+      'that installed your packages — the channel that works when npmjs.com and cascivo.com are blocked or offline.',
+  )
+  lines.push(
+    `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt (offline: \`npx @cascivo/docs --full\`)`,
   )
   lines.push(
     `- Getting started, fetchable as plain markdown (install steps, no browser needed): ${SITE}/docs/getting-started.md`,

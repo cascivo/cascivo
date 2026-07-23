@@ -34,7 +34,7 @@
     "claims:check": "node --experimental-strip-types --test scripts/checks/claims.test.ts scripts/checks/bench-stats.test.ts scripts/checks/md-tables.test.ts",
     "release:check": "node --experimental-strip-types --test scripts/checks/release-filter.test.ts",
     "pack:check": "node scripts/checks/pack-lint.mjs --all",
-    "meta:check": "node --experimental-strip-types --test scripts/checks/meta-coverage.test.ts scripts/checks/manifest-completeness.test.ts scripts/checks/primitive-docs.test.ts scripts/checks/props-parity.test.ts scripts/checks/pkg-exports.test.ts scripts/checks/peer-floors.test.ts scripts/checks/css-imports.test.ts scripts/checks/docs-imports.test.ts scripts/checks/docs-links.test.ts",
+    "meta:check": "node --experimental-strip-types --test scripts/checks/meta-coverage.test.ts scripts/checks/manifest-completeness.test.ts scripts/checks/primitive-docs.test.ts scripts/checks/props-parity.test.ts scripts/checks/pkg-exports.test.ts scripts/checks/peer-floors.test.ts scripts/checks/css-imports.test.ts scripts/checks/docs-imports.test.ts scripts/checks/docs-links.test.ts scripts/checks/docs-package-refs.test.ts",
     "primitive-docs:check": "node --experimental-strip-types --test scripts/checks/primitive-docs.test.ts",
     "lint:host-strict": "node scripts/checks/host-lint/run.mjs",
     "i18n:check": "node --experimental-strip-types --test scripts/checks/i18n-keys.test.ts",

@@ -32,14 +32,14 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ## Props
 
-| Name       | Type                       | Required | Default | Description                                                                                                |
-| ---------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------- |
-| `label`    | `string`                   | Yes      | —       | What the metric measures                                                                                   |
-| `value`    | `string \| number`         | Yes      | —       | The metric value                                                                                           |
-| `delta`    | `string`                   | No       | —       | Change indicator rendered next to the trend arrow                                                          |
-| `trend`    | `'up' \| 'down' \| 'flat'` | No       | flat    | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                               |
-| `helpText` | `string`                   | No       | —       | Fine print below the value (methodology, time range)                                                       |
-| `visual`   | `React.ReactNode`          | No       | —       | Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText |
+| Name       | Type                       | Required | Default | Description                                                                                                                                                        |
+| ---------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `label`    | `string`                   | Yes      | —       | What the metric measures                                                                                                                                           |
+| `value`    | `string \| number`         | Yes      | —       | The metric value                                                                                                                                                   |
+| `delta`    | `string`                   | No       | —       | Change indicator rendered next to the trend arrow                                                                                                                  |
+| `trend`    | `'up' \| 'down' \| 'flat'` | No       | flat    | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                                                                                       |
+| `helpText` | `string`                   | No       | —       | Fine print below the value (methodology, time range)                                                                                                               |
+| `visual`   | `React.ReactNode`          | No       | —       | Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText |
 
 ## Tokens
 

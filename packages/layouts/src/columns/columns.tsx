@@ -2,7 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './columns.module.css'
-import type { SpaceStep } from '../space'
+import type { SpaceStep } from '@cascivo/core'
 
 export interface ColumnsProps extends HTMLAttributes<HTMLDivElement> {
   count?: 2 | 3 | 4

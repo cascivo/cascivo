@@ -2,7 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './flex.module.css'
-import type { SpaceStep } from '../space'
+import type { SpaceStep } from '@cascivo/core'
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: 'vertical' | 'horizontal'

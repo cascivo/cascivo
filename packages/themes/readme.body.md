@@ -1,5 +1,7 @@
 First-party themes for cascivo — {{count.themes}} of them, applied with a single `data-theme` attribute. Themes override the **semantic token layer only**, leaving primitive and component tokens unchanged, so every component (and your own token-consuming CSS) restyles for free.
 
+> **Docs offline?** The full cascivo reference (including the theming guide) ships as an npm package — `npx -y @cascivo/docs guide theming`, no website needed.
+
 ## The themes
 
 `light` · `dark` · `warm` · `flat` · `minimal` · `midnight` · `pastel` · `brutalist` · `corporate` · `terminal` · `cyberpunk` · `arcade`

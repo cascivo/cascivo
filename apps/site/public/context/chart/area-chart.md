@@ -27,7 +27,7 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | Name          | Type                                                                                                                    | Required | Default  | Description                                                                                                                                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `series`      | `AreaChartSeries<Datum>[]`                                                                                              | Yes      | —        | Array of data series                                                                                                                                                                                      |
-| `x`           | `(d: Datum) => number`                                                                                                  | Yes      | —        | X-value accessor                                                                                                                                                                                          |
+| `x`           | `(d: Datum) => number \| Date`                                                                                          | Yes      | —        | X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart).                                                                            |
 | `y`           | `(d: Datum) => number`                                                                                                  | Yes      | —        | Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row. |
 | `title`       | `string`                                                                                                                | Yes      | —        | Title text for the component.                                                                                                                                                                             |
 | `description` | `string`                                                                                                                | No       | —        | Supporting description text.                                                                                                                                                                              |
@@ -92,6 +92,26 @@ const rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors:
   ]}
   x={d => d.t}
   y={d => d.requests}
+/>
+```
+
+### Time axis (Date x)
+
+Return a Date from x for a time axis — ticks render as dates (e.g. "Jul 10"), no need to encode day-of-month as an integer.
+
+```jsx
+import { AreaChart } from '@cascivo/charts'
+
+const data = [
+  { day: new Date('2026-07-10'), y: 120 },
+  { day: new Date('2026-07-20'), y: 180 },
+  { day: new Date('2026-07-30'), y: 150 },
+]
+<AreaChart
+  title="Daily signups"
+  series={[{ id: 's', label: 'Signups', data }]}
+  x={d => d.day}
+  y={d => d.y}
 />
 ```
 

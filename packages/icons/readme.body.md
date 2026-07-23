@@ -2,6 +2,8 @@ A set of **~440** React SVG icon components that inherit the cascivo token syste
 
 Browse and search the full catalog — with click-to-copy imports and live size/color/theme previews — in the **[/icons gallery](https://cascivo.com/icons)**.
 
+> **Docs offline?** The full cascivo reference ships as an npm package — `npx -y @cascivo/docs`, no website needed.
+
 ## Usage
 
 ```tsx
