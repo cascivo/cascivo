@@ -29,12 +29,16 @@ grayscale app and nothing tells you why."** The docs for it are, on paper, excel
 403 to their fetches, cascivo.com wasn't crawlable page-by-page, and they learned the
 entire API by `npm pack`-ing the tarballs and reading `dist/index.d.ts`. For this adopter
 class — AI agents and offline/firewalled humans — the effective documentation surface is
-exactly four channels:
+exactly five channels:
 
 1. **`package.json` metadata** (dependencies, description — travels with `pnpm add`),
 2. **the shipped `dist/index.d.ts` and its JSDoc**,
 3. **runtime behavior** (warnings, defaults),
-4. **install-time artifacts** (what lands in `node_modules`).
+4. **install-time artifacts** (what lands in `node_modules`),
+5. **the npm registry itself** — the same adopter whose fetches to `npmjs.com` (the
+   website) 403'd successfully ran `npm pack` against the registry API. Tarball
+   downloads and `npx` are the one web-adjacent channel empirically proven to work for
+   this adopter class. WS-L ships the entire docs surface through it.
 
 Every previous fix for the unstyled-app failure went to channels 5+ — README, guides,
 llms.txt, the docs site — and was then triaged "not reproducible, docs exist" when the
@@ -62,7 +66,7 @@ are the redundancy, not the fix.
 | 5 | `useTheme()` returns `[Signal<string>, setter]`; reading `.value` doesn't subscribe without the transform; worked around with `useState` | **Mechanism not reproducible (hook self-subscribes) — but third adopter failure on the same shape ⇒ the API shape is the defect** | `useTheme` calls `useSignals()` as its first statement with a tuple-shaped JSDoc example (`packages/react/src/theme.tsx:70-73`), present since first commit (`2aba8dc4`) and covered by a reactivity test. Prior triages: dashboard plan "REFUTED as stated", 07-22 plan WS-D docs-only, `useThemeValue` convenience hook explicitly "default-skip". Three adopters have now shipped `useState` mirrors — the exact anti-pattern the library bans | **WS-E (P1)** |
 | 6 | `gap="4"` fails (numeric union — fine) but the error names `SpaceStep$3`; `$N`-suffixed aliases (`SpaceStep$3/$4`, `Tag$1`) leak throughout the bundled `.d.ts` | **Confirmed — 8 duplicate private `SpaceStep` declarations force the dts bundler to rename; the public type is not exported** | `type SpaceStep = 1\|2\|3\|4\|5\|6\|8\|10\|12` declared privately in 8 files (`packages/layouts/src/{auto-grid,grid,flex,columns,masonry,spacer,section,sections/media-masonry}/…:6-8`); `flatten-types.mjs` bundles them into one `dist/index.d.ts` where the bundler dedupes by `$N` suffix; the dashboard plan noted the duplication but never proposed deduplicating | **WS-F (P1)** |
 | 7 | `Sparkline` appears in `Stat.visual` JSDoc but isn't exported from `@cascivo/react` — grep false positive | **Papercut confirmed; attribution is already correct** | `stat.tsx:12` already says "a `Sparkline` from `@cascivo/charts`" — correct, but a name-grep over `index.d.ts` can't see the attribution. Direction of record (07-18 plan) keeps charts a separate package; no re-export planned | **WS-G (P2)** |
-| 8 | No hosted API reference reachable: npm 403, cascivo.com not crawlable; learned everything from `dist/index.d.ts` | **Site-side fixed and shipping (props tables, llms surface, machine 404s, prerendered index); the adopter-side lesson is channels 1–4** | Props tables (`apps/site/src/pages/components/PropsTable.tsx`), `/docs/components` prerendered (#170), machine-readable 404s (#161), robots.txt AI-crawler allowlist all exist. npm's 403 to non-browser fetchers is outside our control (already noted in audit remediation WS-A). Residual ops item: `docs.cascivo.com` binding still deferred (`docs/internal/OPS-HOSTS.md`) | **WS-B, WS-J** |
+| 8 | No hosted API reference reachable: npm 403, cascivo.com not crawlable; learned everything from `dist/index.d.ts` | **Site-side fixed and shipping (props tables, llms surface, machine 404s, prerendered index); the adopter-side fix is channels 1–5 — including shipping the docs themselves through the registry** | Props tables (`apps/site/src/pages/components/PropsTable.tsx`), `/docs/components` prerendered (#170), machine-readable 404s (#161), robots.txt AI-crawler allowlist all exist. npm's 403 to non-browser fetchers is outside our control (already noted in audit remediation WS-A) — but the registry API is not 403'd, and `@cascivo/mcp` already half-proves the model by bundling registry+context into its dist for offline use (`packages/mcp/scripts/postbuild.mjs:27-49`) while omitting llms/guides and silently falling back to `fetch('https://cascivo.com/…')` (`packages/mcp/src/context.ts:56-92`). Residual ops item: `docs.cascivo.com` binding still deferred (`docs/internal/OPS-HOSTS.md`) | **WS-L, WS-B, WS-J** |
 | 9 | "No icon set ships" — hand-rolled SVGs | **Wrong as stated (`@cascivo/icons`, ~440 components, exists) — which proves the discoverability failure** | `packages/icons` ships ~440 SVG components + CSS glyphs; it is documented in llms.txt and the site gallery but appears **nowhere** in `packages/react/README.md`, GETTING-STARTED's prebuilt path, or any JSDoc an adopter would meet (`SideNav`/`IconButton` icon props don't mention it) | **WS-H (P2)** |
 
 Cross-cutting: the report *praises* five things earlier reports complained about (SSR-free
@@ -147,7 +151,8 @@ Implementation contract:
   > it — every --cascivo-color-* token is unresolved, so components render grayscale.
   > Import '@cascivo/themes/all.css' once in your entry (or '@cascivo/react/styles.css',
   > which bundles the light and dark themes). Custom theme? Ensure its stylesheet is
-  > loaded and defines [data-theme="dark"]. Docs: https://cascivo.com/docs/theming`
+  > loaded and defines [data-theme="dark"]. Docs: https://cascivo.com/docs/theming —
+  > offline: npx -y @cascivo/docs guide theming`
 
 - Also fires for the custom-theme-name typo case (`data-theme="drak"`) for free — the
   probe is per-element, post-attribute.
@@ -198,12 +203,16 @@ that survives type-flattening:
  *
  * Reactivity: components are signal-driven. In an app without the signals Babel
  * transform, any component reading `signal.value` in render must call `useSignals()`
- * (re-exported from @cascivo/core) first. Full docs: https://cascivo.com/llms.txt
+ * (re-exported from @cascivo/core) first.
+ *
+ * Docs: https://cascivo.com/llms.txt — or fully offline, no website needed:
+ *   npx -y @cascivo/docs            (index; `npx @cascivo/docs <component>` for one doc)
  */
 ```
 
 (Exact wording to taste; the load-bearing facts are: themes import line, styles.css
-includes themes (post-WS-A), charts/icons exist, useSignals rule, one canonical URL.)
+includes themes (post-WS-A), charts/icons exist, useSignals rule, the `@cascivo/docs`
+offline line (WS-L), one canonical URL.)
 
 Mirror the pattern in `packages/charts/src/index.ts` (sizing default from WS-C, the
 `styles.css` import, themes for palette) and `packages/icons`' entry.
@@ -236,6 +245,168 @@ post-processes the text); either mechanism is fine, the guard is what matters.
 - Fresh `npm pack` tarball: `dist/index.d.ts` opens with the quickstart; guard enforces it.
 - `pnpm meta:check` green (docs-imports/doc-links unaffected); changesets: react + charts
   + icons + themes **patch**.
+
+---
+
+## WS-L (P0) — `@cascivo/docs`: the full docs surface as an npm package (the unreachability-proof channel)
+
+The recurring failure across six reports is not that docs don't exist — it's that no
+web-hosted channel reliably reaches this adopter class (npm website 403s non-browser
+fetchers; cascivo.com has been stale, uncrawlable, or blocked at various times; corporate
+proxies exist). The npm **registry** is the one distribution channel every adopter
+provably has — they installed the packages through it. So ship the docs through it too:
+a `@cascivo/docs` package containing the entire generated docs surface, consumable
+**without installing** via `npx`, and referenced from every other channel so it cannot be
+missed.
+
+`@cascivo/mcp` already validates the model at half-scale: its postbuild bundles
+`registry.json` + catalogs + `context.json` + `context/*.md` into its own dist precisely
+because "`npx -y @cascivo/mcp` runs with no repo checkout and possibly no network"
+(`packages/mcp/scripts/postbuild.mjs:1-10`). But it omits `llms.txt`/`llms-full.txt`/
+per-component `llms/*.md`/the guides, falls back to `fetch('https://cascivo.com/…')`
+for anything missing (`packages/mcp/src/context.ts:64-68`), and nothing anywhere
+advertises the offline capability. WS-L generalizes it into one canonical package and
+makes the MCP server a consumer of it.
+
+### L1. Package layout
+
+New `packages/docs` → published as `@cascivo/docs`:
+
+```
+packages/docs/
+├── package.json
+├── readme.body.md → README.md   (same generation pattern as react)
+├── bin/cascivo-docs.mjs         (the zero-install CLI, see L2)
+└── content/                     (build output — everything below is generated, never hand-edited)
+    ├── llms.txt                 ├── llms-full.txt
+    ├── llms/<ns>/<name>.md      ├── context.json + context/<name>.md
+    ├── registry.json            ├── tokens.catalog.json / icons.catalog.json / tokens.variants.json
+    ├── breaking-changes.json    ├── marketplace.json
+    ├── guides/<slug>.md         (mirror of the adopter-facing docs/*.md set:
+    │                             GETTING-STARTED, THEMING, TOKENS, TROUBLESHOOTING,
+    │                             USING-WITH-*, MIGRATING-FROM-SHADCN, COMPATIBILITY,
+    │                             HEADLESS, AI-RULES, UPGRADING — same list the site's
+    │                             /docs/*.md mirror serves)
+    └── versions.json            (NEW: { generatedAt, packages: { "@cascivo/react": "0.11.0", … } }
+                                  — snapshot of sibling versions at generation time, so an
+                                  adopter can verify the docs match their installed set)
+```
+
+- **Generation, not duplication:** a build script (pattern: `packages/mcp/scripts/postbuild.mjs`)
+  copies from the same sources the site serves — `apps/site/public/` for the generated
+  surface, `docs/` for the guides — plus emits `versions.json` from the workspace
+  manifests. The content is produced by `pnpm regen` exactly like today; this package is
+  a second consumer of it. Missing source files are a build **error** (mcp's postbuild
+  already sets that precedent). Nothing in `content/` is committed; it is built at
+  pack/publish time and `files` includes `content/` + `bin/`.
+- **Exports map:** every file addressable when installed —
+  `"./llms.txt": "./content/llms.txt"`, `"./llms-full.txt"`, `"./registry.json"`,
+  wildcard subpaths `"./llms/*": "./content/llms/*"`, `"./context/*"`, `"./guides/*"`,
+  plus `"./package.json"` (the `pkg-exports` gate applies). This makes
+  `require.resolve('@cascivo/docs/llms-full.txt')` work for any tool that does install it.
+- No runtime dependencies. The CLI is dependency-free Node (`node:fs`/`node:path` only).
+
+### L2. Zero-install consumption ("used, not installed")
+
+Three tiers, all documented in the package README and everywhere in L4:
+
+1. **`npx` (primary):** `bin: { "cascivo-docs": "./bin/cascivo-docs.mjs" }`. npx runs
+   from its cache without touching the project's `package.json` — used, never installed.
+   Keep the CLI cat-like and greppable, no TUI:
+   - `npx -y @cascivo/docs` → prints `llms.txt` (the index, which names every other path)
+   - `npx -y @cascivo/docs <name>` → prints `llms/<ns>/<name>.md` (accept the flat alias
+     names the site's `_redirects` accepts, e.g. `area-chart`)
+   - `npx -y @cascivo/docs guide <slug>` → prints `guides/<slug>.md`
+   - `npx -y @cascivo/docs --full` → prints `llms-full.txt` (one-shot everything — the
+     "paste this into any agent" artifact)
+   - `npx -y @cascivo/docs --list` → one line per available doc path
+   - `npx -y @cascivo/docs --dir` → prints the absolute `content/` path, so agents and
+     tools can read/grep the tree directly without going through the CLI
+2. **Raw tarball (no npm at all):** document the registry URL pattern —
+   `npm pack @cascivo/docs` or
+   `curl -L https://registry.npmjs.org/@cascivo/docs/-/docs-<version>.tgz | tar xz` —
+   the exact channel this adopter already used successfully for the `.d.ts` files.
+3. **Installed (`pnpm add -D @cascivo/docs`):** for offline-first repos and tools;
+   files resolve via the exports map. Optional, never required.
+
+### L3. `@cascivo/mcp` consumes `@cascivo/docs` (one source of truth)
+
+- Add `"@cascivo/docs": "workspace:^"` to `packages/mcp` `dependencies`.
+- Loader probe order in `context.ts`/`icons.ts`/etc. becomes: monorepo paths (dev) →
+  `require.resolve('@cascivo/docs/<file>')` → bundled `dist/` copy (keep one release for
+  compatibility, then drop) → network fetch as the last resort, now logging a hint that
+  names the offline package when the fetch fails.
+- `postbuild.mjs` shrinks to shebang/chmod only once the migration completes — the data
+  files ship once, in `@cascivo/docs`, not twice.
+- New MCP tool (or extend an existing one): `get_guide(slug)` — the guides become
+  reachable through MCP for the first time; today MCP serves only component/registry
+  data, not GETTING-STARTED/THEMING/TROUBLESHOOTING.
+
+### L4. Referenced everywhere (this is the point — no channel may omit it)
+
+One canonical sentence, adapted per surface: *"Full offline docs: `npx -y @cascivo/docs`
+(or `npx @cascivo/docs <component>`) — the complete reference as an npm package, no
+website needed."*
+
+- **WS-B quickstart JSDoc** (`packages/react/src/index.ts` module header, and charts/
+  icons equivalents): add the sentence as its own line; extend the `check-types-flat.mjs`
+  guard to assert `@cascivo/docs` appears in `dist/index.d.ts`.
+- **Every published package's `package.json` `description`** gets the short form
+  ("Docs offline: npx @cascivo/docs") appended as part of the WS-B2 description pass —
+  one pass, both references.
+- **`llms.txt` + `llms-full.txt` headers** (`scripts/llms/generate.ts`): state that this
+  exact content is also published as `@cascivo/docs`, with the npx line and the raw
+  tarball URL pattern — so an agent that got the file once knows the durable re-fetch
+  path.
+- **All package READMEs** (`readme.body.md` files): in the react README's "Using with AI
+  tools" section, add it as the **first** channel (ahead of llms-full.txt fetch — it's
+  the only one that doesn't need cascivo.com); one-liners in charts/themes/icons/mcp
+  READMEs.
+- **`docs/GETTING-STARTED.md`** (a "Docs offline / can't reach cascivo.com?" callout up
+  top) and **`docs/TROUBLESHOOTING.md`** (new entry: "Docs sites unreachable (403 /
+  proxy / offline)" → the npx line — the entry this adopter needed).
+- **WS-A3's dev warning** message: append "Full docs offline: npx -y @cascivo/docs".
+- **MCP server**: the server's self-description mentions it; the network-fallback
+  failure path (L3) hints it.
+- **Docs site**: footer/docs landing note ("this site is also `npx @cascivo/docs`") —
+  low priority but closes the loop for humans who *can* reach the site and want the
+  offline copy.
+- **Guard:** a `meta:check` addition (`docs-package-refs`) greps the canonical reference
+  into place: fails if `readme.body.md` of any published package, the llms.txt template,
+  GETTING-STARTED, or TROUBLESHOOTING lacks `@cascivo/docs`. Same enforcement philosophy
+  as `peer-floors`/`css-imports` — cross-reference promises rot without a gate.
+
+### L5. Freshness & release coupling
+
+- `@cascivo/docs` versions and releases **with the train**: a changeset accompanies any
+  release (content regenerates every time; at minimum a patch bump per train so the
+  registry copy never lags the published packages — the exact staleness failure that
+  plagued the docs hosts). Implement as a release-workflow step that adds/verifies the
+  docs changeset, or mark the package so `changesets` always bumps it with its siblings
+  (either mechanism; the invariant is: **no release train publishes component packages
+  without publishing a matching `@cascivo/docs`**).
+- `versions.json` is the verification hook: WS-J and `deployed-freshness.sh` gain an
+  assertion that the latest published `@cascivo/docs` names the latest published
+  `@cascivo/react` version (registry-vs-registry check — works even when the site is
+  down, which is precisely when it matters).
+- Drift: content is copied from regen output at build time, so the existing drift job
+  covers the sources; add a `pack:check` assertion that the packed `@cascivo/docs`
+  tarball contains `llms-full.txt`, `registry.json`, `guides/getting-started.md`, and a
+  `versions.json` naming every published sibling.
+
+### Tests / acceptance criteria
+
+- Unit (CLI): `--list`, index print, named component (flat alias and namespaced), guide,
+  `--dir`, unknown name → non-zero exit with the `--list` hint. All against a fixture
+  `content/` tree; no network in any code path (assert: the CLI module never imports
+  `http`/`fetch`).
+- WS-J canary gains a docs leg: from the packed tarball (not the workspace), run
+  `npx cascivo-docs button` and `… --full` **with network access disabled** and assert
+  real content; assert `versions.json` matches the packed sibling versions.
+- `pkg-exports`, `pack:check`, `meta:check` (incl. the new `docs-package-refs` guard) green.
+- Changesets: new package `@cascivo/docs` (initial minor), `@cascivo/mcp` **minor**
+  (dependency + loader order + `get_guide`), plus the reference edits riding WS-B's
+  changesets.
 
 ---
 
@@ -474,7 +645,7 @@ everything): `scripts/checks/cold-adopter.test.ts` (Playwright, reuse the repo's
 setup):
 
 1. Build + `npm pack` the published set (`react`, `charts`, `themes`, `icons`, `core`,
-   `i18n`, `tokens`, `storage`) into a temp dir.
+   `i18n`, `tokens`, `storage`, `docs`, `mcp`) into a temp dir.
 2. Scaffold a minimal Vite + React 19 app in the scratch area installing **from the
    tarballs** (pnpm `overrides` pointing at the `.tgz` files).
 3. The app follows **only the `dist/index.d.ts` quickstart** (WS-B) — literally the
@@ -491,6 +662,9 @@ setup):
      computed colors.
    - **Charts**: no horizontal overflow of the chart card at 320px viewport (WS-C);
      `Date`-x AreaChart renders date-formatted tick text (WS-D).
+   - **Docs offline** (WS-L): with network access disabled, `cascivo-docs button` and
+     `cascivo-docs --full` from the packed `@cascivo/docs` tarball print real content,
+     and its `versions.json` names the packed sibling versions.
    - No page errors on any route.
 
 This is the executable form of this plan's definition of done; wire it as a required
@@ -539,11 +713,12 @@ and always said to be fixed."* Both directions of status drift are live right no
 | 1 | **WS-K** | XS | Pure docs archaeology; unblocks accurate triage for everything below |
 | 2 | **WS-A** | M | The red flag; everything else is secondary |
 | 3 | **WS-B** | S | Rides the same react-package PR as WS-A (shared changeset/regen) |
-| 4 | **WS-E** | M | Breaking-ish; wants its own PR + UPGRADING entry |
-| 5 | **WS-C + WS-D** | M | One charts PR (JSDoc + clamp + Date-x + regen) |
-| 6 | **WS-F** | S | Types-only PR; adds the `$N` guard |
-| 7 | **WS-G + WS-H** | S | Doc/JSDoc sweep PR + regen |
-| 8 | **WS-J** | M | Lands last but its assertions are written against WS-A–E; failing-first is fine earlier |
+| 4 | **WS-L** | M | New package + MCP consolidation + reference sweep; WS-B's JSDoc/description lines land the references, so sequence it right behind (or in) that PR |
+| 5 | **WS-E** | M | Breaking-ish; wants its own PR + UPGRADING entry |
+| 6 | **WS-C + WS-D** | M | One charts PR (JSDoc + clamp + Date-x + regen) |
+| 7 | **WS-F** | S | Types-only PR; adds the `$N` guard |
+| 8 | **WS-G + WS-H** | S | Doc/JSDoc sweep PR + regen |
+| 9 | **WS-J** | M | Lands last but its assertions are written against WS-A–E and WS-L; failing-first is fine earlier |
 
 Every PR: `pnpm ready` green, changesets included, `pnpm regen` artifacts committed.
 Plan is complete only when a release train has **published** the packages and WS-J is
