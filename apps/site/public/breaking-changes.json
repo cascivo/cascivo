@@ -15,8 +15,15 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.4.1",
+      "version": "0.5.0",
       "releases": [
+        {
+          "version": "0.5.0",
+          "level": "minor",
+          "notes": [
+            "Charts: document responsive sizing, clamp over-wide charts, and give `AreaChart` a time axis."
+          ]
+        },
         {
           "version": "0.4.0",
           "level": "minor",
@@ -110,6 +117,19 @@
       ]
     },
     {
+      "name": "@cascivo/docs",
+      "version": "0.2.0",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "Ship the entire docs surface as an npm package so it's reachable with no website."
+          ]
+        }
+      ]
+    },
+    {
       "name": "@cascivo/editor",
       "version": "0.2.16",
       "releases": [
@@ -152,7 +172,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "releases": [
         {
           "version": "0.3.0",
@@ -173,8 +193,15 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.5.2",
+      "version": "0.6.0",
       "releases": [
+        {
+          "version": "0.6.0",
+          "level": "minor",
+          "notes": [
+            "Ship the entire docs surface as an npm package so it's reachable with no website."
+          ]
+        },
         {
           "version": "0.5.0",
           "level": "minor",
@@ -208,8 +235,16 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.10.1",
+      "version": "0.11.0",
       "releases": [
+        {
+          "version": "0.11.0",
+          "level": "minor",
+          "notes": [
+            "Make the prebuilt path impossible to ship grayscale, and put the quickstart where offline/AI adopters actually read it.",
+            "`useTheme()` now returns the theme **name as a plain string**, not a signal."
+          ]
+        },
         {
           "version": "0.10.0",
           "level": "minor",
@@ -302,7 +337,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.4",
+      "version": "0.4.5",
       "releases": [
         {
           "version": "0.4.0",

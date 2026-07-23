@@ -1,7 +1,7 @@
 <!--
   Generated component index — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/components.md
-  registry v0.10.1 · generated 2026-07-23
+  registry v0.11.0 · generated 2026-07-23
 -->
 
 # cascivo component index
@@ -215,4 +215,4 @@ Every component, chart, block, and layout in the registry, with its distribution
 | **User** — Identity composite: an avatar with a name, description, and optional action slot                                                                                                                                        | npm @cascivo/react · or copy-paste | `/llms/user.md`                       |
 | **VisuallyHidden** — Hides content visually while keeping it available to screen readers                                                                                                                                           | npm @cascivo/react · or copy-paste | `/llms/visually-hidden.md`            |
 
-_registry v0.10.1 · generated 2026-07-23_
+_registry v0.11.0 · generated 2026-07-23_

@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/docs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "description": "The complete cascivo documentation as an npm package — read it offline with `npx @cascivo/docs`, no website needed. Components: @cascivo/react",
   "keywords": [
