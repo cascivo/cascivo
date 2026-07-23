@@ -26,9 +26,9 @@
       },
       {
         "name": "x",
-        "type": "(d: Datum) => number",
+        "type": "(d: Datum) => number | Date",
         "required": true,
-        "description": "X-value accessor"
+        "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart)."
       },
       {
         "name": "y",
@@ -220,6 +220,11 @@
         "title": "Multiple fields from one row (per-series y)",
         "description": "The chart-level x/y apply to every series. To plot two fields from the same rows, give each series its own y — no need to reshape the data into separate {x,y} arrays.",
         "code": "import { AreaChart } from '@cascivo/charts'\n\nconst rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors: 9 }]\n<AreaChart\n  title=\"Traffic\"\n  series={[\n    { id: 'req', label: 'Requests', data: rows, y: d => d.requests },\n    { id: 'err', label: 'Errors', data: rows, y: d => d.errors },\n  ]}\n  x={d => d.t}\n  y={d => d.requests}\n/>"
+      },
+      {
+        "title": "Time axis (Date x)",
+        "description": "Return a Date from x for a time axis — ticks render as dates (e.g. \"Jul 10\"), no need to encode day-of-month as an integer.",
+        "code": "import { AreaChart } from '@cascivo/charts'\n\nconst data = [\n  { day: new Date('2026-07-10'), y: 120 },\n  { day: new Date('2026-07-20'), y: 180 },\n  { day: new Date('2026-07-30'), y: 150 },\n]\n<AreaChart\n  title=\"Daily signups\"\n  series={[{ id: 's', label: 'Signups', data }]}\n  x={d => d.day}\n  y={d => d.y}\n/>"
       }
     ],
     "dependencies": ["@cascivo/charts"],

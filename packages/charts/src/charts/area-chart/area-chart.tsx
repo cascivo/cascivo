@@ -16,6 +16,7 @@ import type { ToolboxOptions } from '../../chrome/toolbox'
 import { decimate as decimatePoints, type DecimateMethod, type Pt } from '../../engine/decimate'
 import { useId, useRef } from 'react'
 import { linearScale } from '../../engine/scale'
+import { timeScale } from '../../engine/scale-time'
 import { areaPath, linePath, stackSeries } from '../../engine/shape'
 import type { Point, Curve } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
@@ -48,7 +49,12 @@ export interface AreaChartSeries<Datum> {
 
 export interface AreaChartProps<Datum = { x: number; y: number }> {
   series: readonly AreaChartSeries<Datum>[]
-  x: (d: Datum) => number
+  /**
+   * X-value accessor. Return a `number` for a numeric axis, or a `Date` for a
+   * time axis — when the values are Dates the chart uses a time scale and formats
+   * ticks as dates (parity with `LineChart`). One x-domain per chart.
+   */
+  x: (d: Datum) => number | Date
   /**
    * Y-value accessor, applied to **every** series' data unless a series provides
    * its own `y`. There is one x-domain per chart, so `x` is chart-level only; to
@@ -190,8 +196,24 @@ export function AreaChart<Datum = { x: number; y: number }>({
   warnNonFinite('AreaChart', () => [...leftYvals, ...rightYvals])
   const hasData = allX.length > 0
 
-  const xMin = hasData ? Math.min(...allX) : 0
-  const xMax = hasData ? Math.max(...allX) : 1
+  // Time axis when the x accessor returns Dates (parity with LineChart). Domain is
+  // computed on epoch ms either way; the scale factory picks time vs linear.
+  const usesDate = hasData && allX[0] instanceof Date
+  const xNums = allX.map((v) => (v instanceof Date ? v.getTime() : v))
+  const xMin = hasData ? Math.min(...xNums) : 0
+  const xMax = hasData ? Math.max(...xNums) : 1
+  const makeXScale = (innerW: number) =>
+    usesDate
+      ? timeScale([new Date(xMin), new Date(xMax)], [0, innerW])
+      : linearScale([xMin, xMax], [0, innerW])
+  const mapX = (xScale: ReturnType<typeof makeXScale>, d: Datum): number =>
+    usesDate
+      ? (xScale as ReturnType<typeof timeScale>).map(x(d) as Date)
+      : (xScale as ReturnType<typeof linearScale>).map(x(d) as number)
+  const labelOf = (d: Datum): string => {
+    const xv = x(d)
+    return xv instanceof Date ? xv.toLocaleDateString() : String(xv)
+  }
   const yMin = stacked ? 0 : Math.min(0, ...leftYvals)
   const yMax = stacked
     ? Math.max(
@@ -217,7 +239,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
       <tbody>
         {(series[0]?.data ?? []).map((_, i) => (
           <tr key={i}>
-            <td>{series[0] ? String(x(series[0].data[i]!)) : ''}</td>
+            <td>{series[0] ? labelOf(series[0].data[i]!) : ''}</td>
             {series.map((s) => (
               <td key={s.id}>{s.data[i] != null ? yFor(s)(s.data[i]!) : ''}</td>
             ))}
@@ -239,7 +261,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
 
     const innerW = w - margins.left - margins.right
     const innerH = h - margins.top - margins.bottom
-    const xScale = linearScale([xMin, xMax], [0, innerW])
+    const xScale = makeXScale(innerW)
     const yScale = linearScale([yMin, yMax], [innerH, 0])
     const yScaleRight = hasRight ? linearScale([yMinR, yMaxR], [innerH, 0]) : yScale
     const yOf = (s: AreaChartSeries<Datum>) => (s.axis === 'right' ? yScaleRight : yScale)
@@ -259,9 +281,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
           if (d === undefined) return
           const yv = yFor(s)(d)
           if (!Number.isFinite(yv)) return
-          cx = margins.left + xScale.map(x(d))
+          cx = margins.left + mapX(xScale, d)
           cyTop = Math.min(cyTop, yOf(s).map(yv))
-          labelX = String(x(d))
+          labelX = labelOf(d)
           segments.push({
             label: s.label,
             value: yv,
@@ -287,9 +309,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
       if (hidden.value.has(s.id)) return []
       return s.data.map((d, i) => ({
         id: `${s.id}-${i}`,
-        cx: margins.left + xScale.map(x(d)),
+        cx: margins.left + mapX(xScale, d),
         cy: margins.top + yOf(s).map(yFor(s)(d)),
-        label: String(x(d)),
+        label: labelOf(d),
         value: yFor(s)(d),
         seriesId: s.id,
       }))
@@ -324,7 +346,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
         {({ width, height: h }) => {
           const innerW = width - margins.left - margins.right
           const innerH = h - margins.top - margins.bottom
-          const xScale = linearScale([xMin, xMax], [0, innerW])
+          const xScale = makeXScale(innerW)
           const yScale = linearScale([yMin, yMax], [innerH, 0])
           const yScaleRight = hasRight ? linearScale([yMinR, yMaxR], [innerH, 0]) : yScale
 
@@ -359,9 +381,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
                   let baseline: number
                   if (stacked && stackedOffsets[si]) {
                     const offsets = stackedOffsets[si]!
-                    points = s.data.map((d, i) => [xScale.map(x(d)), yScale.map(offsets[i]![1])])
+                    points = s.data.map((d, i) => [mapX(xScale, d), yScale.map(offsets[i]![1])])
                     const basePoints = s.data.map(
-                      (d, i) => [xScale.map(x(d)), yScale.map(offsets[i]![0])] as Point,
+                      (d, i) => [mapX(xScale, d), yScale.map(offsets[i]![0])] as Point,
                     )
                     baseline = yScale.map(0)
                     // For stacked, draw area between y0 and y1
@@ -399,7 +421,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                     )
                   } else {
                     const ys = s.axis === 'right' ? yScaleRight : yScale
-                    points = s.data.map((d) => [xScale.map(x(d)), ys.map(yFor(s)(d))])
+                    points = s.data.map((d) => [mapX(xScale, d), ys.map(yFor(s)(d))])
                     baseline = ys.map(0)
                     // Dense, non-stacked series: downsample for a fast, crisp path.
                     if (decConf && points.length > decConf.threshold) {

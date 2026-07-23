@@ -2,8 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './spacer.module.css'
-
-type SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+import type { SpaceStep } from '@cascivo/core'
 
 export interface SpacerProps extends HTMLAttributes<HTMLDivElement> {
   size?: SpaceStep

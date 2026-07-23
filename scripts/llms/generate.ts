@@ -468,7 +468,13 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('## Start here')
   lines.push('')
   lines.push(
-    `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt`,
+    "- **Can't reach this site? The whole docs surface is also an npm package — no web access needed:** " +
+      '`npx -y @cascivo/docs` prints this index; `npx @cascivo/docs <component>` prints one reference; ' +
+      '`npx @cascivo/docs --full` prints the entire library. It reaches you through the same npm registry ' +
+      'that installed your packages — the channel that works when npmjs.com and cascivo.com are blocked or offline.',
+  )
+  lines.push(
+    `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt (offline: \`npx @cascivo/docs --full\`)`,
   )
   lines.push(
     `- Getting started, fetchable as plain markdown (install steps, no browser needed): ${SITE}/docs/getting-started.md`,
@@ -766,7 +772,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.',
   )
   lines.push(
-    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[Signal<string>, setTheme]` — read `theme.value`; never destructure `{ theme, setTheme }` (that is next-themes’ shape). Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.',
+    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.',
   )
   lines.push(
     "- Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).",

@@ -2,8 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './flex.module.css'
-
-type SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+import type { SpaceStep } from '@cascivo/core'
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
   direction?: 'vertical' | 'horizontal'

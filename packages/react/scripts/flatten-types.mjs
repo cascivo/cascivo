@@ -50,7 +50,37 @@ try {
     .filter((line) => !/^\s*\/\/#(region|endregion)\b/.test(line))
     .join('\n')
 
-  writeFileSync(join(pkgRoot, 'dist', 'index.d.ts'), cleaned)
+  // Prepend the quickstart banner (WS-B). The dts bundler drops the module-leading
+  // JSDoc from src/index.ts, but `dist/index.d.ts` is the primary documentation
+  // channel for AI agents / offline adopters (the ones who never reach npmjs.com or
+  // cascivo.com), so the quickstart must ride at the top of the published surface.
+  // `scripts/check-styles-complete.mjs` asserts the load-bearing lines survive.
+  const BANNER = `/**
+ * @cascivo/react — every cascivo component, prebuilt. Full API below.
+ *
+ * Quickstart:
+ *   pnpm add @cascivo/react @preact/signals-react
+ *   // @cascivo/themes is installed with @cascivo/react. Once, in your entry file:
+ *   import '@cascivo/themes/all.css'   // tokens + base + light & dark — REQUIRED for color
+ *   // No-bundler / single-file alternative (themes bundled in): '@cascivo/react/styles.css'
+ *   import { Button, Card } from '@cascivo/react'
+ *
+ * Skip the theme import and components render grayscale (ThemeProvider warns in dev).
+ *
+ * Wider family (separate installs):
+ *   @cascivo/charts — LineChart, AreaChart, BarChart, Sparkline, 25 chart types
+ *   @cascivo/icons  — ~440 tree-shakeable SVG icons for SideNav / IconButton / Button
+ *   @cascivo/themes — 12 themes; scope any with data-theme="…" on any element
+ *
+ * Reactivity: components are signal-driven. Without the signals Babel transform, any
+ * component reading signal.value in render must call useSignals() (from @cascivo/core) first.
+ *
+ * Docs: https://cascivo.com/llms.txt — or fully offline, no website needed:
+ *   npx -y @cascivo/docs            (index; \`npx @cascivo/docs <component>\` for one doc)
+ */
+`
+
+  writeFileSync(join(pkgRoot, 'dist', 'index.d.ts'), `${BANNER}${cleaned}`)
 } finally {
   rmSync(outDir, { recursive: true, force: true })
   // Remove any stale nested tree from a previous tsc-based build.

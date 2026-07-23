@@ -2,7 +2,7 @@
   "name": "@cascivo/icons",
   "version": "0.3.2",
   "private": false,
-  "description": "Optional SVG icon components",
+  "description": "~440 tree-shakeable SVG icon components for cascivo (SideNav, IconButton, Button). Components: @cascivo/react. Docs offline: npx @cascivo/docs",
   "keywords": [
     "cascivo",
     "css",

@@ -6,7 +6,7 @@
     {
       "path": "layout-spacer/spacer.tsx",
       "type": "registry:block",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './spacer.module.css'\n\ntype SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12\n\nexport interface SpacerProps extends HTMLAttributes<HTMLDivElement> {\n  size?: SpaceStep\n}\n\nexport function Spacer({ size = 4, className, style, ...props }: SpacerProps) {\n  return (\n    <div\n      role=\"none\"\n      className={cn(styles['spacer'], className)}\n      style={{ ['--_spacer-size' as string]: `var(--cascivo-space-${size})`, ...style }}\n      {...props}\n    />\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './spacer.module.css'\nimport type { SpaceStep } from '@cascivo/core'\n\nexport interface SpacerProps extends HTMLAttributes<HTMLDivElement> {\n  size?: SpaceStep\n}\n\nexport function Spacer({ size = 4, className, style, ...props }: SpacerProps) {\n  return (\n    <div\n      role=\"none\"\n      className={cn(styles['spacer'], className)}\n      style={{ ['--_spacer-size' as string]: `var(--cascivo-space-${size})`, ...style }}\n      {...props}\n    />\n  )\n}\n"
     },
     {
       "path": "layout-spacer/spacer.module.css",

@@ -100,3 +100,4 @@ export type {
   AnchorSide,
   AnchorAlign,
 } from './anchor.tsx'
+export type { SpaceStep } from './space.ts'

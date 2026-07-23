@@ -20,7 +20,8 @@ see `select_component`/`list_components` below before generating custom SVG or A
 
 ## Start here
 
-- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** https://cascivo.com/llms-full.txt
+- **Can't reach this site? The whole docs surface is also an npm package — no web access needed:** `npx -y @cascivo/docs` prints this index; `npx @cascivo/docs <component>` prints one reference; `npx @cascivo/docs --full` prints the entire library. It reaches you through the same npm registry that installed your packages — the channel that works when npmjs.com and cascivo.com are blocked or offline.
+- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** https://cascivo.com/llms-full.txt (offline: `npx @cascivo/docs --full`)
 - Getting started, fetchable as plain markdown (install steps, no browser needed): https://cascivo.com/docs/getting-started.md
 - Docs (per-component reference, props, live examples): https://cascivo.com/docs
 - Storybook (every variant, interactive): https://storybook.cascivo.com
@@ -194,7 +195,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Per-route / per-tenant effect disposal -> `useScope()` / `createScope()` (disposes on unmount; prevents signal leaks across navigation).
 - Genuine internal state machine -> `createMachine` / `useMachine`.
 - Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.
-- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[Signal<string>, setTheme]` — read `theme.value`; never destructure `{ theme, setTheme }` (that is next-themes’ shape). Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
+- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, Select, Combobox, Slider, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput); activating an item -> `onSelect(value)` (Dropdown, Menu, chart points). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
@@ -3305,7 +3306,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `series` | `AreaChartSeries<Datum>[]` | yes | — | Array of data series |
-| `x` | `(d: Datum) => number` | yes | — | X-value accessor |
+| `x` | `(d: Datum) => number \| Date` | yes | — | X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart). |
 | `y` | `(d: Datum) => number` | yes | — | Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
@@ -3359,6 +3360,26 @@ const rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors:
   ]}
   x={d => d.t}
   y={d => d.requests}
+/>
+```
+
+### Time axis (Date x)
+
+Return a Date from x for a time axis — ticks render as dates (e.g. "Jul 10"), no need to encode day-of-month as an integer.
+
+```tsx
+import { AreaChart } from '@cascivo/charts'
+
+const data = [
+  { day: new Date('2026-07-10'), y: 120 },
+  { day: new Date('2026-07-20'), y: 180 },
+  { day: new Date('2026-07-30'), y: 150 },
+]
+<AreaChart
+  title="Daily signups"
+  series={[{ id: 's', label: 'Signups', data }]}
+  x={d => d.day}
+  y={d => d.y}
 />
 ```
 
@@ -15501,7 +15522,7 @@ import { Stat } from '@cascivo/react'
 | `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
 | `trend` | `'up' \| 'down' \| 'flat'` | no | `flat` | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
 | `helpText` | `string` | no | — | Fine print below the value (methodology, time range) |
-| `visual` | `React.ReactNode` | no | — | Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText |
+| `visual` | `React.ReactNode` | no | — | Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText |
 
 ## Examples
 

@@ -22,14 +22,14 @@ import { Stat } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                       | Required | Default | Description                                                                                                |
-| ---------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------- |
-| `label`    | `string`                   | yes      | —       | What the metric measures                                                                                   |
-| `value`    | `string \| number`         | yes      | —       | The metric value                                                                                           |
-| `delta`    | `string`                   | no       | —       | Change indicator rendered next to the trend arrow                                                          |
-| `trend`    | `'up' \| 'down' \| 'flat'` | no       | `flat`  | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                               |
-| `helpText` | `string`                   | no       | —       | Fine print below the value (methodology, time range)                                                       |
-| `visual`   | `React.ReactNode`          | no       | —       | Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText |
+| Prop       | Type                       | Required | Default | Description                                                                                                                                                        |
+| ---------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `label`    | `string`                   | yes      | —       | What the metric measures                                                                                                                                           |
+| `value`    | `string \| number`         | yes      | —       | The metric value                                                                                                                                                   |
+| `delta`    | `string`                   | no       | —       | Change indicator rendered next to the trend arrow                                                                                                                  |
+| `trend`    | `'up' \| 'down' \| 'flat'` | no       | `flat`  | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                                                                                       |
+| `helpText` | `string`                   | no       | —       | Fine print below the value (methodology, time range)                                                                                                               |
+| `visual`   | `React.ReactNode`          | no       | —       | Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText |
 
 ## Examples
 

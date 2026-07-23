@@ -38,6 +38,8 @@ export interface SideNavLinkSubItem {
   id?: string
   label: string
   href?: string
+  /** Leading icon (any ReactNode). `@cascivo/icons` ships ~440 SVG icon components
+   * sized by the token system — use one here instead of hand-rolling an SVG. */
   icon?: ReactNode
   active?: boolean
   /** Shows a trailing checkmark; use for picker-style "current selection" rows. */
@@ -57,6 +59,8 @@ export interface SideNavItem {
   id?: string
   label: string
   href?: string
+  /** Leading icon (any ReactNode). `@cascivo/icons` ships ~440 SVG icon components
+   * sized by the token system — use one here instead of hand-rolling an SVG. */
   icon?: ReactNode
   active?: boolean
   items?: SideNavSubItem[]

@@ -2,8 +2,7 @@
 import { cn } from '@cascivo/core'
 import type { CSSProperties, HTMLAttributes } from 'react'
 import styles from './grid.module.css'
-
-type SpaceStep = 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12
+import type { SpaceStep } from '@cascivo/core'
 
 /** A scalar value, or a per-breakpoint object keyed by the canonical scale. */
 export type Responsive<T> = T | Partial<Record<'base' | 'sm' | 'md' | 'lg' | 'xl', T>>

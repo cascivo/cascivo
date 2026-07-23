@@ -4086,9 +4086,9 @@
         },
         {
           "name": "x",
-          "type": "(d: Datum) => number",
+          "type": "(d: Datum) => number | Date",
           "required": true,
-          "description": "X-value accessor",
+          "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart).",
           "schema": {
             "kind": "function"
           }
@@ -20393,7 +20393,7 @@
           "name": "visual",
           "type": "React.ReactNode",
           "required": false,
-          "description": "Trailing decorative visual, e.g. a Sparkline from @cascivo/charts, rendered below the value/delta/helpText",
+          "description": "Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText",
           "schema": {
             "kind": "node"
           }

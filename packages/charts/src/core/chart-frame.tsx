@@ -39,7 +39,15 @@ export interface ZoomConfig {
 export interface ChartFrameProps {
   title: string
   description?: string | undefined
+  /**
+   * Fixed SVG width in px. **Omit it (the default) for a responsive chart** — the
+   * frame fills and tracks its container's width via `ResizeObserver`. Set a fixed
+   * width only for a fixed-size export or thumbnail; even then it is clamped to the
+   * container (`max-inline-size: 100%`) so it can never overflow its card.
+   */
   width?: number | undefined
+  /** SVG height in px. Defaults to 300 (48 in `plain` mode). Unlike `width`, height
+   * does not track the container — set it to change the chart's aspect. */
   height?: number | undefined
   fallback?: ReactNode
   children: (size: { width: number; height: number }) => ReactNode

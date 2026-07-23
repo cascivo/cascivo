@@ -8,15 +8,15 @@ export interface ListProps extends HTMLAttributes<HTMLElement> {
   marker?: 'disc' | 'decimal' | 'none'
 }
 
-export function List({ as: Tag = 'ul', marker, className, children, ...props }: ListProps) {
+export function List({ as: Component = 'ul', marker, className, children, ...props }: ListProps) {
   return (
-    <Tag
-      data-marker={marker ?? (Tag === 'ol' ? 'decimal' : 'disc')}
+    <Component
+      data-marker={marker ?? (Component === 'ol' ? 'decimal' : 'disc')}
       className={cn(styles['list'], className as string | undefined)}
       {...(props as Record<string, unknown>)}
     >
       {children}
-    </Tag>
+    </Component>
   )
 }
 

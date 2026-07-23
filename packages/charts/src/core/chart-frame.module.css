@@ -4,6 +4,15 @@
     inline-size: 100%;
   }
 
+  /* Clamp the SVG to the frame so an explicit `width` larger than the container
+     scales down (the SVG carries a viewBox, so this preserves aspect) instead of
+     overflowing the card and clipping data. Responsive charts (no fixed width)
+     already fit; this only bites the fixed-width-in-a-small-slot case. */
+  .frame > svg {
+    max-inline-size: 100%;
+    block-size: auto;
+  }
+
   /* Enter + update transitions — progressive enhancement, fully off under
      reduced-motion (a correct static frame when suppressed; no react-spring, no JS).
      Entrance: a subtle fade + rise. Update: marks tween fill/opacity on legend

@@ -1,6 +1,20 @@
 # Fix plan — TanStack Start adopter report (2026-07-22, published 0.9.0 packages)
 
-**Status: planned — not implemented.** This is the full spec for fixing every item in the
+**Status: partially shipped — see per-item note below; remaining items carried into the
+2026-07-23 plan.** Several workstreams shipped in the `0.10.0` release train (PR #166,
+commit `e81a0a73`) and #170: **WS-A** (CSS-free `node`-condition build so SSR needs no
+`ssr.noExternal`), **WS-B** (controlled `<ThemeProvider value>` emits an SSR attribute
+setter — no FOUC), **WS-G** (`Field`/`Input` double-`label` dev warning), **WS-I**
+(`setLinkComponent` inline-adapter inference), charts **WS-E** (per-series `y` accessor,
+`@cascivo/charts@0.4.0`), and **WS-F** (a real prerendered `/docs/components` route, #170).
+Still open at 2026-07-23 and folded into `fix-plan-tanstack-router-dashboard-adopter-2026-07-23.md`:
+**WS-C** (`noUncheckedSideEffectImports`/TS2882 docs+exports), **WS-D** (superseded by that
+plan's WS-E — `useTheme` now returns a value), **WS-H** (`Stack` point-of-use notes), **WS-J**
+(per-file `llms/*.md` docs-imports guard). Per the WS-K status-hygiene rule
+(`docs/internal/feedback/README.md`), the PR that finishes each remaining item updates this
+line.
+
+_Original spec follows (unedited)._ This is the full spec for fixing every item in the
 fifth TanStack Start hands-on report
 (`docs/internal/feedback/feedback-tanstack-start-adopter-2026-07-22.md` — a Vercel-style
 dashboard on TanStack Start / React 19 / Vite 8, against published `@cascivo/react@0.9.0`,

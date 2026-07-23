@@ -49,6 +49,7 @@
     "test": "vp test"
   },
   "dependencies": {
+    "@cascivo/docs": "workspace:^",
     "@modelcontextprotocol/sdk": "catalog:",
     "zod": "catalog:"
   },

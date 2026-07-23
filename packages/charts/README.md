@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/charts</h1>
-  <p><strong>Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies</strong></p>
+  <p><strong>Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies. Colors come from @cascivo/themes; components from @cascivo/react. Docs offline: npx @cascivo/docs</strong></p>
 
 [![npm](https://img.shields.io/npm/v/%40cascivo%2Fcharts?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/charts)
 [![downloads](https://img.shields.io/npm/dm/%40cascivo%2Fcharts?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/charts)
@@ -17,6 +17,8 @@
 ---
 
 Accessible, signal-driven chart library for cascivo — AreaChart, BarChart, LineChart, Sparkline, Heatmap, and more. All charts are keyboard-navigable with `aria-live` tooltips. CVD-safe palettes (Okabe-Ito, oklch) verified in CI across all 12 themes.
+
+> **Docs offline?** The full cascivo reference ships as an npm package — `npx -y @cascivo/docs`, no website needed.
 
 ## Install
 
@@ -48,6 +50,24 @@ export function Traffic() {
 
 Charts are CSS-token-themed: drop them inside any element carrying a `data-theme` (or import a
 theme stylesheet) and they pick up the same palette, radii, and typography as the rest of cascivo.
+
+### Sizing — responsive by default
+
+**Omit `width`** and the chart fills and tracks its container (a `ResizeObserver`
+watches the slot), so a chart drops cleanly into a responsive `Card` or grid cell with
+no measuring on your part. `height` defaults to `300` (px); set it to change the aspect.
+
+Pass an explicit `width` only for a fixed-size export — and even then it is **clamped to
+the container** (`max-inline-size: 100%`), so an over-wide `width` scales down instead of
+overflowing and clipping data. To size another element to match a chart, or to build a
+custom chart, use the exported `useChartSize()` hook.
+
+```tsx
+<Card>
+  <LineChart data={data} />           {/* fills the card, resizes with it */}
+</Card>
+<LineChart data={data} height={160} /> {/* shorter, still full-width */}
+```
 
 > **Vite SSR (TanStack Start, Remix, vite-ssr, workerd)?** Like the rest of cascivo, the
 > chart CSS ships as side-effect imports a bare server loader can't resolve — mark

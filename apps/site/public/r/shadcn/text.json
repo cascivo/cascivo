@@ -6,7 +6,7 @@
     {
       "path": "text/text.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './text.module.css'\n\nexport interface TextProps extends HTMLAttributes<HTMLElement> {\n  as?: 'p' | 'span' | 'div'\n  size?: 'sm' | 'md' | 'lg'\n  weight?: 'normal' | 'medium' | 'semibold'\n  muted?: boolean\n}\n\nexport function Text({\n  as: Tag = 'p',\n  size = 'md',\n  weight = 'normal',\n  muted = false,\n  className,\n  children,\n  ...props\n}: TextProps) {\n  return (\n    <Tag\n      data-size={size}\n      data-weight={weight}\n      data-muted={muted ? '' : undefined}\n      className={cn(styles['text'], className as string | undefined)}\n      {...(props as Record<string, unknown>)}\n    >\n      {children}\n    </Tag>\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './text.module.css'\n\nexport interface TextProps extends HTMLAttributes<HTMLElement> {\n  as?: 'p' | 'span' | 'div'\n  size?: 'sm' | 'md' | 'lg'\n  weight?: 'normal' | 'medium' | 'semibold'\n  muted?: boolean\n}\n\nexport function Text({\n  as: Component = 'p',\n  size = 'md',\n  weight = 'normal',\n  muted = false,\n  className,\n  children,\n  ...props\n}: TextProps) {\n  return (\n    <Component\n      data-size={size}\n      data-weight={weight}\n      data-muted={muted ? '' : undefined}\n      className={cn(styles['text'], className as string | undefined)}\n      {...(props as Record<string, unknown>)}\n    >\n      {children}\n    </Component>\n  )\n}\n"
     },
     {
       "path": "text/text.module.css",

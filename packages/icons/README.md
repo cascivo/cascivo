@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/icons</h1>
-  <p><strong>Optional SVG icon components</strong></p>
+  <p><strong>~440 tree-shakeable SVG icon components for cascivo (SideNav, IconButton, Button). Components: @cascivo/react. Docs offline: npx @cascivo/docs</strong></p>
 
 [![npm](https://img.shields.io/npm/v/%40cascivo%2Ficons?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/icons)
 [![downloads](https://img.shields.io/npm/dm/%40cascivo%2Ficons?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/icons)
@@ -19,6 +19,8 @@
 A set of **~440** React SVG icon components that inherit the cascivo token system — stroked 24×24 `currentColor` geometry, token-driven sizing, and tree-shakeable named exports.
 
 Browse and search the full catalog — with click-to-copy imports and live size/color/theme previews — in the **[/icons gallery](https://cascivo.com/icons)**.
+
+> **Docs offline?** The full cascivo reference ships as an npm package — `npx -y @cascivo/docs`, no website needed.
 
 ## Usage
 

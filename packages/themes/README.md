@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/themes</h1>
-  <p><strong>First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal, cyberpunk, arcade</strong></p>
+  <p><strong>First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal, cyberpunk, arcade. Components: @cascivo/react. Docs offline: npx @cascivo/docs</strong></p>
 
 [![npm](https://img.shields.io/npm/v/%40cascivo%2Fthemes?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/themes)
 [![downloads](https://img.shields.io/npm/dm/%40cascivo%2Fthemes?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/themes)
@@ -17,6 +17,8 @@
 ---
 
 First-party themes for cascivo — 12 of them, applied with a single `data-theme` attribute. Themes override the **semantic token layer only**, leaving primitive and component tokens unchanged, so every component (and your own token-consuming CSS) restyles for free.
+
+> **Docs offline?** The full cascivo reference (including the theming guide) ships as an npm package — `npx -y @cascivo/docs guide theming`, no website needed.
 
 ## The themes
 

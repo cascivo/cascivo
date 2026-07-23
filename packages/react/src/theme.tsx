@@ -9,6 +9,53 @@ import { persistedSignal } from '../../storage/src/persisted-signal'
 const DEFAULT_KEY = 'cascivo-theme'
 const DEFAULT_ATTR = 'data-theme'
 
+/** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so the
+ * browser-facing source needs no `@types/node`, and it's safe where `process` is
+ * absent (bundlers replace `process.env.NODE_ENV` in app builds). Mirrors the
+ * dev-warn idiom in `field.tsx`. */
+function isDev(): boolean {
+  const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
+  return env?.NODE_ENV !== 'production'
+}
+
+const warnedUnstyled = new Set<string>()
+
+/**
+ * Dev-only, deduped warning: `ThemeProvider` set a `data-theme` for which no
+ * cascivo theme CSS is loaded, so every `--cascivo-color-*` token is unresolved
+ * and components render grayscale (the #1 cold-adopter red flag). Probes one
+ * canonical semantic token that every shipped theme defines; an empty computed
+ * value means the theme layer never loaded (or the theme name is a typo). The
+ * message names the exact fix. Deferred one frame so a late-loading stylesheet
+ * doesn't false-positive; no-op on the server and in production.
+ */
+function warnIfThemeUnstyled(el: HTMLElement | null, theme: string): void {
+  if (!isDev()) return
+  if (
+    el === null ||
+    typeof document === 'undefined' ||
+    typeof requestAnimationFrame !== 'function'
+  ) {
+    return
+  }
+  if (warnedUnstyled.has(theme)) return
+  requestAnimationFrame(() => {
+    if (warnedUnstyled.has(theme)) return
+    const accent = getComputedStyle(el).getPropertyValue('--cascivo-color-accent').trim()
+    if (accent !== '') return
+    warnedUnstyled.add(theme)
+    console.warn(
+      `cascivo ThemeProvider: data-theme=${JSON.stringify(theme)} was set, but no ` +
+        `cascivo theme CSS defines it — every --cascivo-color-* token is unresolved, ` +
+        `so components render grayscale. Import '@cascivo/themes/all.css' once in your ` +
+        `entry (or '@cascivo/react/styles.css', which bundles the light and dark ` +
+        `themes). Using a custom theme? Ensure its stylesheet is loaded and defines ` +
+        `[data-theme=${JSON.stringify(theme)}]. Docs: https://cascivo.com/docs/theming ` +
+        `— offline: npx -y @cascivo/docs guide theming`,
+    )
+  })
+}
+
 interface ThemeConfig {
   storageKey: string
   defaultTheme: string
@@ -56,20 +103,33 @@ export function setTheme(next: string): void {
 }
 
 /**
- * Read and set the active theme. The returned signal is reactive — a component
- * that reads `.value` re-renders when the theme changes (this hook calls
- * `useSignals()` for you, so it works in React apps with no Babel transform).
+ * Read and set the active theme. Returns the current theme **name** (a plain
+ * string) and a setter — the component re-renders when the theme changes with no
+ * signal handling on your part (this hook calls `useSignals()` for you, so it
+ * works in React apps with no Babel transform). This is the React-idiomatic shape;
+ * for signal-native code (`computed()`, `effect()`, Preact) use {@link themeSignal}.
  *
  * ```tsx
  * const [theme, setTheme] = useTheme()
- * return <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>
- *   {theme.value}
+ * return <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+ *   {theme}
  * </button>
  * ```
  */
-export function useTheme(): readonly [Signal<string>, (next: string) => void] {
+export function useTheme(): readonly [string, (next: string) => void] {
   useSignals()
-  return [themeStore(), setTheme] as const
+  // Read `.value` inside the hook's own tracking window so the subscription is
+  // guaranteed regardless of where the consumer uses the returned string.
+  return [themeStore().value, setTheme] as const
+}
+
+/**
+ * The underlying theme signal, for signal-native code — `computed()`, `effect()`,
+ * or a Preact app where signals are natively reactive. Most React apps want
+ * {@link useTheme}, which hands back a plain string and handles subscription.
+ */
+export function themeSignal(): Signal<string> {
+  return themeStore()
 }
 
 export interface ThemeProviderProps {
@@ -175,6 +235,7 @@ export function ThemeProvider({
         ? document.documentElement
         : null
     el?.setAttribute(attribute, next)
+    warnIfThemeUnstyled(el, next)
     onChangeRef.current?.(next)
   })
 

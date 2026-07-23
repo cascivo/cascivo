@@ -1,0 +1,56 @@
+{
+  "name": "@cascivo/docs",
+  "version": "0.1.0",
+  "private": false,
+  "description": "The complete cascivo documentation as an npm package — read it offline with `npx @cascivo/docs`, no website needed. Components: @cascivo/react",
+  "keywords": [
+    "ai",
+    "cascivo",
+    "docs",
+    "documentation",
+    "llms",
+    "offline",
+    "reference"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/docs#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/docs"
+  },
+  "bin": {
+    "cascivo-docs": "./bin/cascivo-docs.mjs"
+  },
+  "files": [
+    "bin",
+    "content"
+  ],
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./llms.txt": "./content/llms.txt",
+    "./llms-full.txt": "./content/llms-full.txt",
+    "./registry.json": "./content/registry.json",
+    "./context.json": "./content/context.json",
+    "./versions.json": "./content/versions.json",
+    "./breaking-changes.json": "./content/breaking-changes.json",
+    "./llms/*": "./content/llms/*",
+    "./context/*": "./content/context/*",
+    "./guides/*": "./content/guides/*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "node scripts/build-content.mjs",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

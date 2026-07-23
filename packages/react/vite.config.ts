@@ -11,6 +11,36 @@ const LAYER_ORDER = readFileSync(
   'utf8',
 ).trim()
 
+// The complete design-token + default-theme bundle, inlined into the aggregate
+// styles.css so a consumer who imports ONLY '@cascivo/react/styles.css' gets a
+// fully-colored app (WS-A1) — not the grayscale result of shipping component CSS
+// with no --cascivo-* values behind it. Everything here lands in its canonical
+// @layer (cascivo.tokens / cascivo.base / cascivo.theme), so when a consumer ALSO
+// imports @cascivo/themes/* the duplicated rules are identical and in the same
+// layers — idempotent by construction, exactly like LAYER_ORDER above.
+//
+// Scope: primitive tokens + custom-property registrations + base typography +
+// the two ThemeProvider/OS-preference defaults (light, dark). The other 10 themes
+// (warm, midnight, …) stay opt-in via @cascivo/themes — importing them here would
+// bloat the sheet for the 99% case. Every file's own `@import '@cascivo/tokens…'`
+// is stripped: tokens are inlined once, here, and CSS forbids @import after rules.
+function readCss(rel: string): string {
+  return readFileSync(fileURLToPath(new URL(rel, import.meta.url)), 'utf8')
+}
+const THEME_BUNDLE = [
+  readCss('../tokens/src/index.css'), // primitive tokens (@layer cascivo.tokens)
+  readCss('../tokens/src/properties.css'), // @property registrations
+  readCss('../themes/src/base.css'), // base typography (@layer cascivo.base)
+  readCss('../themes/src/light.css'), // light theme (@layer cascivo.theme)
+  readCss('../themes/src/dark.css'), // dark theme (@layer cascivo.theme)
+]
+  .join('\n')
+  // Drop every @import (tokens/layers are already inlined above; @import is only
+  // legal before any rule, which no longer holds once concatenated).
+  .split('\n')
+  .filter((line) => !/^\s*@import\b/.test(line))
+  .join('\n')
+
 /**
  * Per-component CSS shipping.
  *
@@ -112,12 +142,13 @@ function cssImportEdges() {
       // Aggregate stylesheet for consumers without a bundler (CDN / plain
       // <link>) and for those who prefer a single explicit import. Bundler
       // users never touch this — their CSS rides along with each component
-      // import and tree-shakes. All component CSS lives in @layer
-      // cascivo.component, so concatenation order is not significant.
+      // import and tree-shakes. Includes the full token + light/dark theme
+      // bundle (WS-A1) so this one file is enough for a colored app; all CSS
+      // lives in canonical @layers, so concatenation order is not significant.
       this.emitFile({
         type: 'asset',
         fileName: 'styles.css',
-        source: `${LAYER_ORDER}\n${cssSources.join('\n')}`,
+        source: `${LAYER_ORDER}\n${THEME_BUNDLE}\n${cssSources.join('\n')}`,
       })
       // Flat package entry. preserveModulesRoot ('../components/src') pushes the
       // real entry to dist/react/src/index.js, outside the dist root — a subtree

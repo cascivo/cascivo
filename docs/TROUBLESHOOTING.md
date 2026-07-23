@@ -175,6 +175,31 @@ genuinely unreachable, not that your config is broken.
 
 ---
 
+## The docs sites are unreachable (403 from npmjs.com, blocked/offline cascivo.com)
+
+**Cause:** `npmjs.com` returns HTTP 403 to non-browser fetches, and `cascivo.com`
+may be blocked by a corporate proxy, uncrawlable page-by-page, or simply offline.
+AI agents and firewalled setups hit this often.
+
+**Fix:** read the docs from the npm **registry** instead — the same channel that
+installed your packages. The entire docs surface ships as
+[`@cascivo/docs`](https://www.npmjs.com/package/@cascivo/docs), usable with no
+install:
+
+```sh
+npx -y @cascivo/docs                 # the index (llms.txt)
+npx -y @cascivo/docs button          # one component's reference
+npx -y @cascivo/docs guide theming   # a concept guide
+npx -y @cascivo/docs --full          # the entire library, one file
+npx -y @cascivo/docs --list          # every available doc path
+```
+
+No npm at all? `npm pack @cascivo/docs` (or `curl` the registry tarball) and read
+`content/llms-full.txt`. The package is republished with every release, so its
+copy never lags the packages.
+
+---
+
 ## A component looks or behaves differently than the docs show
 
 **Cause:** version drift. Docs and Storybook track the registry head; your copy

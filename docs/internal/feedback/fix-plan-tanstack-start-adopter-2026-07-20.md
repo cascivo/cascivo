@@ -1,6 +1,14 @@
 # Fix plan — TanStack Start adopter report (2026-07-20, published 0.8.0 packages)
 
-**Status: planned — not implemented.** This document is the full spec for fixing every
+**Status: superseded by the 2026-07-22 and 2026-07-23 plans.** Its two red flags (the SSR
+`.css` crash and the theme FOUC/precedence) were reversed/fixed in the `0.10.0` train (PR
+#166) — the CSS-free `node` build and the controlled-`ThemeProvider` SSR setter — after this
+plan had deferred them. Treat the 2026-07-23 plan
+(`fix-plan-tanstack-router-dashboard-adopter-2026-07-23.md`) as the live tracker for anything
+still open. Per the WS-K status-hygiene rule (`docs/internal/feedback/README.md`), a plan's
+status header is a release artifact and must be updated by the PR that ships or supersedes it.
+
+_Original spec follows (unedited)._ This document is the full spec for fixing every
 item in the fourth TanStack Start hands-on report
 (`docs/internal/feedback/feedback-tanstack-start-adopter-2026-07-20.md` — a Vercel-style
 dashboard on TanStack Start 1.168 / React 19.2, against published `@cascivo/react` 0.8.0,

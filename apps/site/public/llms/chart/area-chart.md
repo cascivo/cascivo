@@ -24,7 +24,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | Prop          | Type                                                                                                                    | Required | Default    | Description                                                                                                                                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `series`      | `AreaChartSeries<Datum>[]`                                                                                              | yes      | —          | Array of data series                                                                                                                                                                                      |
-| `x`           | `(d: Datum) => number`                                                                                                  | yes      | —          | X-value accessor                                                                                                                                                                                          |
+| `x`           | `(d: Datum) => number \| Date`                                                                                          | yes      | —          | X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart).                                                                            |
 | `y`           | `(d: Datum) => number`                                                                                                  | yes      | —          | Y-value accessor, applied to every series unless a series sets its own `y`. One x-domain per chart, so `x` is chart-level only; give each series a `y` to plot different fields from one shared data row. |
 | `title`       | `string`                                                                                                                | yes      | —          | Title text for the component.                                                                                                                                                                             |
 | `description` | `string`                                                                                                                | no       | —          | Supporting description text.                                                                                                                                                                              |
@@ -78,6 +78,26 @@ const rows = [{ t: 0, requests: 100, errors: 5 }, { t: 1, requests: 120, errors:
   ]}
   x={d => d.t}
   y={d => d.requests}
+/>
+```
+
+### Time axis (Date x)
+
+Return a Date from x for a time axis — ticks render as dates (e.g. "Jul 10"), no need to encode day-of-month as an integer.
+
+```tsx
+import { AreaChart } from '@cascivo/charts'
+
+const data = [
+  { day: new Date('2026-07-10'), y: 120 },
+  { day: new Date('2026-07-20'), y: 180 },
+  { day: new Date('2026-07-30'), y: 150 },
+]
+<AreaChart
+  title="Daily signups"
+  series={[{ id: 's', label: 'Signups', data }]}
+  x={d => d.day}
+  y={d => d.y}
 />
 ```
 
