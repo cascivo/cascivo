@@ -38,56 +38,68 @@ RETRIES="${FRESHNESS_RETRIES:-10}"
 SLEEP="${FRESHNESS_SLEEP:-15}"
 FAILED=0
 
-# Fetch a URL (with retries + cache-busting) and echo the body; return 1 on HTTP failure.
-fetch() {
-  local url="$1"
-  local body
-  for ((i = 1; i <= RETRIES; i++)); do
-    body="$(curl -fsSL -H 'Cache-Control: no-cache' "${url}?_cb=$i" 2>/dev/null)" && {
-      printf '%s' "$body"
-      return 0
-    }
-    sleep "$SLEEP"
-  done
-  return 1
-}
-
-# assert_contains URL NEEDLE...  — fetch URL once, assert every needle is present.
+# assert_contains URL NEEDLE...  — retry until the fetched body contains EVERY needle.
+# A freshly deployed host serves HTTP 200 with STALE bytes until the deployment
+# propagates to the custom domain, so a missing needle is a transient "not live yet"
+# state that MUST be retried — not a hard failure. (The old code checked content only
+# once after a single successful fetch, so the version stamp got ZERO propagation
+# tolerance despite the retry budget — the race this check kept losing right after a
+# release deploy.) Sets FAILED and returns 1 when the budget is exhausted.
 assert_contains() {
   local url="$1"
   shift
-  local body
-  if ! body="$(fetch "$url")"; then
-    echo "::error::$url did not return 200 after $RETRIES attempts"
-    FAILED=1
-    return
-  fi
-  local needle
-  for needle in "$@"; do
-    if ! grep -qF -- "$needle" <<<"$body"; then
-      echo "::error::$url is missing expected content: '$needle' (stale deploy or wrong host binding?)"
-      FAILED=1
+  local i body needle ok fetched=0
+  for ((i = 1; i <= RETRIES; i++)); do
+    if body="$(curl -fsSL -H 'Cache-Control: no-cache' "${url}?_cb=$i" 2>/dev/null)"; then
+      fetched=1
+      ok=1
+      for needle in "$@"; do
+        grep -qF -- "$needle" <<<"$body" || ok=0
+      done
+      [[ "$ok" -eq 1 ]] && return 0
     fi
+    sleep "$SLEEP"
   done
+  # Budget exhausted — report precisely using the last attempt's result.
+  if [[ "$fetched" -ne 1 ]]; then
+    echo "::error::$url did not return 200 after $RETRIES attempts"
+  else
+    for needle in "$@"; do
+      grep -qF -- "$needle" <<<"$body" ||
+        echo "::error::$url is missing expected content: '$needle' (stale deploy or wrong host binding?)"
+    done
+  fi
+  FAILED=1
+  return 1
 }
 
-# assert_absent URL NEEDLE... — fetch URL once, assert NONE of the needles is present.
+# assert_absent URL NEEDLE... — retry until the fetched body contains NONE of the
+# needles (same propagation rationale as assert_contains). Sets FAILED / returns 1.
 assert_absent() {
   local url="$1"
   shift
-  local body
-  if ! body="$(fetch "$url")"; then
-    echo "::error::$url did not return 200 after $RETRIES attempts"
-    FAILED=1
-    return
-  fi
-  local needle
-  for needle in "$@"; do
-    if grep -qF -- "$needle" <<<"$body"; then
-      echo "::error::$url unexpectedly contains '$needle' (stale deploy?)"
-      FAILED=1
+  local i body needle ok fetched=0
+  for ((i = 1; i <= RETRIES; i++)); do
+    if body="$(curl -fsSL -H 'Cache-Control: no-cache' "${url}?_cb=$i" 2>/dev/null)"; then
+      fetched=1
+      ok=1
+      for needle in "$@"; do
+        grep -qF -- "$needle" <<<"$body" && ok=0
+      done
+      [[ "$ok" -eq 1 ]] && return 0
     fi
+    sleep "$SLEEP"
   done
+  if [[ "$fetched" -ne 1 ]]; then
+    echo "::error::$url did not return 200 after $RETRIES attempts"
+  else
+    for needle in "$@"; do
+      grep -qF -- "$needle" <<<"$body" &&
+        echo "::error::$url unexpectedly contains '$needle' (stale deploy?)"
+    done
+  fi
+  FAILED=1
+  return 1
 }
 
 # assert_http_ok URL — assert the URL returns HTTP 200 (retries for CDN propagation).
@@ -134,8 +146,14 @@ assert_404_body() {
 
 for HOST in "${HOSTS[@]}"; do
   echo "── Probing $HOST ──"
-  # llms.txt carries the top-of-file version stamp.
-  assert_contains "$HOST/llms.txt" "registry v$VERSION"
+  # Gate on the deploy being live: llms.txt carries the top-of-file version stamp, and
+  # a Cloudflare Pages deployment flips atomically, so once the stamp is current every
+  # other asset is from the same deployment. If the stamp never goes fresh within the
+  # retry budget, skip this host's per-asset assertions — they'd all fail identically
+  # and each burn the full budget again.
+  if ! assert_contains "$HOST/llms.txt" "registry v$VERSION"; then
+    continue
+  fi
   # Canary files chosen from the 2026-07-18 report: stat.md was stale (missing `visual`);
   # area-chart is namespaced (guessed flat name 404s); both must serve current content.
   assert_contains "$HOST/llms/stat.md" '`visual`' "registry v$VERSION"
