@@ -92,12 +92,14 @@ assert_absent() {
 
 # assert_http_ok URL — assert the URL returns HTTP 200 (retries for CDN propagation).
 # Used for SPA routes whose body is the app shell (no stable prerendered needle), where
-# the fix under test is "resolves instead of 404".
+# the fix under test is "resolves instead of 404". Follows redirects (-L): a prerendered
+# directory-index route 308s to its trailing-slash form before serving 200, and that
+# resolves fine for any browser/agent — matches the -fsSL used by fetch() above.
 assert_http_ok() {
   local url="$1"
   local i code
   for ((i = 1; i <= RETRIES; i++)); do
-    code="$(curl -s -o /dev/null -w '%{http_code}' "${url}?_cb=$i")"
+    code="$(curl -sL -o /dev/null -w '%{http_code}' "${url}?_cb=$i")"
     [[ "$code" == "200" ]] && return 0
     sleep "$SLEEP"
   done
