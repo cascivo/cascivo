@@ -1,10 +1,39 @@
 /**
- * @cascivo/react — the prebuilt distribution of every cascivo component.
+ * @cascivo/react — every cascivo component, prebuilt.
  *
  * For users who want to consume cascivo as a normal library instead of
- * copy-pasting source via the CLI. Each component ships its own CSS, pulled in
- * automatically on import and tree-shaken per component by the consumer's
- * bundler. A no-bundler aggregate is available at '@cascivo/react/styles.css'.
+ * copy-pasting source via the CLI.
+ *
+ * Quickstart:
+ * ```sh
+ * pnpm add @cascivo/react @preact/signals-react
+ * ```
+ * ```tsx
+ * // @cascivo/themes is installed with @cascivo/react. Once, in your entry file:
+ * import '@cascivo/themes/all.css'   // tokens + base + light & dark — REQUIRED for color
+ * // No-bundler / single-file alternative (themes already bundled in):
+ * //   import '@cascivo/react/styles.css'
+ * import { Button, Card } from '@cascivo/react'
+ * ```
+ * Each component ships its own CSS, pulled in automatically on import and
+ * tree-shaken per component by the consumer's bundler; the aggregate
+ * '@cascivo/react/styles.css' (which also bundles the light & dark themes) is for
+ * no-bundler setups. Skip the theme import and components render grayscale —
+ * ThemeProvider warns in dev when that happens.
+ *
+ * The wider family (separate installs):
+ * - `@cascivo/charts` — LineChart, AreaChart, BarChart, Sparkline, 25 chart types
+ *   (+ its own styles.css).
+ * - `@cascivo/icons` — ~440 tree-shakeable SVG icon components for SideNav items,
+ *   IconButton, and Button icons.
+ * - `@cascivo/themes` — 12 themes; scope any with `data-theme="…"` on any element.
+ *
+ * Reactivity: components are signal-driven. In an app without the signals Babel
+ * transform, any component reading `signal.value` in render must call `useSignals()`
+ * (re-exported from `@cascivo/core`) first.
+ *
+ * Docs: https://cascivo.com/llms.txt — or fully offline, no website needed:
+ *   `npx -y @cascivo/docs` (index; `npx @cascivo/docs <component>` for one doc).
  */
 export * from '../../components/src/button/button'
 export * from '../../components/src/input/input'
@@ -166,11 +195,17 @@ export * from '../../layouts/src/columns/columns' // Columns
 export * from '../../layouts/src/center/center' // Center
 export * from '../../layouts/src/spacer/spacer' // Spacer
 export * from '../../layouts/src/auto-grid/auto-grid' // AutoGrid
+// The spacing-scale type shared by every layout primitive's `gap`/spacing props.
+// Exported under its public name so compiler errors read `SpaceStep`, not the dts
+// bundler's deduped `SpaceStep$N`.
+export type { SpaceStep } from '../../layouts/src/space'
 // Reusable, SSR-safe theme runtime (ThemeProvider / useTheme / setTheme /
-// themePreloadScript). Packages the data-theme wiring apps otherwise hand-roll.
+// themePreloadScript / themeSignal). Packages the data-theme wiring apps
+// otherwise hand-roll.
 export {
   ThemeProvider,
   useTheme,
+  themeSignal,
   setTheme,
   themePreloadScript,
   type ThemeProviderProps,

@@ -1407,6 +1407,9 @@ importers:
       '@cascivo/i18n':
         specifier: workspace:^
         version: link:../i18n
+      '@cascivo/themes':
+        specifier: workspace:^
+        version: link:../themes
       '@preact/signals-react':
         specifier: '>=3.0.0'
         version: 3.10.1(react@19.2.7)

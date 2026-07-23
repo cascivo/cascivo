@@ -7,16 +7,30 @@ can coexist in one project.
 ## Install
 
 ```sh
-pnpm add @cascivo/react @cascivo/themes @preact/signals-react
+pnpm add @cascivo/react @preact/signals-react
 ```
 
 **Peer dependencies** (install them in your app): `react >=18`, `react-dom >=18`,
 and `@preact/signals-react` — cascivo components are signal-driven, so the
-signals runtime is required. `@cascivo/themes` is optional but recommended; it
-supplies the tokens and themes the components read.
+signals runtime is required.
 
-Charts live in a separate package — add [`@cascivo/charts`](https://github.com/cascivo/cascivo/tree/main/packages/charts)
-for `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and more.
+[`@cascivo/themes`](https://github.com/cascivo/cascivo/tree/main/packages/themes)
+is a **dependency** of `@cascivo/react`, so it installs automatically — you don't
+add it yourself. It supplies the tokens and semantic color values the components
+read; **you must import its CSS once** (see below), or components render
+grayscale (`ThemeProvider` warns in dev when that happens).
+
+**The wider family** (separate installs, only if you use them):
+
+- Charts — [`@cascivo/charts`](https://github.com/cascivo/cascivo/tree/main/packages/charts):
+  `LineChart`, `AreaChart`, `BarChart`, `Sparkline`, and 20+ more.
+- Icons — [`@cascivo/icons`](https://github.com/cascivo/cascivo/tree/main/packages/icons):
+  ~440 tree-shakeable SVG icon components for `SideNav` items, `IconButton`, and
+  `Button` icons (sized by the token system) — so you don't hand-roll SVGs.
+
+> **Can't reach npmjs.com or cascivo.com?** The complete docs also ship as an npm
+> package: `npx -y @cascivo/docs` prints the index; `npx @cascivo/docs <component>`
+> prints one component's reference — no website needed. See [Using with AI tools](#using-with-ai-tools-v0-cursor-claude-code-gemini).
 
 > **Types are the reference.** The shipped `dist/index.d.ts` is a self-contained, flat
 > rollup — every component's `…Props` interface is real, documentation-grade API. Reading
@@ -40,10 +54,12 @@ Components ship with `'use client'` preserved in the bundle, so they work inside
 RSC without any extra wrapper.
 
 > **No bundler? (CDN, import maps, plain `<link>`)** Import the aggregate sheet
-> `@cascivo/react/styles.css` — every component's CSS in one file (~273 KB /
-> ~37 KB gzip, not tree-shaken). With a bundler (CSR) you don't need it; import it
-> only if you prefer one explicit stylesheet over per-component tree-shaking, or
-> for Vite SSR (below), where it is required.
+> `@cascivo/react/styles.css` — every component's CSS **plus the tokens and the
+> light & dark themes** in one file (~305 KB / ~40 KB gzip, not tree-shaken). It is
+> self-contained: this single import gives you a fully-colored app with no separate
+> `@cascivo/themes` import. With a bundler (CSR) you don't need it; import it only if
+> you prefer one explicit stylesheet over per-component tree-shaking, or for Vite SSR
+> (below), where it is required.
 
 > **Vite SSR / TanStack Start / Remix / workerd?** The 4-line SSR checklist (full
 > recipe: [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md)):
@@ -126,6 +142,20 @@ cascivo is AI-first, but a model can only build with it if the knowledge reaches
 the tool. cascivo has no training-data footprint yet, so **don't rely on a tool
 fetching cascivo.com** — that channel is the least reliable one. Use the channels
 that travel with the package instead:
+
+- **Zero web access needed — the whole docs surface as an npm package
+  ([`@cascivo/docs`](https://www.npmjs.com/package/@cascivo/docs)):**
+
+  ```sh
+  npx -y @cascivo/docs              # prints llms.txt (the index)
+  npx -y @cascivo/docs button       # prints one component's full reference
+  npx -y @cascivo/docs --full       # prints llms-full.txt (the entire library)
+  npx -y @cascivo/docs guide theming
+  ```
+
+  It reaches an agent through the same npm registry that installed your packages
+  — the one channel proven to work when `npmjs.com` and `cascivo.com` are blocked,
+  proxied, or offline. No install, no config; `npx` runs it from cache.
 
 - **One file, one fetch — paste or link this into any chat/agent:**
   [`https://cascivo.com/llms-full.txt`](https://cascivo.com/llms-full.txt). It is

@@ -11,7 +11,7 @@ export interface TextProps extends HTMLAttributes<HTMLElement> {
 }
 
 export function Text({
-  as: Tag = 'p',
+  as: Component = 'p',
   size = 'md',
   weight = 'normal',
   muted = false,
@@ -20,7 +20,7 @@ export function Text({
   ...props
 }: TextProps) {
   return (
-    <Tag
+    <Component
       data-size={size}
       data-weight={weight}
       data-muted={muted ? '' : undefined}
@@ -28,6 +28,6 @@ export function Text({
       {...(props as Record<string, unknown>)}
     >
       {children}
-    </Tag>
+    </Component>
   )
 }

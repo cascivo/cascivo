@@ -3,7 +3,7 @@
 <div align="center">
   <a href="https://cascivo.com"><img src="https://cascivo.com/favicon.svg" width="72" height="72" alt="cascivo logo"></a>
   <h1>@cascivo/charts</h1>
-  <p><strong>Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies</strong></p>
+  <p><strong>Chart components built from scratch — scales, shapes, and signal-driven rendering, zero dependencies. Colors come from @cascivo/themes; components from @cascivo/react. Docs offline: npx @cascivo/docs</strong></p>
 
 [![npm](https://img.shields.io/npm/v/%40cascivo%2Fcharts?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/charts)
 [![downloads](https://img.shields.io/npm/dm/%40cascivo%2Fcharts?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/charts)

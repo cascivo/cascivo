@@ -119,6 +119,29 @@ the printed diff).
 
 Release-specific upgrade guides, newest first:
 
+- **`useTheme()` returns a string, not a signal** (`@cascivo/react` minor) — the
+  first tuple element of `useTheme()` is now the theme **name** (a plain `string`)
+  instead of a `Signal<string>`. Migration: drop `.value`.
+
+  ```tsx
+  // before
+  const [theme, setTheme] = useTheme()
+  theme.value === 'dark'
+  // after
+  const [theme, setTheme] = useTheme()
+  theme === 'dark'
+  ```
+
+  TypeScript flags every site (`.value` on a `string` is an error). If you passed
+  the signal itself into `computed()`/`effect()` or a Preact component, get it from
+  the new `themeSignal()` export instead. The setter is unchanged.
+- **`@cascivo/themes` now installs with `@cascivo/react`** (`@cascivo/react` minor)
+  — it moved from a peer/optional install to a real dependency, so `pnpm add
+  @cascivo/react` brings it along. You still import a theme CSS file once (or import
+  the now-self-contained `@cascivo/react/styles.css`, which bundles tokens + light +
+  dark); skipping the import renders components grayscale, and `ThemeProvider` now
+  warns about exactly that in dev. No action needed unless you were installing
+  `@cascivo/themes` separately — you can drop it from your `package.json`.
 - **`cascivo.blocks` layer slot** (`@cascivo/tokens` minor) — the canonical
   `@layer` order gained a declared `cascivo.blocks` slot between `cascivo.theme`
   and `cascivo.override`, and the `@function` helpers moved from an undeclared

@@ -1,8 +1,8 @@
-import { describe, expect, it, beforeEach, afterEach } from 'vitest'
+import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
 import { createRef } from 'react'
 import { act, render } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
-import { ThemeProvider, setTheme, themePreloadScript, useTheme } from './theme'
+import { ThemeProvider, setTheme, themePreloadScript, themeSignal, useTheme } from './theme'
 
 function currentTheme(): string | null {
   return document.documentElement.getAttribute('data-theme')
@@ -60,20 +60,80 @@ describe('ThemeProvider', () => {
     expect(document.documentElement.getAttribute('data-mode')).toBe('dark')
   })
 
-  it('useTheme exposes a reactive [signal, setter] pair', () => {
+  it('useTheme returns a reactive [string, setter] pair (no signal handling)', () => {
     let seen = ''
     function Readout() {
       const [theme] = useTheme()
-      seen = theme.value
-      return <span data-testid="t">{theme.value}</span>
+      seen = theme
+      return <span data-testid="t">{theme}</span>
     }
     render(
       <ThemeProvider defaultTheme="light">
         <Readout />
       </ThemeProvider>,
     )
+    // The consumer reads a plain string and re-renders on change with no `.value`.
     act(() => setTheme('pastel'))
     expect(seen).toBe('pastel')
+  })
+
+  it('themeSignal exposes the underlying signal for signal-native code', () => {
+    render(<ThemeProvider defaultTheme="light" />)
+    const sig = themeSignal()
+    expect(sig).toBe(themeSignal()) // stable identity
+    act(() => setTheme('warm'))
+    expect(sig.value).toBe('warm')
+  })
+})
+
+describe('ThemeProvider dev warning (unstyled: no theme CSS loaded)', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    document.documentElement.removeAttribute('data-theme')
+  })
+
+  // jsdom resolves no CSS custom properties, so getComputedStyle(...).
+  // getPropertyValue('--cascivo-color-accent') is always '' — the "unstyled" case.
+  it('warns once, naming the themes import, when no --cascivo-color-* resolves', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const raf = vi
+      .spyOn(globalThis, 'requestAnimationFrame')
+      .mockImplementation((cb: FrameRequestCallback) => {
+        cb(0)
+        return 0
+      })
+    try {
+      render(<ThemeProvider value="dark-unstyled-test" />)
+      expect(warn).toHaveBeenCalledTimes(1)
+      expect(warn.mock.calls[0]?.[0]).toContain('@cascivo/themes/all.css')
+      // Deduped: re-asserting the same theme does not warn again.
+      render(<ThemeProvider value="dark-unstyled-test" />)
+      expect(warn).toHaveBeenCalledTimes(1)
+    } finally {
+      raf.mockRestore()
+      warn.mockRestore()
+    }
+  })
+
+  it('stays silent when the probed token resolves', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const raf = vi
+      .spyOn(globalThis, 'requestAnimationFrame')
+      .mockImplementation((cb: FrameRequestCallback) => {
+        cb(0)
+        return 0
+      })
+    const getComputed = vi
+      .spyOn(globalThis, 'getComputedStyle')
+      .mockReturnValue({ getPropertyValue: () => '#7c3aed' } as unknown as CSSStyleDeclaration)
+    try {
+      render(<ThemeProvider value="styled-test" />)
+      expect(warn).not.toHaveBeenCalled()
+    } finally {
+      getComputed.mockRestore()
+      raf.mockRestore()
+      warn.mockRestore()
+    }
   })
 })
 
