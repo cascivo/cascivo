@@ -10,18 +10,19 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 | Package                | Version | Latest feature release                                                                    | Changelog                                      |
 | ---------------------- | ------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------- |
 | `@cascivo/ai`          | 0.2.10  | 0.2.0 — AI-layer delivery (audit wave 3):                                                 | [CHANGELOG](packages/ai/CHANGELOG.md)          |
-| `@cascivo/charts`      | 0.4.1   | 0.4.0 — `AreaChart`, `LineChart`, and `BarChart` series accept a per-series `y` accessor  | [CHANGELOG](packages/charts/CHANGELOG.md)      |
+| `@cascivo/charts`      | 0.5.0   | 0.5.0 — Charts: document responsive sizing, clamp over-wide charts, and give `AreaChart`  | [CHANGELOG](packages/charts/CHANGELOG.md)      |
 | `cascivo`              | 0.5.3   | 0.5.0 — CLI adopter-friction fixes from the TanStack Start experience report:             | [CHANGELOG](packages/cli/CHANGELOG.md)         |
 | `@cascivo/core`        | 0.5.2   | 0.5.0 — Expose the router-link contract as a named, documented type.                      | [CHANGELOG](packages/core/CHANGELOG.md)        |
+| `@cascivo/docs`        | 0.2.0   | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)        |
 | `@cascivo/editor`      | 0.2.16  | 0.2.0 — Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-r  | [CHANGELOG](packages/editor/CHANGELOG.md)      |
 | `@cascivo/flow`        | 0.1.15  | —                                                                                         | [CHANGELOG](packages/flow/CHANGELOG.md)        |
 | `@cascivo/i18n`        | 0.2.10  | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                 | [CHANGELOG](packages/i18n/CHANGELOG.md)        |
-| `@cascivo/icons`       | 0.3.2   | 0.3.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/icons/CHANGELOG.md)       |
-| `@cascivo/mcp`         | 0.5.2   | 0.5.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/mcp/CHANGELOG.md)         |
-| `@cascivo/react`       | 0.10.1  | 0.10.0 — SSR now works with zero Vite config — `@cascivo/react` ships a CSS-free server b | [CHANGELOG](packages/react/CHANGELOG.md)       |
+| `@cascivo/icons`       | 0.3.3   | 0.3.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/icons/CHANGELOG.md)       |
+| `@cascivo/mcp`         | 0.6.0   | 0.6.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/mcp/CHANGELOG.md)         |
+| `@cascivo/react`       | 0.11.0  | 0.11.0 — Make the prebuilt path impossible to ship grayscale, and put the quickstart wher | [CHANGELOG](packages/react/CHANGELOG.md)       |
 | `@cascivo/registry`    | 0.2.2   | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/registry/CHANGELOG.md)    |
 | `@cascivo/storage`     | 0.1.15  | 0.1.0 — Initial public release of the cascivo design system. Includes:                    | [CHANGELOG](packages/storage/CHANGELOG.md)     |
-| `@cascivo/themes`      | 0.4.4   | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/themes/CHANGELOG.md)      |
+| `@cascivo/themes`      | 0.4.5   | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/themes/CHANGELOG.md)      |
 | `@cascivo/tokens`      | 0.5.2   | 0.5.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/tokens/CHANGELOG.md)      |
 | `@cascivo/vite-plugin` | 0.1.2   | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/vite-plugin/CHANGELOG.md) |
 
