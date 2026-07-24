@@ -89,7 +89,10 @@ RSC without any extra wrapper.
 > 2. **`@preact/signals-react` 3.x** — on React 19 the 2.x line fails to load. The
 >    peer range enforces `>=3`.
 > 3. **Import the CSS once** in your root entry: `@cascivo/react/styles.css` +
->    `@cascivo/themes/all` (+ `@cascivo/charts/styles.css` if you use charts).
+>    `@cascivo/themes/all` (+ `@cascivo/charts/styles.css` if you use charts). If you
+>    typecheck (`tsc --noEmit`), these bare `.css` imports need ambient types — add
+>    `src/vite-env.d.ts` with `/// <reference types="vite/client" />` or
+>    `declare module '*.css'`, else TS2307/TS2882.
 > 4. **Theme without a mismatch:** inline `themePreloadScript()` in `<head>` and add
 >    `suppressHydrationWarning` to `<html>`, or hard-code `data-theme` for a fixed theme.
 >

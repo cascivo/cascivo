@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/migrating-from-shadcn.md
-  registry v0.11.0 · generated 2026-07-23
+  registry v0.11.0 · generated 2026-07-24
 -->
 
 # Migrating from shadcn/ui to cascivo
@@ -199,12 +199,15 @@ subtree**, not just the document root.
 The runtime switcher maps 1:1 in concept, but **the hook shape differs** — don't copy
 next-themes' destructuring:
 
-| next-themes                                                            | cascivo                                                                                    |
-| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `const { theme, setTheme } = useTheme()` (object; `theme` is a string) | `const [theme, setTheme] = useTheme()` (tuple; `theme` is a `Signal` — read `theme.value`) |
+| next-themes                                                            | cascivo                                                                                 |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `const { theme, setTheme } = useTheme()` (object; `theme` is a string) | `const [theme, setTheme] = useTheme()` (tuple; `theme` is a `string` — use it directly) |
 
-cascivo's `useTheme()` is signal-backed, so it returns a `[Signal<string>, setter]` tuple,
-not a `{ theme, setTheme }` object. `themePreloadScript()` covers the SSR pre-paint script
+cascivo's `useTheme()` returns a `[theme, setTheme]` tuple where `theme` is a plain **`string`**
+(the current theme name — use it directly, e.g. `theme === 'dark'`), not a `{ theme, setTheme }`
+object. The hook is signal-backed and calls `useSignals()` for you, so the component re-renders
+on theme changes; for signal-native code use the `themeSignal()` export.
+`themePreloadScript()` covers the SSR pre-paint script
 you'd otherwise hand-write. See [THEMING.md](/docs/theming.md#switching-themes-at-runtime).
 
 Full catalog in [TOKENS.md](/docs/tokens.md); brand a single component by overriding

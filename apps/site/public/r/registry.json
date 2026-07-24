@@ -3068,7 +3068,7 @@
             "name": "x",
             "type": "(d: Datum) => number | Date",
             "required": true,
-            "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart)."
+            "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart."
           },
           {
             "name": "y",
@@ -3309,7 +3309,7 @@
           },
           {
             "name": "x",
-            "description": "Accessor returning the category label for a datum.",
+            "description": "Accessor returning the **category label** for a datum. BarChart uses a categorical **band** scale, so `x` returns a `string` — this differs from LineChart/AreaChart, whose `x` returns `number | Date` for a continuous/time scale. For a time-based bar chart, format the date to a label in the accessor (e.g. `x={(d) => d.day.toLocaleDateString()}`). For continuous or time-series data, prefer LineChart/AreaChart.",
             "type": "(d: Datum) => string",
             "required": true
           },
@@ -4975,7 +4975,7 @@
             "name": "x",
             "type": "(d: Datum) => number | Date",
             "required": true,
-            "description": "X-value accessor"
+            "description": "X-value accessor. Return a `number` for a numeric axis or a `Date` for a time axis (ticks format as dates). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart."
           },
           {
             "name": "y",
@@ -8833,6 +8833,68 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "Column<Row>",
+            "description": "A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`.",
+            "fields": [
+              {
+                "name": "key",
+                "type": "string",
+                "required": true,
+                "description": "Row property this column reads, and the sort key."
+              },
+              {
+                "name": "header",
+                "type": "string",
+                "required": true,
+                "description": "Column header label."
+              },
+              {
+                "name": "sortable",
+                "type": "boolean",
+                "required": false,
+                "description": "When true, the header toggles sort on this column."
+              },
+              {
+                "name": "render",
+                "type": "(row: Row) => ReactNode",
+                "required": false,
+                "description": "Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`."
+              },
+              {
+                "name": "align",
+                "type": "'start' | 'end'",
+                "required": false,
+                "description": "Cell/text alignment. Use 'end' for numbers and timestamps."
+              },
+              {
+                "name": "width",
+                "type": "string",
+                "required": false,
+                "description": "Explicit column width (any CSS length, e.g. `120px`)."
+              }
+            ]
+          },
+          {
+            "name": "SortState",
+            "description": "Controlled/initial sort state, used by `sort`, `defaultSort`, `onSortChange`.",
+            "fields": [
+              {
+                "name": "key",
+                "type": "string",
+                "required": true,
+                "description": "The sorted column key."
+              },
+              {
+                "name": "direction",
+                "type": "'asc' | 'desc'",
+                "required": true,
+                "description": "Sort direction."
+              }
+            ]
           }
         ],
         "tokens": [
@@ -20397,6 +20459,104 @@
             "type": "ShellHeaderLabels",
             "required": false,
             "description": "i18n overrides for built-in strings"
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "ShellHeaderAction",
+            "description": "A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true,
+                "description": "Stable key for the action."
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true,
+                "description": "Accessible label (aria-label / tooltip)."
+              },
+              {
+                "name": "icon",
+                "type": "ReactNode",
+                "required": true,
+                "description": "Icon node, e.g. an @cascivo/icons glyph."
+              },
+              {
+                "name": "active",
+                "type": "boolean",
+                "required": false,
+                "description": "Renders aria-pressed for a toggle action."
+              },
+              {
+                "name": "onClick",
+                "type": "() => void",
+                "required": false,
+                "description": "Invoked when the action is activated."
+              }
+            ]
+          },
+          {
+            "name": "ShellHeaderBrand",
+            "description": "Structured brand for the `brand` prop (or pass any ReactNode instead).",
+            "fields": [
+              {
+                "name": "prefix",
+                "type": "string",
+                "required": false,
+                "description": "Muted text before the name (e.g. an org)."
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "Product/app name."
+              },
+              {
+                "name": "href",
+                "type": "string",
+                "required": false,
+                "description": "Link target for the brand (routed via setLinkComponent)."
+              }
+            ]
+          },
+          {
+            "name": "ShellHeaderNavItem",
+            "description": "A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`).",
+            "fields": [
+              {
+                "name": "label",
+                "type": "string",
+                "required": true,
+                "description": "Visible nav label."
+              },
+              {
+                "name": "href",
+                "type": "string",
+                "required": false,
+                "description": "Link target (link items). Routed via setLinkComponent."
+              },
+              {
+                "name": "items",
+                "type": "{ label: string; href: string; active?: boolean }[]",
+                "required": false,
+                "description": "Dropdown menu entries (menu items)."
+              },
+              {
+                "name": "active",
+                "type": "boolean",
+                "required": false,
+                "description": "Marks the current nav entry (aria-current)."
+              },
+              {
+                "name": "onClick",
+                "type": "(e: MouseEvent<HTMLAnchorElement>) => void",
+                "required": false,
+                "description": "Intercept navigation (e.g. a SPA section switch)."
+              }
+            ]
           }
         ],
         "tokens": [

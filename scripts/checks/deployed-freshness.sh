@@ -38,6 +38,28 @@ RETRIES="${FRESHNESS_RETRIES:-10}"
 SLEEP="${FRESHNESS_SLEEP:-15}"
 FAILED=0
 
+# Version-truth (WS-11): npm ↔ repo ↔ deployed-docs must agree on one number.
+# registry.json (repo) drives the deployed-docs assertions below; this leg adds the
+# third link — npm's actual `latest` for @cascivo/react must equal registry v$VERSION,
+# so the docs never describe a version an adopter can't `pnpm add`. Opt in with
+# FRESHNESS_CHECK_NPM=1 (the release/verify-site + daily jobs set it); skipped by default
+# so offline/local runs of this script don't fail on registry access.
+if [[ "${FRESHNESS_CHECK_NPM:-}" == "1" ]]; then
+  echo "── Checking npm latest == registry v$VERSION ──"
+  NPM_LATEST="$(npm view @cascivo/react version 2>/dev/null || true)"
+  if [[ -z "$NPM_LATEST" ]]; then
+    echo "::error::could not read @cascivo/react version from npm"
+    FAILED=1
+  elif [[ "$NPM_LATEST" != "$VERSION" ]]; then
+    echo "::error::version drift — npm @cascivo/react@$NPM_LATEST != registry v$VERSION." \
+      "Publish the release train (or roll the docs deploy) so npm, the repo, and the" \
+      "deployed docs agree on one version."
+    FAILED=1
+  else
+    echo "ok: npm @cascivo/react@$NPM_LATEST matches registry v$VERSION"
+  fi
+fi
+
 # assert_contains URL NEEDLE...  — retry until the fetched body contains EVERY needle.
 # A freshly deployed host serves HTTP 200 with STALE bytes until the deployment
 # propagates to the custom domain, so a missing needle is a transient "not live yet"

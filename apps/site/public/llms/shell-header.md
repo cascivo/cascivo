@@ -37,6 +37,42 @@ import { ShellHeader } from '@cascivo/react'
 | `skipToContentHref` | `string \| false`               | no       | `'#cascade-main'` | Skip-link target; false disables the link                                                |
 | `labels`            | `ShellHeaderLabels`             | no       | —                 | i18n overrides for built-in strings                                                      |
 
+## Object types
+
+### `ShellHeaderAction`
+
+A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead.
+
+| Field     | Type         | Required | Description                               |
+| --------- | ------------ | -------- | ----------------------------------------- |
+| `id`      | `string`     | yes      | Stable key for the action.                |
+| `label`   | `string`     | yes      | Accessible label (aria-label / tooltip).  |
+| `icon`    | `ReactNode`  | yes      | Icon node, e.g. an @cascivo/icons glyph.  |
+| `active`  | `boolean`    | no       | Renders aria-pressed for a toggle action. |
+| `onClick` | `() => void` | no       | Invoked when the action is activated.     |
+
+### `ShellHeaderBrand`
+
+Structured brand for the `brand` prop (or pass any ReactNode instead).
+
+| Field    | Type     | Required | Description                                              |
+| -------- | -------- | -------- | -------------------------------------------------------- |
+| `prefix` | `string` | no       | Muted text before the name (e.g. an org).                |
+| `name`   | `string` | yes      | Product/app name.                                        |
+| `href`   | `string` | no       | Link target for the brand (routed via setLinkComponent). |
+
+### `ShellHeaderNavItem`
+
+A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`).
+
+| Field     | Type                                                  | Required | Description                                            |
+| --------- | ----------------------------------------------------- | -------- | ------------------------------------------------------ |
+| `label`   | `string`                                              | yes      | Visible nav label.                                     |
+| `href`    | `string`                                              | no       | Link target (link items). Routed via setLinkComponent. |
+| `items`   | `{ label: string; href: string; active?: boolean }[]` | no       | Dropdown menu entries (menu items).                    |
+| `active`  | `boolean`                                             | no       | Marks the current nav entry (aria-current).            |
+| `onClick` | `(e: MouseEvent<HTMLAnchorElement>) => void`          | no       | Intercept navigation (e.g. a SPA section switch).      |
+
 ## Examples
 
 ### Console header
@@ -44,7 +80,8 @@ import { ShellHeader } from '@cascivo/react'
 Brand with prefix, dropdown nav, global icon action
 
 ```tsx
-<ShellHeader
+import { Bell } from '@cascivo/icons'
+;<ShellHeader
   brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },
@@ -81,4 +118,4 @@ navigation, header, shell, console, menu, app-shell
 
 ---
 
-_Generated from registry v0.11.0 on 2026-07-23. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.11.0 on 2026-07-24. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

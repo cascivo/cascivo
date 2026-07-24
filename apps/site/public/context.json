@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-23",
+  "generatedAt": "2026-07-24",
   "tagline": "The CSS-native, signal-driven, AI-first React design system",
   "authoringRules": [
     "Signals only: useSignal, useComputed, useSignalEffect from @cascivo/core",
@@ -109,7 +109,7 @@
     }
   ],
   "boundaries": {
-    "generatedAt": "2026-07-23",
+    "generatedAt": "2026-07-24",
     "global": {
       "strict": [
         {
@@ -1783,7 +1783,7 @@
     }
   },
   "exceptions": {
-    "generatedAt": "2026-07-23",
+    "generatedAt": "2026-07-24",
     "exceptions": [
       {
         "id": "EXC-001",
@@ -4088,7 +4088,7 @@
           "name": "x",
           "type": "(d: Datum) => number | Date",
           "required": true,
-          "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart).",
+          "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart.",
           "schema": {
             "kind": "function"
           }
@@ -4387,7 +4387,7 @@
         },
         {
           "name": "x",
-          "description": "Accessor returning the category label for a datum.",
+          "description": "Accessor returning the **category label** for a datum. BarChart uses a categorical **band** scale, so `x` returns a `string` — this differs from LineChart/AreaChart, whose `x` returns `number | Date` for a continuous/time scale. For a time-based bar chart, format the date to a label in the accessor (e.g. `x={(d) => d.day.toLocaleDateString()}`). For continuous or time-series data, prefer LineChart/AreaChart.",
           "type": "(d: Datum) => string",
           "required": true,
           "schema": {
@@ -6018,7 +6018,7 @@
           "name": "x",
           "type": "(d: Datum) => number | Date",
           "required": true,
-          "description": "X-value accessor",
+          "description": "X-value accessor. Return a `number` for a numeric axis or a `Date` for a time axis (ticks format as dates). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart.",
           "schema": {
             "kind": "function"
           }

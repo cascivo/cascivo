@@ -1,6 +1,24 @@
 # Fix plan — Vercel-style TanStack dashboard adopter report (2026-07-24, tested 0.11.0 packages)
 
-**Status: SPEC ONLY — not implemented.** Written to be handed to an implementing agent (Opus)
+**Status: implemented on `claude/ui-library-report-analysis-nsjclj`; not yet published.**
+Per-workstream: **WS-1** ✅ (useTheme string contract across AI-RULES/GETTING-STARTED/THEMING/
+MIGRATING/ENTERPRISE/CSS-LAYERS) · **WS-2** ✅ (`context/generate.ts` renders typeDefs; DataTable
+`Column<Row>`+render example & ShellHeader action/brand/nav typeDefs; `typedefs-parity` guard,
+42 pre-existing sweep-debt entries allowlisted) · **WS-3** ✅ (band/string vs number|Date x in all
+three chart metas + date-based bar example) · **WS-4** ✅ (HEADLESS phantom-dep warning, Next.js
+`setLinkComponent` recipe; llms aggregate already carried it) · **WS-5** ✅ (`vite/client`/TS2882
+note in TROUBLESHOOTING/GETTING-STARTED/AI-RULES/llms quickstart/react readme) · **WS-6** ✅
+(auto left-margin for wide y-labels + auto category-label stride in bar/line/area + tests) ·
+**WS-7** ✅ (llms index reconciled to "192 components + 12 page blocks"; `claims:check` extended
+to top-level `docs/*.md`) · **WS-8** ✅ (SideNav/ShellHeader examples import `@cascivo/icons`) ·
+**WS-9** ✅ (Switch→Toggle already via tags/migration; CSS-subpath note) · **WS-10** ✅
+(`doc-api-drift` guard: useTheme return-contract probe + stale-API blocklist over the guides,
+wired into `meta:check`) · **WS-11** ✅ (`version-pins` guard in `claims:check`; npm↔repo↔docs
+parity leg in `deployed-freshness.sh` gated by `FRESHNESS_CHECK_NPM`, enabled in the daily job).
+Remaining to reach the definition of done: publish the release train, then run the freshness +
+npm-parity canaries against the published artifacts.
+
+Originally written to be handed to an implementing agent (Opus)
 as-is. The source report is the 2026-07-24 "Vercel-style dashboard with TanStack + cascivo"
 experience report (a Vercel-style dashboard on TanStack Router + TanStack Query / React 19 /
 Vite 6, tested against published `@cascivo/react@0.11.0`, `@cascivo/charts@0.5.0`,

@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/troubleshooting.md
-  registry v0.11.0 · generated 2026-07-23
+  registry v0.11.0 · generated 2026-07-24
 -->
 
 # Troubleshooting cascivo
@@ -30,6 +30,44 @@ import '@cascivo/themes/all.css' // tokens (once) + base typography + light & da
 ```
 
 See [GETTING-STARTED.md](/docs/getting-started.md#the-critical-wiring-themes--data-theme).
+
+---
+
+## `tsc` fails on the CSS import: `Cannot find module '@cascivo/react/styles.css'` (TS2307 / TS2882)
+
+**Symptom:** the app runs and is styled, but a typecheck step (`tsc --noEmit`) reports
+`TS2307: Cannot find module '@cascivo/react/styles.css' or its corresponding type
+declarations` on the CSS import (also `@cascivo/themes/all.css`, `@cascivo/charts/styles.css`).
+On a strict scaffold with `noUncheckedSideEffectImports` (e.g. TanStack Start) the same import
+reports `TS2882` instead.
+
+**Cause:** a bare CSS **side-effect import** has no TypeScript types on its own. Vite ships
+ambient `*.css` module declarations via `vite/client`, but a project whose `tsconfig` doesn't
+reference them — or one that opts into `noUncheckedSideEffectImports` — doesn't see them. This
+is a standard Vite/TypeScript requirement, not a cascivo-specific issue, but the CSS imports in
+our quick-start trip it on a fresh typechecked setup.
+
+**Fix:** add Vite's client types once. Create `src/vite-env.d.ts`:
+
+```ts
+/// <reference types="vite/client" />
+```
+
+If you don't use Vite's client types (or `noUncheckedSideEffectImports` is on, which `vite/client`
+alone doesn't satisfy), declare the CSS module explicitly instead — this is runtime-free, since a
+CSS import is a pure side effect and the declaration only satisfies the type checker:
+
+```ts
+// src/css.d.ts
+declare module '*.css'
+```
+
+The `npx cascivo create` scaffold writes `src/vite-env.d.ts` for you; the manual quick-start does
+not, so add one of the above when you wire the CSS imports yourself.
+
+Always import the package **specifier** (`@cascivo/react/styles.css`,
+`@cascivo/charts/styles.css`), never the physical `dist/` filename — the subpath is an
+`exports` alias and the real file (`dist/charts.css`) is an implementation detail that can change.
 
 ---
 

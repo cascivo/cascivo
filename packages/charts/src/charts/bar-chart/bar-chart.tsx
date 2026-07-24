@@ -1,7 +1,12 @@
 'use client'
 import { useSignal, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
+import {
+  autoLabelStride,
+  DEFAULT_MARGINS,
+  leftMarginForLabels,
+  PLAIN_MARGINS,
+} from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
 import { Legend } from '../../chrome/legend'
@@ -107,7 +112,6 @@ export function BarChart<Datum = { x: string; y: number }>({
   const defsId = useId()
   const resolvedLabels = plain ? null : resolveLabels(labels)
   const hidden = useSignal(new Set<string>())
-  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
@@ -146,6 +150,18 @@ export function BarChart<Datum = { x: string; y: number }>({
     mode === 'percent'
       ? (v: number | string | Date) => `${Math.round(Number(v) * 100)}%`
       : undefined
+
+  const isVerticalChart = orientation === 'vertical'
+  // Reserve left-margin room for the widest left-axis label so it isn't clipped:
+  // value ticks when vertical, category labels when horizontal.
+  const leftAxisLabels = isVerticalChart
+    ? linearScale([yMin, yMax], [0, 1])
+        .ticks(yTicks)
+        .map((v) => (valFormat ? valFormat(v) : v.toLocaleString()))
+    : categories.map((c) => String(c))
+  const margins = plain
+    ? PLAIN_MARGINS
+    : { ...DEFAULT_MARGINS, left: leftMarginForLabels(leftAxisLabels, plain) }
 
   const fallback = (
     <table>
@@ -258,6 +274,9 @@ export function BarChart<Datum = { x: string; y: number }>({
           const innerW = width - margins.left - margins.right
           const innerH = h - margins.top - margins.bottom
           const isVertical = orientation === 'vertical'
+          // Thin a crowded category axis automatically; an explicit xLabelEvery wins.
+          const resolvedLabelEvery =
+            xLabelEvery ?? autoLabelStride(categories, isVertical ? innerW : innerH)
 
           const catScale = bandScale(categories, isVertical ? [0, innerW] : [0, innerH], 0.2)
           const valScale = linearScale(
@@ -391,7 +410,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       orientation="x"
                       length={innerW}
                       tickCount={xTicks}
-                      labelEvery={xLabelEvery}
+                      labelEvery={resolvedLabelEvery}
                       transform={`translate(0,${innerH})`}
                     />
                     <Axis
@@ -418,7 +437,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       orientation="y"
                       length={innerH}
                       tickCount={yTicks}
-                      labelEvery={xLabelEvery}
+                      labelEvery={resolvedLabelEvery}
                     />
                   </>
                 )}

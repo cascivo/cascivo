@@ -127,10 +127,10 @@ function App() {
 }
 
 function ThemeToggle() {
-  const [theme, setTheme] = useTheme() // reactive [signal, setter]; the hook calls useSignals() for you
+  const [theme, setTheme] = useTheme() // [themeName: string, setter]; the hook calls useSignals() for you
   return (
-    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>
-      {theme.value === 'dark' ? '☀︎' : '☾'}
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      {theme === 'dark' ? '☀︎' : '☾'}
     </button>
   )
 }

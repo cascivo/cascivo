@@ -58,10 +58,13 @@ don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React
    sync/async + Standard Schema (zod/valibot) validation, optional `validateOnChange`.
 7. Theming (light/dark toggle, SSR no-FOUC) -> `<ThemeProvider>` + `useTheme()` /
    `setTheme()` + `themePreloadScript()` (`@cascivo/react`). `useTheme()` returns a **tuple**
-   `[Signal<string>, setTheme]` — read `theme.value`; never destructure `{ theme, setTheme }`
-   (that is next-themes' shape, not cascivo's). A controlled `<ThemeProvider value=…>` is
-   SSR-safe by itself (emits an inline attribute setter). Never a `useEffect` that adds a
-   `.dark` class.
+   `[theme, setTheme]` where `theme` is a plain **`string`** (the current theme name) — use it
+   directly (`theme === 'dark'`), never `theme.value`, and never destructure `{ theme, setTheme }`
+   (that is next-themes' shape, not cascivo's). The hook calls `useSignals()` for you, so the
+   component re-renders on theme changes with no signal handling. For signal-native code
+   (`computed()`/`effect()`/Preact) use `themeSignal()` instead. A controlled
+   `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter). Never a
+   `useEffect` that adds a `.dark` class.
 8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
    '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
 9. In any app without the Babel signals transform, a component reading `signal.value` in
@@ -172,6 +175,13 @@ their server HTML normally. **Next.js App Router needs none of this** (its recip
 imports the aggregate sheet in a Server Component), and plain **Vite CSR/SPA**
 needs none of it either — only Vite *SSR* runtimes do. Full recipe:
 [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md).
+
+**TypeScript + CSS imports.** The `import '@cascivo/react/styles.css'` (and
+`@cascivo/themes/all.css`) side-effect imports need ambient CSS-module types under
+`tsc --noEmit`, or they error with `TS2307` (`TS2882` under
+`noUncheckedSideEffectImports`). Add `src/vite-env.d.ts` with
+`/// <reference types="vite/client" />`, or `declare module '*.css'`. This is a
+type-only declaration — no runtime effect.
 
 ## See also
 

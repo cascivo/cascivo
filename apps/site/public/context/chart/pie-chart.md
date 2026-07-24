@@ -46,6 +46,30 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `labels`        | `boolean \| { format?: (v: number) => string; position?: string }` | No       | —       | Print each value as a label on the mark (collision-aware, decorative/aria-hidden).                                                        |
 | `onSelect`      | `(point: ChartPoint) => void`                                      | No       | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                                |
 
+## Object types
+
+### `PieChartDatum`
+
+One slice. Pass via the `data` prop.
+
+| Field   | Type     | Required | Description                                                                         |
+| ------- | -------- | -------- | ----------------------------------------------------------------------------------- |
+| `id`    | `string` | No       | Stable identity (used for legend toggle state).                                     |
+| `label` | `string` | Yes      | —                                                                                   |
+| `value` | `number` | Yes      | —                                                                                   |
+| `color` | `string` | No       | Any CSS color overriding the positional palette (--cascivo-chart-N) for this slice. |
+
+### `ChartPoint`
+
+Argument passed to the `tooltipFormat` callback.
+
+| Field     | Type               | Required | Description                                                              |
+| --------- | ------------------ | -------- | ------------------------------------------------------------------------ |
+| `label`   | `string`           | Yes      | Slice label.                                                             |
+| `value`   | `number \| string` | Yes      | —                                                                        |
+| `percent` | `number`           | No       | Share of the whole, 0–100. Used by the default "value (pct%)" formatter. |
+| `color`   | `string`           | No       | Resolved slice color (the default tooltip tints its text with this).     |
+
 ## Tokens
 
 - `--cascivo-chart-1`

@@ -26,6 +26,19 @@ export interface PropMeta {
   description?: string
 }
 
+export interface TypeFieldMeta {
+  name: string
+  type: string
+  required?: boolean
+  description?: string
+}
+
+export interface TypeDefMeta {
+  name: string
+  description?: string
+  fields: TypeFieldMeta[]
+}
+
 export interface ExampleMeta {
   title: string
   code: string
@@ -67,6 +80,7 @@ export interface ComponentMeta {
   variants?: string[]
   sizes?: string[]
   props?: PropMeta[]
+  typeDefs?: TypeDefMeta[]
   tokens?: string[]
   accessibility?: { role: string; wcag: string; keyboard?: string[] }
   examples?: ExampleMeta[]
@@ -339,6 +353,29 @@ export function buildComponentMarkdown(entry: RegistryEntry): string {
       )
     }
     lines.push('')
+  }
+
+  if (meta?.typeDefs && meta.typeDefs.length > 0) {
+    const esc = (s: string) => s.replace(/\|/g, '\\|')
+    lines.push('## Object types')
+    lines.push('')
+    for (const def of meta.typeDefs) {
+      lines.push(`### \`${def.name}\``)
+      lines.push('')
+      if (def.description) {
+        lines.push(def.description)
+        lines.push('')
+      }
+      lines.push('| Field | Type | Required | Description |')
+      lines.push('|-------|------|----------|-------------|')
+      for (const f of def.fields) {
+        const desc = esc(f.description ?? '—')
+        lines.push(
+          `| \`${f.name}\` | \`${esc(f.type)}\` | ${f.required ? 'Yes' : 'No'} | ${desc} |`,
+        )
+      }
+      lines.push('')
+    }
   }
 
   if (meta?.tokens && meta.tokens.length > 0) {

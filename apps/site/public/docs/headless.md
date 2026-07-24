@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/headless.md
-  registry v0.11.0 · generated 2026-07-23
+  registry v0.11.0 · generated 2026-07-24
 -->
 
 # Headless primitives (`@cascivo/core`)
@@ -89,11 +89,14 @@ computed prop bag — `href`, `className`, `onClick`, `aria-current`, active `da
 `onClick` only `preventDefault`s a disabled item, so a router keeps middle-click /
 open-in-new-tab.
 
-Import `setLinkComponent`/`getLinkComponent` from `@cascivo/react` on the prebuilt path
-(Path B) — it is re-exported there, so you never add `@cascivo/core` as a direct
-dependency. On the copy-paste path (Path A), `cascivo init` installs `@cascivo/core`, so
-`import { setLinkComponent } from '@cascivo/core'` works too; both resolve the same
-singleton.
+On the prebuilt path (Path B) import `setLinkComponent`/`getLinkComponent`/`LinkComponentProps`
+from **`@cascivo/react`** — they are re-exported there for exactly this reason. Do **not**
+import them from `@cascivo/core` on Path B: `@cascivo/core` is only a _transitive_ dependency
+of `@cascivo/react`, so `import … from '@cascivo/core'` is a phantom-dependency error
+(`MODULE_NOT_FOUND` under pnpm's strict `node_modules`, and a lint error under
+`no-extraneous-dependencies`) unless you add `@cascivo/core` to your own `package.json`. The
+`@cascivo/core` import is correct **only** on the copy-paste path (Path A), where `cascivo init`
+installs `@cascivo/core` as a direct dependency; both resolve the same singleton.
 
 The registered component receives the full computed prop bag (`href`, `className`,
 `aria-current`, `data-state`, `onClick`, …), so active styling and accessibility carry

@@ -155,7 +155,7 @@ The default `align-items: stretch` makes flex children fill the cross-axis. Sett
 When a wrapper element is needed purely for `data-theme` but must not affect grid or flex layout, use `display: contents`. CSS custom properties still inherit through it:
 
 ```tsx
-<div style={{ display: 'contents' }} data-theme={theme.value}>
+<div style={{ display: 'contents' }} data-theme={theme}>
   <AppShell>...</AppShell>
 </div>
 ```

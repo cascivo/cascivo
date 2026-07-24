@@ -579,6 +579,16 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('   required (see SSR SETUP below) and ships the full sheet (~273 KB / ~37 KB gzip).')
   lines.push('')
   lines.push(
+    '   TypeScript note: the bare `.css` side-effect imports above need ambient CSS-module types or',
+  )
+  lines.push(
+    '   `tsc --noEmit` errors with TS2307 (TS2882 under noUncheckedSideEffectImports). Add',
+  )
+  lines.push(
+    '   `src/vite-env.d.ts` with `/// <reference types="vite/client" />`, or `declare module \'*.css\'`.',
+  )
+  lines.push('')
+  lines.push(
     '   Dashboards / data viz: charts are a SEPARATE install — `pnpm add @cascivo/charts`, then',
   )
   lines.push(
@@ -968,7 +978,17 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     .sort((a, b) => b[1] - a[1])
     .map(([pkg, n]) => `${n} in ${pkg}`)
     .join(', ')
-  lines.push(`## Component index (${sorted.length} entries)`)
+  // Split the total so it reconciles with the "N components" figure elsewhere (README,
+  // docs) — those count registry components only; this index also folds in page blocks.
+  // Reconcile with the "N components" figure elsewhere (README/docs count exactly the
+  // registry components); this index additionally folds in the page blocks.
+  const indexComponentCount = registry.components.length
+  const indexFoldedBlocks = sorted.length - indexComponentCount
+  const indexLabel =
+    indexFoldedBlocks > 0
+      ? `${sorted.length} entries — ${indexComponentCount} components + ${indexFoldedBlocks} page blocks`
+      : `${sorted.length} entries`
+  lines.push(`## Component index (${indexLabel})`)
   lines.push('')
   if (breakdown) {
     lines.push(
