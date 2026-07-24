@@ -1,6 +1,6 @@
 # cascivo — The CSS-native, signal-driven, AI-first React design system
 
-_registry v0.11.0 · generated 2026-07-23 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
+_registry v0.11.0 · generated 2026-07-24 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
@@ -87,6 +87,10 @@ import { Button, Card } from '@cascivo/react'
    CSS note: with a bundler (CSR) per-component CSS auto-includes and tree-shakes, so the
    `@cascivo/react/styles.css` line above is optional; under Vite SSR / TanStack Start it is
    required (see SSR SETUP below) and ships the full sheet (~273 KB / ~37 KB gzip).
+
+   TypeScript note: the bare `.css` side-effect imports above need ambient CSS-module types or
+   `tsc --noEmit` errors with TS2307 (TS2882 under noUncheckedSideEffectImports). Add
+   `src/vite-env.d.ts` with `/// <reference types="vite/client" />`, or `declare module '*.css'`.
 
    Dashboards / data viz: charts are a SEPARATE install — `pnpm add @cascivo/charts`, then
    `import { AreaChart } from '@cascivo/charts'`. `@cascivo/react` exports no charts. The code
@@ -306,7 +310,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (204 entries)
+## Component index (204 entries — 192 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -756,4 +760,4 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [User](https://cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
-_Generated: 2026-07-23 from registry v0.11.0_
+_Generated: 2026-07-24 from registry v0.11.0_

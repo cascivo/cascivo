@@ -92,7 +92,8 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items, flyout menus for groups
 
 ```jsx
-<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
+import { Home } from '@cascivo/icons'
+;<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
 ```
 
 ### Expand on hover

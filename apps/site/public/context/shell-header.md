@@ -45,6 +45,42 @@ role="banner" landmarks the header; nav dropdowns expose aria-expanded, icon act
 | `skipToContentHref` | `string \| false`               | No       | '#cascade-main' | Skip-link target; false disables the link                                                |
 | `labels`            | `ShellHeaderLabels`             | No       | —               | i18n overrides for built-in strings                                                      |
 
+## Object types
+
+### `ShellHeaderAction`
+
+A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead.
+
+| Field     | Type         | Required | Description                               |
+| --------- | ------------ | -------- | ----------------------------------------- |
+| `id`      | `string`     | Yes      | Stable key for the action.                |
+| `label`   | `string`     | Yes      | Accessible label (aria-label / tooltip).  |
+| `icon`    | `ReactNode`  | Yes      | Icon node, e.g. an @cascivo/icons glyph.  |
+| `active`  | `boolean`    | No       | Renders aria-pressed for a toggle action. |
+| `onClick` | `() => void` | No       | Invoked when the action is activated.     |
+
+### `ShellHeaderBrand`
+
+Structured brand for the `brand` prop (or pass any ReactNode instead).
+
+| Field    | Type     | Required | Description                                              |
+| -------- | -------- | -------- | -------------------------------------------------------- |
+| `prefix` | `string` | No       | Muted text before the name (e.g. an org).                |
+| `name`   | `string` | Yes      | Product/app name.                                        |
+| `href`   | `string` | No       | Link target for the brand (routed via setLinkComponent). |
+
+### `ShellHeaderNavItem`
+
+A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`).
+
+| Field     | Type                                                  | Required | Description                                            |
+| --------- | ----------------------------------------------------- | -------- | ------------------------------------------------------ |
+| `label`   | `string`                                              | Yes      | Visible nav label.                                     |
+| `href`    | `string`                                              | No       | Link target (link items). Routed via setLinkComponent. |
+| `items`   | `{ label: string; href: string; active?: boolean }[]` | No       | Dropdown menu entries (menu items).                    |
+| `active`  | `boolean`                                             | No       | Marks the current nav entry (aria-current).            |
+| `onClick` | `(e: MouseEvent<HTMLAnchorElement>) => void`          | No       | Intercept navigation (e.g. a SPA section switch).      |
+
 ## Tokens
 
 - `--cascivo-shell-header-block-size`
@@ -62,7 +98,8 @@ role="banner" landmarks the header; nav dropdowns expose aria-expanded, icon act
 Brand with prefix, dropdown nav, global icon action
 
 ```jsx
-<ShellHeader
+import { Bell } from '@cascivo/icons'
+;<ShellHeader
   brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },

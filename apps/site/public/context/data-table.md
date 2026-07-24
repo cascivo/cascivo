@@ -61,6 +61,30 @@ Built on a native <table> with proper header semantics; sortable headers expose 
 | `labels`            | `DataTableLabels`                                                                        | No       | —        | Overrides for the component’s user-visible strings (i18n).                      |
 | `className`         | `string`                                                                                 | No       | —        | Additional CSS class names merged onto the root element.                        |
 
+## Object types
+
+### `Column<Row>`
+
+A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`.
+
+| Field      | Type                      | Required | Description                                                                                               |
+| ---------- | ------------------------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `key`      | `string`                  | Yes      | Row property this column reads, and the sort key.                                                         |
+| `header`   | `string`                  | Yes      | Column header label.                                                                                      |
+| `sortable` | `boolean`                 | No       | When true, the header toggles sort on this column.                                                        |
+| `render`   | `(row: Row) => ReactNode` | No       | Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`. |
+| `align`    | `'start' \| 'end'`        | No       | Cell/text alignment. Use 'end' for numbers and timestamps.                                                |
+| `width`    | `string`                  | No       | Explicit column width (any CSS length, e.g. `120px`).                                                     |
+
+### `SortState`
+
+Controlled/initial sort state, used by `sort`, `defaultSort`, `onSortChange`.
+
+| Field       | Type              | Required | Description            |
+| ----------- | ----------------- | -------- | ---------------------- |
+| `key`       | `string`          | Yes      | The sorted column key. |
+| `direction` | `'asc' \| 'desc'` | Yes      | Sort direction.        |
+
 ## Tokens
 
 - `--cascivo-color-surface`
@@ -101,6 +125,33 @@ Built on a native <table> with proper header semantics; sortable headers expose 
     { name: 'Alice', role: 'Engineer' },
     { name: 'Bob', role: 'Designer' },
   ]}
+  getRowId={(r) => r.name}
+/>
+```
+
+### Custom cell content with Column.render
+
+Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).
+
+```jsx
+<DataTable
+  columns={[
+    { key: 'name', header: 'Project', sortable: true },
+    {
+      key: 'status',
+      header: 'Status',
+      render: (row) => (
+        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
+      ),
+    },
+    {
+      key: 'updated',
+      header: 'Updated',
+      align: 'end',
+      render: (row) => new Date(row.updated).toLocaleDateString(),
+    },
+  ]}
+  rows={rows}
   getRowId={(r) => r.name}
 />
 ```

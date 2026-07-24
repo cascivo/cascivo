@@ -18,7 +18,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'x',
-      description: 'Accessor returning the category label for a datum.',
+      description:
+        'Accessor returning the **category label** for a datum. BarChart uses a categorical **band** scale, so `x` returns a `string` — this differs from LineChart/AreaChart, whose `x` returns `number | Date` for a continuous/time scale. For a time-based bar chart, format the date to a label in the accessor (e.g. `x={(d) => d.day.toLocaleDateString()}`). For continuous or time-series data, prefer LineChart/AreaChart.',
       type: '(d: Datum) => string',
       required: true,
     },
@@ -238,6 +239,24 @@ export const meta: ComponentMeta = {
 
 const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]
 <BarChart series={series} x={d => d.x} y={d => d.y} title="Sales" />`,
+    },
+    {
+      title: 'Date-based categories (format the Date in the accessor)',
+      description:
+        "BarChart's x is a category string, not a Date. When your data is date-keyed, format the Date to a label string inside the x accessor — do NOT return the Date itself (that is a type error; only LineChart/AreaChart take a Date x).",
+      code: `import { BarChart } from '@cascivo/charts'
+
+const series = [{ id: 'signups', label: 'Signups', data: [
+  { day: new Date('2026-07-01'), count: 12 },
+  { day: new Date('2026-07-02'), count: 18 },
+] }]
+<BarChart
+  series={series}
+  x={(d) => d.day.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+  y={(d) => d.count}
+  xLabelEvery={2}
+  title="Daily signups"
+/>`,
     },
     {
       title: 'Stacked bar from row-oriented data',

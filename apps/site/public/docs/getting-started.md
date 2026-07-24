@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/getting-started.md
-  registry v0.11.0 · generated 2026-07-23
+  registry v0.11.0 · generated 2026-07-24
 -->
 
 # Getting started with cascivo
@@ -207,6 +207,15 @@ is small: the bulk is the shared token layer, not the theme files. (For scale: t
 dwarfs any theme choice — if you measured a ~287 KB CSS chunk, that is it, not the
 themes bundle.)
 
+> **TypeScript setup for the CSS imports.** A bare CSS side-effect import
+> (`import '@cascivo/react/styles.css'`) has no types on its own, so a `tsc --noEmit`
+> step fails with `TS2307: Cannot find module …` (or `TS2882` under
+> `noUncheckedSideEffectImports`). Add Vite's ambient types once — create
+> `src/vite-env.d.ts` containing `/// <reference types="vite/client" />` — or, if you
+> don't use `vite/client`, declare the module explicitly with `declare module '*.css'`.
+> `npx cascivo create` writes this for you; the manual setup doesn't. See
+> [TROUBLESHOOTING.md](/docs/troubleshooting.md#tsc-fails-on-the-css-import-cannot-find-module-cascivoreactstylescss-ts2307--ts2882).
+
 ### Theme export → `data-theme` value
 
 **The export name _is_ the attribute value:** import `@cascivo/themes/<name>` and
@@ -240,15 +249,13 @@ For a user-selectable theme, use the runtime from `@cascivo/react`:
 import { ThemeProvider, useTheme } from '@cascivo/react'
 
 function ThemeToggle() {
-  // useTheme() returns a TUPLE [themeSignal, setTheme] — the first element is a
-  // signal, so read `theme.value`. It is NOT a `{ theme, setTheme }` object
-  // (that's next-themes' shape). The hook calls useSignals() for you.
+  // useTheme() returns a TUPLE [theme, setTheme] where `theme` is a plain string
+  // (the current theme name) — use it directly, not `theme.value`. It is NOT a
+  // `{ theme, setTheme }` object (that's next-themes' shape). The hook calls
+  // useSignals() for you, so this re-renders on theme changes. For signal-native
+  // code (computed()/effect()/Preact) use themeSignal() instead.
   const [theme, setTheme] = useTheme()
-  return (
-    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>
-      {theme.value}
-    </button>
-  )
+  return <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme}</button>
 }
 ```
 

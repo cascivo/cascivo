@@ -165,6 +165,60 @@ export const meta: ComponentMeta = {
       required: false,
     },
   ],
+  typeDefs: [
+    {
+      name: 'Column<Row>',
+      description:
+        'A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`.',
+      fields: [
+        {
+          name: 'key',
+          type: 'string',
+          required: true,
+          description: 'Row property this column reads, and the sort key.',
+        },
+        { name: 'header', type: 'string', required: true, description: 'Column header label.' },
+        {
+          name: 'sortable',
+          type: 'boolean',
+          required: false,
+          description: 'When true, the header toggles sort on this column.',
+        },
+        {
+          name: 'render',
+          type: '(row: Row) => ReactNode',
+          required: false,
+          description:
+            'Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`.',
+        },
+        {
+          name: 'align',
+          type: "'start' | 'end'",
+          required: false,
+          description: "Cell/text alignment. Use 'end' for numbers and timestamps.",
+        },
+        {
+          name: 'width',
+          type: 'string',
+          required: false,
+          description: 'Explicit column width (any CSS length, e.g. `120px`).',
+        },
+      ],
+    },
+    {
+      name: 'SortState',
+      description: 'Controlled/initial sort state, used by `sort`, `defaultSort`, `onSortChange`.',
+      fields: [
+        { name: 'key', type: 'string', required: true, description: 'The sorted column key.' },
+        {
+          name: 'direction',
+          type: "'asc' | 'desc'",
+          required: true,
+          description: 'Sort direction.',
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-color-surface',
     '--cascivo-color-bg-subtle',
@@ -207,6 +261,31 @@ export const meta: ComponentMeta = {
     { name: 'Alice', role: 'Engineer' },
     { name: 'Bob', role: 'Designer' },
   ]}
+  getRowId={(r) => r.name}
+/>`,
+    },
+    {
+      title: 'Custom cell content with Column.render',
+      description:
+        'Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).',
+      code: `<DataTable
+  columns={[
+    { key: 'name', header: 'Project', sortable: true },
+    {
+      key: 'status',
+      header: 'Status',
+      render: (row) => (
+        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
+      ),
+    },
+    {
+      key: 'updated',
+      header: 'Updated',
+      align: 'end',
+      render: (row) => new Date(row.updated).toLocaleDateString(),
+    },
+  ]}
+  rows={rows}
   getRowId={(r) => r.name}
 />`,
     },

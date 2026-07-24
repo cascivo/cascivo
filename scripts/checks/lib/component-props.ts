@@ -123,6 +123,92 @@ function propSetsFor(decl: InterfaceDeclaration | TypeAliasDeclaration): PropSet
 }
 
 /**
+ * For the typedefs-parity check: map each OWN prop of `<propsTypeName>` whose
+ * type is a **repo-declared named object with fields** to that type's name
+ * (e.g. `columns` → `Column`, `sort` → `SortState`, `actions` → `ShellHeaderAction`).
+ *
+ * Unwraps `X[]` and `X | undefined`; a prop is included only when a single
+ * object arm remains that (a) has ≥1 property and no call signature, (b) is named
+ * (not an anonymous `{ … }` inline literal — those are already expanded in the
+ * manifest's type string), and (c) is declared inside this repo (excludes
+ * `ReactNode`, `CSSProperties`, `RefObject`, and every other node_modules type).
+ * Returns `null` when the props type can't be resolved (same as `resolvePropSets`).
+ */
+export function resolveNamedObjectProps(
+  tsxRelPaths: string[],
+  propsTypeName: string,
+): Map<string, string> | null {
+  const project = getProject()
+  for (const rel of tsxRelPaths) {
+    const abs = join(REPO_ROOT, rel)
+    let sf = project.getSourceFile(abs)
+    if (!sf) {
+      try {
+        sf = project.addSourceFileAtPath(abs)
+      } catch {
+        continue
+      }
+    }
+    const iface = sf.getInterface(propsTypeName)
+    const alias = sf.getTypeAlias(propsTypeName)
+    const decl = iface?.isExported() ? iface : alias?.isExported() ? alias : undefined
+    if (!decl) continue
+    return namedObjectPropsFor(decl)
+  }
+  return null
+}
+
+function namedObjectPropsFor(
+  decl: InterfaceDeclaration | TypeAliasDeclaration,
+): Map<string, string> {
+  const out = new Map<string, string>()
+  const own = ownMembers(decl)
+  const propsType = decl.getType()
+  for (const name of own) {
+    const sym = propsType.getProperty(name)
+    if (!sym) continue
+    const typeName = namedObjectTypeName(sym.getTypeAtLocation(decl))
+    if (typeName) out.set(name, typeName)
+  }
+  return out
+}
+
+/** The repo-declared object type name for a prop type, or null. */
+function namedObjectTypeName(rawType: import('ts-morph').Type): string | null {
+  // Unwrap `X[]`.
+  let t = rawType
+  if (t.isArray()) {
+    const el = t.getArrayElementType()
+    if (!el) return null
+    t = el
+  }
+  // Unwrap `X | undefined | null` down to a single non-nullish arm.
+  if (t.isUnion()) {
+    const arms = t.getUnionTypes().filter((a) => !a.isUndefined() && !a.isNull())
+    if (arms.length !== 1) return null // multiple arms / literal unions → not a single object
+    t = arms[0]!
+    if (t.isArray()) {
+      const el = t.getArrayElementType()
+      if (!el) return null
+      t = el
+    }
+  }
+  if (!t.isObject() || t.isArray()) return null
+  if (t.getCallSignatures().length > 0 || t.getConstructSignatures().length > 0) return null
+  if (t.getProperties().length === 0) return null
+  const sym = t.getAliasSymbol() ?? t.getSymbol()
+  const name = sym?.getName()
+  if (!name || name === '__type' || name === '__object') return null // anonymous inline literal
+  if (!/^[A-Z][A-Za-z0-9]*$/.test(name)) return null
+  // i18n string bags are documented via the i18n system, not per-component typeDefs.
+  if (name.endsWith('Labels')) return null
+  const decls = sym?.getDeclarations() ?? []
+  const inRepo = decls.some((d) => !d.getSourceFile().getFilePath().includes('node_modules'))
+  if (!inRepo) return null // ReactNode, CSSProperties, RefObject, … live in node_modules
+  return name
+}
+
+/**
  * Test-only: resolve prop sets from an in-memory source string. Used by the
  * seeded mutation test to exercise the directional logic without a fixture file.
  */

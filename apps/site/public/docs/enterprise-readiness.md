@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/enterprise-readiness.md
-  registry v0.11.0 · generated 2026-07-23
+  registry v0.11.0 · generated 2026-07-24
 -->
 
 # Enterprise readiness: frictions → shipped primitives
@@ -134,10 +134,10 @@ function App() {
 }
 
 function ThemeToggle() {
-  const [theme, setTheme] = useTheme() // reactive [signal, setter]; the hook calls useSignals() for you
+  const [theme, setTheme] = useTheme() // [themeName: string, setter]; the hook calls useSignals() for you
   return (
-    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>
-      {theme.value === 'dark' ? '☀︎' : '☾'}
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      {theme === 'dark' ? '☀︎' : '☾'}
     </button>
   )
 }

@@ -74,6 +74,12 @@ function claimSurfaces(): string[] {
     ...collectFiles(join(REPO_ROOT, 'apps/site/src/marketing'), tsx),
     ...collectFiles(join(REPO_ROOT, 'apps/site/src/pages'), tsx),
   ]
+  // Top-level hand-authored guides only — NOT docs/internal|plans|specs (historical
+  // reports/plans quote point-in-time counts on purpose). Non-recursive by design.
+  for (const entry of readdirSync(join(REPO_ROOT, 'docs'))) {
+    if (extname(entry) !== '.md') continue
+    files.push(join(REPO_ROOT, 'docs', entry))
+  }
   for (const dir of readdirSync(join(REPO_ROOT, 'packages'))) {
     const body = join(REPO_ROOT, 'packages', dir, 'readme.body.md')
     try {

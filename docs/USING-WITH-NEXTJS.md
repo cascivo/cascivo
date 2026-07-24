@@ -126,6 +126,28 @@ repo: source is copied to `outputDir` (default `src/components/ui`) with
 `'use client'` already in the source files. Import from there instead of
 `@cascivo/react`; the theming and boundary rules above are identical.
 
+## Client-side routing for nav components
+
+cascivo's config-driven nav (`SideNav`, `ShellHeader`, `Header`, `Breadcrumb`, …) renders
+plain `<a href>` by default. To route those links through Next.js `<Link>` — keeping
+client-side transitions and prefetching — register the link component once at app start
+(a module singleton; no provider). Do it in a small client component mounted in your root
+layout:
+
+```tsx
+'use client'
+import { setLinkComponent } from '@cascivo/react'
+import Link from 'next/link'
+
+// next/link already takes `href`, so the cascivo prop bag maps 1:1.
+setLinkComponent(Link)
+```
+
+Import `setLinkComponent` (and the `LinkComponentProps` type, if you write a custom adapter)
+from **`@cascivo/react`**, not `@cascivo/core` — see the [phantom-dependency note in
+HEADLESS.md](./HEADLESS.md#router-integration--client-side-nav-links). After this, every
+`href`-based nav item navigates via the router and inherits its prefetching.
+
 ## Naming collisions with Next.js globals
 
 Two cascivo exports shadow Next.js modules — alias them on import:

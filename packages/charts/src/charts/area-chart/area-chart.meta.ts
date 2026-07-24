@@ -19,7 +19,7 @@ export const meta: ComponentMeta = {
       type: '(d: Datum) => number | Date',
       required: true,
       description:
-        'X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart).',
+        'X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart.',
     },
     {
       name: 'y',

@@ -1,6 +1,6 @@
 {
   "version": "0.11.0",
-  "generatedAt": "2026-07-23",
+  "generatedAt": "2026-07-24",
   "components": [
     {
       "name": "accordion",
@@ -4677,6 +4677,68 @@
             "required": false
           }
         ],
+        "typeDefs": [
+          {
+            "name": "Column<Row>",
+            "description": "A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`.",
+            "fields": [
+              {
+                "name": "key",
+                "type": "string",
+                "required": true,
+                "description": "Row property this column reads, and the sort key."
+              },
+              {
+                "name": "header",
+                "type": "string",
+                "required": true,
+                "description": "Column header label."
+              },
+              {
+                "name": "sortable",
+                "type": "boolean",
+                "required": false,
+                "description": "When true, the header toggles sort on this column."
+              },
+              {
+                "name": "render",
+                "type": "(row: Row) => ReactNode",
+                "required": false,
+                "description": "Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`."
+              },
+              {
+                "name": "align",
+                "type": "'start' | 'end'",
+                "required": false,
+                "description": "Cell/text alignment. Use 'end' for numbers and timestamps."
+              },
+              {
+                "name": "width",
+                "type": "string",
+                "required": false,
+                "description": "Explicit column width (any CSS length, e.g. `120px`)."
+              }
+            ]
+          },
+          {
+            "name": "SortState",
+            "description": "Controlled/initial sort state, used by `sort`, `defaultSort`, `onSortChange`.",
+            "fields": [
+              {
+                "name": "key",
+                "type": "string",
+                "required": true,
+                "description": "The sorted column key."
+              },
+              {
+                "name": "direction",
+                "type": "'asc' | 'desc'",
+                "required": true,
+                "description": "Sort direction."
+              }
+            ]
+          }
+        ],
         "tokens": [
           "--cascivo-color-surface",
           "--cascivo-color-bg-subtle",
@@ -4711,6 +4773,11 @@
           {
             "title": "Basic table",
             "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Name', sortable: true },\n    { key: 'role', header: 'Role' },\n  ]}\n  rows={[\n    { name: 'Alice', role: 'Engineer' },\n    { name: 'Bob', role: 'Designer' },\n  ]}\n  getRowId={(r) => r.name}\n/>"
+          },
+          {
+            "title": "Custom cell content with Column.render",
+            "description": "Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).",
+            "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Project', sortable: true },\n    {\n      key: 'status',\n      header: 'Status',\n      render: (row) => (\n        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>\n      ),\n    },\n    {\n      key: 'updated',\n      header: 'Updated',\n      align: 'end',\n      render: (row) => new Date(row.updated).toLocaleDateString(),\n    },\n  ]}\n  rows={rows}\n  getRowId={(r) => r.name}\n/>"
           },
           {
             "title": "Full-featured: selection, pagination, search",
@@ -13722,6 +13789,104 @@
             "description": "i18n overrides for built-in strings"
           }
         ],
+        "typeDefs": [
+          {
+            "name": "ShellHeaderAction",
+            "description": "A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true,
+                "description": "Stable key for the action."
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true,
+                "description": "Accessible label (aria-label / tooltip)."
+              },
+              {
+                "name": "icon",
+                "type": "ReactNode",
+                "required": true,
+                "description": "Icon node, e.g. an @cascivo/icons glyph."
+              },
+              {
+                "name": "active",
+                "type": "boolean",
+                "required": false,
+                "description": "Renders aria-pressed for a toggle action."
+              },
+              {
+                "name": "onClick",
+                "type": "() => void",
+                "required": false,
+                "description": "Invoked when the action is activated."
+              }
+            ]
+          },
+          {
+            "name": "ShellHeaderBrand",
+            "description": "Structured brand for the `brand` prop (or pass any ReactNode instead).",
+            "fields": [
+              {
+                "name": "prefix",
+                "type": "string",
+                "required": false,
+                "description": "Muted text before the name (e.g. an org)."
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": true,
+                "description": "Product/app name."
+              },
+              {
+                "name": "href",
+                "type": "string",
+                "required": false,
+                "description": "Link target for the brand (routed via setLinkComponent)."
+              }
+            ]
+          },
+          {
+            "name": "ShellHeaderNavItem",
+            "description": "A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`).",
+            "fields": [
+              {
+                "name": "label",
+                "type": "string",
+                "required": true,
+                "description": "Visible nav label."
+              },
+              {
+                "name": "href",
+                "type": "string",
+                "required": false,
+                "description": "Link target (link items). Routed via setLinkComponent."
+              },
+              {
+                "name": "items",
+                "type": "{ label: string; href: string; active?: boolean }[]",
+                "required": false,
+                "description": "Dropdown menu entries (menu items)."
+              },
+              {
+                "name": "active",
+                "type": "boolean",
+                "required": false,
+                "description": "Marks the current nav entry (aria-current)."
+              },
+              {
+                "name": "onClick",
+                "type": "(e: MouseEvent<HTMLAnchorElement>) => void",
+                "required": false,
+                "description": "Intercept navigation (e.g. a SPA section switch)."
+              }
+            ]
+          }
+        ],
         "tokens": [
           "--cascivo-shell-header-block-size",
           "--cascivo-color-surface",
@@ -13739,7 +13904,7 @@
         "examples": [
           {
             "title": "Console header",
-            "code": "<ShellHeader\n  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
+            "code": "import { Bell } from '@cascivo/icons'\n\n<ShellHeader\n  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
             "description": "Brand with prefix, dropdown nav, global icon action"
           }
         ],
@@ -13944,7 +14109,7 @@
           },
           {
             "title": "Icon rail",
-            "code": "<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />",
+            "code": "import { Home } from '@cascivo/icons'\n\n<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />",
             "description": "Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items, flyout menus for groups"
           },
           {
@@ -19999,7 +20164,7 @@
             "name": "x",
             "type": "(d: Datum) => number | Date",
             "required": true,
-            "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart)."
+            "description": "X-value accessor. Return a number for a numeric axis or a Date for a time axis (ticks format as dates, parity with LineChart). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart."
           },
           {
             "name": "y",
@@ -20257,7 +20422,7 @@
           },
           {
             "name": "x",
-            "description": "Accessor returning the category label for a datum.",
+            "description": "Accessor returning the **category label** for a datum. BarChart uses a categorical **band** scale, so `x` returns a `string` — this differs from LineChart/AreaChart, whose `x` returns `number | Date` for a continuous/time scale. For a time-based bar chart, format the date to a label in the accessor (e.g. `x={(d) => d.day.toLocaleDateString()}`). For continuous or time-series data, prefer LineChart/AreaChart.",
             "type": "(d: Datum) => string",
             "required": true
           },
@@ -20509,6 +20674,11 @@
           {
             "title": "Basic bar chart",
             "code": "import { BarChart } from '@cascivo/charts'\n\nconst series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]\n<BarChart series={series} x={d => d.x} y={d => d.y} title=\"Sales\" />"
+          },
+          {
+            "title": "Date-based categories (format the Date in the accessor)",
+            "description": "BarChart's x is a category string, not a Date. When your data is date-keyed, format the Date to a label string inside the x accessor — do NOT return the Date itself (that is a type error; only LineChart/AreaChart take a Date x).",
+            "code": "import { BarChart } from '@cascivo/charts'\n\nconst series = [{ id: 'signups', label: 'Signups', data: [\n  { day: new Date('2026-07-01'), count: 12 },\n  { day: new Date('2026-07-02'), count: 18 },\n] }]\n<BarChart\n  series={series}\n  x={(d) => d.day.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}\n  y={(d) => d.count}\n  xLabelEvery={2}\n  title=\"Daily signups\"\n/>"
           },
           {
             "title": "Stacked bar from row-oriented data",
@@ -22015,7 +22185,7 @@
             "name": "x",
             "type": "(d: Datum) => number | Date",
             "required": true,
-            "description": "X-value accessor"
+            "description": "X-value accessor. Return a `number` for a numeric axis or a `Date` for a time axis (ticks format as dates). This is a continuous scale — unlike BarChart, whose `x` returns a category `string` (band scale). For discrete categories, use BarChart."
           },
           {
             "name": "y",

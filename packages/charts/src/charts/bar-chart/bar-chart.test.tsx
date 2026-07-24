@@ -186,6 +186,53 @@ describe('BarChart', () => {
       expect(labels).toContain('Mar') // index 2 kept
       expect(labels).toContain('Apr') // last always kept
     })
+
+    it('auto-thins a crowded categorical axis without an explicit xLabelEvery', () => {
+      const cats = Array.from({ length: 14 }, (_, i) => ({ x: `Jul ${i + 1}`, y: i + 1 }))
+      const { container } = render(
+        <BarChart series={[{ id: 'd', label: 'Daily', data: cats }]} x={x} y={y} title="Daily" />,
+      )
+      const catLabels = [...container.querySelectorAll('svg text')]
+        .map((t) => t.textContent ?? '')
+        .filter((s) => s.startsWith('Jul '))
+      // 14 six-char labels don't fit the default width; the axis renders a thinned subset.
+      expect(catLabels.length).toBeGreaterThan(0)
+      expect(catLabels.length).toBeLessThan(14)
+    })
+  })
+
+  /** The main plot group is translated by (margins.left, margins.top=8). */
+  function plotLeftMargin(container: HTMLElement): number {
+    const g = [...container.querySelectorAll('g')].find((el) =>
+      /^translate\([\d.]+,8\)$/.test(el.getAttribute('transform') ?? ''),
+    )
+    return Number(g?.getAttribute('transform')?.match(/translate\(([\d.]+),/)?.[1])
+  }
+
+  describe('y-axis label margin (T-clip)', () => {
+    it('widens the left margin for wide y-axis tick labels', () => {
+      const small = render(<BarChart series={series} x={x} y={y} title="Small" />)
+      const wideY = render(
+        <BarChart
+          series={[
+            {
+              id: 'big',
+              label: 'Big',
+              data: [
+                { x: 'A', y: 40000 },
+                { x: 'B', y: 20000 },
+              ],
+            },
+          ]}
+          x={x}
+          y={y}
+          title="Big"
+        />,
+      )
+      // "40,000" needs more room than "20" → its plot origin shifts right of the 36px default.
+      expect(plotLeftMargin(wideY.container)).toBeGreaterThan(plotLeftMargin(small.container))
+      expect(plotLeftMargin(wideY.container)).toBeGreaterThan(36)
+    })
   })
 
   describe('tiny embedded sizing (T4)', () => {

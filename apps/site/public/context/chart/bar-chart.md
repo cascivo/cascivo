@@ -24,30 +24,73 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name            | Type                                                               | Required | Default  | Description                                                                                                                                                                                                              |
-| --------------- | ------------------------------------------------------------------ | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `series`        | `BarChartSeries<Datum>[]`                                          | Yes      | —        | Series array. Each series accepts an optional `color` (any CSS color) overriding the positional palette for that series/stacked layer.                                                                                   |
-| `x`             | `(d: Datum) => string`                                             | Yes      | —        | Accessor returning the category label for a datum.                                                                                                                                                                       |
-| `y`             | `(d: Datum) => number`                                             | Yes      | —        | Accessor returning the numeric value for a datum, applied to every series unless a series sets its own `y`. One category (x) domain per chart; give each series a `y` to plot different fields from one shared data row. |
-| `title`         | `string`                                                           | Yes      | —        | Title text for the component.                                                                                                                                                                                            |
-| `description`   | `string`                                                           | No       | —        | Supporting description text.                                                                                                                                                                                             |
-| `orientation`   | `'vertical' \| 'horizontal'`                                       | No       | vertical | Layout orientation of the component.                                                                                                                                                                                     |
-| `mode`          | `'grouped' \| 'stacked' \| 'percent'`                              | No       | grouped  | 'percent' stacks each category and normalizes it to 100%.                                                                                                                                                                |
-| `width`         | `number`                                                           | No       | —        | Width of the component.                                                                                                                                                                                                  |
-| `height`        | `number`                                                           | No       | 300      | Height of the component.                                                                                                                                                                                                 |
-| `xTicks`        | `number`                                                           | No       | —        | Approximate number of ticks on the x-axis.                                                                                                                                                                               |
-| `yTicks`        | `number`                                                           | No       | 5        | Approximate number of ticks on the y-axis.                                                                                                                                                                               |
-| `xLabelEvery`   | `number`                                                           | No       | —        | Show every Nth category label (always the last) to thin a crowded x-axis.                                                                                                                                                |
-| `legend`        | `boolean`                                                          | No       | —        | Whether to show the legend.                                                                                                                                                                                              |
-| `tooltip`       | `boolean`                                                          | No       | —        | Whether to show tooltips on hover.                                                                                                                                                                                       |
-| `tooltipFormat` | `(p: ChartPoint) => string`                                        | No       | —        | Custom tooltip formatter. The stacked default lists "label · total" + each non-zero layer in its color.                                                                                                                  |
-| `className`     | `string`                                                           | No       | —        | Additional CSS class names merged onto the root element.                                                                                                                                                                 |
-| `plain`         | `boolean`                                                          | No       | false    | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                    |
-| `annotations`   | `Annotation[]`                                                     | No       | —        | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).                                                                                                                           |
-| `labels`        | `boolean \| { format?: (v: number) => string; position?: string }` | No       | —        | Print each value as a label on the mark (collision-aware, decorative/aria-hidden).                                                                                                                                       |
-| `onSelect`      | `(point: ChartPoint) => void`                                      | No       | —        | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                                                                                                               |
-| `fill`          | `'solid' \| 'gradient' \| 'pattern'`                               | No       | solid    | Bar fill style — solid, a gradient, or a pattern.                                                                                                                                                                        |
-| `patternKind`   | `'dots' \| 'lines' \| 'cross'`                                     | No       | —        | Pattern motif when fill="pattern".                                                                                                                                                                                       |
+| Name            | Type                                                               | Required | Default  | Description                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------------- | ------------------------------------------------------------------ | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `series`        | `BarChartSeries<Datum>[]`                                          | Yes      | —        | Series array. Each series accepts an optional `color` (any CSS color) overriding the positional palette for that series/stacked layer.                                                                                                                                                                                                                                                                                       |
+| `x`             | `(d: Datum) => string`                                             | Yes      | —        | Accessor returning the **category label** for a datum. BarChart uses a categorical **band** scale, so `x` returns a `string` — this differs from LineChart/AreaChart, whose `x` returns `number \| Date` for a continuous/time scale. For a time-based bar chart, format the date to a label in the accessor (e.g. `x={(d) => d.day.toLocaleDateString()}`). For continuous or time-series data, prefer LineChart/AreaChart. |
+| `y`             | `(d: Datum) => number`                                             | Yes      | —        | Accessor returning the numeric value for a datum, applied to every series unless a series sets its own `y`. One category (x) domain per chart; give each series a `y` to plot different fields from one shared data row.                                                                                                                                                                                                     |
+| `title`         | `string`                                                           | Yes      | —        | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                                                |
+| `description`   | `string`                                                           | No       | —        | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `orientation`   | `'vertical' \| 'horizontal'`                                       | No       | vertical | Layout orientation of the component.                                                                                                                                                                                                                                                                                                                                                                                         |
+| `mode`          | `'grouped' \| 'stacked' \| 'percent'`                              | No       | grouped  | 'percent' stacks each category and normalizes it to 100%.                                                                                                                                                                                                                                                                                                                                                                    |
+| `width`         | `number`                                                           | No       | —        | Width of the component.                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `height`        | `number`                                                           | No       | 300      | Height of the component.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `xTicks`        | `number`                                                           | No       | —        | Approximate number of ticks on the x-axis.                                                                                                                                                                                                                                                                                                                                                                                   |
+| `yTicks`        | `number`                                                           | No       | 5        | Approximate number of ticks on the y-axis.                                                                                                                                                                                                                                                                                                                                                                                   |
+| `xLabelEvery`   | `number`                                                           | No       | —        | Show every Nth category label (always the last) to thin a crowded x-axis.                                                                                                                                                                                                                                                                                                                                                    |
+| `legend`        | `boolean`                                                          | No       | —        | Whether to show the legend.                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `tooltip`       | `boolean`                                                          | No       | —        | Whether to show tooltips on hover.                                                                                                                                                                                                                                                                                                                                                                                           |
+| `tooltipFormat` | `(p: ChartPoint) => string`                                        | No       | —        | Custom tooltip formatter. The stacked default lists "label · total" + each non-zero layer in its color.                                                                                                                                                                                                                                                                                                                      |
+| `className`     | `string`                                                           | No       | —        | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                                                     |
+| `plain`         | `boolean`                                                          | No       | false    | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                                        |
+| `annotations`   | `Annotation[]`                                                     | No       | —        | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).                                                                                                                                                                                                                                                                                                                               |
+| `labels`        | `boolean \| { format?: (v: number) => string; position?: string }` | No       | —        | Print each value as a label on the mark (collision-aware, decorative/aria-hidden).                                                                                                                                                                                                                                                                                                                                           |
+| `onSelect`      | `(point: ChartPoint) => void`                                      | No       | —        | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                                                                                                                                                                                                                                                                                                                   |
+| `fill`          | `'solid' \| 'gradient' \| 'pattern'`                               | No       | solid    | Bar fill style — solid, a gradient, or a pattern.                                                                                                                                                                                                                                                                                                                                                                            |
+| `patternKind`   | `'dots' \| 'lines' \| 'cross'`                                     | No       | —        | Pattern motif when fill="pattern".                                                                                                                                                                                                                                                                                                                                                                                           |
+
+## Object types
+
+### `BarChartSeries<Datum>`
+
+One series (a set of bars). Pass an array via the `series` prop.
+
+| Field   | Type               | Required | Description                                                                                          |
+| ------- | ------------------ | -------- | ---------------------------------------------------------------------------------------------------- |
+| `id`    | `string`           | Yes      | Stable series identity.                                                                              |
+| `label` | `string`           | Yes      | Legend + tooltip label.                                                                              |
+| `data`  | `readonly Datum[]` | Yes      | Row data read by the `x`/`y` accessors.                                                              |
+| `color` | `string`           | No       | Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer. |
+
+### `StackedRow`
+
+Row-oriented input to the `toStackedSeries(rows)` pivot helper.
+
+| Field      | Type               | Required | Description                                                                       |
+| ---------- | ------------------ | -------- | --------------------------------------------------------------------------------- |
+| `label`    | `string`           | Yes      | Category (one bar).                                                               |
+| `segments` | `StackedSegment[]` | Yes      | Per-layer values: { key, value, color? }. First non-undefined color per key wins. |
+
+### `StackedSegment`
+
+One layer of a stacked bar within a StackedRow.
+
+| Field   | Type     | Required | Description                                            |
+| ------- | -------- | -------- | ------------------------------------------------------ |
+| `key`   | `string` | Yes      | Layer key — becomes the series id/label (e.g. "Done"). |
+| `value` | `number` | Yes      | —                                                      |
+| `color` | `string` | No       | Optional CSS color for this layer.                     |
+
+### `ChartPoint`
+
+Argument passed to the `tooltipFormat` callback.
+
+| Field      | Type                                                          | Required | Description                                                                          |
+| ---------- | ------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------ |
+| `label`    | `string`                                                      | Yes      | Category label.                                                                      |
+| `value`    | `number \| string`                                            | Yes      | —                                                                                    |
+| `color`    | `string`                                                      | No       | Resolved mark color (the default tooltip tints its text with this).                  |
+| `segments` | `readonly { label: string; value: number; color?: string }[]` | No       | Per-layer breakdown for a stacked category; the default stacked tooltip lists these. |
 
 ## Tokens
 
@@ -69,6 +112,26 @@ import { BarChart } from '@cascivo/charts'
 
 const series = [{ id: 'a', label: 'Sales', data: [{x:'Jan',y:100},{x:'Feb',y:150}] }]
 <BarChart series={series} x={d => d.x} y={d => d.y} title="Sales" />
+```
+
+### Date-based categories (format the Date in the accessor)
+
+BarChart's x is a category string, not a Date. When your data is date-keyed, format the Date to a label string inside the x accessor — do NOT return the Date itself (that is a type error; only LineChart/AreaChart take a Date x).
+
+```jsx
+import { BarChart } from '@cascivo/charts'
+
+const series = [{ id: 'signups', label: 'Signups', data: [
+  { day: new Date('2026-07-01'), count: 12 },
+  { day: new Date('2026-07-02'), count: 18 },
+] }]
+<BarChart
+  series={series}
+  x={(d) => d.day.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+  y={(d) => d.count}
+  xLabelEvery={2}
+  title="Daily signups"
+/>
 ```
 
 ### Stacked bar from row-oriented data

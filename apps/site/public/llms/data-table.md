@@ -62,6 +62,30 @@ import { DataTable } from '@cascivo/react'
 | `labels`            | `DataTableLabels`                                                                        | no       | —          | Overrides for the component’s user-visible strings (i18n).                      |
 | `className`         | `string`                                                                                 | no       | —          | Additional CSS class names merged onto the root element.                        |
 
+## Object types
+
+### `Column<Row>`
+
+A single column definition. `render` is the escape hatch for custom cell content — return any ReactNode (a Badge, an icon + link, a formatted value); when omitted the cell shows `String(row[key])`.
+
+| Field      | Type                      | Required | Description                                                                                               |
+| ---------- | ------------------------- | -------- | --------------------------------------------------------------------------------------------------------- |
+| `key`      | `string`                  | yes      | Row property this column reads, and the sort key.                                                         |
+| `header`   | `string`                  | yes      | Column header label.                                                                                      |
+| `sortable` | `boolean`                 | no       | When true, the header toggles sort on this column.                                                        |
+| `render`   | `(row: Row) => ReactNode` | no       | Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`. |
+| `align`    | `'start' \| 'end'`        | no       | Cell/text alignment. Use 'end' for numbers and timestamps.                                                |
+| `width`    | `string`                  | no       | Explicit column width (any CSS length, e.g. `120px`).                                                     |
+
+### `SortState`
+
+Controlled/initial sort state, used by `sort`, `defaultSort`, `onSortChange`.
+
+| Field       | Type              | Required | Description            |
+| ----------- | ----------------- | -------- | ---------------------- |
+| `key`       | `string`          | yes      | The sorted column key. |
+| `direction` | `'asc' \| 'desc'` | yes      | Sort direction.        |
+
 ## Examples
 
 ### Basic table
@@ -76,6 +100,33 @@ import { DataTable } from '@cascivo/react'
     { name: 'Alice', role: 'Engineer' },
     { name: 'Bob', role: 'Designer' },
   ]}
+  getRowId={(r) => r.name}
+/>
+```
+
+### Custom cell content with Column.render
+
+Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).
+
+```tsx
+<DataTable
+  columns={[
+    { key: 'name', header: 'Project', sortable: true },
+    {
+      key: 'status',
+      header: 'Status',
+      render: (row) => (
+        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
+      ),
+    },
+    {
+      key: 'updated',
+      header: 'Updated',
+      align: 'end',
+      render: (row) => new Date(row.updated).toLocaleDateString(),
+    },
+  ]}
+  rows={rows}
   getRowId={(r) => r.name}
 />
 ```
@@ -139,4 +190,4 @@ table, data, grid, sort, filter, pagination, selection
 
 ---
 
-_Generated from registry v0.11.0 on 2026-07-23. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.11.0 on 2026-07-24. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

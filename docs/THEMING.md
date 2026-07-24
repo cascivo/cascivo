@@ -75,9 +75,9 @@ function App() {
 }
 
 function ThemeToggle() {
-  const [theme, setTheme] = useTheme() // reactive [signal, setter]; calls useSignals() for you
+  const [theme, setTheme] = useTheme() // [themeName: string, setter]; calls useSignals() for you
   return (
-    <button onClick={() => setTheme(theme.value === 'dark' ? 'light' : 'dark')}>{theme.value}</button>
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme}</button>
   )
 }
 ```

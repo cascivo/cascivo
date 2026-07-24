@@ -34,6 +34,7 @@ jobs:
         env:
           FRESHNESS_RETRIES: '5'
           FRESHNESS_SLEEP: '10'
+          FRESHNESS_CHECK_NPM: '1' # npm ↔ repo ↔ docs version parity (WS-11)
           # Remove once the docs.cascivo.com → cascivo.com 301 is configured
           # (docs/internal/OPS-HOSTS.md). Until then only the canonical host is asserted.
           FRESHNESS_SKIP_REDIRECT: '1'

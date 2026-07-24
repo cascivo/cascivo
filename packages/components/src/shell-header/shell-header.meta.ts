@@ -60,6 +60,91 @@ export const meta: ComponentMeta = {
       description: 'i18n overrides for built-in strings',
     },
   ],
+  typeDefs: [
+    {
+      name: 'ShellHeaderAction',
+      description:
+        'A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead.',
+      fields: [
+        { name: 'id', type: 'string', required: true, description: 'Stable key for the action.' },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+          description: 'Accessible label (aria-label / tooltip).',
+        },
+        {
+          name: 'icon',
+          type: 'ReactNode',
+          required: true,
+          description: 'Icon node, e.g. an @cascivo/icons glyph.',
+        },
+        {
+          name: 'active',
+          type: 'boolean',
+          required: false,
+          description: 'Renders aria-pressed for a toggle action.',
+        },
+        {
+          name: 'onClick',
+          type: '() => void',
+          required: false,
+          description: 'Invoked when the action is activated.',
+        },
+      ],
+    },
+    {
+      name: 'ShellHeaderBrand',
+      description: 'Structured brand for the `brand` prop (or pass any ReactNode instead).',
+      fields: [
+        {
+          name: 'prefix',
+          type: 'string',
+          required: false,
+          description: 'Muted text before the name (e.g. an org).',
+        },
+        { name: 'name', type: 'string', required: true, description: 'Product/app name.' },
+        {
+          name: 'href',
+          type: 'string',
+          required: false,
+          description: 'Link target for the brand (routed via setLinkComponent).',
+        },
+      ],
+    },
+    {
+      name: 'ShellHeaderNavItem',
+      description:
+        'A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`).',
+      fields: [
+        { name: 'label', type: 'string', required: true, description: 'Visible nav label.' },
+        {
+          name: 'href',
+          type: 'string',
+          required: false,
+          description: 'Link target (link items). Routed via setLinkComponent.',
+        },
+        {
+          name: 'items',
+          type: '{ label: string; href: string; active?: boolean }[]',
+          required: false,
+          description: 'Dropdown menu entries (menu items).',
+        },
+        {
+          name: 'active',
+          type: 'boolean',
+          required: false,
+          description: 'Marks the current nav entry (aria-current).',
+        },
+        {
+          name: 'onClick',
+          type: '(e: MouseEvent<HTMLAnchorElement>) => void',
+          required: false,
+          description: 'Intercept navigation (e.g. a SPA section switch).',
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-shell-header-block-size',
     '--cascivo-color-surface',
@@ -77,7 +162,9 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Console header',
-      code: `<ShellHeader
+      code: `import { Bell } from '@cascivo/icons'
+
+<ShellHeader
   brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[
     { label: 'Dashboard', href: '/dash', active: true },

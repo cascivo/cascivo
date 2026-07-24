@@ -76,3 +76,39 @@ export const DEFAULT_MARGINS = { top: 8, right: 8, bottom: 24, left: 36 } as con
 
 /** Margins for plain (chrome-less) charts — just enough to keep strokes unclipped. */
 export const PLAIN_MARGINS = { top: 2, right: 2, bottom: 2, left: 2 } as const
+
+/**
+ * Approximate advance width (px) of one axis-label character at the 11px axis font.
+ * A conservative average across digits, separators, and short month names — good
+ * enough to reserve room without measuring text (no DOM in SSR/tests).
+ */
+const AXIS_CHAR_PX = 6.5
+
+/**
+ * Left margin sized to the widest left-axis label so wide ticks (e.g. `40,000`)
+ * aren't clipped past the SVG's `0` origin. The default 36px only fits ~4 glyphs;
+ * a 6-glyph thousands label needs ~45px. `plain` charts keep their tiny margin.
+ */
+export function leftMarginForLabels(
+  leftAxisLabels: readonly string[],
+  plain: boolean | undefined,
+): number {
+  if (plain) return PLAIN_MARGINS.left
+  const widestChars = leftAxisLabels.reduce((m, s) => Math.max(m, s.length), 0)
+  const gutter = 12 // tick line (8px) + breathing room
+  return Math.max(DEFAULT_MARGINS.left, Math.ceil(widestChars * AXIS_CHAR_PX + gutter))
+}
+
+/**
+ * Stride for a crowded categorical (band) axis: render every Nth label so they stop
+ * colliding (e.g. 14 `Jul 1`…`Jul 14` dates in a narrow chart). Returns `undefined`
+ * when every label fits — callers pass that straight to `Axis.labelEvery` (all shown).
+ * An explicit `xLabelEvery` from the caller always overrides this.
+ */
+export function autoLabelStride(labels: readonly string[], axisLength: number): number | undefined {
+  if (labels.length <= 1 || axisLength <= 0) return undefined
+  const band = axisLength / labels.length
+  const widest = labels.reduce((m, s) => Math.max(m, s.length), 0) * AXIS_CHAR_PX + 6
+  if (band >= widest) return undefined
+  return Math.ceil(widest / band)
+}

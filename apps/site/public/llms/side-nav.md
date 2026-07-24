@@ -67,7 +67,8 @@ import { SideNav } from '@cascivo/react'
 Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items, flyout menus for groups
 
 ```tsx
-<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
+import { Home } from '@cascivo/icons'
+;<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
 ```
 
 ### Expand on hover
@@ -115,4 +116,4 @@ navigation, sidebar, app-shell, collapsible
 
 ---
 
-_Generated from registry v0.11.0 on 2026-07-23. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.11.0 on 2026-07-24. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

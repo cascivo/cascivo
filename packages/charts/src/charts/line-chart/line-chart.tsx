@@ -3,7 +3,7 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { useRef } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
 import { warnNonFinite } from '../../core/dev-warn'
-import { DEFAULT_MARGINS, PLAIN_MARGINS } from '../../core/use-chart'
+import { DEFAULT_MARGINS, leftMarginForLabels, PLAIN_MARGINS } from '../../core/use-chart'
 import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
@@ -178,8 +178,6 @@ export function LineChart<Datum = { x: number; y: number }>({
   // A right y-axis is added only when a series opts in; otherwise the layout and
   // scales are byte-identical to the single-axis default.
   const hasRight = !plain && series.some((s) => s.axis === 'right')
-  const baseMargins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
-  const margins = hasRight ? { ...baseMargins, right: 60 } : baseMargins
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
 
@@ -195,6 +193,16 @@ export function LineChart<Datum = { x: number; y: number }>({
   const rightY = hasRight ? finiteY(series.filter((s) => s.axis === 'right')) : []
   warnNonFinite('LineChart', () => series.flatMap((s) => s.data.map((d) => yFor(s)(d))))
   const hasData = allX.length > 0
+
+  // Size the left margin to the widest left y-axis tick label so wide values
+  // (e.g. "40,000") aren't clipped at the SVG's origin.
+  const leftAxisLabels = linearScale(yDomain(leftY), [0, 1])
+    .ticks(yTicks)
+    .map((v) => v.toLocaleString())
+  const baseMargins = plain
+    ? PLAIN_MARGINS
+    : { ...DEFAULT_MARGINS, left: leftMarginForLabels(leftAxisLabels, plain) }
+  const margins = hasRight ? { ...baseMargins, right: 60 } : baseMargins
 
   const usesDate = hasData && allX[0] instanceof Date
 
