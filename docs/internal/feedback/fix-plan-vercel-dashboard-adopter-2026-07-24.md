@@ -14,7 +14,8 @@ Per-workstream status (all **planned — not implemented**):
 **WS-5** CSS side-effect import TS setup — TS2882/`vite/client` (P1) · **WS-6** chart axis
 rendering bugs (P2) · **WS-7** component-count single source of truth (P2) · **WS-8** SideNav
 example missing icon import (P2) · **WS-9** discoverability minors — Switch→Toggle, CSS
-subpath naming (P3) · **WS-10** the anti-drift gate + status hygiene (P0, ties it together).
+subpath naming (P3) · **WS-10** the anti-drift gate + status hygiene (P0, ties it together) ·
+**WS-11** version-truth: npm ↔ repo ↔ deployed-docs parity (P1).
 
 > **Status hygiene (binding, see `README.md` WS-K):** whichever PR implements a workstream
 > below MUST update this header and the per-WS status in the same PR, and flip
@@ -450,14 +451,71 @@ point the 07-23 plan's header at it for its still-open items (TS2882/WS-C → WS
 
 ---
 
+## WS-11 — Version truth: npm ↔ repo ↔ deployed-docs parity (P1)
+
+**Root cause.** "Latest published version" is guaranteed at only one of the three links in the
+chain. Install snippets are unversioned so `pnpm add @cascivo/react` always resolves npm's
+`latest` (good, and it must stay that way). `deployed-freshness.sh` asserts the **deployed site**
+serves the version in `registry.json`. But **nothing asserts `registry.json.version` equals the
+version npm actually serves.** `registry.json.version` is the repo's about-to-ship number
+(currently `0.11.0`); if a package publish fails, or the docs deploy races the npm publish, the
+site can describe a version an adopter can't yet `pnpm add`, or serve stale prose for a version
+already on npm. The unversioned `@latest` install makes this sharper, not safer: the adopter
+always pulls the newest package, so any doc that lags the newest **published** API is wrong for
+everyone, immediately.
+
+Note this is distinct from WS-10: WS-10 keeps the docs matching the code **in the repo**; WS-11
+keeps the repo's version, npm's `latest`, and the deployed docs pinned to **one number** so
+"latest published" is a single, checkable fact.
+
+**Evidence.** Single version source already exists: `package.json:79` `version-packages` runs
+`changeset version && … pnpm regen`, and `package.json:81` `release` runs `changeset publish`.
+`registry.json.version` = `0.11.0` (repo). Freshness probe reads that repo number
+(`scripts/checks/deployed-freshness.sh:30`) and retries against the live host with propagation
+tolerance (`:40-60`) — but it never queries the npm registry. Install snippets are already
+unversioned (`docs/GETTING-STARTED.md:125`, `COMPATIBILITY.md:99`, `USING-WITH-PREACT.md:94`);
+the only pinned `@cascivo/*@x.y.z` strings are in `docs/internal/feedback/**` and `CHANGELOG.md`
+(correctly historical).
+
+**Fix.**
+1. **Single source, no hand-edited versions.** All package versions flow from changesets;
+   `registry.json.version` derives from that same bump (it already does via `regen` inside
+   `version-packages`). Any adopter-visible version string in prose (peer floors, badges, compat
+   tables) must be a **generated placeholder** sourced from `package.json`/`registry.json`, never
+   a literal — the `{{count.*}}` mechanism, applied to versions.
+2. **Guard against re-introducing pins.** Extend `scripts/checks/claims.test.ts` to fail if a
+   literal `@cascivo/*@\d+\.\d+` appears outside `docs/internal/feedback/**` and `**/CHANGELOG.md`.
+   This locks the "install snippets stay unversioned / no stale pins" property.
+3. **Atomic release ordering.** In the release workflow: publish to npm (`changeset publish`) →
+   deploy docs → run the parity probe. Fail the release if any leg disagrees, so a half-published
+   release never leaves the docs pointing at a version npm doesn't serve.
+4. **npm↔repo↔docs parity probe.** Extend `deployed-freshness.sh` (reuse its retry/propagation
+   loop) with an npm leg: assert `npm view @cascivo/react version` (npm's actual `latest`)
+   **==** `registry.json.version` **==** the deployed `llms.txt` version stamp. One number across
+   all three or the check fails. Run it in the `verify-site` post-deploy job **and** the daily
+   `docs-freshness` cron, so a post-hoc drift (CDN lag, partial publish, a package that failed to
+   publish while others succeeded) surfaces within a day rather than at the next adopter report.
+5. **Process half (already binding, WS-10c).** The publishing PR flips each workstream
+   `merged → published vX.Y.Z`. WS-11 is the automated enforcement of that human rule: the probe
+   *is* the machine check that "published" is true.
+
+**Verification.** A dry-run where `registry.json.version` is bumped but npm is not (or vice
+versa) must fail the probe; a normal release where all three agree must pass. `pnpm meta:check`
+/ `git diff --exit-code` stays green after the `claims.test.ts` extension.
+
+**Status:** planned — not implemented.
+
+---
+
 ## Prioritization & sequencing
 
 1. **P0, do first (stop the active bleeding + build the gate):** WS-1 (useTheme docs),
    WS-2 (typeDefs + guard), WS-10 (doctest + parity gate). WS-10a should land with or right
    after WS-1 so WS-1 is locked by a test, not just edited.
 2. **P1:** WS-3 (chart type docs), WS-4 (router docs + phantom-dep), WS-5 (CSS/TS setup + the
-   long-unowned item). These are pure docs/manifest + one JSDoc hedge; low risk, high adopter
-   value.
+   long-unowned item), WS-11 (version-truth parity — its `claims.test.ts` guard can land early;
+   the release-workflow probe lands with the next release train). Mostly pure docs/manifest +
+   one JSDoc hedge + one CI leg; low risk, high adopter value.
 3. **P2:** WS-6 (chart rendering — the only real code work; needs tests + visual sweep),
    WS-7 (counts), WS-8 (SideNav icon import).
 4. **P3:** WS-9 (minors), foldable into WS-5's CSS note and the llms index.
@@ -474,7 +532,9 @@ field docs, `claims.test.ts` for counts, the charts tests for WS-6, the fixture 
 plan as a whole is done when an agent restricted to channels 1–5 on the **published** packages
 can build this exact Vercel dashboard — custom table cells, header actions, router-linked nav,
 date-based bar chart, typechecked CSS imports, correct `useTheme` — without reading `.d.ts` to
-discover any of it, and no doc it reads teaches an API the code no longer has.
+discover any of it, no doc it reads teaches an API the code no longer has, and every version an
+adopter sees (or gets from unversioned `pnpm add`) is the one number npm, the repo, and the
+deployed docs all agree on (WS-11).
 
 ## Enforcement summary (the guards that must exist when this is done)
 
@@ -486,4 +546,6 @@ discover any of it, and no doc it reads teaches an API the code no longer has.
 | Hardcoded/conflicting counts | extend `claims.test.ts` to llms entries + prose files | extend | 7 |
 | Chart labels clip/collide | charts DOM/snapshot tests | new | 6 |
 | CSS import fails typecheck | cold-adopter TS fixture (with/without ambient decl) | new/extend | 5 |
-| Status drifts from what shipped | `README.md` WS-K process | existing | 10c |
+| Docs describe a version npm doesn't serve | npm↔repo↔docs parity probe in `deployed-freshness.sh` + release ordering | extend | 11 |
+| Stale/pinned `@cascivo/*@x.y.z` in prose | extend `claims.test.ts` version-pin guard | extend | 11 |
+| Status drifts from what shipped | `README.md` WS-K process | existing | 10c, 11 |
