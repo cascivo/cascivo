@@ -955,6 +955,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Card: [
     {
+      name: 'actions',
+      required: false,
+    },
+    {
       name: 'variant',
       required: false,
       enum: ['default', 'outlined', 'elevated'],
@@ -3073,6 +3077,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'icon',
       required: false,
     },
@@ -3284,6 +3293,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'delta',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'deltaFormat',
+      required: false,
     },
     {
       name: 'deltaLabel',
@@ -5307,7 +5320,12 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'label',
-      required: true,
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
       primitives: ['string'],
     },
     {

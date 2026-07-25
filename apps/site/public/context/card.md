@@ -32,10 +32,11 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ## Props
 
-| Name      | Type                                    | Required | Default | Description                       |
-| --------- | --------------------------------------- | -------- | ------- | --------------------------------- |
-| `variant` | `'default' \| 'outlined' \| 'elevated'` | No       | default | Selects the visual style variant. |
-| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | No       | md      | Inner padding of the component.   |
+| Name      | Type                                    | Required | Default | Description                                                                                                                                                                                                                                            |
+| --------- | --------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `actions` | `ReactNode`                             | No       | —       | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card. |
+| `variant` | `'default' \| 'outlined' \| 'elevated'` | No       | default | Selects the visual style variant.                                                                                                                                                                                                                      |
+| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | No       | md      | Inner padding of the component.                                                                                                                                                                                                                        |
 
 ## Tokens
 

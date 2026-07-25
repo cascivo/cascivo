@@ -38,3 +38,28 @@ describe('Kpi', () => {
     expect(container.querySelector('[data-testid="icon"]')).toBeTruthy()
   })
 })
+
+describe('Kpi deltaFormat', () => {
+  it('defaults to a signed number (unchanged behaviour)', () => {
+    render(<Kpi label="Deploys" value={128} delta={25.6} />)
+    expect(screen.getByRole('img')).toHaveTextContent('+25.6')
+    expect(screen.getByRole('img')).not.toHaveTextContent('%')
+  })
+
+  it('percent appends the unit without rescaling (25.6 → +25.6%)', () => {
+    render(<Kpi label="Deploys" value={128} delta={25.6} deltaFormat="percent" />)
+    expect(screen.getByRole('img')).toHaveTextContent('+25.6%')
+  })
+
+  it('a function formatter owns the whole string', () => {
+    render(<Kpi label="Deploys" value={128} delta={25.6} deltaFormat={(d) => `${d} pts`} />)
+    expect(screen.getByRole('img')).toHaveTextContent('25.6 pts')
+  })
+
+  it('keeps the down arrow and destructive tone for a negative percent delta', () => {
+    render(<Kpi label="Deploys" value={128} delta={-4} deltaFormat="percent" />)
+    const trend = screen.getByRole('img')
+    expect(trend).toHaveTextContent('▼')
+    expect(trend).toHaveTextContent('-4%')
+  })
+})

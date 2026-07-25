@@ -131,16 +131,15 @@ matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
 `@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
 common mistake: the chart's screen-reader data-table fallback then renders visibly.
 
-SSR SETUP (Vite SSR / TanStack Start / Remix / workerd — READ THIS if you server-render): the
-prebuilt package imports per-component CSS as static `.css` side-effect imports, which a bare
-server ESM loader cannot load — an unconfigured SSR build throws `Unknown file extension ".css"`
-and silently falls back to client-only. Two required steps:
-  1. In vite.config: `ssr: { noExternal: [/^@cascivo\//] }` (or add the `cascivoSsr()`
-     plugin from `@cascivo/vite-plugin`) so Vite processes the CSS instead of the runtime.
-  2. Import `@cascivo/react/styles.css` once in the root route/entry (do NOT rely on the
-     per-component imports server-side). Full recipe: USING-WITH-VITE-SSR.md.
-Next.js App Router does NOT need this (its recipe imports the aggregate sheet in a Server
-Component); plain Vite CSR/SPA does NOT need it either. Only Vite *SSR* runtimes do.
+SSR (Vite SSR / TanStack Start / Remix / workerd): works with ZERO Vite config on
+`@cascivo/react` >= 0.10 — no `ssr.noExternal`, no plugin, no `<ClientOnly>` wrappers. The
+package ships a CSS-free copy of its module graph under the `node` export condition, so a
+server ESM loader never sees a `.css` import. Charts server-render and hydrate too.
+Import a theme once in your root route/entry for color: `@cascivo/themes/all.css` (or the
+all-in-one `@cascivo/react/styles.css`).
+ONLY on `@cascivo/react` < 0.10: an unconfigured SSR build throws `Unknown file extension
+".css"` — pin >= 0.10, or add `ssr: { noExternal: [/^@cascivo\//] }` (or the `cascivoSsr()`
+plugin from `@cascivo/vite-plugin`). Full recipe + the legacy path: USING-WITH-VITE-SSR.md.
 
 C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:
 
@@ -242,9 +241,9 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 ## Frameworks & browsers (summary; full matrix in COMPATIBILITY.md)
 
 - React 18/19, Next.js App Router (RSC), Vite (CSR), Astro islands, Preact 10 (preact/compat — verified).
-- Vite SSR / TanStack Start / Remix / workerd: supported, but add `ssr.noExternal: [/^@cascivo\//]`
-  (or the `cascivoSsr()` plugin) + import `@cascivo/react/styles.css` once. Without it the server
-  loader throws `Unknown file extension ".css"`. See USING-WITH-VITE-SSR.md.
+- Vite SSR / TanStack Start / Remix / workerd: supported with ZERO Vite config on >= 0.10
+  (import a theme once for color). Only on < 0.10 do you need `ssr.noExternal: [/^@cascivo\//]`
+  or the `cascivoSsr()` plugin. See USING-WITH-VITE-SSR.md.
 - Last 2 versions of Chrome/Firefox/Safari (requires @layer, @container, :has(), oklch()).
 - CSS @function is opt-in (`import '@cascivo/tokens/functions.css'`); not auto-loaded, so
   lightningcss / Tailwind v4 pipelines work by default.

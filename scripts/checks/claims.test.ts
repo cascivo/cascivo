@@ -148,3 +148,67 @@ describe('claims:check — hardcoded counts match reality', () => {
     }
   })
 })
+
+/**
+ * SSR-claim consistency (2026-07-25 plan, WS-8 / mechanism C).
+ *
+ * The same fact — "does an SSR build need `ssr.noExternal`?" — was stated independently in
+ * two places and drifted apart: `docs/USING-WITH-VITE-SSR.md` said SSR works with zero Vite
+ * config as of `@cascivo/react` 0.10 (true; an adopter server-rendered 0.11.1 with an
+ * untouched vite.config), while the `llms.txt` generator still told agents there were "two
+ * required steps". `llms.txt` is the file an agent is most likely to fetch as its single
+ * context source, so the stale copy was the one doing damage — new apps got dead config.
+ *
+ * A `noExternal` mention is fine; presenting it as unconditionally required is not. Every
+ * mention in an agent-facing surface must be version-gated.
+ */
+describe('claims:check — the SSR requirement is stated consistently', () => {
+  const AGENT_SURFACES = ['apps/site/public/llms.txt', 'docs/USING-WITH-VITE-SSR.md']
+
+  /** Phrasings that present noExternal as required with no version qualifier nearby. */
+  const IMPERATIVE = [
+    /Two required steps/i,
+    /you must add `?ssr\.noExternal/i,
+    /supported, but add `?ssr\.noExternal/i,
+  ]
+
+  it('no agent-facing surface presents ssr.noExternal as unconditionally required', () => {
+    const failures: string[] = []
+    for (const rel of AGENT_SURFACES) {
+      let content: string
+      try {
+        content = readFileSync(join(REPO_ROOT, rel), 'utf8')
+      } catch {
+        continue
+      }
+      for (const pattern of IMPERATIVE) {
+        const m = pattern.exec(content)
+        if (!m) continue
+        // Scope the version gate to the ENCLOSING PARAGRAPH, not a byte window: a gate that
+        // happens to sit a few hundred characters away in a different paragraph does not
+        // qualify the instruction a reader is following here.
+        const start = content.lastIndexOf('\n\n', m.index)
+        const end = content.indexOf('\n\n', m.index)
+        const paragraph = content.slice(start === -1 ? 0 : start, end === -1 ? content.length : end)
+        if (/0\.10/.test(paragraph)) continue
+        failures.push(`${rel}: "${m[0]}" presents ssr.noExternal as required with no version gate`)
+      }
+    }
+    assert.deepEqual(
+      failures,
+      [],
+      `SSR setup instructions must lead with the current truth (zero config on ` +
+        `@cascivo/react >= 0.10) and gate the noExternal recipe to older versions:\n  ${failures.join('\n  ')}`,
+    )
+  })
+
+  it('llms.txt states the zero-config SSR fact the guide states', () => {
+    const txt = readFileSync(join(REPO_ROOT, 'apps/site/public/llms.txt'), 'utf8')
+    assert.match(
+      txt,
+      /ZERO Vite config/i,
+      'llms.txt must carry the zero-config SSR headline — it is the single-fetch context ' +
+        'source for most agents, so it cannot be the surface that lags.',
+    )
+  })
+})

@@ -57,7 +57,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
-      description: 'Text label for the control.',
+      description:
+        'Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS).',
       type: 'string',
       required: false,
       default: 'Search',
@@ -78,7 +79,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'id',
-      description: 'Id applied to the root element (auto-generated when omitted).',
+      description:
+        'Id for the input, wired to the label. Auto-generated with useId when omitted — SSR-safe and stable across hydration.',
       type: 'string',
       required: false,
     },

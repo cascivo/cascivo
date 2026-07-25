@@ -1,4 +1,5 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -31,32 +32,123 @@ function findRegistry(startDir: string): string | null {
   return null
 }
 
+const CONTRACT_URL = 'https://cascivo.com/audit-contract.json'
+
 /**
- * Load the published cascade contract from local generated artifacts:
- * - token catalog (apps/site/public/tokens.catalog.json) → value→token map
- * - registry.json (repo root) → component prop index
- * - context bundle (apps/site/public/context.json) → which components have chrome text
+ * Download the contract, caching it by version so a second run is offline-fast. Returns
+ * null on any failure — the audit must never hard-depend on the network.
+ */
+async function fetchContract(report: (source: string) => void): Promise<Contract | null> {
+  try {
+    const response = await fetch(CONTRACT_URL, { signal: AbortSignal.timeout(5000) })
+    if (!response.ok) return null
+    const bundled = (await response.json()) as BundledContract
+    try {
+      const target = cachePath(bundled.version)
+      mkdirSync(dirname(target), { recursive: true })
+      writeFileSync(target, JSON.stringify(bundled))
+    } catch {
+      // A read-only cache dir is not a reason to fail the audit.
+    }
+    report(`network: ${CONTRACT_URL}`)
+    return fromBundled(bundled)
+  } catch {
+    return null
+  }
+}
+
+/** The reduced contract shipped inside this package (scripts/registry/audit-contract.ts). */
+interface BundledContract {
+  version: string
+  tokens: { name: string; resolvedDefault: string | null }[]
+  components: { name: string; props: { name: string; type: string; required: boolean }[] }[]
+  content: string[]
+}
+
+/** Adapt the bundled shape to `buildContract`'s three-artifact input. */
+function fromBundled(bundled: BundledContract): Contract {
+  return buildContract({
+    catalog: { tokens: bundled.tokens },
+    registry: { components: bundled.components.map((c) => ({ meta: c })) },
+    context: { components: bundled.content.map((name) => ({ name, intent: { content: true } })) },
+  })
+}
+
+/** Where the network fallback caches a downloaded contract. */
+function cachePath(version: string): string {
+  const base = process.env['XDG_CACHE_HOME'] ?? join(process.env['HOME'] ?? tmpdir(), '.cache')
+  return join(base, 'cascivo', `audit-contract-${version}.json`)
+}
+
+/**
+ * Load the cascade contract. Resolution order, first hit wins:
+ *
+ *   1. an explicit path (`--contract <file>` / `options.contractPath`)
+ *   2. the dev-monorepo artifacts (`apps/site/public/…` + `registry.json`)
+ *   3. the contract bundled in this package  ← what makes `audit` work in a real project
+ *   4. `https://cascivo.com/audit-contract.json`, cached under `~/.cache/cascivo/`
+ *
+ * (3) is why this exists: the walk-up in (2) only ever finds anything inside this monorepo,
+ * so `cascivo audit --ai` died with "token catalog not found" in every consumer project —
+ * a documented, working feature that nobody outside this repo could run. (4) is best-effort
+ * and never required: `audit` works offline.
  */
 export async function loadContract(options?: {
   catalogPath?: string
   contextPath?: string
   registryPath?: string
+  /** Explicit contract file — either the bundled shape or a docs-public directory. */
+  contractPath?: string
+  /** Report which tier answered (used by `--verbose`). */
+  onResolve?: (source: string) => void
 }): Promise<Contract> {
+  const report = options?.onResolve ?? (() => {})
+
+  // 1. Explicit path.
+  if (options?.contractPath) {
+    if (!existsSync(options.contractPath)) {
+      throw new Error(`contract file not found: ${options.contractPath}`)
+    }
+    report(`explicit: ${options.contractPath}`)
+    return fromBundled(JSON.parse(readFileSync(options.contractPath, 'utf8')) as BundledContract)
+  }
+
+  // 2. Dev monorepo — unchanged, so in-repo behavior and its tests are untouched.
   const docsPublic = findDocsPublic(HERE) ?? findDocsPublic(process.cwd())
   const catalogPath =
     options?.catalogPath ?? (docsPublic ? join(docsPublic, 'tokens.catalog.json') : null)
   const contextPath = options?.contextPath ?? (docsPublic ? join(docsPublic, 'context.json') : null)
   const registryPath = options?.registryPath ?? findRegistry(HERE) ?? findRegistry(process.cwd())
+  const haveMonorepo =
+    catalogPath &&
+    existsSync(catalogPath) &&
+    registryPath &&
+    existsSync(registryPath) &&
+    contextPath &&
+    existsSync(contextPath)
 
-  if (!catalogPath || !existsSync(catalogPath)) {
-    throw new Error('token catalog not found (apps/site/public/tokens.catalog.json)')
+  if (!haveMonorepo) {
+    // 3. Bundled contract.
+    const bundled = join(HERE, 'generated', 'audit-contract.json')
+    const bundledDist = join(HERE, '..', 'generated', 'audit-contract.json')
+    for (const candidate of [bundled, bundledDist]) {
+      if (existsSync(candidate)) {
+        report(`bundled: ${candidate}`)
+        return fromBundled(JSON.parse(readFileSync(candidate, 'utf8')) as BundledContract)
+      }
+    }
+
+    // 4. Network, with a local cache. Best-effort: a failure falls through to the error below.
+    const fetched = await fetchContract(report)
+    if (fetched) return fetched
+
+    throw new Error(
+      'cascivo contract unavailable. Pass --contract <path> to a downloaded ' +
+        'audit-contract.json, or run inside the cascivo monorepo. ' +
+        '(The CLI normally ships one; this build appears to be missing it.)',
+    )
   }
-  if (!registryPath || !existsSync(registryPath)) {
-    throw new Error('registry.json not found')
-  }
-  if (!contextPath || !existsSync(contextPath)) {
-    throw new Error('context bundle not found (apps/site/public/context.json)')
-  }
+  report('monorepo artifacts')
 
   const catalog = JSON.parse(readFileSync(catalogPath, 'utf8')) as Parameters<
     typeof buildContract

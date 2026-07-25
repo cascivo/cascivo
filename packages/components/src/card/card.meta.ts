@@ -9,6 +9,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'actions',
+      type: 'ReactNode',
+      required: false,
+      description:
+        'CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card.',
+    },
+    {
       name: 'variant',
       description: 'Selects the visual style variant.',
       type: "'default' | 'outlined' | 'elevated'",

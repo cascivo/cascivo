@@ -28,10 +28,11 @@ import { Card } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                    | Required | Default   | Description                       |
-| --------- | --------------------------------------- | -------- | --------- | --------------------------------- |
-| `variant` | `'default' \| 'outlined' \| 'elevated'` | no       | `default` | Selects the visual style variant. |
-| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | no       | `md`      | Inner padding of the component.   |
+| Prop      | Type                                    | Required | Default   | Description                                                                                                                                                                                                                                            |
+| --------- | --------------------------------------- | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `actions` | `ReactNode`                             | no       | —         | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card. |
+| `variant` | `'default' \| 'outlined' \| 'elevated'` | no       | `default` | Selects the visual style variant.                                                                                                                                                                                                                      |
+| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | no       | `md`      | Inner padding of the component.                                                                                                                                                                                                                        |
 
 ## Examples
 

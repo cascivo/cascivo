@@ -3914,6 +3914,15 @@
       },
       "props": [
         {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "description": "CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card.",
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
           "name": "variant",
           "description": "Selects the visual style variant.",
           "type": "'default' | 'outlined' | 'elevated'",
@@ -5942,6 +5951,16 @@
           }
         },
         {
+          "name": "deltaFormat",
+          "default": "number",
+          "type": "'number' | 'percent' | ((delta: number) => string)",
+          "required": false,
+          "description": "How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included.",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
           "name": "deltaLabel",
           "type": "string",
           "required": false,
@@ -7394,8 +7413,17 @@
         {
           "name": "label",
           "type": "string",
-          "required": true,
-          "description": "Accessible label",
+          "required": false,
+          "description": "Accessible name for the chart (invisible — rendered as the SVG `<title>`).",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one.",
           "schema": {
             "kind": "string"
           }
@@ -13302,6 +13330,15 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "icon",
           "description": "Icon element rendered in the component.",
           "type": "React.ReactNode",
@@ -18699,7 +18736,7 @@
         },
         {
           "name": "label",
-          "description": "Text label for the control.",
+          "description": "Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS).",
           "type": "string",
           "required": false,
           "default": "Search",
@@ -18729,7 +18766,7 @@
         },
         {
           "name": "id",
-          "description": "Id applied to the root element (auto-generated when omitted).",
+          "description": "Id for the input, wired to the label. Auto-generated with useId when omitted — SSR-safe and stable across hydration.",
           "type": "string",
           "required": false,
           "schema": {

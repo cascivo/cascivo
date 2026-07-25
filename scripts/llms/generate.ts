@@ -196,22 +196,6 @@ function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' 
 }
 
 /**
- * The entry's distribution channels, as machine-readable strings for `registry.json` —
- * so the CLI, MCP, the site and the docs generators read one answer instead of each
- * re-deriving it. `copy` means the source files ship for `npx cascivo add <name>`.
- */
-function channelsFor(entry: RegistryEntry): string[] {
-  const out: string[] = []
-  if (entry.install) out.push(`npm:${entry.install}`)
-  else {
-    const pkg = packageFor(entry)
-    if (pkg) out.push(`npm:${pkg}`)
-  }
-  if ((entry.files?.length ?? 0) > 0) out.push('copy')
-  return out
-}
-
-/**
  * Terse distribution-channel marker for the llms.txt component index, so an
  * agent can see at a glance which package (if any) an entry comes from — the
  * single most-reported time sink was not knowing a component was copy-paste vs
@@ -683,30 +667,33 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
   lines.push('')
+  // SSR: state the CURRENT truth first. This block used to lead with "Two required steps:
+  // ssr.noExternal …", which stopped being true at @cascivo/react 0.10 — and llms.txt is the
+  // file an agent is most likely to fetch as its ONE context source, so the stale version
+  // shipped dead config into new apps while docs/USING-WITH-VITE-SSR.md said the opposite.
+  // Keep this in sync with that guide; `claims:check` fails if `noExternal` is presented as
+  // unconditionally required again.
+  lines.push('SSR (Vite SSR / TanStack Start / Remix / workerd): works with ZERO Vite config on')
   lines.push(
-    'SSR SETUP (Vite SSR / TanStack Start / Remix / workerd — READ THIS if you server-render): the',
+    '`@cascivo/react` >= 0.10 — no `ssr.noExternal`, no plugin, no `<ClientOnly>` wrappers. The',
   )
   lines.push(
-    'prebuilt package imports per-component CSS as static `.css` side-effect imports, which a bare',
+    'package ships a CSS-free copy of its module graph under the `node` export condition, so a',
+  )
+  lines.push('server ESM loader never sees a `.css` import. Charts server-render and hydrate too.')
+  lines.push(
+    'Import a theme once in your root route/entry for color: `@cascivo/themes/all.css` (or the',
+  )
+  lines.push('all-in-one `@cascivo/react/styles.css`).')
+  lines.push(
+    'ONLY on `@cascivo/react` < 0.10: an unconfigured SSR build throws `Unknown file extension',
   )
   lines.push(
-    'server ESM loader cannot load — an unconfigured SSR build throws `Unknown file extension ".css"`',
-  )
-  lines.push('and silently falls back to client-only. Two required steps:')
-  lines.push(
-    '  1. In vite.config: `ssr: { noExternal: [/^@cascivo\\//] }` (or add the `cascivoSsr()`',
+    '".css"` — pin >= 0.10, or add `ssr: { noExternal: [/^@cascivo\\//] }` (or the `cascivoSsr()`',
   )
   lines.push(
-    '     plugin from `@cascivo/vite-plugin`) so Vite processes the CSS instead of the runtime.',
+    'plugin from `@cascivo/vite-plugin`). Full recipe + the legacy path: USING-WITH-VITE-SSR.md.',
   )
-  lines.push(
-    '  2. Import `@cascivo/react/styles.css` once in the root route/entry (do NOT rely on the',
-  )
-  lines.push('     per-component imports server-side). Full recipe: USING-WITH-VITE-SSR.md.')
-  lines.push(
-    'Next.js App Router does NOT need this (its recipe imports the aggregate sheet in a Server',
-  )
-  lines.push('Component); plain Vite CSR/SPA does NOT need it either. Only Vite *SSR* runtimes do.')
   lines.push('')
   lines.push('C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:')
   lines.push('')
@@ -887,12 +874,12 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- React 18/19, Next.js App Router (RSC), Vite (CSR), Astro islands, Preact 10 (preact/compat — verified).',
   )
   lines.push(
-    '- Vite SSR / TanStack Start / Remix / workerd: supported, but add `ssr.noExternal: [/^@cascivo\\//]`',
+    '- Vite SSR / TanStack Start / Remix / workerd: supported with ZERO Vite config on >= 0.10',
   )
   lines.push(
-    '  (or the `cascivoSsr()` plugin) + import `@cascivo/react/styles.css` once. Without it the server',
+    '  (import a theme once for color). Only on < 0.10 do you need `ssr.noExternal: [/^@cascivo\\//]`',
   )
-  lines.push('  loader throws `Unknown file extension ".css"`. See USING-WITH-VITE-SSR.md.')
+  lines.push('  or the `cascivoSsr()` plugin. See USING-WITH-VITE-SSR.md.')
   lines.push(
     '- Last 2 versions of Chrome/Firefox/Safari (requires @layer, @container, :has(), oklch()).',
   )

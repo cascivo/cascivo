@@ -1,25 +1,37 @@
 # Fix plan — Vercel-like TanStack **Start** dashboard adopter report (2026-07-25, tested 0.11.1 packages)
 
-**Status: planned — not implemented.**
-Per-workstream: **WS-1** planned (P0 — `useSignal`/`useComputed` do not self-subscribe) ·
-**WS-2** planned (P0 — reactivity primitives unreachable on Path B) ·
-**WS-3** planned (P0 — `Search` module-counter id breaks SSR hydration) ·
-**WS-4** planned (P0 — render-phase signal writes run effect bodies mid-render; the
-primitive **and** `CLAUDE.md`'s taught idiom share the bug) ·
-**WS-5** planned (P1 — `cascivo audit --ai` unusable outside the monorepo) ·
-**WS-6** planned (P1 — distribution channel is inferred from a source path and is **wrong for
-6 layout primitives**) · **WS-7** planned (P1 — 126 prop defaults undocumented across 73
-components; `Flex` is the headline) · **WS-8** planned (P1 — `llms.txt` SSR section contradicts
-`USING-WITH-VITE-SSR.md`) · **WS-9** planned (P2 — accessible-name prop naming has no published
-contract) · **WS-10** planned (P2 — `CardHeader` column default fights the title+action pattern) ·
-**WS-11** planned (P2 — `Kpi` delta formatting uncontrollable; disagrees with `Stat`) ·
-**WS-12** planned (P2 — app layer slot: `CSS-LAYERS-PITFALL.md` contradicts itself) ·
-**WS-13** planned (P3 — recipe minors: `RelativeTime now`, `DataTable Column.width`) ·
-**WS-14** planned (P0 — the anti-recurrence gates that tie WS-1/6/7/8 together; its **process
-items are ✅ done** in the PR that added this plan — tracker pointer, forward-pointers on the
-07-23/07-24 headers, and the mechanism-classification section in `README.md`) ·
-**WS-15** carry-forward (P1 — **15a** publish the 07-24 release train + freshness/npm-parity
-canaries; **15b** the 07-23 WS-J Playwright browser leg, unowned since 2026-07-23, claimed here).
+**Status: implemented on `claude/intelligent-faraday-i5volc`; not yet published.**
+Per-workstream: **WS-1** ✅ (`useSignal`/`useComputed` wrap `useSignals()`; negative +
+tracking-window tests lock the boundary) · **WS-2** ✅ (every reactivity primitive re-exported
+from `@cascivo/react`; SSR guide's prohibition replaced by a "where do imports come from?"
+table) · **WS-3** ✅ (`Search` **and** `usePopover` use `useId`; SSR-parity regression tests) ·
+**WS-4** ✅ (new `useEffectPropSignal`; **14** render-phase mirror sites migrated across
+components/core/flow, not the 1 reported; `CLAUDE.md`'s taught idiom corrected) ·
+**WS-5** ✅ (100 KB `audit-contract.json` bundled in the CLI + `--contract`/`--verbose` flags +
+cached network fallback; verified by auditing a fixture from a packed tarball outside the repo
+with no `HOME` and no network) · **WS-6** ✅ (channels derived from the real export list;
+`channels` field in `registry.json`; Channel column in the dashboard recipe) ·
+**WS-7** ✅ (all 33 undocumented defaults swept; 231 documented, 0 contradicting the code) ·
+**WS-8** ✅ (llms.txt leads with zero-config SSR; `noExternal` version-gated) ·
+**WS-9** ✅ (accessible-name contract published; `ariaLabel` accepted on `IconButton` and
+`Sparkline` via an exclusive union, so exactly one name stays **required**) ·
+**WS-10** ✅ (`CardHeader actions`) · **WS-11** ✅ (`Kpi deltaFormat`, locale-aware) ·
+**WS-12** ✅ (app slot fixed in the docs **and** in all 8 example apps, which had inherited the
+wrong position from the doc example) · **WS-13** ✅ (recipe minors; the `Search` visible-label
+item is **REFUTED** — see §1 #15) · **WS-14** ✅ (7 gates, each observed failing on a
+deliberate revert) · **WS-15** ⬜ **not done — this is what "published" is blocked on**
+(15a publish the 07-24 + this train, then the freshness/npm-parity canaries; 15b the 07-23
+WS-J Playwright browser leg).
+
+> **Definition of done is NOT met yet.** Everything above is on the branch; nothing is on
+> npm. Per `README.md` rule 2 a fix an adopter cannot `pnpm add` is not done — which is
+> exactly why the 07-25 adopter, testing npm, met a fixed-on-`main` catalog. The publishing
+> PR must flip these to `published vX.Y.Z`.
+
+**Known pre-existing failure, untouched by this work:** `pnpm apg:check` fails on
+`collapsible` (`role 'region'` vs the disclosure pattern's required `button`) on a clean
+checkout of `main` too. It is not part of `pnpm ready`. Not fixed here — out of scope, and
+silently folding it in would hide it.
 
 Written to be handed to an implementing agent (Opus) as-is. Source report:
 [`feedback-vercel-tanstack-start-adopter-2026-07-25.md`](feedback-vercel-tanstack-start-adopter-2026-07-25.md)
@@ -135,7 +147,7 @@ already-fixed-but-unpublished).
 | 1b | "`HEADLESS.md` **and** `AI-RULES.md` both state it" | **PARTIALLY REFUTED — outcome unchanged** | Only `HEADLESS.md:33-38` carries the exemption. `AI-RULES.md:70-73` (item 9) states the correct *unconditional* rule. But `AI-RULES.md:71` tells the agent to import `useSignals` from `@cascivo/core`, which Path B is told not to depend on (#2) — so the pasteable contract is still unfollowable | WS-1, WS-2 | P0 |
 | 2 | `@cascivo/react` exports no signal primitives; SSR guide forbids depending on `@cascivo/core` | **CONFIRMED** | `packages/react/src/index.ts` re-exports only `ErrorBoundary`/`SuspenseBoundary`/`Portal`/`FocusScope` (`:97`) and `setLinkComponent`/`getLinkComponent` (`:103-108`). `docs/USING-WITH-VITE-SSR.md:183-185` states the phantom-dep prohibition. No `useSignal`/`useSignals`/`useMachine`/`useDisclosure` export exists | WS-2 | P0 |
 | 3 | `Search` breaks SSR hydration — module-level id counter | **CONFIRMED** | `packages/components/src/search/search.tsx:8` `let idCounter = 0`; `:68-71` increments it into a ref. Violates the rule in `docs/HEADLESS.md:47` and the intent of `scripts/checks/primitive-adoption.test.ts` (which checks only for literal ids / `Math.random()`, so a counter slips through) | WS-3 | P0 |
-| 4 | `CommandMenu` writes signals during render | **CONFIRMED — and the mechanism is worse than reported** | `command-menu.tsx:209-212` mirrors `open`/`hotkey` into signals during render. Those signals are read **only inside `useSignalEffect`** (`:249`, `:277`, `:281`) — so a render-phase write runs effect bodies *synchronously during React's render phase*, including `onOpenChangeRef.current(...)` (`:281`), a parent setState. Same shape in `search.tsx:74` and `password-input.tsx:58` | WS-4 | P0 |
+| 4 | `CommandMenu` writes signals during render | **CONFIRMED — worse than reported: 14 sites, not 1** | `command-menu.tsx:209-212` mirrors `open`/`hotkey` into signals during render. Those signals are read **only inside `useSignalEffect`** (`:249`, `:277`, `:281`) — so a render-phase write runs effect bodies *synchronously during React's render phase*, including `onOpenChangeRef.current(...)` (`:281`), a parent setState. Same shape in `search.tsx:74` and `password-input.tsx:58` | WS-4 | P0 |
 | 4b | Suggested fix: "route these through `useControllableSignal`" | **REFUTED as a fix** | `packages/core/src/controllable.ts:43` performs the identical render-phase write (`sig.value = value as T`). The primitive shares the bug; so does the idiom `CLAUDE.md` teaches under "Syncing a controlled React prop into a signal". Fixing only `CommandMenu` fixes nothing | WS-4 | P0 |
 | 5 | `cascivo audit --ai` cannot run in a consumer project | **CONFIRMED** | `packages/cli/src/utils/contract.ts:12-21` walks up ≤10 dirs for `apps/site/public/`; `:50-58` throws when absent. `loadContract` already accepts explicit paths, but `packages/cli/src/commands/audit.ts` exposes no flag (`:174` parses only `--ai`, `--fix`). No network fallback | WS-5 | P1 |
 | 6 | `Flex` defaults to `direction="vertical"`, undocumented | **CONFIRMED — systemic** | `flex.tsx:16`; `flex.meta.ts:10-15` omits `default`. 126 props / 73 components have the same gap | WS-7 | P1 |
@@ -147,8 +159,27 @@ already-fixed-but-unpublished).
 | 12 | The app's own layer slot isn't in the canonical order statement | **CONFIRMED, plus a self-contradiction** | `docs/AI-RULES.md:18-19` names `cascivo.example` "declared in the order statement"; the statement at `:31` has no app slot. `layers.css:28-30` says insert between `blocks` and `override`; `CSS-LAYERS-PITFALL.md:69-71` shows it between `component` and `theme` | WS-12 | P2 |
 | 13 | `RelativeTime`'s `now` prop deserves surfacing in the dashboard recipe | **CONFIRMED (docs gap)** | `docs/RECIPE-DASHBOARD.md` names `relative-time` but not the `now` prop | WS-13 | P3 |
 | 14 | `DataTable`'s `Column.width` is easy to miss | **CONFIRMED (docs gap)** | Documented at `data-table.meta.ts:201-204`, absent from the recipe and from any example | WS-13 | P3 |
-| 15 | `Search` renders its `label` as visible text by default | **NOT REPRODUCIBLE FROM SOURCE — needs a repro before any change** | `search.module.css:29-41` visually hides `.label` correctly (abs-pos, 1px, `clip-path: inset(50%)`, `overflow: hidden`). Most likely cause is a missing/partial `@cascivo/react/styles.css` in the adopter app, i.e. a CSS-delivery question, not a component defect | WS-13 | P3 |
+| 15 | `Search` renders its `label` as visible text by default | **REFUTED** | `search.module.css:29-41` visually hides `.label` correctly (abs-pos, 1px, `clip-path: inset(50%)`, `overflow: hidden`), and `check-styles-complete` proves the rule ships in the aggregate sheet. Almost certainly a missing/partial stylesheet import in the adopter app. Documented on the `Search` a11y notes so it is not re-filed; no code change | WS-13 | P3 |
 | 16 | Positives: SSR zero-config, `setLinkComponent`, shell components, `dist/index.d.ts`, themes, `cascivo doctor`, the audit engine, per-component `/llms/*.md` | **CONFIRMED — protect these** | — | — | — |
+
+### What implementation changed about this triage
+
+Three things only became visible once the code moved, and they are recorded here rather than
+in a commit message so the next plan inherits them:
+
+1. **WS-1 activates WS-4.** While `useSignal` was a raw re-export, a render-phase write to a
+   mirrored prop notified nobody, so every latent render-phase effect run was silent. Making
+   the hook subscribe turned all of them on at once — the classifier found **14** such sites
+   (components, core, flow), not the one the report saw. They ship together for that reason.
+2. **`useInfiniteScroll`'s `hasMore` was the wrong primitive entirely.** It is read inside the
+   `IntersectionObserver` callback, which runs *outside* the effect's tracking scope, so the
+   signal was both redundant and would have lagged the prop by a microtask. It is a ref now.
+3. **The guards kept catching the plan's own defect class in the guards.** Three separate
+   checks initially passed against reverted code because they matched *prose* — a JSDoc that
+   said `useSignals()` is called, a comment warning against `export *`, a `// heading` inside
+   an export block that swallowed the next name. Each is fixed to parse code with comments
+   stripped. The shared `package-exports` resolver had the same bug and was reporting real
+   exports as missing; fixing it there benefits every guard that uses it.
 
 **Two items in the report's own ranking need re-ranking.** The report puts #4 (`CommandMenu`)
 fifth and calls it "not a functional blocker". Per §WS-4 the render-phase write runs effect

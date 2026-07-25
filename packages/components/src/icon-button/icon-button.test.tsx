@@ -62,3 +62,15 @@ describe('IconButton', () => {
     expect(link).toHaveAttribute('href', '/home')
   })
 })
+
+describe('IconButton — ariaLabel alias (accessible-name naming contract)', () => {
+  it('accepts ariaLabel as an alias for label', () => {
+    render(<IconButton ariaLabel="Close" icon={<span />} />)
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument()
+  })
+
+  it('label still wins when both are passed', () => {
+    render(<IconButton label="Primary" ariaLabel="Alias" icon={<span />} />)
+    expect(screen.getByRole('button', { name: 'Primary' })).toBeInTheDocument()
+  })
+})

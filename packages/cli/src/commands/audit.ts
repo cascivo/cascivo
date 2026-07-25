@@ -173,23 +173,36 @@ function applyFixes(files: string[], contract: Contract): number {
 export async function audit(args: string[], _config: CascadeConfig): Promise<void> {
   if (!args.includes('--ai')) {
     console.log('cascivo audit: use --ai to audit AI-generated code against the cascivo contract')
+    console.log('  --ai [paths…]      audit files against the cascivo contract')
+    console.log('  --fix              rewrite hardcoded values to tokens where unambiguous')
+    console.log('  --json             machine-readable findings')
+    console.log('  --level <level>    minimum level to report (error|warning|info)')
+    console.log('  --contract <path>  use this audit-contract.json instead of the bundled one')
+    console.log('  --verbose          report which contract source was used')
     return
   }
 
   const jsonOutput = args.includes('--json')
   const fixMode = args.includes('--fix')
+  const verbose = args.includes('--verbose')
   const levelIdx = args.indexOf('--level')
   const minLevel = levelIdx >= 0 ? (args[levelIdx + 1] ?? 'error') : 'error'
+  const contractIdx = args.indexOf('--contract')
+  const contractPath = contractIdx >= 0 ? args[contractIdx + 1] : undefined
 
   const paths = args.filter((a, i) => {
     if (a.startsWith('--')) return false
     if (levelIdx >= 0 && i === levelIdx + 1) return false
+    if (contractIdx >= 0 && i === contractIdx + 1) return false
     return true
   })
 
   let contract: Contract
   try {
-    contract = await loadContract()
+    contract = await loadContract({
+      ...(contractPath ? { contractPath } : {}),
+      ...(verbose ? { onResolve: (source: string) => console.error(`contract ← ${source}`) } : {}),
+    })
   } catch (e) {
     console.error(`Contract unavailable: ${e instanceof Error ? e.message : String(e)}`)
     process.exitCode = 2

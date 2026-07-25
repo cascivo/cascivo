@@ -847,6 +847,10 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "actions": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
                   "variant": {
                     "type": "string",
                     "enum": ["default", "outlined", "elevated"]
@@ -2049,6 +2053,9 @@
                 "type": "object",
                 "properties": {
                   "label": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
                     "type": "string"
                   },
                   "variant": {
@@ -6384,6 +6391,9 @@
                   "label": {
                     "type": "string"
                   },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "width": {
                     "type": "number"
                   },
@@ -6397,7 +6407,7 @@
                     "type": "boolean"
                   }
                 },
-                "required": ["data", "label"]
+                "required": ["data"]
               }
             }
           }

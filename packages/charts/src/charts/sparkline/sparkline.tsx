@@ -5,20 +5,29 @@ import { linePath } from '../../engine/shape'
 import type { Point } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
-export interface SparklineProps {
+interface SparklineBaseProps {
   data: readonly number[]
   width?: number
   height?: number
-  label: string
   color?: string
   endDot?: boolean
 }
+
+/**
+ * Exactly one of `label` / `ariaLabel` is required — a chart with no accessible name is a
+ * bug, so this stays enforced by the type. `ariaLabel` is the catalog's convention for an
+ * invisible accessible name (here, the SVG `<title>`); `Sparkline` predates it and shipped
+ * `label`, so both work and neither is deprecated.
+ */
+export type SparklineProps = SparklineBaseProps &
+  ({ label: string; ariaLabel?: never } | { ariaLabel: string; label?: never })
 
 export function Sparkline({
   data,
   width = 120,
   height = 32,
   label,
+  ariaLabel,
   color = 'var(--cascivo-chart-1)',
   endDot = true,
 }: SparklineProps) {
@@ -42,7 +51,7 @@ export function Sparkline({
 
   return (
     <ChartFrame
-      title={label}
+      title={(label ?? ariaLabel) as string}
       width={width}
       height={height}
       plain
