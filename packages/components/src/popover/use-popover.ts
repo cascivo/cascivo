@@ -1,8 +1,6 @@
 import { useRef } from 'react'
-import { useSignal, useSignalEffect } from '@cascivo/core'
+import { useId, useSignal, useSignalEffect } from '@cascivo/core'
 import type { Signal } from '@cascivo/core'
-
-let anchorCounter = 0
 
 export interface UsePopoverOptions {
   open?: boolean
@@ -27,7 +25,10 @@ const supportsAnchor =
   CSS.supports('anchor-name: --cascivo-a')
 
 export function usePopover(options: UsePopoverOptions = {}): UsePopoverReturn {
-  const anchorName = useRef(`--cascivo-popover-${++anchorCounter}`).current
+  // `useId`, not a module counter: the anchor name is server-rendered into a style
+  // property, so a counter that keeps incrementing for the server process's lifetime
+  // diverges from the client's fresh counter and breaks hydration.
+  const anchorName = `--${useId('cascivo-popover')}`
   const triggerRef = useRef<HTMLElement>(null)
   const popoverRef = useRef<HTMLElement>(null)
   const isOpen = useSignal(options.open ?? false)

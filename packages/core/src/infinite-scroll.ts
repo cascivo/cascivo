@@ -1,5 +1,6 @@
 'use client'
 import { useRef, type RefObject } from 'react'
+import { useEffectPropSignal } from './effect-prop.ts'
 import { useSignal, useSignalEffect } from './signals.ts'
 
 export interface UseInfiniteScrollOptions {
@@ -31,12 +32,13 @@ export function useInfiniteScroll(options: UseInfiniteScrollOptions): UseInfinit
   const sentinelRef = useRef<HTMLElement | null>(null)
   const rootRef = useRef<HTMLElement | null>(null)
 
-  // Mirror props into signals so the effect re-attaches when `isEnabled` flips;
-  // `hasMore`/`onLoadMore` stay current via signal/ref reads at intersection time.
-  const enabled = useSignal(options.isEnabled ?? true)
-  enabled.value = options.isEnabled ?? true
-  const hasMore = useSignal(options.hasMore)
-  hasMore.value = options.hasMore
+  // `isEnabled` drives the effect (it re-attaches the observer), so it is a deferred signal.
+  // `hasMore`/`onLoadMore` are read inside the IntersectionObserver callback — which runs
+  // outside the effect's tracking scope — so they are refs: a ref is exact at callback time,
+  // where a signal would both be redundant and lag the prop by a microtask.
+  const enabled = useEffectPropSignal(options.isEnabled ?? true)
+  const hasMoreRef = useRef(options.hasMore)
+  hasMoreRef.current = options.hasMore
   const onLoadMoreRef = useRef(options.onLoadMore)
   onLoadMoreRef.current = options.onLoadMore
 
@@ -47,7 +49,7 @@ export function useInfiniteScroll(options: UseInfiniteScrollOptions): UseInfinit
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting && hasMore.value) onLoadMoreRef.current()
+        if (entries[0]?.isIntersecting && hasMoreRef.current) onLoadMoreRef.current()
       },
       { root: rootRef.current ?? null, rootMargin },
     )

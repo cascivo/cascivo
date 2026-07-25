@@ -1,11 +1,9 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, useId, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { ChangeEvent, KeyboardEvent } from 'react'
 import styles from './search.module.css'
-
-let idCounter = 0
 
 export interface SearchProps {
   value?: string
@@ -64,12 +62,8 @@ export function Search({
   const resolvedClearLabel = clearLabel ?? t(builtin.search.clear)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const generatedIdRef = useRef('')
-  if (generatedIdRef.current === '') {
-    idCounter += 1
-    generatedIdRef.current = `cascade-search-${idCounter}`
-  }
-  const inputId = id ?? generatedIdRef.current
+  const generatedId = useId('cascade-search')
+  const inputId = id ?? generatedId
 
   const isControlled = value !== undefined
   const current = useSignal(isControlled ? value : defaultValue)

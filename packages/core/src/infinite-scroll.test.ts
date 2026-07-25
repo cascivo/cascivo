@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useInfiniteScroll } from './infinite-scroll'
 
@@ -60,7 +60,9 @@ describe('useInfiniteScroll', () => {
     expect(onLoadMore).not.toHaveBeenCalled()
   })
 
-  it('disconnects the observer when disabled', () => {
+  // `isEnabled` reaches the effect one microtask after render (`useEffectPropSignal`), so
+  // that a prop flip cannot run the observer teardown inside React's render phase.
+  it('disconnects the observer when disabled', async () => {
     const onLoadMore = vi.fn()
     const el = document.createElement('div')
     const { rerender } = renderHook(
@@ -72,7 +74,9 @@ describe('useInfiniteScroll', () => {
       { initialProps: { isEnabled: true } },
     )
     expect(observe).toHaveBeenCalledTimes(1)
-    rerender({ isEnabled: false })
+    await act(async () => {
+      rerender({ isEnabled: false })
+    })
     expect(disconnect).toHaveBeenCalled()
   })
 })

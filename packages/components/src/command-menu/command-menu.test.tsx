@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascivo/i18n'
@@ -38,10 +38,15 @@ beforeEach(() => {
 })
 
 describe('CommandMenu', () => {
-  it('is closed by default; open renders dialog with all groups and headings', () => {
+  // `await act` because the controlled `open` prop reaches the `showModal()` effect one
+  // microtask after render (`useEffectPropSignal`). A synchronous mirror called
+  // `showModal()` — and the parent's `onOpenChange` — inside React's render phase.
+  it('is closed by default; open renders dialog with all groups and headings', async () => {
     const { rerender } = render(<CommandMenu open={false} onOpenChange={vi.fn()} groups={groups} />)
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
-    rerender(<CommandMenu open={true} onOpenChange={vi.fn()} groups={groups} />)
+    await act(async () => {
+      rerender(<CommandMenu open={true} onOpenChange={vi.fn()} groups={groups} />)
+    })
     expect(screen.getByRole('combobox')).toBeInTheDocument()
     expect(screen.getByText('Pages')).toBeInTheDocument()
     expect(screen.getByText('Actions')).toBeInTheDocument()

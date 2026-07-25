@@ -1,5 +1,12 @@
 'use client'
-import { batch, cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  batch,
+  cn,
+  useEffectPropSignal,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useId, useRef } from 'react'
 import type { KeyboardEvent, ReactNode } from 'react'
@@ -206,10 +213,8 @@ export function CommandMenu({
   onQueryChangeRef.current = onQueryChange
 
   // Sync controlled props into signals — no-op when unchanged
-  const isOpen = useSignal(open)
-  isOpen.value = open
-  const hotkeyEnabled = useSignal(hotkey)
-  hotkeyEnabled.value = hotkey
+  const isOpen = useEffectPropSignal(open)
+  const hotkeyEnabled = useEffectPropSignal(hotkey)
 
   const query = useSignal('')
   const activeIndex = useSignal(0)

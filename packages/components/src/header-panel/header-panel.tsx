@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, useEffectPropSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
@@ -29,8 +29,7 @@ export function HeaderPanel({
   useSignals()
   const panelRef = useRef<HTMLDivElement>(null)
   const restoreRef = useRef<HTMLElement | null>(null)
-  const isOpen = useSignal(open)
-  isOpen.value = open
+  const isOpen = useEffectPropSignal(open)
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
 

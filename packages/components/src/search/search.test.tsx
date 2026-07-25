@@ -160,3 +160,39 @@ describe('Search', () => {
     })
   })
 })
+
+describe('Search — SSR-stable ids (regression: module-level id counter)', () => {
+  it('gives each instance its own id, with the label wired to its own input', () => {
+    const { container } = render(
+      <>
+        <Search label="First" />
+        <Search label="Second" />
+      </>,
+    )
+    const inputs = [...container.querySelectorAll('input')]
+    const labels = [...container.querySelectorAll('label')]
+    expect(new Set(inputs.map((i) => i.id)).size).toBe(2)
+    for (const [index, label] of labels.entries()) {
+      expect(label.getAttribute('for')).toBe(inputs[index]!.id)
+    }
+  })
+
+  it('renders the same id on every server render in one process', async () => {
+    // The bug this locks out: a module-scoped counter keeps incrementing for the life of
+    // the server process, so the id diverges from the client's fresh counter on nearly
+    // every request — a guaranteed hydration mismatch that React does not patch up, which
+    // can leave `<label for>` pointing at nothing. Two renders in one process is the
+    // minimal executable form.
+    const { renderToString } = await import('react-dom/server')
+    const idOf = (html: string) => /id="([^"]*)"/.exec(html)?.[1]
+    const first = idOf(renderToString(<Search />))
+    const second = idOf(renderToString(<Search />))
+    expect(first).toBeTruthy()
+    expect(second).toBe(first)
+  })
+
+  it('still lets an explicit id win', () => {
+    render(<Search id="user-search" />)
+    expect(screen.getByRole('searchbox')).toHaveAttribute('id', 'user-search')
+  })
+})

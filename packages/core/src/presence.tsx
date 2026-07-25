@@ -1,5 +1,6 @@
 'use client'
 import { cloneElement, isValidElement, useRef, type ReactElement, type Ref } from 'react'
+import { useEffectPropSignal } from './effect-prop.ts'
 import { useSignal, useSignalEffect, useSignals, type Signal } from './signals.ts'
 import { composeRefs } from './utils.ts'
 
@@ -23,10 +24,11 @@ export function Presence({ present, children }: PresenceProps) {
   useSignals()
   const presentVal = typeof present === 'boolean' ? present : present.value
 
-  // Mirror the (boolean or signal) present value into a local signal so the effect reacts to both
-  // prop changes (re-render) and signal changes.
-  const presentSig = useSignal(presentVal)
-  presentSig.value = presentVal
+  // Mirror the (boolean or signal) present value into a signal so the effect reacts to both
+  // prop changes (re-render) and signal changes. Read only inside the effect below, so the
+  // mirror is deferred past the render phase — a synchronous write here would run the effect
+  // mid-render, registering transition listeners against a pre-commit ref.
+  const presentSig = useEffectPropSignal(presentVal)
 
   const isMounted = useSignal(presentVal)
   const state = useSignal<'open' | 'closed'>(presentVal ? 'open' : 'closed')

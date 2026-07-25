@@ -27,7 +27,11 @@ describe('Presence', () => {
     expect(queryByTestId('content')).toBeNull()
   })
 
-  it('keeps the node mounted until transitionend when exiting with a transition', () => {
+  // `await act` (not the sync form) because the present→absent mirror is deferred one
+  // microtask by `useEffectPropSignal`: a synchronous mirror would run this component's
+  // `useSignalEffect` during React's render phase, attaching the transition listeners
+  // against a pre-commit ref. See docs/HEADLESS.md "Syncing a controlled prop".
+  it('keeps the node mounted until transitionend when exiting with a transition', async () => {
     vi.spyOn(window, 'getComputedStyle').mockReturnValue({
       animationName: 'none',
       animationDuration: '0s',
@@ -41,12 +45,12 @@ describe('Presence', () => {
       </Presence>,
     )
     const node = getByTestId('content')
-    act(() => {
+    await act(async () => {
       present.value = false
     })
     // still mounted, now closing
     expect(getByTestId('content').getAttribute('data-state')).toBe('closed')
-    act(() => {
+    await act(async () => {
       node.dispatchEvent(new Event('transitionend'))
     })
     expect(queryByTestId('content')).toBeNull()
