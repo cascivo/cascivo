@@ -69,6 +69,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'scopes',
+      default: '[]',
       type: 'CommandScope[]',
       required: false,
       description:

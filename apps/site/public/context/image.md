@@ -36,7 +36,7 @@ role="img" with alt names the image; on error it shows a fallback image or neutr
 | Name            | Type                                       | Required | Default | Description                                                            |
 | --------------- | ------------------------------------------ | -------- | ------- | ---------------------------------------------------------------------- |
 | `src`           | `string`                                   | No       | —       | Image source URL.                                                      |
-| `alt`           | `string`                                   | No       | —       | Alternative text describing the image.                                 |
+| `alt`           | `string`                                   | No       |         | Alternative text describing the image.                                 |
 | `fallbackSrc`   | `string`                                   | No       | —       | Image shown if src fails to load                                       |
 | `width`         | `string \| number`                         | No       | —       | Width of the component.                                                |
 | `height`        | `string \| number`                         | No       | —       | Height of the component.                                               |

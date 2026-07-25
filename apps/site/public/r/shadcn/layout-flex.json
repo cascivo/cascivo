@@ -14,7 +14,7 @@
       "content": "@layer cascivo.component {\n  .flex {\n    display: flex;\n    gap: var(--_flex-gap, var(--cascivo-space-4));\n\n    &[data-direction='vertical'] {\n      flex-direction: column;\n    }\n    &[data-direction='horizontal'] {\n      flex-direction: row;\n    }\n    &[data-wrap] {\n      flex-wrap: wrap;\n    }\n  }\n}\n"
     }
   ],
-  "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+  "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
   "dependencies": ["@cascivo/core"],
   "categories": ["layout"],
   "meta": {

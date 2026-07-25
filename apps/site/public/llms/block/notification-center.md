@@ -18,10 +18,10 @@ _Copy-paste only — `NotificationCenter` is not exported from `@cascivo/react`.
 
 ## Props
 
-| Prop            | Type             | Required | Default | Description                   |
-| --------------- | ---------------- | -------- | ------- | ----------------------------- |
-| `notifications` | `Notification[]` | no       | —       | Notification items to display |
-| `onMarkAllRead` | `() => void`     | no       | —       | Mark all read button handler  |
+| Prop            | Type             | Required | Default             | Description                   |
+| --------------- | ---------------- | -------- | ------------------- | ----------------------------- |
+| `notifications` | `Notification[]` | no       | `demoNotifications` | Notification items to display |
+| `onMarkAllRead` | `() => void`     | no       | —                   | Mark all read button handler  |
 
 ## Examples
 

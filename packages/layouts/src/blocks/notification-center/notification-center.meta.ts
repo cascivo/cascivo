@@ -10,6 +10,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'notifications',
+      default: 'demoNotifications',
       type: 'Notification[]',
       required: false,
       description: 'Notification items to display',

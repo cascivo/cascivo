@@ -7,7 +7,15 @@ export const meta: ComponentMeta = {
   states: [],
   variants: [],
   sizes: [],
-  props: [{ name: 'stats', type: 'Stat[]', required: false, description: 'KPI stat data' }],
+  props: [
+    {
+      name: 'stats',
+      default: 'demoStats',
+      type: 'Stat[]',
+      required: false,
+      description: 'KPI stat data',
+    },
+  ],
   tokens: [],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },
   examples: [{ title: 'Default', code: '<StatsCards />', description: 'Demo KPI stats' }],

@@ -576,6 +576,10 @@ it in sync. (A handful of pre-existing components still accept a deprecated valu
 #### Checklist before committing a component
 
 1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
+   Every prop with a default in the signature carries a matching `default` in the manifest
+   (`pnpm meta:check` derives this from the code — an undocumented default renders as `—` in
+   the generated props table, which is how `Flex`'s `direction: 'vertical'` cost an adopter
+   three wrong layouts).
 2. Every machine transition is reachable by code inside the component (not just by external props).
 3. DOM side effects use `useSignalEffect`, not `useEffect`.
 4. All tests pass: `vp run @cascivo/components#test`.

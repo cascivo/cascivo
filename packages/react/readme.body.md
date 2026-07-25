@@ -389,7 +389,7 @@ routing break after adding one of these, check that the import resolves to
 - **Cta** — Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.
 - **DashboardLayout** — Dashboard page layout with stats strip, main content area, and optional aside.
 - **FeatureGrid** — Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.
-- **Flex** — Flex layout primitive for vertical or horizontal stacking with gap control.
+- **Flex** — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row.
 - **Grid** — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.
 - **Hero** — Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.
 - **Indicator** — Positions an overlay element (badge, dot, count) at a corner of its child

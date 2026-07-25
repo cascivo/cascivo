@@ -8,7 +8,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'users', type: 'User[]', required: false, description: 'User data' },
+    {
+      name: 'users',
+      default: 'demoUsers',
+      type: 'User[]',
+      required: false,
+      description: 'User data',
+    },
     { name: 'onInvite', type: '() => void', required: false, description: 'Invite button handler' },
   ],
   tokens: [],

@@ -85,6 +85,7 @@
       },
       {
         "name": "scopes",
+        "default": "[]",
         "type": "CommandScope[]",
         "required": false,
         "description": "Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups)."

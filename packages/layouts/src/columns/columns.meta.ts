@@ -9,9 +9,16 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'count', type: '2|3|4', required: false, description: 'Number of equal columns' },
+    {
+      name: 'count',
+      default: '2',
+      type: '2|3|4',
+      required: false,
+      description: 'Number of equal columns',
+    },
     {
       name: 'gap',
+      default: '4',
       type: '1|2|3|4|5|6|8|10|12',
       required: false,
       description: 'Spacing token step',

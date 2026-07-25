@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "name": "layout/flex",
   "type": "layout",
-  "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+  "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
   "version": "0.11.1",
   "files": [
     {
@@ -17,7 +17,7 @@
   "category": "layout",
   "meta": {
     "name": "Flex",
-    "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+    "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
     "category": "layout",
     "states": [],
     "variants": [],
@@ -25,12 +25,14 @@
     "props": [
       {
         "name": "direction",
+        "default": "vertical",
         "type": "'vertical' | 'horizontal'",
         "required": false,
-        "description": "Flex direction"
+        "description": "Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify=\"between\">` alone produces a centered vertical stack."
       },
       {
         "name": "gap",
+        "default": "4",
         "type": "1|2|3|4|5|6|8|10|12",
         "required": false,
         "description": "Spacing token step"
@@ -49,6 +51,7 @@
       },
       {
         "name": "wrap",
+        "default": "false",
         "type": "boolean",
         "required": false,
         "description": "Allow wrapping"

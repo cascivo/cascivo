@@ -2,7 +2,8 @@ import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
   name: 'Flex',
-  description: 'Flex layout primitive for vertical or horizontal stacking with gap control.',
+  description:
+    'Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row.',
   category: 'layout',
   states: [],
   variants: [],
@@ -10,12 +11,15 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'direction',
+      default: 'vertical',
       type: "'vertical' | 'horizontal'",
       required: false,
-      description: 'Flex direction',
+      description:
+        'Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack.',
     },
     {
       name: 'gap',
+      default: '4',
       type: '1|2|3|4|5|6|8|10|12',
       required: false,
       description: 'Spacing token step',
@@ -32,7 +36,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'justify-content',
     },
-    { name: 'wrap', type: 'boolean', required: false, description: 'Allow wrapping' },
+    {
+      name: 'wrap',
+      default: 'false',
+      type: 'boolean',
+      required: false,
+      description: 'Allow wrapping',
+    },
   ],
   tokens: ['--cascivo-space-*'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },

@@ -23,6 +23,7 @@
     "props": [
       {
         "name": "users",
+        "default": "demoUsers",
         "type": "User[]",
         "required": false,
         "description": "User data"

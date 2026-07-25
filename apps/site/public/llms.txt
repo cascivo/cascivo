@@ -481,7 +481,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
 - [layout/columns](https://cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(npm @cascivo/react · or copy-paste)_
 - [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
-- [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. _(npm @cascivo/react · or copy-paste)_
+- [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
 - [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
 - [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
 - [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(copy-paste)_

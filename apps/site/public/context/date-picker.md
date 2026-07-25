@@ -42,12 +42,12 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the ca
 | `onChange`      | `(value: string \| undefined) => void` | No       | —       | Deprecated: use onValueChange (same ISO string \| undefined)                    |
 | `min`           | `string`                               | No       | —       | Minimum ISO date                                                                |
 | `max`           | `string`                               | No       | —       | Maximum ISO date                                                                |
-| `clearable`     | `boolean`                              | No       | —       | Shows a clear button                                                            |
+| `clearable`     | `boolean`                              | No       | false   | Shows a clear button                                                            |
 | `label`         | `string`                               | No       | —       | Field label                                                                     |
 | `hint`          | `string`                               | No       | —       | Hint text                                                                       |
 | `error`         | `string`                               | No       | —       | Error message                                                                   |
-| `size`          | `'sm' \| 'md' \| 'lg'`                 | No       | —       | Field size                                                                      |
-| `disabled`      | `boolean`                              | No       | —       | Disables the picker                                                             |
+| `size`          | `'sm' \| 'md' \| 'lg'`                 | No       | md      | Field size                                                                      |
+| `disabled`      | `boolean`                              | No       | false   | Disables the picker                                                             |
 | `labels`        | `DatePickerLabels`                     | No       | —       | i18n label overrides                                                            |
 
 ## Tokens

@@ -37,18 +37,21 @@
       },
       {
         "name": "defaultRatio",
+        "default": "0.3",
         "type": "number",
         "required": false,
         "description": "Initial split ratio (0–1)"
       },
       {
         "name": "min",
+        "default": "0.2",
         "type": "number",
         "required": false,
         "description": "Minimum ratio for start pane"
       },
       {
         "name": "max",
+        "default": "0.8",
         "type": "number",
         "required": false,
         "description": "Maximum ratio for start pane"

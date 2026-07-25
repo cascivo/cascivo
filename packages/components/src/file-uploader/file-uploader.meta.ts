@@ -8,7 +8,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'files', type: 'UploaderFile[]', required: false, description: 'Controlled file list' },
+    {
+      name: 'files',
+      default: '[]',
+      type: 'UploaderFile[]',
+      required: false,
+      description: 'Controlled file list',
+    },
     {
       name: 'onFilesAdded',
       type: '(files: File[]) => void',
@@ -21,7 +27,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Called when a file is removed',
     },
-    { name: 'multiple', type: 'boolean', required: false, description: 'Allow multiple files' },
+    {
+      name: 'multiple',
+      default: 'false',
+      type: 'boolean',
+      required: false,
+      description: 'Allow multiple files',
+    },
     {
       name: 'accept',
       type: 'string',
@@ -43,7 +55,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'i18n label overrides',
     },
-    { name: 'disabled', type: 'boolean', required: false, description: 'Disables the upload zone' },
+    {
+      name: 'disabled',
+      default: 'false',
+      type: 'boolean',
+      required: false,
+      description: 'Disables the upload zone',
+    },
   ],
   tokens: [
     '--cascivo-color-accent',

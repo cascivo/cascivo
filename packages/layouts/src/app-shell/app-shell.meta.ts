@@ -29,6 +29,7 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true, description: 'Main content' },
     {
       name: 'persistKey',
+      default: 'cascade.appshell',
       type: 'string | false',
       required: false,
       description: 'localStorage key prefix. Pass false to disable persistence.',

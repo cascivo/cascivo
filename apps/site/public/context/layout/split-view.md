@@ -27,9 +27,9 @@ Exposes a keyboard-operable separator with role="separator" and aria-valuenow fo
 | -------------- | ----------- | -------- | ------- | ---------------------------- |
 | `start`        | `ReactNode` | Yes      | —       | Left pane content            |
 | `end`          | `ReactNode` | Yes      | —       | Right pane content           |
-| `defaultRatio` | `number`    | No       | —       | Initial split ratio (0–1)    |
-| `min`          | `number`    | No       | —       | Minimum ratio for start pane |
-| `max`          | `number`    | No       | —       | Maximum ratio for start pane |
+| `defaultRatio` | `number`    | No       | 0.3     | Initial split ratio (0–1)    |
+| `min`          | `number`    | No       | 0.2     | Minimum ratio for start pane |
+| `max`          | `number`    | No       | 0.8     | Maximum ratio for start pane |
 | `aria-label`   | `string`    | No       | —       | Label for the separator      |
 
 ## Tokens

@@ -31,6 +31,7 @@
       },
       {
         "name": "alt",
+        "default": "",
         "description": "Alternative text describing the image.",
         "type": "string",
         "required": false

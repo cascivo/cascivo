@@ -80,6 +80,7 @@
       },
       {
         "name": "size",
+        "default": "md",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "description": "Field/grid size"

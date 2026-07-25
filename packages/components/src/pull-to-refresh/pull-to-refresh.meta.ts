@@ -30,6 +30,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'disabled',
+      default: 'false',
       description: 'When true, disables the control and removes it from the tab order.',
       type: 'boolean',
       required: false,

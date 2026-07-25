@@ -45,12 +45,12 @@ Renders an APG-compliant role="grid" table with role="row"/role="gridcell"; a ro
 | `max`           | `Date`                                            | No       | —       | Latest selectable date                                                  |
 | `disabled`      | `(date: Date) => boolean`                         | No       | —       | Predicate to disable individual days                                    |
 | `locale`        | `string`                                          | No       | —       | BCP-47 locale; defaults to the current i18n locale                      |
-| `size`          | `'sm' \| 'md' \| 'lg'`                            | No       | —       | Grid cell size                                                          |
+| `size`          | `'sm' \| 'md' \| 'lg'`                            | No       | md      | Grid cell size                                                          |
 | `labels`        | `CalendarLabels`                                  | No       | —       | i18n label overrides for the nav buttons                                |
 | `month`         | `number`                                          | No       | —       | Controlled view month (0-11)                                            |
 | `year`          | `number`                                          | No       | —       | Controlled view year                                                    |
 | `onViewChange`  | `(view: { month: number; year: number }) => void` | No       | —       | Called when the visible month changes                                   |
-| `hideNav`       | `boolean`                                         | No       | —       | Hides the prev/next nav so a parent can drive navigation                |
+| `hideNav`       | `boolean`                                         | No       | false   | Hides the prev/next nav so a parent can drive navigation                |
 
 ## Tokens
 

@@ -26,6 +26,7 @@
     "props": [
       {
         "name": "files",
+        "default": "[]",
         "type": "UploaderFile[]",
         "required": false,
         "description": "Controlled file list"
@@ -44,6 +45,7 @@
       },
       {
         "name": "multiple",
+        "default": "false",
         "type": "boolean",
         "required": false,
         "description": "Allow multiple files"
@@ -86,6 +88,7 @@
       },
       {
         "name": "disabled",
+        "default": "false",
         "type": "boolean",
         "required": false,
         "description": "Disables the upload zone"

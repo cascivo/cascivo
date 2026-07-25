@@ -65,6 +65,7 @@
       },
       {
         "name": "persistKey",
+        "default": "cascade.appshell",
         "type": "string | false",
         "required": false,
         "description": "localStorage key prefix. Pass false to disable persistence."

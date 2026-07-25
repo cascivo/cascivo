@@ -35,7 +35,7 @@ role="img" with alt names the person; on image error it falls back to initials s
 | Name       | Type                                   | Required | Default | Description                                                                       |
 | ---------- | -------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
 | `src`      | `string`                               | No       | —       | Image source URL.                                                                 |
-| `alt`      | `string`                               | No       | —       | Alternative text describing the image.                                            |
+| `alt`      | `string`                               | No       |         | Alternative text describing the image.                                            |
 | `name`     | `string`                               | No       | —       | Full name — used to derive initials for the fallback and as the accessible label. |
 | `fallback` | `string`                               | No       | —       | Explicit fallback text (initials/glyph); overrides initials derived from name.    |
 | `size`     | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                             |

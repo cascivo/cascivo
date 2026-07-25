@@ -37,8 +37,8 @@ The action buttons are always rendered in the DOM and the accessibility tree, ne
 | Name              | Type              | Required | Default | Description                                                                |
 | ----------------- | ----------------- | -------- | ------- | -------------------------------------------------------------------------- |
 | `children`        | `React.ReactNode` | Yes      | —       | The row content                                                            |
-| `leadingActions`  | `SwipeAction[]`   | No       | —       | Actions revealed by dragging toward the end edge (shown on the start edge) |
-| `trailingActions` | `SwipeAction[]`   | No       | —       | Actions revealed by dragging toward the start edge (shown on the end edge) |
+| `leadingActions`  | `SwipeAction[]`   | No       | []      | Actions revealed by dragging toward the end edge (shown on the start edge) |
+| `trailingActions` | `SwipeAction[]`   | No       | []      | Actions revealed by dragging toward the start edge (shown on the end edge) |
 | `className`       | `string`          | No       | —       | Additional CSS class names merged onto the root element.                   |
 
 ## Tokens

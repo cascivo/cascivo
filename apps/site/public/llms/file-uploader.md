@@ -33,17 +33,17 @@ import { FileUploader } from '@cascivo/react'
 
 | Prop           | Type                                                | Required | Default | Description                             |
 | -------------- | --------------------------------------------------- | -------- | ------- | --------------------------------------- |
-| `files`        | `UploaderFile[]`                                    | no       | —       | Controlled file list                    |
+| `files`        | `UploaderFile[]`                                    | no       | `[]`    | Controlled file list                    |
 | `onFilesAdded` | `(files: File[]) => void`                           | no       | —       | Called with accepted files              |
 | `onRemove`     | `(id: string) => void`                              | no       | —       | Called when a file is removed           |
-| `multiple`     | `boolean`                                           | no       | —       | Allow multiple files                    |
+| `multiple`     | `boolean`                                           | no       | `false` | Allow multiple files                    |
 | `accept`       | `string`                                            | no       | —       | Accepted file types (MIME or extension) |
 | `maxSize`      | `number`                                            | no       | —       | Maximum file size in bytes              |
 | `onRejected`   | `(files: File[], reason: 'size' \| 'type') => void` | no       | —       | Called with rejected files              |
 | `label`        | `string`                                            | no       | —       | Field label                             |
 | `hint`         | `string`                                            | no       | —       | Hint text below the drop zone           |
 | `labels`       | `FileUploaderLabels`                                | no       | —       | i18n label overrides                    |
-| `disabled`     | `boolean`                                           | no       | —       | Disables the upload zone                |
+| `disabled`     | `boolean`                                           | no       | `false` | Disables the upload zone                |
 
 ## Examples
 

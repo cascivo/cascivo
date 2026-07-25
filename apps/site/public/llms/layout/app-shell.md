@@ -34,16 +34,16 @@ import { AppShell } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                  | Required | Default | Description                                                                     |
-| ------------- | --------------------- | -------- | ------- | ------------------------------------------------------------------------------- |
-| `footer`      | `ReactNode`           | no       | —       | Optional sticky footer rendered below the content area.                         |
-| `sideNavMode` | `'push' \| 'overlay'` | no       | `push`  | push (default): sidebar takes grid space; overlay: sidebar floats over content. |
-| `header`      | `ReactNode`           | yes      | —       | Top header slot                                                                 |
-| `sideNav`     | `ReactNode`           | no       | —       | Side navigation slot                                                            |
-| `aside`       | `ReactNode`           | no       | —       | Right aside slot                                                                |
-| `children`    | `ReactNode`           | yes      | —       | Main content                                                                    |
-| `persistKey`  | `string \| false`     | no       | —       | localStorage key prefix. Pass false to disable persistence.                     |
-| `state`       | `ShellState`          | no       | —       | External shell state from createShellState(). Created internally when omitted.  |
+| Prop          | Type                  | Required | Default            | Description                                                                     |
+| ------------- | --------------------- | -------- | ------------------ | ------------------------------------------------------------------------------- |
+| `footer`      | `ReactNode`           | no       | —                  | Optional sticky footer rendered below the content area.                         |
+| `sideNavMode` | `'push' \| 'overlay'` | no       | `push`             | push (default): sidebar takes grid space; overlay: sidebar floats over content. |
+| `header`      | `ReactNode`           | yes      | —                  | Top header slot                                                                 |
+| `sideNav`     | `ReactNode`           | no       | —                  | Side navigation slot                                                            |
+| `aside`       | `ReactNode`           | no       | —                  | Right aside slot                                                                |
+| `children`    | `ReactNode`           | yes      | —                  | Main content                                                                    |
+| `persistKey`  | `string \| false`     | no       | `cascade.appshell` | localStorage key prefix. Pass false to disable persistence.                     |
+| `state`       | `ShellState`          | no       | —                  | External shell state from createShellState(). Created internally when omitted.  |
 
 ## Examples
 

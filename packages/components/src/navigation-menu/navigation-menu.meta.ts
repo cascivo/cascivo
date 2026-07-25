@@ -22,6 +22,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'orientation',
+      default: 'horizontal',
       description: 'Layout orientation of the component.',
       type: "'horizontal' | 'vertical' | 'both'",
       required: false,

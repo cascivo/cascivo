@@ -8,7 +8,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'maxWidth', type: 'string', required: false, description: 'CSS max-width value' },
+    {
+      name: 'maxWidth',
+      default: '48rem',
+      type: 'string',
+      required: false,
+      description: 'CSS max-width value',
+    },
   ],
   tokens: ['--cascivo-space-4'],
   accessibility: { role: 'generic', wcag: '2.1-AA', keyboard: [] },

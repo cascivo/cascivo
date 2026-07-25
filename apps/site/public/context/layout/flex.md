@@ -1,7 +1,7 @@
 # Flex
 
 **Category:** layout  
-**Description:** Flex layout primitive for vertical or horizontal stacking with gap control.
+**Description:** Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row.
 
 ## When to use
 
@@ -34,13 +34,13 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 ## Props
 
-| Name        | Type                                  | Required | Default | Description        |
-| ----------- | ------------------------------------- | -------- | ------- | ------------------ |
-| `direction` | `'vertical' \| 'horizontal'`          | No       | —       | Flex direction     |
-| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | No       | —       | Spacing token step |
-| `align`     | `'start'\|'center'\|'end'\|'stretch'` | No       | —       | align-items        |
-| `justify`   | `'start'\|'center'\|'end'\|'between'` | No       | —       | justify-content    |
-| `wrap`      | `boolean`                             | No       | —       | Allow wrapping     |
+| Name        | Type                                  | Required | Default  | Description                                                                                                                                                                                               |
+| ----------- | ------------------------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `direction` | `'vertical' \| 'horizontal'`          | No       | vertical | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
+| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | No       | 4        | Spacing token step                                                                                                                                                                                        |
+| `align`     | `'start'\|'center'\|'end'\|'stretch'` | No       | —        | align-items                                                                                                                                                                                               |
+| `justify`   | `'start'\|'center'\|'end'\|'between'` | No       | —        | justify-content                                                                                                                                                                                           |
+| `wrap`      | `boolean`                             | No       | false    | Allow wrapping                                                                                                                                                                                            |
 
 ## Tokens
 
@@ -75,7 +75,7 @@ Row layout
 Copy this into an LLM context bar before editing this component:
 
 ```text
-I am modifying the cascivo Flex component (layout). Flex layout primitive for vertical or horizontal stacking with gap control.
+I am modifying the cascivo Flex component (layout). Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row.
 
 Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.

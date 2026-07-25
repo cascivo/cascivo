@@ -481,7 +481,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
 - [layout/columns](https://cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(npm @cascivo/react · or copy-paste)_
 - [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
-- [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. _(npm @cascivo/react · or copy-paste)_
+- [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
 - [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
 - [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
 - [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(copy-paste)_
@@ -1345,7 +1345,7 @@ import { Avatar } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `src` | `string` | no | — | Image source URL. |
-| `alt` | `string` | no | — | Alternative text describing the image. |
+| `alt` | `string` | no | `` | Alternative text describing the image. |
 | `name` | `string` | no | — | Full name — used to derive initials for the fallback and as the accessible label. |
 | `fallback` | `string` | no | — | Explicit fallback text (initials/glyph); overrides initials derived from name. |
 | `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -2133,7 +2133,7 @@ _Copy-paste only — `NotificationCenter` is not exported from `@cascivo/react`.
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `notifications` | `Notification[]` | no | — | Notification items to display |
+| `notifications` | `Notification[]` | no | `demoNotifications` | Notification items to display |
 | `onMarkAllRead` | `() => void` | no | — | Mark all read button handler |
 
 ## Examples
@@ -2450,7 +2450,7 @@ _Copy-paste only — `StatsCards` is not exported from `@cascivo/react`. Run the
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `stats` | `Stat[]` | no | — | KPI stat data |
+| `stats` | `Stat[]` | no | `demoStats` | KPI stat data |
 
 ## Examples
 
@@ -2539,7 +2539,7 @@ _Copy-paste only — `UsersTablePage` is not exported from `@cascivo/react`. Run
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `users` | `User[]` | no | — | User data |
+| `users` | `User[]` | no | `demoUsers` | User data |
 | `onInvite` | `() => void` | no | — | Invite button handler |
 
 ## Examples
@@ -3066,12 +3066,12 @@ import { Calendar } from '@cascivo/react'
 | `max` | `Date` | no | — | Latest selectable date |
 | `disabled` | `(date: Date) => boolean` | no | — | Predicate to disable individual days |
 | `locale` | `string` | no | — | BCP-47 locale; defaults to the current i18n locale |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | — | Grid cell size |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Grid cell size |
 | `labels` | `CalendarLabels` | no | — | i18n label overrides for the nav buttons |
 | `month` | `number` | no | — | Controlled view month (0-11) |
 | `year` | `number` | no | — | Controlled view year |
 | `onViewChange` | `(view: { month: number; year: number }) => void` | no | — | Called when the visible month changes |
-| `hideNav` | `boolean` | no | — | Hides the prev/next nav so a parent can drive navigation |
+| `hideNav` | `boolean` | no | `false` | Hides the prev/next nav so a parent can drive navigation |
 
 ## Examples
 
@@ -6282,7 +6282,7 @@ import { CommandMenu } from '@cascivo/react'
 | `label` | `string` | no | `Command menu` | Text label for the control. |
 | `loading` | `boolean` | no | `false` | Shows a loading spinner in place of the empty state (for async items) |
 | `onQueryChange` | `(query: string) => void` | no | — | Fires on every query keystroke — use to fetch async items |
-| `scopes` | `CommandScope[]` | no | — | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
+| `scopes` | `CommandScope[]` | no | `[]` | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -7070,12 +7070,12 @@ import { DatePicker } from '@cascivo/react'
 | `onChange` | `(value: string \| undefined) => void` | no | — | Deprecated: use onValueChange (same ISO string \| undefined) |
 | `min` | `string` | no | — | Minimum ISO date |
 | `max` | `string` | no | — | Maximum ISO date |
-| `clearable` | `boolean` | no | — | Shows a clear button |
+| `clearable` | `boolean` | no | `false` | Shows a clear button |
 | `label` | `string` | no | — | Field label |
 | `hint` | `string` | no | — | Hint text |
 | `error` | `string` | no | — | Error message |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | — | Field size |
-| `disabled` | `boolean` | no | — | Disables the picker |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Field size |
+| `disabled` | `boolean` | no | `false` | Disables the picker |
 | `labels` | `DatePickerLabels` | no | — | i18n label overrides |
 
 ## Examples
@@ -7180,7 +7180,7 @@ import { DateRangePicker } from '@cascivo/react'
 | `presets` | `{ label: string; range: { start: Date; end: Date } }[]` | no | — | Quick-select preset ranges shown in a side column |
 | `locale` | `string` | no | — | BCP-47 locale; defaults to the current i18n locale |
 | `placeholder` | `string` | no | — | Empty-state trigger text |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | — | Field/grid size |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Field/grid size |
 | `labels` | `DateRangePickerLabels` | no | — | i18n label overrides |
 
 ## Examples
@@ -8100,17 +8100,17 @@ import { FileUploader } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `files` | `UploaderFile[]` | no | — | Controlled file list |
+| `files` | `UploaderFile[]` | no | `[]` | Controlled file list |
 | `onFilesAdded` | `(files: File[]) => void` | no | — | Called with accepted files |
 | `onRemove` | `(id: string) => void` | no | — | Called when a file is removed |
-| `multiple` | `boolean` | no | — | Allow multiple files |
+| `multiple` | `boolean` | no | `false` | Allow multiple files |
 | `accept` | `string` | no | — | Accepted file types (MIME or extension) |
 | `maxSize` | `number` | no | — | Maximum file size in bytes |
 | `onRejected` | `(files: File[], reason: 'size' \| 'type') => void` | no | — | Called with rejected files |
 | `label` | `string` | no | — | Field label |
 | `hint` | `string` | no | — | Hint text below the drop zone |
 | `labels` | `FileUploaderLabels` | no | — | i18n label overrides |
-| `disabled` | `boolean` | no | — | Disables the upload zone |
+| `disabled` | `boolean` | no | `false` | Disables the upload zone |
 
 ## Examples
 
@@ -9748,7 +9748,7 @@ import { Image } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `src` | `string` | no | — | Image source URL. |
-| `alt` | `string` | no | — | Alternative text describing the image. |
+| `alt` | `string` | no | `` | Alternative text describing the image. |
 | `fallbackSrc` | `string` | no | — | Image shown if src fails to load |
 | `width` | `string \| number` | no | — | Width of the component. |
 | `height` | `string \| number` | no | — | Height of the component. |
@@ -10519,7 +10519,7 @@ import { AppShell } from '@cascivo/react'
 | `sideNav` | `ReactNode` | no | — | Side navigation slot |
 | `aside` | `ReactNode` | no | — | Right aside slot |
 | `children` | `ReactNode` | yes | — | Main content |
-| `persistKey` | `string \| false` | no | — | localStorage key prefix. Pass false to disable persistence. |
+| `persistKey` | `string \| false` | no | `cascade.appshell` | localStorage key prefix. Pass false to disable persistence. |
 | `state` | `ShellState` | no | — | External shell state from createShellState(). Created internally when omitted. |
 
 ## Examples
@@ -10720,7 +10720,7 @@ import { Center } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `maxWidth` | `string` | no | — | CSS max-width value |
+| `maxWidth` | `string` | no | `48rem` | CSS max-width value |
 
 ## Examples
 
@@ -10781,8 +10781,8 @@ import { Columns } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `count` | `2\|3\|4` | no | — | Number of equal columns |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | — | Spacing token step |
+| `count` | `2\|3\|4` | no | `2` | Number of equal columns |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
 
 ## Examples
 
@@ -10879,7 +10879,7 @@ _Generated from registry v0.11.1 on 2026-07-25. Docs track `main`; compare with 
 
 # Flex
 
-Flex layout primitive for vertical or horizontal stacking with gap control.
+Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row.
 
 ## Install
 
@@ -10903,11 +10903,11 @@ import { Flex } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `direction` | `'vertical' \| 'horizontal'` | no | — | Flex direction |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | — | Spacing token step |
+| `direction` | `'vertical' \| 'horizontal'` | no | `vertical` | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
 | `align` | `'start'\|'center'\|'end'\|'stretch'` | no | — | align-items |
 | `justify` | `'start'\|'center'\|'end'\|'between'` | no | — | justify-content |
-| `wrap` | `boolean` | no | — | Allow wrapping |
+| `wrap` | `boolean` | no | `false` | Allow wrapping |
 
 ## Examples
 
@@ -10976,8 +10976,8 @@ import { Grid } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `cols` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no | — | Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | — | Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8. |
+| `cols` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no | `12` | Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8. |
 | `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | no | — | Block-axis alignment of items within their cells (align-items); default stretch |
 | `justify` | `'start' \| 'center' \| 'end' \| 'stretch'` | no | — | Inline-axis alignment of items within their cells (justify-items); default stretch |
 | `span` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no | — | GridItem: column span — a number, or a per-breakpoint object |
@@ -11290,7 +11290,7 @@ import { Spacer } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | — | Spacing token step |
+| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
 
 ## Examples
 
@@ -11349,9 +11349,9 @@ _Copy-paste only — `SplitView` is not exported from `@cascivo/react`. Run the 
 |------|------|----------|---------|-------------|
 | `start` | `ReactNode` | yes | — | Left pane content |
 | `end` | `ReactNode` | yes | — | Right pane content |
-| `defaultRatio` | `number` | no | — | Initial split ratio (0–1) |
-| `min` | `number` | no | — | Minimum ratio for start pane |
-| `max` | `number` | no | — | Maximum ratio for start pane |
+| `defaultRatio` | `number` | no | `0.3` | Initial split ratio (0–1) |
+| `min` | `number` | no | `0.2` | Minimum ratio for start pane |
+| `max` | `number` | no | `0.8` | Maximum ratio for start pane |
 | `aria-label` | `string` | no | — | Label for the separator |
 
 ## Examples
@@ -12257,7 +12257,7 @@ import { NavigationMenu } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | — | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | `horizontal` | Layout orientation of the component. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -13436,7 +13436,7 @@ import { PullToRefresh } from '@cascivo/react'
 | `onRefresh` | `() => Promise<unknown> \| unknown` | yes | — | Called when the pull passes the threshold; the spinner shows until it settles |
 | `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
 | `threshold` | `number` | no | `64` | Pull distance (px) required to trigger a refresh. |
-| `disabled` | `boolean` | no | — | When true, disables the control and removes it from the tab order. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `labels` | `{ pull?: string; release?: string; refreshing?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
@@ -15177,7 +15177,7 @@ import { SideNav } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `groups` | `SideNavGroup[]` | no | — | Grouped navigation items rendered under optional group labels. |
-| `showCollapseToggle` | `boolean` | no | — | Show the collapse/expand toggle control. |
+| `showCollapseToggle` | `boolean` | no | `true` | Show the collapse/expand toggle control. |
 | `items` | `SideNavItem[]` | yes | — | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
 | `collapsed` | `boolean` | no | — | Controlled collapsed state (rail mode) |
 | `defaultCollapsed` | `boolean` | no | `false` | Whether the rail is collapsed on first render (uncontrolled). |
@@ -16141,8 +16141,8 @@ import { SwipeItem } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `children` | `React.ReactNode` | yes | — | The row content |
-| `leadingActions` | `SwipeAction[]` | no | — | Actions revealed by dragging toward the end edge (shown on the start edge) |
-| `trailingActions` | `SwipeAction[]` | no | — | Actions revealed by dragging toward the start edge (shown on the end edge) |
+| `leadingActions` | `SwipeAction[]` | no | `[]` | Actions revealed by dragging toward the end edge (shown on the start edge) |
+| `trailingActions` | `SwipeAction[]` | no | `[]` | Actions revealed by dragging toward the start edge (shown on the end edge) |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples

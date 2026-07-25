@@ -24,7 +24,7 @@ import { Center } from '@cascivo/react'
 
 | Prop       | Type     | Required | Default | Description         |
 | ---------- | -------- | -------- | ------- | ------------------- |
-| `maxWidth` | `string` | no       | —       | CSS max-width value |
+| `maxWidth` | `string` | no       | `48rem` | CSS max-width value |
 
 ## Examples
 
