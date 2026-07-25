@@ -3,7 +3,7 @@
 Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
 
 > ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
-> This page documents `layout/app-shell` (copy-paste). Others:
+> This page documents `layout/app-shell` (npm @cascivo/react · or copy-paste). Others:
 >
 > - `app-shell` — npm @cascivo/react · or copy-paste — /llms/app-shell.md
 
@@ -15,7 +15,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/app-shell
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AppShell } from '@cascivo/react'
+```
 
 ## Category
 

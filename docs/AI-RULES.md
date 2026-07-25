@@ -44,7 +44,12 @@ mistake that makes a signal-native system look layout-only.
 ## cascivo reactivity contract
 
 cascivo is signal-driven. Do not mix React state with signals — it causes toggles that
-don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React hook:
+don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React hook.
+
+**Import every primitive below from `@cascivo/react`** if you installed the prebuilt
+package, or from `@cascivo/core` if you copied component source in with the CLI. Never add
+`@cascivo/core` to a prebuilt-path app's package.json — it is only a transitive dependency
+there, and everything is re-exported from `@cascivo/react`.
 
 1. Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. Never `useState`.
    The signal IS the state.
@@ -67,9 +72,16 @@ don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React
    `useEffect` that adds a `.dark` class.
 8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
    '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
-9. In any app without the Babel signals transform, a component reading `signal.value` in
-   render must call `useSignals()` (from `@cascivo/core`) as its first statement, or it
-   never re-renders.
+9. `useSignals()` is needed ONLY for a signal you did not get from a cascivo hook: a
+   module-level `signal()`, a signal passed in as a prop, or `currentLocale()`. Call it as
+   the component's first statement. Signals returned by `useSignal`, `useComputed`,
+   `useDisclosure`, `useMachine`, `useTheme` and the rest subscribe you already — do not
+   sprinkle `useSignals()` everywhere. Symptom of getting this wrong: handlers fire, the
+   UI never moves, no error.
+10. Mirroring a controlled prop into a signal -> `useControllableSignal` when you read it
+    in render; `useEffectPropSignal` when it is read only inside `useSignalEffect`. Never
+    hand-roll `s.value = prop` for the effect case: signals run effects synchronously on
+    write, so that runs the effect body during React's render phase.
 
 Full catalogs: docs/HEADLESS.md (primitives) and docs/ENTERPRISE-READINESS.md (friction map).
 ```

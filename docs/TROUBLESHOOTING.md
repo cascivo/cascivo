@@ -131,24 +131,52 @@ pnpm doesn't treat the app as its own workspace root.)
 
 ## Handlers fire but the UI never updates (toggles don't toggle, modals don't open)
 
-**Cause:** a component of **yours** reads a signal's `.value` during render
-without subscribing. React apps get no Babel signals transform, so any component
-that reads `signal.value` in render must call `useSignals()` (from
-`@cascivo/core`) as its first statement — otherwise it never re-renders on
-signal writes. cascivo's own components do this internally; the bug lives in
-app code that composes them.
+This is the one failure that gives you nothing to search for: no error, no warning, no
+red console. Every filter, sort, and toggle does nothing, and it looks like your event
+handlers are broken. They aren't — **nothing subscribed the component to the signal.**
 
-**Fix:**
+**Cause:** a component of **yours** reads a signal's `.value` during render without
+subscribing. React apps get no Babel signals transform, so a subscription has to come
+from somewhere.
+
+**Fix — it depends where the signal came from:**
+
+| Where your signal came from | What you need |
+| --- | --- |
+| A cascivo hook — `useSignal`, `useComputed`, `useDisclosure`, `useMachine`, `useTheme`, … | **Nothing.** These subscribe you automatically. (On `@cascivo/core` < 0.6, `useSignal`/`useComputed` did **not** — upgrade, or add `useSignals()`.) |
+| A module-level `signal()`, or a signal passed in as a prop | `useSignals()` as the component's first statement |
+| `currentLocale()` from `@cascivo/i18n` (a plain function, so it can't subscribe you) | `useSignals()` as the component's first statement |
 
 ```tsx
-import { useSignal, useSignals } from '@cascivo/core'
+import { signal } from '@cascivo/core'
+import { useSignals } from '@cascivo/react' // or '@cascivo/core' on the copy-paste path
+
+const isOpen = signal(false) // module-level: NOT a hook
 
 function MyPanel() {
-  useSignals() // ← first statement
-  const open = useSignal(false)
-  return <Modal open={open.value} onClose={() => (open.value = false)} />
+  useSignals() // ← first statement, because `isOpen` is a raw signal
+  return <Modal open={isOpen.value} onClose={() => (isOpen.value = false)} />
 }
 ```
+
+With a hook-created signal, no `useSignals()` is needed at all:
+
+```tsx
+import { useSignal } from '@cascivo/react'
+
+function MyPanel() {
+  const isOpen = useSignal(false) // subscribes this component for you
+  return <Modal open={isOpen.value} onClose={() => (isOpen.value = false)} />
+}
+```
+
+**Which package do I import from?** `@cascivo/react` on the prebuilt path (Path B) —
+every primitive is re-exported there, so you never add `@cascivo/core` to your
+`package.json`. `@cascivo/core` on the copy-paste path (Path A). See
+[HEADLESS.md](HEADLESS.md#when-do-i-need-usesignals).
+
+**Still frozen?** `useSignals()` starts tracking where it is called, so put it first —
+above any signal read.
 
 ---
 

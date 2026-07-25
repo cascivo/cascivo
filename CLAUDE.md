@@ -435,12 +435,36 @@ that don't open).
 
 #### Syncing a controlled React prop into a signal
 
-When a component accepts a controlled boolean/string prop that needs to drive a signal effect, sync it during render:
+**Where you read the mirrored signal decides which primitive is correct.** Preact runs
+effects **synchronously on write**, so a render-phase mirror executes every subscribed
+`useSignalEffect` body inside React's render phase — `showModal()`, listener registration
+against a pre-commit ref, and parent `setState` calls. That shipped in seven components
+before it was caught.
+
+**Read in render** (JSX, a `data-*` attribute, a derived value) — synchronous mirror. The
+write must be sync or the component renders one tick stale, and a render-phase write that
+only notifies the writing component's own subscription is a legal same-fiber update:
 
 ```tsx
-const isOpen = useSignal(open)
-isOpen.value = open // no-op if unchanged; triggers effects if changed
+const [value, setValue] = useControllableSignal({ value: valueProp, defaultValue, onChange })
 ```
+
+**Read only inside `useSignalEffect`** — deferred mirror, so the effect lands after the
+commit where it was always meant to:
+
+```tsx
+const isOpen = useEffectPropSignal(open) // one microtask later; never during render
+useSignalEffect(() => {
+  if (isOpen.value) dialogRef.current?.showModal()
+})
+```
+
+Do **not** hand-roll `const s = useSignal(open); s.value = open` for the effect case — that
+is the exact shape that ran `showModal()` mid-render in `Modal`, `Sheet`, `Dropdown`,
+`AlertDialog`, `HeaderPanel`, `CommandMenu` and `Presence`. If a value is read at
+_callback_ time rather than to drive effect re-runs (e.g. inside an `IntersectionObserver`
+callback, which runs outside the tracking scope), use a plain `useRef` — a signal there is
+both redundant and one microtask stale.
 
 For callbacks that must always be current in an effect, use a ref:
 

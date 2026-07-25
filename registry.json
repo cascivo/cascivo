@@ -116,7 +116,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "action-sheet",
@@ -283,7 +284,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "alert",
@@ -430,7 +432,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "alert-dialog",
@@ -443,7 +446,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.module.css"
       ],
       "fileHashes": {
-        "alert-dialog.tsx": "sha256-345a1684afaaf7c799324c604e1730162c836c045c05ea4c6e08d67e027bdf10",
+        "alert-dialog.tsx": "sha256-d1a09a2f2e995780923218f69db4ddb81a65a4095bcbfc12fd24035b0f62c0c8",
         "alert-dialog.module.css": "sha256-267fbaf50c0ed20988a872e8b04b1dceb27d9a46efbe382dbaec98bb598336ca"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -591,7 +594,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "app-shell",
@@ -728,7 +732,8 @@
           "a11yRationale": "The hidden nav uses transform/inline-size + inert (never display:none alone), so it stays in the a11y tree and is keyboard-reachable when open while leaving the tab order when closed; Escape and a scrim close the mobile drawer and focus returns to the toggle.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "aspect-ratio",
@@ -827,7 +832,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "avatar",
@@ -964,7 +970,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "avatar-group",
@@ -1099,7 +1106,8 @@
           ]
         }
       },
-      "registryDependencies": ["avatar"]
+      "registryDependencies": ["avatar"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "badge",
@@ -1235,7 +1243,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "blockquote",
@@ -1341,7 +1350,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "bottom-sheet",
@@ -1523,7 +1533,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "breadcrumb",
@@ -1646,7 +1657,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "button",
@@ -1806,7 +1818,8 @@
           ]
         }
       },
-      "registryDependencies": ["spinner"]
+      "registryDependencies": ["spinner"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "button-group",
@@ -1941,7 +1954,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "calendar",
@@ -2165,7 +2179,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "card",
@@ -2266,7 +2281,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "carousel",
@@ -2407,7 +2423,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "chat-bubble",
@@ -2548,7 +2565,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "checkbox",
@@ -2561,7 +2579,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
       ],
       "fileHashes": {
-        "checkbox.tsx": "sha256-c5868697cc0d7354831b8dbce2802b047efd5addca623d14f5e5e58574462704",
+        "checkbox.tsx": "sha256-85fc426d7079dfedb5fc35fb2f29900b7ad60a91bf05729c77a4710d8e6b4de3",
         "checkbox.module.css": "sha256-67ab94d2766e3fdff0c3cbbd2fd178f3bc1b489af3825ddd31292de6281295f2"
       },
       "dependencies": ["@cascivo/core"],
@@ -2691,7 +2709,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "checkbox-card",
@@ -2824,7 +2843,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "code",
@@ -2934,7 +2954,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "code-snippet",
@@ -3117,7 +3138,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "collapsible",
@@ -3254,7 +3276,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "color-picker",
@@ -3413,7 +3436,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "combobox",
@@ -3626,7 +3650,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "command-menu",
@@ -3639,7 +3664,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "fileHashes": {
-        "command-menu.tsx": "sha256-cd56231c67694eb8b79694d37f925b7f782d3c96f28a6ec5a83320123f40ab2d",
+        "command-menu.tsx": "sha256-c4c04969b8af47c6a46875080d1418cfa0913eeae6e31c23c6c480cab5810872",
         "command-menu.module.css": "sha256-00c3aca20cd16fa9aa0b42959541f46120480085841c6ecaf895940886d33efb"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3851,7 +3876,8 @@
           ]
         }
       },
-      "registryDependencies": ["kbd", "spinner"]
+      "registryDependencies": ["kbd", "spinner"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "comparison",
@@ -4017,7 +4043,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "contained-list",
@@ -4133,7 +4160,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "context-menu",
@@ -4237,7 +4265,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "copy-button",
@@ -4367,7 +4396,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "data-list",
@@ -4486,7 +4516,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "data-table",
@@ -4831,7 +4862,8 @@
           ]
         }
       },
-      "registryDependencies": ["button", "checkbox"]
+      "registryDependencies": ["button", "checkbox"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "date-picker",
@@ -5037,7 +5069,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "date-range-picker",
@@ -5225,7 +5258,8 @@
           ]
         }
       },
-      "registryDependencies": ["calendar"]
+      "registryDependencies": ["calendar"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "dock",
@@ -5353,7 +5387,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "drawer",
@@ -5527,7 +5562,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "dropdown",
@@ -5540,7 +5576,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
       ],
       "fileHashes": {
-        "dropdown.tsx": "sha256-9faaacfa9db56bd0de2ce22b1bc2c6a2127b7d8239e81207db598f759b64cb93",
+        "dropdown.tsx": "sha256-bfed7dd1d09eab06f9aff410af0992a3b9ffcacc931bdfa3989968782a775999",
         "dropdown.module.css": "sha256-ec2a02c41f49dd3f859b26e4eefe651c26c3d0ff9b58baa68a086072c8683c5c"
       },
       "dependencies": ["@cascivo/core"],
@@ -5669,7 +5705,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "editable",
@@ -5812,7 +5849,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "empty-state",
@@ -5944,7 +5982,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "fab",
@@ -6113,7 +6152,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "field",
@@ -6276,7 +6316,8 @@
           ]
         }
       },
-      "registryDependencies": ["label"]
+      "registryDependencies": ["label"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "file-uploader",
@@ -6463,7 +6504,8 @@
           ]
         }
       },
-      "registryDependencies": ["spinner"]
+      "registryDependencies": ["spinner"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "filter",
@@ -6625,7 +6667,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "form",
@@ -6748,7 +6791,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "header",
@@ -6885,7 +6929,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "header-panel",
@@ -6899,7 +6944,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
       ],
       "fileHashes": {
-        "header-panel.tsx": "sha256-2e9b9de4fb3ddf7fe750f189d659535c21148c7fa8baff07308ab60948302cfa",
+        "header-panel.tsx": "sha256-b399c0e2a3798d9a7cbec6852be3a303e59a9af7f900667dcd5aecd937479408",
         "index.ts": "sha256-3f1a80fd0b1d20520c3db44229ab73ae023c447c9fa92325a9e78b4b40d5db25",
         "header-panel.module.css": "sha256-a1b424f1c33c6b5ba16e54398d94d7222757b5c6a61e06d70454d5cce540d923"
       },
@@ -7019,7 +7064,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "heading",
@@ -7143,7 +7189,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "hover-card",
@@ -7269,7 +7316,8 @@
           ]
         }
       },
-      "registryDependencies": ["popover"]
+      "registryDependencies": ["popover"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "icon-button",
@@ -7427,7 +7475,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "image",
@@ -7594,7 +7643,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "indicator",
@@ -7699,7 +7749,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "inline-loading",
@@ -7828,7 +7879,8 @@
           ]
         }
       },
-      "registryDependencies": ["spinner"]
+      "registryDependencies": ["spinner"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "input",
@@ -7981,7 +8033,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "input-group",
@@ -8108,7 +8161,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "item",
@@ -8226,7 +8280,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "join",
@@ -8328,7 +8383,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "kbd",
@@ -8431,7 +8487,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "label",
@@ -8585,7 +8642,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "link",
@@ -8714,7 +8772,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "list",
@@ -8826,7 +8885,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "log-viewer",
@@ -9000,7 +9060,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "menu",
@@ -9118,7 +9179,8 @@
           ]
         }
       },
-      "registryDependencies": ["popover"]
+      "registryDependencies": ["popover"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "menu-button",
@@ -9298,7 +9360,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "menubar",
@@ -9423,7 +9486,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "modal",
@@ -9436,7 +9500,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.module.css"
       ],
       "fileHashes": {
-        "modal.tsx": "sha256-03cdbc6694cfc9de72918b18861d1b2cb39187cddd7dee6bb2b35eb12d3a6d7e",
+        "modal.tsx": "sha256-32bfacfeddb817fe072dc75e36e79feadc8b3ebad5d90b7a54c529a962563458",
         "modal.module.css": "sha256-ef7bb366fae8d9bf58cc685b5697fec0506fe397ff3eceb0108cb8ead419bd8f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9574,7 +9638,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "multi-select",
@@ -9725,7 +9790,8 @@
           ]
         }
       },
-      "registryDependencies": ["popover"]
+      "registryDependencies": ["popover"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "native-select",
@@ -9890,7 +9956,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "navigation-menu",
@@ -10012,7 +10079,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "notification",
@@ -10180,7 +10248,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "number-input",
@@ -10392,7 +10461,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "otp-input",
@@ -10525,7 +10595,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "overflow-menu",
@@ -10682,7 +10753,8 @@
           ]
         }
       },
-      "registryDependencies": ["dropdown"]
+      "registryDependencies": ["dropdown"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "pagination",
@@ -10839,7 +10911,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "password-input",
@@ -10988,7 +11061,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "popover",
@@ -11005,7 +11079,7 @@
       "fileHashes": {
         "popover.tsx": "sha256-ffbea8304aa99f97e03052f49d68f72a34504584a2565cfdcf38f40cf12cfb2e",
         "index.ts": "sha256-2e50daeeb9dfa03e21cd5e7b890e55fc9db4054df101df845da6fa00ee285822",
-        "use-popover.ts": "sha256-de9b13776d77ba273047042cb33aefd5e7220cf158b64aeae8d21132b80d8d02",
+        "use-popover.ts": "sha256-4339ceab29d3371dd4b5c33b7b2a116e8c7bd3a651cd5a4e246329db4e406ffe",
         "popover.module.css": "sha256-cd6827d53118b367cb7653d1376894ea7ccdd3e10bccfdc8296ddf779f191eb1"
       },
       "dependencies": ["@cascivo/core"],
@@ -11127,7 +11201,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "progress",
@@ -11268,7 +11343,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "progress-bar",
@@ -11412,7 +11488,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "progress-circle",
@@ -11541,7 +11618,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "progress-indicator",
@@ -11666,7 +11744,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "prose",
@@ -11791,7 +11870,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "pull-to-refresh",
@@ -11925,7 +12005,8 @@
           ]
         }
       },
-      "registryDependencies": ["spinner"]
+      "registryDependencies": ["spinner"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "qr-code",
@@ -12064,7 +12145,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "radial-progress",
@@ -12213,7 +12295,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "radio",
@@ -12340,7 +12423,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "radio-card",
@@ -12470,7 +12554,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "rating-group",
@@ -12612,7 +12697,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "relative-time",
@@ -12733,7 +12819,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "resizable",
@@ -12879,7 +12966,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "scroll-area",
@@ -13005,7 +13093,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "search",
@@ -13018,7 +13107,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-a3985b314d8c8db8ca77b400d173dd8e03e4acece4ff10bcb7d4b370711560c1",
+        "search.tsx": "sha256-492e8594f5d6cf852878c658b5540993fb4f126f47ed3ec67478e33b7dc4e3f1",
         "search.module.css": "sha256-129444d231e86bcea559666363ce3d75ce635697142687e5fca843451505807b"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -13201,7 +13290,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "segmented-control",
@@ -13333,7 +13423,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "select",
@@ -13483,7 +13574,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "separator",
@@ -13583,7 +13675,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "sheet",
@@ -13596,7 +13689,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.module.css"
       ],
       "fileHashes": {
-        "sheet.tsx": "sha256-30bad850d17df6058edf06a00d28d8f794401678e41ca857a2d8fed9005cacec",
+        "sheet.tsx": "sha256-9d995d5e7cc23657074753236c050b5ca092784c80301c8664be89fc6d251676",
         "sheet.module.css": "sha256-518a56818809c8deb112812336439cfcb4b8e2fa0bf027d262ab211c1f0427b8"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -13707,7 +13800,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "shell-header",
@@ -13960,7 +14054,8 @@
           ]
         }
       },
-      "registryDependencies": ["popover"]
+      "registryDependencies": ["popover"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "side-nav",
@@ -14160,7 +14255,8 @@
           ]
         }
       },
-      "registryDependencies": ["popover", "tooltip"]
+      "registryDependencies": ["popover", "tooltip"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "skeleton",
@@ -14287,7 +14383,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "skip-nav",
@@ -14406,7 +14503,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "slider",
@@ -14551,7 +14649,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "spinner",
@@ -14658,7 +14757,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "stack",
@@ -14767,7 +14867,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "stat",
@@ -14909,7 +15010,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "status",
@@ -15031,7 +15133,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "steps",
@@ -15177,7 +15280,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "structured-list",
@@ -15321,7 +15425,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "swap",
@@ -15470,7 +15575,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "swipe-item",
@@ -15594,7 +15700,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "switcher",
@@ -15706,7 +15813,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "tabs",
@@ -15820,7 +15928,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "tag",
@@ -15961,7 +16070,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "tags-input",
@@ -16099,7 +16209,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "text",
@@ -16233,7 +16344,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "textarea",
@@ -16376,7 +16488,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "tile",
@@ -16543,7 +16656,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "time-picker",
@@ -16720,7 +16834,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "timeline",
@@ -16822,7 +16937,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "toast",
@@ -16950,7 +17066,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "toc",
@@ -17085,7 +17202,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "toggle",
@@ -17235,7 +17353,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "toggle-group",
@@ -17402,7 +17521,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "toggletip",
@@ -17570,7 +17690,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "tooltip",
@@ -17701,7 +17822,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "tree-view",
@@ -17876,7 +17998,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "user",
@@ -17994,7 +18117,8 @@
           ]
         }
       },
-      "registryDependencies": ["avatar"]
+      "registryDependencies": ["avatar"],
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "visually-hidden",
@@ -18091,7 +18215,8 @@
             }
           ]
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/app-shell",
@@ -18233,7 +18358,8 @@
           "a11yRationale": "Provides landmark structure with header and navigation regions for screen reader orientation.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/auth-layout",
@@ -18323,7 +18449,8 @@
           "a11yRationale": "Provides a main landmark wrapping the focused auth content.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "layout/auto-grid",
@@ -18402,7 +18529,8 @@
           "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/center",
@@ -18478,7 +18606,8 @@
           "a11yRationale": "Pure layout wrapper with no semantic role; does not affect the accessibility tree.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/columns",
@@ -18560,7 +18689,8 @@
           "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/dashboard-layout",
@@ -18648,7 +18778,8 @@
           "a11yRationale": "Provides landmark regions for main content and complementary aside.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "layout/flex",
@@ -18765,7 +18896,8 @@
           "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/grid",
@@ -18870,7 +19002,8 @@
           "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/masonry",
@@ -18954,7 +19087,8 @@
           "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "layout/page-header",
@@ -19062,7 +19196,8 @@
           "a11yRationale": "Renders a header region with a top-level heading for screen reader page structure.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "layout/section",
@@ -19146,7 +19281,8 @@
           "a11yRationale": "Renders a section element to group related content for screen readers.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "layout/settings-layout",
@@ -19228,7 +19364,8 @@
           "a11yRationale": "Provides a navigation region for the menu and a main region for content.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "layout/spacer",
@@ -19299,7 +19436,8 @@
           "a11yRationale": "Empty presentational spacer with no semantic role; ignored by assistive tech.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/split-view",
@@ -19400,7 +19538,8 @@
           "a11yRationale": "Exposes a keyboard-operable separator with role=\"separator\" and aria-valuenow for the split ratio.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "block/console-app",
@@ -19481,7 +19620,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/app-shell", "layout/page-header"]
+      "registryDependencies": ["layout/app-shell", "layout/page-header"],
+      "channels": ["copy"]
     },
     {
       "name": "block/dashboard-charts",
@@ -19558,7 +19698,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/dashboard-layout"]
+      "registryDependencies": ["layout/dashboard-layout"],
+      "channels": ["copy"]
     },
     {
       "name": "block/empty-dashboard",
@@ -19629,7 +19770,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/dashboard-layout"]
+      "registryDependencies": ["layout/dashboard-layout"],
+      "channels": ["copy"]
     },
     {
       "name": "block/login-page",
@@ -19700,7 +19842,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/auth-layout"]
+      "registryDependencies": ["layout/auth-layout"],
+      "channels": ["copy"]
     },
     {
       "name": "block/notification-center",
@@ -19777,7 +19920,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/flex"]
+      "registryDependencies": ["layout/flex"],
+      "channels": ["copy"]
     },
     {
       "name": "block/page-with-breadcrumb",
@@ -19841,7 +19985,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/page-header", "layout/center"]
+      "registryDependencies": ["layout/page-header", "layout/center"],
+      "channels": ["copy"]
     },
     {
       "name": "block/settings-form-page",
@@ -19912,7 +20057,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/settings-layout"]
+      "registryDependencies": ["layout/settings-layout"],
+      "channels": ["copy"]
     },
     {
       "name": "block/sidebar-app",
@@ -19981,7 +20127,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/app-shell"]
+      "registryDependencies": ["layout/app-shell"],
+      "channels": ["copy"]
     },
     {
       "name": "block/stats-cards",
@@ -20055,7 +20202,8 @@
           "a11yRationale": "Each stat card is a labeled figure for screen reader context.",
           "flexibility": []
         }
-      }
+      },
+      "channels": ["copy"]
     },
     {
       "name": "block/users-table-page",
@@ -20132,7 +20280,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/page-header", "layout/flex"]
+      "registryDependencies": ["layout/page-header", "layout/flex"],
+      "channels": ["copy"]
     },
     {
       "name": "chart/area-chart",
@@ -20392,7 +20541,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/bar-chart",
@@ -20714,7 +20864,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/boxplot",
@@ -20831,7 +20982,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/bubble-chart",
@@ -20960,7 +21112,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/bullet",
@@ -21086,7 +21239,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/calendar",
@@ -21217,7 +21371,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/candlestick",
@@ -21398,7 +21553,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/combo-chart",
@@ -21535,7 +21691,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/funnel",
@@ -21664,7 +21821,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/gauge",
@@ -21812,7 +21970,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/heatmap",
@@ -21927,7 +22086,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/histogram",
@@ -22047,7 +22207,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/kpi",
@@ -22153,7 +22314,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/line-chart",
@@ -22419,7 +22581,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/meter",
@@ -22534,7 +22697,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/pie-chart",
@@ -22790,7 +22954,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/polar",
@@ -22938,7 +23103,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/radar",
@@ -23062,7 +23228,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/radial-bar",
@@ -23233,7 +23400,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/sankey",
@@ -23361,7 +23529,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/scatter-chart",
@@ -23553,7 +23722,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/sparkline",
@@ -23655,7 +23825,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/stream",
@@ -23803,7 +23974,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/sunburst",
@@ -23931,7 +24103,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "chart/treemap",
@@ -24048,7 +24221,8 @@
         }
       },
       "install": "@cascivo/charts",
-      "styles": "@cascivo/charts/styles.css"
+      "styles": "@cascivo/charts/styles.css",
+      "channels": ["npm:@cascivo/charts"]
     },
     {
       "name": "editor/code-editor",
@@ -24299,7 +24473,8 @@
         }
       },
       "install": "@cascivo/editor",
-      "styles": "@cascivo/editor/styles.css"
+      "styles": "@cascivo/editor/styles.css",
+      "channels": ["npm:@cascivo/editor"]
     },
     {
       "name": "editor/highlight",
@@ -24411,7 +24586,8 @@
         }
       },
       "install": "@cascivo/editor",
-      "styles": "@cascivo/editor/styles.css"
+      "styles": "@cascivo/editor/styles.css",
+      "channels": ["npm:@cascivo/editor"]
     },
     {
       "name": "section/cta",
@@ -24516,7 +24692,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/section"]
+      "registryDependencies": ["layout/section"],
+      "channels": ["copy"]
     },
     {
       "name": "section/feature-grid",
@@ -24630,7 +24807,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/auto-grid", "layout/section"]
+      "registryDependencies": ["layout/auto-grid", "layout/section"],
+      "channels": ["copy"]
     },
     {
       "name": "section/hero",
@@ -24759,7 +24937,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/section"]
+      "registryDependencies": ["layout/section"],
+      "channels": ["copy"]
     },
     {
       "name": "section/media-masonry",
@@ -24871,7 +25050,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/masonry", "layout/section"]
+      "registryDependencies": ["layout/masonry", "layout/section"],
+      "channels": ["copy"]
     },
     {
       "name": "section/page-footer",
@@ -24965,7 +25145,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/auto-grid"]
+      "registryDependencies": ["layout/auto-grid"],
+      "channels": ["copy"]
     },
     {
       "name": "section/stats-band",
@@ -25060,7 +25241,8 @@
           "flexibility": []
         }
       },
-      "registryDependencies": ["layout/auto-grid"]
+      "registryDependencies": ["layout/auto-grid"],
+      "channels": ["copy"]
     },
     {
       "name": "flow/flow",
@@ -25245,7 +25427,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-background",
@@ -25354,7 +25537,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-controls",
@@ -25478,7 +25662,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-edge",
@@ -25640,7 +25825,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-handle",
@@ -25742,7 +25928,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-minimap",
@@ -25865,7 +26052,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-node",
@@ -26013,7 +26201,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-panel",
@@ -26091,7 +26280,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-story",
@@ -26267,7 +26457,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     },
     {
       "name": "flow/flow-canvas",
@@ -26395,7 +26586,8 @@
         }
       },
       "install": "@cascivo/flow",
-      "styles": "@cascivo/flow/styles.css"
+      "styles": "@cascivo/flow/styles.css",
+      "channels": ["npm:@cascivo/flow"]
     }
   ],
   "blocks": [

@@ -19,9 +19,11 @@ import {
   writeShadcnRegistry,
 } from '../../packages/registry/src/index.ts'
 import type { BlockMeta } from '../../packages/components/src/blocks/types.ts'
+import { reactExportedNames } from './react-exports.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
+const reactExports = reactExportedNames(REPO_ROOT)
 const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
 
 const BASE_URL = (
@@ -96,6 +98,11 @@ interface RegistryComponent {
   fileHashes?: Record<string, string>
   /** npm package to install instead of copying files (used for type: 'chart'). */
   install?: string
+  /**
+   * Every way to obtain this entry: `npm:@cascivo/react`, `npm:@cascivo/charts`, `copy`.
+   * Derived from the real export list — the single source of truth for "is it importable".
+   */
+  channels?: string[]
   /**
    * Stylesheet import specifier this entry's npm package requires, e.g.
    * `@cascivo/charts/styles.css` — present only when `install` is set and that
@@ -271,6 +278,18 @@ async function buildEntry(
     const styles = await resolveStylesheet(entry.install)
     if (styles) entry.styles = styles
   }
+  // How you can actually get this entry — derived from the real `@cascivo/react` export
+  // list, never from the source path. Consumers (CLI, MCP, docs generators, the site) read
+  // this instead of each re-deriving it, which is how the layout primitives ended up
+  // documented as "copy-paste only" while being importable. See scripts/registry/react-exports.ts.
+  entry.channels = [
+    ...(entry.install
+      ? [`npm:${entry.install}`]
+      : reactExports.has(meta.name)
+        ? ['npm:@cascivo/react']
+        : []),
+    ...(fileNames.length > 0 ? ['copy'] : []),
+  ]
   return entry
 }
 

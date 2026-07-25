@@ -475,19 +475,19 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [aspect-ratio](https://cascivo.com/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio _(npm @cascivo/react · or copy-paste)_
 - [indicator](https://cascivo.com/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child _(npm @cascivo/react · or copy-paste)_
 - [join](https://cascivo.com/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii _(npm @cascivo/react · or copy-paste)_
-- [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(copy-paste)_
+- [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(npm @cascivo/react · or copy-paste)_
 - [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(copy-paste)_
-- [layout/auto-grid](https://cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space. _(copy-paste)_
-- [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(copy-paste)_
-- [layout/columns](https://cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(copy-paste)_
+- [layout/auto-grid](https://cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space. _(npm @cascivo/react · or copy-paste)_
+- [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
+- [layout/columns](https://cascivo.com/llms/layout/columns.md) — Equal-width multi-column layout that collapses to single column on narrow viewports. _(npm @cascivo/react · or copy-paste)_
 - [layout/dashboard-layout](https://cascivo.com/llms/layout/dashboard-layout.md) — Dashboard page layout with stats strip, main content area, and optional aside. _(copy-paste)_
-- [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. _(copy-paste)_
-- [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(copy-paste)_
+- [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. _(npm @cascivo/react · or copy-paste)_
+- [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
 - [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
 - [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(copy-paste)_
 - [layout/section](https://cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
 - [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
-- [layout/spacer](https://cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(copy-paste)_
+- [layout/spacer](https://cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(npm @cascivo/react · or copy-paste)_
 - [layout/split-view](https://cascivo.com/llms/layout/split-view.md) — Resizable two-pane split layout with keyboard and pointer drag support. _(copy-paste)_
 - [resizable](https://cascivo.com/llms/resizable.md) — Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space _(npm @cascivo/react · or copy-paste)_
 - [scroll-area](https://cascivo.com/llms/scroll-area.md) — A scroll container with styled, slim scrollbars and overflow shadows _(npm @cascivo/react · or copy-paste)_
@@ -523,7 +523,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [progress-indicator](https://cascivo.com/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow _(npm @cascivo/react · or copy-paste)_
 - [shell-header](https://cascivo.com/llms/shell-header.md) — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content _(npm @cascivo/react · or copy-paste)_
 - [side-nav](https://cascivo.com/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping _(npm @cascivo/react · or copy-paste)_
-- [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(npm @cascivo/react · or copy-paste)_
+- [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(copy-paste)_
 - [steps](https://cascivo.com/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations _(npm @cascivo/react · or copy-paste)_
 - [switcher](https://cascivo.com/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers _(npm @cascivo/react · or copy-paste)_
 - [tabs](https://cascivo.com/llms/tabs.md) — Switch between related panels of content _(npm @cascivo/react · or copy-paste)_
@@ -544,7 +544,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [overflow-menu](https://cascivo.com/llms/overflow-menu.md) — Kebab icon button revealing a menu of row-level actions _(npm @cascivo/react · or copy-paste)_
 - [popover](https://cascivo.com/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API _(npm @cascivo/react · or copy-paste)_
 - [sheet](https://cascivo.com/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations _(npm @cascivo/react · or copy-paste)_
-- [toast](https://cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook _(npm @cascivo/react · or copy-paste)_
+- [toast](https://cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook _(copy-paste)_
 - [toggletip](https://cascivo.com/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content _(npm @cascivo/react · or copy-paste)_
 - [tooltip](https://cascivo.com/llms/tooltip.md) — Contextual label shown on hover or focus _(npm @cascivo/react · or copy-paste)_
 
@@ -1144,7 +1144,7 @@ Sticky-header + full-height side-nav + single-scroll-container layout with an an
 
 > ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
 > This page documents `app-shell` (npm @cascivo/react · or copy-paste). Others:
-> - `layout/app-shell` — copy-paste — /llms/layout/app-shell.md
+> - `layout/app-shell` — npm @cascivo/react · or copy-paste — /llms/layout/app-shell.md
 
 ## Install
 
@@ -1611,7 +1611,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/app-shell
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `App Shell` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1647,7 +1647,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/auth-login
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Login Form` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1683,7 +1683,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/auth-signup
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Sign Up Form` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1719,7 +1719,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/console-app
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `ConsoleApp` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1783,7 +1783,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/dashboard-charts
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `DashboardCharts` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1837,7 +1837,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/dashboard-overview
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Dashboard Overview` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1873,7 +1873,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/dashboard-table
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Dashboard Table` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1909,7 +1909,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/empty-dashboard
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `EmptyDashboard` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1962,7 +1962,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/faq
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `FAQ Accordion` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -1998,7 +1998,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/login-page
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `LoginPage` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2051,7 +2051,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/marketing-features
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Feature Grid` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2087,7 +2087,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/marketing-hero
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Hero Section` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2123,7 +2123,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/notification-center
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `NotificationCenter` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2177,7 +2177,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/page-with-breadcrumb
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `PageWithBreadcrumb` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2228,7 +2228,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/pricing
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Pricing Tiers` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2264,7 +2264,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/settings-form-page
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `SettingsFormPage` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2317,7 +2317,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/settings-profile
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Settings — Profile` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2353,7 +2353,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/sidebar-app
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `SidebarApp` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2404,7 +2404,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/site-footer
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Site Footer` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2440,7 +2440,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/stats-cards
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `StatsCards` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2493,7 +2493,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/testimonials
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Testimonials` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -2529,7 +2529,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/users-table-page
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `UsersTablePage` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -10481,7 +10481,7 @@ _Generated from registry v0.11.1 on 2026-07-25. Docs track `main`; compare with 
 Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
 
 > ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
-> This page documents `layout/app-shell` (copy-paste). Others:
+> This page documents `layout/app-shell` (npm @cascivo/react · or copy-paste). Others:
 > - `app-shell` — npm @cascivo/react · or copy-paste — /llms/app-shell.md
 
 ## Install
@@ -10492,7 +10492,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/app-shell
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AppShell } from '@cascivo/react'
+```
 
 ## Category
 
@@ -10576,7 +10580,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/auth-layout
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `AuthLayout` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -10640,7 +10644,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/auto-grid
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { AutoGrid } from '@cascivo/react'
+```
 
 ## Category
 
@@ -10698,7 +10706,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/center
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Center } from '@cascivo/react'
+```
 
 ## Category
 
@@ -10755,7 +10767,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/columns
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Columns } from '@cascivo/react'
+```
 
 ## Category
 
@@ -10813,7 +10829,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/dashboard-layout
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `DashboardLayout` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -10873,7 +10889,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/flex
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Flex } from '@cascivo/react'
+```
 
 ## Category
 
@@ -10942,7 +10962,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/grid
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Grid } from '@cascivo/react'
+```
 
 ## Category
 
@@ -11011,7 +11035,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/masonry
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Masonry` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -11069,7 +11093,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/page-header
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `PageHeader` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -11136,7 +11160,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/section
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Section` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -11194,7 +11218,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/settings-layout
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `SettingsLayout` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -11252,7 +11276,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/spacer
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Spacer } from '@cascivo/react'
+```
 
 ## Category
 
@@ -11309,7 +11337,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/split-view
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `SplitView` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -14243,7 +14271,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add section/cta
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Cta` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -14309,7 +14337,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add section/feature-grid
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `FeatureGrid` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -14387,7 +14415,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add section/hero
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `Hero` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -14469,7 +14497,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add section/media-masonry
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `MediaMasonry` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -14535,7 +14563,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add section/page-footer
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `PageFooter` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -14609,7 +14637,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add section/stats-band
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `StatsBand` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -15331,11 +15359,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add skip-nav
 ```
 
-Or use it from the prebuilt package without copying:
-
-```tsx
-import { SkipNavLink, SkipNavTarget } from '@cascivo/react'
-```
+_Copy-paste only — `SkipNavLink, SkipNavTarget` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -16977,11 +17001,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add toast
 ```
 
-Or use it from the prebuilt package without copying:
-
-```tsx
-import { ToastProvider, useToast } from '@cascivo/react'
-```
+_Copy-paste only — `ToastProvider, useToast` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 

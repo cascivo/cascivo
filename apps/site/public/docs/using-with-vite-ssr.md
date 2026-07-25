@@ -185,14 +185,47 @@ setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...
 ```
 
 Import `setLinkComponent` and the `LinkComponentProps` contract type from
-`@cascivo/react` (both re-exported) on the prebuilt path — that way you never add
-`@cascivo/core` as a direct dependency (under pnpm, importing it directly would be a
-phantom-dependency error, since it is only a transitive dep). `LinkComponentProps`
+`@cascivo/react` — see [Where do imports come from?](#where-do-imports-come-from) below.
+`LinkComponentProps`
 documents the full computed bag (`href`, `aria-current`, active `data-state`,
 `className`, `onClick`, …), so active styling and accessibility carry over, and — because
 the link stays a real `<a>` — middle-click / open-in-new-tab keep working with no
 `onClick` interception. `SideNavItem.render` is the per-item escape hatch; prefer the
 global `setLinkComponent` for whole-app router wiring.
+
+### Where do imports come from?
+
+On the prebuilt path (Path B), **everything comes from `@cascivo/react`** — components,
+hooks, and the behavior primitives alike. Your `package.json` needs exactly:
+
+```jsonc
+{
+  "dependencies": { "@cascivo/react": "^0.11.0" },
+  // peers you install alongside it:
+  "peerDependencies": { "react": ">=18", "react-dom": ">=18", "@preact/signals-react": ">=3" },
+}
+```
+
+| You need                                                                                                                                                     | Import from                                            | Notes                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ | --------------------------------------------------------------------------- |
+| Components (`Button`, `DataTable`, `AppShell`, …)                                                                                                            | `@cascivo/react`                                       |                                                                             |
+| Reactivity (`useSignal`, `useComputed`, `useSignalEffect`, `useSignals`, `signal`, `computed`, `effect`, `batch`)                                            | `@cascivo/react`                                       | Re-exported; identical module instance, not a copy                          |
+| Controlled-prop bridges (`useControllableSignal`, `useEffectPropSignal`, `useDisclosure`, `useMachine`)                                                      | `@cascivo/react`                                       |                                                                             |
+| Behavior primitives (`useId`, `useMediaQuery`, `useRovingFocus`, `useTypeahead`, `useAnchorPosition`, `DismissableLayer`, `FocusScope`, `Portal`, `Slot`, …) | `@cascivo/react`                                       |                                                                             |
+| Router wiring (`setLinkComponent`, `LinkComponentProps`)                                                                                                     | `@cascivo/react`                                       |                                                                             |
+| The `Signal` / `ReadonlySignal` **types**                                                                                                                    | `@preact/signals-react`                                | It is a declared peer, so you already list it — a legal, non-phantom import |
+| Charts, icons, themes                                                                                                                                        | `@cascivo/charts`, `@cascivo/icons`, `@cascivo/themes` | Separate installs                                                           |
+
+**Do not add `@cascivo/core` to a Path B app.** Under pnpm's strict layout it is only a
+transitive dependency, so importing it directly is a phantom-dependency error — and you
+never need to: every primitive above is re-exported from `@cascivo/react`. Only the
+copy-paste path (Path A), where you own the component source, depends on `@cascivo/core`
+directly.
+
+> This used to be a prohibition with no alternative — the reactivity contract said "use
+> `useSignal`" while `useSignal` existed only in `@cascivo/core`. An adopter following both
+> rules had no legal move. `scripts/checks/path-b-parity.test.ts` now fails the build if a
+> primitive the docs name is not reachable from `@cascivo/react`.
 
 ### Timestamps (`RelativeTime`)
 

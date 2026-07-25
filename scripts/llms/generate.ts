@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { reactExportedNames } from '../registry/react-exports.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -171,20 +172,43 @@ function typeDefsSection(typeDefs: TypeDefMeta[]): string {
 }
 
 /**
- * Which npm package (if any) exports a registry entry. Drives the import example.
- * - charts → @cascivo/charts
- * - components under packages/components/src → @cascivo/react (prebuilt)
- * - layouts/blocks/sections (packages/layouts/src) → null (copy-paste only, unpublished)
+ * Which npm package (if any) exports a registry entry — resolved from the REAL export list
+ * of `packages/react/src/index.ts`, never from the entry's source path.
+ *
+ * This used to read: "files under packages/components/src → @cascivo/react; anything under
+ * packages/layouts/src → copy-paste only". That inference was wrong for the seven layout
+ * primitives `@cascivo/react` does export, so every generated AI surface told agents that
+ * `Flex`, `Grid`, `GridItem`, `AutoGrid`, `Columns`, `Center` and `Spacer` were
+ * "copy-paste only — not published as an importable package", while the hand-written
+ * dashboard recipe correctly said the opposite. The adopter who reported it hand-wrote a
+ * `PageHeader` because the label carried no information: it was identical for the six
+ * importable layouts and the eight genuinely copy-paste-only ones.
+ *
+ * Right for 186 entries and wrong for 6 reads as correct in review — only deriving it from
+ * the export list makes it checkable. `scripts/checks/llms-channels.test.ts` asserts the
+ * two agree, with no allowlist.
  */
+const reactExports = reactExportedNames(ROOT)
+
 function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' | null {
   if (entry.type === 'chart') return '@cascivo/charts'
-  // Blocks are copy-paste only (`npx cascivo add block/<name>`) even though their
-  // source lives under packages/components/src/blocks — they are not importable as
-  // named exports from @cascivo/react, so don't advertise an npm import for them.
-  if (entry.type === 'block') return null
-  const first = entry.files?.[0] ?? ''
-  if (first.includes('/packages/components/src/')) return '@cascivo/react'
-  return null
+  return reactExports.has(displayNameOf(entry)) ? '@cascivo/react' : null
+}
+
+/**
+ * The entry's distribution channels, as machine-readable strings for `registry.json` —
+ * so the CLI, MCP, the site and the docs generators read one answer instead of each
+ * re-deriving it. `copy` means the source files ship for `npx cascivo add <name>`.
+ */
+function channelsFor(entry: RegistryEntry): string[] {
+  const out: string[] = []
+  if (entry.install) out.push(`npm:${entry.install}`)
+  else {
+    const pkg = packageFor(entry)
+    if (pkg) out.push(`npm:${pkg}`)
+  }
+  if ((entry.files?.length ?? 0) > 0) out.push('copy')
+  return out
 }
 
 /**
@@ -275,7 +299,13 @@ function componentMarkdown(
       lines.push('```')
       lines.push('')
     } else {
-      lines.push('_Copy-paste only — this block/layout is not published as an importable package._')
+      // Say what to do INSTEAD, not just what isn't available: an adopter who reads
+      // "not importable" and nothing else hand-writes the component from scratch.
+      lines.push(
+        `_Copy-paste only — \`${exportName}\` is not exported from \`@cascivo/react\`. ` +
+          `Run the command above to own the source, or compose it from the exported ` +
+          `primitives (\`Flex\`, \`Grid\`, \`Heading\`, …)._`,
+      )
       lines.push('')
     }
   }

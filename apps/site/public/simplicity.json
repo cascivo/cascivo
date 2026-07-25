@@ -12,7 +12,7 @@
       "name": "checkbox",
       "label": "Checkbox",
       "primitive": "Native <input type=\"checkbox\">",
-      "loc": 123,
+      "loc": 122,
       "files": 2,
       "deps": 0
     },
@@ -28,7 +28,7 @@
       "name": "modal",
       "label": "Dialog",
       "primitive": "Native <dialog> + showModal()",
-      "loc": 285,
+      "loc": 291,
       "files": 2,
       "deps": 0
     },
@@ -36,7 +36,7 @@
       "name": "popover",
       "label": "Popover",
       "primitive": "Popover API + CSS anchor positioning",
-      "loc": 235,
+      "loc": 237,
       "files": 4,
       "deps": 0
     }

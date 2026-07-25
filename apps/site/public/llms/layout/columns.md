@@ -10,7 +10,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/columns
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Columns } from '@cascivo/react'
+```
 
 ## Category
 

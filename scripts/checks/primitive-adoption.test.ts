@@ -64,7 +64,10 @@ function collectTsx(dir: string): string[] {
       if (entry === 'node_modules' || entry === 'dist') continue
       const full = join(dir, entry)
       if (statSync(full).isDirectory()) results.push(...collectTsx(full))
-      else if (entry.endsWith('.tsx') && !entry.includes('.test.')) results.push(full)
+      // `.ts` as well as `.tsx`: the behavior hooks that build aria ids and CSS anchor
+      // names live in plain `.ts` (e.g. popover/use-popover.ts), so a `.tsx`-only sweep
+      // misses exactly the files these rules exist for.
+      else if (/\.tsx?$/.test(entry) && !entry.includes('.test.')) results.push(full)
     }
   } catch {
     // skip unreadable dirs
@@ -99,6 +102,39 @@ const STATIC_ARIA_ID = /aria-(?:labelledby|describedby)="[^"]/
 const RANDOM_ID = /Math\.random\(/
 const OUTSIDE_CLICK = /document\.addEventListener\(\s*['"](?:mousedown|click|pointerdown)['"]/
 
+/**
+ * A module-scoped mutable counter feeding a DOM identifier.
+ *
+ * Added because the aria-id rule above could not see the shape that actually shipped:
+ * `Search` built its `<label for>`/`<input id>` pair from `let idCounter = 0`, and
+ * `usePopover` built its CSS anchor name the same way. On the server the counter keeps
+ * incrementing for the life of the process, so it diverges from a freshly-loaded client on
+ * essentially every request — a guaranteed hydration mismatch that React declines to patch
+ * up, which can leave the label associated with nothing (2026-07-25 adopter report, #3).
+ *
+ * Deliberately narrow: it fires only when a file has BOTH a top-level numeric `let`/`var`
+ * AND a template literal assigned into an id-ish binding. A counter used for React `key`s
+ * or a runtime queue (e.g. `toast`'s `nextToastId`, which is minted on a user action and
+ * never during SSR) is not a hydration hazard and does not match.
+ */
+const MODULE_COUNTER = /^(?:let|var)\s+(\w+)\s*=\s*-?\d+\s*$/gm
+
+/**
+ * Does this file interpolate `name` into a template literal? That is the step that turns a
+ * counter into a rendered string — and a rendered string built from a module counter is a
+ * DOM id, an anchor name, or a `for` attribute. A counter used as a React key or a queue
+ * sequence (e.g. `toast`'s `nextToastId`, minted on a user action and never during a server
+ * render) never reaches a template literal, so it does not match and needs no allowlist.
+ */
+function interpolatedIntoTemplate(src: string, name: string): boolean {
+  return [...src.matchAll(/`[^`]*`/g)].some((m) =>
+    new RegExp(`\\$\\{[^}]*\\b${name}\\b`).test(m[0]),
+  )
+}
+
+/** Files where a module counter reaches a template literal but is provably SSR-safe. */
+const MODULE_COUNTER_ALLOWLIST: { file: string; reason: string }[] = []
+
 function report(hits: Hit[], guidance: string): void {
   if (hits.length === 0) return
   const msg = hits.map((h) => `  ${h.file}:${h.line}  ${h.context.slice(0, 90)}`).join('\n')
@@ -126,6 +162,24 @@ describe('primitive-adoption:check — components consume shared headless primit
       .flatMap((f) => scan(OUTSIDE_CLICK, f.src, f.rel))
       .filter((h) => !allow.has(h.file))
     report(hits, 'Raw outside-click listener reimplements DismissableLayer — use it instead:')
+  })
+
+  it('no module-scoped counter feeding a DOM id (use useId() — SSR hydration)', () => {
+    const allow = new Set(MODULE_COUNTER_ALLOWLIST.map((e) => e.file))
+    const hits = files
+      .filter((f) => !allow.has(f.rel))
+      .flatMap((f) => {
+        const counters = [...f.src.matchAll(MODULE_COUNTER)].map((m) => m[1]!)
+        const rendered = counters.filter((name) => interpolatedIntoTemplate(f.src, name))
+        return rendered.flatMap((name) =>
+          scan(new RegExp(`^(?:let|var)\\s+${name}\\s*=`), f.src, f.rel),
+        )
+      })
+    report(
+      hits,
+      'A module-scoped counter used to build a DOM id diverges between the server process ' +
+        'and a fresh client, so every SSR render mismatches on hydration. Use useId():',
+    )
   })
 
   it('outside-click allowlist has no stale entries', () => {

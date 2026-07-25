@@ -5,7 +5,7 @@ Sticky-header + full-height side-nav + single-scroll-container layout with an an
 > ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
 > This page documents `app-shell` (npm @cascivo/react · or copy-paste). Others:
 >
-> - `layout/app-shell` — copy-paste — /llms/layout/app-shell.md
+> - `layout/app-shell` — npm @cascivo/react · or copy-paste — /llms/layout/app-shell.md
 
 ## Install
 
