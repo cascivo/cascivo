@@ -1,5 +1,13 @@
 # Fix plan — TanStack Router dashboard adopter report (2026-07-23, published 0.10.1 packages)
 
+> **Superseded — not the live tracker.** The live tracker is
+> [`fix-plan-vercel-tanstack-start-adopter-2026-07-25.md`](fix-plan-vercel-tanstack-start-adopter-2026-07-25.md)
+> (via the 07-24 plan). This plan's still-open items are owned there:
+> **WS-J**'s remaining browser leg (tarball-install + Playwright app) → 07-25 **WS-15**;
+> publishing the release train → 07-25 **WS-15**. Everything else here is ✅ on `main`.
+> Per `README.md` WS-K rule 3, edit statuses here only to record what shipped from this
+> plan — new work goes in the live tracker.
+
 **Status: implemented on `claude/ui-library-report-analysis-3j9eht`; not yet published.**
 Per-workstream: **WS-A** ✅ (complete `styles.css`, `@cascivo/themes` dependency,
 `ThemeProvider` dev warning) · **WS-B** ✅ (`dist/index.d.ts` quickstart banner + package

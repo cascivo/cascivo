@@ -15,8 +15,11 @@ contract) · **WS-10** planned (P2 — `CardHeader` column default fights the ti
 **WS-11** planned (P2 — `Kpi` delta formatting uncontrollable; disagrees with `Stat`) ·
 **WS-12** planned (P2 — app layer slot: `CSS-LAYERS-PITFALL.md` contradicts itself) ·
 **WS-13** planned (P3 — recipe minors: `RelativeTime now`, `DataTable Column.width`) ·
-**WS-14** planned (P0 — the anti-recurrence gates that tie WS-1/6/7/8 together) ·
-**WS-15** carry-forward (P1 — publish the 07-24 release train, then run the freshness canaries).
+**WS-14** planned (P0 — the anti-recurrence gates that tie WS-1/6/7/8 together; its **process
+items are ✅ done** in the PR that added this plan — tracker pointer, forward-pointers on the
+07-23/07-24 headers, and the mechanism-classification section in `README.md`) ·
+**WS-15** carry-forward (P1 — **15a** publish the 07-24 release train + freshness/npm-parity
+canaries; **15b** the 07-23 WS-J Playwright browser leg, unowned since 2026-07-23, claimed here).
 
 Written to be handed to an implementing agent (Opus) as-is. Source report:
 [`feedback-vercel-tanstack-start-adopter-2026-07-25.md`](feedback-vercel-tanstack-start-adopter-2026-07-25.md)
@@ -1115,19 +1118,28 @@ Wiring: new `meta:check` entries go in the root `package.json` `meta:check` scri
 `ready`/`ready:ci` already run); the cold-adopter legs stay on `cold-adopter:check` (release
 tier) since they pack and build.
 
-**Process items, same PR series:**
+**Process items — ✅ done in the PR that added this plan:**
 
-- Update `docs/internal/feedback/README.md`'s "Current live tracker" to point at **this** plan,
-  and point the 07-24 plan's header here (WS-K rule 3).
-- Carry the 07-24 plan's open items into WS-15 below so there is one live tracker.
-- Add a short section to `README.md` in this directory: **"Before writing a fix plan, classify
-  each finding as mechanism A / B / C and name the guard."** The three mechanisms are the
-  reusable output of this analysis; without that step the next plan lists twelve fixes and no
-  gates, and there will be a ninth report.
+- `docs/internal/feedback/README.md`'s "Current live tracker" now points at **this** plan, with
+  a note on why it had gone two plans stale.
+- The **07-24** and **07-23** plan headers now carry forward-pointers here, naming which of
+  their items this plan owns (WS-K rule 3). The 07-24 plan had told its implementer to do this
+  (`fix-plan-vercel-dashboard-adopter-2026-07-24.md` §10c) and it was never done — which is how
+  a "✅" workstream can still leak an unowned item.
+- `README.md` gained a **"Classify before you spec"** section publishing the three recurrence
+  mechanisms from §0, so the next plan classifies each finding and names its guard instead of
+  listing twelve fixes and no gates. Without that step there will be a ninth report.
+- Every open item in the chain behind this plan is now owned by WS-15 — nothing is carried as a
+  bare list line.
 
 ---
 
-## §WS-15 (P1) — Carry-forward from the 07-24 plan
+## §WS-15 (P1) — Carry-forward: every still-open item in the chain
+
+This is the single owner for everything the plans behind this one left open. Both of their
+headers now point here.
+
+### 15a — Publish the 07-24 release train (from the 07-24 plan)
 
 `fix-plan-vercel-dashboard-adopter-2026-07-24.md` reads *"implemented on
 `claude/ui-library-report-analysis-nsjclj`; not yet published"* with WS-1…WS-11 all ✅ and this
@@ -1144,6 +1156,34 @@ rule 2, a fix an adopter cannot `pnpm add` is not done. So:
    production and confirm npm ↔ repo ↔ deployed-docs parity.
 3. Then publish this plan's train and repeat. WS-1/WS-2/WS-3 are the ones adopters feel; do not
    let them sit on `main`.
+
+### 15b — The 07-23 WS-J browser leg (unowned since 2026-07-23 — claimed here)
+
+`fix-plan-tanstack-router-dashboard-adopter-2026-07-23.md`'s **WS-J** is ◑: the offline-docs
+leg shipped as `pnpm cold-adopter:check`, but the **browser leg** — a full tarball-install +
+Playwright app asserting a styled app, the `ThemeProvider` dev warning, and the chart clamp —
+"remains as follow-up, its assertions currently covered by per-package unit tests". It then
+appeared in no later plan. Per `README.md` rule 3 that is exactly the unowned-carry-forward
+failure, so it is claimed here rather than left to a ninth report.
+
+Scope note, to keep this honest: **WS-14's new cold-adopter legs do not close it.** Those legs
+assert build/SSR/reactivity/`console.error` in a scratch app driven from Node — they are not a
+browser. What remains is the Playwright half:
+
+1. Extend `scripts/checks/cold-adopter.test.ts` (or a sibling on the same release tier) to
+   install the **packed** `@cascivo/react` + `@cascivo/themes` into a temp app outside the repo
+   tree, build it, and drive it with the pre-installed Chromium
+   (`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`; never `playwright install`).
+2. Assert, in the browser: computed styles prove `styles.css` landed (a `Button`'s
+   `background-color` is a real token value, not the UA default); a `ThemeProvider`-less tree
+   logs the dev warning; a chart in a narrow container stays clamped inside it.
+3. Fold in WS-14's app legs so there is **one** cold-adopter app, not two — same fixture,
+   Node assertions plus browser assertions.
+4. When it passes, flip the 07-23 plan's WS-J from ◑ to ✅ **in that PR**, and say here that
+   15b is closed.
+
+If this cannot be done in this plan's waves, it does not silently roll forward: it must be
+re-listed with an owner in the next plan, per rule 3.
 
 ---
 
@@ -1183,9 +1223,12 @@ WS-9 · WS-10 · WS-11 · WS-12 · WS-13.
 5. `/llms/layout/flex.md` states the `@cascivo/react` import **and** `direction`'s
    `'vertical'` default. Both facts are what the adopter had to read the shipped JS to learn.
 6. The regenerated `llms.txt` SSR section does not contradict `USING-WITH-VITE-SSR.md`.
-7. This plan's status header and per-WS statuses match what shipped; the tracker pointer in
-   `README.md` is updated; the 07-24 plan's header points here.
-8. Published to npm, then `FRESHNESS_CHECK_NPM=1 bash scripts/checks/deployed-freshness.sh`
+7. This plan's status header and per-WS statuses match what shipped. (The tracker pointer in
+   `README.md` and the forward-pointers on the 07-23/07-24 headers are already done — keep them
+   true: the PR that supersedes **this** plan moves them again.)
+8. WS-15 is closed, not rolled forward: the 07-24 train is published with its statuses flipped,
+   and the 07-23 WS-J browser leg is either ✅ or re-listed **with an owner** in the next plan.
+9. Published to npm, then `FRESHNESS_CHECK_NPM=1 bash scripts/checks/deployed-freshness.sh`
    green — and only then is any of it "fixed".
 
 ---
