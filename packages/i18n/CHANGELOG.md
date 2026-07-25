@@ -1,5 +1,15 @@
 # @cascivo/i18n
 
+## 0.2.11
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+- Updated dependencies [dfc24e4]
+- Updated dependencies [db4fa0d]
+  - @cascivo/core@0.5.3
+
 ## 0.2.10
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @cascivo/icons
 
+## 0.3.4
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+
 ## 0.3.3
 
 ### Patch Changes

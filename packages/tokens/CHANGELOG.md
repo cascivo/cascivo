@@ -1,5 +1,12 @@
 # @cascivo/tokens
 
+## 0.5.3
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+
 ## 0.5.2
 
 ### Patch Changes

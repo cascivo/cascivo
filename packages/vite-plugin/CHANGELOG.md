@@ -1,5 +1,12 @@
 # @cascivo/vite-plugin
 
+## 0.1.3
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @cascivo/docs
 
+## 0.2.1
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,15 @@
 # @cascivo/themes
 
+## 0.4.6
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+- Updated dependencies [dfc24e4]
+- Updated dependencies [db4fa0d]
+  - @cascivo/tokens@0.5.3
+
 ## 0.4.5
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @cascivo/mcp
 
+## 0.6.1
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+- Updated dependencies [dfc24e4]
+- Updated dependencies [db4fa0d]
+  - @cascivo/docs@0.2.1
+
 ## 0.6.0
 
 ### Minor Changes
