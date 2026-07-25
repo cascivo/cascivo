@@ -65,6 +65,9 @@ jobs:
       - name: Primitive-adoption guard (components consume shared headless primitives)
         run: pnpm run primitives:check
 
+      - name: APG conformance guard (declared apgPattern matches role + required keys)
+        run: pnpm run apg:check
+
       - name: Animation audit
         run: pnpm run audit:animation
 

@@ -89,7 +89,7 @@ Architecture constraints — follow exactly:
 NavigationMenu is strictly bound to these tokens — use only these, do not invent token names:
   --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-text, --cascivo-color-border, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit
 
-Accessibility: role "navigation", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End/Enter/Escape. Keep it AA.
+Accessibility: role "navigation", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/Home/End/Enter/Space/Escape. Keep it AA.
 Flexible: orientation, panel content.
 
 Do not invent props, tokens, or global viewport media queries.

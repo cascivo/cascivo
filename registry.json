@@ -3228,7 +3228,7 @@
           "--cascivo-ease-out"
         ],
         "accessibility": {
-          "role": "region",
+          "role": "button",
           "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"],
           "apgPattern": "disclosure",
@@ -10048,8 +10048,8 @@
         "accessibility": {
           "role": "navigation",
           "wcag": "2.2-AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End", "Enter", "Escape"],
-          "apgPattern": "disclosure",
+          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End", "Enter", "Space", "Escape"],
+          "apgPattern": "disclosure-navigation",
           "reducedMotion": true,
           "forcedColors": true
         },

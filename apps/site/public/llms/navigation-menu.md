@@ -62,7 +62,7 @@ import { NavigationMenu } from '@cascivo/react'
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `navigation`
-- **Keyboard:** ArrowLeft, ArrowRight, Home, End, Enter, Escape
+- **Keyboard:** ArrowLeft, ArrowRight, Home, End, Enter, Space, Escape
 
 ## Dependencies
 

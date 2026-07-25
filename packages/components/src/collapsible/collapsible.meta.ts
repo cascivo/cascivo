@@ -59,7 +59,10 @@ export const meta: ComponentMeta = {
     '--cascivo-ease-out',
   ],
   accessibility: {
-    role: 'region',
+    // The disclosure pattern's interactive element — the trigger. (The revealed content is
+    // additionally a `role="region"` labelled by the trigger; `role` here names the control,
+    // matching `accordion`, which is the same shape.)
+    role: 'button',
     wcag: '2.2-AA',
     keyboard: ['Enter', 'Space'],
     apgPattern: 'disclosure',

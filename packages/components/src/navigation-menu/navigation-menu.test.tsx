@@ -54,3 +54,25 @@ describe('NavigationMenu', () => {
     expect(screen.queryByText('All products')).not.toBeInTheDocument()
   })
 })
+
+describe('NavigationMenu — APG disclosure-navigation conformance (manifest-backed)', () => {
+  // `Space` was missing from the manifest's keyboard list even though the triggers are
+  // native buttons and have always responded to it. This locks the corrected claim.
+  it('opens a submenu on Space', async () => {
+    const user = userEvent.setup()
+    render(<NavigationMenu items={buildItems()} ariaLabel="Main" />)
+    const trigger = screen.getAllByRole('button')[0]!
+    trigger.focus()
+    await user.keyboard(' ')
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('opens a submenu on Enter', async () => {
+    const user = userEvent.setup()
+    render(<NavigationMenu items={buildItems()} ariaLabel="Main" />)
+    const trigger = screen.getAllByRole('button')[0]!
+    trigger.focus()
+    await user.keyboard('{Enter}')
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  })
+})

@@ -127,7 +127,7 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → build → type check → tests. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
+This runs: `pnpm regen` → `vp check --fix` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, primitives, apg) → build → type check → tests. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
 
 To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
 
@@ -159,6 +159,9 @@ git diff --exit-code
 
 # Breakpoint literal check (off-scale @media/@container widths)
 pnpm breakpoint:check
+
+# APG conformance (a declared apgPattern matches the manifest's role + required keys)
+pnpm apg:check
 
 # Manifest + docs guards (props-parity, pkg-exports, peer-floors, css-imports, docs-imports, doc-links, …)
 pnpm meta:check

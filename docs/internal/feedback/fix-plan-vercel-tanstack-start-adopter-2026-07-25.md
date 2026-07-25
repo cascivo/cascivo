@@ -28,10 +28,23 @@ WS-J Playwright browser leg).
 > exactly why the 07-25 adopter, testing npm, met a fixed-on-`main` catalog. The publishing
 > PR must flip these to `published vX.Y.Z`.
 
-**Known pre-existing failure, untouched by this work:** `pnpm apg:check` fails on
-`collapsible` (`role 'region'` vs the disclosure pattern's required `button`) on a clean
-checkout of `main` too. It is not part of `pnpm ready`. Not fixed here — out of scope, and
-silently folding it in would hide it.
+**WS-16 (added during implementation) ✅ — `apg:check` fixed and wired into the gate.**
+It failed on a clean checkout of `main` and was not part of `pnpm ready`, so nothing ran it.
+Fixing it turned up the same mechanism-A/B pattern as the rest of this plan:
+
+- The guard `assert`ed inside its loop, so it stopped at the first offender — `collapsible`
+  masked `navigation-menu` entirely. It now collects every violation.
+- It `continue`d silently past any `apgPattern` key missing from its map, so **five**
+  components (`menu-button`, `menubar`, `resizable`, `toggle-group`, `tree-view`) declared a
+  pattern that was never checked. An unknown key is now a failure, and all five patterns are
+  in the map — so the guard covers 12 components instead of 7.
+- Both real defects were **manifest** bugs, not component bugs: `Collapsible` correctly
+  renders a `<button>` trigger plus a `role="region"` panel but declared only the region;
+  `NavigationMenu`'s native-button triggers have always responded to `Space` while its
+  manifest omitted the key, so the published keyboard docs were incomplete. Both claims are
+  now backed by behavior tests rather than one string agreeing with another.
+
+Wired into `pnpm ready`, `pnpm ready:ci`, and the CI workflow.
 
 Written to be handed to an implementing agent (Opus) as-is. Source report:
 [`feedback-vercel-tanstack-start-adopter-2026-07-25.md`](feedback-vercel-tanstack-start-adopter-2026-07-25.md)

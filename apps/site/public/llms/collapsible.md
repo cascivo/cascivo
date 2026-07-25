@@ -69,7 +69,7 @@ import { Collapsible } from '@cascivo/react'
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
-- **ARIA role:** `region`
+- **ARIA role:** `button`
 - **Keyboard:** Enter, Space
 
 ## Dependencies

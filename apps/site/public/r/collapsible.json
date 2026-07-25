@@ -74,7 +74,7 @@
       "--cascivo-ease-out"
     ],
     "accessibility": {
-      "role": "region",
+      "role": "button",
       "wcag": "2.2-AA",
       "keyboard": ["Enter", "Space"],
       "apgPattern": "disclosure",
