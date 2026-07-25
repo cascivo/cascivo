@@ -1,5 +1,16 @@
 # @cascivo/flow
 
+## 0.1.16
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+- Updated dependencies [dfc24e4]
+- Updated dependencies [db4fa0d]
+  - @cascivo/core@0.5.3
+  - @cascivo/i18n@0.2.11
+
 ## 0.1.15
 
 ### Patch Changes

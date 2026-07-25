@@ -1,5 +1,12 @@
 # @cascivo/registry
 
+## 0.2.3
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+
 ## 0.2.2
 
 ### Patch Changes

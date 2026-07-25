@@ -1,5 +1,15 @@
 # cascivo
 
+## 0.5.4
+
+### Patch Changes
+
+- dfc24e4: Documentation updates
+- db4fa0d: Docs
+- Updated dependencies [dfc24e4]
+- Updated dependencies [db4fa0d]
+  - @cascivo/registry@0.2.3
+
 ## 0.5.3
 
 ### Patch Changes
