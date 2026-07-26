@@ -17,6 +17,7 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { registryGeneratedAt } from '../registry/generated-at.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(HERE, '..', '..')
@@ -171,7 +172,7 @@ function main(): void {
   const markdown = readFileSync(MATRIX_PATH, 'utf8')
   const reactIndex = readFileSync(REACT_INDEX_PATH, 'utf8')
   const registry = JSON.parse(readFileSync(REGISTRY_PATH, 'utf8'))
-  const report = generate(markdown, reactIndex, registry, new Date().toISOString().slice(0, 10))
+  const report = generate(markdown, reactIndex, registry, registryGeneratedAt())
   writeFileSync(OUT_PATH, JSON.stringify(report, null, 2) + '\n')
   const { shadcn, carbon } = report.competitors
   console.log(

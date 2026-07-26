@@ -131,6 +131,27 @@ Commit the generated `.changeset/<random-name>.md` alongside your PR.
 
 ## Troubleshooting
 
+### Release fails with "Generated docs are stale at release time"
+
+The workflow's first gate regenerates every artifact (`pnpm regen && pnpm exec vp check --fix`)
+and refuses to publish if the result differs from what is committed. A real diff means someone
+committed a manifest change without regenerating — run those two commands and commit the result.
+
+A diff consisting **only** of `generatedAt` / "generated on \<date\>" stamps is not real drift:
+it means a generator read the wall clock, so the artifacts differ from a regen on any later UTC
+day. `pnpm regen` must be reproducible for a given checkout — the shared stamp lives in
+`scripts/registry/generated-at.ts` and is keyed to the registry **version**, not the clock, so
+it only moves when the version does (and `version-packages` regenerates as part of the bump).
+`pnpm regen:check` guards this: no generator reachable from the `regen` chain may call
+`new Date()` or `Date.now()`.
+
+### A failed release left its changesets unconsumed
+
+`release.yml` only triggers on pushes that touch `.changeset/**`, so fixing the cause of a
+failed release does not restart it — the staged changesets sit unreleased until the next one
+lands. Re-run it by hand: **Actions → Release → Run workflow** on `main`. With no staged
+changesets it no-ops safely.
+
 ### Release fails with `TypeError: Cannot read properties of undefined (reading 'includes')`
 
 Stack trace points at `isAlreadyPublishedError` / `internalPublish` inside

@@ -21,6 +21,11 @@ on:
     # should not start a release.
     paths:
       - '.changeset/**'
+  # A failed release leaves its changesets staged but un-consumed, and no push
+  # re-triggers this workflow until the *next* changeset lands — so the pending
+  # release sits stuck. Manual dispatch on `main` resumes it without inventing a
+  # dummy changeset; with no staged changesets the action simply no-ops.
+  workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 

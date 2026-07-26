@@ -9,6 +9,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { registryGeneratedAt } from '../registry/generated-at.ts'
 import { parseTokens } from './parse-tokens.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -22,7 +23,7 @@ async function main() {
   const catalog = {
     generatedFrom: ['packages/tokens/src/index.css', 'packages/themes/src/light.css'],
     resolutionTheme: 'light',
-    generatedAt: new Date().toISOString().slice(0, 10),
+    generatedAt: registryGeneratedAt(),
     count: tokens.length,
     tokens,
   }
