@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-25",
+  "generatedAt": "2026-07-26",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.11",
+      "version": "0.2.12",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,8 +15,15 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.5.1",
+      "version": "0.6.0",
       "releases": [
+        {
+          "version": "0.6.0",
+          "level": "minor",
+          "notes": [
+            "Fix the reactivity contract, SSR ids, and the audit's reachability (2026-07-25 adopter report)"
+          ]
+        },
         {
           "version": "0.5.0",
           "level": "minor",
@@ -47,8 +54,15 @@
     },
     {
       "name": "cascivo",
-      "version": "0.5.4",
+      "version": "0.6.0",
       "releases": [
+        {
+          "version": "0.6.0",
+          "level": "minor",
+          "notes": [
+            "Fix the reactivity contract, SSR ids, and the audit's reachability (2026-07-25 adopter report)"
+          ]
+        },
         {
           "version": "0.5.0",
           "level": "minor",
@@ -83,8 +97,15 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.5.3",
+      "version": "0.6.0",
       "releases": [
+        {
+          "version": "0.6.0",
+          "level": "minor",
+          "notes": [
+            "Fix the reactivity contract, SSR ids, and the audit's reachability (2026-07-25 adopter report)"
+          ]
+        },
         {
           "version": "0.5.0",
           "level": "minor",
@@ -118,7 +139,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "releases": [
         {
           "version": "0.2.0",
@@ -131,7 +152,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.17",
+      "version": "0.2.18",
       "releases": [
         {
           "version": "0.2.0",
@@ -151,12 +172,12 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.1.16",
+      "version": "0.1.17",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.11",
+      "version": "0.2.12",
       "releases": [
         {
           "version": "0.2.0",
@@ -172,7 +193,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.4",
+      "version": "0.3.5",
       "releases": [
         {
           "version": "0.3.0",
@@ -193,7 +214,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "releases": [
         {
           "version": "0.6.0",
@@ -235,8 +256,15 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.11.1",
+      "version": "0.12.0",
       "releases": [
+        {
+          "version": "0.12.0",
+          "level": "minor",
+          "notes": [
+            "Fix the reactivity contract, SSR ids, and the audit's reachability (2026-07-25 adopter report)"
+          ]
+        },
         {
           "version": "0.11.0",
           "level": "minor",
@@ -310,7 +338,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "releases": [
         {
           "version": "0.2.0",
@@ -326,7 +354,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.16",
+      "version": "0.1.17",
       "releases": [
         {
           "version": "0.1.0",
@@ -337,7 +365,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.6",
+      "version": "0.4.7",
       "releases": [
         {
           "version": "0.4.0",
@@ -363,7 +391,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.3",
+      "version": "0.5.4",
       "releases": [
         {
           "version": "0.5.0",
@@ -394,7 +422,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "releases": [
         {
           "version": "0.1.0",
