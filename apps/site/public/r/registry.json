@@ -792,6 +792,7 @@
           },
           {
             "name": "alt",
+            "default": "",
             "description": "Alternative text describing the image.",
             "type": "string",
             "required": false
@@ -1548,6 +1549,7 @@
         "props": [
           {
             "name": "notifications",
+            "default": "demoNotifications",
             "type": "Notification[]",
             "required": false,
             "description": "Notification items to display"
@@ -1846,6 +1848,7 @@
         "props": [
           {
             "name": "stats",
+            "default": "demoStats",
             "type": "Stat[]",
             "required": false,
             "description": "KPI stat data"
@@ -1930,6 +1933,7 @@
         "props": [
           {
             "name": "users",
+            "default": "demoUsers",
             "type": "User[]",
             "required": false,
             "description": "User data"
@@ -2703,6 +2707,7 @@
           },
           {
             "name": "size",
+            "default": "md",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "description": "Grid cell size"
@@ -2733,6 +2738,7 @@
           },
           {
             "name": "hideNav",
+            "default": "false",
             "type": "boolean",
             "required": false,
             "description": "Hides the prev/next nav so a parent can drive navigation"
@@ -2840,6 +2846,12 @@
         "variants": ["default", "outlined", "elevated"],
         "sizes": [],
         "props": [
+          {
+            "name": "actions",
+            "type": "ReactNode",
+            "required": false,
+            "description": "CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card."
+          },
           {
             "name": "variant",
             "description": "Selects the visual style variant.",
@@ -4885,6 +4897,13 @@
             "description": "Change value (positive = up, negative = down)"
           },
           {
+            "name": "deltaFormat",
+            "default": "number",
+            "type": "'number' | 'percent' | ((delta: number) => string)",
+            "required": false,
+            "description": "How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included."
+          },
+          {
             "name": "deltaLabel",
             "type": "string",
             "required": false,
@@ -6306,8 +6325,14 @@
           {
             "name": "label",
             "type": "string",
-            "required": true,
-            "description": "Accessible label"
+            "required": false,
+            "description": "Accessible name for the chart (invisible — rendered as the SVG `<title>`)."
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one."
           },
           {
             "name": "width",
@@ -7465,7 +7490,7 @@
           "--cascivo-ease-out"
         ],
         "accessibility": {
-          "role": "region",
+          "role": "button",
           "wcag": "2.2-AA",
           "keyboard": ["Enter", "Space"],
           "apgPattern": "disclosure",
@@ -7954,6 +7979,7 @@
           },
           {
             "name": "scopes",
+            "default": "[]",
             "type": "CommandScope[]",
             "required": false,
             "description": "Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups)."
@@ -9045,6 +9071,7 @@
           },
           {
             "name": "clearable",
+            "default": "false",
             "type": "boolean",
             "required": false,
             "description": "Shows a clear button"
@@ -9069,12 +9096,14 @@
           },
           {
             "name": "size",
+            "default": "md",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "description": "Field size"
           },
           {
             "name": "disabled",
+            "default": "false",
             "type": "boolean",
             "required": false,
             "description": "Disables the picker"
@@ -9245,6 +9274,7 @@
           },
           {
             "name": "size",
+            "default": "md",
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "description": "Field/grid size"
@@ -10657,6 +10687,7 @@
         "props": [
           {
             "name": "files",
+            "default": "[]",
             "type": "UploaderFile[]",
             "required": false,
             "description": "Controlled file list"
@@ -10675,6 +10706,7 @@
           },
           {
             "name": "multiple",
+            "default": "false",
             "type": "boolean",
             "required": false,
             "description": "Allow multiple files"
@@ -10717,6 +10749,7 @@
           },
           {
             "name": "disabled",
+            "default": "false",
             "type": "boolean",
             "required": false,
             "description": "Disables the upload zone"
@@ -12804,6 +12837,12 @@
             "required": true
           },
           {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one."
+          },
+          {
             "name": "icon",
             "description": "Icon element rendered in the component.",
             "type": "React.ReactNode",
@@ -12948,6 +12987,7 @@
           },
           {
             "name": "alt",
+            "default": "",
             "description": "Alternative text describing the image.",
             "type": "string",
             "required": false
@@ -14001,6 +14041,7 @@
           },
           {
             "name": "persistKey",
+            "default": "cascade.appshell",
             "type": "string | false",
             "required": false,
             "description": "localStorage key prefix. Pass false to disable persistence."
@@ -14247,6 +14288,7 @@
         "props": [
           {
             "name": "maxWidth",
+            "default": "48rem",
             "type": "string",
             "required": false,
             "description": "CSS max-width value"
@@ -14315,12 +14357,14 @@
         "props": [
           {
             "name": "count",
+            "default": "2",
             "type": "2|3|4",
             "required": false,
             "description": "Number of equal columns"
           },
           {
             "name": "gap",
+            "default": "4",
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "description": "Spacing token step"
@@ -14446,7 +14490,7 @@
       "schemaVersion": 2,
       "name": "layout/flex",
       "type": "layout",
-      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
       "version": "0.11.1",
       "files": [
         {
@@ -14461,7 +14505,7 @@
       "category": "layout",
       "meta": {
         "name": "Flex",
-        "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+        "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
         "category": "layout",
         "states": [],
         "variants": [],
@@ -14469,12 +14513,14 @@
         "props": [
           {
             "name": "direction",
+            "default": "vertical",
             "type": "'vertical' | 'horizontal'",
             "required": false,
-            "description": "Flex direction"
+            "description": "Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify=\"between\">` alone produces a centered vertical stack."
           },
           {
             "name": "gap",
+            "default": "4",
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "description": "Spacing token step"
@@ -14493,6 +14539,7 @@
           },
           {
             "name": "wrap",
+            "default": "false",
             "type": "boolean",
             "required": false,
             "description": "Allow wrapping"
@@ -14573,12 +14620,14 @@
         "props": [
           {
             "name": "cols",
+            "default": "12",
             "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
             "description": "Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns"
           },
           {
             "name": "gap",
+            "default": "4",
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "description": "Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8."
@@ -14991,6 +15040,7 @@
         "props": [
           {
             "name": "size",
+            "default": "4",
             "type": "1|2|3|4|5|6|8|10|12",
             "required": false,
             "description": "Spacing token step"
@@ -15066,18 +15116,21 @@
           },
           {
             "name": "defaultRatio",
+            "default": "0.3",
             "type": "number",
             "required": false,
             "description": "Initial split ratio (0–1)"
           },
           {
             "name": "min",
+            "default": "0.2",
             "type": "number",
             "required": false,
             "description": "Minimum ratio for start pane"
           },
           {
             "name": "max",
+            "default": "0.8",
             "type": "number",
             "required": false,
             "description": "Maximum ratio for start pane"
@@ -16351,6 +16404,7 @@
           },
           {
             "name": "orientation",
+            "default": "horizontal",
             "description": "Layout orientation of the component.",
             "type": "'horizontal' | 'vertical' | 'both'",
             "required": false
@@ -16374,8 +16428,8 @@
         "accessibility": {
           "role": "navigation",
           "wcag": "2.2-AA",
-          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End", "Enter", "Escape"],
-          "apgPattern": "disclosure",
+          "keyboard": ["ArrowLeft", "ArrowRight", "Home", "End", "Enter", "Space", "Escape"],
+          "apgPattern": "disclosure-navigation",
           "reducedMotion": true,
           "forcedColors": true
         },
@@ -18088,6 +18142,7 @@
           },
           {
             "name": "disabled",
+            "default": "false",
             "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
             "required": false
@@ -19221,7 +19276,7 @@
           },
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "description": "Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS).",
             "type": "string",
             "required": false,
             "default": "Search"
@@ -19242,7 +19297,7 @@
           },
           {
             "name": "id",
-            "description": "Id applied to the root element (auto-generated when omitted).",
+            "description": "Id for the input, wired to the label. Auto-generated with useId when omitted — SSR-safe and stable across hydration.",
             "type": "string",
             "required": false
           },
@@ -20661,6 +20716,7 @@
           },
           {
             "name": "showCollapseToggle",
+            "default": "true",
             "type": "boolean",
             "required": false,
             "description": "Show the collapse/expand toggle control."
@@ -22008,12 +22064,14 @@
           },
           {
             "name": "leadingActions",
+            "default": "[]",
             "type": "SwipeAction[]",
             "required": false,
             "description": "Actions revealed by dragging toward the end edge (shown on the start edge)"
           },
           {
             "name": "trailingActions",
+            "default": "[]",
             "type": "SwipeAction[]",
             "required": false,
             "description": "Actions revealed by dragging toward the start edge (shown on the end edge)"

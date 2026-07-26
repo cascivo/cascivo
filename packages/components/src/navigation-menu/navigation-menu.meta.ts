@@ -22,6 +22,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'orientation',
+      default: 'horizontal',
       description: 'Layout orientation of the component.',
       type: "'horizontal' | 'vertical' | 'both'",
       required: false,
@@ -45,8 +46,11 @@ export const meta: ComponentMeta = {
   accessibility: {
     role: 'navigation',
     wcag: '2.2-AA',
-    keyboard: ['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Enter', 'Escape'],
-    apgPattern: 'disclosure',
+    // `Space` was missing: the triggers are native `<button>`s, so the browser has always
+    // activated them on Space — the manifest simply never said so, and the generated
+    // keyboard docs were incomplete because of it.
+    keyboard: ['ArrowLeft', 'ArrowRight', 'Home', 'End', 'Enter', 'Space', 'Escape'],
+    apgPattern: 'disclosure-navigation',
     reducedMotion: true,
     forcedColors: true,
   },

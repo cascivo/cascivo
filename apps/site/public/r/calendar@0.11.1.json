@@ -91,6 +91,7 @@
       },
       {
         "name": "size",
+        "default": "md",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "description": "Grid cell size"
@@ -121,6 +122,7 @@
       },
       {
         "name": "hideNav",
+        "default": "false",
         "type": "boolean",
         "required": false,
         "description": "Hides the prev/next nav so a parent can drive navigation"

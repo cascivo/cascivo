@@ -26,8 +26,8 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 | Name    | Type                          | Required | Default | Description             |
 | ------- | ----------------------------- | -------- | ------- | ----------------------- |
-| `count` | `2\|3\|4`                     | No       | —       | Number of equal columns |
-| `gap`   | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | —       | Spacing token step      |
+| `count` | `2\|3\|4`                     | No       | 2       | Number of equal columns |
+| `gap`   | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | 4       | Spacing token step      |
 
 ## Tokens
 

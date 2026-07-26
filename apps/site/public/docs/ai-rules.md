@@ -21,10 +21,12 @@ follow these rules whenever you generate or edit CSS:
 
 1. Every declaration goes inside an `@layer` block. Unlayered CSS beats all layers
    regardless of specificity — never emit it.
-2. Never invent layer names. Write only: the app's own slot (e.g. `cascivo.example`,
-   declared in the order statement) for page/app styles, and
+2. Never invent layer names. Write only: your app's own slot for page/app styles, and
    `@layer cascivo.override { … }` for hotfixes / one-off overrides — it beats
-   everything cascivo ships.
+   everything cascivo ships. Your app slot goes **between `cascivo.blocks` and
+   `cascivo.override`** in the order statement below (rename `cascivo.myapp` after your
+   app) — high enough to beat cascivo's components, themes and blocks, low enough to
+   leave `cascivo.override` as the escape hatch.
 3. Never nest layers deeper than the shipped `cascivo.blocks.<name>` pattern. For
    sub-elements (a badge in a card, a dot in a badge) use native CSS nesting inside one
    layer block, not new sublayers.
@@ -34,7 +36,7 @@ follow these rules whenever you generate or edit CSS:
 5. Style with `--cascivo-*` tokens, not raw values.
 
 Canonical layer order (lowest → highest priority):
-`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;`
+`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.myapp, cascivo.override;`
 
 The full machine-readable guide is at https://cascivo.com/llms.txt.
 ```
@@ -50,7 +52,12 @@ mistake that makes a signal-native system look layout-only.
 ## cascivo reactivity contract
 
 cascivo is signal-driven. Do not mix React state with signals — it causes toggles that
-don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React hook:
+don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React hook.
+
+**Import every primitive below from `@cascivo/react`** if you installed the prebuilt
+package, or from `@cascivo/core` if you copied component source in with the CLI. Never add
+`@cascivo/core` to a prebuilt-path app's package.json — it is only a transitive dependency
+there, and everything is re-exported from `@cascivo/react`.
 
 1. Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. Never `useState`.
    The signal IS the state.
@@ -73,9 +80,16 @@ don't toggle and UIs that freeze. Reach for the cascivo primitive, not the React
    `useEffect` that adds a `.dark` class.
 8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
 '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
-9. In any app without the Babel signals transform, a component reading `signal.value` in
-   render must call `useSignals()` (from `@cascivo/core`) as its first statement, or it
-   never re-renders.
+9. `useSignals()` is needed ONLY for a signal you did not get from a cascivo hook: a
+   module-level `signal()`, a signal passed in as a prop, or `currentLocale()`. Call it as
+   the component's first statement. Signals returned by `useSignal`, `useComputed`,
+   `useDisclosure`, `useMachine`, `useTheme` and the rest subscribe you already — do not
+   sprinkle `useSignals()` everywhere. Symptom of getting this wrong: handlers fire, the
+   UI never moves, no error.
+10. Mirroring a controlled prop into a signal -> `useControllableSignal` when you read it
+    in render; `useEffectPropSignal` when it is read only inside `useSignalEffect`. Never
+    hand-roll `s.value = prop` for the effect case: signals run effects synchronously on
+    write, so that runs the effect body during React's render phase.
 
 Full catalogs: docs/HEADLESS.md (primitives) and docs/ENTERPRISE-READINESS.md (friction map).
 ```
@@ -96,6 +110,25 @@ Rule of thumb when authoring or generating: **if your handler's first argument i
 name it `onValueChange`; if it's a DOM event, name it `onChange`.** A few components still
 accept a deprecated value-carrying `onChange` alias for backward compatibility — prefer
 `onValueChange`; the alias will be removed in a future major.
+
+## Accessible-name and item-identity props
+
+The sibling of the handler rule: name a prop by **what it is**, not by the component.
+
+| The value is                                                                                       | Prop name       | Examples                                                 |
+| -------------------------------------------------------------------------------------------------- | --------------- | -------------------------------------------------------- |
+| Text the component **renders**                                                                     | **`label`**     | `Field`, `Checkbox`, `Radio`, `Toggle`, `Slider`         |
+| An **invisible** accessible name for an icon-only control or a nav landmark (goes to `aria-label`) | **`ariaLabel`** | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Dock`, `Steps` |
+| The identity of an item in a collection                                                            | **`value`**     | `OverflowMenu`, `Dropdown`, `Menu`, `Select`, `Combobox` |
+
+Two components predate the rule and take `label` for an **invisible** name: `IconButton`
+and `Sparkline`. Both now also accept `ariaLabel` as an alias, so guessing either way works;
+`label` keeps working and is not deprecated.
+
+Guessing across components is the failure this prevents: an adopter wrote
+`<OverflowMenu label=… items={[{ id, label }]}>` by analogy with `CommandMenu` and
+`IconButton` and got two type errors — `OverflowMenu` takes `ariaLabel` and `value`. The
+per-component pages were correct; the cost was that the convention was never stated.
 
 ## Overriding styles the sanctioned way
 
@@ -119,6 +152,26 @@ climb this ladder in order and stop at the first rung that works:
 gentle **warning**, not an error — it never blocks a build on a fast-prototyping override.
 Genuinely invented props (`sx`, `elevation`, …) remain errors; use rung 4 only when you
 mean it.
+
+### Running the audit
+
+It works in any project with no setup — the contract ships inside the CLI, so there is
+nothing to download and no network needed:
+
+```sh
+npx cascivo audit --ai src            # or add it to your lint script
+npx cascivo audit --ai --json src     # machine-readable findings
+npx cascivo audit --ai --fix src      # rewrite unambiguous literals to tokens
+```
+
+A good CI gate pairs it with `doctor`, which checks the install itself:
+
+```jsonc
+{ "scripts": { "lint": "cascivo doctor --ci && cascivo audit --ai src" } }
+```
+
+`--contract <path>` points at a specific `audit-contract.json` (pin a version, or run
+fully air-gapped); `--verbose` reports which contract source was used.
 
 ## Layout primitives — structure with these before writing CSS
 

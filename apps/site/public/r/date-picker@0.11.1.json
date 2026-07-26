@@ -67,6 +67,7 @@
       },
       {
         "name": "clearable",
+        "default": "false",
         "type": "boolean",
         "required": false,
         "description": "Shows a clear button"
@@ -91,12 +92,14 @@
       },
       {
         "name": "size",
+        "default": "md",
         "type": "'sm' | 'md' | 'lg'",
         "required": false,
         "description": "Field size"
       },
       {
         "name": "disabled",
+        "default": "false",
         "type": "boolean",
         "required": false,
         "description": "Disables the picker"

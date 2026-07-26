@@ -44,12 +44,12 @@ import { DatePicker } from '@cascivo/react'
 | `onChange`      | `(value: string \| undefined) => void` | no       | —       | Deprecated: use onValueChange (same ISO string \| undefined)                    |
 | `min`           | `string`                               | no       | —       | Minimum ISO date                                                                |
 | `max`           | `string`                               | no       | —       | Maximum ISO date                                                                |
-| `clearable`     | `boolean`                              | no       | —       | Shows a clear button                                                            |
+| `clearable`     | `boolean`                              | no       | `false` | Shows a clear button                                                            |
 | `label`         | `string`                               | no       | —       | Field label                                                                     |
 | `hint`          | `string`                               | no       | —       | Hint text                                                                       |
 | `error`         | `string`                               | no       | —       | Error message                                                                   |
-| `size`          | `'sm' \| 'md' \| 'lg'`                 | no       | —       | Field size                                                                      |
-| `disabled`      | `boolean`                              | no       | —       | Disables the picker                                                             |
+| `size`          | `'sm' \| 'md' \| 'lg'`                 | no       | `md`    | Field size                                                                      |
+| `disabled`      | `boolean`                              | no       | `false` | Disables the picker                                                             |
 | `labels`        | `DatePickerLabels`                     | no       | —       | i18n label overrides                                                            |
 
 ## Examples

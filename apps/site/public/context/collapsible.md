@@ -96,7 +96,7 @@ Architecture constraints — follow exactly:
 Collapsible is strictly bound to these tokens — use only these, do not invent token names:
   --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-radius-control, --cascivo-focus-ring, --cascivo-space-3, --cascivo-duration-200, --cascivo-ease-out
 
-Accessibility: role "region", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
+Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 
 Do not change (strict): trigger markup — Always rendered as a native button for keyboard and a11y correctness
 Flexible: open state.

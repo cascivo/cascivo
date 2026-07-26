@@ -10,6 +10,13 @@ export const meta: ComponentMeta = {
   props: [
     { name: 'label', description: 'Text label for the control.', type: 'string', required: true },
     {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one.',
+    },
+    {
       name: 'icon',
       description: 'Icon element rendered in the component.',
       type: 'React.ReactNode',

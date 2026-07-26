@@ -1,5 +1,6 @@
 'use client'
 import { useRef, type RefObject } from 'react'
+import { useEffectPropSignal } from './effect-prop.ts'
 import { useSignal, useSignalEffect, type ReadonlySignal } from './signals.ts'
 
 export interface DragOffset {
@@ -53,8 +54,7 @@ export function useDraggable(options: UseDraggableOptions = {}): UseDraggableRet
   const velocity = useSignal<DragVelocity>({ x: 0, y: 0 })
   const isDragging = useSignal(false)
 
-  const disabled = useSignal(options.isDisabled ?? false)
-  disabled.value = options.isDisabled ?? false
+  const disabled = useEffectPropSignal(options.isDisabled ?? false)
   const axisRef = useRef(options.axis ?? 'both')
   axisRef.current = options.axis ?? 'both'
   const onDragEndRef = useRef(options.onDragEnd)

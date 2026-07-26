@@ -95,17 +95,89 @@ export * from '../../components/src/context-menu/context-menu'
 export * from '../../components/src/comparison/comparison'
 export * from '../../components/src/hover-card/hover-card'
 export { ErrorBoundary, SuspenseBoundary, Portal, FocusScope } from '@cascivo/core'
-// Router-link integration: config-driven navs (SideNav, ShellHeader, Breadcrumb, …)
-// render links through the component registered here. Re-exported from @cascivo/react
-// so prebuilt-package (Path B) users need not add @cascivo/core as a direct dep (it is
-// only a transitive dep, so `import … from '@cascivo/core'` is a phantom-dependency
-// error under pnpm). Copied-source (Path A) projects can import it from either package.
+
+// ── @cascivo/core primitives, re-exported for the prebuilt path ────────────────────────
+//
+// Path B (this package) must never need `@cascivo/core` in its package.json: under pnpm's
+// strict layout core is only a transitive dep, so importing it directly is a
+// phantom-dependency error — which `docs/USING-WITH-VITE-SSR.md` tells adopters to avoid.
+// Yet the reactivity contract in `docs/AI-RULES.md` says "never useState, use useSignal",
+// and useSignal lived only in core. An adopter following both rules had no legal move; the
+// one who reported it added core as a direct dep and pinned two packages in lockstep.
+//
+// So everything the contract names ships from here too. Path A (copied source) can keep
+// importing from either package — these are re-exports of the same module instance, not a
+// copy: `@cascivo/core` is external in this package's build (see vite.config.ts), so there
+// is no second signals runtime and no signal-identity hazard.
+//
+// `scripts/checks/path-b-parity.test.ts` fails the build if a primitive named in the
+// reactivity docs is missing here. Keep these NAMED — a star re-export of the whole core
+// surface would drag it all into the flat dist/index.d.ts and break check-types-flat.
 export {
+  // Reactivity — the state layer the contract is built on.
+  useSignal,
+  useComputed,
+  useSignalEffect,
+  useSignals,
+  signal,
+  computed,
+  effect,
+  batch,
+  // Controlled-prop bridges and local state.
+  useControllableSignal,
+  useEffectPropSignal,
+  useDisclosure,
+  createMachine,
+  useMachine,
+  type Machine,
+  type MachineConfig,
+  type UseControllableSignalOptions,
+  type UseDisclosureOptions,
+  type UseDisclosureReturn,
+  // Lifecycle / ownership.
+  useScope,
+  createScope,
+  // Keyboard/behavior primitives the docs tell apps to compose with instead of
+  // hand-rolling (see the "don't hand-roll a11y" table in CLAUDE.md).
+  useRovingFocus,
+  useTypeahead,
+  useStreamBuffer,
+  createStreamBuffer,
+  useAnchorPosition,
+  computePosition,
+  // Composition and DOM primitives an app reaches for directly.
+  useId,
+  useMediaQuery,
+  useScrollLock,
+  useClipboard,
+  type UseClipboardOptions,
+  type UseClipboardReturn,
+  VisuallyHidden,
+  type VisuallyHiddenProps,
+  Slot,
+  type SlotProps,
+  Presence,
+  DismissableLayer,
+  type DismissableLayerProps,
+  cn,
+  composeRefs,
+  mergeProps,
+  // Router-link integration: config-driven navs (SideNav, ShellHeader, Breadcrumb, …)
+  // render links through the component registered here.
   setLinkComponent,
   getLinkComponent,
   type LinkComponent,
   type LinkComponentProps,
 } from '@cascivo/core'
+// The `Signal` / `ReadonlySignal` TYPES are deliberately not re-exported here — same rule
+// as `SpaceStep` below. They are referenced by component declarations, so re-exporting them
+// makes the dts bundler bind the name twice and emit an aliased `Signal$1` throughout the
+// flat index.d.ts (caught by check-styles-complete).
+//
+// Nothing is lost: `@preact/signals-react` is a PEER dependency of this package, so a Path B
+// consumer already lists it and `import type { Signal } from '@preact/signals-react'` is a
+// legal, non-phantom import. Values from `useSignal`/`useComputed` infer anyway; the
+// explicit type is only needed to annotate a prop.
 export * from '../../components/src/password-input/password-input'
 export * from '../../components/src/multi-select/multi-select'
 export * from '../../components/src/tags-input/tags-input'

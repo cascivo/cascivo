@@ -9,7 +9,19 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     { name: 'data', type: 'number[]', required: true, description: 'Array of numeric values' },
-    { name: 'label', type: 'string', required: true, description: 'Accessible label' },
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      description: 'Accessible name for the chart (invisible — rendered as the SVG `<title>`).',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one.',
+    },
     {
       name: 'width',
       description: 'Width of the component.',

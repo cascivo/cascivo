@@ -43,6 +43,32 @@
     min-inline-size: 0;
   }
 
+  /* Title + trailing actions (CardHeader `actions`). The default header is a column
+     (title over description), so the row variant is opt-in: `justify-content` alone on a
+     column does nothing, which is the trap the most common dashboard card layout hits. */
+  .headerRow {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--cascivo-space-3);
+
+    /* Let the text column shrink so a long title truncates instead of pushing the
+       actions past the card's clipping edge. */
+    .headerMain {
+      display: flex;
+      flex-direction: column;
+      gap: var(--cascivo-space-1);
+      min-inline-size: 0;
+    }
+
+    .headerActions {
+      display: flex;
+      align-items: center;
+      gap: var(--cascivo-space-1);
+      flex-shrink: 0;
+    }
+  }
+
   .title {
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-lg);

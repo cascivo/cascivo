@@ -1,5 +1,14 @@
 # Fix plan — Vercel-style TanStack dashboard adopter report (2026-07-24, tested 0.11.0 packages)
 
+> **Superseded — not the live tracker.** The live tracker is
+> [`fix-plan-vercel-tanstack-start-adopter-2026-07-25.md`](fix-plan-vercel-tanstack-start-adopter-2026-07-25.md).
+> This plan's one remaining item — **publish the release train, then run the freshness +
+> npm-parity canaries against the published artifacts** — is owned there as **WS-15**. That
+> unpublished state is exactly why the 07-25 adopter, testing npm, still met a
+> fixed-on-`main` catalog: per `README.md` rule 2, a fix an adopter cannot `pnpm add` is not
+> done. §10c below told the implementer to update the directory's tracker pointer and the
+> 07-23 plan's header; that was not done at the time and is done as of the 07-25 plan.
+
 **Status: implemented on `claude/ui-library-report-analysis-nsjclj`; not yet published.**
 Per-workstream: **WS-1** ✅ (useTheme string contract across AI-RULES/GETTING-STARTED/THEMING/
 MIGRATING/ENTERPRISE/CSS-LAYERS) · **WS-2** ✅ (`context/generate.ts` renders typeDefs; DataTable

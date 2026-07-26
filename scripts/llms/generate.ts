@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { reactExportedNames } from '../registry/react-exports.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -171,20 +172,27 @@ function typeDefsSection(typeDefs: TypeDefMeta[]): string {
 }
 
 /**
- * Which npm package (if any) exports a registry entry. Drives the import example.
- * - charts → @cascivo/charts
- * - components under packages/components/src → @cascivo/react (prebuilt)
- * - layouts/blocks/sections (packages/layouts/src) → null (copy-paste only, unpublished)
+ * Which npm package (if any) exports a registry entry — resolved from the REAL export list
+ * of `packages/react/src/index.ts`, never from the entry's source path.
+ *
+ * This used to read: "files under packages/components/src → @cascivo/react; anything under
+ * packages/layouts/src → copy-paste only". That inference was wrong for the seven layout
+ * primitives `@cascivo/react` does export, so every generated AI surface told agents that
+ * `Flex`, `Grid`, `GridItem`, `AutoGrid`, `Columns`, `Center` and `Spacer` were
+ * "copy-paste only — not published as an importable package", while the hand-written
+ * dashboard recipe correctly said the opposite. The adopter who reported it hand-wrote a
+ * `PageHeader` because the label carried no information: it was identical for the six
+ * importable layouts and the eight genuinely copy-paste-only ones.
+ *
+ * Right for 186 entries and wrong for 6 reads as correct in review — only deriving it from
+ * the export list makes it checkable. `scripts/checks/llms-channels.test.ts` asserts the
+ * two agree, with no allowlist.
  */
+const reactExports = reactExportedNames(ROOT)
+
 function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' | null {
   if (entry.type === 'chart') return '@cascivo/charts'
-  // Blocks are copy-paste only (`npx cascivo add block/<name>`) even though their
-  // source lives under packages/components/src/blocks — they are not importable as
-  // named exports from @cascivo/react, so don't advertise an npm import for them.
-  if (entry.type === 'block') return null
-  const first = entry.files?.[0] ?? ''
-  if (first.includes('/packages/components/src/')) return '@cascivo/react'
-  return null
+  return reactExports.has(displayNameOf(entry)) ? '@cascivo/react' : null
 }
 
 /**
@@ -275,7 +283,13 @@ function componentMarkdown(
       lines.push('```')
       lines.push('')
     } else {
-      lines.push('_Copy-paste only — this block/layout is not published as an importable package._')
+      // Say what to do INSTEAD, not just what isn't available: an adopter who reads
+      // "not importable" and nothing else hand-writes the component from scratch.
+      lines.push(
+        `_Copy-paste only — \`${exportName}\` is not exported from \`@cascivo/react\`. ` +
+          `Run the command above to own the source, or compose it from the exported ` +
+          `primitives (\`Flex\`, \`Grid\`, \`Heading\`, …)._`,
+      )
       lines.push('')
     }
   }
@@ -653,30 +667,33 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
   lines.push('')
+  // SSR: state the CURRENT truth first. This block used to lead with "Two required steps:
+  // ssr.noExternal …", which stopped being true at @cascivo/react 0.10 — and llms.txt is the
+  // file an agent is most likely to fetch as its ONE context source, so the stale version
+  // shipped dead config into new apps while docs/USING-WITH-VITE-SSR.md said the opposite.
+  // Keep this in sync with that guide; `claims:check` fails if `noExternal` is presented as
+  // unconditionally required again.
+  lines.push('SSR (Vite SSR / TanStack Start / Remix / workerd): works with ZERO Vite config on')
   lines.push(
-    'SSR SETUP (Vite SSR / TanStack Start / Remix / workerd — READ THIS if you server-render): the',
+    '`@cascivo/react` >= 0.10 — no `ssr.noExternal`, no plugin, no `<ClientOnly>` wrappers. The',
   )
   lines.push(
-    'prebuilt package imports per-component CSS as static `.css` side-effect imports, which a bare',
+    'package ships a CSS-free copy of its module graph under the `node` export condition, so a',
+  )
+  lines.push('server ESM loader never sees a `.css` import. Charts server-render and hydrate too.')
+  lines.push(
+    'Import a theme once in your root route/entry for color: `@cascivo/themes/all.css` (or the',
+  )
+  lines.push('all-in-one `@cascivo/react/styles.css`).')
+  lines.push(
+    'ONLY on `@cascivo/react` < 0.10: an unconfigured SSR build throws `Unknown file extension',
   )
   lines.push(
-    'server ESM loader cannot load — an unconfigured SSR build throws `Unknown file extension ".css"`',
-  )
-  lines.push('and silently falls back to client-only. Two required steps:')
-  lines.push(
-    '  1. In vite.config: `ssr: { noExternal: [/^@cascivo\\//] }` (or add the `cascivoSsr()`',
+    '".css"` — pin >= 0.10, or add `ssr: { noExternal: [/^@cascivo\\//] }` (or the `cascivoSsr()`',
   )
   lines.push(
-    '     plugin from `@cascivo/vite-plugin`) so Vite processes the CSS instead of the runtime.',
+    'plugin from `@cascivo/vite-plugin`). Full recipe + the legacy path: USING-WITH-VITE-SSR.md.',
   )
-  lines.push(
-    '  2. Import `@cascivo/react/styles.css` once in the root route/entry (do NOT rely on the',
-  )
-  lines.push('     per-component imports server-side). Full recipe: USING-WITH-VITE-SSR.md.')
-  lines.push(
-    'Next.js App Router does NOT need this (its recipe imports the aggregate sheet in a Server',
-  )
-  lines.push('Component); plain Vite CSR/SPA does NOT need it either. Only Vite *SSR* runtimes do.')
   lines.push('')
   lines.push('C. shadcn CLI / v0 — install any component from the shadcn-compatible registry:')
   lines.push('')
@@ -857,12 +874,12 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- React 18/19, Next.js App Router (RSC), Vite (CSR), Astro islands, Preact 10 (preact/compat — verified).',
   )
   lines.push(
-    '- Vite SSR / TanStack Start / Remix / workerd: supported, but add `ssr.noExternal: [/^@cascivo\\//]`',
+    '- Vite SSR / TanStack Start / Remix / workerd: supported with ZERO Vite config on >= 0.10',
   )
   lines.push(
-    '  (or the `cascivoSsr()` plugin) + import `@cascivo/react/styles.css` once. Without it the server',
+    '  (import a theme once for color). Only on < 0.10 do you need `ssr.noExternal: [/^@cascivo\\//]`',
   )
-  lines.push('  loader throws `Unknown file extension ".css"`. See USING-WITH-VITE-SSR.md.')
+  lines.push('  or the `cascivoSsr()` plugin. See USING-WITH-VITE-SSR.md.')
   lines.push(
     '- Last 2 versions of Chrome/Firefox/Safari (requires @layer, @container, :has(), oklch()).',
   )

@@ -12,12 +12,14 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'React.ReactNode', required: true, description: 'The row content' },
     {
       name: 'leadingActions',
+      default: '[]',
       type: 'SwipeAction[]',
       required: false,
       description: 'Actions revealed by dragging toward the end edge (shown on the start edge)',
     },
     {
       name: 'trailingActions',
+      default: '[]',
       type: 'SwipeAction[]',
       required: false,
       description: 'Actions revealed by dragging toward the start edge (shown on the end edge)',

@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignalEffect, type ReadonlySignal } from '@cascivo/core'
+import { type ReadonlySignal, useEffectPropSignal, useSignal, useSignalEffect } from '@cascivo/core'
 import { useRef, type RefObject } from 'react'
 import type { Connection, XYPosition } from '../engine/types.ts'
 
@@ -48,8 +48,7 @@ export function useConnection(options: UseConnectionOptions): UseConnectionRetur
   const toFlowRef = useRef(options.clientToFlow)
   toFlowRef.current = options.clientToFlow
 
-  const enabled = useSignal(options.enabled ?? true)
-  enabled.value = options.enabled ?? true
+  const enabled = useEffectPropSignal(options.enabled ?? true)
 
   useSignalEffect(() => {
     if (!enabled.value || typeof window === 'undefined') return

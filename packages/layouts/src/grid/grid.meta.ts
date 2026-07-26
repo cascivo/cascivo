@@ -11,6 +11,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'cols',
+      default: '12',
       type: 'number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }',
       required: false,
       description:
@@ -18,6 +19,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'gap',
+      default: '4',
       type: '1|2|3|4|5|6|8|10|12',
       required: false,
       description:

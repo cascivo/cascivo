@@ -1,6 +1,6 @@
 # Flex
 
-Flex layout primitive for vertical or horizontal stacking with gap control.
+Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row.
 
 ## Install
 
@@ -10,7 +10,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/flex
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Flex } from '@cascivo/react'
+```
 
 ## Category
 
@@ -18,13 +22,13 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop        | Type                                  | Required | Default | Description        |
-| ----------- | ------------------------------------- | -------- | ------- | ------------------ |
-| `direction` | `'vertical' \| 'horizontal'`          | no       | —       | Flex direction     |
-| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | no       | —       | Spacing token step |
-| `align`     | `'start'\|'center'\|'end'\|'stretch'` | no       | —       | align-items        |
-| `justify`   | `'start'\|'center'\|'end'\|'between'` | no       | —       | justify-content    |
-| `wrap`      | `boolean`                             | no       | —       | Allow wrapping     |
+| Prop        | Type                                  | Required | Default    | Description                                                                                                                                                                                               |
+| ----------- | ------------------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `direction` | `'vertical' \| 'horizontal'`          | no       | `vertical` | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
+| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | no       | `4`        | Spacing token step                                                                                                                                                                                        |
+| `align`     | `'start'\|'center'\|'end'\|'stretch'` | no       | —          | align-items                                                                                                                                                                                               |
+| `justify`   | `'start'\|'center'\|'end'\|'between'` | no       | —          | justify-content                                                                                                                                                                                           |
+| `wrap`      | `boolean`                             | no       | `false`    | Allow wrapping                                                                                                                                                                                            |
 
 ## Examples
 

@@ -18,6 +18,14 @@ export const meta: ComponentMeta = {
       description: 'Change value (positive = up, negative = down)',
     },
     {
+      name: 'deltaFormat',
+      default: 'number',
+      type: "'number' | 'percent' | ((delta: number) => string)",
+      required: false,
+      description:
+        "How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included.",
+    },
+    {
       name: 'deltaLabel',
       type: 'string',
       required: false,

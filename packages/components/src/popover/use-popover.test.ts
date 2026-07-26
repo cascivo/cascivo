@@ -37,3 +37,34 @@ describe('usePopover', () => {
     expect(typeof supported).toBe('boolean')
   })
 })
+
+describe('usePopover — SSR-stable anchor names (regression: module-level counter)', () => {
+  it('renders the same anchor name on every server render in one process', async () => {
+    const { renderToString } = await import('react-dom/server')
+    const { createElement } = await import('react')
+    function Probe() {
+      const { anchorName } = usePopover()
+      return createElement('span', { 'data-anchor': anchorName })
+    }
+    const nameOf = (html: string) => /data-anchor="([^"]*)"/.exec(html)?.[1]
+    const first = nameOf(renderToString(createElement(Probe)))
+    const second = nameOf(renderToString(createElement(Probe)))
+    expect(first).toMatch(/^--cascivo-popover-/)
+    expect(second).toBe(first)
+  })
+
+  it('gives two instances in one tree distinct anchor names', async () => {
+    const { renderToString } = await import('react-dom/server')
+    const { createElement, Fragment } = await import('react')
+    function Probe() {
+      const { anchorName } = usePopover()
+      return createElement('span', { 'data-anchor': anchorName })
+    }
+    const html = renderToString(
+      createElement(Fragment, null, createElement(Probe), createElement(Probe)),
+    )
+    const names = [...html.matchAll(/data-anchor="([^"]*)"/g)].map((m) => m[1])
+    expect(names).toHaveLength(2)
+    expect(new Set(names).size).toBe(2)
+  })
+})

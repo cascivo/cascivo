@@ -1,5 +1,13 @@
 'use client'
-import { cn, useDraggable, useId, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  cn,
+  useDraggable,
+  useEffectPropSignal,
+  useId,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
@@ -41,9 +49,7 @@ export function Modal({
     ? ({ '--modal-x': `${offset.value.x}px`, '--modal-y': `${offset.value.y}px` } as CSSProperties)
     : undefined
 
-  const isOpen = useSignal(open)
-  // Sync controlled prop into signal — no-op when value unchanged
-  isOpen.value = open
+  const isOpen = useEffectPropSignal(open)
 
   useSignalEffect(() => {
     const dialog = dialogRef.current

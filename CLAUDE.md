@@ -127,7 +127,7 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → build → type check → tests. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
+This runs: `pnpm regen` → `vp check --fix` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, primitives, apg) → build → type check → tests. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
 
 To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
 
@@ -159,6 +159,9 @@ git diff --exit-code
 
 # Breakpoint literal check (off-scale @media/@container widths)
 pnpm breakpoint:check
+
+# APG conformance (a declared apgPattern matches the manifest's role + required keys)
+pnpm apg:check
 
 # Manifest + docs guards (props-parity, pkg-exports, peer-floors, css-imports, docs-imports, doc-links, …)
 pnpm meta:check
@@ -435,12 +438,36 @@ that don't open).
 
 #### Syncing a controlled React prop into a signal
 
-When a component accepts a controlled boolean/string prop that needs to drive a signal effect, sync it during render:
+**Where you read the mirrored signal decides which primitive is correct.** Preact runs
+effects **synchronously on write**, so a render-phase mirror executes every subscribed
+`useSignalEffect` body inside React's render phase — `showModal()`, listener registration
+against a pre-commit ref, and parent `setState` calls. That shipped in seven components
+before it was caught.
+
+**Read in render** (JSX, a `data-*` attribute, a derived value) — synchronous mirror. The
+write must be sync or the component renders one tick stale, and a render-phase write that
+only notifies the writing component's own subscription is a legal same-fiber update:
 
 ```tsx
-const isOpen = useSignal(open)
-isOpen.value = open // no-op if unchanged; triggers effects if changed
+const [value, setValue] = useControllableSignal({ value: valueProp, defaultValue, onChange })
 ```
+
+**Read only inside `useSignalEffect`** — deferred mirror, so the effect lands after the
+commit where it was always meant to:
+
+```tsx
+const isOpen = useEffectPropSignal(open) // one microtask later; never during render
+useSignalEffect(() => {
+  if (isOpen.value) dialogRef.current?.showModal()
+})
+```
+
+Do **not** hand-roll `const s = useSignal(open); s.value = open` for the effect case — that
+is the exact shape that ran `showModal()` mid-render in `Modal`, `Sheet`, `Dropdown`,
+`AlertDialog`, `HeaderPanel`, `CommandMenu` and `Presence`. If a value is read at
+_callback_ time rather than to drive effect re-runs (e.g. inside an `IntersectionObserver`
+callback, which runs outside the tracking scope), use a plain `useRef` — a signal there is
+both redundant and one microtask stale.
 
 For callbacks that must always be current in an effect, use a ref:
 
@@ -552,6 +579,10 @@ it in sync. (A handful of pre-existing components still accept a deprecated valu
 #### Checklist before committing a component
 
 1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
+   Every prop with a default in the signature carries a matching `default` in the manifest
+   (`pnpm meta:check` derives this from the code — an undocumented default renders as `—` in
+   the generated props table, which is how `Flex`'s `direction: 'vertical'` cost an adopter
+   three wrong layouts).
 2. Every machine transition is reachable by code inside the component (not just by external props).
 3. DOM side effects use `useSignalEffect`, not `useEffect`.
 4. All tests pass: `vp run @cascivo/components#test`.

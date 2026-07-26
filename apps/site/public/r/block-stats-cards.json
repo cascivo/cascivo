@@ -22,6 +22,7 @@
     "props": [
       {
         "name": "stats",
+        "default": "demoStats",
         "type": "Stat[]",
         "required": false,
         "description": "KPI stat data"

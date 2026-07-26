@@ -1,5 +1,6 @@
 'use client'
 import { useRef, type RefObject } from 'react'
+import { useEffectPropSignal } from './effect-prop.ts'
 import { useSignal, useSignalEffect, type ReadonlySignal } from './signals.ts'
 
 export interface ElementSize {
@@ -34,8 +35,7 @@ export function useResizeObserver<T extends Element = Element>(
   const size = useSignal<ElementSize | null>(null)
   const entry = useSignal<ResizeObserverEntry | null>(null)
 
-  const box = useSignal(options.box)
-  box.value = options.box
+  const box = useEffectPropSignal(options.box)
 
   useSignalEffect(() => {
     const observeBox = box.value

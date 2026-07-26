@@ -52,7 +52,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Empty-state trigger text',
     },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, description: 'Field/grid size' },
+    {
+      name: 'size',
+      default: 'md',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      description: 'Field/grid size',
+    },
     {
       name: 'labels',
       type: 'DateRangePickerLabels',

@@ -53,12 +53,12 @@ import { Calendar } from '@cascivo/react'
 | `max`           | `Date`                                            | no       | —       | Latest selectable date                                                  |
 | `disabled`      | `(date: Date) => boolean`                         | no       | —       | Predicate to disable individual days                                    |
 | `locale`        | `string`                                          | no       | —       | BCP-47 locale; defaults to the current i18n locale                      |
-| `size`          | `'sm' \| 'md' \| 'lg'`                            | no       | —       | Grid cell size                                                          |
+| `size`          | `'sm' \| 'md' \| 'lg'`                            | no       | `md`    | Grid cell size                                                          |
 | `labels`        | `CalendarLabels`                                  | no       | —       | i18n label overrides for the nav buttons                                |
 | `month`         | `number`                                          | no       | —       | Controlled view month (0-11)                                            |
 | `year`          | `number`                                          | no       | —       | Controlled view year                                                    |
 | `onViewChange`  | `(view: { month: number; year: number }) => void` | no       | —       | Called when the visible month changes                                   |
-| `hideNav`       | `boolean`                                         | no       | —       | Hides the prev/next nav so a parent can drive navigation                |
+| `hideNav`       | `boolean`                                         | no       | `false` | Hides the prev/next nav so a parent can drive navigation                |
 
 ## Examples
 

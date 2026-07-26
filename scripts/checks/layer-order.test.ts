@@ -239,3 +239,52 @@ describe('layer-order:check — one canonical @layer order, no drift', () => {
     }
   })
 })
+
+/**
+ * App-slot position (2026-07-25 plan, WS-12 / mechanism C).
+ *
+ * The same fact was answered twice, differently, inside one file:
+ * `docs/CSS-LAYERS-PITFALL.md` said app-local sublayers go "between `cascivo.blocks` and
+ * `cascivo.override`" (matching `packages/tokens/src/layers.css`), and twenty lines later
+ * its own worked example put `cascivo.example` between `cascivo.component` and
+ * `cascivo.theme`. Meanwhile `AI-RULES.md` told agents to declare the app slot "in the
+ * order statement" and then printed a statement with no app slot in it. Because layer
+ * order beats specificity, a wrong guess here silently loses every app style to a theme.
+ *
+ * The canonical position is immediately before `cascivo.override`: above cascivo's
+ * components, themes and blocks, below the consumer's last-resort escape hatch.
+ */
+describe('layer-order:check — an app-local slot sits immediately before cascivo.override', () => {
+  const canonical = readCanonicalOrder()
+  const scanned: Statement[] = [
+    ...collectFiles(join(REPO_ROOT, 'docs'), new Set(['.md']), new Set()),
+    ...collectFiles(join(REPO_ROOT, 'apps'), new Set(['.css', '.html']), new Set()),
+    join(REPO_ROOT, 'packages/cli/src/commands/create.ts'),
+  ].flatMap(scanFile)
+
+  it('every non-canonical cascivo.* layer is placed just before cascivo.override', () => {
+    const failures: string[] = []
+    for (const statement of scanned) {
+      const appSlots = statement.names.filter(
+        (n) => n.startsWith('cascivo.') && !isGoverned(n, canonical),
+      )
+      if (appSlots.length === 0) continue
+      const overrideIdx = statement.names.indexOf('cascivo.override')
+      if (overrideIdx === -1) continue // no override in this statement — nothing to anchor to
+      for (const slot of appSlots) {
+        if (statement.names.indexOf(slot) !== overrideIdx - 1) {
+          failures.push(
+            `${statement.file}:${statement.line}: app layer '${slot}' must sit immediately ` +
+              `before 'cascivo.override' (got: ${statement.names.join(', ')})`,
+          )
+        }
+      }
+    }
+    assert.deepEqual(
+      failures,
+      [],
+      `App-local layer slots are misplaced. Layer order beats specificity, so a slot below ` +
+        `cascivo.theme loses every app style to the theme:\n  ${failures.join('\n  ')}`,
+    )
+  })
+})

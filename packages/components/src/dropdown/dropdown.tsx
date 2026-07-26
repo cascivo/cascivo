@@ -2,6 +2,7 @@
 import {
   composeRefs,
   createMachine,
+  useEffectPropSignal,
   useMachine,
   useSignal,
   useSignalEffect,
@@ -54,8 +55,7 @@ export function Dropdown({
 
   const isControlled = open !== undefined
   const isOpen = isControlled ? open : state.value === 'open'
-  const openSignal = useSignal(isOpen)
-  openSignal.value = isOpen
+  const openSignal = useEffectPropSignal(isOpen)
 
   const enabledIndexes = items
     .map((item, index) => ({ item, index }))

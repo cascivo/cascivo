@@ -22,6 +22,7 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, it } from 'node:test'
+import { reactExportedNames } from '../registry/react-exports.ts'
 
 const REPO_ROOT = join(import.meta.dirname, '../..')
 const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
@@ -89,6 +90,58 @@ describe('llms channel + stylesheet guard', () => {
       }
       if (!readFileSync(md, 'utf8').includes(`import '${e.styles}'`)) {
         failures.push(`${e.name}: markdown lacks \`import '${e.styles}'\``)
+      }
+    }
+    assert.deepEqual(failures, [], `Regenerate docs (\`pnpm regen\`):\n${failures.join('\n')}`)
+  })
+
+  // ── Channel truth (2026-07-25 plan, WS-6 / mechanism B) ──────────────────────────────
+  //
+  // The channel annotation existed and was *checked for presence* long before it was
+  // checked for TRUTH — and it was inverted for the seven layout primitives that
+  // @cascivo/react does export, so `layout/flex` shipped a doc page reading "Copy-paste
+  // only — not published as an importable package" while the dashboard recipe correctly
+  // said the opposite. Presence checks cannot see a wrong answer; this one can.
+  //
+  // No allowlist by design: if an entry's channel is ever ambiguous, the export list IS
+  // the answer.
+  it("every entry's channels match the real @cascivo/react export list", () => {
+    const exported = reactExportedNames(REPO_ROOT)
+    const failures: string[] = []
+    for (const e of registry()) {
+      // An explicit `install` is authoritative — the entry ships in that package, and its
+      // display name may legitimately collide with a different component of the same name
+      // in @cascivo/react (`chart/calendar` vs the date-picker `Calendar`).
+      if (e.install) continue
+      const name = (e as { meta?: { name?: string } }).meta?.name ?? e.name
+      const channels = (e as { channels?: string[] }).channels ?? []
+      const claimsReact = channels.includes('npm:@cascivo/react')
+      const reallyExported = exported.has(name)
+      if (claimsReact !== reallyExported) {
+        failures.push(
+          `${e.name}: registry says ${claimsReact ? '' : 'NOT '}importable from ` +
+            `@cascivo/react, but packages/react/src/index.ts ${reallyExported ? 'does' : 'does not'} export \`${name}\``,
+        )
+      }
+    }
+    assert.deepEqual(
+      failures,
+      [],
+      `Channel annotations disagree with the real export list (run \`pnpm regen\`):\n${failures.join('\n')}`,
+    )
+  })
+
+  it('no generated markdown calls an importable entry "copy-paste only"', () => {
+    const failures: string[] = []
+    for (const e of registry()) {
+      const channels = (e as { channels?: string[] }).channels ?? []
+      if (!channels.some((c) => c.startsWith('npm:'))) continue
+      const md = join(LLMS_DIR, `${e.name}.md`)
+      if (!existsSync(md)) continue
+      if (/Copy-paste only/i.test(readFileSync(md, 'utf8'))) {
+        failures.push(
+          `${e.name}: doc says "Copy-paste only" but it ships in ${channels.join(', ')}`,
+        )
       }
     }
     assert.deepEqual(failures, [], `Regenerate docs (\`pnpm regen\`):\n${failures.join('\n')}`)

@@ -64,7 +64,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'BCP-47 locale; defaults to the current i18n locale',
     },
-    { name: 'size', type: "'sm' | 'md' | 'lg'", required: false, description: 'Grid cell size' },
+    {
+      name: 'size',
+      default: 'md',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      description: 'Grid cell size',
+    },
     {
       name: 'labels',
       type: 'CalendarLabels',
@@ -86,6 +92,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'hideNav',
+      default: 'false',
       type: 'boolean',
       required: false,
       description: 'Hides the prev/next nav so a parent can drive navigation',

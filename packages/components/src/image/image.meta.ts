@@ -11,6 +11,7 @@ export const meta: ComponentMeta = {
     { name: 'src', description: 'Image source URL.', type: 'string', required: false },
     {
       name: 'alt',
+      default: '',
       description: 'Alternative text describing the image.',
       type: 'string',
       required: false,

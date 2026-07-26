@@ -2,7 +2,7 @@
 
 import { useId, useRef } from 'react'
 import type { ReactNode } from 'react'
-import { useSignal, useSignalEffect } from '@cascivo/core'
+import { useEffectPropSignal, useSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './sheet.module.css'
 
@@ -18,8 +18,7 @@ export interface SheetProps {
 export function Sheet({ open, onClose, title, children, side = 'end' }: SheetProps) {
   const sheetRef = useRef<HTMLDivElement>(null)
   const titleId = useId()
-  const isOpen = useSignal(open)
-  isOpen.value = open
+  const isOpen = useEffectPropSignal(open)
   const onCloseRef = useRef(onClose)
   onCloseRef.current = onClose
 

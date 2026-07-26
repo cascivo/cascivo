@@ -89,7 +89,13 @@ function collectFromFile(file: string, seen: Set<string>): Set<string> {
   const names = new Set<string>()
   if (seen.has(file)) return names
   seen.add(file)
+  // Comments are stripped before parsing: a long `export { … }` block is often grouped with
+  // `// heading` lines INSIDE the braces, and splitting on `,` would then read the comment
+  // as the start of the next name and drop the real one. That silently hid `setLinkComponent`
+  // and every reactivity primitive from this resolver, which reports them as "not exported".
   const src = readFileSync(file, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/(^|[^:])\/\/.*$/gm, '$1')
 
   // export * from './x'  /  export * from '@cascivo/pkg'
   for (const m of src.matchAll(/export\s+\*\s+from\s+['"]([^'"]+)['"]/g)) {

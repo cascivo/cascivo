@@ -51,8 +51,30 @@ there and they beat tokens, components, **and** themes — with no
 
 `cascivo.blocks.*` sublayers **are** shipped (by the composite blocks under
 `packages/components/src/blocks/`) and live inside the canonical `cascivo.blocks`
-slot. App-local sublayers (`cascivo.example`) are not shipped by any package; insert
-them between `cascivo.blocks` and `cascivo.override`.
+slot.
+
+### Your app's own layer
+
+App-local sublayers are not shipped by any package — you declare one yourself, and it goes
+**between `cascivo.blocks` and `cascivo.override`**: high enough to beat cascivo's
+components, themes and blocks, low enough to leave `cascivo.override` as the last-resort
+escape hatch. Name it after your app (`cascivo.myapp`, `cascivo.console`, …).
+
+The complete worked example — the order statement plus one rule:
+
+```css
+@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme,
+  cascivo.blocks, cascivo.myapp, cascivo.override;
+
+@layer cascivo.myapp {
+  .dashboard-toolbar {
+    gap: var(--cascivo-space-3);
+  }
+}
+```
+
+`scripts/checks/layer-order.test.ts` enforces the position, so an app slot written anywhere
+else in the statement fails the build.
 
 ## The Problem
 
@@ -67,8 +89,8 @@ Declare the layer order **before any CSS loads** and wrap the reset inside the l
 ```html
 <!-- index.html -->
 <style>
-  @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.example, cascivo.theme,
-    cascivo.blocks, cascivo.override;
+  @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme,
+    cascivo.blocks, cascivo.myapp, cascivo.override;
   @layer cascivo.reset {
     *,
     *::before,

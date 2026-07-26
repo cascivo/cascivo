@@ -16,6 +16,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'showCollapseToggle',
+      default: 'true',
       type: 'boolean',
       required: false,
       description: 'Show the collapse/expand toggle control.',

@@ -31,17 +31,52 @@ you build on cascivo, reach for these, not the React hook you'd normally use:
 | Intercepting nav-item `onClick` to route client-side | `setLinkComponent(YourLink)` / `getLinkComponent()`                             | Config-driven nav (SideNav, ShellHeader, Header, Breadcrumb, Switcher, Dock, NavigationMenu) renders links through the registered component — a real router `<Link>`, so hover-preloading works and no click interception is needed. |
 | Reading token names out of a CSS file                | `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` | Generated union of every `--cascivo-*` property — visible in the type, no file lookup.                                                                                                                                               |
 
-In a React app that does **not** run the Babel signals transform (any consumer app,
-`apps/examples/*`), a component that reads a **raw** `signal.value` during render must call
-`useSignals()` (from `@cascivo/core`) as its first statement, or it will never re-render
-on a signal write. Symptom: handlers fire but the UI freezes.
+### When do I need `useSignals()`?
 
-You do **not** need `useSignals()` when the signal comes from a cascivo hook — `useSignal`,
+No consumer app runs the Babel signals transform, so a React component only re-renders on a
+signal write if something subscribed it. The rule is short:
+
+> **You need `useSignals()` only for a signal you did not get from a cascivo hook.**
+> That means exactly three things: a module-level `signal()`, a signal handed to you as a
+> prop, and `currentLocale()` from `@cascivo/i18n` (a plain function, so it cannot
+> self-subscribe). Call it as the component's **first statement**.
+
+Everything a cascivo hook returns is already reactive on its own: `useSignal`,
 `useComputed`, `useControllableSignal`, `useDisclosure`, `useMediaQuery`, `useMachine`,
 `useRovingFocus`, `useStreamBuffer`, `useScope`, `useTheme`, `useForm`, `useAnchorPosition`
-all call `useSignals()` for you, so reading their returned signal in render is reactive on
-its own. The one exception is `currentLocale()` from `@cascivo/i18n` (a plain function, not
-a hook): call `useSignals()` yourself if you read it in render.
+all call `useSignals()` for you.
+
+**That list is machine-checked, not a promise in prose.** Every hook on it is rendered in a
+transform-free React component, written to, and asserted to re-render
+(`packages/core/src/self-subscribe.test.tsx`), and
+`scripts/checks/self-subscribe-parity.test.ts` fails the build if this paragraph and the
+code ever disagree in either direction. It is written this way because it was once prose:
+the list claimed twelve hooks while the test covered three, `useSignal` and `useComputed`
+were quietly not among the ten that worked, and an adopter shipped an entire dashboard whose
+filters, sorts and toggles did nothing — with no error to explain it.
+
+> **Symptom to recognize:** handlers fire, your signal updates, the UI never moves. That is
+> always a missing subscription, never a broken handler. See
+> [TROUBLESHOOTING.md](/docs/troubleshooting.md#handlers-fire-but-the-ui-never-updates-toggles-dont-toggle-modals-dont-open).
+
+**One caveat on the wrappers.** `useSignals()` starts tracking where it is called, so a
+signal read that happens _above_ your first `useSignal`/`useComputed` call is not tracked.
+Call the hooks before reading signals — or just call `useSignals()` first, which is always
+safe and is what cascivo's own components do.
+
+### Syncing a controlled prop into a signal
+
+Preact runs effects **synchronously on write**, so _where you read the mirrored signal_
+decides which primitive is correct:
+
+| The signal is read…                                    | Use                                                        | Why                                                                                                                                                                                                                                                                                           |
+| ------------------------------------------------------ | ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| in render (JSX, a `data-*` attribute, a derived value) | `useControllableSignal({ value, defaultValue, onChange })` | The write must be synchronous or the component renders one tick stale. A render-phase write that only notifies the writing component's own subscription is a legal same-fiber render-phase update.                                                                                            |
+| only inside `useSignalEffect`                          | `useEffectPropSignal(prop)`                                | A synchronous write would run the effect body **inside React's render phase** — `showModal()`, listener registration against a pre-commit ref, a parent `setState`. `useEffectPropSignal` defers the mirror one microtask so the effect lands after the commit, where it was always meant to. |
+
+Never hand-roll `const s = useSignal(prop); s.value = prop` for the second case: that is the
+exact shape that shipped a render-phase `showModal()` in `Modal`, `Sheet`, `Dropdown`,
+`AlertDialog`, `HeaderPanel`, `CommandMenu` and `Presence`.
 
 For the full friction-to-primitive rationale with code — and why the generic
 React/Tailwind patterns an LLM defaults to are wrong here — see

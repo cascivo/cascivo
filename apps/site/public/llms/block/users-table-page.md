@@ -10,7 +10,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/users-table-page
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `UsersTablePage` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -18,10 +18,10 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 ## Props
 
-| Prop       | Type         | Required | Default | Description           |
-| ---------- | ------------ | -------- | ------- | --------------------- |
-| `users`    | `User[]`     | no       | —       | User data             |
-| `onInvite` | `() => void` | no       | —       | Invite button handler |
+| Prop       | Type         | Required | Default     | Description           |
+| ---------- | ------------ | -------- | ----------- | --------------------- |
+| `users`    | `User[]`     | no       | `demoUsers` | User data             |
+| `onInvite` | `() => void` | no       | —           | Invite button handler |
 
 ## Examples
 

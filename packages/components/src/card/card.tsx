@@ -1,6 +1,6 @@
 'use client'
 import { cn } from '@cascivo/core'
-import type { HTMLAttributes } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './card.module.css'
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -27,12 +27,31 @@ export function Card({
   )
 }
 
-export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {}
+export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Trailing content pinned to the inline-end of the header — an overflow menu, a status
+   * badge, a link. Without it the header is a column (title over description), which is
+   * why `justify-content: space-between` alone does nothing: the most common dashboard
+   * card layout is title-left / action-right, and it needs a row.
+   *
+   * The title column keeps `min-inline-size: 0`, so a long title truncates instead of
+   * pushing the actions out of the card.
+   */
+  actions?: ReactNode
+}
 
-export function CardHeader({ className, children, ...props }: CardHeaderProps) {
+export function CardHeader({ actions, className, children, ...props }: CardHeaderProps) {
+  if (actions === undefined) {
+    return (
+      <div className={cn(styles['header'], className)} {...props}>
+        {children}
+      </div>
+    )
+  }
   return (
-    <div className={cn(styles['header'], className)} {...props}>
-      {children}
+    <div className={cn(styles['header'], styles['headerRow'], className)} {...props}>
+      <div className={styles['headerMain']}>{children}</div>
+      <div className={styles['headerActions']}>{actions}</div>
     </div>
   )
 }

@@ -33,3 +33,31 @@ describe('Card', () => {
     expect(screen.getByText('My Footer')).toBeInTheDocument()
   })
 })
+
+describe('CardHeader actions (title + action row)', () => {
+  it('renders actions after the title in DOM order', () => {
+    render(
+      <Card>
+        <CardHeader actions={<button type="button">Menu</button>}>
+          <CardTitle>Project</CardTitle>
+        </CardHeader>
+      </Card>,
+    )
+    const title = screen.getByText('Project')
+    const action = screen.getByRole('button', { name: 'Menu' })
+    expect(title.compareDocumentPosition(action) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
+  it('keeps the plain column header when no actions are passed', () => {
+    const { container } = render(
+      <Card>
+        <CardHeader>
+          <CardTitle>Project</CardTitle>
+        </CardHeader>
+      </Card>,
+    )
+    // No extra wrapper divs: the children stay direct descendants of the header.
+    const header = container.querySelector('h3')!.parentElement!
+    expect(header.className).not.toMatch(/headerRow/)
+  })
+})

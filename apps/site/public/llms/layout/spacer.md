@@ -10,7 +10,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/spacer
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Spacer } from '@cascivo/react'
+```
 
 ## Category
 
@@ -20,7 +24,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 | Prop   | Type                          | Required | Default | Description        |
 | ------ | ----------------------------- | -------- | ------- | ------------------ |
-| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | —       | Spacing token step |
+| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | `4`     | Spacing token step |
 
 ## Examples
 

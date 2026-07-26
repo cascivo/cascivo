@@ -21,14 +21,15 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop     | Type       | Required | Default | Description                 |
-| -------- | ---------- | -------- | ------- | --------------------------- |
-| `data`   | `number[]` | yes      | —       | Array of numeric values     |
-| `label`  | `string`   | yes      | —       | Accessible label            |
-| `width`  | `number`   | no       | `80`    | Width of the component.     |
-| `height` | `number`   | no       | `32`    | Height of the component.    |
-| `color`  | `string`   | no       | —       | Stroke color (CSS value)    |
-| `endDot` | `boolean`  | no       | —       | Show dot at last data point |
+| Prop        | Type       | Required | Default | Description                                                                                               |
+| ----------- | ---------- | -------- | ------- | --------------------------------------------------------------------------------------------------------- |
+| `data`      | `number[]` | yes      | —       | Array of numeric values                                                                                   |
+| `label`     | `string`   | no       | —       | Accessible name for the chart (invisible — rendered as the SVG `<title>`).                                |
+| `ariaLabel` | `string`   | no       | —       | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
+| `width`     | `number`   | no       | `80`    | Width of the component.                                                                                   |
+| `height`    | `number`   | no       | `32`    | Height of the component.                                                                                  |
+| `color`     | `string`   | no       | —       | Stroke color (CSS value)                                                                                  |
+| `endDot`    | `boolean`  | no       | —       | Show dot at last data point                                                                               |
 
 ## Examples
 

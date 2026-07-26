@@ -10,7 +10,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add block/app-shell
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+_Copy-paste only — `App Shell` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 

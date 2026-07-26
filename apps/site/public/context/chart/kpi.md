@@ -24,15 +24,16 @@ Renders with role="figure" and a labeled metric for screen reader context.
 
 ## Props
 
-| Name         | Type               | Required | Default | Description                                              |
-| ------------ | ------------------ | -------- | ------- | -------------------------------------------------------- |
-| `value`      | `string \| number` | Yes      | —       | Primary metric value                                     |
-| `label`      | `string`           | Yes      | —       | Metric label                                             |
-| `delta`      | `number`           | No       | —       | Change value (positive = up, negative = down)            |
-| `deltaLabel` | `string`           | No       | —       | Delta context label (e.g. "vs last week")                |
-| `icon`       | `ReactNode`        | No       | —       | Icon element rendered in the component.                  |
-| `sparkline`  | `number[]`         | No       | —       | Trend data for embedded sparkline                        |
-| `className`  | `string`           | No       | —       | Additional CSS class names merged onto the root element. |
+| Name          | Type                                                   | Required | Default | Description                                                                                                                                                                       |
+| ------------- | ------------------------------------------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`       | `string \| number`                                     | Yes      | —       | Primary metric value                                                                                                                                                              |
+| `label`       | `string`                                               | Yes      | —       | Metric label                                                                                                                                                                      |
+| `delta`       | `number`                                               | No       | —       | Change value (positive = up, negative = down)                                                                                                                                     |
+| `deltaFormat` | `'number' \| 'percent' \| ((delta: number) => string)` | No       | number  | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included. |
+| `deltaLabel`  | `string`                                               | No       | —       | Delta context label (e.g. "vs last week")                                                                                                                                         |
+| `icon`        | `ReactNode`                                            | No       | —       | Icon element rendered in the component.                                                                                                                                           |
+| `sparkline`   | `number[]`                                             | No       | —       | Trend data for embedded sparkline                                                                                                                                                 |
+| `className`   | `string`                                               | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                          |
 
 ## Tokens
 

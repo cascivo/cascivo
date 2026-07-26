@@ -54,3 +54,35 @@ describe('Collapsible', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'false')
   })
 })
+
+describe('Collapsible — APG disclosure conformance (manifest-backed)', () => {
+  // The manifest claims role `button` + keys Enter/Space. These assert the component
+  // actually behaves that way, so `apg:check` is checking a claim backed by evidence
+  // rather than one string against another.
+  it('exposes the trigger as a button with aria-expanded/aria-controls', () => {
+    render(<Collapsible trigger="Details">Body</Collapsible>)
+    const trigger = screen.getByRole('button', { name: 'Details' })
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+    const controls = trigger.getAttribute('aria-controls')
+    expect(controls).toBeTruthy()
+    expect(document.getElementById(controls!)).toHaveAttribute('role', 'region')
+  })
+
+  it('toggles on Enter', async () => {
+    const user = userEvent.setup()
+    render(<Collapsible trigger="Details">Body</Collapsible>)
+    const trigger = screen.getByRole('button', { name: 'Details' })
+    trigger.focus()
+    await user.keyboard('{Enter}')
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  })
+
+  it('toggles on Space', async () => {
+    const user = userEvent.setup()
+    render(<Collapsible trigger="Details">Body</Collapsible>)
+    const trigger = screen.getByRole('button', { name: 'Details' })
+    trigger.focus()
+    await user.keyboard(' ')
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+  })
+})

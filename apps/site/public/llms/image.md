@@ -31,7 +31,7 @@ import { Image } from '@cascivo/react'
 | Prop            | Type                                       | Required | Default | Description                                                            |
 | --------------- | ------------------------------------------ | -------- | ------- | ---------------------------------------------------------------------- |
 | `src`           | `string`                                   | no       | —       | Image source URL.                                                      |
-| `alt`           | `string`                                   | no       | —       | Alternative text describing the image.                                 |
+| `alt`           | `string`                                   | no       | ``      | Alternative text describing the image.                                 |
 | `fallbackSrc`   | `string`                                   | no       | —       | Image shown if src fails to load                                       |
 | `width`         | `string \| number`                         | no       | —       | Width of the component.                                                |
 | `height`        | `string \| number`                         | no       | —       | Height of the component.                                               |

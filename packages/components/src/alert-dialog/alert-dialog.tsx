@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { useId, useSignal, useSignalEffect } from '@cascivo/core'
+import { useEffectPropSignal, useId, useSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './alert-dialog.module.css'
 
@@ -32,8 +32,7 @@ export function AlertDialog({
   const dialogRef = useRef<HTMLDivElement>(null)
   const titleId = useId('cascivo-alert-dialog-title')
   const descId = useId('cascivo-alert-dialog-desc')
-  const isOpen = useSignal(open)
-  isOpen.value = open
+  const isOpen = useEffectPropSignal(open)
 
   const cancelRef = useRef<HTMLButtonElement>(null)
   const onCancelRef = useRef(onCancel)

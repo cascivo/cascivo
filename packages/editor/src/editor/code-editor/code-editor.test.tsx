@@ -233,7 +233,12 @@ describe('CodeEditor', () => {
     vi.unstubAllGlobals()
   })
 
-  it('re-seeds highlighting when the controlled value is swapped', () => {
+  // `async` + `await act` around the controlled-value swap: the effect that schedules the
+  // rAF-debounced highlight now runs after the render settles rather than *during* render.
+  // (Signal writes made while a `useSignals()` render store is open notify when that store
+  // finalizes — which is the whole point: a render-phase effect run would register DOM work
+  // against a pre-commit tree.) Without the await, `flush()` finds no queued frame.
+  it('re-seeds highlighting when the controlled value is swapped', async () => {
     const frames: FrameRequestCallback[] = []
     vi.stubGlobal('requestAnimationFrame', (cb: FrameRequestCallback) => frames.push(cb))
     vi.stubGlobal('cancelAnimationFrame', () => {})
@@ -258,14 +263,16 @@ describe('CodeEditor', () => {
     expect(stringTwo()).toBeUndefined()
 
     // Programmatic whole-document swap whose 2nd line is inside a fence.
-    rerender(
-      <CodeEditor
-        language="markdown"
-        value={'```ts\ntwo'}
-        onValueChange={() => {}}
-        lineNumbers={false}
-      />,
-    )
+    await act(async () => {
+      rerender(
+        <CodeEditor
+          language="markdown"
+          value={'```ts\ntwo'}
+          onValueChange={() => {}}
+          lineNumbers={false}
+        />,
+      )
+    })
     flush()
     expect(stringTwo(), 'the swapped document re-seeds the state index').toBeDefined()
 

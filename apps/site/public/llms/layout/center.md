@@ -10,7 +10,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/center
 ```
 
-_Copy-paste only — this block/layout is not published as an importable package._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Center } from '@cascivo/react'
+```
 
 ## Category
 
@@ -20,7 +24,7 @@ _Copy-paste only — this block/layout is not published as an importable package
 
 | Prop       | Type     | Required | Default | Description         |
 | ---------- | -------- | -------- | ------- | ------------------- |
-| `maxWidth` | `string` | no       | —       | CSS max-width value |
+| `maxWidth` | `string` | no       | `48rem` | CSS max-width value |
 
 ## Examples
 

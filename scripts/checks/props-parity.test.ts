@@ -47,6 +47,9 @@ const ALLOWLIST: Record<string, string> = {
   'layout/grid.span':
     'documented on the sibling GridItem component (GridItemProps) in the same file; ' +
     'the manifest covers the Grid/GridItem compound under one entry',
+  'card.actions':
+    'lives on CardHeaderProps, not CardProps; the manifest covers the ' +
+    'Card/CardHeader/CardTitle/CardContent/CardFooter compound under one entry',
 }
 
 /** Own props never required in a manifest (framework passthrough / DOM). */

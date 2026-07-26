@@ -21,15 +21,16 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop         | Type               | Required | Default | Description                                              |
-| ------------ | ------------------ | -------- | ------- | -------------------------------------------------------- |
-| `value`      | `string \| number` | yes      | —       | Primary metric value                                     |
-| `label`      | `string`           | yes      | —       | Metric label                                             |
-| `delta`      | `number`           | no       | —       | Change value (positive = up, negative = down)            |
-| `deltaLabel` | `string`           | no       | —       | Delta context label (e.g. "vs last week")                |
-| `icon`       | `ReactNode`        | no       | —       | Icon element rendered in the component.                  |
-| `sparkline`  | `number[]`         | no       | —       | Trend data for embedded sparkline                        |
-| `className`  | `string`           | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop          | Type                                                   | Required | Default  | Description                                                                                                                                                                       |
+| ------------- | ------------------------------------------------------ | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`       | `string \| number`                                     | yes      | —        | Primary metric value                                                                                                                                                              |
+| `label`       | `string`                                               | yes      | —        | Metric label                                                                                                                                                                      |
+| `delta`       | `number`                                               | no       | —        | Change value (positive = up, negative = down)                                                                                                                                     |
+| `deltaFormat` | `'number' \| 'percent' \| ((delta: number) => string)` | no       | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included. |
+| `deltaLabel`  | `string`                                               | no       | —        | Delta context label (e.g. "vs last week")                                                                                                                                         |
+| `icon`        | `ReactNode`                                            | no       | —        | Icon element rendered in the component.                                                                                                                                           |
+| `sparkline`   | `number[]`                                             | no       | —        | Trend data for embedded sparkline                                                                                                                                                 |
+| `className`   | `string`                                               | no       | —        | Additional CSS class names merged onto the root element.                                                                                                                          |
 
 ## Examples
 

@@ -38,6 +38,47 @@ export const APG_PATTERNS: Record<string, ApgPattern> = {
     requiredRoles: ['button'],
     requiredKeys: ['Enter', 'Space'],
   },
+  /**
+   * A `<nav>` landmark whose top-level items are disclosure buttons revealing submenus —
+   * APG's "Disclosure Navigation Menu" example. Distinct from a single disclosure widget:
+   * the component's headline role is the landmark, while each trigger is a button, and
+   * arrow-key roving between triggers is part of the pattern.
+   */
+  'disclosure-navigation': {
+    url: 'https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/',
+    requiredRoles: ['navigation', 'button'],
+    requiredKeys: ['Enter', 'Space', 'Escape'],
+  },
+  /**
+   * A button that opens a menu. Both roles are part of the widget (the trigger and the
+   * popup), so either satisfies the headline `role` field.
+   */
+  'menu-button': {
+    url: 'https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/',
+    requiredRoles: ['button', 'menu'],
+    requiredKeys: ['Enter', 'Space', 'ArrowDown', 'Escape'],
+  },
+  menubar: {
+    url: 'https://www.w3.org/WAI/ARIA/apg/patterns/menubar/',
+    requiredRoles: ['menubar'],
+    requiredKeys: ['ArrowLeft', 'ArrowRight', 'ArrowDown', 'Home', 'End', 'Enter', 'Escape'],
+  },
+  windowsplitter: {
+    url: 'https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/',
+    requiredRoles: ['separator'],
+    requiredKeys: ['ArrowLeft', 'ArrowRight', 'Home', 'End'],
+  },
+  /** The group half of the radio pattern — used by single-select toggle groups. */
+  radiogroup: {
+    url: 'https://www.w3.org/WAI/ARIA/apg/patterns/radio/',
+    requiredRoles: ['radiogroup'],
+    requiredKeys: ['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'Space'],
+  },
+  'tree-view': {
+    url: 'https://www.w3.org/WAI/ARIA/apg/patterns/treeview/',
+    requiredRoles: ['tree'],
+    requiredKeys: ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'Home', 'End', 'Enter'],
+  },
   checkbox: {
     url: 'https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/',
     requiredRoles: ['checkbox'],

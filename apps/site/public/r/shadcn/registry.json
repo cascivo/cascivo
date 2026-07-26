@@ -2650,7 +2650,7 @@
           "type": "registry:block"
         }
       ],
-      "description": "Flex layout primitive for vertical or horizontal stacking with gap control.",
+      "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
       "dependencies": ["@cascivo/core"],
       "categories": ["layout"],
       "meta": {

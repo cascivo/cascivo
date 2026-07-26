@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignalEffect } from '@cascivo/core'
+import { cn, useEffectPropSignal, useSignal, useSignalEffect } from '@cascivo/core'
 import { useRef } from 'react'
 import type { InputHTMLAttributes } from 'react'
 import styles from './checkbox.module.css'
@@ -18,8 +18,7 @@ export function Checkbox({
   ...props
 }: CheckboxProps) {
   const inputRef = useRef<HTMLInputElement>(null)
-  const isIndeterminate = useSignal(indeterminate)
-  isIndeterminate.value = indeterminate
+  const isIndeterminate = useEffectPropSignal(indeterminate)
 
   useSignalEffect(() => {
     if (inputRef.current) inputRef.current.indeterminate = isIndeterminate.value

@@ -25,7 +25,7 @@ Empty presentational spacer with no semantic role; ignored by assistive tech.
 
 | Name   | Type                          | Required | Default | Description        |
 | ------ | ----------------------------- | -------- | ------- | ------------------ |
-| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | —       | Spacing token step |
+| `size` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | 4       | Spacing token step |
 
 ## Tokens
 

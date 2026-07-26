@@ -27,12 +27,12 @@ import { NavigationMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                   | Required | Default | Description                                              |
-| ------------- | -------------------------------------- | -------- | ------- | -------------------------------------------------------- |
-| `items`       | `NavigationMenuItem[]`                 | yes      | —       | The items to render.                                     |
-| `aria-label`  | `string`                               | no       | —       | Accessible label used when no visible label is present.  |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no       | —       | Layout orientation of the component.                     |
-| `className`   | `string`                               | no       | —       | Additional CSS class names merged onto the root element. |
+| Prop          | Type                                   | Required | Default      | Description                                              |
+| ------------- | -------------------------------------- | -------- | ------------ | -------------------------------------------------------- |
+| `items`       | `NavigationMenuItem[]`                 | yes      | —            | The items to render.                                     |
+| `aria-label`  | `string`                               | no       | —            | Accessible label used when no visible label is present.  |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no       | `horizontal` | Layout orientation of the component.                     |
+| `className`   | `string`                               | no       | —            | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -62,7 +62,7 @@ import { NavigationMenu } from '@cascivo/react'
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `navigation`
-- **Keyboard:** ArrowLeft, ArrowRight, Home, End, Enter, Escape
+- **Keyboard:** ArrowLeft, ArrowRight, Home, End, Enter, Space, Escape
 
 ## Dependencies
 

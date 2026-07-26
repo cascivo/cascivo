@@ -26,7 +26,7 @@ Pure layout wrapper with no semantic role; does not affect the accessibility tre
 
 | Name       | Type     | Required | Default | Description         |
 | ---------- | -------- | -------- | ------- | ------------------- |
-| `maxWidth` | `string` | No       | —       | CSS max-width value |
+| `maxWidth` | `string` | No       | 48rem   | CSS max-width value |
 
 ## Tokens
 
