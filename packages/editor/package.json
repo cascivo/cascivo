@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/editor",
-  "version": "0.2.17",
+  "version": "0.2.18",
   "private": false,
   "description": "Lightweight CSS-native code editor — native textarea overlay + owned zero-dependency tokenizer",
   "keywords": [

@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-tailwind.md
-  registry v0.11.1 · generated 2026-07-25
+  registry v0.12.0 · generated 2026-07-26
 -->
 
 # Using cascivo with Tailwind v4

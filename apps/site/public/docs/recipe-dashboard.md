@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/recipe-dashboard.md
-  registry v0.11.1 · generated 2026-07-25
+  registry v0.12.0 · generated 2026-07-26
 -->
 
 # Recipe: building a console/dashboard page
