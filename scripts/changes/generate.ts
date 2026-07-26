@@ -12,6 +12,7 @@
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { registryGeneratedAt } from '../registry/generated-at.ts'
 
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const OUT_PATH = join(REPO_ROOT, 'apps', 'site', 'public', 'breaking-changes.json')
@@ -82,7 +83,7 @@ function main(): void {
   }
 
   const out = {
-    generatedAt: new Date().toISOString().slice(0, 10),
+    generatedAt: registryGeneratedAt(),
     description:
       'Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.',
     packages,

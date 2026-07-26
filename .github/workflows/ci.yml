@@ -140,6 +140,12 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # A generator that reads the wall clock makes the drift check below (and
+      # the identical gate in release.yml) fail purely because the artifacts
+      # were committed on an earlier UTC day. Catch that at the source.
+      - name: Regen determinism guard (no wall-clock reads in generators)
+        run: pnpm run regen:check
+
       - name: Regenerate generated artifacts
         run: |
           pnpm run regen

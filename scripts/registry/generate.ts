@@ -19,6 +19,7 @@ import {
   writeShadcnRegistry,
 } from '../../packages/registry/src/index.ts'
 import type { BlockMeta } from '../../packages/components/src/blocks/types.ts'
+import { stampForVersion } from './generated-at.ts'
 import { reactExportedNames } from './react-exports.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
@@ -425,7 +426,7 @@ async function main(): Promise<void> {
 
   const registry = {
     version,
-    generatedAt: new Date().toISOString().slice(0, 10),
+    generatedAt: stampForVersion(version),
     components,
     blocks,
     templates,

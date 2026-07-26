@@ -188,7 +188,7 @@ export function buildContextIndex(
 ): ContextIndex {
   const sorted = [...entries].sort((a, b) => a.name.localeCompare(b.name))
   return {
-    generatedAt: new Date().toISOString().slice(0, 10),
+    generatedAt: registry.generatedAt,
     tagline: 'The CSS-native, signal-driven, AI-first React design system',
     authoringRules: AUTHORING_RULES,
     tokenCatalogUrl: '/tokens.catalog.json',

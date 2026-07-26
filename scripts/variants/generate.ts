@@ -22,6 +22,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { extractDeclarations } from '../catalog/parse-tokens.ts'
+import { registryGeneratedAt } from '../registry/generated-at.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(HERE, '..', '..')
@@ -215,7 +216,7 @@ export function buildVariantMatrix(
 
   return {
     generatedFrom: ['packages/tokens/src/index.css', 'packages/themes/src/*.css'],
-    generatedAt: new Date().toISOString().slice(0, 10),
+    generatedAt: registryGeneratedAt(),
     themes: themeMaps.map((t) => t.name),
     families,
     tokens,

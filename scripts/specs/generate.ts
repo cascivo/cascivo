@@ -19,6 +19,7 @@
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { registryGeneratedAt } from '../registry/generated-at.ts'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -198,7 +199,7 @@ const OUT_DIR = join(ROOT, 'apps', 'site', 'public')
 
 function main() {
   mkdirSync(OUT_DIR, { recursive: true })
-  const generatedAt = new Date().toISOString().slice(0, 10)
+  const generatedAt = registryGeneratedAt()
 
   // specs.json
   const specFiles = readdirSync(SPECS_DIR)
