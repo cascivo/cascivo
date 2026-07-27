@@ -5,6 +5,14 @@
     overflow: hidden;
     padding: var(--_card-p, 0);
 
+    /* When the card holds its own subcomponents, THEY own the inset — otherwise both pad and
+       the header's content sits 48px from the border at the default size (measured in
+       Chromium by scripts/checks/computed-style.test.ts, which is the only kind of test that
+       can see it). Raw children still get the card's padding, which is what it is for. */
+    &:has(> .header, > .content, > .footer) {
+      padding: 0;
+    }
+
     /* `--_card-p` is the CARD BOX's own padding; `--_card-inner-p` is what CardHeader /
        CardContent / CardFooter use. They are separate because `padding="none"` means
        "let a flush child (a LogViewer, an image) reach the card's edge" — it must not

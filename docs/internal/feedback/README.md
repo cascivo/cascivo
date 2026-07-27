@@ -20,8 +20,14 @@ Therefore:
 1. **The PR that implements or supersedes a workstream updates the plan's status
    header and that workstream's status in the same PR.** Not a follow-up.
 2. **The PR that publishes to npm flips a workstream from `merged` → `published
-   vX.Y.Z`.** A fix an adopter can't `pnpm add` yet is not done — every prior
-   recurrence involved an adopter meeting artifacts that lagged the repo.
+   vX.Y.Z`.** A fix an adopter can't `pnpm add` yet is not done.
+
+   **But do not reach for "not yet published" as the explanation without checking it.** That
+   sentence was carried through three plans as the reason adopters kept meeting already-fixed
+   defects. For the 07-26 pair it was tested by unpacking the published tarballs — every
+   artifact matched `main` byte for byte, and the defects were genuinely shipped. The real
+   cause was Mechanism D. `pnpm npm:parity` compares the published tarball against this
+   checkout; run it before writing that sentence again.
 3. **Open items carry forward.** When a new report supersedes an older plan, list
    the still-open workstreams in the new plan so there is a single live tracker,
    and point the old plan's header at it.
@@ -34,9 +40,9 @@ status must not drift from what actually shipped.
 `fix-plan-adopter-pair-2026-07-26.md` is the newest plan. It triages **two** reports from the
 same day (a TanStack Start console and a React Router console, both on published `0.12.0`) and
 carries the open items of the whole chain behind it — 07-20 → 07-22 → 07-23 → 07-24 → 07-25 →
-07-26 — in its WS-15 (publish the 07-24 + 07-25 trains, run the freshness + npm-parity
-canaries, and the 07-23 WS-J browser leg). Every superseded plan's header points forward to
-here.
+07-26. Its WS-15 is down to one item: **publish** (a release action). The npm-parity canary
+and the 07-23 WS-J browser leg are implemented (`pnpm npm:parity`, `pnpm computed:check`), and
+the freshness probe already existed. Every superseded plan's header points forward to here.
 
 **Keep this pointer current.** It went two plans stale (still naming the 07-23 plan after
 the 07-24 plan landed, even though that plan's own §10c told the implementer to update it),
@@ -63,6 +69,11 @@ fixes but no gates produces the next report:
   → **Fix:** derive from the real source (the export list, the destructuring default) and
   add a parity guard. An inference that is right for 186 entries and wrong for 6 is
   indistinguishable from correct at review time; only a guard sees it.
+- **C — the same fact stated independently in two places.** e.g. `llms.txt` requiring
+  `ssr.noExternal` while `USING-WITH-VITE-SSR.md` says SSR is zero-config;
+  `CSS-LAYERS-PITFALL.md` contradicting its own prose twenty lines later on where the
+  app-local layer slot goes.
+  → **Fix:** one owner per fact; every other surface includes it or is checked against it.
 - **D — the fix landed on a surface the adopter does not read.** (Added by the 07-26 pair.)
   The 07-25 plan's WS-7 swept 231 prop defaults into the manifests and its guard is green — and
   the 07-26 TanStack adopter still hit `Flex`'s column default three times, because they built
@@ -71,8 +82,3 @@ fixes but no gates produces the next report:
   **types** (`@cascivo/react/dist/index.d.ts`), **machine** (`registry.json` / `llms/*`), and
   **human** (`docs/*.md`) — with a parity guard across them.
   → **Fix:** the Three-Surface Rule + `tsdoc-parity` (07-26 plan WS-1).
-- **C — the same fact stated independently in two places.** e.g. `llms.txt` requiring
-  `ssr.noExternal` while `USING-WITH-VITE-SSR.md` says SSR is zero-config;
-  `CSS-LAYERS-PITFALL.md` contradicting its own prose twenty lines later on where the
-  app-local layer slot goes.
-  → **Fix:** one owner per fact; every other surface includes it or is checked against it.

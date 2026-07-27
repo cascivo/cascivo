@@ -48,3 +48,10 @@ chrome moved from inline styles into a layered stylesheet (it was un-overridable
 `Stat` gains `card` so it matches `Kpi`; `AppShell` extends `HTMLAttributes` so its documented
 tokens have an application point; `PieChart` gains `tooltip`; `DataTable` only uses a fixed
 layout when every column is sized, and gains `Column.minWidth`; `PageHeader` is exported.
+
+**Card padding no longer doubles.** A card and its `CardHeader`/`CardContent` both applied the
+padding, so a default `<Card><CardHeader>` sat its title 48px from the border. The
+subcomponents now own the inset when they are present. Found by a new computed-style canary
+that renders the shipped `dist` in headless Chromium — the class of defect (an `asChild`
+button's UA underline, a card's resolved padding) that jsdom cannot see and a stylesheet grep
+cannot prove.

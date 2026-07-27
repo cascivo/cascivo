@@ -104,6 +104,16 @@ jobs:
       - name: SSR-import guard (published dist ships bare CSS imports)
         run: pnpm run ssr:check
 
+      - name: Install Chromium (for the computed-style canary)
+        run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
+
+      # Also AFTER the build, and for the same reason: it renders the SHIPPED dist through a
+      # real browser. Two of the 2026-07-26 adopter defects (an asChild button rendering
+      # underlined, a card zeroing its header's padding) were computed-style facts that jsdom
+      # cannot see and a stylesheet grep cannot prove.
+      - name: Computed-style canary (real browser, shipped dist)
+        run: pnpm run computed:check
+
       - name: Bundle budgets
         run: pnpm run audit:bundle
 

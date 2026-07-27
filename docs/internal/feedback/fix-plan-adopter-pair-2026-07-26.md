@@ -17,13 +17,33 @@ opacity + `--cascivo-chart-fill-opacity-overlap` in all 12 themes + scale-mismat
 them, `vocabulary` guard) · **WS-10** ✅ (`Badge tone=` fixed; `example-props` guard type-checks
 all 370 examples and found a second real gap) · **WS-11** ✅ (channels derived per-symbol;
 `importableSymbols`; `PageHeader` exported) · **WS-12** ✅ (12 papercuts) ·
-**WS-13** ✅ (`export-collisions` guard, react↔charts scoped) · **WS-14** ✅ (8 new guards, all
-wired into `pnpm meta:check`) · **WS-15** ⬜ **not done — this is what "published" is blocked on.**
+**WS-13** ✅ (`export-collisions` guard + icons-overlap ratchet) · **WS-14** ✅ (10 new guards,
+wired into `pnpm meta:check` / `pnpm ready` / CI) · **WS-15** ◑ (15b `npm-parity` canary
+implemented; 15a publish is a release action, not a code change).
 
-> **Definition of done is NOT met yet.** Everything above is on the branch; nothing is on npm.
-> Per `README.md` rule 2 a fix an adopter cannot `pnpm add` is not done — which is exactly why
-> both 07-26 adopters, testing npm, met defects that were already fixed on `main`. The
-> publishing PR must flip these to `published vX.Y.Z`.
+> **Correction — the publishing theory was wrong for this round.** This plan originally
+> carried the 07-25 plan's framing: _"both 07-26 adopters tested npm, not `main`, so they met
+> defects already fixed."_ **That is false, and it was worth checking rather than repeating.**
+> `@cascivo/react@0.12.0` was on npm before the reports, and the published tarball was
+> unpacked and compared:
+>
+> - published `dist/index.d.ts` has `direction?: 'vertical' | 'horizontal';` with **no TSDoc**
+>   — the same as `main`. The `⚠` existed only in the manifest.
+> - published `dist/button/button.css` contains **zero** `text-decoration` declarations — the
+>   underline defect was genuinely shipped.
+> - the published CLI's bundled contract has the **duplicate `AppShell`/`Calendar` entries**
+>   and `SideNav.items: required: true` — the audit's false positives were genuinely shipped.
+> - the published `@cascivo/docs` **does** carry the Flex ⚠ — which is why the adopter who
+>   read it was saved and the adopter who read the `.d.ts` was not.
+>
+> Every artifact matched its source exactly. **Nothing lagged; the release pipeline is sound.**
+> The defects were real defects in real published code, and the explanation is Mechanism D
+> alone — the fix reached the manifest, not the type surface. Attributing three rounds of
+> recurrence to "not yet published" was itself an instance of the failure this directory
+> exists to prevent: a diagnosis carried forward without being checked.
+>
+> `scripts/checks/npm-parity.test.ts` now answers that question with evidence instead of
+> assumption, in both directions, so no future plan has to guess.
 
 Every claim in both reports was triaged against `main` at commit `183ef05a` with file:line
 evidence, a verdict (**CONFIRMED** / **PARTIALLY REFUTED** / **REFUTED**), and — for the two
@@ -202,8 +222,9 @@ literal, then suggests `--cascivo-space-12`. A table column width is not spacing
 2. Every fix present on **all three surfaces** (§0.1) — checked by a guard, not by review.
 3. Each of the four mechanisms has a guard that **fails a PR reintroducing its class**
    (WS-14), and each guard is observed failing on a deliberate revert.
-4. **Published to npm** (WS-15). Both of these adopters tested npm, not `main`. A fix an
-   adopter cannot `pnpm add` is not a fix — README rule 2.
+4. **Published to npm** (WS-15a). A fix an adopter cannot `pnpm add` is not a fix (README
+   rule 2) — but note the correction in the status header: for *this* round publishing was
+   **not** the cause. `npm-parity` now makes that checkable rather than assumed.
 
 ### §0.6 Priority
 

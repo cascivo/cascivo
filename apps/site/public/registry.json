@@ -2197,7 +2197,7 @@
       ],
       "fileHashes": {
         "card.tsx": "sha256-072752ba72696fe4e3b3aa456edf039b1c4f1d8ea09f4a2830470b82658fc179",
-        "card.module.css": "sha256-47bae411aa03ef9c6fdf18a03358f88f2a6eabc6bdc2311798ca720405dad717"
+        "card.module.css": "sha256-c25ebadc3082572c5e43f979f7f6ececc6cc7bb8db007bba75f99729c4499368"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {

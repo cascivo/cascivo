@@ -30,6 +30,14 @@ const KNOWN: Record<string, string> = {
     'charts ships the calendar-heatmap chart; @cascivo/react ships the date-picker calendar',
 }
 
+/**
+ * Current count of `@cascivo/icons` names that also name a component or chart. An icon set of
+ * ~440 nouns will always contain some (`Search`, `Filter`, `Grid`, `User`, `BarChart`,
+ * `PieChart`, …) — the convention is `import { Search as SearchIcon }`. Enumerating them
+ * would be noise; capping the count catches a *new* one, which is the part that is avoidable.
+ */
+const ICON_OVERLAP_CEILING = 20
+
 /** Top-level export names of a package's entry module (one level of `export *` followed). */
 function packageExports(entry: string): Set<string> {
   const file = join(ROOT, entry)
@@ -86,6 +94,29 @@ describe('cross-package export collisions', () => {
         'together, so any file using both needs an alias — and a wrong resolution is silent, ' +
         'not a compile error. Rename one side, or move it to a subpath export:\n' +
         `${added.map((n) => `  ${n}`).join('\n')}`,
+    )
+  })
+
+  /**
+   * Icons overlap with components by nature, so the set can't be zero — but it must not grow
+   * unnoticed. A *new* component named after an existing icon (or vice versa) is a real
+   * hazard: an adopter who writes `<Search/>` after importing both gets whichever the
+   * bundler resolved, silently. The count is a ratchet, not a ban.
+   */
+  it('the icons ↔ components overlap does not grow', () => {
+    const overlap = [...icons].filter((n) => react.has(n) || charts.has(n)).sort()
+    assert.ok(
+      overlap.length <= ICON_OVERLAP_CEILING,
+      `The @cascivo/icons ↔ component overlap grew to ${overlap.length} (ceiling ` +
+        `${ICON_OVERLAP_CEILING}). A new name here means \`import { X }\` from two packages ` +
+        `resolves silently to one of them. Either rename, or raise the ceiling deliberately ` +
+        `and note why.\n  ${overlap.join(', ')}`,
+    )
+    // Keep the ceiling honest: if the overlap shrank, the ceiling should follow.
+    assert.ok(
+      overlap.length >= ICON_OVERLAP_CEILING - 3,
+      `The overlap dropped to ${overlap.length}, well under the ${ICON_OVERLAP_CEILING} ` +
+        'ceiling — lower the ceiling so it keeps its grip.',
     )
   })
 
