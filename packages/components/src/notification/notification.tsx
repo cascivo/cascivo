@@ -1,5 +1,6 @@
 'use client'
-import { cn, normalizeTone, Presence, useSignal, useSignals, type ToneInput } from '@cascivo/core'
+import { cn, normalizeTone, Presence, useSignal, useSignals } from '@cascivo/core'
+import type { ToneInput } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { HTMLAttributes, ReactNode } from 'react'

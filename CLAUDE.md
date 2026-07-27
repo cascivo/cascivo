@@ -127,7 +127,11 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, primitives, apg) → build → type check → tests. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
+This runs: `pnpm regen` → `vp check --fix` → `lint:host-strict` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, primitives, apg) → build → `ssr:check` → `computed:check` → type check → tests.
+
+`lint:host-strict` is in there because CI runs it and `ready` did not: component source is _copied into adopter projects_, so it must also pass the objective host-lint rules (e.g. no inline `type` specifiers — write a separate `import type` line). It is fast and offline; skipping it locally just moves the failure to CI.
+
+**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:bundle`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`. Run them directly if you touched what they cover. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
 
 To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
 

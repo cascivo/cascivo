@@ -1,5 +1,6 @@
 'use client'
-import { cn, normalizeTone, useSignals, type ToneInput } from '@cascivo/core'
+import { cn, normalizeTone, useSignals } from '@cascivo/core'
+import type { ToneInput } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import type { HTMLAttributes } from 'react'
 import styles from './tag.module.css'

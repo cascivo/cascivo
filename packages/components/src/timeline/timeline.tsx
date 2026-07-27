@@ -1,5 +1,6 @@
 'use client'
-import { cn, normalizeProgress, type ProgressInput } from '@cascivo/core'
+import { cn, normalizeProgress } from '@cascivo/core'
+import type { ProgressInput } from '@cascivo/core'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './timeline.module.css'
 

@@ -1,5 +1,6 @@
 'use client'
-import { normalizeProgress, useSignal, useSignals, type ProgressInput } from '@cascivo/core'
+import { normalizeProgress, useSignal, useSignals } from '@cascivo/core'
+import type { ProgressInput } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './steps.module.css'
 
