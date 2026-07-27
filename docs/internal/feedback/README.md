@@ -31,10 +31,12 @@ status must not drift from what actually shipped.
 
 ## Current live tracker
 
-`fix-plan-vercel-tanstack-start-adopter-2026-07-25.md` is the newest plan. It carries
-the open items of the whole chain behind it — 07-20 → 07-22 → 07-23 → 07-24 → 07-25 —
-in its WS-15 (publish the 07-24 release train, run the freshness + npm-parity canaries,
-and the 07-23 WS-J browser leg). Every superseded plan's header points forward to here.
+`fix-plan-adopter-pair-2026-07-26.md` is the newest plan. It triages **two** reports from the
+same day (a TanStack Start console and a React Router console, both on published `0.12.0`) and
+carries the open items of the whole chain behind it — 07-20 → 07-22 → 07-23 → 07-24 → 07-25 →
+07-26 — in its WS-15 (publish the 07-24 + 07-25 trains, run the freshness + npm-parity
+canaries, and the 07-23 WS-J browser leg). Every superseded plan's header points forward to
+here.
 
 **Keep this pointer current.** It went two plans stale (still naming the 07-23 plan after
 the 07-24 plan landed, even though that plan's own §10c told the implementer to update it),
@@ -61,6 +63,14 @@ fixes but no gates produces the next report:
   → **Fix:** derive from the real source (the export list, the destructuring default) and
   add a parity guard. An inference that is right for 186 entries and wrong for 6 is
   indistinguishable from correct at review time; only a guard sees it.
+- **D — the fix landed on a surface the adopter does not read.** (Added by the 07-26 pair.)
+  The 07-25 plan's WS-7 swept 231 prop defaults into the manifests and its guard is green — and
+  the 07-26 TanStack adopter still hit `Flex`'s column default three times, because they built
+  from the shipped `.d.ts`, where 284 of 373 defaulted props carry no TSDoc at all. The guard
+  checked the surface the fix landed on. Every doc-only fix must land on all three surfaces —
+  **types** (`@cascivo/react/dist/index.d.ts`), **machine** (`registry.json` / `llms/*`), and
+  **human** (`docs/*.md`) — with a parity guard across them.
+  → **Fix:** the Three-Surface Rule + `tsdoc-parity` (07-26 plan WS-1).
 - **C — the same fact stated independently in two places.** e.g. `llms.txt` requiring
   `ssr.noExternal` while `USING-WITH-VITE-SSR.md` says SSR is zero-config;
   `CSS-LAYERS-PITFALL.md` contradicting its own prose twenty lines later on where the

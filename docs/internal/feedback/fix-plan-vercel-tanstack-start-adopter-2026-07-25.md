@@ -1,5 +1,11 @@
 # Fix plan — Vercel-like TanStack **Start** dashboard adopter report (2026-07-25, tested 0.11.1 packages)
 
+> **Superseded as the live tracker by
+> [`fix-plan-adopter-pair-2026-07-26.md`](fix-plan-adopter-pair-2026-07-26.md).** This plan's
+> **WS-15 is still open** and is carried forward there. That plan also records why WS-7 (the
+> prop-defaults sweep) did not reach the 07-26 TanStack adopter: it landed on the manifests,
+> and that adopter read the shipped `.d.ts` — the new **Mechanism D** in `README.md`.
+
 **Status: implemented on `claude/intelligent-faraday-i5volc`; not yet published.**
 Per-workstream: **WS-1** ✅ (`useSignal`/`useComputed` wrap `useSignals()`; negative +
 tracking-window tests lock the boundary) · **WS-2** ✅ (every reactivity primitive re-exported
