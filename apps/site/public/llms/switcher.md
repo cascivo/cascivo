@@ -75,4 +75,4 @@ navigation, switcher, shell, console, app-switcher
 
 ---
 
-_Generated from registry v0.12.0 on 2026-07-26. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.13.0 on 2026-07-27. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
