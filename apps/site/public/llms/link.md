@@ -33,12 +33,13 @@ import { Link } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type                       | Required | Default      | Description                                                                  |
-| ---------- | -------------------------- | -------- | ------------ | ---------------------------------------------------------------------------- |
-| `variant`  | `'standalone' \| 'inline'` | no       | `standalone` | Selects the visual style variant.                                            |
-| `size`     | `'sm' \| 'md' \| 'lg'`     | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg').                        |
-| `external` | `boolean`                  | no       | `false`      | When true, treats the link as external (opens in a new tab with rel safety). |
-| `href`     | `string`                   | no       | —            | The destination URL.                                                         |
+| Prop       | Type                       | Required | Default      | Description                                                                                                                                                                                                                                                                                     |
+| ---------- | -------------------------- | -------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`  | `'standalone' \| 'inline'` | no       | `standalone` | Selects the visual style variant.                                                                                                                                                                                                                                                               |
+| `size`     | `'sm' \| 'md' \| 'lg'`     | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                           |
+| `external` | `boolean`                  | no       | `false`      | When true, treats the link as external (opens in a new tab with rel safety).                                                                                                                                                                                                                    |
+| `href`     | `string`                   | no       | —            | The destination URL.                                                                                                                                                                                                                                                                            |
+| `asChild`  | `boolean`                  | no       | `false`      | Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md. |
 
 ## Examples
 
@@ -74,6 +75,7 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ## Design tokens
 
+- `--cascivo-link-color`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-hover`
 - `--cascivo-color-accent-active`

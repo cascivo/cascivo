@@ -21,8 +21,20 @@ export interface CarouselProps {
   children?: ReactNode
   slides?: ReactNode[]
   index?: number
+  /**
+   * The initial slide index when uncontrolled.
+   *
+   * @defaultValue `0`
+   * @see the component manifest
+   */
   defaultIndex?: number
   onIndexChange?: (index: number) => void
+  /**
+   * When true, navigation wraps around from end to start.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   loop?: boolean
   className?: string
   labels?: CarouselLabels

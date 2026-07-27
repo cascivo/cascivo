@@ -1,7 +1,7 @@
 'use client'
 import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { cloneElement, isValidElement, useRef } from 'react'
-import type { ReactElement, ReactNode } from 'react'
+import type { HTMLAttributes, ReactElement, ReactNode } from 'react'
 import styles from './app-shell.module.css'
 
 /** Props AppShell injects into a {@link ShellHeader}-shaped header element. */
@@ -10,7 +10,17 @@ interface HeaderMenuProps {
   menuExpanded?: boolean
 }
 
-export interface AppShellProps {
+/**
+ * `AppShell` extends `HTMLAttributes<HTMLDivElement>`, like every other layout primitive,
+ * so `className` **and `style`** pass through to its root element. That matters because the
+ * shell's documented design tokens (`--cascivo-shell-aside-inline-size`,
+ * `--cascivo-shell-panel-inline-size`, `--cascivo-shell-header-block-size`) have to be set
+ * *somewhere*: set them here —
+ * `<AppShell style={{ '--cascivo-shell-aside-inline-size': '15.5rem' }}>` — or on any
+ * ancestor, since they inherit. Before this the props were a closed list with no `style`,
+ * so the tokens had no documented application point and adopters set them on `#root`.
+ */
+export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Top bar — typically a `<ShellHeader>`. If it is a React element, AppShell
    * binds its burger (`onMenuClick`/`menuExpanded`) to the nav open state so the
@@ -44,6 +54,11 @@ export interface AppShellProps {
  * Rail vs full-hide reconcile cleanly: AppShell owns the full show/hide (this
  * `open` state); the SideNav you pass owns its own rail collapse
  * (`showCollapseToggle`). They compose on different axes and never fight.
+ *
+ * **Visual regression note:** the shell is `100dvh` with an internal scroll container (that
+ * is what makes the header sticky and the nav full-height). The page body therefore never
+ * grows, so a Playwright `fullPage: true` screenshot captures only the viewport. To capture
+ * the whole page, screenshot the scroll container element or set a tall viewport.
  */
 export function AppShell({
   header,
@@ -54,6 +69,7 @@ export function AppShell({
   defaultOpen,
   onOpenChange,
   className,
+  ...props
 }: AppShellProps) {
   useSignals()
   const controlled = open !== undefined
@@ -115,7 +131,7 @@ export function AppShell({
       : header
 
   return (
-    <div className={cn(styles['shell'], className)} data-open={isOpen.value}>
+    <div className={cn(styles['shell'], className)} data-open={isOpen.value} {...props}>
       <div className={styles['header']}>{headerEl}</div>
       <div className={styles['body']}>
         {nav && (

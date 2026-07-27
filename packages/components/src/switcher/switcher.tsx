@@ -15,6 +15,12 @@ export type SwitcherEntry = SwitcherLink | { divider: true }
 
 export interface SwitcherProps {
   items: SwitcherEntry[]
+  /**
+   * Text label for the control.
+   *
+   * @defaultValue `Switch application`
+   * @see the component manifest
+   */
   label?: string
   className?: string | undefined
 }

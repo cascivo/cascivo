@@ -12,21 +12,57 @@ export interface GaugeThreshold {
 
 export interface GaugeProps {
   value: number
+  /**
+   * Minimum allowed value.
+   *
+   * @defaultValue `0`
+   * @see the component manifest
+   */
   min?: number
+  /**
+   * Maximum allowed value.
+   *
+   * @defaultValue `100`
+   * @see the component manifest
+   */
   max?: number
   /** Coloured zones from `min` upward; the last should reach `max`. */
   thresholds?: readonly GaugeThreshold[]
   /** Unit suffix shown after the centre value. */
   unit?: string
-  /** Total sweep in degrees (default 270 — a speedometer arc). */
+  /**
+   * Total sweep angle in degrees (270 = a speedometer arc).
+   *
+   * @defaultValue `270`
+   * @see the component manifest
+   */
   sweep?: number
-  /** Major tick count (labels at min…max). */
+  /**
+   * Major tick count.
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   ticks?: number
   title: string
   description?: string
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
   className?: string
+  /**
+   * Marks only — no ticks/labels. For micro/inline charts.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
 }
 

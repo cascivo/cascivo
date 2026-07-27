@@ -12,7 +12,12 @@ export interface TileProps {
   defaultSelected?: boolean
   /** Called with this tile's value whenever it is toggled on (or off for multi). */
   onSelect?: (value: string) => void
-  /** Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off). */
+  /**
+   * Single = radio semantics (toggle on); multi = checkbox semantics (toggle on/off).
+   *
+   * @defaultValue `single`
+   * @see the component manifest
+   */
   selectable?: 'single' | 'multi'
   disabled?: boolean
   /** Optional leading icon/visual. */

@@ -2,7 +2,7 @@
   "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
   "resolutionTheme": "light",
   "generatedAt": "2026-07-26",
-  "count": 263,
+  "count": 266,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1805,6 +1805,24 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-link-color",
+      "value": "var(--cascivo-color-accent)",
+      "layer": "component",
+      "group": "link",
+      "resolvedDefault": "oklch(0.52 0.2 250)",
+      "resolvesPerTheme": true,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-search-width",
+      "value": "100%",
+      "layer": "component",
+      "group": "search",
+      "resolvedDefault": "100%",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-screen-sm",
       "value": "30rem",
       "layer": "semantic",
@@ -2273,6 +2291,15 @@
       "layer": "component",
       "group": "focus",
       "resolvedDefault": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)",
+      "resolvesPerTheme": true,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-chart-fill-opacity-overlap",
+      "value": "0.125",
+      "layer": "semantic",
+      "group": "chart",
+      "resolvedDefault": "0.125",
       "resolvesPerTheme": true,
       "canonical": true
     },

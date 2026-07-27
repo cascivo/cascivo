@@ -9,6 +9,8 @@
     font-family: var(--cascivo-font-sans);
     line-height: var(--cascivo-leading-none);
     cursor: pointer;
+    /* `asChild` renders this styling onto a real <a> — kill the UA underline. */
+    text-decoration: none;
     border: 1px solid transparent;
     border-radius: var(--cascivo-button-radius, var(--cascivo-radius-control));
     background-color: transparent;
@@ -23,7 +25,9 @@
       box-shadow: var(--cascivo-focus-ring);
     }
 
-    &:disabled {
+    /* An <a> can't be :disabled — under `asChild` it arrives as aria-disabled. */
+    &:disabled,
+    &[aria-disabled='true'] {
       opacity: 0.5;
       cursor: not-allowed;
       pointer-events: none;

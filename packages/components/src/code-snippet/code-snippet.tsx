@@ -10,7 +10,12 @@ export type { CodeLang }
 export interface CodeSnippetProps {
   /** The code to display (and copy). */
   code: string
-  /** inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>. */
+  /**
+   * inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>.
+   *
+   * @defaultValue `single`
+   * @see the component manifest
+   */
   variant?: 'inline' | 'single' | 'multi'
   /**
    * Enables lightweight, dependency-free syntax highlighting for the block

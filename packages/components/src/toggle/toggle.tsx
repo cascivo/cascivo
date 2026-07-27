@@ -5,6 +5,12 @@ import styles from './toggle.module.css'
 
 export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   checked?: boolean
+  /**
+   * Whether the control is checked on first render (uncontrolled).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   defaultChecked?: boolean
   /** Called with the new checked state when the switch is toggled. */
   onValueChange?: (checked: boolean) => void

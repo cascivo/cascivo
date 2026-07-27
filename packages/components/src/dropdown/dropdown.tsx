@@ -32,6 +32,12 @@ export interface DropdownProps {
   trigger: ReactElement
   items: DropdownItem[]
   onSelect?: (value: string) => void
+  /**
+   * Placement relative to the trigger.
+   *
+   * @defaultValue `bottom-start`
+   * @see the component manifest
+   */
   placement?: 'bottom-start' | 'bottom-end'
   open?: boolean
   onOpenChange?: (open: boolean) => void

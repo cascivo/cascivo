@@ -19,6 +19,7 @@ guides, references, cookbooks, and specs that ship with the source.
 
 | Guide | What it covers |
 | ----- | -------------- |
+| [USING-WITH-A-ROUTER.md](USING-WITH-A-ROUTER.md) | **Any router** (TanStack, React Router, Next.js) — `setLinkComponent` for config-driven navs vs `<Link asChild>` for in-content links. Read before writing any link. |
 | [USING-WITH-NEXTJS.md](USING-WITH-NEXTJS.md) | Next.js App Router / RSC — client boundaries, serialization caveats, naming collisions. |
 | [USING-WITH-VITE-SSR.md](USING-WITH-VITE-SSR.md) | Vite SSR / TanStack Start / Remix / workerd — the one-line `ssr.noExternal` fix for the `Unknown file extension ".css"` crash. |
 | [USING-WITH-PREACT.md](USING-WITH-PREACT.md) | Preact + `preact/compat`, where signals are natively reactive. |
@@ -36,6 +37,7 @@ guides, references, cookbooks, and specs that ship with the source.
 
 | Guide | What it covers |
 | ----- | -------------- |
+| [BENCHMARKS.md](BENCHMARKS.md) | **Bundle size** (JS + CSS, min+gzip) against shadcn/ui and Carbon, per-component incremental cost, and runtime benchmarks. The answer to "how big is it?". |
 | [TESTING.md](TESTING.md) | How components are tested — unit, a11y, and visual regression. |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Symptom → cause → fix for the common failure modes (unstyled UI, frozen signals). |
 | [UPGRADING.md](UPGRADING.md) | Upgrade guidance and `cascivo update` for owned component code. |

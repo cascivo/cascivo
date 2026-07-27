@@ -42,9 +42,19 @@ export interface FieldProps {
   description?: ReactNode
   /** Error message; sets aria-invalid on the control and is announced via role="alert". */
   error?: ReactNode
-  /** Marks the field required (forwarded to the Label marker). */
+  /**
+   * When true, marks the field as required.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   required?: boolean
-  /** Dims the label and is forwarded to the cloned control. */
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   /** Explicit id for the control; auto-generated when omitted. */
   id?: string

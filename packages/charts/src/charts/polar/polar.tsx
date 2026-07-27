@@ -16,16 +16,40 @@ export interface PolarProps {
   data: readonly PolarDatum[]
   title: string
   description?: string
-  /** Plot bars (a rose), or a polar line / filled area. */
+  /**
+   * Bars (rose), a polar line, or a filled polar area.
+   *
+   * @defaultValue `bar`
+   * @see the component manifest
+   */
   mode?: 'bar' | 'line' | 'area'
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
-  /** Radial ring count. */
+  /**
+   * Radial ring count.
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   rings?: number
   /** Domain top (full radius). Defaults to the largest value. */
   max?: number
   tooltip?: boolean
   className?: string
+  /**
+   * Marks only — no rings or labels. For micro/inline charts.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
 }
 

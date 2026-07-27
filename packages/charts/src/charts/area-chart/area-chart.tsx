@@ -1,8 +1,13 @@
 'use client'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { warnNonFinite } from '../../core/dev-warn'
-import { DEFAULT_MARGINS, leftMarginForLabels, PLAIN_MARGINS } from '../../core/use-chart'
+import { warnNonFinite, warnScaleMismatch } from '../../core/dev-warn'
+import {
+  DEFAULT_MARGINS,
+  leftMarginForLabels,
+  PLAIN_MARGINS,
+  rightMarginForLabels,
+} from '../../core/use-chart'
 import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
@@ -25,6 +30,20 @@ import type { ChartPoint, TooltipModel } from '../../core/data-point'
 // (the dark theme raises it, since a low-opacity fill over the dark surface reads as
 // a muddy neutral). Static 0.25 fallback keeps non-supporting paths correct.
 const SOLID_FILL_STYLE = { fillOpacity: 'var(--cascivo-chart-fill-opacity, 0.25)' }
+
+/**
+ * Fill opacity for a solid area. A single area reads best at the theme's full fill
+ * opacity, but overlapping areas at that opacity hide each other completely: an adopter
+ * reported a plot that was solid grey with one outline while the legend named two series
+ * in two colours nobody could see. Overlapping fills drop to a translucency where each
+ * series stays identifiable, and the stroke (drawn at full opacity) carries the colour.
+ *
+ * Stacked areas never overlap, so they keep the full opacity.
+ */
+function solidFillStyle(seriesCount: number, stacked: boolean): { fillOpacity: string } {
+  if (stacked || seriesCount <= 1) return SOLID_FILL_STYLE
+  return { fillOpacity: 'var(--cascivo-chart-fill-opacity-overlap, 0.12)' }
+}
 
 export interface AreaDecimateOptions {
   method?: DecimateMethod
@@ -64,19 +83,55 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   title: string
   description?: string
   stacked?: boolean
+  /**
+   * Line/area interpolation curve.
+   *
+   * @defaultValue `monotone`
+   * @see the component manifest
+   */
   curve?: Curve
-  /** Area fill style: solid (default), a top→bottom gradient, or a pattern. */
+  /**
+   * Area fill style — solid, a top→bottom gradient, or a pattern.
+   *
+   * @defaultValue `solid`
+   * @see the component manifest
+   */
   fill?: FillKind
   /** Pattern motif when `fill="pattern"`. */
   patternKind?: PatternKind
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
+  /**
+   * Approximate number of ticks on the x-axis.
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   xTicks?: number
+  /**
+   * Approximate number of ticks on the y-axis.
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   yTicks?: number
   legend?: boolean
   tooltip?: boolean
   className?: string
-  /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
+  /**
+   * Marks only — no axes, grid lines, or legend. For micro/inline charts.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
   /** Reference lines, shaded bands, and markers drawn over the plot (target/threshold annotations). */
   annotations?: readonly Annotation[]
@@ -84,15 +139,37 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   labels?: LabelOptions
   /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
   onSelect?: (point: ChartPoint) => void
-  /** Show a keyboard-operable Brush below the plot to subset the series to a window. */
+  /**
+   * Show a keyboard-operable Brush below the plot to subset the series to a window.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   brush?: boolean
-  /** Show a DataZoom slider below the plot — a Brush whose body also pans the window. */
+  /**
+   * Show a DataZoom slider below the plot — a Brush whose body also pans the window.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   dataZoom?: boolean
-  /** Enable in-plot wheel/drag/keyboard zoom-pan (`+`/`-`/`0`) over the series index window. */
+  /**
+   * Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a
+   * reset control and re-ticked axes.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   zoom?: boolean
   /** Connect this chart to others sharing the same id — they mirror zoom window + hovered x. */
   syncId?: string
-  /** Tooltip trigger: `item` (default, nearest point) or `axis` (crosshair + all series at the hovered x). */
+  /**
+   * Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing
+   * every series at the hovered x).
+   *
+   * @defaultValue `item`
+   * @see the component manifest
+   */
   tooltipMode?: 'item' | 'axis'
   /** Add a right-hand y-axis for series with `axis: 'right'` (non-stacked only). */
   secondAxis?: { label?: string; format?: (value: number) => string }
@@ -179,6 +256,8 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const hasRight = !plain && !stacked && series.some((s) => s.axis === 'right')
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
+  // Overlapping solid areas must not hide each other — see solidFillStyle.
+  const fillStyle = solidFillStyle(series.length, stacked)
 
   // Per-series Y accessor: a series may override the chart-level `y` (e.g. to plot
   // a different field from a shared data row). Falls back to the chart-level `y`.
@@ -191,6 +270,18 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const rightYvals = hasRight
     ? series.filter((s) => s.axis === 'right').flatMap((s) => s.data.map((d) => yFor(s)(d)))
     : []
+  // Two series of very different magnitude on one axis: the smaller renders as a flat
+  // line at the baseline while the legend still names both — a plot that contradicts its
+  // own legend, which is worse than an error because it looks like it worked.
+  if (!hasRight && !stacked && series.length > 1) {
+    warnScaleMismatch(
+      'AreaChart',
+      series.map((s) => ({
+        label: s.label,
+        max: Math.max(0, ...s.data.map((d) => yFor(s)(d)).filter((v) => Number.isFinite(v))),
+      })),
+    )
+  }
   warnNonFinite('AreaChart', () => [...leftYvals, ...rightYvals])
   const hasData = allX.length > 0
 
@@ -228,10 +319,28 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const leftAxisLabels = linearScale([yMin, yMax], [0, 1])
     .ticks(yTicks)
     .map((v) => v.toLocaleString())
-  const baseMargins = plain
+  // A right axis renders its labels OUTSIDE the plot, and the final bottom label is
+  // centred on the plot's right edge so half of it overhangs ("7/26/2026" → "7/26/202").
+  // Both need real room reserved; the fixed 60px used before covered neither reliably.
+  const rightAxisLabels = hasRight
+    ? linearScale([yMinR, yMaxR], [0, 1])
+        .ticks(yTicks)
+        .map((v) => (secondAxis?.format ? secondAxis.format(v) : v.toLocaleString()))
+    : []
+  const bottomAxisLabels = usesDate
+    ? timeScale([new Date(xMin), new Date(xMax)], [0, 1])
+        .ticks(xTicks)
+        .map((d) => d.toLocaleDateString())
+    : linearScale([xMin, xMax], [0, 1])
+        .ticks(xTicks)
+        .map((v) => v.toLocaleString())
+  const margins = plain
     ? PLAIN_MARGINS
-    : { ...DEFAULT_MARGINS, left: leftMarginForLabels(leftAxisLabels, plain) }
-  const margins = hasRight ? { ...baseMargins, right: 60 } : baseMargins
+    : {
+        ...DEFAULT_MARGINS,
+        left: leftMarginForLabels(leftAxisLabels, plain),
+        right: rightMarginForLabels({ rightAxisLabels, bottomAxisLabels, plain }),
+      }
 
   const fallback = (
     <table>
@@ -407,7 +516,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                         <path
                           d={d}
                           fill={fillFor(defsId, s.id, fill, color)}
-                          style={fill === 'solid' ? SOLID_FILL_STYLE : undefined}
+                          style={fill === 'solid' ? fillStyle : undefined}
                           stroke="none"
                         />
                         <path
@@ -440,7 +549,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                           <path
                             d={areaPath(decPts, baseline, curve)}
                             fill={fillFor(defsId, s.id, fill, color)}
-                            style={fill === 'solid' ? SOLID_FILL_STYLE : undefined}
+                            style={fill === 'solid' ? fillStyle : undefined}
                             stroke="none"
                           />
                           <path
@@ -457,7 +566,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                         <path
                           d={areaPath(points, baseline, curve)}
                           fill={fillFor(defsId, s.id, fill, color)}
-                          style={fill === 'solid' ? SOLID_FILL_STYLE : undefined}
+                          style={fill === 'solid' ? fillStyle : undefined}
                           stroke="none"
                         />
                         <path
@@ -492,7 +601,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                     {hasRight && (
                       <Axis
                         scale={yScaleRight}
-                        orientation="y"
+                        orientation="y-right"
                         length={innerH}
                         tickCount={yTicks}
                         transform={`translate(${innerW},0)`}

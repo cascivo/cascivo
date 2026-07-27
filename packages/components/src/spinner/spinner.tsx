@@ -6,6 +6,12 @@ import styles from './spinner.module.css'
 
 export interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * Accessible label announced by screen readers
+   *
+   * @defaultValue `Loading`
+   * @see the component manifest
+   */
   label?: string
 }
 

@@ -23,9 +23,19 @@ export interface SwipeAction {
 export interface SwipeItemProps {
   /** The row content. */
   children: ReactNode
-  /** Actions revealed by dragging the row toward its end edge (shown on the start edge). */
+  /**
+   * Actions revealed by dragging toward the end edge (shown on the start edge)
+   *
+   * @defaultValue `[]`
+   * @see the component manifest
+   */
   leadingActions?: SwipeAction[]
-  /** Actions revealed by dragging the row toward its start edge (shown on the end edge). */
+  /**
+   * Actions revealed by dragging toward the start edge (shown on the end edge)
+   *
+   * @defaultValue `[]`
+   * @see the component manifest
+   */
   trailingActions?: SwipeAction[]
   className?: string
 }

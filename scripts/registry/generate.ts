@@ -20,7 +20,7 @@ import {
 } from '../../packages/registry/src/index.ts'
 import type { BlockMeta } from '../../packages/components/src/blocks/types.ts'
 import { stampForVersion } from './generated-at.ts'
-import { reactExportedNames } from './react-exports.ts'
+import { exportedNamesOf, reactExportedNames } from './react-exports.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
@@ -104,6 +104,12 @@ interface RegistryComponent {
    * Derived from the real export list — the single source of truth for "is it importable".
    */
   channels?: string[]
+  /**
+   * Symbols of this entry that `@cascivo/react` exports, when the entry's own display name
+   * is not one of them (`toast` → `ToastProvider`, `useToast`, `dismissAllToasts`). Lets a
+   * partially-exported entry be described precisely instead of rounded to "npm" or "copy".
+   */
+  importableSymbols?: string[]
   /**
    * Stylesheet import specifier this entry's npm package requires, e.g.
    * `@cascivo/charts/styles.css` — present only when `install` is set and that
@@ -283,14 +289,33 @@ async function buildEntry(
   // list, never from the source path. Consumers (CLI, MCP, docs generators, the site) read
   // this instead of each re-deriving it, which is how the layout primitives ended up
   // documented as "copy-paste only" while being importable. See scripts/registry/react-exports.ts.
+  //
+  // Resolved by SYMBOL, not by display name. `toast`'s display name is `Toast`, which
+  // `@cascivo/react` does not export — but `ToastProvider`, `useToast` and
+  // `dismissAllToasts` are exported and are the whole usable API, so labelling the entry
+  // "copy-paste only" was wrong in the way that matters. `importableSymbols` records
+  // exactly which of the entry's symbols an adopter can `import`, so a partially-exported
+  // entry can say so instead of rounding to one of two wrong answers.
+  const entrySymbols = new Set<string>()
+  for (const file of fileNames) {
+    if (!file.endsWith('.tsx') && !file.endsWith('.ts')) continue
+    if (file.endsWith('.meta.ts') || file.includes('.test.')) continue
+    for (const name of exportedNamesOf(join(dir, file))) entrySymbols.add(name)
+  }
+  const importable = [...entrySymbols].filter((n) => reactExports.has(n)).sort()
   entry.channels = [
     ...(entry.install
       ? [`npm:${entry.install}`]
-      : reactExports.has(meta.name)
+      : reactExports.has(meta.name) || importable.length > 0
         ? ['npm:@cascivo/react']
         : []),
     ...(fileNames.length > 0 ? ['copy'] : []),
   ]
+  // Only interesting when the entry's own display name is NOT importable — that is the
+  // partial case a single channel label cannot express.
+  if (!entry.install && !reactExports.has(meta.name) && importable.length > 0) {
+    entry.importableSymbols = importable
+  }
   return entry
 }
 

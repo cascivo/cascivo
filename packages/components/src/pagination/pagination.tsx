@@ -18,6 +18,12 @@ export interface PaginationProps {
   totalItems: number
   onPageChange: (page: number) => void
   onPageSizeChange?: (size: number) => void
+  /**
+   * Options for the page size select
+   *
+   * @defaultValue `[10, 25, 50, 100]`
+   * @see the component manifest
+   */
   pageSizeOptions?: number[]
   labels?: PaginationLabels
   className?: string

@@ -23,14 +23,39 @@ export interface StreamProps {
   categories: readonly (string | number)[]
   title: string
   description?: string
-  /** `silhouette` (centered streamgraph, default) or `zero` (baseline stack). */
+  /**
+   * silhouette centers the stack (streamgraph); zero is a baseline stack.
+   *
+   * @defaultValue `silhouette`
+   * @see the component manifest
+   */
   offset?: StreamOffset
+  /**
+   * Interpolation curve.
+   *
+   * @defaultValue `basis`
+   * @see the component manifest
+   */
   curve?: Curve
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
   legend?: boolean
   tooltip?: boolean
   className?: string
+  /**
+   * When true, renders a minimal variant without chart chrome.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
 }
 

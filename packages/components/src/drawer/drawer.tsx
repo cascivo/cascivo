@@ -26,7 +26,12 @@ export interface DrawerProps {
   defaultOpen?: boolean
   /** Called whenever the open state should change. */
   onOpenChange?: (open: boolean) => void
-  /** Edge the panel is anchored to. Drives the slide direction. */
+  /**
+   * Edge the panel is anchored to. Drives the slide direction.
+   *
+   * @defaultValue `end`
+   * @see the component manifest
+   */
   side?: 'start' | 'end' | 'top' | 'bottom'
   /** Panel size along its cross axis (width for start/end, height for top/bottom). */
   size?: string
@@ -37,7 +42,12 @@ export interface DrawerProps {
   children?: ReactNode
   labels?: { close?: string }
   className?: string
-  /** Allow dragging the header toward its edge to dismiss (opt-in; CSS translate, no animation library). */
+  /**
+   * Allow dragging the header toward its edge to dismiss (opt-in).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   swipeToDismiss?: boolean
 }
 

@@ -24,6 +24,12 @@ export interface NumberInputProps extends Omit<
   onChange?: (value: number | null) => void
   min?: number
   max?: number
+  /**
+   * Increment between allowed values.
+   *
+   * @defaultValue `1`
+   * @see the component manifest
+   */
   step?: number
   precision?: number
   formatOptions?: Intl.NumberFormatOptions
@@ -31,7 +37,19 @@ export interface NumberInputProps extends Omit<
   hint?: string
   error?: string
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * Accessible label for the increment button.
+   *
+   * @defaultValue `Increment`
+   * @see the component manifest
+   */
   incrementLabel?: string
+  /**
+   * Accessible label for the decrement button.
+   *
+   * @defaultValue `Decrement`
+   * @see the component manifest
+   */
   decrementLabel?: string
 }
 

@@ -127,6 +127,8 @@
     --cascivo-chart-grid: oklch(1 0 0 / 0.06);
     --cascivo-chart-axis: oklch(0.68 0.02 285);
     --cascivo-chart-fill-opacity: 0.4;
+    /* Overlapping (non-stacked) areas — lower so series stay distinguishable. */
+    --cascivo-chart-fill-opacity-overlap: 0.2;
 
     /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

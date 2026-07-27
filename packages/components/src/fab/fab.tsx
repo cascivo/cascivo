@@ -32,7 +32,12 @@ export interface FabProps {
   onClick?: () => void
   /** Speed-dial actions revealed above the button when opened. */
   actions?: FabAction[]
-  /** Screen corner to anchor to. */
+  /**
+   * Position of the component.
+   *
+   * @defaultValue `bottom-end`
+   * @see the component manifest
+   */
   position?: 'bottom-end' | 'bottom-start'
   /** Controlled speed-dial open state. */
   open?: boolean

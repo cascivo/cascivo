@@ -82,6 +82,12 @@ interface RegistryEntry {
   install?: string
   /** stylesheet the npm package requires, e.g. `@cascivo/charts/styles.css`. */
   styles?: string
+  /**
+   * Symbols of this entry that `@cascivo/react` exports when the entry's display name is
+   * not one of them (`toast` → `ToastProvider`, `useToast`). Derived in
+   * scripts/registry/generate.ts from the real export list.
+   */
+  importableSymbols?: string[]
   dependencies?: string[]
   tags?: string[]
   meta?: ComponentMeta & { intent?: ComponentIntent }
@@ -192,7 +198,11 @@ const reactExports = reactExportedNames(ROOT)
 
 function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' | null {
   if (entry.type === 'chart') return '@cascivo/charts'
-  return reactExports.has(displayNameOf(entry)) ? '@cascivo/react' : null
+  if (reactExports.has(displayNameOf(entry))) return '@cascivo/react'
+  // Partially exported: the display name isn't importable but some of the entry's symbols
+  // are (`toast` → `ToastProvider`/`useToast`). Testing only the name told adopters the
+  // whole entry was copy-paste only.
+  return (entry.importableSymbols?.length ?? 0) > 0 ? '@cascivo/react' : null
 }
 
 /**
@@ -203,8 +213,13 @@ function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' 
  */
 function channelLabel(entry: RegistryEntry): string {
   if (entry.install) return `npm ${entry.install}`
-  if (packageFor(entry) === '@cascivo/react') return 'npm @cascivo/react · or copy-paste'
-  return 'copy-paste'
+  if (packageFor(entry) !== '@cascivo/react') return 'copy-paste'
+  const partial = entry.importableSymbols
+  if (partial?.length) {
+    // Name the importable symbols rather than implying the whole entry is on npm.
+    return `npm @cascivo/react (${partial.join(', ')}) · the ${displayNameOf(entry)} component itself is copy-paste`
+  }
+  return 'npm @cascivo/react · or copy-paste'
 }
 
 /** Display name used for the H1 and for same-name collision detection. */

@@ -40,14 +40,29 @@ export interface LogViewerLabels {
 export interface LogViewerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** The log lines — a signal (for live streams) or a plain array. */
   lines: { readonly value: readonly LogLine[] } | readonly LogLine[]
-  /** Pixel height of one row. Default 20. */
+  /**
+   * Height of each row in pixels, used for virtualization.
+   *
+   * @defaultValue `20`
+   * @see the component manifest
+   */
   rowHeight?: number
-  /** Extra rows rendered above/below the viewport. Default 8. */
+  /**
+   * Number of extra rows rendered above and below the viewport.
+   *
+   * @defaultValue `8`
+   * @see the component manifest
+   */
   overscan?: number
   /** Controlled pin-to-bottom. Omit for uncontrolled (defaults to following). */
   follow?: boolean
   onFollowChange?: (follow: boolean) => void
-  /** Parse ANSI SGR color escapes. Default false (use `level` instead). */
+  /**
+   * When true, parses ANSI color escape codes into colored spans.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   ansi?: boolean
   /** Seed the search/highlight box. */
   search?: string

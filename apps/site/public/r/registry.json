@@ -3128,13 +3128,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -3359,13 +3359,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -3639,13 +3639,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -3749,13 +3749,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -3890,14 +3890,14 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "40"
@@ -4002,13 +4002,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "160"
@@ -4114,13 +4114,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -4296,13 +4296,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -4414,13 +4414,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -4576,13 +4576,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "240"
@@ -4677,13 +4677,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -4797,13 +4797,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -5280,13 +5280,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false
           }
@@ -5373,13 +5373,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -5615,13 +5615,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -5761,13 +5761,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -5872,13 +5872,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -6036,13 +6036,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -6158,13 +6158,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -6336,14 +6336,14 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false,
             "default": "80"
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "32"
@@ -6457,13 +6457,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -6584,13 +6584,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -6699,13 +6699,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -10856,6 +10856,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "aria-label",
             "type": "string",
             "required": false,
@@ -11773,14 +11779,14 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Width in px.",
             "type": "number",
             "required": false,
             "default": "200"
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "Height in px.",
             "type": "number",
             "required": false,
             "default": "150"
@@ -11874,6 +11880,12 @@
             "type": "{ x: number; y: number }",
             "required": false,
             "description": "Position in flow coords (controllable)."
+          },
+          {
+            "name": "defaultPosition",
+            "type": "XYPosition",
+            "required": false,
+            "description": "Initial position for an uncontrolled node — the node then owns its own position as it is dragged. Pass `position` instead to control it."
           },
           {
             "name": "onPositionChange",
@@ -12834,7 +12846,7 @@
             "name": "label",
             "description": "Text label for the control.",
             "type": "string",
-            "required": true
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -13000,13 +13012,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Intrinsic width in px, forwarded to the `<img>`. Set it together with `height` so the browser can reserve the box before the image loads (no layout shift).",
             "type": "string | number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "Intrinsic height in px, forwarded to the `<img>`. Pair with `width` to reserve the box and avoid layout shift.",
             "type": "string | number",
             "required": false
           },
@@ -15224,9 +15236,17 @@
             "description": "The destination URL.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "asChild",
+            "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
           }
         ],
         "tokens": [
+          "--cascivo-link-color",
           "--cascivo-color-accent",
           "--cascivo-color-accent-hover",
           "--cascivo-color-accent-active",
@@ -17528,6 +17548,12 @@
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
         "props": [
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "aria-label",
             "type": "string",
@@ -20724,7 +20750,7 @@
           {
             "name": "items",
             "type": "SideNavItem[]",
-            "required": true,
+            "required": false,
             "description": "{ label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch"
           },
           {
@@ -21433,6 +21459,13 @@
         "sizes": [],
         "props": [
           {
+            "name": "card",
+            "description": "Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
             "name": "label",
             "type": "string",
             "required": true,
@@ -21787,6 +21820,12 @@
         "variants": ["static", "selectable"],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "aria-label",
             "type": "string",

@@ -39,7 +39,12 @@ export interface BottomSheetProps {
   snapPoints?: number[]
   /** Controlled active detent index into `snapPoints`. */
   activeSnap?: number
-  /** Initial active detent index for uncontrolled use. Defaults to the lowest detent. */
+  /**
+   * The initial snap-point index when uncontrolled.
+   *
+   * @defaultValue `0`
+   * @see the component manifest
+   */
   defaultSnap?: number
   /** Called when the active detent changes via drag. */
   onSnapChange?: (index: number) => void

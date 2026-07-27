@@ -6,9 +6,21 @@ import { t, builtin } from '@cascivo/i18n'
 import styles from './otp-input.module.css'
 
 export interface OtpInputProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  /**
+   * Number of input cells.
+   *
+   * @defaultValue `6`
+   * @see the component manifest
+   */
   length?: number
   value: string
   onValueChange: (v: string) => void
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   type?: 'numeric' | 'alphanumeric'
 }

@@ -15,6 +15,12 @@ import { Spinner } from '../spinner/spinner'
 import styles from './command-menu.module.css'
 
 export interface CommandPage {
+  /**
+   * Placeholder text shown when the field is empty.
+   *
+   * @defaultValue `Type a command or search…`
+   * @see the component manifest
+   */
   placeholder?: string
   groups: CommandGroup[]
 }
@@ -75,12 +81,43 @@ export interface CommandMenuProps {
   onOpenChange: (open: boolean) => void
   groups: CommandGroup[]
   placeholder?: string
+  /**
+   * Text shown when no commands match the query.
+   *
+   * @defaultValue `No results found`
+   * @see the component manifest
+   */
   emptyLabel?: string
+  /**
+   * Global Cmd/Ctrl+K toggles the menu via onOpenChange
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   hotkey?: boolean
+  /**
+   * Text label for the control.
+   *
+   * @defaultValue `Command menu`
+   * @see the component manifest
+   */
   label?: string
+  /**
+   * Shows a loading spinner in place of the empty state (for async items)
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   loading?: boolean
   onQueryChange?: (query: string) => void
-  /** Selectable filter scopes; enables the scope bar, chip, prefixes, and Tab cycling. */
+  /**
+   * Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its
+   * pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with
+   * a matching scope (plus untagged groups).
+   *
+   * @defaultValue `[]`
+   * @see the component manifest
+   */
   scopes?: CommandScope[]
   className?: string
 }

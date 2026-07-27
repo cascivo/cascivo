@@ -1,5 +1,9 @@
 @layer cascivo.component {
   .wrapper {
+    /* A grid/flex item's default minimum is its content size, so a control with an
+       intrinsic width (an <input> defaults to ~20ch) refuses to shrink and spills out of
+       its track — reported as "Input overflows its grid cell" inside <Grid cols={{md:2}}>. */
+    min-inline-size: 0;
     position: relative;
     display: inline-block;
     width: 100%;

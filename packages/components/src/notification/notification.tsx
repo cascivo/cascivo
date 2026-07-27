@@ -1,16 +1,38 @@
 'use client'
-import { cn, Presence, useSignal, useSignals } from '@cascivo/core'
+import { cn, normalizeTone, Presence, useSignal, useSignals } from '@cascivo/core'
+import type { ToneInput } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './notification.module.css'
 
-export type NotificationVariant = 'info' | 'success' | 'warning' | 'error'
+/** The value Notification's stylesheet and icon set key on. */
+export type NotificationVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error'
+
+/** Canonical tone → {@link NotificationVariant}. */
+const TONE_CLASS: Record<string, NotificationVariant> = {
+  neutral: 'neutral',
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  danger: 'error',
+}
 
 export interface NotificationProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   title: ReactNode
   description?: ReactNode
-  variant?: NotificationVariant
+  /**
+   * Severity tone. Accepts the catalog-wide `Tone` vocabulary
+   * (`neutral | info | success | warning | danger`) plus Notification's historical
+   * spellings (`error`, `destructive`).
+   */
+  variant?: ToneInput
+  /**
+   * When true, shows a control to dismiss the component.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   dismissible?: boolean
   onDismiss?: () => void
   actions?: ReactNode
@@ -82,7 +104,7 @@ function VariantIcon({ variant }: { variant: NotificationVariant }) {
 export function Notification({
   title,
   description,
-  variant = 'info',
+  variant: variantProp = 'info',
   dismissible = false,
   onDismiss,
   actions,
@@ -92,6 +114,8 @@ export function Notification({
   ...props
 }: NotificationProps) {
   useSignals()
+  const variant: NotificationVariant =
+    TONE_CLASS[normalizeTone(variantProp)] ?? (variantProp as NotificationVariant)
   const open = useSignal(true)
   const onDismissRef = useRef(onDismiss)
   onDismissRef.current = onDismiss

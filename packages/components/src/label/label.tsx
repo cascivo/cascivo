@@ -5,11 +5,27 @@ import type { LabelHTMLAttributes, ReactNode } from 'react'
 import styles from './label.module.css'
 
 export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
-  /** Renders into the child element (Slot composition) instead of a native `<label>`. */
+  /**
+   * When true, renders the child element as the root via Slot, merging props (polymorphic
+   * rendering).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   asChild?: boolean
-  /** Shows a required marker after the label text. */
+  /**
+   * When true, marks the field as required.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   required?: boolean
-  /** Dims the label to match an associated disabled control. */
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   children: ReactNode
   /** Override built-in strings (e.g. the required-marker accessible text). */

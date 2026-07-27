@@ -5,10 +5,30 @@ import styles from './flex.module.css'
 import type { SpaceStep } from '@cascivo/core'
 
 export interface FlexProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike
+   * Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone
+   * produces a centered vertical stack.
+   *
+   * @defaultValue `vertical`
+   * @see the component manifest
+   */
   direction?: 'vertical' | 'horizontal'
+  /**
+   * Spacing token step
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   gap?: SpaceStep
   align?: 'start' | 'center' | 'end' | 'stretch'
   justify?: 'start' | 'center' | 'end' | 'between'
+  /**
+   * Allow wrapping
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   wrap?: boolean
 }
 

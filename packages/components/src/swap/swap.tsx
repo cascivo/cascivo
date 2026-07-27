@@ -6,6 +6,12 @@ export type SwapMode = 'rotate' | 'flip'
 export interface SwapProps {
   on: React.ReactNode
   off: React.ReactNode
+  /**
+   * Whether the control is checked (controlled).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   checked?: boolean
   /** Called with the new checked state when the swap is toggled. */
   onValueChange?: (checked: boolean) => void

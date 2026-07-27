@@ -483,7 +483,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
 - [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
 - [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
-- [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(copy-paste)_
+- [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(npm @cascivo/react · or copy-paste)_
 - [layout/section](https://cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
 - [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
 - [layout/spacer](https://cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(npm @cascivo/react · or copy-paste)_
@@ -522,7 +522,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [progress-indicator](https://cascivo.com/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow _(npm @cascivo/react · or copy-paste)_
 - [shell-header](https://cascivo.com/llms/shell-header.md) — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content _(npm @cascivo/react · or copy-paste)_
 - [side-nav](https://cascivo.com/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping _(npm @cascivo/react · or copy-paste)_
-- [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(copy-paste)_
+- [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(npm @cascivo/react (SkipNavLink, SkipNavLinkProps, SkipNavTarget, SkipNavTargetProps) · the SkipNav component itself is copy-paste)_
 - [steps](https://cascivo.com/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations _(npm @cascivo/react · or copy-paste)_
 - [switcher](https://cascivo.com/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers _(npm @cascivo/react · or copy-paste)_
 - [tabs](https://cascivo.com/llms/tabs.md) — Switch between related panels of content _(npm @cascivo/react · or copy-paste)_
@@ -543,7 +543,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [overflow-menu](https://cascivo.com/llms/overflow-menu.md) — Kebab icon button revealing a menu of row-level actions _(npm @cascivo/react · or copy-paste)_
 - [popover](https://cascivo.com/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API _(npm @cascivo/react · or copy-paste)_
 - [sheet](https://cascivo.com/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations _(npm @cascivo/react · or copy-paste)_
-- [toast](https://cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook _(copy-paste)_
+- [toast](https://cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook _(npm @cascivo/react (ToastOptions, ToastProvider, ToastVariant, dismissAllToasts, useToast) · the Toast component itself is copy-paste)_
 - [toggletip](https://cascivo.com/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content _(npm @cascivo/react · or copy-paste)_
 - [tooltip](https://cascivo.com/llms/tooltip.md) — Contextual label shown on hover or focus _(npm @cascivo/react · or copy-paste)_
 
@@ -3318,8 +3318,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `curve` | `'linear' \| 'monotone' \| 'step' \| 'stepBefore' \| 'stepAfter' \| 'natural' \| 'basis' \| 'cardinal' \| 'catmullRom'` | no | `monotone` | Line/area interpolation curve. |
 | `fill` | `'solid' \| 'gradient' \| 'pattern'` | no | `solid` | Area fill style — solid, a top→bottom gradient, or a pattern. |
 | `patternKind` | `'dots' \| 'lines' \| 'cross'` | no | — | Pattern motif when fill="pattern". |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `xTicks` | `number` | no | `5` | Approximate number of ticks on the x-axis. |
 | `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
 | `legend` | `boolean` | no | — | Whether to show the legend. |
@@ -3456,8 +3456,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `description` | `string` | no | — | Supporting description text. |
 | `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Layout orientation of the component. |
 | `mode` | `'grouped' \| 'stacked' \| 'percent'` | no | `grouped` | 'percent' stacks each category and normalizes it to 100%. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `xTicks` | `number` | no | — | Approximate number of ticks on the x-axis. |
 | `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
 | `xLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded x-axis. |
@@ -3624,8 +3624,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `series` | `{ id: string; label: string; values: number[] }[]` | yes | — | Array of series each with raw numeric values |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -3701,8 +3701,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `series` | `{ name: string; data: { x: number; y: number; size: number }[] }[]` | yes | — | The data series to plot. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
@@ -3781,8 +3781,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `label` | `string` | yes | — | Text label for the control. |
 | `min` | `number` | no | `0` | Minimum allowed value. |
 | `max` | `number` | no | — | Domain maximum (defaults to last range) |
-| `width` | `number` | no | `300` | Width of the component. |
-| `height` | `number` | no | `40` | Height of the component. |
+| `width` | `number` | no | `300` | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `40` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -3855,8 +3855,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `description` | `string` | no | — | Supporting description text. |
 | `from` | `string \| Date` | no | — | Range start (defaults to min day). |
 | `to` | `string \| Date` | no | — | Range end (defaults to max day). |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `160` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `160` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | When true, renders a minimal variant without chart chrome. |
@@ -3927,8 +3927,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `CandlestickDatum[]` | yes | — | One candle per period: { t, open, high, low, close, volume? }. |
 | `title` | `string` | yes | — | Chart title (also aria-label). |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
 | `upColor` | `string` | no | — | Colour for up candles (close ≥ open). |
 | `downColor` | `string` | no | — | Colour for down candles (close < open). |
@@ -4031,8 +4031,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `secondAxis` | `boolean` | no | — | Render line on a secondary right y-axis |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
@@ -4103,8 +4103,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `FunnelStage[]` | yes | — | Ordered stages (descending): { id, label, value, color? }. |
 | `title` | `string` | yes | — | Chart title (also used as aria-label). |
 | `description` | `string` | no | — | Subtitle below the title. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `showConversion` | `boolean` | no | `false` | Append each stage’s % of the first stage to its label. |
 | `tooltip` | `boolean` | no | — | Enable hover tooltip. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -4194,8 +4194,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `ticks` | `number` | no | `5` | Major tick count. |
 | `title` | `string` | yes | — | Chart title (also aria-label). |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `240` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `240` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no ticks/labels. For micro/inline charts. |
 
@@ -4272,8 +4272,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `{ x: string; y: string; value: number }[]` | yes | — | Array of x/y/value triples |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 | `visualMap` | `VisualMapOptions` | no | — | Map cell value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range. |
@@ -4347,8 +4347,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `title` | `string` | yes | — | Title text for the component. |
 | `label` | `string` | yes | — | X-axis label |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -4598,8 +4598,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `max` | `number` | no | `100` | Maximum allowed value. |
 | `variant` | `'bar' \| 'gauge'` | no | `bar` | Selects the visual style variant. |
 | `thresholds` | `MeterThresholds` | no | — | Color breakpoints |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | — | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | — | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 
 ## Examples
 
@@ -4668,8 +4668,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `donut` | `boolean` | no | — | Render as donut chart |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `size` | `number` | no | — | Square shorthand: sets width === height. Explicit width/height win. |
 | `thickness` | `number` | no | — | Ring width in px (donut only); defaults to 0.4 × radius. |
 | `innerRadius` | `number` | no | — | Inner radius in px (donut only); takes precedence over thickness; clamped to [0, outerRadius). |
@@ -4809,8 +4809,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `title` | `string` | yes | — | Chart title (also aria-label). |
 | `description` | `string` | no | — | Supporting description text. |
 | `mode` | `'bar' \| 'line' \| 'area'` | no | `bar` | Bars (rose), a polar line, or a filled polar area. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `rings` | `number` | no | `4` | Radial ring count. |
 | `max` | `number` | no | — | Domain top (full radius). Defaults to the largest value. |
 | `tooltip` | `boolean` | no | — | Enable hover tooltip. |
@@ -4899,8 +4899,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `max` | `number` | no | — | Maximum value (defaults to data max) |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -4975,8 +4975,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `title` | `string` | yes | — | Chart title (also used as aria-label). |
 | `description` | `string` | no | — | Subtitle below the title. |
 | `size` | `number` | no | — | Square shorthand (width === height). Explicit width/height win. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `max` | `number` | no | — | Domain top — the value a full sweep represents. Defaults to the largest datum. |
 | `sweep` | `number` | no | `270` | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring). |
 | `centerValue` | `string` | no | — | Text in the hole. |
@@ -5068,8 +5068,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `links` | `SankeyLink[]` | yes | — | Links: { source, target, value }. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | When true, renders a minimal variant without chart chrome. |
@@ -5148,8 +5148,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `r` | `number \| ((d: ScatterDatum) => number)` | no | `4` | Point radius or accessor |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `xTicks` | `number` | no | `5` | Approximate number of ticks on the x-axis. |
 | `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
 | `legend` | `boolean` | no | — | Whether to show the legend. |
@@ -5233,8 +5233,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `number[]` | yes | — | Array of numeric values |
 | `label` | `string` | no | — | Accessible name for the chart (invisible — rendered as the SVG `<title>`). |
 | `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
-| `width` | `number` | no | `80` | Width of the component. |
-| `height` | `number` | no | `32` | Height of the component. |
+| `width` | `number` | no | `80` | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `32` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `color` | `string` | no | — | Stroke color (CSS value) |
 | `endDot` | `boolean` | no | — | Show dot at last data point |
 
@@ -5302,8 +5302,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `description` | `string` | no | — | Supporting description text. |
 | `offset` | `'silhouette' \| 'zero'` | no | `silhouette` | silhouette centers the stack (streamgraph); zero is a baseline stack. |
 | `curve` | `Curve` | no | `basis` | Interpolation curve. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `legend` | `boolean` | no | — | Whether to show the legend. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -5386,8 +5386,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `size` | `number` | no | — | Square shorthand (width === height). |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `300` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | When true, renders a minimal variant without chart chrome. |
@@ -5467,8 +5467,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `{ id: string; label: string; value: number }[]` | yes | — | The hierarchical data to render as nested rectangles. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Width of the component. |
-| `height` | `number` | no | `320` | Height of the component. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 
@@ -6948,7 +6948,7 @@ Use Column.render to return any ReactNode per cell — a Badge for status, an ic
       key: 'status',
       header: 'Status',
       render: (row) => (
-        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
+        <Badge variant={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
       ),
     },
     {
@@ -8207,6 +8207,7 @@ import { Filter } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
 | `aria-label` | `string` | no | — | Accessible label for the filter group. |
 | `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
 | `value` | `string[]` | no | — | Controlled selected values |
@@ -8858,8 +8859,8 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `viewport` | `Viewport` | yes | — | The current pan/zoom viewport to reflect in the minimap. |
 | `containerWidth` | `number` | no | — | Width of the flow container, used to scale the minimap. |
 | `containerHeight` | `number` | no | — | Height of the flow container, used to scale the minimap. |
-| `width` | `number` | no | `200` | Width of the component. |
-| `height` | `number` | no | `150` | Height of the component. |
+| `width` | `number` | no | `200` | Width in px. |
+| `height` | `number` | no | `150` | Height in px. |
 | `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no | `bottom-right` | Position of the component. |
 | `onViewportChange` | `(viewport: Viewport) => void` | no | — | Called with the new viewport when the minimap is dragged. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -8942,6 +8943,7 @@ import '@cascivo/flow/styles.css' // required stylesheet
 |------|------|----------|---------|-------------|
 | `id` | `string` | yes | — | Stable node id. |
 | `position` | `{ x: number; y: number }` | no | — | Position in flow coords (controllable). |
+| `defaultPosition` | `XYPosition` | no | — | Initial position for an uncontrolled node — the node then owns its own position as it is dragged. Pass `position` instead to control it. |
 | `onPositionChange` | `(position: XYPosition) => void` | no | — | Fired while dragging. |
 | `zoom` | `number` | no | `1` | Current zoom (drag deltas are divided by it). |
 | `selected` | `boolean` | no | `false` | Whether the node is rendered as selected. |
@@ -9655,7 +9657,7 @@ import { IconButton } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | yes | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. |
 | `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
 | `icon` | `React.ReactNode` | no | — | Icon element rendered in the component. |
 | `variant` | `'ghost' \| 'outline' \| 'filled'` | no | `ghost` | Selects the visual style variant. |
@@ -9753,8 +9755,8 @@ import { Image } from '@cascivo/react'
 | `src` | `string` | no | — | Image source URL. |
 | `alt` | `string` | no | `` | Alternative text describing the image. |
 | `fallbackSrc` | `string` | no | — | Image shown if src fails to load |
-| `width` | `string \| number` | no | — | Width of the component. |
-| `height` | `string \| number` | no | — | Height of the component. |
+| `width` | `string \| number` | no | — | Intrinsic width in px, forwarded to the `<img>`. Set it together with `height` so the browser can reserve the box before the image loads (no layout shift). |
+| `height` | `string \| number` | no | — | Intrinsic height in px, forwarded to the `<img>`. Pair with `width` to reserve the box and avoid layout shift. |
 | `radius` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'full'` | no | `md` | Corner radius of the image ('none' \| 'sm' \| 'md' \| 'lg' \| 'full'). |
 | `zoom` | `boolean` | no | `false` | When true, zooms the image on hover. |
 | `removeWrapper` | `boolean` | no | `false` | Render a bare <img> with no wrapper, placeholder, or zoom |
@@ -11096,7 +11098,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/page-header
 ```
 
-_Copy-paste only — `PageHeader` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { PageHeader } from '@cascivo/react'
+```
 
 ## Category
 
@@ -11434,6 +11440,7 @@ import { Link } from '@cascivo/react'
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `external` | `boolean` | no | `false` | When true, treats the link as external (opens in a new tab with rel safety). |
 | `href` | `string` | no | — | The destination URL. |
+| `asChild` | `boolean` | no | `false` | Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md. |
 
 ## Examples
 
@@ -11461,6 +11468,7 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ## Design tokens
 
+- `--cascivo-link-color`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-hover`
 - `--cascivo-color-accent-active`
@@ -12988,6 +12996,7 @@ import { Progress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
 | `aria-label` | `string` | no | — | Accessible label when no visible label is present. |
 | `aria-describedby` | `string` | no | — | Id of an element describing the progress bar. |
 | `value` | `number` | no | — | 0–100. Omit for indeterminate state. |
@@ -15181,7 +15190,7 @@ import { SideNav } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `groups` | `SideNavGroup[]` | no | — | Grouped navigation items rendered under optional group labels. |
 | `showCollapseToggle` | `boolean` | no | `true` | Show the collapse/expand toggle control. |
-| `items` | `SideNavItem[]` | yes | — | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
+| `items` | `SideNavItem[]` | no | — | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
 | `collapsed` | `boolean` | no | — | Controlled collapsed state (rail mode) |
 | `defaultCollapsed` | `boolean` | no | `false` | Whether the rail is collapsed on first render (uncontrolled). |
 | `onCollapsedChange` | `(collapsed: boolean) => void` | no | — | Called with the new collapsed state when it changes. |
@@ -15362,7 +15371,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add skip-nav
 ```
 
-_Copy-paste only — `SkipNavLink, SkipNavTarget` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { SkipNavLink, SkipNavTarget } from '@cascivo/react'
+```
 
 ## Category
 
@@ -15659,6 +15672,7 @@ import { Stat } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `card` | `boolean` | no | `false` | Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control. |
 | `label` | `string` | yes | — | What the metric measures |
 | `value` | `string \| number` | yes | — | The metric value |
 | `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
@@ -15969,6 +15983,7 @@ import { StructuredList } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
 | `aria-label` | `string` | no | — | Accessible label for the list table. |
 | `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes | — | The items to render. |
 | `headers` | `ReactNode[]` | no | — | The column header cells. |
@@ -17004,7 +17019,11 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add toast
 ```
 
-_Copy-paste only — `ToastProvider, useToast` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ToastProvider, useToast } from '@cascivo/react'
+```
 
 ## Category
 

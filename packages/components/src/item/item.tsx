@@ -4,7 +4,20 @@ import type { HTMLAttributes } from 'react'
 import styles from './item.module.css'
 
 export interface ItemProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * When true, renders the child element as the root via Slot, merging props (polymorphic
+   * rendering).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   asChild?: boolean
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `default`
+   * @see the component manifest
+   */
   variant?: 'default' | 'muted'
   size?: 'sm' | 'md'
 }

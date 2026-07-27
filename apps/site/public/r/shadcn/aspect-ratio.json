@@ -6,7 +6,7 @@
     {
       "path": "aspect-ratio/aspect-ratio.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes, ReactNode } from 'react'\nimport styles from './aspect-ratio.module.css'\n\nexport interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {\n  /** Width-to-height ratio (e.g. 16 / 9). Defaults to 16/9. */\n  ratio?: number\n  children?: ReactNode\n}\n\nexport function AspectRatio({\n  ratio = 16 / 9,\n  className,\n  style,\n  children,\n  ...props\n}: AspectRatioProps) {\n  return (\n    <div\n      className={cn(styles['root'], className)}\n      style={{ '--cascivo-aspect-ratio': ratio, ...style } as CSSProperties}\n      {...props}\n    >\n      <div className={styles['inner']}>{children}</div>\n    </div>\n  )\n}\n"
+      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { CSSProperties, HTMLAttributes, ReactNode } from 'react'\nimport styles from './aspect-ratio.module.css'\n\nexport interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {\n  /**\n   * Width-to-height ratio applied via the CSS aspect-ratio property\n   *\n   * @defaultValue `16 / 9`\n   * @see the component manifest\n   */\n  ratio?: number\n  children?: ReactNode\n}\n\nexport function AspectRatio({\n  ratio = 16 / 9,\n  className,\n  style,\n  children,\n  ...props\n}: AspectRatioProps) {\n  return (\n    <div\n      className={cn(styles['root'], className)}\n      style={{ '--cascivo-aspect-ratio': ratio, ...style } as CSSProperties}\n      {...props}\n    >\n      <div className={styles['inner']}>{children}</div>\n    </div>\n  )\n}\n"
     },
     {
       "path": "aspect-ratio/aspect-ratio.module.css",

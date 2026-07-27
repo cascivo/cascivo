@@ -14,8 +14,19 @@ export interface PullToRefreshProps {
   /** Invoked when the pull passes the threshold; the spinner shows until it settles. */
   onRefresh: () => Promise<unknown> | unknown
   children: ReactNode
-  /** Pull distance (px) required to trigger a refresh. Default 64. */
+  /**
+   * Pull distance (px) required to trigger a refresh.
+   *
+   * @defaultValue `64`
+   * @see the component manifest
+   */
   threshold?: number
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   labels?: { pull?: string; release?: string; refreshing?: string }
   className?: string

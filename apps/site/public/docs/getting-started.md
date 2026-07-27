@@ -185,6 +185,11 @@ import '@cascivo/themes/all.css' // tokens (once) + base typography + light & da
 <main data-theme="light">…</main>
 ```
 
+> **`<main>` or `<html>`?** Both work — the attribute is scopable to any element. Set it in
+> JSX when you ship one fixed theme; let `ThemeProvider` set it on `<html>` when you switch
+> themes at runtime (it must be the document element so portalled overlays switch too). The
+> decision table is in [THEMING.md](/docs/theming.md#where-does-the-attribute-go--html-or-an-element).
+
 `@cascivo/themes/all` loads `@cascivo/tokens` once, applies base typography (so
 plain markup uses the sans stack, not browser serif), and ships both `light` and
 `dark`. Cost: **≈41 KB / ≈9 KB gzip** of CSS (source, pre-minification).
@@ -206,6 +211,12 @@ is small: the bulk is the shared token layer, not the theme files. (For scale: t
 **component** stylesheet `@cascivo/react/styles.css` is ~273 KB / ~37 KB gzip and
 dwarfs any theme choice — if you measured a ~287 KB CSS chunk, that is it, not the
 themes bundle.)
+
+**JS bundle size** is measured too, and against the alternatives: see
+[BENCHMARKS.md](https://github.com/cascivo/cascivo/blob/main/docs/BENCHMARKS.md) for min+gzip totals vs shadcn/ui and Carbon plus the
+per-component incremental cost. Per-component CSS is auto-included and tree-shaken by your
+bundler, so a real app ships a fraction of the aggregate sheet (a ~45-component dashboard
+measured 137 KB / 19 KB gzip of the 273 KB).
 
 > **TypeScript setup for the CSS imports.** A bare CSS side-effect import
 > (`import '@cascivo/react/styles.css'`) has no types on its own, so a `tsc --noEmit`

@@ -6,7 +6,7 @@
     {
       "path": "join/join.tsx",
       "type": "registry:component",
-      "content": "import styles from './join.module.css'\n\nexport type JoinOrientation = 'horizontal' | 'vertical'\n\nexport interface JoinProps {\n  children: React.ReactNode\n  orientation?: JoinOrientation\n  className?: string\n}\n\nexport function Join({ children, orientation = 'horizontal', className }: JoinProps) {\n  return (\n    <div\n      className={[styles.join, className].filter(Boolean).join(' ')}\n      data-orientation={orientation}\n    >\n      {children}\n    </div>\n  )\n}\n"
+      "content": "import styles from './join.module.css'\n\nexport type JoinOrientation = 'horizontal' | 'vertical'\n\nexport interface JoinProps {\n  children: React.ReactNode\n  /**\n   * Layout orientation of the component.\n   *\n   * @defaultValue `horizontal`\n   * @see the component manifest\n   */\n  orientation?: JoinOrientation\n  className?: string\n}\n\nexport function Join({ children, orientation = 'horizontal', className }: JoinProps) {\n  return (\n    <div\n      className={[styles.join, className].filter(Boolean).join(' ')}\n      data-orientation={orientation}\n    >\n      {children}\n    </div>\n  )\n}\n"
     },
     {
       "path": "join/join.module.css",

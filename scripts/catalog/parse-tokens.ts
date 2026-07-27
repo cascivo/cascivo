@@ -14,7 +14,7 @@
  *               chart, duration, ease, z
  *   component — name contains a specific UI component identifier as a word
  *               segment: button, input, card, badge, modal, ring, shell,
- *               control, focus, overlay
+ *               control, focus, overlay, link, search
  *   semantic  — everything else (color-accent, radius-base, motion-*, …)
  *
  * Resolution:
@@ -91,6 +91,8 @@ const COMPONENT_SEGMENTS = new Set([
   'control',
   'focus',
   'overlay',
+  'link',
+  'search',
 ])
 
 /**

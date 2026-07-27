@@ -5,10 +5,27 @@ import type { HTMLAttributes, KeyboardEvent } from 'react'
 import styles from './button-group.module.css'
 
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Layout orientation of the component.
+   *
+   * @defaultValue `horizontal`
+   * @see the component manifest
+   */
   orientation?: 'horizontal' | 'vertical'
   size?: 'sm' | 'md' | 'lg'
-  /** Enable arrow-key roving focus across the group's focusable buttons. */
+  /**
+   * When true, uses roving tabindex so arrow keys move focus between buttons.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   roving?: boolean
+  /**
+   * When true, navigation wraps around from end to start.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   loop?: boolean
 }
 

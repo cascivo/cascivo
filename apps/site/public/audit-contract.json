@@ -291,6 +291,8 @@
     { "name": "--cascivo-shell-header-block-size", "resolvedDefault": "3rem" },
     { "name": "--cascivo-shell-panel-inline-size", "resolvedDefault": "20rem" },
     { "name": "--cascivo-shell-aside-inline-size", "resolvedDefault": "18rem" },
+    { "name": "--cascivo-link-color", "resolvedDefault": "oklch(0.52 0.2 250)" },
+    { "name": "--cascivo-search-width", "resolvedDefault": "100%" },
     { "name": "--cascivo-screen-sm", "resolvedDefault": "30rem" },
     { "name": "--cascivo-screen-md", "resolvedDefault": "40rem" },
     { "name": "--cascivo-screen-lg", "resolvedDefault": "64rem" },
@@ -358,6 +360,7 @@
       "name": "--cascivo-focus-ring",
       "resolvedDefault": "0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color)"
     },
+    { "name": "--cascivo-chart-fill-opacity-overlap", "resolvedDefault": "0.125" },
     { "name": "--cascivo-color-primary-content", "resolvedDefault": "oklch(0.985 0 0)" },
     { "name": "--cascivo-color-accent-content", "resolvedDefault": "oklch(1 0 0)" },
     { "name": "--cascivo-color-destructive-content", "resolvedDefault": "oklch(1 0 0)" },
@@ -940,6 +943,7 @@
     {
       "name": "Filter",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         { "name": "options", "type": "FilterOption[]", "required": true },
         { "name": "value", "type": "string[]", "required": false },
@@ -1003,7 +1007,7 @@
     {
       "name": "IconButton",
       "props": [
-        { "name": "label", "type": "string", "required": true },
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "icon", "type": "React.ReactNode", "required": false },
         { "name": "variant", "type": "'ghost' | 'outline' | 'filled'", "required": false },
@@ -1113,7 +1117,8 @@
         { "name": "variant", "type": "'standalone' | 'inline'", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "external", "type": "boolean", "required": false },
-        { "name": "href", "type": "string", "required": false }
+        { "name": "href", "type": "string", "required": false },
+        { "name": "asChild", "type": "boolean", "required": false }
       ]
     },
     {
@@ -1321,6 +1326,7 @@
     {
       "name": "Progress",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         { "name": "aria-describedby", "type": "string", "required": false },
         { "name": "value", "type": "number", "required": false },
@@ -1553,7 +1559,7 @@
       "props": [
         { "name": "groups", "type": "SideNavGroup[]", "required": false },
         { "name": "showCollapseToggle", "type": "boolean", "required": false },
-        { "name": "items", "type": "SideNavItem[]", "required": true },
+        { "name": "items", "type": "SideNavItem[]", "required": false },
         { "name": "collapsed", "type": "boolean", "required": false },
         { "name": "defaultCollapsed", "type": "boolean", "required": false },
         { "name": "onCollapsedChange", "type": "(collapsed: boolean) => void", "required": false },
@@ -1613,6 +1619,7 @@
     {
       "name": "Stat",
       "props": [
+        { "name": "card", "type": "boolean", "required": false },
         { "name": "label", "type": "string", "required": true },
         { "name": "value", "type": "string | number", "required": true },
         { "name": "delta", "type": "string", "required": false },
@@ -1645,6 +1652,7 @@
     {
       "name": "StructuredList",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         {
           "name": "items",
@@ -2762,6 +2770,7 @@
       "props": [
         { "name": "id", "type": "string", "required": true },
         { "name": "position", "type": "{ x: number; y: number }", "required": false },
+        { "name": "defaultPosition", "type": "XYPosition", "required": false },
         { "name": "onPositionChange", "type": "(position: XYPosition) => void", "required": false },
         { "name": "zoom", "type": "number", "required": false },
         { "name": "selected", "type": "boolean", "required": false },

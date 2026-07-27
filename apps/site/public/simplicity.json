@@ -12,7 +12,7 @@
       "name": "checkbox",
       "label": "Checkbox",
       "primitive": "Native <input type=\"checkbox\">",
-      "loc": 122,
+      "loc": 128,
       "files": 2,
       "deps": 0
     },
@@ -20,7 +20,7 @@
       "name": "toggle",
       "label": "Switch",
       "primitive": "Accessible <button> + :has()",
-      "loc": 146,
+      "loc": 152,
       "files": 2,
       "deps": 0
     },
@@ -28,7 +28,7 @@
       "name": "modal",
       "label": "Dialog",
       "primitive": "Native <dialog> + showModal()",
-      "loc": 291,
+      "loc": 302,
       "files": 2,
       "deps": 0
     },

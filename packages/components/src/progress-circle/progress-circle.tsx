@@ -9,9 +9,20 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 export interface ProgressCircleProps extends HTMLAttributes<HTMLDivElement> {
   /** Current value from 0 to max — clamped. */
   value: number
+  /**
+   * Maximum allowed value.
+   *
+   * @defaultValue `100`
+   * @see the component manifest
+   */
   max?: number
   size?: 'sm' | 'md' | 'lg'
-  /** Renders the rounded percentage in the center — pairs best with md and lg. */
+  /**
+   * Renders the rounded percentage in the center — pairs best with md and lg
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   showValue?: boolean
   /** Accessible name for the progressbar. */
   label?: string

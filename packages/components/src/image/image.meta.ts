@@ -24,13 +24,15 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'width',
-      description: 'Width of the component.',
+      description:
+        'Intrinsic width in px, forwarded to the `<img>`. Set it together with `height` so the browser can reserve the box before the image loads (no layout shift).',
       type: 'string | number',
       required: false,
     },
     {
       name: 'height',
-      description: 'Height of the component.',
+      description:
+        'Intrinsic height in px, forwarded to the `<img>`. Pair with `width` to reserve the box and avoid layout shift.',
       type: 'string | number',
       required: false,
     },

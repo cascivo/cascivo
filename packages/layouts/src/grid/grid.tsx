@@ -32,8 +32,21 @@ function responsiveVars(prefix: string, value: Responsive<number> | undefined): 
 export type GridAlign = 'start' | 'center' | 'end' | 'stretch'
 
 export interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  /** Column count. A number, or `{ base, sm, md, lg, xl }` for responsive columns. */
+  /**
+   * Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive
+   * columns
+   *
+   * @defaultValue `12`
+   * @see the component manifest
+   */
   cols?: Responsive<number>
+  /**
+   * Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips
+   * 7/9/11 — use 6 or 8.
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   gap?: SpaceStep
   /** Block-axis alignment of items within their cells (`align-items`). Defaults to `stretch`. */
   align?: GridAlign

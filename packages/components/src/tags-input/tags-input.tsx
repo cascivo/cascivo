@@ -11,6 +11,12 @@ export interface TagsInputProps extends Omit<HTMLAttributes<HTMLDivElement>, 'on
   placeholder?: string
   validate?: (tag: string) => boolean
   max?: number
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 

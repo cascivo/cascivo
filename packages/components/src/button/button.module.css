@@ -9,6 +9,9 @@
     line-height: var(--cascivo-leading-none);
     white-space: nowrap;
     cursor: pointer;
+    /* `asChild` renders this styling onto a real <a>, where the UA's `a[href]`
+       underline would otherwise survive and make the button label underlined. */
+    text-decoration: none;
     border: 1px solid transparent;
     transition:
       background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
@@ -21,7 +24,10 @@
       box-shadow: var(--cascivo-focus-ring);
     }
 
-    &:disabled {
+    /* An <a> can't be :disabled — under `asChild` the disabled state arrives as
+       aria-disabled, so both selectors must carry the same visuals. */
+    &:disabled,
+    &[aria-disabled='true'] {
       opacity: 0.5; /* static fallback */
       opacity: var(--cascivo-disabled-opacity, 0.5);
       cursor: not-allowed;

@@ -7,6 +7,12 @@ import styles from './color-picker.module.css'
 
 export interface ColorPickerLabels {
   hue?: string
+  /**
+   * When true, enables alpha (opacity) selection.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   alpha?: string
   colorArea?: string
   eyedropper?: string
@@ -14,11 +20,23 @@ export interface ColorPickerLabels {
 
 export interface ColorPickerProps {
   value?: string
+  /**
+   * The initial value when uncontrolled.
+   *
+   * @defaultValue `#3b82f6`
+   * @see the component manifest
+   */
   defaultValue?: string
   onValueChange?: (value: string) => void
   presets?: string[]
   alpha?: boolean
   label?: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   size?: 'sm' | 'md' | 'lg'
   className?: string

@@ -21,8 +21,20 @@ const machine = createMachine({
 
 export interface TooltipProps {
   content: ReactNode
+  /**
+   * Placement relative to the trigger.
+   *
+   * @defaultValue `top`
+   * @see the component manifest
+   */
   placement?: 'top' | 'right' | 'bottom' | 'left'
   children: ReactElement
+  /**
+   * Milliseconds to wait before showing
+   *
+   * @defaultValue `200`
+   * @see the component manifest
+   */
   delay?: number
 }
 

@@ -44,6 +44,12 @@ export interface DateRangePickerProps {
   presets?: DateRangePreset[]
   locale?: string
   placeholder?: string
+  /**
+   * Field/grid size
+   *
+   * @defaultValue `md`
+   * @see the component manifest
+   */
   size?: 'sm' | 'md' | 'lg'
   labels?: DateRangePickerLabels
   className?: string

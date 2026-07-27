@@ -25,10 +25,11 @@ The column is generated from `registry.json` and checked by
 | Right-click / row actions | `ContextMenu`, or `OverflowMenu` for a visible "⋯" trigger | `context-menu`, `overflow-menu` | `@cascivo/react` | Right-click is undiscoverable on touch — pair `ContextMenu` with a visible `OverflowMenu`/`Dropdown` for the same actions, don't ship it as the only path. |
 | Page structure (shell content, toolbars, card grids) | `Grid`/`GridItem`, `AutoGrid`, `Flex` | `layout/grid`, `layout/auto-grid`, `layout/flex` | `@cascivo/react` | `Grid`/`GridItem` take responsive object props (`cols={{ base: 1, md: 2, lg: 3 }}`); `AutoGrid` fills columns by width with no media queries; `Flex` is the gap-based flex container. Reach for these before writing custom layout CSS. |
 | Project-card grid | `Card` + `Badge` (framework/status) + `RelativeTime` (last deploy), laid out in `AutoGrid`/`Grid` | `card`, `badge`, `relative-time`, `layout/auto-grid` | `@cascivo/react` | `AutoGrid min="16rem"` gives a responsive card grid with no media queries; use `Grid cols={{…}}` for an explicit responsive column count. Under SSR pass `RelativeTime`'s `now` (a serialized server timestamp) for byte-identical server/client text — every deploy console has a "3 minutes ago" column. `CardHeader actions={…}` gives the title-left / menu-right header. |
-| KPI / usage numbers | `Stat`, or `Kpi` for a chart-library tile | `stat`, `chart/kpi` | `@cascivo/react` / `@cascivo/charts` | `Stat` is layout-only (label/value/delta/trend); `Kpi` (from `@cascivo/charts`) bundles a trailing sparkline — see below. |
-| Usage sparklines (inline, no axes) | `Sparkline` | `chart/sparkline` | `@cascivo/charts` | `npm: @cascivo/charts`. Token-scaled via `--cascivo-chart-*`; default 120×32, pass `width`/`height` to resize. |
+| KPI / usage numbers | `Stat`, or `Kpi` for a chart-library tile | `stat`, `chart/kpi` | `@cascivo/react` / `@cascivo/charts` | `Stat` is layout-only (label/value/delta/trend); `Kpi` (from `@cascivo/charts`) bundles a trailing sparkline — see below. ⚠ **`Kpi` ships card chrome and `Stat` does not**, so a `Stat` row and a `Kpi` row on adjacent pages look like different products. Mixing them? Pass `<Stat card>` — it opts into the same surface/border/radius/padding. |
+| Usage sparklines (inline, no axes) | `Sparkline` | `chart/sparkline` | `@cascivo/charts` | `npm: @cascivo/charts`. Token-scaled via `--cascivo-chart-*`; 120×32 is a *preferred* size — it shrinks to fit a narrow flex/grid track rather than pushing siblings onto the next line. Pass `width`/`height` to change it. |
 | Time-series usage charts (with axes, zoom, live data) | `LineChart` / `AreaChart` | `chart/line-chart`, `chart/area-chart` | `@cascivo/charts` | Both support time scales, multi-series, brush/zoom. For live-updating usage graphs, feed them with `useStreamSeries` (`@cascivo/charts`). |
-| Data table of deployments/rows | `DataTable` | `data-table` | `@cascivo/react` | Sorting/pagination/search built in. Set `Column.width` (any CSS length) on identifier-shaped columns — default sizing doesn't consider content shape, so a commit hash wraps mid-hash. |
+| Data table of deployments/rows | `DataTable` | `data-table` | `@cascivo/react` | Sorting/pagination/search built in. Set `Column.width` (any CSS length) on identifier-shaped columns — default sizing doesn't consider content shape, so a commit hash wraps mid-hash. **Mixing sized and unsized columns is fine**: unsized columns absorb the remaining width and never collapse below their content; give a free-form column a `minWidth` if it must stay readable when the table is narrow. |
+| Page header (title + description + breadcrumb + actions) | `PageHeader` | `layout/page-header` | `@cascivo/react` | Every routed page needs one. Now exported — do **not** hand-compose it from `Heading`/`Text`/`Flex`, and don't `npx cascivo add` it just for this (that mixes consumption paths). Pair `breadcrumb={<Breadcrumb …/>}` with `actions={<Button …/>}`. |
 | Empty state before first deploy/project | a dedicated empty-state block | `block/empty-dashboard` | copy-paste | Full page: empty illustration/copy + CTA, ready to adapt. |
 
 ## Whole-page starting points
@@ -96,6 +97,62 @@ visual; use `Kpi` when you want the chart-library tile with the sparkline baked 
 The two disagree deliberately about who formats: `Stat` takes `delta` as a
 pre-formatted **string** (you own it), `Kpi` takes a **number** and owns the sign, arrow,
 colour and unit — pass `deltaFormat="percent"` for `+4.3%`, or a function for anything else.
+
+## Sizing charts — omit `width`
+
+**Every chart in `@cascivo/charts` is responsive by default. Omit `width` and it fills its
+container**, tracking resizes through a `ResizeObserver`. There is no config, no wrapper and
+no container query to write:
+
+```tsx
+<Card>
+  <CardHeader>Requests</CardHeader>
+  <CardContent>
+    <AreaChart title="Requests" series={series} x={(d) => d.t} y={(d) => d.v} height={240} />
+  </CardContent>
+</Card>
+```
+
+- **`width`** — a *fixed* SVG width in px, for an export or a thumbnail. It is clamped to the
+  container (`max-inline-size: 100%`), so it can never overflow its card, but it also stops
+  the chart from growing. In a responsive dashboard grid there is no correct number: don't
+  pass one.
+- **`height`** — sets the aspect (default 300; 48 in `plain` mode). Unlike `width` it does
+  **not** track the container, so this is the knob you do set.
+- **`useChartSize`** is **not** the answer to "make my chart responsive" — charts already
+  call it internally. Reach for it only to size a *different* element to match a chart, or to
+  build a custom chart on the same measurement primitive.
+
+Two axis-chrome details worth knowing, both automatic:
+
+- Margins are sized to the actual tick labels, so a `60,000` left label or a right-hand
+  second axis is never clipped.
+- A crowded category axis is auto-strided (`Jun 1 … Jun 30` renders every Nth label).
+  `xLabelEvery` **overrides** that computation — omit it unless you specifically want a
+  different stride; passing `Math.ceil(n / 8)` "to help" makes it worse.
+
+## Importing from more than one cascivo package
+
+A dashboard file often imports from `@cascivo/react`, `@cascivo/charts` and `@cascivo/icons`
+at once. Two name clashes are worth knowing, because a wrong resolution is **silent** — the
+wrong component renders, nothing errors:
+
+| Name | `@cascivo/react` | `@cascivo/charts` |
+| --- | --- | --- |
+| `Text` | the typography component | an SVG `<text>` primitive for custom charts |
+| `Calendar` | the date-picker calendar | the calendar-heatmap chart |
+
+Alias whichever you use less:
+
+```tsx
+import { Text, Calendar } from '@cascivo/react'
+import { Text as ChartText, Calendar as CalendarChart } from '@cascivo/charts'
+```
+
+`@cascivo/icons` shares names with both by nature — an icon set of ~440 nouns contains
+`Search`, `Filter`, `Grid`, `User`, `BarChart`, `PieChart`. The convention is the same one
+every icon library uses: `import { Search as SearchIcon } from '@cascivo/icons'`.
+`scripts/checks/export-collisions.test.ts` fails CI on a **new** react↔charts collision.
 
 ## Don't hand-roll the behavior layer
 

@@ -92,6 +92,8 @@ React/Tailwind patterns an LLM defaults to are wrong here — see
 | `useScrollLock` | Lock body scroll while an overlay is open. |
 | `VisuallyHidden` | Visually hide content while keeping it in the a11y tree. |
 | `Slot` / `composeRefs` / `mergeProps` | Merge props/refs when forwarding to a child element. |
+| `normalizeTone` / `Tone` / `ToneInput` | The catalog's one severity vocabulary — `neutral \| info \| success \| warning \| danger`. `Badge`, `Tag`, `Status` and `Notification` all accept it, plus their historical spellings (`destructive`/`error` → `danger`, `default` → `neutral`) which `normalizeTone` resolves. Use it to map one domain enum onto every display component without a per-component lookup table. |
+| `normalizeProgress` / `Progress` / `ProgressInput` | The catalog's one sequence vocabulary — `pending \| active \| complete \| error`. `Steps` and `Timeline` both accept it, plus Timeline's `current` / `upcoming` aliases, which `normalizeProgress` resolves. |
 | `setLinkComponent` / `getLinkComponent` | Register the component config-driven nav renders links through. Call `setLinkComponent(...)` once at app start so SideNav/ShellHeader/Header/Breadcrumb/Switcher/Dock/NavigationMenu render your framework's router `<Link>` (preserving `href`, `aria-current`, active `data-state`), instead of a plain `<a>`. The Link must forward `ref` to its anchor for roving-focus navs. Re-exported from `@cascivo/react` (Path B) as well as `@cascivo/core` (Path A). |
 
 ## Router integration — client-side nav links
@@ -131,6 +133,22 @@ The registered component receives the full computed prop bag (`href`, `className
 `aria-current`, `data-state`, `onClick`, …), so active styling and accessibility carry
 over unchanged. For a one-off custom item, `SideNavItem.render({ children, linkProps })`
 gives you the same bag plus the default icon/label node.
+
+### `setLinkComponent` covers config-driven navs — not links you write yourself
+
+It is deliberately scoped to components that render the `<a>` **for** you. A link you place
+in page content (a project name in a card title, a branch in a table cell) is styled with
+**`asChild`** instead, which puts cascivo's styling on your router's element:
+
+```tsx
+<Link asChild><RouterLink to="/projects/alpha">alpha</RouterLink></Link>
+<Button asChild><RouterLink to="/projects/new">New Project</RouterLink></Button>
+```
+
+A bare `<Link href="/x">` in a routed app is a full page reload, and copying cascivo's link
+CSS into your own layer drifts on every release — override `--cascivo-link-color` instead.
+Full guide, including every `asChild`-capable component:
+[USING-WITH-A-ROUTER.md](./USING-WITH-A-ROUTER.md).
 
 ## Recipe: an accessible menu from primitives
 

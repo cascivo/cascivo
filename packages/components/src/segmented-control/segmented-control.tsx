@@ -6,6 +6,12 @@ import styles from './segmented-control.module.css'
 export interface SegmentedControlOption {
   label: string
   value: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 

@@ -8,6 +8,14 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    {
+      name: 'card',
+      description:
+        "Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control.",
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
     { name: 'label', type: 'string', required: true, description: 'What the metric measures' },
     { name: 'value', type: 'string | number', required: true, description: 'The metric value' },
     {

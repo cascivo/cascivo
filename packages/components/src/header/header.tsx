@@ -20,6 +20,12 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   brand?: ReactNode
   links?: HeaderLink[]
   actions?: ReactNode
+  /**
+   * When true, the header sticks to the top on scroll.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   sticky?: boolean
   labels?: HeaderLabels
 }

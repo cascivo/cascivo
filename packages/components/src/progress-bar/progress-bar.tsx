@@ -6,10 +6,22 @@ import styles from './progress-bar.module.css'
 export interface ProgressBarProps {
   /** Current value from 0 to max. Omit for an indeterminate bar. */
   value?: number
+  /**
+   * Maximum allowed value.
+   *
+   * @defaultValue `100`
+   * @see the component manifest
+   */
   max?: number
   label?: string
   helperText?: string
   size?: 'sm' | 'md'
+  /**
+   * success/error tint the fill and show a glyph next to the label
+   *
+   * @defaultValue `active`
+   * @see the component manifest
+   */
   status?: 'active' | 'success' | 'error'
   className?: string
 }

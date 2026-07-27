@@ -12,6 +12,12 @@ export interface SheetProps {
   /** Optional heading. Accepts rich nodes; when present it labels the dialog via `aria-labelledby`. */
   title?: ReactNode
   children: ReactNode
+  /**
+   * Edge the component is anchored to.
+   *
+   * @defaultValue `end`
+   * @see the component manifest
+   */
   side?: 'start' | 'end' | 'top' | 'bottom'
 }
 

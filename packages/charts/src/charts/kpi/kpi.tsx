@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react'
 import { currentLocale } from '@cascivo/i18n'
 import { Sparkline } from '../sparkline/sparkline'
+import styles from './kpi.module.css'
 
 export interface KpiProps {
   value: string | number
@@ -47,52 +48,20 @@ export function Kpi({
   const deltaNegative = delta != null && delta < 0
 
   return (
-    <div
-      className={className}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--cascivo-space-2)',
-        padding: 'var(--cascivo-space-4)',
-        borderRadius: 'var(--cascivo-radius-surface)',
-        border: '1px solid var(--cascivo-color-border)',
-        background: 'var(--cascivo-color-surface)',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span
-          style={{
-            fontSize: 'var(--cascivo-text-sm)',
-            color: 'var(--cascivo-color-foreground-muted)',
-          }}
-        >
-          {label}
-        </span>
+    <div className={[styles['kpi'], className].filter(Boolean).join(' ')}>
+      <div className={styles['head']}>
+        <span className={styles['label']}>{label}</span>
         {icon && <span aria-hidden="true">{icon}</span>}
       </div>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'var(--cascivo-space-2)' }}>
-        <span
-          style={{
-            fontSize: 'var(--cascivo-text-2xl)',
-            fontWeight: 700,
-            lineHeight: 1,
-            color: 'var(--cascivo-color-foreground)',
-          }}
-        >
+      <div className={styles['valueRow']}>
+        <span className={styles['value']}>
           {typeof value === 'number' ? value.toLocaleString(currentLocale()) : value}
         </span>
         {delta != null && (
           <span
             role="img"
-            style={{
-              fontSize: 'var(--cascivo-text-sm)',
-              fontWeight: 500,
-              color: deltaPositive
-                ? 'var(--cascivo-color-success-foreground)'
-                : deltaNegative
-                  ? 'var(--cascivo-color-destructive-foreground)'
-                  : 'var(--cascivo-color-foreground-muted)',
-            }}
+            className={styles['delta']}
+            data-trend={deltaPositive ? 'up' : deltaNegative ? 'down' : 'flat'}
             aria-label={`Trend: ${formatDelta(delta, deltaFormat)}${deltaLabel ? ` ${deltaLabel}` : ''}`}
           >
             {deltaPositive ? '▲' : deltaNegative ? '▼' : '–'} {formatDelta(delta, deltaFormat)}
@@ -101,7 +70,7 @@ export function Kpi({
         )}
       </div>
       {sparkline && sparkline.length > 0 && (
-        <Sparkline data={sparkline} label={`${label} trend`} width={120} height={32} />
+        <Sparkline data={sparkline} label={`${label} trend`} height={32} />
       )}
     </div>
   )

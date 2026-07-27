@@ -30,8 +30,17 @@ export const meta: ComponentMeta = {
       default: 'false',
     },
     { name: 'href', description: 'The destination URL.', type: 'string', required: false },
+    {
+      name: 'asChild',
+      description:
+        "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md.",
+      type: 'boolean',
+      required: false,
+      default: 'false',
+    },
   ],
   tokens: [
+    '--cascivo-link-color',
     '--cascivo-color-accent',
     '--cascivo-color-accent-hover',
     '--cascivo-color-accent-active',

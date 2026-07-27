@@ -4,7 +4,12 @@ import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import styles from './aspect-ratio.module.css'
 
 export interface AspectRatioProps extends HTMLAttributes<HTMLDivElement> {
-  /** Width-to-height ratio (e.g. 16 / 9). Defaults to 16/9. */
+  /**
+   * Width-to-height ratio applied via the CSS aspect-ratio property
+   *
+   * @defaultValue `16 / 9`
+   * @see the component manifest
+   */
   ratio?: number
   children?: ReactNode
 }

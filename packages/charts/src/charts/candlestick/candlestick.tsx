@@ -19,7 +19,12 @@ export interface CandlestickDatum {
   high: number
   low: number
   close: number
-  /** Optional traded volume for the secondary axis. */
+  /**
+   * Render volume bars beneath the candles.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   volume?: number
 }
 
@@ -27,8 +32,22 @@ export interface CandlestickProps {
   data: readonly CandlestickDatum[]
   title: string
   description?: string
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
+  /**
+   * Approximate number of ticks on the y-axis.
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   yTicks?: number
   /** Colour for up candles (close ≥ open). */
   upColor?: string
@@ -38,6 +57,12 @@ export interface CandlestickProps {
   volume?: boolean
   tooltip?: boolean
   className?: string
+  /**
+   * Marks only — no axes. For micro/inline charts.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
   /** Reference lines, shaded bands, and markers over the plot (e.g. a last-price rule). */
   annotations?: readonly Annotation[]
@@ -49,7 +74,12 @@ export interface CandlestickProps {
   zoom?: boolean
   /** Connect this chart to others sharing the same id — they mirror the zoom window. */
   syncId?: string
-  /** Tooltip trigger: `item` (default, nearest candle) or `axis` (crosshair + OHLC at hovered x). */
+  /**
+   * item (nearest candle) or axis (crosshair + OHLC at the hovered x).
+   *
+   * @defaultValue `item`
+   * @see the component manifest
+   */
   tooltipMode?: 'item' | 'axis'
 }
 

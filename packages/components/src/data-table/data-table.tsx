@@ -14,7 +14,23 @@ export interface Column<Row> {
   sortable?: boolean
   render?: (row: Row) => ReactNode
   align?: 'start' | 'end'
+  /**
+   * Preferred column width, any CSS length (`'8rem'`, `'120px'`, `'12%'`). Set it on
+   * identifier-shaped columns (commit hashes, IDs, timestamps) — default sizing doesn't
+   * consider content shape, so a hash wraps mid-hash.
+   *
+   * **Mixing sized and unsized columns is supported**: unsized columns absorb the
+   * remaining width and never collapse below their content. Only when *every* column
+   * declares a width does the table switch to a fixed layout (which keeps widths
+   * identical across pages); otherwise widths are preferred sizes, not hard ones.
+   */
   width?: string
+  /**
+   * Floor for the column's width, any CSS length. Use it on a free-form column
+   * (a commit message, a description) that must stay readable when the table is narrow —
+   * the table then scrolls horizontally rather than squeezing the column to nothing.
+   */
+  minWidth?: string
 }
 
 export type SortDirection = 'asc' | 'desc'
@@ -43,23 +59,71 @@ export interface DataTableProps<Row> {
   defaultSort?: SortState
   sortMode?: 'client' | 'server'
   onSortChange?: (sort: SortState | undefined) => void
+  /**
+   * When true, shows a search/filter input.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   searchable?: boolean
   pagination?: { pageSize: number; pageSizeOptions?: number[] }
   selection?: { mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }
   batchActions?: { id?: string; label: string; onClick: (selectedIds: string[]) => void }[]
   renderExpandedRow?: (row: Row) => ReactNode
   density?: 'compact' | 'normal' | 'relaxed'
+  /**
+   * When true, applies alternating row striping.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   zebra?: boolean
+  /**
+   * When true, the header stays fixed while the body scrolls.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   stickyHeader?: boolean
+  /**
+   * When true, shows a loading state.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   loading?: boolean
   emptyState?: ReactNode
   title?: string
   description?: string
   labels?: DataTableLabels
   className?: string
+  /**
+   * Render only the visible row window for large datasets.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   virtualized?: boolean
+  /**
+   * Fixed row height in px, used to compute the virtualized window.
+   *
+   * @defaultValue `40`
+   * @see the component manifest
+   */
   rowHeight?: number
+  /**
+   * Number of rows rendered in the virtualized window.
+   *
+   * @defaultValue `20`
+   * @see the component manifest
+   */
   windowSize?: number
+  /**
+   * Extra rows rendered above/below the window to smooth scrolling.
+   *
+   * @defaultValue `3`
+   * @see the component manifest
+   */
   overscan?: number
 }
 
@@ -309,6 +373,12 @@ export function DataTable<Row>({
       data-zebra={zebra || undefined}
       data-sticky-header={stickyHeader || undefined}
       data-paginated={pagination ? true : undefined}
+      // A fixed layout keeps column widths identical across pages, but it gives unsized
+      // columns only the leftover space with no content floor — six sized columns out of
+      // seven collapsed the seventh to ~50px and wrapped it one character per line. The
+      // page-stability guarantee is only honourable when the caller has sized everything,
+      // so that is exactly when it is applied.
+      data-fixed-layout={columns.every((col) => col.width !== undefined) || undefined}
     >
       <span aria-live="polite" className={styles['srOnly']}>
         {selectedSignal.value.length > 0 ? l.itemsSelected(selectedSignal.value.length) : ''}
@@ -379,7 +449,14 @@ export function DataTable<Row>({
             {columns.map((col) => (
               <col
                 key={col.key}
-                style={col.width !== undefined ? { width: col.width } : undefined}
+                style={
+                  col.width !== undefined || col.minWidth !== undefined
+                    ? {
+                        ...(col.width !== undefined ? { width: col.width } : {}),
+                        ...(col.minWidth !== undefined ? { minWidth: col.minWidth } : {}),
+                      }
+                    : undefined
+                }
               />
             ))}
           </colgroup>
@@ -414,6 +491,7 @@ export function DataTable<Row>({
                     key={col.key}
                     scope="col"
                     data-align={col.align ?? 'start'}
+                    data-sized={col.width !== undefined || undefined}
                     aria-sort={col.sortable ? ariaSort : undefined}
                   >
                     {col.sortable ? (
@@ -491,7 +569,11 @@ export function DataTable<Row>({
                         </td>
                       )}
                       {columns.map((col) => (
-                        <td key={col.key} data-align={col.align ?? 'start'}>
+                        <td
+                          key={col.key}
+                          data-align={col.align ?? 'start'}
+                          data-sized={col.width !== undefined || undefined}
+                        >
                           {col.render
                             ? col.render(entry.row)
                             : String(cellValue(entry.row, col.key) ?? '')}

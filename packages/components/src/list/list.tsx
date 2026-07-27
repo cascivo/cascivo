@@ -4,6 +4,12 @@ import type { HTMLAttributes, LiHTMLAttributes } from 'react'
 import styles from './list.module.css'
 
 export interface ListProps extends HTMLAttributes<HTMLElement> {
+  /**
+   * The HTML element to render as.
+   *
+   * @defaultValue `ul`
+   * @see the component manifest
+   */
   as?: 'ul' | 'ol'
   marker?: 'disc' | 'decimal' | 'none'
 }

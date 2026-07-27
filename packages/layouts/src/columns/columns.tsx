@@ -5,7 +5,19 @@ import styles from './columns.module.css'
 import type { SpaceStep } from '@cascivo/core'
 
 export interface ColumnsProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Number of equal columns
+   *
+   * @defaultValue `2`
+   * @see the component manifest
+   */
   count?: 2 | 3 | 4
+  /**
+   * Spacing token step
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   gap?: SpaceStep
 }
 

@@ -4,6 +4,17 @@
     flex-direction: column;
     gap: var(--cascivo-space-1);
     font-family: var(--cascivo-font-sans);
+    min-inline-size: 0;
+
+    /* Opt into the same chrome `@cascivo/charts`' Kpi ships, so a Stat row and a Kpi row
+       in one dashboard read as one system. Kept opt-in: Stat's default is layout-only
+       precisely so it can live inside a Card the app controls. */
+    &[data-card] {
+      padding: var(--cascivo-space-4);
+      border-radius: var(--cascivo-radius-surface);
+      border: 1px solid var(--cascivo-color-border);
+      background: var(--cascivo-color-surface);
+    }
   }
 
   .label {

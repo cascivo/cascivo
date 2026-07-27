@@ -267,6 +267,11 @@ export * from '../../layouts/src/columns/columns' // Columns
 export * from '../../layouts/src/center/center' // Center
 export * from '../../layouts/src/spacer/spacer' // Spacer
 export * from '../../layouts/src/auto-grid/auto-grid' // AutoGrid
+// PageHeader: title + description + breadcrumb + actions slots. Every routed page needs one,
+// and two independent adopters hand-composed it in ~30 lines of Heading/Text/Flex because it
+// was copy-paste-only — mixing consumption paths for a single component is a worse trade than
+// exporting it. Same dependency profile as the other layout primitives (@cascivo/core only).
+export * from '../../layouts/src/page-header/page-header' // PageHeader
 // The spacing-scale type shared by every layout primitive's `gap`/spacing props
 // lives in @cascivo/core (a direct dependency of this package). Importing it there
 // — `import type { SpaceStep } from '@cascivo/core'` — keeps it a single external

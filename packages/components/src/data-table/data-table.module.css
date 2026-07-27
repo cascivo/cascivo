@@ -115,9 +115,13 @@
     table-layout: auto;
   }
 
-  /* Paginated tables use a fixed layout so column widths stay constant as the
-     page changes — content of the visible rows can no longer shift columns. */
-  .root[data-paginated='true'] .table {
+  /* A fixed layout keeps column widths constant as the page changes, but it hands
+     unsized columns only the leftover space with no content floor. With six of seven
+     columns sized, the seventh collapsed to ~50px and wrapped one character per line.
+     So it applies only when EVERY column declares a width — the one case where the
+     stability guarantee costs nothing. Otherwise widths are preferred sizes under the
+     auto algorithm, which still respects each column's content minimum. */
+  .root[data-paginated='true'][data-fixed-layout='true'] .table {
     table-layout: fixed;
   }
 
@@ -146,9 +150,15 @@
     vertical-align: middle;
     border-block-end: 1px solid var(--cascivo-color-border);
     color: var(--cascivo-color-text);
-    /* Long unbroken tokens (commit hashes, branch names) wrap inside the cell
-       instead of spilling past the padding into the adjacent column — the cause
-       of adjacent columns visually touching under table-layout: fixed. */
+  }
+
+  /* Long unbroken tokens (commit hashes, branch names) wrap inside the cell instead of
+     spilling past the padding into the adjacent column. Scoped to columns that declared a
+     `width` — that is the identifier-shaped case this exists for. Applying it to a
+     free-form column made a squeezed column wrap one character per line instead of
+     pushing back on the layout. */
+  .table td[data-sized],
+  .table th[data-sized] {
     overflow-wrap: anywhere;
   }
 

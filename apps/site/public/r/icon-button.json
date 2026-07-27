@@ -27,7 +27,7 @@
         "name": "label",
         "description": "Text label for the control.",
         "type": "string",
-        "required": true
+        "required": false
       },
       {
         "name": "ariaLabel",

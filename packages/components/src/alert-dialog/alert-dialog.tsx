@@ -17,6 +17,12 @@ export interface AlertDialogProps {
   onConfirm: () => void
   onCancel: () => void
   labels?: AlertDialogLabels
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `default`
+   * @see the component manifest
+   */
   variant?: 'destructive' | 'default'
 }
 

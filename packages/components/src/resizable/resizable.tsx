@@ -7,10 +7,34 @@ import styles from './resizable.module.css'
 
 export interface ResizableProps {
   children: ReactNode
+  /**
+   * Layout orientation of the component.
+   *
+   * @defaultValue `horizontal`
+   * @see the component manifest
+   */
   orientation?: 'horizontal' | 'vertical'
+  /**
+   * The initial split ratio when uncontrolled.
+   *
+   * @defaultValue `0.5`
+   * @see the component manifest
+   */
   defaultRatio?: number
   ratio?: number
+  /**
+   * Minimum allowed split ratio.
+   *
+   * @defaultValue `0.1`
+   * @see the component manifest
+   */
   minRatio?: number
+  /**
+   * Maximum allowed split ratio.
+   *
+   * @defaultValue `0.9`
+   * @see the component manifest
+   */
   maxRatio?: number
   onRatioChange?: (ratio: number) => void
   className?: string

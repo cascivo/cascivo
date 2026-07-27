@@ -483,7 +483,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [layout/flex](https://cascivo.com/llms/layout/flex.md) — Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row. _(npm @cascivo/react · or copy-paste)_
 - [layout/grid](https://cascivo.com/llms/layout/grid.md) — CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required. _(npm @cascivo/react · or copy-paste)_
 - [layout/masonry](https://cascivo.com/llms/layout/masonry.md) — Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column). _(copy-paste)_
-- [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(copy-paste)_
+- [layout/page-header](https://cascivo.com/llms/layout/page-header.md) — Page-level header with title, description, breadcrumb, and actions slots. _(npm @cascivo/react · or copy-paste)_
 - [layout/section](https://cascivo.com/llms/layout/section.md) — Page-section shell with block padding, centered inner width, and stack gap. _(copy-paste)_
 - [layout/settings-layout](https://cascivo.com/llms/layout/settings-layout.md) — Two-column settings page layout with a fixed-width menu and fluid content area. _(copy-paste)_
 - [layout/spacer](https://cascivo.com/llms/layout/spacer.md) — Fixed-height spacing block using design token steps. _(npm @cascivo/react · or copy-paste)_
@@ -522,7 +522,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [progress-indicator](https://cascivo.com/llms/progress-indicator.md) — Shows progress through the steps of a multi-step flow _(npm @cascivo/react · or copy-paste)_
 - [shell-header](https://cascivo.com/llms/shell-header.md) — Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content _(npm @cascivo/react · or copy-paste)_
 - [side-nav](https://cascivo.com/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping _(npm @cascivo/react · or copy-paste)_
-- [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(copy-paste)_
+- [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(npm @cascivo/react (SkipNavLink, SkipNavLinkProps, SkipNavTarget, SkipNavTargetProps) · the SkipNav component itself is copy-paste)_
 - [steps](https://cascivo.com/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations _(npm @cascivo/react · or copy-paste)_
 - [switcher](https://cascivo.com/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers _(npm @cascivo/react · or copy-paste)_
 - [tabs](https://cascivo.com/llms/tabs.md) — Switch between related panels of content _(npm @cascivo/react · or copy-paste)_
@@ -543,7 +543,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [overflow-menu](https://cascivo.com/llms/overflow-menu.md) — Kebab icon button revealing a menu of row-level actions _(npm @cascivo/react · or copy-paste)_
 - [popover](https://cascivo.com/llms/popover.md) — Anchored floating panel built on CSS Anchor Positioning + Popover API _(npm @cascivo/react · or copy-paste)_
 - [sheet](https://cascivo.com/llms/sheet.md) — Slide-in panel from any edge, using popover=manual and @starting-style animations _(npm @cascivo/react · or copy-paste)_
-- [toast](https://cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook _(copy-paste)_
+- [toast](https://cascivo.com/llms/toast.md) — Transient notification surfaced via the useToast hook _(npm @cascivo/react (ToastOptions, ToastProvider, ToastVariant, dismissAllToasts, useToast) · the Toast component itself is copy-paste)_
 - [toggletip](https://cascivo.com/llms/toggletip.md) — A click-triggered info popover for supplementary, selectable content _(npm @cascivo/react · or copy-paste)_
 - [tooltip](https://cascivo.com/llms/tooltip.md) — Contextual label shown on hover or focus _(npm @cascivo/react · or copy-paste)_
 

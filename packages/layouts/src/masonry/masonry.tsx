@@ -5,7 +5,19 @@ import styles from './masonry.module.css'
 import type { SpaceStep } from '@cascivo/core'
 
 export interface MasonryProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Number of columns
+   *
+   * @defaultValue `3`
+   * @see the component manifest
+   */
   cols?: number
+  /**
+   * Spacing token step
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   gap?: SpaceStep
   className?: string | undefined
 }

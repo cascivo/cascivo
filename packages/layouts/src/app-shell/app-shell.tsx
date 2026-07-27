@@ -12,6 +12,12 @@ export interface AppShellProps {
   /** Optional sticky footer rendered below the content area. */
   footer?: ReactNode
   children: ReactNode
+  /**
+   * localStorage key prefix. Pass false to disable persistence.
+   *
+   * @defaultValue `cascade.appshell`
+   * @see the component manifest
+   */
   persistKey?: string | false
   /** External shell state (from createShellState). Created internally when omitted. */
   state?: ShellState

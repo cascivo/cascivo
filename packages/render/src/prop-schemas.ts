@@ -2190,6 +2190,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Filter: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'aria-label',
       required: false,
       primitives: ['string'],
@@ -2554,6 +2559,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'position',
+      required: false,
+    },
+    {
+      name: 'defaultPosition',
       required: false,
     },
     {
@@ -3073,7 +3082,7 @@ export const propSchemas: Record<string, PropSchema[]> = {
   IconButton: [
     {
       name: 'label',
-      required: true,
+      required: false,
       primitives: ['string'],
     },
     {
@@ -3512,6 +3521,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'href',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'asChild',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   List: [
@@ -4313,6 +4327,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Progress: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'aria-label',
       required: false,
@@ -5181,7 +5200,7 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'items',
-      required: true,
+      required: false,
     },
     {
       name: 'collapsed',
@@ -5409,6 +5428,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Stat: [
     {
+      name: 'card',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
       name: 'label',
       required: true,
       primitives: ['string'],
@@ -5553,6 +5577,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   StructuredList: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'aria-label',
       required: false,

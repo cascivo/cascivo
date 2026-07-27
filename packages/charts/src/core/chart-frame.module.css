@@ -2,6 +2,11 @@
   .frame {
     position: relative;
     inline-size: 100%;
+    /* A flex/grid item's default minimum is its content size, so a frame carrying a
+       fixed-width SVG (a 120px Sparkline) refuses to compress and pushes its siblings
+       onto the next line — reported as a label wrapping to three lines beside a
+       Sparkline in a 19rem card. With this the SVG's max-inline-size: 100% can bite. */
+    min-inline-size: 0;
   }
 
   /* Clamp the SVG to the frame so an explicit `width` larger than the container

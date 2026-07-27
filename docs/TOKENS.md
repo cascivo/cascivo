@@ -62,6 +62,7 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-chart-8`** | `oklch(0.5 0.12 200)` |  |
 | **`--cascivo-chart-axis`** | `oklch(0.5 0.016 264)` |  |
 | **`--cascivo-chart-fill-opacity`** | `0.25` |  |
+| **`--cascivo-chart-fill-opacity-overlap`** | `0.125` |  |
 | **`--cascivo-chart-grid`** | `var(--cascivo-gray-200)` |  |
 | **`--cascivo-color-accent`** | `oklch(0.52 0.2 250)` |  |
 | **`--cascivo-color-accent-active`** | `var(--cascivo-blue-800)` |  |
@@ -345,3 +346,5 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-editor-syntax-type`** | `oklch(0.54 0.12 350)` |  |
 | **`--cascivo-editor-syntax-variable`** | `var(--cascivo-editor-fg)` |  |
 | **`--cascivo-hover-opacity`** | `0.8` |  |
+| **`--cascivo-link-color`** | `var(--cascivo-color-accent)` |  |
+| **`--cascivo-search-width`** | `100%` |  |

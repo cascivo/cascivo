@@ -58,6 +58,23 @@ Apply a theme by setting the attribute on any container:
 <main data-theme="dark">…</main>
 ```
 
+### Where does the attribute go — `<html>` or an element?
+
+Both are correct, and which one applies is decided by whether you switch themes at runtime.
+This is the one place that answers it:
+
+| You are…                                                                                            | Put `data-theme` on                              | Who sets it                                     |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------------------- |
+| Shipping one fixed theme                                                                            | any container — `<main>`, `#root`, a `<section>` | you, in JSX                                     |
+| Switching themes at runtime (`ThemeProvider` / `useTheme`)                                          | **`<html>`**                                     | `ThemeProvider` — do **not** also set it in JSX |
+| Theming one subtree differently (a docs preview, an embedded widget, a dark toolbar in a light app) | that subtree's wrapper                           | you, in JSX                                     |
+
+`ThemeProvider` writes the attribute on `document.documentElement` so the whole document —
+including portalled overlays that render outside your React tree — switches together. A
+`data-theme` you also set in JSX inside a `ThemeProvider` app wins for its subtree and will
+not follow the toggle; that mismatch is the usual cause of "the modal didn't change theme".
+Scoping a subtree deliberately is still supported — just do it knowingly.
+
 **The theme export name is the `data-theme` value:** import `@cascivo/themes/<name>`
 and set `data-theme="<name>"` (e.g. `@cascivo/themes/midnight` ↔
 `data-theme="midnight"`). The full import→value table for all twelve first-party

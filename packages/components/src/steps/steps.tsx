@@ -1,17 +1,30 @@
 'use client'
-import { useSignal, useSignals } from '@cascivo/core'
+import { normalizeProgress, useSignal, useSignals } from '@cascivo/core'
+import type { ProgressInput } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './steps.module.css'
 
+/**
+ * The catalog-wide progress vocabulary. `Timeline`'s `current` / `upcoming` are accepted as
+ * aliases of `active` / `pending`, so one status enum drives both components — writing
+ * `state: 'upcoming'` here used to be a type error with no hint that `pending` was the word.
+ */
 export type StepState = 'pending' | 'active' | 'complete' | 'error'
 
 export interface Step {
   label: string
-  state?: StepState
+  /** Accepts `StepState` plus Timeline's `current` / `upcoming` aliases. */
+  state?: ProgressInput
 }
 
 export interface StepsProps {
   steps: Step[]
+  /**
+   * Index of the currently active step (0-based)
+   *
+   * @defaultValue `0`
+   * @see the component manifest
+   */
   activeStep?: number
   orientation?: 'horizontal' | 'vertical'
   className?: string
@@ -38,8 +51,13 @@ export function Steps({
       aria-label={resolvedAriaLabel}
     >
       {steps.map((step, i) => {
-        const state: StepState =
-          step.state ?? (i < active.value ? 'complete' : i === active.value ? 'active' : 'pending')
+        const state: StepState = step.state
+          ? normalizeProgress(step.state)
+          : i < active.value
+            ? 'complete'
+            : i === active.value
+              ? 'active'
+              : 'pending'
         return (
           <li
             key={i}

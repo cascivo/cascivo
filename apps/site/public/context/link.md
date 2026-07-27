@@ -32,15 +32,17 @@ Renders a native <a> so role, Enter activation, and focus come from the platform
 
 ## Props
 
-| Name       | Type                       | Required | Default    | Description                                                                  |
-| ---------- | -------------------------- | -------- | ---------- | ---------------------------------------------------------------------------- |
-| `variant`  | `'standalone' \| 'inline'` | No       | standalone | Selects the visual style variant.                                            |
-| `size`     | `'sm' \| 'md' \| 'lg'`     | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                        |
-| `external` | `boolean`                  | No       | false      | When true, treats the link as external (opens in a new tab with rel safety). |
-| `href`     | `string`                   | No       | —          | The destination URL.                                                         |
+| Name       | Type                       | Required | Default    | Description                                                                                                                                                                                                                                                                                     |
+| ---------- | -------------------------- | -------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`  | `'standalone' \| 'inline'` | No       | standalone | Selects the visual style variant.                                                                                                                                                                                                                                                               |
+| `size`     | `'sm' \| 'md' \| 'lg'`     | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                           |
+| `external` | `boolean`                  | No       | false      | When true, treats the link as external (opens in a new tab with rel safety).                                                                                                                                                                                                                    |
+| `href`     | `string`                   | No       | —          | The destination URL.                                                                                                                                                                                                                                                                            |
+| `asChild`  | `boolean`                  | No       | false      | Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md. |
 
 ## Tokens
 
+- `--cascivo-link-color`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-hover`
 - `--cascivo-color-accent-active`
@@ -102,7 +104,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Link is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-radius-sm, --cascivo-focus-ring
+  --cascivo-link-color, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-radius-sm, --cascivo-focus-ring
 
 Accessibility: role "link", WCAG 2.2-AA, keyboard: Enter. Keep it AA.
 

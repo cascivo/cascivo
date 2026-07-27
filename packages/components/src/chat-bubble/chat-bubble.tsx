@@ -4,6 +4,12 @@ export type ChatBubbleSide = 'start' | 'end'
 
 export interface ChatBubbleProps {
   children: React.ReactNode
+  /**
+   * Edge the component is anchored to.
+   *
+   * @defaultValue `start`
+   * @see the component manifest
+   */
   side?: ChatBubbleSide
   avatar?: React.ReactNode
   name?: string
