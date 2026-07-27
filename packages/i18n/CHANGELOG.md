@@ -1,5 +1,12 @@
 # @cascivo/i18n
 
+## 0.2.13
+
+### Patch Changes
+
+- Updated dependencies [6f318dd]
+  - @cascivo/core@0.7.0
+
 ## 0.2.12
 
 ### Patch Changes
