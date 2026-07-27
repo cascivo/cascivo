@@ -24,9 +24,21 @@ export interface FileUploaderLabels {
 }
 
 export interface FileUploaderProps {
+  /**
+   * Controlled file list
+   *
+   * @defaultValue `[]`
+   * @see the component manifest
+   */
   files?: UploaderFile[]
   onFilesAdded?: (files: File[]) => void
   onRemove?: (id: string) => void
+  /**
+   * Allow multiple files
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   multiple?: boolean
   accept?: string
   maxSize?: number
@@ -34,6 +46,12 @@ export interface FileUploaderProps {
   label?: string
   hint?: string
   labels?: FileUploaderLabels
+  /**
+   * Disables the upload zone
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   className?: string
 }

@@ -27,8 +27,8 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `viewport`         | `Viewport`                                                     | yes      | —              | The current pan/zoom viewport to reflect in the minimap.  |
 | `containerWidth`   | `number`                                                       | no       | —              | Width of the flow container, used to scale the minimap.   |
 | `containerHeight`  | `number`                                                       | no       | —              | Height of the flow container, used to scale the minimap.  |
-| `width`            | `number`                                                       | no       | `200`          | Width of the component.                                   |
-| `height`           | `number`                                                       | no       | `150`          | Height of the component.                                  |
+| `width`            | `number`                                                       | no       | `200`          | Width in px.                                              |
+| `height`           | `number`                                                       | no       | `150`          | Height in px.                                             |
 | `position`         | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no       | `bottom-right` | Position of the component.                                |
 | `onViewportChange` | `(viewport: Viewport) => void`                                 | no       | —              | Called with the new viewport when the minimap is dragged. |
 | `className`        | `string`                                                       | no       | —              | Additional CSS class names merged onto the root element.  |

@@ -16,17 +16,38 @@ const machine = createMachine({
 
 export interface ImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'placeholder'> {
   src?: string
+  /**
+   * Alternative text describing the image.
+   *
+   * @defaultValue ``
+   * @see the component manifest
+   */
   alt?: string
   /** Image shown if `src` fails to load. Without it, a neutral fallback box renders. */
   fallbackSrc?: string
   width?: string | number
   height?: string | number
   radius?: 'none' | 'sm' | 'md' | 'lg' | 'full'
-  /** Hover-zoom the image (reduced-motion-safe). */
+  /**
+   * When true, zooms the image on hover.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   zoom?: boolean
-  /** Render a bare <img> with no wrapper, placeholder, or zoom (HeroUI parity). */
+  /**
+   * Render a bare <img> with no wrapper, placeholder, or zoom
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   removeWrapper?: boolean
-  /** Show a blurred placeholder while loading. */
+  /**
+   * When true, renders a blurred backdrop behind the image.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   isBlurred?: boolean
 }
 

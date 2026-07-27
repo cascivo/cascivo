@@ -116,7 +116,7 @@ Use Column.render to return any ReactNode per cell — a Badge for status, an ic
       key: 'status',
       header: 'Status',
       render: (row) => (
-        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
+        <Badge variant={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
       ),
     },
     {

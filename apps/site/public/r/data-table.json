@@ -285,7 +285,7 @@
       {
         "title": "Custom cell content with Column.render",
         "description": "Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).",
-        "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Project', sortable: true },\n    {\n      key: 'status',\n      header: 'Status',\n      render: (row) => (\n        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>\n      ),\n    },\n    {\n      key: 'updated',\n      header: 'Updated',\n      align: 'end',\n      render: (row) => new Date(row.updated).toLocaleDateString(),\n    },\n  ]}\n  rows={rows}\n  getRowId={(r) => r.name}\n/>"
+        "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Project', sortable: true },\n    {\n      key: 'status',\n      header: 'Status',\n      render: (row) => (\n        <Badge variant={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>\n      ),\n    },\n    {\n      key: 'updated',\n      header: 'Updated',\n      align: 'end',\n      render: (row) => new Date(row.updated).toLocaleDateString(),\n    },\n  ]}\n  rows={rows}\n  getRowId={(r) => r.name}\n/>"
       },
       {
         "title": "Full-featured: selection, pagination, search",

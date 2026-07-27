@@ -1,0 +1,63 @@
+@layer cascivo.component {
+  /* Kpi's chrome used to be inline styles. Inline styles outrank every `@layer`, so the
+     tile was the one component in the catalog an adopter could not restyle through the
+     cascade — and `unlayered:check` could not see it, because that guard reads `.css`
+     files. It also made Kpi (chrome) and its sibling Stat (no chrome) look like two
+     different products on adjacent pages; `Stat card` now opts into the same chrome. */
+  .kpi {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-space-2);
+    padding: var(--cascivo-kpi-padding, var(--cascivo-space-4));
+    border-radius: var(--cascivo-radius-surface);
+    border: 1px solid var(--cascivo-color-border);
+    background: var(--cascivo-color-surface);
+    /* Composable inside a flex/grid track (a KPI row) rather than forcing its width. */
+    min-inline-size: 0;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cascivo-space-2);
+    min-inline-size: 0;
+  }
+
+  .label {
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .valueRow {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--cascivo-space-2);
+    min-inline-size: 0;
+  }
+
+  .value {
+    font-size: var(--cascivo-text-2xl);
+    font-weight: var(--cascivo-font-bold);
+    line-height: var(--cascivo-leading-none);
+    color: var(--cascivo-color-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .delta {
+    font-size: var(--cascivo-text-sm);
+    font-weight: var(--cascivo-font-medium);
+    white-space: nowrap;
+    color: var(--cascivo-color-foreground-muted);
+
+    &[data-trend='up'] {
+      color: var(--cascivo-color-success-foreground);
+    }
+
+    &[data-trend='down'] {
+      color: var(--cascivo-color-destructive-foreground);
+    }
+  }
+}

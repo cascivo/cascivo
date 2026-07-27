@@ -14,6 +14,12 @@ const machine = createMachine({
 export interface SelectOption {
   value: string
   label: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 

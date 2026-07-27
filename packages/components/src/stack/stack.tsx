@@ -2,6 +2,13 @@ import styles from './stack.module.css'
 
 export interface StackProps {
   children: React.ReactNode
+  /**
+   * Pixel offset applied per overlapped layer in both axes. This is NOT a spacing `gap` —
+   * for gap-based vertical/horizontal layout use `Flex`/`Grid` and their `gap` prop.
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   offset?: number
   className?: string
 }

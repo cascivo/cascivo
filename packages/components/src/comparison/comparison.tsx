@@ -12,11 +12,27 @@ export interface ComparisonProps extends Omit<HTMLAttributes<HTMLDivElement>, 'o
   before: ReactNode
   /** Divider position as a percentage 0–100. Controlled when provided. */
   position?: number
-  /** Initial divider position for uncontrolled use. Default 50. */
+  /**
+   * The initial divider position (0–100) when uncontrolled.
+   *
+   * @defaultValue `50`
+   * @see the component manifest
+   */
   defaultPosition?: number
   onPositionChange?: (position: number) => void
+  /**
+   * Layout orientation of the component.
+   *
+   * @defaultValue `horizontal`
+   * @see the component manifest
+   */
   orientation?: 'horizontal' | 'vertical'
-  /** Percentage the Arrow keys move the divider. Default 5. */
+  /**
+   * How far the divider moves per arrow-key press.
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   keyboardStep?: number
   /** Accessible label for the divider slider. */
   label?: string

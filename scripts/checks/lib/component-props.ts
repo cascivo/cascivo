@@ -20,6 +20,13 @@ import { type InterfaceDeclaration, Node, Project, ts, type TypeAliasDeclaration
 const REPO_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 
 export interface PropSets {
+  /**
+   * Props the TypeScript type marks REQUIRED (no `?`). The manifest's `required: true` is
+   * checked against this: `SideNav`'s manifest said `items` was required while the type
+   * said `items?`, and `cascivo audit --ai` then reported a correct `<SideNav groups={…}>`
+   * as missing a prop. `props-parity` compared names and types but never optionality.
+   */
+  requiredAll: Set<string>
   /** Members declared directly on the props type (excludes inherited/spread). */
   declaredOwn: Set<string>
   /** Full property set incl. inherited/spread (via the type checker). */
@@ -118,8 +125,13 @@ export function resolvePropSets(tsxRelPaths: string[], propsTypeName: string): P
 function propSetsFor(decl: InterfaceDeclaration | TypeAliasDeclaration): PropSets {
   const declaredOwn = ownMembers(decl)
   const resolvedAll = new Set<string>()
-  for (const p of decl.getType().getProperties()) resolvedAll.add(unquote(p.getName()))
-  return { declaredOwn, resolvedAll }
+  const requiredAll = new Set<string>()
+  for (const p of decl.getType().getProperties()) {
+    const name = unquote(p.getName())
+    resolvedAll.add(name)
+    if (!p.isOptional()) requiredAll.add(name)
+  }
+  return { declaredOwn, resolvedAll, requiredAll }
 }
 
 /**

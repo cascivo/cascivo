@@ -36,7 +36,12 @@ export interface ActionSheetProps {
   title?: ReactNode
   /** Optional supporting message under the title. */
   description?: ReactNode
-  /** Show the separate Cancel button. Default true. */
+  /**
+   * When true, shows a cancel button below the actions.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   showCancel?: boolean
   labels?: { cancel?: string; label?: string }
   className?: string

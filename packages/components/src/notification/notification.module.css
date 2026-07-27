@@ -22,6 +22,13 @@
       transition: opacity var(--cascivo-motion-exit);
     }
 
+    /* `neutral` — the tone `Notification` was missing, so a domain enum with a plain
+       "no severity" state had nowhere to map. Uses the plain border/surface. */
+    &[data-variant='neutral'] {
+      border-color: var(--cascivo-color-border);
+      background: var(--cascivo-color-bg);
+    }
+
     &[data-variant='info'] {
       border-color: color-mix(in oklch, var(--cascivo-color-info) 35%, var(--cascivo-color-border));
       background: color-mix(in oklch, var(--cascivo-color-info) 5%, var(--cascivo-color-bg));

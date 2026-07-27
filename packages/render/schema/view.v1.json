@@ -1880,6 +1880,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -2072,8 +2075,7 @@
                   "disabled": {
                     "type": "boolean"
                   }
-                },
-                "required": ["label"]
+                }
               }
             }
           }
@@ -2395,6 +2397,9 @@
                   },
                   "href": {
                     "type": "string"
+                  },
+                  "asChild": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -2982,6 +2987,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -3713,8 +3721,7 @@
                   "className": {
                     "type": "string"
                   }
-                },
-                "required": ["items"]
+                }
               }
             }
           }
@@ -3882,6 +3889,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "card": {
+                    "type": "boolean"
+                  },
                   "label": {
                     "type": "string"
                   },
@@ -3978,6 +3988,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -7111,6 +7124,10 @@
                 "properties": {
                   "id": {
                     "type": "string"
+                  },
+                  "defaultPosition": {
+                    "type": "string",
+                    "enum": ["XYPosition"]
                   },
                   "zoom": {
                     "type": "number"

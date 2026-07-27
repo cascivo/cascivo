@@ -300,9 +300,17 @@
     --cascivo-z-tooltip: 500;
 
     /* ── Shell ──────────────────────────────────────────── */
+    /* Set these on any ancestor of the AppShell (it inherits them) or on the shell
+       itself via its `style` prop — see docs/RECIPE-DASHBOARD.md. */
     --cascivo-shell-header-block-size: 3rem;
     --cascivo-shell-panel-inline-size: 20rem;
     --cascivo-shell-aside-inline-size: 18rem;
+
+    /* ── Component override hooks ───────────────────────── */
+    /* Declared here so they appear in tokens.catalog.json — a component reading an
+       undeclared var is an override hook nobody can discover. */
+    --cascivo-link-color: var(--cascivo-color-accent);
+    --cascivo-search-width: 100%;
 
     /* ── Breakpoint Scale ────────────────────────────── */
     /* Breakpoints are a lint-guarded constant. Use these exact values in @media/@container;    */

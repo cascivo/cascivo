@@ -5,6 +5,7 @@ import {
   autoLabelStride,
   DEFAULT_MARGINS,
   leftMarginForLabels,
+  rightMarginForLabels,
   PLAIN_MARGINS,
 } from '../../core/use-chart'
 import { Axis } from '../../chrome/axis'
@@ -43,11 +44,31 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   y: (d: Datum) => number
   title: string
   description?: string
+  /**
+   * Layout orientation of the component.
+   *
+   * @defaultValue `vertical`
+   * @see the component manifest
+   */
   orientation?: 'vertical' | 'horizontal'
   mode?: 'grouped' | 'stacked' | 'percent'
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
   xTicks?: number
+  /**
+   * Approximate number of ticks on the y-axis.
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   yTicks?: number
   /** Show every Nth category label (and always the last) to thin a crowded x-axis. */
   xLabelEvery?: number
@@ -56,7 +77,12 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   /** Custom tooltip formatter. Stacked default lists "label · total" + per-layer values. */
   tooltipFormat?: (p: ChartPoint) => string
   className?: string
-  /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
+  /**
+   * Marks only — no axes, grid lines, or legend. For micro/inline charts.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
   /**
    * Reference lines, bands, and markers drawn over the plot. Geometric axes: `y` is the
@@ -67,7 +93,12 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   labels?: LabelOptions
   /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
   onSelect?: (point: ChartPoint) => void
-  /** Bar fill style: solid (default), a gradient, or a pattern. */
+  /**
+   * Bar fill style — solid, a gradient, or a pattern.
+   *
+   * @defaultValue `solid`
+   * @see the component manifest
+   */
   fill?: FillKind
   /** Pattern motif when `fill="pattern"`. */
   patternKind?: PatternKind
@@ -159,9 +190,20 @@ export function BarChart<Datum = { x: string; y: number }>({
         .ticks(yTicks)
         .map((v) => (valFormat ? valFormat(v) : v.toLocaleString()))
     : categories.map((c) => String(c))
+  // The final bottom-axis label is centred on the plot's right edge, so half of it
+  // overhangs into the right margin — the default 8px clipped it on every chart.
+  const bottomAxisLabels = isVerticalChart
+    ? categories.map((c) => String(c))
+    : linearScale([yMin, yMax], [0, 1])
+        .ticks(xTicks)
+        .map((v) => (valFormat ? valFormat(v) : v.toLocaleString()))
   const margins = plain
     ? PLAIN_MARGINS
-    : { ...DEFAULT_MARGINS, left: leftMarginForLabels(leftAxisLabels, plain) }
+    : {
+        ...DEFAULT_MARGINS,
+        left: leftMarginForLabels(leftAxisLabels, plain),
+        right: rightMarginForLabels({ bottomAxisLabels, plain }),
+      }
 
   const fallback = (
     <table>

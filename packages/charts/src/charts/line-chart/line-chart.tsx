@@ -3,7 +3,12 @@ import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { useRef } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
 import { warnNonFinite } from '../../core/dev-warn'
-import { DEFAULT_MARGINS, leftMarginForLabels, PLAIN_MARGINS } from '../../core/use-chart'
+import {
+  DEFAULT_MARGINS,
+  leftMarginForLabels,
+  PLAIN_MARGINS,
+  rightMarginForLabels,
+} from '../../core/use-chart'
 import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
 import { GridLines } from '../../chrome/grid-lines'
@@ -53,34 +58,90 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
   y: (d: Datum) => number
   title: string
   description?: string
+  /**
+   * Line interpolation curve
+   *
+   * @defaultValue `monotone`
+   * @see the component manifest
+   */
   curve?: Curve
   width?: number
+  /**
+   * SVG height in px
+   *
+   * @defaultValue `300`
+   * @see the component manifest
+   */
   height?: number
+  /**
+   * Approximate number of X-axis ticks
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   xTicks?: number
+  /**
+   * Approximate number of Y-axis ticks
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   yTicks?: number
   legend?: boolean
   tooltip?: boolean
   formatTooltip?: (datum: Datum, series: LineChartSeries<Datum>) => string
   className?: string
-  /** Render only the marks — no axes, grid lines, or legend. For micro/inline charts. */
+  /**
+   * Marks only — no axes, grid lines, or legend. For micro/inline charts.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
   /** Reference lines, shaded bands, and markers drawn over the plot (target/threshold annotations). */
   annotations?: readonly Annotation[]
   /** Print each point's value as a label above the mark. */
   labels?: LabelOptions
-  /** Bridge `null`/non-finite y gaps instead of breaking the line at them (default: break). */
+  /**
+   * Bridge non-finite y gaps instead of breaking the line at them.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   connectNulls?: boolean
   /** Fired when a point is clicked or activated (Enter/Space) — for drill-down. */
   onSelect?: (point: ChartPoint) => void
-  /** Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window. */
+  /**
+   * Show a keyboard-operable Brush below the plot to subset (zoom) the series to a window.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   brush?: boolean
-  /** Show a DataZoom slider below the plot — a Brush whose body also pans the window. */
+  /**
+   * Show a DataZoom slider below the plot — a Brush whose body also pans the window.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   dataZoom?: boolean
-  /** Enable in-plot wheel/drag/keyboard zoom-pan (`+`/`-`/`0`) over the series index window. */
+  /**
+   * Enable in-plot wheel/drag/keyboard zoom-pan (+/-/0) over the series index window, with a
+   * reset control and re-ticked axes.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   zoom?: boolean
   /** Connect this chart to others sharing the same id — they mirror zoom window + hovered x. */
   syncId?: string
-  /** Tooltip trigger: `item` (default, nearest point) or `axis` (crosshair + all series at the hovered x). */
+  /**
+   * Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing
+   * every series at the hovered x).
+   *
+   * @defaultValue `item`
+   * @see the component manifest
+   */
   tooltipMode?: 'item' | 'axis'
   /** Add a right-hand y-axis for series with `axis: 'right'` (e.g. bandwidth vs requests/sec). */
   secondAxis?: { label?: string; format?: (value: number) => string }
@@ -199,12 +260,40 @@ export function LineChart<Datum = { x: number; y: number }>({
   const leftAxisLabels = linearScale(yDomain(leftY), [0, 1])
     .ticks(yTicks)
     .map((v) => v.toLocaleString())
-  const baseMargins = plain
-    ? PLAIN_MARGINS
-    : { ...DEFAULT_MARGINS, left: leftMarginForLabels(leftAxisLabels, plain) }
-  const margins = hasRight ? { ...baseMargins, right: 60 } : baseMargins
-
   const usesDate = hasData && allX[0] instanceof Date
+
+  // A right axis renders its labels OUTSIDE the plot, and the final bottom label is
+  // centred on the plot's right edge so half of it overhangs ("7/26/2026" → "7/26/202").
+  // The fixed 60px reserved before covered neither reliably.
+  const rightAxisLabels = hasRight
+    ? linearScale(yDomain(rightY), [0, 1])
+        .ticks(yTicks)
+        .map((v) => (secondAxis?.format ? secondAxis.format(v) : v.toLocaleString()))
+    : []
+  const numericX = allX.filter((v): v is number => typeof v === 'number')
+  const dateX = allX.filter((v): v is Date => v instanceof Date)
+  const bottomAxisLabels = !hasData
+    ? []
+    : usesDate
+      ? timeScale(
+          [
+            new Date(Math.min(...dateX.map((d) => d.getTime()))),
+            new Date(Math.max(...dateX.map((d) => d.getTime()))),
+          ],
+          [0, 1],
+        )
+          .ticks(xTicks)
+          .map((d) => d.toLocaleDateString())
+      : linearScale([Math.min(...numericX), Math.max(...numericX)], [0, 1])
+          .ticks(xTicks)
+          .map((v) => v.toLocaleString())
+  const margins = plain
+    ? PLAIN_MARGINS
+    : {
+        ...DEFAULT_MARGINS,
+        left: leftMarginForLabels(leftAxisLabels, plain),
+        right: rightMarginForLabels({ rightAxisLabels, bottomAxisLabels, plain }),
+      }
 
   const fallback = (
     <table>
@@ -479,7 +568,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                     {hasRight && (
                       <Axis
                         scale={yScaleRight}
-                        orientation="y"
+                        orientation="y-right"
                         length={innerH}
                         tickCount={yTicks}
                         transform={`translate(${innerW},0)`}

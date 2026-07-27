@@ -7,13 +7,23 @@ import styles from './collapsible.module.css'
 export interface CollapsibleProps {
   /** Controlled open state. */
   open?: boolean
-  /** Initial open state for uncontrolled use. */
+  /**
+   * Initial open state for uncontrolled use
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   defaultOpen?: boolean
   /** Called whenever the open state should change. */
   onOpenChange?: (open: boolean) => void
   /** Content rendered inside the trigger button. */
   trigger: ReactNode
-  /** Disables the trigger. */
+  /**
+   * Disables the trigger button
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   className?: string
   children?: ReactNode

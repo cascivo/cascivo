@@ -11,7 +11,19 @@ export interface DataListItem {
 
 export interface DataListProps extends HTMLAttributes<HTMLDListElement> {
   items: DataListItem[]
+  /**
+   * Layout orientation of the component.
+   *
+   * @defaultValue `horizontal`
+   * @see the component manifest
+   */
   orientation?: 'horizontal' | 'vertical'
+  /**
+   * When true, shows dividers between items.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   dividers?: boolean
   size?: 'sm' | 'md'
 }

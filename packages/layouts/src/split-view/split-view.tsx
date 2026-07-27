@@ -7,8 +7,26 @@ import styles from './split-view.module.css'
 export interface SplitViewProps {
   start: ReactNode
   end: ReactNode
+  /**
+   * Initial split ratio (0–1)
+   *
+   * @defaultValue `0.3`
+   * @see the component manifest
+   */
   defaultRatio?: number
+  /**
+   * Minimum ratio for start pane
+   *
+   * @defaultValue `0.2`
+   * @see the component manifest
+   */
   min?: number
+  /**
+   * Maximum ratio for start pane
+   *
+   * @defaultValue `0.8`
+   * @see the component manifest
+   */
   max?: number
   'aria-label'?: string
   className?: string

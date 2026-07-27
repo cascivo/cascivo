@@ -38,6 +38,42 @@ export function warnNonFinite(chart: string, getValues: () => readonly number[])
   )
 }
 
+/**
+ * Warn once per `chart` key with a free-form message. Same dedupe and prod-strip as
+ * {@link warnNonFinite}; `key` distinguishes independent warnings from one chart.
+ */
+export function warnOnce(key: string, message: string): void {
+  if (isProd()) return
+  if (warned.has(key)) return
+  warned.add(key)
+  console.warn(`[cascivo charts] ${message}`)
+}
+
+/**
+ * Warn when two series that share one plot differ so much in magnitude that the smaller
+ * one is invisible — the reader then sees a legend naming two metrics over a plot showing
+ * one, which is worse than an error because it looks like a working chart.
+ */
+export function warnScaleMismatch(
+  chart: string,
+  extents: readonly { label: string; max: number }[],
+): void {
+  if (isProd()) return
+  const finite = extents.filter((e) => Number.isFinite(e.max) && e.max > 0)
+  if (finite.length < 2) return
+  const sorted = [...finite].sort((a, b) => b.max - a.max)
+  const biggest = sorted[0]!
+  const smallest = sorted[sorted.length - 1]!
+  if (biggest.max / smallest.max < 20) return
+  warnOnce(
+    `${chart}:scale-mismatch`,
+    `${chart}: "${smallest.label}" (max ${smallest.max.toLocaleString()}) is more than 20× smaller than ` +
+      `"${biggest.label}" (max ${biggest.max.toLocaleString()}) on the same axis, so it renders as a flat ` +
+      'line at the baseline while the legend still names both. Put the smaller series on its own scale ' +
+      "with `axis: 'right'` + `secondAxis`, or split it into a second chart.",
+  )
+}
+
 /** Test-only: clear the dedupe set so a warning can be asserted more than once. */
 export function __resetChartWarnings(): void {
   warned.clear()

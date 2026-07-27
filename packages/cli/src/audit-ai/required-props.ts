@@ -28,9 +28,9 @@ export function findRequiredPropViolations(
   const findings: RequiredPropFinding[] = []
   const tracked = importedCascadeComponents(source)
 
-  for (const comp of tracked) {
-    const info = contract.components.get(comp)
-    if (!info?.hasRequiredProps) continue
+  for (const [comp, contractName] of tracked) {
+    const info = contract.components.get(contractName)
+    if (!info) continue
 
     for (const tag of findOpeningTags(source, comp)) {
       if (tag.hasSpread) continue
@@ -46,6 +46,21 @@ export function findRequiredPropViolations(
           level: 'error',
           rule: 'missing-prop',
           message: `<${comp}> requires "${req}"`,
+        })
+      }
+      // `children` is element content, not an attribute. The scan only ever sees the
+      // opening tag, so treating it like a prop reported EVERY correct usage as missing —
+      // `<AppShell>{children}</AppShell>` and `<Field label="…"><Input/></Field>` both.
+      // A self-closing tag is the one shape that genuinely has no children.
+      if (info.requiresChildren && tag.selfClosing && !present.has('children')) {
+        findings.push({
+          file: filename,
+          line,
+          component: comp,
+          prop: 'children',
+          level: 'error',
+          rule: 'missing-prop',
+          message: `<${comp} /> is self-closing but requires children`,
         })
       }
     }

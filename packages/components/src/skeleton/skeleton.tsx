@@ -4,9 +4,21 @@ import type { CSSProperties, HTMLAttributes } from 'react'
 import styles from './skeleton.module.css'
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `text`
+   * @see the component manifest
+   */
   variant?: 'text' | 'circle' | 'rect'
   width?: string
   height?: string
+  /**
+   * Number of bars for the text variant; the last bar renders shorter
+   *
+   * @defaultValue `1`
+   * @see the component manifest
+   */
   lines?: number
 }
 

@@ -5,6 +5,12 @@ export type IndicatorPlacement = 'top-start' | 'top-end' | 'bottom-start' | 'bot
 export interface IndicatorProps {
   children: React.ReactNode
   overlay: React.ReactNode
+  /**
+   * Placement relative to the trigger.
+   *
+   * @defaultValue `top-end`
+   * @see the component manifest
+   */
   placement?: IndicatorPlacement
   className?: string
 }

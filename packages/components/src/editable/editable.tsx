@@ -8,7 +8,19 @@ export interface EditableProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onC
   value: string
   onValueChange: (v: string) => void
   placeholder?: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
+  /**
+   * When true, commits the edit when the field loses focus.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   submitOnBlur?: boolean
   onCancel?: () => void
 }

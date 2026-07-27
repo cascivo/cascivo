@@ -11,7 +11,7 @@ export interface PropFinding {
 }
 
 /** Props always allowed on any cascade component (DOM passthrough / React intrinsics). */
-const PASSTHROUGH = new Set(['className', 'style', 'id', 'ref', 'key', 'children'])
+export const PASSTHROUGH = new Set(['className', 'style', 'id', 'ref', 'key', 'children'])
 
 /**
  * Standard HTML/React DOM attributes. Every cascade component extends an
@@ -21,7 +21,7 @@ const PASSTHROUGH = new Set(['className', 'style', 'id', 'ref', 'key', 'children
  * Without this set, a legitimate `type`/`name`/`title`/`tabIndex` on a Button is
  * a non-suppressible `unknown-prop` error — the audit-loop deadlock.
  */
-const HTML_PASSTHROUGH = new Set([
+export const HTML_PASSTHROUGH = new Set([
   'type',
   'name',
   'value',
@@ -81,21 +81,45 @@ function isPassthrough(prop: string): boolean {
   return false
 }
 
-/** Names imported from @cascivo/react in this source. */
-export function importedCascadeComponents(source: string): Set<string> {
-  const names = new Set<string>()
-  const importRe = /import\s*\{([^}]*)\}\s*from\s*['"]@cascivo\/react['"]/g
+/**
+ * Local JSX names bound to a cascade component, mapped to the contract name they refer to.
+ *
+ * Two rules, both learned from false positives on correct code:
+ *
+ * 1. **Track the LOCAL binding, not the imported name.** `import { Link as CascadeLink }`
+ *    used to register `Link`, so the scan then matched the *router's* `<Link to=…>` and
+ *    reported `to` as an unknown prop. For a router-based app that collateral is close to
+ *    guaranteed.
+ * 2. **Never audit a name this file also imports from somewhere else.** A bare-name clash
+ *    (`Link` from `@tanstack/react-router`) must not be audited against cascivo's contract
+ *    even when nothing is aliased.
+ */
+export function importedCascadeComponents(source: string): Map<string, string> {
+  const names = new Map<string, string>()
+  const foreign = new Set<string>()
+
+  const importRe = /import\s*(?:type\s*)?\{([^}]*)\}\s*from\s*['"]([^'"]+)['"]/g
   for (const m of source.matchAll(importRe)) {
-    const group = m[1]
-    if (group === undefined) continue
+    const [, group, specifier] = m
+    if (group === undefined || specifier === undefined) continue
+    const isCascade = specifier === '@cascivo/react'
     for (const raw of group.split(',')) {
-      const name = raw
-        .trim()
-        .split(/\s+as\s+/)[0]
-        ?.trim()
-      if (name) names.add(name)
+      const parts = raw.trim().split(/\s+as\s+/)
+      const imported = parts[0]?.trim().replace(/^type\s+/, '')
+      const local = (parts[1] ?? parts[0])?.trim()
+      if (!imported || !local) continue
+      if (isCascade) names.set(local, imported)
+      else foreign.add(local)
     }
   }
+  // A default import (`import Link from 'next/link'`) also shadows the name.
+  for (const m of source.matchAll(
+    /import\s+(\w+)\s*(?:,\s*\{[^}]*\})?\s*from\s*['"]([^'"]+)['"]/g,
+  )) {
+    if (m[2] !== '@cascivo/react' && m[1]) foreign.add(m[1])
+  }
+
+  for (const local of foreign) names.delete(local)
   return names
 }
 
@@ -104,6 +128,8 @@ export interface OpeningTag {
   attrs: string
   index: number
   hasSpread: boolean
+  /** `<Foo />` — the one shape that genuinely cannot have children. */
+  selfClosing: boolean
 }
 
 export function findOpeningTags(source: string, comp: string): OpeningTag[] {
@@ -139,8 +165,14 @@ export function findOpeningTags(source: string, comp: string): OpeningTag[] {
       attrs += ch
     }
     if (!closed) continue
-    const cleanAttrs = attrs.replace(/\/$/, '')
-    tags.push({ attrs: cleanAttrs, index: start, hasSpread: /\{\s*\.\.\./.test(cleanAttrs) })
+    const selfClosing = /\/\s*$/.test(attrs)
+    const cleanAttrs = attrs.replace(/\/\s*$/, '')
+    tags.push({
+      attrs: cleanAttrs,
+      index: start,
+      hasSpread: /\{\s*\.\.\./.test(cleanAttrs),
+      selfClosing,
+    })
   }
   return tags
 }
@@ -213,8 +245,8 @@ export function findJsxPropViolations(
   const findings: PropFinding[] = []
   const tracked = importedCascadeComponents(source)
 
-  for (const comp of tracked) {
-    const info = contract.components.get(comp)
+  for (const [comp, contractName] of tracked) {
+    const info = contract.components.get(contractName)
     if (!info) continue
     const known = new Set(info.props.map((p) => p.name))
 

@@ -1,13 +1,33 @@
 'use client'
-import { cn, useSignals } from '@cascivo/core'
+import { cn, normalizeTone, useSignals, type ToneInput } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import type { HTMLAttributes } from 'react'
 import styles from './tag.module.css'
 
+/** Canonical tone → the value Tag's stylesheet keys on. */
+const TONE_CLASS: Record<string, string> = {
+  neutral: 'default',
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  danger: 'error',
+}
+
 export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'info' | 'success' | 'warning' | 'error'
+  /**
+   * Severity tone. Accepts the catalog-wide `Tone` vocabulary
+   * (`neutral | info | success | warning | danger`) plus Tag's historical spellings
+   * (`default`, `error`, `destructive`).
+   */
+  variant?: ToneInput
   size?: 'sm' | 'md'
   onDismiss?: () => void
+  /**
+   * Accessible label for the dismiss button.
+   *
+   * @defaultValue `Remove`
+   * @see the component manifest
+   */
   dismissLabel?: string
 }
 
@@ -24,7 +44,7 @@ export function Tag({
   const resolvedDismissLabel = dismissLabel ?? t(builtin.tag.dismiss)
   return (
     <span
-      data-variant={variant}
+      data-variant={TONE_CLASS[normalizeTone(variant)] ?? variant}
       data-size={size}
       className={cn(styles['tag'], className)}
       {...props}

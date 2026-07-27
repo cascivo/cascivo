@@ -15,6 +15,12 @@ export interface PasswordInputProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'type' | 'size'
 > {
+  /**
+   * When true, shows a password-strength meter.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   showStrengthMeter?: boolean
   size?: 'sm' | 'md' | 'lg'
   labels?: PasswordInputLabels

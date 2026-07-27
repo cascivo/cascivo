@@ -17,6 +17,13 @@ export const meta: ComponentMeta = {
       description: 'Position in flow coords (controllable).',
     },
     {
+      name: 'defaultPosition',
+      type: 'XYPosition',
+      required: false,
+      description:
+        'Initial position for an uncontrolled node — the node then owns its own position as it is dragged. Pass `position` instead to control it.',
+    },
+    {
       name: 'onPositionChange',
       type: '(position: XYPosition) => void',
       required: false,

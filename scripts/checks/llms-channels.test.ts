@@ -115,12 +115,24 @@ describe('llms channel + stylesheet guard', () => {
       if (e.install) continue
       const name = (e as { meta?: { name?: string } }).meta?.name ?? e.name
       const channels = (e as { channels?: string[] }).channels ?? []
+      const partial = (e as { importableSymbols?: string[] }).importableSymbols ?? []
       const claimsReact = channels.includes('npm:@cascivo/react')
-      const reallyExported = exported.has(name)
+      // Symbol-level, not name-level. `toast`'s display name `Toast` is not exported, but
+      // `ToastProvider`/`useToast`/`dismissAllToasts` are and are the whole usable API —
+      // checking only the name labelled the entry copy-paste-only, and the recipe's channel
+      // column (which an adopter trusted *because* it is CI-checked) was wrong for it.
+      const reallyExported = exported.has(name) || partial.length > 0
       if (claimsReact !== reallyExported) {
         failures.push(
           `${e.name}: registry says ${claimsReact ? '' : 'NOT '}importable from ` +
-            `@cascivo/react, but packages/react/src/index.ts ${reallyExported ? 'does' : 'does not'} export \`${name}\``,
+            `@cascivo/react, but packages/react/src/index.ts exports neither \`${name}\` nor any of its symbols`,
+        )
+      }
+      // Every claimed partial symbol must really be exported.
+      for (const symbol of partial) {
+        if (exported.has(symbol)) continue
+        failures.push(
+          `${e.name}: importableSymbols lists \`${symbol}\`, which packages/react/src/index.ts does not export`,
         )
       }
     }

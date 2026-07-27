@@ -9,6 +9,12 @@ import styles from './multi-select.module.css'
 export interface MultiSelectOption {
   label: string
   value: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 

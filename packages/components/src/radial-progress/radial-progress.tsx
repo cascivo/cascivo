@@ -7,6 +7,12 @@ export type RadialProgressVariant = 'primary' | 'info' | 'success' | 'warning' |
 export interface RadialProgressProps {
   value: number
   size?: RadialProgressSize
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `primary`
+   * @see the component manifest
+   */
   variant?: RadialProgressVariant
   children?: React.ReactNode
   'aria-label'?: string

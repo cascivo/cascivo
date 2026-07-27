@@ -5,8 +5,20 @@ import { Spinner } from '../spinner/spinner'
 import styles from './button.module.css'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `primary`
+   * @see the component manifest
+   */
   variant?: 'primary' | 'secondary' | 'ghost' | 'destructive'
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * When true, shows a loading state.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   loading?: boolean
   /**
    * Render the single child element instead of a native `<button>` so the button

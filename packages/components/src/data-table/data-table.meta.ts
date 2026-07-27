@@ -275,7 +275,7 @@ export const meta: ComponentMeta = {
       key: 'status',
       header: 'Status',
       render: (row) => (
-        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
+        <Badge variant={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>
       ),
     },
     {

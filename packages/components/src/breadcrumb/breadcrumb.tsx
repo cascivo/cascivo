@@ -12,7 +12,12 @@ export interface BreadcrumbProps {
   items: BreadcrumbItem[]
   maxVisible?: number
   className?: string
-  /** Accessible label for the nav landmark */
+  /**
+   * Accessible label for the component.
+   *
+   * @defaultValue `Breadcrumb`
+   * @see the component manifest
+   */
   ariaLabel?: string
 }
 

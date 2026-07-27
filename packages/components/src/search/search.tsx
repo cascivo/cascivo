@@ -13,11 +13,44 @@ export interface SearchProps {
   /** @deprecated Use `onValueChange` — it receives the same string. */
   onChange?: (value: string) => void
   onSearch?: (value: string) => void
+  /**
+   * Debounce delay (ms) before onSearch fires.
+   *
+   * @defaultValue `300`
+   * @see the component manifest
+   */
   debounceMs?: number
+  /**
+   * Placeholder text shown when the field is empty.
+   *
+   * @defaultValue `Search`
+   * @see the component manifest
+   */
   placeholder?: string
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * Accessible name for the control. Rendered as a real `<label>` that is **visually
+   * hidden** by design — it changes the accessible name, not the visible UI. If you can see
+   * it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the
+   * per-component CSS).
+   *
+   * @defaultValue `Search`
+   * @see the component manifest
+   */
   label?: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
+  /**
+   * Accessible label for the clear button.
+   *
+   * @defaultValue `Clear search`
+   * @see the component manifest
+   */
   clearLabel?: string
   id?: string
   className?: string

@@ -23,6 +23,12 @@ const machine = createMachine({
 export interface ComboboxOption {
   value: string
   label: string
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 
@@ -41,7 +47,19 @@ export interface ComboboxProps {
   onValueChange?: (value: string | undefined) => void
   /** @deprecated Use `onValueChange` — it receives the same `string | undefined`. */
   onChange?: (value: string | undefined) => void
+  /**
+   * When true, shows a control to clear the selected value.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   clearable?: boolean
+  /**
+   * When true, shows a search/filter input.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   searchable?: boolean
   label?: string
   hint?: string

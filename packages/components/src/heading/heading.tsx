@@ -16,6 +16,12 @@ const DERIVED_SIZE: Record<HeadingLevel, HeadingSize> = {
 }
 
 export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
+  /**
+   * Heading level (1–6) mapping to h1–h6.
+   *
+   * @defaultValue `2`
+   * @see the component manifest
+   */
   level?: HeadingLevel
   size?: HeadingSize
 }

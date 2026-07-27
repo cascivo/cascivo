@@ -5,6 +5,12 @@ import styles from './spacer.module.css'
 import type { SpaceStep } from '@cascivo/core'
 
 export interface SpacerProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Spacing token step
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   size?: SpaceStep
 }
 

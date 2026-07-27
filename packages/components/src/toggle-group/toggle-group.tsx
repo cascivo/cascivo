@@ -8,6 +8,12 @@ export interface ToggleGroupItem {
   value: string
   label?: string
   icon?: ReactNode
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 
@@ -20,6 +26,12 @@ export interface ToggleGroupProps extends Omit<
   defaultValue?: string | string[]
   onValueChange?: (value: string | string[]) => void
   items: ToggleGroupItem[]
+  /**
+   * Layout orientation of the component.
+   *
+   * @defaultValue `horizontal`
+   * @see the component manifest
+   */
   orientation?: 'horizontal' | 'vertical'
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean

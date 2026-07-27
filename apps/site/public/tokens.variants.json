@@ -318,6 +318,26 @@
       }
     },
     {
+      "name": "--cascivo-chart-fill-opacity-overlap",
+      "layer": "semantic",
+      "group": "chart",
+      "byTheme": {
+        "arcade": "0.125",
+        "brutalist": "0.125",
+        "corporate": "0.125",
+        "cyberpunk": "0.2",
+        "dark": "0.2",
+        "flat": "0.125",
+        "light": "0.125",
+        "midnight": "0.2",
+        "minimal": "0.125",
+        "pastel": "0.125",
+        "tailwind": null,
+        "terminal": "0.2",
+        "warm": "0.125"
+      }
+    },
+    {
       "name": "--cascivo-chart-grid",
       "layer": "semantic",
       "group": "chart",
@@ -2224,6 +2244,26 @@
       }
     },
     {
+      "name": "--cascivo-link-color",
+      "layer": "semantic",
+      "group": "link",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.22 27)",
+        "brutalist": "oklch(0.88 0.19 105)",
+        "corporate": "oklch(0.5 0.16 255)",
+        "cyberpunk": "oklch(0.7 0.25 330)",
+        "dark": "oklch(0.65 0.2 250)",
+        "flat": "oklch(0.5 0.2 145)",
+        "light": "oklch(0.52 0.2 250)",
+        "midnight": "oklch(0.7 0.22 290)",
+        "minimal": "oklch(0.25 0.01 80)",
+        "pastel": "oklch(0.68 0.18 350)",
+        "tailwind": null,
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.768 0.145 75)"
+      }
+    },
+    {
       "name": "--cascivo-motion-emphasis",
       "layer": "semantic",
       "group": "motion",
@@ -2681,6 +2721,26 @@
         "tailwind": "80rem",
         "terminal": "80rem",
         "warm": "80rem"
+      }
+    },
+    {
+      "name": "--cascivo-search-width",
+      "layer": "semantic",
+      "group": "search",
+      "byTheme": {
+        "arcade": "100%",
+        "brutalist": "100%",
+        "corporate": "100%",
+        "cyberpunk": "100%",
+        "dark": "100%",
+        "flat": "100%",
+        "light": "100%",
+        "midnight": "100%",
+        "minimal": "100%",
+        "pastel": "100%",
+        "tailwind": "100%",
+        "terminal": "100%",
+        "warm": "100%"
       }
     },
     {

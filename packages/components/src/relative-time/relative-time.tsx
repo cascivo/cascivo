@@ -7,7 +7,12 @@ import styles from './relative-time.module.css'
 export interface RelativeTimeProps extends Omit<TimeHTMLAttributes<HTMLTimeElement>, 'dateTime'> {
   /** The instant to describe relative to now. */
   date: Date | number | string
-  /** Auto-update as time passes. Default true. */
+  /**
+   * When true, updates the relative time as it elapses.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   sync?: boolean
   /** Override "now" (ms since epoch). Mainly for deterministic tests; disables the interval. */
   now?: number

@@ -10,9 +10,27 @@ export interface RatingGroupLabels {
 export interface RatingGroupProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: number
   onValueChange?: (v: number) => void
+  /**
+   * Maximum allowed value.
+   *
+   * @defaultValue `5`
+   * @see the component manifest
+   */
   max?: number
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
+  /**
+   * When true, the value is shown but cannot be edited.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   readOnly?: boolean
   labels?: RatingGroupLabels
 }

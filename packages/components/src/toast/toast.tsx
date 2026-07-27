@@ -10,7 +10,19 @@ export type ToastVariant = 'default' | 'success' | 'warning' | 'destructive'
 export interface ToastOptions {
   title: string
   description?: string
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `default`
+   * @see the component manifest
+   */
   variant?: ToastVariant
+  /**
+   * How long (ms) the toast stays visible before auto-dismiss.
+   *
+   * @defaultValue `5000`
+   * @see the component manifest
+   */
   duration?: number
 }
 

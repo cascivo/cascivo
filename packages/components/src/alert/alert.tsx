@@ -5,9 +5,21 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './alert.module.css'
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `default`
+   * @see the component manifest
+   */
   variant?: 'default' | 'info' | 'success' | 'warning' | 'destructive'
   title?: string
   icon?: ReactNode
+  /**
+   * When true, shows a control to dismiss the component.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   dismissible?: boolean
   onDismiss?: () => void
   action?: { label: string; onClick: () => void }

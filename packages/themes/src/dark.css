@@ -131,6 +131,8 @@
     /* Raised from the 0.25 base: a low-opacity fill over the dark surface (L≈0.185)
        desaturates into a muddy neutral, so give area fills more presence on dark. */
     --cascivo-chart-fill-opacity: 0.4;
+    /* Overlapping (non-stacked) areas — lower so series stay distinguishable. */
+    --cascivo-chart-fill-opacity-overlap: 0.2;
 
     /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

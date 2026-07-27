@@ -73,6 +73,22 @@ function resolveModule(fromFile: string, spec: string): string | null {
  * Every identifier importable from `@cascivo/react`, values and types alike.
  * `depth` bounds the `export *` walk; one level of indirection is all the entry uses.
  */
+/**
+ * Top-level export names declared in one source file.
+ *
+ * Used to decide an entry's distribution channel by its **symbols** rather than by its
+ * display name. `toast`'s display name is `Toast`, which `@cascivo/react` does not export —
+ * but `ToastProvider`, `useToast` and `dismissAllToasts` are all exported and are the entire
+ * usable API. Testing the name alone labelled the whole entry "copy-paste only", and the
+ * recipe's channel column — which an adopter explicitly trusted *because* it is CI-checked —
+ * was wrong for it.
+ */
+export function exportedNamesOf(file: string): Set<string> {
+  if (!existsSync(file)) return new Set()
+  const src = stripComments(readFileSync(file, 'utf8'))
+  return new Set([...namedExports(src), ...declarationExports(src)])
+}
+
 export function reactExportedNames(repoRoot: string, depth = 2): Set<string> {
   const entry = join(repoRoot, 'packages/react/src/index.ts')
   const names = new Set<string>()

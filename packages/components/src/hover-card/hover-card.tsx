@@ -11,7 +11,19 @@ const HoverCardContext = createContext<UsePopoverReturn | null>(null)
 
 export interface HoverCardProps {
   children: ReactNode
+  /**
+   * Delay (ms) before the card opens on hover/focus.
+   *
+   * @defaultValue `300`
+   * @see the component manifest
+   */
   openDelay?: number
+  /**
+   * Delay (ms) before the card closes after hover/focus leaves.
+   *
+   * @defaultValue `100`
+   * @see the component manifest
+   */
   closeDelay?: number
 }
 

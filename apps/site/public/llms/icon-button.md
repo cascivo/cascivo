@@ -40,7 +40,7 @@ import { IconButton } from '@cascivo/react'
 
 | Prop        | Type                                         | Required | Default | Description                                                                                               |
 | ----------- | -------------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------- |
-| `label`     | `string`                                     | yes      | —       | Text label for the control.                                                                               |
+| `label`     | `string`                                     | no       | —       | Text label for the control.                                                                               |
 | `ariaLabel` | `string`                                     | no       | —       | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
 | `icon`      | `React.ReactNode`                            | no       | —       | Icon element rendered in the component.                                                                   |
 | `variant`   | `'ghost' \| 'outline' \| 'filled'`           | no       | `ghost` | Selects the visual style variant.                                                                         |

@@ -12,10 +12,24 @@ export interface SankeyProps {
   links: readonly SankeyLink[]
   title: string
   description?: string
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
   tooltip?: boolean
   className?: string
+  /**
+   * When true, renders a minimal variant without chart chrome.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
 }
 

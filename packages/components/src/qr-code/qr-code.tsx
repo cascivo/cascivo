@@ -11,13 +11,28 @@ export interface QrCodeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'child
   value: string
   /** Rendered size in pixels (width and height). Default 128. */
   size?: number
-  /** Error-correction level. Higher tolerates more damage but holds less data. Default 'M'. */
+  /**
+   * Higher levels tolerate more damage but hold less data
+   *
+   * @defaultValue `M`
+   * @see the component manifest
+   */
   errorCorrection?: ErrorCorrection
   /** CSS length rounding the code's corners (applied to the container). */
   radius?: string
-  /** Module color. Default `currentColor` so the code inherits text color. */
+  /**
+   * Foreground color of the QR modules.
+   *
+   * @defaultValue `currentColor`
+   * @see the component manifest
+   */
   fill?: string
-  /** Background color behind the modules. Default `transparent`. */
+  /**
+   * Background color behind the QR code.
+   *
+   * @defaultValue `transparent`
+   * @see the component manifest
+   */
   background?: string
   /** Accessible label. Defaults to the i18n built-in "QR code". */
   label?: string

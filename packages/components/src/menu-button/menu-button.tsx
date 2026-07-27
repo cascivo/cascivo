@@ -16,6 +16,12 @@ export interface MenuButtonItem {
   id: string
   label: ReactNode
   onSelect?: () => void
+  /**
+   * Disables the trigger
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
 }
 

@@ -25,6 +25,12 @@ export interface NavigationMenuItem {
 export interface NavigationMenuProps {
   items: NavigationMenuItem[]
   'aria-label'?: string
+  /**
+   * Layout orientation of the component.
+   *
+   * @defaultValue `horizontal`
+   * @see the component manifest
+   */
   orientation?: RovingOrientation
   className?: string
 }

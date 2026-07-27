@@ -36,6 +36,8 @@ export interface PieChartProps {
   centerSlot?: ReactNode
   /** Visible placeholder text when data is empty. Defaults to the i18n built-in ("No data"). */
   emptyLabel?: string
+  /** Show tooltips (default `true`). Parity with Area/Bar/Line/Combo, which all take this. */
+  tooltip?: boolean
   /** Custom tooltip formatter. Defaults to "value (pct%)". Receives ChartPoint.percent. */
   tooltipFormat?: (p: ChartPoint) => string
   legend?: boolean
@@ -69,6 +71,7 @@ export function PieChart({
   centerLabel,
   centerSlot,
   emptyLabel,
+  tooltip,
   tooltipFormat,
   legend,
   className,
@@ -157,7 +160,7 @@ export function PieChart({
         data-state={hasData ? undefined : 'empty'}
         emptyLabel={emptyLabel}
         plain={plain}
-        tooltip={hasData ? buildTooltip : undefined}
+        tooltip={tooltip !== false && hasData ? buildTooltip : undefined}
         onSelect={onSelect}
       >
         {({ width, height: h }) => {

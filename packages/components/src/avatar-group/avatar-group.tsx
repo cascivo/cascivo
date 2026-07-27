@@ -16,9 +16,19 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
   max?: number
   /** Override the total count used for the +N chip (when more exist than rendered). */
   total?: number
-  /** Overlap amount. */
+  /**
+   * Spacing between items.
+   *
+   * @defaultValue `md`
+   * @see the component manifest
+   */
   spacing?: 'sm' | 'md' | 'lg'
-  /** Wrap into a grid instead of an overlapping row. */
+  /**
+   * When true, lays the avatars out in a grid instead of an overlapping stack.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   isGrid?: boolean
   labels?: AvatarGroupLabels
   /** The <Avatar> children. */

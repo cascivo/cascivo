@@ -130,7 +130,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.module.css"
       ],
       "fileHashes": {
-        "action-sheet.tsx": "sha256-498ae534542fc490605586ca797e062c00690f1ee1752acd54ea91997ac4cc37",
+        "action-sheet.tsx": "sha256-bdc05eb38f70c6887f65907a3058cbb56d4cae60333b456bbb5a10e5b9956dfe",
         "action-sheet.module.css": "sha256-d1f0305ac1c08b0cd7e1656648d525d3b0c9b3c7cf9ff66057264b4eada60c2c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -298,7 +298,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/alert.module.css"
       ],
       "fileHashes": {
-        "alert.tsx": "sha256-5e94a1c69e53ba5c0634b710ec52000a007ea15330b78031585db2169b8866ff",
+        "alert.tsx": "sha256-e614b15b860d5e476bfa79bbf3e3bb556bf4a8849f77bb53339f2c6aed08ad9e",
         "alert.module.css": "sha256-10072baa13db3ed9408bf6d163c3785a3544c91dbd3e77388599fc03e3cc2621"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -446,7 +446,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.module.css"
       ],
       "fileHashes": {
-        "alert-dialog.tsx": "sha256-d1a09a2f2e995780923218f69db4ddb81a65a4095bcbfc12fd24035b0f62c0c8",
+        "alert-dialog.tsx": "sha256-01494e531aec4c2abae530aa65acd3a7067402c0b187faa04e59a35e648940ed",
         "alert-dialog.module.css": "sha256-267fbaf50c0ed20988a872e8b04b1dceb27d9a46efbe382dbaec98bb598336ca"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -608,7 +608,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
       ],
       "fileHashes": {
-        "app-shell.tsx": "sha256-1f1af60ecb91758606c9d7aab5e576ce06231d6221d55600c3c4f028ce382892",
+        "app-shell.tsx": "sha256-648fc7b9b2cb57acb9910055c4f6864f53e7bff9dc6300ebc974acb5b96af1d5",
         "app-shell.module.css": "sha256-83ce3c2da71f0d5249d4a18f12c12779e1a1b7bc8973ab889d19d0a39004180b"
       },
       "dependencies": ["@cascivo/core"],
@@ -746,7 +746,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.module.css"
       ],
       "fileHashes": {
-        "aspect-ratio.tsx": "sha256-05d3a47d5586b3c0953b179ff794d7abdf33a058ddb7573ef938ad0fda72f46f",
+        "aspect-ratio.tsx": "sha256-3d536cb4c1be1f64771902d55f8c7a1647fa5316d35a1743ec48109847e2b0d8",
         "aspect-ratio.module.css": "sha256-45fe567e8d1e3e8c98e15503cfecf46f488d2cee567d6ae8d87624a0abab47ea"
       },
       "dependencies": ["@cascivo/core"],
@@ -846,7 +846,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.module.css"
       ],
       "fileHashes": {
-        "avatar.tsx": "sha256-b8a528eb3319fd685eedb485b48b39ee7fe846bcf36d88296df63deb0d0f5e01",
+        "avatar.tsx": "sha256-4793fe171b0dfc31d94387042247962207d2861a9689e53fb9b775fc34bdd7c3",
         "avatar.module.css": "sha256-e0f5b3e477d8a6b541293d9966e530c235ddb3df57fabf55955c17f62847d13f"
       },
       "dependencies": ["@cascivo/core"],
@@ -985,7 +985,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.module.css"
       ],
       "fileHashes": {
-        "avatar-group.tsx": "sha256-938cab3fd9d476b2e0720e00e4652b28efe6038008c9139fcbc78aa897ecbc60",
+        "avatar-group.tsx": "sha256-35a1679d64654d2bd174f50c3c2252f340788f239d52ab9a5045208ef5bf6343",
         "avatar-group.module.css": "sha256-6a3367c2fa054dc6d0ff0ca768f0162a5c9f4de52f539c0d3f4090c39924c810"
       },
       "dependencies": ["@cascivo/core", "@cascivo/components"],
@@ -1121,7 +1121,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
       ],
       "fileHashes": {
-        "badge.tsx": "sha256-c146bace1ac2cf78d91df953fef66cc01e314d7110ce3754286a6b90c15fc558",
+        "badge.tsx": "sha256-583f6220f823acdde05e29bac41316048ce32012a34d62501e684f407e31e4b4",
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0"
       },
       "dependencies": ["@cascivo/core"],
@@ -1258,7 +1258,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.module.css"
       ],
       "fileHashes": {
-        "blockquote.tsx": "sha256-ffadee8ba2da2db047d6c708f92d1fdb8d11391b552864ad35c3598a696618e7",
+        "blockquote.tsx": "sha256-6619887aefd8087aa23afa1acb7cf75ab51d3b6eb92b14b6cbe818f96af07c91",
         "blockquote.module.css": "sha256-2d67d6719167f6bed6857a2be2ea7041d70b29e0124c7e1d536a16ac9d956bfb"
       },
       "dependencies": ["@cascivo/core"],
@@ -1365,7 +1365,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.module.css"
       ],
       "fileHashes": {
-        "bottom-sheet.tsx": "sha256-d466c349050eab2659a8f00e45ab492498f1fc9a7480a964b83d7a549c159227",
+        "bottom-sheet.tsx": "sha256-0ac207aede2881c8b9c77e0c7e534ad286b84ab06ca6e21d71bf7ad6a78381d8",
         "bottom-sheet.module.css": "sha256-4e8f886dd70fa89cf89a69e16601ad8c3c9bd73dc176a8fbbda8c7d755b86d59"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -1548,7 +1548,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.module.css"
       ],
       "fileHashes": {
-        "breadcrumb.tsx": "sha256-2db0efc4decdd98e1d12ef026e82b469ebe31d09f923a582b8d88690c05bcd50",
+        "breadcrumb.tsx": "sha256-2caeec1b09256242f9ab5df90786c7e2a9440fcd6c02021cc0c100ef5f31f060",
         "breadcrumb.module.css": "sha256-f75bb68385f2664591666d0cfa8017ce32440ffb9bef2e9d42ef5f512d46637d"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -1672,8 +1672,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.module.css"
       ],
       "fileHashes": {
-        "button.tsx": "sha256-4abc3f07e7c8bc0f36a90b26656dd9f0a7b7f823ac652a45a4b957076932a3a4",
-        "button.module.css": "sha256-908a78949db98adc34d37e0d51e45dc3abbe9b78fe09f057bc68f22b53a06721"
+        "button.tsx": "sha256-bccfa5c2feb8e6cd28b3265fdedf9b31dac58c00269157c7e04e558b4ff52232",
+        "button.module.css": "sha256-b6ff24230a9cc0e6c45aa64b2b3bef77efa1fa0f56fe132e2d0765e79fcdc039"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -1833,7 +1833,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.module.css"
       ],
       "fileHashes": {
-        "button-group.tsx": "sha256-f73b231f5f097753b191082126b46b00d831542c130132e81d5b0a2d4406dbed",
+        "button-group.tsx": "sha256-9ef2a7967c5270c6185a555488fa5dfdf91c370c88b8e9aa4bb3bae3eb7c8002",
         "button-group.module.css": "sha256-38ef0e5c125f8d4300ddf2afcce6cfccd0be37b90d2cbb7c9c3d464b3afa065d"
       },
       "dependencies": ["@cascivo/core"],
@@ -1969,7 +1969,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.module.css"
       ],
       "fileHashes": {
-        "calendar.tsx": "sha256-be9c824998531ff8c9fb81dd109f7b108282681a50fde158e21f965ce702f0d8",
+        "calendar.tsx": "sha256-e39927d4b19844a35a052fb3e57bcbd6335cb3db6b8f44fba6fc256144c7d11a",
         "calendar.module.css": "sha256-b963f6d9f94387973c7b2163f62fc89cfa1346b61e9ffa7131de2a44480433ee"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -2196,8 +2196,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.module.css"
       ],
       "fileHashes": {
-        "card.tsx": "sha256-b9ab98c410b67468480667e49a52f5691134dd581be38b15d8a53e8204659110",
-        "card.module.css": "sha256-03590d257a7642578db3bb984d71ca277e6a34209ff35d65e15db9fb7fc58fa3"
+        "card.tsx": "sha256-072752ba72696fe4e3b3aa456edf039b1c4f1d8ea09f4a2830470b82658fc179",
+        "card.module.css": "sha256-47bae411aa03ef9c6fdf18a03358f88f2a6eabc6bdc2311798ca720405dad717"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -2304,7 +2304,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/carousel.module.css"
       ],
       "fileHashes": {
-        "carousel.tsx": "sha256-1193b32538298e8a80668cdf590bfd41ad2be72a126d611315c07eec13a488e2",
+        "carousel.tsx": "sha256-0fab4fb01cf11c9f61a76523e7257145d56a271ac1470f73347c1c9ee2bbcdc0",
         "carousel.module.css": "sha256-54bffbc1b857a12c34064c4f673931e66508a51c638ccca42c6d201ede8ccfdf"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -2446,7 +2446,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.module.css"
       ],
       "fileHashes": {
-        "chat-bubble.tsx": "sha256-3294c2864d6a0f401ce487b53e656a606bd7a15d67d39095a0fd3df146852817",
+        "chat-bubble.tsx": "sha256-7824de05c1de8c39d41891e063194103676cf2918ad948bb9d08cb5d2aaf1485",
         "chat-bubble.module.css": "sha256-057b48821b086f66878e1f2557b1f233847315d6487dd33fb3a5feadfbda16b1"
       },
       "dependencies": [],
@@ -2588,7 +2588,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
       ],
       "fileHashes": {
-        "checkbox.tsx": "sha256-85fc426d7079dfedb5fc35fb2f29900b7ad60a91bf05729c77a4710d8e6b4de3",
+        "checkbox.tsx": "sha256-94dd842950ec5061ea4b6fea47ce5b1913ce756939e7bdd85603b64235186fca",
         "checkbox.module.css": "sha256-67ab94d2766e3fdff0c3cbbd2fd178f3bc1b489af3825ddd31292de6281295f2"
       },
       "dependencies": ["@cascivo/core"],
@@ -2978,7 +2978,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
       ],
       "fileHashes": {
-        "code-snippet.tsx": "sha256-55fe7719c692e247467c645e75e721dcc4752c612833b94998f3816f9b607e0d",
+        "code-snippet.tsx": "sha256-7373bcf0419064e03de71ce758c8487efe213c88f6c3697b173485d68a7b516f",
         "highlight.ts": "sha256-252064dd28611c901ce64e2804a11fd5725555af31421768d3178aeba15badea",
         "code-snippet.module.css": "sha256-8fc59484d1db377346646a7144fec2d4d8b5f3d616277d203849ca63125a1130"
       },
@@ -3161,7 +3161,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.module.css"
       ],
       "fileHashes": {
-        "collapsible.tsx": "sha256-7a03d8f401ceec7c7530ca3ffd71ee1d3e1b315fb8d315c0db93b11352c887a2",
+        "collapsible.tsx": "sha256-3f9377474dae25c2911971d08203bb14a759e64169cb0090f4a8b3ee05903f7e",
         "collapsible.module.css": "sha256-2dc44bd421295fc372eac76be82ddbd08abb9e7938e351d5d946d412f3008d4c"
       },
       "dependencies": ["@cascivo/core"],
@@ -3299,7 +3299,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
       ],
       "fileHashes": {
-        "color-picker.tsx": "sha256-f679bc9178e8f90f37c4c029ae14f77b02fdc40eceb30576acd65791006f6233",
+        "color-picker.tsx": "sha256-8dba581bdbd2e1615d927c727c9619ea6acf4e92ec014d24106beb66a984b704",
         "color-picker.module.css": "sha256-77b085a0afb2e106ecdb4dc6e2c6ec80fb202e6c545120b41dfddcb59733188f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3459,8 +3459,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
       ],
       "fileHashes": {
-        "combobox.tsx": "sha256-32087b9f2cf2ab0e62da88b124d0b1d4580e3ff7a7eabc951f69a2521e640c80",
-        "combobox.module.css": "sha256-42d3d49f6069242254d52d7334f7c3ec25f901c341112aa9c9c6736193870930"
+        "combobox.tsx": "sha256-23ac2bfab434db3ff6be732aeda8c0812e8a67efe5b186f42e80859bde6fe167",
+        "combobox.module.css": "sha256-1550747eb9329071fb38c33397a75db8a08e181924cad9159ca05f3470d80aa5"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -3673,7 +3673,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "fileHashes": {
-        "command-menu.tsx": "sha256-c4c04969b8af47c6a46875080d1418cfa0913eeae6e31c23c6c480cab5810872",
+        "command-menu.tsx": "sha256-9060a4227dcf178fc37f1726f664ff4882c10cce1784fce0ffdc9915ff98be2c",
         "command-menu.module.css": "sha256-00c3aca20cd16fa9aa0b42959541f46120480085841c6ecaf895940886d33efb"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3900,7 +3900,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.module.css"
       ],
       "fileHashes": {
-        "comparison.tsx": "sha256-c33bec359337770b5383761c1b9900013353a024cd55ebc4252ebe76c826f6c2",
+        "comparison.tsx": "sha256-58f5d1e1e2b662f14edf89dc90300c9aaf7ca5b0a12aeb9b293abcb6674fb1b3",
         "comparison.module.css": "sha256-aca33593240a1f285f5b2b96e077e9c78d592e67582938b093a65418a44ea34c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -4420,7 +4420,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.module.css"
       ],
       "fileHashes": {
-        "data-list.tsx": "sha256-63cfc22164b69507eb597c8827c9f6a128e05cf89595c32b63b4eafe40134e46",
+        "data-list.tsx": "sha256-6d00a69f7feec2ba83173941eb3d560dc13277b056bf962a97095aff1a64e80f",
         "data-list.module.css": "sha256-2543d44f539a0b05d7f4ee26b3d5b481797444173fe4d9f5e5f14ceaeea7242d"
       },
       "dependencies": ["@cascivo/core"],
@@ -4540,8 +4540,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-6430b54e1914dc88705fe732f9ea72754744b701c471b5dd4d598bda5204415e",
-        "data-table.module.css": "sha256-4ce9daaed0be52aa5b3960a6800c6074c102c93425239f2b2a5d1f0dc9ef6cb3"
+        "data-table.tsx": "sha256-9547426674916585502a0207f5cc77e67617302657f83f61c8e89eeae41d6bd8",
+        "data-table.module.css": "sha256-aa1d331352a0c79f1dd0e91a24163d745d97a1f2f60dfe09bd899de0b6e51f6a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -4818,7 +4818,7 @@
           {
             "title": "Custom cell content with Column.render",
             "description": "Use Column.render to return any ReactNode per cell — a Badge for status, an icon + link for a repo, a right-aligned timestamp. Columns without render fall back to String(row[key]).",
-            "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Project', sortable: true },\n    {\n      key: 'status',\n      header: 'Status',\n      render: (row) => (\n        <Badge tone={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>\n      ),\n    },\n    {\n      key: 'updated',\n      header: 'Updated',\n      align: 'end',\n      render: (row) => new Date(row.updated).toLocaleDateString(),\n    },\n  ]}\n  rows={rows}\n  getRowId={(r) => r.name}\n/>"
+            "code": "<DataTable\n  columns={[\n    { key: 'name', header: 'Project', sortable: true },\n    {\n      key: 'status',\n      header: 'Status',\n      render: (row) => (\n        <Badge variant={row.status === 'ready' ? 'success' : 'warning'}>{row.status}</Badge>\n      ),\n    },\n    {\n      key: 'updated',\n      header: 'Updated',\n      align: 'end',\n      render: (row) => new Date(row.updated).toLocaleDateString(),\n    },\n  ]}\n  rows={rows}\n  getRowId={(r) => r.name}\n/>"
           },
           {
             "title": "Full-featured: selection, pagination, search",
@@ -4886,8 +4886,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "fileHashes": {
-        "date-picker.tsx": "sha256-0379149a0e9eb10cea35f07c72cc8d5164a841948274475c86eb8adc9892658d",
-        "date-picker.module.css": "sha256-01d78074b9b1f4f729b370afac818cf930a65207ea2a11f7d40ec260062d74a8"
+        "date-picker.tsx": "sha256-0e93430d7aae5119b0f90a6cfc06dbe49d8c097d3e280d58e66ee3539e3293fa",
+        "date-picker.module.css": "sha256-af8a0f707b5a57bffac9cb18f3b870390dd813201ae7f7009030840a7f591a12"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -5096,7 +5096,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
       ],
       "fileHashes": {
-        "date-range-picker.tsx": "sha256-1e15a1c37ee6ea8fac07a2cec4d375f099ef582f10dadf0e64039ae4c0046baa",
+        "date-range-picker.tsx": "sha256-eb653fee680d02a6144e9730ea927fec7ed1b001f9175413270eda94402e31b5",
         "date-range-picker.module.css": "sha256-c9fa6b5cf1ba86f23eb53b47bdf871c8ae3c86e730df0469df914bd9c11d3942"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -5415,7 +5415,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.module.css"
       ],
       "fileHashes": {
-        "drawer.tsx": "sha256-ad0e6df15486bd36c5098c18a9599f287a0978310245f09f85076dd70824d32e",
+        "drawer.tsx": "sha256-9c27d30907d7fc51e15dfb79fa1b8a74f344141faab86328351384ff8c1567c4",
         "drawer.module.css": "sha256-78400367e1181c57f0a882d1ad3c0a50e0b2b8b1230023c160c1f8fa55910be4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -5590,7 +5590,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
       ],
       "fileHashes": {
-        "dropdown.tsx": "sha256-bfed7dd1d09eab06f9aff410af0992a3b9ffcacc931bdfa3989968782a775999",
+        "dropdown.tsx": "sha256-1ace68f743375250ed0b99b4610bb0a9fcb26eb2373478ef4e307fa31677c7e2",
         "dropdown.module.css": "sha256-ec2a02c41f49dd3f859b26e4eefe651c26c3d0ff9b58baa68a086072c8683c5c"
       },
       "dependencies": ["@cascivo/core"],
@@ -5733,7 +5733,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.module.css"
       ],
       "fileHashes": {
-        "editable.tsx": "sha256-c3b3d68049a75a06e1fc7605942bdf1c709fc45e2e9d9c2c2713fc47db3b40a2",
+        "editable.tsx": "sha256-ad4120697977c58b81527a51e5851d4d40457f3fcd7efa06547a058b0fd9b45a",
         "editable.module.css": "sha256-e27d115820fd61b515f0abb93b7de15acd064a5ab9b268e91b170f535e353b60"
       },
       "dependencies": ["@cascivo/core"],
@@ -6010,7 +6010,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.module.css"
       ],
       "fileHashes": {
-        "fab.tsx": "sha256-9ecf0c78689c245aba8d76c9c287f1658ba0f8d1f7caf12192535a9a307aa0e0",
+        "fab.tsx": "sha256-5e91e49f544b614eed838fd326f5e47c9658f8c7361a1169cee2e17ab394223d",
         "fab.module.css": "sha256-829a972d999ba2199e07711e7c51683bf92fe268214fd20cb3d8ae8bc83511e8"
       },
       "dependencies": ["@cascivo/core"],
@@ -6180,7 +6180,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
       ],
       "fileHashes": {
-        "field.tsx": "sha256-8949f7babd5e654b710dd8fada81aae98c191e75d4b422504063e75c2493efd5",
+        "field.tsx": "sha256-c6be47470c7d2be402b5310620db24efda0b151dd4092c73ebad45b54fc61aac",
         "field.module.css": "sha256-0aeb9ff8562b462d119eef97fec7766d80452366edc87eeee633d1ca24ea9468"
       },
       "dependencies": ["@cascivo/core"],
@@ -6344,8 +6344,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
       ],
       "fileHashes": {
-        "file-uploader.tsx": "sha256-013e2ce5dba9e0351a85e1f9cd41e86a3417e500fbd71c460253b2ed5a785e75",
-        "file-uploader.module.css": "sha256-ddbc217d60c431a7ac0ddb841f9b58f8f622fdab22717cdea179bfd22e3dda10"
+        "file-uploader.tsx": "sha256-7db7c20433938067b79e5aebbdc26479dc8bd8c01e2e6a1300ff8946abbc6df1",
+        "file-uploader.module.css": "sha256-484e293908ff05ae22c80590eb1132e620f185c9577387f7bd8b4c3fb7623007"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -6535,7 +6535,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
       ],
       "fileHashes": {
-        "filter.tsx": "sha256-de4a109bdef654381c447729f66bf637731c7be8e04c31b152b7d7b0472d5d29",
+        "filter.tsx": "sha256-ebd88f3f0a509d6496c424c6e2862210c3ce90727edd31964c1faf93ea37b397",
         "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
       },
       "dependencies": ["@cascivo/core"],
@@ -6551,6 +6551,12 @@
         "variants": ["pill", "outline"],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "aria-label",
             "type": "string",
@@ -6822,7 +6828,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/header.module.css"
       ],
       "fileHashes": {
-        "header.tsx": "sha256-5c691ba6d25dab56b236568610eb4e502836ae20ee3acc26a02684cd7194a8f7",
+        "header.tsx": "sha256-036e52d0676626a3881c4bd2c9c70e89e93b9ad1cba51a05ab3fdcfbeffcdf18",
         "header.module.css": "sha256-b9881e5799d65035192bafa5d933a89c8039918e5c5f1084cc08311a148c74a2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -7095,7 +7101,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.module.css"
       ],
       "fileHashes": {
-        "heading.tsx": "sha256-248d278eaa1c24d210fe8b7d615e33ea88c67d5b9dae0b0f5e09d3d47ac1292e",
+        "heading.tsx": "sha256-7058dfaebc6608f357dff7f17210642e0ca56af011b2b4dbb3f929cb3c9bb308",
         "heading.module.css": "sha256-c875b4b9398b9c50e9e911741c21836678687beef9483cbdc1a8f9ebc54966c5"
       },
       "dependencies": ["@cascivo/core"],
@@ -7220,7 +7226,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/hover-card.module.css"
       ],
       "fileHashes": {
-        "hover-card.tsx": "sha256-79ad14f3b73038fb3f814f62cd14facf67259c874203a60168b4fc470c2c5c5d",
+        "hover-card.tsx": "sha256-112c312c7c3ee78c14aec0a3ddb45812a09f0cf86e22e93be86434b5f6e61f0f",
         "hover-card.module.css": "sha256-67859345fbd6fda68e4e27c25db687eead9ea88cd3ffff1a9d34170011134800"
       },
       "dependencies": ["@cascivo/core"],
@@ -7347,8 +7353,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
       ],
       "fileHashes": {
-        "icon-button.tsx": "sha256-db57040e1e70bd93ddcec2698d23c38d86ece3af7b3be746efc0743b78d88b56",
-        "icon-button.module.css": "sha256-9c1b9c3fde386758f4969adc4b5231e8d6e3d276813b443ba30838cec7b049ff"
+        "icon-button.tsx": "sha256-1fd35a98f6e7a2af50736d3b126984a0ebfa1c6ea0d90e7bf4a7ba43b47dfe77",
+        "icon-button.module.css": "sha256-6318b21f5f7783f201cff842754b07c4c4e4fa16a6287e509bc220da4bdf47cb"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -7367,7 +7373,7 @@
             "name": "label",
             "description": "Text label for the control.",
             "type": "string",
-            "required": true
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -7512,7 +7518,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/image.module.css"
       ],
       "fileHashes": {
-        "image.tsx": "sha256-eb4c8bf652b17472977a86219af4b720fe79c60c50705b5d8266e29d94529890",
+        "image.tsx": "sha256-fa8e18c8f1939214c4f523d8110885f69e2e30c805aaf293ae85f1849cc593b7",
         "image.module.css": "sha256-28f9e7a5c0b95886412cd8af561dd7d85846d6c94d05455fac8edb617e19881e"
       },
       "dependencies": ["@cascivo/core"],
@@ -7549,13 +7555,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Intrinsic width in px, forwarded to the `<img>`. Set it together with `height` so the browser can reserve the box before the image loads (no layout shift).",
             "type": "string | number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "Intrinsic height in px, forwarded to the `<img>`. Pair with `width` to reserve the box and avoid layout shift.",
             "type": "string | number",
             "required": false
           },
@@ -7681,7 +7687,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.module.css"
       ],
       "fileHashes": {
-        "indicator.tsx": "sha256-502baa77523d3e819d6808a7ecc45fd11ac955b58f7a9b4e99019e86c7a12c22",
+        "indicator.tsx": "sha256-063a4cd409d8ce2884b3e2c07af7f7cd1be5cc40e99836a4a18e74f214c5ded6",
         "indicator.module.css": "sha256-7e1f689d9f7baad0fb1b022aa6ae71ab80ba0d642ad99cd1ac5268eeab4d4d1c"
       },
       "dependencies": [],
@@ -7918,7 +7924,7 @@
       ],
       "fileHashes": {
         "input.tsx": "sha256-086b55c79c2b506819d5883006a0b2d356aec8a54d646a76f707b0165189b773",
-        "input.module.css": "sha256-c3bb10eea73c453dbd9eac5ea0b7d8ee0c965d9b3bd6e77409de976f80e71a9c"
+        "input.module.css": "sha256-6126b5e4be1f319a191b98d5f1ea523670acad79ac62f3ecd077b2760cbb53d0"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -8199,8 +8205,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.module.css"
       ],
       "fileHashes": {
-        "item.tsx": "sha256-15e7c6dceaa00140f806063aa51a360c8d1cf1e14154f968f41a377aa7f8c7ab",
-        "item.module.css": "sha256-f5135544daac74ff1d176b610a576067fde08eab6133fbfd9f7d83a1f6d28de1"
+        "item.tsx": "sha256-7055b58c7bd7b5202746470cf3dc61baf1a2e1cd105810dca286bea17bb2dd27",
+        "item.module.css": "sha256-74573cd2cf2265a0813d0e323ae4f6a54d4daf479fe06ec0ce6bbb4dfe1e1f6f"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -8318,7 +8324,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.module.css"
       ],
       "fileHashes": {
-        "join.tsx": "sha256-01b0dfe0b9edda3e3df3f0d4c2c1353398e3c5c775b94f509ac97c03ad64f85c",
+        "join.tsx": "sha256-79ce9c40780832ef4decbc068d4455fcefc168cb0bf4161cc35809df638db449",
         "join.module.css": "sha256-fa3d06236cc6f4fd6e650fa73184c4ce5a820512a72ccae8eaeed4912d3a5e33"
       },
       "dependencies": [],
@@ -8525,7 +8531,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.module.css"
       ],
       "fileHashes": {
-        "label.tsx": "sha256-0f340e9d43840180e9d480ff80accb54ca99ab4a0dc494dccb747e5974dde386",
+        "label.tsx": "sha256-d73fb3f144302a35b78915c93a37b1f178a86ddf7d8903e0df22b280766cc591",
         "label.module.css": "sha256-4ad66385f2ed2f7864fbaf25ade338f1296aedb83fd3881d4e0b5e31a877fc2a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -8680,7 +8686,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.module.css"
       ],
       "fileHashes": {
-        "link.tsx": "sha256-4a216833f70835b912e0a5bd277166ef2b13fe8d39b504f3e93b771aead217d4",
+        "link.tsx": "sha256-a613f3aad1a11a4ad932efc84b4ccf9b5d6123f6291ad40015207bd36b742d19",
         "link.module.css": "sha256-f7a46896130cf3861ccdce5c70a20e4946d14d00dde51b8b98b9e86f5305c0b4"
       },
       "dependencies": ["@cascivo/core"],
@@ -8722,9 +8728,17 @@
             "description": "The destination URL.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "asChild",
+            "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
           }
         ],
         "tokens": [
+          "--cascivo-link-color",
           "--cascivo-color-accent",
           "--cascivo-color-accent-hover",
           "--cascivo-color-accent-active",
@@ -8810,7 +8824,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.module.css"
       ],
       "fileHashes": {
-        "list.tsx": "sha256-7a9f2511538bc94107cf50db5cfcb020713c7deab4f0ff79df6459147ec0e7aa",
+        "list.tsx": "sha256-054e3dc0cca265a55c074a33de1a94a2a32fe161ab34af378bc6ad4684f866af",
         "list.module.css": "sha256-04cff38d1581297fbc1bf783c65c2f3525bd2ad12986a45fd173004173186fae"
       },
       "dependencies": ["@cascivo/core"],
@@ -8923,7 +8937,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.module.css"
       ],
       "fileHashes": {
-        "log-viewer.tsx": "sha256-23b76bd246d264e684f9c677d6505f8802d89d1bac2a280fd9f29012a6e98ee3",
+        "log-viewer.tsx": "sha256-e316a2de0e3af622d44faf830b558b28af86029c90d812955c15ccb3ec6f32b9",
         "log-viewer.module.css": "sha256-b467bdb2f433578d52ead2852e25449280fb840f0a8a599e364ba57f081453b2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9217,7 +9231,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.module.css"
       ],
       "fileHashes": {
-        "menu-button.tsx": "sha256-5bf36d28cdcf1126c1ae44f4a0a30cadc614ba10da5e5774f4260c6fd8742b23",
+        "menu-button.tsx": "sha256-e2edf5ba82ef8707098dd14ba7335ca2e1d568efd7ecc2a045e04d0225b48440",
         "menu-button.module.css": "sha256-37dfec8bd0bc3ea0b3820cfd73a83a35727d7f58df902b0aec6b61e08af25ee1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9524,7 +9538,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.module.css"
       ],
       "fileHashes": {
-        "modal.tsx": "sha256-32bfacfeddb817fe072dc75e36e79feadc8b3ebad5d90b7a54c529a962563458",
+        "modal.tsx": "sha256-5164dd78a85478f641e2a9d83d5920f76b6c9f7351b64be5299c8a3ae6ddc5d7",
         "modal.module.css": "sha256-ef7bb366fae8d9bf58cc685b5697fec0506fe397ff3eceb0108cb8ead419bd8f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -9676,8 +9690,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.module.css"
       ],
       "fileHashes": {
-        "multi-select.tsx": "sha256-178b387a3a0f6b4783143cc155572d398cb752d59ae01b53b3a66949d7453cfa",
-        "multi-select.module.css": "sha256-02e5301590d519bdc8bd27ebd2d3dabdce40bfc512828cfaf16c13a1044c9244"
+        "multi-select.tsx": "sha256-7f42a4cc95ceafe9a59b7881e4f9baab28b1dd253ce4f9acfd381a4a14228134",
+        "multi-select.module.css": "sha256-fdda5c9cb5e84ee720816102f06a28d679ad6478f3b331c815704bb4de17370f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -9994,7 +10008,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
       ],
       "fileHashes": {
-        "navigation-menu.tsx": "sha256-f11b43b08a5b5bb76f297435587533205d51cc8371ecf789afcfa3fb6554b596",
+        "navigation-menu.tsx": "sha256-4ac26ce778ea4e10ac65aa2453921433a00b49fe5e24f880a19b2d1d2828f65e",
         "navigation-menu.module.css": "sha256-27871a11da58d30b376d8194b52813d9c6b608b7bbd4b2fd053496d38a102f04"
       },
       "dependencies": ["@cascivo/core"],
@@ -10118,8 +10132,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.module.css"
       ],
       "fileHashes": {
-        "notification.tsx": "sha256-c137638435af97a33c3285c82dcd9bce4f0c8c5da23fa41f1fe31ab2ff8e4bd3",
-        "notification.module.css": "sha256-4fbae198f0f4eda1a2578b78537ee44054aaf35650b36a32990d7d134b35c1d1"
+        "notification.tsx": "sha256-83d4817c8c553836e24fa3e4c495288cbc3bbdb17009cf50ccf3750bbb3d297d",
+        "notification.module.css": "sha256-5c7995e8eb4ea44832527a3850890609daffeaf2b50776e6fb56511a0c49fb13"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -10287,8 +10301,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.module.css"
       ],
       "fileHashes": {
-        "number-input.tsx": "sha256-53e54bd542665bd665e3f0263c5fe704f113e97ef6f36490fb32f6eb2b377088",
-        "number-input.module.css": "sha256-9cde02d5c3628757a62aa5bc0fdade19e5fd2705b0a3cedfccc7767f5b57e53c"
+        "number-input.tsx": "sha256-4e4e1f6ef9a7e3132159a38bf34b8ddf272a209567311e50de5e4e00b5b08f59",
+        "number-input.module.css": "sha256-052b1ea4e35ba484767d3b30b590e742a7069125857dc7c0a3bb2b8ceacbb39a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -10500,8 +10514,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/otp-input.module.css"
       ],
       "fileHashes": {
-        "otp-input.tsx": "sha256-7bb5404f56ab4b128fcbe0ceb3440e68e9f8f7f6bf780d72b921e09a23d55905",
-        "otp-input.module.css": "sha256-931793cd10ec700cc722af29df0b1f7ef5507d23c303ddc31ff3ac0a533d9f03"
+        "otp-input.tsx": "sha256-74d90f6f42da90db2ced87773cee63ba1a03fcc6ea8805cfbcdea37f20c6ddd8",
+        "otp-input.module.css": "sha256-d5ca3d5e912f2fb6392b5a14c614c3f165efd54bb7fee0e53a26654b35a3bc76"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -10634,7 +10648,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
       "fileHashes": {
-        "overflow-menu.tsx": "sha256-0ad10a3b7cf90afbcf1d002ee9dfd2df7bc57d23d8c0a86f00d6aea29756db71",
+        "overflow-menu.tsx": "sha256-f658777cfab250f9727257ffb57e6cafbcfb547583efb761ccb8d49acf05d3f9",
         "overflow-menu.module.css": "sha256-21f4c4a11b7f8dc0d8bf6ac885e922bf145a1d2ea68dc75ae3b77186112a89a9"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10792,7 +10806,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/pagination.module.css"
       ],
       "fileHashes": {
-        "pagination.tsx": "sha256-66dd4dbda11b31f7a1128d415904b4429025e92de2ad44b9de3a170f1970c27c",
+        "pagination.tsx": "sha256-35ed19daffe3c06a665dacd37baafd02b16b4bf6972d5569478a32e38b929bba",
         "pagination.module.css": "sha256-8abeed2da3e0e2613253f5a0714867e4b36db2f7dbd672c4146a03adc21fdf2a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -10950,8 +10964,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/password-input.module.css"
       ],
       "fileHashes": {
-        "password-input.tsx": "sha256-42015863a0820d48f3235c2d9b72d895acd8ec7f8ea57b93a0a75e480f096cd2",
-        "password-input.module.css": "sha256-15a89bfcbc2ec38cc026f052e7709d8d65ff2617cc6f3f764f66d81d44531ac7"
+        "password-input.tsx": "sha256-26520aa7800692b2961ee577d0c68f5b302ca8902606901add69465a114849c4",
+        "password-input.module.css": "sha256-691e0128f4573fcf6bd44c44775e0834030a6ee36968c58949a120d00f3ecae2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -11240,7 +11254,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
       ],
       "fileHashes": {
-        "progress.tsx": "sha256-2104113488bdffd8d6787a29ca5a02ee7445887906986ae30cb49e16ddd38f56",
+        "progress.tsx": "sha256-5c4ade92fd585564b7819269313c6f00a93306e42e6eb95e6e907ea43ed6b953",
         "progress.module.css": "sha256-b096cd775fd5682dce7112a207cea6072d9af8e513ef11a8065354446fbd449a"
       },
       "dependencies": ["@cascivo/core"],
@@ -11256,6 +11270,12 @@
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
         "props": [
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "aria-label",
             "type": "string",
@@ -11382,7 +11402,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/progress-bar.module.css"
       ],
       "fileHashes": {
-        "progress-bar.tsx": "sha256-d57a77e9999ed7fccb02bbbd2349ec709e22dab192c037596110634a25710dee",
+        "progress-bar.tsx": "sha256-5dab144f4cf6e6cdc8224fdd05451d466f3d02558102464b6a31e907c05c2f70",
         "progress-bar.module.css": "sha256-6a9f481b3748c57d08fa06a4201ad720cc9d16f2074aa0edc81ff660790628ce"
       },
       "dependencies": ["@cascivo/core"],
@@ -11527,7 +11547,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
       ],
       "fileHashes": {
-        "progress-circle.tsx": "sha256-1a3b7b564b84029c37694fa2befda1a53aff34e75cfea578ff515911ba87c0a8",
+        "progress-circle.tsx": "sha256-d05a6f6faa7a48e6bbebda381c2c6492356f77bd0e4e20ad8e02f7ed35fe533c",
         "progress-circle.module.css": "sha256-1d91d42681c703f98e6cc8e775a102c362bb899529a48e9646ba3d6721167c55"
       },
       "dependencies": ["@cascivo/core"],
@@ -11657,7 +11677,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.module.css"
       ],
       "fileHashes": {
-        "progress-indicator.tsx": "sha256-8110962b2850ccc7f3285d955784e75a222fc0a963446eea27081e6fe492029f",
+        "progress-indicator.tsx": "sha256-3c6ccebcafacb38231e299bf1093aadac7f717408d4bd93bad093b257a9fe407",
         "progress-indicator.module.css": "sha256-408dad3a0db11ac5fcd71a812fa322cd557ed8ac1685948e44116a03de247418"
       },
       "dependencies": ["@cascivo/core"],
@@ -11909,7 +11929,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.module.css"
       ],
       "fileHashes": {
-        "pull-to-refresh.tsx": "sha256-d87121fb26e9e19e99637ab313172c0050ae7743122e18b7a45361e5e0615ef5",
+        "pull-to-refresh.tsx": "sha256-0f2abef6f4e1760b3a9ef8e5e27e3ad2747780b5cbe890b2c7dfa8d6ad2a7f81",
         "pull-to-refresh.module.css": "sha256-b5fed18a205afb7b9e0b8c30acfaff1f9214b56afa4346413fd9e1422cc3d362"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -12046,7 +12066,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
       ],
       "fileHashes": {
-        "qr-code.tsx": "sha256-f6be1dd05e379ada5dfc2566974de5241ebb53ecea876fcc1b9ac71d6a79f0a9",
+        "qr-code.tsx": "sha256-4b6d5a4acc8a43add8c0bca3997db26b12931d9673c558f121b92c021dbe18c9",
         "encode.ts": "sha256-0b3c1ed5123bb178b9a580917b8bbe5cc01b5f00856a3b50f2e3c2ac7795fc86",
         "qr-code.module.css": "sha256-8805c704330aebfc339530698a01899025c42998d1fcb428fb222c7a1bcf4ec3"
       },
@@ -12185,7 +12205,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.module.css"
       ],
       "fileHashes": {
-        "radial-progress.tsx": "sha256-3dd3cfb939cd5df0d5ed80e2dcb95e7796e2f823685c1a02815e5db2947dda61",
+        "radial-progress.tsx": "sha256-77ae44f7c4a37ad3d02bcd9b406a5cf52cdbc20a795c3d0c83e014501856002d",
         "radial-progress.module.css": "sha256-14b34c799619dbe66ace841bb48cd9bdbb90b8976601b3ab45aa89c8b1f5fdc4"
       },
       "dependencies": [],
@@ -12594,7 +12614,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/rating-group.module.css"
       ],
       "fileHashes": {
-        "rating-group.tsx": "sha256-374c590838b7894dd57da571f59af6a1aa556373be1a7ada6d10badc48f5d475",
+        "rating-group.tsx": "sha256-035c428c5752cef55f6d2e65f71ad2cf24102cd3ab9d6d5a96f3c92d54adfa85",
         "rating-group.module.css": "sha256-e62a96251c881c34547e83349a315475b3ea7750aa944d971d0f45f1963b2155"
       },
       "dependencies": ["@cascivo/core"],
@@ -12737,7 +12757,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.module.css"
       ],
       "fileHashes": {
-        "relative-time.tsx": "sha256-e6ac71f3a75b86d7965d33e9c416920939c895e100087e144258b03f78facf79",
+        "relative-time.tsx": "sha256-1fb1a60ee2a500952d4e1a1aec78b875ac7a1e4f111b75f54743fdedd0c2ad43",
         "relative-time.module.css": "sha256-c25d05f5dceeb217bfc60eb61d6ba451c2c63e17843f853c46a0a925dbe185f1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -12859,7 +12879,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.module.css"
       ],
       "fileHashes": {
-        "resizable.tsx": "sha256-f15c9a719163c21ad66dbe512696636232b8289296b1cf04c1ebf0625821af9f",
+        "resizable.tsx": "sha256-4799d949fe7866698eca8a8ee76b0c212fc15ee3a83820781b2daedf5d10f553",
         "resizable.module.css": "sha256-40a8a32bcfcb7794299bf966a0ac466cc2298613f00456046d88d861dea3a2ad"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -13006,7 +13026,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.module.css"
       ],
       "fileHashes": {
-        "scroll-area.tsx": "sha256-60ba2e820ca3ed8b6306ce9d7f7b83accc49d20f8d95925f48d847487e32496d",
+        "scroll-area.tsx": "sha256-aa751b3764fe7ca0a777e8875433ac809a6df62c3c1cc985e3a724e027ee55d9",
         "scroll-area.module.css": "sha256-0c12fb5a58bc67accb5458b031961b1b164cfaef78997938fbf566301142e08c"
       },
       "dependencies": ["@cascivo/core"],
@@ -13133,8 +13153,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-492e8594f5d6cf852878c658b5540993fb4f126f47ed3ec67478e33b7dc4e3f1",
-        "search.module.css": "sha256-129444d231e86bcea559666363ce3d75ce635697142687e5fca843451505807b"
+        "search.tsx": "sha256-abb6b9b9c200f0115fc1d26d37a8f1017a04aa3a6255e3f4275a7fc7dea644ce",
+        "search.module.css": "sha256-bb8b8f5650d1f3623aed5b21b05f5bc6894a82c8399ed8ab7ce53cd213b7c709"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -13330,7 +13350,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.module.css"
       ],
       "fileHashes": {
-        "segmented-control.tsx": "sha256-4b3a8e4cc0d448a56fcbc392a20dac6063538614e7de633b9f3ff6ae9e5004e0",
+        "segmented-control.tsx": "sha256-7d43719423fcb30ea93dbd5d1b7527629e303d8333230753aa60b763a75f2473",
         "segmented-control.module.css": "sha256-75f43302c357675012e3a15115355fe07dd9030bb61f7193f595cb92c27a3cb0"
       },
       "dependencies": ["@cascivo/core"],
@@ -13463,7 +13483,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.module.css"
       ],
       "fileHashes": {
-        "select.tsx": "sha256-e3fa144746655ab306451c32a798ade46ba9bb4884eda28a676208390d1aedbe",
+        "select.tsx": "sha256-62e6ac8811f8186f191683912285ecdef4c034d528c5319da2c009ffdb6f4257",
         "select.module.css": "sha256-8ca4c52fb34be14d6c8fbe1d6e7f7eb5732117eabffef18f0967b942f0eac7f8"
       },
       "dependencies": ["@cascivo/core"],
@@ -13614,7 +13634,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.module.css"
       ],
       "fileHashes": {
-        "separator.tsx": "sha256-935e9e4bae950ad02626bda88852a6d159ad1a8bc8ea93d5898837d2a30e7d85",
+        "separator.tsx": "sha256-d9f097b90ca1f6ddbfc3c7bcccff5b2b170bddc8d3d75ec648201e40b9689e6c",
         "separator.module.css": "sha256-d17fbd02899fe563a5e28fad65cad951e84d8bbbdafe30931fad3de8722d1ef4"
       },
       "dependencies": ["@cascivo/core"],
@@ -13715,7 +13735,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.module.css"
       ],
       "fileHashes": {
-        "sheet.tsx": "sha256-9d995d5e7cc23657074753236c050b5ca092784c80301c8664be89fc6d251676",
+        "sheet.tsx": "sha256-78874f929e0061a004a10a76603128948ede3d50bff6d4213a194a5022ea5df5",
         "sheet.module.css": "sha256-518a56818809c8deb112812336439cfcb4b8e2fa0bf027d262ab211c1f0427b8"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -14094,7 +14114,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-c87536b652f0d910b48c12f4c0099d7de96ebef64419c934c17d81a31e76d6f7",
+        "side-nav.tsx": "sha256-bcab2f7e244219835a00d7ade9f1d00276808f05c143ec22e8dff0a5ec3a037e",
         "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -14127,7 +14147,7 @@
           {
             "name": "items",
             "type": "SideNavItem[]",
-            "required": true,
+            "required": false,
             "description": "{ label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch"
           },
           {
@@ -14296,7 +14316,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.module.css"
       ],
       "fileHashes": {
-        "skeleton.tsx": "sha256-b2133f33135539f7ca4c899b10c9d772f5a0716b564534a462b8196d5a6bb139",
+        "skeleton.tsx": "sha256-e66a1de1a25a0d221a97394c2278a5eead5a69c01bf09ab3b80275aea7eb20e4",
         "skeleton.module.css": "sha256-f66948cbe0383dace12f9d82650fbe061e5edf7227b049e9f817e54179d3ab44"
       },
       "dependencies": ["@cascivo/core"],
@@ -14424,7 +14444,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.module.css"
       ],
       "fileHashes": {
-        "skip-nav.tsx": "sha256-b6abf92e86f2ee1f686a1df39e61d173505518d4d6af75c9178ff85caa2e814e",
+        "skip-nav.tsx": "sha256-fe311736cd08df4c8726f4893e3a63471b118b97ae362c8792d22f8fc204e1f9",
         "skip-nav.module.css": "sha256-1e0452730a3b255759d417aca101a6cac9c8e0853150fdb4bcea3e57e5d4ee5c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -14531,7 +14551,13 @@
           ]
         }
       },
-      "channels": ["copy"]
+      "channels": ["npm:@cascivo/react", "copy"],
+      "importableSymbols": [
+        "SkipNavLink",
+        "SkipNavLinkProps",
+        "SkipNavTarget",
+        "SkipNavTargetProps"
+      ]
     },
     {
       "name": "slider",
@@ -14690,7 +14716,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.module.css"
       ],
       "fileHashes": {
-        "spinner.tsx": "sha256-1ad7d35537957c89b76ed6e6c106c03b7308600909daa314054336b942ba9a76",
+        "spinner.tsx": "sha256-54eaa03c8c5a29fbcaa2844215fb5f7480af8ced37b106e004445965bfbe2536",
         "spinner.module.css": "sha256-3494ac97d644c317847fa59c04667b3decba483e40c1ab81168c8e0890d0cb2c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -14798,7 +14824,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/stack.module.css"
       ],
       "fileHashes": {
-        "stack.tsx": "sha256-ed2f9e83ab2a6df6a498e28d029ce754f6285a1402752ec4ec0f225e373f38d7",
+        "stack.tsx": "sha256-c8cf24d3b4ab6e3f2e404b3bb266c32151311ae2cac47f6e030382d4044174a3",
         "stack.module.css": "sha256-b6dfb65ef871476c58e3ee646b2a4e63ad68c9b954996fa182ff4118d1625974"
       },
       "dependencies": [],
@@ -14908,8 +14934,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
       ],
       "fileHashes": {
-        "stat.tsx": "sha256-e236328c43034b9ea20f4883b89aad1071a49547c4fa4a7b623b19237f71b39b",
-        "stat.module.css": "sha256-c6a041acd7512dab271a1fc347f40baf0446411a8dc895ba5c7753da76f87e28"
+        "stat.tsx": "sha256-78edf10d18818f4bb7b072067b04e8527322f9639ea5a51cc6d42aab17971656",
+        "stat.module.css": "sha256-741cc5dd7aabecd845084bb9db37e686d60e82630574701c5d522b9e5c0887d2"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -14924,6 +14950,13 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "card",
+            "description": "Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
           {
             "name": "label",
             "type": "string",
@@ -15051,7 +15084,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.module.css"
       ],
       "fileHashes": {
-        "status.tsx": "sha256-c725f8edaaf17328dc2c3fd024b54705aaa2d807861194467998d5226d1d685d",
+        "status.tsx": "sha256-bf031944f63d8284e859957c9cb7e2d5e4f517065034c493ebcffba8b11578ac",
         "status.module.css": "sha256-bd74f83a9465a3a9a9948a51a291ddc29b07e323540d9a1b328d2fad979fa96f"
       },
       "dependencies": ["@cascivo/core"],
@@ -15174,7 +15207,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.module.css"
       ],
       "fileHashes": {
-        "steps.tsx": "sha256-ac56747eae8582b512ecfb754dc7f619d7b837c7f9f4dce96cceb3ad18b5ce4b",
+        "steps.tsx": "sha256-4c4e7a15339ab95215406b2cde438b4be127eb4b7e2b49f7e7f819f362259e9f",
         "steps.module.css": "sha256-eb38a365985624e1c7ae566bc6293c5fd14a71bf9819e466102a0bc5f4044c73"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15321,7 +15354,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
       ],
       "fileHashes": {
-        "structured-list.tsx": "sha256-e344a4028df9c2b19a57adbf1d399624d1f5e4ca07fa8e136249eb0df61f6110",
+        "structured-list.tsx": "sha256-274d21101b7b22c2c1bf59af5b1b1683b2e637f9189619dd760190d19b6100b1",
         "structured-list.module.css": "sha256-6d70d2d5b53f472098236450775c8847cfe86e4b380f5f40ecee475955cc1d90"
       },
       "dependencies": ["@cascivo/core"],
@@ -15337,6 +15370,12 @@
         "variants": ["static", "selectable"],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "aria-label",
             "type": "string",
@@ -15466,7 +15505,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
       ],
       "fileHashes": {
-        "swap.tsx": "sha256-b34aac256ad65db180827b37fa10f00a8480c7ccf881d70f95ee9b62e0fe642a",
+        "swap.tsx": "sha256-570e933827f5ed2e40e9192bc1b43fce7b3960484ddf740ec2e121b93939e2fb",
         "swap.module.css": "sha256-69738c9cf9a9f3da5d4da1d17ab6229af3f45772739251bfa39dcc447e3984b1"
       },
       "dependencies": ["@cascivo/core"],
@@ -15616,7 +15655,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.module.css"
       ],
       "fileHashes": {
-        "swipe-item.tsx": "sha256-23b597b29e027c5cbb0861101c6e1e6055d3ac152b2dff6b0598c254a711c8f1",
+        "swipe-item.tsx": "sha256-cf0cd20c370083007e000170ae844b90891d13c56f8303b560b08fdf8805247b",
         "swipe-item.module.css": "sha256-fc199d4832bb8a5a909aa84c5c6e474644c39bff94352802b0a45f04bc3b4100"
       },
       "dependencies": ["@cascivo/core"],
@@ -15744,7 +15783,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-71cd818ada0e190b2af5657e1d9093e64311ca600679dacad922243010a18119",
+        "switcher.tsx": "sha256-b94fce6e8bd0e80c4fb4d33baeb8e8a6b810180ad2cea72551633690eab39b42",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
         "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
@@ -15971,7 +16010,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/tag.module.css"
       ],
       "fileHashes": {
-        "tag.tsx": "sha256-b979d3748b4e0924f633f3339aa961a6e0ca1ca83f705e252a37b63c13d105c4",
+        "tag.tsx": "sha256-cd621f4b4fc5d4cb67e46374dfe396eef2ae9e4c3ecfb195c5be36ec4716c7bf",
         "tag.module.css": "sha256-3d745266aa1b7b4cafa28646918b2374dd2dc850a6bd1700284a9af12407f91f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -16113,8 +16152,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.module.css"
       ],
       "fileHashes": {
-        "tags-input.tsx": "sha256-5872dae820a7f99b232d5342f0adc7db7eb9d9ce75a5f0f48c85575d6da2bf5b",
-        "tags-input.module.css": "sha256-b27b6bf44d512c8b960b3fdd07e42e625ba951c49357ec25abf06dbd5f7172cc"
+        "tags-input.tsx": "sha256-dc1a3bedd890e5cf607e70259f6f724d2b3f069691242856a5743a8fb64ad3cf",
+        "tags-input.module.css": "sha256-97f294967ec53a6124456a4efc7c8f5d71b73fe7787ac5e78f25d7164e1a43af"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -16252,7 +16291,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.module.css"
       ],
       "fileHashes": {
-        "text.tsx": "sha256-be6d034f5bef4ee41ace3d0dca0b7d20afb5dc2435eb277c93d9a96ff8a9be30",
+        "text.tsx": "sha256-a862813845dc796d1dfdd4f48564d9eb5f8a12952cd5f446a66fb79ce620a054",
         "text.module.css": "sha256-5d7d11e88320100b61c66160ec1bb43006a1c5e995280e47aa4a73dd8788c24e"
       },
       "dependencies": ["@cascivo/core"],
@@ -16531,8 +16570,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.module.css"
       ],
       "fileHashes": {
-        "tile.tsx": "sha256-1171e999926b045d58880fa64d779c4ff6fcc4001d26b5cbe95838ad7a8d597d",
-        "tile.module.css": "sha256-d0d5569c695a9bd4e53e6a2ecaae21154c8226b0703fed52ee0fc41e5b3097b7"
+        "tile.tsx": "sha256-afe1b42722f4f9020a0bcb81b5c1cdf1e7a1d257d13244ad2a71927523195dee",
+        "tile.module.css": "sha256-3cee01f06a4101f365bca4ed3d52ed9b4da9a75d01d91088eba7c97bbb4c36a1"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -16700,7 +16739,7 @@
       ],
       "fileHashes": {
         "time-picker.tsx": "sha256-0b4b65798dcfcbf0950d40093327c1f3b6870912154ab0fb098e916a1b4731fd",
-        "time-picker.module.css": "sha256-4ab7b2fa853a8dfd7456ac1c395dedd46567566fc56a0c16a08c77eb10a39842"
+        "time-picker.module.css": "sha256-d8d10612976071d8b64538919c7f8539ddafaf3af538bcd49a94345774af3a36"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -16877,7 +16916,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.module.css"
       ],
       "fileHashes": {
-        "timeline.tsx": "sha256-8fc43065aa128a122634ce25630e6661f7a4362fffc0770b51a4f6a5395e92b4",
+        "timeline.tsx": "sha256-2fa5e6b80ba6e8b9fc4bfda0f55154846cc0e211a992df3c4296b1013abf064a",
         "timeline.module.css": "sha256-9e62ffd1aed349f9a48e4e59a5965995b18ce0a9ded8b405513ad1e8f6aabfa3"
       },
       "dependencies": ["@cascivo/core"],
@@ -16980,7 +17019,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/toast.module.css"
       ],
       "fileHashes": {
-        "toast.tsx": "sha256-34ecf05237f2400af221c415565bc957251782037820f5a69481dbe3f307037c",
+        "toast.tsx": "sha256-619641a54c0428883d83ff8c898b18994eaccfe7752dc2376de391cb0fe75b0d",
         "toast.module.css": "sha256-8cc1a7d641bfa6f572dd2592df41743520cf557d0380c9ab16770b421115b369"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -17096,7 +17135,14 @@
           ]
         }
       },
-      "channels": ["copy"]
+      "channels": ["npm:@cascivo/react", "copy"],
+      "importableSymbols": [
+        "ToastOptions",
+        "ToastProvider",
+        "ToastVariant",
+        "dismissAllToasts",
+        "useToast"
+      ]
     },
     {
       "name": "toc",
@@ -17245,7 +17291,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.module.css"
       ],
       "fileHashes": {
-        "toggle.tsx": "sha256-7c02b2fc5097c6697728aee77c0919ea582f82ecae242e6bdc093ceac5a9ee3b",
+        "toggle.tsx": "sha256-4feef0cc03a06cbeffd24a556ae28a1c7a65e17c4a0128b286a9bb29115923e8",
         "toggle.module.css": "sha256-9c452a066e05bdcf11ffe10f5245ec08d99a4eb36d00bada9fa53de0460572bf"
       },
       "dependencies": ["@cascivo/core"],
@@ -17396,7 +17442,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.module.css"
       ],
       "fileHashes": {
-        "toggle-group.tsx": "sha256-7807a5bf3ca7428f4a19de8ac0492b539af1b9a0a5718ea82da07e93966b70f8",
+        "toggle-group.tsx": "sha256-e4ffd50f2cb2a411adca1ec97b90f63d01861b1f4aa46a653478ea7e754d7d55",
         "toggle-group.module.css": "sha256-971ab0ac7fc68a484b1871621339784f48f372fe78b57db1b57c370721ac50b3"
       },
       "dependencies": ["@cascivo/core"],
@@ -17564,7 +17610,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/toggletip.module.css"
       ],
       "fileHashes": {
-        "toggletip.tsx": "sha256-485ae9e38963de13d7bfa4eafaa647aa0c29daee98d9930e86105091866f9dda",
+        "toggletip.tsx": "sha256-4633ffac020be5717bbe3b01d54bd92f370b371ea5a2d34113bafc18cd084589",
         "toggletip.module.css": "sha256-32a210dcd77c90bc4c28b7c794b1b9240460996efff65d386837a8feab71343e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -17733,7 +17779,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.module.css"
       ],
       "fileHashes": {
-        "tooltip.tsx": "sha256-731338a646c2c2d58e7770c627b67368cca39f872914271498efd284231d58d7",
+        "tooltip.tsx": "sha256-cf7d10e0d38eae2d8dfeb170b43bc944efa7ef4f2b5e357e3a6be091a77da801",
         "tooltip.module.css": "sha256-10303a9b8948c9464efe2b1a56943377824089a52f2931ccb9ba789e84db6d02"
       },
       "dependencies": ["@cascivo/core"],
@@ -18259,7 +18305,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
       ],
       "fileHashes": {
-        "app-shell.tsx": "sha256-28d846dca6412f70d43f6c6c02af35b85c82f704377036a95e8372b022166867",
+        "app-shell.tsx": "sha256-e1b240a6e11473adb75b7b187b77cfc41937743b5f2de55507e2ebfb40bb9281",
         "shell-state.ts": "sha256-126741ee8e54f784c6df83819c87936b90d85df5a10149c62076305ebef789ca",
         "app-shell.module.css": "sha256-171613b8ad89cb1af5ba00d97284697f532c3d06972144ba31fa4c5f33f13d8a"
       },
@@ -18493,7 +18539,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.module.css"
       ],
       "fileHashes": {
-        "auto-grid.tsx": "sha256-75ec64f4e6a3d012f5f6d0873e5ccc91413c508d19b8e1bd57edc211bd148bdb",
+        "auto-grid.tsx": "sha256-d765b7081184bc08da0abc2d59666300583cc632669cedac37ccd9ee1e181e11",
         "auto-grid.module.css": "sha256-c4ddabc261c6f0ae4292d463dd92647c5bb91a67bc137bf56cfcfd47e9603082"
       },
       "dependencies": ["@cascivo/core"],
@@ -18573,7 +18619,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.module.css"
       ],
       "fileHashes": {
-        "center.tsx": "sha256-8ee4d62c88be6f046ec8375a159f4d6acf76ef96948eb31ccf3da60745ca68ac",
+        "center.tsx": "sha256-f9ab64b4c1d23aea12d3862d465ab339a802e2c6105ebf71c46e841a31f80dd6",
         "center.module.css": "sha256-179d9de5d56624bc88d2a8218f297d75501842258032767fe1c289fc38522a7f"
       },
       "dependencies": ["@cascivo/core"],
@@ -18651,7 +18697,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.module.css"
       ],
       "fileHashes": {
-        "columns.tsx": "sha256-91e582d7e3a4a32786e26b79a31379e15c6f68ad511b793e21795421c36b182d",
+        "columns.tsx": "sha256-9bbdc859b9a08be0fb713a70d632dbc858eb61d409d908c56c4e36e02ede1e11",
         "columns.module.css": "sha256-b13c6d5993a498e14b560c09bcc02cb2139deadf3ef47ff44bb83f0cfcef2ad1"
       },
       "dependencies": ["@cascivo/core"],
@@ -18825,7 +18871,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
       ],
       "fileHashes": {
-        "flex.tsx": "sha256-aad7aa51fe63464ead604a0c9caf37ad9392a487a3562de8d9445e79b652bb09",
+        "flex.tsx": "sha256-a30ca2c2013885eb570c2dad54c0d0862689bdd53b6506b17d947fe6497100bc",
         "flex.module.css": "sha256-0dc986fb37d2cb6a657d40f879f26ee28a1795f1b626e4fd32052528994ea090"
       },
       "dependencies": ["@cascivo/core"],
@@ -18946,7 +18992,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "fileHashes": {
-        "grid.tsx": "sha256-16ba50403ac8f0ec7bbf13481fd50cc3fab23d0415a18e45c76ac63001f276f5",
+        "grid.tsx": "sha256-cd658ad7ef6105643ac5b90a29f2961797465ba88b0acaa27b5c5f8ec1193889",
         "grid.module.css": "sha256-5d51fec5a0b0f52866e5d78f515261f98384f071cbf3c0eaf2a683fa08f196a8"
       },
       "dependencies": ["@cascivo/core"],
@@ -19054,7 +19100,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.module.css"
       ],
       "fileHashes": {
-        "masonry.tsx": "sha256-3de5ee806473ad739627ac36160b681fa547363b7e687640ee65abf5b8cc3dec",
+        "masonry.tsx": "sha256-f9e54f2bbe4fd68932fcabb118f46e76211c8bf2de708d333b621eb1908119ee",
         "masonry.module.css": "sha256-6d4dff2b18d3b3db045e24372c7cfa352a4fecb930bd9f94a2364c025d775793"
       },
       "dependencies": ["@cascivo/core"],
@@ -19235,7 +19281,7 @@
           "flexibility": []
         }
       },
-      "channels": ["copy"]
+      "channels": ["npm:@cascivo/react", "copy"]
     },
     {
       "name": "layout/section",
@@ -19248,7 +19294,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.module.css"
       ],
       "fileHashes": {
-        "section.tsx": "sha256-c7792348ae571f4512ad49e1d130ddf98b8f120eaddea320c9beb09d460581d3",
+        "section.tsx": "sha256-35716e0790f3a23cb5be722ae8652ac74985fd48bfd50f824ec55d71430f4b02",
         "section.module.css": "sha256-94d60eef5a1a659f3455da858f1dd311a1524c06565cd718c65e1f616b5b2001"
       },
       "dependencies": ["@cascivo/core"],
@@ -19416,7 +19462,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
       ],
       "fileHashes": {
-        "spacer.tsx": "sha256-7b176387ceb5c6afc365dcce07eb025c845907739f96794bf024d07848cdcf71",
+        "spacer.tsx": "sha256-ce38d245f33b787ddd7e0505631b2737e8eba94126a5cac047ae0f9f7ddf07a2",
         "spacer.module.css": "sha256-b958a185559596febc9b8f7be84fea0da37cba494e8e096eb24cefce645836ca"
       },
       "dependencies": ["@cascivo/core"],
@@ -19489,7 +19535,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.module.css"
       ],
       "fileHashes": {
-        "split-view.tsx": "sha256-8ac52cafdde1510fb4ffeed63261a2d36b9f89559c03403526d5153595eef8b7",
+        "split-view.tsx": "sha256-f62ed871267be04afead55b6ab9ac17e064afdd2e52f62f0e4594fd3187ce63f",
         "split-view.module.css": "sha256-6abe3492b40fa6bfe00e0f5d4d65829f269c3f6565b9e929af7b2705e178f6e9"
       },
       "dependencies": ["@cascivo/core"],
@@ -20406,13 +20452,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -20655,13 +20701,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -20952,13 +20998,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -21070,13 +21116,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -21219,14 +21265,14 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false,
             "default": "300"
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "40"
@@ -21339,13 +21385,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "160"
@@ -21459,13 +21505,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -21653,13 +21699,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -21779,13 +21825,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -21949,13 +21995,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "240"
@@ -22058,13 +22104,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -22186,13 +22232,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -22697,13 +22743,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false
           }
@@ -22798,13 +22844,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -23056,13 +23102,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -23210,13 +23256,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -23329,13 +23375,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -23501,13 +23547,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -23631,13 +23677,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -23817,14 +23863,14 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false,
             "default": "80"
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "32"
@@ -23946,13 +23992,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -24081,13 +24127,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -24204,13 +24250,13 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
             "type": "number",
             "required": false
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false,
             "default": "320"
@@ -26035,14 +26081,14 @@
           },
           {
             "name": "width",
-            "description": "Width of the component.",
+            "description": "Width in px.",
             "type": "number",
             "required": false,
             "default": "200"
           },
           {
             "name": "height",
-            "description": "Height of the component.",
+            "description": "Height in px.",
             "type": "number",
             "required": false,
             "default": "150"
@@ -26144,6 +26190,12 @@
             "type": "{ x: number; y: number }",
             "required": false,
             "description": "Position in flow coords (controllable)."
+          },
+          {
+            "name": "defaultPosition",
+            "type": "XYPosition",
+            "required": false,
+            "description": "Initial position for an uncontrolled node — the node then owns its own position as it is dragged. Pass `position` instead to control it."
           },
           {
             "name": "onPositionChange",

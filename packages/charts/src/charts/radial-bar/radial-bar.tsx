@@ -20,11 +20,24 @@ export interface RadialBarProps {
   description?: string
   /** Square shorthand: sets width === height. Explicit width/height win. */
   size?: number
+  /**
+   * Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks
+   * its container via a ResizeObserver; there is no correct pixel number in a responsive
+   * grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never
+   * overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for
+   * this — charts call it internally.
+   * @see the component manifest
+   */
   width?: number
   height?: number
   /** Domain top — the value a full sweep represents. Defaults to the largest datum. */
   max?: number
-  /** Sweep angle in degrees (default 270 — a gauge arc). */
+  /**
+   * Sweep angle in degrees (270 = a gauge arc; 360 = a full ring).
+   *
+   * @defaultValue `270`
+   * @see the component manifest
+   */
   sweep?: number
   /** Center value text rendered in the hole. */
   centerValue?: string
@@ -35,7 +48,12 @@ export interface RadialBarProps {
   tooltip?: boolean
   legend?: boolean
   className?: string
-  /** Render only the marks — no legend. For micro/inline charts. */
+  /**
+   * Marks only — no legend. For micro/inline charts.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   plain?: boolean
 }
 

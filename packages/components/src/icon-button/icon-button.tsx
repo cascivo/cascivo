@@ -9,8 +9,20 @@ interface IconButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    * ships ~440 ready-made SVG icon components, or pass your own. */
   icon?: ReactNode
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `ghost`
+   * @see the component manifest
+   */
   variant?: 'ghost' | 'outline' | 'filled'
-  /** Render the single child element instead of a `<button>` (composition). */
+  /**
+   * When true, renders the child element as the root via Slot, merging props (polymorphic
+   * rendering).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   asChild?: boolean
 }
 

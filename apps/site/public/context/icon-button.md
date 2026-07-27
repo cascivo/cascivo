@@ -34,7 +34,7 @@ Renders a native <button> with a mandatory aria-label so the icon-only control a
 
 | Name        | Type                                         | Required | Default | Description                                                                                               |
 | ----------- | -------------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------- |
-| `label`     | `string`                                     | Yes      | —       | Text label for the control.                                                                               |
+| `label`     | `string`                                     | No       | —       | Text label for the control.                                                                               |
 | `ariaLabel` | `string`                                     | No       | —       | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
 | `icon`      | `React.ReactNode`                            | No       | —       | Icon element rendered in the component.                                                                   |
 | `variant`   | `'ghost' \| 'outline' \| 'filled'`           | No       | ghost   | Selects the visual style variant.                                                                         |

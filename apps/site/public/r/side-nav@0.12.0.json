@@ -40,7 +40,7 @@
       {
         "name": "items",
         "type": "SideNavItem[]",
-        "required": true,
+        "required": false,
         "description": "{ label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch"
       },
       {

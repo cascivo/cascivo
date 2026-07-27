@@ -14,6 +14,12 @@ const machine = createMachine({
 
 export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
   src?: string
+  /**
+   * Alternative text describing the image.
+   *
+   * @defaultValue ``
+   * @see the component manifest
+   */
   alt?: string
   /** Full name — used to derive initials for the fallback and as the accessible label. */
   name?: string

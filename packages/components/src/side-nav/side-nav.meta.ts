@@ -24,7 +24,10 @@ export const meta: ComponentMeta = {
     {
       name: 'items',
       type: 'SideNavItem[]',
-      required: true,
+      // Optional: `groups` is the documented alternative and the type says `items?`.
+      // Claiming required here made `cascivo audit --ai` report a correct
+      // `<SideNav groups={…}>` as missing a prop.
+      required: false,
       description:
         '{ label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch',
     },

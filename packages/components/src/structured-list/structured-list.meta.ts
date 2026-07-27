@@ -9,6 +9,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'ariaLabel',
+      description:
+        'Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'aria-label',
       type: 'string',
       required: false,

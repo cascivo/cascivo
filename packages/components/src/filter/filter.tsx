@@ -12,13 +12,39 @@ export interface FilterOption {
 export interface FilterProps {
   options: FilterOption[]
   value?: string[]
+  /**
+   * Initial selected values for uncontrolled use
+   *
+   * @defaultValue `[]`
+   * @see the component manifest
+   */
   defaultValue?: string[]
   /** Called with the selected values whenever the selection changes. */
   onValueChange?: (selected: string[]) => void
   /** @deprecated Use `onValueChange` — it receives the same `string[]`. */
   onChange?: (selected: string[]) => void
+  /**
+   * Allow multiple items to be selected simultaneously
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   multi?: boolean
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `pill`
+   * @see the component manifest
+   */
   variant?: FilterVariant
+  /**
+   * Invisible accessible name. `ariaLabel` is the catalog convention (see the
+   * accessible-name table in `docs/AI-RULES.md`); the DOM spelling `aria-label` is accepted
+   * too, so either guess compiles. Two spellings of one idea inside a package was a coin
+   * flip on every component.
+   */
+  ariaLabel?: string
+  /** DOM-spelled alias of {@link ariaLabel}. */
   'aria-label'?: string
   className?: string
 }
@@ -32,6 +58,7 @@ export function Filter({
   multi = false,
   variant = 'pill',
   className,
+  ariaLabel,
   ...aria
 }: FilterProps) {
   useSignals()
@@ -57,6 +84,7 @@ export function Filter({
       role="group"
       className={[styles['filter'], className].filter(Boolean).join(' ')}
       data-variant={variant}
+      aria-label={aria['aria-label'] ?? ariaLabel}
       {...aria}
     >
       {options.map((opt) => (

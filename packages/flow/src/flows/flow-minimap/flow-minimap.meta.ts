@@ -29,14 +29,14 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'width',
-      description: 'Width of the component.',
+      description: 'Width in px.',
       type: 'number',
       required: false,
       default: '200',
     },
     {
       name: 'height',
-      description: 'Height of the component.',
+      description: 'Height in px.',
       type: 'number',
       required: false,
       default: '150',

@@ -13,16 +13,38 @@ export interface StructuredListItem {
 export interface StructuredListProps {
   items: StructuredListItem[]
   headers?: ReactNode[]
+  /**
+   * When true, rows can be selected.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   selectable?: boolean
   value?: string
   defaultValue?: string
   onSelect?: (id: string) => void
   className?: string
+  /**
+   * Invisible accessible name. `ariaLabel` is the catalog convention (see the
+   * accessible-name table in `docs/AI-RULES.md`); the DOM spelling `aria-label` is accepted
+   * too, so either guess compiles. Two spellings of one idea inside a package was a coin
+   * flip on every component.
+   */
+  ariaLabel?: string
+  /** DOM-spelled alias of {@link ariaLabel}. */
   'aria-label'?: string
 }
 
 export function StructuredList(props: StructuredListProps) {
-  const { items, headers, selectable = false, className, 'aria-label': ariaLabel } = props
+  const {
+    items,
+    headers,
+    selectable = false,
+    className,
+    ariaLabel: ariaLabelProp,
+    'aria-label': ariaLabelAttr,
+  } = props
+  const ariaLabel = ariaLabelAttr ?? ariaLabelProp
 
   if (selectable) {
     return <SelectableStructuredList {...props} />
@@ -61,8 +83,10 @@ function SelectableStructuredList({
   defaultValue,
   onSelect,
   className,
-  'aria-label': ariaLabel,
+  ariaLabel: ariaLabelProp,
+  'aria-label': ariaLabelAttr,
 }: StructuredListProps) {
+  const ariaLabel = ariaLabelAttr ?? ariaLabelProp
   useSignals()
   const groupId = useId()
   const [selected, setSelected] = useControllableSignal<string>({

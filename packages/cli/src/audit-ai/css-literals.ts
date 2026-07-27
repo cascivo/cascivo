@@ -68,6 +68,44 @@ function classify(
 }
 
 /**
+ * Character ranges covered by a JSX `style={{ … }}` object.
+ *
+ * The inline-style scan used to run over every `prop: 'value'` pair in a `.tsx` file, so a
+ * plain data object was audited as if it were CSS: a `DataTable` column's
+ * `width: '3rem'` was reported as a hardcoded value that should be `--cascivo-space-12`.
+ * A spacing token is not the right unit for a table column, and the object was never a
+ * style in the first place — the rule was matching the literal, not the context.
+ */
+function styleObjectRanges(source: string): Array<[number, number]> {
+  const ranges: Array<[number, number]> = []
+  const re = /style\s*=\s*\{/g
+  for (const m of source.matchAll(re)) {
+    let depth = 0
+    let quote = ''
+    for (let i = m.index! + m[0].length - 1; i < source.length; i++) {
+      const ch = source[i]
+      if (quote) {
+        if (ch === quote) quote = ''
+        continue
+      }
+      if (ch === '"' || ch === "'" || ch === '`') {
+        quote = ch
+        continue
+      }
+      if (ch === '{') depth++
+      else if (ch === '}') {
+        depth--
+        if (depth === 0) {
+          ranges.push([m.index!, i])
+          break
+        }
+      }
+    }
+  }
+  return ranges
+}
+
+/**
  * Detect literal color/size values in CSS declarations and TSX inline styles
  * that exactly match a known cascade token. Heuristic, line-based — no full
  * CSS/JS parse. Values with no catalog match are NOT flagged (arbitrary brand
@@ -80,6 +118,16 @@ export function findCssLiteralViolations(
 ): LiteralFinding[] {
   const findings: LiteralFinding[] = []
   const lines = source.split('\n')
+  const styleRanges = styleObjectRanges(source)
+  // Absolute offset of the start of each line, so a match can be tested against the ranges.
+  const lineStarts: number[] = []
+  let offset = 0
+  for (const line of lines) {
+    lineStarts.push(offset)
+    offset += line.length + 1
+  }
+  const inStyleObject = (absolute: number): boolean =>
+    styleRanges.some(([start, end]) => absolute >= start && absolute <= end)
 
   // CSS declaration: `property: value;` (also matches the kebab props inside style="...")
   const cssDecl = /(^|[;{\s])([a-z-]+)\s*:\s*([^;}{]+?)\s*(?=[;}]|$)/gi
@@ -115,6 +163,9 @@ export function findCssLiteralViolations(
       if (m[1] === undefined || m[3] === undefined) continue
       const prop = INLINE_PROP_MAP[m[1]]
       if (!prop) continue
+      // Only inside an actual `style={{ … }}`; a data object that happens to have a
+      // `width` key is not CSS.
+      if (!inStyleObject((lineStarts[i] ?? 0) + (m.index ?? 0))) continue
       const rawValue = m[3].trim()
       if (!isLiteralValue(rawValue)) continue
       const key = `${prop}|${rawValue}`

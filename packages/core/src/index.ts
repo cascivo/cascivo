@@ -102,3 +102,7 @@ export type {
   AnchorAlign,
 } from './anchor.tsx'
 export type { SpaceStep } from './space.ts'
+// The catalog's one status vocabulary (Tone) and one progress vocabulary (Progress),
+// plus the alias normalizers every component that models either uses.
+export { normalizeTone, normalizeProgress } from './tone.ts'
+export type { Tone, ToneAlias, ToneInput, Progress, ProgressAlias, ProgressInput } from './tone.ts'

@@ -10,6 +10,12 @@ export interface ProgressStep {
 export interface ProgressIndicatorProps {
   steps: ProgressStep[]
   currentIndex: number
+  /**
+   * When true, lays the steps out vertically.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   vertical?: boolean
   className?: string
 }

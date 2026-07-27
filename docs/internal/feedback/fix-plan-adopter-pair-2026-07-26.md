@@ -1,10 +1,33 @@
 # Fix plan — the 2026-07-26 adopter **pair** (both tested published `0.12.0`)
 
-**Status: planned — not implemented.** Nothing below has been written yet. This document is
-the complete spec, written to be handed to an implementing agent (Opus) as-is. Every claim in
-both reports is triaged against `main` at commit `183ef05a` with file:line evidence, a verdict
-(**CONFIRMED** / **PARTIALLY REFUTED** / **REFUTED**), and — for the two red flags that are
-reproducible in-process — an actual reproduction that was run.
+**Status: implemented on `claude/ui-library-analysis-plan-s4qogb`; not yet published.**
+Per-workstream: **WS-1** ✅ (`tsdoc:generate` republishes the manifest onto the type surface —
+124 components, 300+ props; `tsdoc-parity` guard + placeholder blocklist + coverage ratchet) ·
+**WS-2** ✅ (all four root causes fixed; `adopter-app` fixture audits clean in CI; `props-parity`
+gained a `required` direction, which found 2 real drifts) · **WS-3** ✅ (`Link asChild`,
+`text-decoration: none` + `aria-disabled` on all four control-like components,
+`--cascivo-link-color` published, `USING-WITH-A-ROUTER.md` + `aschild-docs` guard) ·
+**WS-4** ✅ (ComboChart: margins, stride, legend, line series in the a11y table, two dev-warns;
+16-case chart-chrome contract test) · **WS-5** ✅ (`Axis orientation="y-right"`,
+`rightMarginForLabels`, pixel-based stride/last-label collision) · **WS-6** ✅ (overlap fill
+opacity + `--cascivo-chart-fill-opacity-overlap` in all 12 themes + scale-mismatch warning) ·
+**WS-7** ✅ (23 chart manifests rewritten; recipe "Sizing charts" section) ·
+**WS-8** ✅ (fixed layout only when every column is sized; `Column.minWidth`; scoped
+`overflow-wrap`) · **WS-9** ✅ (`Tone` + `Progress` in `@cascivo/core`, six components accept
+them, `vocabulary` guard) · **WS-10** ✅ (`Badge tone=` fixed; `example-props` guard type-checks
+all 370 examples and found a second real gap) · **WS-11** ✅ (channels derived per-symbol;
+`importableSymbols`; `PageHeader` exported) · **WS-12** ✅ (12 papercuts) ·
+**WS-13** ✅ (`export-collisions` guard, react↔charts scoped) · **WS-14** ✅ (8 new guards, all
+wired into `pnpm meta:check`) · **WS-15** ⬜ **not done — this is what "published" is blocked on.**
+
+> **Definition of done is NOT met yet.** Everything above is on the branch; nothing is on npm.
+> Per `README.md` rule 2 a fix an adopter cannot `pnpm add` is not done — which is exactly why
+> both 07-26 adopters, testing npm, met defects that were already fixed on `main`. The
+> publishing PR must flip these to `published vX.Y.Z`.
+
+Every claim in both reports was triaged against `main` at commit `183ef05a` with file:line
+evidence, a verdict (**CONFIRMED** / **PARTIALLY REFUTED** / **REFUTED**), and — for the two
+red flags that are reproducible in-process — an actual reproduction that was run.
 
 **Source reports** (both dated 2026-07-26, both a Vercel-style console, both **Path B**, both
 against the *published* `@cascivo/react@0.12.0` / `@cascivo/charts@0.6.0` /

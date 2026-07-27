@@ -82,7 +82,7 @@ export const PLAIN_MARGINS = { top: 2, right: 2, bottom: 2, left: 2 } as const
  * A conservative average across digits, separators, and short month names — good
  * enough to reserve room without measuring text (no DOM in SSR/tests).
  */
-const AXIS_CHAR_PX = 6.5
+export const AXIS_CHAR_PX = 6.5
 
 /**
  * Left margin sized to the widest left-axis label so wide ticks (e.g. `40,000`)
@@ -100,10 +100,44 @@ export function leftMarginForLabels(
 }
 
 /**
+ * Right margin sized so the axis chrome on the right-hand side isn't clipped by the SVG
+ * edge. Two independent causes, both of which the default 8px margin failed:
+ *
+ * - a **right-hand value axis** (`secondAxis`) needs the full width of its widest label,
+ *   which renders *outside* the plot via `Axis orientation="y-right"`;
+ * - the **final bottom-axis label** is centred on the last tick, which sits at the plot's
+ *   right edge, so half of it overhangs (`7/26/2026` → `7/26/202`).
+ *
+ * Pass whichever apply; the larger wins. `plain` charts keep their tiny margin.
+ */
+export function rightMarginForLabels(
+  options: {
+    /** Labels of a right-hand value axis, if the chart has one. */
+    rightAxisLabels?: readonly string[]
+    /** Labels of the bottom axis — only the last one's overhang matters. */
+    bottomAxisLabels?: readonly string[]
+    plain?: boolean | undefined
+  } = {},
+): number {
+  const { rightAxisLabels = [], bottomAxisLabels = [], plain } = options
+  if (plain) return PLAIN_MARGINS.right
+  const gutter = 12 // tick line (8px) + breathing room
+  const rightAxis = rightAxisLabels.reduce((m, s) => Math.max(m, s.length), 0)
+  const rightAxisPx = rightAxis > 0 ? Math.ceil(rightAxis * AXIS_CHAR_PX + gutter) : 0
+  // Only the last bottom label overhangs, and only by half its width.
+  const lastBottom = bottomAxisLabels[bottomAxisLabels.length - 1] ?? ''
+  const overhangPx = lastBottom ? Math.ceil((lastBottom.length * AXIS_CHAR_PX) / 2 + 2) : 0
+  return Math.max(DEFAULT_MARGINS.right, rightAxisPx, overhangPx)
+}
+
+/**
  * Stride for a crowded categorical (band) axis: render every Nth label so they stop
  * colliding (e.g. 14 `Jul 1`…`Jul 14` dates in a narrow chart). Returns `undefined`
  * when every label fits — callers pass that straight to `Axis.labelEvery` (all shown).
  * An explicit `xLabelEvery` from the caller always overrides this.
+ *
+ * `Axis` always draws the final label, and drops the strided label before it when the two
+ * would collide — so a stride that doesn't divide the domain evenly is safe.
  */
 export function autoLabelStride(labels: readonly string[], axisLength: number): number | undefined {
   if (labels.length <= 1 || axisLength <= 0) return undefined

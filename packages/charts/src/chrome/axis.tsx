@@ -1,4 +1,5 @@
 'use client'
+import { AXIS_CHAR_PX } from '../core/use-chart'
 import type { BandScale, LinearScale } from '../engine/scale'
 import type { LogScale } from '../engine/scale-log'
 import type { TimeScale } from '../engine/scale-time'
@@ -14,11 +15,24 @@ function isTime(s: AnyScale): s is TimeScale {
 
 export interface AxisProps {
   scale: AnyScale
-  orientation: 'x' | 'y'
+  /**
+   * `x` — horizontal axis, labels below the line.
+   * `y` — vertical axis on the **left**, labels outside to the left.
+   * `y-right` — vertical axis on the **right**, labels outside to the right.
+   *
+   * A right-hand axis MUST use `y-right`: a `y` axis translated to the plot's right edge
+   * draws its labels at `x: -8` with `text-anchor: end`, i.e. *inside the plot*, on top of
+   * the marks. That was the actual rendering of every right axis in the catalog.
+   */
+  orientation: 'x' | 'y' | 'y-right'
   length: number
   format?: (value: number | string | Date) => string
   tickCount?: number
-  /** For band scales: render every Nth category label (and always the last) to avoid crowding. */
+  /**
+   * For band scales: render every Nth category label to avoid crowding. The final label is
+   * always drawn, and a strided label that would collide with it is dropped —
+   * see `autoLabelStride`, which computes this for you. Pass explicitly only to override.
+   */
   labelEvery?: number | undefined
   transform?: string
 }
@@ -42,6 +56,21 @@ export function Axis({
 
   if (isBand(scale)) {
     const last = scale.domain.length - 1
+    const strided = labelEvery != null && labelEvery > 1
+    // The last strided index before the always-drawn final label. When the stride doesn't
+    // divide `last` evenly these two can land close enough to overprint each other
+    // (30 categories at stride 4 → …24, 28, 29 → "Jul 21 JulJ2526").
+    //
+    // The test is in PIXELS, not indices: four wide bands at stride 2 leave plenty of room
+    // between index 2 and index 3, while thirty narrow ones do not. Comparing index
+    // distance instead would drop a label that fits perfectly well.
+    const penultimate = strided ? Math.floor(last / labelEvery) * labelEvery : -1
+    let dropPenultimate = false
+    if (strided && penultimate !== last && penultimate >= 0) {
+      const posOf = (i: number) => (scale.map(scale.domain[i]!) ?? 0) + scale.bandwidth / 2
+      const widest = scale.domain.reduce((m, d) => Math.max(m, format(d).length), 0) * AXIS_CHAR_PX
+      dropPenultimate = posOf(last) - posOf(penultimate) < widest
+    }
     ticks = scale.domain
       .map((d, i) => ({
         position: (scale.map(d) ?? 0) + scale.bandwidth / 2,
@@ -49,9 +78,12 @@ export function Axis({
         i,
       }))
       // Thin labels for crowded categorical axes: keep every Nth and always the last.
-      .filter(({ i }) =>
-        labelEvery != null && labelEvery > 1 ? i % labelEvery === 0 || i === last : true,
-      )
+      .filter(({ i }) => {
+        if (!strided) return true
+        if (i === last) return true
+        if (dropPenultimate && i === penultimate) return false
+        return i % labelEvery === 0
+      })
   } else if (isTime(scale)) {
     ticks = scale.ticks(tickCount).map((d) => ({
       position: scale.map(d),
@@ -66,6 +98,11 @@ export function Axis({
   }
 
   const isX = orientation === 'x'
+  const isRight = orientation === 'y-right'
+  // Tick mark and label sit on the outside of the plot: left for `y`, right for `y-right`.
+  const tickX = isX ? 0 : isRight ? 4 : -4
+  const labelX = isX ? 0 : isRight ? 8 : -8
+  const anchor = isX ? 'middle' : isRight ? 'start' : 'end'
   return (
     <g transform={transform} aria-hidden="true">
       <line
@@ -81,15 +118,15 @@ export function Axis({
           <line
             x1={0}
             y1={0}
-            x2={isX ? 0 : -4}
+            x2={tickX}
             y2={isX ? 4 : 0}
             stroke="var(--cascivo-chart-axis)"
             strokeWidth={1}
           />
           <text
-            x={isX ? 0 : -8}
+            x={labelX}
             y={isX ? 16 : 4}
-            textAnchor={isX ? 'middle' : 'end'}
+            textAnchor={anchor}
             fill="var(--cascivo-chart-axis)"
             fontSize={11}
           >

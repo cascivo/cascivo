@@ -28,8 +28,8 @@ role="img" with an i18n-defaulted label describing the overview.
 | `viewport`         | `Viewport`                                                     | Yes      | —            | The current pan/zoom viewport to reflect in the minimap.  |
 | `containerWidth`   | `number`                                                       | No       | —            | Width of the flow container, used to scale the minimap.   |
 | `containerHeight`  | `number`                                                       | No       | —            | Height of the flow container, used to scale the minimap.  |
-| `width`            | `number`                                                       | No       | 200          | Width of the component.                                   |
-| `height`           | `number`                                                       | No       | 150          | Height of the component.                                  |
+| `width`            | `number`                                                       | No       | 200          | Width in px.                                              |
+| `height`           | `number`                                                       | No       | 150          | Height in px.                                             |
 | `position`         | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | No       | bottom-right | Position of the component.                                |
 | `onViewportChange` | `(viewport: Viewport) => void`                                 | No       | —            | Called with the new viewport when the minimap is dragged. |
 | `className`        | `string`                                                       | No       | —            | Additional CSS class names merged onto the root element.  |

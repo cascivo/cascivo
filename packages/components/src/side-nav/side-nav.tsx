@@ -98,12 +98,48 @@ export interface SideNavProps {
   items?: SideNavItem[]
   groups?: SideNavGroup[]
   collapsed?: boolean
+  /**
+   * Whether the rail is collapsed on first render (uncontrolled).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   defaultCollapsed?: boolean
   onCollapsedChange?: (collapsed: boolean) => void
+  /**
+   * Accessible label for the component.
+   *
+   * @defaultValue `Side navigation`
+   * @see the component manifest
+   */
   ariaLabel?: string
+  /**
+   * Accessible label for the collapse control.
+   *
+   * @defaultValue `Collapse navigation`
+   * @see the component manifest
+   */
   collapseLabel?: string
+  /**
+   * Accessible label for the expand control.
+   *
+   * @defaultValue `Expand navigation`
+   * @see the component manifest
+   */
   expandLabel?: string
+  /**
+   * Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   expandOnHover?: boolean
+  /**
+   * Show the collapse/expand toggle control.
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   showCollapseToggle?: boolean
   /** Content rendered above the items, inside the item padding context. */
   header?: ReactNode

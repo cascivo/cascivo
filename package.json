@@ -35,7 +35,7 @@
     "release:check": "node --experimental-strip-types --test scripts/checks/release-filter.test.ts",
     "regen:check": "node --experimental-strip-types --test scripts/checks/regen-determinism.test.ts",
     "pack:check": "node scripts/checks/pack-lint.mjs --all",
-    "meta:check": "node --experimental-strip-types --test scripts/checks/meta-coverage.test.ts scripts/checks/manifest-completeness.test.ts scripts/checks/primitive-docs.test.ts scripts/checks/self-subscribe-parity.test.ts scripts/checks/path-b-parity.test.ts scripts/checks/recipe-channels.test.ts scripts/checks/props-parity.test.ts scripts/checks/prop-defaults-parity.test.ts scripts/checks/typedefs-parity.test.ts scripts/checks/doc-api-drift.test.ts scripts/checks/pkg-exports.test.ts scripts/checks/peer-floors.test.ts scripts/checks/css-imports.test.ts scripts/checks/docs-imports.test.ts scripts/checks/docs-links.test.ts scripts/checks/docs-package-refs.test.ts",
+    "meta:check": "node --experimental-strip-types --test scripts/checks/meta-coverage.test.ts scripts/checks/manifest-completeness.test.ts scripts/checks/primitive-docs.test.ts scripts/checks/self-subscribe-parity.test.ts scripts/checks/path-b-parity.test.ts scripts/checks/recipe-channels.test.ts scripts/checks/props-parity.test.ts scripts/checks/prop-defaults-parity.test.ts scripts/checks/typedefs-parity.test.ts scripts/checks/doc-api-drift.test.ts scripts/checks/pkg-exports.test.ts scripts/checks/peer-floors.test.ts scripts/checks/css-imports.test.ts scripts/checks/docs-imports.test.ts scripts/checks/docs-links.test.ts scripts/checks/docs-package-refs.test.ts scripts/checks/tsdoc-parity.test.ts scripts/checks/vocabulary.test.ts scripts/checks/aschild-docs.test.ts scripts/checks/grid-safety.test.ts scripts/checks/example-props.test.ts scripts/checks/export-collisions.test.ts",
     "primitive-docs:check": "node --experimental-strip-types --test scripts/checks/primitive-docs.test.ts",
     "lint:host-strict": "node scripts/checks/host-lint/run.mjs",
     "i18n:check": "node --experimental-strip-types --test scripts/checks/i18n-keys.test.ts",
@@ -70,7 +70,7 @@
     "tokens:generate": "node scripts/tokens/generate-manifest.mjs",
     "icons:generate": "node scripts/icons/generate.mjs",
     "glyphs:generate": "node scripts/icons/generate-glyphs.mjs",
-    "regen": "pnpm registry:generate && pnpm deps:check && pnpm icons:generate && pnpm glyphs:generate && pnpm stories:generate && pnpm schema:generate && pnpm catalog:generate && pnpm variants:generate && pnpm specs:generate && pnpm context:generate && pnpm audit-contract:generate && pnpm changes:generate && pnpm parity:generate && pnpm migration:generate && pnpm simplicity:generate && pnpm tokens:generate && pnpm readme:index && pnpm readme:generate && pnpm llms:generate && pnpm docs-md:generate && pnpm sitemap:generate && pnpm blog-feed:generate",
+    "regen": "pnpm registry:generate && pnpm deps:check && pnpm icons:generate && pnpm glyphs:generate && pnpm stories:generate && pnpm schema:generate && pnpm catalog:generate && pnpm variants:generate && pnpm specs:generate && pnpm context:generate && pnpm audit-contract:generate && pnpm changes:generate && pnpm parity:generate && pnpm migration:generate && pnpm simplicity:generate && pnpm tokens:generate && pnpm tsdoc:generate && pnpm readme:index && pnpm readme:generate && pnpm llms:generate && pnpm docs-md:generate && pnpm sitemap:generate && pnpm blog-feed:generate",
     "dev:docs": "vp run @cascivo/site#dev",
     "dev:landing": "vp run @cascivo/site#dev",
     "dev:landing:full": "vp run -F @cascivo/example-deploy -F @cascivo/example-pay -F @cascivo/example-flow -F @cascivo/example-track -F @cascivo/example-pulse -F @cascivo/example-trade build && vp run @cascivo/site#dev",
@@ -80,7 +80,8 @@
     "changeset": "changeset && pnpm check:fix",
     "version-packages": "changeset version && pnpm install --no-frozen-lockfile && pnpm regen && vp check --fix",
     "build:release": "vp run --concurrency-limit 1 -F @cascivo/ai -F @cascivo/core -F @cascivo/docs -F @cascivo/editor -F @cascivo/flow -F @cascivo/i18n -F @cascivo/icons -F @cascivo/charts -F @cascivo/mcp -F @cascivo/react -F @cascivo/registry -F @cascivo/storage -F @cascivo/themes -F @cascivo/tokens -F @cascivo/vite-plugin -F cascivo build",
-    "release": "pnpm build:release && pnpm pack:check && changeset publish"
+    "release": "pnpm build:release && pnpm pack:check && changeset publish",
+    "tsdoc:generate": "node --experimental-strip-types scripts/tsdoc/generate.ts"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",

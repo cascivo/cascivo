@@ -12,16 +12,54 @@ import styles from './overflow-menu.module.css'
 
 export interface OverflowMenuItem {
   label: string
-  value: string
+  /**
+   * Item identity — what `onSelect` receives. `value` is the catalog convention for the
+   * identity of an item in a collection (see the accessible-name/item-identity table in
+   * `docs/AI-RULES.md`); `id` is accepted as an alias because `CommandMenu`-shaped `id`
+   * is the common wrong guess and cost an adopter a compile round-trip. Pass either.
+   */
+  value?: string
+  /** Alias of {@link OverflowMenuItem.value}. Exactly one of the two is required. */
+  id?: string
   icon?: ReactNode
+  /**
+   * When true, disables the control and removes it from the tab order.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   destructive?: boolean
+}
+
+/** The item's identity, from whichever of the two accepted spellings was supplied. */
+function identityOf(item: OverflowMenuItem): string {
+  const value = item.value ?? item.id
+  if (value === undefined) {
+    throw new Error(
+      `OverflowMenu: item "${item.label}" has neither \`value\` nor \`id\`. One of them is required — ` +
+        'it is what `onSelect` receives.',
+    )
+  }
+  return value
 }
 
 export interface OverflowMenuProps {
   items: OverflowMenuItem[]
   onSelect?: (value: string) => void
+  /**
+   * Placement relative to the trigger.
+   *
+   * @defaultValue `bottom-end`
+   * @see the component manifest
+   */
   placement?: 'bottom-start' | 'bottom-end'
+  /**
+   * Accessible label for the component.
+   *
+   * @defaultValue `More actions`
+   * @see the component manifest
+   */
   ariaLabel?: string
   size?: 'sm' | 'md'
   disabled?: boolean
@@ -52,7 +90,7 @@ export function OverflowMenu({
   // Map to Dropdown's item shape. Destructive items carry a hidden marker span
   // inside the icon slot so CSS can target them via :has().
   const dropdownItems: DropdownItem[] = items.map((item) => {
-    const mapped: DropdownItem = { label: item.label, value: item.value }
+    const mapped: DropdownItem = { label: item.label, value: identityOf(item) }
     if (item.disabled !== undefined) mapped.disabled = item.disabled
     if (item.destructive) {
       mapped.icon = (

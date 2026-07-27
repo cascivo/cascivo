@@ -4,9 +4,21 @@ import type { HTMLAttributes } from 'react'
 import styles from './text.module.css'
 
 export interface TextProps extends HTMLAttributes<HTMLElement> {
+  /**
+   * The HTML element to render as.
+   *
+   * @defaultValue `p`
+   * @see the component manifest
+   */
   as?: 'p' | 'span' | 'div'
   size?: 'sm' | 'md' | 'lg'
   weight?: 'normal' | 'medium' | 'semibold'
+  /**
+   * When true, renders in a muted/subtle color.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   muted?: boolean
 }
 

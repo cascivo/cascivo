@@ -129,6 +129,8 @@
     /* Axis labels are text — gray-400 (2.6:1) fails; match text-muted. */
     --cascivo-chart-axis: oklch(0.5 0.016 264);
     --cascivo-chart-fill-opacity: 0.25;
+    /* Overlapping (non-stacked) areas — lower so series stay distinguishable. */
+    --cascivo-chart-fill-opacity-overlap: 0.125;
 
     /* ── -content tokens (foreground ≥4.5:1 on paired background) ── */
     --cascivo-color-primary-content: var(--cascivo-color-primary-fg);

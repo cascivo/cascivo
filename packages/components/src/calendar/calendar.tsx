@@ -77,6 +77,12 @@ export interface CalendarProps {
   max?: Date
   disabled?: (date: Date) => boolean
   locale?: string
+  /**
+   * Grid cell size
+   *
+   * @defaultValue `md`
+   * @see the component manifest
+   */
   size?: 'sm' | 'md' | 'lg'
   labels?: CalendarLabels
   className?: string
@@ -93,7 +99,12 @@ export interface CalendarProps {
   year?: number
   /** Called when the user navigates months (prev/next or keyboard). */
   onViewChange?: (view: { month: number; year: number }) => void
-  /** Hide the prev/next header nav (parent drives navigation). */
+  /**
+   * Hides the prev/next nav so a parent can drive navigation
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   hideNav?: boolean
 }
 

@@ -6,6 +6,12 @@ import styles from './checkbox.module.css'
 
 export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
+  /**
+   * When true, renders the mixed/indeterminate state.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   indeterminate?: boolean
 }
 

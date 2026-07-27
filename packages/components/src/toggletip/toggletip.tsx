@@ -28,6 +28,12 @@ export interface ToggletipProps {
   /** The popover content. Interactive and selectable. */
   children: ReactNode
   placement?: ToggletipPlacement
+  /**
+   * Initial open state when uncontrolled
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   defaultOpen?: boolean
   open?: boolean
   onOpenChange?: (open: boolean) => void

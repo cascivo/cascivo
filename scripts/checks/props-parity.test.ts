@@ -134,6 +134,35 @@ describe('props-parity — manifest props match the TypeScript interface', () =>
     )
   })
 
+  it("Direction C — manifest `required` matches the type's optionality", () => {
+    // The audit CLI derives its required-prop rule straight from the manifest, so a manifest
+    // that claims a prop is required when the type says `?` makes `cascivo audit --ai` fail
+    // correct code — `SideNav.items` said `required: true` while the type said `items?`, and
+    // a documented `<SideNav groups={…}>` was reported as missing `items`. Names and types
+    // were checked from the start; optionality never was.
+    const errors: string[] = []
+    for (const c of checkable) {
+      for (const p of c.metaProps) {
+        if (!c.sets.resolvedAll.has(p.name)) continue // Direction A already reports this
+        const metaRequired = p.required === true
+        const typeRequired = c.sets.requiredAll.has(p.name)
+        if (metaRequired === typeRequired) continue
+        errors.push(
+          `  ${c.name} (${c.propsType}): meta says '${p.name}' is ` +
+            `${metaRequired ? 'required' : 'optional'}, the type says ` +
+            `${typeRequired ? 'required' : 'optional'}`,
+        )
+      }
+    }
+    assert.deepEqual(
+      errors,
+      [],
+      `Manifest optionality disagrees with the TypeScript interface. This is what makes ` +
+        `\`cascivo audit --ai\` fail correct code, so it is an error, not a warning ` +
+        `(fix the .meta.ts + \`pnpm regen\`):\n${errors.join('\n')}`,
+    )
+  })
+
   it('allowlist has no stale entries', () => {
     const byName = new Map(checkable.map((c) => [c.name, c]))
     const stale: string[] = []

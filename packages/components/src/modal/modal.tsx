@@ -14,6 +14,12 @@ import type { CSSProperties, ReactNode } from 'react'
 import styles from './modal.module.css'
 
 export interface ModalProps {
+  /**
+   * Whether the component is open (controlled).
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   open?: boolean
   onClose?: () => void
   title?: string
@@ -21,7 +27,12 @@ export interface ModalProps {
   children?: ReactNode
   className?: string
   size?: 'sm' | 'md' | 'lg'
-  /** Allow dragging the dialog by its header (opt-in; CSS translate, no animation library). */
+  /**
+   * Allow dragging the dialog by its header
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   draggable?: boolean
 }
 

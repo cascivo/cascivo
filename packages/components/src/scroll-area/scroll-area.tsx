@@ -9,9 +9,19 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement> {
   height?: string
   /** Max inline size of the scroll container (any CSS length). */
   width?: string
-  /** Which axes may scroll. */
+  /**
+   * Which axes may scroll
+   *
+   * @defaultValue `vertical`
+   * @see the component manifest
+   */
   orientation?: 'vertical' | 'horizontal' | 'both'
-  /** Edge affordance: box-shadow (default), a mask-image fade (HeroUI ScrollShadow), or none. */
+  /**
+   * Edge affordance: box-shadow, a mask-image fade, or none
+   *
+   * @defaultValue `shadow`
+   * @see the component manifest
+   */
   edges?: 'shadow' | 'mask' | 'none'
   children?: ReactNode
 }

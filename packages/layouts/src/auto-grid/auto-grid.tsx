@@ -5,8 +5,20 @@ import styles from './auto-grid.module.css'
 import type { SpaceStep } from '@cascivo/core'
 
 export interface AutoGridProps extends HTMLAttributes<HTMLDivElement> {
-  /** Minimum track size before items wrap to fewer columns. */
+  /**
+   * Minimum track width before items wrap to fewer columns
+   *
+   * @defaultValue `"16rem"`
+   * @see the component manifest
+   */
   min?: string
+  /**
+   * Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips
+   * 7/9/11 — use 6 or 8.
+   *
+   * @defaultValue `4`
+   * @see the component manifest
+   */
   gap?: SpaceStep
   className?: string | undefined
 }

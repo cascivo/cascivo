@@ -4,6 +4,12 @@ import type { HTMLAttributes } from 'react'
 import styles from './center.module.css'
 
 export interface CenterProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * CSS max-width value
+   *
+   * @defaultValue `48rem`
+   * @see the component manifest
+   */
   maxWidth?: string
 }
 

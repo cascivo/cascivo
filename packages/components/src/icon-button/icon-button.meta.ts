@@ -8,7 +8,7 @@ export const meta: ComponentMeta = {
   variants: ['ghost', 'outline', 'filled'],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: true },
+    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
     {
       name: 'ariaLabel',
       type: 'string',

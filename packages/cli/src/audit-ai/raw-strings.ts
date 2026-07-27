@@ -32,8 +32,8 @@ export function findRawStringViolations(
   const findings: RawStringFinding[] = []
   const tracked = importedCascadeComponents(source)
 
-  for (const comp of tracked) {
-    const info = contract.components.get(comp)
+  for (const [comp, contractName] of tracked) {
+    const info = contract.components.get(contractName)
     if (!info?.hasContent) continue
 
     for (const tag of findOpeningTags(source, comp)) {

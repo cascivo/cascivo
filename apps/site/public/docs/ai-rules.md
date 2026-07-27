@@ -111,6 +111,10 @@ name it `onValueChange`; if it's a DOM event, name it `onChange`.** A few compon
 accept a deprecated value-carrying `onChange` alias for backward compatibility — prefer
 `onValueChange`; the alias will be removed in a future major.
 
+> **`Toggle` is the exception to note:** it `Omit`s the DOM `onChange` and redefines it to
+> receive a `boolean`. Use **`onValueChange`** — the same boolean, the correct name. The
+> value-carrying `onChange` is deprecated and kept only for compatibility; do not add another.
+
 ## Accessible-name and item-identity props
 
 The sibling of the handler rule: name a prop by **what it is**, not by the component.
@@ -125,10 +129,59 @@ Two components predate the rule and take `label` for an **invisible** name: `Ico
 and `Sparkline`. Both now also accept `ariaLabel` as an alias, so guessing either way works;
 `label` keeps working and is not deprecated.
 
+Three components took only the DOM spelling `aria-label` (`Filter`, `StructuredList`,
+`Progress`). They now accept **both** `ariaLabel` and `aria-label` — two spellings of one
+idea inside one package was a coin flip on every component. Likewise `OverflowMenu` items
+accept **`id`** as an alias of `value`, which is the common wrong guess by analogy with
+`CommandMenu`.
+
 Guessing across components is the failure this prevents: an adopter wrote
 `<OverflowMenu label=… items={[{ id, label }]}>` by analogy with `CommandMenu` and
 `IconButton` and got two type errors — `OverflowMenu` takes `ariaLabel` and `value`. The
 per-component pages were correct; the cost was that the convention was never stated.
+
+## Status and progress vocabularies — one set of words
+
+Four display components and two sequence components used to ship six overlapping enums for
+two ideas. There is now one canonical vocabulary for each, and every historical spelling is
+accepted as an alias — so one domain enum drives the whole catalog with no lookup table.
+
+**Severity — `Tone`** (`@cascivo/core`): `neutral | info | success | warning | danger`
+
+| Component      | Prop      | Also accepts (aliases)                                                                         |
+| -------------- | --------- | ---------------------------------------------------------------------------------------------- |
+| `Badge`        | `variant` | `default`→neutral, `destructive`/`error`→danger, plus `secondary`/`outline` (looks, not tones) |
+| `Tag`          | `variant` | `default`→neutral, `error`/`destructive`→danger                                                |
+| `Status`       | `status`  | `error`/`destructive`→danger, `default`→neutral                                                |
+| `Notification` | `variant` | `error`/`destructive`→danger                                                                   |
+
+**Position in a sequence — `Progress`** (`@cascivo/core`): `pending | active | complete | error`
+
+| Component  | Prop                  | Also accepts (aliases)               |
+| ---------- | --------------------- | ------------------------------------ |
+| `Steps`    | `Step.state`          | `current`→active, `upcoming`→pending |
+| `Timeline` | `TimelineItem.status` | `current`→active, `upcoming`→pending |
+
+Write the canonical value in new code. `scripts/checks/vocabulary.test.ts` fails a component
+that models either idea with a private union.
+
+## Links in a routed app
+
+Two kinds of link, wired two different ways. Getting this wrong costs either a full page
+reload or a hand-rolled copy of cascivo's link CSS — both were reported by adopters.
+
+| The link is                                                                                                                  | Do this                                                      |
+| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Rendered **by cascivo** from config (`SideNav`, `ShellHeader`, `Header`, `Breadcrumb`, `Switcher`, `Dock`, `NavigationMenu`) | `setLinkComponent(...)` **once** at app startup              |
+| Written **by you** in page content (a project name, a branch in a table cell)                                                | `<Link asChild><RouterLink to="…">…</RouterLink></Link>`     |
+| A call-to-action that navigates                                                                                              | `<Button asChild><RouterLink to="…">…</RouterLink></Button>` |
+
+**Never write a bare `<Link href="/x">` in a routed app** — cascivo's `Link` renders a real
+`<a>`, so it is a full page reload. `setLinkComponent` does **not** apply to it: `Link` is a
+component you place, so it takes the child you hand it. **Never copy cascivo's link CSS into
+your own layer** — override the tokens (`--cascivo-link-color`) instead.
+
+Full guide: [USING-WITH-A-ROUTER.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-A-ROUTER.md).
 
 ## Overriding styles the sanctioned way
 
@@ -169,6 +222,13 @@ A good CI gate pairs it with `doctor`, which checks the install itself:
 ```jsonc
 { "scripts": { "lint": "cascivo doctor --ci && cascivo audit --ai src" } }
 ```
+
+Only `error`-level findings fail `--ci`. `info` findings (a component using a `{...spread}`,
+whose props can't be known statically) and `warn` findings (an inline `style` literal that
+happens to equal a token) never do — so the gate stays green on correct code. A realistic
+router-based dashboard is audited in cascivo's own CI
+(`packages/cli/src/audit-ai/adopter-app.test.ts`) and must report **zero errors**; that
+fixture is what keeps this recommendation honest.
 
 `--contract <path>` points at a specific `audit-contract.json` (pin a version, or run
 fully air-gapped); `--verbose` reports which contract source was used.
@@ -244,6 +304,7 @@ type-only declaration — no runtime effect.
 
 ## See also
 
+- [USING-WITH-A-ROUTER.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-A-ROUTER.md) — `setLinkComponent` vs `asChild`.
 - [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md) — the SSR `ssr.noExternal` recipe.
 - [CSS-LAYERS-PITFALL.md](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md) — the canonical order and the
   `cascivo.override` escape hatch.

@@ -73,11 +73,29 @@ export interface DatePickerProps {
   onChange?: (value: string | undefined) => void
   min?: string
   max?: string
+  /**
+   * Shows a clear button
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   clearable?: boolean
   label?: string
   hint?: string
   error?: string
+  /**
+   * Field size
+   *
+   * @defaultValue `md`
+   * @see the component manifest
+   */
   size?: 'sm' | 'md' | 'lg'
+  /**
+   * Disables the picker
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   disabled?: boolean
   labels?: DatePickerLabels
   className?: string

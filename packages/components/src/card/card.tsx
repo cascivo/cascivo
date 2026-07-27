@@ -4,7 +4,19 @@ import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './card.module.css'
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Selects the visual style variant.
+   *
+   * @defaultValue `default`
+   * @see the component manifest
+   */
   variant?: 'default' | 'outlined' | 'elevated'
+  /**
+   * Inner padding of the component.
+   *
+   * @defaultValue `md`
+   * @see the component manifest
+   */
   padding?: 'none' | 'sm' | 'md' | 'lg'
 }
 

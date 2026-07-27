@@ -7,6 +7,12 @@ import styles from './skip-nav.module.css'
 const DEFAULT_TARGET_ID = 'cascade-skip-target'
 
 export interface SkipNavLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'href'> {
+  /**
+   * SkipNavLink: id of the SkipNavTarget to jump to
+   *
+   * @defaultValue `cascade-skip-target`
+   * @see the component manifest
+   */
   targetId?: string
   labels?: { label?: string }
 }
@@ -28,6 +34,12 @@ export function SkipNavLink({
 }
 
 export interface SkipNavTargetProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * SkipNavTarget: anchor id — must match the link targetId
+   *
+   * @defaultValue `cascade-skip-target`
+   * @see the component manifest
+   */
   id?: string
 }
 
