@@ -3,6 +3,7 @@
 import {
   cn,
   DismissableLayer,
+  focusElement,
   Presence,
   useAnchorPosition,
   useRovingFocus,
@@ -128,7 +129,7 @@ function MenubarTrigger({ menu, baseId, openId, itemProps }: MenubarTriggerProps
           floatingStyle={floatingStyle}
           onClose={() => {
             openId.value = null
-            triggerRef.current?.focus()
+            focusElement(triggerRef.current)
           }}
         />
       </Presence>

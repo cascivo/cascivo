@@ -1,5 +1,5 @@
 'use client'
-import { cn, getLinkComponent, useSignal, useSignals } from '@cascivo/core'
+import { cn, focusElement, getLinkComponent, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { Fragment, useId } from 'react'
 import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
@@ -288,7 +288,7 @@ function RailGroupFlyout({ item }: RailGroupFlyoutProps) {
     } else if (e.key === 'Escape') {
       e.preventDefault()
       close()
-      triggerRef.current?.focus()
+      focusElement(triggerRef.current)
     }
   }
 

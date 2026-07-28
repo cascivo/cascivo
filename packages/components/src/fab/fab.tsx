@@ -3,6 +3,7 @@
 import {
   cn,
   DismissableLayer,
+  focusElement,
   Presence,
   useControllableSignal,
   useRovingFocus,
@@ -88,7 +89,7 @@ export function Fab({
         ?.querySelector<HTMLElement>('[role="menuitem"]:not([aria-disabled="true"])')
         ?.focus()
     } else if (!next && wasOpenRef.current) {
-      fabRef.current?.focus()
+      focusElement(fabRef.current)
     }
     wasOpenRef.current = next
   })

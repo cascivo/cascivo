@@ -1,5 +1,6 @@
 'use client'
 import { createMachine, useMachine, cn } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { InputHTMLAttributes } from 'react'
 import styles from './input.module.css'
 
@@ -18,17 +19,17 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   size?: 'sm' | 'md' | 'lg'
 }
 
-export function Input({
-  label,
-  hint,
-  error,
-  size = 'md',
-  className,
-  id,
-  onFocus,
-  onBlur,
-  ...props
-}: InputProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<input>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10): the ref already worked at
+ * runtime under React 19, but nothing declared it, so passing one was a `ts(2322)` and every
+ * consumer had to cast. `forwardRef` rather than a bare `ref?: Ref<T>` prop keeps the
+ * `react >= 18` peer floor honest, since ref-as-prop does not work there.
+ */
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { label, hint, error, size = 'md', className, id, onFocus, onBlur, ...props },
+  ref,
+) {
   const [state, send] = useMachine(machine)
   const inputId =
     id ?? (label ? `cascade-input-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined)
@@ -45,6 +46,7 @@ export function Input({
         </label>
       )}
       <input
+        ref={ref}
         id={inputId}
         className={styles['input']}
         aria-invalid={error ? true : undefined}
@@ -71,4 +73,4 @@ export function Input({
       )}
     </div>
   )
-}
+})

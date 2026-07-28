@@ -1,5 +1,12 @@
 'use client'
-import { useSignal, useComputed, useSignalEffect, useSignals, cn } from '@cascivo/core'
+import {
+  cn,
+  focusElement,
+  useComputed,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { useRef } from 'react'
 import type { HTMLAttributes } from 'react'
 import { t, builtin } from '@cascivo/i18n'
@@ -62,7 +69,7 @@ export function MultiSelect({
   useSignalEffect(() => {
     if (popover.isOpen.value) {
       activeIndex.value = -1
-      setTimeout(() => searchRef.current?.focus(), 0)
+      setTimeout(() => focusElement(searchRef.current), 0)
     } else {
       searchQuery.value = ''
     }

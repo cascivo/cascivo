@@ -2,6 +2,7 @@
 import {
   composeRefs,
   createMachine,
+  focusElement,
   useEffectPropSignal,
   useMachine,
   useSignal,
@@ -115,7 +116,7 @@ export function Dropdown({
     if (!item || item.separator || item.disabled) return
     onSelect?.(item.value)
     setOpen(false)
-    triggerRef.current?.focus()
+    focusElement(triggerRef.current)
   }
 
   const moveActive = (delta: number) => {
@@ -146,7 +147,7 @@ export function Dropdown({
       case 'Escape':
         event.preventDefault()
         setOpen(false)
-        triggerRef.current?.focus()
+        focusElement(triggerRef.current)
         break
       case 'Enter':
       case ' ':

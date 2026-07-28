@@ -12,7 +12,7 @@
       "name": "checkbox",
       "label": "Checkbox",
       "primitive": "Native <input type=\"checkbox\">",
-      "loc": 128,
+      "loc": 134,
       "files": 2,
       "deps": 0
     },

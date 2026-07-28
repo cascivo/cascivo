@@ -1,5 +1,5 @@
 'use client'
-import { cn, useId, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, focusElement, useId, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { ChangeEvent, KeyboardEvent } from 'react'
@@ -139,7 +139,7 @@ export function Search({
     if (!isControlled) current.value = ''
     ;(onValueChange ?? onChange)?.('')
     onSearch?.('')
-    inputRef.current?.focus()
+    focusElement(inputRef.current)
   }
 
   const filled = current.value !== ''

@@ -1118,6 +1118,9 @@ importers:
       '@cascivo/i18n':
         specifier: workspace:*
         version: link:../i18n
+      '@preact/signals':
+        specifier: ^2
+        version: 2.9.2(preact@10.29.2)
       '@testing-library/jest-dom':
         specifier: ^6
         version: 6.9.1
@@ -1136,6 +1139,9 @@ importers:
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1
+      preact:
+        specifier: 'catalog:'
+        version: 10.29.2
       react:
         specifier: 'catalog:'
         version: 19.2.7

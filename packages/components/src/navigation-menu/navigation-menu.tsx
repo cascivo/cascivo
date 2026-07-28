@@ -3,6 +3,7 @@
 import {
   cn,
   DismissableLayer,
+  focusElement,
   getLinkComponent,
   Presence,
   useAnchorPosition,
@@ -146,7 +147,7 @@ function NavigationMenuEntry({ item, baseId, openId, itemProps }: NavigationMenu
           floatingStyle={floatingStyle}
           onClose={() => {
             openId.value = null
-            triggerRef.current?.focus()
+            focusElement(triggerRef.current)
           }}
         >
           {item.content}

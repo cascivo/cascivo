@@ -1,5 +1,5 @@
 'use client'
-import { useSignal, useSignals, cn } from '@cascivo/core'
+import { cn, focusElement, useSignal, useSignals } from '@cascivo/core'
 import { useRef } from 'react'
 import type { HTMLAttributes } from 'react'
 import { t, builtin } from '@cascivo/i18n'
@@ -54,7 +54,7 @@ export function TagsInput({
     <div
       className={cn(styles['wrapper'], className)}
       data-disabled={disabled ? '' : undefined}
-      onClick={() => inputRef.current?.focus()}
+      onClick={() => focusElement(inputRef.current)}
       {...props}
     >
       {value.map((tag, i) => {

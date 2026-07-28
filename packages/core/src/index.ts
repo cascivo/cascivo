@@ -10,7 +10,7 @@ export {
   useSignals,
 } from './signals.ts'
 export type { Signal, ReadonlySignal } from './signals.ts'
-export { cn, composeRefs, mergeProps } from './utils.ts'
+export { cn, composeRefs, focusElement, mergeProps } from './utils.ts'
 export type {
   Machine,
   MachineConfig,
