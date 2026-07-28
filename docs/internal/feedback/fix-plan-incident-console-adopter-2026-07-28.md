@@ -33,14 +33,17 @@ reproduced in CI) ·
 symptom-keyed troubleshooting entries, Troubleshooting in the nav) ·
 **WS-12** ◑ (`@cascivo/ai` converged to `.js`/`.d.ts`; per-icon subpaths **not done** —
 tree-shaking already works, so it was the lowest-value item here) ·
-**WS-13** ◑ (13a `isolated:check` shipped; **13b `bare-page:check` not built** — the browser
-leg for C12/C13/C14/C15 is still source-text-guarded only).
+**WS-13** ◑ (13a `isolated:check` and 13b `bare-page:check` both shipped; of `bare-page`'s
+four cases only **C12 was observed failing on its pre-fix state** — C13/C14/C15 pass but
+their failure modes are unproven, recorded in that file's header. C13's real guard is
+`popover-hidden`, which *was* observed failing and named both offenders).
 
 **Honest summary of what is NOT done**, so nobody reads ✅ where there is none:
 1. **The C1 repro** (§0.5) — the fix shipped, the mechanism is unexplained.
 2. **`apps/examples/astro-islands`** — WS-10's executable reproduction of C2.
-3. **`bare-page:check`** — WS-13b's browser fixture. The C12/C13 fixes are verified by
-   source-text guards and unit tests, not by a real browser hit-test.
+3. **Three of `bare-page`'s four browser cases** — C13, C14 and C15 pass but were never
+   observed failing, so they are regression tripwires rather than proofs. C12 was verified
+   properly (`scrollWidth 1314` vs `clientWidth 1280` on a reset-stripped stylesheet).
 4. **Per-icon subpaths** — WS-12 item 2.
 
 **Source report:**
