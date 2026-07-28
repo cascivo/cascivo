@@ -630,6 +630,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
+        "styleHooks": ["data-cascivo-appshell-nav", "data-cascivo-appshell-main"],
         "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
         "intent": {
           "whenToUse": [
@@ -9571,6 +9572,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-dialog-body-gap",
           "--cascivo-color-surface",
           "--cascivo-color-border",
           "--cascivo-radius-overlay",
@@ -9585,6 +9587,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "styleHooks": ["data-cascivo-drawer-body"],
         "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
         "intent": {
           "whenToUse": [
@@ -16007,6 +16010,12 @@
             "default": "md"
           },
           {
+            "name": "footer",
+            "description": "Dialog actions, rendered in a right-aligned row below the body and separated by a divider.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
             "name": "draggable",
             "type": "boolean",
             "required": false,
@@ -16019,7 +16028,8 @@
           "--cascivo-color-border",
           "--cascivo-radius-modal",
           "--cascivo-shadow-xl",
-          "--cascivo-focus-ring"
+          "--cascivo-focus-ring",
+          "--cascivo-dialog-body-gap"
         ],
         "accessibility": {
           "role": "dialog",
@@ -16031,6 +16041,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "styleHooks": ["data-cascivo-modal-body", "data-cascivo-modal-footer"],
         "tags": ["overlay", "dialog", "popup"],
         "intent": {
           "whenToUse": [
@@ -20403,6 +20414,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-dialog-body-gap",
           "--cascivo-color-surface",
           "--cascivo-color-border",
           "--cascivo-radius-lg",
@@ -20417,6 +20429,7 @@
         },
         "examples": [],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "styleHooks": ["data-cascivo-sheet-body"],
         "tags": ["overlay", "drawer", "panel", "slide"],
         "intent": {
           "whenToUse": [

@@ -42,6 +42,7 @@ Uses popover="manual" with role="dialog" and aria-modal so it is announced as a 
 
 ## Tokens
 
+- `--cascivo-dialog-body-gap`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-radius-lg`
@@ -90,7 +91,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Sheet is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-lg, --cascivo-shadow-xl, --cascivo-motion-enter, --cascivo-motion-exit
+  --cascivo-dialog-body-gap, --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-lg, --cascivo-shadow-xl, --cascivo-motion-enter, --cascivo-motion-exit
 
 Accessibility: role "dialog", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.
 

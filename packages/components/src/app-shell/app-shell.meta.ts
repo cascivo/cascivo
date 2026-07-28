@@ -81,6 +81,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core'],
+  styleHooks: ['data-cascivo-appshell-nav', 'data-cascivo-appshell-main'],
   tags: ['shell', 'layout', 'sidebar', 'navigation', 'drawer', 'responsive', 'sticky'],
   intent: {
     whenToUse: [

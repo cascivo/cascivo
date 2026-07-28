@@ -41,6 +41,13 @@ export const meta: ComponentMeta = {
       default: 'md',
     },
     {
+      name: 'footer',
+      description:
+        'Dialog actions, rendered in a right-aligned row below the body and separated by a divider.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
       name: 'draggable',
       type: 'boolean',
       required: false,
@@ -54,6 +61,7 @@ export const meta: ComponentMeta = {
     '--cascivo-radius-modal',
     '--cascivo-shadow-xl',
     '--cascivo-focus-ring',
+    '--cascivo-dialog-body-gap',
   ],
   accessibility: {
     role: 'dialog',
@@ -70,6 +78,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  styleHooks: ['data-cascivo-modal-body', 'data-cascivo-modal-footer'],
   tags: ['overlay', 'dialog', 'popup'],
   intent: {
     whenToUse: [

@@ -184,6 +184,10 @@
   }
 
   .body {
+    /* See modal.module.css for the rationale; the dialog family shares one gap token. */
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-dialog-body-gap, var(--cascivo-space-5));
     padding: var(--cascivo-space-6);
     overflow-y: auto;
     flex: 1;

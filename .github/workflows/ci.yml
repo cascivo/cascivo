@@ -68,6 +68,9 @@ jobs:
       - name: Popover-hidden guard (a closed popover keeps no box, eats no clicks)
         run: pnpm run popover:check
 
+      - name: Dead-props guard (a declared prop is a prop the component reads)
+        run: pnpm run dead-props:check
+
       - name: Primitive-adoption guard (components consume shared headless primitives)
         run: pnpm run primitives:check
 

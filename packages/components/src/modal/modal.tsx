@@ -25,6 +25,22 @@ export interface ModalProps {
   title?: string
   description?: string
   children?: ReactNode
+  /**
+   * Dialog actions, rendered in a right-aligned row below the body and separated from it
+   * by a divider. Every consumer hand-rolled this before it existed.
+   *
+   * ```tsx
+   * <Modal open={open} title="Delete project" footer={
+   *   <>
+   *     <Button variant="ghost" onClick={close}>Cancel</Button>
+   *     <Button variant="destructive" onClick={remove}>Delete</Button>
+   *   </>
+   * }>
+   *   …
+   * </Modal>
+   * ```
+   */
+  footer?: ReactNode
   className?: string
   size?: 'sm' | 'md' | 'lg'
   /**
@@ -42,6 +58,7 @@ export function Modal({
   title,
   description,
   children,
+  footer,
   className,
   size = 'md',
   draggable = false,
@@ -133,7 +150,14 @@ export function Modal({
             {description}
           </p>
         )}
-        <div className={styles['body']}>{children}</div>
+        <div className={styles['body']} data-cascivo-modal-body="">
+          {children}
+        </div>
+        {footer && (
+          <div className={styles['footer']} data-cascivo-modal-footer="">
+            {footer}
+          </div>
+        )}
       </div>
     </dialog>
   )

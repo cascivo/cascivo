@@ -1178,6 +1178,7 @@
         { "name": "title", "type": "string", "required": false },
         { "name": "description", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
+        { "name": "footer", "type": "ReactNode", "required": false },
         { "name": "draggable", "type": "boolean", "required": false }
       ]
     },

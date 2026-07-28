@@ -103,6 +103,15 @@
       position: static;
       z-index: auto;
       inline-size: var(--cascivo-shell-aside-inline-size, 18rem);
+      /* The sidebar has a fixed width by design, so it must never be the flex item that
+         gives way. Without this it keeps the default `flex-shrink: 1` + `min-width: auto`,
+         and an intrinsically-wide page shrinks the SIDEBAR instead of scrolling the
+         content — while navInner (pinned to its own width) overflows the shrunken wrapper,
+         so nothing looks broken and the page just sits narrower than every other page.
+         Measured at 1700px: 268px against 288px on eight sibling routes (2026-07-28 report
+         C14). Note `.main` already has `min-inline-size: 0`; that is not the fix, because
+         main is not the element giving way. */
+      flex-shrink: 0;
       transform: none;
       transition: inline-size var(--cascivo-motion-emphasis);
     }

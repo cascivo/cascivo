@@ -3751,6 +3751,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['sm', 'md', 'lg'],
     },
     {
+      name: 'footer',
+      required: false,
+    },
+    {
       name: 'draggable',
       required: false,
       primitives: ['boolean'],

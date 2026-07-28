@@ -63,6 +63,7 @@ Dragging the header past a threshold toward the edge dismisses the panel.
 
 ## Design tokens
 
+- `--cascivo-dialog-body-gap`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-radius-overlay`

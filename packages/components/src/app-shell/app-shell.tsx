@@ -141,6 +141,12 @@ export function AppShell({
               className={styles['navWrapper']}
               data-open={isOpen.value}
               data-testid="app-shell-nav"
+              /* Stable styling hook. The wrapper carries only a hashed CSS-module class,
+                 so a consumer who needs to reach it has no selector but
+                 `div:has(> div > nav[aria-label='…'])` — which an adopter actually wrote,
+                 and which breaks the moment the internal nesting changes (2026-07-28
+                 report C14). This attribute is public API: see docs/STYLING-INTERNALS.md. */
+              data-cascivo-appshell-nav=""
             >
               <div className={styles['navInner']}>{nav}</div>
             </div>
@@ -153,7 +159,12 @@ export function AppShell({
             />
           </>
         )}
-        <main id="cascade-main" tabIndex={-1} className={styles['main']}>
+        <main
+          id="cascade-main"
+          tabIndex={-1}
+          className={styles['main']}
+          data-cascivo-appshell-main=""
+        >
           {children}
         </main>
       </div>

@@ -2586,6 +2586,10 @@
                     "type": "string",
                     "enum": ["sm", "md", "lg"]
                   },
+                  "footer": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
                   "draggable": {
                     "type": "boolean"
                   }

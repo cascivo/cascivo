@@ -79,6 +79,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-dialog-body-gap',
     '--cascivo-color-surface',
     '--cascivo-color-border',
     '--cascivo-radius-overlay',
@@ -107,6 +108,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  styleHooks: ['data-cascivo-drawer-body'],
   tags: ['overlay', 'drawer', 'panel', 'slide', 'dialog'],
   intent: {
     whenToUse: [
