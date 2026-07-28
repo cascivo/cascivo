@@ -35,7 +35,7 @@ CSS, by design, so the aggregate stylesheet is how the server HTML gets styled):
 
 ```tsx
 import '@cascivo/react/styles.css' // all component structure, one stylesheet
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 import '@cascivo/charts/styles.css' // only if you use @cascivo/charts
 ```
 

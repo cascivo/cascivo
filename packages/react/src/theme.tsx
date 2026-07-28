@@ -95,11 +95,77 @@ function themeStore(): Signal<string> {
 }
 
 /**
+ * Whether a {@link ThemeProvider} has ever run its DOM-writing effect.
+ *
+ * `setTheme` only writes the signal; the `data-theme` attribute is written by the
+ * provider's `useSignalEffect`. With no provider mounted, `setTheme` therefore returns
+ * cleanly, `useTheme()` reports the new value — and nothing on the page restyles. There
+ * was no warning for it, unlike the (excellent) one for missing theme CSS fifteen lines
+ * above. A 2026-07-28 adopter lost time to exactly this (report C5).
+ */
+let providerMounted = false
+let warnedNoProvider = false
+
+/**
+ * Dev-only, once-per-session warning: `setTheme` ran with no `ThemeProvider` mounted, so
+ * the signal updated and the DOM did not. Deferred a frame so a `setTheme` call that races
+ * a provider's first effect (an eager theme write during initial mount) doesn't false-
+ * positive. No-op on the server and in production.
+ */
+function warnIfNoProvider(next: string): void {
+  if (!isDev() || warnedNoProvider) return
+  if (typeof requestAnimationFrame !== 'function') return
+  requestAnimationFrame(() => {
+    if (providerMounted || warnedNoProvider) return
+    warnedNoProvider = true
+    console.warn(
+      `cascivo setTheme(${JSON.stringify(next)}): no <ThemeProvider> is mounted, so the ` +
+        `theme signal updated but the ${DEFAULT_ATTR} attribute was never written — nothing ` +
+        `on the page will restyle. Wrap your app in <ThemeProvider> (it is SSR-safe and ` +
+        `persists the choice), or call applyTheme() to write the attribute directly if you ` +
+        `are theming outside React. Docs: https://cascivo.com/docs/theming ` +
+        `— offline: npx -y @cascivo/docs guide theming`,
+    )
+  })
+}
+
+/**
  * Set the active theme imperatively, from anywhere. Persists the choice and
  * drives the `data-theme` attribute through the mounted {@link ThemeProvider}.
+ *
+ * Requires a mounted {@link ThemeProvider} — this writes the signal, the provider writes
+ * the DOM. Without one, nothing restyles (dev builds warn). To write the attribute
+ * directly, with no provider and no React, use {@link applyTheme}.
  */
 export function setTheme(next: string): void {
   themeStore().value = next
+  warnIfNoProvider(next)
+}
+
+/**
+ * Write a theme onto an element directly, with no provider and no React.
+ *
+ * The escape hatch for imperative setups: a theme toggle in a non-React shell, a
+ * pre-hydration inline script, a Storybook decorator, an e2e test. Also updates the theme
+ * signal, so a React tree reading {@link useTheme} stays in sync.
+ *
+ * `setTheme` deliberately does **not** do this itself: it is SSR-callable, and
+ * `ThemeProvider` can scope a theme to any subtree via its `target` ref. A direct document
+ * write inside `setTheme` would break scoped theming and touch `document` on the server.
+ *
+ * ```ts
+ * applyTheme('midnight')                       // <html data-theme="midnight">
+ * applyTheme('warm', panelRef.current)         // scope to a subtree
+ * ```
+ *
+ * No-op on the server (no `document`).
+ */
+export function applyTheme(next: string, target?: HTMLElement | null): void {
+  themeStore().value = next
+  const el = target ?? (typeof document !== 'undefined' ? document.documentElement : null)
+  if (el === null) return
+  el.setAttribute(DEFAULT_ATTR, next)
+  warnIfThemeUnstyled(el, next)
 }
 
 /**
@@ -234,6 +300,9 @@ export function ThemeProvider({
       : typeof document !== 'undefined'
         ? document.documentElement
         : null
+    // Records that the DOM-writing half of the theme system is live, so `setTheme` can
+    // tell "the attribute will be written" from "the signal changed and nothing happened".
+    providerMounted = true
     el?.setAttribute(attribute, next)
     warnIfThemeUnstyled(el, next)
     onChangeRef.current?.(next)

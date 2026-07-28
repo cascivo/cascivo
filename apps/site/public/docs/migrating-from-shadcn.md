@@ -97,7 +97,7 @@ There is **no Tailwind dependency and no `tailwind.config`** to port:
 ```tsx
 // shadcn: Tailwind directives + utility classes in markup
 // cascivo: one themes import, then plain components
-import '@cascivo/themes/all.css' // tokens once + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens once + base typography + light & dark
 // component CSS (@layer cascivo.component) auto-included on import
 ```
 

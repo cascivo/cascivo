@@ -16,7 +16,7 @@
 
 ---
 
-First-party themes for cascivo — 12 of them, applied with a single `data-theme` attribute. Themes override the **semantic token layer only**, leaving primitive and component tokens unchanged, so every component (and your own token-consuming CSS) restyles for free.
+First-party themes for cascivo — 13 of them, applied with a single `data-theme` attribute. Themes override the **semantic token layer only**, leaving primitive and component tokens unchanged, so every component (and your own token-consuming CSS) restyles for free.
 
 > **Docs offline?** The full cascivo reference (including the theming guide) ships as an npm package — `npx -y @cascivo/docs guide theming`, no website needed.
 
@@ -38,7 +38,7 @@ import '@cascivo/themes/all.css' // tokens (once) + base typography + light & da
 import '@cascivo/themes/base.css' // base typography layer (font, line-height, color)
 import '@cascivo/themes/light.css'
 import '@cascivo/themes/dark.css'
-import '@cascivo/themes/midnight.css' // …any of the 12 themes by name
+import '@cascivo/themes/midnight.css' // …any of the 13 themes by name
 ```
 
 Every export also works with an explicit `.css` suffix (`@cascivo/themes/light.css`) for tooling that requires it.

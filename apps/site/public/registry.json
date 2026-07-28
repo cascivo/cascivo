@@ -608,8 +608,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
       ],
       "fileHashes": {
-        "app-shell.tsx": "sha256-648fc7b9b2cb57acb9910055c4f6864f53e7bff9dc6300ebc974acb5b96af1d5",
-        "app-shell.module.css": "sha256-83ce3c2da71f0d5249d4a18f12c12779e1a1b7bc8973ab889d19d0a39004180b"
+        "app-shell.tsx": "sha256-56c790b924626d3f3c82a193f0f337f1f02e4c4f92305f500c9fd99b33324fa1",
+        "app-shell.module.css": "sha256-c6073eee79d04775c0a91d6c7bae4da01c7724b1b791055b12ed03a84cbc4884"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -693,6 +693,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "styleHooks": ["data-cascivo-appshell-nav", "data-cascivo-appshell-main"],
         "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
         "intent": {
           "whenToUse": [
@@ -5415,8 +5416,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.module.css"
       ],
       "fileHashes": {
-        "drawer.tsx": "sha256-9c27d30907d7fc51e15dfb79fa1b8a74f344141faab86328351384ff8c1567c4",
-        "drawer.module.css": "sha256-78400367e1181c57f0a882d1ad3c0a50e0b2b8b1230023c160c1f8fa55910be4"
+        "drawer.tsx": "sha256-d777ebbeb7e1a5a9569fa5ee51430f91b51f38115e1d8cabebf7f1803f6e245f",
+        "drawer.module.css": "sha256-87b9e22a36da627ba7f8c876f00d48b654bb1c6de71826a274fc2b31d3e6e5c5"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -5502,6 +5503,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-dialog-body-gap",
           "--cascivo-color-surface",
           "--cascivo-color-border",
           "--cascivo-radius-overlay",
@@ -5526,6 +5528,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "styleHooks": ["data-cascivo-drawer-body"],
         "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
         "intent": {
           "whenToUse": [
@@ -9538,8 +9541,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.module.css"
       ],
       "fileHashes": {
-        "modal.tsx": "sha256-5164dd78a85478f641e2a9d83d5920f76b6c9f7351b64be5299c8a3ae6ddc5d7",
-        "modal.module.css": "sha256-ef7bb366fae8d9bf58cc685b5697fec0506fe397ff3eceb0108cb8ead419bd8f"
+        "modal.tsx": "sha256-e636737c30cce65a550f31cfe5ae1c5af371691ed86977a1b92948513dc043bd",
+        "modal.module.css": "sha256-e33879eb178b1ef5e414a2139c89c8720b0419a3a7e503e010642d31cfba0409"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -9588,6 +9591,12 @@
             "default": "md"
           },
           {
+            "name": "footer",
+            "description": "Dialog actions, rendered in a right-aligned row below the body and separated by a divider.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
             "name": "draggable",
             "type": "boolean",
             "required": false,
@@ -9600,7 +9609,8 @@
           "--cascivo-color-border",
           "--cascivo-radius-modal",
           "--cascivo-shadow-xl",
-          "--cascivo-focus-ring"
+          "--cascivo-focus-ring",
+          "--cascivo-dialog-body-gap"
         ],
         "accessibility": {
           "role": "dialog",
@@ -9617,6 +9627,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "styleHooks": ["data-cascivo-modal-body", "data-cascivo-modal-footer"],
         "tags": ["overlay", "dialog", "popup"],
         "intent": {
           "whenToUse": [
@@ -9691,7 +9702,7 @@
       ],
       "fileHashes": {
         "multi-select.tsx": "sha256-7f42a4cc95ceafe9a59b7881e4f9baab28b1dd253ce4f9acfd381a4a14228134",
-        "multi-select.module.css": "sha256-fdda5c9cb5e84ee720816102f06a28d679ad6478f3b331c815704bb4de17370f"
+        "multi-select.module.css": "sha256-e2d845c117aab258dfbe0f82b850f143738fe630ff0f04c04f82325ce488ea68"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -11116,7 +11127,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.module.css"
       ],
       "fileHashes": {
-        "popover.tsx": "sha256-ffbea8304aa99f97e03052f49d68f72a34504584a2565cfdcf38f40cf12cfb2e",
+        "popover.tsx": "sha256-1a5700b12f43cc60404e4331a4b33281762de16210dacda18426b725f2e55dc7",
         "index.ts": "sha256-2e50daeeb9dfa03e21cd5e7b890e55fc9db4054df101df845da6fa00ee285822",
         "use-popover.ts": "sha256-4339ceab29d3371dd4b5c33b7b2a116e8c7bd3a651cd5a4e246329db4e406ffe",
         "popover.module.css": "sha256-cd6827d53118b367cb7653d1376894ea7ccdd3e10bccfdc8296ddf779f191eb1"
@@ -13735,8 +13746,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.module.css"
       ],
       "fileHashes": {
-        "sheet.tsx": "sha256-78874f929e0061a004a10a76603128948ede3d50bff6d4213a194a5022ea5df5",
-        "sheet.module.css": "sha256-518a56818809c8deb112812336439cfcb4b8e2fa0bf027d262ab211c1f0427b8"
+        "sheet.tsx": "sha256-b82faec2513e6f7f6b739002dfe1c15ce7db26945b177d1bd295b62d3c7c319b",
+        "sheet.module.css": "sha256-c61931317af5a3c08d8af91223f8e05f358295258143b92ca18326d644fde4c2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -13779,6 +13790,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-dialog-body-gap",
           "--cascivo-color-surface",
           "--cascivo-color-border",
           "--cascivo-radius-lg",
@@ -13802,6 +13814,7 @@
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "styleHooks": ["data-cascivo-sheet-body"],
         "tags": ["overlay", "drawer", "panel", "slide"],
         "intent": {
           "whenToUse": [

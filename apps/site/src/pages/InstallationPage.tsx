@@ -44,7 +44,7 @@ export function InstallationPage() {
         <CodeBlock
           lang="tsx"
           code={`// once, in your app entry
-import '@cascivo/themes/all.css'
+import '@cascivo/themes/light-dark.css'
 
 import { Button } from '@cascivo/react'`}
         />
@@ -64,8 +64,8 @@ npx cascivo add button    # copy button.tsx + button.module.css into your repo`}
         <h2>Styling</h2>
         <p>
           Every component reads <code>--cascivo-*</code> custom properties — without a theme
-          imported, components render unstyled. Import <code>@cascivo/themes/all</code> once and set{' '}
-          <code>data-theme="light" | "dark" | "warm"</code> on any container.
+          imported, components render unstyled. Import <code>@cascivo/themes/light-dark</code> once
+          and set <code>data-theme="light" | "dark" | "warm"</code> on any container.
         </p>
         <p style={subtle}>
           See the <a href="/docs/tokens">Design Tokens</a> reference for the token layers and how to

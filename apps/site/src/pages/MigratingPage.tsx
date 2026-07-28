@@ -59,7 +59,7 @@ export function MigratingPage() {
         </p>
         <code
           style={code}
-        >{`import '@cascivo/themes/all.css' // tokens once + base typography + light & dark
+        >{`import '@cascivo/themes/light-dark.css' // tokens once + base typography + light & dark
 // component CSS auto-included on import — no styles.css needed with a bundler
 
 <main data-theme="light">

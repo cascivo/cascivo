@@ -16,7 +16,7 @@
 
 ---
 
-Accessible, signal-driven chart library for cascivo — AreaChart, BarChart, LineChart, Sparkline, Heatmap, and more. All charts are keyboard-navigable with `aria-live` tooltips. CVD-safe palettes (Okabe-Ito, oklch) verified in CI across all 12 themes.
+Accessible, signal-driven chart library for cascivo — AreaChart, BarChart, LineChart, Sparkline, Heatmap, and more. All charts are keyboard-navigable with `aria-live` tooltips. CVD-safe palettes (Okabe-Ito, oklch) verified in CI across all 13 themes.
 
 > **Docs offline?** The full cascivo reference ships as an npm package — `npx -y @cascivo/docs`, no website needed.
 

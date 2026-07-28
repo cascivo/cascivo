@@ -54,7 +54,7 @@ export function GettingStartedPage() {
         <CodeBlock
           lang="tsx"
           code={`// once, in your app entry
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 
 // anywhere — component CSS rides along, no styles.css to import
 import { Button, Card, CardContent } from '@cascivo/react'
@@ -104,9 +104,13 @@ import { Button } from './components/ui/button/button'`}
       <section style={cardStyle}>
         <h2>Themes</h2>
         <p>
-          <code>@cascivo/themes/all</code> loads the tokens once, applies base typography, and ships
-          the <code>light</code> and <code>dark</code> themes. Prefer à-la-carte? Import only what
-          you need (each theme self-imports the tokens, deduped):
+          <code>@cascivo/themes/light-dark</code> loads the tokens once, applies base typography,
+          and ships the <code>light</code> and <code>dark</code> themes.{' '}
+          <code>@cascivo/themes/all</code> ships all twelve — use it if you offer a theme picker.
+          Setting a <code>data-theme</code> whose CSS is not loaded leaves every{' '}
+          <code>--cascivo-color-*</code> unresolved and renders components greyscale (ThemeProvider
+          warns in dev). Prefer à-la-carte? Import only what you need (each theme self-imports the
+          tokens, deduped):
         </p>
         <CodeBlock
           lang="tsx"
@@ -120,6 +124,38 @@ import '@cascivo/themes/dark.css'`}
           Styles live in cascade layers (
           <code>cascivo.base &lt; cascivo.theme &lt; cascivo.component</code>); your own unlayered
           CSS always wins.
+        </p>
+      </section>
+
+      <section style={cardStyle}>
+        <h2>State: call useSignals() in your own components</h2>
+        <p>
+          cascivo's components call <code>useSignals()</code> internally, so everything above works
+          with no setup. Components <strong>you</strong> write are not compiled by cascivo's build —
+          so in a React app with no Babel signals transform (Vite + React, Next.js, CRA), a
+          component that reads <code>signal.value</code> during render never re-renders when that
+          signal changes.
+        </p>
+        <p>
+          There is no error and no warning. The symptom is distinctive:{' '}
+          <strong>handlers fire, the UI freezes</strong> — toggles that don't toggle, modals that
+          don't open, a counter stuck at 0.
+        </p>
+        <CodeBlock
+          lang="tsx"
+          code={`import { useSignal, useSignals } from '@cascivo/core'
+
+function Counter() {
+  useSignals()          // ← first statement, or this never re-renders
+  const count = useSignal(0)
+  return <Button onClick={() => count.value++}>Clicked {count} times</Button>
+}`}
+        />
+        <p style={subtle}>
+          It is a no-op where a transform is already active (Preact, or React with the Babel
+          plugin), so adding it is always safe. You don't need it to pass a signal into a cascivo
+          component, in an event handler, or inside <code>useSignalEffect</code> — only for a read
+          during render.
         </p>
       </section>
 

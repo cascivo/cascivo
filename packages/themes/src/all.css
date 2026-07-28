@@ -1,15 +1,32 @@
 /* cascivo — All-in-one theming bundle */
-/* The single-import path for the common light + dark setup (#3):
+/* Every first-party theme, in one import:
 
-     @import '@cascivo/themes/all';
+     @import '@cascivo/themes/all.css';
 
-   It loads @cascivo/tokens exactly ONCE (here), then the base layer, then the
-   light and dark themes (each scoped by [data-theme]). The per-theme files
-   below also self-import @cascivo/tokens for standalone use; bundlers and
-   browsers dedupe the identical @import URL, so tokens are still emitted once.
+   It loads @cascivo/tokens exactly ONCE (here), then the base layer, then all
+   twelve themes (each scoped by its own [data-theme]). The per-theme files below
+   also self-import @cascivo/tokens for standalone use; bundlers and browsers
+   dedupe the identical @import URL, so tokens are still emitted once.
+
+   ── Which bundle do you want? ─────────────────────────────────────────────
+     '@cascivo/themes/light-dark.css'  light + dark only — the common setup,
+                                       and what THIS file used to contain
+     '@cascivo/themes/all.css'         all twelve (this file)
+     '@cascivo/themes/<name>.css'      exactly one theme, self-contained
+
+   BREAKING in 0.14.0: this file previously imported light and dark only, despite
+   the name. Setting data-theme="cyberpunk" with it loaded left every
+   --cascivo-color-* unresolved and rendered components greyscale — a pure naming
+   trap that cost adopters real time (2026-07-28 report C4). The name now means
+   what it says. If you only ever used light and dark, switch to
+   './light-dark.css' for the previous size; see docs/UPGRADING.md.
+
+   'tailwind.css' is NOT included: it is an opt-in bridge that maps cascivo tokens
+   onto Tailwind's --color-* utilities, not a theme. See docs/USING-WITH-TAILWIND.md.
 
    Canonical layer order (lowest → highest priority) — see @cascivo/tokens/layers.css:
-     cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme < cascivo.override
+     cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme
+     < cascivo.blocks < cascivo.override
    The order statement is emitted first (below, and again transitively via
    @cascivo/tokens); identical @layer statements are idempotent. */
 
@@ -19,3 +36,13 @@
 @import './base.css';
 @import './light.css';
 @import './dark.css';
+@import './warm.css';
+@import './flat.css';
+@import './minimal.css';
+@import './midnight.css';
+@import './pastel.css';
+@import './brutalist.css';
+@import './corporate.css';
+@import './terminal.css';
+@import './cyberpunk.css';
+@import './arcade.css';

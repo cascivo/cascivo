@@ -16,7 +16,7 @@ but uncolored components.
 set `data-theme`:
 
 ```tsx
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 ```
 
 ```tsx
