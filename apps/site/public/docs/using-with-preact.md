@@ -6,14 +6,27 @@
 
 # Using cascivo with Preact
 
-**Short version: it works.** `@cascivo/react` runs inside a Preact app via the
-standard `react → preact/compat` alias — components render, signals update,
+**Short version: it works on Vite CSR.** `@cascivo/react` runs inside a Preact app via
+the standard `react → preact/compat` alias — components render, signals update,
 interactions fire, with zero runtime errors. Two production migrations (a Vite +
 Tailwind v4 studio and a Preact 10 PWA) verified this firsthand. cascivo's bundle
 is ~75 KB JS under compat with no JS warnings; the signals runtime does not fight
 Preact.
 
 This page documents the setup so you don't have to discover it by trial.
+
+## Scope — read this first
+
+Being precise about what "it works" covers, because the unqualified claim cost a
+2026-07-28 adopter a day (report C3):
+
+|                                                 | Status                                                                                                                                                                                                                                                                                                                                                |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Vite CSR** (`@preact/preset-vite`)            | ✅ **Verified.** This is the configuration described below, and the one the numbers come from. Components, signals, overlays (`Modal`, `Drawer`, `Popover`, `Tooltip`, `Toast`, `CommandMenu`), `DataTable`, `Timeline` and `SegmentedControl` all behave identically to React. Roughly half the JS — one adopter measured 60 KB gzip against 110 KB. |
+| **SSR / prerender**                             | ❔ **Not verified.** No SSR Preact setup is exercised in this repo or in the migrations behind this guide. It may work; nobody has checked.                                                                                                                                                                                                           |
+| **Astro** (`@astrojs/preact({ compat: true })`) | ❌ **Known broken.** Three stacked causes plus an alias-ordering conflict that cannot be worked around from cascivo's side. Fully documented in [`USING-WITH-ASTRO.md`](/docs/using-with-astro.md). Use React islands under Astro.                                                                                                                    |
+
+Everything below describes the ✅ row.
 
 ---
 

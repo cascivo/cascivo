@@ -22,7 +22,8 @@ guides, references, cookbooks, and specs that ship with the source.
 | [USING-WITH-A-ROUTER.md](USING-WITH-A-ROUTER.md) | **Any router** (TanStack, React Router, Next.js) — `setLinkComponent` for config-driven navs vs `<Link asChild>` for in-content links. Read before writing any link. |
 | [USING-WITH-NEXTJS.md](USING-WITH-NEXTJS.md) | Next.js App Router / RSC — client boundaries, serialization caveats, naming collisions. |
 | [USING-WITH-VITE-SSR.md](USING-WITH-VITE-SSR.md) | Vite SSR / TanStack Start / Remix / workerd — the one-line `ssr.noExternal` fix for the `Unknown file extension ".css"` crash. |
-| [USING-WITH-PREACT.md](USING-WITH-PREACT.md) | Preact + `preact/compat`, where signals are natively reactive. |
+| [USING-WITH-PREACT.md](USING-WITH-PREACT.md) | Preact + `preact/compat`, where signals are natively reactive. **Verified on Vite CSR**; see the guide's scope table for SSR and Astro. |
+| [USING-WITH-ASTRO.md](USING-WITH-ASTRO.md) | Astro islands — which client directive keeps your component CSS, and why Preact under Astro does not work. |
 | [USING-WITH-TAILWIND.md](USING-WITH-TAILWIND.md) | Interop with an existing Tailwind v4 setup. |
 
 ## Theming & tokens
