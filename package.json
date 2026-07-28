@@ -48,6 +48,7 @@
     "ssr:check": "node --experimental-strip-types --test scripts/checks/ssr-import.test.ts",
     "css-contract:check": "node --experimental-strip-types --test scripts/checks/css-contract.test.ts",
     "cold-adopter:check": "node --experimental-strip-types --test scripts/checks/cold-adopter.test.ts",
+    "isolated:check": "node --experimental-strip-types --test scripts/checks/isolated-install.test.ts",
     "brand:check": "node scripts/brand-guard.mjs",
     "demos:storage:check": "node --experimental-strip-types --test scripts/checks/demo-storage-keys.test.ts",
     "deps:check": "node scripts/registry/deps-check.ts",

@@ -119,6 +119,13 @@ jobs:
       - name: CSS-contract guard (CSS-shipping packages import their own CSS + ship a node twin)
         run: pnpm run css-contract:check
 
+      # The consumer-shaped fixture: packs the real tarballs and type-checks them in a
+      # strict, non-hoisted pnpm WORKSPACE outside the repo, with skipLibCheck OFF. Every
+      # other guard runs inside the monorepo, where @types/react is root-hoisted — see
+      # docs/internal/feedback/README.md, Mechanism E.
+      - name: Isolated-install canary (published tarballs type-check for a real consumer)
+        run: pnpm run isolated:check
+
       - name: Install Chromium (for the computed-style canary)
         run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
 

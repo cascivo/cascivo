@@ -22,8 +22,14 @@
  *
  *    The monorepo could not see it: `@types/react` is hoisted to the repo root here, so
  *    each package's own `tsc --noEmit` passes. That is Mechanism E — see
- *    `docs/internal/feedback/README.md`. `pnpm isolated:check` is the fixture that
- *    reproduces it; this guard is the cheap source-text half that runs in `pnpm ready`.
+ *    `docs/internal/feedback/README.md`.
+ *
+ *    ⚠ **The exact C1 mechanism is not reproduced.** `pnpm isolated:check` type-checks the
+ *    packed tarballs in a strict, non-hoisted pnpm workspace on the reporter's own
+ *    TypeScript version, and cascivo's types resolve there even *without* this peer — see
+ *    that file's header for the full negative result. The peer is still correct: it is the
+ *    convention for typed React libraries and makes resolution deliberate rather than
+ *    dependent on a layout accident. This guard keeps it from regressing.
  *
  *    Optional, not required: a JS-only consumer must not get an install warning for types
  *    they will never read. And a peer rather than a `dependency`, because a bundled copy

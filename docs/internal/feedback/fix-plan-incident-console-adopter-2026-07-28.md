@@ -1,11 +1,47 @@
 # Fix plan — the 2026-07-28 incident-console adopter (tested published `0.13.0`)
 
-**Status: planned — not implemented.** No workstream below has landed. This document is the
-spec; the implementing PRs update this header and their own workstream status **in the same
-PR** (binding, see [`README.md`](README.md) "Status hygiene").
+**Status: implemented on `claude/ui-library-analysis-plan-iyopig`; not yet published.**
+The PR that publishes flips each workstream to `published vX.Y.Z` — and per
+[`README.md`](README.md), run `pnpm npm:parity` before writing any sentence about what is or
+is not published.
 
-Per-workstream: **WS-1** ☐ · **WS-2** ☐ · **WS-3** ☐ · **WS-4** ☐ · **WS-5** ☐ · **WS-6** ☐ ·
-**WS-7** ☐ · **WS-8** ☐ · **WS-9** ☐ · **WS-10** ☐ · **WS-11** ☐ · **WS-12** ☐ · **WS-13** ☐.
+Per-workstream:
+**WS-1** ◑ (peers shipped on 7 packages + `peer-floors` guard; the C1 *mechanism* does not
+reproduce — see §0.5, the one genuinely open item) ·
+**WS-2** ✅ (`forwardRef` on Textarea/Input/NativeSelect/Checkbox, `ref-forwarding` tests;
+chose `forwardRef` over a bare `ref?:` prop to keep the `react >= 18` floor honest) ·
+**WS-3** ✅ (`reset.css` in the `cascivo.reset` layer, reaching every entry path + inlined
+into the aggregate; `reset-floor` guard, observed failing first) ·
+**WS-4** ✅ (MultiSelect + Sheet; `popover-hidden` guard, observed failing on exactly those
+two) ·
+**WS-5** ✅ (AppShell `flex-shrink`, dialog-family body gap + Modal `footer`, six
+`data-cascivo-*` hooks + `STYLING-INTERNALS.md` + bidirectional `style-hooks` guard) ·
+**WS-6** ✅ (`all.css` = all twelve, new `light-dark.css`, `theme-bundle` guard;
+provider-missing dev warning + `applyTheme`) ·
+**WS-7** ✅ (CSS self-import + node twin across charts/editor/flow/ai via one shared plugin,
+`css-contract` guard; `format`; integer ticks + `allowDecimals`; role-named axis props;
+per-datum `color` + `data-x`) ·
+**WS-8** ✅ (`PopoverTrigger asChild` via `Slot`; `dead-props` guard, verified against the
+real pre-fix file) ·
+**WS-9** ✅ (`focusElement` + 16 call sites; a `preact` vitest project over the interactive
+family) ·
+**WS-10** ◑ (matrix regraded, `USING-WITH-ASTRO.md`, Preact scope table, `framework-matrix`
+guard — but **no `apps/examples/astro-*` app**, so the Astro defect is documented, not
+reproduced in CI) ·
+**WS-11** ✅ (generated version matrix, `useSignals()` on all surfaces +
+`getting-started-contract` guard, dead `/docs/theming` URL fixed + `doc-urls` guard, seven
+symptom-keyed troubleshooting entries, Troubleshooting in the nav) ·
+**WS-12** ◑ (`@cascivo/ai` converged to `.js`/`.d.ts`; per-icon subpaths **not done** —
+tree-shaking already works, so it was the lowest-value item here) ·
+**WS-13** ◑ (13a `isolated:check` shipped; **13b `bare-page:check` not built** — the browser
+leg for C12/C13/C14/C15 is still source-text-guarded only).
+
+**Honest summary of what is NOT done**, so nobody reads ✅ where there is none:
+1. **The C1 repro** (§0.5) — the fix shipped, the mechanism is unexplained.
+2. **`apps/examples/astro-islands`** — WS-10's executable reproduction of C2.
+3. **`bare-page:check`** — WS-13b's browser fixture. The C12/C13 fixes are verified by
+   source-text guards and unit tests, not by a real browser hit-test.
+4. **Per-icon subpaths** — WS-12 item 2.
 
 **Source report:**
 [`feedback-incident-console-adopter-2026-07-28.md`](feedback-incident-console-adopter-2026-07-28.md)
@@ -84,13 +120,57 @@ on the pre-fix state. A fix without a failing-first guard is how all three §0.2
 here. Where a workstream is documentation-only, "its guard" means a parity check that fails when
 the doc and the code disagree — never "the doc was updated".
 
+### §0.5 Correction — C1's mechanism does not reproduce
+
+**Added after implementation. The triage row above was written before the fixture existed.**
+
+The plan's WS-13a fixture was built specifically to reproduce C1, and it does not. Against
+the **pre-fix** tarballs (no `@types/react` peer), in a pnpm workspace, under pnpm's strict
+non-hoisting default, with `skipLibCheck: false`, on **TypeScript 6.0.3 — the reporter's own
+version** — cascivo's types resolve cleanly and not one prop goes missing.
+
+The virtual store is exactly as the report describes:
+
+```
+node_modules/.pnpm/@cascivo+react@…/node_modules/   →   @cascivo  @preact  react  react-dom
+```
+
+`@types/react` is genuinely absent from it. TypeScript finds the types anyway, by walking up
+from the symlinked path into the app's own `node_modules`.
+
+The only configuration found to break resolution this way is `preserveSymlinks: true`, and
+that also breaks `@types/react`'s own `csstype` import — a consumer tsconfig problem, not a
+cascivo packaging one. The reporter's app began on Astro, whose TS preset is a plausible
+source, but that is a hypothesis, not a finding.
+
+**What this changes:**
+
+- The reporter's *symptom* is not in doubt — they measured 18 errors and committed a
+  `publicHoistPattern` workaround. Something in their environment did break resolution.
+- The **fix still ships.** An optional `@types/react` peer is the convention every typed
+  React library converged on, it makes resolution deliberate rather than an accident of
+  layout, and it costs a JS-only consumer nothing. It is very likely the right fix; it is
+  simply not *proven* to be.
+- **Nothing may claim C1 is guarded.** The fixture's header and `peer-floors`' header both
+  state the negative result explicitly, so the next reader inherits the evidence rather than
+  the assumption — which is the failure mode this whole directory exists to prevent (see the
+  07-26 plan's "not yet published" correction).
+- **Open:** if anyone reproduces C1, add the configuration to
+  `scripts/checks/isolated-install.test.ts`. That is the one genuinely unfinished item in
+  this plan.
+
+The fixture is kept regardless. It proves something nothing else did: the published tarballs
+install and type-check in a strict, non-hoisted workspace with lib checking on.
+
+---
+
 ### §0.4 Triage summary
 
 Every finding was reproduced against this checkout with file:line evidence. Verdicts:
 
 | # | Verdict | Evidence | WS |
 | --- | --- | --- | --- |
-| C1 | **CONFIRMED** | `packages/react/package.json:74` — `@types/react` is in `devDependencies`, absent from `dependencies` and `peerDependencies`. Same in `core`, `charts`, `icons`. | WS-1 |
+| C1 | **PARTIALLY REFUTED** (see §0.5) | The packaging fact is confirmed: `@types/react` was `devDependencies`-only in seven published packages. The *mechanism* is not reproduced — packed pre-fix tarballs type-check cleanly in a strict non-hoisted pnpm workspace on the reporter's own TypeScript 6.0.3. | WS-1 |
 | C2 | **CONFIRMED (Astro-specific)** | not reproducible in-repo; accepted on the reporter's measurements (`client:load` → no component CSS; `client:only` → 58 KB) | WS-10 |
 | C3 | **CONFIRMED (docs scope)** | `docs/USING-WITH-PREACT.md` describes only Vite CSR; `docs/COMPATIBILITY.md:16` lists Preact ✅ with no qualifier | WS-10 |
 | C4 | **CONFIRMED** | `packages/themes/src/all.css:15-20` imports `light.css` + `dark.css`; `packages/themes/src/` contains 12 themes | WS-6 |
