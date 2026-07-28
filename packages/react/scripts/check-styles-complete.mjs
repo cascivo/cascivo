@@ -37,6 +37,15 @@ for (const t of ["[data-theme='light']", "[data-theme='dark']"]) {
 // still appear inside a comment, which is harmless — scan actual at-rule lines).
 const strayImport = css.split('\n').find((l) => /^\s*@import\b/.test(l))
 if (strayImport) fail(`styles.css still has an @import at-rule: ${strayImport.trim()}`)
+// The `cascivo.reset` floor must survive into the aggregate. It reaches every other
+// entry path via index.css's `@import './reset.css'`, but THIS sheet strips imports —
+// so the reset is inlined explicitly in vite.config.ts and this asserts it stayed.
+// Without it, a consumer importing only styles.css renders on the browser's content-box
+// default and every `width: 100%` + padding component overflows (2026-07-28 report C12).
+if (!/@layer cascivo\.reset\s*\{/.test(css))
+  fail('styles.css has no `@layer cascivo.reset` block — the reset floor was not inlined')
+if (!/box-sizing:\s*border-box/.test(css))
+  fail('styles.css sets no global box-sizing — the reset floor was not inlined')
 
 // ── 2. quickstart banner in the published .d.ts ─────────────────────────────
 const dts = readFileSync(join(DIST, 'index.d.ts'), 'utf8')

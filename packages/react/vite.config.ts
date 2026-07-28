@@ -28,6 +28,10 @@ function readCss(rel: string): string {
   return readFileSync(fileURLToPath(new URL(rel, import.meta.url)), 'utf8')
 }
 const THEME_BUNDLE = [
+  // The `cascivo.reset` floor — box-sizing + body margin. Listed EXPLICITLY because
+  // every @import is stripped below, so index.css's own `@import './reset.css'` would
+  // vanish and this aggregate would ship without the reset (2026-07-28 report C12).
+  readCss('../tokens/src/reset.css'), // reset floor (@layer cascivo.reset)
   readCss('../tokens/src/index.css'), // primitive tokens (@layer cascivo.tokens)
   readCss('../tokens/src/properties.css'), // @property registrations
   readCss('../themes/src/base.css'), // base typography (@layer cascivo.base)

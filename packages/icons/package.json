@@ -58,6 +58,12 @@
     "vite-plus": "catalog:"
   },
   "peerDependencies": {
+    "@types/react": ">=18.0.0",
     "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
   }
 }

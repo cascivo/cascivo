@@ -6,8 +6,16 @@
     border: none;
     background: var(--cascivo-color-surface);
     box-shadow: var(--cascivo-shadow-overlay);
-    display: flex;
+    /* `display` belongs to the OPEN state only — see multi-select.module.css for the
+       full note. An author `display` here beats the UA
+       `[popover]:not(:popover-open) { display: none }` rule, so a closed sheet keeps a
+       full-height, fixed-position, invisible box over the page and eats every click
+       (2026-07-28 report C13). Enforced by `pnpm popover:check`. */
     flex-direction: column;
+
+    &:popover-open {
+      display: flex;
+    }
 
     /* Transitions for enter/exit */
     transition:

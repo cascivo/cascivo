@@ -1,0 +1,42 @@
+/* packages/tokens/src/reset.css */
+/* cascivo — the `cascivo.reset` floor. */
+/*
+ * `layers.css` has always described `cascivo.reset` as "consumer reset (box-sizing,
+ * margin/padding zeroing) — the floor". For thirteen minor versions that layer shipped
+ * EMPTY, and nothing else in @cascivo/tokens, @cascivo/themes or @cascivo/react set a
+ * global `box-sizing` either.
+ *
+ * That is not cosmetic. `textarea.css` is `width: 100%` + 32px of inline padding + a 2px
+ * border with no `box-sizing`, so under the browser default of `content-box` it computes
+ * 34px wider than its container. A 2026-07-28 adopter measured the textarea overhanging
+ * the viewport by 25px, which pushed a horizontal scrollbar, which made the document 16px
+ * taller than the viewport, which produced a SECOND vertical scrollbar beside AppShell's
+ * own. Following getting-started exactly and writing no CSS at all produced two stray
+ * scrollbars, and every instinct says "my layout is broken".
+ *
+ * It survived because every app in this repo — apps/site, apps/storybook, every example —
+ * ships its own reset in app CSS, so no shipped surface has ever rendered on the browser
+ * default. See `docs/internal/feedback/README.md`, Mechanism E.
+ *
+ * DELIBERATELY MINIMAL. `box-sizing` and `body { margin: 0 }` only. Typography, list and
+ * heading resets are opinions and belong to the consumer; `@cascivo/themes/base.css`
+ * already owns the html font/color floor in `cascivo.base`.
+ *
+ * OPTING OUT is the layer, and it already works: `cascivo.reset` is the LOWEST layer in
+ * the canonical order, so it loses to every other cascivo layer and to all unlayered
+ * author CSS. A consumer's own reset simply wins — no `!important`, no specificity fight.
+ * That is what makes shipping this safe.
+ */
+@import './layers.css';
+
+@layer cascivo.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+  }
+}

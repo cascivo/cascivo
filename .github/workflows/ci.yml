@@ -62,6 +62,12 @@ jobs:
       - name: Unlayered-CSS guard (shipped CSS lives inside @layer)
         run: pnpm run unlayered:check
 
+      - name: Reset-floor guard (no canonical @layer ships empty)
+        run: pnpm run reset:check
+
+      - name: Popover-hidden guard (a closed popover keeps no box, eats no clicks)
+        run: pnpm run popover:check
+
       - name: Primitive-adoption guard (components consume shared headless primitives)
         run: pnpm run primitives:check
 
