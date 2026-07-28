@@ -12,7 +12,7 @@
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
 ![components](https://img.shields.io/badge/components-192-0079bf?style=flat-square)
-![themes](https://img.shields.io/badge/themes-13-0079bf?style=flat-square)
+![themes](https://img.shields.io/badge/themes-12-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
 
@@ -35,7 +35,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 - **Data viz out of the box** — `@cascivo/charts` ships 25 chart types (line, area, bar, sparkline, KPI, heatmap, and more) on a shared scale/shape/decimation engine, token-scaled to match your theme. Pre-built dashboard blocks (`dashboard-charts`, `stats-cards`) and five full example apps (deploy/pulse/trade/pay/track) show them composed into real consoles.
 - **Modern CSS only** — `@layer` for predictable cascade, `@container` for slot-aware responsiveness, `:has()` for stateful styling. No Tailwind, no runtime style injection.
 - **Signal-driven interactivity** — fine-grained Preact Signals + a micro-FSM update precise DOM nodes with zero unnecessary React re-renders. RSC-compatible (`"use client"` preserved).
-- **Beautiful by default** — 13 first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
+- **Beautiful by default** — 12 first-party themes (light, dark, warm, midnight, pastel, brutalist, corporate, terminal, cyberpunk, and more), applied via `data-theme` on any container, scoped to any subtree.
 - **Three-level tokens** — primitive → semantic → component. Themes remap the semantic layer; you override component tokens for per-brand adaptation with no rebuild.
 - **AI-first context layer** — every component ships a `<name>.meta.ts` manifest (e.g. `button.meta.ts`); an MCP server, Claude Code skills, a closed-set token catalog, and `cascivo audit --ai` let agents generate against real props and have their output checked.
 - **Earned accessibility** — WCAG 2.2 AA + APG-conformant, verified by a nightly axe sweep over every story; CVD-safe chart palettes (Okabe-Ito, oklch); keyboard-navigable chart tooltips with `aria-live`; an AT test plan (NVDA / JAWS / VoiceOver — manual results pending).
@@ -119,7 +119,7 @@ cascivo/
 ├── packages/
 │   ├── core/         # @cascivo/core    — micro-FSM + Preact Signals primitives
 │   ├── tokens/       # @cascivo/tokens  — three-level CSS design tokens
-│   ├── themes/       # @cascivo/themes  — 13 first-party themes
+│   ├── themes/       # @cascivo/themes  — 12 first-party themes
 │   ├── icons/        # @cascivo/icons   — optional SVG icon set
 │   ├── i18n/         # @cascivo/i18n    — signal-driven locale store + catalogs
 │   ├── storage/      # @cascivo/storage — persisted signals (localStorage/IndexedDB)

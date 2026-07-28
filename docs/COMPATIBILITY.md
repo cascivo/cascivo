@@ -71,20 +71,27 @@ import '@cascivo/tokens/functions.css' // Chrome 133+ progressive enhancement
 
 ## Package compatibility
 
-All `@cascivo/*` packages are 0.x and released together. Install matching minors;
-the set verified by the integration migrations is:
+All `@cascivo/*` packages are 0.x and released together. Install matching minors.
 
-| Package           | Version | Peer requirements                                  |
-| ----------------- | ------- | -------------------------------------------------- |
-| `@cascivo/core`   | 0.1.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=3` |
-| `@cascivo/tokens` | 0.2.x   | none (CSS only)                                    |
-| `@cascivo/themes` | 0.2.x   | `@cascivo/tokens` (direct dep) — themes `@import` it |
-| `@cascivo/react`  | 0.2.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=3` |
-| `@cascivo/icons`  | 0.1.x   | `react >=18`                                       |
-| `@cascivo/charts` | 0.1.x   | `react >=18`, `@cascivo/core`                      |
-| `@cascivo/i18n`   | 0.1.x   | `@preact/signals-react`                            |
-| `@cascivo/storage` | 0.1.x  | `@preact/signals-react`                            |
-| `@cascivo/mcp`    | 0.1.x   | (server; run via `npx`)                            |
+This table is **generated from the packages themselves** by `pnpm regen` and verified by
+CI's drift check — it cannot go stale. (It once sat thirteen minors behind, claiming
+`@cascivo/react` 0.2.x while npm served 0.13.0, which is why it is no longer hand-written.)
+
+<!-- BEGIN GENERATED: package-compatibility (scripts/compat/generate.ts) -->
+
+| Package | Version | Peer requirements |
+| ------- | ------- | ----------------- |
+| `@cascivo/core` | 0.7.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/tokens` | 0.5.x | none (CSS only) |
+| `@cascivo/themes` | 0.4.x | `@cascivo/tokens` (direct dep) — themes `@import` it |
+| `@cascivo/react` | 0.13.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/icons` | 0.3.x | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0` |
+| `@cascivo/charts` | 0.7.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/i18n` | 0.2.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/storage` | 0.1.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/mcp` | 0.6.x | (server; run via `npx`) |
+
+<!-- END GENERATED: package-compatibility -->
 
 > **React 19 requires `@preact/signals-react` 3.x.** React 19 removed the internal
 > that signals-react 2.x imports, so a 2.x runtime fails to load under React 19

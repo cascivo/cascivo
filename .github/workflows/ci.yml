@@ -71,6 +71,9 @@ jobs:
       - name: Dead-props guard (a declared prop is a prop the component reads)
         run: pnpm run dead-props:check
 
+      - name: Doc-URL guard (every shipped cascivo.com link resolves)
+        run: pnpm run doc-urls:check
+
       - name: Primitive-adoption guard (components consume shared headless primitives)
         run: pnpm run primitives:check
 

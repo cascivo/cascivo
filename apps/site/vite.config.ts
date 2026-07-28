@@ -51,7 +51,9 @@ export function componentCount(): number {
 // `tailwind.css` (interop sheet) are not user-facing themes — exclude them so
 // the injected count tracks selectable themes. Keep in sync with NON_THEME_CSS
 // in scripts/readme/generate.ts.
-const NON_THEME_CSS = new Set(['all.css', 'base.css', 'tailwind.css'])
+// `light-dark.css` is a BUNDLE (light + dark), not a selectable theme — the same
+// reason `all.css` is excluded. Counting it would claim 13 themes when 12 ship.
+const NON_THEME_CSS = new Set(['all.css', 'light-dark.css', 'base.css', 'tailwind.css'])
 
 export function themeCount(): number {
   return readdirSync(resolve(root, 'packages/themes/src')).filter(

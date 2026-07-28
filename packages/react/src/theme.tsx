@@ -50,7 +50,7 @@ function warnIfThemeUnstyled(el: HTMLElement | null, theme: string): void {
         `so components render grayscale. Import '@cascivo/themes/all.css' once in your ` +
         `entry (or '@cascivo/react/styles.css', which bundles the light and dark ` +
         `themes). Using a custom theme? Ensure its stylesheet is loaded and defines ` +
-        `[data-theme=${JSON.stringify(theme)}]. Docs: https://cascivo.com/docs/theming ` +
+        `[data-theme=${JSON.stringify(theme)}]. Docs: https://cascivo.com/docs/theming.md ` +
         `— offline: npx -y @cascivo/docs guide theming`,
     )
   })
@@ -123,7 +123,7 @@ function warnIfNoProvider(next: string): void {
         `theme signal updated but the ${DEFAULT_ATTR} attribute was never written — nothing ` +
         `on the page will restyle. Wrap your app in <ThemeProvider> (it is SSR-safe and ` +
         `persists the choice), or call applyTheme() to write the attribute directly if you ` +
-        `are theming outside React. Docs: https://cascivo.com/docs/theming ` +
+        `are theming outside React. Docs: https://cascivo.com/docs/theming.md ` +
         `— offline: npx -y @cascivo/docs guide theming`,
     )
   })

@@ -52,7 +52,9 @@ function rootBadges(componentCount: number, themeCount: number): string {
 
 // Bundles and interop sheets that are not selectable themes. Keep in sync with
 // NON_THEME_CSS in apps/site/vite.config.ts.
-const NON_THEME_CSS = new Set(['all.css', 'base.css', 'tailwind.css'])
+// `light-dark.css` is a BUNDLE (light + dark), not a selectable theme — the same
+// reason `all.css` is excluded. Counting it would claim 13 themes when 12 ship.
+const NON_THEME_CSS = new Set(['all.css', 'light-dark.css', 'base.css', 'tailwind.css'])
 
 interface Counts {
   components: number
