@@ -37,12 +37,20 @@ status must not drift from what actually shipped.
 
 ## Current live tracker
 
-`fix-plan-adopter-pair-2026-07-26.md` is the newest plan. It triages **two** reports from the
-same day (a TanStack Start console and a React Router console, both on published `0.12.0`) and
-carries the open items of the whole chain behind it — 07-20 → 07-22 → 07-23 → 07-24 → 07-25 →
-07-26. Its WS-15 is down to one item: **publish** (a release action). The npm-parity canary
-and the 07-23 WS-J browser leg are implemented (`pnpm npm:parity`, `pnpm computed:check`), and
-the freshness probe already existed. Every superseded plan's header points forward to here.
+`fix-plan-incident-console-adopter-2026-07-28.md` is the newest plan (**planned — not
+implemented**). It triages the eleventh report: a local-first incident console on Astro-then-Vite,
+tested against published `0.13.0`, with 19 findings and 3 blockers.
+
+It carries **nothing forward**. The 07-26 plan's only open item was WS-15a (publish), and it is
+closed by observation: the 07-28 reporter's environment names `@cascivo/react` 0.13.0 ·
+`@cascivo/core` 0.7.0 · `@cascivo/themes` 0.4.8 · `@cascivo/tokens` 0.5.5 · `@cascivo/icons`
+0.3.5 · `@cascivo/charts` 0.7.0 — exactly `main`. The 07-20 → 07-26 chain is fully shipped.
+
+The 07-28 plan adds **Mechanism E** to the taxonomy below: *the defect is only observable in a
+consumer-shaped environment, and every guard runs in the monorepo.* All three of its blockers
+(`@types/react` unresolvable under pnpm, the `cascivo.reset` layer shipping empty, closed popover
+panels swallowing clicks) are invisible to the entire existing guard suite for that one reason.
+Its WS-13 builds the two fixtures — an isolated install and a bare page — that the class needs.
 
 **Keep this pointer current.** It went two plans stale (still naming the 07-23 plan after
 the 07-24 plan landed, even though that plan's own §10c told the implementer to update it),
@@ -82,3 +90,16 @@ fixes but no gates produces the next report:
   **types** (`@cascivo/react/dist/index.d.ts`), **machine** (`registry.json` / `llms/*`), and
   **human** (`docs/*.md`) — with a parity guard across them.
   → **Fix:** the Three-Surface Rule + `tsdoc-parity` (07-26 plan WS-1).
+- **E — the defect is only observable in a consumer-shaped environment, and every guard runs in
+  the monorepo.** (Added by the 07-28 incident console.) `@types/react` is hoisted to the repo
+  root, so `packages/react`'s own `tsc --noEmit` passes while an isolated pnpm install resolves
+  **zero** React prop types. `apps/site` and `apps/storybook` ship their own `box-sizing`
+  reset in app CSS, so no shipped surface has ever rendered on the browser default — which is
+  how the `cascivo.reset` layer shipped empty for thirteen minors. `computed:check` mounts one
+  component at a time in a 640px box, so a closed `MultiSelect` panel never has a `<Button>`
+  underneath it to swallow. Three blockers, one cause: the guards are good, and they all run in
+  the one environment where these cannot happen.
+  → **Fix:** a fixture that is **not** the monorepo — an isolated install of the packed
+  tarballs (`isolated:check`) and a bare page with no app CSS and several stacked components
+  (`bare-page:check`) — asserted in CI (07-28 plan WS-13). When a report's finding is
+  "reproduced on a default install", check Mechanism E before anything else.
