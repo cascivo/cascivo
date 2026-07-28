@@ -113,6 +113,9 @@ jobs:
       - name: SSR-import guard (published dist ships bare CSS imports)
         run: pnpm run ssr:check
 
+      - name: CSS-contract guard (CSS-shipping packages import their own CSS + ship a node twin)
+        run: pnpm run css-contract:check
+
       - name: Install Chromium (for the computed-style canary)
         run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
 

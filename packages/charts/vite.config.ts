@@ -1,5 +1,6 @@
 import { createRequire } from 'node:module'
 import { defineConfig } from 'vite-plus'
+import { cssImportEdge } from '../../scripts/build/css-import-edge.ts'
 
 // Bridge the charts onto Preact exactly as the docs app does: alias react /
 // react-dom to preact/compat (signals-react resolves its own `react` import
@@ -28,6 +29,7 @@ const preactAlias = [
 const PREACT_TEST = 'charts-preact-compat.test.tsx'
 
 export default defineConfig({
+  plugins: [cssImportEdge('charts.css')],
   build: {
     lib: {
       entry: './src/index.ts',

@@ -67,14 +67,40 @@ export const meta: ComponentMeta = {
       default: '300',
     },
     {
-      name: 'xTicks',
-      description: 'Approximate number of ticks on the x-axis.',
+      name: 'valueAxisTicks',
+      description:
+        'Approximate number of ticks on the VALUE axis, on both orientations. Prefer this over xTicks/yTicks, which are named for where the axis is drawn and therefore swap meaning when orientation="horizontal".',
       type: 'number',
       required: false,
+      default: '5',
+    },
+    {
+      name: 'categoryAxisTicks',
+      description:
+        'Approximate number of ticks on the CATEGORY axis, on both orientations. Role-named twin of valueAxisTicks.',
+      type: 'number',
+      required: false,
+      default: '5',
+    },
+    {
+      name: 'categoryLabelEvery',
+      type: 'number',
+      required: false,
+      description:
+        'Show every Nth category label (always the last) to thin a crowded axis. Role-named twin of xLabelEvery; always strides the category axis on both orientations.',
+    },
+    {
+      name: 'xTicks',
+      description:
+        'DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the x-axis — follows SCREEN position, so it controls the category axis when vertical and the VALUE axis when horizontal.',
+      type: 'number',
+      required: false,
+      default: '5',
     },
     {
       name: 'yTicks',
-      description: 'Approximate number of ticks on the y-axis.',
+      description:
+        'DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the y-axis — follows SCREEN position, so it controls the value axis when vertical and the CATEGORY axis when horizontal.',
       type: 'number',
       required: false,
       default: '5',
@@ -83,7 +109,8 @@ export const meta: ComponentMeta = {
       name: 'xLabelEvery',
       type: 'number',
       required: false,
-      description: 'Show every Nth category label (always the last) to thin a crowded x-axis.',
+      description:
+        'Show every Nth category label (always the last) to thin a crowded axis. Unlike xTicks/yTicks this does NOT swap with orientation — it always strides the category axis. categoryLabelEvery is the unambiguous name.',
     },
     {
       name: 'legend',
@@ -166,10 +193,10 @@ export const meta: ComponentMeta = {
         },
         {
           name: 'color',
-          type: 'string',
+          type: 'string | ((datum: Datum, index: number) => string)',
           required: false,
           description:
-            'Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer.',
+            'Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer. Pass a FUNCTION to color each bar from its own datum — the single-series categorical case (incidents by severity, where SEV1 reads as danger regardless of which bar is tallest). Each bar is also stamped with data-x for CSS targeting.',
         },
       ],
     },

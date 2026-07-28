@@ -2119,6 +2119,9 @@
         { "name": "mode", "type": "'grouped' | 'stacked' | 'percent'", "required": false },
         { "name": "width", "type": "number", "required": false },
         { "name": "height", "type": "number", "required": false },
+        { "name": "valueAxisTicks", "type": "number", "required": false },
+        { "name": "categoryAxisTicks", "type": "number", "required": false },
+        { "name": "categoryLabelEvery", "type": "number", "required": false },
         { "name": "xTicks", "type": "number", "required": false },
         { "name": "yTicks", "type": "number", "required": false },
         { "name": "xLabelEvery", "type": "number", "required": false },
@@ -2335,6 +2338,11 @@
         { "name": "height", "type": "number", "required": false },
         { "name": "xTicks", "type": "number", "required": false },
         { "name": "yTicks", "type": "number", "required": false },
+        {
+          "name": "format",
+          "type": "(value: number | string | Date) => string",
+          "required": false
+        },
         { "name": "legend", "type": "boolean", "required": false },
         { "name": "tooltip", "type": "boolean", "required": false },
         {

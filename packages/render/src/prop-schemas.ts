@@ -454,6 +454,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
+      name: 'valueAxisTicks',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'categoryAxisTicks',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'categoryLabelEvery',
+      required: false,
+      primitives: ['number'],
+    },
+    {
       name: 'xTicks',
       required: false,
       primitives: ['number'],
@@ -3413,6 +3428,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'yTicks',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'format',
+      required: false,
     },
     {
       name: 'legend',

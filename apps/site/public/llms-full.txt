@@ -3458,9 +3458,12 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `mode` | `'grouped' \| 'stacked' \| 'percent'` | no | `grouped` | 'percent' stacks each category and normalizes it to 100%. |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `xTicks` | `number` | no | — | Approximate number of ticks on the x-axis. |
-| `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
-| `xLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded x-axis. |
+| `valueAxisTicks` | `number` | no | `5` | Approximate number of ticks on the VALUE axis, on both orientations. Prefer this over xTicks/yTicks, which are named for where the axis is drawn and therefore swap meaning when orientation="horizontal". |
+| `categoryAxisTicks` | `number` | no | `5` | Approximate number of ticks on the CATEGORY axis, on both orientations. Role-named twin of valueAxisTicks. |
+| `categoryLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded axis. Role-named twin of xLabelEvery; always strides the category axis on both orientations. |
+| `xTicks` | `number` | no | `5` | DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the x-axis — follows SCREEN position, so it controls the category axis when vertical and the VALUE axis when horizontal. |
+| `yTicks` | `number` | no | `5` | DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the y-axis — follows SCREEN position, so it controls the value axis when vertical and the CATEGORY axis when horizontal. |
+| `xLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded axis. Unlike xTicks/yTicks this does NOT swap with orientation — it always strides the category axis. categoryLabelEvery is the unambiguous name. |
 | `legend` | `boolean` | no | — | Whether to show the legend. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
 | `tooltipFormat` | `(p: ChartPoint) => string` | no | — | Custom tooltip formatter. The stacked default lists "label · total" + each non-zero layer in its color. |
@@ -3483,7 +3486,7 @@ One series (a set of bars). Pass an array via the `series` prop.
 | `id` | `string` | yes | Stable series identity. |
 | `label` | `string` | yes | Legend + tooltip label. |
 | `data` | `readonly Datum[]` | yes | Row data read by the `x`/`y` accessors. |
-| `color` | `string` | no | Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer. |
+| `color` | `string \| ((datum: Datum, index: number) => string)` | no | Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer. Pass a FUNCTION to color each bar from its own datum — the single-series categorical case (incidents by severity, where SEV1 reads as danger regardless of which bar is tallest). Each bar is also stamped with data-x for CSS targeting. |
 
 ### `StackedRow`
 
@@ -4488,6 +4491,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `height` | `number` | no | `300` | SVG height in px |
 | `xTicks` | `number` | no | `5` | Approximate number of X-axis ticks |
 | `yTicks` | `number` | no | `5` | Approximate number of Y-axis ticks |
+| `format` | `(value: number \| string \| Date) => string` | no | — | Format each X-axis tick label; receives the datum's raw x value (number \| string \| Date). Without it a numeric x renders raw — a Date.now()-scale value renders as 1,785,217,000,000 — and passing Date objects gives a fixed date format, so sub-day buckets all collapse to the same label. Mirrors secondAxis.format on the right. |
 | `legend` | `boolean` | no | — | Show series legend |
 | `tooltip` | `boolean` | no | — | Enable hover tooltip |
 | `formatTooltip` | `(datum: Datum, series: LineChartSeries<Datum>) => string` | no | — | Custom tooltip formatter |

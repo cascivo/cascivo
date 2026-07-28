@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite-plus'
+import { cssImportEdge } from '../../scripts/build/css-import-edge.ts'
 
 export default defineConfig({
+  plugins: [cssImportEdge('flow.css')],
   build: {
     lib: {
       entry: './src/index.ts',
