@@ -1,6 +1,7 @@
 'use client'
 import { cn, createMachine, useMachine, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
+import { forwardRef } from 'react'
 import type { InputHTMLAttributes, KeyboardEvent } from 'react'
 import styles from './number-input.module.css'
 
@@ -78,30 +79,39 @@ function parseText(text: string): number | null {
   return Number.isFinite(parsed) ? parsed : null
 }
 
-export function NumberInput({
-  value,
-  defaultValue,
-  onValueChange,
-  onChange,
-  min,
-  max,
-  step = 1,
-  precision,
-  formatOptions,
-  label,
-  hint,
-  error,
-  size = 'md',
-  disabled,
-  incrementLabel,
-  decrementLabel,
-  className,
-  id,
-  onFocus,
-  onBlur,
-  onKeyDown,
-  ...props
-}: NumberInputProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<input>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). Enforced by
+ * `ref-parity.test.ts`, which found this component: the plan's own list of 16 was itself
+ * incomplete, which is why the rule is a guard and not a checklist.
+ */
+export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(function NumberInput(
+  {
+    value,
+    defaultValue,
+    onValueChange,
+    onChange,
+    min,
+    max,
+    step = 1,
+    precision,
+    formatOptions,
+    label,
+    hint,
+    error,
+    size = 'md',
+    disabled,
+    incrementLabel,
+    decrementLabel,
+    className,
+    id,
+    onFocus,
+    onBlur,
+    onKeyDown,
+    ...props
+  },
+  ref,
+) {
   useSignals()
   const resolvedIncrementLabel = incrementLabel ?? t(builtin.numberInput.increment)
   const resolvedDecrementLabel = decrementLabel ?? t(builtin.numberInput.decrement)
@@ -199,6 +209,7 @@ export function NumberInput({
             onBlur?.(e)
           }}
           onKeyDown={handleKeyDown}
+          ref={ref as never}
           {...props}
         />
         <div className={styles['steppers']}>
@@ -256,4 +267,4 @@ export function NumberInput({
       )}
     </div>
   )
-}
+})

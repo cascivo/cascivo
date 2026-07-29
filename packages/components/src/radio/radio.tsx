@@ -1,6 +1,6 @@
 'use client'
 import { cn } from '@cascivo/core'
-import { Children, cloneElement, isValidElement } from 'react'
+import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import type { InputHTMLAttributes, ReactElement, ReactNode } from 'react'
 import styles from './radio.module.css'
 
@@ -9,7 +9,18 @@ export interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
   value: string
 }
 
-export function Radio({ label, className, id, disabled, value, ...props }: RadioProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<input>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). `forwardRef` rather than a
+ * bare `ref?: Ref<T>` prop keeps the `react >= 18` peer floor honest, since ref-as-prop does
+ * not work there.
+ *
+ * Only `Radio` is wrapped; `RadioGroup` below is a layout container with no single host.
+ */
+export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
+  { label, className, id, disabled, value, ...props },
+  ref,
+) {
   const radioId = id ?? (label ? `cascade-radio-${value}` : undefined)
 
   return (
@@ -20,13 +31,14 @@ export function Radio({ label, className, id, disabled, value, ...props }: Radio
         value={value}
         className={styles['input']}
         disabled={disabled}
+        ref={ref as never}
         {...props}
       />
       <span className={styles['control']} aria-hidden="true" />
       {label && <span className={styles['label']}>{label}</span>}
     </label>
   )
-}
+})
 
 export interface RadioGroupProps {
   name: string

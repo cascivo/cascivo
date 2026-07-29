@@ -1,5 +1,6 @@
 'use client'
 import { cn, Slot } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { AnchorHTMLAttributes } from 'react'
 import styles from './link.module.css'
 
@@ -31,15 +32,24 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   asChild?: boolean
 }
 
-export function Link({
-  variant = 'standalone',
-  size = 'md',
-  external = false,
-  asChild = false,
-  className,
-  children,
-  ...props
-}: LinkProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<a>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). `forwardRef` rather than a
+ * bare `ref?: Ref<T>` prop keeps the `react >= 18` peer floor honest, since ref-as-prop does
+ * not work there.
+ */
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
+  {
+    variant = 'standalone',
+    size = 'md',
+    external = false,
+    asChild = false,
+    className,
+    children,
+    ...props
+  },
+  ref,
+) {
   const Comp = asChild ? Slot : 'a'
   return (
     <Comp
@@ -48,9 +58,10 @@ export function Link({
       data-external={external || undefined}
       className={cn(styles['link'], className)}
       {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
+      ref={ref as never}
       {...props}
     >
       {children}
     </Comp>
   )
-}
+})

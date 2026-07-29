@@ -81,6 +81,16 @@ export interface CandlestickProps {
    * @see the component manifest
    */
   tooltipMode?: 'item' | 'axis'
+  /**
+   * Format each X-axis tick label. Receives the datum's raw `x` value — a number, a string,
+   * or a `Date`, whichever the series carries.
+   *
+   * Without it a numeric x renders raw: a `Date.now()`-scale value (the natural shape for a
+   * time series) renders as `1,785,217,000,000`. Passing `Date` objects switches the axis to
+   * a time scale, but that format is fixed, so every bucket narrower than a day collapses to
+   * the same label. Threads through `Axis`'s own `format` (2026-07-28 report C16).
+   */
+  format?: (value: number | string | Date) => string
 }
 
 export function Candlestick({
@@ -102,6 +112,7 @@ export function Candlestick({
   zoom,
   syncId,
   tooltipMode,
+  format: xFormat,
 }: CandlestickProps) {
   useSignals()
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
@@ -316,6 +327,7 @@ export function Candlestick({
                     orientation="x"
                     length={innerW}
                     transform={`translate(0,${innerH})`}
+                    {...(xFormat ? { format: xFormat } : {})}
                   />
                   <Axis scale={yScale} orientation="y" length={candleH} tickCount={yTicks} />
                 </>

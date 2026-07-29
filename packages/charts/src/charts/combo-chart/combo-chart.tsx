@@ -77,6 +77,16 @@ export interface ComboChartProps {
   plain?: boolean
   /** Reference lines, bands, and markers. `y` maps to the bar value axis. */
   annotations?: readonly Annotation[]
+  /**
+   * Format each X-axis tick label. Receives the datum's raw `x` value — a number, a string,
+   * or a `Date`, whichever the series carries.
+   *
+   * Without it a numeric x renders raw: a `Date.now()`-scale value (the natural shape for a
+   * time series) renders as `1,785,217,000,000`. Passing `Date` objects switches the axis to
+   * a time scale, but that format is fixed, so every bucket narrower than a day collapses to
+   * the same label. Threads through `Axis`'s own `format` (2026-07-28 report C16).
+   */
+  format?: (value: number | string | Date) => string
 }
 
 const BAR_COLOR = 'var(--cascivo-chart-1)'
@@ -98,6 +108,7 @@ export function ComboChart({
   className,
   plain,
   annotations,
+  format,
 }: ComboChartProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -317,6 +328,7 @@ export function ComboChart({
                     length={inner.width}
                     labelEvery={labelEvery}
                     transform={`translate(0,${inner.height})`}
+                    {...(format ? { format } : {})}
                   />
                   <Axis scale={barYScale} orientation="y" length={inner.height} />
                   {secondAxis && (

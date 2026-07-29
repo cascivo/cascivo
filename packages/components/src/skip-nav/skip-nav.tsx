@@ -1,6 +1,7 @@
 'use client'
 import { cn, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
+import { forwardRef } from 'react'
 import type { AnchorHTMLAttributes, HTMLAttributes } from 'react'
 import styles from './skip-nav.module.css'
 
@@ -18,12 +19,16 @@ export interface SkipNavLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorEl
 }
 
 /** Render as the FIRST focusable element on the page — visually hidden until focused. */
-export function SkipNavLink({
-  targetId = DEFAULT_TARGET_ID,
-  labels,
-  className,
-  ...props
-}: SkipNavLinkProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<a>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). Enforced by
+ * `ref-parity.test.ts`, which found this component: the plan's own list of 16 was itself
+ * incomplete, which is why the rule is a guard and not a checklist.
+ */
+export const SkipNavLink = forwardRef<HTMLAnchorElement, SkipNavLinkProps>(function SkipNavLink(
+  { targetId = DEFAULT_TARGET_ID, labels, className, ...props },
+  ref,
+) {
   useSignals()
   const label = labels?.label ?? t(builtin.skipNav.label)
   return (
@@ -31,7 +36,7 @@ export function SkipNavLink({
       {label}
     </a>
   )
-}
+})
 
 export interface SkipNavTargetProps extends HTMLAttributes<HTMLDivElement> {
   /**

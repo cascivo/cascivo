@@ -45,6 +45,16 @@ export interface BubbleChartProps {
   plain?: boolean
   /** Point glyph shape — a fixed shape, or a function to encode a category by shape. Defaults to a circle. */
   glyph?: GlyphShape | ((d: BubbleDatum, seriesName: string) => GlyphShape)
+  /**
+   * Format each X-axis tick label. Receives the datum's raw `x` value — a number, a string,
+   * or a `Date`, whichever the series carries.
+   *
+   * Without it a numeric x renders raw: a `Date.now()`-scale value (the natural shape for a
+   * time series) renders as `1,785,217,000,000`. Passing `Date` objects switches the axis to
+   * a time scale, but that format is fixed, so every bucket narrower than a day collapses to
+   * the same label. Threads through `Axis`'s own `format` (2026-07-28 report C16).
+   */
+  format?: (value: number | string | Date) => string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -61,6 +71,7 @@ export function BubbleChart({
   className,
   plain,
   glyph,
+  format,
 }: BubbleChartProps) {
   useSignals()
   const hovered = useSignal<string | null>(null)
@@ -217,6 +228,7 @@ export function BubbleChart({
                   orientation="x"
                   length={inner.width}
                   transform={`translate(0,${inner.height})`}
+                  {...(format ? { format } : {})}
                 />
                 <Axis scale={yScale} orientation="y" length={inner.height} />
               </>

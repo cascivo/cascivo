@@ -194,7 +194,7 @@ export function LineChart<Datum = { x: number; y: number }>({
   height,
   xTicks = 5,
   yTicks = 5,
-  format,
+  format: xFormat,
   legend,
   tooltip,
   formatTooltip,
@@ -583,7 +583,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                       length={innerW}
                       tickCount={xTicks}
                       transform={`translate(0,${innerH})`}
-                      {...(format ? { format } : {})}
+                      {...(xFormat ? { format: xFormat } : {})}
                     />
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
                     {hasRight && (

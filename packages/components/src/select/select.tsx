@@ -1,5 +1,6 @@
 'use client'
 import { createMachine, useMachine, cn } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { SelectHTMLAttributes } from 'react'
 import styles from './select.module.css'
 
@@ -32,21 +33,30 @@ export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement
   size?: 'sm' | 'md' | 'lg'
 }
 
-export function Select({
-  label,
-  hint,
-  error,
-  placeholder,
-  options,
-  size = 'md',
-  className,
-  id,
-  defaultValue,
-  value,
-  onFocus,
-  onBlur,
-  ...props
-}: SelectProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<select>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). `forwardRef` rather than a
+ * bare `ref?: Ref<T>` prop keeps the `react >= 18` peer floor honest, since ref-as-prop does
+ * not work there.
+ */
+export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
+  {
+    label,
+    hint,
+    error,
+    placeholder,
+    options,
+    size = 'md',
+    className,
+    id,
+    defaultValue,
+    value,
+    onFocus,
+    onBlur,
+    ...props
+  },
+  ref,
+) {
   const [state, send] = useMachine(machine)
   const selectId =
     id ?? (label ? `cascade-select-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined)
@@ -80,6 +90,7 @@ export function Select({
             send('BLUR')
             onBlur?.(e)
           }}
+          ref={ref as never}
           {...props}
         >
           {hasPlaceholder && (
@@ -107,4 +118,4 @@ export function Select({
       )}
     </div>
   )
-}
+})

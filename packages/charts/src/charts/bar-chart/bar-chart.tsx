@@ -186,6 +186,14 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   fill?: FillKind
   /** Pattern motif when `fill="pattern"`. */
   patternKind?: PatternKind
+  /**
+   * Format each category/x-axis tick label. Receives the datum's raw `x` value — a number,
+   * a string, or a `Date`, whichever the series carries.
+   *
+   * Threads through `Axis`'s own `format`, which every chart composing an axis should
+   * surface (2026-07-28 report C16); enforced by `axis-parity.test.ts`.
+   */
+  format?: (value: number | string | Date) => string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -225,6 +233,7 @@ export function BarChart<Datum = { x: string; y: number }>({
   onSelect,
   fill = 'solid',
   patternKind,
+  format: xFormat,
 }: BarChartProps<Datum>) {
   useSignals()
   const defsId = useId()
@@ -576,6 +585,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       tickCount={resolvedXTicks}
                       labelEvery={labelEvery}
                       transform={`translate(0,${innerH})`}
+                      {...(xFormat ? { format: xFormat } : {})}
                     />
                     <Axis
                       scale={valScale}

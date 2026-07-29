@@ -1,6 +1,7 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
+import { forwardRef } from 'react'
 import type { ButtonHTMLAttributes } from 'react'
 import styles from './copy-button.module.css'
 
@@ -11,7 +12,16 @@ export interface CopyButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   labels?: { copy?: string; copied?: string }
 }
 
-export function CopyButton({ value, size = 'md', labels, className, ...props }: CopyButtonProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<button>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). Enforced by
+ * `ref-parity.test.ts`, which found this component: the plan's own list of 16 was itself
+ * incomplete, which is why the rule is a guard and not a checklist.
+ */
+export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(function CopyButton(
+  { value, size = 'md', labels, className, ...props },
+  ref,
+) {
   useSignals()
   const copied = useSignal(false)
   const copyLabel = labels?.copy ?? t(builtin.copyButton.copy)
@@ -33,6 +43,7 @@ export function CopyButton({ value, size = 'md', labels, className, ...props }: 
       data-size={size}
       className={cn(styles['copyButton'], className as string | undefined)}
       onClick={handleClick}
+      ref={ref as never}
       {...props}
     >
       {copied.value ? (
@@ -68,4 +79,4 @@ export function CopyButton({ value, size = 'md', labels, className, ...props }: 
       )}
     </button>
   )
-}
+})

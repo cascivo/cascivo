@@ -177,6 +177,16 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
   decimate?: boolean | AreaDecimateOptions
   /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
   toolbox?: boolean | ToolboxOptions
+  /**
+   * Format each X-axis tick label. Receives the datum's raw `x` value — a number, a string,
+   * or a `Date`, whichever the series carries.
+   *
+   * Without it a numeric x renders raw: a `Date.now()`-scale value (the natural shape for a
+   * time series) renders as `1,785,217,000,000`. Passing `Date` objects switches the axis to
+   * a time scale, but that format is fixed, so every bucket narrower than a day collapses to
+   * the same label. Threads through `Axis`'s own `format` (2026-07-28 report C16).
+   */
+  format?: (value: number | string | Date) => string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -210,6 +220,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   secondAxis,
   decimate,
   toolbox,
+  format: xFormat,
 }: AreaChartProps<Datum>) {
   useSignals()
   const defsId = useId()
@@ -596,6 +607,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
                       length={innerW}
                       tickCount={xTicks}
                       transform={`translate(0,${innerH})`}
+                      {...(xFormat ? { format: xFormat } : {})}
                     />
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
                     {hasRight && (

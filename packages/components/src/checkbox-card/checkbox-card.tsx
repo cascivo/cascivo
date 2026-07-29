@@ -1,5 +1,6 @@
 'use client'
 import { cn } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { InputHTMLAttributes, ReactNode } from 'react'
 import styles from './checkbox-card.module.css'
 
@@ -13,16 +14,16 @@ export interface CheckboxCardProps extends Omit<
   className?: string | undefined
 }
 
-export function CheckboxCard({
-  title,
-  description,
-  checked,
-  defaultChecked,
-  disabled,
-  onCheckedChange,
-  className,
-  ...props
-}: CheckboxCardProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<input>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). Enforced by
+ * `ref-parity.test.ts`, which found this component: the plan's own list of 16 was itself
+ * incomplete, which is why the rule is a guard and not a checklist.
+ */
+export const CheckboxCard = forwardRef<HTMLInputElement, CheckboxCardProps>(function CheckboxCard(
+  { title, description, checked, defaultChecked, disabled, onCheckedChange, className, ...props },
+  ref,
+) {
   return (
     <label className={cn(styles['card'], className)} data-disabled={disabled || undefined}>
       <input
@@ -31,6 +32,7 @@ export function CheckboxCard({
         disabled={disabled}
         {...(checked !== undefined ? { checked } : { defaultChecked })}
         onChange={(e) => onCheckedChange?.(e.currentTarget.checked)}
+        ref={ref as never}
         {...props}
       />
       <span className={styles['glyph']} aria-hidden="true">
@@ -44,4 +46,4 @@ export function CheckboxCard({
       </span>
     </label>
   )
-}
+})
