@@ -51,6 +51,7 @@ import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { createRequire } from 'node:module'
+import { chromiumNote, resolveChromium } from './lib/chromium.ts'
 import { after, before, describe, it } from 'node:test'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
@@ -103,9 +104,14 @@ before(async () => {
     new URL('../../packages/react/dist/node/index.js', import.meta.url).href
   )
   STYLES = readFileSync(join(DIST, 'styles.css'), 'utf8')
-  const executablePath = process.env['CASCIVO_CHROMIUM']
+  // See lib/chromium.ts: Playwright pins an exact build, dev-container images ship a
+  // different one, and requiring every developer to know CASCIVO_CHROMIUM is how
+  // `pnpm ready` ends up unrunnable outside CI.
+  const executablePath = resolveChromium(chromium.executablePath())
+  console.log(chromiumNote(executablePath))
   // Deliberately not wrapped in try/skip — a canary that passes when it could not run is
-  // worse than no canary. Same reasoning as computed-style.test.ts.
+  // worse than no canary. Same reasoning as computed-style.test.ts. Discovery substitutes a
+  // REAL browser; when none exists this still fails loudly.
   browser = await chromium.launch(executablePath ? { executablePath } : {})
   page = await browser.newPage()
 })

@@ -27,6 +27,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import { strict as assert } from 'node:assert'
 import { after, before, describe, it } from 'node:test'
 import { createRequire } from 'node:module'
+import { chromiumNote, resolveChromium } from './lib/chromium.ts'
 
 // React, react-dom and Playwright are dependencies of `packages/react`, not of the repo root,
 // so resolve them from there rather than adding root devDependencies for one check. Resolve
@@ -86,14 +87,18 @@ before(async () => {
   ;({ Button, Card, CardContent, CardHeader, Link, Stat } = await import(
     new URL('../../packages/react/dist/node/index.js', import.meta.url).href
   ))
-  // CASCIVO_CHROMIUM lets an environment point at a preinstalled Chromium whose build
-  // number doesn't match this Playwright version (CI images, sandboxes). Unset → Playwright's
-  // own managed download, which is what a normal `pnpm install` provides.
-  const executablePath = process.env['CASCIVO_CHROMIUM']
-  // Deliberately NOT wrapped in a try/skip. A canary that passes when it could not run is
-  // worse than no canary — that shape is what let `@cascivo/core` slip past npm-parity and
-  // what let a green suite ship an underlined button. If Chromium is missing, this fails
-  // loudly and CI installs it (see .github/workflows/ci.yml).
+  // Playwright pins an exact Chromium build and refuses to launch anything else, so a dev
+  // container whose image ships a different build fails here with "Executable doesn't exist
+  // at …/chromium-<rev>/…" — which is what made `pnpm ready` unrunnable outside CI until the
+  // developer discovered CASCIVO_CHROMIUM. `resolveChromium` finds an installed Chromium
+  // under PLAYWRIGHT_BROWSERS_PATH instead; the assertions here are `box-sizing`,
+  // `text-decoration` and custom-property resolution, none of which is build-specific.
+  const executablePath = resolveChromium(chromium.executablePath())
+  console.log(chromiumNote(executablePath))
+  // Still deliberately NOT wrapped in a try/skip. A canary that passes when it could not run
+  // is worse than no canary — that shape is what let `@cascivo/core` slip past npm-parity and
+  // what let a green suite ship an underlined button. Discovery substitutes a REAL browser;
+  // when none exists this still fails loudly and CI installs the pinned one.
   browser = await chromium.launch(executablePath ? { executablePath } : {})
   page = await browser.newPage()
 })
