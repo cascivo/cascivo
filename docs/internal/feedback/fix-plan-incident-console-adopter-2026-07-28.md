@@ -8,8 +8,11 @@ is not published.
 Per-workstream:
 **WS-1** ◑ (peers shipped on 7 packages + `peer-floors` guard; the C1 *mechanism* does not
 reproduce — see §0.5, the one genuinely open item) ·
-**WS-2** ✅ (`forwardRef` on Textarea/Input/NativeSelect/Checkbox, `ref-forwarding` tests;
-chose `forwardRef` over a bare `ref?:` prop to keep the `react >= 18` floor honest) ·
+**WS-2** ◑ (`forwardRef` on Textarea/Input/NativeSelect/Checkbox + `ref-forwarding` tests;
+chose `forwardRef` over a bare `ref?:` prop to keep the `react >= 18` floor honest. **11 of
+the 16 listed components still have no `ref`** — Button, Select, Radio, Toggle, Slider,
+Search, TagsInput, Combobox, OtpInput, Card, Link — and the **ref-parity guard is not
+built**, so nothing stops the gap widening) ·
 **WS-3** ✅ (`reset.css` in the `cascivo.reset` layer, reaching every entry path + inlined
 into the aggregate; `reset-floor` guard, observed failing first) ·
 **WS-4** ✅ (MultiSelect + Sheet; `popover-hidden` guard, observed failing on exactly those
@@ -18,9 +21,14 @@ two) ·
 `data-cascivo-*` hooks + `STYLING-INTERNALS.md` + bidirectional `style-hooks` guard) ·
 **WS-6** ✅ (`all.css` = all twelve, new `light-dark.css`, `theme-bundle` guard;
 provider-missing dev warning + `applyTheme`) ·
-**WS-7** ✅ (CSS self-import + node twin across charts/editor/flow/ai via one shared plugin,
-`css-contract` guard; `format`; integer ticks + `allowDecimals`; role-named axis props;
-per-datum `color` + `data-x`) ·
+**WS-7** ◑ (CSS self-import + node twin across charts/editor/flow/ai via one shared plugin,
+`css-contract` guard ✅; integer ticks + `allowDecimals` ✅. But three items landed on
+**one chart only**, which is precisely the shape this workstream warned about — "one chart
+having it and eleven not is how this class of report repeats": `format` is on `LineChart`
+and **absent from the other 7 axis-composing charts** (Area, Scatter, Combo, Bar, Histogram,
+Candlestick, Bubble); role-named axis props are on `BarChart` only; per-datum `color` +
+`data-x` are on `BarChart` only, while `PieChart`/`Funnel`/`RadialBar` remain string-only.
+Neither the **axis-prop parity guard** nor the `vocabulary` deprecation entry was built) ·
 **WS-8** ✅ (`PopoverTrigger asChild` via `Slot`; `dead-props` guard, verified against the
 real pre-fix file) ·
 **WS-9** ✅ (`focusElement` + 16 call sites; a `preact` vitest project over the interactive
@@ -31,20 +39,40 @@ reproduced in CI) ·
 **WS-11** ✅ (generated version matrix, `useSignals()` on all surfaces +
 `getting-started-contract` guard, dead `/docs/theming` URL fixed + `doc-urls` guard, seven
 symptom-keyed troubleshooting entries, Troubleshooting in the nav) ·
-**WS-12** ◑ (`@cascivo/ai` converged to `.js`/`.d.ts`; per-icon subpaths **not done** —
-tree-shaking already works, so it was the lowest-value item here) ·
+**WS-12** ◑ (`@cascivo/ai` converged to `.js`/`.d.ts`, and the `minimumReleaseAge`
+troubleshooting entry shipped. **`@cascivo/icons` still emits `.mjs`/`.d.mts`**, so the
+family convention is *still* inconsistent — the defect C8 actually named — and the
+`pkg-exports` assertion locking the convention was not added. Per-icon subpaths and the
+Flex/Stack comparison table **not done**) ·
 **WS-13** ◑ (13a `isolated:check` and 13b `bare-page:check` both shipped; of `bare-page`'s
 four cases only **C12 was observed failing on its pre-fix state** — C13/C14/C15 pass but
 their failure modes are unproven, recorded in that file's header. C13's real guard is
 `popover-hidden`, which *was* observed failing and named both offenders).
 
-**Honest summary of what is NOT done**, so nobody reads ✅ where there is none:
-1. **The C1 repro** (§0.5) — the fix shipped, the mechanism is unexplained.
-2. **`apps/examples/astro-islands`** — WS-10's executable reproduction of C2.
-3. **Three of `bare-page`'s four browser cases** — C13, C14 and C15 pass but were never
+**Honest summary of what is NOT done.** An earlier revision of this header listed four
+items; that was wrong, and under-reporting completion is the exact defect this directory
+exists to prevent. The real list:
+
+*Fixes that landed on one instance of a class instead of the class:*
+1. **`ref` on 11 of 16 components** — Button, Select, Radio, Toggle, Slider, Search,
+   TagsInput, Combobox, OtpInput, Card, Link. Plus the **ref-parity guard**.
+2. **`format` on 7 of 8 axis-composing charts** — Area, Scatter, Combo, Bar, Histogram,
+   Candlestick, Bubble. Plus the **axis-prop parity guard**. WS-7 explicitly called this
+   out as the recurrence shape and it happened anyway.
+3. **Role-named axis props** beyond `BarChart`, and the `vocabulary` deprecation entry.
+4. **Per-datum `color` + `data-x`** beyond `BarChart` — `PieChart`, `Funnel`, `RadialBar`.
+5. **`@cascivo/icons` module convention** — still `.mjs`/`.d.mts` against the family's
+   `.js`/`.d.ts`, which is the inconsistency C8 reported. Plus the `pkg-exports` assertion.
+
+*Never started:*
+6. **`apps/examples/astro-islands`** — WS-10's executable reproduction of C2.
+7. **Per-icon subpaths** and the **Flex/Stack comparison table** — WS-12.
+
+*Investigative:*
+8. **The C1 repro** (§0.5) — the fix shipped, the mechanism is unexplained.
+9. **Three of `bare-page`'s four browser cases** — C13, C14 and C15 pass but were never
    observed failing, so they are regression tripwires rather than proofs. C12 was verified
    properly (`scrollWidth 1314` vs `clientWidth 1280` on a reset-stripped stylesheet).
-4. **Per-icon subpaths** — WS-12 item 2.
 
 **Source report:**
 [`feedback-incident-console-adopter-2026-07-28.md`](feedback-incident-console-adopter-2026-07-28.md)
