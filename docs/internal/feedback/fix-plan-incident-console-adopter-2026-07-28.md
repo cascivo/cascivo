@@ -187,6 +187,39 @@ install and type-check in a strict, non-hoisted workspace with lib checking on.
 
 ---
 
+### §0.6 Correction — WS-9's own test was vacuous
+
+**Added after implementation, from a CI failure on this branch.**
+
+The `preact-compat` suite this plan specifies for C9 passed for its first three commits
+without ever executing the code it was written to protect. Reverting `focusElement()` to the
+pre-fix `.current?.focus()` shape left all six cases green.
+
+The cause: the suite dispatched Escape at `document.activeElement`, which jsdom leaves as
+`<body>`, while these components bind Escape to the *popup*. The event bubbled past the
+handler, the focus-restore path never ran, and an assertion that no console error occurred
+held trivially — because nothing occurred.
+
+It was found only because an unrelated CI failure (a `@preact/signals` timer outliving jsdom
+teardown, throwing `ReferenceError: cancelAnimationFrame is not defined` as an unhandled
+error with 1147/1147 tests green) forced a proper look at the file.
+
+**The generalisable lesson, and it applies to more than this file:** an assertion that
+something *did not happen* is satisfied by the code under test never running. Nine of the
+guards this plan adds are shaped that way — no unlayered rule, no dead prop, no 404 URL, no
+missing peer. Each therefore needs a positive companion assertion proving it looked at what
+it claims to cover, and the ones written that way already have it (`theme-bundle`'s
+"finds the themes it is meant to cover", `dead-props` verified against the real pre-fix
+`popover.tsx`, `bare-page` rewritten twice after passing on broken CSS). The `preact-compat`
+suite was the one that shipped without it; it now asserts focus lands back on Dropdown's
+trigger, and both the broken-`focusElement` and the old-dispatch-target mutations fail it.
+
+The three earlier catches were luck plus suspicion. The habit to keep is mechanical:
+**after writing a guard, break the thing it guards and watch it fail.** A guard not yet seen
+to fail is a guard not yet known to work.
+
+---
+
 ### §0.4 Triage summary
 
 Every finding was reproduced against this checkout with file:line evidence. Verdicts:
