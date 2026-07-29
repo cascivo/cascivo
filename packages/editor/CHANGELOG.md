@@ -1,5 +1,14 @@
 # @cascivo/editor
 
+## 0.2.20
+
+### Patch Changes
+
+- 3ec6aaf: Minor fixes
+- Updated dependencies [3ec6aaf]
+  - @cascivo/core@0.7.1
+  - @cascivo/i18n@0.2.14
+
 ## 0.2.19
 
 ### Patch Changes

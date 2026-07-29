@@ -1,5 +1,11 @@
 # cascivo
 
+## 0.6.2
+
+### Patch Changes
+
+- 3ec6aaf: Minor fixes
+
 ## 0.6.1
 
 ### Patch Changes

@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-27",
+  "generatedAt": "2026-07-29",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.13",
+      "version": "0.2.14",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,7 +15,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "releases": [
         {
           "version": "0.7.0",
@@ -61,7 +61,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "releases": [
         {
           "version": "0.6.0",
@@ -104,7 +104,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "releases": [
         {
           "version": "0.7.0",
@@ -166,7 +166,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.19",
+      "version": "0.2.20",
       "releases": [
         {
           "version": "0.2.0",
@@ -186,12 +186,12 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.1.18",
+      "version": "0.1.19",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.13",
+      "version": "0.2.14",
       "releases": [
         {
           "version": "0.2.0",
@@ -207,7 +207,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "releases": [
         {
           "version": "0.3.0",
@@ -270,7 +270,7 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.13.0",
+      "version": "0.13.1",
       "releases": [
         {
           "version": "0.13.0",
@@ -375,7 +375,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.18",
+      "version": "0.1.19",
       "releases": [
         {
           "version": "0.1.0",
@@ -386,7 +386,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.8",
+      "version": "0.4.9",
       "releases": [
         {
           "version": "0.4.0",
@@ -412,7 +412,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.5",
+      "version": "0.5.6",
       "releases": [
         {
           "version": "0.5.0",

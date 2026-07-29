@@ -1,5 +1,13 @@
 # @cascivo/themes
 
+## 0.4.9
+
+### Patch Changes
+
+- 3ec6aaf: Minor fixes
+- Updated dependencies [3ec6aaf]
+  - @cascivo/tokens@0.5.6
+
 ## 0.4.8
 
 ### Patch Changes
