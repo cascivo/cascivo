@@ -11,12 +11,18 @@
  *
  * Why a guard and not just a sweep: the first implementation pass converted four components
  * and left eleven, which is the same "fixed one instance of a class" shape that WS-7 hit with
- * chart formatters in the very same plan. A sweep decays; a guard does not.
+ * chart formatters in the very same plan. A sweep decays; a guard does not — and when this
+ * one was first written it immediately found nine components the plan's own list of sixteen
+ * had never mentioned.
  *
- * The rule: if a component spreads `{...props}` onto exactly one **intrinsic** element
- * (`<button>`, `<input>`, `<a>`, …), it must be a `forwardRef`. Composites that spread onto a
- * wrapper `<div>` are excluded by name with a reason — for those the useful ref target is an
- * inner control, which is a design decision, not an oversight.
+ * The rule: if an exported component spreads `{...props}` onto exactly one **intrinsic**
+ * element (`<button>`, `<input>`, `<a>`, …), it must be a `forwardRef`.
+ *
+ * Scope is **per exported component**, not per file. An earlier revision reasoned per file
+ * and had to allowlist `accordion` and `tabs` wholesale, because it could not express
+ * "`AccordionTrigger` forwards, `AccordionItem` does not" — which meant three real gaps hid
+ * behind one allowlist entry each. Splitting each file into its exported components removed
+ * both entries and surfaced the gaps.
  *
  * Run: `pnpm meta:check`.
  */
@@ -32,30 +38,29 @@ const COMPONENTS_DIR = join(REPO_ROOT, 'packages/components/src')
 const HOST_TAGS = ['button', 'input', 'textarea', 'select', 'a']
 
 /**
- * Components that spread onto a host-like element but deliberately do not forward a ref,
- * each with the reason. Keep this list short and specific.
+ * Exported components that spread onto a host-like element but deliberately do not forward
+ * a ref, each with the reason. Keyed by the exported component name.
+ *
+ * Keep this short and specific. "Composite, so the ref target is a design decision" is a
+ * reason; "awkward to thread" is not.
  */
 const ALLOWLIST: Record<string, string> = {
-  search:
+  Search:
     'composite — {...props} lands on the wrapper; the useful ref is the inner <input>, and ' +
     'which element `ref` should mean is a design decision, not an oversight',
-  combobox: 'composite — same shape as search (wrapper vs inner input)',
-  'tags-input': 'composite — same shape as search (wrapper vs inner input)',
-  'otp-input': 'composite — {...props} lands on the role="group" wrapper, not a single input',
-  accordion:
-    'multi-export file — the <button> spread is on the AccordionTrigger SUBCOMPONENT, and ' +
-    'this guard reasons per file, so it cannot express "trigger forwards, item does not". ' +
-    'Sharpening it to per-export analysis is open work; do not read this as "no gap"',
-  tabs: 'multi-export file — same limitation as accordion (TabsTrigger vs TabsList)',
+  Combobox: 'composite — same shape as Search (wrapper vs inner input)',
+  TagsInput: 'composite — same shape as Search (wrapper vs inner input)',
+  OtpInput: 'composite — {...props} lands on the role="group" wrapper, not a single input',
 }
 
-interface Component {
+interface ExportedComponent {
+  file: string
   name: string
   source: string
 }
 
-function components(): Component[] {
-  const out: Component[] = []
+function componentFiles(): { name: string; source: string }[] {
+  const out: { name: string; source: string }[] = []
   for (const entry of readdirSync(COMPONENTS_DIR, { withFileTypes: true })) {
     if (!entry.isDirectory()) continue
     const file = join(COMPONENTS_DIR, entry.name, `${entry.name}.tsx`)
@@ -66,15 +71,33 @@ function components(): Component[] {
 }
 
 /**
- * The intrinsic element that receives `{...props}`, if exactly one does.
+ * Split a file into its exported components, each with its own source span.
  *
- * Returns null when the spread lands on a wrapper `<div>`/`<span>`, on a component, or on
- * more than one element — all cases where "the ref target" is not self-evident.
+ * A component's span runs from its `export function X` / `export const X =` to the start of
+ * the next top-level `export`, which is a good enough boundary for the two questions asked
+ * of it (does THIS component spread onto a host tag, and is IT a forwardRef) without
+ * needing a parser.
+ */
+function exportedComponents(file: string, source: string): ExportedComponent[] {
+  const starts: { name: string; index: number }[] = []
+  for (const m of source.matchAll(/^export (?:function|const) ([A-Z]\w*)/gm)) {
+    starts.push({ name: m[1]!, index: m.index! })
+  }
+  return starts.map((s, i) => ({
+    file,
+    name: s.name,
+    source: source.slice(s.index, starts[i + 1]?.index ?? source.length),
+  }))
+}
+
+/**
+ * The intrinsic element that receives `{...props}` within this component, if exactly one
+ * does. Null when the spread lands on a wrapper `<div>`/`<span>`, on another component, or
+ * on more than one element — all cases where "the ref target" is not self-evident.
  */
 function singleHostSpread(source: string): string | null {
   const hosts = new Set<string>()
   for (const match of source.matchAll(/\{\.\.\.(?:props|rest)\}/g)) {
-    // Walk back to the opening `<tag` of the element carrying this spread.
     const before = source.slice(0, match.index)
     const open = before.lastIndexOf('<')
     if (open === -1) continue
@@ -84,15 +107,19 @@ function singleHostSpread(source: string): string | null {
   return hosts.size === 1 ? [...hosts][0]! : null
 }
 
+function allComponents(): ExportedComponent[] {
+  return componentFiles().flatMap((f) => exportedComponents(f.name, f.source))
+}
+
 describe('ref-parity — single-host components forward a ref', () => {
-  it('every component spreading props onto one intrinsic element is a forwardRef', () => {
+  it('every exported component spreading props onto one intrinsic element is a forwardRef', () => {
     const missing: string[] = []
-    for (const c of components()) {
+    for (const c of allComponents()) {
       if (c.name in ALLOWLIST) continue
       const host = singleHostSpread(c.source)
       if (host === null) continue
       if (/\bforwardRef\b/.test(c.source)) continue
-      missing.push(`${c.name} (spreads onto <${host}>)`)
+      missing.push(`${c.file}: ${c.name} (spreads onto <${host}>)`)
     }
     assert.deepEqual(
       missing,
@@ -104,23 +131,22 @@ describe('ref-parity — single-host components forward a ref', () => {
         'host element. Use forwardRef rather than a bare `ref?: Ref<T>` prop: the peer floor ' +
         'is react >= 18, where ref-as-prop does not work, so a bare type would compile and ' +
         'silently hand back null.\n' +
-        `Or add the component to ALLOWLIST with a reason.\nMissing: ${missing.join(', ')}`,
+        `Or add the component to ALLOWLIST with a reason.\nMissing:\n  ${missing.join('\n  ')}`,
     )
   })
 
-  it('finds the components it is meant to cover (guards against passing vacuously)', () => {
-    const hosted = components()
-      .map((c) => ({ name: c.name, host: singleHostSpread(c.source) }))
-      .filter((c) => c.host !== null)
+  it('splits files into exported components (guards against passing vacuously)', () => {
+    const all = allComponents()
     assert.ok(
-      hosted.length >= 8,
-      `expected at least 8 single-host components, found ${hosted.length}: ` +
-        hosted.map((c) => c.name).join(', '),
+      all.length >= 150,
+      `expected 150+ exported components across the catalog, found ${all.length}`,
     )
-    for (const expected of ['textarea', 'input', 'button']) {
+    // The two files an earlier revision had to allowlist wholesale, precisely because it
+    // could not see subcomponents. If this ever stops finding them, the split has broken.
+    for (const expected of ['AccordionTrigger', 'TabsTrigger', 'AccordionItem']) {
       assert.ok(
-        hosted.some((c) => c.name === expected),
-        `${expected} should be detected as single-host; found: ${hosted.map((c) => c.name).join(', ')}`,
+        all.some((c) => c.name === expected),
+        `${expected} not found — the per-export split is not working`,
       )
     }
   })

@@ -105,17 +105,34 @@ Astro's compat layer.
 
 ---
 
-## What is not yet verified
+## Verification status
 
 Honest scope, so this page does not repeat the mistake it documents:
 
-- There is **no `apps/examples/astro-*` app in this repo**, so nothing in CI exercises the
-  Astro path. Everything above comes from an adopter's reproduction plus reading Astro's
-  island build; treat it as a report, not as a tested contract.
+- **The CSS drop is now reproduced in CI**, not just reported.
+  [`apps/examples/astro-islands`](../apps/examples/astro-islands/) builds a real Astro app
+  with **one client directive per page** and checks, per page, whether the component CSS its
+  markup references was actually emitted. Current result on **Astro 7.1.5**:
+
+  ```
+  load/index.html      4 classes  ->  UNSTYLED  (4 with no rule, e.g. ._card_ssezx_2)
+  visible/index.html   4 classes  ->  UNSTYLED  (4 with no rule, e.g. ._card_ssezx_2)
+  only/index.html      0 classes  ->  (no SSR'd markup — client:only renders on the client)
+  ```
+
+  So C2 still reproduces two majors after the report (which was filed against Astro 6.4.8).
+
+  One directive per page matters: a single page carrying all three passes trivially, because
+  `client:only` emits the component CSS and the SSR'd islands on the same page then appear
+  covered by it. The first version of that fixture did exactly this and reported "does not
+  reproduce".
 - Whether the `client:load` CSS drop is fixable from cascivo's side (a build change) or is
   purely an Astro island-build behaviour is **not yet determined**. Until it is, the
   compatibility matrix grades Astro ⚠️ Partial rather than ✅.
 
+- The **Preact-under-Astro** section is NOT reproduced in CI — it comes from the adopter's
+  report plus reading `@astrojs/preact`. Treat that section as a report, not a tested
+  contract.
+
 If you hit something here that does not match, please
-[open an issue](https://github.com/cascivo/cascivo/issues) — an Astro repro in CI is the
-missing piece.
+[open an issue](https://github.com/cascivo/cascivo/issues).

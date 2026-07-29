@@ -60,61 +60,59 @@ describe('pkg-exports — published packages expose ./package.json', () => {
   })
 
   /**
-   * Module-file convention across the family — RECORDED, NOT ENFORCED.
+   * One module-file convention across the family.
    *
-   * `@cascivo/icons`, `@cascivo/core`, `@cascivo/i18n`, `@cascivo/storage` and the tool
-   * packages emit `.mjs`/`.d.mts` (they build with `vp pack`) while `@cascivo/react`,
-   * `@cascivo/charts`, `@cascivo/flow`, `@cascivo/editor` and `@cascivo/ai` emit
-   * `.js`/`.d.ts`. The 2026-07-28 reporter called it out as C8: "harmless, but it breaks
-   * tooling that assumes one convention across a package family."
+   * `@cascivo/core`, `@cascivo/i18n`, `@cascivo/storage` and `@cascivo/icons` emitted
+   * `.mjs`/`.d.mts` (they built with `vp pack`) while `@cascivo/react`, `@cascivo/charts`,
+   * `@cascivo/flow`, `@cascivo/editor` and `@cascivo/ai` emitted `.js`/`.d.ts`. The
+   * 2026-07-28 reporter named it C8: "harmless, but it breaks tooling that assumes one
+   * convention across a package family." Every package is `"type": "module"`, so `.js` is
+   * already unambiguous.
    *
-   * **Converging it was attempted and reverted.** Rebuilding `core`/`i18n`/`storage`/`icons`
-   * with an explicit `vp build` lib config produces a single-file bundle instead of
-   * `vp pack`'s output, and that broke Next.js RSC prerendering in
-   * `apps/examples/react-next` — `ReferenceError: p is not defined` from a `forwardRef`
-   * binding lost when Turbopack re-bundles the collapsed chunk. `'use client'` banners and
-   * subpath-aware externals were both tried and neither fixed it.
+   * **The first convergence attempt broke Next.js RSC prerendering and was reverted.** The
+   * cause turned out to be neither `vp build` nor the single-file output: `packages/core`
+   * already carried a `build.lib` block whose `external` list used EXACT STRINGS
+   * (`'@preact/signals-react'`). `vp pack` ignores that block, so it was inert for years.
+   * The moment core built with `vp build`, the list took effect — and an exact string does
+   * not match `@preact/signals-react/runtime`, so that subpath got bundled along with its
+   * CJS `use-sync-external-store` shim, whose `require("react")` is what Turbopack rejected.
    *
-   * So the divergence stands, deliberately: it is cosmetic, and the alternative is a broken
-   * RSC build for every Next.js adopter. The assertion is left here as a **record of the
-   * attempt** rather than a gate, so the next person does not pay for the same experiment.
-   * If you want to retry, start from why Turbopack drops that binding.
-   *
-   * `@cascivo/ai` IS converged (it moved to `vp build` for the CSS-import-edge plugin and
-   * builds clean), which shows the conversion is not universally unsafe — only unsafe for
-   * packages Next re-bundles through `@cascivo/react`.
+   * Fix: subpath-aware regex externals, plus a `'use client'` banner (the bundler collapses
+   * 23 directive-carrying modules into one entry and drops per-module directives). All four
+   * packages are converged and `apps/examples/react-next` prerenders. The lesson worth
+   * keeping: an inert config block is not a safe config block.
    */
-  it('records which published packages emit .mjs (informational, see the comment above)', () => {
-    const mjs = publishedPackagesWithExports()
-      .filter((p) =>
-        Object.values(p.exports).some((target) => {
-          const targets =
-            typeof target === 'string' ? [target] : Object.values(target as Record<string, string>)
-          return targets.some((t) => typeof t === 'string' && /\.(mjs|d\.mts)$/.test(t))
-        }),
-      )
-      .map((p) => p.name)
-      .sort()
-
-    // A floor on what is known-diverged. If this SHRINKS, someone converged a package —
-    // update the list and the comment above. If it GROWS, a new package picked the minority
-    // convention and should have picked `.js`/`.d.ts` instead.
+  it('every published package emits .js/.d.ts, not .mjs/.d.mts', () => {
+    // Tool packages an adopter RUNS (npx) rather than imports, plus the build-time vite
+    // plugin. The convention matters for anything landing in a consumer's module graph; a
+    // CLI binary's own extension does not.
+    const NOT_IMPORTED = new Set([
+      'cascivo',
+      '@cascivo/mcp',
+      '@cascivo/registry',
+      '@cascivo/vite-plugin',
+    ])
+    const offenders: string[] = []
+    for (const p of publishedPackagesWithExports()) {
+      if (NOT_IMPORTED.has(p.name)) continue
+      for (const [subpath, target] of Object.entries(p.exports)) {
+        const targets =
+          typeof target === 'string' ? [target] : Object.values(target as Record<string, string>)
+        for (const t of targets) {
+          if (typeof t === 'string' && /\.(mjs|d\.mts)$/.test(t)) {
+            offenders.push(`${p.name} ${subpath} -> ${t}`)
+          }
+        }
+      }
+    }
     assert.deepEqual(
-      mjs,
-      [
-        '@cascivo/core',
-        '@cascivo/i18n',
-        '@cascivo/icons',
-        '@cascivo/mcp',
-        '@cascivo/registry',
-        '@cascivo/storage',
-        '@cascivo/vite-plugin',
-        'cascivo',
-      ],
-      'The set of packages emitting .mjs/.d.mts changed. New packages should emit ' +
-        '.js/.d.ts (build with `vp build` + scripts/flatten-types.mjs, see packages/flow). ' +
-        'If you converged one of the listed packages, verify apps/examples/react-next still ' +
-        'prerenders — that is what blocked the last attempt — then update this list.',
+      offenders,
+      [],
+      'These published packages emit `.mjs`/`.d.mts` while the rest of the family emits ' +
+        '`.js`/`.d.ts`. Build with `vp build` + `scripts/flatten-types.mjs` (see ' +
+        '`packages/flow`), and make the `external` list SUBPATH-AWARE (regexes, not exact ' +
+        'strings) or a CJS subpath will be bundled and break Next.js RSC — see the comment ' +
+        `above.\nOffenders:\n  ${offenders.join('\n  ')}`,
     )
   })
 

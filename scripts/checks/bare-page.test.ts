@@ -26,25 +26,24 @@
  *  - **C14** — `AppShell`'s sidebar shrank under wide content. Needs two renders compared.
  *  - **C15** — dialog bodies had no gap between children. Needs real layout.
  *
- * ## Verification status of each assertion
+ * ## Verification status — all four cases reproduce
  *
- * The plan's bar is "observe the guard failing on the pre-fix state" — so, precisely:
+ * The bar is "observe the guard failing on the pre-fix state". Each case was re-run against
+ * a deliberately broken `styles.css` and each fails:
  *
- *  - **C12 — VERIFIED.** Re-running against a stylesheet with the `cascivo.reset`
- *    `box-sizing` rule stripped fails both assertions: `scrollWidth 1314` against
- *    `clientWidth 1280`, and `box-sizing: content-box`. Note the container had to be
- *    full-width to reproduce it — the ~34px overhang must reach past the *viewport* edge to
- *    move `scrollWidth`, so an earlier version of this test using a fixed 400px box passed
- *    on broken CSS. That is recorded in the test body.
- *  - **C13 — NOT verified here.** The assertion passes on the fixed CSS, but re-introducing
- *    `display: flex` into the panel's base rule did not make it fail, so its failure mode is
- *    unproven and the hit-test may not be reproducing the reporter's geometry. **C13 is
- *    guarded by `popover-hidden.test.ts`**, which *was* observed failing on the pre-fix
- *    source and named both offenders exactly. Treat this case as a regression tripwire, not
- *    as the proof.
- *  - **C14, C15 — NOT verified.** Both pass on the fixed CSS; neither was observed failing.
- *
- * Improving the C13/C14/C15 cases to fail on their pre-fix state is open work.
+ *  - **C12** — strip the `cascivo.reset` `box-sizing` rule: `scrollWidth 1314` against
+ *    `clientWidth 1280`, and `box-sizing: content-box`. The container must be full-width;
+ *    the ~34px overhang has to reach past the *viewport* edge to move `scrollWidth`, so an
+ *    earlier fixed-400px version passed on broken CSS.
+ *  - **C13** — put `display: flex` back in `MultiSelect`'s panel base rule: the closed panel
+ *    measures 210x88. An earlier revision asserted only `elementFromPoint` over the button
+ *    and PASSED on that same broken CSS, because anchor positioning happened to place the
+ *    panel at x=535 while the button sat at x=0. Geometry is incidental; "a closed popover
+ *    has no layout box" is the contract, so that is what is asserted now.
+ *  - **C14** — remove `flex-shrink: 0` from `.navWrapper`: the sidebar width differs between
+ *    a narrow and an intrinsically-wide page.
+ *  - **C15** — remove `gap: var(--cascivo-dialog-body-gap…)` from the dialog bodies: the
+ *    modal body computes `row-gap: normal`.
  *
  * Run: `pnpm bare-page:check` (requires a prior `pnpm build`).
  */
@@ -159,9 +158,9 @@ describe('bare-page — a default install fits the viewport (C12)', () => {
   )
 })
 
-describe('bare-page — a closed overlay swallows no clicks (C13)', () => {
+describe('bare-page — a closed overlay keeps no layout box (C13)', () => {
   for (const name of ['MultiSelect', 'Sheet']) {
-    it(`a closed ${name} does not cover the content beneath it`, { skip: !built }, async () => {
+    it(`a closed ${name} occupies no space and covers nothing`, { skip: !built }, async () => {
       const { Button } = components
       const Overlay = components[name]
       const overlayProps =
@@ -183,25 +182,49 @@ describe('bare-page — a closed overlay swallows no clicks (C13)', () => {
         ]),
       )
 
-      const hit = await page.evaluate(() => {
+      const probe = await page.evaluate(() => {
+        const panel = document.querySelector('[popover]') as HTMLElement | null
+        if (!panel) return null
+        const rect = panel.getBoundingClientRect()
         const button = document.querySelector('#target') as HTMLElement | null
-        if (!button) return { ok: false, reason: 'target button not rendered' }
-        const box = button.getBoundingClientRect()
-        const el = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)
+        const box = button?.getBoundingClientRect()
+        const hit = box && document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)
         return {
-          ok: el === button || button.contains(el),
-          reason: el ? `${el.tagName.toLowerCase()}.${el.className}` : 'nothing',
+          width: rect.width,
+          height: rect.height,
+          display: getComputedStyle(panel).display,
+          open: panel.matches(':popover-open'),
+          coversButton: Boolean(button && hit && (hit === button || button.contains(hit))),
+          hit: hit ? `${hit.tagName.toLowerCase()}.${(hit as HTMLElement).className}` : 'none',
         }
       })
 
       assert.ok(
-        hit.ok,
+        probe,
+        `${name} rendered no [popover] element — the fixture is not testing anything`,
+      )
+      assert.ok(!probe.open, `${name}'s panel reports :popover-open while closed`)
+
+      // THE invariant, and the one that reproduces. An earlier revision only hit-tested the
+      // button, which passed on broken CSS purely because anchor positioning happened to put
+      // the panel at x=535 while the button sat at x=0 — a 210x88 invisible box, laid out and
+      // hit-testable, that simply missed. Geometry is incidental; "a closed popover has no
+      // box" is the actual contract (2026-07-28 report C13).
+      assert.deepEqual(
+        { width: probe.width, height: probe.height },
+        { width: 0, height: 0 },
+        `A closed ${name} occupies ${probe.width}x${probe.height}px (display: ${probe.display}).\n` +
+          'The panel declares `display` in its base rule, which beats the UA-origin ' +
+          '`[popover]:not(:popover-open) { display: none }`, so while closed it stays laid ' +
+          'out — invisible at opacity 0, fixed-position and hit-testable, swallowing clicks ' +
+          'wherever it happens to land. Move `display` under `&:popover-open` (see ' +
+          'popover-hidden.test.ts).',
+      )
+
+      assert.ok(
+        probe.coversButton,
         `A closed ${name} is intercepting clicks meant for the button below it — ` +
-          `elementFromPoint at the button's centre returned "${hit.reason}".\n` +
-          'This is C13: the panel declares `display` in its base rule, which beats the ' +
-          'UA-origin `[popover]:not(:popover-open) { display: none }`, so while closed it ' +
-          'stays laid out — invisible at opacity 0, fixed-position, and hit-testable. ' +
-          'Move `display` under `&:popover-open` (see popover-hidden.test.ts).',
+          `elementFromPoint returned "${probe.hit}".`,
       )
     })
   }

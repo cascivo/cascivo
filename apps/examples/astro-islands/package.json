@@ -1,0 +1,21 @@
+{
+  "name": "@cascivo/example-astro-islands",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build && node scripts/assert-island-css.mjs",
+    "dev": "astro dev"
+  },
+  "dependencies": {
+    "@astrojs/react": "^5",
+    "@cascivo/react": "workspace:*",
+    "@cascivo/themes": "workspace:*",
+    "astro": "^7",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:"
+  }
+}

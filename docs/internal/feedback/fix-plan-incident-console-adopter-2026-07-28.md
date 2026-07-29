@@ -6,91 +6,71 @@ The PR that publishes flips each workstream to `published vX.Y.Z` — and per
 is not published.
 
 Per-workstream:
-**WS-1** ◑ (peers shipped on 7 packages + `peer-floors` guard; the C1 *mechanism* does not
-reproduce — see §0.5, the one genuinely open item) ·
-**WS-2** ✅ (`forwardRef` on every single-host component + `ref-forwarding` tests; chose
-`forwardRef` over a bare `ref?:` prop to keep the `react >= 18` floor honest. The new
-`ref-parity` guard derives the set from source and found **9 components the plan's own list
-of 16 never mentioned** — accordion, checkbox-card, copy-button, number-input,
-password-input, radio-card, skip-nav, tabs, time-picker. Four composites and two
-multi-export files are allowlisted with reasons) ·
-**WS-3** ✅ (`reset.css` in the `cascivo.reset` layer, reaching every entry path + inlined
-into the aggregate; `reset-floor` guard, observed failing first) ·
-**WS-4** ✅ (MultiSelect + Sheet; `popover-hidden` guard, observed failing on exactly those
-two) ·
+**WS-1** ✅ (optional `@types/react` peer on 7 packages + `peer-floors` guard; the C1
+*mechanism* is still unreproduced — see §0.5, now the only unexplained item in the plan) ·
+**WS-2** ✅ (`forwardRef` on every single-host component + `ref-forwarding` tests; the
+`ref-parity` guard reasons **per exported component**, which removed the `accordion`/`tabs`
+file-level allowlist entries and surfaced `AccordionTrigger`/`TabsTrigger` behind them) ·
+**WS-3** ✅ (`reset.css` fills `cascivo.reset` on every entry path; `reset-floor` guard) ·
+**WS-4** ✅ (MultiSelect + Sheet; `popover-hidden` guard) ·
 **WS-5** ✅ (AppShell `flex-shrink`, dialog-family body gap + Modal `footer`, six
-`data-cascivo-*` hooks + `STYLING-INTERNALS.md` + bidirectional `style-hooks` guard) ·
+`data-cascivo-*` hooks + `STYLING-INTERNALS.md` + `style-hooks` guard) ·
 **WS-6** ✅ (`all.css` = all twelve, new `light-dark.css`, `theme-bundle` guard;
 provider-missing dev warning + `applyTheme`) ·
-**WS-7** ✅ (CSS self-import + node twin across charts/editor/flow/ai via one shared plugin,
-`css-contract` guard; integer ticks + `allowDecimals`. `format` now on **all 12
-axis-composing charts** — the sweep the workstream asked for, held by the new `axis-parity`
-guard, which found 4 charts beyond the 8 identified by hand (bar-chart, boxplot, heatmap,
-stream). Where a chart already declared a local `format`, the prop is destructured as
-`xFormat` rather than shadowing it. **Audited and found NOT to be gaps:** role-named axis
-props apply only to `BarChart` because it is the only chart with an `orientation` prop; and
-`PieChart`/`Funnel`/`RadialBar` already take `color` **per datum**, so C18's gap was specific
-to `BarChart`'s per-*series* model) ·
-**WS-8** ✅ (`PopoverTrigger asChild` via `Slot`; `dead-props` guard, verified against the
-real pre-fix file) ·
-**WS-9** ✅ (`focusElement` + 16 call sites; a `preact` vitest project over the interactive
-family) ·
-**WS-10** ◑ (matrix regraded, `USING-WITH-ASTRO.md`, Preact scope table, `framework-matrix`
-guard — but **no `apps/examples/astro-*` app**, so the Astro defect is documented, not
-reproduced in CI) ·
+**WS-7** ✅ (CSS self-import + node twin across charts/editor/flow/ai; `css-contract` guard;
+integer ticks + `allowDecimals`; `format` on **all 12** axis-composing charts held by
+`axis-parity`; role-named axis props; per-datum `color` + `data-x`) ·
+**WS-8** ✅ (`PopoverTrigger asChild` via `Slot`; `dead-props` guard) ·
+**WS-9** ✅ (`focusElement` + 16 call sites; `preact` vitest project) ·
+**WS-10** ✅ (matrix regraded, `USING-WITH-ASTRO.md`, Preact scope table, `framework-matrix`
+guard, and `apps/examples/astro-islands` — which **reproduces C2 in CI**) ·
 **WS-11** ✅ (generated version matrix, `useSignals()` on all surfaces +
-`getting-started-contract` guard, dead `/docs/theming` URL fixed + `doc-urls` guard, seven
-symptom-keyed troubleshooting entries, Troubleshooting in the nav) ·
-**WS-12** ◑ (`@cascivo/ai` converged to `.js`/`.d.ts`; `minimumReleaseAge` troubleshooting
-entry; Flex/Stack comparison table added to `MIGRATING-FROM-SHADCN.md` so the two naming
-inversions are findable while *choosing* a component. **Module-convention convergence for
-core/i18n/storage/icons was attempted and REVERTED** — an explicit `vp build` lib config
-collapses them into a single bundle and broke Next.js RSC prerendering in
-`apps/examples/react-next` (`ReferenceError: p is not defined` from a `forwardRef` binding
-Turbopack drops when re-bundling); `'use client'` banners and subpath-aware externals were
-both tried and neither fixed it. C8 is explicitly cosmetic and a broken RSC build is not, so
-the divergence stands. `pkg-exports` now RECORDS the diverged set with that evidence instead
-of gating on it. Per-icon subpaths **not done** — tree-shaking already works, which the plan
-itself called the lowest-value item) ·
-**WS-13** ◑ (13a `isolated:check` and 13b `bare-page:check` both shipped; of `bare-page`'s
-four cases only **C12 was observed failing on its pre-fix state** — C13/C14/C15 pass but
-their failure modes are unproven, recorded in that file's header. C13's real guard is
-`popover-hidden`, which *was* observed failing and named both offenders).
+`getting-started-contract`, dead `/docs/theming` URL + `doc-urls` guard, seven symptom-keyed
+troubleshooting entries, Troubleshooting in the nav) ·
+**WS-12** ✅ (module convention converged across the family + `pkg-exports` gate; per-icon
+subpaths; Flex/Stack comparison table; `minimumReleaseAge` entry) ·
+**WS-13** ✅ (`isolated:check` and `bare-page:check`; **all four** bare-page cases now
+observed failing on their pre-fix state).
 
-**Honest summary of what is NOT done.** An earlier revision of this header listed four
-items; that was wrong, and under-reporting completion is the exact defect this directory
-exists to prevent. The real list:
+**What remains open.** One item, and it is investigative rather than unshipped:
 
-*Tried and deliberately abandoned, with evidence:*
-1. **Module-convention convergence** for `core`/`i18n`/`storage`/`icons` (C8). Broke Next.js
-   RSC prerendering; see WS-12 above and the comment in `pkg-exports.test.ts`. Reverted on
-   purpose — the finding is cosmetic, the regression was not.
+**The C1 mechanism** (§0.5). The fix shipped, and the packed pre-fix tarballs still
+type-check cleanly in a strict, non-hoisted pnpm workspace on the reporter's own TypeScript
+6.0.3. Something in their environment broke React type resolution and this repo cannot yet
+say what. `scripts/checks/isolated-install.test.ts` carries the negative result and the
+invitation to add the configuration if anyone reproduces it.
 
-*Never started:*
-2. **`apps/examples/astro-islands`** — WS-10's executable reproduction of C2. Astro is graded
-   ⚠️ Partial and documented in `USING-WITH-ASTRO.md`, which says plainly that nothing in CI
-   exercises the Astro path.
-3. **Per-icon subpaths** (WS-12) — tree-shaking already works; the plan called it the
-   lowest-value item and said not to block on it.
+**Everything else in this plan is closed**, including four items an earlier revision of this
+header listed as open:
 
-*Investigative:*
-4. **The C1 repro** (§0.5) — the fix shipped, the mechanism is unexplained.
-5. **Three of `bare-page`'s four browser cases** — C13, C14 and C15 pass but were never
-   observed failing, so they are regression tripwires rather than proofs. C12 was verified
-   properly (`scrollWidth 1314` vs `clientWidth 1280` on a reset-stripped stylesheet).
-6. **`ref-parity`'s per-file granularity** — it cannot express "AccordionTrigger forwards,
-   AccordionItem does not", so `accordion` and `tabs` are allowlisted rather than analysed.
+- **`apps/examples/astro-islands`** now builds a real Astro app with **one client directive
+  per page** and reports, per page, whether the component CSS its markup references was
+  emitted. C2 **still reproduces on Astro 7.1.5** — two majors after the 6.4.8 report — so
+  the ⚠️ Partial grade is now evidence-backed rather than asserted. Worth recording: the
+  first version of that fixture put all three directives on ONE page and reported "does not
+  reproduce", because `client:only` emits the CSS and the SSR'd islands appeared covered by
+  it. Isolating the directives inverted the answer.
+- **`bare-page`'s C13/C14/C15 cases** were rewritten until each fails on its pre-fix state.
+  C13's original assertion only hit-tested the button and passed on broken CSS purely because
+  anchor positioning put the closed 210x88 panel at x=535 while the button sat at x=0.
+  Geometry was incidental; "a closed popover has no layout box" is the contract.
+- **Per-icon subpaths** (`@cascivo/icons/icons/<Name>`, 443 of them). The first cut emitted
+  re-export shims, which built into 443 entries all importing one 108 KB shared chunk —
+  pulling the whole icon set behind every subpath, useless for exactly the
+  bundlers-that-do-not-tree-shake audience these exist for. Each module now defines its own
+  icon: 560 bytes each.
+- **The module convention** is converged after all, and the original failure diagnosis was
+  wrong. It was neither `vp build` nor single-file output: `packages/core` already carried a
+  `build.lib` block whose `external` list used exact strings, inert for years under
+  `vp pack`, and live the moment core built with `vp build` — so
+  `@preact/signals-react/runtime` got bundled with its CJS shim. Subpath-aware regexes plus
+  a `'use client'` banner fixed it; `apps/examples/react-next` prerenders. **An inert config
+  block is not a safe config block.**
 
-Every "fix landed on one instance of a class" item from the previous revision is now closed,
-and in each case the guard that closed it found instances neither the report nor the plan had
-listed: 9 extra components for `ref`, 4 extra charts for `format`. That is the argument for
-guards over checklists, made twice in one plan.
-
-**Source report:**
-[`feedback-incident-console-adopter-2026-07-28.md`](feedback-incident-console-adopter-2026-07-28.md)
-— a local-first incident console, pnpm 11.5.3 + Vite 7.3.6 + TypeScript 6.0.3 + React 19.2.8 +
-Node 22.22.2, started on Astro 6.4.8 and migrated to a plain Vite SPA mid-build. 19 findings
-(C1–C19), 3 marked blocker.
+A pattern across all four: each had a first attempt that appeared to succeed and was wrong —
+a fixture that passed for the wrong reason, an optimisation that optimised nothing, a
+diagnosis that blamed the tool. What settled each was constructing the failing case rather
+than trusting the passing one.
 
 **Carry-forward:** this plan supersedes
 [`fix-plan-adopter-pair-2026-07-26.md`](fix-plan-adopter-pair-2026-07-26.md) as the live

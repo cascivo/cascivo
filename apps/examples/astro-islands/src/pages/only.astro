@@ -1,0 +1,12 @@
+---
+// ISOLATED: one directive per page, so one directive's CSS emission cannot mask another's.
+// A single page carrying all three passes trivially — client:only emits the component CSS
+// and the SSR'd islands then appear to have it too.
+import '@cascivo/themes/light-dark.css'
+import { Panel } from '../components/Panel'
+---
+
+<html lang="en" data-theme="light">
+  <head><meta charset="utf-8" /><title>client:only="react"</title></head>
+  <body><Panel label="only" client:only="react" /></body>
+</html>

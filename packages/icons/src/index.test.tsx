@@ -130,3 +130,37 @@ describe('@cascivo/icons', () => {
     expect(Icon).toBeTypeOf('function')
   })
 })
+
+/**
+ * Per-icon subpaths (`@cascivo/icons/icons/<Name>`) must be SELF-CONTAINED.
+ *
+ * Tree-shaking off the barrel already works, so these subpaths exist only for consumers
+ * whose bundler does not tree-shake well (2026-07-28 report C8). A first attempt emitted
+ * them as re-exports from the barrel, which built into 443 entries all importing one 108 kB
+ * shared chunk — pulling the whole icon set behind every subpath and making the feature
+ * pointless for exactly the audience it targets. This asserts the property that matters.
+ */
+describe('per-icon subpath entries', () => {
+  it('generates one entry module per exported icon', async () => {
+    const { readFileSync, readdirSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    // `import.meta.url` is an http: URL under vitest, not file:, so resolve from the
+    // package root (vitest's cwd) rather than from this module.
+    const dir = join(process.cwd(), 'src/single')
+    const entries = JSON.parse(readFileSync(`${dir}/entries.json`, 'utf8')) as string[]
+    const files = readdirSync(dir).filter((f) => f.endsWith('.tsx'))
+    expect(files.length).toBe(entries.length)
+    expect(entries.length).toBeGreaterThanOrEqual(440)
+  })
+
+  it('generated-icon entries define their icon rather than re-exporting the barrel', async () => {
+    const { readFileSync } = await import('node:fs')
+    const { join } = await import('node:path')
+    const dir = join(process.cwd(), 'src/single')
+    // A generated icon: must call createIcon itself, so its built chunk carries one icon.
+    const source = readFileSync(`${dir}/AccessPolicy.tsx`, 'utf8')
+    expect(source).toContain("import { createIcon } from '../create-icon'")
+    expect(source).toContain('createIcon(')
+    expect(source).not.toContain("from '../generated'")
+  })
+})

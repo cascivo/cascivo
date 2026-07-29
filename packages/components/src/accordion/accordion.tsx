@@ -1,8 +1,8 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascivo/core'
 import type { Signal } from '@cascivo/core'
-import { createContext, useId } from 'react'
-import type { HTMLAttributes, ReactNode } from 'react'
+import { createContext, forwardRef, useId } from 'react'
+import type { Ref, HTMLAttributes, ReactNode } from 'react'
 import styles from './accordion.module.css'
 
 interface AccordionStore {
@@ -79,27 +79,41 @@ export function AccordionItem({ value, className, children, ...props }: Accordio
   )
 }
 
-export function AccordionTrigger(props: HTMLAttributes<HTMLButtonElement>) {
-  return (
-    <AccordionContext.Consumer>
-      {(store) => (
-        <AccordionItemContext.Consumer>
-          {(item) =>
-            store && item ? <AccordionTriggerInner store={store} item={item} {...props} /> : null
-          }
-        </AccordionItemContext.Consumer>
-      )}
-    </AccordionContext.Consumer>
-  )
-}
+/**
+ * `forwardRef` so `ref` reaches the trigger `<button>` — see `textarea.tsx` for the full
+ * rationale (2026-07-28 report C10). The ref is threaded through the private Inner, which is
+ * where the button actually lives.
+ */
+export const AccordionTrigger = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonElement>>(
+  function AccordionTrigger(props, ref) {
+    return (
+      <AccordionContext.Consumer>
+        {(store) => (
+          <AccordionItemContext.Consumer>
+            {(item) =>
+              store && item ? (
+                <AccordionTriggerInner store={store} item={item} buttonRef={ref} {...props} />
+              ) : null
+            }
+          </AccordionItemContext.Consumer>
+        )}
+      </AccordionContext.Consumer>
+    )
+  },
+)
 
 function AccordionTriggerInner({
   store,
   item,
   className,
   children,
+  buttonRef,
   ...props
-}: HTMLAttributes<HTMLButtonElement> & { store: AccordionStore; item: { value: string } }) {
+}: HTMLAttributes<HTMLButtonElement> & {
+  store: AccordionStore
+  item: { value: string }
+  buttonRef?: Ref<HTMLButtonElement>
+}) {
   useSignals()
   const open = store.open.value.includes(item.value)
 
@@ -113,6 +127,7 @@ function AccordionTriggerInner({
         data-state={open ? 'open' : 'closed'}
         className={cn(styles['trigger'], className)}
         onClick={() => store.toggle(item.value)}
+        ref={buttonRef}
         {...props}
       >
         <span>{children}</span>

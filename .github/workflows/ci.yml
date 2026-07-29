@@ -143,6 +143,13 @@ jobs:
       - name: Bare-page canary (no app CSS, stacked components, real hit-testing)
         run: pnpm run bare-page:check
 
+      # Executable form of the C2 report: builds a real Astro app with one client directive
+      # per page and reports, per directive, whether the component CSS its markup references
+      # was actually emitted. Exits 0 either way — it keeps the compatibility grade honest,
+      # it does not gate on upstream Astro behaviour. See docs/USING-WITH-ASTRO.md.
+      - name: Astro island CSS probe (keeps the ⚠️ Partial grade evidence-backed)
+        run: pnpm --filter @cascivo/example-astro-islands run build
+
       - name: Bundle budgets
         run: pnpm run audit:bundle
 

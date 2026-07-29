@@ -13,7 +13,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.module.css"
       ],
       "fileHashes": {
-        "accordion.tsx": "sha256-d3c3ef93560e7268692431d7ca4fcbaa4eed5f0a9100990fb6a0935a1d41fa55",
+        "accordion.tsx": "sha256-0f25f418a32db53c0400e08c1b400179c38978dde15a8b4dd0fcc9b80d943d4a",
         "accordion.module.css": "sha256-0690d967181b92475453f566917af6fe4876c12fce1695a92ef68010da0f228c"
       },
       "dependencies": ["@cascivo/core"],
@@ -15908,7 +15908,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.module.css"
       ],
       "fileHashes": {
-        "tabs.tsx": "sha256-5e4911a389fc06ee00fd1e6a05af02005015f81e074190ac33ddb553fbbaf4ca",
+        "tabs.tsx": "sha256-856b3def02b762b4fad007b0959f11e51fb62a7495c7f593cf85a2bde83a7e65",
         "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5"
       },
       "dependencies": ["@cascivo/core"],
