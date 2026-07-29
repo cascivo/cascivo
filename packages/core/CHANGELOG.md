@@ -1,5 +1,11 @@
 # @cascivo/core
 
+## 0.7.1
+
+### Patch Changes
+
+- 3ec6aaf: Minor fixes
+
 ## 0.7.0
 
 ### Minor Changes

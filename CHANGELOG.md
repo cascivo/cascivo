@@ -9,21 +9,21 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 
 | Package                | Version | Latest feature release                                                                    | Changelog                                      |
 | ---------------------- | ------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| `@cascivo/ai`          | 0.2.13  | 0.2.0 — AI-layer delivery (audit wave 3):                                                 | [CHANGELOG](packages/ai/CHANGELOG.md)          |
-| `@cascivo/charts`      | 0.7.0   | 0.7.0 — Fix the 2026-07-26 adopter pair — two same-day dashboard reports on published 0.  | [CHANGELOG](packages/charts/CHANGELOG.md)      |
-| `cascivo`              | 0.6.1   | 0.6.0 — Fix the reactivity contract, SSR ids, and the audit's reachability (2026-07-25 a  | [CHANGELOG](packages/cli/CHANGELOG.md)         |
-| `@cascivo/core`        | 0.7.0   | 0.7.0 — Fix the 2026-07-26 adopter pair — two same-day dashboard reports on published 0.  | [CHANGELOG](packages/core/CHANGELOG.md)        |
+| `@cascivo/ai`          | 0.2.14  | 0.2.0 — AI-layer delivery (audit wave 3):                                                 | [CHANGELOG](packages/ai/CHANGELOG.md)          |
+| `@cascivo/charts`      | 0.7.1   | 0.7.0 — Fix the 2026-07-26 adopter pair — two same-day dashboard reports on published 0.  | [CHANGELOG](packages/charts/CHANGELOG.md)      |
+| `cascivo`              | 0.6.2   | 0.6.0 — Fix the reactivity contract, SSR ids, and the audit's reachability (2026-07-25 a  | [CHANGELOG](packages/cli/CHANGELOG.md)         |
+| `@cascivo/core`        | 0.7.1   | 0.7.0 — Fix the 2026-07-26 adopter pair — two same-day dashboard reports on published 0.  | [CHANGELOG](packages/core/CHANGELOG.md)        |
 | `@cascivo/docs`        | 0.2.2   | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)        |
-| `@cascivo/editor`      | 0.2.19  | 0.2.0 — Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-r  | [CHANGELOG](packages/editor/CHANGELOG.md)      |
-| `@cascivo/flow`        | 0.1.18  | —                                                                                         | [CHANGELOG](packages/flow/CHANGELOG.md)        |
-| `@cascivo/i18n`        | 0.2.13  | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                 | [CHANGELOG](packages/i18n/CHANGELOG.md)        |
-| `@cascivo/icons`       | 0.3.5   | 0.3.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/icons/CHANGELOG.md)       |
+| `@cascivo/editor`      | 0.2.20  | 0.2.0 — Large-document performance (v47): windowed (viewport-scoped) tokenization. Per-r  | [CHANGELOG](packages/editor/CHANGELOG.md)      |
+| `@cascivo/flow`        | 0.1.19  | —                                                                                         | [CHANGELOG](packages/flow/CHANGELOG.md)        |
+| `@cascivo/i18n`        | 0.2.14  | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                 | [CHANGELOG](packages/i18n/CHANGELOG.md)        |
+| `@cascivo/icons`       | 0.3.6   | 0.3.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/icons/CHANGELOG.md)       |
 | `@cascivo/mcp`         | 0.6.2   | 0.6.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/mcp/CHANGELOG.md)         |
-| `@cascivo/react`       | 0.13.0  | 0.13.0 — Fix the 2026-07-26 adopter pair — two same-day dashboard reports on published 0. | [CHANGELOG](packages/react/CHANGELOG.md)       |
+| `@cascivo/react`       | 0.13.1  | 0.13.0 — Fix the 2026-07-26 adopter pair — two same-day dashboard reports on published 0. | [CHANGELOG](packages/react/CHANGELOG.md)       |
 | `@cascivo/registry`    | 0.2.4   | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/registry/CHANGELOG.md)    |
-| `@cascivo/storage`     | 0.1.18  | 0.1.0 — Initial public release of the cascivo design system. Includes:                    | [CHANGELOG](packages/storage/CHANGELOG.md)     |
-| `@cascivo/themes`      | 0.4.8   | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/themes/CHANGELOG.md)      |
-| `@cascivo/tokens`      | 0.5.5   | 0.5.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/tokens/CHANGELOG.md)      |
+| `@cascivo/storage`     | 0.1.19  | 0.1.0 — Initial public release of the cascivo design system. Includes:                    | [CHANGELOG](packages/storage/CHANGELOG.md)     |
+| `@cascivo/themes`      | 0.4.9   | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/themes/CHANGELOG.md)      |
+| `@cascivo/tokens`      | 0.5.6   | 0.5.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/tokens/CHANGELOG.md)      |
 | `@cascivo/vite-plugin` | 0.1.4   | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/vite-plugin/CHANGELOG.md) |
 
 See [docs/UPGRADING.md](docs/UPGRADING.md) for upgrade guidance.

@@ -1,5 +1,13 @@
 # @cascivo/storage
 
+## 0.1.19
+
+### Patch Changes
+
+- 3ec6aaf: Minor fixes
+- Updated dependencies [3ec6aaf]
+  - @cascivo/core@0.7.1
+
 ## 0.1.18
 
 ### Patch Changes

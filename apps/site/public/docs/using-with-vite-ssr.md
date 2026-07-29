@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-vite-ssr.md
-  registry v0.13.0 · generated 2026-07-27
+  registry v0.13.1 · generated 2026-07-29
 -->
 
 # Using cascivo with Vite SSR (TanStack Start, vite-ssr, Remix, workerd)

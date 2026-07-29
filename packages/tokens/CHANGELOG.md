@@ -1,5 +1,11 @@
 # @cascivo/tokens
 
+## 0.5.6
+
+### Patch Changes
+
+- 3ec6aaf: Minor fixes
+
 ## 0.5.5
 
 ### Patch Changes
