@@ -2,7 +2,7 @@
 
 import { createContext } from 'react'
 import type { ReactNode } from 'react'
-import { useSignals } from '@cascivo/core'
+import { Slot, useSignals } from '@cascivo/core'
 import { usePopover } from './use-popover'
 import type { UsePopoverOptions, UsePopoverReturn } from './use-popover'
 import styles from './popover.module.css'
@@ -20,20 +20,36 @@ export function Popover({ children, ...options }: PopoverProps) {
 
 export interface PopoverTriggerProps {
   children: ReactNode
+  /**
+   * Render the single child element as the trigger instead of wrapping it in
+   * `PopoverTrigger`'s own `<button>` — the Slot pattern. Use this whenever the child is
+   * already an interactive element (`Button`, `IconButton`, a router link): nesting a
+   * `<button>` inside a `<button>` is invalid HTML, and it orphans the inner element's
+   * `aria-label` on a node the accessibility tree does not expect there.
+   *
+   * ```tsx
+   * <PopoverTrigger asChild>
+   *   <IconButton label="Theme" icon={<Palette />} />
+   * </PopoverTrigger>
+   * ```
+   */
   asChild?: boolean
 }
 
-export function PopoverTrigger({ children }: PopoverTriggerProps) {
+export function PopoverTrigger({ children, asChild = false }: PopoverTriggerProps) {
   useSignals()
+  // Matches `icon-button.tsx` — including `type` only on the real <button>, since a
+  // slotted <a> or router link must not receive it.
+  const Comp = asChild ? Slot : 'button'
   return (
     <PopoverContext.Consumer>
       {(ctx) => {
         if (!ctx) throw new Error('PopoverTrigger must be used inside <Popover>')
         const { triggerRef, toggle, anchorName, isOpen } = ctx
         return (
-          <button
+          <Comp
             ref={triggerRef as React.RefObject<HTMLButtonElement>}
-            type="button"
+            type={asChild ? undefined : 'button'}
             aria-expanded={isOpen.value}
             aria-haspopup="dialog"
             style={{ anchorName } as React.CSSProperties}
@@ -41,7 +57,7 @@ export function PopoverTrigger({ children }: PopoverTriggerProps) {
             className={styles.trigger}
           >
             {children}
-          </button>
+          </Comp>
         )
       }}
     </PopoverContext.Consumer>

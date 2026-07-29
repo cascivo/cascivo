@@ -1,5 +1,6 @@
 'use client'
 import { cn } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { ReactNode, SelectHTMLAttributes } from 'react'
 import styles from './native-select.module.css'
 
@@ -26,18 +27,28 @@ export interface NativeSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectE
  * layers on a custom chevron and focus/invalid rings via CSS only. No JS interactivity, so no
  * signals: the browser owns all state. Distinct from the custom-rendered `Select` listbox.
  */
-export function NativeSelect({
-  options,
-  children,
-  size = 'md',
-  invalid,
-  disabled,
-  placeholder,
-  value,
-  defaultValue,
-  className,
-  ...props
-}: NativeSelectProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<select>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10): the ref already worked at
+ * runtime under React 19, but nothing declared it, so passing one was a `ts(2322)` and every
+ * consumer had to cast. `forwardRef` rather than a bare `ref?: Ref<T>` prop keeps the
+ * `react >= 18` peer floor honest, since ref-as-prop does not work there.
+ */
+export const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(function NativeSelect(
+  {
+    options,
+    children,
+    size = 'md',
+    invalid,
+    disabled,
+    placeholder,
+    value,
+    defaultValue,
+    className,
+    ...props
+  },
+  ref,
+) {
   const isControlled = value !== undefined
   const hasPlaceholder = placeholder !== undefined
 
@@ -48,6 +59,7 @@ export function NativeSelect({
       data-invalid={invalid || undefined}
     >
       <select
+        ref={ref}
         className={styles['select']}
         disabled={disabled}
         aria-invalid={invalid || undefined}
@@ -71,4 +83,4 @@ export function NativeSelect({
       <span className={styles['chevron']} aria-hidden="true" />
     </div>
   )
-}
+})

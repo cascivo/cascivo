@@ -1,15 +1,43 @@
 /**
- * Peer-floor check — every published (`private !== true`) package that peer-depends
- * on `@preact/signals-react` must floor it at `>=3.0.0`.
+ * Peer-floor check — two invariants about what a published package promises its
+ * consumer's dependency graph will contain.
  *
- * React 19 removed the internal that signals-react 2.x imports, so a 2.x runtime
- * fails to load under React 19 (`SyntaxError: … '__SECRET_INTERNALS…'`). A floor of
- * `>=2.0.0` admitted that broken install; a TanStack Start adopter hit it (2026-07-20).
- * This check prevents any single package's floor from silently regressing.
+ * 1. Every published (`private !== true`) package that peer-depends on
+ *    `@preact/signals-react` must floor it at `>=3.0.0`.
+ *
+ *    React 19 removed the internal that signals-react 2.x imports, so a 2.x runtime
+ *    fails to load under React 19 (`SyntaxError: … '__SECRET_INTERNALS…'`). A floor of
+ *    `>=2.0.0` admitted that broken install; a TanStack Start adopter hit it (2026-07-20).
+ *
+ * 2. Every published package whose **types** import from `react` must declare an
+ *    optional `@types/react` peer.
+ *
+ *    This is the 2026-07-28 incident-console blocker (C1). `@types/react` was in
+ *    `devDependencies` only, so under pnpm's isolated layout nothing put it on
+ *    `@cascivo/react`'s resolution path. `import { HTMLAttributes } from 'react'` in the
+ *    emitted `.d.ts` failed to resolve, every `extends HTMLAttributes<…>` collapsed to an
+ *    error type, and `skipLibCheck: true` hid the cause — so `children`, `className`,
+ *    `style`, `onClick` and every `aria-*` prop silently vanished from every component.
+ *    18 errors from a 90-line file; strict TS + pnpm could not type-check at all.
+ *
+ *    The monorepo could not see it: `@types/react` is hoisted to the repo root here, so
+ *    each package's own `tsc --noEmit` passes. That is Mechanism E — see
+ *    `docs/internal/feedback/README.md`.
+ *
+ *    ⚠ **The exact C1 mechanism is not reproduced.** `pnpm isolated:check` type-checks the
+ *    packed tarballs in a strict, non-hoisted pnpm workspace on the reporter's own
+ *    TypeScript version, and cascivo's types resolve there even *without* this peer — see
+ *    that file's header for the full negative result. The peer is still correct: it is the
+ *    convention for typed React libraries and makes resolution deliberate rather than
+ *    dependent on a layout accident. This guard keeps it from regressing.
+ *
+ *    Optional, not required: a JS-only consumer must not get an install warning for types
+ *    they will never read. And a peer rather than a `dependency`, because a bundled copy
+ *    of `@types/react` conflicts with the app's own React types (duplicate-`JSX` errors).
  */
 
 import assert from 'node:assert/strict'
-import { readFileSync, readdirSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, it } from 'node:test'
 
@@ -17,11 +45,14 @@ const REPO_ROOT = join(import.meta.dirname, '../..')
 const PACKAGES_DIR = join(REPO_ROOT, 'packages')
 const SIGNALS = '@preact/signals-react'
 const REQUIRED_FLOOR = '>=3.0.0'
+const TYPES_REACT = '@types/react'
+const TYPES_REACT_FLOOR = '>=18.0.0'
 
 interface PkgJson {
   name?: string
   private?: boolean
   peerDependencies?: Record<string, string>
+  peerDependenciesMeta?: Record<string, { optional?: boolean }>
 }
 
 function packagesWithSignalsPeer(): { name: string; floor: string }[] {
@@ -58,5 +89,111 @@ describe('peer-floors — signals-react floored at 3.x', () => {
       count >= 8,
       `expected at least 8 published packages peer-depending on ${SIGNALS}, found ${count}`,
     )
+  })
+})
+
+/** Every `.ts`/`.tsx` under `dir`, skipping tests, fixtures and build output. */
+function sourceFiles(dir: string): string[] {
+  const out: string[] = []
+  let entries: string[]
+  try {
+    entries = readdirSync(dir)
+  } catch {
+    return out
+  }
+  for (const entry of entries) {
+    if (entry === 'node_modules' || entry === 'dist' || entry === '__fixtures__') continue
+    const full = join(dir, entry)
+    if (statSync(full).isDirectory()) out.push(...sourceFiles(full))
+    else if (/\.tsx?$/.test(entry) && !/\.test\.tsx?$/.test(entry)) out.push(full)
+  }
+  return out
+}
+
+/**
+ * Does this file contain a real module-level `… from 'react'` import?
+ *
+ * Template literals are stripped first, because `cascivo`'s scaffolder emits
+ * ``return `import React from 'react'…` `` — generated *output*, not the CLI's own type
+ * surface. Without the strip this guard demands an `@types/react` peer on a package that
+ * ships no React types at all, and a guard that asks for the wrong thing gets allowlisted
+ * into uselessness. The remaining regex is line-anchored so only a statement in import
+ * position counts.
+ */
+function importsReactTypes(source: string): boolean {
+  const withoutTemplates = source.replace(/`(?:[^`\\]|\\[\s\S])*`/g, '``')
+  return /^\s*import\s[^`;]*?\bfrom\s+['"]react['"]/m.test(withoutTemplates)
+}
+
+/**
+ * Published packages whose emitted types will reference React's own types.
+ *
+ * Derived from the source rather than from a hand-kept list — the Mechanism-B lesson:
+ * a package that gains a React type import gets flagged here without anyone remembering
+ * to update this file. A *type-only* import is enough (and is the common case): it is
+ * `import type { HTMLAttributes } from 'react'` that lands in the `.d.ts`.
+ */
+function publishedPackagesUsingReactTypes(): string[] {
+  const out: string[] = []
+  for (const dir of readdirSync(PACKAGES_DIR)) {
+    let pkg: PkgJson
+    try {
+      pkg = JSON.parse(readFileSync(join(PACKAGES_DIR, dir, 'package.json'), 'utf8')) as PkgJson
+    } catch {
+      continue
+    }
+    if (pkg.private === true) continue
+    const usesReact = sourceFiles(join(PACKAGES_DIR, dir, 'src')).some((file) =>
+      importsReactTypes(readFileSync(file, 'utf8')),
+    )
+    if (usesReact) out.push(dir)
+  }
+  return out
+}
+
+describe('peer-floors — @types/react is reachable from a consumer install', () => {
+  it('every published package whose types import from `react` peers @types/react optionally', () => {
+    const offenders: string[] = []
+    for (const dir of publishedPackagesUsingReactTypes()) {
+      const pkg = JSON.parse(
+        readFileSync(join(PACKAGES_DIR, dir, 'package.json'), 'utf8'),
+      ) as PkgJson
+      const name = pkg.name ?? dir
+      const floor = pkg.peerDependencies?.[TYPES_REACT]
+      if (floor === undefined) {
+        offenders.push(`${name}: no "${TYPES_REACT}" in peerDependencies`)
+        continue
+      }
+      if (floor !== TYPES_REACT_FLOOR) {
+        offenders.push(
+          `${name}: "${TYPES_REACT}" floored at ${floor}, expected ${TYPES_REACT_FLOOR}`,
+        )
+      }
+      if (pkg.peerDependenciesMeta?.[TYPES_REACT]?.optional !== true) {
+        offenders.push(`${name}: "${TYPES_REACT}" must be peerDependenciesMeta.optional = true`)
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      "Published packages import React types but do not put @types/react on a consumer's " +
+        'resolution path. Under pnpm this silently strips children/className/onClick/aria-* ' +
+        'from every component (2026-07-28 report C1). Add to each package.json:\n' +
+        `  "peerDependencies":     { "${TYPES_REACT}": "${TYPES_REACT_FLOOR}", … }\n` +
+        `  "peerDependenciesMeta": { "${TYPES_REACT}": { "optional": true } }\n` +
+        `Offenders:\n  ${offenders.join('\n  ')}`,
+    )
+  })
+
+  it('finds the expected set of React-typed packages (guards against silent skips)', () => {
+    const found = publishedPackagesUsingReactTypes()
+    for (const expected of ['react', 'core', 'charts', 'icons']) {
+      assert.ok(
+        found.includes(expected),
+        `expected @cascivo/${expected} to be detected as importing React types, but the ` +
+          `detector found only: ${found.join(', ')}. If the detector broke, this guard is ` +
+          `passing vacuously.`,
+      )
+    }
   })
 })

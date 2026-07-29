@@ -74,7 +74,9 @@ export function Sheet({ open, onClose, title, children, side = 'end' }: SheetPro
           ✕
         </button>
       </div>
-      <div className={styles.body}>{children}</div>
+      <div className={styles.body} data-cascivo-sheet-body="">
+        {children}
+      </div>
     </div>
   )
 }

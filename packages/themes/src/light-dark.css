@@ -1,0 +1,33 @@
+/* cascivo — Light + dark bundle */
+/* The single-import path for the common light/dark setup:
+
+     @import '@cascivo/themes/light-dark.css';
+
+   It loads @cascivo/tokens exactly ONCE (here), then the base layer, then the
+   light and dark themes (each scoped by [data-theme]). The per-theme files
+   self-import @cascivo/tokens for standalone use; bundlers and browsers dedupe
+   the identical @import URL, so tokens are still emitted once.
+
+   Want a theme beyond these two — 'cyberpunk', 'midnight', 'terminal', …? Use
+   '@cascivo/themes/all.css' (all twelve) or import the single theme file you
+   need alongside this one. Setting data-theme to a theme whose CSS is not loaded
+   leaves every --cascivo-color-* unresolved and renders components greyscale;
+   ThemeProvider warns about exactly that in dev.
+
+   This file exists because 'all.css' used to contain only light and dark, and a
+   name that says "all" while shipping two of twelve cost adopters real time
+   (2026-07-28 report C4). 'all.css' now means all; this is the two-theme bundle
+   under a name that says so.
+
+   Canonical layer order (lowest → highest priority) — see @cascivo/tokens/layers.css:
+     cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.theme
+     < cascivo.blocks < cascivo.override
+   The order statement is emitted first (below, and again transitively via
+   @cascivo/tokens); identical @layer statements are idempotent. */
+
+@import '@cascivo/tokens/layers.css';
+@import '@cascivo/tokens';
+@import '@cascivo/tokens/properties.css';
+@import './base.css';
+@import './light.css';
+@import './dark.css';

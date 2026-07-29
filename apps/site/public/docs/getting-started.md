@@ -150,7 +150,7 @@ aggregate `@cascivo/react/styles.css` instead.)
 > `@cascivo/react` **0.10+** SSR works with **zero Vite config** — the package ships
 > a CSS-free `node`-condition build that a bare server loader imports cleanly. The
 > only SSR checklist left: `@preact/signals-react` 3.x, import the CSS set
-> (`@cascivo/react/styles.css` + `@cascivo/themes/all.css`), and — for runtime theme
+> (`@cascivo/react/styles.css` + `@cascivo/themes/light-dark.css`), and — for runtime theme
 > switching — `themePreloadScript()` + `suppressHydrationWarning`. On
 > `@cascivo/react` **< 0.10** you additionally need `ssr: { noExternal: [/^@cascivo\//] }`
 > (or `cascivoSsr()`), or an unconfigured build throws `Unknown file extension ".css"`.
@@ -178,7 +178,7 @@ matches what you ship.
 **Recipe A — light + dark with a system default** (the common case):
 
 ```tsx
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 ```
 
 ```tsx
@@ -190,7 +190,7 @@ import '@cascivo/themes/all.css' // tokens (once) + base typography + light & da
 > themes at runtime (it must be the document element so portalled overlays switch too). The
 > decision table is in [THEMING.md](/docs/theming.md#where-does-the-attribute-go--html-or-an-element).
 
-`@cascivo/themes/all` loads `@cascivo/tokens` once, applies base typography (so
+`@cascivo/themes/light-dark` loads `@cascivo/tokens` once, applies base typography (so
 plain markup uses the sans stack, not browser serif), and ships both `light` and
 `dark`. Cost: **≈41 KB / ≈9 KB gzip** of CSS (source, pre-minification).
 
@@ -248,9 +248,30 @@ set `data-theme="<name>"`. The twelve first-party themes:
 | `@cascivo/themes/arcade`    | `arcade`           | light       |
 
 `@cascivo/themes/base` is required scaffolding (tokens + typography), **not** a
-theme — always load it (directly, or transitively via `all`). `@cascivo/themes/tailwind`
+theme — always load it (directly, or transitively via a bundle). `@cascivo/themes/tailwind`
 is a Tailwind bridge stylesheet, also not a theme. Each import has a `.css` twin
 (`@cascivo/themes/dark.css`) for bundlers that need the explicit extension.
+
+#### Which bundle?
+
+Setting `data-theme="cyberpunk"` while only light and dark are loaded leaves every
+`--cascivo-color-*` unresolved, so components render **greyscale**. Pick the bundle that
+contains the themes you actually set:
+
+| Import                           | Contains                                 | Use when                                             |
+| -------------------------------- | ---------------------------------------- | ---------------------------------------------------- |
+| `@cascivo/themes/light-dark.css` | light + dark                             | the common case — a light/dark toggle                |
+| `@cascivo/themes/all.css`        | **all twelve**                           | you offer a theme picker                             |
+| `@cascivo/themes/<name>.css`     | that one theme                           | you ship a single fixed theme (pair with `base.css`) |
+| `@cascivo/react/styles.css`      | light + dark, plus every component's CSS | no bundler / one-file setup                          |
+
+> **Changed in 0.14.0.** `all.css` used to contain light and dark only, despite the name —
+> a trap that cost adopters real time. It now contains all twelve. If you imported it for a
+> light/dark app, switch to `light-dark.css` to keep the smaller sheet. See
+> [UPGRADING.md](https://github.com/cascivo/cascivo/blob/main/docs/UPGRADING.md).
+
+`ThemeProvider` warns in dev when you set a `data-theme` whose CSS is not loaded, naming
+the import to add.
 
 ### Runtime switching & SSR (no-flash)
 
@@ -305,7 +326,7 @@ not a broken install. See [TROUBLESHOOTING.md](/docs/troubleshooting.md).
 ## First component
 
 ```tsx
-import '@cascivo/themes/all.css'
+import '@cascivo/themes/light-dark.css'
 // Path A: import from your copied source
 import { Button, Card, CardContent } from '@/components/ui'
 // Path B: import { Button, Card, CardContent } from '@cascivo/react'
@@ -322,6 +343,53 @@ export function App() {
   )
 }
 ```
+
+---
+
+## State: call `useSignals()` in your own components
+
+**Read this before you write a component that holds state.** It is the single most likely
+first-day bug, it produces no error and no warning, and it looks like a cascivo bug.
+
+cascivo's own components call `useSignals()` internally, so everything above works with no
+setup. But components **you** write are not compiled by cascivo's build — so in a React app
+with no Babel signals transform (the normal case: Vite + React, Next.js, CRA), a component
+that reads `signal.value` during render never re-renders when that signal changes.
+
+The symptom is distinctive: **handlers fire, the UI freezes.** Toggles that don't toggle,
+modals that don't open, a counter stuck at 0. Everything logs correctly.
+
+```tsx
+import { useSignal } from '@cascivo/core'
+
+// ✗ Broken — reads count.value during render, never re-renders.
+function Counter() {
+  const count = useSignal(0)
+  return <Button onClick={() => count.value++}>Clicked {count} times</Button>
+}
+```
+
+```tsx
+import { useSignal, useSignals } from '@cascivo/core'
+
+// ✓ Correct — useSignals() first, before anything else in the body.
+function Counter() {
+  useSignals()
+  const count = useSignal(0)
+  return <Button onClick={() => count.value++}>Clicked {count} times</Button>
+}
+```
+
+The rule: **`useSignals()` is the first statement in any component of yours that reads
+`signal.value` during render.** It is a no-op where a transform is already active (Preact
+apps, or React with the Babel plugin), so adding it is always safe.
+
+You do _not_ need it to pass signals into a cascivo component, or in an event handler, or
+inside `useSignalEffect` — only for a read that happens during render.
+
+Full reactivity model, including which React hooks map to which cascivo primitive:
+[HEADLESS.md](/docs/headless.md). Symptom-first version:
+[TROUBLESHOOTING.md](/docs/troubleshooting.md#handlers-fire-but-the-ui-never-updates-toggles-dont-toggle-modals-dont-open).
 
 ---
 

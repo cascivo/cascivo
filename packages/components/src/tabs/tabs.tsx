@@ -1,8 +1,8 @@
 'use client'
 import { cn, useSignal, useSignals } from '@cascivo/core'
 import type { Signal } from '@cascivo/core'
-import { createContext, useId, useRef } from 'react'
-import type { HTMLAttributes, KeyboardEvent, ReactNode } from 'react'
+import { createContext, forwardRef, useId, useRef } from 'react'
+import type { HTMLAttributes, KeyboardEvent, Ref, ReactNode } from 'react'
 import styles from './tabs.module.css'
 
 interface TabsStore {
@@ -87,13 +87,20 @@ export interface TabsTriggerProps extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean
 }
 
-export function TabsTrigger(props: TabsTriggerProps) {
-  return (
-    <TabsContext.Consumer>
-      {(store) => (store ? <TabsTriggerInner store={store} {...props} /> : null)}
-    </TabsContext.Consumer>
-  )
-}
+/**
+ * `forwardRef` so `ref` reaches the tab `<button>` — see `textarea.tsx` for the full
+ * rationale (2026-07-28 report C10). Threaded through the private Inner, which owns the
+ * button. Roving-focus navs need a real element here, so this is not cosmetic.
+ */
+export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
+  function TabsTrigger(props, ref) {
+    return (
+      <TabsContext.Consumer>
+        {(store) => (store ? <TabsTriggerInner store={store} buttonRef={ref} {...props} /> : null)}
+      </TabsContext.Consumer>
+    )
+  },
+)
 
 function TabsTriggerInner({
   store,
@@ -101,8 +108,9 @@ function TabsTriggerInner({
   className,
   children,
   disabled,
+  buttonRef,
   ...props
-}: TabsTriggerProps & { store: TabsStore }) {
+}: TabsTriggerProps & { store: TabsStore; buttonRef?: Ref<HTMLButtonElement> }) {
   useSignals()
   const selected = store.active.value === value
 
@@ -119,6 +127,7 @@ function TabsTriggerInner({
       disabled={disabled}
       className={cn(styles['trigger'], className)}
       onClick={() => store.setValue(value)}
+      ref={buttonRef}
       {...props}
     >
       {children}

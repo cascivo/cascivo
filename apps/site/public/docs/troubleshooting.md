@@ -22,7 +22,7 @@ but uncolored components.
 set `data-theme`:
 
 ```tsx
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 ```
 
 ```tsx
@@ -301,6 +301,157 @@ browsers are outside the support matrix.
 **Fix:** check the feature table in [COMPATIBILITY.md](/docs/compatibility.md). Note
 `Modal` uses the native `<dialog>` element (much older support) — it is the
 conservative choice if you must reach browsers below the Popover API line.
+
+---
+
+## `children` / `className` / `onClick` "does not exist" on every component (TS2322, TS2559)
+
+```
+error ts(2322): Property 'children' does not exist on type 'IntrinsicAttributes & BadgeProps'.
+error ts(2559): Type '{ children: Element[]; }' has no properties in common with CardProps.
+```
+
+Every component loses `children`, `className`, `style`, `onClick` and all `aria-*` props at
+once, usually a dozen-plus errors from one small file.
+
+**Cause:** `@types/react` is not resolvable from `@cascivo/*`. cascivo's `.d.ts` files
+`import { HTMLAttributes } from 'react'` and most interfaces `extend` those types; when the
+import cannot resolve, `extends HTMLAttributes<…>` collapses to an error type and each
+interface keeps only its _own_ members. `skipLibCheck: true` (which most setups enable)
+hides the diagnostic that would explain it.
+
+**Fix:** upgrade to `@cascivo/react` ≥ 0.14.0 — every package that ships React types now
+declares `@types/react` as an optional peer, so pnpm puts it on the resolution path.
+
+On an older version, add it yourself:
+
+```yaml
+# pnpm-workspace.yaml
+publicHoistPattern:
+  - '@types/react'
+  - '@types/react-dom'
+```
+
+---
+
+## The page has a horizontal scrollbar I didn't create
+
+Often a _second_, vertical one appears next to it: the horizontal bar makes the document
+taller than the viewport.
+
+**Cause:** no global `box-sizing: border-box`. Components that are `width: 100%` _and_
+padded (`Textarea`, `Input`, `Select`) compute wider than their container under the
+browser's `content-box` default.
+
+**Fix:** upgrade to `@cascivo/tokens` ≥ 0.6.0 — the `cascivo.reset` layer now ships the
+floor, and it arrives automatically with any theme or `@cascivo/react/styles.css`. It is
+the lowest cascade layer, so your own reset still wins.
+
+On an older version, fill the layer cascivo reserves:
+
+```css
+@layer cascivo.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+  }
+}
+```
+
+---
+
+## A button below a MultiSelect / Sheet stopped responding to clicks
+
+Nothing looks wrong. Screenshots are perfect, there is no console output, and the element
+below the control simply never receives a click.
+
+**Cause:** the closed overlay panel was still laid out. The browser hides a closed popover
+with `[popover]:not(:popover-open) { display: none }`, but that is a **UA-origin** rule, so
+an author `display: flex` in the component's base rule beat it. The panel stayed invisible
+(`opacity: 0`), fixed-position and hit-testable — an unmarked rectangle swallowing every
+click beneath it.
+
+**Fix:** upgrade to `@cascivo/react` ≥ 0.14.0.
+
+On an older version, put the UA behaviour back:
+
+```css
+@layer cascivo.override {
+  [popover]:not(:popover-open) {
+    display: none;
+  }
+}
+```
+
+This does not break the open/close animation — `display` is already in those components'
+`transition` with `allow-discrete`.
+
+---
+
+## Charts render unstyled
+
+`@cascivo/react` auto-loads its CSS, so it is reasonable to assume `@cascivo/charts` does
+too. It did not.
+
+**Fix:** upgrade to `@cascivo/charts` ≥ 0.8.0 — it imports its own stylesheet, matching
+`@cascivo/react`. (`@cascivo/editor`, `@cascivo/flow` and `@cascivo/ai` had the same gap and
+were fixed together.) On an older version, import it explicitly:
+
+```ts
+import '@cascivo/charts/styles.css'
+```
+
+---
+
+## `setTheme()` runs but nothing changes
+
+`useTheme()` reports the new theme, no error is thrown, and `data-theme` never changes.
+
+**Cause:** `setTheme()` writes the theme _signal_; the mounted `<ThemeProvider>` is what
+writes the attribute. With no provider mounted, the signal updates and the DOM does not.
+
+**Fix:** wrap your app in `<ThemeProvider>` (SSR-safe, and it persists the choice). If you
+are theming outside React — an imperative shell, a pre-hydration script, a Storybook
+decorator — use `applyTheme(theme, target?)` instead, which writes the attribute directly:
+
+```ts
+import { applyTheme } from '@cascivo/react'
+applyTheme('midnight')
+```
+
+`@cascivo/react` ≥ 0.14.0 warns in dev when `setTheme()` runs with no provider mounted.
+
+---
+
+## Components render greyscale after setting a theme like `cyberpunk`
+
+**Cause:** that theme's CSS is not loaded. `@cascivo/themes/light-dark.css` carries light
+and dark only; `@cascivo/react/styles.css` bundles the same two.
+
+**Fix:** import `@cascivo/themes/all.css` (all twelve themes) or the single theme file you
+need. Before 0.14.0, `all.css` itself contained only light and dark despite the name — if
+you are on an older version, import `@cascivo/themes/cyberpunk.css` explicitly.
+
+`ThemeProvider` emits a dev warning naming the exact import to add.
+
+---
+
+## pnpm refuses to install cascivo: "is younger than the minimum release age"
+
+**Cause:** pnpm's `minimumReleaseAge` gate and a recently published cascivo release. Not a
+cascivo defect — the same gate trips on any fresh package.
+
+**Fix:** wait out the window, or exclude the packages:
+
+```yaml
+# pnpm-workspace.yaml
+minimumReleaseAgeExclude:
+  - '@cascivo/*'
+```
 
 ---
 

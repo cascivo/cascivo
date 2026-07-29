@@ -35,14 +35,15 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 
 ## Props
 
-| Name          | Type                   | Required | Default | Description                                           |
-| ------------- | ---------------------- | -------- | ------- | ----------------------------------------------------- |
-| `open`        | `boolean`              | No       | false   | Whether the component is open (controlled).           |
-| `onClose`     | `() => void`           | No       | —       | Called when the component is closed.                  |
-| `title`       | `string`               | No       | —       | Title text for the component.                         |
-| `description` | `string`               | No       | —       | Supporting description text.                          |
-| `size`        | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `draggable`   | `boolean`              | No       | false   | Allow dragging the dialog by its header               |
+| Name          | Type                   | Required | Default | Description                                                                                |
+| ------------- | ---------------------- | -------- | ------- | ------------------------------------------------------------------------------------------ |
+| `open`        | `boolean`              | No       | false   | Whether the component is open (controlled).                                                |
+| `onClose`     | `() => void`           | No       | —       | Called when the component is closed.                                                       |
+| `title`       | `string`               | No       | —       | Title text for the component.                                                              |
+| `description` | `string`               | No       | —       | Supporting description text.                                                               |
+| `size`        | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                      |
+| `footer`      | `ReactNode`            | No       | —       | Dialog actions, rendered in a right-aligned row below the body and separated by a divider. |
+| `draggable`   | `boolean`              | No       | false   | Allow dragging the dialog by its header                                                    |
 
 ## Tokens
 
@@ -51,6 +52,7 @@ Built on the native <dialog> element so showModal() provides a real focus trap, 
 - `--cascivo-radius-modal`
 - `--cascivo-shadow-xl`
 - `--cascivo-focus-ring`
+- `--cascivo-dialog-body-gap`
 
 ## Examples
 
@@ -86,7 +88,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Modal is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-radius-modal, --cascivo-shadow-xl, --cascivo-focus-ring
+  --cascivo-color-surface-overlay, --cascivo-color-border, --cascivo-radius-modal, --cascivo-shadow-xl, --cascivo-focus-ring, --cascivo-dialog-body-gap
 
 Accessibility: role "dialog", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.
 

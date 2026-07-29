@@ -112,6 +112,24 @@ export interface ComponentMeta {
    * Rendered verbatim inside `import { … }`. Defaults to `name`.
    */
   importSymbols?: string
+  /**
+   * Stable `data-cascivo-*` attributes this component stamps on its internal elements, as
+   * a public styling contract.
+   *
+   * CSS Modules hash every internal class name, so a consumer who needs to reach an inner
+   * element has no selector at all — one adopter shipped
+   * `div:has(> div > nav[aria-label='…'])` to stop `AppShell`'s sidebar shrinking, which
+   * breaks the moment the nesting changes (2026-07-28 report C14). These attributes are
+   * the supported alternative and are semver-covered.
+   *
+   * Declaring them here is what makes them discoverable: they flow into `registry.json`,
+   * `llms/<name>.md` and the docs site by regeneration. The `style-hooks` parity guard
+   * asserts this list matches the `data-cascivo-*` attributes in the component's TSX in
+   * both directions, so a renamed or dropped hook cannot ship silently.
+   *
+   * Prose lives in `docs/STYLING-INTERNALS.md`.
+   */
+  styleHooks?: string[]
   tags: string[]
   intent?: ComponentIntent
 }

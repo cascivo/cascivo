@@ -87,6 +87,25 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
    * @see the component manifest
    */
   yTicks?: number
+  /**
+   * Format each X-axis tick label. Receives the datum's raw `x` value — a number, a
+   * string, or a `Date`, whichever the series carries.
+   *
+   * Without it a numeric x renders raw: a `Date.now()`-scale value (the natural shape for
+   * a time series) renders as `1,785,217,000,000`. Passing `Date` objects instead switches
+   * the axis to a time scale, but that format is fixed, so every bucket narrower than a day
+   * collapses to the same label — worse than the epoch number, which at least differed
+   * between buckets. This threads through `Axis`'s existing `format`, mirroring what
+   * `secondAxis.format` already offers on the right (2026-07-28 report C16).
+   *
+   * ```tsx
+   * <LineChart
+   *   series={series}
+   *   format={(x) => new Date(Number(x)).toLocaleTimeString([], { timeStyle: 'short' })}
+   * />
+   * ```
+   */
+  format?: (value: number | string | Date) => string
   legend?: boolean
   tooltip?: boolean
   formatTooltip?: (datum: Datum, series: LineChartSeries<Datum>) => string
@@ -175,6 +194,7 @@ export function LineChart<Datum = { x: number; y: number }>({
   height,
   xTicks = 5,
   yTicks = 5,
+  format: xFormat,
   legend,
   tooltip,
   formatTooltip,
@@ -563,6 +583,7 @@ export function LineChart<Datum = { x: number; y: number }>({
                       length={innerW}
                       tickCount={xTicks}
                       transform={`translate(0,${innerH})`}
+                      {...(xFormat ? { format: xFormat } : {})}
                     />
                     <Axis scale={yScale} orientation="y" length={innerH} tickCount={yTicks} />
                     {hasRight && (

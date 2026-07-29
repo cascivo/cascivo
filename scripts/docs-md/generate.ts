@@ -42,6 +42,8 @@ const GUIDES: { src: string; slug: string }[] = [
   { src: 'USING-WITH-VITE-SSR.md', slug: 'using-with-vite-ssr' },
   { src: 'USING-WITH-TAILWIND.md', slug: 'using-with-tailwind' },
   { src: 'USING-WITH-PREACT.md', slug: 'using-with-preact' },
+  { src: 'USING-WITH-ASTRO.md', slug: 'using-with-astro' },
+  { src: 'STYLING-INTERNALS.md', slug: 'styling-internals' },
   { src: 'USING-WITH-STRICT-ESLINT.md', slug: 'using-with-strict-eslint' },
 ]
 

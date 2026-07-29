@@ -1,6 +1,6 @@
 'use client'
 import { cn } from '@cascivo/core'
-import { createContext } from 'react'
+import { createContext, forwardRef } from 'react'
 import type { InputHTMLAttributes, ReactNode } from 'react'
 import styles from './radio-card.module.css'
 
@@ -52,14 +52,17 @@ export interface RadioCardProps extends Omit<
   hideIndicator?: boolean
 }
 
-export function RadioCard({
-  value,
-  title,
-  description,
-  disabled,
-  hideIndicator,
-  ...props
-}: RadioCardProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<input>` — and so it is TYPED. See
+ * `textarea.tsx` for the rationale (2026-07-28 report C10).
+ *
+ * `RadioCard` (the item), not `RadioCardGroup` (the container): the group renders a <div>
+ * and only the card owns a focusable control.
+ */
+export const RadioCard = forwardRef<HTMLInputElement, RadioCardProps>(function RadioCard(
+  { value, title, description, disabled, hideIndicator, ...props },
+  ref,
+) {
   return (
     <Ctx.Consumer>
       {(ctx) => (
@@ -76,6 +79,7 @@ export function RadioCard({
                   defaultChecked: ctx.defaultValue === value,
                   onChange: () => ctx.onValueChange?.(value),
                 })}
+            ref={ref as never}
             {...props}
           />
           {!hideIndicator && <span className={styles['glyph']} aria-hidden="true" />}
@@ -87,4 +91,4 @@ export function RadioCard({
       )}
     </Ctx.Consumer>
   )
-}
+})

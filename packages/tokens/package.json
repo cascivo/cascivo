@@ -33,6 +33,8 @@
     ".": "./src/index.css",
     "./layers": "./src/layers.css",
     "./layers.css": "./src/layers.css",
+    "./reset": "./src/reset.css",
+    "./reset.css": "./src/reset.css",
     "./properties": "./src/properties.css",
     "./properties.css": "./src/properties.css",
     "./functions": "./src/functions.css",

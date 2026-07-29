@@ -4,6 +4,8 @@ node_modules/
 # Build output
 dist/
 dist-matrix/
+# Astro's generated type shims — build output, regenerated on every `astro build`.
+.astro/
 .lighthouseci/
 storybook-static/
 apps/examples/registry-starter/public/

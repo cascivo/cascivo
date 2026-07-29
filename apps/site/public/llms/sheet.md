@@ -54,6 +54,7 @@ import { Sheet } from '@cascivo/react'
 
 ## Design tokens
 
+- `--cascivo-dialog-body-gap`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-radius-lg`

@@ -1,5 +1,12 @@
 'use client'
-import { cn, useEffectPropSignal, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  cn,
+  focusElement,
+  useEffectPropSignal,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
@@ -50,7 +57,7 @@ export function HeaderPanel({
       } catch {
         /* jsdom or already hidden */
       }
-      restoreRef.current?.focus()
+      focusElement(restoreRef.current)
       restoreRef.current = null
     }
   })

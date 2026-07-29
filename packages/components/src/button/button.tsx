@@ -1,5 +1,6 @@
 'use client'
 import { cn, Slot } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { ButtonHTMLAttributes } from 'react'
 import { Spinner } from '../spinner/spinner'
 import styles from './button.module.css'
@@ -28,16 +29,26 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean
 }
 
-export function Button({
-  variant = 'primary',
-  size = 'md',
-  loading = false,
-  asChild = false,
-  className,
-  disabled,
-  children,
-  ...props
-}: ButtonProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<button>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10).
+ *
+ * Under `asChild` the ref goes to `Slot`, which composes it onto the child element, so a
+ * consumer's ref lands on whatever they rendered rather than being dropped.
+ */
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    variant = 'primary',
+    size = 'md',
+    loading = false,
+    asChild = false,
+    className,
+    disabled,
+    children,
+    ...props
+  },
+  ref,
+) {
   const shared = {
     'data-variant': variant,
     'data-size': size,
@@ -48,16 +59,16 @@ export function Button({
 
   if (asChild) {
     return (
-      <Slot {...shared} {...props}>
+      <Slot {...shared} ref={ref as never} {...props}>
         {children}
       </Slot>
     )
   }
 
   return (
-    <button {...shared} disabled={disabled || loading} {...props}>
+    <button {...shared} ref={ref} disabled={disabled || loading} {...props}>
       {loading && <Spinner size="sm" aria-hidden="true" />}
       <span>{children}</span>
     </button>
   )
-}
+})

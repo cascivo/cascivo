@@ -34,6 +34,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
+      "node": "./dist/node/index.js",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
@@ -69,7 +70,13 @@
   },
   "peerDependencies": {
     "@preact/signals-react": ">=3.0.0",
+    "@types/react": ">=18.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
   }
 }

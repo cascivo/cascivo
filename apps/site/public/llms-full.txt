@@ -198,7 +198,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Per-route / per-tenant effect disposal -> `useScope()` / `createScope()` (disposes on unmount; prevents signal leaks across navigation).
 - Genuine internal state machine -> `createMachine` / `useMachine`.
 - Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.
-- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
+- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, Select, Combobox, Slider, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput); activating an item -> `onSelect(value)` (Dropdown, Menu, chart points). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
@@ -3458,9 +3458,12 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `mode` | `'grouped' \| 'stacked' \| 'percent'` | no | `grouped` | 'percent' stacks each category and normalizes it to 100%. |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `xTicks` | `number` | no | — | Approximate number of ticks on the x-axis. |
-| `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
-| `xLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded x-axis. |
+| `valueAxisTicks` | `number` | no | `5` | Approximate number of ticks on the VALUE axis, on both orientations. Prefer this over xTicks/yTicks, which are named for where the axis is drawn and therefore swap meaning when orientation="horizontal". |
+| `categoryAxisTicks` | `number` | no | `5` | Approximate number of ticks on the CATEGORY axis, on both orientations. Role-named twin of valueAxisTicks. |
+| `categoryLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded axis. Role-named twin of xLabelEvery; always strides the category axis on both orientations. |
+| `xTicks` | `number` | no | `5` | DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the x-axis — follows SCREEN position, so it controls the category axis when vertical and the VALUE axis when horizontal. |
+| `yTicks` | `number` | no | `5` | DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the y-axis — follows SCREEN position, so it controls the value axis when vertical and the CATEGORY axis when horizontal. |
+| `xLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded axis. Unlike xTicks/yTicks this does NOT swap with orientation — it always strides the category axis. categoryLabelEvery is the unambiguous name. |
 | `legend` | `boolean` | no | — | Whether to show the legend. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
 | `tooltipFormat` | `(p: ChartPoint) => string` | no | — | Custom tooltip formatter. The stacked default lists "label · total" + each non-zero layer in its color. |
@@ -3483,7 +3486,7 @@ One series (a set of bars). Pass an array via the `series` prop.
 | `id` | `string` | yes | Stable series identity. |
 | `label` | `string` | yes | Legend + tooltip label. |
 | `data` | `readonly Datum[]` | yes | Row data read by the `x`/`y` accessors. |
-| `color` | `string` | no | Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer. |
+| `color` | `string \| ((datum: Datum, index: number) => string)` | no | Any CSS color overriding the positional palette (--cascivo-chart-N) for this series / stacked layer. Pass a FUNCTION to color each bar from its own datum — the single-series categorical case (incidents by severity, where SEV1 reads as danger regardless of which bar is tallest). Each bar is also stamped with data-x for CSS targeting. |
 
 ### `StackedRow`
 
@@ -4488,6 +4491,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `height` | `number` | no | `300` | SVG height in px |
 | `xTicks` | `number` | no | `5` | Approximate number of X-axis ticks |
 | `yTicks` | `number` | no | `5` | Approximate number of Y-axis ticks |
+| `format` | `(value: number \| string \| Date) => string` | no | — | Format each X-axis tick label; receives the datum's raw x value (number \| string \| Date). Without it a numeric x renders raw — a Date.now()-scale value renders as 1,785,217,000,000 — and passing Date objects gives a fixed date format, so sub-day buckets all collapse to the same label. Mirrors secondAxis.format on the right. |
 | `legend` | `boolean` | no | — | Show series legend |
 | `tooltip` | `boolean` | no | — | Enable hover tooltip |
 | `formatTooltip` | `(datum: Datum, series: LineChartSeries<Datum>) => string` | no | — | Custom tooltip formatter |
@@ -7406,6 +7410,7 @@ Dragging the header past a threshold toward the edge dismisses the panel.
 
 ## Design tokens
 
+- `--cascivo-dialog-body-gap`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-radius-overlay`
@@ -12005,6 +12010,7 @@ import { Modal } from '@cascivo/react'
 | `title` | `string` | no | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `footer` | `ReactNode` | no | — | Dialog actions, rendered in a right-aligned row below the body and separated by a divider. |
 | `draggable` | `boolean` | no | `false` | Allow dragging the dialog by its header |
 
 ## Examples
@@ -12024,6 +12030,7 @@ import { Modal } from '@cascivo/react'
 - `--cascivo-radius-modal`
 - `--cascivo-shadow-xl`
 - `--cascivo-focus-ring`
+- `--cascivo-dialog-body-gap`
 
 ## Accessibility
 
@@ -15004,6 +15011,7 @@ import { Sheet } from '@cascivo/react'
 
 ## Design tokens
 
+- `--cascivo-dialog-body-gap`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-radius-lg`

@@ -7,6 +7,15 @@
    along first and dedupes by URL. See ./layers.css for the authoritative order. */
 @import './layers.css';
 
+/* Fill the `cascivo.reset` floor. Same reasoning as the layer statement above: every
+   consumer path reaches @cascivo/tokens, so importing it here is the ONE place that
+   guarantees a default install gets `box-sizing: border-box` — which components with
+   `width: 100%` + padding require and which nothing shipped before (2026-07-28 report
+   C12). It is the lowest layer, so a consumer's own reset still wins. Both @imports stay
+   ahead of the @layer block below: an @import after a @layer rule is a spec violation and
+   browsers warn. */
+@import './reset.css';
+
 @layer cascivo.tokens {
   :root {
     /* ── Color Primitives ─────────────────────────────── */

@@ -25,6 +25,132 @@ const x = (d: { x: string; y: number }) => d.x
 const y = (d: { x: string; y: number }) => d.y
 
 describe('BarChart', () => {
+  // 2026-07-28 report C18 — a single series whose categories each carry meaning (incidents
+  // by severity: SEV1 must read as danger regardless of which bar is tallest). The only
+  // route before this was one single-point series per category with mode="grouped", which
+  // renders wrong: bars overlap and only the first category label survives.
+  describe('per-datum color', () => {
+    const SEVERITY = { Jan: '#dc2626', Feb: '#65a30d' } as const
+
+    it('colors each bar from its own datum', () => {
+      const { container } = render(
+        <BarChart
+          series={[
+            {
+              id: 'incidents',
+              label: 'Incidents',
+              data: series[0]!.data,
+              color: (d) => SEVERITY[d.x as 'Jan' | 'Feb'],
+            },
+          ]}
+          x={x}
+          y={y}
+          width={400}
+          height={200}
+        />,
+      )
+      const fills = [...container.querySelectorAll('rect[data-x]')].map((r) =>
+        r.getAttribute('fill'),
+      )
+      expect(fills).toEqual([SEVERITY.Jan, SEVERITY.Feb])
+    })
+
+    it('still accepts a plain string for the whole series', () => {
+      const { container } = render(
+        <BarChart
+          series={[{ id: 'a', label: 'Q1', data: series[0]!.data, color: '#123456' }]}
+          x={x}
+          y={y}
+          width={400}
+          height={200}
+        />,
+      )
+      const fills = [...container.querySelectorAll('rect[data-x]')].map((r) =>
+        r.getAttribute('fill'),
+      )
+      expect(fills).toEqual(['#123456', '#123456'])
+    })
+
+    it('stamps data-x on every bar so CSS can target one category', () => {
+      // Before this, each rect sat alone in its own <g>, so `rect:nth-of-type(n)` matched
+      // EVERY bar at n=1 and none at n>=2 — no selector distinguished bars.
+      const { container } = render(
+        <BarChart series={series} x={x} y={y} width={400} height={200} />,
+      )
+      const stamped = [...container.querySelectorAll('rect[data-x]')].map((r) =>
+        r.getAttribute('data-x'),
+      )
+      expect(stamped).toEqual(['Jan', 'Feb', 'Jan', 'Feb'])
+    })
+  })
+
+  // 2026-07-28 report C17b — xTicks/yTicks follow SCREEN position and swap with
+  // orientation; xLabelEvery follows the DATA field and does not. The role-named props
+  // must mean the same axis on both orientations.
+  describe('role-named axis props', () => {
+    it('valueAxisTicks controls the value axis on a vertical chart', () => {
+      const { container } = render(
+        <BarChart
+          series={[{ id: 'a', label: 'A', data: [{ x: 'one', y: 1 }] }]}
+          x={x}
+          y={y}
+          valueAxisTicks={1}
+          width={400}
+          height={200}
+        />,
+      )
+      // Integer domain -> integer ticks (C17a); no fractional label may appear.
+      expect(container.textContent).not.toMatch(/0\.\d/)
+    })
+
+    it('valueAxisTicks controls the value axis on a horizontal chart too', () => {
+      const { container } = render(
+        <BarChart
+          series={[{ id: 'a', label: 'A', data: [{ x: 'one', y: 1 }] }]}
+          x={x}
+          y={y}
+          orientation="horizontal"
+          valueAxisTicks={1}
+          width={400}
+          height={200}
+        />,
+      )
+      // The old trap: yTicks={1} here did nothing because the value axis had moved to
+      // screen-x. valueAxisTicks must work on both, so neither renders a fraction.
+      expect(container.textContent).not.toMatch(/0\.\d/)
+    })
+
+    it('categoryLabelEvery renders every category label on a horizontal chart', () => {
+      const cats = [
+        { x: 'alpha', y: 1 },
+        { x: 'beta', y: 2 },
+        { x: 'gamma', y: 3 },
+        { x: 'delta', y: 4 },
+      ]
+      const { container } = render(
+        <BarChart
+          series={[{ id: 'a', label: 'A', data: cats }]}
+          x={x}
+          y={y}
+          orientation="horizontal"
+          categoryLabelEvery={1}
+          width={400}
+          height={220}
+        />,
+      )
+      for (const label of ['alpha', 'beta', 'gamma', 'delta']) {
+        expect(container.textContent).toContain(label)
+      }
+    })
+
+    it('xTicks/yTicks keep working for anyone already passing them', () => {
+      const { container } = render(
+        <BarChart series={series} x={x} y={y} yTicks={2} width={400} height={200} />,
+      )
+      expect(container.querySelectorAll('rect[data-x]').length).toBe(4)
+    })
+  })
+
   it('honors a per-series y accessor over the chart-level y', () => {
     type Row = { cat: string; requests: number; errors: number }
     const rows: Row[] = [

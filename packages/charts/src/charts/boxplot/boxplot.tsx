@@ -35,6 +35,14 @@ export interface BoxplotProps {
    * @see the component manifest
    */
   plain?: boolean
+  /**
+   * Format each category/x-axis tick label. Receives the datum's raw `x` value — a number,
+   * a string, or a `Date`, whichever the series carries.
+   *
+   * Threads through `Axis`'s own `format`, which every chart composing an axis should
+   * surface (2026-07-28 report C16); enforced by `axis-parity.test.ts`.
+   */
+  format?: (value: number | string | Date) => string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -47,6 +55,7 @@ export function Boxplot({
   height,
   className,
   plain,
+  format,
 }: BoxplotProps) {
   useSignals()
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
@@ -228,6 +237,7 @@ export function Boxplot({
                   orientation="x"
                   length={inner.width}
                   transform={`translate(0,${inner.height})`}
+                  {...(format ? { format: format } : {})}
                 />
                 <Axis scale={yScale} orientation="y" length={inner.height} />
               </>

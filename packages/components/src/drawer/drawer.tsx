@@ -159,7 +159,9 @@ export function Drawer({
                     </button>
                   </div>
                 )}
-                <div className={styles['body']}>{children}</div>
+                <div className={styles['body']} data-cascivo-drawer-body="">
+                  {children}
+                </div>
               </div>
             </FocusScope>
           </DismissableLayer>

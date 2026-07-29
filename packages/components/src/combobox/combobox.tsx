@@ -2,6 +2,7 @@
 import {
   cn,
   createMachine,
+  focusElement,
   useMachine,
   useSignal,
   useSignalEffect,
@@ -131,7 +132,7 @@ export function Combobox({
     query.value = ''
     activeIndex.value = 0
     send('OPEN')
-    setTimeout(() => inputRef.current?.focus(), 0)
+    setTimeout(() => focusElement(inputRef.current), 0)
   }
 
   const close = () => {

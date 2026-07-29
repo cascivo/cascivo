@@ -2,7 +2,14 @@ import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
 import { createRef } from 'react'
 import { act, render } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
-import { ThemeProvider, setTheme, themePreloadScript, themeSignal, useTheme } from './theme'
+import {
+  applyTheme,
+  ThemeProvider,
+  setTheme,
+  themePreloadScript,
+  themeSignal,
+  useTheme,
+} from './theme'
 
 function currentTheme(): string | null {
   return document.documentElement.getAttribute('data-theme')
@@ -133,6 +140,98 @@ describe('ThemeProvider dev warning (unstyled: no theme CSS loaded)', () => {
       getComputed.mockRestore()
       raf.mockRestore()
       warn.mockRestore()
+    }
+  })
+})
+
+describe('setTheme without a mounted ThemeProvider (C5)', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    document.documentElement.removeAttribute('data-theme')
+  })
+
+  /** A fresh module instance, so the module-level `providerMounted` flag starts false.
+   * It is deliberately module-scoped (the provider is a singleton, not context), so a
+   * provider rendered by an earlier describe in this file would otherwise leak in. */
+  async function freshTheme() {
+    vi.resetModules()
+    return await import('./theme')
+  }
+
+  it('warns that the signal updated but data-theme was not written', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const raf = vi
+      .spyOn(globalThis, 'requestAnimationFrame')
+      .mockImplementation((cb: FrameRequestCallback) => {
+        cb(0)
+        return 0
+      })
+    try {
+      const theme = await freshTheme()
+      theme.setTheme('midnight')
+      // The signal updates and useTheme() would report it — that is the trap.
+      expect(theme.themeSignal().value).toBe('midnight')
+      // …but nothing wrote the DOM.
+      expect(currentTheme()).toBeNull()
+      const message = warn.mock.calls.map((c) => String(c[0])).join('\n')
+      expect(message).toContain('no <ThemeProvider> is mounted')
+      expect(message).toContain('applyTheme')
+    } finally {
+      raf.mockRestore()
+      warn.mockRestore()
+    }
+  })
+
+  it('stays silent when a provider is mounted', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const raf = vi
+      .spyOn(globalThis, 'requestAnimationFrame')
+      .mockImplementation((cb: FrameRequestCallback) => {
+        cb(0)
+        return 0
+      })
+    const getComputed = vi
+      .spyOn(globalThis, 'getComputedStyle')
+      .mockReturnValue({ getPropertyValue: () => '#7c3aed' } as unknown as CSSStyleDeclaration)
+    try {
+      const theme = await freshTheme()
+      render(<theme.ThemeProvider storageKey={freshKey()} />)
+      act(() => {
+        theme.setTheme('warm')
+      })
+      expect(currentTheme()).toBe('warm')
+      const message = warn.mock.calls.map((c) => String(c[0])).join('\n')
+      expect(message).not.toContain('no <ThemeProvider> is mounted')
+    } finally {
+      getComputed.mockRestore()
+      raf.mockRestore()
+      warn.mockRestore()
+    }
+  })
+})
+
+describe('applyTheme (no provider, no React)', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    document.documentElement.removeAttribute('data-theme')
+  })
+
+  it('writes data-theme directly and keeps the signal in sync', () => {
+    applyTheme('cyberpunk')
+    expect(currentTheme()).toBe('cyberpunk')
+    expect(themeSignal().value).toBe('cyberpunk')
+  })
+
+  it('scopes to a target element when given one', () => {
+    const panel = document.createElement('div')
+    document.body.appendChild(panel)
+    try {
+      applyTheme('warm', panel)
+      expect(panel.getAttribute('data-theme')).toBe('warm')
+      // The document root is untouched — that is the point of a scoped write.
+      expect(currentTheme()).toBeNull()
+    } finally {
+      panel.remove()
     }
   })
 })

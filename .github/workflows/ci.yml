@@ -62,6 +62,18 @@ jobs:
       - name: Unlayered-CSS guard (shipped CSS lives inside @layer)
         run: pnpm run unlayered:check
 
+      - name: Reset-floor guard (no canonical @layer ships empty)
+        run: pnpm run reset:check
+
+      - name: Popover-hidden guard (a closed popover keeps no box, eats no clicks)
+        run: pnpm run popover:check
+
+      - name: Dead-props guard (a declared prop is a prop the component reads)
+        run: pnpm run dead-props:check
+
+      - name: Doc-URL guard (every shipped cascivo.com link resolves)
+        run: pnpm run doc-urls:check
+
       - name: Primitive-adoption guard (components consume shared headless primitives)
         run: pnpm run primitives:check
 
@@ -104,6 +116,16 @@ jobs:
       - name: SSR-import guard (published dist ships bare CSS imports)
         run: pnpm run ssr:check
 
+      - name: CSS-contract guard (CSS-shipping packages import their own CSS + ship a node twin)
+        run: pnpm run css-contract:check
+
+      # The consumer-shaped fixture: packs the real tarballs and type-checks them in a
+      # strict, non-hoisted pnpm WORKSPACE outside the repo, with skipLibCheck OFF. Every
+      # other guard runs inside the monorepo, where @types/react is root-hoisted — see
+      # docs/internal/feedback/README.md, Mechanism E.
+      - name: Isolated-install canary (published tarballs type-check for a real consumer)
+        run: pnpm run isolated:check
+
       - name: Install Chromium (for the computed-style canary)
         run: pnpm --filter @cascivo/site exec playwright install chromium --with-deps
 
@@ -113,6 +135,20 @@ jobs:
       # cannot see and a stylesheet grep cannot prove.
       - name: Computed-style canary (real browser, shipped dist)
         run: pnpm run computed:check
+
+      # The bare-page leg: shipped styles.css and NOTHING else, full viewport, several
+      # components stacked so hit-testing is meaningful. computed:check mounts one
+      # component at a time in a styled 640px box, so it structurally cannot see a
+      # scrollbar caused by a missing reset or an invisible overlay eating clicks.
+      - name: Bare-page canary (no app CSS, stacked components, real hit-testing)
+        run: pnpm run bare-page:check
+
+      # Executable form of the C2 report: builds a real Astro app with one client directive
+      # per page and reports, per directive, whether the component CSS its markup references
+      # was actually emitted. Exits 0 either way — it keeps the compatibility grade honest,
+      # it does not gate on upstream Astro behaviour. See docs/USING-WITH-ASTRO.md.
+      - name: Astro island CSS probe (keeps the ⚠️ Partial grade evidence-backed)
+        run: pnpm --filter @cascivo/example-astro-islands run build
 
       - name: Bundle budgets
         run: pnpm run audit:bundle

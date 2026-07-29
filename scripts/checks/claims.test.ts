@@ -21,7 +21,9 @@ const REPO_ROOT = join(import.meta.dirname, '../..')
 
 // Keep in sync with NON_THEME_CSS in scripts/readme/generate.ts and
 // apps/site/vite.config.ts.
-const NON_THEME_CSS = new Set(['all.css', 'base.css', 'tailwind.css'])
+// `light-dark.css` is a BUNDLE (light + dark), not a selectable theme — the same
+// reason `all.css` is excluded. Counting it would claim 13 themes when 12 ship.
+const NON_THEME_CSS = new Set(['all.css', 'light-dark.css', 'base.css', 'tailwind.css'])
 
 // Subset counts that are correct as written. Key: `${file}:${match}`.
 const ALLOWLIST: { file: string; match: string; reason: string }[] = [

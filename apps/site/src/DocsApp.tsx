@@ -90,6 +90,10 @@ const DOCS_ROUTES: Record<string, ComponentType> = {
 const exploreItems = [
   { label: 'Installation', href: '/docs/installation', icon: <Zap size={16} /> },
   { label: 'Getting Started', href: '/docs/getting-started', icon: <Zap size={16} /> },
+  // Troubleshooting is the single most useful page for a stuck adopter and had no entry
+  // here at all — it is served as raw markdown from public/docs. It belongs directly
+  // under Getting Started, where someone whose first build misbehaves will look.
+  { label: 'Troubleshooting', href: '/docs/troubleshooting.md', icon: <Check size={16} /> },
   { label: 'All components', href: '/docs/components', icon: <Grid size={16} /> },
   { label: 'FAQ', href: '/docs/faq', icon: <Check size={16} /> },
   { label: 'API reference', href: '/docs/api', icon: <Grid size={16} /> },

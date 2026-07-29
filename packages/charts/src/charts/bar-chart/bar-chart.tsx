@@ -19,11 +19,48 @@ import { linearScale, bandScale } from '../../engine/scale'
 import { stackSeries } from '../../engine/shape'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
+/**
+ * Resolve a series' `color` for one datum. One helper for every call site so the palette
+ * fallback (`COLORS[i % COLORS.length]`) stays identical whether the color is a string, a
+ * function, or absent.
+ */
+function resolveColor<Datum>(
+  color: string | ((datum: Datum, index: number) => string) | undefined,
+  datum: Datum | undefined,
+  index: number,
+  fallback: string,
+): string {
+  if (typeof color === 'function') {
+    // Legend swatches and tooltips are series-wide, so they pass the first datum: a
+    // per-datum palette has no single "series color", and the first bar's is the least
+    // surprising stand-in. The bars themselves always pass their own datum.
+    return datum === undefined ? fallback : color(datum, index)
+  }
+  return color ?? fallback
+}
+
 export interface BarChartSeries<Datum> {
   id: string
   label: string
   data: readonly Datum[]
-  color?: string
+  /**
+   * Bar color. A string colors the whole series; a function colors each bar from its own
+   * datum.
+   *
+   * The per-datum form exists for the common single-series categorical chart whose
+   * categories each carry meaning — incidents by severity, where SEV1 should read as
+   * danger and SEV4 as neutral regardless of which bar is tallest. Before it, the only
+   * route was one single-point series per category with `mode="grouped"`, which renders
+   * *wrong*: the bars overlap and only the first series' category label survives
+   * (2026-07-28 report C18).
+   *
+   * ```tsx
+   * series={[{ id: 'count', label: 'Incidents', data, color: (d) => SEVERITY_COLOR[d.x] }]}
+   * ```
+   *
+   * Each bar is also stamped with `data-x`, so CSS can target one category directly.
+   */
+  color?: string | ((datum: Datum, index: number) => string)
   /**
    * Per-series Y accessor. Overrides the chart-level `y` for this series only —
    * use it to plot two series from one shared `data` row against different fields
@@ -62,16 +99,63 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
    */
   width?: number
   height?: number
+  /**
+   * Approximate number of ticks on the x-axis.
+   *
+   * ⚠ **Follows SCREEN position, so its meaning swaps with `orientation`.** On a vertical
+   * chart the x-axis is the category axis; on a horizontal one it is the VALUE axis. Prefer
+   * {@link BarChartProps.valueAxisTicks} / {@link BarChartProps.categoryAxisTicks}, which
+   * name the axis by role and never swap.
+   *
+   * @defaultValue `5`
+   * @deprecated Use `valueAxisTicks` / `categoryAxisTicks`.
+   */
   xTicks?: number
   /**
    * Approximate number of ticks on the y-axis.
    *
+   * ⚠ **Follows SCREEN position, so its meaning swaps with `orientation`** — see
+   * {@link BarChartProps.xTicks}.
+   *
+   * @defaultValue `5`
+   * @deprecated Use `valueAxisTicks` / `categoryAxisTicks`.
+   */
+  yTicks?: number
+  /**
+   * Approximate number of ticks on the **value** axis, whichever way the chart is turned.
+   *
+   * This is the prop you want. `xTicks`/`yTicks` are named for where the axis is *drawn*,
+   * so on `orientation="horizontal"` the value axis moves from screen-y to screen-x and the
+   * controlling prop moves with it — `yTicks={1}` silently does nothing while `xTicks={1}`
+   * works. Meanwhile `xLabelEvery` does NOT swap: it always strides the category axis. Two
+   * conventions in one component, with nothing in the types to say so (2026-07-28 report
+   * C17b). Wins over `xTicks`/`yTicks` when both are given.
+   *
+   * @defaultValue `5`
+   */
+  valueAxisTicks?: number
+  /**
+   * Approximate number of ticks on the CATEGORY axis, on both orientations. Role-named twin
+   * of valueAxisTicks.
+   *
    * @defaultValue `5`
    * @see the component manifest
    */
-  yTicks?: number
-  /** Show every Nth category label (and always the last) to thin a crowded x-axis. */
+  categoryAxisTicks?: number
+  /**
+   * Show every Nth category label (and always the last) to thin a crowded axis.
+   *
+   * Always strides the **category** axis (the `x` field of each datum), on both
+   * orientations — unlike `xTicks`/`yTicks`, which follow screen position.
+   * {@link BarChartProps.categoryLabelEvery} is the unambiguous name; this is kept for
+   * compatibility.
+   */
   xLabelEvery?: number
+  /**
+   * Show every Nth category label (and always the last). Role-named twin of
+   * `xLabelEvery`; wins when both are given.
+   */
+  categoryLabelEvery?: number
   legend?: boolean
   tooltip?: boolean
   /** Custom tooltip formatter. Stacked default lists "label · total" + per-layer values. */
@@ -102,6 +186,14 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   fill?: FillKind
   /** Pattern motif when `fill="pattern"`. */
   patternKind?: PatternKind
+  /**
+   * Format each category/x-axis tick label. Receives the datum's raw `x` value — a number,
+   * a string, or a `Date`, whichever the series carries.
+   *
+   * Threads through `Axis`'s own `format`, which every chart composing an axis should
+   * surface (2026-07-28 report C16); enforced by `axis-parity.test.ts`.
+   */
+  format?: (value: number | string | Date) => string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -127,7 +219,10 @@ export function BarChart<Datum = { x: string; y: number }>({
   height,
   xTicks = 5,
   yTicks = 5,
+  valueAxisTicks,
+  categoryAxisTicks,
   xLabelEvery,
+  categoryLabelEvery,
   legend,
   tooltip,
   tooltipFormat,
@@ -138,6 +233,7 @@ export function BarChart<Datum = { x: string; y: number }>({
   onSelect,
   fill = 'solid',
   patternKind,
+  format: xFormat,
 }: BarChartProps<Datum>) {
   useSignals()
   const defsId = useId()
@@ -183,11 +279,22 @@ export function BarChart<Datum = { x: string; y: number }>({
       : undefined
 
   const isVerticalChart = orientation === 'vertical'
+
+  // Resolve the role-named axis props onto the screen-named ones the render path uses.
+  // This is the single place the swap happens, so `valueAxisTicks` means the value axis on
+  // BOTH orientations while `xTicks`/`yTicks` keep their existing screen-position meaning
+  // for anyone already passing them (2026-07-28 report C17b).
+  const resolvedYTicks = (isVerticalChart ? valueAxisTicks : categoryAxisTicks) ?? yTicks
+  const resolvedXTicks = (isVerticalChart ? categoryAxisTicks : valueAxisTicks) ?? xTicks
+  // `xLabelEvery` never swapped — it always strides the category axis — so its role-named
+  // twin is a plain alias rather than an orientation-dependent pick.
+  const resolvedLabelEvery = categoryLabelEvery ?? xLabelEvery
+
   // Reserve left-margin room for the widest left-axis label so it isn't clipped:
   // value ticks when vertical, category labels when horizontal.
   const leftAxisLabels = isVerticalChart
     ? linearScale([yMin, yMax], [0, 1])
-        .ticks(yTicks)
+        .ticks(resolvedYTicks)
         .map((v) => (valFormat ? valFormat(v) : v.toLocaleString()))
     : categories.map((c) => String(c))
   // The final bottom-axis label is centred on the plot's right edge, so half of it
@@ -195,7 +302,7 @@ export function BarChart<Datum = { x: string; y: number }>({
   const bottomAxisLabels = isVerticalChart
     ? categories.map((c) => String(c))
     : linearScale([yMin, yMax], [0, 1])
-        .ticks(xTicks)
+        .ticks(resolvedXTicks)
         .map((v) => (valFormat ? valFormat(v) : v.toLocaleString()))
   const margins = plain
     ? PLAIN_MARGINS
@@ -256,7 +363,8 @@ export function BarChart<Datum = { x: string; y: number }>({
       const segs = visibleSeries.map((s) => ({
         label: s.label,
         value: yFor(s)(s.data[di]!),
-        color: s.color ?? COLORS[series.indexOf(s) % COLORS.length]!,
+        // The tooltip names one category, so it can resolve the exact datum's color.
+        color: resolveColor(s.color, s.data[di], di, COLORS[series.indexOf(s) % COLORS.length]!),
       }))
       return { segs, total: segs.reduce((sum, seg) => sum + seg.value, 0) }
     })
@@ -316,9 +424,9 @@ export function BarChart<Datum = { x: string; y: number }>({
           const innerW = width - margins.left - margins.right
           const innerH = h - margins.top - margins.bottom
           const isVertical = orientation === 'vertical'
-          // Thin a crowded category axis automatically; an explicit xLabelEvery wins.
-          const resolvedLabelEvery =
-            xLabelEvery ?? autoLabelStride(categories, isVertical ? innerW : innerH)
+          // Thin a crowded category axis automatically; an explicit stride prop wins.
+          const labelEvery =
+            resolvedLabelEvery ?? autoLabelStride(categories, isVertical ? innerW : innerH)
 
           const catScale = bandScale(categories, isVertical ? [0, innerW] : [0, innerH], 0.2)
           const valScale = linearScale(
@@ -342,16 +450,26 @@ export function BarChart<Datum = { x: string; y: number }>({
                   patternKind={patternKind}
                   series={series.map((s, si) => ({
                     id: s.id,
-                    color: s.color ?? COLORS[si % COLORS.length]!,
+                    color: resolveColor(s.color, s.data[0], 0, COLORS[si % COLORS.length]!),
                   }))}
                 />
               )}
               <g transform={`translate(${margins.left},${margins.top})`}>
                 {!plain && isVertical && (
-                  <GridLines scale={valScale} orientation="y" length={innerW} tickCount={yTicks} />
+                  <GridLines
+                    scale={valScale}
+                    orientation="y"
+                    length={innerW}
+                    tickCount={resolvedYTicks}
+                  />
                 )}
                 {!plain && !isVertical && (
-                  <GridLines scale={valScale} orientation="x" length={innerH} tickCount={xTicks} />
+                  <GridLines
+                    scale={valScale}
+                    orientation="x"
+                    length={innerH}
+                    tickCount={resolvedXTicks}
+                  />
                 )}
                 {!plain &&
                   renderAnnotations(annotations, {
@@ -361,7 +479,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                     innerH,
                   })}
                 {visibleSeries.map((s, si) => {
-                  const color = s.color ?? COLORS[series.indexOf(s) % COLORS.length]!
+                  const paletteColor = COLORS[series.indexOf(s) % COLORS.length]!
                   const seriesIdx = series.indexOf(s)
                   const subBandW =
                     mode === 'grouped'
@@ -416,15 +534,27 @@ export function BarChart<Datum = { x: string; y: number }>({
                       if (isStackLike && valLen < 14) label = null
                     }
 
+                    // Per-datum color when `series.color` is a function; the series color
+                    // otherwise. `fillFor` still routes through the gradient/pattern defs,
+                    // which are keyed by series — a per-datum color falls back to a flat
+                    // fill there, which is the only sensible reading of "one gradient, many
+                    // colors".
+                    const barColor = resolveColor(s.color, d, di, paletteColor)
+                    // `data-x` is the CSS hook for a single bar. Without it every <rect>
+                    // sits alone in its own <g>, so `rect:nth-of-type(n)` matches EVERY bar
+                    // at n=1 and none at n>=2 — the only selector that distinguished bars
+                    // was position among sibling <g>s, an implementation detail that breaks
+                    // the moment `annotations` add another sibling (2026-07-28 report C18).
                     const rect = isVertical ? (
                       <rect
                         x={barStart}
                         y={valStart}
                         width={subBandW}
                         height={valLen}
-                        fill={fillFor(defsId, s.id, fill, color)}
+                        fill={fillFor(defsId, s.id, fill, barColor)}
                         rx={2}
                         data-series={s.id}
+                        data-x={String(x(d))}
                       />
                     ) : (
                       <rect
@@ -432,9 +562,10 @@ export function BarChart<Datum = { x: string; y: number }>({
                         y={barStart}
                         width={valLen}
                         height={subBandW}
-                        fill={fillFor(defsId, s.id, fill, color)}
+                        fill={fillFor(defsId, s.id, fill, barColor)}
                         rx={2}
                         data-series={s.id}
+                        data-x={String(x(d))}
                       />
                     )
                     return (
@@ -451,15 +582,16 @@ export function BarChart<Datum = { x: string; y: number }>({
                       scale={catScale}
                       orientation="x"
                       length={innerW}
-                      tickCount={xTicks}
-                      labelEvery={resolvedLabelEvery}
+                      tickCount={resolvedXTicks}
+                      labelEvery={labelEvery}
                       transform={`translate(0,${innerH})`}
+                      {...(xFormat ? { format: xFormat } : {})}
                     />
                     <Axis
                       scale={valScale}
                       orientation="y"
                       length={innerH}
-                      tickCount={yTicks}
+                      tickCount={resolvedYTicks}
                       {...(valFormat && { format: valFormat })}
                     />
                   </>
@@ -470,7 +602,7 @@ export function BarChart<Datum = { x: string; y: number }>({
                       scale={valScale}
                       orientation="x"
                       length={innerW}
-                      tickCount={xTicks}
+                      tickCount={resolvedXTicks}
                       {...(valFormat && { format: valFormat })}
                       transform={`translate(0,${innerH})`}
                     />
@@ -478,8 +610,8 @@ export function BarChart<Datum = { x: string; y: number }>({
                       scale={catScale}
                       orientation="y"
                       length={innerH}
-                      tickCount={yTicks}
-                      labelEvery={resolvedLabelEvery}
+                      tickCount={resolvedYTicks}
+                      labelEvery={labelEvery}
                     />
                   </>
                 )}
@@ -493,7 +625,7 @@ export function BarChart<Datum = { x: string; y: number }>({
           series={series.map((s, i) => ({
             id: s.id,
             label: s.label,
-            color: s.color ?? COLORS[i % COLORS.length]!,
+            color: resolveColor(s.color, s.data[0], 0, COLORS[i % COLORS.length]!),
           }))}
           hidden={hidden}
         />

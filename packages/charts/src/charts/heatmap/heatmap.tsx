@@ -41,6 +41,14 @@ export interface HeatmapProps {
   visualMap?: VisualMapOptions
   /** Render a toolbox (PNG/SVG export, data-view toggle, restore). `true` enables all tools. */
   toolbox?: boolean | ToolboxOptions
+  /**
+   * Format each category/x-axis tick label. Receives the datum's raw `x` value — a number,
+   * a string, or a `Date`, whichever the series carries.
+   *
+   * Threads through `Axis`'s own `format`, which every chart composing an axis should
+   * surface (2026-07-28 report C16); enforced by `axis-parity.test.ts`.
+   */
+  format?: (value: number | string | Date) => string
 }
 
 export function Heatmap({
@@ -53,6 +61,7 @@ export function Heatmap({
   plain,
   visualMap,
   toolbox,
+  format,
 }: HeatmapProps) {
   useSignals()
   const resolvedHeight = height ?? (plain ? 48 : 320)
@@ -183,6 +192,7 @@ export function Heatmap({
                   orientation="x"
                   length={inner.width}
                   transform={`translate(0,${inner.height})`}
+                  {...(format ? { format: format } : {})}
                 />
                 <Axis scale={yScale} orientation="y" length={inner.height} />
               </>

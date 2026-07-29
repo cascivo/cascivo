@@ -32,6 +32,16 @@ export interface HistogramProps {
    * @see the component manifest
    */
   plain?: boolean
+  /**
+   * Format each X-axis tick label. Receives the datum's raw `x` value — a number, a string,
+   * or a `Date`, whichever the series carries.
+   *
+   * Without it a numeric x renders raw: a `Date.now()`-scale value (the natural shape for a
+   * time series) renders as `1,785,217,000,000`. Passing `Date` objects switches the axis to
+   * a time scale, but that format is fixed, so every bucket narrower than a day collapses to
+   * the same label. Threads through `Axis`'s own `format` (2026-07-28 report C16).
+   */
+  format?: (value: number | string | Date) => string
 }
 
 export function Histogram({
@@ -44,6 +54,7 @@ export function Histogram({
   height,
   className,
   plain,
+  format,
 }: HistogramProps) {
   useSignals()
   const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
@@ -153,6 +164,7 @@ export function Histogram({
                   orientation="x"
                   length={inner.width}
                   transform={`translate(0,${inner.height})`}
+                  {...(format ? { format } : {})}
                 />
                 <Axis scale={yScale} orientation="y" length={inner.height} />
               </>

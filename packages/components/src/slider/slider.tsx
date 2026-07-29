@@ -1,5 +1,6 @@
 'use client'
 import { cn } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { InputHTMLAttributes } from 'react'
 import styles from './slider.module.css'
 
@@ -7,16 +8,16 @@ export interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
   label?: string
 }
 
-export function Slider({
-  label,
-  className,
-  id,
-  min = 0,
-  max = 100,
-  step = 1,
-  disabled,
-  ...props
-}: SliderProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<input>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). `forwardRef` rather than a
+ * bare `ref?: Ref<T>` prop keeps the `react >= 18` peer floor honest, since ref-as-prop does
+ * not work there.
+ */
+export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
+  { label, className, id, min = 0, max = 100, step = 1, disabled, ...props },
+  ref,
+) {
   const sliderId =
     id ?? (label ? `cascade-slider-${label.toLowerCase().replace(/\s+/g, '-')}` : undefined)
 
@@ -35,8 +36,9 @@ export function Slider({
         step={step}
         disabled={disabled}
         className={styles['slider']}
+        ref={ref as never}
         {...props}
       />
     </div>
   )
-}
+})

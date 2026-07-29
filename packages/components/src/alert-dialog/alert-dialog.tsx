@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { useEffectPropSignal, useId, useSignal, useSignalEffect } from '@cascivo/core'
+import { focusElement, useEffectPropSignal, useId, useSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './alert-dialog.module.css'
 
@@ -55,7 +55,7 @@ export function AlertDialog({
       } catch {
         /* noop */
       }
-      requestAnimationFrame(() => cancelRef.current?.focus())
+      requestAnimationFrame(() => focusElement(cancelRef.current))
     } else {
       try {
         el.hidePopover()

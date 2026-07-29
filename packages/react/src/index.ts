@@ -280,13 +280,14 @@ export * from '../../layouts/src/page-header/page-header' // PageHeader
 // it plainly. Not re-exported here: a separate re-export makes the bundler mint a
 // second `SpaceStep$1` binding for the same external type.
 // Reusable, SSR-safe theme runtime (ThemeProvider / useTheme / setTheme /
-// themePreloadScript / themeSignal). Packages the data-theme wiring apps
-// otherwise hand-roll.
+// applyTheme / themePreloadScript / themeSignal). Packages the data-theme wiring
+// apps otherwise hand-roll.
 export {
   ThemeProvider,
   useTheme,
   themeSignal,
   setTheme,
+  applyTheme,
   themePreloadScript,
   type ThemeProviderProps,
 } from './theme'

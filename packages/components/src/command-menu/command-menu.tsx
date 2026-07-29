@@ -2,6 +2,7 @@
 import {
   batch,
   cn,
+  focusElement,
   useEffectPropSignal,
   useSignal,
   useSignalEffect,
@@ -297,7 +298,7 @@ export function CommandMenu({
           activeScope.value = null
         })
         if (typeof dialog.showModal === 'function') dialog.showModal()
-        inputRef.current?.focus()
+        focusElement(inputRef.current)
       }
     } else if (dialog.open) {
       pageStack.value = []
@@ -382,7 +383,7 @@ export function CommandMenu({
       activeScope.value = null
       activeIndex.value = 0
     })
-    inputRef.current?.focus()
+    focusElement(inputRef.current)
   }
 
   const popPage = () => {
@@ -547,7 +548,7 @@ export function CommandMenu({
                     activeScope.value = activeScope.value === scope.id ? null : scope.id
                     activeIndex.value = 0
                   })
-                  inputRef.current?.focus()
+                  focusElement(inputRef.current)
                 }}
               >
                 {scope.prefix && <span className={styles['scopePrefix']}>{scope.prefix}</span>}

@@ -35,6 +35,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-dialog-body-gap',
     '--cascivo-color-surface',
     '--cascivo-color-border',
     '--cascivo-radius-lg',
@@ -62,6 +63,7 @@ export const meta: ComponentMeta = {
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  styleHooks: ['data-cascivo-sheet-body'],
   tags: ['overlay', 'drawer', 'panel', 'slide'],
   intent: {
     whenToUse: [

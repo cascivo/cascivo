@@ -146,7 +146,30 @@
   }
 
   .body {
+    /* A dialog body stacks fields, prose and actions, so it owns the rhythm between its
+       children — `Field` deliberately has no outer margin (it is `display: grid` and owns
+       only its own label/control/description spacing). Without a gap here, three Fields and
+       a submit button render flush at 0px, which is the obvious content for a dialog and
+       looked broken by default. Modal, Drawer, Sheet and AlertDialog were ALL missing it,
+       so they were consistent with each other and wrong together (2026-07-28 report C15).
+       Override per instance with --cascivo-dialog-body-gap: 0 for full-bleed content. */
+    display: flex;
+    flex-direction: column;
+    gap: var(--cascivo-dialog-body-gap, var(--cascivo-space-5));
     padding: var(--cascivo-space-6);
+  }
+
+  /* Dialog actions: a right-aligned row, divided from the body. Every consumer
+     hand-rolled this shape before the `footer` prop existed (2026-07-28 report C15).
+     `flex-wrap` so a three-button footer degrades on a 320px screen instead of
+     overflowing; padding-block-start only, since .body already owns the space above. */
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--cascivo-space-2);
+    padding: var(--cascivo-space-4) var(--cascivo-space-6);
+    border-block-start: 1px solid var(--cascivo-color-border);
   }
 
   @media (max-width: 40rem) {

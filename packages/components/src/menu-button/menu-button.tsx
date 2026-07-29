@@ -3,6 +3,7 @@
 import {
   cn,
   DismissableLayer,
+  focusElement,
   useAnchorPosition,
   useSignal,
   useSignalEffect,
@@ -79,7 +80,7 @@ export function MenuButton({
 
   function close(restoreFocus: boolean): void {
     open.value = false
-    if (restoreFocus) triggerRef.current?.focus()
+    if (restoreFocus) focusElement(triggerRef.current)
   }
 
   function handleTriggerKeyDown(e: KeyboardEvent<HTMLButtonElement>): void {

@@ -10,11 +10,11 @@ baseline. If an integration surprises you, start here.
 | Framework                  | Supported | Notes                                                                                   |
 | -------------------------- | --------- | --------------------------------------------------------------------------------------- |
 | React 18 / 19              | ✅ Yes    | Primary target. Components ship `'use client'` preserved.                                |
-| Next.js App Router (RSC)   | ✅ Yes    | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. |
+| Next.js App Router (RSC)   | ✅ Yes    | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. Working example: [`apps/examples/react-next`](../apps/examples/react-next/). See [`USING-WITH-NEXTJS.md`](./USING-WITH-NEXTJS.md). |
 | Vite + React (CSR/SPA)     | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
 | Vite SSR / TanStack Start  | ✅ Yes¹   | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/). See [`USING-WITH-VITE-SSR.md`](./USING-WITH-VITE-SSR.md). |
-| Preact 10 (`preact/compat`) | ✅ Yes    | Verified in production. See [`USING-WITH-PREACT.md`](./USING-WITH-PREACT.md).            |
-| Astro (React islands)      | ✅ Yes    | Works as a React island; import CSS in a shared layout.                                  |
+| Preact 10 (`preact/compat`) | ✅ **CSR only** | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](./USING-WITH-PREACT.md). |
+| Astro (React islands)      | ⚠️ **Partial** | `client:only` ✅. Under `client:load` / `client:visible` Astro drops the per-component CSS, so islands render unstyled — import the aggregate `@cascivo/react/styles.css` in a shared layout as a workaround (+308 KB). See [`USING-WITH-ASTRO.md`](./USING-WITH-ASTRO.md). |
 | Vue / Svelte / Angular     | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React. |
 
 ¹ The published `@cascivo/react` bundle ships per-component CSS as static
@@ -71,20 +71,27 @@ import '@cascivo/tokens/functions.css' // Chrome 133+ progressive enhancement
 
 ## Package compatibility
 
-All `@cascivo/*` packages are 0.x and released together. Install matching minors;
-the set verified by the integration migrations is:
+All `@cascivo/*` packages are 0.x and released together. Install matching minors.
 
-| Package           | Version | Peer requirements                                  |
-| ----------------- | ------- | -------------------------------------------------- |
-| `@cascivo/core`   | 0.1.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=3` |
-| `@cascivo/tokens` | 0.2.x   | none (CSS only)                                    |
-| `@cascivo/themes` | 0.2.x   | `@cascivo/tokens` (direct dep) — themes `@import` it |
-| `@cascivo/react`  | 0.2.x   | `react >=18`, `react-dom >=18`, `@preact/signals-react >=3` |
-| `@cascivo/icons`  | 0.1.x   | `react >=18`                                       |
-| `@cascivo/charts` | 0.1.x   | `react >=18`, `@cascivo/core`                      |
-| `@cascivo/i18n`   | 0.1.x   | `@preact/signals-react`                            |
-| `@cascivo/storage` | 0.1.x  | `@preact/signals-react`                            |
-| `@cascivo/mcp`    | 0.1.x   | (server; run via `npx`)                            |
+This table is **generated from the packages themselves** by `pnpm regen` and verified by
+CI's drift check — it cannot go stale. (It once sat thirteen minors behind, claiming
+`@cascivo/react` 0.2.x while npm served 0.13.0, which is why it is no longer hand-written.)
+
+<!-- BEGIN GENERATED: package-compatibility (scripts/compat/generate.ts) -->
+
+| Package | Version | Peer requirements |
+| ------- | ------- | ----------------- |
+| `@cascivo/core` | 0.7.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/tokens` | 0.5.x | none (CSS only) |
+| `@cascivo/themes` | 0.4.x | `@cascivo/tokens` (direct dep) — themes `@import` it |
+| `@cascivo/react` | 0.13.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/icons` | 0.3.x | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0` |
+| `@cascivo/charts` | 0.7.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/i18n` | 0.2.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/storage` | 0.1.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/mcp` | 0.6.x | (server; run via `npx`) |
+
+<!-- END GENERATED: package-compatibility -->
 
 > **React 19 requires `@preact/signals-react` 3.x.** React 19 removed the internal
 > that signals-react 2.x imports, so a 2.x runtime fails to load under React 19
@@ -107,7 +114,7 @@ every package manager, with or without `auto-install-peers`.
 
 ```ts
 import '@cascivo/react/styles.css' // components (no tokens/colors on their own)
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 import './my-theme.css' // optional brand overrides — always LAST
 ```
 

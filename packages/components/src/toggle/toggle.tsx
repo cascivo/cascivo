@@ -1,5 +1,6 @@
 'use client'
 import { cn, createMachine, useMachine, useSignals } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { ButtonHTMLAttributes } from 'react'
 import styles from './toggle.module.css'
 
@@ -26,17 +27,26 @@ export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   size?: 'sm' | 'md'
 }
 
-export function Toggle({
-  checked,
-  defaultChecked = false,
-  onValueChange,
-  onChange,
-  label,
-  size = 'md',
-  className,
-  disabled,
-  ...props
-}: ToggleProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<button>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). `forwardRef` rather than a
+ * bare `ref?: Ref<T>` prop keeps the `react >= 18` peer floor honest, since ref-as-prop does
+ * not work there.
+ */
+export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle(
+  {
+    checked,
+    defaultChecked = false,
+    onValueChange,
+    onChange,
+    label,
+    size = 'md',
+    className,
+    disabled,
+    ...props
+  },
+  ref,
+) {
   useSignals()
   const machine = createMachine({
     initial: defaultChecked ? ('on' as const) : ('off' as const),
@@ -65,6 +75,7 @@ export function Toggle({
       disabled={disabled}
       className={cn(styles['toggle'], className)}
       onClick={handleClick}
+      ref={ref as never}
       {...props}
     >
       <span className={styles['track']} aria-hidden="true">
@@ -73,4 +84,4 @@ export function Toggle({
       {label && <span className={styles['label']}>{label}</span>}
     </button>
   )
-}
+})

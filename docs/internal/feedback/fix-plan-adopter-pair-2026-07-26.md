@@ -1,6 +1,13 @@
 # Fix plan — the 2026-07-26 adopter **pair** (both tested published `0.12.0`)
 
-**Status: implemented on `claude/ui-library-analysis-plan-s4qogb`; not yet published.**
+> **Superseded — this plan is closed.** The live tracker is
+> [`fix-plan-incident-console-adopter-2026-07-28.md`](fix-plan-incident-console-adopter-2026-07-28.md).
+> **WS-15a (publish) is done**: the 07-28 reporter tested `@cascivo/react` 0.13.0 ·
+> `@cascivo/core` 0.7.0 · `@cascivo/themes` 0.4.8 · `@cascivo/tokens` 0.5.5 · `@cascivo/icons`
+> 0.3.5 · `@cascivo/charts` 0.7.0 — exactly `main` at `757e6cc8`. Nothing carries forward from
+> this plan or the 07-20 → 07-26 chain behind it.
+
+**Status: implemented and published (`@cascivo/react` 0.13.0 and the matching train).**
 Per-workstream: **WS-1** ✅ (`tsdoc:generate` republishes the manifest onto the type surface —
 124 components, 300+ props; `tsdoc-parity` guard + placeholder blocklist + coverage ratchet) ·
 **WS-2** ✅ (all four root causes fixed; `adopter-app` fixture audits clean in CI; `props-parity`
@@ -18,8 +25,8 @@ them, `vocabulary` guard) · **WS-10** ✅ (`Badge tone=` fixed; `example-props`
 all 370 examples and found a second real gap) · **WS-11** ✅ (channels derived per-symbol;
 `importableSymbols`; `PageHeader` exported) · **WS-12** ✅ (12 papercuts) ·
 **WS-13** ✅ (`export-collisions` guard + icons-overlap ratchet) · **WS-14** ✅ (10 new guards,
-wired into `pnpm meta:check` / `pnpm ready` / CI) · **WS-15** ◑ (15b `npm-parity` canary
-implemented; 15a publish is a release action, not a code change).
+wired into `pnpm meta:check` / `pnpm ready` / CI) · **WS-15** ✅ (15b `npm-parity` canary
+implemented; 15a published — confirmed by the 07-28 report's version block, see the note above).
 
 > **Correction — the publishing theory was wrong for this round.** This plan originally
 > carried the 07-25 plan's framing: _"both 07-26 adopters tested npm, not `main`, so they met

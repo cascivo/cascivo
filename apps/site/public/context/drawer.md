@@ -50,6 +50,7 @@ Renders role="dialog" with aria-modal; the title labels it via aria-labelledby a
 
 ## Tokens
 
+- `--cascivo-dialog-body-gap`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-radius-overlay`
@@ -101,7 +102,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Drawer is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit
+  --cascivo-dialog-body-gap, --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit
 
 Accessibility: role "dialog", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.
 

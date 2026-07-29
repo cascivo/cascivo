@@ -57,6 +57,14 @@ export interface StreamProps {
    * @see the component manifest
    */
   plain?: boolean
+  /**
+   * Format each category/x-axis tick label. Receives the datum's raw `x` value — a number,
+   * a string, or a `Date`, whichever the series carries.
+   *
+   * Threads through `Axis`'s own `format`, which every chart composing an axis should
+   * surface (2026-07-28 report C16); enforced by `axis-parity.test.ts`.
+   */
+  format?: (value: number | string | Date) => string
 }
 
 const COLORS = Array.from({ length: 8 }, (_, i) => `var(--cascivo-chart-${i + 1})`)
@@ -75,6 +83,7 @@ export function Stream({
   tooltip,
   className,
   plain,
+  format,
 }: StreamProps) {
   useSignals()
   const hidden = useSignal(new Set<string>())
@@ -182,6 +191,7 @@ export function Stream({
                   orientation="x"
                   length={innerW}
                   transform={`translate(0,${innerH})`}
+                  {...(format ? { format: format } : {})}
                 />
               )}
             </g>

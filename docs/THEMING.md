@@ -315,7 +315,7 @@ Import order (see also the [`@cascivo/react` README](../packages/react/README.md
 
 ```ts
 import '@cascivo/react/styles.css' // components
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 import './my-theme.css' // brand overrides — MUST be last
 ```
 

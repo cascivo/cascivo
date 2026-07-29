@@ -269,6 +269,7 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 | Example                                                           | Description                                                                                         |
 | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| [`@cascivo/example-astro-islands`](apps/examples/astro-islands)   |                                                                                                     |
 | [`@cascivo/example-deploy`](apps/examples/deploy)                 | Example app — a Vercel-style deployment platform built with cascivo                                 |
 | [`@cascivo/example-flow`](apps/examples/flow)                     | Example app — a Camunda-style process orchestration dashboard built with cascivo                    |
 | [`@cascivo/json-playground`](apps/examples/json-playground)       | Live JSON → UI renderer playground using @cascivo/render                                            |

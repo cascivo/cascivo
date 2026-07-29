@@ -75,6 +75,13 @@ export const meta: ComponentMeta = {
       default: '5',
       description: 'Approximate number of Y-axis ticks',
     },
+    {
+      name: 'format',
+      description:
+        "Format each X-axis tick label; receives the datum's raw x value (number | string | Date). Without it a numeric x renders raw — a Date.now()-scale value renders as 1,785,217,000,000 — and passing Date objects gives a fixed date format, so sub-day buckets all collapse to the same label. Mirrors secondAxis.format on the right.",
+      type: '(value: number | string | Date) => string',
+      required: false,
+    },
     { name: 'legend', type: 'boolean', required: false, description: 'Show series legend' },
     { name: 'tooltip', type: 'boolean', required: false, description: 'Enable hover tooltip' },
     {

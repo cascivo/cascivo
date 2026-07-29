@@ -1,5 +1,6 @@
 'use client'
 import { cn, createMachine, useMachine, useSignals } from '@cascivo/core'
+import { forwardRef } from 'react'
 import type { InputHTMLAttributes } from 'react'
 import styles from './time-picker.module.css'
 
@@ -30,24 +31,33 @@ export interface TimePickerProps extends Omit<
   size?: 'sm' | 'md' | 'lg'
 }
 
-export function TimePicker({
-  value,
-  defaultValue,
-  onValueChange,
-  onChange,
-  min,
-  max,
-  step,
-  label,
-  hint,
-  error,
-  size = 'md',
-  className,
-  id,
-  onFocus,
-  onBlur,
-  ...props
-}: TimePickerProps) {
+/**
+ * `forwardRef` so `ref` reaches the underlying `<input>` — and so it is TYPED. See
+ * `textarea.tsx` for the full rationale (2026-07-28 report C10). Enforced by
+ * `ref-parity.test.ts`, which found this component: the plan's own list of 16 was itself
+ * incomplete, which is why the rule is a guard and not a checklist.
+ */
+export const TimePicker = forwardRef<HTMLInputElement, TimePickerProps>(function TimePicker(
+  {
+    value,
+    defaultValue,
+    onValueChange,
+    onChange,
+    min,
+    max,
+    step,
+    label,
+    hint,
+    error,
+    size = 'md',
+    className,
+    id,
+    onFocus,
+    onBlur,
+    ...props
+  },
+  ref,
+) {
   useSignals()
   const [state, send] = useMachine(machine)
   const inputId =
@@ -84,6 +94,7 @@ export function TimePicker({
           send('BLUR')
           onBlur?.(e)
         }}
+        ref={ref as never}
         {...props}
       />
       {error && (
@@ -98,4 +109,4 @@ export function TimePicker({
       )}
     </div>
   )
-}
+})

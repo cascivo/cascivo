@@ -127,11 +127,11 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → `lint:host-strict` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, primitives, apg) → build → `ssr:check` → `computed:check` → type check → tests.
+This runs: `pnpm regen` → `vp check --fix` → `lint:host-strict` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg) → build → `ssr:check` → `css-contract:check` → `computed:check` → type check → tests.
 
 `lint:host-strict` is in there because CI runs it and `ready` did not: component source is _copied into adopter projects_, so it must also pass the objective host-lint rules (e.g. no inline `type` specifiers — write a separate `import type` line). It is fast and offline; skipping it locally just moves the failure to CI.
 
-**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:bundle`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`. Run them directly if you touched what they cover. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
+**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:bundle`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`, `isolated:check`. Run them directly if you touched what they cover. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
 
 To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
 
@@ -167,6 +167,34 @@ pnpm breakpoint:check
 # APG conformance (a declared apgPattern matches the manifest's role + required keys)
 pnpm apg:check
 
+# The `cascivo.reset` layer is filled (no canonical @layer ships empty)
+pnpm reset:check
+
+# A closed popover keeps no box — an author `display` beats the UA hide rule
+pnpm popover:check
+
+# Every declared prop is read by its component (no typed-but-inert props)
+pnpm dead-props:check
+
+# Every shipped cascivo.com URL resolves to a real route or public file
+pnpm doc-urls:check
+
+# CSS-shipping packages import their own CSS + ship a CSS-free node twin (needs a build)
+pnpm css-contract:check
+
+# Consumer-shaped canary: pack the tarballs, type-check them in a strict, non-hoisted
+# pnpm WORKSPACE outside the repo, with skipLibCheck OFF (needs a build; ~90s)
+pnpm isolated:check
+
+# Bare page: shipped styles.css and NOTHING else, full viewport, stacked components,
+# real hit-testing (needs a build + Chromium). Catches what computed:check structurally
+# cannot — a missing reset, an invisible overlay eating clicks.
+pnpm bare-page:check
+
+# Astro island CSS probe — one client directive per page; reports (does not gate) whether
+# component CSS survives an SSR'd island. Keeps COMPATIBILITY.md's Astro grade honest.
+pnpm --filter @cascivo/example-astro-islands run build
+
 # Manifest + docs guards (props-parity, pkg-exports, peer-floors, css-imports, docs-imports, doc-links, …)
 pnpm meta:check
 
@@ -179,7 +207,12 @@ bash scripts/checks/deployed-freshness.sh
 
 All must exit 0. The drift check is especially important: regenerated artifacts must be committed if changed.
 
-`pnpm meta:check` bundles the manifest/docs guards: `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `peer-floors` (every published package flooring the `@preact/signals-react` peer requires `>=3.0.0`, so React 19 support can't silently regress), `css-imports` (every cross-package `@import '@cascivo/…'` in shipped CSS is a real `dependencies` entry, not a peer), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
+`pnpm meta:check` bundles the manifest/docs guards, including the 2026-07-28 additions
+(`ref-parity` — single-host components forward a ref; `axis-parity` — every chart drawing an
+x-axis surfaces `Axis`'s `format`; `style-hooks` — `data-cascivo-*` styling hooks match their manifests and
+`docs/STYLING-INTERNALS.md`; `theme-bundle` — `all.css` really contains all twelve themes;
+`framework-matrix` — every ✅ in the support matrix names an example app or CI job that
+exists; `ref-parity`/`axis-parity` — per-exported-component and per-chart capability sweeps; `getting-started-contract` — a first-day fact appears on every first-day surface): `props-parity` (manifest props match the TS interface, both directions), `pkg-exports` (every published package exports `./package.json`), `peer-floors` (every published package flooring the `@preact/signals-react` peer requires `>=3.0.0`, so React 19 support can't silently regress), `css-imports` (every cross-package `@import '@cascivo/…'` in shipped CSS is a real `dependencies` entry, not a peer), `docs-imports` (every `@cascivo/*` import in the guides resolves to a real export/subpath), and `docs-links` (relative links in the guides resolve). `deployed-freshness.sh` asserts the live docs hosts serve the current `registry.json` version (the docs freshness invariant); it runs automatically in the `verify-site` post-deploy job and the daily `docs-freshness` workflow.
 
 ### Workspace package aliases — keep in sync
 

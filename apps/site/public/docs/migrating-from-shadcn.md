@@ -85,6 +85,32 @@ _Generated from the [parity matrix](https://cascivo.com/docs/parity) — 58 of 5
 
 <!-- END shadcn-map -->
 
+## Layout names that invert the ecosystem convention
+
+Two layout primitives are named against what Chakra, MUI and Radix taught you. Both are
+deliberate, both are flagged in their TSDoc — but the TSDoc only helps once you have already
+picked the component, and by then you have usually written the markup. So, before you pick:
+
+| cascivo   | What you probably expect                                                                                                         | What it actually does                                                                                                                              |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<Flex>`  | a **row** — CSS `flex-direction` defaults to `row`, and so do Chakra's `<Flex>`, MUI's `<Stack direction>`, and Radix's `<Flex>` | defaults to **`direction="vertical"`**. Pass `direction="horizontal"` for a row.                                                                   |
+| `<Stack>` | a **spacing stack** — a column with a gap, which is what `<Stack>` means in Chakra and MUI                                       | an **overlap primitive**: children are layered on top of one another (think `position: relative` + absolutely-stacked children), not spaced apart. |
+
+**What you want instead:**
+
+| Goal                                  | Use                                        |
+| ------------------------------------- | ------------------------------------------ |
+| A row of items with a gap             | `<Flex direction="horizontal" gap={3}>`    |
+| A column of items with a gap          | `<Flex gap={3}>` (vertical is the default) |
+| Elements layered on top of each other | `<Stack>`                                  |
+
+A 2026-07-28 adopter's summary: the JSDoc "caught us before runtime — but the names still
+invert two of the strongest conventions in the ecosystem." The names are staying (renaming
+them now would break every existing app for a naming preference); this table exists so the
+inversion is findable while you are _choosing_ a component rather than while hovering one.
+
+---
+
 ## CSS setup delta
 
 shadcn relies on Tailwind: you copy a `globals.css` with `@tailwind` directives
@@ -97,7 +123,7 @@ There is **no Tailwind dependency and no `tailwind.config`** to port:
 ```tsx
 // shadcn: Tailwind directives + utility classes in markup
 // cascivo: one themes import, then plain components
-import '@cascivo/themes/all.css' // tokens once + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens once + base typography + light & dark
 // component CSS (@layer cascivo.component) auto-included on import
 ```
 
