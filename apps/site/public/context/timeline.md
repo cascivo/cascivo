@@ -32,10 +32,10 @@ Rendered as an ordered list (ol/li) to convey sequence; the active item carries 
 
 ## Props
 
-| Name          | Type                                                                                                                                           | Required | Default  | Description                          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | ------------------------------------ |
-| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | Yes      | —        | The items to render.                 |
-| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                   | No       | vertical | Layout orientation of the component. |
+| Name          | Type                                                                                                                                                                                                             | Required | Default  | Description                          |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------- | ------------------------------------ |
+| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming"; tone?: "neutral" \| "info" \| "success" \| "warning" \| "danger" }[]` | Yes      | —        | The items to render.                 |
+| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                                                                                     | No       | vertical | Layout orientation of the component. |
 
 ## Tokens
 
@@ -44,6 +44,9 @@ Rendered as an ordered list (ol/li) to convey sequence; the active item carries 
 - `--cascivo-color-surface`
 - `--cascivo-color-success`
 - `--cascivo-color-primary`
+- `--cascivo-color-info`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-full`
 
 ## Examples
@@ -60,12 +63,52 @@ Rendered as an ordered list (ol/li) to convey sequence; the active item carries 
 />
 ```
 
+### Activity feed coloured by entry type
+
+In a feed every entry is equally done, so `tone` — not `status` — is what separates them. Keep the meaning in the text too; colour alone is not perceivable.
+
+```jsx
+<Timeline
+  items={[
+    {
+      id: '1',
+      title: 'p99 latency 4.2s',
+      description: 'ALERT · monitor',
+      time: '14:28',
+      tone: 'danger',
+    },
+    {
+      id: '2',
+      title: 'Rolling back deploy 4821',
+      description: 'NOTE · bo',
+      time: '14:49',
+      tone: 'neutral',
+    },
+    {
+      id: '3',
+      title: 'Status changed to monitoring',
+      description: 'STATUS · ana',
+      time: '15:12',
+      tone: 'info',
+    },
+    {
+      id: '4',
+      title: 'Merged 2 edits from kim',
+      description: 'MERGE · sync',
+      time: '15:14',
+      tone: 'success',
+    },
+  ]}
+/>
+```
+
 ## Boundaries
 
-| Area             | Level    | Note                                                                   |
-| ---------------- | -------- | ---------------------------------------------------------------------- |
-| orientation      | flexible | vertical for feeds, horizontal for compact progress strips             |
-| status semantics | strict   | Use a single current item; status drives marker colour via data-status |
+| Area             | Level    | Note                                                                                                                                                                  |
+| ---------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| orientation      | flexible | vertical for feeds, horizontal for compact progress strips                                                                                                            |
+| status semantics | strict   | Use a single current item; status drives marker colour via data-status                                                                                                |
+| tone semantics   | flexible | tone marks what kind of entry it is and overrides status on the marker; use it for feeds, status for trackers, and keep the meaning in the text as well as the colour |
 
 ## AI context prompt
 
@@ -83,12 +126,12 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Timeline is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-color-success, --cascivo-color-primary, --cascivo-radius-full
+  --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-color-success, --cascivo-color-primary, --cascivo-color-info, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-radius-full
 
 Accessibility: role "list", WCAG 2.2-AA. Keep it AA.
 
 Do not change (strict): status semantics — Use a single current item; status drives marker colour via data-status
-Flexible: orientation.
+Flexible: orientation, tone semantics.
 
 Do not invent props, tokens, or global viewport media queries.
 ```

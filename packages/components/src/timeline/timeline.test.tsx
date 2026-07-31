@@ -53,4 +53,54 @@ describe('Timeline', () => {
     expect(container.querySelector('time')!.textContent).toBe('09:00')
     expect(getByText('At door')).toBeDefined()
   })
+
+  it('omits data-tone entirely when no tone is given', () => {
+    const { getByRole } = render(<Timeline items={[{ id: 'x', title: 'Solo' }]} />)
+    expect(getByRole('listitem').getAttribute('data-tone')).toBeNull()
+  })
+
+  it('sets data-tone from the canonical tone vocabulary', () => {
+    const { getAllByRole } = render(
+      <Timeline
+        items={[
+          { id: '1', title: 'Alert', tone: 'danger' },
+          { id: '2', title: 'Merge', tone: 'success' },
+          { id: '3', title: 'Note', tone: 'neutral' },
+        ]}
+      />,
+    )
+    expect(getAllByRole('listitem').map((li) => li.getAttribute('data-tone'))).toEqual([
+      'danger',
+      'success',
+      'neutral',
+    ])
+  })
+
+  it('normalizes the tone aliases, so either spelling reaches the same stylesheet value', () => {
+    const { getAllByRole } = render(
+      <Timeline
+        items={[
+          { id: '1', title: 'a', tone: 'error' },
+          { id: '2', title: 'b', tone: 'destructive' },
+          { id: '3', title: 'c', tone: 'default' },
+        ]}
+      />,
+    )
+    expect(getAllByRole('listitem').map((li) => li.getAttribute('data-tone'))).toEqual([
+      'danger',
+      'danger',
+      'neutral',
+    ])
+  })
+
+  it('keeps status independent of tone, so a feed entry can carry both', () => {
+    const { getByRole } = render(
+      <Timeline items={[{ id: '1', title: 'Shipped', status: 'current', tone: 'info' }]} />,
+    )
+    const li = getByRole('listitem')
+    expect(li.getAttribute('data-status')).toBe('current')
+    expect(li.getAttribute('data-tone')).toBe('info')
+    // aria-current is a statement about sequence position, so tone must not touch it.
+    expect(li.getAttribute('aria-current')).toBe('step')
+  })
 })

@@ -20545,6 +20545,12 @@
             "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })"
           },
           {
+            "name": "center",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs"
+          },
+          {
             "name": "actions",
             "type": "ShellHeaderAction[]",
             "required": false,
@@ -23293,7 +23299,7 @@
           {
             "name": "items",
             "description": "The items to render.",
-            "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\" }[]",
+            "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\"; tone?: \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" }[]",
             "required": true
           },
           {
@@ -23310,6 +23316,9 @@
           "--cascivo-color-surface",
           "--cascivo-color-success",
           "--cascivo-color-primary",
+          "--cascivo-color-info",
+          "--cascivo-color-warning",
+          "--cascivo-color-destructive",
           "--cascivo-radius-full"
         ],
         "accessibility": {
@@ -23355,6 +23364,11 @@
               "area": "status semantics",
               "level": "strict",
               "note": "Use a single current item; status drives marker colour via data-status"
+            },
+            {
+              "area": "tone semantics",
+              "level": "flexible",
+              "note": "tone marks what kind of entry it is and overrides status on the marker; use it for feeds, status for trackers, and keep the meaning in the text as well as the colour"
             }
           ]
         }

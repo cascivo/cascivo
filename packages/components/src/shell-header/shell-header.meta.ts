@@ -23,6 +23,13 @@ export const meta: ComponentMeta = {
         'Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })',
     },
     {
+      name: 'center',
+      type: 'ReactNode',
+      required: false,
+      description:
+        'Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs',
+    },
+    {
       name: 'actions',
       type: 'ShellHeaderAction[]',
       required: false,
@@ -173,6 +180,20 @@ export const meta: ComponentMeta = {
   actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}
 />`,
       description: 'Brand with prefix, dropdown nav, global icon action',
+    },
+    {
+      title: 'Command-palette trigger in the centre slot',
+      code: `<ShellHeader
+  brand={{ name: 'Console', href: '/' }}
+  center={
+    <Button variant="ghost" onClick={openPalette}>
+      Search incidents, alerts, services… <Kbd>⌘K</Kbd>
+    </Button>
+  }
+  end={<UserMenu />}
+/>`,
+      description:
+        'center takes the header’s spare width, so the trigger grows and shrinks with the viewport instead of being pinned right like end',
     },
   ],
   dependencies: ['@cascivo/core', '@cascivo/i18n'],

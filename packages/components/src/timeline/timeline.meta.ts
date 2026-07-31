@@ -11,7 +11,7 @@ export const meta: ComponentMeta = {
     {
       name: 'items',
       description: 'The items to render.',
-      type: '{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" | "current" | "upcoming" }[]',
+      type: '{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" | "current" | "upcoming"; tone?: "neutral" | "info" | "success" | "warning" | "danger" }[]',
       required: true,
     },
     {
@@ -28,6 +28,9 @@ export const meta: ComponentMeta = {
     '--cascivo-color-surface',
     '--cascivo-color-success',
     '--cascivo-color-primary',
+    '--cascivo-color-info',
+    '--cascivo-color-warning',
+    '--cascivo-color-destructive',
     '--cascivo-radius-full',
   ],
   accessibility: { role: 'list', wcag: '2.2-AA', keyboard: [] },
@@ -35,6 +38,12 @@ export const meta: ComponentMeta = {
     {
       title: 'Vertical timeline with statuses',
       code: `<Timeline\n  items={[\n    { id: '1', title: 'Order placed', time: '09:00', status: 'complete' },\n    { id: '2', title: 'Shipped', time: '12:30', status: 'current' },\n    { id: '3', title: 'Delivered', status: 'upcoming' },\n  ]}\n/>`,
+    },
+    {
+      title: 'Activity feed coloured by entry type',
+      description:
+        'In a feed every entry is equally done, so `tone` — not `status` — is what separates them. Keep the meaning in the text too; colour alone is not perceivable.',
+      code: `<Timeline\n  items={[\n    { id: '1', title: 'p99 latency 4.2s', description: 'ALERT · monitor', time: '14:28', tone: 'danger' },\n    { id: '2', title: 'Rolling back deploy 4821', description: 'NOTE · bo', time: '14:49', tone: 'neutral' },\n    { id: '3', title: 'Status changed to monitoring', description: 'STATUS · ana', time: '15:12', tone: 'info' },\n    { id: '4', title: 'Merged 2 edits from kim', description: 'MERGE · sync', time: '15:14', tone: 'success' },\n  ]}\n/>`,
     },
   ],
   dependencies: ['@cascivo/core'],
@@ -75,6 +84,11 @@ export const meta: ComponentMeta = {
         area: 'status semantics',
         level: 'strict',
         note: 'Use a single current item; status drives marker colour via data-status',
+      },
+      {
+        area: 'tone semantics',
+        level: 'flexible',
+        note: 'tone marks what kind of entry it is and overrides status on the marker; use it for feeds, status for trackers, and keep the meaning in the text as well as the colour',
       },
     ],
   },

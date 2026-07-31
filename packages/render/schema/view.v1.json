@@ -3659,6 +3659,10 @@
                     "type": "string",
                     "enum": ["ShellHeaderBrand", "ReactNode"]
                   },
+                  "center": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
                   "end": {
                     "type": "string",
                     "enum": ["ReactNode"]

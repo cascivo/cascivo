@@ -56,6 +56,20 @@ export interface ShellHeaderLabels {
 export interface ShellHeaderProps {
   brand?: ShellHeaderBrand | ReactNode
   nav?: ShellHeaderNavItem[]
+  /**
+   * Free-form content between the nav and the right-hand cluster, in a wrapper that
+   * takes the header's spare width.
+   *
+   * This is where a command-palette / search trigger belongs — a wide, low-contrast
+   * button naming what it searches and showing its chord. Without a slot here the only
+   * remaining position is `end`, which sits after the spacer and so can neither centre
+   * nor grow; reaching the right spot otherwise means selecting the brand's hashed
+   * CSS-module class, which breaks whenever the internal nesting changes.
+   *
+   * `nav` cannot express it (links and menus only) and `actions` cannot (icon buttons
+   * with an `aria-label`, no text, no flex).
+   */
+  center?: ReactNode
   actions?: ShellHeaderAction[]
   end?: ReactNode
   onMenuClick?: (() => void) | undefined
@@ -183,6 +197,7 @@ function NavMenu({ item }: { item: ShellHeaderNavMenu }) {
 export function ShellHeader({
   brand,
   nav,
+  center,
   actions,
   end,
   onMenuClick,
@@ -259,7 +274,11 @@ export function ShellHeader({
           </ul>
         </nav>
       )}
-      <div className={styles['spacer']} />
+      {center ? (
+        <div className={styles['center']}>{center}</div>
+      ) : (
+        <div className={styles['spacer']} />
+      )}
       {actions && actions.length > 0 && (
         <div className={styles['actions']}>
           {actions.map((action) => (

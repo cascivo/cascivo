@@ -1660,6 +1660,11 @@
           "area": "status semantics",
           "level": "strict",
           "note": "Use a single current item; status drives marker colour via data-status"
+        },
+        {
+          "area": "tone semantics",
+          "level": "flexible",
+          "note": "tone marks what kind of entry it is and overrides status on the marker; use it for feeds, status for trackers, and keep the meaning in the text as well as the colour"
         }
       ],
       "Toast": [
@@ -19777,6 +19782,15 @@
           }
         },
         {
+          "name": "center",
+          "type": "ReactNode",
+          "required": false,
+          "description": "Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs",
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
           "name": "actions",
           "type": "ShellHeaderAction[]",
           "required": false,
@@ -22016,6 +22030,11 @@
             "area": "status semantics",
             "level": "strict",
             "note": "Use a single current item; status drives marker colour via data-status"
+          },
+          {
+            "area": "tone semantics",
+            "level": "flexible",
+            "note": "tone marks what kind of entry it is and overrides status on the marker; use it for feeds, status for trackers, and keep the meaning in the text as well as the colour"
           }
         ]
       },
@@ -22023,7 +22042,7 @@
         {
           "name": "items",
           "description": "The items to render.",
-          "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\" }[]",
+          "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\"; tone?: \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" }[]",
           "required": true,
           "schema": {
             "kind": "node"
@@ -22042,7 +22061,7 @@
         }
       ],
       "contextUrl": "/context/timeline.md",
-      "aiPrompt": "I am modifying the cascivo Timeline component (display). Ordered sequence of events with status markers and a connector line\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTimeline is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-color-success, --cascivo-color-primary, --cascivo-radius-full\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): status semantics — Use a single current item; status drives marker colour via data-status\nFlexible: orientation.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Timeline component (display). Ordered sequence of events with status markers and a connector line\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTimeline is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-surface, --cascivo-color-success, --cascivo-color-primary, --cascivo-color-info, --cascivo-color-warning, --cascivo-color-destructive, --cascivo-radius-full\n\nAccessibility: role \"list\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): status semantics — Use a single current item; status drives marker colour via data-status\nFlexible: orientation, tone semantics.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Toast",

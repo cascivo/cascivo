@@ -40,6 +40,12 @@
         "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })"
       },
       {
+        "name": "center",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs"
+      },
+      {
         "name": "actions",
         "type": "ShellHeaderAction[]",
         "required": false,
@@ -194,6 +200,11 @@
         "title": "Console header",
         "code": "import { Bell } from '@cascivo/icons'\n\n<ShellHeader\n  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
         "description": "Brand with prefix, dropdown nav, global icon action"
+      },
+      {
+        "title": "Command-palette trigger in the centre slot",
+        "code": "<ShellHeader\n  brand={{ name: 'Console', href: '/' }}\n  center={\n    <Button variant=\"ghost\" onClick={openPalette}>\n      Search incidents, alerts, services… <Kbd>⌘K</Kbd>\n    </Button>\n  }\n  end={<UserMenu />}\n/>",
+        "description": "center takes the header’s spare width, so the trigger grows and shrinks with the viewport instead of being pinned right like end"
       }
     ],
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],

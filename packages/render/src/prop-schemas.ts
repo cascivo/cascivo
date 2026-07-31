@@ -5185,6 +5185,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'center',
+      required: false,
+    },
+    {
       name: 'actions',
       required: false,
     },
