@@ -33,10 +33,10 @@ import { Timeline } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                                                                                                           | Required | Default    | Description                          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------ |
-| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming" }[]` | yes      | —          | The items to render.                 |
-| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                   | no       | `vertical` | Layout orientation of the component. |
+| Prop          | Type                                                                                                                                                                                                             | Required | Default    | Description                          |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------ |
+| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming"; tone?: "neutral" \| "info" \| "success" \| "warning" \| "danger" }[]` | yes      | —          | The items to render.                 |
+| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                                                                                     | no       | `vertical` | Layout orientation of the component. |
 
 ## Examples
 
@@ -52,6 +52,45 @@ import { Timeline } from '@cascivo/react'
 />
 ```
 
+### Activity feed coloured by entry type
+
+In a feed every entry is equally done, so `tone` — not `status` — is what separates them. Keep the meaning in the text too; colour alone is not perceivable.
+
+```tsx
+<Timeline
+  items={[
+    {
+      id: '1',
+      title: 'p99 latency 4.2s',
+      description: 'ALERT · monitor',
+      time: '14:28',
+      tone: 'danger',
+    },
+    {
+      id: '2',
+      title: 'Rolling back deploy 4821',
+      description: 'NOTE · bo',
+      time: '14:49',
+      tone: 'neutral',
+    },
+    {
+      id: '3',
+      title: 'Status changed to monitoring',
+      description: 'STATUS · ana',
+      time: '15:12',
+      tone: 'info',
+    },
+    {
+      id: '4',
+      title: 'Merged 2 edits from kim',
+      description: 'MERGE · sync',
+      time: '15:14',
+      tone: 'success',
+    },
+  ]}
+/>
+```
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -59,6 +98,9 @@ import { Timeline } from '@cascivo/react'
 - `--cascivo-color-surface`
 - `--cascivo-color-success`
 - `--cascivo-color-primary`
+- `--cascivo-color-info`
+- `--cascivo-color-warning`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-full`
 
 ## Accessibility

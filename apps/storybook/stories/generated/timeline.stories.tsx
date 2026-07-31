@@ -20,3 +20,41 @@ export const VerticalTimelineWithStatuses: Story = {
     />
   ),
 }
+
+export const ActivityFeedColouredByEntryType: Story = {
+  name: 'Activity feed coloured by entry type',
+  render: () => (
+    <Timeline
+      items={[
+        {
+          id: '1',
+          title: 'p99 latency 4.2s',
+          description: 'ALERT · monitor',
+          time: '14:28',
+          tone: 'danger',
+        },
+        {
+          id: '2',
+          title: 'Rolling back deploy 4821',
+          description: 'NOTE · bo',
+          time: '14:49',
+          tone: 'neutral',
+        },
+        {
+          id: '3',
+          title: 'Status changed to monitoring',
+          description: 'STATUS · ana',
+          time: '15:12',
+          tone: 'info',
+        },
+        {
+          id: '4',
+          title: 'Merged 2 edits from kim',
+          description: 'MERGE · sync',
+          time: '15:14',
+          tone: 'success',
+        },
+      ]}
+    />
+  ),
+}

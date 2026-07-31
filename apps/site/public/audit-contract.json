@@ -1547,6 +1547,7 @@
       "props": [
         { "name": "brand", "type": "ShellHeaderBrand | ReactNode", "required": false },
         { "name": "nav", "type": "ShellHeaderNavItem[]", "required": false },
+        { "name": "center", "type": "ReactNode", "required": false },
         { "name": "actions", "type": "ShellHeaderAction[]", "required": false },
         { "name": "end", "type": "ReactNode", "required": false },
         { "name": "onMenuClick", "type": "() => void", "required": false },
@@ -1787,7 +1788,7 @@
       "props": [
         {
           "name": "items",
-          "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\" }[]",
+          "type": "{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: \"complete\" | \"current\" | \"upcoming\"; tone?: \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\" }[]",
           "required": true
         },
         { "name": "orientation", "type": "'vertical' | 'horizontal'", "required": false }

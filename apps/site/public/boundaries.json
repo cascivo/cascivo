@@ -1550,6 +1550,11 @@
         "area": "status semantics",
         "level": "strict",
         "note": "Use a single current item; status drives marker colour via data-status"
+      },
+      {
+        "area": "tone semantics",
+        "level": "flexible",
+        "note": "tone marks what kind of entry it is and overrides status on the marker; use it for feeds, status for trackers, and keep the meaning in the text as well as the colour"
       }
     ],
     "Toast": [

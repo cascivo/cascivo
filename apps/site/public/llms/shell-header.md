@@ -26,16 +26,17 @@ import { ShellHeader } from '@cascivo/react'
 
 ## Props
 
-| Prop                | Type                            | Required | Default           | Description                                                                              |
-| ------------------- | ------------------------------- | -------- | ----------------- | ---------------------------------------------------------------------------------------- |
-| `brand`             | `ShellHeaderBrand \| ReactNode` | no       | —                 | Brand: { prefix?, name, href? } or free-form node                                        |
-| `nav`               | `ShellHeaderNavItem[]`          | no       | —                 | Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items }) |
-| `actions`           | `ShellHeaderAction[]`           | no       | —                 | Right-aligned global icon actions with aria-pressed                                      |
-| `end`               | `ReactNode`                     | no       | —                 | Free-form trailing slot (user menu, theme switcher)                                      |
-| `onMenuClick`       | `() => void`                    | no       | —                 | Renders the hamburger button; call shell.toggleSideNav                                   |
-| `menuExpanded`      | `boolean`                       | no       | —                 | aria-expanded for the hamburger button                                                   |
-| `skipToContentHref` | `string \| false`               | no       | `'#cascade-main'` | Skip-link target; false disables the link                                                |
-| `labels`            | `ShellHeaderLabels`             | no       | —                 | i18n overrides for built-in strings                                                      |
+| Prop                | Type                            | Required | Default           | Description                                                                                                                                    |
+| ------------------- | ------------------------------- | -------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `brand`             | `ShellHeaderBrand \| ReactNode` | no       | —                 | Brand: { prefix?, name, href? } or free-form node                                                                                              |
+| `nav`               | `ShellHeaderNavItem[]`          | no       | —                 | Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })                                                       |
+| `center`            | `ReactNode`                     | no       | —                 | Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs |
+| `actions`           | `ShellHeaderAction[]`           | no       | —                 | Right-aligned global icon actions with aria-pressed                                                                                            |
+| `end`               | `ReactNode`                     | no       | —                 | Free-form trailing slot (user menu, theme switcher)                                                                                            |
+| `onMenuClick`       | `() => void`                    | no       | —                 | Renders the hamburger button; call shell.toggleSideNav                                                                                         |
+| `menuExpanded`      | `boolean`                       | no       | —                 | aria-expanded for the hamburger button                                                                                                         |
+| `skipToContentHref` | `string \| false`               | no       | `'#cascade-main'` | Skip-link target; false disables the link                                                                                                      |
+| `labels`            | `ShellHeaderLabels`             | no       | —                 | i18n overrides for built-in strings                                                                                                            |
 
 ## Object types
 
@@ -88,6 +89,22 @@ import { Bell } from '@cascivo/icons'
     { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },
   ]}
   actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}
+/>
+```
+
+### Command-palette trigger in the centre slot
+
+center takes the header’s spare width, so the trigger grows and shrinks with the viewport instead of being pinned right like end
+
+```tsx
+<ShellHeader
+  brand={{ name: 'Console', href: '/' }}
+  center={
+    <Button variant="ghost" onClick={openPalette}>
+      Search incidents, alerts, services… <Kbd>⌘K</Kbd>
+    </Button>
+  }
+  end={<UserMenu />}
 />
 ```
 

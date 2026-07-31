@@ -220,6 +220,18 @@
     flex: 1;
   }
 
+  /* Takes the spare width the spacer would have taken, so `center` content can grow
+     instead of being pinned right like `end`. `min-inline-size: 0` is what lets a
+     long label inside actually shrink rather than forcing the header wider. */
+  .center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 0;
+    padding-inline: var(--cascivo-space-2);
+  }
+
   .actions {
     display: flex;
     align-items: center;

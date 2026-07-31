@@ -93,6 +93,39 @@
     color: var(--cascivo-color-text-subtle);
   }
 
+  /* Tone wins over status on the marker. Same specificity as the status rules above,
+     so source order decides — deliberate: an entry that declares what kind of thing it
+     is has said something more specific than where it sits in a sequence. */
+  .item[data-tone='neutral'] .marker {
+    border-color: var(--cascivo-color-border-strong);
+    background-color: var(--cascivo-color-border-strong);
+    color: var(--cascivo-color-text-on-accent);
+  }
+
+  .item[data-tone='info'] .marker {
+    border-color: var(--cascivo-color-info);
+    background-color: var(--cascivo-color-info);
+    color: var(--cascivo-color-info-foreground);
+  }
+
+  .item[data-tone='success'] .marker {
+    border-color: var(--cascivo-color-success);
+    background-color: var(--cascivo-color-success);
+    color: var(--cascivo-color-success-foreground);
+  }
+
+  .item[data-tone='warning'] .marker {
+    border-color: var(--cascivo-color-warning);
+    background-color: var(--cascivo-color-warning);
+    color: var(--cascivo-color-warning-foreground);
+  }
+
+  .item[data-tone='danger'] .marker {
+    border-color: var(--cascivo-color-destructive);
+    background-color: var(--cascivo-color-destructive);
+    color: var(--cascivo-color-destructive-foreground);
+  }
+
   .content {
     display: flex;
     flex-direction: column;

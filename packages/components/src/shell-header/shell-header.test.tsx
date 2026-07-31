@@ -120,6 +120,39 @@ describe('ShellHeader actions', () => {
   })
 })
 
+describe('ShellHeader center slot', () => {
+  it('renders center content between the nav and the trailing cluster', () => {
+    render(
+      <ShellHeader
+        brand={{ name: 'Console' }}
+        nav={[{ label: 'Overview', href: '/overview' }]}
+        center={<button type="button">Search everything</button>}
+        end={<span>trailing</span>}
+      />,
+    )
+    const header = screen.getByRole('banner')
+    const search = screen.getByRole('button', { name: 'Search everything' })
+    const nav = screen.getByRole('navigation')
+    const trailing = screen.getByText('trailing')
+
+    // Document order is the contract: the trigger must sit after the nav and before
+    // whatever `end` holds, which is what makes it reachable in the expected tab order.
+    expect(nav.compareDocumentPosition(search) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(search.compareDocumentPosition(trailing) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(header).toContainElement(search)
+  })
+
+  it('keeps the spacer when no center content is given, so end stays right-aligned', () => {
+    const { container } = render(<ShellHeader brand={{ name: 'Console' }} end={<span>end</span>} />)
+    const header = screen.getByRole('banner')
+    // Exactly one flexible element either way: the spacer, or the center wrapper that
+    // replaces it. Two would double the gap and push `end` off the edge.
+    const flexible = container.querySelectorAll('[class*="spacer"], [class*="center"]')
+    expect(flexible).toHaveLength(1)
+    expect(header).toBeInTheDocument()
+  })
+})
+
 describe('ShellHeader stable keys', () => {
   it('does not warn about duplicate keys when nav links share an href placeholder', () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
