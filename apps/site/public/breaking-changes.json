@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-29",
+  "generatedAt": "2026-07-31",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
@@ -270,8 +270,13 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.13.1",
+      "version": "0.14.0",
       "releases": [
+        {
+          "version": "0.14.0",
+          "level": "minor",
+          "notes": ["Two additive props from the 2026-07-31 incident-console adopter report."]
+        },
         {
           "version": "0.13.0",
           "level": "minor",

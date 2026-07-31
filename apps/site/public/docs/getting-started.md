@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/getting-started.md
-  registry v0.13.1 · generated 2026-07-29
+  registry v0.14.0 · generated 2026-07-31
 -->
 
 # Getting started with cascivo

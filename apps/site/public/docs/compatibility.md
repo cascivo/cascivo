@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/compatibility.md
-  registry v0.13.1 · generated 2026-07-29
+  registry v0.14.0 · generated 2026-07-31
 -->
 
 # Compatibility & support matrix
@@ -90,7 +90,7 @@ CI's drift check — it cannot go stale. (It once sat thirteen minors behind, cl
 | `@cascivo/core`    | 0.7.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
 | `@cascivo/tokens`  | 0.5.x   | none (CSS only)                                                                                               |
 | `@cascivo/themes`  | 0.4.x   | `@cascivo/tokens` (direct dep) — themes `@import` it                                                          |
-| `@cascivo/react`   | 0.13.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/react`   | 0.14.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
 | `@cascivo/icons`   | 0.3.x   | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                                                        |
 | `@cascivo/charts`  | 0.7.x   | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
 | `@cascivo/i18n`    | 0.2.x   | `@preact/signals-react >=3.0.0`                                                                               |
