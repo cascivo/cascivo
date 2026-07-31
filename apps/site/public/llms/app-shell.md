@@ -88,4 +88,4 @@ shell, layout, sidebar, navigation, drawer, responsive, sticky
 
 ---
 
-_Generated from registry v0.13.1 on 2026-07-29. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.14.0 on 2026-07-31. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
