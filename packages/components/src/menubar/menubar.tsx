@@ -27,20 +27,32 @@ export interface MenubarMenu {
   items: MenubarItem[]
 }
 
-export interface MenubarProps {
+export interface MenubarBaseProps {
   menus: MenubarMenu[]
-  'aria-label': string
   className?: string
 }
 
-export function Menubar({ menus, 'aria-label': ariaLabel, className }: MenubarProps) {
+/**
+ * Exactly one of `ariaLabel` / `aria-label` is required — a menubar landmark with no
+ * accessible name is a bug, so this stays enforced by the type rather than a dev warning.
+ * `ariaLabel` is the catalog's convention; `aria-label` is the DOM spelling this component
+ * shipped with. Both work, mirroring `IconButton`.
+ */
+export type MenubarProps = MenubarBaseProps &
+  ({ ariaLabel: string; 'aria-label'?: never } | { 'aria-label': string; ariaLabel?: never })
+
+export function Menubar({ menus, ariaLabel, 'aria-label': ariaLabelDom, className }: MenubarProps) {
   useSignals()
   const baseId = useId()
   const openId = useSignal<string | null>(null)
   const roving = useRovingFocus({ orientation: 'horizontal', loop: true })
 
   return (
-    <div role="menubar" aria-label={ariaLabel} className={cn(styles['menubar'], className)}>
+    <div
+      role="menubar"
+      aria-label={ariaLabel ?? ariaLabelDom}
+      className={cn(styles['menubar'], className)}
+    >
       {menus.map((menu, index) => (
         <MenubarTrigger
           key={menu.id}

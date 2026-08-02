@@ -2547,6 +2547,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -2554,7 +2557,7 @@
                     "type": "string"
                   }
                 },
-                "required": ["menus", "aria-label"]
+                "required": ["menus"]
               }
             }
           }
@@ -2683,6 +2686,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -3227,6 +3233,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "value": {
                     "type": "number"
                   },
@@ -4035,6 +4044,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "checked": {
                     "type": "boolean"
                   },
@@ -4603,6 +4615,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -5049,6 +5064,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "start": {
                     "type": "string",
                     "enum": ["ReactNode"]
@@ -6879,6 +6897,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   }

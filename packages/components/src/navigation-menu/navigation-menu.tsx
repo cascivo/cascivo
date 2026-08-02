@@ -25,6 +25,11 @@ export interface NavigationMenuItem {
 
 export interface NavigationMenuProps {
   items: NavigationMenuItem[]
+  /**
+   * Invisible accessible name. The catalog convention (see the item-identity table in
+   * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
+   */
+  ariaLabel?: string
   'aria-label'?: string
   /**
    * Layout orientation of the component.
@@ -38,7 +43,8 @@ export interface NavigationMenuProps {
 
 export function NavigationMenu({
   items,
-  'aria-label': ariaLabel,
+  'aria-label': ariaLabelDom,
+  ariaLabel,
   orientation = 'horizontal',
   className,
 }: NavigationMenuProps) {
@@ -49,7 +55,7 @@ export function NavigationMenu({
 
   return (
     <nav
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? ariaLabelDom}
       className={cn(styles['nav'], className)}
       data-orientation={orientation}
     >

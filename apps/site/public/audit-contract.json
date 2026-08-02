@@ -1234,8 +1234,9 @@
     {
       "name": "Menubar",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "menus", "type": "MenubarMenu[]", "required": true },
-        { "name": "aria-label", "type": "string", "required": true },
+        { "name": "aria-label", "type": "string", "required": false },
         { "name": "className", "type": "string", "required": false }
       ]
     },
@@ -1284,6 +1285,7 @@
     {
       "name": "NavigationMenu",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "items", "type": "NavigationMenuItem[]", "required": true },
         { "name": "aria-label", "type": "string", "required": false },
         { "name": "orientation", "type": "'horizontal' | 'vertical' | 'both'", "required": false },
@@ -1476,6 +1478,7 @@
     {
       "name": "RadialProgress",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "value", "type": "number", "required": true },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         {
@@ -1741,6 +1744,7 @@
     {
       "name": "Swap",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "on", "type": "React.ReactNode", "required": true },
         { "name": "off", "type": "React.ReactNode", "required": true },
         { "name": "checked", "type": "boolean", "required": false },
@@ -1952,6 +1956,7 @@
     {
       "name": "TreeView",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         {
           "name": "items",
@@ -2092,6 +2097,7 @@
     {
       "name": "SplitView",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "start", "type": "ReactNode", "required": true },
         { "name": "end", "type": "ReactNode", "required": true },
         { "name": "defaultRatio", "type": "number", "required": false },
@@ -2749,6 +2755,7 @@
     {
       "name": "StatsBand",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "stats", "type": "StatItem[]", "required": true },
         { "name": "aria-label", "type": "string", "required": false }
       ]
@@ -2968,7 +2975,6 @@
     "aria-valuenow",
     "aria-valuetext",
     "ariaLabel",
-    "asChild",
     "autoCapitalize",
     "autoComplete",
     "autoCorrect",
@@ -3009,7 +3015,6 @@
     "href",
     "hrefLang",
     "htmlFor",
-    "icon",
     "id",
     "inert",
     "inlist",
@@ -3245,7 +3250,6 @@
     "unselectable",
     "useMap",
     "value",
-    "variant",
     "vocab",
     "width",
     "wrap"

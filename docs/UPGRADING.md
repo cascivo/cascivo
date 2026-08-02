@@ -60,6 +60,33 @@ release in that package's `releases` array newer than `0.2.1`.
 
 ---
 
+## How cascivo renames things (the deprecation contract)
+
+A rename is the most expensive change a component library can make, so the catalog uses
+one mechanism for all of them. If you see any of these, this is what is happening and how
+long you have.
+
+1. **Both names work.** The old name stays as an alias for at least one minor. Your code
+   keeps compiling and behaving identically.
+2. **The old name carries `@deprecated`** in its TSDoc, naming the replacement. Your editor
+   strikes it through; `tsc` stays silent.
+3. **A changeset records it**, so it appears in the CHANGELOG and in
+   [`breaking-changes.json`](#breaking-changesjson--for-machines) — the file
+   `cascivo doctor --drift` reads.
+4. **A guard keeps the pair honest.** The alias and its tracking entry are removed
+   together; a check fails if one outlives the other, so an alias cannot quietly become
+   permanent and a tracking note cannot go stale.
+
+Aliases that only *add* a name (`ariaLabel` alongside `aria-label`, `value` alongside `id`)
+are not deprecations — both spellings are supported indefinitely, and neither is
+struck through. They exist because guessing the wrong one cost adopters a compile
+round-trip.
+
+Where a name is **required** for accessibility, an alias is expressed as an XOR union
+(`{ label: string; ariaLabel?: never } | { ariaLabel: string; label?: never }`) rather than
+making both optional — the compile-time guarantee that a control has an accessible name is
+worth more than the simpler type.
+
 ## Upgrading copied components: `cascivo update`
 
 Copied source is yours to edit — so upgrading it is a merge, not an overwrite.

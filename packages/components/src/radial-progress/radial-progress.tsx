@@ -15,6 +15,11 @@ export interface RadialProgressProps {
    */
   variant?: RadialProgressVariant
   children?: React.ReactNode
+  /**
+   * Invisible accessible name. The catalog convention (see the item-identity table in
+   * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
+   */
+  ariaLabel?: string
   'aria-label'?: string
   className?: string
 }
@@ -25,13 +30,14 @@ export function RadialProgress({
   variant = 'primary',
   children,
   className,
+  ariaLabel,
   ...aria
 }: RadialProgressProps) {
   const clamped = Math.min(100, Math.max(0, value))
   const labelId = useId()
   // progressbar takes its name from the author only — visible text doesn't
   // count. Name it from its own label span unless the caller passed aria-label.
-  const hasAriaLabel = Boolean(aria['aria-label'])
+  const hasAriaLabel = Boolean(ariaLabel ?? aria['aria-label'])
   return (
     <div
       role="progressbar"
@@ -48,6 +54,7 @@ export function RadialProgress({
         }
       }
       {...aria}
+      {...(ariaLabel !== undefined ? { 'aria-label': ariaLabel } : {})}
     >
       <span id={labelId} className={styles.label}>
         {children ?? `${clamped}%`}

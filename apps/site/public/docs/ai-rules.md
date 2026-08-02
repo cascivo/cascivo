@@ -137,21 +137,30 @@ accept a deprecated value-carrying `onChange` alias for backward compatibility �
 
 The sibling of the handler rule: name a prop by **what it is**, not by the component.
 
-| The value is                                                                                       | Prop name       | Examples                                                 |
-| -------------------------------------------------------------------------------------------------- | --------------- | -------------------------------------------------------- |
-| Text the component **renders**                                                                     | **`label`**     | `Field`, `Checkbox`, `Radio`, `Toggle`, `Slider`         |
-| An **invisible** accessible name for an icon-only control or a nav landmark (goes to `aria-label`) | **`ariaLabel`** | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Dock`, `Steps` |
-| The identity of an item in a collection                                                            | **`value`**     | `OverflowMenu`, `Dropdown`, `Menu`, `Select`, `Combobox` |
+| The value is                                                                                       | Prop name                                         | Examples                                                               |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
+| Text the component **renders**                                                                     | **`label`**                                       | `Field`, `Checkbox`, `Radio`, `Toggle`, `Slider`                       |
+| An **invisible** accessible name for an icon-only control or a nav landmark (goes to `aria-label`) | **`ariaLabel`**                                   | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Dock`, `Steps`               |
+| The identity of an item that is **handed to a callback**                                           | **`value`**                                       | `OverflowMenu`, `Dropdown`, `Select`, `Combobox`                       |
+| A **React key** for an item — never passed anywhere                                                | **`id`** (rows/items) / **`key`** (table columns) | `CommandMenu`, `StructuredList`, `Timeline`, `DataTable.columns[].key` |
 
 Two components predate the rule and take `label` for an **invisible** name: `IconButton`
 and `Sparkline`. Both now also accept `ariaLabel` as an alias, so guessing either way works;
 `label` keeps working and is not deprecated.
 
-Three components took only the DOM spelling `aria-label` (`Filter`, `StructuredList`,
-`Progress`). They now accept **both** `ariaLabel` and `aria-label` — two spellings of one
-idea inside one package was a coin flip on every component. Likewise `OverflowMenu` items
-accept **`id`** as an alias of `value`, which is the common wrong guess by analogy with
-`CommandMenu`.
+Every component that took only the DOM spelling `aria-label` now accepts **both**
+`ariaLabel` and `aria-label` — two spellings of one idea inside one package was a coin flip
+on every component. That covers `Filter`, `StructuredList`, `Progress`, `Menubar`,
+`NavigationMenu`, `TreeView`, `Swap`, `RadialProgress`, `SplitView` and `StatsBand`. Where
+the name is **required** (`Menubar`, `IconButton`), an XOR union enforces that exactly one
+is present, so the a11y guarantee survives the alias.
+
+**`value` vs `id` is a real distinction, not an inconsistency.** `value` is the identity the
+component _hands back to you_ — `onSelect(value)`. `id` is a React key the component uses
+internally and never passes anywhere: `CommandMenu`'s items take `onSelect: () => void`, so
+their `id` could not be delivered even in principle. Reach for `value` when a callback
+receives it, `id` when it is only identity. `OverflowMenu` items additionally accept **`id`**
+as an alias of `value`, because it is the common wrong guess by analogy with `CommandMenu`.
 
 Guessing across components is the failure this prevents: an adopter wrote
 `<OverflowMenu label=… items={[{ id, label }]}>` by analogy with `CommandMenu` and

@@ -3783,12 +3783,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Menubar: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'menus',
       required: true,
     },
     {
       name: 'aria-label',
-      required: true,
+      required: false,
       primitives: ['string'],
     },
     {
@@ -3951,6 +3956,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   NavigationMenu: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'items',
       required: true,
@@ -4758,6 +4768,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   RadialProgress: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'value',
       required: true,
       primitives: ['number'],
@@ -5503,6 +5518,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   SplitView: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'start',
       required: true,
     },
@@ -5589,6 +5609,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   StatsBand: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'stats',
       required: true,
@@ -5788,6 +5813,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Swap: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'on',
       required: true,
@@ -6287,6 +6317,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   TreeView: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'aria-label',
       required: false,

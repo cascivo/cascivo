@@ -18,6 +18,11 @@ export interface SwapProps {
   /** @deprecated Use `onValueChange` — it receives the same `checked` boolean. */
   onChange?: (checked: boolean) => void
   mode?: SwapMode
+  /**
+   * Invisible accessible name. The catalog convention (see the item-identity table in
+   * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
+   */
+  ariaLabel?: string
   'aria-label'?: string
   className?: string
 }
@@ -30,6 +35,7 @@ export function Swap({
   onChange,
   mode = 'rotate',
   className,
+  ariaLabel,
   ...aria
 }: SwapProps) {
   useSignals()
@@ -51,6 +57,7 @@ export function Swap({
       data-mode={mode}
       onClick={handleClick}
       {...aria}
+      {...(ariaLabel !== undefined ? { 'aria-label': ariaLabel } : {})}
     >
       <span className={styles.on} aria-hidden="true">
         {on}

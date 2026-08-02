@@ -33,17 +33,18 @@ Implements the WAI-ARIA TreeView pattern: role=tree on the root, role=treeitem w
 
 ## Props
 
-| Name               | Type                                                                          | Required | Default | Description                                                          |
-| ------------------ | ----------------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------- |
-| `aria-label`       | `string`                                                                      | No       | —       | Accessible label for the tree.                                       |
-| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | Yes      | —       | The items to render.                                                 |
-| `selectionMode`    | `'single' \| 'multi'`                                                         | No       | single  | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
-| `selected`         | `string \| string[]`                                                          | No       | —       | The controlled selected node id(s).                                  |
-| `defaultSelected`  | `string \| string[]`                                                          | No       | —       | The initially selected node id(s) when uncontrolled.                 |
-| `onSelectChange`   | `(selected: string \| string[]) => void`                                      | No       | —       | Called with the new selection when it changes.                       |
-| `expanded`         | `string[]`                                                                    | No       | —       | The controlled set of expanded node ids.                             |
-| `defaultExpanded`  | `string[]`                                                                    | No       | —       | The initially expanded node ids when uncontrolled.                   |
-| `onExpandedChange` | `(expanded: string[]) => void`                                                | No       | —       | Called with the new expanded set when it changes.                    |
+| Name               | Type                                                                          | Required | Default | Description                                                                                                   |
+| ------------------ | ----------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`        | `string`                                                                      | No       | —       | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `aria-label`       | `string`                                                                      | No       | —       | Accessible label for the tree.                                                                                |
+| `items`            | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | Yes      | —       | The items to render.                                                                                          |
+| `selectionMode`    | `'single' \| 'multi'`                                                         | No       | single  | Whether one or multiple nodes can be selected ('single' \| 'multi').                                          |
+| `selected`         | `string \| string[]`                                                          | No       | —       | The controlled selected node id(s).                                                                           |
+| `defaultSelected`  | `string \| string[]`                                                          | No       | —       | The initially selected node id(s) when uncontrolled.                                                          |
+| `onSelectChange`   | `(selected: string \| string[]) => void`                                      | No       | —       | Called with the new selection when it changes.                                                                |
+| `expanded`         | `string[]`                                                                    | No       | —       | The controlled set of expanded node ids.                                                                      |
+| `defaultExpanded`  | `string[]`                                                                    | No       | —       | The initially expanded node ids when uncontrolled.                                                            |
+| `onExpandedChange` | `(expanded: string[]) => void`                                                | No       | —       | Called with the new expanded set when it changes.                                                             |
 
 ## Tokens
 

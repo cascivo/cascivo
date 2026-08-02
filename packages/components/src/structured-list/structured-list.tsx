@@ -4,6 +4,15 @@ import { useId } from 'react'
 import type { ReactNode } from 'react'
 import styles from './structured-list.module.css'
 
+/**
+ * One row's data. **This is a type, not a component.**
+ *
+ * `StructuredList` is config-driven: pass `items`, not children. An adopter imported
+ * `StructuredListItem` expecting a composable `<StructuredListItem>` — a reasonable guess,
+ * since most catalogs ship both forms — wrote markup against it, and only then found the
+ * real API. There is no composable form and none is planned; the config shape is what
+ * makes the list keyboard-navigable and selectable without per-row wiring.
+ */
 export interface StructuredListItem {
   id: string
   cells: ReactNode[]
@@ -11,6 +20,7 @@ export interface StructuredListItem {
 }
 
 export interface StructuredListProps {
+  /** The rows. `StructuredList` is config-driven — there is no composable child form. */
   items: StructuredListItem[]
   headers?: ReactNode[]
   /**

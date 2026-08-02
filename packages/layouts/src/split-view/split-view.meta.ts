@@ -8,6 +8,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.',
+    },
     { name: 'start', type: 'ReactNode', required: true, description: 'Left pane content' },
     { name: 'end', type: 'ReactNode', required: true, description: 'Right pane content' },
     {

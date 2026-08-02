@@ -15,6 +15,11 @@ export interface StatItem {
 export interface StatsBandProps extends HTMLAttributes<HTMLElement> {
   stats: StatItem[]
   /** Accessible label for the stats region when no visible heading is shown. */
+  /**
+   * Invisible accessible name. The catalog convention (see the item-identity table in
+   * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
+   */
+  ariaLabel?: string
   'aria-label'?: string
   className?: string | undefined
 }
@@ -23,7 +28,7 @@ export function StatsBand({ stats, className, ...props }: StatsBandProps) {
   return (
     <section
       className={cn(styles['stats-band'], className)}
-      aria-label={props['aria-label'] ?? 'Key metrics'}
+      aria-label={props.ariaLabel ?? props['aria-label'] ?? 'Key metrics'}
       {...props}
     >
       <div className={styles['inner']}>

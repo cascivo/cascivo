@@ -28,6 +28,11 @@ export interface SplitViewProps {
    * @see the component manifest
    */
   max?: number
+  /**
+   * Invisible accessible name. The catalog convention (see the item-identity table in
+   * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
+   */
+  ariaLabel?: string
   'aria-label'?: string
   className?: string
 }
@@ -38,7 +43,8 @@ export function SplitView({
   defaultRatio = 0.3,
   min = 0.2,
   max = 0.8,
-  'aria-label': ariaLabel = 'Split view',
+  'aria-label': ariaLabelDom,
+  ariaLabel,
   className,
 }: SplitViewProps) {
   useSignals()
@@ -82,7 +88,7 @@ export function SplitView({
       <div className={styles['pane-start']}>{start}</div>
       <div
         role="separator"
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? ariaLabelDom ?? 'Split view'}
         aria-orientation="vertical"
         aria-valuenow={Math.round(ratio.value * 100)}
         aria-valuemin={Math.round(min * 100)}

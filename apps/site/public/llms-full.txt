@@ -11351,6 +11351,7 @@ _Copy-paste only — `SplitView` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `start` | `ReactNode` | yes | — | Left pane content |
 | `end` | `ReactNode` | yes | — | Right pane content |
 | `defaultRatio` | `number` | no | `0.3` | Initial split ratio (0–1) |
@@ -11916,8 +11917,9 @@ import { Menubar } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. |
 | `menus` | `MenubarMenu[]` | yes | — | The top-level menus to render. |
-| `aria-label` | `string` | yes | — | Accessible label used when no visible label is present. |
+| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -12263,6 +12265,7 @@ import { NavigationMenu } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | `horizontal` | Layout orientation of the component. |
@@ -13618,6 +13621,7 @@ import { RadialProgress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `value` | `number` | yes | — | The controlled value. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
@@ -14656,6 +14660,7 @@ _Copy-paste only — `StatsBand` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `stats` | `StatItem[]` | yes | — | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
 | `aria-label` | `string` | no | `"Key metrics"` | Accessible label for the stats region |
 
@@ -16088,6 +16093,7 @@ import { Swap } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `on` | `React.ReactNode` | yes | — | Content shown in the active (on) state. |
 | `off` | `React.ReactNode` | yes | — | Content shown in the inactive (off) state. |
 | `checked` | `boolean` | no | `false` | Whether the control is checked (controlled). |
@@ -17606,6 +17612,7 @@ import { TreeView } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `aria-label` | `string` | no | — | Accessible label for the tree. |
 | `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes | — | The items to render. |
 | `selectionMode` | `'single' \| 'multi'` | no | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi'). |

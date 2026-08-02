@@ -15172,6 +15172,15 @@
       },
       "props": [
         {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "start",
           "type": "ReactNode",
           "required": true,
@@ -15811,6 +15820,15 @@
       },
       "props": [
         {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "menus",
           "description": "The top-level menus to render.",
           "type": "MenubarMenu[]",
@@ -15823,7 +15841,7 @@
           "name": "aria-label",
           "description": "Accessible label used when no visible label is present.",
           "type": "string",
-          "required": true,
+          "required": false,
           "schema": {
             "kind": "string"
           }
@@ -16289,6 +16307,15 @@
         ]
       },
       "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "items",
           "description": "The items to render.",
@@ -18029,6 +18056,15 @@
       },
       "props": [
         {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "value",
           "description": "The controlled value.",
           "type": "number",
@@ -19315,6 +19351,15 @@
         "flexibility": []
       },
       "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "stats",
           "type": "StatItem[]",
@@ -20957,6 +21002,15 @@
         ]
       },
       "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "on",
           "description": "Content shown in the active (on) state.",
@@ -22840,6 +22894,15 @@
         ]
       },
       "props": [
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.",
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "aria-label",
           "type": "string",

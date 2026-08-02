@@ -9,6 +9,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.',
+    },
+    {
       name: 'items',
       description: 'The items to render.',
       type: 'NavigationMenuItem[]',
