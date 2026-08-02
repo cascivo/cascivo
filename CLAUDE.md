@@ -127,7 +127,7 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → `lint:host-strict` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg) → build → `ssr:check` → `css-contract:check` → `computed:check` → type check → tests.
+This runs: `pnpm regen` → `vp check --fix` → `lint:host-strict` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → `ssr:check` → `css-contract:check` → `computed:check` → type check → tests.
 
 `lint:host-strict` is in there because CI runs it and `ready` did not: component source is _copied into adopter projects_, so it must also pass the objective host-lint rules (e.g. no inline `type` specifiers — write a separate `import type` line). It is fast and offline; skipping it locally just moves the failure to CI.
 
@@ -166,6 +166,11 @@ pnpm breakpoint:check
 
 # APG conformance (a declared apgPattern matches the manifest's role + required keys)
 pnpm apg:check
+
+# Every registry component has a committed visual baseline for all three themes,
+# and no baseline is orphaned by a rename (keeps the nightly `Visual regression`
+# workflow from rotting red)
+pnpm visual:baselines:check
 
 # The `cascivo.reset` layer is filled (no canonical @layer ships empty)
 pnpm reset:check

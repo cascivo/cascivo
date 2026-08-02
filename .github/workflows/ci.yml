@@ -80,6 +80,9 @@ jobs:
       - name: APG conformance guard (declared apgPattern matches role + required keys)
         run: pnpm run apg:check
 
+      - name: Visual-baseline coverage (every component has a committed snapshot)
+        run: pnpm run visual:baselines:check
+
       - name: Animation audit
         run: pnpm run audit:animation
 
