@@ -7,6 +7,10 @@ export default defineConfig({
   use: {
     viewport: { width: 900, height: 700 },
     deviceScaleFactor: 1,
+    // Baselines are captured on UTC runners; pinning the timezone keeps a local
+    // `--update-snapshots` from silently re-rendering every date-aware demo a
+    // day off.
+    timezoneId: 'UTC',
   },
   expect: {
     toHaveScreenshot: {

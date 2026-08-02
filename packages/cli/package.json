@@ -43,7 +43,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "vp pack && node -e \"const fs=require('fs');fs.mkdirSync('dist/generated',{recursive:true});fs.copyFileSync('src/generated/audit-contract.json','dist/generated/audit-contract.json')\" && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c)\" && chmod +x dist/index.mjs",
+    "build": "vp pack && node -e \"const fs=require('fs');fs.mkdirSync('dist/generated',{recursive:true});fs.copyFileSync('src/generated/audit-contract.json','dist/generated/audit-contract.json')\" && node -e \"const fs=require('fs');const f='dist/index.mjs';const c=fs.readFileSync(f,'utf8');if(!c.startsWith('#!/'))fs.writeFileSync(f,'#!/usr/bin/env node\\n'+c);fs.chmodSync(f,0o755)\"",
     "check": "tsc --noEmit",
     "test": "vp test",
     "dev": "vp pack --watch"

@@ -258,13 +258,18 @@ async function capture() {
 
 const mode = process.argv.includes('--capture') ? 'capture' : 'placeholder'
 if (mode === 'capture') {
+  // No placeholder fallback here: --capture is the mode CI commits from, and
+  // silently downgrading to wireframes overwrites good screenshots with worse
+  // ones. Ask for placeholders explicitly (drop --capture) if that's the intent.
   try {
     await capture()
   } catch (err) {
     console.error('[screenshots] --capture failed:', err.message.split('\n')[0])
-    console.error('[screenshots] falling back to placeholders. Install Chromium with:')
+    console.error('[screenshots] real screenshots need the landing + every demo app built')
+    console.error('  pnpm run build:landing-demos')
+    console.error('and Chromium installed:')
     console.error('  pnpm exec playwright install chromium')
-    writePlaceholders()
+    process.exit(1)
   }
 } else {
   writePlaceholders()

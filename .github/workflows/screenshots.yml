@@ -11,6 +11,10 @@ on:
   workflow_dispatch:
     # Also triggerable manually from the Actions tab
 
+# The job commits the regenerated PNGs back to the branch.
+permissions:
+  contents: write
+
 jobs:
   capture:
     runs-on: ubuntu-latest
@@ -32,8 +36,12 @@ jobs:
       - name: Install Chromium
         run: pnpm exec playwright install chromium --with-deps
 
+      # `build:landing-demos` builds the landing AND each demo app, then copies
+      # every demo dist into apps/site/dist/demos/. Building only the landing
+      # leaves those dists missing, which is what made the capture step fall
+      # back to placeholder wireframes.
       - name: Build landing (with demo apps assembled)
-        run: pnpm exec vp run @cascivo/site#build
+        run: pnpm run build:landing-demos
 
       - name: Capture screenshots
         run: node scripts/gen-demo-screenshots.mjs --capture

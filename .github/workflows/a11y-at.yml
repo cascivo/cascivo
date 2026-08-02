@@ -38,8 +38,10 @@ jobs:
           cd apps/storybook
           pnpm add -D @guidepup/guidepup playwright
           pnpm exec playwright install webkit
+      # The guidepup CLI is a commander program with `setup`/`install`
+      # subcommands — invoking the bare bin prints usage and exits 1.
       - name: Enable VoiceOver automation
-        run: npx --yes @guidepup/setup
+        run: npx --yes @guidepup/setup setup --ci
       - name: Sweep
         env:
           AT_SR: voiceover
@@ -55,12 +57,11 @@ jobs:
   nvda:
     name: NVDA (Windows)
     runs-on: windows-latest
-    # Non-blocking: the Windows `vp run -r build` reliably crashes inside the
-    # dts-flatten step (packages/*/scripts/flatten-types.mjs) with an msys
-    # `chmod … MapViewOfFileEx … Win32 error 487` fork error — a known
-    # instability of the alpha vp toolchain on hosted Windows runners that
-    # can't be reproduced or fixed from a Linux dev box. VoiceOver (macOS) is
-    # the gating AT signal; NVDA stays a best-effort spot-check, like JAWS.
+    # Non-blocking: VoiceOver (macOS) is the gating AT signal; NVDA stays a
+    # best-effort spot-check, like JAWS. (The msys `chmod … MapViewOfFileEx …
+    # Win32 error 487` fork crash that used to kill the Windows build came from
+    # `chmod +x` in @cascivo/cli's build script — that is now an fs.chmodSync
+    # call, so the build no longer shells out to msys chmod.)
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
@@ -79,7 +80,7 @@ jobs:
           pnpm add -D @guidepup/guidepup playwright
           pnpm exec playwright install chromium
       - name: Enable NVDA automation
-        run: npx --yes @guidepup/setup
+        run: npx --yes @guidepup/setup setup --ci
       - name: Sweep
         env:
           AT_SR: nvda
