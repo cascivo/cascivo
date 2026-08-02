@@ -113,6 +113,36 @@ don't exist until tokens + a theme load, so always pair it with
 `@cascivo/themes/all` (or an individual theme). Order: components → tokens+theme →
 your brand overrides (last).
 
+### The cost: per-component CSS tree-shaking does not apply under SSR
+
+[GETTING-STARTED.md](/docs/getting-started.md#css-size) advertises per-component CSS
+tree-shaking — a ~45-component dashboard measured 137 KB / 19 KB gzip of the
+273 KB aggregate. **That measurement is client-only (SPA), and the saving is not
+available to you here.** Importing the aggregate is what makes SSR work, and the
+aggregate is by definition not tree-shakeable.
+
+Worse, you get both: the client build still emits per-component chunks for the
+components it sees in the module graph, so a measured TanStack Start build
+produced a 306 KB `index-*.css` **plus** ~12 per-component chunks duplicating a
+subset of it.
+
+This is a real, currently-unavoidable tradeoff, not an oversight — and since
+TanStack Start, Remix and Next are where most new dashboards get built, it is
+worth stating plainly rather than leaving the two numbers to contradict each other.
+
+**What you can do today:**
+
+- Ship one theme instead of `all.css` (see GETTING-STARTED Recipe B) — the theme
+  layer is the larger half of the aggregate for most apps.
+- Accept the duplication: it is CSS, it gzips well, and it is served once.
+- If your framework can defer hydration CSS, the per-component chunks are the
+  redundant half — not the aggregate.
+
+**What we are not going to pretend:** there is no flag that makes the aggregate
+shakeable. A client-shakeable `styles.css` would have to drop the `@layer` order
+statement that makes the cascade deterministic before a theme loads, which is the
+other half of why the import is required.
+
 ## TanStack Start
 
 TanStack Start is Vite under the hood, so the TL;DR applies directly. Put the

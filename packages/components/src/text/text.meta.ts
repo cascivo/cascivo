@@ -62,6 +62,15 @@ export const meta: ComponentMeta = {
       code: '<Text as="span" weight="semibold">emphasis</Text>',
       description: 'Use as="span" inside other flow content',
     },
+    {
+      title: 'Icon beside text',
+      code: `<Text>
+  <CheckIcon aria-hidden />
+  <Text as="span" weight="semibold">Deployed</Text>
+</Text>`,
+      description:
+        'Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside a <p> is invalid HTML and the browser silently closes the outer one, breaking the layout.',
+    },
   ],
   dependencies: ['@cascivo/core'],
   tags: ['typography', 'text', 'paragraph', 'body'],

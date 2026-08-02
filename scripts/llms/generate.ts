@@ -587,9 +587,15 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '  body (not the HTML SPA) — trust the 404, then look up the real name in the index below.',
   )
   lines.push(`- Per-component context (intent, when-to-use, boundaries): ${DOCS}/context/<name>.md`)
+  lines.push(
+    '  (`/context/<name>.md` is the condensed intent summary for a context window; `/llms/<name>.md` above is the full reference.)',
+  )
+  lines.push(
+    '- **Props: the shipped `.d.ts` is authoritative.** Ctrl-click any import, or read node_modules/@cascivo/react/dist/index.d.ts. It carries @defaultValue, the design rationale, and ⚠ warnings for the specific mistakes previous adopters made. When it and any other surface disagree, it wins. See /docs/getting-started.md#where-the-documentation-lives.',
+  )
   lines.push(`- Context bundle (all intent + boundaries + rules): ${DOCS}/context.json`)
   lines.push(
-    `- Token catalog (closed set, every --cascivo-* + layer + default): ${DOCS}/tokens.catalog.json`,
+    `- Token catalog (closed set: every --cascivo-* the system declares OR reads as an author hook, incl. per-component knobs like --cascivo-sidenav-inline-size, + layer + default): ${DOCS}/tokens.catalog.json`,
   )
   lines.push(
     `- Icon catalog (every @cascivo/icons icon + keywords/category): ${DOCS}/icons.catalog.json`,

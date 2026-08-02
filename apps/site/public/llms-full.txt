@@ -41,8 +41,10 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - A wrong/guessed name under /llms/*, /context/*, or /r/* returns HTTP 404 with a short hint
   body (not the HTML SPA) — trust the 404, then look up the real name in the index below.
 - Per-component context (intent, when-to-use, boundaries): https://cascivo.com/context/<name>.md
+  (`/context/<name>.md` is the condensed intent summary for a context window; `/llms/<name>.md` above is the full reference.)
+- **Props: the shipped `.d.ts` is authoritative.** Ctrl-click any import, or read node_modules/@cascivo/react/dist/index.d.ts. It carries @defaultValue, the design rationale, and ⚠ warnings for the specific mistakes previous adopters made. When it and any other surface disagree, it wins. See /docs/getting-started.md#where-the-documentation-lives.
 - Context bundle (all intent + boundaries + rules): https://cascivo.com/context.json
-- Token catalog (closed set, every --cascivo-* + layer + default): https://cascivo.com/tokens.catalog.json
+- Token catalog (closed set: every --cascivo-* the system declares OR reads as an author hook, incl. per-component knobs like --cascivo-sidenav-inline-size, + layer + default): https://cascivo.com/tokens.catalog.json
 - Icon catalog (every @cascivo/icons icon + keywords/category): https://cascivo.com/icons.catalog.json
 - Breaking/feature changes (major+minor releases per package — detect API drift): https://cascivo.com/breaking-changes.json
 
@@ -16629,6 +16631,17 @@ Use as="span" inside other flow content
 
 ```tsx
 <Text as="span" weight="semibold">emphasis</Text>
+```
+
+### Icon beside text
+
+Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside a <p> is invalid HTML and the browser silently closes the outer one, breaking the layout.
+
+```tsx
+<Text>
+  <CheckIcon aria-hidden />
+  <Text as="span" weight="semibold">Deployed</Text>
+</Text>
 ```
 
 ## Design tokens

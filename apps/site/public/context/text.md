@@ -78,6 +78,19 @@ Use as="span" inside other flow content
 </Text>
 ```
 
+### Icon beside text
+
+Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside a <p> is invalid HTML and the browser silently closes the outer one, breaking the layout.
+
+```jsx
+<Text>
+  <CheckIcon aria-hidden />
+  <Text as="span" weight="semibold">
+    Deployed
+  </Text>
+</Text>
+```
+
 ## Boundaries
 
 | Area               | Level    | Note                                                         |
