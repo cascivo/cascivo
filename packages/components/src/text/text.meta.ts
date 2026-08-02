@@ -92,6 +92,9 @@ export const meta: ComponentMeta = {
     a11yRationale:
       'Renders the chosen native element (p/span/div) without imposing roles; muted styling keeps contrast within AA so secondary text stays readable',
     content: {
+      // Children are the page's authored prose, not chrome this component owns —
+      // so `audit --ai`'s raw-string rule must not flag every sentence.
+      contentPrimitive: true,
       tone: 'Plain body voice; the component does not constrain copy',
       notes: 'Use muted sparingly for genuinely secondary information',
     },

@@ -2054,6 +2054,7 @@
           ],
           "a11yRationale": "Renders a native <blockquote> with the attribution in <footer><cite>, so the quotation and its source are semantically distinct to assistive tech",
           "content": {
+            "contentPrimitive": true,
             "tone": "Verbatim quotation; do not paraphrase inside the quote",
             "notes": "cite names the author or work, not a URL label"
           },
@@ -12727,6 +12728,7 @@
           ],
           "a11yRationale": "Renders a real <h1>–<h6> from the level prop so the heading appears in the accessibility tree at the correct level; visual size is decoupled so styling never forces an incorrect level",
           "content": {
+            "contentPrimitive": true,
             "tone": "Concise, descriptive titles in sentence case",
             "notes": "Each page should have one h1"
           },
@@ -14011,6 +14013,7 @@
           ],
           "a11yRationale": "Renders a native <label> so the platform handles click-to-focus and accessible naming; the required marker pairs an aria-hidden asterisk with visually-hidden localized text so the requirement is both seen and announced",
           "content": {
+            "contentPrimitive": true,
             "tone": "Short noun phrase naming the field",
             "notes": "Sentence case, no trailing colon; let the required marker convey requirement"
           },
@@ -18154,6 +18157,7 @@
           ],
           "a11yRationale": "Adds no roles of its own — it styles descendant native elements, so the document semantics of the underlying HTML (headings, lists, code) are preserved for assistive tech",
           "content": {
+            "contentPrimitive": true,
             "tone": "Long-form editorial; the wrapper does not constrain voice",
             "notes": "Source HTML should be sanitized before dangerouslySetInnerHTML"
           },
@@ -22816,6 +22820,7 @@
           ],
           "a11yRationale": "Renders the chosen native element (p/span/div) without imposing roles; muted styling keeps contrast within AA so secondary text stays readable",
           "content": {
+            "contentPrimitive": true,
             "tone": "Plain body voice; the component does not constrain copy",
             "notes": "Use muted sparingly for genuinely secondary information"
           },
@@ -24546,6 +24551,7 @@
           ],
           "a11yRationale": "Applies the standard clip technique so content stays in the DOM and accessibility tree while being painted off-screen — assistive tech reads it, sighted users do not see it",
           "content": {
+            "contentPrimitive": true,
             "tone": "Concise supplementary context for screen readers",
             "notes": "Write what a screen-reader user needs that visuals already convey"
           },

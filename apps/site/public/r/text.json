@@ -112,6 +112,7 @@
       ],
       "a11yRationale": "Renders the chosen native element (p/span/div) without imposing roles; muted styling keeps contrast within AA so secondary text stays readable",
       "content": {
+        "contentPrimitive": true,
         "tone": "Plain body voice; the component does not constrain copy",
         "notes": "Use muted sparingly for genuinely secondary information"
       },

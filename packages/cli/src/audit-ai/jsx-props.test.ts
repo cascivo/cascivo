@@ -22,6 +22,16 @@ const contract: Contract = buildContract({
   context: { components: [] },
 })
 
+/** A contract carrying the type-derived DOM attributes, as the shipped one does. */
+const withDom: Contract = buildContract({
+  catalog: { tokens: [] },
+  registry: {
+    components: [{ meta: { name: 'Form', props: [{ name: 'onSubmit', type: 'fn' }] } }],
+  },
+  context: { components: [] },
+  domAttributes: ['noValidate', 'acceptCharset', 'encType', 'autoCapitalize', 'translate'],
+})
+
 const IMPORT = `import { Button } from '@cascivo/react'\n`
 
 describe('findJsxPropViolations', () => {
@@ -92,5 +102,32 @@ describe('findJsxPropViolations', () => {
     const src = `${IMPORT}\n\n<Button frobnicate />`
     const out = findJsxPropViolations(src, 'H.tsx', contract)
     expect(out[0].line).toBe(4)
+  })
+})
+
+describe('inherited DOM attributes are not unknown props', () => {
+  const FORM_IMPORT = `import { Form } from '@cascivo/react'\n`
+
+  it('does not flag `noValidate` on <Form>', () => {
+    // The reported false positive. `FormProps extends Omit<FormHTMLAttributes<…>,'onSubmit'>`,
+    // so `noValidate` is valid and type-checked — but the hand-maintained 48-name
+    // passthrough list did not contain it, and the audit is pitched as a CI gate, so the
+    // adopter deleted a legitimate prop to get it green.
+    const out = findJsxPropViolations(`${FORM_IMPORT}<Form noValidate />`, 'F.tsx', withDom)
+    expect(out.filter((f) => f.rule === 'unknown-prop')).toEqual([])
+  })
+
+  it('does not flag any attribute the component inherits', () => {
+    // A hand list can never be complete; the contract now carries the resolved set.
+    const attrs = ['acceptCharset', 'encType', 'autoCapitalize', 'translate']
+    const src = `${FORM_IMPORT}<Form ${attrs.map((a) => `${a}="x"`).join(' ')} />`
+    expect(
+      findJsxPropViolations(src, 'F.tsx', withDom).filter((f) => f.rule === 'unknown-prop'),
+    ).toEqual([])
+  })
+
+  it('still flags a genuinely unknown prop', () => {
+    const out = findJsxPropViolations(`${FORM_IMPORT}<Form frobnicate />`, 'F.tsx', withDom)
+    expect(out.find((f) => f.rule === 'unknown-prop')).toMatchObject({ prop: 'frobnicate' })
   })
 })

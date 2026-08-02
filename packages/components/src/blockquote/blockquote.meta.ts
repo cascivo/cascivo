@@ -67,6 +67,9 @@ export const meta: ComponentMeta = {
     a11yRationale:
       'Renders a native <blockquote> with the attribution in <footer><cite>, so the quotation and its source are semantically distinct to assistive tech',
     content: {
+      // Children are the page's authored prose, not chrome this component owns —
+      // so `audit --ai`'s raw-string rule must not flag every sentence.
+      contentPrimitive: true,
       tone: 'Verbatim quotation; do not paraphrase inside the quote',
       notes: 'cite names the author or work, not a URL label',
     },
