@@ -1626,6 +1626,7 @@
         { "name": "value", "type": "string | number", "required": true },
         { "name": "delta", "type": "string", "required": false },
         { "name": "trend", "type": "'up' | 'down' | 'flat'", "required": false },
+        { "name": "goodDirection", "type": "'up' | 'down' | 'neutral'", "required": false },
         { "name": "helpText", "type": "string", "required": false },
         { "name": "visual", "type": "React.ReactNode", "required": false }
       ]
@@ -2316,6 +2317,7 @@
           "type": "'number' | 'percent' | ((delta: number) => string)",
           "required": false
         },
+        { "name": "goodDirection", "type": "'up' | 'down' | 'neutral'", "required": false },
         { "name": "deltaLabel", "type": "string", "required": false },
         { "name": "icon", "type": "ReactNode", "required": false },
         { "name": "sparkline", "type": "number[]", "required": false },

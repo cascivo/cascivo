@@ -3412,6 +3412,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'goodDirection',
+      required: false,
+      enum: ['up', 'down', 'neutral'],
+    },
+    {
       name: 'deltaLabel',
       required: false,
       primitives: ['string'],
@@ -5567,6 +5572,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'trend',
       required: false,
       enum: ['up', 'down', 'flat'],
+    },
+    {
+      name: 'goodDirection',
+      required: false,
+      enum: ['up', 'down', 'neutral'],
     },
     {
       name: 'helpText',

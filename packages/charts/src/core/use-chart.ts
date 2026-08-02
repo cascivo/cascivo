@@ -116,14 +116,19 @@ export function rightMarginForLabels(
     rightAxisLabels?: readonly string[]
     /** Labels of the bottom axis — only the last one's overhang matters. */
     bottomAxisLabels?: readonly string[]
+    /** Whether the right axis also draws a rotated title outside its tick labels. */
+    rightAxisTitle?: boolean
     plain?: boolean | undefined
   } = {},
 ): number {
-  const { rightAxisLabels = [], bottomAxisLabels = [], plain } = options
+  const { rightAxisLabels = [], bottomAxisLabels = [], rightAxisTitle = false, plain } = options
   if (plain) return PLAIN_MARGINS.right
   const gutter = 12 // tick line (8px) + breathing room
   const rightAxis = rightAxisLabels.reduce((m, s) => Math.max(m, s.length), 0)
-  const rightAxisPx = rightAxis > 0 ? Math.ceil(rightAxis * AXIS_CHAR_PX + gutter) : 0
+  // A rotated axis title sits outside the tick labels, so it needs its own line box plus
+  // clearance from the widest tick — otherwise it renders on top of them or off the SVG.
+  const titlePx = rightAxisTitle ? AXIS_LINE_PX + 6 : 0
+  const rightAxisPx = rightAxis > 0 ? Math.ceil(rightAxis * AXIS_CHAR_PX + gutter + titlePx) : 0
   // Only the last bottom label overhangs, and only by half its width.
   const lastBottom = bottomAxisLabels[bottomAxisLabels.length - 1] ?? ''
   const overhangPx = lastBottom ? Math.ceil((lastBottom.length * AXIS_CHAR_PX) / 2 + 2) : 0

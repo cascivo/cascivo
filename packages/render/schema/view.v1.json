@@ -3914,6 +3914,10 @@
                     "type": "string",
                     "enum": ["up", "down", "flat"]
                   },
+                  "goodDirection": {
+                    "type": "string",
+                    "enum": ["up", "down", "neutral"]
+                  },
                   "helpText": {
                     "type": "string"
                   }
@@ -5930,6 +5934,10 @@
                   },
                   "delta": {
                     "type": "number"
+                  },
+                  "goodDirection": {
+                    "type": "string",
+                    "enum": ["up", "down", "neutral"]
                   },
                   "deltaLabel": {
                     "type": "string"

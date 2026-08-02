@@ -4926,6 +4926,13 @@
             "description": "How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included."
           },
           {
+            "name": "goodDirection",
+            "type": "'up' | 'down' | 'neutral'",
+            "required": false,
+            "default": "up",
+            "description": "Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour."
+          },
+          {
             "name": "deltaLabel",
             "type": "string",
             "required": false,
@@ -21535,6 +21542,13 @@
             "type": "'up' | 'down' | 'flat'",
             "required": false,
             "default": "flat"
+          },
+          {
+            "name": "goodDirection",
+            "description": "Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour.",
+            "type": "'up' | 'down' | 'neutral'",
+            "required": false,
+            "default": "up"
           },
           {
             "name": "helpText",

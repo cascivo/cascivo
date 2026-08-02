@@ -149,6 +149,69 @@ describe('crowded category axes are strided', () => {
   })
 })
 
+describe('secondAxis.label names the right-hand scale', () => {
+  const SERIES = [
+    {
+      id: 'req',
+      label: 'Requests',
+      data: [
+        { t: 1, v: 100 },
+        { t: 2, v: 200 },
+      ],
+    },
+    {
+      id: 'err',
+      label: 'Errors',
+      axis: 'right' as const,
+      data: [
+        { t: 1, v: 3 },
+        { t: 2, v: 7 },
+      ],
+    },
+  ]
+
+  it('AreaChart renders the label (it was typed but never drawn)', () => {
+    const { container } = render(
+      <AreaChart
+        title="Traffic"
+        series={SERIES}
+        x={(d) => d.t}
+        y={(d) => d.v}
+        secondAxis={{ label: 'Errors' }}
+        width={720}
+        height={320}
+      />,
+    )
+    // Before the fix the SVG contained only tick values — no "Errors" text anywhere, so a
+    // dual-axis chart could not say which series belonged to which scale.
+    expect(textsOf(container)).toContain('Errors')
+  })
+
+  it('LineChart does the same', () => {
+    const { container } = render(
+      <LineChart
+        title="Traffic"
+        series={SERIES}
+        x={(d) => d.t}
+        y={(d) => d.v}
+        secondAxis={{ label: 'Errors/min' }}
+        width={720}
+        height={320}
+      />,
+    )
+    expect(textsOf(container)).toContain('Errors/min')
+  })
+
+  it('reserves margin so the rotated title is not clipped by the SVG edge', () => {
+    const withTitle = rightMarginForLabels({
+      rightAxisLabels: ['4,000'],
+      rightAxisTitle: true,
+    })
+    const without = rightMarginForLabels({ rightAxisLabels: ['4,000'] })
+    expect(withTitle).toBeGreaterThan(without)
+  })
+})
+
 describe('right margin is reserved for right-hand chrome', () => {
   it('a right axis renders its labels outside the plot, not over it', () => {
     const { container } = render(

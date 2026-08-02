@@ -7,6 +7,7 @@ import {
   leftMarginForLabels,
   PLAIN_MARGINS,
   rightMarginForLabels,
+  AXIS_CHAR_PX,
 } from '../../core/use-chart'
 import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
@@ -350,7 +351,12 @@ export function AreaChart<Datum = { x: number; y: number }>({
     : {
         ...DEFAULT_MARGINS,
         left: leftMarginForLabels(leftAxisLabels, plain),
-        right: rightMarginForLabels({ rightAxisLabels, bottomAxisLabels, plain }),
+        right: rightMarginForLabels({
+          rightAxisLabels,
+          bottomAxisLabels,
+          rightAxisTitle: secondAxis?.label !== undefined && secondAxis.label !== '',
+          plain,
+        }),
       }
 
   const fallback = (
@@ -619,6 +625,20 @@ export function AreaChart<Datum = { x: number; y: number }>({
                         transform={`translate(${innerW},0)`}
                         {...(secondAxis?.format
                           ? { format: (v: number | string | Date) => secondAxis.format!(Number(v)) }
+                          : {})}
+                        {...(secondAxis?.label !== undefined && secondAxis.label !== ''
+                          ? {
+                              title: secondAxis.label,
+                              // Clear the widest tick label: they start 8px out from the
+                              // axis line and run outward.
+                              titleOffset:
+                                8 +
+                                Math.ceil(
+                                  rightAxisLabels.reduce((m, l) => Math.max(m, l.length), 0) *
+                                    AXIS_CHAR_PX,
+                                ) +
+                                10,
+                            }
                           : {})}
                       />
                     )}

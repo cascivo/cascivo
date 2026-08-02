@@ -4407,6 +4407,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `label` | `string` | yes | — | Metric label |
 | `delta` | `number` | no | — | Change value (positive = up, negative = down) |
 | `deltaFormat` | `'number' \| 'percent' \| ((delta: number) => string)` | no | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included. |
+| `goodDirection` | `'up' \| 'down' \| 'neutral'` | no | `up` | Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
 | `deltaLabel` | `string` | no | — | Delta context label (e.g. "vs last week") |
 | `icon` | `ReactNode` | no | — | Icon element rendered in the component. |
 | `sparkline` | `number[]` | no | — | Trend data for embedded sparkline |
@@ -15683,6 +15684,7 @@ import { Stat } from '@cascivo/react'
 | `value` | `string \| number` | yes | — | The metric value |
 | `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
 | `trend` | `'up' \| 'down' \| 'flat'` | no | `flat` | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
+| `goodDirection` | `'up' \| 'down' \| 'neutral'` | no | `up` | Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
 | `helpText` | `string` | no | — | Fine print below the value (methodology, time range) |
 | `visual` | `React.ReactNode` | no | — | Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText |
 

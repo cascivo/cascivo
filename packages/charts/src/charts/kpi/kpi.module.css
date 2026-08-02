@@ -52,11 +52,13 @@
     white-space: nowrap;
     color: var(--cascivo-color-foreground-muted);
 
-    &[data-trend='up'] {
+    /* Colour keys on sentiment, not direction: a rising error rate points up and is bad.
+       `data-trend` still drives the arrow. */
+    &[data-sentiment='good'] {
       color: var(--cascivo-color-success-foreground);
     }
 
-    &[data-trend='down'] {
+    &[data-sentiment='bad'] {
       color: var(--cascivo-color-destructive-foreground);
     }
   }

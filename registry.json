@@ -14958,8 +14958,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
       ],
       "fileHashes": {
-        "stat.tsx": "sha256-78edf10d18818f4bb7b072067b04e8527322f9639ea5a51cc6d42aab17971656",
-        "stat.module.css": "sha256-741cc5dd7aabecd845084bb9db37e686d60e82630574701c5d522b9e5c0887d2"
+        "stat.tsx": "sha256-beb4d287919b488598cdeeb4c85e72a560c96c560f61a0d6daa648e5af092c52",
+        "stat.module.css": "sha256-9ed322b9a80279a9ade2de1940f925ccc6741141ff95c9d164b54c19b7ca7874"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -15005,6 +15005,13 @@
             "type": "'up' | 'down' | 'flat'",
             "required": false,
             "default": "flat"
+          },
+          {
+            "name": "goodDirection",
+            "description": "Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour.",
+            "type": "'up' | 'down' | 'neutral'",
+            "required": false,
+            "default": "up"
           },
           {
             "name": "helpText",
@@ -22403,6 +22410,13 @@
             "type": "'number' | 'percent' | ((delta: number) => string)",
             "required": false,
             "description": "How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included."
+          },
+          {
+            "name": "goodDirection",
+            "type": "'up' | 'down' | 'neutral'",
+            "required": false,
+            "default": "up",
+            "description": "Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour."
           },
           {
             "name": "deltaLabel",

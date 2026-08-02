@@ -50,4 +50,29 @@ describe('Stat', () => {
     const { container } = render(<Stat label="x" value={1} />)
     expect(container.querySelector('svg')).not.toBeInTheDocument()
   })
+
+  it('colours a delta by sentiment, not by arrow direction', () => {
+    // The reported defect: `Errors 2.9K ▲ 14.9%` rendered green because up was hard-coded
+    // as good. The arrow must still point up — the number really did rise.
+    const { container } = render(
+      <Stat label="Errors" value="2.9K" delta="14.9%" trend="up" goodDirection="down" />,
+    )
+    const delta = container.querySelector('[data-trend]')!
+    expect(delta.getAttribute('data-trend')).toBe('up')
+    expect(delta.getAttribute('data-sentiment')).toBe('bad')
+  })
+
+  it('defaults to up-is-good, preserving existing behaviour', () => {
+    const { container } = render(<Stat label="Revenue" value="1M" delta="12%" trend="up" />)
+    expect(container.querySelector('[data-trend]')!.getAttribute('data-sentiment')).toBe('good')
+  })
+
+  it('drops sentiment colour for a metric with no good direction', () => {
+    const { container } = render(
+      <Stat label="Headcount" value={120} delta="4" trend="up" goodDirection="neutral" />,
+    )
+    const delta = container.querySelector('[data-trend]')!
+    expect(delta.getAttribute('data-trend')).toBe('up')
+    expect(delta.getAttribute('data-sentiment')).toBe('neutral')
+  })
 })
