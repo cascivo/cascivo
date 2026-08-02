@@ -1,8 +1,10 @@
 # Fix plan: the 2026-07-30 + 2026-08-02 adopter experience reports
 
 **Status: IMPLEMENTED (Phases 1–4), 2026-08-02.** Every workstream below has shipped with
-its guard. Spec and outcome are both kept: the spec is the root-cause record, and the
-"Outcome" notes mark where implementation diverged from the plan and why.
+its guard. The spec is kept as-written because it is the root-cause record; where
+implementation diverged from it, the divergences are listed immediately below rather than
+edited into the workstreams — a spec quietly rewritten to match what happened stops being
+evidence of anything.
 
 Nine new guards now run in `pnpm ready`; the full gate (regen, format, lint, 201 meta
 checks, build, typecheck, all package tests) is green. **Do not treat this header as
