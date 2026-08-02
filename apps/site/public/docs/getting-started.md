@@ -134,6 +134,24 @@ pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 (`@cascivo/tokens` comes with `@cascivo/themes` automatically — it is a direct
 dependency, not a peer, so you never install it by hand.)
 
+**If you lint with `eslint-plugin-react-hooks@7`, add one more dev dependency now:**
+
+```sh
+pnpm add -D @cascivo/eslint-config
+```
+
+```js
+// eslint.config.js
+import cascivo from '@cascivo/eslint-config'
+export default [...yourConfig, ...cascivo] // spread LAST
+```
+
+Its `recommended-latest` enables `react-hooks/immutability`, which reports every
+`signal.value = next` — cascivo's mandatory state idiom — as
+`Error: This value cannot be modified`. Without this you get a lint error on
+every piece of state you write. See
+[USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md) §1.
+
 Peer dependencies: `react >=18`, `react-dom >=18`, and `@preact/signals-react`
 (cascivo components are signal-driven, so the signals runtime is required).
 **On React 19 the signals runtime must be 3.x** — the peer range enforces `>=3`

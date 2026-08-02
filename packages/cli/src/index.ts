@@ -282,9 +282,12 @@ export async function run(args: string[]): Promise<void> {
       } else {
         const cwd = process.cwd()
         const result = await runDoctor(cwd)
-        const { checkProjectDependencies, checkSignalsCompat, checkSsrConfig, isAdopterProject } =
+        const { checkProjectDependencies, checkSignalsCompat, checkSsrConfig, detectInstallPath } =
           await import('./commands/doctor.js')
-        const adopter = isAdopterProject(cwd)
+        // Gate on evidence of *any* cascivo install, not on a `cascivo.config.*` file. The
+        // config gate mislabelled every prebuilt-path app as copy-paste (the scaffolder wrote
+        // one unconditionally), and would now skip them entirely since it no longer does.
+        const adopter = detectInstallPath(cwd) !== 'unknown'
         const deps = adopter ? checkProjectDependencies(cwd) : []
         const missingRequired = deps.filter((d) => d.required)
         const signalsCompat = adopter ? await checkSignalsCompat(cwd) : null
@@ -298,8 +301,13 @@ export async function run(args: string[]): Promise<void> {
             console.error(`[${v.rule}] ${v.detail}\n  ${v.file}`)
           }
           for (const d of missingRequired) {
+            // A forbidden dependency needs the opposite advice from a missing one. Sharing
+            // the "install it" template told prebuilt-path adopters to install the very
+            // packages the message was asking them to remove.
             console.error(
-              `[missing-dependency] ${d.package} is not in package.json — copied cascivo source needs it. Install: ${d.hint}`,
+              d.kind === 'forbidden'
+                ? `[forbidden-dependency] ${d.package} must not be a direct dependency here. Remove it — ${d.hint}`
+                : `[missing-dependency] ${d.package} is not in package.json. Install: ${d.hint}`,
             )
           }
           if (signalsCompat) {

@@ -6,6 +6,7 @@ import {
   checkProjectDependencies,
   checkSignalsCompat,
   checkSsrConfig,
+  detectInstallPath,
   isAdopterProject,
   runDoctor,
   stripCommentsAndStrings,
@@ -84,50 +85,159 @@ describe('runDoctor', () => {
   })
 })
 
+describe('detectInstallPath', () => {
+  let dir: string
+  afterEach(() => rmSync(dir, { recursive: true, force: true }))
+
+  function project(pkg: Record<string, unknown> | null, opts: { copied?: boolean } = {}): string {
+    dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-path-'))
+    if (pkg !== null) writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg))
+    if (opts.copied === true) {
+      mkdirSync(join(dir, 'src/components/ui'), { recursive: true })
+      writeFileSync(join(dir, 'src/components/ui/button.tsx'), 'export const Button = () => null\n')
+    }
+    return dir
+  }
+
+  it('detects the prebuilt path from an @cascivo/react dependency', () => {
+    expect(detectInstallPath(project({ dependencies: { '@cascivo/react': '0.14.0' } }))).toBe(
+      'prebuilt',
+    )
+  })
+
+  it('detects the copied path from vendored source', () => {
+    expect(detectInstallPath(project({ dependencies: {} }, { copied: true }))).toBe('copied')
+  })
+
+  it('detects hybrid when the app both depends on the package and copied source', () => {
+    const root = project({ dependencies: { '@cascivo/react': '0.14.0' } }, { copied: true })
+    expect(detectInstallPath(root)).toBe('hybrid')
+  })
+
+  it('a cascivo.config alone is NOT evidence of a copy-paste app', () => {
+    // The regression: `cascivo create` wrote a config into every scaffold, so every
+    // prebuilt-path app was judged copy-paste and told to install the forbidden packages.
+    const root = project({ dependencies: {} })
+    writeFileSync(
+      join(root, 'cascivo.config.ts'),
+      "export default { outputDir: 'src/components/ui' }\n",
+    )
+    expect(detectInstallPath(root)).toBe('unknown')
+  })
+
+  it('honours a custom outputDir from the config', () => {
+    const root = project({ dependencies: {} })
+    writeFileSync(join(root, 'cascivo.config.ts'), "export default { outputDir: 'app/ui' }\n")
+    mkdirSync(join(root, 'app/ui'), { recursive: true })
+    writeFileSync(join(root, 'app/ui/card.tsx'), 'export const Card = () => null\n')
+    expect(detectInstallPath(root)).toBe('copied')
+  })
+
+  it('is unknown with no package.json', () => {
+    expect(detectInstallPath(project(null))).toBe('unknown')
+  })
+})
+
 describe('checkProjectDependencies', () => {
   let dir: string
   afterEach(() => rmSync(dir, { recursive: true, force: true }))
 
-  function project(pkg: Record<string, unknown>): string {
+  function project(pkg: Record<string, unknown>, opts: { copied?: boolean } = {}): string {
     dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-deps-'))
     writeFileSync(join(dir, 'package.json'), JSON.stringify(pkg))
+    if (opts.copied === true) {
+      mkdirSync(join(dir, 'src/components/ui'), { recursive: true })
+      writeFileSync(join(dir, 'src/components/ui/button.tsx'), 'export const Button = () => null\n')
+    }
     return dir
   }
 
-  it('flags every missing runtime dependency (incl. the signals peer)', () => {
-    const root = project({ dependencies: {} })
-    const findings = checkProjectDependencies(root)
-    const required = findings.filter((f) => f.required).map((f) => f.package)
+  it('flags every missing runtime dependency on the copied path (incl. the signals peer)', () => {
+    const root = project({ dependencies: {} }, { copied: true })
+    const required = checkProjectDependencies(root)
+      .filter((f) => f.required)
+      .map((f) => f.package)
     expect(required).toContain('@cascivo/core')
     expect(required).toContain('@preact/signals-react')
     expect(required).toContain('@cascivo/themes')
   })
 
-  it('marks @cascivo/i18n and @cascivo/charts as advisory, not required', () => {
+  it('does NOT demand @cascivo/core or @cascivo/tokens on the prebuilt path', () => {
+    // The reported bug: `doctor --ci` failed a correctly-installed Path B app and told the
+    // adopter to install two packages the docs explicitly forbid there.
     const root = project({
       dependencies: {
-        '@cascivo/core': '^0.4.0',
-        '@cascivo/tokens': '^0.5.0',
-        '@cascivo/themes': '^0.4.0',
-        '@preact/signals-react': '^3.0.0',
+        '@cascivo/react': '0.14.0',
+        '@cascivo/themes': '0.4.9',
+        '@preact/signals-react': '>=3.0.0',
       },
     })
+    const required = checkProjectDependencies(root)
+      .filter((f) => f.required)
+      .map((f) => f.package)
+    expect(required).toEqual([])
+  })
+
+  it('flags @cascivo/core and @cascivo/tokens as forbidden on the prebuilt path', () => {
+    const root = project({
+      dependencies: {
+        '@cascivo/react': '0.14.0',
+        '@cascivo/themes': '0.4.9',
+        '@preact/signals-react': '>=3.0.0',
+        '@cascivo/core': '0.7.1',
+        '@cascivo/tokens': '0.5.6',
+      },
+    })
+    const forbidden = checkProjectDependencies(root).filter((f) => f.kind === 'forbidden')
+    expect(forbidden.map((f) => f.package).sort()).toEqual(['@cascivo/core', '@cascivo/tokens'])
+    expect(forbidden.every((f) => f.required)).toBe(true)
+  })
+
+  it('does not call @cascivo/core forbidden on a hybrid app that copied source', () => {
+    // A hybrid legitimately needs it for the vendored files; flagging it there would be the
+    // same bug in mirror image.
+    const root = project(
+      { dependencies: { '@cascivo/react': '0.14.0', '@cascivo/core': '0.7.1' } },
+      { copied: true },
+    )
+    expect(checkProjectDependencies(root).some((f) => f.kind === 'forbidden')).toBe(false)
+  })
+
+  it('advises on nothing when the install path is unknown', () => {
+    expect(checkProjectDependencies(project({ dependencies: {} }))).toEqual([])
+  })
+
+  it('marks @cascivo/i18n and @cascivo/charts as advisory, not required', () => {
+    const root = project(
+      {
+        dependencies: {
+          '@cascivo/core': '^0.4.0',
+          '@cascivo/tokens': '^0.5.0',
+          '@cascivo/themes': '^0.4.0',
+          '@preact/signals-react': '^3.0.0',
+        },
+      },
+      { copied: true },
+    )
     const findings = checkProjectDependencies(root)
     expect(findings.every((f) => !f.required)).toBe(true)
     expect(findings.map((f) => f.package).sort()).toEqual(['@cascivo/charts', '@cascivo/i18n'])
   })
 
-  it('returns nothing when the full set is present', () => {
-    const root = project({
-      dependencies: {
-        '@cascivo/core': '^0.4.0',
-        '@cascivo/tokens': '^0.5.0',
-        '@cascivo/themes': '^0.4.0',
-        '@cascivo/i18n': '^0.2.0',
-        '@cascivo/charts': '^0.3.0',
-        '@preact/signals-react': '^3.0.0',
+  it('returns nothing when the full copied-path set is present', () => {
+    const root = project(
+      {
+        dependencies: {
+          '@cascivo/core': '^0.4.0',
+          '@cascivo/tokens': '^0.5.0',
+          '@cascivo/themes': '^0.4.0',
+          '@cascivo/i18n': '^0.2.0',
+          '@cascivo/charts': '^0.3.0',
+          '@preact/signals-react': '^3.0.0',
+        },
       },
-    })
+      { copied: true },
+    )
     expect(checkProjectDependencies(root)).toEqual([])
   })
 })

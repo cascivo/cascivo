@@ -19,7 +19,7 @@ describe('buildScaffold', () => {
       'tsconfig.json',
       'vite.config.ts',
       'index.html',
-      'cascivo.config.ts',
+      'eslint.config.js',
       '.gitignore',
       'README.md',
       'AGENTS.md',
@@ -42,14 +42,24 @@ describe('buildScaffold', () => {
     expect(pkg.name).toBe('my-app')
   })
 
-  it('depends on the cascivo runtime packages', () => {
+  it('depends on the cascivo runtime packages the prebuilt path needs — and no others', () => {
     const pkg = JSON.parse(map.get('package.json')!) as {
       dependencies: Record<string, string>
     }
     expect(pkg.dependencies['@cascivo/react']).toBeDefined()
     expect(pkg.dependencies['@cascivo/themes']).toBeDefined()
-    expect(pkg.dependencies['@cascivo/tokens']).toBeDefined()
     expect(pkg.dependencies['react']).toBeDefined()
+    // The generated App.tsx calls `useSignals()`; the peer used to be omitted entirely and
+    // resolved only by hoisting.
+    expect(pkg.dependencies['@preact/signals-react']).toBeDefined()
+    // AI-RULES.md / GETTING-STARTED.md both forbid declaring these on the prebuilt path.
+    expect(pkg.dependencies['@cascivo/core']).toBeUndefined()
+    expect(pkg.dependencies['@cascivo/tokens']).toBeUndefined()
+  })
+
+  it('writes no cascivo.config on the prebuilt path', () => {
+    // Its presence is what made `doctor` classify the scaffold as a copy-paste project.
+    expect([...map.keys()].some((p) => p.startsWith('cascivo.config.'))).toBe(false)
   })
 
   it('wires the chosen theme into html and the entry CSS', () => {
@@ -59,9 +69,24 @@ describe('buildScaffold', () => {
 
   it('declares the canonical layer order with a vendor slot for third-party CSS', () => {
     const html = map.get('index.html')!
-    expect(html).toContain(
-      '@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;',
-    )
+    const declared = /@layer ([^;]+);/
+      .exec(html)?.[1]
+      ?.split(',')
+      .map((s) => s.trim())
+    expect(declared).toEqual([
+      'vendor',
+      'cascivo.reset',
+      'cascivo.base',
+      'cascivo.tokens',
+      'cascivo.component',
+      'cascivo.theme',
+      'cascivo.blocks',
+      // The app's own slot. AGENTS.md tells the agent to write here; it used to be named
+      // there but never declared, so that CSS landed in an undeclared layer that beats
+      // every cascivo layer.
+      'cascivo.example',
+      'cascivo.override',
+    ])
     expect(html).toContain('layer(vendor)')
   })
 

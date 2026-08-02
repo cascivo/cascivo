@@ -61,6 +61,13 @@ there, and everything is re-exported from `@cascivo/react`.
 
 1. Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. Never `useState`.
    The signal IS the state.
+   > ⚠ **Your linter will reject this rule by default.** `eslint-plugin-react-hooks@7`'s
+   > `recommended-latest` enables `react-hooks/immutability`, which reports every
+   > `signal.value = next` as `Error: This value cannot be modified`. It fires on the idiom
+   > this line mandates, in your own page code, on both install paths. Install
+   > `@cascivo/eslint-config` (`...cascivo` spread last in `eslint.config.js`) or set
+   > `'react-hooks/immutability': 'off'` yourself. Full rationale and what it costs:
+   > [USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md).
 2. Side effects (DOM, listeners, `showModal()`) -> `useSignalEffect(fn)`. Never `useEffect`.
 3. Shared/app-wide state -> a module-level `signal` imported anywhere. Never `useContext`.
 4. A controlled/uncontrolled prop bridged to a signal ->

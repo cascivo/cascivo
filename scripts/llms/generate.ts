@@ -847,6 +847,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. The signal IS the state.',
   )
   lines.push(
+    "  ⚠ LINT: `eslint-plugin-react-hooks@7` (`recommended-latest`) enables `react-hooks/immutability`, which reports EVERY `signal.value = next` as `Error: This value cannot be modified`. It fires on this documented idiom, in the app's own page code, on both install paths — one reported build hit it 8 times and had no doc to reach for. Fix: `pnpm add -D @cascivo/eslint-config` and spread `...cascivo` LAST in `eslint.config.js`, or set `'react-hooks/immutability': 'off'`. Scoping it to a vendored-source glob does NOT work. See /docs/using-with-strict-eslint.md.",
+  )
+  lines.push(
     '- Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.',
   )
   lines.push('- Side effects (DOM, listeners) -> `useSignalEffect(fn)`, never `useEffect`.')

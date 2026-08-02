@@ -12,6 +12,15 @@ The catalogue below is the **a11y/behavior** layer; this is the **state** layer.
 components never use `useState`/`useContext`/`useEffect` — the signal *is* the state. When
 you build on cascivo, reach for these, not the React hook you'd normally use:
 
+> ⚠ **Before you write your first signal, turn off one lint rule.** Every write below —
+> including this page's `onClick={() => (open.value = !open.value)}` — is reported as
+> `Error: This value cannot be modified` by `react-hooks/immutability`, which
+> `eslint-plugin-react-hooks@7` enables by default in `recommended-latest`. Add
+> `@cascivo/eslint-config` (`...cascivo`, spread last) or set
+> `'react-hooks/immutability': 'off'`. See
+> [USING-WITH-STRICT-ESLINT.md](./USING-WITH-STRICT-ESLINT.md) §1 for why it cannot be
+> narrowed and what turning it off costs.
+
 | You'd normally reach for… | Use instead | Why |
 | --- | --- | --- |
 | `useState` | `useSignal(initial)` (local) / `useComputed(fn)` (derived) | The signal is the state; fine-grained updates, no subtree re-render. |
