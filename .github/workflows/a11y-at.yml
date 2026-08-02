@@ -38,10 +38,19 @@ jobs:
           cd apps/storybook
           pnpm add -D @guidepup/guidepup playwright
           pnpm exec playwright install webkit
-      # The guidepup CLI is a commander program with `setup`/`install`
-      # subcommands — invoking the bare bin prints usage and exits 1.
+      # The guidepup CLI is a commander program — invoking the bare bin prints
+      # usage and exits 1. BOTH subcommands are required: `setup` configures the
+      # OS, `install` downloads the screen-reader assets into the guidepup cache
+      # under $HOME. Without `install`, VoiceOver.start() dies with "Failed to
+      # mount Guidepup preferences". `install` reads the manifest.json shipped by
+      # @guidepup/guidepup, resolved from the working directory, so it has to run
+      # where that package was added. A bare `install` picks the one screen
+      # reader the manifest marks default for this platform (voiceover).
       - name: Enable VoiceOver automation
-        run: npx --yes @guidepup/setup setup --ci
+        working-directory: apps/storybook
+        run: |
+          npx --yes @guidepup/setup setup --ci
+          npx --yes @guidepup/setup install
       - name: Sweep
         env:
           AT_SR: voiceover
@@ -79,8 +88,13 @@ jobs:
           cd apps/storybook
           pnpm add -D @guidepup/guidepup playwright
           pnpm exec playwright install chromium
+      # Same two-subcommand contract as the macOS job; here `install` resolves
+      # to nvda.
       - name: Enable NVDA automation
-        run: npx --yes @guidepup/setup setup --ci
+        working-directory: apps/storybook
+        run: |
+          npx --yes @guidepup/setup setup --ci
+          npx --yes @guidepup/setup install
       - name: Sweep
         env:
           AT_SR: nvda
