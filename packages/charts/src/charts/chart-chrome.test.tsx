@@ -113,6 +113,40 @@ describe('crowded category axes are strided', () => {
   it('autoLabelStride returns undefined when every label fits', () => {
     expect(autoLabelStride(['a', 'b', 'c'], 900)).toBeUndefined()
   })
+
+  it('autoLabelStride measures stacked labels by line height, not text width', () => {
+    // The reported case: 7 route names down a 240px-tall axis. Measured as horizontal
+    // text they look crowded (one is 8 chars ≈ 58px vs a 34px band) and get strided away;
+    // stacked, each has a whole 34px row for a ~14px line box, so all seven fit.
+    const routes = ['/', '/pricing', '/docs', '/blog', '/about', '/careers', '/contact']
+    expect(autoLabelStride(routes, 240, 'vertical')).toBeUndefined()
+    expect(autoLabelStride(routes, 240, 'horizontal')).toBeGreaterThan(1)
+  })
+
+  it('autoLabelStride still thins a genuinely crowded vertical axis', () => {
+    // Direction-awareness must not become "never stride" — 40 labels in 240px is 6px a row.
+    const many = Array.from({ length: 40 }, (_, i) => `row ${i}`)
+    expect(autoLabelStride(many, 240, 'vertical')).toBeGreaterThan(1)
+  })
+
+  it('a 7-category horizontal BarChart renders every category label', () => {
+    const routes = ['/', '/pricing', '/docs', '/blog', '/about', '/careers', '/contact']
+    const { container } = render(
+      <BarChart
+        title="Top routes"
+        orientation="horizontal"
+        series={[
+          { id: 'views', label: 'Views', data: routes.map((r, i) => ({ r, v: (i + 1) * 100 })) },
+        ]}
+        x={(d) => d.r}
+        y={(d) => d.v}
+        width={600}
+        height={260}
+      />,
+    )
+    const rendered = textsOf(container)
+    for (const route of routes) expect(rendered).toContain(route)
+  })
 })
 
 describe('right margin is reserved for right-hand chrome', () => {

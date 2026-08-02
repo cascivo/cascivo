@@ -52,6 +52,7 @@ Renders with role="img"; the value and range are in the fallback table.
 
 ```jsx
 import { Gauge } from '@cascivo/charts'
+
 ;<Gauge
   title="CPU load"
   value={72}

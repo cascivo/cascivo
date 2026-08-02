@@ -130,6 +130,10 @@ Two axis-chrome details worth knowing, both automatic:
 - A crowded category axis is auto-strided (`Jun 1 … Jun 30` renders every Nth label).
   `xLabelEvery` **overrides** that computation — omit it unless you specifically want a
   different stride; passing `Math.ceil(n / 8)` "to help" makes it worse.
+  The stride is direction-aware: `orientation="horizontal"` stacks its categories down the
+  y-axis, so they are measured by line height, not by name length. If you still see labels
+  dropped on an axis that visibly has room, that is a bug worth reporting — but
+  `categoryLabelEvery={1}` forces every label in the meantime.
 
 ## Importing from more than one cascivo package
 

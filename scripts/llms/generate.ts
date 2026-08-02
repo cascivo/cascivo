@@ -823,7 +823,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.',
   )
   lines.push(
-    '- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, Select, Combobox, Slider, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput); activating an item -> `onSelect(value)` (Dropdown, Menu, chart points). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.',
+    '- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.',
   )
   lines.push('')
   lines.push(

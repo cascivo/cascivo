@@ -131,18 +131,44 @@ export function rightMarginForLabels(
 }
 
 /**
+ * Approximate block size (px) of one axis label at the 11px axis font — the line box
+ * plus a little separation. What crowds labels stacked down a y-axis is their *height*,
+ * not the length of the text.
+ */
+export const AXIS_LINE_PX = 14
+
+/**
  * Stride for a crowded categorical (band) axis: render every Nth label so they stop
  * colliding (e.g. 14 `Jul 1`…`Jul 14` dates in a narrow chart). Returns `undefined`
  * when every label fits — callers pass that straight to `Axis.labelEvery` (all shown).
  * An explicit `xLabelEvery` from the caller always overrides this.
  *
+ * `direction` says which way the labels are laid out along the axis, and therefore which
+ * dimension of the label competes for the band:
+ *
+ * - `'horizontal'` (a bottom category axis) — labels sit side by side, so the constraint
+ *   is text *width*, estimated from the character count.
+ * - `'vertical'` (a horizontal bar chart's category axis, which runs down the y-axis) —
+ *   labels stack, so the constraint is line *height*, which is the same for every label.
+ *
+ * Measuring the vertical case against text width is the bug this parameter fixes: seven
+ * categories down a 240px axis were strided away as "crowded" because one of them was
+ * eight characters long, which is not a fact about vertical space at all.
+ *
  * `Axis` always draws the final label, and drops the strided label before it when the two
  * would collide — so a stride that doesn't divide the domain evenly is safe.
  */
-export function autoLabelStride(labels: readonly string[], axisLength: number): number | undefined {
+export function autoLabelStride(
+  labels: readonly string[],
+  axisLength: number,
+  direction: 'horizontal' | 'vertical' = 'horizontal',
+): number | undefined {
   if (labels.length <= 1 || axisLength <= 0) return undefined
   const band = axisLength / labels.length
-  const widest = labels.reduce((m, s) => Math.max(m, s.length), 0) * AXIS_CHAR_PX + 6
-  if (band >= widest) return undefined
-  return Math.ceil(widest / band)
+  const needed =
+    direction === 'vertical'
+      ? AXIS_LINE_PX
+      : labels.reduce((m, s) => Math.max(m, s.length), 0) * AXIS_CHAR_PX + 6
+  if (band >= needed) return undefined
+  return Math.ceil(needed / band)
 }

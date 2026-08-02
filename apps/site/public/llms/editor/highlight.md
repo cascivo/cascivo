@@ -38,6 +38,7 @@ import '@cascivo/editor/styles.css' // required stylesheet
 ```tsx
 import { Highlight } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
+
 ;<Highlight language="json" value={'{ "ok": true }'} />
 ```
 

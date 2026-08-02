@@ -100,6 +100,7 @@ Brand with prefix, dropdown nav, global icon action
 
 ```jsx
 import { Bell } from '@cascivo/icons'
+
 ;<ShellHeader
   brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[

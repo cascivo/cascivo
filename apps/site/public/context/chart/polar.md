@@ -56,6 +56,7 @@ Renders with role="img"; values are in the fallback table.
 
 ```jsx
 import { Polar } from '@cascivo/charts'
+
 ;<Polar
   title="Wind by direction"
   mode="bar"

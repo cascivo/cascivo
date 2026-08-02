@@ -24,6 +24,15 @@ export interface SelectOption {
   disabled?: boolean
 }
 
+/**
+ * ⚠ `Select` is a **native `<select>` wrapper**, so its change handler is the DOM
+ * `onChange(event)` — read the value off `event.target.value`. There is **no**
+ * `onValueChange`; TypeScript unhelpfully suggests `onVolumeChange` when you try it.
+ *
+ * The catalog's `onValueChange` convention covers composite components that invent their
+ * own value (`Tabs`, `Combobox`, `Toggle`, …). `Select`, like `Checkbox` and
+ * `NativeSelect`, spreads onto a real element and inherits that element's event.
+ */
 export interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   label?: string
   hint?: string

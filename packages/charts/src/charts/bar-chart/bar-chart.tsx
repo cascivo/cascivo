@@ -425,8 +425,16 @@ export function BarChart<Datum = { x: string; y: number }>({
           const innerH = h - margins.top - margins.bottom
           const isVertical = orientation === 'vertical'
           // Thin a crowded category axis automatically; an explicit stride prop wins.
+          // Horizontal bars run their categories down the y-axis, where labels stack and
+          // compete for height rather than width — so the direction has to travel with the
+          // length, or long category names strand a chart that has plenty of room.
           const labelEvery =
-            resolvedLabelEvery ?? autoLabelStride(categories, isVertical ? innerW : innerH)
+            resolvedLabelEvery ??
+            autoLabelStride(
+              categories,
+              isVertical ? innerW : innerH,
+              isVertical ? 'horizontal' : 'vertical',
+            )
 
           const catScale = bandScale(categories, isVertical ? [0, innerW] : [0, innerH], 0.2)
           const valScale = linearScale(

@@ -39,6 +39,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Funnel } from '@cascivo/charts'
+
 ;<Funnel
   title="Signup funnel"
   showConversion

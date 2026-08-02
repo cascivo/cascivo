@@ -48,6 +48,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Candlestick } from '@cascivo/charts'
+
 ;<Candlestick
   title="ACME daily"
   tooltip

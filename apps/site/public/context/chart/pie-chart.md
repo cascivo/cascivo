@@ -87,6 +87,7 @@ Argument passed to the `tooltipFormat` callback.
 
 ```jsx
 import { PieChart } from '@cascivo/charts'
+
 ;<PieChart
   data={[
     { label: 'A', value: 60 },
@@ -100,6 +101,7 @@ import { PieChart } from '@cascivo/charts'
 
 ```jsx
 import { PieChart } from '@cascivo/charts'
+
 ;<PieChart
   donut
   size={220}

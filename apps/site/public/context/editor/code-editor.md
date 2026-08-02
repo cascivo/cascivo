@@ -80,6 +80,7 @@ The native <textarea> is the editing surface, so caret, selection, IME, undo, an
 ```jsx
 import { CodeEditor } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
+
 ;<CodeEditor language="typescript" lineNumbers defaultValue={'const x = 1\n'} />
 ```
 
