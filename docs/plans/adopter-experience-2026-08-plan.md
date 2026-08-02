@@ -1,10 +1,31 @@
 # Fix plan: the 2026-07-30 + 2026-08-02 adopter experience reports
 
-**Status: planned — not implemented.** This document is the complete spec for fixing every
-item in two hands-on agent experience reports. It is written to be handed to an implementing
-agent as-is: every issue is root-caused against current source with `file:line` evidence
-(all verified in this repo at `b18ce298`), and every workstream carries a design decision,
-implementation steps, an executable guard, and acceptance criteria.
+**Status: IMPLEMENTED (Phases 1–4), 2026-08-02.** Every workstream below has shipped with
+its guard. Spec and outcome are both kept: the spec is the root-cause record, and the
+"Outcome" notes mark where implementation diverged from the plan and why.
+
+Nine new guards now run in `pnpm ready`; the full gate (regen, format, lint, 201 meta
+checks, build, typecheck, all package tests) is green. **Do not treat this header as
+evidence** — that is the mistake §0 Cause 1 is about. Run `pnpm ready`; the guards answer
+the question continuously.
+
+Where the plan and reality diverged, in summary:
+
+- **§0 Cause 1 was wrong** and is corrected in place: the prior plan's seven workstreams had
+  all shipped; only its status header was stale. The corrected finding is worse, not better.
+- **WS-D5** did not add an `ariaLabel` alias for the chart `title` as specced. An alias
+  requires making both optional, which drops the compile-time guarantee that every chart has
+  an accessible name. Documented loudly instead, with a guard.
+- **WS-F1** did not converge the identity field on `value`. The audit found a real rule
+  underneath the reported inconsistency (`value` is handed to a callback; `id`/`key` is a
+  React key that is never passed anywhere), so the fix was to state the rule, not to rename.
+- Several workstreams found **more instances than reported** once their guard existed —
+  recorded per-WS below.
+
+This document is written to be handed to an implementing agent as-is: every issue is
+root-caused against current source with `file:line` evidence (all verified at `b18ce298`),
+and every workstream carries a design decision, implementation steps, an executable guard,
+and acceptance criteria.
 
 **Sources:**
 
@@ -29,12 +50,23 @@ theme provider, dependencies — "were already mentioned multiple times, and it 
 mentioned to be fixed." That is accurate, and the repository shows why. Three structural
 causes, and **every workstream below is required to close one of them.**
 
-**Cause 1 — a prior plan was never implemented.**
+**Cause 1 — a prior plan looked unimplemented, and nobody could tell.**
 `docs/plans/tanstack-start-experience-report-plan.md` is a complete, correct, file:line
-root-caused spec for the 2026-07-17 report. Its header still reads
-**"Status: planned — not implemented."** Its WS4 ("copied source fails host's strict
-ESLint") is the direct ancestor of R1's #1 blocker. The plan was written, praised, and
-shelved. **A plan is not a fix.** See §8 for the required disposition of that document.
+root-caused spec for the 2026-07-17 report, and its header read
+**"Status: planned — not implemented."** for months.
+
+**Correction (2026-08-02): all seven of its workstreams had in fact shipped.** Verified
+against current source during WS-G5 — package-manager detection, the `init` dependency set,
+npm-entry installs, host-strict lint, docs prerendering, the `Stack` disambiguation and the
+DataTable gutter are all in the tree. The header was stale, not the work.
+
+That is a *worse* finding than the original reading, not a better one. The project could
+not answer "did this land?" from anything but a fresh source audit, so the honest default
+was to assume it hadn't. A status line nobody re-reads is indistinguishable from an
+abandoned plan, and it cost this review a full re-triage. **This is the argument for
+guards over documents**: a check that fails when a fix is reverted answers the question
+continuously and for free; a status line answers it once, then rots. See §8 for the
+disposition of that document.
 
 **Cause 2 — fixes land on the instance, not the class, and ship without a guard.**
 The pattern is visible three times over:

@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import {
   checkProjectDependencies,
   checkSignalsCompat,
+  checkDuplicateCore,
   checkSsrConfig,
   detectInstallPath,
   isAdopterProject,
@@ -329,5 +330,49 @@ describe('isAdopterProject', () => {
     expect(isAdopterProject(dir)).toBe(false)
     writeFileSync(join(dir, 'cascivo.config.ts'), 'export default {}\n')
     expect(isAdopterProject(dir)).toBe(true)
+  })
+})
+
+describe('checkDuplicateCore', () => {
+  let dir: string
+  afterEach(() => rmSync(dir, { recursive: true, force: true }))
+
+  function install(root: string | null, nested: Record<string, string>): string {
+    dir = mkdtempSync(join(tmpdir(), 'cascade-doctor-dup-'))
+    if (root !== null) {
+      mkdirSync(join(dir, 'node_modules/@cascivo/core'), { recursive: true })
+      writeFileSync(
+        join(dir, 'node_modules/@cascivo/core/package.json'),
+        JSON.stringify({ name: '@cascivo/core', version: root }),
+      )
+    }
+    for (const [owner, version] of Object.entries(nested)) {
+      const base = join(dir, 'node_modules', owner)
+      mkdirSync(join(base, 'node_modules/@cascivo/core'), { recursive: true })
+      writeFileSync(join(base, 'package.json'), JSON.stringify({ name: owner, version: '0.0.0' }))
+      writeFileSync(
+        join(base, 'node_modules/@cascivo/core/package.json'),
+        JSON.stringify({ name: '@cascivo/core', version }),
+      )
+    }
+    return dir
+  }
+
+  it('is null when one @cascivo/core is hoisted', async () => {
+    expect(await checkDuplicateCore(install('0.7.1', {}))).toBeNull()
+  })
+
+  it('is null when a nested copy matches the hoisted one', async () => {
+    const root = install('0.7.1', { '@cascivo/charts': '0.7.1' })
+    expect(await checkDuplicateCore(root)).toBeNull()
+  })
+
+  it('reports a nested copy that differs', async () => {
+    // Two copies of @cascivo/core means two signal registries: a write through one is
+    // invisible to components subscribed through the other, with no error at all.
+    const root = install('0.7.1', { '@cascivo/charts': '0.6.0' })
+    const finding = await checkDuplicateCore(root)
+    expect(finding?.root).toBe('0.7.1')
+    expect(finding?.nested).toEqual(['@cascivo/charts → 0.6.0'])
   })
 })

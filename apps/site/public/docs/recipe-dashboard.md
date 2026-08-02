@@ -33,7 +33,7 @@ The column is generated from `registry.json` and checked by
 | Project-card grid                                        | `Card` + `Badge` (framework/status) + `RelativeTime` (last deploy), laid out in `AutoGrid`/`Grid` | `card`, `badge`, `relative-time`, `layout/auto-grid` | `@cascivo/react`                     | `AutoGrid min="16rem"` gives a responsive card grid with no media queries; use `Grid cols={{…}}` for an explicit responsive column count. Under SSR pass `RelativeTime`'s `now` (a serialized server timestamp) for byte-identical server/client text — every deploy console has a "3 minutes ago" column. `CardHeader actions={…}` gives the title-left / menu-right header.                                                                                                                                                                                     |
 | KPI / usage numbers                                      | `Stat`, or `Kpi` for a chart-library tile                                                         | `stat`, `chart/kpi`                                  | `@cascivo/react` / `@cascivo/charts` | `Stat` is layout-only (label/value/delta/trend); `Kpi` (from `@cascivo/charts`) bundles a trailing sparkline — see below. ⚠ **`Kpi` ships card chrome and `Stat` does not**, so a `Stat` row and a `Kpi` row on adjacent pages look like different products. Mixing them? Pass `<Stat card>` — it opts into the same surface/border/radius/padding.                                                                                                                                                                                                               |
 | Usage sparklines (inline, no axes)                       | `Sparkline`                                                                                       | `chart/sparkline`                                    | `@cascivo/charts`                    | `npm: @cascivo/charts`. Token-scaled via `--cascivo-chart-*`; 120×32 is a _preferred_ size — it shrinks to fit a narrow flex/grid track rather than pushing siblings onto the next line. Pass `width`/`height` to change it.                                                                                                                                                                                                                                                                                                                                      |
-| Time-series usage charts (with axes, zoom, live data)    | `LineChart` / `AreaChart`                                                                         | `chart/line-chart`, `chart/area-chart`               | `@cascivo/charts`                    | Both support time scales, multi-series, brush/zoom. For live-updating usage graphs, feed them with `useStreamSeries` (`@cascivo/charts`).                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Time-series usage charts (with axes, zoom, live data)    | `LineChart` / `AreaChart`                                                                         | `chart/line-chart`, `chart/area-chart`               | `@cascivo/charts`                    | Both support time scales, multi-series, brush/zoom. For live-updating usage graphs, feed them with `useStreamSeries` (`@cascivo/charts`). **Multi-series colours are automatic**: the Nth series takes `--cascivo-chart-N` (eight distinct hues per theme, light and dark), so a two-series chart differentiates itself with no `color` prop. Set `color` on a series only to override — e.g. to make "errors" red regardless of position.                                                                                                                        |
 | Data table of deployments/rows                           | `DataTable`                                                                                       | `data-table`                                         | `@cascivo/react`                     | Sorting/pagination/search built in. Set `Column.width` (any CSS length) on identifier-shaped columns — default sizing doesn't consider content shape, so a commit hash wraps mid-hash. **Size SOME columns, not all**: sizing every one flips the table to `table-layout: fixed`, which can overflow its container (the far columns are then reachable by horizontal scroll, not dropped). Leave at least one free-form column unsized to absorb the remaining width. Sized and unsized columns alike have a content floor, so `minWidth` is only for raising it. |
 | Page header (title + description + breadcrumb + actions) | `PageHeader`                                                                                      | `layout/page-header`                                 | `@cascivo/react`                     | Every routed page needs one. Now exported — do **not** hand-compose it from `Heading`/`Text`/`Flex`, and don't `npx cascivo add` it just for this (that mixes consumption paths). Pair `breadcrumb={<Breadcrumb …/>}` with `actions={<Button …/>}`.                                                                                                                                                                                                                                                                                                               |
 | Empty state before first deploy/project                  | a dedicated empty-state block                                                                     | `block/empty-dashboard`                              | copy-paste                           | Full page: empty illustration/copy + CTA, ready to adapt.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
@@ -66,6 +66,34 @@ read one end-to-end rather than starting from a blank file:
 - [`apps/examples/trade`](https://github.com/cascivo/cascivo/tree/main/apps/examples/trade) — Trade Republic-style: `Sparkline`, `Stat`.
 - [`apps/examples/pay`](https://github.com/cascivo/cascivo/tree/main/apps/examples/pay) — Stripe-style: `AreaChart`, `BarChart`.
 - [`apps/examples/track`](https://github.com/cascivo/cascivo/tree/main/apps/examples/track) — Linear-style issue tracker console.
+
+## Bundle size, and the 500 KB warning on your first build
+
+A six-route console drawing on a few dozen of the catalog's components plus three chart
+types measures roughly
+**540 KB JS / 177 KB gzip** and **166 KB CSS / 21 KB gzip** in production. Vite prints its
+default `chunk-size-limit` warning at 500 KB, so **a stock cascivo dashboard trips that
+warning on the first build**. That is alarming and worth explaining: it is one eagerly-loaded
+chunk containing every route, not a signal that something is wrong.
+
+The fix is ordinary route-level code splitting, which every router supports:
+
+```tsx
+// React Router — lazy route modules
+{ path: 'analytics', lazy: () => import('./routes/analytics') }
+
+// TanStack Router — the same idea
+createFileRoute('/analytics')({ component: lazyRouteComponent(() => import('./analytics')) })
+```
+
+Charts are the single biggest win: `@cascivo/charts` is a real charting engine, and a
+console typically renders charts on one or two routes out of six. Splitting those routes
+keeps the engine out of the initial chunk entirely.
+
+The CSS number behaves differently and needs no action — per-component tree-shaking already
+dropped ~40% of the aggregate sheet (166 KB of 273 KB) — **except under SSR**, where the
+aggregate import is required; see
+[USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md#the-cost-per-component-css-tree-shaking-does-not-apply-under-ssr).
 
 ## Composing a KPI tile with a sparkline
 

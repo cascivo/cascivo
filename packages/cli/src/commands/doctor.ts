@@ -199,6 +199,51 @@ export function checkProjectDependencies(cwd: string): DependencyFinding[] {
   return findings
 }
 
+/**
+ * Two copies of `@cascivo/core` in one install.
+ *
+ * `@cascivo/react` and `@cascivo/charts` each depend on `@cascivo/core`, and the family
+ * versions independently on 0.x. If their ranges do not overlap, the package manager
+ * resolves a nested second copy — and because cascivo's reactivity is a module-level signal
+ * registry, two copies means two registries: a signal written through one is invisible to
+ * components subscribed through the other. Nothing errors. Handlers fire and the UI does
+ * not move, which is the single hardest cascivo symptom to diagnose.
+ *
+ * Turning that into a named finding is the cheap half of the version-sprawl problem
+ * (lockstep versioning is the expensive half, and is a policy decision).
+ */
+export interface DuplicateCoreFinding {
+  /** Version at the install root, if any. */
+  root: string | null
+  /** Nested copies, as `<owner> → <version>`. */
+  nested: string[]
+  hint: string
+}
+
+/** Packages that carry their own `@cascivo/core` dependency. */
+const CORE_DEPENDENTS = ['@cascivo/react', '@cascivo/charts', '@cascivo/flow', '@cascivo/editor']
+
+export async function checkDuplicateCore(cwd: string): Promise<DuplicateCoreFinding | null> {
+  const root = await readInstalledPackageVersion(cwd, '@cascivo/core')
+  const nested: string[] = []
+  for (const owner of CORE_DEPENDENTS) {
+    const ownerRoot = join(cwd, 'node_modules', owner)
+    if (!existsSync(ownerRoot)) continue
+    const version = await readInstalledPackageVersion(ownerRoot, '@cascivo/core')
+    // A nested copy only matters when it differs from the hoisted one.
+    if (version !== null && version !== root) nested.push(`${owner} → ${version}`)
+  }
+  if (nested.length === 0) return null
+  return {
+    root,
+    nested,
+    hint:
+      'Align the @cascivo/* versions (they are released together — see breaking-changes.json) ' +
+      'and reinstall. Two copies of @cascivo/core means two signal registries: writes through ' +
+      'one are invisible to components subscribed through the other, with no error.',
+  }
+}
+
 export interface SignalsCompatFinding {
   /** 'error' = a runtime break (React 19 + signals <3); 'warning' = works but upgrade advised. */
   severity: 'error' | 'warning'

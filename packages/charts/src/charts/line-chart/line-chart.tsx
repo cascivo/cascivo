@@ -36,6 +36,12 @@ export interface LineChartSeries<Datum> {
   id: string
   label: string
   data: readonly Datum[]
+  /**
+   * Series colour. **Omit it** — the Nth series automatically takes `--cascivo-chart-N`,
+   * eight distinct hues per theme in both light and dark, so a multi-series chart
+   * differentiates itself with no configuration. Set this only to override the position,
+   * e.g. to keep "errors" red wherever it lands in the array.
+   */
   color?: string
   /** Which y-axis this series is measured against. Default 'left'. */
   axis?: 'left' | 'right'

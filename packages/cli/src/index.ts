@@ -282,8 +282,13 @@ export async function run(args: string[]): Promise<void> {
       } else {
         const cwd = process.cwd()
         const result = await runDoctor(cwd)
-        const { checkProjectDependencies, checkSignalsCompat, checkSsrConfig, detectInstallPath } =
-          await import('./commands/doctor.js')
+        const {
+          checkDuplicateCore,
+          checkProjectDependencies,
+          checkSignalsCompat,
+          checkSsrConfig,
+          detectInstallPath,
+        } = await import('./commands/doctor.js')
         // Gate on evidence of *any* cascivo install, not on a `cascivo.config.*` file. The
         // config gate mislabelled every prebuilt-path app as copy-paste (the scaffolder wrote
         // one unconditionally), and would now skip them entirely since it no longer does.
@@ -293,8 +298,15 @@ export async function run(args: string[]): Promise<void> {
         const signalsCompat = adopter ? await checkSignalsCompat(cwd) : null
         const signalsError = signalsCompat?.severity === 'error'
         const ssrHint = adopter ? checkSsrConfig(cwd) : null
+        const duplicateCore = adopter ? await checkDuplicateCore(cwd) : null
 
-        if (result.passed && deps.length === 0 && signalsCompat === null && ssrHint === null) {
+        if (
+          result.passed &&
+          deps.length === 0 &&
+          signalsCompat === null &&
+          ssrHint === null &&
+          duplicateCore === null
+        ) {
           console.log('No violations found.')
         } else {
           for (const v of result.violations) {
@@ -318,12 +330,25 @@ export async function run(args: string[]): Promise<void> {
           if (ssrHint) {
             console.log(`[ssr-config] ${ssrHint}`)
           }
+          if (duplicateCore) {
+            console.error(
+              `[duplicate-core] More than one @cascivo/core is installed ` +
+                `(root: ${duplicateCore.root ?? 'none'}; ${duplicateCore.nested.join('; ')}). ` +
+                duplicateCore.hint,
+            )
+          }
           for (const d of deps.filter((x) => !x.required)) {
             console.log(
               `[optional] ${d.package} is not installed; add it when a component or chart needs it: ${d.hint}`,
             )
           }
-          if (ci && (result.violations.length > 0 || missingRequired.length > 0 || signalsError)) {
+          if (
+            ci &&
+            (result.violations.length > 0 ||
+              missingRequired.length > 0 ||
+              signalsError ||
+              duplicateCore !== null)
+          ) {
             process.exitCode = 1
           }
         }
