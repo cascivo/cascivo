@@ -1,4 +1,4 @@
-# AppShell
+# AppFrame
 
 **Category:** layout  
 **Description:** Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
@@ -16,7 +16,7 @@
 
 ## Related components
 
-- **AppShell (@cascivo/react)** (alternative): The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside.
+- **AppShell (@cascivo/react)** (alternative): The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Simpler prop surface (`nav` vs this frame’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste frame when you need persisted collapse, a progress bar, or a right aside. This entry used to be called `AppShell` too — one name for two incompatible prop surfaces — and was renamed to `AppFrame` so an import can only mean one thing.
 - **SidebarApp** (alternative): Use the opinionated block when you want prewired sidebar nav
 - **DashboardLayout** (alternative): Use for a stats-strip dashboard page rather than a bare shell
 
@@ -59,9 +59,9 @@ Provides landmark structure with header and navigation regions for screen reader
 App shell with collapsible nav
 
 ```jsx
-<AppShell header={<Header />} sideNav={<Nav />}>
+<AppFrame header={<Header />} sideNav={<Nav />}>
   content
-</AppShell>
+</AppFrame>
 ```
 
 ## AI context prompt
@@ -69,7 +69,7 @@ App shell with collapsible nav
 Copy this into an LLM context bar before editing this component:
 
 ```text
-I am modifying the cascivo AppShell component (layout). Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
+I am modifying the cascivo AppFrame component (layout). Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
 
 Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
@@ -79,7 +79,7 @@ Architecture constraints — follow exactly:
 - Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
 - CSS logical properties only (RTL-safe).
 
-AppShell is strictly bound to these tokens — use only these, do not invent token names:
+AppFrame is strictly bound to these tokens — use only these, do not invent token names:
   --cascivo-space-3, --cascivo-space-4, --cascivo-space-6, --cascivo-duration-200, --cascivo-ease-out, --cascivo-color-border, --cascivo-color-surface, --cascivo-font-size-xs, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-focus-ring
 
 Accessibility: role "generic", WCAG 2.1-AA. Keep it AA.

@@ -82,7 +82,6 @@ Brand with prefix, dropdown nav, global icon action
 
 ```tsx
 import { Bell } from '@cascivo/icons'
-
 ;<ShellHeader
   brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}
   nav={[

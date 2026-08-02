@@ -52,7 +52,6 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ```jsx
 import { Funnel } from '@cascivo/charts'
-
 ;<Funnel
   title="Signup funnel"
   showConversion

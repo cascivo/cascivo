@@ -1914,7 +1914,7 @@
       "props": [{ "name": "children", "type": "ReactNode", "required": true }]
     },
     {
-      "name": "AppShell",
+      "name": "AppFrame",
       "props": [
         { "name": "footer", "type": "ReactNode", "required": false },
         { "name": "sideNavMode", "type": "'push' | 'overlay'", "required": false },
@@ -2191,7 +2191,7 @@
       ]
     },
     {
-      "name": "Calendar",
+      "name": "CalendarHeatmap",
       "props": [
         { "name": "data", "type": "CalendarDatum[]", "required": true },
         { "name": "title", "type": "string", "required": true },

@@ -39,7 +39,6 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Sankey } from '@cascivo/charts'
-
 ;<Sankey
   title="Traffic flow"
   nodes={[

@@ -56,7 +56,6 @@ Renders with role="img"; OHLC values are in the fallback table and tooltip.
 
 ```jsx
 import { Candlestick } from '@cascivo/charts'
-
 ;<Candlestick
   title="ACME daily"
   tooltip

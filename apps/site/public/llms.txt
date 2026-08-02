@@ -474,7 +474,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [aspect-ratio](https://cascivo.com/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio _(npm @cascivo/react · or copy-paste)_
 - [indicator](https://cascivo.com/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child _(npm @cascivo/react · or copy-paste)_
 - [join](https://cascivo.com/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii _(npm @cascivo/react · or copy-paste)_
-- [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(npm @cascivo/react · or copy-paste)_
+- [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(copy-paste)_
 - [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(copy-paste)_
 - [layout/auto-grid](https://cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space. _(npm @cascivo/react · or copy-paste)_
 - [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
@@ -598,7 +598,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Boxplot](https://cascivo.com/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
 - [BubbleChart](https://cascivo.com/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
 - [Bullet](https://cascivo.com/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
-- [Calendar](https://cascivo.com/context/chart/calendar.md) — Use when: Showing a daily value over weeks/months (activity, contributions)
+- [CalendarHeatmap](https://cascivo.com/context/chart/calendar.md) — Use when: Showing a daily value over weeks/months (activity, contributions)
 - [Candlestick](https://cascivo.com/context/chart/candlestick.md) — Use when: Showing open/high/low/close price movement over time
 - [ComboChart](https://cascivo.com/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
 - [Funnel](https://cascivo.com/context/chart/funnel.md) — Use when: Showing drop-off across the ordered stages of a process (signup, checkout)
@@ -671,7 +671,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Join](https://cascivo.com/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
 - [Kbd](https://cascivo.com/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
 - [Label](https://cascivo.com/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
-- [AppShell](https://cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
+- [AppFrame](https://cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
 - [AuthLayout](https://cascivo.com/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
 - [AutoGrid](https://cascivo.com/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width
 - [Center](https://cascivo.com/context/layout/center.md) — Use when: Horizontally centering content within a configurable max-width

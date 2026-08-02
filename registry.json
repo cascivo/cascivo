@@ -18342,7 +18342,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.module.css"
       ],
       "fileHashes": {
-        "app-shell.tsx": "sha256-e1b240a6e11473adb75b7b187b77cfc41937743b5f2de55507e2ebfb40bb9281",
+        "app-shell.tsx": "sha256-4ac0a0cfff63e663926485bf1ed7ab208017b8faf8df6618f0cdc7c1f291645e",
         "shell-state.ts": "sha256-126741ee8e54f784c6df83819c87936b90d85df5a10149c62076305ebef789ca",
         "app-shell.module.css": "sha256-171613b8ad89cb1af5ba00d97284697f532c3d06972144ba31fa4c5f33f13d8a"
       },
@@ -18354,7 +18354,7 @@
       },
       "tags": ["layout", "shell", "sidebar", "navigation"],
       "meta": {
-        "name": "AppShell",
+        "name": "AppFrame",
         "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
         "category": "layout",
         "states": ["expanded", "collapsed", "loading", "error"],
@@ -18434,7 +18434,7 @@
         "examples": [
           {
             "title": "Basic",
-            "code": "<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>",
+            "code": "<AppFrame header={<Header />} sideNav={<Nav />}>content</AppFrame>",
             "description": "App shell with collapsible nav"
           }
         ],
@@ -18455,7 +18455,7 @@
             {
               "name": "AppShell (@cascivo/react)",
               "relationship": "alternative",
-              "reason": "The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside."
+              "reason": "The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Simpler prop surface (`nav` vs this frame’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste frame when you need persisted collapse, a progress bar, or a right aside. This entry used to be called `AppShell` too — one name for two incompatible prop surfaces — and was renamed to `AppFrame` so an import can only mean one thing."
             },
             {
               "name": "SidebarApp",
@@ -18472,7 +18472,7 @@
           "flexibility": []
         }
       },
-      "channels": ["npm:@cascivo/react", "copy"]
+      "channels": ["copy"]
     },
     {
       "name": "layout/auth-layout",
@@ -19677,7 +19677,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
       ],
       "fileHashes": {
-        "console-app.tsx": "sha256-999ea8d594c0f559306217fef9734d411342b8cfd1dac375cb21306f68e53b8d",
+        "console-app.tsx": "sha256-65876951318d114476d0e737688112197d82495c9f93fdf8868274ff6fae9448",
         "console-app.module.css": "sha256-19f2b03d57de531b64acf059e9e04f3378cb4b43f0c9f13a1d78854d55ad7048"
       },
       "dependencies": ["@cascivo/react", "@cascivo/icons"],
@@ -20196,7 +20196,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
       ],
       "fileHashes": {
-        "sidebar-app.tsx": "sha256-27b534b24ef567c1a6369416205c9a7de3925fa99445d1a0491c372d7a46c0c6"
+        "sidebar-app.tsx": "sha256-402470d3eb95c0b6923c1224bd67d7048283bc291b38f6582a52d063b91c665b"
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
@@ -21404,7 +21404,7 @@
       },
       "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
       "meta": {
-        "name": "Calendar",
+        "name": "CalendarHeatmap",
         "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
         "category": "chart",
         "states": [],
@@ -21493,7 +21493,7 @@
         "examples": [
           {
             "title": "Contribution calendar",
-            "code": "import { Calendar } from '@cascivo/charts'\n\n<Calendar\n  title=\"Activity\"\n  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}\n/>"
+            "code": "import { CalendarHeatmap } from '@cascivo/charts'\n\n<CalendarHeatmap\n  title=\"Activity\"\n  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}\n/>"
           }
         ],
         "dependencies": ["@cascivo/charts"],

@@ -137,6 +137,42 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['destructive', 'default'],
     },
   ],
+  AppFrame: [
+    {
+      name: 'footer',
+      required: false,
+    },
+    {
+      name: 'sideNavMode',
+      required: false,
+      enum: ['push', 'overlay'],
+    },
+    {
+      name: 'header',
+      required: true,
+    },
+    {
+      name: 'sideNav',
+      required: false,
+    },
+    {
+      name: 'aside',
+      required: false,
+    },
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'persistKey',
+      required: false,
+      primitives: ['string', 'boolean'],
+    },
+    {
+      name: 'state',
+      required: false,
+    },
+  ],
   AppShell: [
     {
       name: 'header',
@@ -876,6 +912,59 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'hideNav',
       required: false,
       primitives: ['boolean'],
+    },
+  ],
+  CalendarHeatmap: [
+    {
+      name: 'data',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'from',
+      required: false,
+    },
+    {
+      name: 'to',
+      required: false,
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'visualMap',
+      required: false,
     },
   ],
   Candlestick: [

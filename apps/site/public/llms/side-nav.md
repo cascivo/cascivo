@@ -68,7 +68,6 @@ Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items,
 
 ```tsx
 import { Home } from '@cascivo/icons'
-
 ;<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
 ```
 

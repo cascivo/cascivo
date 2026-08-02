@@ -39,7 +39,6 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Bullet } from '@cascivo/charts'
-
 ;<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
 

@@ -55,7 +55,6 @@ import '@cascivo/editor/styles.css' // required stylesheet
 ```tsx
 import { CodeEditor } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
-
 ;<CodeEditor language="typescript" lineNumbers defaultValue={'const x = 1\n'} />
 ```
 

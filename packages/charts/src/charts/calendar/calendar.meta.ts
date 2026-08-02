@@ -1,7 +1,7 @@
 import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
-  name: 'Calendar',
+  name: 'CalendarHeatmap',
   description:
     'Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).',
   category: 'chart',
@@ -85,9 +85,9 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Contribution calendar',
-      code: `import { Calendar } from '@cascivo/charts'
+      code: `import { CalendarHeatmap } from '@cascivo/charts'
 
-<Calendar
+<CalendarHeatmap
   title="Activity"
   data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}
 />`,

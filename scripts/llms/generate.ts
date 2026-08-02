@@ -7,7 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { reactExportedNames } from '../registry/react-exports.ts'
+import { reactExportedModules, reactExportedNames } from '../registry/react-exports.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -195,10 +195,37 @@ function typeDefsSection(typeDefs: TypeDefMeta[]): string {
  * two agree, with no allowlist.
  */
 const reactExports = reactExportedNames(ROOT)
+const reactModules = reactExportedModules(ROOT)
+
+/** Repo-relative source paths of an entry, from its GitHub raw `files` URLs. */
+function sourcePathsOf(entry: RegistryEntry): string[] {
+  return (entry.files ?? [])
+    .filter((f) => f.endsWith('.tsx') || f.endsWith('.ts'))
+    .map((f) => {
+      const i = f.indexOf('/packages/')
+      return i === -1 ? f : f.slice(i + 1)
+    })
+}
+
+/**
+ * Whether `@cascivo/react` re-exports *this entry's own module* — as opposed to some other
+ * entry that happens to share its display name.
+ *
+ * `AppShell` and `Calendar` each name two different registry entries with incompatible
+ * APIs, and only one of each pair is exported. Keying on the name marked both as npm, so
+ * the copy-paste twin's page carried an `import { AppShell } from '@cascivo/react'` line
+ * that hands the reader the other component. The file path is what distinguishes them.
+ */
+function isExportedEntry(entry: RegistryEntry): boolean {
+  return sourcePathsOf(entry).some((p) => reactModules.has(p))
+}
 
 function packageFor(entry: RegistryEntry): '@cascivo/react' | '@cascivo/charts' | null {
   if (entry.type === 'chart') return '@cascivo/charts'
-  if (reactExports.has(displayNameOf(entry))) return '@cascivo/react'
+  if (isExportedEntry(entry)) return '@cascivo/react'
+  // A display name that IS exported but from a different entry's module means this entry is
+  // the copy-paste twin of a collision — explicitly not on npm, however familiar the name.
+  if (reactExports.has(displayNameOf(entry)) && sourcePathsOf(entry).length > 0) return null
   // Partially exported: the display name isn't importable but some of the entry's symbols
   // are (`toast` → `ToastProvider`/`useToast`). Testing only the name told adopters the
   // whole entry was copy-paste only.
@@ -246,12 +273,32 @@ function componentMarkdown(
   // agent that lands on the wrong page codes against the wrong prop surface, so
   // cross-link them explicitly.
   if (siblings.length > 0) {
-    lines.push(
-      `> ⚠ **Name collision:** more than one cascivo entry is named \`${displayNameOf(entry)}\`.`,
-    )
+    const name = displayNameOf(entry)
+    lines.push(`> ⚠ **Name collision:** more than one cascivo entry is named \`${name}\`.`)
     lines.push(`> This page documents \`${entry.name}\` (${channelLabel(entry)}). Others:`)
     for (const s of siblings) {
       lines.push(`> - \`${s.name}\` — ${channelLabel(s)} — /llms/${s.name}.md`)
+    }
+    // Naming the siblings is not enough: the reported failure was an adopter reading the
+    // copy-paste page, writing `import { AppShell } from '@cascivo/react'` as it said, and
+    // getting the *other* component's prop surface. State which entry owns the bare import.
+    const exported = [entry, ...siblings].find(isExportedEntry)
+    lines.push('>')
+    if (exported === undefined) {
+      lines.push(`> **\`import { ${name} } from '@cascivo/react'\` resolves to none of these** —`)
+      lines.push('> every entry with this name is copy-paste only.')
+    } else if (exported === entry) {
+      lines.push(`> **\`import { ${name} } from '@cascivo/react'\` gives you THIS one.**`)
+    } else {
+      lines.push(
+        `> **\`import { ${name} } from '@cascivo/react'\` does NOT give you this page's component** —`,
+      )
+      lines.push(`> it resolves to \`${exported.name}\`, which has a different prop surface.`)
+      lines.push(
+        entry.install
+          ? `> Get this one from its own package: \`import { ${name} } from '${entry.install}'\`.`
+          : `> This entry is copy-paste only: \`npx cascivo add ${entry.name}\`.`,
+      )
     }
     lines.push('')
   }

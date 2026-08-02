@@ -1,4 +1,4 @@
-# Calendar
+# CalendarHeatmap
 
 **Category:** chart  
 **Description:** Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
@@ -46,9 +46,8 @@ Renders role="img" with a title and a fallback day/value table.
 ### Contribution calendar
 
 ```jsx
-import { Calendar } from '@cascivo/charts'
-
-;<Calendar
+import { CalendarHeatmap } from '@cascivo/charts'
+;<CalendarHeatmap
   title="Activity"
   data={[
     { day: '2026-01-01', value: 3 },
@@ -62,7 +61,7 @@ import { Calendar } from '@cascivo/charts'
 Copy this into an LLM context bar before editing this component:
 
 ```text
-I am modifying the cascivo Calendar component (chart). Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
+I am modifying the cascivo CalendarHeatmap component (chart). Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
 
 Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.
@@ -72,7 +71,7 @@ Architecture constraints — follow exactly:
 - Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.
 - CSS logical properties only (RTL-safe).
 
-Calendar is strictly bound to these tokens — use only these, do not invent token names:
+CalendarHeatmap is strictly bound to these tokens — use only these, do not invent token names:
   --cascivo-chart-2
 
 Accessibility: role "img", WCAG 2.1-AA, keyboard: Tab (focus chart)/ArrowLeft/ArrowRight (navigate days)/Escape (clear focus). Keep it AA.

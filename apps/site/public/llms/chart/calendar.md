@@ -1,11 +1,6 @@
-# Calendar
+# CalendarHeatmap
 
 Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
-
-> ⚠ **Name collision:** more than one cascivo entry is named `Calendar`.
-> This page documents `chart/calendar` (npm @cascivo/charts). Others:
->
-> - `calendar` — npm @cascivo/react · or copy-paste — /llms/calendar.md
 
 ## Install
 
@@ -16,7 +11,7 @@ pnpm add @cascivo/charts
 ```
 
 ```tsx
-import { Calendar } from '@cascivo/charts'
+import { CalendarHeatmap } from '@cascivo/charts'
 import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
 ```
 
@@ -45,9 +40,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 ### Contribution calendar
 
 ```tsx
-import { Calendar } from '@cascivo/charts'
-
-;<Calendar
+import { CalendarHeatmap } from '@cascivo/charts'
+;<CalendarHeatmap
   title="Activity"
   data={[
     { day: '2026-01-01', value: 3 },

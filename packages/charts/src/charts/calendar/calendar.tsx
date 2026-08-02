@@ -4,13 +4,13 @@ import { ChartFrame } from '../../core/chart-frame'
 import { VisualMap, mapVisual, visualVisible, type VisualMapOptions } from '../../chrome/visual-map'
 import type { ChartPoint, TooltipModel } from '../../core/data-point'
 
-export interface CalendarDatum {
+export interface CalendarHeatmapDatum {
   day: string | Date
   value: number
 }
 
-export interface CalendarProps {
-  data: readonly CalendarDatum[]
+export interface CalendarHeatmapProps {
+  data: readonly CalendarHeatmapDatum[]
   title: string
   description?: string
   /** Range start/end (ISO string or Date). Defaults to the data's min/max day. */
@@ -50,7 +50,7 @@ function weekStart(d: Date): Date {
 }
 
 /** A calendar heatmap — a week-column grid of day cells colored by value. */
-export function Calendar({
+export function CalendarHeatmap({
   data,
   title,
   description,
@@ -62,7 +62,7 @@ export function Calendar({
   className,
   plain,
   visualMap,
-}: CalendarProps) {
+}: CalendarHeatmapProps) {
   useSignals()
   const hasData = data.length > 0
   const vmRange = useSignal<[number, number]>([visualMap?.min ?? 0, visualMap?.max ?? 1])
@@ -187,3 +187,16 @@ export function Calendar({
     </div>
   )
 }
+
+/**
+ * @deprecated Renamed to `CalendarHeatmap`. `Calendar` collided with `@cascivo/react`'s
+ * date-picker `Calendar`: two entries shared one display name with incompatible APIs, so a
+ * dashboard importing from both packages silently got whichever one resolved last, and the
+ * generated docs for one told adopters to import the other. Kept as an alias for one minor;
+ * see `breaking-changes.json`.
+ */
+export const Calendar = CalendarHeatmap
+/** @deprecated Renamed to `CalendarHeatmapProps`. */
+export type CalendarProps = CalendarHeatmapProps
+/** @deprecated Renamed to `CalendarHeatmapDatum`. */
+export type CalendarDatum = CalendarHeatmapDatum

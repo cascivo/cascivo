@@ -1,7 +1,7 @@
 import { render, screen, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { AppShell } from './app-shell'
+import { AppFrame } from './app-shell'
 import { createShellState } from './shell-state'
 
 // suppress storage errors in jsdom
@@ -10,39 +10,39 @@ beforeEach(() => {
   localStorage.clear()
 })
 
-describe('AppShell', () => {
+describe('AppFrame', () => {
   it('renders header slot', () => {
     render(
-      <AppShell header={<nav>Header</nav>} persistKey={false}>
+      <AppFrame header={<nav>Header</nav>} persistKey={false}>
         content
-      </AppShell>,
+      </AppFrame>,
     )
     expect(screen.getByText('Header')).toBeInTheDocument()
   })
 
   it('renders children in main', () => {
     render(
-      <AppShell header={<div />} persistKey={false}>
+      <AppFrame header={<div />} persistKey={false}>
         <p>Main content</p>
-      </AppShell>,
+      </AppFrame>,
     )
     expect(screen.getByText('Main content')).toBeInTheDocument()
   })
 
   it('renders sideNav', () => {
     render(
-      <AppShell header={<div />} sideNav={<div>Nav</div>} persistKey={false}>
+      <AppFrame header={<div />} sideNav={<div>Nav</div>} persistKey={false}>
         children
-      </AppShell>,
+      </AppFrame>,
     )
     expect(screen.getByText('Nav')).toBeInTheDocument()
   })
 
   it('nav renders with expanded state by default', () => {
     render(
-      <AppShell header={<div />} sideNav={<div>Nav</div>} persistKey={false}>
+      <AppFrame header={<div />} sideNav={<div>Nav</div>} persistKey={false}>
         children
-      </AppShell>,
+      </AppFrame>,
     )
     const nav = document.querySelector('[data-state]')!
     expect(nav).toHaveAttribute('data-state', 'expanded')
@@ -50,20 +50,20 @@ describe('AppShell', () => {
 
   it('renders aside slot', () => {
     render(
-      <AppShell header={<div />} aside={<div>Aside</div>} persistKey={false}>
+      <AppFrame header={<div />} aside={<div>Aside</div>} persistKey={false}>
         children
-      </AppShell>,
+      </AppFrame>,
     )
     expect(screen.getByText('Aside')).toBeInTheDocument()
   })
 })
 
-describe('AppShell v2', () => {
+describe('AppFrame v2', () => {
   it('main has the skip-link target id and is focusable', () => {
     render(
-      <AppShell header={<div>h</div>} persistKey={false}>
+      <AppFrame header={<div>h</div>} persistKey={false}>
         <p>content</p>
-      </AppShell>,
+      </AppFrame>,
     )
     const main = screen.getByRole('main')
     expect(main).toHaveAttribute('id', 'cascade-main')
@@ -74,9 +74,9 @@ describe('AppShell v2', () => {
     const state = createShellState({ persistKey: false })
     state.asideOpen.value = false
     render(
-      <AppShell header={<div>h</div>} aside={<p>details</p>} state={state} persistKey={false}>
+      <AppFrame header={<div>h</div>} aside={<p>details</p>} state={state} persistKey={false}>
         <p>content</p>
-      </AppShell>,
+      </AppFrame>,
     )
     expect(document.querySelector('[data-state="closed"]')).toBeInTheDocument()
   })
@@ -85,9 +85,9 @@ describe('AppShell v2', () => {
     const state = createShellState({ persistKey: false })
     state.sideNavCollapsed.value = true
     render(
-      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
+      <AppFrame header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
         <p>content</p>
-      </AppShell>,
+      </AppFrame>,
     )
     expect(screen.getByText('nav').closest('[data-state]')).toHaveAttribute(
       'data-state',
@@ -97,42 +97,42 @@ describe('AppShell v2', () => {
 
   it('keeps working with no state prop (back-compat)', () => {
     render(
-      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} persistKey={false}>
+      <AppFrame header={<div>h</div>} sideNav={<p>nav</p>} persistKey={false}>
         <p>content</p>
-      </AppShell>,
+      </AppFrame>,
     )
     expect(screen.getByText('nav')).toBeInTheDocument()
   })
 })
 
-describe('AppShell sideNavMode', () => {
+describe('AppFrame sideNavMode', () => {
   it('defaults to push mode', () => {
     render(
-      <AppShell header={<div>h</div>} persistKey={false}>
+      <AppFrame header={<div>h</div>} persistKey={false}>
         content
-      </AppShell>,
+      </AppFrame>,
     )
     expect(document.querySelector('[data-sidenav-mode="push"]')).toBeInTheDocument()
   })
 
   it('sets overlay mode via prop', () => {
     render(
-      <AppShell header={<div>h</div>} sideNavMode="overlay" persistKey={false}>
+      <AppFrame header={<div>h</div>} sideNavMode="overlay" persistKey={false}>
         content
-      </AppShell>,
+      </AppFrame>,
     )
     expect(document.querySelector('[data-sidenav-mode="overlay"]')).toBeInTheDocument()
   })
 })
 
-describe('AppShell mobile drawer', () => {
+describe('AppFrame mobile drawer', () => {
   it('renders a scrim that closes the drawer on click', async () => {
     const state = createShellState({ persistKey: false })
     state.sideNavOpen.value = true
     render(
-      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
+      <AppFrame header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
         <p>content</p>
-      </AppShell>,
+      </AppFrame>,
     )
     const scrim = screen.getByTestId('cascade-shell-scrim')
     await userEvent.click(scrim)
@@ -143,22 +143,22 @@ describe('AppShell mobile drawer', () => {
     const state = createShellState({ persistKey: false })
     state.sideNavOpen.value = true
     render(
-      <AppShell header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
+      <AppFrame header={<div>h</div>} sideNav={<p>nav</p>} state={state} persistKey={false}>
         <p>content</p>
-      </AppShell>,
+      </AppFrame>,
     )
     await userEvent.keyboard('{Escape}')
     expect(state.sideNavOpen.value).toBe(false)
   })
 })
 
-describe('AppShell loading bar', () => {
+describe('AppFrame loading bar', () => {
   it('renders no progressbar when loading is idle', () => {
     const state = createShellState({ persistKey: false })
     render(
-      <AppShell header={<div>h</div>} state={state}>
+      <AppFrame header={<div>h</div>} state={state}>
         content
-      </AppShell>,
+      </AppFrame>,
     )
     expect(screen.queryByRole('progressbar')).toBeNull()
   })
@@ -166,9 +166,9 @@ describe('AppShell loading bar', () => {
   it('renders the loading bar with progress', () => {
     const state = createShellState({ persistKey: false })
     render(
-      <AppShell header={<div>h</div>} state={state}>
+      <AppFrame header={<div>h</div>} state={state}>
         content
-      </AppShell>,
+      </AppFrame>,
     )
     act(() => {
       state.startLoading()
@@ -184,9 +184,9 @@ describe('AppShell loading bar', () => {
     const user = userEvent.setup()
     const state = createShellState({ persistKey: false })
     render(
-      <AppShell header={<div>h</div>} state={state}>
+      <AppFrame header={<div>h</div>} state={state}>
         content
-      </AppShell>,
+      </AppFrame>,
     )
     act(() => {
       state.startLoading()
