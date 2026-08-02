@@ -3794,9 +3794,9 @@ import { Bullet } from '@cascivo/charts'
 ## Design tokens
 
 - `--cascivo-chart-1`
-- `--cascivo-color-neutral-200`
-- `--cascivo-color-neutral-300`
-- `--cascivo-color-neutral-400`
+- `--cascivo-gray-200`
+- `--cascivo-gray-300`
+- `--cascivo-gray-400`
 
 ## Accessibility
 
@@ -4288,7 +4288,7 @@ const data = [
 ## Design tokens
 
 - `--cascivo-chart-1`
-- `--cascivo-color-neutral-100`
+- `--cascivo-gray-100`
 
 ## Accessibility
 
@@ -6209,7 +6209,7 @@ import { Combobox } from '@cascivo/react'
 - `--cascivo-color-text-muted`
 - `--cascivo-color-text-subtle`
 - `--cascivo-color-accent`
-- `--cascivo-color-danger`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-radius-md`
 - `--cascivo-radius-sm`
@@ -7102,11 +7102,17 @@ Date range constraint
 
 ## Design tokens
 
-- `--cascivo-date-picker-bg`
-- `--cascivo-date-picker-border`
-- `--cascivo-date-picker-radius`
-- `--cascivo-date-picker-day-selected-bg`
-- `--cascivo-date-picker-day-today-color`
+- `--cascivo-color-surface`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-destructive`
 
 ## Accessibility
 
@@ -8140,8 +8146,8 @@ Shows file list
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
 - `--cascivo-color-success`
-- `--cascivo-color-danger`
-- `--cascivo-color-danger-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-destructive-subtle`
 
 ## Accessibility
 
@@ -10533,7 +10539,7 @@ App shell with collapsible nav
 - `--cascivo-ease-out`
 - `--cascivo-color-border`
 - `--cascivo-color-surface`
-- `--cascivo-font-size-xs`
+- `--cascivo-text-xs`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
@@ -11119,11 +11125,11 @@ Title with description
 
 - `--cascivo-space-2`
 - `--cascivo-space-4`
-- `--cascivo-font-size-2xl`
-- `--cascivo-font-weight-bold`
+- `--cascivo-text-2xl`
+- `--cascivo-font-bold`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
-- `--cascivo-font-size-sm`
+- `--cascivo-text-sm`
 
 ## Accessibility
 
@@ -14300,11 +14306,11 @@ Quiet bordered band with centered heading, description, and action buttons
 ## Design tokens
 
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14380,9 +14386,9 @@ Four-item text-only feature grid with section heading
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-semibold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14464,7 +14470,7 @@ Two-column layout with copy on the left and media on the right
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14530,7 +14536,7 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14601,8 +14607,8 @@ Three-column footer with brand and license meta
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-semibold`
-- `--cascivo-text-primary`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
 - `--cascivo-color-accent`
 - `--cascivo-space-*`
@@ -14675,9 +14681,9 @@ Four KPI cells — three with sparkline trends and signed deltas
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-mono`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -16909,7 +16915,7 @@ import { TimePicker } from '@cascivo/react'
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
 - `--cascivo-color-accent`
-- `--cascivo-color-danger`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-radius-md`
 

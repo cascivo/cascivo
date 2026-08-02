@@ -235,3 +235,71 @@ export function parseTokens(indexCss: string, lightCss: string): TokenEntry[] {
     }
   })
 }
+
+/**
+ * Per-component author hooks: a `var(--cascivo-x, default)` a component reads but nothing
+ * declares. cascivo never sets them; the fallback IS the default, and setting the property
+ * is the documented way to resize a sidebar or cap a table's height.
+ *
+ * They were absent from the catalog because it is generated from the token and theme
+ * stylesheets only — so `--cascivo-sidenav-inline-size`, `--cascivo-data-table-max-height`
+ * and friends were invisible to anyone validating against the set `llms.txt` calls closed.
+ * Those are exactly the knobs an adopter reaches for.
+ */
+/**
+ * Per-component tokens, from the component stylesheets the base catalog never reads.
+ *
+ * Two kinds, both real API and both previously invisible:
+ * - **declared** (`--cascivo-calendar-bg: var(--cascivo-color-surface)`), and
+ * - **author hooks** (`var(--cascivo-sidenav-inline-size, 16rem)`) that cascivo reads but
+ *   never sets, so the fallback is the default and setting it is the documented override.
+ *
+ * `llms.txt` calls the catalog a closed set; without these it omitted exactly the knobs an
+ * adopter reaches for ("make the sidebar narrower").
+ */
+export function parseComponentHooks(
+  files: Array<{ path: string; source: string }>,
+  alreadyKnown: ReadonlySet<string>,
+): TokenEntry[] {
+  const out = new Map<string, TokenEntry>()
+
+  // (a) Tokens a component stylesheet DECLARES (`--cascivo-calendar-bg: …`). Real tokens
+  // with real defaults, absent from the catalog only because it was built from the token
+  // and theme stylesheets alone.
+  const declared = new Set<string>()
+  for (const { source } of files) {
+    for (const m of source.matchAll(/(--cascivo-[a-z0-9-]+)\s*:\s*([^;}]+)/gi)) {
+      const name = m[1]!
+      declared.add(name)
+      if (alreadyKnown.has(name) || out.has(name)) continue
+      out.set(name, entry(name, m[2]!.trim()))
+    }
+  }
+
+  // (b) Author hooks: `var(--cascivo-x, default)` that nothing declares. cascivo never sets
+  // them; the fallback IS the default, and setting the property is the documented way to
+  // resize a sidebar or cap a table's height.
+  for (const { source } of files) {
+    for (const m of source.matchAll(
+      /var\(\s*(--cascivo-[a-z0-9-]+)\s*,\s*([^()]*(?:\([^()]*\))?[^()]*)\)/gi,
+    )) {
+      const name = m[1]!
+      if (alreadyKnown.has(name) || declared.has(name) || out.has(name)) continue
+      out.set(name, entry(name, m[2]!.trim()))
+    }
+  }
+
+  return [...out.values()].sort((a, b) => a.name.localeCompare(b.name))
+}
+
+function entry(name: string, value: string): TokenEntry {
+  return {
+    name,
+    value,
+    layer: 'component',
+    group: extractGroup(name),
+    resolvedDefault: value,
+    resolvesPerTheme: false,
+    canonical: true,
+  }
+}

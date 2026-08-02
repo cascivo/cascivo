@@ -53,12 +53,7 @@ export const meta: ComponentMeta = {
       required: false,
     },
   ],
-  tokens: [
-    '--cascivo-chart-1',
-    '--cascivo-color-neutral-200',
-    '--cascivo-color-neutral-300',
-    '--cascivo-color-neutral-400',
-  ],
+  tokens: ['--cascivo-chart-1', '--cascivo-gray-200', '--cascivo-gray-300', '--cascivo-gray-400'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

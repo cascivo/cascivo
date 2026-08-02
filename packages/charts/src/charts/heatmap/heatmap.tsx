@@ -167,7 +167,7 @@ export function Heatmap({
               const pct = Math.round(norm(d.value) * 100)
               const fill = visualMap
                 ? (mapVisual(d.value, visualMap).color ?? 'var(--cascivo-chart-1)')
-                : `color-mix(in oklab, var(--cascivo-chart-1) ${pct}%, var(--cascivo-color-neutral-100))`
+                : `color-mix(in oklab, var(--cascivo-chart-1) ${pct}%, var(--cascivo-gray-100))`
               const visible = visualMap
                 ? visualVisible(d.value, visualMap, vmRange.value, vmHidden.value)
                 : true

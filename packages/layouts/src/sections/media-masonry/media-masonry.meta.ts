@@ -53,7 +53,7 @@ export const meta: ComponentMeta = {
     '--cascivo-text-2xl',
     '--cascivo-text-base',
     '--cascivo-font-bold',
-    '--cascivo-text-secondary',
+    '--cascivo-color-text-subtle',
     '--cascivo-space-*',
   ],
   accessibility: { role: 'region', wcag: '2.1-AA', keyboard: [] },

@@ -371,7 +371,76 @@
     { "name": "--cascivo-color-secondary", "resolvedDefault": "oklch(0.92 0.004 264)" },
     { "name": "--cascivo-color-secondary-content", "resolvedDefault": "oklch(0.27 0.01 264)" },
     { "name": "--cascivo-color-secondary-hover", "resolvedDefault": "oklch(0.86 0.006 264)" },
-    { "name": "--cascivo-color-secondary-subtle", "resolvedDefault": "oklch(0.967 0.002 264)" }
+    { "name": "--cascivo-color-secondary-subtle", "resolvedDefault": "oklch(0.967 0.002 264)" },
+    { "name": "--cascivo-aspect-ratio", "resolvedDefault": "1" },
+    { "name": "--cascivo-button-radius", "resolvedDefault": "var(--cascivo-radius-control)" },
+    { "name": "--cascivo-calendar-bg", "resolvedDefault": "var(--cascivo-color-surface)" },
+    { "name": "--cascivo-calendar-cell-size", "resolvedDefault": "2.25rem" },
+    {
+      "name": "--cascivo-calendar-day-selected-bg",
+      "resolvedDefault": "var(--cascivo-color-accent)"
+    },
+    {
+      "name": "--cascivo-calendar-day-selected-fg",
+      "resolvedDefault": "var(\n      --cascivo-color-accent-foreground,\n      var(--cascivo-color-text-on-accent)\n    )"
+    },
+    {
+      "name": "--cascivo-calendar-day-today-color",
+      "resolvedDefault": "var(--cascivo-color-accent)"
+    },
+    { "name": "--cascivo-calendar-radius", "resolvedDefault": "var(--cascivo-radius-overlay)" },
+    {
+      "name": "--cascivo-calendar-range-bg",
+      "resolvedDefault": "color-mix(in srgb, var(--cascivo-color-accent) 16%, transparent)"
+    },
+    { "name": "--cascivo-chart-anim-dur", "resolvedDefault": "320ms" },
+    { "name": "--cascivo-chart-anim-ease", "resolvedDefault": "ease-out" },
+    { "name": "--cascivo-chart-anim-props", "resolvedDefault": "opacity, fill, fill-opacity" },
+    { "name": "--cascivo-color-picker-area-size", "resolvedDefault": "9rem" },
+    { "name": "--cascivo-color-picker-solid", "resolvedDefault": "#000" },
+    { "name": "--cascivo-color-scrim", "resolvedDefault": "oklch(0 0 0 / 40%)" },
+    { "name": "--cascivo-context-x", "resolvedDefault": "0" },
+    { "name": "--cascivo-context-y", "resolvedDefault": "0" },
+    { "name": "--cascivo-data-table-cell-gap", "resolvedDefault": "var(--cascivo-space-4)" },
+    { "name": "--cascivo-data-table-height", "resolvedDefault": "400px" },
+    { "name": "--cascivo-data-table-max-height", "resolvedDefault": "none" },
+    {
+      "name": "--cascivo-dialog-body-gap",
+      "resolvedDefault": "0 for full-bleed content. */\n    display: flex"
+    },
+    { "name": "--cascivo-dropdown-anchor", "resolvedDefault": "--dropdown-trigger" },
+    { "name": "--cascivo-editor-bracket", "resolvedDefault": "currentColor" },
+    { "name": "--cascivo-editor-caret-line", "resolvedDefault": "0" },
+    {
+      "name": "--cascivo-editor-gutter-active",
+      "resolvedDefault": "var(--cascivo-editor-current-line)"
+    },
+    { "name": "--cascivo-editor-match", "resolvedDefault": "rgba(125, 211, 252, 0.28)" },
+    { "name": "--cascivo-editor-match-current", "resolvedDefault": "rgba(250, 204, 21, 0.5)" },
+    { "name": "--cascivo-editor-tab-size", "resolvedDefault": "2" },
+    { "name": "--cascivo-header-bg", "resolvedDefault": "var(--cascivo-color-surface)" },
+    { "name": "--cascivo-kpi-padding", "resolvedDefault": "var(--cascivo-space-4)" },
+    { "name": "--cascivo-popover-anchor", "resolvedDefault": "inherit" },
+    { "name": "--cascivo-progress-color", "resolvedDefault": "var(--cascivo-color-primary)" },
+    { "name": "--cascivo-progress-value", "resolvedDefault": "0%" },
+    { "name": "--cascivo-radial-color", "resolvedDefault": "var(--cascivo-color-accent)" },
+    { "name": "--cascivo-radial-progress", "resolvedDefault": "0" },
+    { "name": "--cascivo-radial-size", "resolvedDefault": "5rem" },
+    { "name": "--cascivo-radial-thickness", "resolvedDefault": "0.375rem" },
+    { "name": "--cascivo-radius-pill", "resolvedDefault": "9999px" },
+    { "name": "--cascivo-resizable-ratio", "resolvedDefault": "0.5" },
+    { "name": "--cascivo-scroll-area-height", "resolvedDefault": "none" },
+    { "name": "--cascivo-scroll-area-width", "resolvedDefault": "none" },
+    { "name": "--cascivo-sidenav-bg", "resolvedDefault": "var(--cascivo-color-surface)" },
+    { "name": "--cascivo-sidenav-inline-size", "resolvedDefault": "16rem" },
+    { "name": "--cascivo-sidenav-rail-inline-size", "resolvedDefault": "4rem" },
+    { "name": "--cascivo-skeleton-height", "resolvedDefault": "var(--cascivo-space-10)" },
+    { "name": "--cascivo-skeleton-width", "resolvedDefault": "100%" },
+    { "name": "--cascivo-stack-index", "resolvedDefault": "0" },
+    { "name": "--cascivo-stack-offset", "resolvedDefault": "4px" },
+    { "name": "--cascivo-tooltip-anchor", "resolvedDefault": "attr(data-anchor)" },
+    { "name": "--cascivo-tree-indent", "resolvedDefault": "var(--cascivo-space-5)" },
+    { "name": "--cascivo-z-dock", "resolvedDefault": "40" }
   ],
   "components": [
     {

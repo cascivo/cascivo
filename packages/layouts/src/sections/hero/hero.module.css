@@ -29,7 +29,7 @@
   .eyebrow {
     font-size: var(--cascivo-text-sm);
     font-family: var(--cascivo-font-mono);
-    color: var(--cascivo-text-secondary);
+    color: var(--cascivo-color-text-subtle);
     margin: 0;
   }
 
@@ -42,7 +42,7 @@
 
   .description {
     font-size: var(--cascivo-text-lg);
-    color: var(--cascivo-text-secondary);
+    color: var(--cascivo-color-text-subtle);
     max-inline-size: 60ch;
     margin: 0;
   }

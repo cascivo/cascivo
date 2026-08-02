@@ -144,13 +144,13 @@
     border-color: var(--cascivo-color-border);
 
     &:hover {
-      background: var(--cascivo-color-bg-muted);
+      background: var(--cascivo-color-bg-subtle);
     }
   }
 
   .confirm {
     background: var(--cascivo-color-accent);
-    color: var(--cascivo-color-on-accent);
+    color: var(--cascivo-color-text-on-accent);
 
     &:hover {
       opacity: 0.9;
@@ -158,7 +158,7 @@
 
     [data-variant='destructive'] & {
       background: var(--cascivo-color-destructive);
-      color: var(--cascivo-color-on-destructive);
+      color: var(--cascivo-color-text-on-destructive);
     }
   }
 }

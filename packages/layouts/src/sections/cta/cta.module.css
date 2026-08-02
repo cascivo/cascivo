@@ -1,7 +1,7 @@
 @layer cascivo.component {
   .cta {
     border-block: 1px solid var(--cascivo-color-border);
-    background-color: var(--cascivo-surface-subtle);
+    background-color: var(--cascivo-color-bg-subtle);
   }
 
   .title {
@@ -14,7 +14,7 @@
 
   .description {
     font-size: var(--cascivo-text-base);
-    color: var(--cascivo-text-secondary);
+    color: var(--cascivo-color-text-subtle);
     text-align: center;
     max-inline-size: 56ch;
     margin-inline: auto;

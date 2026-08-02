@@ -447,7 +447,7 @@
       ],
       "fileHashes": {
         "alert-dialog.tsx": "sha256-52e6d5da37d3f574401afea70ed04a9f3f043249c8d8343928e313098d87b1e0",
-        "alert-dialog.module.css": "sha256-267fbaf50c0ed20988a872e8b04b1dceb27d9a46efbe382dbaec98bb598336ca"
+        "alert-dialog.module.css": "sha256-fa35d8ba7ddbe3232ba2d374d79467bd622e5f9d7f64b793df32ed375021dd74"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -3461,7 +3461,7 @@
       ],
       "fileHashes": {
         "combobox.tsx": "sha256-9e92ad7533c4f4dabc78f7108974c22801cee44f9e7e20ae8bc2a309fd148cbc",
-        "combobox.module.css": "sha256-1550747eb9329071fb38c33397a75db8a08e181924cad9159ca05f3470d80aa5"
+        "combobox.module.css": "sha256-cc7cd8b4087667c0df3b737f588c92bbdb03e7a1c94e52ef9d8f321ea74575f5"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -3582,7 +3582,7 @@
           "--cascivo-color-text-muted",
           "--cascivo-color-text-subtle",
           "--cascivo-color-accent",
-          "--cascivo-color-danger",
+          "--cascivo-color-destructive",
           "--cascivo-radius-input",
           "--cascivo-radius-md",
           "--cascivo-radius-sm",
@@ -4888,7 +4888,7 @@
       ],
       "fileHashes": {
         "date-picker.tsx": "sha256-0e93430d7aae5119b0f90a6cfc06dbe49d8c097d3e280d58e66ee3539e3293fa",
-        "date-picker.module.css": "sha256-af8a0f707b5a57bffac9cb18f3b870390dd813201ae7f7009030840a7f591a12"
+        "date-picker.module.css": "sha256-e816d0d00db6d3d3dc52f49c8671c11eaa1710e2aa8a4d6ef8f3356207dee47e"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -4993,11 +4993,17 @@
           }
         ],
         "tokens": [
-          "--cascivo-date-picker-bg",
-          "--cascivo-date-picker-border",
-          "--cascivo-date-picker-radius",
-          "--cascivo-date-picker-day-selected-bg",
-          "--cascivo-date-picker-day-today-color"
+          "--cascivo-color-surface",
+          "--cascivo-color-surface-overlay",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-accent",
+          "--cascivo-color-text-on-accent",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-destructive"
         ],
         "accessibility": {
           "role": "combobox",
@@ -5737,7 +5743,7 @@
       ],
       "fileHashes": {
         "editable.tsx": "sha256-ad4120697977c58b81527a51e5851d4d40457f3fcd7efa06547a058b0fd9b45a",
-        "editable.module.css": "sha256-e27d115820fd61b515f0abb93b7de15acd064a5ab9b268e91b170f535e353b60"
+        "editable.module.css": "sha256-ec9d9b7bc1172ca2ef57938563cf6eaa95ba55dcb64b3148c29d475159674341"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -6348,7 +6354,7 @@
       ],
       "fileHashes": {
         "file-uploader.tsx": "sha256-7db7c20433938067b79e5aebbdc26479dc8bd8c01e2e6a1300ff8946abbc6df1",
-        "file-uploader.module.css": "sha256-484e293908ff05ae22c80590eb1132e620f185c9577387f7bd8b4c3fb7623007"
+        "file-uploader.module.css": "sha256-ecb8fd3d4bd32b9661a0e9e90394801056c19ba1b693ddefa4969db78aac5719"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -6438,8 +6444,8 @@
           "--cascivo-color-accent",
           "--cascivo-color-accent-subtle",
           "--cascivo-color-success",
-          "--cascivo-color-danger",
-          "--cascivo-color-danger-subtle"
+          "--cascivo-color-destructive",
+          "--cascivo-color-destructive-subtle"
         ],
         "accessibility": {
           "role": "button",
@@ -9702,7 +9708,7 @@
       ],
       "fileHashes": {
         "multi-select.tsx": "sha256-86cda23ca02522f206ff5d19b35bd7498876f01bfb62ad758cac60bede2416f8",
-        "multi-select.module.css": "sha256-e2d845c117aab258dfbe0f82b850f143738fe630ff0f04c04f82325ce488ea68"
+        "multi-select.module.css": "sha256-4fe95e0f073a168474369f0c26eccd74bae995ca51b435e9831e32f0597ca940"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -16184,7 +16190,7 @@
       ],
       "fileHashes": {
         "tags-input.tsx": "sha256-f27e28596a97b934c6fac5d8894590357ce4c82bfbe27594485aab3c9fc5dd39",
-        "tags-input.module.css": "sha256-97f294967ec53a6124456a4efc7c8f5d71b73fe7787ac5e78f25d7164e1a43af"
+        "tags-input.module.css": "sha256-3d8a0a5e33fbe066e7e4855d7a7d9260c98b08f0e16b65c8ccf85f837a1866df"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -16770,7 +16776,7 @@
       ],
       "fileHashes": {
         "time-picker.tsx": "sha256-f3a1ada2c187376d3c215310748c381f31d73f2ac4e5338185064876d3299817",
-        "time-picker.module.css": "sha256-d8d10612976071d8b64538919c7f8539ddafaf3af538bcd49a94345774af3a36"
+        "time-picker.module.css": "sha256-84aacb74f566e0c5082a48a3b73194981ab1bc9c17bafc5c7d43bd27bfc6f480"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -16873,7 +16879,7 @@
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
           "--cascivo-color-accent",
-          "--cascivo-color-danger",
+          "--cascivo-color-destructive",
           "--cascivo-radius-input",
           "--cascivo-radius-md"
         ],
@@ -18427,7 +18433,7 @@
           "--cascivo-ease-out",
           "--cascivo-color-border",
           "--cascivo-color-surface",
-          "--cascivo-font-size-xs",
+          "--cascivo-text-xs",
           "--cascivo-color-accent",
           "--cascivo-color-destructive",
           "--cascivo-color-destructive-subtle",
@@ -19230,7 +19236,7 @@
       ],
       "fileHashes": {
         "page-header.tsx": "sha256-6683e4af80f7b8f9db57287a3399d239244cb9cff664b7ec0587ded8346a1542",
-        "page-header.module.css": "sha256-1fb6578f9e3ebda3c63d002e2eb13d4e1409cd97c4f9912c54a2e7c3c2a00818"
+        "page-header.module.css": "sha256-f5a39930488fb3107318f673616818dbc750556b756df9328d0e830bed65d646"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -19279,11 +19285,11 @@
         "tokens": [
           "--cascivo-space-2",
           "--cascivo-space-4",
-          "--cascivo-font-size-2xl",
-          "--cascivo-font-weight-bold",
+          "--cascivo-text-2xl",
+          "--cascivo-font-bold",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
-          "--cascivo-font-size-sm"
+          "--cascivo-text-sm"
         ],
         "accessibility": {
           "role": "banner",
@@ -21351,9 +21357,9 @@
         ],
         "tokens": [
           "--cascivo-chart-1",
-          "--cascivo-color-neutral-200",
-          "--cascivo-color-neutral-300",
-          "--cascivo-color-neutral-400"
+          "--cascivo-gray-200",
+          "--cascivo-gray-300",
+          "--cascivo-gray-400"
         ],
         "accessibility": {
           "role": "img",
@@ -22206,7 +22212,7 @@
             "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
           }
         ],
-        "tokens": ["--cascivo-chart-1", "--cascivo-color-neutral-100"],
+        "tokens": ["--cascivo-chart-1", "--cascivo-gray-100"],
         "accessibility": {
           "role": "img",
           "wcag": "2.1-AA",
@@ -24783,7 +24789,7 @@
       ],
       "fileHashes": {
         "cta.tsx": "sha256-cee8fa0e55dfc242005bec7f4792f805da231b326743d11e9a30781567f116af",
-        "cta.module.css": "sha256-feecd79bffa74171b77fb856c3c77698d1bbb6adb40659d031916582123502d6"
+        "cta.module.css": "sha256-64d4f42e4ac21dbece53db49348d4456071fdda19cbb992f7dce8ddfb4ad3919"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -24826,11 +24832,11 @@
         ],
         "tokens": [
           "--cascivo-color-border",
-          "--cascivo-surface-subtle",
+          "--cascivo-color-bg-subtle",
           "--cascivo-text-2xl",
           "--cascivo-text-base",
           "--cascivo-font-bold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -24889,7 +24895,7 @@
       ],
       "fileHashes": {
         "feature-grid.tsx": "sha256-43c86e0180834887850924cc1ed4fa0719140938d9074623fa9a69ff2e9145a1",
-        "feature-grid.module.css": "sha256-774b6b4aa5bd4ff50235d7b8d1d6de1265c0bfcaac1caac055388d8fbae0815a"
+        "feature-grid.module.css": "sha256-96c772216992fd23cf5bfb24f1fe2d1e71b0eb7912bc221d72f1fa4252ee0371"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -24943,9 +24949,9 @@
           "--cascivo-text-sm",
           "--cascivo-font-bold",
           "--cascivo-font-semibold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-color-border",
-          "--cascivo-surface-subtle",
+          "--cascivo-color-bg-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -25004,7 +25010,7 @@
       ],
       "fileHashes": {
         "hero.tsx": "sha256-6441bd69596ecc8181c554c943b8c55a08a5f213464168a02991bb34df4cecf2",
-        "hero.module.css": "sha256-364a9734afec739cd492e63ba1d2e2a8ddf2de4c12d8f4d6243802675e56f5f1"
+        "hero.module.css": "sha256-9c1e9fc32e62ad6a8d1fb59618a4c38e461d62a70e72bb3caec605857602e0ec"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -25070,7 +25076,7 @@
           "--cascivo-text-sm",
           "--cascivo-font-mono",
           "--cascivo-font-bold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -25134,7 +25140,7 @@
       ],
       "fileHashes": {
         "media-masonry.tsx": "sha256-67b125fcf466330597f10c8040989ed753ed9409dc9edabc470a7a8f809bf13b",
-        "media-masonry.module.css": "sha256-002c56f1e7a23af38eb79d397b5298b51575535677282ecc826f8b73f9adf18c"
+        "media-masonry.module.css": "sha256-6193fa3b063a622abe76eb2fc12aa5e000a7e541f7df189427c82071e8d4d030"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -25193,7 +25199,7 @@
           "--cascivo-text-2xl",
           "--cascivo-text-base",
           "--cascivo-font-bold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -25247,7 +25253,7 @@
       ],
       "fileHashes": {
         "page-footer.tsx": "sha256-757e14018d1a3c08e8afaca1d24060c17739bc7c20d7d39d6b1b818262be1b7d",
-        "page-footer.module.css": "sha256-0f9fe93c8d81f7bc2633fc41d853ad26797a0f064dc2e8e5e1a7a22187e207ad"
+        "page-footer.module.css": "sha256-4d77adfbd5ae900cd98e03daaa7d31cb0610d7b89b1bea88b19ca33710dafb00"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -25285,8 +25291,8 @@
           "--cascivo-text-sm",
           "--cascivo-font-mono",
           "--cascivo-font-semibold",
-          "--cascivo-text-primary",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
           "--cascivo-color-border",
           "--cascivo-color-accent",
           "--cascivo-space-*"
@@ -25342,7 +25348,7 @@
       ],
       "fileHashes": {
         "stats-band.tsx": "sha256-59609c823f5d1b90a1774430fe49b955ecca044f0a54fa96afc731ce88c707be",
-        "stats-band.module.css": "sha256-2c48d1b94571a513eea6768fc57b07e8ddbceca1755f026f522c8c61a525c4b4"
+        "stats-band.module.css": "sha256-c222d28794d4940d4d80fbcdcd10c55a883ef0c7fb1a2694398e37fe98ddd445"
       },
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
       "peerVersions": {
@@ -25377,9 +25383,9 @@
           "--cascivo-text-sm",
           "--cascivo-font-bold",
           "--cascivo-font-mono",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-color-border",
-          "--cascivo-surface-subtle",
+          "--cascivo-color-bg-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {

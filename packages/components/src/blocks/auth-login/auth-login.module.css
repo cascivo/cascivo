@@ -36,7 +36,7 @@
   .field {
     display: flex;
     flex-direction: column;
-    gap: var(--cascivo-space-1-5);
+    gap: var(--cascivo-space-2);
   }
 
   .label {

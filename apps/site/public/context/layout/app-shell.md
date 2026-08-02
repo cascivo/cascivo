@@ -46,7 +46,7 @@ Provides landmark structure with header and navigation regions for screen reader
 - `--cascivo-ease-out`
 - `--cascivo-color-border`
 - `--cascivo-color-surface`
-- `--cascivo-font-size-xs`
+- `--cascivo-text-xs`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
@@ -80,7 +80,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 AppFrame is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-space-3, --cascivo-space-4, --cascivo-space-6, --cascivo-duration-200, --cascivo-ease-out, --cascivo-color-border, --cascivo-color-surface, --cascivo-font-size-xs, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-focus-ring
+  --cascivo-space-3, --cascivo-space-4, --cascivo-space-6, --cascivo-duration-200, --cascivo-ease-out, --cascivo-color-border, --cascivo-color-surface, --cascivo-text-xs, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-destructive-subtle, --cascivo-focus-ring
 
 Accessibility: role "generic", WCAG 2.1-AA. Keep it AA.
 

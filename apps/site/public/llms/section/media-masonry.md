@@ -46,7 +46,7 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility

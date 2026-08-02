@@ -201,7 +201,7 @@ export function Radar({
                     fontSize={11}
                     textAnchor="middle"
                     dominantBaseline="middle"
-                    fill="var(--cascivo-text-secondary)"
+                    fill="var(--cascivo-color-text-subtle)"
                   >
                     {axes[i]}
                   </text>

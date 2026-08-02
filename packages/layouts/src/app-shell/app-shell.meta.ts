@@ -49,7 +49,7 @@ export const meta: ComponentMeta = {
     '--cascivo-ease-out',
     '--cascivo-color-border',
     '--cascivo-color-surface',
-    '--cascivo-font-size-xs',
+    '--cascivo-text-xs',
     '--cascivo-color-accent',
     '--cascivo-color-destructive',
     '--cascivo-color-destructive-subtle',

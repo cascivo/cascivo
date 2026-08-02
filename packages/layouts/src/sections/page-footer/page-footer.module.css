@@ -24,7 +24,7 @@
     font-size: var(--cascivo-text-sm);
     font-family: var(--cascivo-font-mono);
     font-weight: var(--cascivo-font-semibold);
-    color: var(--cascivo-text-secondary);
+    color: var(--cascivo-color-text-subtle);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin: 0;
@@ -41,7 +41,7 @@
 
   .link {
     font-size: var(--cascivo-text-sm);
-    color: var(--cascivo-text-primary);
+    color: var(--cascivo-color-text);
     text-decoration: none;
   }
 
@@ -66,6 +66,6 @@
 
   .meta {
     font-size: var(--cascivo-text-sm);
-    color: var(--cascivo-text-secondary);
+    color: var(--cascivo-color-text-subtle);
   }
 }

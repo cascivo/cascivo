@@ -44,11 +44,11 @@ Title with description
 
 - `--cascivo-space-2`
 - `--cascivo-space-4`
-- `--cascivo-font-size-2xl`
-- `--cascivo-font-weight-bold`
+- `--cascivo-text-2xl`
+- `--cascivo-font-bold`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
-- `--cascivo-font-size-sm`
+- `--cascivo-text-sm`
 
 ## Accessibility
 

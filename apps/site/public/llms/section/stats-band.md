@@ -47,9 +47,9 @@ Four KPI cells — three with sparkline trends and signed deltas
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-mono`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
