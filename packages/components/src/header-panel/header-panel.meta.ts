@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings',
   category: 'navigation',
+  clientJs: 'required',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

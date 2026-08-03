@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Filterable single-select with an animated custom listbox, built on the dropdown open/close machine',
   category: 'inputs',
+  clientJs: 'required',
   states: ['closed', 'open', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

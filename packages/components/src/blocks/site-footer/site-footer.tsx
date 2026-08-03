@@ -1,4 +1,3 @@
-'use client'
 import { Link } from '../../link/link'
 import { Separator } from '../../separator/separator'
 import styles from './site-footer.module.css'

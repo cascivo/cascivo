@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { CSSProperties } from 'react'
 import styles from './progress-bar.module.css'

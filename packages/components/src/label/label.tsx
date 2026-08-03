@@ -1,4 +1,3 @@
-'use client'
 import { cn, Slot } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import type { LabelHTMLAttributes, ReactNode } from 'react'

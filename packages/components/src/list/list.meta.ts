@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'List',
   description: 'Styled unordered or ordered list with ListItem',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['disc', 'decimal', 'none'],
   sizes: [],

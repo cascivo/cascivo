@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Slider',
   description: 'Range input for selecting a value within bounds',
   category: 'inputs',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

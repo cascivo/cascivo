@@ -57,6 +57,10 @@ Four-item text-only feature grid with section heading
 />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-text-2xl`

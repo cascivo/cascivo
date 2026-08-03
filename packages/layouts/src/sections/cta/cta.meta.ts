@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

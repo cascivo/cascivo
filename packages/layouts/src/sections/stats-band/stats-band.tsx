@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import { Sparkline } from '@cascivo/charts'
 import type { HTMLAttributes } from 'react'

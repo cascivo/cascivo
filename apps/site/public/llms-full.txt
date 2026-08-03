@@ -814,6 +814,10 @@ import { Accordion } from '@cascivo/react'
 <Accordion type="single" defaultValue="a"><AccordionItem value="a"><AccordionTrigger>Section</AccordionTrigger><AccordionContent>…</AccordionContent></AccordionItem></Accordion>
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -906,6 +910,10 @@ Escape and outside press still dismiss the sheet.
 ```tsx
 <ActionSheet defaultOpen showCancel={false} actions={[{ label: "Archive", onSelect: archive }]} />
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -1105,6 +1113,10 @@ import { AlertDialog } from '@cascivo/react'
 />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -1279,6 +1291,10 @@ import { AspectRatio } from '@cascivo/react'
   <img src="/avatar.jpg" alt="Avatar" />
 </AspectRatio>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -1460,6 +1476,10 @@ import { AvatarGroup } from '@cascivo/react'
 <AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -1549,6 +1569,10 @@ import { Badge } from '@cascivo/react'
 ```tsx
 <Badge variant="destructive">Deprecated</Badge>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -1803,6 +1827,10 @@ Charts dashboard demo
 ```tsx
 <DashboardCharts />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Accessibility
 
@@ -2196,6 +2224,10 @@ Page with breadcrumb
 <PageWithBreadcrumb />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Accessibility
 
 - **WCAG level:** 2.1-AA
@@ -2372,6 +2404,10 @@ App with sidebar navigation
 <SidebarApp />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Accessibility
 
 - **WCAG level:** 2.1-AA
@@ -2460,6 +2496,10 @@ Demo KPI stats
 ```tsx
 <StatsCards />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Accessibility
 
@@ -2614,6 +2654,10 @@ Attribution renders as <footer><cite>
 <Blockquote cite="Dieter Rams">Less, but better.</Blockquote>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-border-strong`
@@ -2708,6 +2752,10 @@ Snaps between three detents by dragging the handle; opens at half height.
   <PlacesList />
 </BottomSheet>
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -2895,6 +2943,10 @@ Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
 ```tsx
 <Button asChild><a href="/pricing">View pricing</a></Button>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -3175,6 +3227,10 @@ import { Card } from '@cascivo/react'
   <CardContent>Content here</CardContent>
 </Card>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -4433,6 +4489,10 @@ import { Kpi } from '@cascivo/charts'
 <Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -4614,6 +4674,10 @@ import { Meter } from '@cascivo/charts'
 
 <Meter value={72} label="CPU usage" />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -5252,6 +5316,10 @@ import { Sparkline } from '@cascivo/charts'
 <Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -5586,6 +5654,10 @@ Message with an avatar beside the bubble
 <ChatBubble side="start" avatar={<Avatar src="/alice.png" size="sm" />} name="Alice">See you tomorrow!</ChatBubble>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -5663,6 +5735,10 @@ import { Checkbox } from '@cascivo/react'
 ```tsx
 <Checkbox label="Select all" indeterminate />
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 
@@ -5826,6 +5902,10 @@ Sits inline with surrounding text
 ```tsx
 <Code size="sm">--cascivo-color-accent</Code>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -5998,7 +6078,7 @@ import { Collapsible } from '@cascivo/react'
 | `defaultOpen` | `boolean` | no | `false` | Initial open state for uncontrolled use |
 | `onOpenChange` | `(open: boolean) => void` | no | — | Called whenever the open state should change |
 | `trigger` | `ReactNode` | yes | — | Content rendered inside the built-in trigger button |
-| `disabled` | `boolean` | no | `false` | Disables the trigger button |
+| `disabled` | `boolean` | no | `false` | Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable |
 | `children` | `ReactNode` | no | — | Content of the collapsible region |
 
 ## Examples
@@ -6018,6 +6098,10 @@ import { Collapsible } from '@cascivo/react'
   <p>Visible initially.</p>
 </Collapsible>
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 
@@ -6208,6 +6292,10 @@ import { Combobox } from '@cascivo/react'
 />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -6344,6 +6432,10 @@ A scope chip filters to Clusters, matched glyphs are highlighted, each row carri
   ]}
 />
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -6617,6 +6709,10 @@ import { ContextMenu } from '@cascivo/react'
 </ContextMenu>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -6806,6 +6902,10 @@ import { DataList } from '@cascivo/react'
   items={[{ label: 'Email', value: 'ada@example.com' }]}
 />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -7110,6 +7210,10 @@ Date range constraint
 <DatePicker min="2024-01-01" max="2024-12-31" />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-date-picker-bg`
@@ -7214,6 +7318,10 @@ Limits the selectable dates
 ```tsx
 <DateRangePicker min={new Date(Date.UTC(2024, 0, 1))} max={new Date(Date.UTC(2024, 11, 31))} />
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -7408,6 +7516,10 @@ Dragging the header past a threshold toward the edge dismisses the panel.
 </Drawer>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-dialog-body-gap`
@@ -7484,6 +7596,10 @@ import { Dropdown } from '@cascivo/react'
 ```tsx
 <Dropdown trigger={<Button>Actions</Button>} items={[{ label: "Edit", value: "edit" }]} onSelect={handle} />
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -7690,6 +7806,10 @@ const commands = [
 <CodeEditor language="markdown" commands={commands} />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-editor-bg`
@@ -7849,6 +7969,10 @@ import { EmptyState } from '@cascivo/react'
 <EmptyState icon="📄" title="No documents yet" description="Create your first document to get started." action={<Button>New document</Button>} />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-text`
@@ -7948,6 +8072,10 @@ The main button toggles a menu of secondary actions.
 <Fab label="Help" position="bottom-start" onClick={openHelp}><HelpIcon /></Fab>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -8043,6 +8171,10 @@ Sets aria-invalid on the control and announces the error via role="alert".
 ```tsx
 <Field label="Email" error="Email is required" required><Input /></Field>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -8479,6 +8611,10 @@ The grid and cross variants.
 )
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -8809,6 +8945,10 @@ import '@cascivo/flow/styles.css' // required stylesheet
 )
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -9038,6 +9178,10 @@ import '@cascivo/flow/styles.css' // required stylesheet
   </div>
 )
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -9412,6 +9556,10 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 </HeaderPanel>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-shell-header-block-size`
@@ -9500,6 +9648,10 @@ Keep the document outline correct while controlling the visual scale
 ```tsx
 <Heading level={2} size="2xl">Visually large, semantically h2</Heading>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -9590,6 +9742,10 @@ import { HoverCard } from '@cascivo/react'
   <HoverCardContent>A longer explanation shown on hover or focus.</HoverCardContent>
 </HoverCard>
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -9690,6 +9846,10 @@ import { IconButton } from '@cascivo/react'
 ```tsx
 <IconButton label="Home" asChild><a href="/"><HomeIcon /></a></IconButton>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -9880,6 +10040,10 @@ Indicator positioned at the bottom-start corner
 <Indicator overlay={<Badge variant="destructive">!</Badge>} placement="bottom-start"><Card>Content</Card></Indicator>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
@@ -9951,6 +10115,10 @@ import { InlineLoading } from '@cascivo/react'
 ```tsx
 <InlineLoading status="error" label="Save failed" />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -10039,6 +10207,10 @@ import { Input } from '@cascivo/react'
 <Input label="Email" error="Invalid email address" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -10123,6 +10295,10 @@ import { InputGroup } from '@cascivo/react'
 ```tsx
 <ButtonGroup><Button>Left</Button><Button>Right</Button></ButtonGroup>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -10215,6 +10391,10 @@ import { Item } from '@cascivo/react'
 </Item>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-text`
@@ -10298,6 +10478,10 @@ Vertically joined button group
 <Join orientation="vertical"><Button>Top</Button><Button>Middle</Button><Button>Bottom</Button></Join>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
@@ -10367,6 +10551,10 @@ Compose multiple keys to show a shortcut
 ```tsx
 <Kbd size="sm">Esc</Kbd>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -10454,6 +10642,10 @@ Render the label semantics onto a custom element via Slot.
 ```tsx
 <Label asChild htmlFor="email"><span>Email</span></Label>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -10613,6 +10805,10 @@ Centered auth card with logo
 <AuthLayout logo={<img src="/logo.svg" alt="Logo" />}><form>...</form></AuthLayout>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-bg-subtle`
@@ -10681,6 +10877,10 @@ Items fill available space and wrap when narrower than 12rem
 <AutoGrid min="12rem" gap={4}><div>Card 1</div><div>Card 2</div><div>Card 3</div></AutoGrid>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-space-*`
@@ -10741,6 +10941,10 @@ Centered container with custom max-width
 ```tsx
 <Center maxWidth="60rem"><p>Content</p></Center>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -10804,6 +11008,10 @@ Three equal columns
 <Columns count={3}><div>A</div><div>B</div><div>C</div></Columns>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-space-*`
@@ -10862,6 +11070,10 @@ Stats + main layout
 ```tsx
 <DashboardLayout stats={<div>KPIs</div>} main={<div>Content</div>} />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -10937,6 +11149,10 @@ Row layout
 <Flex direction="horizontal" gap={2}><div>A</div><div>B</div></Flex>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-space-*`
@@ -11010,6 +11226,10 @@ import { Grid } from '@cascivo/react'
 <Grid cols={{ base: 1, md: 2, lg: 3 }} gap={4}><GridItem span={{ base: 1, lg: 2 }}>Wide</GridItem></Grid>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-space-*`
@@ -11067,6 +11287,10 @@ Variable-height cards laid out in a masonry pattern; falls back to CSS columns
 ```tsx
 <Masonry cols={3} gap={4}>{items.map(item => <Card key={item.id}>{item.content}</Card>)}</Masonry>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -11133,6 +11357,10 @@ Title with description
 <PageHeader title="Dashboard" description="Welcome back" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-space-2`
@@ -11197,6 +11425,10 @@ Centered 72rem content column with 2rem block padding
 <Section width="content" gap={8}><h2>Heading</h2><p>Body copy.</p></Section>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-space-*`
@@ -11254,6 +11486,10 @@ Menu + content layout
 ```tsx
 <SettingsLayout menu={<nav>Menu</nav>}><div>Settings</div></SettingsLayout>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -11315,6 +11551,10 @@ Adds vertical space between elements
 ```tsx
 <Spacer size={8} />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -11471,6 +11711,10 @@ Opens in a new tab with rel="noreferrer" and a visual indicator.
 <Link external href="https://example.com">Example</Link>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-link-color`
@@ -11556,6 +11800,10 @@ Keeps list semantics without visual markers
 ```tsx
 <List marker="none"><ListItem>Clean row</ListItem></List>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -11743,6 +11991,10 @@ import { Menu } from '@cascivo/react'
 </Menu>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -11857,6 +12109,10 @@ Aligns the menu to the trigger end edge
 />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-primary`
@@ -11937,6 +12193,10 @@ import { Menubar } from '@cascivo/react'
 ```tsx
 <Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -12023,6 +12283,10 @@ import { Modal } from '@cascivo/react'
 </Modal>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-surface-overlay`
@@ -12098,6 +12362,10 @@ import { MultiSelect } from '@cascivo/react'
 ```tsx
 <MultiSelect options={[{label:'One',value:'1'},{label:'Two',value:'2'}]} value={[]} onValueChange={() => {}} />
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -12210,6 +12478,10 @@ import { NativeSelect } from '@cascivo/react'
 ```tsx
 <NativeSelect invalid placeholder="Required" options={countries} />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -12484,6 +12756,10 @@ import { NumberInput } from '@cascivo/react'
 ```tsx
 <NumberInput label="Opacity" min={0} max={1} step={0.1} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 
@@ -12838,6 +13114,10 @@ import { PasswordInput } from '@cascivo/react'
 <PasswordInput showStrengthMeter placeholder="Create password" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -12928,6 +13208,10 @@ import { Popover } from '@cascivo/react'
   <PopoverContent><FilterForm /></PopoverContent>
 </Popover>
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -13036,6 +13320,10 @@ import { Progress } from '@cascivo/react'
 <Progress value={40} size="sm" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-surface-2`
@@ -13136,6 +13424,10 @@ import { ProgressBar } from '@cascivo/react'
 <ProgressBar value={100} status="success" label="Upload complete" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -13224,6 +13516,10 @@ import { ProgressCircle } from '@cascivo/react'
 <ProgressCircle value={3} max={8} label="Steps completed" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -13305,6 +13601,10 @@ import { ProgressIndicator } from '@cascivo/react'
 <ProgressIndicator vertical steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]} currentIndex={0} />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -13381,6 +13681,10 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 ```tsx
 <Prose dangerouslySetInnerHTML={{ __html: html }} />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -13661,6 +13965,10 @@ Override the default percentage label with custom content
 <RadialProgress value={45} variant="warning">45 GB</RadialProgress>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-primary`
@@ -13731,6 +14039,10 @@ import { Radio } from '@cascivo/react'
 ```tsx
 <RadioGroup name="plan" defaultValue="pro"><Radio value="pro" label="Pro" /><Radio value="team" label="Team" /></RadioGroup>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -14244,6 +14556,10 @@ import { Search } from '@cascivo/react'
 <Search size="lg" placeholder="Search products…" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -14314,6 +14630,10 @@ Quiet bordered band with centered heading, description, and action buttons
 ```tsx
 <Cta title="Ready to ship?" description="Add Cascade to your project in minutes." actions={<><Button>Get started</Button><Button variant="ghost">View on GitHub</Button></>} />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -14390,6 +14710,10 @@ Four-item text-only feature grid with section heading
   ]}
 />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -14475,6 +14799,10 @@ Two-column layout with copy on the left and media on the right
 <Hero variant="split" title="Signal-driven, CSS-native" description="Fine-grained reactivity with zero re-renders. Beautiful by default." actions={<Button>Start building</Button>} media={<img src="/preview.png" alt="Dashboard preview" />} />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-text-4xl`
@@ -14542,6 +14870,10 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 ```tsx
 <MediaMasonry title="Customer stories" cols={3} gap={4}><img src="/photo-1.jpg" alt="Team at desk" /><img src="/photo-2.jpg" alt="Product screenshot" /><img src="/photo-3.jpg" alt="Dashboard view" /></MediaMasonry>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -14613,6 +14945,10 @@ Three-column footer with brand and license meta
   ]}
 />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -14686,6 +15022,10 @@ Four KPI cells — three with sparkline trends and signed deltas
   ]}
 />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -14860,6 +15200,10 @@ import { Select } from '@cascivo/react'
 <Select label="Country" placeholder="Choose…" options={countries} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -14931,6 +15275,10 @@ import { Separator } from '@cascivo/react'
 ```tsx
 <Separator orientation="vertical" />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -15008,6 +15356,10 @@ import { Sheet } from '@cascivo/react'
   <ShareOptions />
 </Sheet>
 ```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
 ## Design tokens
 
@@ -15151,6 +15503,10 @@ center takes the header’s spare width, so the trigger grows and shrinks with t
 />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-shell-header-block-size`
@@ -15259,6 +15615,10 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 <SideNav collapsed expandOnHover items={items} />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-sidenav-inline-size`
@@ -15357,6 +15717,10 @@ import { Skeleton } from '@cascivo/react'
 <Skeleton variant="rect" height="12rem" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -15429,6 +15793,10 @@ SkipNavLink must be the first focusable element on the page
 ```tsx
 <><SkipNavLink targetId="main-content" /><SkipNavTarget id="main-content" /></>
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 
@@ -15506,6 +15874,10 @@ import { Slider } from '@cascivo/react'
 ```tsx
 <Slider label="Rating" min={0} max={5} step={1} />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -15656,6 +16028,10 @@ Overlapping avatar group with minimal offset
 <Stack offset={2}><Avatar src="/a.jpg" /><Avatar src="/b.jpg" /><Avatar src="/c.jpg" /></Stack>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
@@ -15732,6 +16108,10 @@ Sparkline is from @cascivo/charts
 ```tsx
 <Stat label="Requests / min" value="1.2k" delta="+4.3%" trend="up" visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />} />
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -15818,6 +16198,10 @@ The pulse animation respects prefers-reduced-motion
 ```tsx
 <Status status="info" pulse>Deploying</Status>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Design tokens
 
@@ -16642,6 +17026,10 @@ Use as="span" inside other flow content
 <Text as="span" weight="semibold">emphasis</Text>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-font-sans`
@@ -16726,6 +17114,10 @@ import { Textarea } from '@cascivo/react'
 ```tsx
 <Textarea label="Bio" error="Bio is required" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 
@@ -17019,6 +17411,10 @@ In a feed every entry is equally done, so `tone` — not `status` — is what se
 />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -17268,6 +17664,10 @@ import { Toggle } from '@cascivo/react'
 ```tsx
 <Toggle checked={enabled} onValueChange={setEnabled} label="Dark mode" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 
@@ -17539,6 +17939,10 @@ import { Tooltip } from '@cascivo/react'
 <Tooltip content="Copy to clipboard"><Button>Copy</Button></Tooltip>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-text`
@@ -17709,6 +18113,10 @@ import { User } from '@cascivo/react'
 <User name="Jane Doe" description="Admin"><IconButton aria-label="More" /></User>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-text`
@@ -17780,6 +18188,10 @@ Gives an icon-only control an accessible name
 ```tsx
 <th>Price <VisuallyHidden>(in euros)</VisuallyHidden></th>
 ```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
 
 ## Accessibility
 

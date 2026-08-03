@@ -1,4 +1,3 @@
-'use client'
 import { LineChart, BarChart, PieChart, Kpi } from '@cascivo/charts'
 import { DashboardLayout } from '../../dashboard-layout/dashboard-layout'
 

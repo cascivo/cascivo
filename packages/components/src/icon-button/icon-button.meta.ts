@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'IconButton',
   description: 'Square, icon-only button with a required accessible label',
   category: 'inputs',
+  clientJs: 'none',
   states: ['idle'],
   variants: ['ghost', 'outline', 'filled'],
   sizes: ['sm', 'md', 'lg'],

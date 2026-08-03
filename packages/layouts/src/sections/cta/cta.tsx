@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { Section } from '../../section/section'

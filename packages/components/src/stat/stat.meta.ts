@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Stat',
   description: 'Displays a key metric with optional delta, trend direction and help text',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

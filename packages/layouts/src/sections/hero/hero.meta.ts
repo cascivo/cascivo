@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: ['centered', 'split'],
   sizes: [],

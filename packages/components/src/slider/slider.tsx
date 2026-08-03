@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import { forwardRef } from 'react'
 import type { InputHTMLAttributes } from 'react'

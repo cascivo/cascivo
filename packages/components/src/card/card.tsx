@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './card.module.css'

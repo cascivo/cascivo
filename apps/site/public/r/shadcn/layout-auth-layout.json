@@ -6,7 +6,7 @@
     {
       "path": "layout-auth-layout/auth-layout.tsx",
       "type": "registry:block",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './auth-layout.module.css'\n\nexport interface AuthLayoutProps {\n  children: ReactNode\n  logo?: ReactNode\n  className?: string\n}\n\nexport function AuthLayout({ children, logo, className }: AuthLayoutProps) {\n  return (\n    <div className={cn(styles['layout'], className)}>\n      <div className={styles['card']}>\n        {logo && <div className={styles['logo']}>{logo}</div>}\n        {children}\n      </div>\n    </div>\n  )\n}\n"
+      "content": "import { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './auth-layout.module.css'\n\nexport interface AuthLayoutProps {\n  children: ReactNode\n  logo?: ReactNode\n  className?: string\n}\n\nexport function AuthLayout({ children, logo, className }: AuthLayoutProps) {\n  return (\n    <div className={cn(styles['layout'], className)}>\n      <div className={styles['card']}>\n        {logo && <div className={styles['logo']}>{logo}</div>}\n        {children}\n      </div>\n    </div>\n  )\n}\n"
     },
     {
       "path": "layout-auth-layout/auth-layout.module.css",

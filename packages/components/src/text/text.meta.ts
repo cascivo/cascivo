@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Text',
   description: 'Body text with size, weight, and muted variants',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['normal', 'medium', 'semibold'],
   sizes: ['sm', 'md', 'lg'],

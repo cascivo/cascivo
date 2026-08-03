@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Accordion',
   description: 'Vertically stacked, collapsible content sections',
   category: 'navigation',
+  clientJs: 'enhancement',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
@@ -82,7 +83,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'Each trigger is a native <button> exposing aria-expanded and controlling its panel via aria-controls, so screen readers announce open/closed state and Enter/Space toggle from the platform',
+      'Each item is a native <details> and each trigger its <summary>, so the button role, the expanded state, and Enter/Space activation all come from the platform rather than from ARIA — and the open panel renders before any JavaScript runs. The trigger wraps a heading so heading navigation still reaches each section, and each panel is a role="region" labelled by its trigger',
     flexibility: [
       {
         area: 'single vs multiple',

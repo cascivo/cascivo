@@ -1,4 +1,3 @@
-'use client'
 import { cn, normalizeTone } from '@cascivo/core'
 import type { ToneInput } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'

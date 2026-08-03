@@ -1,4 +1,3 @@
-'use client'
 import { Header, SideNav } from '@cascivo/react'
 import { AppShell } from '../../app-shell/app-shell'
 

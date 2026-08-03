@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'HoverCard',
   description: 'Hover-triggered popover with configurable open/close delay',
   category: 'overlay',
+  clientJs: 'required',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

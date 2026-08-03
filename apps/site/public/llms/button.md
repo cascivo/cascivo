@@ -79,6 +79,10 @@ Render button styling on a real anchor (keeps middle-click / open-in-new-tab).
 </Button>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-accent`

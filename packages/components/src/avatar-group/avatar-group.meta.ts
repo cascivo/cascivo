@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'AvatarGroup',
   description: 'Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip',
   category: 'display',
+  clientJs: 'none',
   states: ['default'],
   variants: [],
   sizes: [],

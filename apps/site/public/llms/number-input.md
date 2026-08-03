@@ -73,6 +73,10 @@ import { NumberInput } from '@cascivo/react'
 <NumberInput label="Opacity" min={0} max={1} step={0.1} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`

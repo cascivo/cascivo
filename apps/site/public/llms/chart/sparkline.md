@@ -40,6 +40,10 @@ import { Sparkline } from '@cascivo/charts'
 ;<Sparkline data={[10, 20, 15, 30, 25]} label="Trend" endDot />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-chart-1`

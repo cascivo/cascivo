@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'ChatBubble',
   description: 'Message bubble for chat and messaging UIs with avatar, name, and timestamp support',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['start', 'end'],
   sizes: [],

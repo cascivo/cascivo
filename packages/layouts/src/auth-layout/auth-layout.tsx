@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { ReactNode } from 'react'
 import styles from './auth-layout.module.css'

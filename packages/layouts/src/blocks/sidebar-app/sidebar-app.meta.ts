@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'SidebarApp',
   description: 'Full app shell with collapsible side navigation and top header.',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

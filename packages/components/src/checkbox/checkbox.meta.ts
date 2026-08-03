@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Checkbox',
   description: 'Binary toggle for forms, with indeterminate support',
   category: 'inputs',
+  clientJs: 'enhancement',
   states: ['unchecked', 'checked', 'indeterminate'],
   variants: [],
   sizes: [],

@@ -34,6 +34,10 @@ Stats + main layout
 <DashboardLayout stats={<div>KPIs</div>} main={<div>Content</div>} />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-space-4`

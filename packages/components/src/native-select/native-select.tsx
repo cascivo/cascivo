@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import { forwardRef } from 'react'
 import type { ReactNode, SelectHTMLAttributes } from 'react'

@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'AspectRatio',
   description: 'Constrains content to a fixed width-to-height ratio',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

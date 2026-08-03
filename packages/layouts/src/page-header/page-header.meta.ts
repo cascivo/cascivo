@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'PageHeader',
   description: 'Page-level header with title, description, breadcrumb, and actions slots.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

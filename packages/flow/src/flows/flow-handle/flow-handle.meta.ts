@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'A connection port on a node edge — where edges attach and interactive connect starts.',
   category: 'display',
+  clientJs: 'none',
   states: ['default', 'hover', 'focus'],
   variants: ['source', 'target'],
   sizes: [],

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

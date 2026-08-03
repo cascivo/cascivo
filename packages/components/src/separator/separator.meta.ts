@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Separator',
   description: 'Visual or semantic divider between content',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

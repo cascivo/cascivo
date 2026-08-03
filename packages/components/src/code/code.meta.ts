@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Code',
   description: 'Inline code span for identifiers, commands, and short snippets',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: ['sm', 'md'],

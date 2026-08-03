@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Textarea',
   description: 'Multi-line text input with optional label, hint, and error state',
   category: 'inputs',
+  clientJs: 'enhancement',
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: [],

@@ -362,6 +362,20 @@ function componentMarkdown(
     }
   }
 
+  if (meta?.clientJs) {
+    const RUNTIME_COST: Record<string, string> = {
+      none: 'None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.',
+      enhancement:
+        'Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.',
+      required:
+        'Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.',
+    }
+    lines.push('## Client JavaScript')
+    lines.push('')
+    lines.push(RUNTIME_COST[meta.clientJs] ?? meta.clientJs)
+    lines.push('')
+  }
+
   if (meta?.tokens && meta.tokens.length > 0) {
     lines.push('## Design tokens')
     lines.push('')

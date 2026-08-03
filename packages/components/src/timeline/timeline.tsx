@@ -1,4 +1,3 @@
-'use client'
 import { cn, normalizeProgress, normalizeTone } from '@cascivo/core'
 import type { ProgressInput, ToneInput } from '@cascivo/core'
 import type { HTMLAttributes, ReactNode } from 'react'

@@ -1,4 +1,3 @@
-'use client'
 import { cn, Slot } from '@cascivo/core'
 import { forwardRef } from 'react'
 import type { AnchorHTMLAttributes } from 'react'

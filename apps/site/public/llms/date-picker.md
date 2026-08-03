@@ -78,6 +78,10 @@ Date range constraint
 <DatePicker min="2024-01-01" max="2024-12-31" />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-date-picker-bg`

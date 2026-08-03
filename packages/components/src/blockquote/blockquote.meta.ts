@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Blockquote',
   description: 'Quoted passage with optional attribution footer',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

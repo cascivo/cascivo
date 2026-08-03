@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'CommandMenu',
   description: 'Cmd+K command palette with fuzzy search over grouped commands',
   category: 'overlay',
+  clientJs: 'required',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

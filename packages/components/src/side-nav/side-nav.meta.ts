@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'SideNav',
   description: 'Collapsible sidebar navigation with optional icons and one level of grouping',
   category: 'navigation',
+  clientJs: 'required',
   states: ['expanded', 'collapsed'],
   variants: [],
   sizes: [],

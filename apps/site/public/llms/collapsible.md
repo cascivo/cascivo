@@ -27,14 +27,14 @@ import { Collapsible } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                      | Required | Default | Description                                         |
-| -------------- | ------------------------- | -------- | ------- | --------------------------------------------------- |
-| `open`         | `boolean`                 | no       | —       | Controlled open state                               |
-| `defaultOpen`  | `boolean`                 | no       | `false` | Initial open state for uncontrolled use             |
-| `onOpenChange` | `(open: boolean) => void` | no       | —       | Called whenever the open state should change        |
-| `trigger`      | `ReactNode`               | yes      | —       | Content rendered inside the built-in trigger button |
-| `disabled`     | `boolean`                 | no       | `false` | Disables the trigger button                         |
-| `children`     | `ReactNode`               | no       | —       | Content of the collapsible region                   |
+| Prop           | Type                      | Required | Default | Description                                                                                                                                                       |
+| -------------- | ------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`         | `boolean`                 | no       | —       | Controlled open state                                                                                                                                             |
+| `defaultOpen`  | `boolean`                 | no       | `false` | Initial open state for uncontrolled use                                                                                                                           |
+| `onOpenChange` | `(open: boolean) => void` | no       | —       | Called whenever the open state should change                                                                                                                      |
+| `trigger`      | `ReactNode`               | yes      | —       | Content rendered inside the built-in trigger button                                                                                                               |
+| `disabled`     | `boolean`                 | no       | `false` | Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable |
+| `children`     | `ReactNode`               | no       | —       | Content of the collapsible region                                                                                                                                 |
 
 ## Examples
 
@@ -53,6 +53,10 @@ import { Collapsible } from '@cascivo/react'
   <p>Visible initially.</p>
 </Collapsible>
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 

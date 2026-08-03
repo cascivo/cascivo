@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'PageWithBreadcrumb',
   description: 'A centered content page with a breadcrumb navigation and page header.',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

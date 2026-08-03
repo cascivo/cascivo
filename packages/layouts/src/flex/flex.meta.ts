@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction="horizontal"` for a row.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

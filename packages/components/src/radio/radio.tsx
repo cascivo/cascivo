@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import type { InputHTMLAttributes, ReactElement, ReactNode } from 'react'

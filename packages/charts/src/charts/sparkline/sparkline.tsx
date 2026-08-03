@@ -1,4 +1,3 @@
-'use client'
 import { ChartFrame } from '../../core/chart-frame'
 import { linearScale } from '../../engine/scale'
 import { linePath } from '../../engine/shape'

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

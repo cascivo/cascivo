@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Dropdown',
   description: 'Menu of actions revealed from a trigger',
   category: 'overlay',
+  clientJs: 'required',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

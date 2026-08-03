@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Status',
   description: 'Colored dot with a label communicating the state of a system or entity',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['success', 'warning', 'error', 'info', 'neutral'],
   sizes: [],

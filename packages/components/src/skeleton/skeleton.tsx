@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { CSSProperties, HTMLAttributes } from 'react'
 import styles from './skeleton.module.css'

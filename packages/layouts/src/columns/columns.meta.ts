@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Equal-width multi-column layout that collapses to single column on narrow viewports.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

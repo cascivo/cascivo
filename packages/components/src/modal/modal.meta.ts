@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Modal',
   description: 'Accessible dialog overlay using native <dialog> element',
   category: 'overlay',
+  clientJs: 'required',
   states: ['closed', 'open'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Select',
   description: 'Native select menu styled to match the design system',
   category: 'inputs',
+  clientJs: 'enhancement',
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

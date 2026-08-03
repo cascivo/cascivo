@@ -6,6 +6,7 @@ export const meta: BlockMeta = {
   description:
     'Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.',
   category: 'marketing',
+  clientJs: 'none',
   tags: ['marketing', 'faq', 'accordion', 'questions'],
   screenshot: {
     light: '/blocks/screenshots/faq-light.png',

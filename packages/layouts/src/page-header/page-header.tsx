@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { ReactNode } from 'react'
 import styles from './page-header.module.css'

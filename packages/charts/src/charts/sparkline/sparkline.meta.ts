@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Sparkline',
   description: 'Compact inline sparkline for embedding trend data in dashboards or KPI cards.',
   category: 'chart',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

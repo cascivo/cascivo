@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Label',
   description: 'Accessible caption for a form control',
   category: 'inputs',
+  clientJs: 'none',
   states: ['default', 'disabled'],
   variants: [],
   sizes: [],

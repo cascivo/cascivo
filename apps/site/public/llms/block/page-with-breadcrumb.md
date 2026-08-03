@@ -30,6 +30,10 @@ Page with breadcrumb
 <PageWithBreadcrumb />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Accessibility
 
 - **WCAG level:** 2.1-AA

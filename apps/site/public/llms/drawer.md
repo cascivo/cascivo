@@ -61,6 +61,10 @@ Dragging the header past a threshold toward the edge dismisses the panel.
 </Drawer>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-dialog-body-gap`

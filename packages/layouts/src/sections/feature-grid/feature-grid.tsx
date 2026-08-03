@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { AutoGrid } from '../../auto-grid/auto-grid'

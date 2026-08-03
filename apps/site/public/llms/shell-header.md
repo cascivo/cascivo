@@ -108,6 +108,10 @@ center takes the header’s spare width, so the trigger grows and shrinks with t
 />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-shell-header-block-size`

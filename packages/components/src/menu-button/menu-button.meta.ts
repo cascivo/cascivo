@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'MenuButton',
   description: 'A button that opens an anchored action menu of one-shot commands',
   category: 'navigation',
+  clientJs: 'required',
   states: ['open', 'closed'],
   variants: ['primary', 'secondary', 'ghost'],
   sizes: ['sm', 'md', 'lg'],

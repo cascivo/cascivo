@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Kbd',
   description: 'Displays a keyboard key or shortcut',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: ['sm', 'md'],

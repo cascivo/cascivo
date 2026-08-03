@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Sheet',
   description: 'Slide-in panel from any edge, using popover=manual and @starting-style animations',
   category: 'overlay',
+  clientJs: 'required',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'ContextMenu',
   description: 'Right-click context menu anchored at pointer coordinates via CSS custom properties',
   category: 'overlay',
+  clientJs: 'required',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

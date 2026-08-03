@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'ProgressBar',
   description: 'Shows determinate or indeterminate progress of a task',
   category: 'feedback',
+  clientJs: 'none',
   states: ['determinate', 'indeterminate'],
   variants: ['active', 'success', 'error'],
   sizes: ['sm', 'md'],

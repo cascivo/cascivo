@@ -6,7 +6,7 @@
     {
       "path": "layout-center/center.tsx",
       "type": "registry:block",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './center.module.css'\n\nexport interface CenterProps extends HTMLAttributes<HTMLDivElement> {\n  /**\n   * CSS max-width value\n   *\n   * @defaultValue `48rem`\n   * @see the component manifest\n   */\n  maxWidth?: string\n}\n\nexport function Center({ maxWidth = '48rem', className, style, ...props }: CenterProps) {\n  return (\n    <div\n      className={cn(styles['center'], className)}\n      style={{ ['--_center-max' as string]: maxWidth, ...style }}\n      {...props}\n    />\n  )\n}\n"
+      "content": "import { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './center.module.css'\n\nexport interface CenterProps extends HTMLAttributes<HTMLDivElement> {\n  /**\n   * CSS max-width value\n   *\n   * @defaultValue `48rem`\n   * @see the component manifest\n   */\n  maxWidth?: string\n}\n\nexport function Center({ maxWidth = '48rem', className, style, ...props }: CenterProps) {\n  return (\n    <div\n      className={cn(styles['center'], className)}\n      style={{ ['--_center-max' as string]: maxWidth, ...style }}\n      {...props}\n    />\n  )\n}\n"
     },
     {
       "path": "layout-center/center.module.css",

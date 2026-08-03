@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Timeline',
   description: 'Ordered sequence of events with status markers and a connector line',
   category: 'display',
+  clientJs: 'none',
   states: ['complete', 'current', 'upcoming'],
   variants: ['vertical', 'horizontal'],
   sizes: [],

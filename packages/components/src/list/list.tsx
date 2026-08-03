@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes, LiHTMLAttributes } from 'react'
 import styles from './list.module.css'

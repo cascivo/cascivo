@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './progress-circle.module.css'

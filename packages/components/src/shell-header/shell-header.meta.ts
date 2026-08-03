@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content',
   category: 'navigation',
+  clientJs: 'required',
   states: ['default'],
   variants: [],
   sizes: [],

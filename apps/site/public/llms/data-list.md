@@ -58,6 +58,10 @@ import { DataList } from '@cascivo/react'
 <DataList orientation="vertical" dividers items={[{ label: 'Email', value: 'ada@example.com' }]} />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-text`

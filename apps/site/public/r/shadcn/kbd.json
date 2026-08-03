@@ -6,7 +6,7 @@
     {
       "path": "kbd/kbd.tsx",
       "type": "registry:component",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './kbd.module.css'\n\nexport interface KbdProps extends HTMLAttributes<HTMLElement> {\n  size?: 'sm' | 'md'\n}\n\nexport function Kbd({ size = 'md', className, children, ...props }: KbdProps) {\n  return (\n    <kbd data-size={size} className={cn(styles['kbd'], className)} {...props}>\n      {children}\n    </kbd>\n  )\n}\n"
+      "content": "import { cn } from '@cascivo/core'\nimport type { HTMLAttributes } from 'react'\nimport styles from './kbd.module.css'\n\nexport interface KbdProps extends HTMLAttributes<HTMLElement> {\n  size?: 'sm' | 'md'\n}\n\nexport function Kbd({ size = 'md', className, children, ...props }: KbdProps) {\n  return (\n    <kbd data-size={size} className={cn(styles['kbd'], className)} {...props}>\n      {children}\n    </kbd>\n  )\n}\n"
     },
     {
       "path": "kbd/kbd.module.css",

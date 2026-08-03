@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import styles from './progress-indicator.module.css'
 

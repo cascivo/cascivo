@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Badge',
   description: 'Small status label or category indicator',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['default', 'secondary', 'success', 'warning', 'destructive', 'outline'],
   sizes: ['sm', 'md'],

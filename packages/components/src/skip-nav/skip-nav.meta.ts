@@ -6,6 +6,7 @@ export const meta: ComponentMeta = {
   importSymbols: 'SkipNavLink, SkipNavTarget',
   description: 'Skip link that jumps keyboard users past the navigation to the main content',
   category: 'navigation',
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

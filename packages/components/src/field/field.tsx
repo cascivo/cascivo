@@ -1,4 +1,3 @@
-'use client'
 import { cn, useId } from '@cascivo/core'
 import { Children, cloneElement, isValidElement } from 'react'
 import type { ReactElement, ReactNode } from 'react'

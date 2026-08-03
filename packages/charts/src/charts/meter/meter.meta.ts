@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Meter',
   description: 'Progress meter in bar or gauge variant with threshold coloring.',
   category: 'chart',
+  clientJs: 'none',
   states: [],
   variants: ['bar', 'gauge'],
   sizes: [],

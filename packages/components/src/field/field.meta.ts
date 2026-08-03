@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Field',
   description: 'Form-field wrapper composing label, control, description, and error',
   category: 'inputs',
+  clientJs: 'none',
   states: ['default', 'disabled', 'invalid'],
   variants: [],
   sizes: [],

@@ -1,4 +1,3 @@
-'use client'
 import { cn } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { Children } from 'react'

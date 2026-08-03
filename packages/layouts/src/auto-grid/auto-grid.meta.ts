@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'AutoGrid',
   description: 'Media-query-free responsive grid — columns auto-fill based on available space.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

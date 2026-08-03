@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'StatsCards',
   description: 'Grid of KPI stat cards with trend badges.',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

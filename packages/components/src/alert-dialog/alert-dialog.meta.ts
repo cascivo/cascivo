@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'AlertDialog',
   description: 'Confirmation dialog requiring explicit user action; no light-dismiss',
   category: 'overlay',
+  clientJs: 'required',
   states: ['open', 'closed'],
   variants: ['default', 'destructive'],
   sizes: [],

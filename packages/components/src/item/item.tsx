@@ -1,4 +1,3 @@
-'use client'
 import { cn, Slot } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './item.module.css'

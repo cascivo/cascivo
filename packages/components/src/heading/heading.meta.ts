@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Heading',
   description: 'Section heading with semantic level decoupled from visual size',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg', 'xl', '2xl'],
