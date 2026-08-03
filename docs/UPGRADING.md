@@ -60,6 +60,31 @@ release in that package's `releases` array newer than `0.2.1`.
 
 ---
 
+## The `@cascivo/core` family versions in lockstep
+
+Eight packages release together at one version: **`@cascivo/core`, `@cascivo/react`,
+`@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`,
+`@cascivo/ai`**. Seven of them depend on `@cascivo/core`.
+
+**What this means for you: pin them all to the same version.** If `@cascivo/react` is
+`0.15.0`, so is `@cascivo/charts`. A mismatched pair is not a supported combination, and
+`cascivo doctor` will tell you if your install ended up with one.
+
+**Why it is enforced rather than advised.** Independently-versioned 0.x packages could
+resolve two non-overlapping `@cascivo/core` ranges, and the package manager then nests a
+second copy. cascivo's reactivity is a module-level signal registry, so two copies means two
+registries: a signal written through one is invisible to components subscribed through the
+other. Nothing errors — handlers fire and the UI silently stops updating, which is the
+hardest failure in this system to diagnose from symptoms.
+
+`@cascivo/icons`, `@cascivo/themes`, `@cascivo/tokens`, `@cascivo/mcp`, `@cascivo/registry`,
+`@cascivo/vite-plugin`, `@cascivo/eslint-config`, `@cascivo/docs` and the `cascivo` CLI keep
+their own version lines — none of them link against the signal registry.
+
+`scripts/checks/version-lockstep.test.ts` fails the build if a package starts depending on
+`@cascivo/core` without joining the group, so the guarantee cannot erode as packages are
+added.
+
 ## How cascivo renames things (the deprecation contract)
 
 A rename is the most expensive change a component library can make, so the catalog uses

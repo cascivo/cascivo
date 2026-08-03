@@ -11,7 +11,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'data',
-      type: 'CalendarDatum[]',
+      type: 'CalendarHeatmapDatum[]',
       required: true,
       description: 'Days: { day: string | Date, value }.',
     },

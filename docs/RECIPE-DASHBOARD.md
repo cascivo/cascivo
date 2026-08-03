@@ -167,19 +167,26 @@ Two axis-chrome details worth knowing, both automatic:
 ## Importing from more than one cascivo package
 
 A dashboard file often imports from `@cascivo/react`, `@cascivo/charts` and `@cascivo/icons`
-at once. Two name clashes are worth knowing, because a wrong resolution is **silent** — the
-wrong component renders, nothing errors:
+at once. One name clash remains, and a wrong resolution is **silent** — the wrong component
+renders, nothing errors:
 
 | Name | `@cascivo/react` | `@cascivo/charts` |
 | --- | --- | --- |
 | `Text` | the typography component | an SVG `<text>` primitive for custom charts |
-| `Calendar` | the date-picker calendar | the calendar-heatmap chart |
 
 Alias whichever you use less:
 
 ```tsx
-import { Text, Calendar } from '@cascivo/react'
-import { Text as ChartText, Calendar as CalendarChart } from '@cascivo/charts'
+import { Text } from '@cascivo/react'
+import { Text as ChartText } from '@cascivo/charts'
+```
+
+`Calendar` used to clash the same way. The charts heatmap is now **`CalendarHeatmap`**, so
+`Calendar` unambiguously means `@cascivo/react`'s date picker and no alias is needed:
+
+```tsx
+import { Calendar } from '@cascivo/react' // date picker
+import { CalendarHeatmap } from '@cascivo/charts' // activity heatmap
 ```
 
 `@cascivo/icons` shares names with both by nature — an icon set of ~440 nouns contains

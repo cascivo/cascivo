@@ -2269,7 +2269,7 @@
     {
       "name": "CalendarHeatmap",
       "props": [
-        { "name": "data", "type": "CalendarDatum[]", "required": true },
+        { "name": "data", "type": "CalendarHeatmapDatum[]", "required": true },
         { "name": "title", "type": "string", "required": true },
         { "name": "description", "type": "string", "required": false },
         { "name": "from", "type": "string | Date", "required": false },

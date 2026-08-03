@@ -26,8 +26,6 @@ const ROOT = fileURLToPath(new URL('../..', import.meta.url))
  */
 const KNOWN: Record<string, string> = {
   Text: 'charts ships an SVG <text> primitive; @cascivo/react ships the typography component',
-  Calendar:
-    "RESOLVED, pending alias removal: the charts heatmap is now `CalendarHeatmap`. `Calendar` survives only as a @deprecated alias for one minor, so the symbol still collides with @cascivo/react's date picker. Delete both this entry and the alias together.",
 }
 
 /**

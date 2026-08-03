@@ -4,6 +4,18 @@
   "commit": false,
   "access": "public",
   "baseBranch": "main",
+  "fixed": [
+    [
+      "@cascivo/core",
+      "@cascivo/react",
+      "@cascivo/charts",
+      "@cascivo/editor",
+      "@cascivo/flow",
+      "@cascivo/i18n",
+      "@cascivo/storage",
+      "@cascivo/ai"
+    ]
+  ],
   "updateInternalDependencies": "patch",
   "privatePackages": {
     "version": false,

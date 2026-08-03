@@ -187,16 +187,3 @@ export function CalendarHeatmap({
     </div>
   )
 }
-
-/**
- * @deprecated Renamed to `CalendarHeatmap`. `Calendar` collided with `@cascivo/react`'s
- * date-picker `Calendar`: two entries shared one display name with incompatible APIs, so a
- * dashboard importing from both packages silently got whichever one resolved last, and the
- * generated docs for one told adopters to import the other. Kept as an alias for one minor;
- * see `breaking-changes.json`.
- */
-export const Calendar = CalendarHeatmap
-/** @deprecated Renamed to `CalendarHeatmapProps`. */
-export type CalendarProps = CalendarHeatmapProps
-/** @deprecated Renamed to `CalendarHeatmapDatum`. */
-export type CalendarDatum = CalendarHeatmapDatum
