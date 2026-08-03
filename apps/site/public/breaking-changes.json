@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-31",
+  "generatedAt": "2026-08-03",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.2.14",
+      "version": "0.15.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,8 +15,16 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.7.1",
+      "version": "0.15.0",
       "releases": [
+        {
+          "version": "0.15.0",
+          "level": "minor",
+          "notes": [
+            "Rename the calendar-heatmap chart to `CalendarHeatmap`.",
+            "Render `secondAxis.label`, and colour `Stat`/`Kpi` deltas by sentiment."
+          ]
+        },
         {
           "version": "0.7.0",
           "level": "minor",
@@ -61,8 +69,16 @@
     },
     {
       "name": "cascivo",
-      "version": "0.6.2",
+      "version": "0.7.0",
       "releases": [
+        {
+          "version": "0.7.0",
+          "level": "minor",
+          "notes": [
+            "`doctor` now reports a duplicated `@cascivo/core`.",
+            "Add `@cascivo/eslint-config`, and fix the scaffolder + doctor to obey cascivo's own docs."
+          ]
+        },
         {
           "version": "0.6.0",
           "level": "minor",
@@ -104,8 +120,16 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.7.1",
+      "version": "0.15.0",
       "releases": [
+        {
+          "version": "0.15.0",
+          "level": "minor",
+          "notes": [
+            "Version the `@cascivo/core`-sharing family in lockstep.",
+            "Render `secondAxis.label`, and colour `Stat`/`Kpi` deltas by sentiment."
+          ]
+        },
         {
           "version": "0.7.0",
           "level": "minor",
@@ -166,7 +190,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.2.20",
+      "version": "0.15.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -185,13 +209,26 @@
       ]
     },
     {
+      "name": "@cascivo/eslint-config",
+      "version": "0.2.0",
+      "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "Add `@cascivo/eslint-config`, and fix the scaffolder + doctor to obey cascivo's own docs."
+          ]
+        }
+      ]
+    },
+    {
       "name": "@cascivo/flow",
-      "version": "0.1.19",
+      "version": "0.15.0",
       "releases": []
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.2.14",
+      "version": "0.15.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -270,8 +307,15 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.14.0",
+      "version": "0.15.0",
       "releases": [
+        {
+          "version": "0.15.0",
+          "level": "minor",
+          "notes": [
+            "Converge the accessible-name prop on `ariaLabel`, and give `DataTable` sized columns a"
+          ]
+        },
         {
           "version": "0.14.0",
           "level": "minor",
@@ -380,7 +424,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.1.19",
+      "version": "0.15.0",
       "releases": [
         {
           "version": "0.1.0",
@@ -417,7 +461,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.6",
+      "version": "0.5.7",
       "releases": [
         {
           "version": "0.5.0",

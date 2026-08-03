@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/enterprise-readiness.md
-  registry v0.14.0 · generated 2026-07-31
+  registry v0.15.0 · generated 2026-08-03
 -->
 
 # Enterprise readiness: frictions → shipped primitives

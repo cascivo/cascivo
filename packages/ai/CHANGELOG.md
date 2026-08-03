@@ -1,5 +1,16 @@
 # @cascivo/ai
 
+## 0.15.0
+
+### Patch Changes
+
+- Updated dependencies [9841d27]
+- Updated dependencies [9841d27]
+- Updated dependencies [9841d27]
+  - @cascivo/core@0.15.0
+  - @cascivo/tokens@0.5.7
+  - @cascivo/i18n@0.15.0
+
 ## 0.2.14
 
 ### Patch Changes
