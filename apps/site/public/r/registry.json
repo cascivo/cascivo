@@ -2054,6 +2054,7 @@
           ],
           "a11yRationale": "Renders a native <blockquote> with the attribution in <footer><cite>, so the quotation and its source are semantically distinct to assistive tech",
           "content": {
+            "contentPrimitive": true,
             "tone": "Verbatim quotation; do not paraphrase inside the quote",
             "notes": "cite names the author or work, not a URL label"
           },
@@ -3933,9 +3934,9 @@
         ],
         "tokens": [
           "--cascivo-chart-1",
-          "--cascivo-color-neutral-200",
-          "--cascivo-color-neutral-300",
-          "--cascivo-color-neutral-400"
+          "--cascivo-gray-200",
+          "--cascivo-gray-300",
+          "--cascivo-gray-400"
         ],
         "accessibility": {
           "role": "img",
@@ -3985,7 +3986,7 @@
       "install": "@cascivo/charts",
       "styles": "@cascivo/charts/styles.css",
       "meta": {
-        "name": "Calendar",
+        "name": "CalendarHeatmap",
         "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
         "category": "chart",
         "states": [],
@@ -3994,7 +3995,7 @@
         "props": [
           {
             "name": "data",
-            "type": "CalendarDatum[]",
+            "type": "CalendarHeatmapDatum[]",
             "required": true,
             "description": "Days: { day: string | Date, value }."
           },
@@ -4736,7 +4737,7 @@
             "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
           }
         ],
-        "tokens": ["--cascivo-chart-1", "--cascivo-color-neutral-100"],
+        "tokens": ["--cascivo-chart-1", "--cascivo-gray-100"],
         "accessibility": {
           "role": "img",
           "wcag": "2.1-AA",
@@ -4924,6 +4925,13 @@
             "type": "'number' | 'percent' | ((delta: number) => string)",
             "required": false,
             "description": "How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included."
+          },
+          {
+            "name": "goodDirection",
+            "type": "'up' | 'down' | 'neutral'",
+            "required": false,
+            "default": "up",
+            "description": "Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour."
           },
           {
             "name": "deltaLabel",
@@ -7845,7 +7853,7 @@
           "--cascivo-color-text-muted",
           "--cascivo-color-text-subtle",
           "--cascivo-color-accent",
-          "--cascivo-color-danger",
+          "--cascivo-color-destructive",
           "--cascivo-radius-input",
           "--cascivo-radius-md",
           "--cascivo-radius-sm",
@@ -9144,11 +9152,17 @@
           }
         ],
         "tokens": [
-          "--cascivo-date-picker-bg",
-          "--cascivo-date-picker-border",
-          "--cascivo-date-picker-radius",
-          "--cascivo-date-picker-day-selected-bg",
-          "--cascivo-date-picker-day-today-color"
+          "--cascivo-color-surface",
+          "--cascivo-color-surface-overlay",
+          "--cascivo-color-border",
+          "--cascivo-color-border-strong",
+          "--cascivo-color-accent",
+          "--cascivo-color-text-on-accent",
+          "--cascivo-color-text",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-text-subtle",
+          "--cascivo-color-bg-subtle",
+          "--cascivo-color-destructive"
         ],
         "accessibility": {
           "role": "combobox",
@@ -10789,8 +10803,8 @@
           "--cascivo-color-accent",
           "--cascivo-color-accent-subtle",
           "--cascivo-color-success",
-          "--cascivo-color-danger",
-          "--cascivo-color-danger-subtle"
+          "--cascivo-color-destructive",
+          "--cascivo-color-destructive-subtle"
         ],
         "accessibility": {
           "role": "button",
@@ -12714,6 +12728,7 @@
           ],
           "a11yRationale": "Renders a real <h1>–<h6> from the level prop so the heading appears in the accessibility tree at the correct level; visual size is decoupled so styling never forces an incorrect level",
           "content": {
+            "contentPrimitive": true,
             "tone": "Concise, descriptive titles in sentence case",
             "notes": "Each page should have one h1"
           },
@@ -13998,6 +14013,7 @@
           ],
           "a11yRationale": "Renders a native <label> so the platform handles click-to-focus and accessible naming; the required marker pairs an aria-hidden asterisk with visually-hidden localized text so the requirement is both seen and announced",
           "content": {
+            "contentPrimitive": true,
             "tone": "Short noun phrase naming the field",
             "notes": "Sentence case, no trailing colon; let the required marker convey requirement"
           },
@@ -14037,7 +14053,7 @@
       "tags": ["layout", "shell", "sidebar", "navigation"],
       "category": "layout",
       "meta": {
-        "name": "AppShell",
+        "name": "AppFrame",
         "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
         "category": "layout",
         "states": ["expanded", "collapsed", "loading", "error"],
@@ -14103,7 +14119,7 @@
           "--cascivo-ease-out",
           "--cascivo-color-border",
           "--cascivo-color-surface",
-          "--cascivo-font-size-xs",
+          "--cascivo-text-xs",
           "--cascivo-color-accent",
           "--cascivo-color-destructive",
           "--cascivo-color-destructive-subtle",
@@ -14132,7 +14148,7 @@
             {
               "name": "AppShell (@cascivo/react)",
               "relationship": "alternative",
-              "reason": "The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside."
+              "reason": "The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Simpler prop surface (`nav` vs this frame’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste frame when you need persisted collapse, a progress bar, or a right aside. This entry used to be called `AppShell` too — one name for two incompatible prop surfaces — and was renamed to `AppFrame` so an import can only mean one thing."
             },
             {
               "name": "SidebarApp",
@@ -14864,11 +14880,11 @@
         "tokens": [
           "--cascivo-space-2",
           "--cascivo-space-4",
-          "--cascivo-font-size-2xl",
-          "--cascivo-font-weight-bold",
+          "--cascivo-text-2xl",
+          "--cascivo-font-bold",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
-          "--cascivo-font-size-sm"
+          "--cascivo-text-sm"
         ],
         "accessibility": {
           "role": "banner",
@@ -15144,6 +15160,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
+          },
           {
             "name": "start",
             "type": "ReactNode",
@@ -15887,6 +15909,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it."
+          },
+          {
             "name": "menus",
             "description": "The top-level menus to render.",
             "type": "MenubarMenu[]",
@@ -15896,7 +15924,7 @@
             "name": "aria-label",
             "description": "Accessible label used when no visible label is present.",
             "type": "string",
-            "required": true
+            "required": false
           },
           {
             "name": "className",
@@ -16448,6 +16476,12 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
+          },
           {
             "name": "items",
             "description": "The items to render.",
@@ -18141,6 +18175,7 @@
           ],
           "a11yRationale": "Adds no roles of its own — it styles descendant native elements, so the document semantics of the underlying HTML (headings, lists, code) are preserved for assistive tech",
           "content": {
+            "contentPrimitive": true,
             "tone": "Long-form editorial; the wrapper does not constrain voice",
             "notes": "Source HTML should be sanitized before dangerouslySetInnerHTML"
           },
@@ -18429,6 +18464,12 @@
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
         "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
+          },
           {
             "name": "value",
             "description": "The controlled value.",
@@ -19495,11 +19536,11 @@
         ],
         "tokens": [
           "--cascivo-color-border",
-          "--cascivo-surface-subtle",
+          "--cascivo-color-bg-subtle",
           "--cascivo-text-2xl",
           "--cascivo-text-base",
           "--cascivo-font-bold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -19603,9 +19644,9 @@
           "--cascivo-text-sm",
           "--cascivo-font-bold",
           "--cascivo-font-semibold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-color-border",
-          "--cascivo-surface-subtle",
+          "--cascivo-color-bg-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -19721,7 +19762,7 @@
           "--cascivo-text-sm",
           "--cascivo-font-mono",
           "--cascivo-font-bold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -19830,7 +19871,7 @@
           "--cascivo-text-2xl",
           "--cascivo-text-base",
           "--cascivo-font-bold",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -19913,8 +19954,8 @@
           "--cascivo-text-sm",
           "--cascivo-font-mono",
           "--cascivo-font-semibold",
-          "--cascivo-text-primary",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text",
+          "--cascivo-color-text-subtle",
           "--cascivo-color-border",
           "--cascivo-color-accent",
           "--cascivo-space-*"
@@ -19977,6 +20018,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
+          },
+          {
             "name": "stats",
             "type": "StatItem[]",
             "required": true,
@@ -19995,9 +20042,9 @@
           "--cascivo-text-sm",
           "--cascivo-font-bold",
           "--cascivo-font-mono",
-          "--cascivo-text-secondary",
+          "--cascivo-color-text-subtle",
           "--cascivo-color-border",
-          "--cascivo-surface-subtle",
+          "--cascivo-color-bg-subtle",
           "--cascivo-space-*"
         ],
         "accessibility": {
@@ -21537,6 +21584,13 @@
             "default": "flat"
           },
           {
+            "name": "goodDirection",
+            "description": "Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour.",
+            "type": "'up' | 'down' | 'neutral'",
+            "required": false,
+            "default": "up"
+          },
+          {
             "name": "helpText",
             "type": "string",
             "required": false,
@@ -22005,6 +22059,12 @@
         "variants": ["rotate", "flip"],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
+          },
           {
             "name": "on",
             "description": "Content shown in the active (on) state.",
@@ -22796,6 +22856,7 @@
           ],
           "a11yRationale": "Renders the chosen native element (p/span/div) without imposing roles; muted styling keeps contrast within AA so secondary text stays readable",
           "content": {
+            "contentPrimitive": true,
             "tone": "Plain body voice; the component does not constrain copy",
             "notes": "Use muted sparingly for genuinely secondary information"
           },
@@ -23214,7 +23275,7 @@
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
           "--cascivo-color-accent",
-          "--cascivo-color-danger",
+          "--cascivo-color-destructive",
           "--cascivo-radius-input",
           "--cascivo-radius-md"
         ],
@@ -24216,6 +24277,12 @@
         "sizes": [],
         "props": [
           {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
+          },
+          {
             "name": "aria-label",
             "type": "string",
             "required": false,
@@ -24526,6 +24593,7 @@
           ],
           "a11yRationale": "Applies the standard clip technique so content stays in the DOM and accessibility tree while being painted off-screen — assistive tech reads it, sighted users do not see it",
           "content": {
+            "contentPrimitive": true,
             "tone": "Concise supplementary context for screen readers",
             "notes": "Write what a screen-reader user needs that visuals already convey"
           },

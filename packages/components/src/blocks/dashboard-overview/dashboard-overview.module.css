@@ -73,7 +73,7 @@
   .statDelta {
     display: flex;
     align-items: center;
-    gap: var(--cascivo-space-1-5);
+    gap: var(--cascivo-space-2);
     font-size: var(--cascivo-text-sm);
   }
 

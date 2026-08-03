@@ -11,7 +11,7 @@
     {
       "path": "section-media-masonry/media-masonry.module.css",
       "type": "registry:block",
-      "content": "@layer cascivo.component {\n  .header {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-3);\n  }\n\n  .title {\n    font-size: var(--cascivo-text-2xl);\n    font-weight: var(--cascivo-font-bold);\n    text-wrap: balance;\n    margin: 0;\n  }\n\n  .description {\n    font-size: var(--cascivo-text-base);\n    color: var(--cascivo-text-secondary);\n    max-inline-size: 60ch;\n    margin: 0;\n  }\n}\n"
+      "content": "@layer cascivo.component {\n  .header {\n    display: flex;\n    flex-direction: column;\n    gap: var(--cascivo-space-3);\n  }\n\n  .title {\n    font-size: var(--cascivo-text-2xl);\n    font-weight: var(--cascivo-font-bold);\n    text-wrap: balance;\n    margin: 0;\n  }\n\n  .description {\n    font-size: var(--cascivo-text-base);\n    color: var(--cascivo-color-text-subtle);\n    max-inline-size: 60ch;\n    margin: 0;\n  }\n}\n"
     }
   ],
   "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",

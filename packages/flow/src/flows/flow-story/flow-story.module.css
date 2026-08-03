@@ -82,7 +82,7 @@
   }
 
   .button:hover {
-    background-color: var(--cascivo-color-bg-muted);
+    background-color: var(--cascivo-color-bg-subtle);
   }
 
   .button:focus-visible {

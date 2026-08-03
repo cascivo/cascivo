@@ -79,7 +79,7 @@ import { Combobox } from '@cascivo/react'
 - `--cascivo-color-text-muted`
 - `--cascivo-color-text-subtle`
 - `--cascivo-color-accent`
-- `--cascivo-color-danger`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-radius-md`
 - `--cascivo-radius-sm`

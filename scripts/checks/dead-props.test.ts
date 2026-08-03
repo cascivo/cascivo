@@ -154,6 +154,36 @@ function componentSource(code: string, name: string): string | null {
   return null
 }
 
+/**
+ * Fields of an inline object-typed prop, as `[outer, field]` pairs.
+ *
+ * `declaredProps` deliberately flattens these away — only the outer name is the
+ * component's own prop. But a dead field one level in is just as inert and just as
+ * invisible: `secondAxis?: { label?: string; format?: … }` was typed on `AreaChart` and
+ * `LineChart` for months with only `.format` ever read, so `secondAxis={{ label: 'Errors' }}`
+ * compiled, read correctly, and drew nothing — on a dual-axis chart, the one thing that
+ * says which series belongs to which scale.
+ *
+ * One level only. Deeper nesting is rare here and the false-positive risk grows fast.
+ */
+function nestedFields(body: string): Array<[string, string]> {
+  const out: Array<[string, string]> = []
+  for (const m of body.matchAll(/(\w+)\??\s*:\s*\{([^{}]*)\}/g)) {
+    const outer = m[1]!
+    for (const f of m[2]!.matchAll(/(?:^|[;\n,])\s*(?:readonly\s+)?(\w+)\??\s*:/g)) {
+      out.push([outer, f[1]!])
+    }
+  }
+  return out
+}
+
+/** Whether the implementation reads `outer.field` — via access or destructuring. */
+function readsNested(implementation: string, outer: string, field: string): boolean {
+  if (new RegExp(`\\b${outer}\\s*(?:\\?\\.|\\.)\\s*${field}\\b`).test(implementation)) return true
+  // `const { label } = secondAxis ?? {}` / `({ label }) => …` off the outer prop.
+  return new RegExp(`\\{[^}]*\\b${field}\\b[^}]*\\}\\s*=\\s*${outer}\\b`).test(implementation)
+}
+
 function findOffenders(): Offender[] {
   const offenders: Offender[] = []
   for (const dir of SOURCE_DIRS) {
@@ -173,6 +203,15 @@ function findOffenders(): Offender[] {
           if (`${interfaceName}.${prop}` in ALLOWLIST) continue
           if (new RegExp(`\\b${prop}\\b`).test(implementation)) continue
           offenders.push({ file: relative(REPO_ROOT, file), interfaceName, prop })
+        }
+
+        for (const [outer, field] of nestedFields(body)) {
+          const id = `${outer}.${field}`
+          if (`${interfaceName}.${id}` in ALLOWLIST) continue
+          // The outer prop being unread is already reported above; don't double-report.
+          if (!new RegExp(`\\b${outer}\\b`).test(implementation)) continue
+          if (readsNested(implementation, outer, field)) continue
+          offenders.push({ file: relative(REPO_ROOT, file), interfaceName, prop: id })
         }
       }
     }
@@ -239,5 +278,33 @@ describe('dead-props — every declared prop is read by its component', () => {
       ['PopoverTriggerProps.asChild'],
       'the guard must flag PopoverTrigger.asChild while ignoring Popover, which spreads',
     )
+  })
+
+  it('flags a dead field on a nested object prop, which the flat scan cannot see', () => {
+    // The exact shape of the reported defect: `secondAxis.label` typed and documented on
+    // AreaChart/LineChart, with only `.format` ever read. `declaredProps` flattens nested
+    // members away by design, so the outer `secondAxis` looked live and the dead field
+    // inside it was invisible to the guard for months.
+    const source = `
+export interface AreaChartProps {
+  secondAxis?: { label?: string; format?: (v: number) => string }
+}
+export function AreaChart({ secondAxis }: AreaChartProps) {
+  return <Axis format={secondAxis?.format} />
+}
+`
+    const code = codeOnly(source)
+    const implementation = componentSource(code, 'AreaChart')
+    assert.ok(implementation !== null)
+    const [, body] = exportedPropsInterfaces(source)[0]!
+    const dead = nestedFields(body)
+      .filter(([outer, field]) => !readsNested(implementation, outer, field))
+      .map(([outer, field]) => `${outer}.${field}`)
+    assert.deepEqual(dead, ['secondAxis.label'])
+  })
+
+  it('accepts a nested field read by destructuring the outer prop', () => {
+    const implementation = 'const { label } = secondAxis ?? {}'
+    assert.ok(readsNested(implementation, 'secondAxis', 'label'))
   })
 })

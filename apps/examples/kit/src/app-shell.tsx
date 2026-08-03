@@ -2,7 +2,7 @@
 import { signal, useSignals } from '@cascivo/core'
 import { defineMessages, t } from '@cascivo/i18n'
 import { Moon, Sun } from '@cascivo/icons'
-import { AppShell as LayoutsAppShell } from '@cascivo/layouts/app-shell'
+import { AppFrame as LayoutsAppShell } from '@cascivo/layouts/app-shell'
 import { createShellState } from '@cascivo/layouts/shell-state'
 import { CommandMenu, ShellHeader, SideNav } from '@cascivo/react'
 import type {

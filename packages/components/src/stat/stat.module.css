@@ -39,15 +39,17 @@
     font-weight: var(--cascivo-font-medium);
     font-variant-numeric: tabular-nums;
 
-    &[data-trend='up'] {
+    /* Colour keys on sentiment, not direction: an error rate that rose points up and is
+       bad. `data-trend` still drives the arrow. */
+    &[data-sentiment='good'] {
       color: var(--cascivo-color-success-foreground);
     }
 
-    &[data-trend='down'] {
+    &[data-sentiment='bad'] {
       color: var(--cascivo-color-destructive-foreground);
     }
 
-    &[data-trend='flat'] {
+    &[data-sentiment='neutral'] {
       color: var(--cascivo-color-text-subtle);
     }
   }

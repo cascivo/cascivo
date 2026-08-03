@@ -10,6 +10,17 @@ import { html } from '../grammars/html.ts'
 import { markdown } from '../grammars/markdown.ts'
 import { bash } from '../grammars/bash.ts'
 
+/**
+ * Property tests must be reproducible. `fc.assert` defaults to a clock-derived seed, so a
+ * counterexample surfaces once in CI and vanishes on re-run — a shape that cost a real
+ * diagnosis cycle in `charts/src/engine/stats.test.ts` before the underlying bugs were found
+ * by hand. A fixed seed makes the suite either always pass or always fail; `numRuns` is
+ * raised above the default 100 because breadth can no longer come from a varying seed.
+ *
+ * Enforced by `scripts/checks/property-seeds.test.ts`.
+ */
+const DETERMINISTIC = { seed: 0x5ca1ab1e, numRuns: 2000 } as const
+
 const GRAMMARS: Grammar[] = [plaintext, json, javascript, typescript, css, html, markdown, bash]
 
 /**
@@ -30,6 +41,7 @@ describe('grammar tokenizeLine is total and lossless (property)', () => {
           const { tokens } = g.tokenizeLine(line, g.initialState)
           return tokens.map((t) => t.value).join('') === line
         }),
+        DETERMINISTIC,
       )
     })
   }

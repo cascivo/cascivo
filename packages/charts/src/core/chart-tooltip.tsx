@@ -19,7 +19,7 @@ export function ChartTooltip({ point, model }: ChartTooltipProps) {
         top: Math.max(0, point.cy - 32),
         pointerEvents: 'none',
         background: 'var(--cascivo-surface-overlay, var(--cascivo-color-background))',
-        color: 'var(--cascivo-text-primary, currentColor)',
+        color: 'var(--cascivo-color-text, currentColor)',
         border: '1px solid var(--cascivo-color-border)',
         borderRadius: 'var(--cascivo-radius-sm, 4px)',
         padding: '0.25rem 0.5rem',

@@ -2,6 +2,17 @@ import fc from 'fast-check'
 import { describe, expect, it } from 'vitest'
 import { bandScale, linearScale, niceTicks } from './scale'
 
+/**
+ * Property tests must be reproducible. `fc.assert` defaults to a clock-derived seed, so a
+ * counterexample surfaces once in CI and vanishes on re-run — a shape that cost a real
+ * diagnosis cycle in `charts/src/engine/stats.test.ts` before the underlying bugs were found
+ * by hand. A fixed seed makes the suite either always pass or always fail; `numRuns` is
+ * raised above the default 100 because breadth can no longer come from a varying seed.
+ *
+ * Enforced by `scripts/checks/property-seeds.test.ts`.
+ */
+const DETERMINISTIC = { seed: 0x5ca1ab1e, numRuns: 2000 } as const
+
 describe('linearScale', () => {
   it('maps domain to range linearly', () => {
     const s = linearScale([0, 100], [0, 500])
@@ -122,6 +133,7 @@ describe('niceTicks', () => {
           }
         },
       ),
+      DETERMINISTIC,
     )
   })
 })

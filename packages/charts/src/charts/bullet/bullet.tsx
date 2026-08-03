@@ -33,9 +33,9 @@ export interface BulletProps {
 }
 
 const RANGE_COLORS = [
-  'var(--cascivo-color-neutral-200)',
-  'var(--cascivo-color-neutral-300)',
-  'var(--cascivo-color-neutral-400)',
+  'var(--cascivo-gray-200)',
+  'var(--cascivo-gray-300)',
+  'var(--cascivo-gray-400)',
 ]
 
 export function Bullet({
@@ -99,7 +99,7 @@ export function Bullet({
                   y={0}
                   width={Math.max(0, bandW)}
                   height={height}
-                  fill={RANGE_COLORS[i % RANGE_COLORS.length] ?? 'var(--cascivo-color-neutral-200)'}
+                  fill={RANGE_COLORS[i % RANGE_COLORS.length] ?? 'var(--cascivo-gray-200)'}
                 />
               )
             })}
@@ -117,7 +117,7 @@ export function Bullet({
               y1={targetY}
               x2={scale.map(target)}
               y2={targetY + targetH}
-              stroke="var(--cascivo-text-primary)"
+              stroke="var(--cascivo-color-text)"
               strokeWidth={2.5}
             />
           </>

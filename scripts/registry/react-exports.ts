@@ -89,6 +89,37 @@ export function exportedNamesOf(file: string): Set<string> {
   return new Set([...namedExports(src), ...declarationExports(src)])
 }
 
+/**
+ * The **source modules** `@cascivo/react` re-exports from, as repo-relative paths.
+ *
+ * Names alone cannot answer "is *this entry* on npm?" when two registry entries share a
+ * display name. Two do: `app-shell` and `layout/app-shell` are both `AppShell`; `calendar`
+ * and `chart/calendar` are both `Calendar`. Because `AppShell` is in the exported-name set,
+ * a name-keyed lookup marked **both** entries npm-distributed, so the generated
+ * `/llms/layout/app-shell.md` told adopters to
+ * `import { AppShell } from '@cascivo/react'` — an import that silently gives them the
+ * *other* component, with `nav` where they were told to write `sideNav`. Identity has to be
+ * keyed on the file, which is unique per entry.
+ */
+export function reactExportedModules(repoRoot: string, depth = 2): Set<string> {
+  const entry = join(repoRoot, 'packages/react/src/index.ts')
+  const modules = new Set<string>()
+
+  const visit = (file: string, remaining: number): void => {
+    if (remaining <= 0) return
+    const src = stripComments(readFileSync(file, 'utf8'))
+    for (const spec of src.matchAll(/export\s*(?:\*|\{[^}]*\})\s*from\s*['"](\.[^'"]+)['"]/g)) {
+      const target = resolveModule(file, spec[1]!)
+      if (!target) continue
+      modules.add(target.slice(repoRoot.length).replace(/^\/+/, ''))
+      visit(target, remaining - 1)
+    }
+  }
+
+  visit(entry, depth)
+  return modules
+}
+
 export function reactExportedNames(repoRoot: string, depth = 2): Set<string> {
   const entry = join(repoRoot, 'packages/react/src/index.ts')
   const names = new Set<string>()

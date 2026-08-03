@@ -1,11 +1,6 @@
-# AppShell
+# AppFrame
 
 Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
-
-> ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
-> This page documents `layout/app-shell` (npm @cascivo/react · or copy-paste). Others:
->
-> - `app-shell` — npm @cascivo/react · or copy-paste — /llms/app-shell.md
 
 ## Install
 
@@ -15,11 +10,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/app-shell
 ```
 
-Or use it from the prebuilt package without copying:
-
-```tsx
-import { AppShell } from '@cascivo/react'
-```
+_Copy-paste only — `AppFrame` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -52,9 +43,9 @@ import { AppShell } from '@cascivo/react'
 App shell with collapsible nav
 
 ```tsx
-<AppShell header={<Header />} sideNav={<Nav />}>
+<AppFrame header={<Header />} sideNav={<Nav />}>
   content
-</AppShell>
+</AppFrame>
 ```
 
 ## Design tokens
@@ -66,7 +57,7 @@ App shell with collapsible nav
 - `--cascivo-ease-out`
 - `--cascivo-color-border`
 - `--cascivo-color-surface`
-- `--cascivo-font-size-xs`
+- `--cascivo-text-xs`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`

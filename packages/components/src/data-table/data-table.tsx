@@ -16,19 +16,24 @@ export interface Column<Row> {
   align?: 'start' | 'end'
   /**
    * Preferred column width, any CSS length (`'8rem'`, `'120px'`, `'12%'`). Set it on
-   * identifier-shaped columns (commit hashes, IDs, timestamps) — default sizing doesn't
-   * consider content shape, so a hash wraps mid-hash.
+   * identifier-shaped columns (ids, statuses, dates) so they stop stealing space from the
+   * free-form ones.
    *
-   * **Mixing sized and unsized columns is supported**: unsized columns absorb the
-   * remaining width and never collapse below their content. Only when *every* column
-   * declares a width does the table switch to a fixed layout (which keeps widths
-   * identical across pages); otherwise widths are preferred sizes, not hard ones.
+   * It is a *preferred* size with a **content floor**: a sized column never shrinks below
+   * its own longest word, so you do not need a paired `minWidth` just to stop it
+   * collapsing. Use `minWidth` only to raise the floor above the content.
+   *
+   * ⚠ **Sizing EVERY column changes the layout mode.** Only then does the table switch to
+   * `table-layout: fixed` (which keeps widths identical across pages), and a fixed table
+   * can exceed its container — the extra columns are reachable by horizontal scroll, not
+   * dropped. Leave at least one free-form column unsized unless you specifically want
+   * page-stable widths.
    */
   width?: string
   /**
-   * Floor for the column's width, any CSS length. Use it on a free-form column
-   * (a commit message, a description) that must stay readable when the table is narrow —
-   * the table then scrolls horizontally rather than squeezing the column to nothing.
+   * Floor for the column's width, any CSS length. Use it on a free-form column that should
+   * get a minimum share, or to raise a sized column's floor above its content — the
+   * content floor is automatic, so this is no longer needed merely to prevent collapse.
    */
   minWidth?: string
 }

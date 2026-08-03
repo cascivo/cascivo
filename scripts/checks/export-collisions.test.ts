@@ -26,8 +26,6 @@ const ROOT = fileURLToPath(new URL('../..', import.meta.url))
  */
 const KNOWN: Record<string, string> = {
   Text: 'charts ships an SVG <text> primitive; @cascivo/react ships the typography component',
-  Calendar:
-    'charts ships the calendar-heatmap chart; @cascivo/react ships the date-picker calendar',
 }
 
 /**

@@ -41,8 +41,10 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - A wrong/guessed name under /llms/*, /context/*, or /r/* returns HTTP 404 with a short hint
   body (not the HTML SPA) — trust the 404, then look up the real name in the index below.
 - Per-component context (intent, when-to-use, boundaries): https://cascivo.com/context/<name>.md
+  (`/context/<name>.md` is the condensed intent summary for a context window; `/llms/<name>.md` above is the full reference.)
+- **Props: the shipped `.d.ts` is authoritative.** Ctrl-click any import, or read node_modules/@cascivo/react/dist/index.d.ts. It carries @defaultValue, the design rationale, and ⚠ warnings for the specific mistakes previous adopters made. When it and any other surface disagree, it wins. See /docs/getting-started.md#where-the-documentation-lives.
 - Context bundle (all intent + boundaries + rules): https://cascivo.com/context.json
-- Token catalog (closed set, every --cascivo-* + layer + default): https://cascivo.com/tokens.catalog.json
+- Token catalog (closed set: every --cascivo-* the system declares OR reads as an author hook, incl. per-component knobs like --cascivo-sidenav-inline-size, + layer + default): https://cascivo.com/tokens.catalog.json
 - Icon catalog (every @cascivo/icons icon + keywords/category): https://cascivo.com/icons.catalog.json
 - Breaking/feature changes (major+minor releases per package — detect API drift): https://cascivo.com/breaking-changes.json
 
@@ -192,6 +194,7 @@ reads `signal.value` in render MUST call `useSignals()` (from `@cascivo/core`) a
 statement, or it never re-renders. When you do own reactive state, use these:
 
 - Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. The signal IS the state.
+  ⚠ LINT: `eslint-plugin-react-hooks@7` (`recommended-latest`) enables `react-hooks/immutability`, which reports EVERY `signal.value = next` as `Error: This value cannot be modified`. It fires on this documented idiom, in the app's own page code, on both install paths — one reported build hit it 8 times and had no doc to reach for. Fix: `pnpm add -D @cascivo/eslint-config` and spread `...cascivo` LAST in `eslint.config.js`, or set `'react-hooks/immutability': 'off'`. Scoping it to a vendored-source glob does NOT work. See /docs/using-with-strict-eslint.md.
 - Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.
 - Side effects (DOM, listeners) -> `useSignalEffect(fn)`, never `useEffect`.
 - Shared/app-wide state -> a module-level signal, imported anywhere. No React context needed.
@@ -201,7 +204,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
-- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, Select, Combobox, Slider, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput); activating an item -> `onSelect(value)` (Dropdown, Menu, chart points). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
+- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
 
 Full behavior/headless catalog: https://github.com/cascivo/cascivo/blob/main/docs/HEADLESS.md. Enterprise friction -> primitive map: https://github.com/cascivo/cascivo/blob/main/docs/ENTERPRISE-READINESS.md.
 
@@ -474,7 +477,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [aspect-ratio](https://cascivo.com/llms/aspect-ratio.md) — Constrains content to a fixed width-to-height ratio _(npm @cascivo/react · or copy-paste)_
 - [indicator](https://cascivo.com/llms/indicator.md) — Positions an overlay element (badge, dot, count) at a corner of its child _(npm @cascivo/react · or copy-paste)_
 - [join](https://cascivo.com/llms/join.md) — Groups adjacent children into a seamless joined element by removing interior borders and radii _(npm @cascivo/react · or copy-paste)_
-- [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(npm @cascivo/react · or copy-paste)_
+- [layout/app-shell](https://cascivo.com/llms/layout/app-shell.md) — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip. _(copy-paste)_
 - [layout/auth-layout](https://cascivo.com/llms/layout/auth-layout.md) — Centered card layout for authentication pages (login, register, forgot password). _(copy-paste)_
 - [layout/auto-grid](https://cascivo.com/llms/layout/auto-grid.md) — Media-query-free responsive grid — columns auto-fill based on available space. _(npm @cascivo/react · or copy-paste)_
 - [layout/center](https://cascivo.com/llms/layout/center.md) — Horizontally centered container with a configurable max-width. _(npm @cascivo/react · or copy-paste)_
@@ -598,7 +601,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Boxplot](https://cascivo.com/context/chart/boxplot.md) — Use when: Comparing the distribution spread, median, and quartiles across groups
 - [BubbleChart](https://cascivo.com/context/chart/bubble-chart.md) — Use when: Plotting three dimensions at once — x, y, and a size-encoded magnitude
 - [Bullet](https://cascivo.com/context/chart/bullet.md) — Use when: Showing a single measure against a target with qualitative range bands
-- [Calendar](https://cascivo.com/context/chart/calendar.md) — Use when: Showing a daily value over weeks/months (activity, contributions)
+- [CalendarHeatmap](https://cascivo.com/context/chart/calendar.md) — Use when: Showing a daily value over weeks/months (activity, contributions)
 - [Candlestick](https://cascivo.com/context/chart/candlestick.md) — Use when: Showing open/high/low/close price movement over time
 - [ComboChart](https://cascivo.com/context/chart/combo-chart.md) — Use when: Overlaying two related metrics with different scales (e.g. volume bars + rate line)
 - [Funnel](https://cascivo.com/context/chart/funnel.md) — Use when: Showing drop-off across the ordered stages of a process (signup, checkout)
@@ -671,7 +674,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Join](https://cascivo.com/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
 - [Kbd](https://cascivo.com/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
 - [Label](https://cascivo.com/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
-- [AppShell](https://cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
+- [AppFrame](https://cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
 - [AuthLayout](https://cascivo.com/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
 - [AutoGrid](https://cascivo.com/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width
 - [Center](https://cascivo.com/context/layout/center.md) — Use when: Horizontally centering content within a configurable max-width
@@ -1140,10 +1143,6 @@ _Generated from registry v0.14.0 on 2026-07-31. Docs track `main`; compare with 
 # AppShell
 
 Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
-
-> ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
-> This page documents `app-shell` (npm @cascivo/react · or copy-paste). Others:
-> - `layout/app-shell` — npm @cascivo/react · or copy-paste — /llms/layout/app-shell.md
 
 ## Install
 
@@ -3015,10 +3014,6 @@ _Generated from registry v0.14.0 on 2026-07-31. Docs track `main`; compare with 
 
 An accessible standalone month-grid date picker.
 
-> ⚠ **Name collision:** more than one cascivo entry is named `Calendar`.
-> This page documents `calendar` (npm @cascivo/react · or copy-paste). Others:
-> - `chart/calendar` — npm @cascivo/charts — /llms/chart/calendar.md
-
 ## Install
 
 Copy-paste the source (you own and can edit it):
@@ -3801,9 +3796,9 @@ import { Bullet } from '@cascivo/charts'
 ## Design tokens
 
 - `--cascivo-chart-1`
-- `--cascivo-color-neutral-200`
-- `--cascivo-color-neutral-300`
-- `--cascivo-color-neutral-400`
+- `--cascivo-gray-200`
+- `--cascivo-gray-300`
+- `--cascivo-gray-400`
 
 ## Accessibility
 
@@ -3824,13 +3819,9 @@ _Generated from registry v0.14.0 on 2026-07-31. Docs track `main`; compare with 
 
 ---
 
-# Calendar
+# CalendarHeatmap
 
 Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
-
-> ⚠ **Name collision:** more than one cascivo entry is named `Calendar`.
-> This page documents `chart/calendar` (npm @cascivo/charts). Others:
-> - `calendar` — npm @cascivo/react · or copy-paste — /llms/calendar.md
 
 ## Install
 
@@ -3841,7 +3832,7 @@ pnpm add @cascivo/charts
 ```
 
 ```tsx
-import { Calendar } from '@cascivo/charts'
+import { CalendarHeatmap } from '@cascivo/charts'
 import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
 ```
 
@@ -3853,7 +3844,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `data` | `CalendarDatum[]` | yes | — | Days: { day: string \| Date, value }. |
+| `data` | `CalendarHeatmapDatum[]` | yes | — | Days: { day: string \| Date, value }. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
 | `from` | `string \| Date` | no | — | Range start (defaults to min day). |
@@ -3870,9 +3861,9 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 ### Contribution calendar
 
 ```tsx
-import { Calendar } from '@cascivo/charts'
+import { CalendarHeatmap } from '@cascivo/charts'
 
-<Calendar
+<CalendarHeatmap
   title="Activity"
   data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}
 />
@@ -4299,7 +4290,7 @@ const data = [
 ## Design tokens
 
 - `--cascivo-chart-1`
-- `--cascivo-color-neutral-100`
+- `--cascivo-gray-100`
 
 ## Accessibility
 
@@ -4418,6 +4409,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `label` | `string` | yes | — | Metric label |
 | `delta` | `number` | no | — | Change value (positive = up, negative = down) |
 | `deltaFormat` | `'number' \| 'percent' \| ((delta: number) => string)` | no | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included. |
+| `goodDirection` | `'up' \| 'down' \| 'neutral'` | no | `up` | Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
 | `deltaLabel` | `string` | no | — | Delta context label (e.g. "vs last week") |
 | `icon` | `ReactNode` | no | — | Icon element rendered in the component. |
 | `sparkline` | `number[]` | no | — | Trend data for embedded sparkline |
@@ -6219,7 +6211,7 @@ import { Combobox } from '@cascivo/react'
 - `--cascivo-color-text-muted`
 - `--cascivo-color-text-subtle`
 - `--cascivo-color-accent`
-- `--cascivo-color-danger`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-radius-md`
 - `--cascivo-radius-sm`
@@ -7112,11 +7104,17 @@ Date range constraint
 
 ## Design tokens
 
-- `--cascivo-date-picker-bg`
-- `--cascivo-date-picker-border`
-- `--cascivo-date-picker-radius`
-- `--cascivo-date-picker-day-selected-bg`
-- `--cascivo-date-picker-day-today-color`
+- `--cascivo-color-surface`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-destructive`
 
 ## Accessibility
 
@@ -8150,8 +8148,8 @@ Shows file list
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
 - `--cascivo-color-success`
-- `--cascivo-color-danger`
-- `--cascivo-color-danger-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-destructive-subtle`
 
 ## Accessibility
 
@@ -10486,13 +10484,9 @@ _Generated from registry v0.14.0 on 2026-07-31. Docs track `main`; compare with 
 
 ---
 
-# AppShell
+# AppFrame
 
 Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
-
-> ⚠ **Name collision:** more than one cascivo entry is named `AppShell`.
-> This page documents `layout/app-shell` (npm @cascivo/react · or copy-paste). Others:
-> - `app-shell` — npm @cascivo/react · or copy-paste — /llms/app-shell.md
 
 ## Install
 
@@ -10502,11 +10496,7 @@ Copy-paste the source (you own and can edit it):
 npx cascivo add layout/app-shell
 ```
 
-Or use it from the prebuilt package without copying:
-
-```tsx
-import { AppShell } from '@cascivo/react'
-```
+_Copy-paste only — `AppFrame` is not exported from `@cascivo/react`. Run the command above to own the source, or compose it from the exported primitives (`Flex`, `Grid`, `Heading`, …)._
 
 ## Category
 
@@ -10539,7 +10529,7 @@ import { AppShell } from '@cascivo/react'
 App shell with collapsible nav
 
 ```tsx
-<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>
+<AppFrame header={<Header />} sideNav={<Nav />}>content</AppFrame>
 ```
 
 ## Design tokens
@@ -10551,7 +10541,7 @@ App shell with collapsible nav
 - `--cascivo-ease-out`
 - `--cascivo-color-border`
 - `--cascivo-color-surface`
-- `--cascivo-font-size-xs`
+- `--cascivo-text-xs`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
 - `--cascivo-color-destructive-subtle`
@@ -11137,11 +11127,11 @@ Title with description
 
 - `--cascivo-space-2`
 - `--cascivo-space-4`
-- `--cascivo-font-size-2xl`
-- `--cascivo-font-weight-bold`
+- `--cascivo-text-2xl`
+- `--cascivo-font-bold`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
-- `--cascivo-font-size-sm`
+- `--cascivo-text-sm`
 
 ## Accessibility
 
@@ -11361,6 +11351,7 @@ _Copy-paste only — `SplitView` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `start` | `ReactNode` | yes | — | Left pane content |
 | `end` | `ReactNode` | yes | — | Right pane content |
 | `defaultRatio` | `number` | no | `0.3` | Initial split ratio (0–1) |
@@ -11926,8 +11917,9 @@ import { Menubar } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. |
 | `menus` | `MenubarMenu[]` | yes | — | The top-level menus to render. |
-| `aria-label` | `string` | yes | — | Accessible label used when no visible label is present. |
+| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -12273,6 +12265,7 @@ import { NavigationMenu } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | `horizontal` | Layout orientation of the component. |
@@ -13628,6 +13621,7 @@ import { RadialProgress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `value` | `number` | yes | — | The controlled value. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
@@ -14318,11 +14312,11 @@ Quiet bordered band with centered heading, description, and action buttons
 ## Design tokens
 
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14398,9 +14392,9 @@ Four-item text-only feature grid with section heading
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-semibold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14482,7 +14476,7 @@ Two-column layout with copy on the left and media on the right
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14548,7 +14542,7 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -14619,8 +14613,8 @@ Three-column footer with brand and license meta
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-semibold`
-- `--cascivo-text-primary`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
 - `--cascivo-color-accent`
 - `--cascivo-space-*`
@@ -14666,6 +14660,7 @@ _Copy-paste only — `StatsBand` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `stats` | `StatItem[]` | yes | — | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
 | `aria-label` | `string` | no | `"Key metrics"` | Accessible label for the stats region |
 
@@ -14693,9 +14688,9 @@ Four KPI cells — three with sparkline trends and signed deltas
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-mono`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility
@@ -15702,6 +15697,7 @@ import { Stat } from '@cascivo/react'
 | `value` | `string \| number` | yes | — | The metric value |
 | `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
 | `trend` | `'up' \| 'down' \| 'flat'` | no | `flat` | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
+| `goodDirection` | `'up' \| 'down' \| 'neutral'` | no | `up` | Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
 | `helpText` | `string` | no | — | Fine print below the value (methodology, time range) |
 | `visual` | `React.ReactNode` | no | — | Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText |
 
@@ -16097,6 +16093,7 @@ import { Swap } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `on` | `React.ReactNode` | yes | — | Content shown in the active (on) state. |
 | `off` | `React.ReactNode` | yes | — | Content shown in the inactive (off) state. |
 | `checked` | `boolean` | no | `false` | Whether the control is checked (controlled). |
@@ -16642,6 +16639,17 @@ Use as="span" inside other flow content
 <Text as="span" weight="semibold">emphasis</Text>
 ```
 
+### Icon beside text
+
+Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside a <p> is invalid HTML and the browser silently closes the outer one, breaking the layout.
+
+```tsx
+<Text>
+  <CheckIcon aria-hidden />
+  <Text as="span" weight="semibold">Deployed</Text>
+</Text>
+```
+
 ## Design tokens
 
 - `--cascivo-font-sans`
@@ -16926,7 +16934,7 @@ import { TimePicker } from '@cascivo/react'
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
 - `--cascivo-color-accent`
-- `--cascivo-color-danger`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-radius-md`
 
@@ -17604,6 +17612,7 @@ import { TreeView } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
 | `aria-label` | `string` | no | — | Accessible label for the tree. |
 | `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes | — | The items to render. |
 | `selectionMode` | `'single' \| 'multi'` | no | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi'). |

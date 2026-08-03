@@ -74,7 +74,7 @@ Two-column layout with copy on the left and media on the right
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility

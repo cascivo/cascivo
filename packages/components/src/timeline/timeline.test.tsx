@@ -93,6 +93,54 @@ describe('Timeline', () => {
     ])
   })
 
+  it('gives `status: "error"` its own marker instead of collapsing onto `current`', () => {
+    const { getAllByRole } = render(
+      <Timeline
+        items={[
+          { id: '1', title: 'building', status: 'active' },
+          { id: '2', title: 'failed', status: 'error' },
+        ]}
+      />,
+    )
+    const [running, failed] = getAllByRole('listitem')
+    expect(failed!.getAttribute('data-status')).toBe('error')
+    // The defect: a failed deploy and an in-progress one rendered pixel-identically.
+    expect(failed!.getAttribute('data-status')).not.toBe(running!.getAttribute('data-status'))
+  })
+
+  it('marks an error entry with a glyph so the state survives without colour', () => {
+    const { getByRole } = render(
+      <Timeline items={[{ id: '1', title: 'failed', status: 'error' }]} />,
+    )
+    expect(getByRole('listitem').textContent).toContain('✕')
+  })
+
+  it('lets a caller-supplied icon win over the default error glyph', () => {
+    const { getByRole } = render(
+      <Timeline items={[{ id: '1', title: 'failed', status: 'error', icon: <span>!</span> }]} />,
+    )
+    const text = getByRole('listitem').textContent!
+    expect(text).toContain('!')
+    expect(text).not.toContain('✕')
+  })
+
+  it('renders every Progress value as a distinct marker state', () => {
+    // Class-level guard: `error` silently collapsing onto `current` is the bug this
+    // catches, and it is equally possible for any other pair.
+    const { getAllByRole } = render(
+      <Timeline
+        items={[
+          { id: '1', title: 'a', status: 'pending' },
+          { id: '2', title: 'b', status: 'active' },
+          { id: '3', title: 'c', status: 'complete' },
+          { id: '4', title: 'd', status: 'error' },
+        ]}
+      />,
+    )
+    const rendered = getAllByRole('listitem').map((li) => li.getAttribute('data-status'))
+    expect(new Set(rendered).size).toBe(rendered.length)
+  })
+
   it('keeps status independent of tone, so a feed entry can carry both', () => {
     const { getByRole } = render(
       <Timeline items={[{ id: '1', title: 'Shipped', status: 'current', tone: 'info' }]} />,

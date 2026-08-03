@@ -67,8 +67,8 @@ export const meta: ComponentMeta = {
     '--cascivo-color-accent',
     '--cascivo-color-accent-subtle',
     '--cascivo-color-success',
-    '--cascivo-color-danger',
-    '--cascivo-color-danger-subtle',
+    '--cascivo-color-destructive',
+    '--cascivo-color-destructive-subtle',
   ],
   accessibility: {
     role: 'button',

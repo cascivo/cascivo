@@ -14,8 +14,8 @@
   }
 
   .heading {
-    font-size: var(--cascivo-text-5xl);
-    font-weight: var(--cascivo-font-extrabold);
+    font-size: var(--cascivo-text-4xl);
+    font-weight: var(--cascivo-font-bold);
     line-height: var(--cascivo-leading-tight);
     letter-spacing: var(--cascivo-tracking-tight);
     max-inline-size: 40rem;

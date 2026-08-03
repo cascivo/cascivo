@@ -12,6 +12,15 @@ The catalogue below is the **a11y/behavior** layer; this is the **state** layer.
 components never use `useState`/`useContext`/`useEffect` — the signal *is* the state. When
 you build on cascivo, reach for these, not the React hook you'd normally use:
 
+> ⚠ **Before you write your first signal, turn off one lint rule.** Every write below —
+> including this page's `onClick={() => (open.value = !open.value)}` — is reported as
+> `Error: This value cannot be modified` by `react-hooks/immutability`, which
+> `eslint-plugin-react-hooks@7` enables by default in `recommended-latest`. Add
+> `@cascivo/eslint-config` (`...cascivo`, spread last) or set
+> `'react-hooks/immutability': 'off'`. See
+> [USING-WITH-STRICT-ESLINT.md](./USING-WITH-STRICT-ESLINT.md) §1 for why it cannot be
+> narrowed and what turning it off costs.
+
 | You'd normally reach for… | Use instead | Why |
 | --- | --- | --- |
 | `useState` | `useSignal(initial)` (local) / `useComputed(fn)` (derived) | The signal is the state; fine-grained updates, no subtree re-render. |
@@ -95,6 +104,7 @@ React/Tailwind patterns an LLM defaults to are wrong here — see
 | `focusElement` | Focus whatever a ref actually points at; returns whether it worked. Use it instead of `ref.current?.focus()` whenever the ref was attached to a **consumer-supplied element** (a cloned `trigger`), because a ref on a function component resolves to the DOM node under React 19 but to the component *instance* under `preact/compat` — so `.focus()` is undefined there and throws. Safe (and equivalent) on a ref you attached to your own intrinsic element. |
 | `normalizeTone` / `Tone` / `ToneInput` | The catalog's one severity vocabulary — `neutral \| info \| success \| warning \| danger`. `Badge`, `Tag`, `Status` and `Notification` all accept it, plus their historical spellings (`destructive`/`error` → `danger`, `default` → `neutral`) which `normalizeTone` resolves. Use it to map one domain enum onto every display component without a per-component lookup table. |
 | `normalizeProgress` / `Progress` / `ProgressInput` | The catalog's one sequence vocabulary — `pending \| active \| complete \| error`. `Steps` and `Timeline` both accept it, plus Timeline's `current` / `upcoming` aliases, which `normalizeProgress` resolves. |
+| `sentimentOf` / `Trend` / `GoodDirection` / `Sentiment` | Splits **which way a metric moved** (the arrow) from **whether that is welcome** (the colour). `Stat` and `Kpi` both hard-coded up-is-green, so a deploy console's error-rate and latency tiles rendered their worst news in green, and negating the delta to fix the colour also reversed the arrow. Pass `goodDirection="down"` for errors/latency/cost/churn, `"neutral"` where neither direction is inherently good. |
 | `setLinkComponent` / `getLinkComponent` | Register the component config-driven nav renders links through. Call `setLinkComponent(...)` once at app start so SideNav/ShellHeader/Header/Breadcrumb/Switcher/Dock/NavigationMenu render your framework's router `<Link>` (preserving `href`, `aria-current`, active `data-state`), instead of a plain `<a>`. The Link must forward `ref` to its anchor for roving-focus navs. Re-exported from `@cascivo/react` (Path B) as well as `@cascivo/core` (Path A). |
 
 ## Router integration — client-side nav links

@@ -20,6 +20,12 @@ export interface ComponentInfo {
   /** True if the component declares user-facing chrome text (intent.content) */
   hasContent: boolean
   /**
+   * True for a typography primitive whose children are authored page prose rather than
+   * chrome the component owns. The `raw-string` rule skips these — otherwise every
+   * sentence on every page warns and the real findings are buried.
+   */
+  isContentPrimitive: boolean
+  /**
    * Number of distinct registry entries that share this display name. More than one means
    * the name is ambiguous (`AppShell` is both the npm component and the copy-paste
    * `layout/app-shell`, with different prop surfaces) and the props below are the UNION —
@@ -33,6 +39,12 @@ export interface Contract {
   tokensByValue: Map<string, string[]>
   /** Map from component name (PascalCase) → component info */
   components: Map<string, ComponentInfo>
+  /**
+   * DOM attribute names cascivo components inherit from a React `*HTMLAttributes` base and
+   * spread onto their element — resolved from the types at contract-generation time, not
+   * hand-listed. Empty when reading an older contract that predates the field.
+   */
+  domAttributes: Set<string>
 }
 
 interface TokenEntry {
@@ -76,6 +88,10 @@ export interface BuildContractInput {
   catalog: CatalogFile
   registry: RegistryFile
   context: ContextFile
+  /** Inherited DOM attributes, from the shipped contract. Absent in older contracts. */
+  domAttributes?: string[]
+  /** Typography-primitive names, from the shipped contract. Absent in older contracts. */
+  contentPrimitives?: string[]
 }
 
 /** Normalize a color/size value for catalog comparison: lowercase, strip spaces. */
@@ -95,6 +111,7 @@ export function buildContract(input: BuildContractInput): Contract {
   }
 
   const contentNames = new Set<string>()
+  const primitiveNames = new Set<string>(input.contentPrimitives ?? [])
   for (const c of input.context.components) {
     if (c.intent?.content) contentNames.add(c.name)
   }
@@ -145,9 +162,10 @@ export function buildContract(input: BuildContractInput): Contract {
       hasRequiredProps: requiredProps.length > 0,
       requiresChildren: all.some((p) => p.name === 'children' && p.required),
       hasContent: contentNames.has(name),
+      isContentPrimitive: primitiveNames.has(name),
       entryCount: metas.length,
     })
   }
 
-  return { tokensByValue, components }
+  return { tokensByValue, components, domAttributes: new Set(input.domAttributes ?? []) }
 }

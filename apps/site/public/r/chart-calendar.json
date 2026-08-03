@@ -11,7 +11,7 @@
   "install": "@cascivo/charts",
   "styles": "@cascivo/charts/styles.css",
   "meta": {
-    "name": "Calendar",
+    "name": "CalendarHeatmap",
     "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
     "category": "chart",
     "states": [],
@@ -20,7 +20,7 @@
     "props": [
       {
         "name": "data",
-        "type": "CalendarDatum[]",
+        "type": "CalendarHeatmapDatum[]",
         "required": true,
         "description": "Days: { day: string | Date, value }."
       },
@@ -100,7 +100,7 @@
     "examples": [
       {
         "title": "Contribution calendar",
-        "code": "import { Calendar } from '@cascivo/charts'\n\n<Calendar\n  title=\"Activity\"\n  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}\n/>"
+        "code": "import { CalendarHeatmap } from '@cascivo/charts'\n\n<CalendarHeatmap\n  title=\"Activity\"\n  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}\n/>"
       }
     ],
     "dependencies": ["@cascivo/charts"],

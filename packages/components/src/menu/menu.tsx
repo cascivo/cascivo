@@ -117,16 +117,23 @@ export function Menu({ children }: MenuProps) {
 
 export interface MenuTriggerProps {
   children: ReactNode
+  /**
+   * Invisible accessible name. The catalog convention (see the item-identity table in
+   * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
+   */
+  ariaLabel?: string
   'aria-label'?: string
 }
 
 function MenuTriggerInner({
   ctx,
   children,
-  'aria-label': ariaLabel,
+  ariaLabel,
+  'aria-label': ariaLabelDom,
 }: {
   ctx: UsePopoverReturn
   children: ReactNode
+  ariaLabel?: string
   'aria-label'?: string
 }) {
   useSignals()
@@ -137,7 +144,7 @@ function MenuTriggerInner({
       type="button"
       aria-haspopup="menu"
       aria-expanded={isOpen.value}
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? ariaLabelDom}
       style={{ anchorName } as React.CSSProperties}
       onClick={toggle}
       className={styles.trigger}
@@ -147,13 +154,14 @@ function MenuTriggerInner({
   )
 }
 
-export function MenuTrigger({ children, 'aria-label': ariaLabel }: MenuTriggerProps) {
+export function MenuTrigger({ children, ariaLabel, 'aria-label': ariaLabelDom }: MenuTriggerProps) {
+  const name = ariaLabel ?? ariaLabelDom
   return (
     <MenuContext.Consumer>
       {(ctx) => {
         if (!ctx) throw new Error('MenuTrigger must be inside <Menu>')
         return (
-          <MenuTriggerInner ctx={ctx} {...(ariaLabel !== undefined && { 'aria-label': ariaLabel })}>
+          <MenuTriggerInner ctx={ctx} {...(name !== undefined && { ariaLabel: name })}>
             {children}
           </MenuTriggerInner>
         )

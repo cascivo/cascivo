@@ -8,8 +8,8 @@
   .preview {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascivo-space-1-5);
-    padding-block: var(--cascivo-space-0-5);
+    gap: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-1);
     padding-inline: var(--cascivo-space-1);
     background: none;
     border: 1px solid transparent;
@@ -70,7 +70,7 @@
     .input {
       width: 100%;
       min-width: 4rem;
-      padding-block: var(--cascivo-space-0-5);
+      padding-block: var(--cascivo-space-1);
       padding-inline: var(--cascivo-space-1);
       font-family: var(--cascivo-font-sans);
       font-size: inherit;

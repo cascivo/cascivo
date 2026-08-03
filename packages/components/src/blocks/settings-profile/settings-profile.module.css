@@ -46,7 +46,7 @@
   .field {
     display: flex;
     flex-direction: column;
-    gap: var(--cascivo-space-1-5);
+    gap: var(--cascivo-space-2);
   }
 
   .label {
@@ -74,7 +74,7 @@
   .toggleDescription {
     font-size: var(--cascivo-text-xs);
     color: var(--cascivo-color-foreground-muted);
-    margin-block-start: var(--cascivo-space-0-5);
+    margin-block-start: var(--cascivo-space-1);
   }
 
   .footer {

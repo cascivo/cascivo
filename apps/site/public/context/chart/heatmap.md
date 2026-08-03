@@ -38,7 +38,7 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 ## Tokens
 
 - `--cascivo-chart-1`
-- `--cascivo-color-neutral-100`
+- `--cascivo-gray-100`
 
 ## Examples
 
@@ -70,7 +70,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Heatmap is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-chart-1, --cascivo-color-neutral-100
+  --cascivo-chart-1, --cascivo-gray-100
 
 Accessibility: role "img", WCAG 2.1-AA. Keep it AA.
 

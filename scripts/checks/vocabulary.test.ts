@@ -12,7 +12,7 @@
  * every component that models either accepts the whole canonical set — so a new component
  * can't reintroduce a private dialect, and an existing one can't quietly drop a value.
  */
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { strict as assert } from 'node:assert'
@@ -105,3 +105,75 @@ describe('item identity is not a coin flip', () => {
     assert.match(code, /\bid\?: string/, 'OverflowMenu items must accept `id` as well as `value`')
   })
 })
+
+describe('the accessible-name prop is one name, everywhere', () => {
+  /**
+   * Every component that accepts the DOM spelling `aria-label` as a declared prop must
+   * also accept `ariaLabel`, the catalog's name for an invisible accessible name.
+   *
+   * Two spellings of one idea inside one package is a coin flip on every component, and an
+   * adopter reported paying it: `label` sometimes meant visible text, sometimes an
+   * invisible name, and sometimes was not accepted at all. AI-RULES.md now states the rule
+   * for the whole catalog, so it has to actually hold for the whole catalog.
+   */
+  const DUAL_SPELLING = [
+    ['components', 'filter'],
+    ['components', 'structured-list'],
+    ['components', 'progress'],
+    ['components', 'menubar'],
+    ['components', 'navigation-menu'],
+    ['components', 'tree-view'],
+    ['components', 'swap'],
+    ['components', 'radial-progress'],
+    ['layouts', 'split-view'],
+    ['layouts', 'sections/stats-band'],
+  ] as const
+
+  for (const [pkg, name] of DUAL_SPELLING) {
+    it(`${name} accepts ariaLabel alongside aria-label`, () => {
+      const file = join(ROOT, `packages/${pkg}/src/${name}/${name.split('/').pop()}.tsx`)
+      const code = readFileSync(file, 'utf8')
+      assert.match(
+        code,
+        /\bariaLabel\??:\s*string/,
+        `${name} declares 'aria-label' but not ariaLabel — the catalog convention.`,
+      )
+    })
+  }
+
+  it('no component declares aria-label WITHOUT the ariaLabel alias', () => {
+    // The list above is a fixture; this is the sweep that catches a new one.
+    const offenders: string[] = []
+    for (const pkg of ['components', 'layouts']) {
+      for (const file of tsxFiles(join(ROOT, `packages/${pkg}/src`))) {
+        const code = readFileSync(file, 'utf8')
+        if (!/^\s+'aria-label'\??:\s*string/m.test(code)) continue
+        if (/\bariaLabel\??:\s*string/.test(code)) continue
+        offenders.push(file.slice(ROOT.length + 1))
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      `These declare 'aria-label' but not ariaLabel:\n  ${offenders.join('\n  ')}`,
+    )
+  })
+})
+
+/** Component `.tsx` files under a directory, excluding tests. */
+function tsxFiles(dir: string): string[] {
+  const out: string[] = []
+  let entries: string[]
+  try {
+    entries = readdirSync(dir)
+  } catch {
+    return out
+  }
+  for (const entry of entries) {
+    if (entry === 'node_modules' || entry === 'dist') continue
+    const full = join(dir, entry)
+    if (statSync(full).isDirectory()) out.push(...tsxFiles(full))
+    else if (entry.endsWith('.tsx') && !entry.endsWith('.test.tsx')) out.push(full)
+  }
+  return out
+}

@@ -5,6 +5,48 @@ fix.
 
 ---
 
+## `pnpm lint` errors on every signal write: `Error: This value cannot be modified`
+
+```
+error  Error: This value cannot be modified
+Modifying a value returned from a hook is not allowed.
+  onValueChange={(v) => (env.value = v)}
+                         ^^^ `env` cannot be modified
+```
+
+Also seen as `react-hooks/immutability`, and on `open.value = !open.value`,
+`count.value++`, or any other `signal.value = …` assignment.
+
+**Cause:** `eslint-plugin-react-hooks@7` enables `react-hooks/immutability` in
+`recommended-latest` — the config a stock 2026 React app gets. The rule reports
+writes to values returned from hooks, and `useSignal()` returns one. cascivo's
+reactivity contract mandates signals over `useState`, so the rule fires on the
+documented idiom, in your own page code, on both install paths. Your code is
+correct.
+
+**Fix:**
+
+```sh
+pnpm add -D @cascivo/eslint-config
+```
+
+```js
+// eslint.config.js
+import cascivo from '@cascivo/eslint-config'
+export default [...yourConfig, ...cascivo] // spread LAST
+```
+
+Or set it directly: `{ rules: { 'react-hooks/immutability': 'off' } }`.
+
+**Not** fixable by scoping the rule to `src/components/ui/**` — signal writes are
+in your own pages, and on the prebuilt path that directory doesn't exist.
+
+See [USING-WITH-STRICT-ESLINT.md](./USING-WITH-STRICT-ESLINT.md) §1 for why the
+rule cannot be narrowed, what turning it off costs, and cascivo's React Compiler
+position.
+
+---
+
 ## Components render unstyled (no colors, wrong font, no padding)
 
 **Cause:** the themes CSS is not loaded. Component CSS only defines structure —

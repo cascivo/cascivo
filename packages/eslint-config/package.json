@@ -1,0 +1,45 @@
+{
+  "name": "@cascivo/eslint-config",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Flat ESLint config for apps using cascivo — reconciles the signal-based reactivity contract with eslint-plugin-react-hooks 7",
+  "keywords": [
+    "cascivo",
+    "design-system",
+    "eslint",
+    "eslint-config",
+    "react",
+    "react-hooks",
+    "signals"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/eslint-config#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/eslint-config"
+  },
+  "files": [
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "!src/**/*.test.js"
+  ],
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "echo 'eslint-config: plain ESM, no build'",
+    "test": "node --test src/index.test.js"
+  }
+}

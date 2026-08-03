@@ -22,6 +22,11 @@ export interface TreeViewProps {
   defaultExpanded?: string[]
   onExpandedChange?: (expanded: string[]) => void
   className?: string
+  /**
+   * Invisible accessible name. The catalog convention (see the item-identity table in
+   * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
+   */
+  ariaLabel?: string
   'aria-label'?: string
 }
 
@@ -63,7 +68,8 @@ export function TreeView({
   defaultExpanded,
   onExpandedChange,
   className,
-  'aria-label': ariaLabel,
+  'aria-label': ariaLabelDom,
+  ariaLabel,
 }: TreeViewProps) {
   useSignals()
 
@@ -242,7 +248,11 @@ export function TreeView({
   }
 
   return (
-    <ul role="tree" aria-label={ariaLabel} className={cn(styles['tree'], className)}>
+    <ul
+      role="tree"
+      aria-label={ariaLabel ?? ariaLabelDom}
+      className={cn(styles['tree'], className)}
+    >
       {items.map((node, i) => renderNode(node, 1, i + 1, items.length))}
     </ul>
   )

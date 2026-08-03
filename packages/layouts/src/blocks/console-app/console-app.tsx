@@ -2,7 +2,7 @@
 import { useSignal, useSignals } from '@cascivo/core'
 import { HeaderPanel, ShellHeader, SideNav, Switcher } from '@cascivo/react'
 import { Bell, Database, Grid, HelpCircle, Home, Server, Settings, Users } from '@cascivo/icons'
-import { AppShell } from '../../app-shell/app-shell'
+import { AppFrame } from '../../app-shell/app-shell'
 import { createShellState } from '../../app-shell/shell-state'
 import { PageHeader } from '../../page-header/page-header'
 import styles from './console-app.module.css'
@@ -52,7 +52,7 @@ export function ConsoleApp() {
   const openPanel = useSignal<'notifications' | 'switcher' | null>(null)
 
   return (
-    <AppShell
+    <AppFrame
       state={shell}
       persistKey={false}
       header={
@@ -215,6 +215,6 @@ export function ConsoleApp() {
           </table>
         </div>
       </div>
-    </AppShell>
+    </AppFrame>
   )
 }

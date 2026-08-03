@@ -101,6 +101,11 @@
   .scroller {
     overflow: auto;
     max-block-size: var(--cascivo-data-table-max-height, none);
+    /* Reserve the gutter so a horizontally-scrollable table SAYS so. With an overlay
+       scrollbar (the default on macOS and Android) columns past the fold simply vanish and
+       it reads as "the table dropped my columns" — one adopter measured clientWidth 1052
+       against scrollWidth 1360 before working out the rows were scrollable at all. */
+    scrollbar-gutter: stable;
   }
 
   .scrollerVirtualized {
@@ -157,9 +162,21 @@
      `width` — that is the identifier-shaped case this exists for. Applying it to a
      free-form column made a squeezed column wrap one character per line instead of
      pushing back on the layout. */
+  /* A sized column must not be squeezed below its own content.
+     `width` is a *preferred* size, but under `table-layout: fixed` — which kicks in once
+     every column is sized — the browser will happily shrink one below its text, and
+     `overflow-wrap: anywhere` then broke words mid-character ("Buildin" / "g"). The docs
+     promised unsized columns never collapse below their content; sized ones now get the
+     same floor.
+
+     `break-word` rather than `anywhere` is load-bearing: `anywhere` participates in
+     min-content sizing (making the floor one character wide, i.e. no floor at all), while
+     `break-word` leaves min-content at the longest word and still wraps unbreakable
+     strings. Pass `minWidth` to raise the floor above the content. */
   .table td[data-sized],
   .table th[data-sized] {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    min-inline-size: min-content;
   }
 
   .table td[data-align='end'] {

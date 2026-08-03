@@ -1,7 +1,84 @@
 # Using cascivo with a strict host ESLint config
 
-**Short version: scope your host's stylistic rules off the directory cascivo
-copies into.** When you `cascivo add` a component, you vendor its source into your
+**Short version:**
+
+```sh
+pnpm add -D @cascivo/eslint-config
+```
+
+```js
+// eslint.config.js
+import cascivo from '@cascivo/eslint-config'
+
+export default [
+  // …your existing config…
+  ...cascivo, // spread LAST — flat config is last-wins
+]
+```
+
+That covers both problems on this page. Read on for what it does and why.
+
+---
+
+## 1. `react-hooks/immutability` errors on every signal write
+
+**This affects every cascivo app, on both install paths.** It is not a
+strict-config problem — `eslint-plugin-react-hooks@7` with `recommended-latest`
+is what a stock 2026 React app gets.
+
+The error looks like this, and you will get one for every piece of state you
+wrote:
+
+```
+error  Error: This value cannot be modified
+Modifying a value returned from a hook is not allowed.
+  onValueChange={(v) => (env.value = v)}
+                         ^^^ `env` cannot be modified
+```
+
+Your code is fine. cascivo's reactivity contract mandates `useSignal` over
+`useState` ([AI-RULES.md](./AI-RULES.md)), and writing a signal means assigning
+to `.value` — the rule fires on the exact idiom the docs tell you to use. The
+canonical example in [HEADLESS.md](./HEADLESS.md),
+`onClick={() => (open.value = !open.value)}`, is a reported error under this rule.
+
+**Fix:** install `@cascivo/eslint-config` as above, or set the rule yourself:
+
+```js
+{ rules: { 'react-hooks/immutability': 'off' } }
+```
+
+**Why it can't be narrowed.** The rule cannot distinguish a deliberate signal
+write from an accidental mutation of `useState` output, and it offers no
+hook-name allowlist. Turning it off is the only mechanism available.
+
+**What that costs.** You lose the rule's protection against genuinely mutating
+React state elsewhere in your files. That is a real loss. If you would rather
+keep it, skip the `cascivoSignals` fragment and put a
+`// eslint-disable-next-line react-hooks/immutability` above each signal
+assignment instead.
+
+**Note the scope.** The directory-scoped recipe in §2 does **not** help here:
+signal writes live in your own page and component code, and on the prebuilt path
+(`@cascivo/react`) the `src/components/ui/**` directory does not exist at all.
+
+### React Compiler
+
+The React Compiler ecosystem is tightening around mutation analysis, and
+`react-hooks/immutability` is the leading edge of it. cascivo's position: signals
+are a deliberate escape from the compiler's memoization model — a signal cell is
+*meant* to be mutated, and its reads are tracked at runtime rather than inferred
+at compile time. We expect to keep this rule off for the foreseeable future
+rather than reshape the reactivity contract around it. If you enable the React
+Compiler itself, cascivo components are unaffected (they ship `'use client'` and
+do not rely on compiler memoization), but your own signal-writing components
+should be excluded from compilation or written with the disable directive above.
+
+---
+
+## 2. Host stylistic rules flag vendored source
+
+**Copy-paste path only.** When you `cascivo add` a component, you vendor its source into your
 project (`src/components/ui/**` by default). That code is generated-style code you
 own but did not write, and a strict host config — `@tanstack/eslint-config`,
 `eslint-config-airbnb`, a bespoke typescript-eslint strict setup — will flag it
@@ -10,11 +87,11 @@ bar (Oxlint) is deliberately not every downstream config's bar, and chasing ever
 host's stylistic preferences inside vendored code is a losing game that
 `cascivo update` would undo on the next re-copy anyway.
 
-The fix is a one-time, durable ESLint override for your cascivo output directory.
+The fix is a one-time, durable ESLint override for your cascivo output directory —
+`@cascivo/eslint-config`'s `cascivoVendoredSource()` fragment is exactly the block
+below, or write it by hand:
 
----
-
-## The recipe (flat config)
+### The recipe (flat config)
 
 Add this block to `eslint.config.js` (adjust the glob to your `outputDir` from
 `cascivo.config.ts` — the default is `src/components/ui/**`):
@@ -55,6 +132,7 @@ config for every rule outside the scope-off list above.
 
 ### `.eslintrc` (legacy) equivalent
 
+
 ```json
 {
   "overrides": [
@@ -76,7 +154,7 @@ config for every rule outside the scope-off list above.
 }
 ```
 
-## Why not just fix the source?
+## Why not just fix the vendored source?
 
 cascivo keeps the **objective** classes clean at the source — inline vs top-level
 type specifiers, unnecessary type assertions, `prefer-const`, and stale
@@ -96,4 +174,7 @@ editing vendored files for, because:
 ## See also
 
 - [GETTING-STARTED.md](./GETTING-STARTED.md) — install + the files the CLI manages.
-- [AI-RULES.md](./AI-RULES.md) — the contract for AI-authored cascivo code.
+- [AI-RULES.md](./AI-RULES.md) — the reactivity contract that makes §1's rule fire.
+- [HEADLESS.md](./HEADLESS.md) — the signal primitives, and the `open.value = !open.value`
+  example the rule reports.
+- [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) — keyed on the literal error text.

@@ -137,6 +137,42 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['destructive', 'default'],
     },
   ],
+  AppFrame: [
+    {
+      name: 'footer',
+      required: false,
+    },
+    {
+      name: 'sideNavMode',
+      required: false,
+      enum: ['push', 'overlay'],
+    },
+    {
+      name: 'header',
+      required: true,
+    },
+    {
+      name: 'sideNav',
+      required: false,
+    },
+    {
+      name: 'aside',
+      required: false,
+    },
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'persistKey',
+      required: false,
+      primitives: ['string', 'boolean'],
+    },
+    {
+      name: 'state',
+      required: false,
+    },
+  ],
   AppShell: [
     {
       name: 'header',
@@ -876,6 +912,59 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'hideNav',
       required: false,
       primitives: ['boolean'],
+    },
+  ],
+  CalendarHeatmap: [
+    {
+      name: 'data',
+      required: true,
+    },
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'description',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'from',
+      required: false,
+    },
+    {
+      name: 'to',
+      required: false,
+    },
+    {
+      name: 'width',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'plain',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'visualMap',
+      required: false,
     },
   ],
   Candlestick: [
@@ -3323,6 +3412,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'goodDirection',
+      required: false,
+      enum: ['up', 'down', 'neutral'],
+    },
+    {
       name: 'deltaLabel',
       required: false,
       primitives: ['string'],
@@ -3689,12 +3783,17 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Menubar: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'menus',
       required: true,
     },
     {
       name: 'aria-label',
-      required: true,
+      required: false,
       primitives: ['string'],
     },
     {
@@ -3857,6 +3956,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   NavigationMenu: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'items',
       required: true,
@@ -4664,6 +4768,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   RadialProgress: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'value',
       required: true,
       primitives: ['number'],
@@ -5409,6 +5518,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   SplitView: [
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'start',
       required: true,
     },
@@ -5480,6 +5594,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['up', 'down', 'flat'],
     },
     {
+      name: 'goodDirection',
+      required: false,
+      enum: ['up', 'down', 'neutral'],
+    },
+    {
       name: 'helpText',
       required: false,
       primitives: ['string'],
@@ -5490,6 +5609,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   StatsBand: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'stats',
       required: true,
@@ -5689,6 +5813,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Swap: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'on',
       required: true,
@@ -6188,6 +6317,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   TreeView: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'aria-label',
       required: false,

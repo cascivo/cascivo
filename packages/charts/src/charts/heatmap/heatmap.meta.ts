@@ -64,7 +64,7 @@ export const meta: ComponentMeta = {
         'Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).',
     },
   ],
-  tokens: ['--cascivo-chart-1', '--cascivo-color-neutral-100'],
+  tokens: ['--cascivo-chart-1', '--cascivo-gray-100'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },
   examples: [
     {

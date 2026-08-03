@@ -41,14 +41,30 @@ export function binValues(values: readonly number[], binCount?: number): Bin[] {
   }
 
   const width = (max - min) / k
+
+  // A range too narrow to divide `k` ways collapses to one bin rather than `k` degenerate
+  // ones. `binValues([0, 5e-324], 200)` used to underflow `width` to 0, which made every
+  // boundary identical, sent `(v - min) / width` to `0/0 = NaN` for `v === min`, and dropped
+  // that value's count entirely — 1 of 2 values counted, silently.
+  if (!Number.isFinite(width) || width <= 0) {
+    return [{ x0: min, x1: max, count: n }]
+  }
+
   const bins: Bin[] = Array.from({ length: k }, (_, i) => ({
     x0: min + i * width,
-    x1: min + (i + 1) * width,
+    // Pin the final edge to `max` instead of accumulating to `min + k * width`, which lands
+    // short of `max` by up to a few ulps — and by *more* than the caller can compensate for
+    // at subnormal scales, where a relative epsilon underflows to zero. Bins now cover
+    // [min, max] exactly, so the contract is testable without a tolerance.
+    x1: i === k - 1 ? max : min + (i + 1) * width,
     count: 0,
   }))
 
   for (const v of values) {
-    const idx = Math.min(Math.floor((v - min) / width), k - 1)
+    const raw = Math.floor((v - min) / width)
+    // `raw` is NaN only if `width` is non-finite, which is excluded above; clamp anyway so a
+    // future change cannot reintroduce a lost count through an out-of-range index.
+    const idx = Number.isFinite(raw) ? Math.min(Math.max(raw, 0), k - 1) : k - 1
     const bin = bins[idx]
     if (bin) bin.count++
   }

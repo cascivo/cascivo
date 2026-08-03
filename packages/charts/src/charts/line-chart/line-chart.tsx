@@ -8,6 +8,7 @@ import {
   leftMarginForLabels,
   PLAIN_MARGINS,
   rightMarginForLabels,
+  AXIS_CHAR_PX,
 } from '../../core/use-chart'
 import { getSyncGroup, releaseSyncGroup, type SyncGroup } from '../../core/sync'
 import { Axis } from '../../chrome/axis'
@@ -35,6 +36,12 @@ export interface LineChartSeries<Datum> {
   id: string
   label: string
   data: readonly Datum[]
+  /**
+   * Series colour. **Omit it** — the Nth series automatically takes `--cascivo-chart-N`,
+   * eight distinct hues per theme in both light and dark, so a multi-series chart
+   * differentiates itself with no configuration. Set this only to override the position,
+   * e.g. to keep "errors" red wherever it lands in the array.
+   */
   color?: string
   /** Which y-axis this series is measured against. Default 'left'. */
   axis?: 'left' | 'right'
@@ -56,6 +63,20 @@ export interface LineChartProps<Datum = { x: number; y: number }> {
    * plot multiple fields from one row, give each series its own `y`.
    */
   y: (d: Datum) => number
+  /**
+   * ⚠ **Not rendered as a visible heading.** This becomes the chart's accessible name
+   * (the SVG `<caption>` / `aria-label`), which is why it is required — a chart with no
+   * accessible name is unusable with a screen reader.
+   *
+   * For a visible heading, put a `CardTitle`/`Heading` above the chart. The prop name
+   * promises a heading and an adopter wrote one, saw nothing, and ended up with a
+   * redundant `CardTitle` on every chart anyway.
+   *
+   * It is NOT renamed to `ariaLabel` (the catalog's name for an invisible accessible name)
+   * because an alias would have to make both optional, which drops the compile-time
+   * guarantee that every chart has an accessible name. The requirement is worth more than
+   * the naming consistency; this warning is the compensation.
+   */
   title: string
   description?: string
   /**
@@ -312,7 +333,12 @@ export function LineChart<Datum = { x: number; y: number }>({
     : {
         ...DEFAULT_MARGINS,
         left: leftMarginForLabels(leftAxisLabels, plain),
-        right: rightMarginForLabels({ rightAxisLabels, bottomAxisLabels, plain }),
+        right: rightMarginForLabels({
+          rightAxisLabels,
+          bottomAxisLabels,
+          rightAxisTitle: secondAxis?.label !== undefined && secondAxis.label !== '',
+          plain,
+        }),
       }
 
   const fallback = (
@@ -595,6 +621,20 @@ export function LineChart<Datum = { x: number; y: number }>({
                         transform={`translate(${innerW},0)`}
                         {...(secondAxis?.format
                           ? { format: (v: number | string | Date) => secondAxis.format!(Number(v)) }
+                          : {})}
+                        {...(secondAxis?.label !== undefined && secondAxis.label !== ''
+                          ? {
+                              title: secondAxis.label,
+                              // Clear the widest tick label: they start 8px out from the
+                              // axis line and run outward.
+                              titleOffset:
+                                8 +
+                                Math.ceil(
+                                  rightAxisLabels.reduce((m, l) => Math.max(m, l.length), 0) *
+                                    AXIS_CHAR_PX,
+                                ) +
+                                10,
+                            }
                           : {})}
                       />
                     )}

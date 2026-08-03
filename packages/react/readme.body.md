@@ -379,8 +379,8 @@ routing break after adding one of these, check that the import resolves to
 
 ### Layout
 
+- **AppFrame** — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
 - **AppShell** — Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.
-- **AppShell** — Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.
 - **AspectRatio** — Constrains content to a fixed width-to-height ratio
 - **AuthLayout** — Centered card layout for authentication pages (login, register, forgot password).
 - **AutoGrid** — Media-query-free responsive grid — columns auto-fill based on available space.
@@ -425,7 +425,7 @@ routing break after adding one of these, check that the import resolves to
 - **Boxplot** — Box-and-whisker plot with five-number summary and outlier dots per series.
 - **BubbleChart** — Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.
 - **Bullet** — Bullet chart with background range bands, measure bar, and target tick.
-- **Calendar** — Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
+- **CalendarHeatmap** — Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).
 - **Candlestick** — OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.
 - **ComboChart** — Combination bar + line chart on shared or dual y-axes.
 - **Funnel** — Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.

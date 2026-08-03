@@ -2,6 +2,17 @@ import * as fc from 'fast-check'
 import { describe, it, expect } from 'vitest'
 import { clampZoom, screenToFlow, flowToScreen } from './transform.ts'
 
+/**
+ * Property tests must be reproducible. `fc.assert` defaults to a clock-derived seed, so a
+ * counterexample surfaces once in CI and vanishes on re-run — a shape that cost a real
+ * diagnosis cycle in `charts/src/engine/stats.test.ts` before the underlying bugs were found
+ * by hand. A fixed seed makes the suite either always pass or always fail; `numRuns` is
+ * raised above the default 100 because breadth can no longer come from a varying seed.
+ *
+ * Enforced by `scripts/checks/property-seeds.test.ts`.
+ */
+const DETERMINISTIC = { seed: 0x5ca1ab1e, numRuns: 2000 } as const
+
 const finite = (opts?: { min?: number; max?: number }) =>
   fc.double({ noNaN: true, noDefaultInfinity: true, min: -1e4, max: 1e4, ...opts })
 
@@ -20,6 +31,7 @@ describe('clampZoom (property)', () => {
           expect(out).toBeLessThanOrEqual(max)
         },
       ),
+      DETERMINISTIC,
     )
   })
 })
@@ -36,6 +48,7 @@ describe('screen/flow transforms (property)', () => {
           expect(back.y).toBeCloseTo(point.y, 2)
         },
       ),
+      DETERMINISTIC,
     )
   })
 })

@@ -67,8 +67,8 @@ Three-column footer with brand and license meta
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-semibold`
-- `--cascivo-text-primary`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
 - `--cascivo-color-accent`
 - `--cascivo-space-*`

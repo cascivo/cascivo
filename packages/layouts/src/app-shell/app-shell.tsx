@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import styles from './app-shell.module.css'
 import { createShellState, type ShellState } from './shell-state'
 
-export interface AppShellProps {
+export interface AppFrameProps {
   header: ReactNode
   sideNav?: ReactNode
   aside?: ReactNode
@@ -29,7 +29,7 @@ export interface AppShellProps {
   sideNavMode?: 'push' | 'overlay'
 }
 
-export function AppShell({
+export function AppFrame({
   header,
   sideNav,
   aside,
@@ -39,7 +39,7 @@ export function AppShell({
   state,
   className,
   sideNavMode = 'push',
-}: AppShellProps) {
+}: AppFrameProps) {
   useSignals()
 
   // Lazy-init shell state (house pattern)

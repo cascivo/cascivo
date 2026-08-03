@@ -94,7 +94,7 @@
             "ActionSheet",
             "Alert",
             "AlertDialog",
-            "AppShell",
+            "AppFrame",
             "AppShell",
             "AreaChart",
             "AspectRatio",
@@ -113,7 +113,7 @@
             "Button",
             "ButtonGroup",
             "Calendar",
-            "Calendar",
+            "CalendarHeatmap",
             "Candlestick",
             "Card",
             "Carousel",
@@ -2547,6 +2547,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -2554,7 +2557,7 @@
                     "type": "string"
                   }
                 },
-                "required": ["menus", "aria-label"]
+                "required": ["menus"]
               }
             }
           }
@@ -2683,6 +2686,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -3227,6 +3233,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "value": {
                     "type": "number"
                   },
@@ -3914,6 +3923,10 @@
                     "type": "string",
                     "enum": ["up", "down", "flat"]
                   },
+                  "goodDirection": {
+                    "type": "string",
+                    "enum": ["up", "down", "neutral"]
+                  },
                   "helpText": {
                     "type": "string"
                   }
@@ -4031,6 +4044,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "checked": {
                     "type": "boolean"
                   },
@@ -4599,6 +4615,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   },
@@ -4672,7 +4691,7 @@
           "if": {
             "properties": {
               "component": {
-                "const": "AppShell"
+                "const": "AppFrame"
               }
             },
             "required": ["component"]
@@ -5045,6 +5064,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "start": {
                     "type": "string",
                     "enum": ["ReactNode"]
@@ -5555,7 +5577,7 @@
           "if": {
             "properties": {
               "component": {
-                "const": "Calendar"
+                "const": "CalendarHeatmap"
               }
             },
             "required": ["component"]
@@ -5930,6 +5952,10 @@
                   },
                   "delta": {
                     "type": "number"
+                  },
+                  "goodDirection": {
+                    "type": "string",
+                    "enum": ["up", "down", "neutral"]
                   },
                   "deltaLabel": {
                     "type": "string"
@@ -6871,6 +6897,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "aria-label": {
                     "type": "string"
                   }
