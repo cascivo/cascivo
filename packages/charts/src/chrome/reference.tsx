@@ -1,4 +1,3 @@
-'use client'
 import type { ReactNode } from 'react'
 
 /** A scale that maps a domain value to a pixel position within the plot area. */

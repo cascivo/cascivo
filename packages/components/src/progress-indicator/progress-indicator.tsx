@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import styles from './progress-indicator.module.css'
 
 export interface ProgressStep {

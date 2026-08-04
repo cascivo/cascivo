@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'KPI card showing a primary metric with optional delta indicator, icon, and sparkline.',
   category: 'chart',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

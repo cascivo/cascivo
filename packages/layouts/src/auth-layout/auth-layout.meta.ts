@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'AuthLayout',
   description: 'Centered card layout for authentication pages (login, register, forgot password).',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Card',
   description: 'Container for grouping related content',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['default', 'outlined', 'elevated'],
   sizes: [],

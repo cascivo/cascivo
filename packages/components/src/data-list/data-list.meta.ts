@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'DataList',
   description: 'Key-value pairs rendered as a description list',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['horizontal', 'vertical'],
   sizes: ['sm', 'md'],

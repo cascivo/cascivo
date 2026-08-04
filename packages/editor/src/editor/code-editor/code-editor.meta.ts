@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.',
   category: 'inputs',
+  clientJs: 'required',
   states: ['default'],
   variants: [],
   sizes: [],

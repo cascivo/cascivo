@@ -63,6 +63,10 @@ Escape and outside press still dismiss the sheet.
 <ActionSheet defaultOpen showCancel={false} actions={[{ label: 'Archive', onSelect: archive }]} />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-surface`

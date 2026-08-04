@@ -1,4 +1,3 @@
-'use client'
 // Tooltip: meter displays a single value, not a discrete datum set — no data-point traversal.
 import { arcPath } from '../../engine/shape'
 

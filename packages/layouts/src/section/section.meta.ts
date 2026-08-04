@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Section',
   description: 'Page-section shell with block padding, centered inner width, and stack gap.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

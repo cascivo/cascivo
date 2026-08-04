@@ -41,6 +41,10 @@ Masonry gallery with three image tiles; falls back to CSS columns in unsupported
 </MediaMasonry>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-text-2xl`

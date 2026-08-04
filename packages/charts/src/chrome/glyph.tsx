@@ -1,4 +1,3 @@
-'use client'
 import type { ReactNode } from 'react'
 
 export type GlyphShape = 'circle' | 'square' | 'diamond' | 'triangle' | 'cross' | 'star'

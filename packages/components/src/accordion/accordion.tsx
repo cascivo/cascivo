@@ -1,14 +1,15 @@
 'use client'
-import { cn, useSignal, useSignals } from '@cascivo/core'
+import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import type { Signal } from '@cascivo/core'
-import { createContext, forwardRef, useId } from 'react'
+import { createContext, forwardRef, useId, useRef } from 'react'
 import type { Ref, HTMLAttributes, ReactNode } from 'react'
 import styles from './accordion.module.css'
 
 interface AccordionStore {
   open: Signal<string[]>
-  toggle: (value: string) => void
+  toggle: (value: string, next: boolean) => void
   baseId: string
+  type: 'single' | 'multiple'
 }
 
 const AccordionContext = createContext<AccordionStore | null>(null)
@@ -43,16 +44,23 @@ export function Accordion({
   const store: AccordionStore = {
     open,
     baseId,
-    toggle: (val) => {
+    type,
+    /**
+     * `next` is the state the browser has already moved the `<details>` to. Exclusivity is
+     * still computed here rather than delegated to the native `name` grouping: jsdom does
+     * not implement `name`, so tests would diverge from browsers, and with JS on this
+     * signal is what actually drives the render. `name` covers the JS-off case only.
+     */
+    toggle: (val, next) => {
       const current = open.value
-      let next: string[]
+      let updated: string[]
       if (type === 'multiple') {
-        next = current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
+        updated = next ? [...new Set([...current, val])] : current.filter((v) => v !== val)
       } else {
-        next = current.includes(val) ? [] : [val]
+        updated = next ? [val] : []
       }
-      if (value === undefined) open.value = next
-      onValueChange?.(type === 'multiple' ? next : (next[0] ?? ''))
+      if (value === undefined) open.value = updated
+      onValueChange?.(type === 'multiple' ? updated : (updated[0] ?? ''))
     },
   }
 
@@ -65,26 +73,88 @@ export function Accordion({
   )
 }
 
-export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
+export interface AccordionItemProps extends HTMLAttributes<HTMLElement> {
   value: string
 }
 
+/**
+ * Renders the `<details>` element itself, so `AccordionTrigger` (a `<summary>`) and
+ * `AccordionContent` land as its first and second children — which is exactly the shape
+ * consumers already write.
+ */
 export function AccordionItem({ value, className, children, ...props }: AccordionItemProps) {
   return (
     <AccordionItemContext.Provider value={{ value }}>
-      <div data-value={value} className={cn(styles['item'], className)} {...props}>
-        {children}
-      </div>
+      <AccordionContext.Consumer>
+        {(store) =>
+          store ? (
+            <AccordionItemDetails store={store} value={value} className={className} {...props}>
+              {children}
+            </AccordionItemDetails>
+          ) : null
+        }
+      </AccordionContext.Consumer>
     </AccordionItemContext.Provider>
   )
 }
 
+function AccordionItemDetails({
+  store,
+  value,
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLElement> & { store: AccordionStore; value: string }) {
+  useSignals()
+  const detailsRef = useRef<HTMLDetailsElement>(null)
+  const isOpen = store.open.value.includes(value)
+
+  /**
+   * A user click mutates `details.open` in the DOM behind React's back, so when the signal
+   * round-trips to the value React last rendered, React issues no update and the element
+   * stays stuck. Reconciling the property is what makes exclusive mode close the sibling.
+   */
+  useSignalEffect(() => {
+    const el = detailsRef.current
+    const next = store.open.value.includes(value)
+    if (el && el.open !== next) el.open = next
+  })
+
+  return (
+    <details
+      ref={detailsRef}
+      open={isOpen}
+      /* Native exclusivity for the JS-off case; the store owns it once JS runs. */
+      {...(store.type === 'single' ? { name: store.baseId } : {})}
+      data-value={value}
+      data-state={isOpen ? 'open' : 'closed'}
+      className={cn(styles['item'], className)}
+      onToggle={(event) => {
+        const el = event.currentTarget
+        if (el.open !== store.open.value.includes(value)) store.toggle(value, el.open)
+        /*
+          A controlled parent may refuse the change, leaving the signal where it was while
+          the browser has already moved the element. The signal is authoritative, so put
+          the DOM back. Writing `open` re-enters this handler once, finds both sides in
+          agreement, and stops.
+        */
+        const authoritative = store.open.value.includes(value)
+        if (el.open !== authoritative) el.open = authoritative
+      }}
+      {...props}
+    >
+      {children}
+    </details>
+  )
+}
+
 /**
- * `forwardRef` so `ref` reaches the trigger `<button>` — see `textarea.tsx` for the full
- * rationale (2026-07-28 report C10). The ref is threaded through the private Inner, which is
- * where the button actually lives.
+ * `forwardRef` so `ref` reaches the trigger element — see `textarea.tsx` for the full
+ * rationale (2026-07-28 report C10). The target is the `<summary>`, not a `<button>`:
+ * `<summary>` must be the first child of `<details>`, so it cannot be nested inside a
+ * heading. The heading moves inside it instead, which `<summary>`'s content model allows.
  */
-export const AccordionTrigger = forwardRef<HTMLButtonElement, HTMLAttributes<HTMLButtonElement>>(
+export const AccordionTrigger = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
   function AccordionTrigger(props, ref) {
     return (
       <AccordionContext.Consumer>
@@ -92,7 +162,7 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, HTMLAttributes<HTM
           <AccordionItemContext.Consumer>
             {(item) =>
               store && item ? (
-                <AccordionTriggerInner store={store} item={item} buttonRef={ref} {...props} />
+                <AccordionTriggerInner store={store} item={item} summaryRef={ref} {...props} />
               ) : null
             }
           </AccordionItemContext.Consumer>
@@ -107,33 +177,33 @@ function AccordionTriggerInner({
   item,
   className,
   children,
-  buttonRef,
+  summaryRef,
   ...props
-}: HTMLAttributes<HTMLButtonElement> & {
+}: HTMLAttributes<HTMLElement> & {
   store: AccordionStore
   item: { value: string }
-  buttonRef?: Ref<HTMLButtonElement>
+  summaryRef?: Ref<HTMLElement>
 }) {
   useSignals()
   const open = store.open.value.includes(item.value)
 
   return (
-    <h3 className={styles['heading']}>
-      <button
-        type="button"
-        id={`${store.baseId}-trigger-${item.value}`}
-        aria-expanded={open}
-        aria-controls={`${store.baseId}-content-${item.value}`}
-        data-state={open ? 'open' : 'closed'}
-        className={cn(styles['trigger'], className)}
-        onClick={() => store.toggle(item.value)}
-        ref={buttonRef}
-        {...props}
-      >
-        <span>{children}</span>
-        <span className={styles['indicator']} aria-hidden="true" />
-      </button>
-    </h3>
+    /*
+      No `aria-expanded` and no explicit `role`: `<summary>` carries the button role and the
+      expanded state natively, and re-declaring either overrides the disclosure mapping and
+      suppresses state announcement in some assistive tech.
+    */
+    <summary
+      id={`${store.baseId}-trigger-${item.value}`}
+      aria-controls={`${store.baseId}-content-${item.value}`}
+      data-state={open ? 'open' : 'closed'}
+      className={cn(styles['trigger'], className)}
+      ref={summaryRef}
+      {...props}
+    >
+      <h3 className={styles['heading']}>{children}</h3>
+      <span className={styles['indicator']} aria-hidden="true" />
+    </summary>
   )
 }
 
@@ -158,19 +228,15 @@ function AccordionContentInner({
   children,
   ...props
 }: HTMLAttributes<HTMLDivElement> & { store: AccordionStore; item: { value: string } }) {
-  useSignals()
-  const open = store.open.value.includes(item.value)
-
   return (
     <div
       role="region"
       id={`${store.baseId}-content-${item.value}`}
       aria-labelledby={`${store.baseId}-trigger-${item.value}`}
-      data-state={open ? 'open' : 'closed'}
       className={cn(styles['content'], className)}
       {...props}
     >
-      <div className={styles['contentInner']}>{children}</div>
+      {children}
     </div>
   )
 }

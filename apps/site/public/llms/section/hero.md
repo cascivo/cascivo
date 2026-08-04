@@ -67,6 +67,10 @@ Two-column layout with copy on the left and media on the right
 />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-text-4xl`

@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'DashboardCharts',
   description: 'Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

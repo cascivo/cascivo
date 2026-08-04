@@ -1,4 +1,3 @@
-'use client'
 import { Badge, Card, CardContent, CardHeader, CardTitle } from '@cascivo/react'
 
 interface Stat {

@@ -4,7 +4,7 @@
       "name": "radio",
       "label": "Radio",
       "primitive": "Native <input type=\"radio\">",
-      "loc": 172,
+      "loc": 171,
       "files": 2,
       "deps": 0
     },

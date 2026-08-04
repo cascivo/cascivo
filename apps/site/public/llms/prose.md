@@ -49,6 +49,10 @@ The use case: HTML you do not control (CMS, markdown pipelines)
 <Prose dangerouslySetInnerHTML={{ __html: html }} />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-font-sans`

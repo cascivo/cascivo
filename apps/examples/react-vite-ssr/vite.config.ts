@@ -20,6 +20,9 @@ export default defineConfig(({ isSsrBuild }) => ({
       // @cascivo/react: it must resolve to its built dist via the package
       // `exports` map, because the CSS-import edge only exists in the dist. An
       // alias here would make this example verify nothing (see readme.body.md).
+      // Must precede the bare '@cascivo/core' entry: a string alias replaces by
+      // prefix, so without this '@cascivo/core/pure' resolves to 'index.ts/pure'.
+      '@cascivo/core/pure': resolve(root, 'packages/core/src/pure.ts'),
       '@cascivo/core': resolve(root, 'packages/core/src/index.ts'),
       '@cascivo/i18n': resolve(root, 'packages/i18n/src/index.ts'),
     },

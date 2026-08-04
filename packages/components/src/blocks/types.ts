@@ -16,6 +16,12 @@ export type BlockMeta = {
   displayName: string
   description: string
   category: BlockCategory
+  /**
+   * How much client JavaScript this block needs to be correct — same tiers and same
+   * derivation rules as `ComponentMeta['clientJs']` (see `packages/core/src/types.ts`),
+   * enforced by `scripts/checks/client-js-parity.test.ts`.
+   */
+  clientJs?: 'none' | 'enhancement' | 'required'
   tags: string[]
   screenshot: {
     light: string

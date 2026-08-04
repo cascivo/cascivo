@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'DashboardLayout',
   description: 'Dashboard page layout with stats strip, main content area, and optional aside.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

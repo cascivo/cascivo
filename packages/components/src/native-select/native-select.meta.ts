@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring',
   category: 'inputs',
+  clientJs: 'none',
   states: ['default', 'focus', 'disabled', 'invalid'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

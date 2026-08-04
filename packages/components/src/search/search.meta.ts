@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Search',
   description: 'Search input with debounced search callback and clear button',
   category: 'inputs',
+  clientJs: 'enhancement',
   states: ['empty', 'filled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

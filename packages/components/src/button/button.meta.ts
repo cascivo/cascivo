@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Button',
   description: 'Triggers an action or event',
   category: 'inputs',
+  clientJs: 'none',
   states: ['idle', 'loading'],
   variants: ['primary', 'secondary', 'ghost', 'destructive'],
   sizes: ['sm', 'md', 'lg'],

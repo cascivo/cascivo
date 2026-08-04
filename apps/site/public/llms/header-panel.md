@@ -48,6 +48,10 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 </HeaderPanel>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-shell-header-block-size`

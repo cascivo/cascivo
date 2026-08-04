@@ -163,10 +163,13 @@ function cssImportEdges() {
       this.emitFile({
         type: 'asset',
         fileName: 'index.js',
-        source: "'use client';\nexport * from './react/src/index.js';\n",
+        source: "export * from './react/src/index.js';\n",
       })
-      // Collapse the duplicate 'use client' (source directive + banner) in
-      // component chunks that did not receive a CSS import above.
+      // Collapse any duplicate 'use client' in component chunks that did not receive a CSS
+      // import above. The barrel above is deliberately directive-FREE: it only re-exports,
+      // and each client component carries its own directive in its own chunk
+      // (preserveModules keeps them one-to-one), so a Server Component importing a
+      // `clientJs: 'none'` component from here never crosses a boundary.
       for (const fileName of Object.keys(bundle)) {
         const chunk = bundle[fileName]
         if (chunk.type !== 'chunk' || typeof chunk.code !== 'string') continue
@@ -191,7 +194,7 @@ function cssImportEdges() {
       this.emitFile({
         type: 'asset',
         fileName: 'node/index.js',
-        source: "'use client';\nexport * from './react/src/index.js';\n",
+        source: "export * from './react/src/index.js';\n",
       })
     },
   }
@@ -210,8 +213,12 @@ export default defineConfig({
         /^react($|\/)/,
         /^react-dom($|\/)/,
         '@preact/signals-react',
-        '@cascivo/core',
-        '@cascivo/i18n',
+        // Subpath-AWARE, like packages/core's own externals: an exact string misses
+        // `@cascivo/core/pure` (the server-safe subset every `clientJs: 'none'` component
+        // imports), which would bundle a second copy of `cn`/`Slot` into this package and
+        // duplicate their types in the published .d.ts.
+        /^@cascivo\/core($|\/)/,
+        /^@cascivo\/i18n($|\/)/,
       ],
       output: {
         // One file per component so consumers tree-shake unused components +
@@ -227,8 +234,14 @@ export default defineConfig({
           if (name.endsWith('.module.css')) return name.replace(/\.module\.css$/, '.css')
           return '[name][extname]'
         },
-        // Components are client components; preserve the directive for RSC consumers.
-        banner: "'use client';",
+        // NO blanket banner. `preserveModules` emits one chunk per source file, so each
+        // component's own directive survives into its own chunk; a banner would only add
+        // it to the components that deliberately do NOT declare one (`clientJs: 'none'`),
+        // making every static component a client boundary for nothing.
+        //
+        // Unlike packages/core, whose SINGLE-ENTRY build really does collapse 23
+        // directive-carrying modules into one chunk and drop their directives — its banner
+        // is load-bearing and must stay. The difference is preserveModules.
       },
     },
   },

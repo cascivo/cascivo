@@ -1,4 +1,3 @@
-'use client'
 import type { ReactNode } from 'react'
 
 export type FillKind = 'solid' | 'gradient' | 'pattern'

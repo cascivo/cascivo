@@ -1,4 +1,3 @@
-'use client'
 import type { LinearScale } from '../engine/scale'
 
 export interface GridLinesProps {

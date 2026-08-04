@@ -6,6 +6,7 @@ export const meta: BlockMeta = {
   description:
     'Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.',
   category: 'marketing',
+  clientJs: 'none',
   tags: ['marketing', 'testimonials', 'social-proof', 'cards'],
   screenshot: {
     light: '/blocks/screenshots/testimonials-light.png',

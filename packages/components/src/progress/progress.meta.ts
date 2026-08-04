@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Progress',
   description: 'Horizontal bar showing the completion progress of a tracked operation',
   category: 'feedback',
+  clientJs: 'none',
   states: ['determinate', 'indeterminate'],
   variants: ['primary', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md', 'lg'],

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions',
   category: 'inputs',
+  clientJs: 'required',
   states: ['default', 'open', 'closed'],
   variants: [],
   sizes: [],

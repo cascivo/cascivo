@@ -41,6 +41,10 @@ import { Separator } from '@cascivo/react'
 <Separator orientation="vertical" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-border`

@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Circular progress indicator using conic-gradient, with percentage label and variant colors',
   category: 'feedback',
+  clientJs: 'none',
   states: [],
   variants: ['primary', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md', 'lg'],

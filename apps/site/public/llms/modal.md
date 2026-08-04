@@ -53,6 +53,10 @@ import { Modal } from '@cascivo/react'
 </Modal>
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-color-surface-overlay`

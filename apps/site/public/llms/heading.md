@@ -59,6 +59,10 @@ Keep the document outline correct while controlling the visual scale
 </Heading>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-font-display`

@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { HTMLAttributes, LiHTMLAttributes } from 'react'
 import styles from './list.module.css'
 

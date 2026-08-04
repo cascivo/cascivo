@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'PasswordInput',
   description: 'Password input with reveal toggle and optional strength meter',
   category: 'inputs',
+  clientJs: 'enhancement',
   states: ['idle', 'revealed'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

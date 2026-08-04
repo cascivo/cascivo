@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Input',
   description: 'Text input field with optional label, hint, and error state',
   category: 'inputs',
+  clientJs: 'enhancement',
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

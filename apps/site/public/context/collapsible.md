@@ -28,18 +28,18 @@
 
 ## Accessibility rationale
 
-The trigger is a native button exposing aria-expanded and aria-controls; the region is labelled by the trigger, so screen readers announce the disclosure state and target
+Built on a native <details>/<summary>, so the button role, the expanded state, and Enter/Space activation come from the platform rather than from ARIA, and the content renders before any JavaScript runs; the region is labelled by the trigger so screen readers announce the disclosure target
 
 ## Props
 
-| Name           | Type                      | Required | Default | Description                                         |
-| -------------- | ------------------------- | -------- | ------- | --------------------------------------------------- |
-| `open`         | `boolean`                 | No       | —       | Controlled open state                               |
-| `defaultOpen`  | `boolean`                 | No       | false   | Initial open state for uncontrolled use             |
-| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called whenever the open state should change        |
-| `trigger`      | `ReactNode`               | Yes      | —       | Content rendered inside the built-in trigger button |
-| `disabled`     | `boolean`                 | No       | false   | Disables the trigger button                         |
-| `children`     | `ReactNode`               | No       | —       | Content of the collapsible region                   |
+| Name           | Type                      | Required | Default | Description                                                                                                                                                       |
+| -------------- | ------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`         | `boolean`                 | No       | —       | Controlled open state                                                                                                                                             |
+| `defaultOpen`  | `boolean`                 | No       | false   | Initial open state for uncontrolled use                                                                                                                           |
+| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called whenever the open state should change                                                                                                                      |
+| `trigger`      | `ReactNode`               | Yes      | —       | Content rendered inside the built-in trigger button                                                                                                               |
+| `disabled`     | `boolean`                 | No       | false   | Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable |
+| `children`     | `ReactNode`               | No       | —       | Content of the collapsible region                                                                                                                                 |
 
 ## Tokens
 

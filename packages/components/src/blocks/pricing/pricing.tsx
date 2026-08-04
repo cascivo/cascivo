@@ -1,4 +1,3 @@
-'use client'
 import { Badge } from '../../badge/badge'
 import { Button } from '../../button/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../card/card'

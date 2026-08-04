@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'MultiSelect',
   description: 'Searchable multi-value select with popover listbox',
   category: 'inputs',
+  clientJs: 'required',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

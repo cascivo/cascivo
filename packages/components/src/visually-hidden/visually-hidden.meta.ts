@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'VisuallyHidden',
   description: 'Hides content visually while keeping it available to screen readers',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

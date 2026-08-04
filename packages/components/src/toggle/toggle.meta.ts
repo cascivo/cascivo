@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Toggle',
   description: 'On/off switch built as an accessible button',
   category: 'inputs',
+  clientJs: 'enhancement',
   states: ['off', 'on'],
   variants: [],
   sizes: ['sm', 'md'],

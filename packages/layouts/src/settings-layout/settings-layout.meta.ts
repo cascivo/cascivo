@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'SettingsLayout',
   description: 'Two-column settings page layout with a fixed-width menu and fluid content area.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

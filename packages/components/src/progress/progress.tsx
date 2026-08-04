@@ -1,4 +1,3 @@
-'use client'
 import styles from './progress.module.css'
 
 export type ProgressVariant = 'primary' | 'info' | 'success' | 'warning' | 'error'

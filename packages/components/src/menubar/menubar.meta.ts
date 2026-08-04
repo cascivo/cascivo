@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Menubar',
   description: 'Horizontal application menu bar with keyboard-navigable dropdown menus',
   category: 'navigation',
+  clientJs: 'required',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

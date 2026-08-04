@@ -15,8 +15,12 @@ export default defineConfig({
         /^react($|\/)/,
         /^react-dom($|\/)/,
         '@preact/signals-react',
-        '@cascivo/core',
-        '@cascivo/i18n',
+        // Subpath-AWARE, like packages/core's own externals: an exact string misses
+        // `@cascivo/core/pure` (the server-safe subset every `clientJs: 'none'` component
+        // imports), which would bundle a second copy of `cn`/`Slot` into this package and
+        // duplicate their types in the published .d.ts.
+        /^@cascivo\/core($|\/)/,
+        /^@cascivo\/i18n($|\/)/,
       ],
       output: {
         // The editor surfaces are signal-driven client components; preserve the

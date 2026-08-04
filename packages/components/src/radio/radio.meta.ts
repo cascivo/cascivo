@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Radio',
   description: 'Single choice from a set, grouped with RadioGroup',
   category: 'inputs',
+  clientJs: 'none',
   states: ['unchecked', 'checked'],
   variants: [],
   sizes: [],

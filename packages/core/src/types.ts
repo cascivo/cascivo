@@ -87,6 +87,28 @@ export interface ComponentMeta {
     | 'layout'
     | 'block'
     | 'chart'
+  /**
+   * How much client JavaScript this component needs in order to be correct.
+   *
+   * - `'none'` — no client-only React API, no signal primitive, no DOM handler of its own.
+   *   The server-rendered HTML is complete; disabling JS loses nothing, and the component
+   *   may be rendered from a React Server Component without ever hydrating. Native-control
+   *   wrappers land here even though they are interactive: the platform provides the
+   *   interaction.
+   * - `'enhancement'` — the server-rendered HTML is correct and **no content is unreachable**
+   *   with JS off; client JS adds interaction on top.
+   * - `'required'` — without client JS the component renders nothing useful, or renders a
+   *   shell whose content is unreachable.
+   *
+   * Describes the component, not a usage: `Button` is `'none'` even though most callers pass
+   * `onClick`, because the handler is the caller's client code.
+   *
+   * Optional — absent means **unclassified**, not `'required'`. `clientJs: 'none'` is derived
+   * from source and asserted in both directions by `scripts/checks/client-js-parity.test.ts`;
+   * the other two tiers are author-declared, because no scan can tell "content is merely
+   * hidden" from "content is unreachable".
+   */
+  clientJs?: 'none' | 'enhancement' | 'required'
   states: string[]
   variants: string[]
   sizes: string[]

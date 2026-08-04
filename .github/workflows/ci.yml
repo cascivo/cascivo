@@ -146,6 +146,14 @@ jobs:
       - name: Bare-page canary (no app CSS, stacked components, real hit-testing)
         run: pnpm run bare-page:check
 
+      # The no-JS leg: server HTML mounted and never hydrated, so the disclosure base layer
+      # is driven by the browser alone. jsdom exposes neither <summary>'s button role nor
+      # Enter/Space activation nor <details name> exclusivity, so the platform behaviour
+      # `clientJs: 'enhancement'` claims for Accordion/Collapsible is unprovable in the unit
+      # suite and is asserted only here.
+      - name: No-JS disclosure canary (static markup, real keyboard)
+        run: pnpm run no-js:check
+
       # Executable form of the C2 report: builds a real Astro app with one client directive
       # per page and reports, per directive, whether the component CSS its markup references
       # was actually emitted. Exits 0 either way — it keeps the compatibility grade honest,

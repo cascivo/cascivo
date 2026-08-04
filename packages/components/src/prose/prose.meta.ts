@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Prose',
   description: 'Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

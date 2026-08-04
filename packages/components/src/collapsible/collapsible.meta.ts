@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Collapsible',
   description: 'A single disclosure region toggled open and closed by its trigger',
   category: 'display',
+  clientJs: 'enhancement',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],
@@ -38,7 +39,8 @@ export const meta: ComponentMeta = {
       type: 'boolean',
       required: false,
       default: 'false',
-      description: 'Disables the trigger button',
+      description:
+        'Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable',
     },
     {
       name: 'children',
@@ -106,7 +108,7 @@ export const meta: ComponentMeta = {
       },
     ],
     a11yRationale:
-      'The trigger is a native button exposing aria-expanded and aria-controls; the region is labelled by the trigger, so screen readers announce the disclosure state and target',
+      'Built on a native <details>/<summary>, so the button role, the expanded state, and Enter/Space activation come from the platform rather than from ARIA, and the content renders before any JavaScript runs; the region is labelled by the trigger so screen readers announce the disclosure target',
     flexibility: [
       {
         area: 'open state',

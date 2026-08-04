@@ -5,6 +5,7 @@ export const meta: BlockMeta = {
   displayName: 'Hero Section',
   description: 'Full-width hero with headline, subtitle, CTA pair, and trust badges.',
   category: 'marketing',
+  clientJs: 'none',
   tags: ['marketing', 'hero', 'landing', 'cta'],
   screenshot: {
     light: '/blocks/screenshots/marketing-hero-light.png',

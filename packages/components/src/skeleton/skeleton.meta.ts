@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Skeleton',
   description: 'Animated loading placeholder that mirrors the shape of pending content',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['text', 'circle', 'rect'],
   sizes: [],

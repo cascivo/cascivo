@@ -6,7 +6,7 @@
     {
       "path": "layout-dashboard-layout/dashboard-layout.tsx",
       "type": "registry:block",
-      "content": "'use client'\nimport { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './dashboard-layout.module.css'\n\nexport interface DashboardLayoutProps {\n  stats?: ReactNode\n  main: ReactNode\n  aside?: ReactNode\n  className?: string | undefined\n}\n\nexport function DashboardLayout({ stats, main, aside, className }: DashboardLayoutProps) {\n  return (\n    <div className={cn(styles['layout'], className)}>\n      {stats && <div className={styles['stats']}>{stats}</div>}\n      <div className={styles['body']}>\n        <div className={styles['main']}>{main}</div>\n        {aside && <div className={styles['aside']}>{aside}</div>}\n      </div>\n    </div>\n  )\n}\n"
+      "content": "import { cn } from '@cascivo/core/pure'\nimport type { ReactNode } from 'react'\nimport styles from './dashboard-layout.module.css'\n\nexport interface DashboardLayoutProps {\n  stats?: ReactNode\n  main: ReactNode\n  aside?: ReactNode\n  className?: string | undefined\n}\n\nexport function DashboardLayout({ stats, main, aside, className }: DashboardLayoutProps) {\n  return (\n    <div className={cn(styles['layout'], className)}>\n      {stats && <div className={styles['stats']}>{stats}</div>}\n      <div className={styles['body']}>\n        <div className={styles['main']}>{main}</div>\n        {aside && <div className={styles['aside']}>{aside}</div>}\n      </div>\n    </div>\n  )\n}\n"
     },
     {
       "path": "layout-dashboard-layout/dashboard-layout.module.css",

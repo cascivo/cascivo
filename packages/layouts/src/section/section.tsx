@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { CSSProperties, HTMLAttributes } from 'react'
 import styles from './section.module.css'
 import type { SpaceStep } from '@cascivo/core'

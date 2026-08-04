@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'FlowPanel',
   description: 'An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 import styles from './aspect-ratio.module.css'
 

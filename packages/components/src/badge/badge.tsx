@@ -1,5 +1,4 @@
-'use client'
-import { cn, normalizeTone } from '@cascivo/core'
+import { cn, normalizeTone } from '@cascivo/core/pure'
 import type { ToneInput } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './badge.module.css'

@@ -4,6 +4,9 @@ import { defineConfig } from 'vite-plus'
 export default defineConfig({
   resolve: {
     alias: {
+      // Must precede the bare '@cascivo/core' entry: a string alias replaces by
+      // prefix, so without this '@cascivo/core/pure' resolves to 'index.ts/pure'.
+      '@cascivo/core/pure': resolve(__dirname, '../../../packages/core/src/pure.ts'),
       '@cascivo/core': resolve(__dirname, '../../../packages/core/src/index.ts'),
       '@cascivo/storage': resolve(__dirname, '../../../packages/storage/src/index.ts'),
       '@cascivo/i18n': resolve(__dirname, '../../../packages/i18n/src/index.ts'),

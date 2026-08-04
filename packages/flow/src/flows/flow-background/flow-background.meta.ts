@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'FlowBackground',
   description: 'Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: ['dots', 'grid', 'cross'],
   sizes: [],

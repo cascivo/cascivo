@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { Avatar } from '../avatar/avatar'
 import type { AvatarProps } from '../avatar/avatar'

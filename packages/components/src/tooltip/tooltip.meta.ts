@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Tooltip',
   description: 'Contextual label shown on hover or focus',
   category: 'overlay',
+  clientJs: 'required',
   states: ['hidden', 'visible'],
   variants: [],
   sizes: [],

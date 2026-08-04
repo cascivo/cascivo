@@ -1,5 +1,4 @@
-'use client'
-import { cn, sentimentOf } from '@cascivo/core'
+import { cn, sentimentOf } from '@cascivo/core/pure'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './stat.module.css'
 

@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import { Sparkline } from '@cascivo/charts'
 import type { HTMLAttributes } from 'react'
 import { AutoGrid } from '../../auto-grid/auto-grid'

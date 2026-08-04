@@ -1,4 +1,3 @@
-'use client'
 import { AXIS_CHAR_PX } from '../core/use-chart'
 import type { BandScale, LinearScale } from '../engine/scale'
 import type { LogScale } from '../engine/scale-log'

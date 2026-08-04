@@ -67,6 +67,10 @@ import { ProgressBar } from '@cascivo/react'
 <ProgressBar value={100} status="success" label="Upload complete" />
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-accent`

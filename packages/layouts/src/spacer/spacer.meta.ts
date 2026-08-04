@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Spacer',
   description: 'Fixed-height spacing block using design token steps.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

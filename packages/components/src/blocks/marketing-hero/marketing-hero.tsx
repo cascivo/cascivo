@@ -1,4 +1,3 @@
-'use client'
 import { Badge } from '../../badge/badge'
 import { Button } from '../../button/button'
 import styles from './marketing-hero.module.css'

@@ -42,6 +42,10 @@ Attribution renders as <footer><cite>
 <Blockquote cite="Dieter Rams">Less, but better.</Blockquote>
 ```
 
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
 ## Design tokens
 
 - `--cascivo-color-border-strong`

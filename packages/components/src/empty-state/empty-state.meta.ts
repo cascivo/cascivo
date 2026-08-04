@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'EmptyState',
   description: 'Placeholder for views that have no data to display',
   category: 'display',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: ['md', 'lg'],

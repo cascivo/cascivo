@@ -13,8 +13,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.module.css"
       ],
       "fileHashes": {
-        "accordion.tsx": "sha256-0f25f418a32db53c0400e08c1b400179c38978dde15a8b4dd0fcc9b80d943d4a",
-        "accordion.module.css": "sha256-0690d967181b92475453f566917af6fe4876c12fce1695a92ef68010da0f228c"
+        "accordion.tsx": "sha256-a61f8af9363948fecdb0e28480c163cde927b13f3e4840e44e6977a021643a15",
+        "accordion.module.css": "sha256-d559585cd5a3803d10319a19e7d62ccc0a4efc1a3d1ba569af28c9fdbd4f0a4c"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -25,6 +25,7 @@
         "name": "Accordion",
         "description": "Vertically stacked, collapsible content sections",
         "category": "navigation",
+        "clientJs": "enhancement",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -102,7 +103,7 @@
               "reason": "Tabs switch between peer views; Accordion stacks sequential sections vertically"
             }
           ],
-          "a11yRationale": "Each trigger is a native <button> exposing aria-expanded and controlling its panel via aria-controls, so screen readers announce open/closed state and Enter/Space toggle from the platform",
+          "a11yRationale": "Each item is a native <details> and each trigger its <summary>, so the button role, the expanded state, and Enter/Space activation all come from the platform rather than from ARIA — and the open panel renders before any JavaScript runs. The trigger wraps a heading so heading navigation still reaches each section, and each panel is a role=\"region\" labelled by its trigger",
           "flexibility": [
             {
               "area": "single vs multiple",
@@ -143,6 +144,7 @@
         "name": "ActionSheet",
         "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -459,6 +461,7 @@
         "name": "AlertDialog",
         "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": ["default", "destructive"],
         "sizes": [],
@@ -747,7 +750,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.module.css"
       ],
       "fileHashes": {
-        "aspect-ratio.tsx": "sha256-3d536cb4c1be1f64771902d55f8c7a1647fa5316d35a1743ec48109847e2b0d8",
+        "aspect-ratio.tsx": "sha256-759d67b119b4702e0b7141c17541195bab82d491941d88732832b3ac24668d80",
         "aspect-ratio.module.css": "sha256-45fe567e8d1e3e8c98e15503cfecf46f488d2cee567d6ae8d87624a0abab47ea"
       },
       "dependencies": ["@cascivo/core"],
@@ -759,6 +762,7 @@
         "name": "AspectRatio",
         "description": "Constrains content to a fixed width-to-height ratio",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -986,7 +990,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.module.css"
       ],
       "fileHashes": {
-        "avatar-group.tsx": "sha256-35a1679d64654d2bd174f50c3c2252f340788f239d52ab9a5045208ef5bf6343",
+        "avatar-group.tsx": "sha256-9f37862c28bf567516492685881d8288302ccb23f2f3e59e0854f4a3876fb822",
         "avatar-group.module.css": "sha256-6a3367c2fa054dc6d0ff0ca768f0162a5c9f4de52f539c0d3f4090c39924c810"
       },
       "dependencies": ["@cascivo/core", "@cascivo/components"],
@@ -999,6 +1003,7 @@
         "name": "AvatarGroup",
         "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
         "category": "display",
+        "clientJs": "none",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -1122,7 +1127,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
       ],
       "fileHashes": {
-        "badge.tsx": "sha256-0fe2cdf5c97f8a6e40ad7b46e251dd5d9552a9bec6b2b16c3aa736b642936920",
+        "badge.tsx": "sha256-0a4143e1d92e139095e24eb9c3726101ce726e1ce6ca3fb7c66915f9fb064034",
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0"
       },
       "dependencies": ["@cascivo/core"],
@@ -1134,6 +1139,7 @@
         "name": "Badge",
         "description": "Small status label or category indicator",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["default", "secondary", "success", "warning", "destructive", "outline"],
         "sizes": ["sm", "md"],
@@ -1259,7 +1265,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.module.css"
       ],
       "fileHashes": {
-        "blockquote.tsx": "sha256-6619887aefd8087aa23afa1acb7cf75ab51d3b6eb92b14b6cbe818f96af07c91",
+        "blockquote.tsx": "sha256-bb95f2d7b170b0777c2ab28a72157060e33b4d1ec61c55de293cd3cb7f8634b9",
         "blockquote.module.css": "sha256-2d67d6719167f6bed6857a2be2ea7041d70b29e0124c7e1d536a16ac9d956bfb"
       },
       "dependencies": ["@cascivo/core"],
@@ -1271,6 +1277,7 @@
         "name": "Blockquote",
         "description": "Quoted passage with optional attribution footer",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -1380,6 +1387,7 @@
         "name": "BottomSheet",
         "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed", "dragging"],
         "variants": [],
         "sizes": [],
@@ -1674,7 +1682,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.module.css"
       ],
       "fileHashes": {
-        "button.tsx": "sha256-5a6f2bf9208d0f93db7ef85e58c6e84b01ee02176fe570eb5c679e1520ec1879",
+        "button.tsx": "sha256-491998c651771badb072d1d5e9f9c284ccf6af39d5876899b6c8edb843786b19",
         "button.module.css": "sha256-b6ff24230a9cc0e6c45aa64b2b3bef77efa1fa0f56fe132e2d0765e79fcdc039"
       },
       "dependencies": ["@cascivo/core"],
@@ -1686,6 +1694,7 @@
         "name": "Button",
         "description": "Triggers an action or event",
         "category": "inputs",
+        "clientJs": "none",
         "states": ["idle", "loading"],
         "variants": ["primary", "secondary", "ghost", "destructive"],
         "sizes": ["sm", "md", "lg"],
@@ -2198,7 +2207,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.module.css"
       ],
       "fileHashes": {
-        "card.tsx": "sha256-072752ba72696fe4e3b3aa456edf039b1c4f1d8ea09f4a2830470b82658fc179",
+        "card.tsx": "sha256-5475c78c37ce44f8624dd276426d95623981a692fc1fda1bc347eb77699dc2b6",
         "card.module.css": "sha256-c25ebadc3082572c5e43f979f7f6ececc6cc7bb8db007bba75f99729c4499368"
       },
       "dependencies": ["@cascivo/core"],
@@ -2210,6 +2219,7 @@
         "name": "Card",
         "description": "Container for grouping related content",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["default", "outlined", "elevated"],
         "sizes": [],
@@ -2457,6 +2467,7 @@
         "name": "ChatBubble",
         "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["start", "end"],
         "sizes": [],
@@ -2602,6 +2613,7 @@
         "name": "Checkbox",
         "description": "Binary toggle for forms, with indeterminate support",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["unchecked", "checked", "indeterminate"],
         "variants": [],
         "sizes": [],
@@ -2868,7 +2880,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/code.module.css"
       ],
       "fileHashes": {
-        "code.tsx": "sha256-3ae2757b3590320a27971e8eea48a2702d7df3abc15ef8fdb96950d923059235",
+        "code.tsx": "sha256-b8534658238f4f64a85159e93b055590571c09ec4e6ea925dfecb5fa93940dae",
         "code.module.css": "sha256-795e9e62fcedbf7f83b8548fc99d7f2b392e5eca7ce3ee1dcdc98005b69340ae"
       },
       "dependencies": ["@cascivo/core"],
@@ -2880,6 +2892,7 @@
         "name": "Code",
         "description": "Inline code span for identifiers, commands, and short snippets",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -3163,8 +3176,8 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.module.css"
       ],
       "fileHashes": {
-        "collapsible.tsx": "sha256-3f9377474dae25c2911971d08203bb14a759e64169cb0090f4a8b3ee05903f7e",
-        "collapsible.module.css": "sha256-2dc44bd421295fc372eac76be82ddbd08abb9e7938e351d5d946d412f3008d4c"
+        "collapsible.tsx": "sha256-2864d6e8532a79077079950e22caedd33ad4123674ff5d99498efd0405aa1008",
+        "collapsible.module.css": "sha256-f007d00fdbdaeb7fb68e214100a8f1173391136a28a60f0b154a689e46af4594"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -3175,6 +3188,7 @@
         "name": "Collapsible",
         "description": "A single disclosure region toggled open and closed by its trigger",
         "category": "display",
+        "clientJs": "enhancement",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -3209,7 +3223,7 @@
             "type": "boolean",
             "required": false,
             "default": "false",
-            "description": "Disables the trigger button"
+            "description": "Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable"
           },
           {
             "name": "children",
@@ -3273,7 +3287,7 @@
               "reason": "Multi-region disclosure; Collapsible is the single-region case"
             }
           ],
-          "a11yRationale": "The trigger is a native button exposing aria-expanded and aria-controls; the region is labelled by the trigger, so screen readers announce the disclosure state and target",
+          "a11yRationale": "Built on a native <details>/<summary>, so the button role, the expanded state, and Enter/Space activation come from the platform rather than from ARIA, and the content renders before any JavaScript runs; the region is labelled by the trigger so screen readers announce the disclosure target",
           "flexibility": [
             {
               "area": "open state",
@@ -3474,6 +3488,7 @@
         "name": "Combobox",
         "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
         "category": "inputs",
+        "clientJs": "required",
         "states": ["closed", "open", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -3688,6 +3703,7 @@
         "name": "CommandMenu",
         "description": "Cmd+K command palette with fuzzy search over grouped commands",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -4198,6 +4214,7 @@
         "name": "ContextMenu",
         "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -4422,7 +4439,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.module.css"
       ],
       "fileHashes": {
-        "data-list.tsx": "sha256-6d00a69f7feec2ba83173941eb3d560dc13277b056bf962a97095aff1a64e80f",
+        "data-list.tsx": "sha256-2307d2a76bddaf4bd5431eba4b3d56a3eef24a8e2d54fcfef6c17033213d4534",
         "data-list.module.css": "sha256-2543d44f539a0b05d7f4ee26b3d5b481797444173fe4d9f5e5f14ceaeea7242d"
       },
       "dependencies": ["@cascivo/core"],
@@ -4434,6 +4451,7 @@
         "name": "DataList",
         "description": "Key-value pairs rendered as a description list",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["horizontal", "vertical"],
         "sizes": ["sm", "md"],
@@ -4901,6 +4919,7 @@
         "name": "DatePicker",
         "description": "An accessible date-picker with a calendar popover.",
         "category": "inputs",
+        "clientJs": "required",
         "states": ["default", "open", "error", "disabled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -5117,6 +5136,7 @@
         "name": "DateRangePicker",
         "description": "A dual-calendar picker for selecting a contiguous date range.",
         "category": "inputs",
+        "clientJs": "required",
         "states": ["default", "open", "selecting"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -5436,6 +5456,7 @@
         "name": "Drawer",
         "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -5612,6 +5633,7 @@
         "name": "Dropdown",
         "description": "Menu of actions revealed from a trigger",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -5887,7 +5909,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.module.css"
       ],
       "fileHashes": {
-        "empty-state.tsx": "sha256-d3578124fba56c367b5793c335ec4b904bf554aa30678a38db796aa09d210bb9",
+        "empty-state.tsx": "sha256-8f985213d17a36d7abaf3591569854869d4550e15f06479ecc0909aaa3d8cf7b",
         "empty-state.module.css": "sha256-a96b87df58c53d5f14db3962fa0c3bd68bff8186b83b31c064206bc4cad2e747"
       },
       "dependencies": ["@cascivo/core"],
@@ -5899,6 +5921,7 @@
         "name": "EmptyState",
         "description": "Placeholder for views that have no data to display",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": ["md", "lg"],
@@ -6032,6 +6055,7 @@
         "name": "Fab",
         "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
         "category": "inputs",
+        "clientJs": "required",
         "states": ["default", "open", "closed"],
         "variants": [],
         "sizes": [],
@@ -6190,7 +6214,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
       ],
       "fileHashes": {
-        "field.tsx": "sha256-c6be47470c7d2be402b5310620db24efda0b151dd4092c73ebad45b54fc61aac",
+        "field.tsx": "sha256-ca7d2211925e35431487ed420fa77d3abddd6b9df024facfb8616cc8e71b49c1",
         "field.module.css": "sha256-0aeb9ff8562b462d119eef97fec7766d80452366edc87eeee633d1ca24ea9468"
       },
       "dependencies": ["@cascivo/core"],
@@ -6202,6 +6226,7 @@
         "name": "Field",
         "description": "Form-field wrapper composing label, control, description, and error",
         "category": "inputs",
+        "clientJs": "none",
         "states": ["default", "disabled", "invalid"],
         "variants": [],
         "sizes": [],
@@ -6991,6 +7016,7 @@
         "name": "HeaderPanel",
         "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
         "category": "navigation",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -7111,7 +7137,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.module.css"
       ],
       "fileHashes": {
-        "heading.tsx": "sha256-7058dfaebc6608f357dff7f17210642e0ca56af011b2b4dbb3f929cb3c9bb308",
+        "heading.tsx": "sha256-605008ea4ccca86e6b2268227a1c5c48279536544685e79ac49f675867940d5e",
         "heading.module.css": "sha256-c875b4b9398b9c50e9e911741c21836678687beef9483cbdc1a8f9ebc54966c5"
       },
       "dependencies": ["@cascivo/core"],
@@ -7123,6 +7149,7 @@
         "name": "Heading",
         "description": "Section heading with semantic level decoupled from visual size",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg", "xl", "2xl"],
@@ -7249,6 +7276,7 @@
         "name": "HoverCard",
         "description": "Hover-triggered popover with configurable open/close delay",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -7364,7 +7392,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
       ],
       "fileHashes": {
-        "icon-button.tsx": "sha256-1fd35a98f6e7a2af50736d3b126984a0ebfa1c6ea0d90e7bf4a7ba43b47dfe77",
+        "icon-button.tsx": "sha256-ba00c324206db5f53555e1ef1a4d77a2f2728a378aa47ff8736e340788aa64b9",
         "icon-button.module.css": "sha256-6318b21f5f7783f201cff842754b07c4c4e4fa16a6287e509bc220da4bdf47cb"
       },
       "dependencies": ["@cascivo/core"],
@@ -7376,6 +7404,7 @@
         "name": "IconButton",
         "description": "Square, icon-only button with a required accessible label",
         "category": "inputs",
+        "clientJs": "none",
         "states": ["idle"],
         "variants": ["ghost", "outline", "filled"],
         "sizes": ["sm", "md", "lg"],
@@ -7707,6 +7736,7 @@
         "name": "Indicator",
         "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -7804,7 +7834,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/inline-loading.module.css"
       ],
       "fileHashes": {
-        "inline-loading.tsx": "sha256-d57f8302a9452e0dad41d2ae198fb175a324878627016d71a56e10128d8bdd8b",
+        "inline-loading.tsx": "sha256-50a99a14a4493b4bcc0efef386499209640930f021f176b5e489c79879f85b31",
         "inline-loading.module.css": "sha256-cd6c01b496ea7778e743d19e1ac04e5f55569dd96c1313655fdc5ed155dc8f94"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -7817,6 +7847,7 @@
         "name": "InlineLoading",
         "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
         "category": "feedback",
+        "clientJs": "none",
         "states": ["inactive", "active", "finished", "error"],
         "variants": [],
         "sizes": [],
@@ -7946,6 +7977,7 @@
         "name": "Input",
         "description": "Text input field with optional label, hint, and error state",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -8088,7 +8120,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/input-group.module.css"
       ],
       "fileHashes": {
-        "input-group.tsx": "sha256-5efcb5380015daef080ea8c067d953fbc4908b3112cb809886a347fdf19fe035",
+        "input-group.tsx": "sha256-532f3c1d292aa104e62c1c8693723d4e600d2bcf3e5156d5ec97322e48dcd2e8",
         "input-group.module.css": "sha256-417db77a965dd1c0a16d4a9add4f7e2e812e13d6447bd82e42d1563dfb114b22"
       },
       "dependencies": ["@cascivo/core"],
@@ -8100,6 +8132,7 @@
         "name": "InputGroup",
         "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
         "category": "inputs",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -8216,7 +8249,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.module.css"
       ],
       "fileHashes": {
-        "item.tsx": "sha256-7055b58c7bd7b5202746470cf3dc61baf1a2e1cd105810dca286bea17bb2dd27",
+        "item.tsx": "sha256-d664833d0ffa3d169e567da47a30aa807a805697aecaba01c7443aa7f3e3c5b3",
         "item.module.css": "sha256-74573cd2cf2265a0813d0e323ae4f6a54d4daf479fe06ec0ce6bbb4dfe1e1f6f"
       },
       "dependencies": ["@cascivo/core"],
@@ -8228,6 +8261,7 @@
         "name": "Item",
         "description": "Generic content row primitive with media, content, and action regions",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["default", "muted"],
         "sizes": ["sm", "md"],
@@ -8344,6 +8378,7 @@
         "name": "Join",
         "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -8438,7 +8473,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/kbd.module.css"
       ],
       "fileHashes": {
-        "kbd.tsx": "sha256-a39f79e83db9f1d753c81056bd7abf957c0ff8befc5ceea61689a26dbbe90922",
+        "kbd.tsx": "sha256-ec78b098e53fc3fd838bfae57be04d47ceecce7abaab2921cace2f7aa71d8c90",
         "kbd.module.css": "sha256-ab0c35cd53062ef3f521534cf8de9b3ecd55e4abb538b3200dfff073f7fe2205"
       },
       "dependencies": ["@cascivo/core"],
@@ -8450,6 +8485,7 @@
         "name": "Kbd",
         "description": "Displays a keyboard key or shortcut",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -8542,7 +8578,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.module.css"
       ],
       "fileHashes": {
-        "label.tsx": "sha256-d73fb3f144302a35b78915c93a37b1f178a86ddf7d8903e0df22b280766cc591",
+        "label.tsx": "sha256-4a25167d1a96f39ea149e5b92201b85b4c3c46241f9fb324f4e2bd1b932aab8b",
         "label.module.css": "sha256-4ad66385f2ed2f7864fbaf25ade338f1296aedb83fd3881d4e0b5e31a877fc2a"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -8555,6 +8591,7 @@
         "name": "Label",
         "description": "Accessible caption for a form control",
         "category": "inputs",
+        "clientJs": "none",
         "states": ["default", "disabled"],
         "variants": [],
         "sizes": [],
@@ -8698,7 +8735,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.module.css"
       ],
       "fileHashes": {
-        "link.tsx": "sha256-d9b7c1d0c85e88ecc9ffadb6c13e9da38391affad309fd2e95aee3dfe21743ae",
+        "link.tsx": "sha256-0b5822b68e64cbd3706b24a104ccbf0af3a310e5f420b79bf75aafd0ea4a67b0",
         "link.module.css": "sha256-f7a46896130cf3861ccdce5c70a20e4946d14d00dde51b8b98b9e86f5305c0b4"
       },
       "dependencies": ["@cascivo/core"],
@@ -8710,6 +8747,7 @@
         "name": "Link",
         "description": "Styled anchor for navigation, standalone or inline within prose",
         "category": "navigation",
+        "clientJs": "none",
         "states": [],
         "variants": ["standalone", "inline"],
         "sizes": ["sm", "md", "lg"],
@@ -8836,7 +8874,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.module.css"
       ],
       "fileHashes": {
-        "list.tsx": "sha256-054e3dc0cca265a55c074a33de1a94a2a32fe161ab34af378bc6ad4684f866af",
+        "list.tsx": "sha256-388545286df96ea367bea325dffb4baef882ddb3bab67ccd4d9e13631c2df36f",
         "list.module.css": "sha256-04cff38d1581297fbc1bf783c65c2f3525bd2ad12986a45fd173004173186fae"
       },
       "dependencies": ["@cascivo/core"],
@@ -8848,6 +8886,7 @@
         "name": "List",
         "description": "Styled unordered or ordered list with ListItem",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["disc", "decimal", "none"],
         "sizes": [],
@@ -9136,6 +9175,7 @@
         "name": "Menu",
         "description": "Dropdown menu with keyboard navigation, built on usePopover",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -9256,6 +9296,7 @@
         "name": "MenuButton",
         "description": "A button that opens an anchored action menu of one-shot commands",
         "category": "navigation",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": ["primary", "secondary", "ghost"],
         "sizes": ["sm", "md", "lg"],
@@ -9436,6 +9477,7 @@
         "name": "Menubar",
         "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
         "category": "navigation",
+        "clientJs": "required",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -9569,6 +9611,7 @@
         "name": "Modal",
         "description": "Accessible dialog overlay using native <dialog> element",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -9729,6 +9772,7 @@
         "name": "MultiSelect",
         "description": "Searchable multi-value select with popover listbox",
         "category": "inputs",
+        "clientJs": "required",
         "states": ["closed", "open"],
         "variants": [],
         "sizes": [],
@@ -9868,7 +9912,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.module.css"
       ],
       "fileHashes": {
-        "native-select.tsx": "sha256-c3b9eebb542ea947e88d9b3a36001318551c1f3f2ff01e0bd00781cffade4c59",
+        "native-select.tsx": "sha256-088333edf347cd38dceb8bc1e2125561fc334b8855170c9c983f1e2f6caf1988",
         "native-select.module.css": "sha256-5db10e0e8b579e8400de5616832442a2e89825f2a2e2803b5e802fde2ac02138"
       },
       "dependencies": ["@cascivo/core"],
@@ -9880,6 +9924,7 @@
         "name": "NativeSelect",
         "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
         "category": "inputs",
+        "clientJs": "none",
         "states": ["default", "focus", "disabled", "invalid"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -10346,6 +10391,7 @@
         "name": "NumberInput",
         "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -11009,6 +11055,7 @@
         "name": "PasswordInput",
         "description": "Password input with reveal toggle and optional strength meter",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["idle", "revealed"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -11162,6 +11209,7 @@
         "name": "Popover",
         "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -11286,7 +11334,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
       ],
       "fileHashes": {
-        "progress.tsx": "sha256-5c4ade92fd585564b7819269313c6f00a93306e42e6eb95e6e907ea43ed6b953",
+        "progress.tsx": "sha256-f040b25c27d4ec495a31775b8e137cdadbb4abce727b297e7dc263ead5c0e973",
         "progress.module.css": "sha256-b096cd775fd5682dce7112a207cea6072d9af8e513ef11a8065354446fbd449a"
       },
       "dependencies": ["@cascivo/core"],
@@ -11298,6 +11346,7 @@
         "name": "Progress",
         "description": "Horizontal bar showing the completion progress of a tracked operation",
         "category": "feedback",
+        "clientJs": "none",
         "states": ["determinate", "indeterminate"],
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
@@ -11434,7 +11483,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/progress-bar.module.css"
       ],
       "fileHashes": {
-        "progress-bar.tsx": "sha256-5dab144f4cf6e6cdc8224fdd05451d466f3d02558102464b6a31e907c05c2f70",
+        "progress-bar.tsx": "sha256-0096f48d19b1672fe725b22371810d0a5d56c119b6b3702a9a72da1f9218db68",
         "progress-bar.module.css": "sha256-6a9f481b3748c57d08fa06a4201ad720cc9d16f2074aa0edc81ff660790628ce"
       },
       "dependencies": ["@cascivo/core"],
@@ -11446,6 +11495,7 @@
         "name": "ProgressBar",
         "description": "Shows determinate or indeterminate progress of a task",
         "category": "feedback",
+        "clientJs": "none",
         "states": ["determinate", "indeterminate"],
         "variants": ["active", "success", "error"],
         "sizes": ["sm", "md"],
@@ -11579,7 +11629,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
       ],
       "fileHashes": {
-        "progress-circle.tsx": "sha256-d05a6f6faa7a48e6bbebda381c2c6492356f77bd0e4e20ad8e02f7ed35fe533c",
+        "progress-circle.tsx": "sha256-9bd4bf3aa2661eb273abbc21c5f0c2eb9905e1da7ac5cc46516926957b63c5c9",
         "progress-circle.module.css": "sha256-1d91d42681c703f98e6cc8e775a102c362bb899529a48e9646ba3d6721167c55"
       },
       "dependencies": ["@cascivo/core"],
@@ -11591,6 +11641,7 @@
         "name": "ProgressCircle",
         "description": "Circular determinate progress indicator rendered as an SVG arc",
         "category": "feedback",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -11709,7 +11760,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.module.css"
       ],
       "fileHashes": {
-        "progress-indicator.tsx": "sha256-3c6ccebcafacb38231e299bf1093aadac7f717408d4bd93bad093b257a9fe407",
+        "progress-indicator.tsx": "sha256-0212e4ee572abc5b9b5f99086684e97105eadb83b31e4f6b071815469a8fb22e",
         "progress-indicator.module.css": "sha256-408dad3a0db11ac5fcd71a812fa322cd557ed8ac1685948e44116a03de247418"
       },
       "dependencies": ["@cascivo/core"],
@@ -11721,6 +11772,7 @@
         "name": "ProgressIndicator",
         "description": "Shows progress through the steps of a multi-step flow",
         "category": "navigation",
+        "clientJs": "none",
         "states": ["complete", "current", "incomplete"],
         "variants": ["horizontal", "vertical"],
         "sizes": [],
@@ -11835,7 +11887,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.module.css"
       ],
       "fileHashes": {
-        "prose.tsx": "sha256-58a48e2f6634960265f4614b407fd37b72238bf03d85122fde1faa03f069f46d",
+        "prose.tsx": "sha256-ef323751d8e379be4084e50490b69ad2a84adf47a8492be06cb84069e9f22cae",
         "prose.module.css": "sha256-0d751b15fe871a32b78852a5443abfb0be90249a09e7164d4c358a92a2deebba"
       },
       "dependencies": ["@cascivo/core"],
@@ -11847,6 +11899,7 @@
         "name": "Prose",
         "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -12247,6 +12300,7 @@
         "name": "RadialProgress",
         "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
         "category": "feedback",
+        "clientJs": "none",
         "states": [],
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
@@ -12394,7 +12448,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.module.css"
       ],
       "fileHashes": {
-        "radio.tsx": "sha256-337de68c3376a54a9c15253f81728a3b9bb81c12500995de490269784d299f84",
+        "radio.tsx": "sha256-b73fa54a55278a5e524eb8adcbcc5e588d698b6e1f259b48112848bf09aee984",
         "radio.module.css": "sha256-505ca3d7c8e242dcb0f3a7149db2857f09e5dff3d712fb8dcf9badb21ca009ab"
       },
       "dependencies": ["@cascivo/core"],
@@ -12406,6 +12460,7 @@
         "name": "Radio",
         "description": "Single choice from a set, grouped with RadioGroup",
         "category": "inputs",
+        "clientJs": "none",
         "states": ["unchecked", "checked"],
         "variants": [],
         "sizes": [],
@@ -13205,6 +13260,7 @@
         "name": "Search",
         "description": "Search input with debounced search callback and clear button",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["empty", "filled"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -13534,6 +13590,7 @@
         "name": "Select",
         "description": "Native select menu styled to match the design system",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -13673,7 +13730,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.module.css"
       ],
       "fileHashes": {
-        "separator.tsx": "sha256-d9f097b90ca1f6ddbfc3c7bcccff5b2b170bddc8d3d75ec648201e40b9689e6c",
+        "separator.tsx": "sha256-586b288fa4a30514b29d0d6019ee6d62366d0b5975d465a7e3ca763301db7eb0",
         "separator.module.css": "sha256-d17fbd02899fe563a5e28fad65cad951e84d8bbbdafe30931fad3de8722d1ef4"
       },
       "dependencies": ["@cascivo/core"],
@@ -13685,6 +13742,7 @@
         "name": "Separator",
         "description": "Visual or semantic divider between content",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -13787,6 +13845,7 @@
         "name": "Sheet",
         "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["open", "closed"],
         "variants": [],
         "sizes": [],
@@ -13916,6 +13975,7 @@
         "name": "ShellHeader",
         "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
         "category": "navigation",
+        "clientJs": "required",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -14179,6 +14239,7 @@
         "name": "SideNav",
         "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
         "category": "navigation",
+        "clientJs": "required",
         "states": ["expanded", "collapsed"],
         "variants": [],
         "sizes": [],
@@ -14368,7 +14429,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.module.css"
       ],
       "fileHashes": {
-        "skeleton.tsx": "sha256-e66a1de1a25a0d221a97394c2278a5eead5a69c01bf09ab3b80275aea7eb20e4",
+        "skeleton.tsx": "sha256-a5e850a02a5a730eb19e1e71d78c9ebde7aa1fd3f3965fc55a3b15b6cfa07f80",
         "skeleton.module.css": "sha256-f66948cbe0383dace12f9d82650fbe061e5edf7227b049e9f817e54179d3ab44"
       },
       "dependencies": ["@cascivo/core"],
@@ -14380,6 +14441,7 @@
         "name": "Skeleton",
         "description": "Animated loading placeholder that mirrors the shape of pending content",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["text", "circle", "rect"],
         "sizes": [],
@@ -14510,6 +14572,7 @@
         "importSymbols": "SkipNavLink, SkipNavTarget",
         "description": "Skip link that jumps keyboard users past the navigation to the main content",
         "category": "navigation",
+        "clientJs": "enhancement",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -14622,7 +14685,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.module.css"
       ],
       "fileHashes": {
-        "slider.tsx": "sha256-69e2d25e4981ae1766a2a406ba08980e38c265a65b705623734986a123782931",
+        "slider.tsx": "sha256-8ca009de0ae576a6d91420fa20e568d46edec7d4fca8efc6182aade93a4b94b5",
         "slider.module.css": "sha256-4bff460e358e21d6595f9e3d4472642bcd9f9ee2826b810c76387c712d5c8632"
       },
       "dependencies": ["@cascivo/core"],
@@ -14634,6 +14697,7 @@
         "name": "Slider",
         "description": "Range input for selecting a value within bounds",
         "category": "inputs",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -14885,6 +14949,7 @@
         "name": "Stack",
         "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -14986,7 +15051,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
       ],
       "fileHashes": {
-        "stat.tsx": "sha256-beb4d287919b488598cdeeb4c85e72a560c96c560f61a0d6daa648e5af092c52",
+        "stat.tsx": "sha256-db2c4e53b112c1870fb3add3f30091760038dae61524df8c2e14560fbd58a567",
         "stat.module.css": "sha256-9ed322b9a80279a9ade2de1940f925ccc6741141ff95c9d164b54c19b7ca7874"
       },
       "dependencies": ["@cascivo/core"],
@@ -14998,6 +15063,7 @@
         "name": "Stat",
         "description": "Displays a key metric with optional delta, trend direction and help text",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -15143,7 +15209,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.module.css"
       ],
       "fileHashes": {
-        "status.tsx": "sha256-b4a3b886b674a21619663ed78dd361c44442e75630466caf5396efcdc85fcb8e",
+        "status.tsx": "sha256-2326dc7afd6805898fba3e82b0aa267da1eb4b0c99bf01352d396453ea170404",
         "status.module.css": "sha256-bd74f83a9465a3a9a9948a51a291ddc29b07e323540d9a1b328d2fad979fa96f"
       },
       "dependencies": ["@cascivo/core"],
@@ -15155,6 +15221,7 @@
         "name": "Status",
         "description": "Colored dot with a label communicating the state of a system or entity",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["success", "warning", "error", "info", "neutral"],
         "sizes": [],
@@ -16356,7 +16423,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.module.css"
       ],
       "fileHashes": {
-        "text.tsx": "sha256-a862813845dc796d1dfdd4f48564d9eb5f8a12952cd5f446a66fb79ce620a054",
+        "text.tsx": "sha256-a1aca1c42ef8e4abcadcc29d0c663e769682ee1f439c3fd76afc4fad0957f031",
         "text.module.css": "sha256-5d7d11e88320100b61c66160ec1bb43006a1c5e995280e47aa4a73dd8788c24e"
       },
       "dependencies": ["@cascivo/core"],
@@ -16368,6 +16435,7 @@
         "name": "Text",
         "description": "Body text with size, weight, and muted variants",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["normal", "medium", "semibold"],
         "sizes": ["sm", "md", "lg"],
@@ -16509,6 +16577,7 @@
         "name": "Textarea",
         "description": "Multi-line text input with optional label, hint, and error state",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["idle", "focused", "error"],
         "variants": [],
         "sizes": [],
@@ -16987,7 +17056,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.module.css"
       ],
       "fileHashes": {
-        "timeline.tsx": "sha256-572972fc0feb1509baaf33828028268d54863e04d8accd8524cfd01c51d95f01",
+        "timeline.tsx": "sha256-62d6402ea2eae272080792e05759179c5fa2df4ab34e69de798c567da921aa2a",
         "timeline.module.css": "sha256-e25b0e5a351adbca5eefa99c8328407006497c51cf44d0f020294b4e9cbda34a"
       },
       "dependencies": ["@cascivo/core"],
@@ -16999,6 +17068,7 @@
         "name": "Timeline",
         "description": "Ordered sequence of events with status markers and a connector line",
         "category": "display",
+        "clientJs": "none",
         "states": ["complete", "current", "upcoming"],
         "variants": ["vertical", "horizontal"],
         "sizes": [],
@@ -17387,6 +17457,7 @@
         "name": "Toggle",
         "description": "On/off switch built as an accessible button",
         "category": "inputs",
+        "clientJs": "enhancement",
         "states": ["off", "on"],
         "variants": [],
         "sizes": ["sm", "md"],
@@ -17875,6 +17946,7 @@
         "name": "Tooltip",
         "description": "Contextual label shown on hover or focus",
         "category": "overlay",
+        "clientJs": "required",
         "states": ["hidden", "visible"],
         "variants": [],
         "sizes": [],
@@ -18177,7 +18249,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.module.css"
       ],
       "fileHashes": {
-        "user.tsx": "sha256-35cd93fcff5f4bfe00c78d4df59d59463aa89672f3d811a5972e06343d3b8dbb",
+        "user.tsx": "sha256-1ab8caa807fd142f03162f0c64b74789d5195b21bdd386512681715192a2b8d2",
         "user.module.css": "sha256-d94f57f12e1784e025f85c00e31de446bd532de9f13e49b14928d72d8053a8f7"
       },
       "dependencies": ["@cascivo/core", "@cascivo/components"],
@@ -18190,6 +18262,7 @@
         "name": "User",
         "description": "Identity composite: an avatar with a name, description, and optional action slot",
         "category": "display",
+        "clientJs": "none",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -18296,7 +18369,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/visually-hidden.module.css"
       ],
       "fileHashes": {
-        "visually-hidden.tsx": "sha256-840e2ae59768678961adb59b42362e8c6700130bb44da8155c6d732ecaae01fb",
+        "visually-hidden.tsx": "sha256-e467a933b5a75882b10d60721ead662720796634e4a72d5d73ddf41c74636cca",
         "visually-hidden.module.css": "sha256-c48abbc8b2078546467ccb9d4ff08191ae2efdd11cca35207cd746b55abcc347"
       },
       "dependencies": ["@cascivo/core"],
@@ -18308,6 +18381,7 @@
         "name": "VisuallyHidden",
         "description": "Hides content visually while keeping it available to screen readers",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18539,7 +18613,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.module.css"
       ],
       "fileHashes": {
-        "auth-layout.tsx": "sha256-1ee1158bd9e069fbfe877e588a325b1fb32b9037c7731ae34ba72b97d4d91247",
+        "auth-layout.tsx": "sha256-99abe9286affc10554c0ecbb96c5bfa60813ed85eae07405bcd80719da83cd42",
         "auth-layout.module.css": "sha256-5a80937a55aa6a462469214dcfd5f90ca86ba97478b4b5d6557ad1837bc181ec"
       },
       "dependencies": ["@cascivo/core"],
@@ -18551,6 +18625,7 @@
         "name": "AuthLayout",
         "description": "Centered card layout for authentication pages (login, register, forgot password).",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18630,7 +18705,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.module.css"
       ],
       "fileHashes": {
-        "auto-grid.tsx": "sha256-d765b7081184bc08da0abc2d59666300583cc632669cedac37ccd9ee1e181e11",
+        "auto-grid.tsx": "sha256-eec15cbad7e4f3dce0856caa7a356ceb18afe5b80df61fcde82a8bfa7e77c9e7",
         "auto-grid.module.css": "sha256-c4ddabc261c6f0ae4292d463dd92647c5bb91a67bc137bf56cfcfd47e9603082"
       },
       "dependencies": ["@cascivo/core"],
@@ -18642,6 +18717,7 @@
         "name": "AutoGrid",
         "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18710,7 +18786,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.module.css"
       ],
       "fileHashes": {
-        "center.tsx": "sha256-f9ab64b4c1d23aea12d3862d465ab339a802e2c6105ebf71c46e841a31f80dd6",
+        "center.tsx": "sha256-4249debc191fd25381bc529b746fe1bc33e12f213e2304cc4e9f0e3e6784e9b6",
         "center.module.css": "sha256-179d9de5d56624bc88d2a8218f297d75501842258032767fe1c289fc38522a7f"
       },
       "dependencies": ["@cascivo/core"],
@@ -18722,6 +18798,7 @@
         "name": "Center",
         "description": "Horizontally centered container with a configurable max-width.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18788,7 +18865,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.module.css"
       ],
       "fileHashes": {
-        "columns.tsx": "sha256-9bbdc859b9a08be0fb713a70d632dbc858eb61d409d908c56c4e36e02ede1e11",
+        "columns.tsx": "sha256-baa9f6e95ab46188587f2d1e57d0228cb2e99e7bef14f98bd8405ab0b9321704",
         "columns.module.css": "sha256-b13c6d5993a498e14b560c09bcc02cb2139deadf3ef47ff44bb83f0cfcef2ad1"
       },
       "dependencies": ["@cascivo/core"],
@@ -18800,6 +18877,7 @@
         "name": "Columns",
         "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18873,7 +18951,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
       ],
       "fileHashes": {
-        "dashboard-layout.tsx": "sha256-114637b76526da85caca1ec52c83684a4ad874347db47d4eaee5e77eaca485d0",
+        "dashboard-layout.tsx": "sha256-23e79b32a35ccd89ffbfa80e327d06aa62dfbf58df7ea15eaf03575663060fd1",
         "dashboard-layout.module.css": "sha256-89cadb02ecead74e8062237f501c7865882c5569f30ceec04bfae58c33473997"
       },
       "dependencies": ["@cascivo/core"],
@@ -18885,6 +18963,7 @@
         "name": "DashboardLayout",
         "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -18962,7 +19041,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
       ],
       "fileHashes": {
-        "flex.tsx": "sha256-a30ca2c2013885eb570c2dad54c0d0862689bdd53b6506b17d947fe6497100bc",
+        "flex.tsx": "sha256-c3a1108c6e6f14ccd0196f2dfc9d1330cd0633fad3e61db0a855cb4690396c74",
         "flex.module.css": "sha256-0dc986fb37d2cb6a657d40f879f26ee28a1795f1b626e4fd32052528994ea090"
       },
       "dependencies": ["@cascivo/core"],
@@ -18974,6 +19053,7 @@
         "name": "Flex",
         "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19083,7 +19163,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "fileHashes": {
-        "grid.tsx": "sha256-cd658ad7ef6105643ac5b90a29f2961797465ba88b0acaa27b5c5f8ec1193889",
+        "grid.tsx": "sha256-937196d1c470c009c7d7ef58ded8b592b560eb6000c425caa2076374144c0604",
         "grid.module.css": "sha256-5d51fec5a0b0f52866e5d78f515261f98384f071cbf3c0eaf2a683fa08f196a8"
       },
       "dependencies": ["@cascivo/core"],
@@ -19095,6 +19175,7 @@
         "name": "Grid",
         "description": "CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19191,7 +19272,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.module.css"
       ],
       "fileHashes": {
-        "masonry.tsx": "sha256-f9e54f2bbe4fd68932fcabb118f46e76211c8bf2de708d333b621eb1908119ee",
+        "masonry.tsx": "sha256-8eabd0f5f6dcad61a8dd12a713f1d90f844f4c4cdfd9d74e83188546dc1af07d",
         "masonry.module.css": "sha256-6d4dff2b18d3b3db045e24372c7cfa352a4fecb930bd9f94a2364c025d775793"
       },
       "dependencies": ["@cascivo/core"],
@@ -19203,6 +19284,7 @@
         "name": "Masonry",
         "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19276,7 +19358,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.module.css"
       ],
       "fileHashes": {
-        "page-header.tsx": "sha256-6683e4af80f7b8f9db57287a3399d239244cb9cff664b7ec0587ded8346a1542",
+        "page-header.tsx": "sha256-1750eec9ec543f2dc8bf3ce10218ebd866279fa04b1ecb60832c1f64610a8662",
         "page-header.module.css": "sha256-f5a39930488fb3107318f673616818dbc750556b756df9328d0e830bed65d646"
       },
       "dependencies": ["@cascivo/core"],
@@ -19288,6 +19370,7 @@
         "name": "PageHeader",
         "description": "Page-level header with title, description, breadcrumb, and actions slots.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19385,7 +19468,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.module.css"
       ],
       "fileHashes": {
-        "section.tsx": "sha256-35716e0790f3a23cb5be722ae8652ac74985fd48bfd50f824ec55d71430f4b02",
+        "section.tsx": "sha256-ec58e0ecd90562b5cb63c9e91b396e788f091c9848a1cb6e05032b4b82175a12",
         "section.module.css": "sha256-94d60eef5a1a659f3455da858f1dd311a1524c06565cd718c65e1f616b5b2001"
       },
       "dependencies": ["@cascivo/core"],
@@ -19397,6 +19480,7 @@
         "name": "Section",
         "description": "Page-section shell with block padding, centered inner width, and stack gap.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19470,7 +19554,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.module.css"
       ],
       "fileHashes": {
-        "settings-layout.tsx": "sha256-2210943472c4f541ef324409e77cb99c836987391cb3550f0bc3c0bb7a620a0e",
+        "settings-layout.tsx": "sha256-9b235035eeb48c862bcf0fb4957ba9f0e1ab037f6874ec133173621f4f95c649",
         "settings-layout.module.css": "sha256-f8056bc2aa0d3ba25fca1b4834a6261b3c54d2c719a4253c885d131f07f283c4"
       },
       "dependencies": ["@cascivo/core"],
@@ -19482,6 +19566,7 @@
         "name": "SettingsLayout",
         "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19553,7 +19638,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
       ],
       "fileHashes": {
-        "spacer.tsx": "sha256-ce38d245f33b787ddd7e0505631b2737e8eba94126a5cac047ae0f9f7ddf07a2",
+        "spacer.tsx": "sha256-3a8ea7a1b0f9b76add1ca8493b77a0146dd7cd1a047469bd48abadea3132159d",
         "spacer.module.css": "sha256-b958a185559596febc9b8f7be84fea0da37cba494e8e096eb24cefce645836ca"
       },
       "dependencies": ["@cascivo/core"],
@@ -19565,6 +19650,7 @@
         "name": "Spacer",
         "description": "Fixed-height spacing block using design token steps.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -19818,7 +19904,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
       ],
       "fileHashes": {
-        "dashboard-charts.tsx": "sha256-3bb27e23a84dcd1c7e4ebca46ae77a1b0cb9eec256c9f2f780daa7f5035b57aa"
+        "dashboard-charts.tsx": "sha256-78d7faecc7d1fa0a39f093c8943956af2c5394fe082453a0c4d8ca53b28bb6e1"
       },
       "dependencies": ["@cascivo/charts", "@cascivo/react"],
       "peerVersions": {
@@ -19830,6 +19916,7 @@
         "name": "DashboardCharts",
         "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -20119,7 +20206,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
       ],
       "fileHashes": {
-        "page-with-breadcrumb.tsx": "sha256-6e6b64edabf1c32f7eac0e38bad87b91052a27107c9b920db72e1ca20027867f"
+        "page-with-breadcrumb.tsx": "sha256-6254bb736f4cb1163338b35021fc7e6863a7907bae99407dfd4a67017d379bb5"
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
@@ -20130,6 +20217,7 @@
         "name": "PageWithBreadcrumb",
         "description": "A centered content page with a breadcrumb navigation and page header.",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -20256,7 +20344,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
       ],
       "fileHashes": {
-        "sidebar-app.tsx": "sha256-402470d3eb95c0b6923c1224bd67d7048283bc291b38f6582a52d063b91c665b"
+        "sidebar-app.tsx": "sha256-02c2ac1a262dc4ab627a496de5fbb0b9b8a233441f7f0a94a952a9ddaa5215fa"
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
@@ -20267,6 +20355,7 @@
         "name": "SidebarApp",
         "description": "Full app shell with collapsible side navigation and top header.",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -20326,7 +20415,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
       ],
       "fileHashes": {
-        "stats-cards.tsx": "sha256-1fd9e2e506807936bc1f7940d94eeade80096263daee0bf97971ae7c0377be4c"
+        "stats-cards.tsx": "sha256-6caef62d371111a928b2798e5792f8dd551d762938482317d8b1c8af84af64ba"
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
@@ -20337,6 +20426,7 @@
         "name": "StatsCards",
         "description": "Grid of KPI stat cards with trend badges.",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -22435,6 +22525,7 @@
         "name": "Kpi",
         "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
         "category": "chart",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -22829,6 +22920,7 @@
         "name": "Meter",
         "description": "Progress meter in bar or gauge variant with threshold coloring.",
         "category": "chart",
+        "clientJs": "none",
         "states": [],
         "variants": ["bar", "gauge"],
         "sizes": [],
@@ -23970,6 +24062,7 @@
         "name": "Sparkline",
         "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
         "category": "chart",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -24476,6 +24569,7 @@
         "name": "CodeEditor",
         "description": "Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.",
         "category": "inputs",
+        "clientJs": "required",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -24835,7 +24929,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/cta/cta.module.css"
       ],
       "fileHashes": {
-        "cta.tsx": "sha256-cee8fa0e55dfc242005bec7f4792f805da231b326743d11e9a30781567f116af",
+        "cta.tsx": "sha256-70fa76dfd96937e95dbe42cf1c6221db16f65dc6d309aeb36f0b248408a97010",
         "cta.module.css": "sha256-64d4f42e4ac21dbece53db49348d4456071fdda19cbb992f7dce8ddfb4ad3919"
       },
       "dependencies": ["@cascivo/core"],
@@ -24847,6 +24941,7 @@
         "name": "Cta",
         "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -24941,7 +25036,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
       ],
       "fileHashes": {
-        "feature-grid.tsx": "sha256-43c86e0180834887850924cc1ed4fa0719140938d9074623fa9a69ff2e9145a1",
+        "feature-grid.tsx": "sha256-4850a491e40f788801f7ad7a7d096842e8539fb3d7f90777550b37fffced4e87",
         "feature-grid.module.css": "sha256-96c772216992fd23cf5bfb24f1fe2d1e71b0eb7912bc221d72f1fa4252ee0371"
       },
       "dependencies": ["@cascivo/core"],
@@ -24953,6 +25048,7 @@
         "name": "FeatureGrid",
         "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -25056,7 +25152,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/hero/hero.module.css"
       ],
       "fileHashes": {
-        "hero.tsx": "sha256-6441bd69596ecc8181c554c943b8c55a08a5f213464168a02991bb34df4cecf2",
+        "hero.tsx": "sha256-a18f557b5f30d1caf6813d3f459778140255fd77a85a545cff5748e247e2cb84",
         "hero.module.css": "sha256-9c1e9fc32e62ad6a8d1fb59618a4c38e461d62a70e72bb3caec605857602e0ec"
       },
       "dependencies": ["@cascivo/core"],
@@ -25068,6 +25164,7 @@
         "name": "Hero",
         "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": ["centered", "split"],
         "sizes": [],
@@ -25186,7 +25283,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
       ],
       "fileHashes": {
-        "media-masonry.tsx": "sha256-67b125fcf466330597f10c8040989ed753ed9409dc9edabc470a7a8f809bf13b",
+        "media-masonry.tsx": "sha256-f25ba3f3cbe09742ffe066caf2e46190117111cce3d0a671ab3da84e25555a6f",
         "media-masonry.module.css": "sha256-6193fa3b063a622abe76eb2fc12aa5e000a7e541f7df189427c82071e8d4d030"
       },
       "dependencies": ["@cascivo/core"],
@@ -25198,6 +25295,7 @@
         "name": "MediaMasonry",
         "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -25299,7 +25397,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
       ],
       "fileHashes": {
-        "page-footer.tsx": "sha256-757e14018d1a3c08e8afaca1d24060c17739bc7c20d7d39d6b1b818262be1b7d",
+        "page-footer.tsx": "sha256-64a79a93db69f950ce32941871fb28d93870e11fea177b95ae9a7fe39b23aab2",
         "page-footer.module.css": "sha256-4d77adfbd5ae900cd98e03daaa7d31cb0610d7b89b1bea88b19ca33710dafb00"
       },
       "dependencies": ["@cascivo/core"],
@@ -25311,6 +25409,7 @@
         "name": "PageFooter",
         "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -25394,7 +25493,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
       ],
       "fileHashes": {
-        "stats-band.tsx": "sha256-4b430ffeb63e95e5bc934bd2922ec20add54d3ab50ea026949ae55527bd1aaf2",
+        "stats-band.tsx": "sha256-eefab715b3f63bf007f53721a5520e809cb58a5b98872c69fa6c169e8163932c",
         "stats-band.module.css": "sha256-c222d28794d4940d4d80fbcdcd10c55a883ef0c7fb1a2694398e37fe98ddd445"
       },
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
@@ -25407,6 +25506,7 @@
         "name": "StatsBand",
         "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
         "category": "layout",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -25687,6 +25787,7 @@
         "name": "FlowBackground",
         "description": "Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": ["dots", "grid", "cross"],
         "sizes": [],
@@ -26085,6 +26186,7 @@
         "name": "FlowHandle",
         "description": "A connection port on a node edge — where edges attach and interactive connect starts.",
         "category": "display",
+        "clientJs": "none",
         "states": ["default", "hover", "focus"],
         "variants": ["source", "target"],
         "sizes": [],
@@ -26467,6 +26569,7 @@
         "name": "FlowPanel",
         "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
         "category": "display",
+        "clientJs": "none",
         "states": [],
         "variants": [],
         "sizes": [],

@@ -43,6 +43,11 @@
       "path": "/docs/specs/chart-palette.md"
     },
     {
+      "id": "client-js-manifest-field",
+      "title": "client-js-manifest-field",
+      "path": "/docs/specs/client-js-manifest-field.md"
+    },
+    {
       "id": "spec-color-usage",
       "title": "Color Usage",
       "path": "/docs/specs/color-usage.md"
@@ -1827,7 +1832,7 @@
             "reason": "Tabs switch between peer views; Accordion stacks sequential sections vertically"
           }
         ],
-        "a11yRationale": "Each trigger is a native <button> exposing aria-expanded and controlling its panel via aria-controls, so screen readers announce open/closed state and Enter/Space toggle from the platform",
+        "a11yRationale": "Each item is a native <details> and each trigger its <summary>, so the button role, the expanded state, and Enter/Space activation all come from the platform rather than from ARIA — and the open panel renders before any JavaScript runs. The trigger wraps a heading so heading navigation still reaches each section, and each panel is a role=\"region\" labelled by its trigger",
         "flexibility": [
           {
             "area": "single vs multiple",
@@ -8431,7 +8436,7 @@
             "reason": "Multi-region disclosure; Collapsible is the single-region case"
           }
         ],
-        "a11yRationale": "The trigger is a native button exposing aria-expanded and aria-controls; the region is labelled by the trigger, so screen readers announce the disclosure state and target",
+        "a11yRationale": "Built on a native <details>/<summary>, so the button role, the expanded state, and Enter/Space activation come from the platform rather than from ARIA, and the content renders before any JavaScript runs; the region is labelled by the trigger so screen readers announce the disclosure target",
         "flexibility": [
           {
             "area": "open state",
@@ -8488,7 +8493,7 @@
           "type": "boolean",
           "required": false,
           "default": "false",
-          "description": "Disables the trigger button",
+          "description": "Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable",
           "schema": {
             "kind": "boolean"
           }

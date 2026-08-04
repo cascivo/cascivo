@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import { forwardRef } from 'react'
 import type { ReactNode, SelectHTMLAttributes } from 'react'
 import styles from './native-select.module.css'

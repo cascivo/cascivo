@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'User',
   description: 'Identity composite: an avatar with a name, description, and optional action slot',
   category: 'display',
+  clientJs: 'none',
   states: ['default'],
   variants: [],
   sizes: [],

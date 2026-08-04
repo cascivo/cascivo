@@ -6,6 +6,7 @@ export const meta: BlockMeta = {
   description:
     'Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan.',
   category: 'marketing',
+  clientJs: 'none',
   tags: ['marketing', 'pricing', 'plans', 'cards'],
   screenshot: {
     light: '/blocks/screenshots/pricing-light.png',

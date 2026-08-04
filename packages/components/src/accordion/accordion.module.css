@@ -32,8 +32,14 @@
     text-align: start;
     color: var(--cascivo-color-text);
     background: transparent;
-    border: none;
     cursor: pointer;
+
+    /* Suppress the UA disclosure triangle — both spellings are needed for full coverage. */
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
 
     &:hover {
       background-color: var(--cascivo-color-bg-subtle);
@@ -54,37 +60,48 @@
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3E%3C/svg%3E")
       no-repeat center / contain;
 
-    .trigger[data-state='open'] & {
+    .item[open] & {
       rotate: 180deg;
     }
   }
 
-  .content {
-    display: grid;
-    grid-template-rows: 0fr;
-    visibility: hidden;
+  /*
+    `::details-content` is the browser's own wrapper around everything after the
+    `<summary>`, so the open/closed animation hangs off it instead of a wrapper element
+    this component would otherwise have to invent. Baseline since Sept 2025.
+
+    `content-visibility` is transitioned with `allow-discrete` so the browser does not
+    blank the content before the size animation finishes.
+  */
+  .item::details-content {
+    block-size: 0;
+    overflow: hidden;
     color: var(--cascivo-color-text);
     transition:
-      grid-template-rows var(--cascivo-duration-200) var(--cascivo-ease-out),
-      visibility var(--cascivo-duration-200) var(--cascivo-ease-out);
-
-    &[data-state='open'] {
-      grid-template-rows: 1fr;
-      visibility: visible;
-    }
+      block-size var(--cascivo-duration-200) var(--cascivo-ease-out),
+      content-visibility var(--cascivo-duration-200) allow-discrete;
   }
 
-  .contentInner {
-    overflow: hidden;
+  .item[open]::details-content {
+    /* Static fallback — Firefox/Safari snap to the open size instead of animating. */
+    block-size: auto;
+    /* Progressive enhancement — Chromium interpolates to the intrinsic size. */
+    block-size: calc-size(auto, size);
+  }
+
+  .content {
+    padding-inline: var(--cascivo-space-4);
+    padding-block-end: var(--cascivo-space-4);
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-sm);
     color: var(--cascivo-color-text-subtle);
     line-height: var(--cascivo-leading-relaxed);
+  }
+}
 
-    .content[data-state='open'] & {
-      padding-inline: var(--cascivo-space-4);
-      padding-block-end: var(--cascivo-space-4);
-    }
+@media (prefers-reduced-motion: reduce) {
+  .item::details-content {
+    transition: none;
   }
 }
 

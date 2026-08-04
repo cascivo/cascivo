@@ -50,6 +50,10 @@ import { Checkbox } from '@cascivo/react'
 <Checkbox label="Select all" indeterminate />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`

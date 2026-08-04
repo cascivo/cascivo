@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Link',
   description: 'Styled anchor for navigation, standalone or inline within prose',
   category: 'navigation',
+  clientJs: 'none',
   states: [],
   variants: ['standalone', 'inline'],
   sizes: ['sm', 'md', 'lg'],

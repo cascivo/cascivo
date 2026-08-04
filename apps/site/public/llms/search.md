@@ -69,6 +69,10 @@ import { Search } from '@cascivo/react'
 <Search size="lg" placeholder="Search products…" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`

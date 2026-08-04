@@ -1,4 +1,3 @@
-'use client'
 import { Avatar } from '../../avatar/avatar'
 import { Card, CardContent } from '../../card/card'
 import styles from './testimonials.module.css'

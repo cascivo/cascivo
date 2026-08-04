@@ -5,6 +5,7 @@ export const meta: ComponentMeta = {
   description:
     'Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders',
   category: 'inputs',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],

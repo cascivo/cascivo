@@ -1,4 +1,3 @@
-'use client'
 import type { ChartPoint, TooltipModel } from './data-point'
 import { defaultFormat } from './data-point'
 

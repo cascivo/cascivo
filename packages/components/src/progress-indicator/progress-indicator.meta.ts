@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'ProgressIndicator',
   description: 'Shows progress through the steps of a multi-step flow',
   category: 'navigation',
+  clientJs: 'none',
   states: ['complete', 'current', 'incomplete'],
   variants: ['horizontal', 'vertical'],
   sizes: [],

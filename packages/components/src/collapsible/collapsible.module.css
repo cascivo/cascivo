@@ -1,7 +1,6 @@
 @layer cascivo.component {
   .root {
-    display: flex;
-    flex-direction: column;
+    display: block;
   }
 
   .trigger {
@@ -21,7 +20,14 @@
     border-radius: var(--cascivo-radius-control);
     cursor: pointer;
 
-    &:hover:not(:disabled) {
+    /* Suppress the UA disclosure triangle — both spellings are needed for full coverage. */
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:hover:not([aria-disabled='true']) {
       background-color: var(--cascivo-color-bg-subtle);
     }
 
@@ -30,46 +36,47 @@
       box-shadow: var(--cascivo-focus-ring);
     }
 
-    &:disabled {
+    &[aria-disabled='true'] {
       opacity: 0.5;
       cursor: not-allowed;
     }
   }
 
-  .content {
-    display: grid;
-    grid-template-rows: 0fr;
-    visibility: hidden;
+  /*
+    `::details-content` is the browser's own wrapper around everything after the
+    `<summary>`, so the open/closed animation hangs off it instead of a wrapper element
+    this component would otherwise have to invent. Baseline since Sept 2025.
+
+    `content-visibility` is transitioned with `allow-discrete` so the browser does not
+    blank the content before the size animation finishes.
+  */
+  .root::details-content {
+    block-size: 0;
+    overflow: hidden;
     color: var(--cascivo-color-text);
     transition:
-      grid-template-rows var(--cascivo-duration-200) var(--cascivo-ease-out),
-      visibility var(--cascivo-duration-200) var(--cascivo-ease-out);
-
-    &[data-state='open'] {
-      grid-template-rows: 1fr;
-      visibility: visible;
-
-      @starting-style {
-        grid-template-rows: 0fr;
-      }
-    }
+      block-size var(--cascivo-duration-200) var(--cascivo-ease-out),
+      content-visibility var(--cascivo-duration-200) allow-discrete;
   }
 
-  .contentInner {
-    overflow: hidden;
+  .root[open]::details-content {
+    /* Static fallback — Firefox/Safari snap to the open size instead of animating. */
+    block-size: auto;
+    /* Progressive enhancement — Chromium interpolates to the intrinsic size. */
+    block-size: calc-size(auto, size);
+  }
+
+  .content {
+    padding-block: var(--cascivo-space-3);
     font-family: var(--cascivo-font-sans);
     font-size: var(--cascivo-text-sm);
     color: var(--cascivo-color-text-subtle);
     line-height: var(--cascivo-leading-relaxed);
-
-    .content[data-state='open'] & {
-      padding-block: var(--cascivo-space-3);
-    }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .content {
+  .root::details-content {
     transition: none;
   }
 }

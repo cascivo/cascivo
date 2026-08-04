@@ -1,5 +1,4 @@
-'use client'
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import { Children, cloneElement, forwardRef, isValidElement } from 'react'
 import type { InputHTMLAttributes, ReactElement, ReactNode } from 'react'
 import styles from './radio.module.css'

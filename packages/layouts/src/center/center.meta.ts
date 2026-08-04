@@ -4,6 +4,7 @@ export const meta: ComponentMeta = {
   name: 'Center',
   description: 'Horizontally centered container with a configurable max-width.',
   category: 'layout',
+  clientJs: 'none',
   states: [],
   variants: [],
   sizes: [],
