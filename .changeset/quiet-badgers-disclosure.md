@@ -15,13 +15,13 @@ rather than from ARIA. `role="region"` and `aria-labelledby` on the panel stay �
 additive and do not collide with native semantics.
 
 **Breaking — the rendered DOM changed.** The public component API is unchanged, so no markup
-you write needs editing, but anything reaching *into* these components does:
+you write needs editing, but anything reaching _into_ these components does:
 
-| Before | After |
-| --- | --- |
-| `<div class="item">` wrapping the pair | `<details class="item">` |
-| `<h3><button class="trigger">` | `<summary class="trigger"><h3>` |
-| `aria-expanded` on the trigger | native; the attribute is gone |
+| Before                                       | After                                 |
+| -------------------------------------------- | ------------------------------------- |
+| `<div class="item">` wrapping the pair       | `<details class="item">`              |
+| `<h3><button class="trigger">`               | `<summary class="trigger"><h3>`       |
+| `aria-expanded` on the trigger               | native; the attribute is gone         |
 | `AccordionTrigger` ref → `HTMLButtonElement` | ref → `HTMLElement` (the `<summary>`) |
 
 - **Tests** querying `getByRole('button', { name })` or asserting `aria-expanded` must read

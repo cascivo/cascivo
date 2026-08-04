@@ -27,7 +27,7 @@ Attempted to call cn() from the server but cn is on the client.
 `@cascivo/core` builds as a **single bundled chunk** whose own `'use client'` banner is
 load-bearing — the bundler collapses its 23 directive-carrying modules into one file and
 drops their per-module directives, so without it Next.js treats every hook and
-`Portal`/`Presence` as a Server Component. The side effect is that *everything* in
+`Portal`/`Presence` as a Server Component. The side effect is that _everything_ in
 `@cascivo/core` sits behind a client boundary, including helpers that need no browser at all.
 
 **`@cascivo/core/pure`** is the fix: the same sources built without the banner, exporting
