@@ -181,6 +181,11 @@ pnpm popover:check
 # Every declared prop is read by its component (no typed-but-inert props)
 pnpm dead-props:check
 
+# `clientJs` parity — a manifest claiming 'none' really uses no client-only API, a clean
+# source is not understated as 'enhancement'/'required', and a 'none' component ships no
+# `'use client'`. (Part of `meta:check`; 'enhancement' vs 'required' is author-declared.)
+pnpm exec node --experimental-strip-types --test scripts/checks/client-js-parity.test.ts
+
 # Every shipped cascivo.com URL resolves to a real route or public file
 pnpm doc-urls:check
 
@@ -195,6 +200,12 @@ pnpm isolated:check
 # real hit-testing (needs a build + Chromium). Catches what computed:check structurally
 # cannot — a missing reset, an invisible overlay eating clicks.
 pnpm bare-page:check
+
+# No-JS disclosure canary: server HTML mounted and never hydrated, driven by a real
+# keyboard (needs a build + Chromium). jsdom exposes neither `<summary>`'s button role nor
+# Enter/Space activation nor `<details name>` exclusivity, so the platform behaviour behind
+# Accordion/Collapsible's `clientJs: 'enhancement'` is asserted only here.
+pnpm no-js:check
 
 # Astro island CSS probe — one client directive per page; reports (does not gate) whether
 # component CSS survives an SSR'd island. Keeps COMPATIBILITY.md's Astro grade honest.

@@ -1,6 +1,10 @@
 # `clientJs` — a runtime-cost tier in the component manifest
 
-**Status:** spec + audit only — nothing in this document is implemented.
+**Status: implemented**, except the build change in §6, which was attempted, measured, and
+reverted — it is blocked upstream by `@cascivo/core` and needs its own spec (§6.2).
+Shipped: the field on `ComponentMeta`/`BlockMeta` (68 `none`, 11 `enhancement`, 24 `required`,
+101 deliberately unclassified), the `client-js-parity` guard in `meta:check`, propagation into
+`registry.json` and `llms/<name>.md`, and the removal of 76 redundant `'use client'` directives.
 **Origin:** Ariel Salminen, ["Progressive Web Components"](https://arielsalminen.com/2026/progressive-web-components/)
 (2026). The post argues a design system should be authored in two layers — "a base layer of HTML
 and CSS that renders immediately, without JavaScript, and an enhancement layer of JavaScript" — and
@@ -174,7 +178,53 @@ Nothing else needs to change. `pnpm regen` covers 1–3 and CI diffs the result.
 
 ---
 
-## 6. Out of scope: the build change
+## 6. The build change — attempted, measured, reverted [verified]
+
+**Status: blocked upstream. Do not retry without fixing §6.1 first.**
+
+The change described below was implemented and measured on 2026-08-04. Dropping
+`output.banner` and making both flat entries directive-free worked exactly as predicted at
+the bundler level: the rebuilt dist emitted **86 of 272 chunks** carrying `'use client'`,
+with `badge/badge.js` clean, `modal/modal.js` still marked, and `dist/index.js` reduced to a
+bare `export * from './react/src/index.js'`.
+
+Then `apps/examples/react-next` failed to prerender:
+
+```
+Error: Attempted to call cn() from the server but cn is on the client.
+```
+
+### 6.1 The real blocker is `@cascivo/core`, not the barrel
+
+`packages/core` does a **single-entry** lib build, so its 23 directive-carrying modules
+collapse into one chunk and their per-module directives are dropped. Its banner
+(`packages/core/vite.config.ts:15`) is what puts the directive back, and it is genuinely
+load-bearing — without it Next.js treats every hook and `Portal`/`Slot` as a Server
+Component. `i18n`, `storage` and `icons` carry no banner; `core` is the only sibling that
+does.
+
+The consequence: **the whole of `@cascivo/core` is a client module**, including the pure
+helpers `cn` and `normalizeTone`. A directive-free `badge.js` is a Server Component, and it
+imports `cn` from a client module — which is the error above. This is unrelated to
+`preserveModules` and unrelated to the barrel; it would block the change no matter how the
+react build is configured.
+
+The banner in `packages/react/vite.config.ts` remains redundant for every file that declares
+its own directive (its own `spliceAfterDirectives` comment says as much), but removing it
+cannot pay off while `cn` is unreachable from the server.
+
+### 6.2 What would actually unlock it
+
+A directive-free way to import the pure helpers — most likely a `@cascivo/core/pure`
+subpath built without the banner, exporting `cn`, `normalizeTone` and the tone/type
+utilities, with the ~76 `clientJs: 'none'` components importing from there.
+
+That is a public API change: it alters the copy-paste source every adopter receives, so it
+touches the docs-imports guard, the manifests' `dependencies`, and the getting-started
+surface. It needs its own spec. Until it lands, the directive cleanup pays off **only on the
+copy-paste path** (§1.2), which is where the waste was real anyway.
+
+## 7. The original plan for the build change (superseded by §6)
 
 §1.1 shows the npm distribution forces every consumer through a client barrel. Fixing it means
 dropping `output.banner` (`vite.config.ts:231`) and emitting the directive per chunk from the
@@ -188,11 +238,11 @@ published RSC semantics of every component and interacts with barrel tree-shakin
 should be specced and measured separately, after `clientJs` exists to say which chunks are
 supposed to come out clean.
 
-**Do not bundle it into the manifest change.**
+**Do not bundle it into the manifest change.** (Superseded — this was attempted; see §6.)
 
 ---
 
-## 7. Non-goals
+## 8. Non-goals
 
 - **Web components / custom elements.** The post's substrate. Cascivo's thesis is React + signals +
   owned source; a `@cascivo/elements` distribution would double the catalog surface and break the

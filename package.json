@@ -91,6 +91,7 @@
     "release": "pnpm build:release && pnpm pack:check && changeset publish",
     "tsdoc:generate": "node --experimental-strip-types scripts/tsdoc/generate.ts",
     "computed:check": "node --experimental-strip-types --test scripts/checks/computed-style.test.ts",
+    "no-js:check": "node --experimental-strip-types --test scripts/checks/no-js-disclosure.test.ts",
     "bare-page:check": "node --experimental-strip-types --test scripts/checks/bare-page.test.ts",
     "npm:parity": "node --experimental-strip-types --test scripts/checks/npm-parity.test.ts"
   },
