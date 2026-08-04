@@ -43,7 +43,15 @@
  */
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { after, before, describe, it } from 'node:test'
@@ -171,6 +179,24 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
       return `file:${join(tarballs, name)}`
     }
 
+    // Every inter-cascivo edge must be covered by PACKAGES, or the `overrides` below leave it
+    // pointing at the registry — which either fails the install or, worse, silently
+    // type-checks the last PUBLISHED copy of that package instead of the one built here.
+    for (const pkg of PACKAGES) {
+      const manifest = JSON.parse(
+        readFileSync(join(REPO_ROOT, 'packages', pkg, 'package.json'), 'utf8'),
+      ) as { dependencies?: Record<string, string> }
+      for (const dep of Object.keys(manifest.dependencies ?? {})) {
+        if (!dep.startsWith('@cascivo/')) continue
+        assert.ok(
+          PACKAGES.includes(dep.slice('@cascivo/'.length)),
+          `${dep} is a dependency of @cascivo/${pkg} but is missing from PACKAGES, so this ` +
+            `fixture would resolve it from the npm registry instead of the local build. ` +
+            `Add it to PACKAGES (and to NEEDS_DIST if it builds to dist/).`,
+        )
+      }
+    }
+
     // A WORKSPACE, not a single package — this is what makes the fixture faithful.
     //
     // In a single-package app, `node_modules/@types/react` sits at the app root, and
@@ -186,7 +212,20 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
     // carry `@types/react` unless the package declares it as a peer. That is the layout the
     // 2026-07-28 adopter had — a pnpm + Turborepo monorepo — and it is the only one that
     // reproduces C1.
-    writeFileSync(join(work, 'pnpm-workspace.yaml'), "packages:\n  - 'packages/*'\n")
+    // `pnpm pack` rewrites `workspace:^` to `^<version>`, so the packed @cascivo/react asks
+    // for `@cascivo/core@^0.15.0` — from the REGISTRY, where the monorepo's current version
+    // does not exist until release day. That is not a hypothetical: it turned this canary red
+    // the moment a version bump landed ahead of a publish. Overrides pin every inter-cascivo
+    // edge to the tarball built from THIS commit, which is also the only way the fixture
+    // type-checks the build under test rather than a mix of it and the last published one.
+    //
+    // They live in pnpm-workspace.yaml, not package.json: pnpm 10+ stopped reading the
+    // `pnpm` field and only warns about it, so a package.json override silently does nothing.
+    const overrides = PACKAGES.map((p) => `  '@cascivo/${p}': '${tarballFor(p)}'`).join('\n')
+    writeFileSync(
+      join(work, 'pnpm-workspace.yaml'),
+      `packages:\n  - 'packages/*'\noverrides:\n${overrides}\n`,
+    )
     writeFileSync(
       join(work, 'package.json'),
       JSON.stringify({ name: 'cascivo-isolated-root', private: true }, null, 2),
