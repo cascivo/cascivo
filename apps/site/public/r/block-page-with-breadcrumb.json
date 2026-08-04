@@ -3,7 +3,7 @@
   "name": "block/page-with-breadcrumb",
   "type": "block",
   "description": "A centered content page with a breadcrumb navigation and page header.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"

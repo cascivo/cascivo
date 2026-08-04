@@ -3,7 +3,7 @@
   "name": "visually-hidden",
   "type": "component",
   "description": "Hides content visually while keeping it available to screen readers",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/visually-hidden.tsx"

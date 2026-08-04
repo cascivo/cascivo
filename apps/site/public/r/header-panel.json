@@ -3,7 +3,7 @@
   "name": "header-panel",
   "type": "component",
   "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.tsx"

@@ -3,7 +3,7 @@
   "name": "layout/columns",
   "type": "layout",
   "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.tsx"

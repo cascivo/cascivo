@@ -3,7 +3,7 @@
   "name": "progress",
   "type": "component",
   "description": "Horizontal bar showing the completion progress of a tracked operation",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.tsx"

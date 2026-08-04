@@ -3,7 +3,7 @@
   "name": "chart/kpi",
   "type": "chart",
   "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],

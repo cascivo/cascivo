@@ -3,7 +3,7 @@
   "name": "layout/masonry",
   "type": "layout",
   "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.tsx"

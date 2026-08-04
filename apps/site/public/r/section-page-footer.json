@@ -3,7 +3,7 @@
   "name": "section/page-footer",
   "type": "section",
   "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.tsx"

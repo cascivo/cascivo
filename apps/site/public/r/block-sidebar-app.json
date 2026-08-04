@@ -3,7 +3,7 @@
   "name": "block/sidebar-app",
   "type": "block",
   "description": "Full app shell with collapsible side navigation and top header.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"

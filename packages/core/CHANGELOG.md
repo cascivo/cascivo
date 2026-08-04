@@ -1,5 +1,40 @@
 # @cascivo/core
 
+## 0.15.0
+
+### Minor Changes
+
+- 9841d27: Version the `@cascivo/core`-sharing family in lockstep.
+
+  `@cascivo/core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage` and `ai` now release
+  together at one version (`fixed` in `.changeset/config.json`). Seven of them depend on
+  `@cascivo/core`, and while they versioned independently an adopter could resolve two
+  non-overlapping `@cascivo/core` ranges — the package manager then nests a second copy, and
+  because cascivo's reactivity is a module-level signal registry, two copies means two
+  registries: a signal written through one is invisible to components subscribed through the
+  other, with no error at all.
+
+  Expect a one-time version jump as the family aligns (the lower-numbered packages catch up to
+  the highest). After that, a release bumps all eight together, which is an accurate reflection
+  of how they are actually supported: only ever as a set.
+
+  `linked` was considered and rejected — it aligns only packages bumped in the same release, so
+  drift remains possible, which is the state this fixes. `cascivo doctor`'s duplicate-core
+  check stays as defense in depth, since a carried-over lockfile can still hold a stale copy.
+
+- 9841d27: Render `secondAxis.label`, and colour `Stat`/`Kpi` deltas by sentiment.
+
+  `AreaChart`/`LineChart`'s `secondAxis.label` was typed and documented but never drawn, so a
+  dual-axis chart had no way to say which series belonged to which scale. `Axis` gains a
+  `title`/`titleOffset` pair; the right margin now reserves room for it.
+
+  `Stat` and `Kpi` hard-coded "up is green, down is red", so a deploy console's two
+  most-watched tiles — errors and latency — rendered their worst news in green, and negating
+  the delta to correct the colour also reversed the arrow. Both now take
+  `goodDirection?: 'up' | 'down' | 'neutral'` (default `'up'`, so existing behaviour is
+  unchanged), backed by a shared `sentimentOf` in `@cascivo/core` so the two tiles in two
+  packages cannot drift apart.
+
 ## 0.7.1
 
 ### Patch Changes

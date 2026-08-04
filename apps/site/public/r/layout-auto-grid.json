@@ -3,7 +3,7 @@
   "name": "layout/auto-grid",
   "type": "layout",
   "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.tsx"

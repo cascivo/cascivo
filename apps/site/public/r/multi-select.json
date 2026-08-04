@@ -3,7 +3,7 @@
   "name": "multi-select",
   "type": "component",
   "description": "Searchable multi-value select with popover listbox",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.tsx"

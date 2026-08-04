@@ -3,7 +3,7 @@
   "name": "status",
   "type": "component",
   "description": "Colored dot with a label communicating the state of a system or entity",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.tsx"

@@ -3,7 +3,7 @@
   "name": "side-nav",
   "type": "component",
   "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.tsx"

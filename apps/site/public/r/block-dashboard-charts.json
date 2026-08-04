@@ -3,7 +3,7 @@
   "name": "block/dashboard-charts",
   "type": "block",
   "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"

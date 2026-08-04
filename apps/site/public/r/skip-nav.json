@@ -3,7 +3,7 @@
   "name": "skip-nav",
   "type": "component",
   "description": "Skip link that jumps keyboard users past the navigation to the main content",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.tsx"

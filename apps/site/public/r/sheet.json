@@ -3,7 +3,7 @@
   "name": "sheet",
   "type": "component",
   "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.tsx"

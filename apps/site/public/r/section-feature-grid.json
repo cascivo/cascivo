@@ -3,7 +3,7 @@
   "name": "section/feature-grid",
   "type": "section",
   "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx"

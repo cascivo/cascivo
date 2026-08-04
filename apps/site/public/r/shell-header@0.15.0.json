@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 2,
+  "name": "shell-header",
+  "type": "component",
+  "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+  "version": "0.15.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/index.ts"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+  "category": "navigation",
+  "registryDependencies": ["popover"],
+  "meta": {
+    "name": "ShellHeader",
+    "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
+    "category": "navigation",
+    "states": ["default"],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "brand",
+        "type": "ShellHeaderBrand | ReactNode",
+        "required": false,
+        "description": "Brand: { prefix?, name, href? } or free-form node"
+      },
+      {
+        "name": "nav",
+        "type": "ShellHeaderNavItem[]",
+        "required": false,
+        "description": "Top nav: links ({ label, href, active?, onClick? }) or dropdown menus ({ label, items })"
+      },
+      {
+        "name": "center",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Free-form slot between the nav and the right-hand cluster, taking the header’s spare width — where a command-palette or search trigger belongs"
+      },
+      {
+        "name": "actions",
+        "type": "ShellHeaderAction[]",
+        "required": false,
+        "description": "Right-aligned global icon actions with aria-pressed"
+      },
+      {
+        "name": "end",
+        "type": "ReactNode",
+        "required": false,
+        "description": "Free-form trailing slot (user menu, theme switcher)"
+      },
+      {
+        "name": "onMenuClick",
+        "type": "() => void",
+        "required": false,
+        "description": "Renders the hamburger button; call shell.toggleSideNav"
+      },
+      {
+        "name": "menuExpanded",
+        "type": "boolean",
+        "required": false,
+        "description": "aria-expanded for the hamburger button"
+      },
+      {
+        "name": "skipToContentHref",
+        "type": "string | false",
+        "required": false,
+        "default": "'#cascade-main'",
+        "description": "Skip-link target; false disables the link"
+      },
+      {
+        "name": "labels",
+        "type": "ShellHeaderLabels",
+        "required": false,
+        "description": "i18n overrides for built-in strings"
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "ShellHeaderAction",
+        "description": "A right-aligned global icon action. `actions` is a typed array of these — pass an `icon` node per item, not free-form JSX. For non-action trailing content (user menu, theme switcher) use the `end` slot instead.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "Stable key for the action."
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Accessible label (aria-label / tooltip)."
+          },
+          {
+            "name": "icon",
+            "type": "ReactNode",
+            "required": true,
+            "description": "Icon node, e.g. an @cascivo/icons glyph."
+          },
+          {
+            "name": "active",
+            "type": "boolean",
+            "required": false,
+            "description": "Renders aria-pressed for a toggle action."
+          },
+          {
+            "name": "onClick",
+            "type": "() => void",
+            "required": false,
+            "description": "Invoked when the action is activated."
+          }
+        ]
+      },
+      {
+        "name": "ShellHeaderBrand",
+        "description": "Structured brand for the `brand` prop (or pass any ReactNode instead).",
+        "fields": [
+          {
+            "name": "prefix",
+            "type": "string",
+            "required": false,
+            "description": "Muted text before the name (e.g. an org)."
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": true,
+            "description": "Product/app name."
+          },
+          {
+            "name": "href",
+            "type": "string",
+            "required": false,
+            "description": "Link target for the brand (routed via setLinkComponent)."
+          }
+        ]
+      },
+      {
+        "name": "ShellHeaderNavItem",
+        "description": "A top-nav entry: either a link (`{ label, href, active?, onClick? }`) or a dropdown menu (`{ label, items: { label, href, active? }[] }`).",
+        "fields": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Visible nav label."
+          },
+          {
+            "name": "href",
+            "type": "string",
+            "required": false,
+            "description": "Link target (link items). Routed via setLinkComponent."
+          },
+          {
+            "name": "items",
+            "type": "{ label: string; href: string; active?: boolean }[]",
+            "required": false,
+            "description": "Dropdown menu entries (menu items)."
+          },
+          {
+            "name": "active",
+            "type": "boolean",
+            "required": false,
+            "description": "Marks the current nav entry (aria-current)."
+          },
+          {
+            "name": "onClick",
+            "type": "(e: MouseEvent<HTMLAnchorElement>) => void",
+            "required": false,
+            "description": "Intercept navigation (e.g. a SPA section switch)."
+          }
+        ]
+      }
+    ],
+    "tokens": [
+      "--cascivo-shell-header-block-size",
+      "--cascivo-color-surface",
+      "--cascivo-color-border",
+      "--cascivo-color-text",
+      "--cascivo-color-text-subtle",
+      "--cascivo-color-accent",
+      "--cascivo-radius-control"
+    ],
+    "accessibility": {
+      "role": "banner",
+      "wcag": "2.2-AA",
+      "keyboard": ["Tab", "Enter", "Space", "ArrowDown", "ArrowUp", "Escape"]
+    },
+    "examples": [
+      {
+        "title": "Console header",
+        "code": "import { Bell } from '@cascivo/icons'\n\n<ShellHeader\n  brand={{ prefix: 'cascivo', name: 'Console', href: '/' }}\n  nav={[\n    { label: 'Dashboard', href: '/dash', active: true },\n    { label: 'Manage', items: [{ label: 'Users', href: '/users' }] },\n  ]}\n  actions={[{ id: 'notifications', label: 'Notifications', icon: <Bell /> }]}\n/>",
+        "description": "Brand with prefix, dropdown nav, global icon action"
+      },
+      {
+        "title": "Command-palette trigger in the centre slot",
+        "code": "<ShellHeader\n  brand={{ name: 'Console', href: '/' }}\n  center={\n    <Button variant=\"ghost\" onClick={openPalette}>\n      Search incidents, alerts, services… <Kbd>⌘K</Kbd>\n    </Button>\n  }\n  end={<UserMenu />}\n/>",
+        "description": "center takes the header’s spare width, so the trigger grows and shrinks with the viewport instead of being pinned right like end"
+      }
+    ],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "registryDependencies": ["popover"],
+    "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
+    "intent": {
+      "whenToUse": [
+        "Building console/admin app chrome with brand, dropdown nav, and global icon actions",
+        "Providing a hamburger that toggles a SideNav and a skip-to-content link",
+        "Hosting global controls (notifications, switcher, user menu) in one top bar"
+      ],
+      "whenNotToUse": [
+        "A simple marketing or app top bar — use Header",
+        "In-page section headings — use Heading"
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Reaching for ShellHeader on a basic landing page",
+          "good": "<Header> for simple top bars",
+          "why": "ShellHeader carries console machinery (dropdowns, icon actions, hamburger) that is overkill for simple sites"
+        }
+      ],
+      "related": [
+        {
+          "name": "SideNav",
+          "relationship": "pairs-with",
+          "reason": "The hamburger toggles a SideNav in the app shell"
+        },
+        {
+          "name": "HeaderPanel",
+          "relationship": "pairs-with",
+          "reason": "Icon actions open HeaderPanels (notifications, switcher)"
+        },
+        {
+          "name": "Header",
+          "relationship": "alternative",
+          "reason": "Header is the simpler top bar for non-console apps"
+        }
+      ],
+      "a11yRationale": "role=\"banner\" landmarks the header; nav dropdowns expose aria-expanded, icon actions use aria-pressed, the hamburger reports aria-expanded, and a skip-to-content link lets keyboard users bypass the chrome",
+      "flexibility": [
+        {
+          "area": "nav / actions / end slots",
+          "level": "flexible",
+          "note": "Brand, nav, actions, and end are composable and optional"
+        },
+        {
+          "area": "token names",
+          "level": "strict",
+          "note": "Surfaces, sizing, and accent must resolve to --cascivo-* shell tokens"
+        }
+      ]
+    }
+  }
+}

@@ -3,7 +3,7 @@
   "name": "combobox",
   "type": "component",
   "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.tsx"

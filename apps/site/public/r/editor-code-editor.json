@@ -3,7 +3,7 @@
   "name": "editor/code-editor",
   "type": "editor",
   "description": "Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [],
   "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["editor", "code", "syntax-highlighting", "textarea", "inputs"],

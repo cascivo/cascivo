@@ -3,7 +3,7 @@
   "name": "collapsible",
   "type": "component",
   "description": "A single disclosure region toggled open and closed by its trigger",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.tsx"

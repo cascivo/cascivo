@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 2,
+  "name": "layout/flex",
+  "type": "layout",
+  "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
+  "version": "0.15.0",
+  "files": [
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.tsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
+    }
+  ],
+  "dependencies": ["@cascivo/core"],
+  "tags": ["layout", "flex", "stack", "spacing"],
+  "category": "layout",
+  "meta": {
+    "name": "Flex",
+    "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
+    "category": "layout",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "direction",
+        "default": "vertical",
+        "type": "'vertical' | 'horizontal'",
+        "required": false,
+        "description": "Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify=\"between\">` alone produces a centered vertical stack."
+      },
+      {
+        "name": "gap",
+        "default": "4",
+        "type": "1|2|3|4|5|6|8|10|12",
+        "required": false,
+        "description": "Spacing token step"
+      },
+      {
+        "name": "align",
+        "type": "'start'|'center'|'end'|'stretch'",
+        "required": false,
+        "description": "align-items"
+      },
+      {
+        "name": "justify",
+        "type": "'start'|'center'|'end'|'between'",
+        "required": false,
+        "description": "justify-content"
+      },
+      {
+        "name": "wrap",
+        "default": "false",
+        "type": "boolean",
+        "required": false,
+        "description": "Allow wrapping"
+      }
+    ],
+    "tokens": ["--cascivo-space-*"],
+    "accessibility": {
+      "role": "generic",
+      "wcag": "2.1-AA",
+      "keyboard": []
+    },
+    "examples": [
+      {
+        "title": "Vertical",
+        "code": "<Flex gap={4}><div>A</div><div>B</div></Flex>",
+        "description": "Default vertical stack"
+      },
+      {
+        "title": "Horizontal",
+        "code": "<Flex direction=\"horizontal\" gap={2}><div>A</div><div>B</div></Flex>",
+        "description": "Row layout"
+      }
+    ],
+    "dependencies": ["@cascivo/core"],
+    "tags": ["layout", "flex", "stack", "spacing"],
+    "intent": {
+      "whenToUse": [
+        "Arranging children vertically or horizontally with a consistent gap",
+        "The default primitive for spacing a small set of elements in one direction"
+      ],
+      "whenNotToUse": [
+        "Two-dimensional layouts — use Grid",
+        "Responsive auto-wrapping card collections — use AutoGrid",
+        "A visual card-pile / overlapping avatars — that is `Stack` in @cascivo/react (an `offset` prop), a different component."
+      ],
+      "antiPatterns": [
+        {
+          "bad": "Expecting import { Stack } from '@cascivo/react' to gap items",
+          "good": "Use Flex for gap-based layout (import { Flex } from \"@cascivo/react\", or `npx cascivo add flex`)",
+          "why": "The published `Stack` export is a card-pile that overlaps children by an offset — it does not do gap-based layout. Flex is the flex container."
+        }
+      ],
+      "related": [
+        {
+          "name": "Stack",
+          "relationship": "alternative",
+          "reason": "The `@cascivo/react` `Stack` overlaps children with an offset (card-pile) — a different component for visual overlap, not gap-based layout."
+        },
+        {
+          "name": "Grid",
+          "relationship": "alternative",
+          "reason": "Use for two-dimensional row-and-column layouts"
+        },
+        {
+          "name": "Columns",
+          "relationship": "alternative",
+          "reason": "Use for equal-width multi-column content"
+        }
+      ],
+      "a11yRationale": "Pure layout primitive with no semantic role; does not affect the accessibility tree.",
+      "flexibility": []
+    }
+  }
+}

@@ -3,7 +3,7 @@
   "name": "fab",
   "type": "component",
   "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.tsx"

@@ -3,7 +3,7 @@
   "name": "avatar-group",
   "type": "component",
   "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.tsx"

@@ -3,7 +3,7 @@
   "name": "action-sheet",
   "type": "component",
   "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.tsx"

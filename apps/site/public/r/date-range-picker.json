@@ -3,7 +3,7 @@
   "name": "date-range-picker",
   "type": "component",
   "description": "A dual-calendar picker for selecting a contiguous date range.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.tsx"

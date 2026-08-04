@@ -3,7 +3,7 @@
   "name": "native-select",
   "type": "component",
   "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.tsx"

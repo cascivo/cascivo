@@ -3,7 +3,7 @@
   "name": "command-menu",
   "type": "component",
   "description": "Cmd+K command palette with fuzzy search over grouped commands",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.tsx"

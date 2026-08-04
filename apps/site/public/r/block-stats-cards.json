@@ -3,7 +3,7 @@
   "name": "block/stats-cards",
   "type": "block",
   "description": "Grid of KPI stat cards with trend badges.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"

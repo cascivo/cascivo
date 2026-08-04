@@ -3,7 +3,7 @@
   "name": "stack",
   "type": "component",
   "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/stack.tsx"

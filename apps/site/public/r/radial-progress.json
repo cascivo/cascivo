@@ -3,7 +3,7 @@
   "name": "radial-progress",
   "type": "component",
   "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.tsx"

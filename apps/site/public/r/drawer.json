@@ -3,7 +3,7 @@
   "name": "drawer",
   "type": "component",
   "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.tsx"

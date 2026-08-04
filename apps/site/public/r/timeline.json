@@ -3,7 +3,7 @@
   "name": "timeline",
   "type": "component",
   "description": "Ordered sequence of events with status markers and a connector line",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.tsx"

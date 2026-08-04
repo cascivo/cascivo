@@ -3,7 +3,7 @@
   "name": "link",
   "type": "component",
   "description": "Styled anchor for navigation, standalone or inline within prose",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.tsx"

@@ -3,7 +3,7 @@
   "name": "chart/meter",
   "type": "chart",
   "description": "Progress meter in bar or gauge variant with threshold coloring.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "meter", "gauge", "progress", "data-viz"],

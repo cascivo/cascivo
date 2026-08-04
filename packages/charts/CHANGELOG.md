@@ -1,5 +1,59 @@
 # @cascivo/charts
 
+## 0.15.0
+
+### Minor Changes
+
+- 9841d27: Rename the calendar-heatmap chart to `CalendarHeatmap`.
+
+  `Calendar` named two different components with incompatible APIs: this heatmap, and
+  `@cascivo/react`'s date picker. A dashboard importing from both packages got whichever
+  resolved last, with no error — and because the docs generator resolved a component's
+  distribution channel by display name rather than by its own module, the heatmap's page told
+  adopters to `import { Calendar } from '@cascivo/react'`, which hands back the date picker.
+
+  **Breaking:** `Calendar`, `CalendarProps` and `CalendarDatum` are removed, not deprecated.
+  Migrate to `CalendarHeatmap`, `CalendarHeatmapProps` and `CalendarHeatmapDatum`. The aliases
+  were kept briefly during development and deleted before release, because keeping them would
+  have kept the symbol colliding with `@cascivo/react`'s `Calendar` — the exact hazard the
+  rename exists to remove. A one-line find-and-replace; the props are unchanged.
+
+  The copy-paste `layout/app-shell` was renamed in the same pass — `AppShell` → `AppFrame` —
+  for the same reason. It is not published, so no npm consumer is affected; adopters who
+  already copied the source own their copy and are unaffected.
+
+- 9841d27: Render `secondAxis.label`, and colour `Stat`/`Kpi` deltas by sentiment.
+
+  `AreaChart`/`LineChart`'s `secondAxis.label` was typed and documented but never drawn, so a
+  dual-axis chart had no way to say which series belonged to which scale. `Axis` gains a
+  `title`/`titleOffset` pair; the right margin now reserves room for it.
+
+  `Stat` and `Kpi` hard-coded "up is green, down is red", so a deploy console's two
+  most-watched tiles — errors and latency — rendered their worst news in green, and negating
+  the delta to correct the colour also reversed the arrow. Both now take
+  `goodDirection?: 'up' | 'down' | 'neutral'` (default `'up'`, so existing behaviour is
+  unchanged), backed by a shared `sentimentOf` in `@cascivo/core` so the two tiles in two
+  packages cannot drift apart.
+
+### Patch Changes
+
+- 9841d27: Fix CSS custom properties that resolved to nothing, and complete the token catalog.
+
+  18 shipped `var(--cascivo-…)` reads referenced properties that are declared nowhere and had
+  no fallback, so the declaration silently did not apply — `--cascivo-text-secondary`,
+  `--cascivo-color-danger`, `--cascivo-font-size-sm`, `--cascivo-color-neutral-200` and
+  friends, all near-misses for a real token. Affected shipped CSS across components, layouts
+  and two charts (`Bullet`'s range fills and `Heatmap`'s `color-mix` base).
+
+  `tokens.catalog.json` — advertised as a closed set — was generated from the token and theme
+  stylesheets only, so every per-component knob was invisible to anyone validating against it.
+  It now includes component-declared tokens and author hooks: 266 → 317 entries.
+
+- Updated dependencies [9841d27]
+- Updated dependencies [9841d27]
+  - @cascivo/core@0.15.0
+  - @cascivo/i18n@0.15.0
+
 ## 0.7.1
 
 ### Patch Changes

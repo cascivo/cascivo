@@ -3,7 +3,7 @@
   "name": "flow/flow-panel",
   "type": "flow",
   "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "panel", "slot", "chrome"],

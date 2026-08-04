@@ -3,7 +3,7 @@
   "name": "hover-card",
   "type": "component",
   "description": "Hover-triggered popover with configurable open/close delay",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/hover-card.tsx"
