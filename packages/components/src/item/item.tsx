@@ -1,4 +1,4 @@
-import { cn, Slot } from '@cascivo/core'
+import { cn, Slot } from '@cascivo/core/pure'
 import type { HTMLAttributes } from 'react'
 import styles from './item.module.css'
 

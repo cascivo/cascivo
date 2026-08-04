@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { HTMLAttributes } from 'react'
 import styles from './spacer.module.css'
 import type { SpaceStep } from '@cascivo/core'

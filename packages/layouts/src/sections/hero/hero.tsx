@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { Section } from '../../section/section'
 import styles from './hero.module.css'

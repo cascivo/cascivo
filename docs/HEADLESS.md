@@ -97,6 +97,35 @@ React/Tailwind patterns an LLM defaults to are wrong here — see
 | `normalizeProgress` / `Progress` / `ProgressInput` | The catalog's one sequence vocabulary — `pending \| active \| complete \| error`. `Steps` and `Timeline` both accept it, plus Timeline's `current` / `upcoming` aliases, which `normalizeProgress` resolves. |
 | `setLinkComponent` / `getLinkComponent` | Register the component config-driven nav renders links through. Call `setLinkComponent(...)` once at app start so SideNav/ShellHeader/Header/Breadcrumb/Switcher/Dock/NavigationMenu render your framework's router `<Link>` (preserving `href`, `aria-current`, active `data-state`), instead of a plain `<a>`. The Link must forward `ref` to its anchor for roving-focus navs. Re-exported from `@cascivo/react` (Path B) as well as `@cascivo/core` (Path A). |
 
+### `@cascivo/core/pure` — the server-safe subset
+
+`@cascivo/core`'s main entry is a single bundled chunk carrying a `'use client'` banner. That
+banner is load-bearing (without it Next.js treats every hook and `Portal`/`Presence` as a
+Server Component), but it also means **everything** imported from `@cascivo/core` sits behind
+a client boundary — including helpers that need no browser at all. A component that renders
+on the server and imports `cn` from there fails RSC prerendering with `Attempted to call cn()
+from the server but cn is on the client`.
+
+`@cascivo/core/pure` is the same helpers built without the banner:
+
+```tsx
+import { cn, Slot, normalizeTone, useId } from '@cascivo/core/pure'
+```
+
+Exports `cn`, `composeRefs`, `mergeProps`, `Slot`, `normalizeTone`, `normalizeProgress`,
+`useId`, and their types. Every one is transitively free of client-only React APIs — `useId`
+included, because React exports it under the `react-server` condition.
+
+**When to use which.** Reach for `/pure` only from a component that must render on the
+server — exactly the set `clientJs: 'none'` names in the manifests. Everything else keeps its
+single `@cascivo/core` import, which re-exports all of these anyway. **Type-only imports
+never need it**: `import type { ToneInput } from '@cascivo/core'` is erased at compile time,
+so it creates no runtime edge, and routing types through two specifiers makes the published
+`.d.ts` alias them (`ToneInput$1`).
+
+Adding to this subpath is a packaging decision, not a convenience — anything unexportable
+from a Server Component belongs in the main entry.
+
 ## Router integration — client-side nav links
 
 cascivo's config-driven nav components render plain `<a href>` by default. To make

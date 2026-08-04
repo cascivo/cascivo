@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { HTMLAttributes } from 'react'
 import type { HandlePosition } from '../../engine/types.ts'
 import styles from './flow-handle.module.css'

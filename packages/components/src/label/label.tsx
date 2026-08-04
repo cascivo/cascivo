@@ -1,4 +1,4 @@
-import { cn, Slot } from '@cascivo/core'
+import { cn, Slot } from '@cascivo/core/pure'
 import { builtin, t } from '@cascivo/i18n'
 import type { LabelHTMLAttributes, ReactNode } from 'react'
 import styles from './label.module.css'

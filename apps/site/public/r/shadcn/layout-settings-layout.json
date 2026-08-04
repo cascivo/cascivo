@@ -6,7 +6,7 @@
     {
       "path": "layout-settings-layout/settings-layout.tsx",
       "type": "registry:block",
-      "content": "import { cn } from '@cascivo/core'\nimport type { ReactNode } from 'react'\nimport styles from './settings-layout.module.css'\n\nexport interface SettingsLayoutProps {\n  menu: ReactNode\n  children: ReactNode\n  className?: string\n}\n\nexport function SettingsLayout({ menu, children, className }: SettingsLayoutProps) {\n  // Outer element establishes the query container; the inner `.layout` grid hosts the\n  // `@container` collapse rule, which can only resolve against an ancestor container.\n  return (\n    <div className={cn(styles['layout-container'], className)}>\n      <div className={styles['layout']}>\n        <div className={styles['menu']}>{menu}</div>\n        <div className={styles['content']}>{children}</div>\n      </div>\n    </div>\n  )\n}\n"
+      "content": "import { cn } from '@cascivo/core/pure'\nimport type { ReactNode } from 'react'\nimport styles from './settings-layout.module.css'\n\nexport interface SettingsLayoutProps {\n  menu: ReactNode\n  children: ReactNode\n  className?: string\n}\n\nexport function SettingsLayout({ menu, children, className }: SettingsLayoutProps) {\n  // Outer element establishes the query container; the inner `.layout` grid hosts the\n  // `@container` collapse rule, which can only resolve against an ancestor container.\n  return (\n    <div className={cn(styles['layout-container'], className)}>\n      <div className={styles['layout']}>\n        <div className={styles['menu']}>{menu}</div>\n        <div className={styles['content']}>{children}</div>\n      </div>\n    </div>\n  )\n}\n"
     },
     {
       "path": "layout-settings-layout/settings-layout.module.css",

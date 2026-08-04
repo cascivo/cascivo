@@ -1,4 +1,4 @@
-// Roll the published types up into a single, self-contained dist/index.d.ts so
+// Roll the published types up into self-contained dist/<entry>.d.ts files so
 // the published surface never leaks the internal monorepo layout (no
 // `packages/.../src` re-exports in consumers' "Go to definition").
 //
@@ -18,37 +18,44 @@ const isWin = process.platform === 'win32'
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 const outDir = mkdtempSync(join(tmpdir(), 'cascivo-react-dts-'))
 
+// Every published entry in package.json `exports`. `pure` is the server-safe subset
+// (src/pure.ts); it needs its own declaration or `@cascivo/core/pure` resolves to nothing
+// and every consumer of a `clientJs: 'none'` component fails to type-check.
+const ENTRIES = ['index', 'pure']
+
 try {
-  // Generate the bundled .d.mts into a throwaway dir (we only keep the types).
-  execFileSync(
-    'pnpm',
-    [
-      'exec',
-      'vp',
-      'pack',
-      '--out-dir',
-      isWin ? `"${outDir}"` : outDir,
-      '--dts',
-      '--no-clean',
-      'src/index.ts',
-    ],
-    {
-      cwd: pkgRoot,
-      stdio: 'inherit',
-      // pnpm is pnpm.cmd on Windows; .cmd files require a shell on Node >= 22.
-      shell: isWin,
-    },
-  )
+  for (const entry of ENTRIES) {
+    // Generate the bundled .d.mts into a throwaway dir (we only keep the types).
+    execFileSync(
+      'pnpm',
+      [
+        'exec',
+        'vp',
+        'pack',
+        '--out-dir',
+        isWin ? `"${outDir}"` : outDir,
+        '--dts',
+        '--no-clean',
+        `src/${entry}.ts`,
+      ],
+      {
+        cwd: pkgRoot,
+        stdio: 'inherit',
+        // pnpm is pnpm.cmd on Windows; .cmd files require a shell on Node >= 22.
+        shell: isWin,
+      },
+    )
 
-  const bundled = readFileSync(join(outDir, 'index.d.mts'), 'utf8')
-  // Drop vp's `//#region <source path>` / `//#endregion` navigation comments so
-  // no internal source path strings survive in the published declaration.
-  const cleaned = bundled
-    .split('\n')
-    .filter((line) => !/^\s*\/\/#(region|endregion)\b/.test(line))
-    .join('\n')
+    const bundled = readFileSync(join(outDir, `${entry}.d.mts`), 'utf8')
+    // Drop vp's `//#region <source path>` / `//#endregion` navigation comments so
+    // no internal source path strings survive in the published declaration.
+    const cleaned = bundled
+      .split('\n')
+      .filter((line) => !/^\s*\/\/#(region|endregion)\b/.test(line))
+      .join('\n')
 
-  writeFileSync(join(pkgRoot, 'dist', 'index.d.ts'), cleaned)
+    writeFileSync(join(pkgRoot, 'dist', `${entry}.d.ts`), cleaned)
+  }
 } finally {
   rmSync(outDir, { recursive: true, force: true })
   // Remove any stale nested tree from a previous tsc-based build.

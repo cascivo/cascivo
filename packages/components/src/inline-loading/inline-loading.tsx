@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import { builtin, t } from '@cascivo/i18n'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { Spinner } from '../spinner/spinner'

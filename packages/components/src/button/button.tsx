@@ -1,4 +1,4 @@
-import { cn, Slot } from '@cascivo/core'
+import { cn, Slot } from '@cascivo/core/pure'
 import { forwardRef } from 'react'
 import type { ButtonHTMLAttributes } from 'react'
 import { Spinner } from '../spinner/spinner'

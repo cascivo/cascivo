@@ -1,7 +1,7 @@
 # `clientJs` — a runtime-cost tier in the component manifest
 
-**Status: implemented**, except the build change in §6, which was attempted, measured, and
-reverted — it is blocked upstream by `@cascivo/core` and needs its own spec (§6.2).
+**Status: implemented**, including the build change in §6 — which took two attempts; the
+first is kept below because the failure is the useful part.
 Shipped: the field on `ComponentMeta`/`BlockMeta` (68 `none`, 11 `enhancement`, 24 `required`,
 101 deliberately unclassified), the `client-js-parity` guard in `meta:check`, propagation into
 `registry.json` and `llms/<name>.md`, and the removal of 76 redundant `'use client'` directives.
@@ -11,8 +11,8 @@ and CSS that renders immediately, without JavaScript, and an enhancement layer o
 classifies components by how much of that base layer survives without JS. Its web-component
 substrate is not applicable to cascivo; the classification is.
 **Scope:** one optional field on `ComponentMeta` (`packages/core/src/types.ts:78`), its derivation
-guard, and its propagation to the AI surfaces. A related build change is described in §6 and is
-explicitly **not** part of this spec.
+guard, and its propagation to the AI surfaces — plus the `@cascivo/react` build change in §6,
+which was originally deferred and later landed once `@cascivo/core/pure` unblocked it.
 
 ---
 
@@ -178,9 +178,12 @@ Nothing else needs to change. `pnpm regen` covers 1–3 and CI diffs the result.
 
 ---
 
-## 6. The build change — attempted, measured, reverted [verified]
+## 6. The build change — failed once, then landed [verified]
 
-**Status: blocked upstream. Do not retry without fixing §6.1 first.**
+**Status: shipped.** `@cascivo/react` no longer stamps `'use client'` onto every chunk, so
+the 76 directive-free components reach npm consumers as Server Components. 86 of 272 chunks
+carry the directive; `badge/badge.js` does not; `dist/index.js` is a bare re-export.
+`apps/examples/react-next` prerenders.
 
 The change described below was implemented and measured on 2026-08-04. Dropping
 `output.banner` and making both flat entries directive-free worked exactly as predicted at
@@ -213,16 +216,32 @@ The banner in `packages/react/vite.config.ts` remains redundant for every file t
 its own directive (its own `spliceAfterDirectives` comment says as much), but removing it
 cannot pay off while `cn` is unreachable from the server.
 
-### 6.2 What would actually unlock it
+### 6.2 The unlock, as shipped
 
-A directive-free way to import the pure helpers — most likely a `@cascivo/core/pure`
-subpath built without the banner, exporting `cn`, `normalizeTone` and the tone/type
-utilities, with the ~76 `clientJs: 'none'` components importing from there.
+`@cascivo/core/pure` — a second build entry from the same sources with no banner, exporting
+exactly the transitively-pure surface the `clientJs: 'none'` components need: `cn`,
+`composeRefs`, `mergeProps`, `Slot`, `normalizeTone`, `normalizeProgress`, `useId`. Measured
+first: those 55 files import only 7 distinct symbols from core, so the subpath is small by
+construction rather than by judgement. The main entry still re-exports all of them, so client
+components are untouched.
 
-That is a public API change: it alters the copy-paste source every adopter receives, so it
-touches the docs-imports guard, the manifests' `dependencies`, and the getting-started
-surface. It needs its own spec. Until it lands, the directive cleanup pays off **only on the
-copy-paste path** (§1.2), which is where the waste was real anyway.
+Three things this surfaced that the original spec did not anticipate:
+
+1. **`useId` was over-marked.** `packages/core/src/use-id.ts` carried `'use client'`, but it
+   only wraps React's `useId`, which *is* exported under the `react-server` condition. The
+   directive was removed.
+2. **Type-only imports must stay on the main entry.** Routing a type through both specifiers
+   makes the bundled `.d.ts` alias it (`ProgressInput$1`), which `check-styles-complete`
+   rejects. Type imports are erased, so they create no runtime edge and need no subpath.
+3. **A string alias is a prefix replacement.** Twelve vite alias maps rewrote
+   `@cascivo/core/pure` to `…/src/index.ts/pure`; four `rollupOptions.external` lists used an
+   exact string that misses the subpath — the same class of bug `packages/core`'s own
+   externals comment already warned about. Both are now recorded in the CLAUDE.md alias
+   checklist.
+
+`packages/core`'s banner stays exactly as it was. Its single-entry build really does collapse
+23 directive-carrying modules and drop their directives; only `@cascivo/react`'s banner was
+redundant, because `preserveModules` keeps chunks one-to-one with sources.
 
 ## 7. The original plan for the build change (superseded by §6)
 

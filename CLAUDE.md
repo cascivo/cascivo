@@ -251,6 +251,18 @@ The alias maps the package name to its TypeScript source entry so Rolldown can b
    - `apps/storybook/.storybook/main.ts` (`viteFinal` alias block)
 3. Verify each builds locally: `pnpm exec vp run @cascivo/site#build @cascivo/storybook#build`
 
+**Subpaths need their own alias, listed first.** A string alias is a _prefix_ replacement, so
+`'@cascivo/core'` alone rewrites `@cascivo/core/pure` to `…/src/index.ts/pure` and the build
+dies with `UNLOADABLE_DEPENDENCY … Not a directory`. Every alias map that carries
+`'@cascivo/core'` must carry `'@cascivo/core/pure'` **above** it — currently twelve of them
+(`apps/site`, `apps/storybook`, and the ten `apps/examples/*` that alias core). Adding a
+subpath to any `@cascivo/*` package means the same sweep.
+
+Also make the package's own consumers' `rollupOptions.external` **subpath-aware**: an exact
+string (`'@cascivo/core'`) does not match `@cascivo/core/pure`, so the subpath gets bundled
+in and its types are duplicated in the published `.d.ts` (`ProgressInput$1`, caught by
+`check-styles-complete`). Use `/^@cascivo\/core($|\/)/`.
+
 Packages that export source directly (components, layouts, charts, themes, tokens) do **not** need aliases — Rolldown resolves them via the `exports` map to their `.tsx`/`.css` source files.
 
 ---

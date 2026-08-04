@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { HTMLAttributes, ReactNode } from 'react'
 import { AutoGrid } from '../../auto-grid/auto-grid'
 import styles from './page-footer.module.css'

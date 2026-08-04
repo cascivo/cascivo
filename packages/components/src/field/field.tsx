@@ -1,4 +1,4 @@
-import { cn, useId } from '@cascivo/core'
+import { cn, useId } from '@cascivo/core/pure'
 import { Children, cloneElement, isValidElement } from 'react'
 import type { ReactElement, ReactNode } from 'react'
 import { Label } from '../label/label'

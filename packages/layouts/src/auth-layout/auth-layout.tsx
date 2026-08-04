@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { ReactNode } from 'react'
 import styles from './auth-layout.module.css'
 

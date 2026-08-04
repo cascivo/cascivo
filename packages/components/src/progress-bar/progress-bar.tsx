@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { CSSProperties } from 'react'
 import styles from './progress-bar.module.css'
 

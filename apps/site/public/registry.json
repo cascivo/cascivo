@@ -13,7 +13,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.module.css"
       ],
       "fileHashes": {
-        "accordion.tsx": "sha256-b0e6086316a8829c6359a335f83f5d181b3f3a9f34c18c1b07ae6fec903231af",
+        "accordion.tsx": "sha256-a61f8af9363948fecdb0e28480c163cde927b13f3e4840e44e6977a021643a15",
         "accordion.module.css": "sha256-d559585cd5a3803d10319a19e7d62ccc0a4efc1a3d1ba569af28c9fdbd4f0a4c"
       },
       "dependencies": ["@cascivo/core"],
@@ -3175,7 +3175,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.module.css"
       ],
       "fileHashes": {
-        "collapsible.tsx": "sha256-f0792c4f048196c10007a7561fdfd3247fe2b2be0bd86b46e1739dc838c53999",
+        "collapsible.tsx": "sha256-2864d6e8532a79077079950e22caedd33ad4123674ff5d99498efd0405aa1008",
         "collapsible.module.css": "sha256-f007d00fdbdaeb7fb68e214100a8f1173391136a28a60f0b154a689e46af4594"
       },
       "dependencies": ["@cascivo/core"],
