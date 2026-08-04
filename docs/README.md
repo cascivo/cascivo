@@ -5,6 +5,28 @@ that matches what you're doing. The full, interactive docs live at
 [cascivo.com](https://cascivo.com); this directory holds the adopter
 guides, references, cookbooks, and specs that ship with the source.
 
+## Where the documentation lives
+
+Four surfaces, and each is authoritative for something different. Two hands-on
+reports independently reached a working model only after reading all four, so it
+is worth 30 seconds to know which to open.
+
+| Surface | Authoritative for | Reach it |
+| --- | --- | --- |
+| **The shipped `.d.ts`** | **Props — always check here first.** Every prop carries its type, `@defaultValue`, the rationale, and ⚠ warnings for the mistakes previous adopters made (`Flex` defaults to `vertical`; a chart's `title` renders nothing visible; `useToast()` returns `{ toast }`, not a callable). Both reports rated it the single best artefact in the project. | Ctrl-click any import in your editor, or `node_modules/@cascivo/react/dist/index.d.ts` |
+| **`llms.txt` + `/llms/<name>.md`** | Agent-facing reference: the component index with distribution channel, per-component pages (props → object types → examples → tokens → a11y), and the machine-readable catalogs (`registry.json`, `tokens.catalog.json`, `icons.catalog.json`). | <https://cascivo.com/llms.txt>, or offline via `npx @cascivo/docs` |
+| **The guides (`docs/*.md`)** | Cross-cutting concerns no single component owns: install paths, SSR, routers, theming, layers, lint config, the dashboard recipe. | This directory, <https://cascivo.com/docs>, or `npx @cascivo/docs guide <name>` |
+| **The docs site** | The same content, rendered, plus live examples you can interact with. | <https://cascivo.com> |
+
+**If two disagree, the `.d.ts` wins** — it is generated from the same source the
+components compile from, and the parity guards in `scripts/checks/` fail the build
+when a manifest and its interface diverge.
+
+The `@cascivo/docs` package ships two directories that look alike:
+`llms/<name>.md` is the full per-component reference, and `context/<name>.md` is
+the condensed intent summary (when to use, when not to, related components) meant
+for pasting into an agent's context window.
+
 ## Start here
 
 | Guide | What it covers |

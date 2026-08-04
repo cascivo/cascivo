@@ -10,6 +10,13 @@ export const meta: ComponentMeta = {
   variants: ['primary', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md', 'lg'],
   props: [
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling.',
+    },
     { name: 'value', description: 'The controlled value.', type: 'number', required: true },
     {
       name: 'size',

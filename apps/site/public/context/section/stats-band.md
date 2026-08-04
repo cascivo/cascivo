@@ -24,10 +24,11 @@ Has no visible heading; consumers must supply an aria-label for the band.
 
 ## Props
 
-| Name         | Type         | Required | Default       | Description                                                                                            |
-| ------------ | ------------ | -------- | ------------- | ------------------------------------------------------------------------------------------------------ |
-| `stats`      | `StatItem[]` | Yes      | —             | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
-| `aria-label` | `string`     | No       | "Key metrics" | Accessible label for the stats region                                                                  |
+| Name         | Type         | Required | Default       | Description                                                                                                   |
+| ------------ | ------------ | -------- | ------------- | ------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`  | `string`     | No       | —             | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `stats`      | `StatItem[]` | Yes      | —             | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline        |
+| `aria-label` | `string`     | No       | "Key metrics" | Accessible label for the stats region                                                                         |
 
 ## Tokens
 
@@ -35,9 +36,9 @@ Has no visible heading; consumers must supply an aria-label for the band.
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-mono`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Examples
@@ -74,7 +75,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 StatsBand is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-text-2xl, --cascivo-text-sm, --cascivo-font-bold, --cascivo-font-mono, --cascivo-text-secondary, --cascivo-color-border, --cascivo-surface-subtle, --cascivo-space-*
+  --cascivo-text-2xl, --cascivo-text-sm, --cascivo-font-bold, --cascivo-font-mono, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-space-*
 
 Accessibility: role "region", WCAG 2.1-AA. Keep it AA.
 

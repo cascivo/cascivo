@@ -60,6 +60,58 @@ release in that package's `releases` array newer than `0.2.1`.
 
 ---
 
+## The `@cascivo/core` family versions in lockstep
+
+Eight packages release together at one version: **`@cascivo/core`, `@cascivo/react`,
+`@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`,
+`@cascivo/ai`**. Seven of them depend on `@cascivo/core`.
+
+**What this means for you: pin them all to the same version.** If `@cascivo/react` is
+`0.15.0`, so is `@cascivo/charts`. A mismatched pair is not a supported combination, and
+`cascivo doctor` will tell you if your install ended up with one.
+
+**Why it is enforced rather than advised.** Independently-versioned 0.x packages could
+resolve two non-overlapping `@cascivo/core` ranges, and the package manager then nests a
+second copy. cascivo's reactivity is a module-level signal registry, so two copies means two
+registries: a signal written through one is invisible to components subscribed through the
+other. Nothing errors — handlers fire and the UI silently stops updating, which is the
+hardest failure in this system to diagnose from symptoms.
+
+`@cascivo/icons`, `@cascivo/themes`, `@cascivo/tokens`, `@cascivo/mcp`, `@cascivo/registry`,
+`@cascivo/vite-plugin`, `@cascivo/eslint-config`, `@cascivo/docs` and the `cascivo` CLI keep
+their own version lines — none of them link against the signal registry.
+
+`scripts/checks/version-lockstep.test.ts` fails the build if a package starts depending on
+`@cascivo/core` without joining the group, so the guarantee cannot erode as packages are
+added.
+
+## How cascivo renames things (the deprecation contract)
+
+A rename is the most expensive change a component library can make, so the catalog uses
+one mechanism for all of them. If you see any of these, this is what is happening and how
+long you have.
+
+1. **Both names work.** The old name stays as an alias for at least one minor. Your code
+   keeps compiling and behaving identically.
+2. **The old name carries `@deprecated`** in its TSDoc, naming the replacement. Your editor
+   strikes it through; `tsc` stays silent.
+3. **A changeset records it**, so it appears in the CHANGELOG and in
+   [`breaking-changes.json`](#breaking-changesjson--for-machines) — the file
+   `cascivo doctor --drift` reads.
+4. **A guard keeps the pair honest.** The alias and its tracking entry are removed
+   together; a check fails if one outlives the other, so an alias cannot quietly become
+   permanent and a tracking note cannot go stale.
+
+Aliases that only *add* a name (`ariaLabel` alongside `aria-label`, `value` alongside `id`)
+are not deprecations — both spellings are supported indefinitely, and neither is
+struck through. They exist because guessing the wrong one cost adopters a compile
+round-trip.
+
+Where a name is **required** for accessibility, an alias is expressed as an XOR union
+(`{ label: string; ariaLabel?: never } | { ariaLabel: string; label?: never }`) rather than
+making both optional — the compile-time guarantee that a control has an accessible name is
+worth more than the simpler type.
+
 ## Upgrading copied components: `cascivo update`
 
 Copied source is yours to edit — so upgrading it is a merge, not an overwrite.

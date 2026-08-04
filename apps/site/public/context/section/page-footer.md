@@ -34,8 +34,8 @@ Renders a footer element wrapping a labeled Footer navigation region.
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-semibold`
-- `--cascivo-text-primary`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
 - `--cascivo-color-accent`
 - `--cascivo-space-*`
@@ -94,7 +94,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 PageFooter is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-text-sm, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-text-primary, --cascivo-text-secondary, --cascivo-color-border, --cascivo-color-accent, --cascivo-space-*
+  --cascivo-text-sm, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-border, --cascivo-color-accent, --cascivo-space-*
 
 Accessibility: role "contentinfo", WCAG 2.1-AA. Keep it AA.
 

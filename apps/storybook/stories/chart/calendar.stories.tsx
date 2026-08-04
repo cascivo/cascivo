@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Calendar } from '@cascivo/charts'
+import { CalendarHeatmap } from '@cascivo/charts'
 
 // One year of deterministic daily values.
 const data = Array.from({ length: 365 }, (_, i) => {
@@ -7,9 +7,9 @@ const data = Array.from({ length: 365 }, (_, i) => {
   return { day: d.toISOString().slice(0, 10), value: (i * 7 + (i % 5) * 11) % 13 }
 })
 
-const meta: Meta<typeof Calendar> = {
-  title: 'Charts/Calendar',
-  component: Calendar,
+const meta: Meta<typeof CalendarHeatmap> = {
+  title: 'Charts/CalendarHeatmap',
+  component: CalendarHeatmap,
   parameters: { layout: 'fullscreen' },
   decorators: [
     (S) => (
@@ -20,7 +20,7 @@ const meta: Meta<typeof Calendar> = {
   ],
 }
 export default meta
-type Story = StoryObj<typeof Calendar>
+type Story = StoryObj<typeof CalendarHeatmap>
 
 export const Default: Story = {
   args: { data, title: 'Contributions, 2026', height: 140, tooltip: true },

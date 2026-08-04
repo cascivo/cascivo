@@ -206,4 +206,28 @@ describe('tsdoc-parity — the .d.ts carries what the manifest documents', () =>
         'you add docs; never lower it.',
     )
   })
+
+  it('a required-but-invisible chart `title` says so in its TSDoc', () => {
+    // `title: string` is required on every chart and renders NO visible text — it becomes
+    // the SVG accessible name. The prop name promises a heading, so an adopter wrote one,
+    // saw nothing, and shipped a redundant `CardTitle` above every chart. The requirement
+    // is deliberate (a chart with no accessible name is unusable with a screen reader), so
+    // the warning in the TSDoc is the only thing standing between the next adopter and the
+    // same afternoon.
+    const charts = ['area-chart', 'line-chart', 'bar-chart']
+    const missing: string[] = []
+    for (const chart of charts) {
+      const file = join(ROOT, `packages/charts/src/charts/${chart}/${chart}.tsx`)
+      const src = readFileSync(file, 'utf8')
+      const doc = /\/\*\*(?:(?!\*\/)[\s\S])*?\*\/\s*\n\s*title: string/.exec(src)?.[0]
+      if (doc === undefined || !/not rendered as a visible heading/i.test(doc)) {
+        missing.push(chart)
+      }
+    }
+    assert.deepEqual(
+      missing,
+      [],
+      `These charts' required \`title\` prop does not warn that it renders nothing visible: ${missing.join(', ')}`,
+    )
+  })
 })

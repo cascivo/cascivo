@@ -17,7 +17,7 @@ import { Radar } from '@cascivo/charts'
 import { Bullet } from '@cascivo/charts'
 import { RadialBar } from '@cascivo/charts'
 import { Funnel } from '@cascivo/charts'
-import { Calendar } from '@cascivo/charts'
+import { CalendarHeatmap } from '@cascivo/charts'
 import { Candlestick } from '@cascivo/charts'
 import { Gauge } from '@cascivo/charts'
 import { Polar } from '@cascivo/charts'
@@ -300,7 +300,7 @@ export const chartDemos: Record<string, () => JSX.Element> = {
       tooltip
     />
   ),
-  calendar: () => <Calendar data={calendarData} title="Contributions" height={160} />,
+  calendar: () => <CalendarHeatmap data={calendarData} title="Contributions" height={160} />,
   candlestick: () => <Candlestick data={candleData} title="Price (OHLC)" height={260} volume />,
   gauge: () => (
     <Gauge

@@ -51,11 +51,11 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Design tokens
 
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility

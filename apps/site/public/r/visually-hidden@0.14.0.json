@@ -76,6 +76,7 @@
       ],
       "a11yRationale": "Applies the standard clip technique so content stays in the DOM and accessibility tree while being painted off-screen — assistive tech reads it, sighted users do not see it",
       "content": {
+        "contentPrimitive": true,
         "tone": "Concise supplementary context for screen readers",
         "notes": "Write what a screen-reader user needs that visuals already convey"
       },

@@ -62,4 +62,19 @@ describe('Kpi deltaFormat', () => {
     expect(trend).toHaveTextContent('▼')
     expect(trend).toHaveTextContent('-4%')
   })
+
+  it('colours the delta by sentiment, not by the sign of the number', () => {
+    // `Errors / day 2,933 ▼ -5.4%` rendered red because negative was hard-coded as bad.
+    const { container } = render(
+      <Kpi label="Errors / day" value={2933} delta={-5.4} goodDirection="down" />,
+    )
+    const delta = container.querySelector('[data-trend]')!
+    expect(delta.getAttribute('data-trend')).toBe('down')
+    expect(delta.getAttribute('data-sentiment')).toBe('good')
+  })
+
+  it('defaults to up-is-good, preserving existing behaviour', () => {
+    const { container } = render(<Kpi label="Revenue" value={100} delta={12} />)
+    expect(container.querySelector('[data-trend]')!.getAttribute('data-sentiment')).toBe('good')
+  })
 })

@@ -62,7 +62,11 @@ interface BundledContract {
   version: string
   tokens: { name: string; resolvedDefault: string | null }[]
   components: { name: string; props: { name: string; type: string; required: boolean }[] }[]
+  /** Absent in contracts cut before the hand-listed passthrough set was replaced. */
+  domAttributes?: string[]
   content: string[]
+  /** Absent in contracts cut before typography primitives were distinguished. */
+  contentPrimitives?: string[]
 }
 
 /** Adapt the bundled shape to `buildContract`'s three-artifact input. */
@@ -71,6 +75,8 @@ function fromBundled(bundled: BundledContract): Contract {
     catalog: { tokens: bundled.tokens },
     registry: { components: bundled.components.map((c) => ({ meta: c })) },
     context: { components: bundled.content.map((name) => ({ name, intent: { content: true } })) },
+    ...(bundled.domAttributes ? { domAttributes: bundled.domAttributes } : {}),
+    ...(bundled.contentPrimitives ? { contentPrimitives: bundled.contentPrimitives } : {}),
   })
 }
 
@@ -160,5 +166,26 @@ export async function loadContract(options?: {
     typeof buildContract
   >[0]['context']
 
-  return buildContract({ catalog, registry, context })
+  // The DOM-attribute set is derived by the contract generator (it needs the type checker),
+  // so even the monorepo path reads it from the generated artifact rather than recomputing.
+  let domAttributes: string[] | undefined
+  let contentPrimitives: string[] | undefined
+  try {
+    const generated = JSON.parse(
+      readFileSync(join(docsPublic!, 'audit-contract.json'), 'utf8'),
+    ) as { domAttributes?: string[]; contentPrimitives?: string[] }
+    domAttributes = generated.domAttributes
+    contentPrimitives = generated.contentPrimitives
+  } catch {
+    domAttributes = undefined
+    contentPrimitives = undefined
+  }
+
+  return buildContract({
+    catalog,
+    registry,
+    context,
+    ...(domAttributes ? { domAttributes } : {}),
+    ...(contentPrimitives ? { contentPrimitives } : {}),
+  })
 }

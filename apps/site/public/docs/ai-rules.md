@@ -61,6 +61,13 @@ there, and everything is re-exported from `@cascivo/react`.
 
 1. Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. Never `useState`.
    The signal IS the state.
+   > ⚠ **Your linter will reject this rule by default.** `eslint-plugin-react-hooks@7`'s
+   > `recommended-latest` enables `react-hooks/immutability`, which reports every
+   > `signal.value = next` as `Error: This value cannot be modified`. It fires on the idiom
+   > this line mandates, in your own page code, on both install paths. Install
+   > `@cascivo/eslint-config` (`...cascivo` spread last in `eslint.config.js`) or set
+   > `'react-hooks/immutability': 'off'` yourself. Full rationale and what it costs:
+   > [USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md).
 2. Side effects (DOM, listeners, `showModal()`) -> `useSignalEffect(fn)`. Never `useEffect`.
 3. Shared/app-wide state -> a module-level `signal` imported anywhere. Never `useContext`.
 4. A controlled/uncontrolled prop bridged to a signal ->
@@ -99,12 +106,12 @@ Full catalogs: docs/HEADLESS.md (primitives) and docs/ENTERPRISE-READINESS.md (f
 cascivo names change/activation callbacks by **what the handler receives**, so you can
 predict the prop without checking the types:
 
-| Handler receives                                                                       | Prop name                  | Examples                                                                                                                   |
-| -------------------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| The component's **value** (string / number / array / boolean / Date — not a DOM event) | **`onValueChange(value)`** | `Tabs`, `SegmentedControl`, `Select`, `Combobox`, `Slider`, `MultiSelect`, `Toggle`, `Search`, `NumberInput`, `DatePicker` |
-| A raw **DOM `ChangeEvent`** from a real underlying element                             | **`onChange(event)`**      | `Checkbox`, `NativeSelect`, `PasswordInput`                                                                                |
-| **Activation / selection** of a discrete item                                          | **`onSelect(value)`**      | `Dropdown`, `Menu`, `ContextMenu`, `OverflowMenu`, chart point clicks                                                      |
-| A raw DOM click passthrough                                                            | **`onClick(event)`**       | nav items, buttons                                                                                                         |
+| Handler receives                                                                       | Prop name                  | Examples                                                                                               |
+| -------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------ |
+| The component's **value** (string / number / array / boolean / Date — not a DOM event) | **`onValueChange(value)`** | `Tabs`, `SegmentedControl`, `Combobox`, `MultiSelect`, `Toggle`, `Search`, `NumberInput`, `DatePicker` |
+| A raw **DOM `ChangeEvent`** from a real underlying element                             | **`onChange(event)`**      | `Checkbox`, `NativeSelect`, `PasswordInput`, `Select`, `Slider`                                        |
+| **Activation / selection** of a discrete item                                          | **`onSelect(value)`**      | `Dropdown`, `OverflowMenu`, `MenuItem`, `ContextMenuItem`, chart point clicks                          |
+| A raw DOM click passthrough                                                            | **`onClick(event)`**       | nav items, buttons                                                                                     |
 
 Rule of thumb when authoring or generating: **if your handler's first argument is a value,
 name it `onValueChange`; if it's a DOM event, name it `onChange`.** A few components still
@@ -115,25 +122,45 @@ accept a deprecated value-carrying `onChange` alias for backward compatibility �
 > receive a `boolean`. Use **`onValueChange`** — the same boolean, the correct name. The
 > value-carrying `onChange` is deprecated and kept only for compatibility; do not add another.
 
+> **`Select` and `Slider` are native-element wrappers**, not composite components: they
+> spread onto a real `<select>` / `<input type="range">` and carry only the DOM
+> `onChange(event)`. Read the value off `event.target.value`. They were previously listed
+> in the `onValueChange` row, which was wrong and cost an adopter a build cycle —
+> `scripts/checks/handler-naming-parity.test.ts` now fails the build if this table names a
+> handler a component does not have.
+
+> **`onSelect` on menus lives on the item, not the menu.** `MenuItem` / `ContextMenuItem`
+> take `onSelect: () => void` (the item already knows which item it is). `Dropdown` and
+> `OverflowMenu` are config-driven, so their root takes `onSelect(value)`.
+
 ## Accessible-name and item-identity props
 
 The sibling of the handler rule: name a prop by **what it is**, not by the component.
 
-| The value is                                                                                       | Prop name       | Examples                                                 |
-| -------------------------------------------------------------------------------------------------- | --------------- | -------------------------------------------------------- |
-| Text the component **renders**                                                                     | **`label`**     | `Field`, `Checkbox`, `Radio`, `Toggle`, `Slider`         |
-| An **invisible** accessible name for an icon-only control or a nav landmark (goes to `aria-label`) | **`ariaLabel`** | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Dock`, `Steps` |
-| The identity of an item in a collection                                                            | **`value`**     | `OverflowMenu`, `Dropdown`, `Menu`, `Select`, `Combobox` |
+| The value is                                                                                       | Prop name                                         | Examples                                                               |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
+| Text the component **renders**                                                                     | **`label`**                                       | `Field`, `Checkbox`, `Radio`, `Toggle`, `Slider`                       |
+| An **invisible** accessible name for an icon-only control or a nav landmark (goes to `aria-label`) | **`ariaLabel`**                                   | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Dock`, `Steps`               |
+| The identity of an item that is **handed to a callback**                                           | **`value`**                                       | `OverflowMenu`, `Dropdown`, `Select`, `Combobox`                       |
+| A **React key** for an item — never passed anywhere                                                | **`id`** (rows/items) / **`key`** (table columns) | `CommandMenu`, `StructuredList`, `Timeline`, `DataTable.columns[].key` |
 
 Two components predate the rule and take `label` for an **invisible** name: `IconButton`
 and `Sparkline`. Both now also accept `ariaLabel` as an alias, so guessing either way works;
 `label` keeps working and is not deprecated.
 
-Three components took only the DOM spelling `aria-label` (`Filter`, `StructuredList`,
-`Progress`). They now accept **both** `ariaLabel` and `aria-label` — two spellings of one
-idea inside one package was a coin flip on every component. Likewise `OverflowMenu` items
-accept **`id`** as an alias of `value`, which is the common wrong guess by analogy with
-`CommandMenu`.
+Every component that took only the DOM spelling `aria-label` now accepts **both**
+`ariaLabel` and `aria-label` — two spellings of one idea inside one package was a coin flip
+on every component. That covers `Filter`, `StructuredList`, `Progress`, `Menubar`,
+`NavigationMenu`, `TreeView`, `Swap`, `RadialProgress`, `SplitView` and `StatsBand`. Where
+the name is **required** (`Menubar`, `IconButton`), an XOR union enforces that exactly one
+is present, so the a11y guarantee survives the alias.
+
+**`value` vs `id` is a real distinction, not an inconsistency.** `value` is the identity the
+component _hands back to you_ — `onSelect(value)`. `id` is a React key the component uses
+internally and never passes anywhere: `CommandMenu`'s items take `onSelect: () => void`, so
+their `id` could not be delivered even in principle. Reach for `value` when a callback
+receives it, `id` when it is only identity. `OverflowMenu` items additionally accept **`id`**
+as an alias of `value`, because it is the common wrong guess by analogy with `CommandMenu`.
 
 Guessing across components is the failure this prevents: an adopter wrote
 `<OverflowMenu label=… items={[{ id, label }]}>` by analogy with `CommandMenu` and

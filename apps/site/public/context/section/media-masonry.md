@@ -37,7 +37,7 @@ Renders a section shell; tiles supply their own accessible content.
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Examples
@@ -70,7 +70,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 MediaMasonry is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-text-2xl, --cascivo-text-base, --cascivo-font-bold, --cascivo-text-secondary, --cascivo-space-*
+  --cascivo-text-2xl, --cascivo-text-base, --cascivo-font-bold, --cascivo-color-text-subtle, --cascivo-space-*
 
 Accessibility: role "region", WCAG 2.1-AA. Keep it AA.
 

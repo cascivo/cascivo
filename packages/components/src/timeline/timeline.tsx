@@ -8,7 +8,7 @@ const STATUS_CLASS: Record<string, string> = {
   pending: 'upcoming',
   active: 'current',
   complete: 'complete',
-  error: 'current',
+  error: 'error',
 }
 
 /** Canonical tone → the value Timeline's stylesheet keys on. */
@@ -69,28 +69,32 @@ export function Timeline({ items, orientation = 'vertical', className, ...props 
       className={cn(styles['list'], className as string | undefined)}
       {...props}
     >
-      {items.map((item) => (
-        <li
-          key={item.id}
-          data-status={STATUS_CLASS[normalizeProgress(item.status ?? 'pending')] ?? 'upcoming'}
-          data-tone={item.tone ? (TONE_CLASS[normalizeTone(item.tone)] ?? item.tone) : undefined}
-          aria-current={
-            normalizeProgress(item.status ?? 'pending') === 'active' ? 'step' : undefined
-          }
-          className={styles['item']}
-        >
-          <span className={styles['marker']} aria-hidden="true">
-            {item.icon}
-          </span>
-          <div className={styles['content']}>
-            <div className={styles['title']}>{item.title}</div>
-            {item.time ? <time className={styles['time']}>{item.time}</time> : null}
-            {item.description ? (
-              <div className={styles['description']}>{item.description}</div>
-            ) : null}
-          </div>
-        </li>
-      ))}
+      {items.map((item) => {
+        const progress = normalizeProgress(item.status ?? 'pending')
+        return (
+          <li
+            key={item.id}
+            data-status={STATUS_CLASS[progress] ?? 'upcoming'}
+            data-tone={item.tone ? (TONE_CLASS[normalizeTone(item.tone)] ?? item.tone) : undefined}
+            aria-current={progress === 'active' ? 'step' : undefined}
+            className={styles['item']}
+          >
+            <span className={styles['marker']} aria-hidden="true">
+              {/* A failed entry needs an affordance that survives without colour vision, so
+                the error marker carries a glyph when the caller gave no icon — matching
+                Steps' `✕`, which the shared Progress vocabulary already trained readers on. */}
+              {item.icon ?? (progress === 'error' ? '✕' : null)}
+            </span>
+            <div className={styles['content']}>
+              <div className={styles['title']}>{item.title}</div>
+              {item.time ? <time className={styles['time']}>{item.time}</time> : null}
+              {item.description ? (
+                <div className={styles['description']}>{item.description}</div>
+              ) : null}
+            </div>
+          </li>
+        )
+      })}
     </ol>
   )
 }

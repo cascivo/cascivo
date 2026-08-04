@@ -1,11 +1,29 @@
 # Fix plan: TanStack Start dashboard experience report (2026-07-17)
 
-**Status: planned — not implemented.** This document is the full spec for fixing every
-item in the second hands-on experience report (a Vercel-style dashboard built on TanStack
-Start + cascivo 0.4.3, pnpm monorepo, theme `midnight`). It is written to be handed to an
-implementing agent as-is: every issue is root-caused against the current source with
-file:line evidence, and every workstream carries design decisions, implementation steps,
-tests, and acceptance criteria.
+**Status: IMPLEMENTED — closed 2026-08-02.** All seven workstreams were verified against
+current source and every one has shipped. The header below said "planned — not implemented"
+for months after the work landed, which is its own small lesson: a status line nobody
+re-reads is indistinguishable from an unimplemented plan, and the 2026-08-02 review opened
+by treating this document as evidence that cascivo writes plans and shelves them.
+
+| WS | Status | Verified against |
+| --- | --- | --- |
+| WS1 — package-manager detection in workspaces | ✅ shipped | `packages/cli/src/utils/config.ts` walks up to the workspace lockfile (see the comment at `:143`) |
+| WS2 — `init` installs + states the full dependency set | ✅ shipped | `packages/cli/src/commands/init.ts:26-27` installs `@cascivo/themes` and the `@preact/signals-react` peer |
+| WS3 — npm-distributed entries actually install | ✅ shipped | `add.ts:291` adds `entry.install` to `npmPackages`; `:342-352` installs them |
+| WS4 — vendored source survives strict host lint | ✅ shipped | `pnpm lint:host-strict` + `scripts/checks/host-lint/run.mjs`. Superseded in part by `@cascivo/eslint-config` (2026-08-02 plan WS-A1), which covers the `react-hooks/immutability` case this plan predates |
+| WS5 — docs readable by plain fetch/agents | ✅ shipped | `PRERENDER_ROUTES` (`route-head.ts:171`) plus `DOCS_STATIC_PRERENDER` (`apps/site/vite.config.ts:182`), guarded by `pnpm docs-routes:check` |
+| WS6 — `stack` naming disambiguation | ✅ shipped | `stack.meta.ts` describes the card-pile explicitly and cross-references `Flex` as the spacing primitive |
+| WS7 — DataTable column gutter | ✅ shipped | `--cascivo-data-table-cell-gap` padding in `data-table.module.css:135` |
+
+**Do not implement from this document.** It is kept as the root-cause record for the
+2026-07-17 report. Live follow-on work is tracked in
+[`adopter-experience-2026-08-plan.md`](./adopter-experience-2026-08-plan.md), whose §0
+explains why the recurrence pattern this plan's stale header contributed to keeps
+happening — and which requires every fix to ship with a guard, so "did this land?" stops
+being answerable only by re-reading source.
+
+---
 
 **Source:** experience report dated 2026-07-17. Outcome was positive — the full dashboard
 shipped with zero console errors and no hydration mismatches — but the report lists eight

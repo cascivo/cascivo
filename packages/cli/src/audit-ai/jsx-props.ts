@@ -72,8 +72,11 @@ export const HTML_PASSTHROUGH = new Set([
   'open',
 ])
 
-function isPassthrough(prop: string): boolean {
+function isPassthrough(prop: string, contract?: Contract): boolean {
   if (PASSTHROUGH.has(prop)) return true
+  // Resolved from the component types at contract-generation time. `HTML_PASSTHROUGH` below
+  // is the pre-contract fallback for an older shipped contract that lacks the field.
+  if (contract?.domAttributes.has(prop) === true) return true
   if (HTML_PASSTHROUGH.has(prop)) return true
   if (prop.startsWith('data-')) return true
   if (prop.startsWith('aria-')) return true
@@ -265,7 +268,7 @@ export function findJsxPropViolations(
         continue
       }
       for (const name of extractAttrNames(tag.attrs)) {
-        if (isPassthrough(name)) continue
+        if (isPassthrough(name, contract)) continue
         if (known.has(name)) continue
         findings.push({
           file: filename,

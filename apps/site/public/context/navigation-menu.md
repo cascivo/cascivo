@@ -33,12 +33,13 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 
 ## Props
 
-| Name          | Type                                   | Required | Default    | Description                                              |
-| ------------- | -------------------------------------- | -------- | ---------- | -------------------------------------------------------- |
-| `items`       | `NavigationMenuItem[]`                 | Yes      | —          | The items to render.                                     |
-| `aria-label`  | `string`                               | No       | —          | Accessible label used when no visible label is present.  |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No       | horizontal | Layout orientation of the component.                     |
-| `className`   | `string`                               | No       | —          | Additional CSS class names merged onto the root element. |
+| Name          | Type                                   | Required | Default    | Description                                                                                                   |
+| ------------- | -------------------------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`   | `string`                               | No       | —          | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `items`       | `NavigationMenuItem[]`                 | Yes      | —          | The items to render.                                                                                          |
+| `aria-label`  | `string`                               | No       | —          | Accessible label used when no visible label is present.                                                       |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No       | horizontal | Layout orientation of the component.                                                                          |
+| `className`   | `string`                               | No       | —          | Additional CSS class names merged onto the root element.                                                      |
 
 ## Tokens
 

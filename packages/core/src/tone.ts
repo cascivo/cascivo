@@ -62,3 +62,31 @@ const PROGRESS_ALIASES: Record<ProgressAlias, Progress> = {
 export function normalizeProgress(value: ProgressInput): Progress {
   return (PROGRESS_ALIASES as Record<string, Progress | undefined>)[value] ?? (value as Progress)
 }
+
+/** Which way a metric moved. Drives the arrow, never the colour. */
+export type Trend = 'up' | 'down' | 'flat'
+
+/**
+ * Which direction is *good* for a metric. `'neutral'` means neither is inherently
+ * welcome (headcount, page views) — keep the arrow, drop the sentiment colour.
+ */
+export type GoodDirection = 'up' | 'down' | 'neutral'
+
+/** Whether a movement is welcome. The colour, as distinct from the arrow. */
+export type Sentiment = 'good' | 'bad' | 'neutral'
+
+/**
+ * Resolve a trend plus the metric's preferred direction into a sentiment.
+ *
+ * `Stat` and `Kpi` both hard-coded "up is green, down is red", so the two most-watched
+ * tiles on a deploy console — errors and latency — rendered their worst news in green.
+ * Lying about the trend to correct the colour also reversed the arrow, so there was no
+ * correct call. Splitting direction from sentiment gives one.
+ *
+ * Lives in `@cascivo/core` because `Stat` (`@cascivo/react`) and `Kpi` (`@cascivo/charts`)
+ * are in different packages and must not drift apart again.
+ */
+export function sentimentOf(trend: Trend, goodDirection: GoodDirection): Sentiment {
+  if (trend === 'flat' || goodDirection === 'neutral') return 'neutral'
+  return trend === goodDirection ? 'good' : 'bad'
+}

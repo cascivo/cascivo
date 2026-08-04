@@ -23,6 +23,9 @@ function looksLikeProse(text: string): boolean {
  * chrome text (intent.content), warn when a literal multi-word English child
  * appears, suggesting the labels prop / i18n. Never errors. Only inspects the
  * immediate text directly after the opening tag (no nested element traversal).
+ *
+ * Typography primitives (`intent.content.contentPrimitive`) are excluded: their children
+ * are page copy, not component chrome.
  */
 export function findRawStringViolations(
   source: string,
@@ -35,6 +38,11 @@ export function findRawStringViolations(
   for (const [comp, contractName] of tracked) {
     const info = contract.components.get(contractName)
     if (!info?.hasContent) continue
+    // A typography primitive's children ARE the page's authored prose, so "use the labels
+    // prop / i18n" is advice with no target — `Text` has no labels prop. Warning here fires
+    // once per sentence in a real app, which trains adopters to ignore the rule and buries
+    // the chrome-label findings it exists to surface.
+    if (info.isContentPrimitive) continue
 
     for (const tag of findOpeningTags(source, comp)) {
       // Locate the end of this opening tag in the source.

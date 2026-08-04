@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core/pure'
+import { cn, sentimentOf } from '@cascivo/core/pure'
 import type { HTMLAttributes, ReactNode } from 'react'
 import styles from './stat.module.css'
 
@@ -7,6 +7,20 @@ export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childre
   value: string | number
   delta?: string
   trend?: 'up' | 'down' | 'flat'
+  /**
+   * Which direction is *good* for this metric — the colour, independent of the arrow.
+   *
+   * `trend` says which way the number moved; this says whether that is welcome. They are
+   * the same question only for metrics where up is better, and hard-coding that made every
+   * error-rate, latency, cost and churn tile render its worst news in green. Lying about
+   * `trend` to fix the colour also reverses the arrow, so there was no correct answer.
+   *
+   * `'neutral'` keeps the arrow and drops the sentiment colour, for metrics where neither
+   * direction is inherently good (headcount, page views).
+   *
+   * @defaultValue `up`
+   */
+  goodDirection?: 'up' | 'down' | 'neutral'
   helpText?: string
   /**
    * Wrap the tile in the same card chrome (surface, border, radius, padding) that
@@ -25,6 +39,7 @@ export function Stat({
   value,
   delta,
   trend = 'flat',
+  goodDirection = 'up',
   helpText,
   card = false,
   visual,
@@ -40,7 +55,11 @@ export function Stat({
       <span className={styles['label']}>{label}</span>
       <span className={styles['value']}>{value}</span>
       {delta && (
-        <span data-trend={trend} className={styles['delta']}>
+        <span
+          data-trend={trend}
+          data-sentiment={sentimentOf(trend, goodDirection)}
+          className={styles['delta']}
+        >
           <span aria-hidden="true" className={styles['arrow']}>
             {trend === 'up' ? '▲' : trend === 'down' ? '▼' : '–'}
           </span>

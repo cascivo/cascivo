@@ -63,13 +63,13 @@
     }
 
     .wrapper[data-state='error'] & {
-      border-color: var(--cascivo-color-danger);
+      border-color: var(--cascivo-color-destructive);
     }
   }
 
   .error {
     font-size: var(--cascivo-text-xs);
-    color: var(--cascivo-color-danger);
+    color: var(--cascivo-color-destructive);
   }
 
   .hint {

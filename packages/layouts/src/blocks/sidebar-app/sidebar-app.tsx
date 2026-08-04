@@ -1,9 +1,9 @@
 import { Header, SideNav } from '@cascivo/react'
-import { AppShell } from '../../app-shell/app-shell'
+import { AppFrame } from '../../app-shell/app-shell'
 
 export function SidebarApp() {
   return (
-    <AppShell
+    <AppFrame
       persistKey={false}
       header={
         <Header
@@ -25,6 +25,6 @@ export function SidebarApp() {
         <h1>Dashboard</h1>
         <p>Welcome to your app.</p>
       </div>
-    </AppShell>
+    </AppFrame>
   )
 }

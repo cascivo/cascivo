@@ -23,6 +23,28 @@ but uncolored markup — see [What it looks like when you forget](#the-critical-
 > (one reference), `npx @cascivo/docs guide getting-started`. No website needed —
 > it comes through the same registry that installs the packages.
 
+## Where the documentation lives
+
+Four surfaces, and each is authoritative for something different. Two hands-on
+reports independently reached a working model only after reading all four, so it
+is worth 30 seconds to know which to open.
+
+| Surface                            | Authoritative for                                                                                                                                                                                                                                                                                                                                     | Reach it                                                                               |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| **The shipped `.d.ts`**            | **Props — always check here first.** Every prop carries its type, `@defaultValue`, the rationale, and ⚠ warnings for the mistakes previous adopters made (`Flex` defaults to `vertical`; a chart's `title` renders nothing visible; `useToast()` returns `{ toast }`, not a callable). Both reports rated it the single best artefact in the project. | Ctrl-click any import in your editor, or `node_modules/@cascivo/react/dist/index.d.ts` |
+| **`llms.txt` + `/llms/<name>.md`** | Agent-facing reference: the component index with distribution channel, per-component pages (props → object types → examples → tokens → a11y), and the machine-readable catalogs (`registry.json`, `tokens.catalog.json`, `icons.catalog.json`).                                                                                                       | <https://cascivo.com/llms.txt>, or offline via `npx @cascivo/docs`                     |
+| **The guides (`docs/*.md`)**       | Cross-cutting concerns no single component owns: install paths, SSR, routers, theming, layers, lint config, the dashboard recipe.                                                                                                                                                                                                                     | This directory, <https://cascivo.com/docs>, or `npx @cascivo/docs guide <name>`        |
+| **The docs site**                  | The same content, rendered, plus live examples you can interact with.                                                                                                                                                                                                                                                                                 | <https://cascivo.com>                                                                  |
+
+**If two disagree, the `.d.ts` wins** — it is generated from the same source the
+components compile from, and the parity guards in `scripts/checks/` fail the build
+when a manifest and its interface diverge.
+
+The `@cascivo/docs` package ships two directories that look alike:
+`llms/<name>.md` is the full per-component reference, and `context/<name>.md` is
+the condensed intent summary (when to use, when not to, related components) meant
+for pasting into an agent's context window.
+
 **This is not layout-only.** Alongside the CSS-native layout system, cascivo ships:
 
 - **Interactive components with the behavior wired in** — `Dropdown`, `Menu`,
@@ -134,6 +156,24 @@ pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 (`@cascivo/tokens` comes with `@cascivo/themes` automatically — it is a direct
 dependency, not a peer, so you never install it by hand.)
 
+**If you lint with `eslint-plugin-react-hooks@7`, add one more dev dependency now:**
+
+```sh
+pnpm add -D @cascivo/eslint-config
+```
+
+```js
+// eslint.config.js
+import cascivo from '@cascivo/eslint-config'
+export default [...yourConfig, ...cascivo] // spread LAST
+```
+
+Its `recommended-latest` enables `react-hooks/immutability`, which reports every
+`signal.value = next` — cascivo's mandatory state idiom — as
+`Error: This value cannot be modified`. Without this you get a lint error on
+every piece of state you write. See
+[USING-WITH-STRICT-ESLINT.md](/docs/using-with-strict-eslint.md) §1.
+
 Peer dependencies: `react >=18`, `react-dom >=18`, and `@preact/signals-react`
 (cascivo components are signal-driven, so the signals runtime is required).
 **On React 19 the signals runtime must be 3.x** — the peer range enforces `>=3`
@@ -217,6 +257,13 @@ themes bundle.)
 per-component incremental cost. Per-component CSS is auto-included and tree-shaken by your
 bundler, so a real app ships a fraction of the aggregate sheet (a ~45-component dashboard
 measured 137 KB / 19 KB gzip of the 273 KB).
+
+> ⚠ **That measurement is client-only (SPA).** Under SSR — TanStack Start, Remix,
+> Next — you must import the aggregate `@cascivo/react/styles.css` for
+> server-rendered HTML to be styled on first paint, and an aggregate is by
+> definition not tree-shakeable. Budget for the full sheet, not the 137 KB.
+> [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md#the-cost-per-component-css-tree-shaking-does-not-apply-under-ssr)
+> explains the tradeoff and what you can still do about it.
 
 > **TypeScript setup for the CSS imports.** A bare CSS side-effect import
 > (`import '@cascivo/react/styles.css'`) has no types on its own, so a `tsc --noEmit`

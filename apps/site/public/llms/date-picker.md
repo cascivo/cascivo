@@ -84,11 +84,17 @@ Required. Without client JavaScript this renders nothing useful, or a shell whos
 
 ## Design tokens
 
-- `--cascivo-date-picker-bg`
-- `--cascivo-date-picker-border`
-- `--cascivo-date-picker-radius`
-- `--cascivo-date-picker-day-selected-bg`
-- `--cascivo-date-picker-day-today-color`
+- `--cascivo-color-surface`
+- `--cascivo-color-surface-overlay`
+- `--cascivo-color-border`
+- `--cascivo-color-border-strong`
+- `--cascivo-color-accent`
+- `--cascivo-color-text-on-accent`
+- `--cascivo-color-text`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-text-subtle`
+- `--cascivo-color-bg-subtle`
+- `--cascivo-color-destructive`
 
 ## Accessibility
 

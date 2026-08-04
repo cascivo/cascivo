@@ -10,6 +10,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description:
+        'Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it.',
+    },
+    {
       name: 'menus',
       description: 'The top-level menus to render.',
       type: 'MenubarMenu[]',
@@ -19,7 +26,7 @@ export const meta: ComponentMeta = {
       name: 'aria-label',
       description: 'Accessible label used when no visible label is present.',
       type: 'string',
-      required: true,
+      required: false,
     },
     {
       name: 'className',

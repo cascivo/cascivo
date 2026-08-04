@@ -90,6 +90,9 @@ export const meta: ComponentMeta = {
     a11yRationale:
       'Adds no roles of its own — it styles descendant native elements, so the document semantics of the underlying HTML (headings, lists, code) are preserved for assistive tech',
     content: {
+      // Children are the page's authored prose, not chrome this component owns —
+      // so `audit --ai`'s raw-string rule must not flag every sentence.
+      contentPrimitive: true,
       tone: 'Long-form editorial; the wrapper does not constrain voice',
       notes: 'Source HTML should be sanitized before dangerouslySetInnerHTML',
     },

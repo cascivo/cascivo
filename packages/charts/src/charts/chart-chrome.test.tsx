@@ -113,6 +113,103 @@ describe('crowded category axes are strided', () => {
   it('autoLabelStride returns undefined when every label fits', () => {
     expect(autoLabelStride(['a', 'b', 'c'], 900)).toBeUndefined()
   })
+
+  it('autoLabelStride measures stacked labels by line height, not text width', () => {
+    // The reported case: 7 route names down a 240px-tall axis. Measured as horizontal
+    // text they look crowded (one is 8 chars ≈ 58px vs a 34px band) and get strided away;
+    // stacked, each has a whole 34px row for a ~14px line box, so all seven fit.
+    const routes = ['/', '/pricing', '/docs', '/blog', '/about', '/careers', '/contact']
+    expect(autoLabelStride(routes, 240, 'vertical')).toBeUndefined()
+    expect(autoLabelStride(routes, 240, 'horizontal')).toBeGreaterThan(1)
+  })
+
+  it('autoLabelStride still thins a genuinely crowded vertical axis', () => {
+    // Direction-awareness must not become "never stride" — 40 labels in 240px is 6px a row.
+    const many = Array.from({ length: 40 }, (_, i) => `row ${i}`)
+    expect(autoLabelStride(many, 240, 'vertical')).toBeGreaterThan(1)
+  })
+
+  it('a 7-category horizontal BarChart renders every category label', () => {
+    const routes = ['/', '/pricing', '/docs', '/blog', '/about', '/careers', '/contact']
+    const { container } = render(
+      <BarChart
+        title="Top routes"
+        orientation="horizontal"
+        series={[
+          { id: 'views', label: 'Views', data: routes.map((r, i) => ({ r, v: (i + 1) * 100 })) },
+        ]}
+        x={(d) => d.r}
+        y={(d) => d.v}
+        width={600}
+        height={260}
+      />,
+    )
+    const rendered = textsOf(container)
+    for (const route of routes) expect(rendered).toContain(route)
+  })
+})
+
+describe('secondAxis.label names the right-hand scale', () => {
+  const SERIES = [
+    {
+      id: 'req',
+      label: 'Requests',
+      data: [
+        { t: 1, v: 100 },
+        { t: 2, v: 200 },
+      ],
+    },
+    {
+      id: 'err',
+      label: 'Errors',
+      axis: 'right' as const,
+      data: [
+        { t: 1, v: 3 },
+        { t: 2, v: 7 },
+      ],
+    },
+  ]
+
+  it('AreaChart renders the label (it was typed but never drawn)', () => {
+    const { container } = render(
+      <AreaChart
+        title="Traffic"
+        series={SERIES}
+        x={(d) => d.t}
+        y={(d) => d.v}
+        secondAxis={{ label: 'Errors' }}
+        width={720}
+        height={320}
+      />,
+    )
+    // Before the fix the SVG contained only tick values — no "Errors" text anywhere, so a
+    // dual-axis chart could not say which series belonged to which scale.
+    expect(textsOf(container)).toContain('Errors')
+  })
+
+  it('LineChart does the same', () => {
+    const { container } = render(
+      <LineChart
+        title="Traffic"
+        series={SERIES}
+        x={(d) => d.t}
+        y={(d) => d.v}
+        secondAxis={{ label: 'Errors/min' }}
+        width={720}
+        height={320}
+      />,
+    )
+    expect(textsOf(container)).toContain('Errors/min')
+  })
+
+  it('reserves margin so the rotated title is not clipped by the SVG edge', () => {
+    const withTitle = rightMarginForLabels({
+      rightAxisLabels: ['4,000'],
+      rightAxisTitle: true,
+    })
+    const without = rightMarginForLabels({ rightAxisLabels: ['4,000'] })
+    expect(withTitle).toBeGreaterThan(without)
+  })
 })
 
 describe('right margin is reserved for right-hand chrome', () => {

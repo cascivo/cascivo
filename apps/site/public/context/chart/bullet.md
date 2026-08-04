@@ -39,9 +39,9 @@ Renders with role="img" and requires a label prop for screen reader labeling.
 ## Tokens
 
 - `--cascivo-chart-1`
-- `--cascivo-color-neutral-200`
-- `--cascivo-color-neutral-300`
-- `--cascivo-color-neutral-400`
+- `--cascivo-gray-200`
+- `--cascivo-gray-300`
+- `--cascivo-gray-400`
 
 ## Examples
 
@@ -68,7 +68,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Bullet is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-chart-1, --cascivo-color-neutral-200, --cascivo-color-neutral-300, --cascivo-color-neutral-400
+  --cascivo-chart-1, --cascivo-gray-200, --cascivo-gray-300, --cascivo-gray-400
 
 Accessibility: role "img", WCAG 2.1-AA. Keep it AA.
 

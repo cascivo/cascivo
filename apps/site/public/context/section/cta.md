@@ -34,11 +34,11 @@ Renders a section with a heading and clearly labeled action controls.
 ## Tokens
 
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-text-2xl`
 - `--cascivo-text-base`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Examples
@@ -76,7 +76,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Cta is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-border, --cascivo-surface-subtle, --cascivo-text-2xl, --cascivo-text-base, --cascivo-font-bold, --cascivo-text-secondary, --cascivo-space-*
+  --cascivo-color-border, --cascivo-color-bg-subtle, --cascivo-text-2xl, --cascivo-text-base, --cascivo-font-bold, --cascivo-color-text-subtle, --cascivo-space-*
 
 Accessibility: role "region", WCAG 2.1-AA. Keep it AA.
 

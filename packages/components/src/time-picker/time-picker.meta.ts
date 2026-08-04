@@ -76,7 +76,7 @@ export const meta: ComponentMeta = {
     '--cascivo-color-text',
     '--cascivo-color-text-muted',
     '--cascivo-color-accent',
-    '--cascivo-color-danger',
+    '--cascivo-color-destructive',
     '--cascivo-radius-input',
     '--cascivo-radius-md',
   ],

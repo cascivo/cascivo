@@ -1,6 +1,6 @@
 import type { ComponentType } from 'preact'
 import { useSignalEffect, useSignals } from '@cascivo/core'
-import { AppShell } from '@cascivo/layouts/app-shell'
+import { AppFrame } from '@cascivo/layouts/app-shell'
 import { createShellState } from '@cascivo/layouts/shell-state'
 import { SideNav } from '@cascivo/components/side-nav'
 import {
@@ -186,7 +186,7 @@ export function DocsApp() {
   ]
 
   return (
-    <AppShell
+    <AppFrame
       state={shell}
       // The single, app-wide navbar — identical to every marketing page.
       header={<Header />}
@@ -212,6 +212,6 @@ export function DocsApp() {
         <MenuIcon size={16} /> Browse components
       </button>
       <div class="page">{pageFor(path)}</div>
-    </AppShell>
+    </AppFrame>
   )
 }

@@ -19,8 +19,8 @@
 
   .title {
     margin: 0;
-    font-size: var(--cascivo-font-size-2xl, 1.5rem);
-    font-weight: var(--cascivo-font-weight-bold, 700);
+    font-size: var(--cascivo-text-2xl, 1.5rem);
+    font-weight: var(--cascivo-font-bold, 700);
     color: var(--cascivo-color-text);
     line-height: 1.2;
   }
@@ -35,6 +35,6 @@
   .description {
     margin: 0;
     color: var(--cascivo-color-text-muted);
-    font-size: var(--cascivo-font-size-sm);
+    font-size: var(--cascivo-text-sm);
   }
 }

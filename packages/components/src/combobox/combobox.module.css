@@ -68,7 +68,7 @@
   }
 
   .wrapper[data-state='error'] .trigger {
-    border-color: var(--cascivo-color-danger);
+    border-color: var(--cascivo-color-destructive);
   }
 
   .value {
@@ -211,7 +211,7 @@
 
   .error {
     font-size: var(--cascivo-text-xs);
-    color: var(--cascivo-color-danger);
+    color: var(--cascivo-color-destructive);
   }
 
   .hint {

@@ -50,7 +50,7 @@ const data = [
 ## Design tokens
 
 - `--cascivo-chart-1`
-- `--cascivo-color-neutral-100`
+- `--cascivo-gray-100`
 
 ## Accessibility
 

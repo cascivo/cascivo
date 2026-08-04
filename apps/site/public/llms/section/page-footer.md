@@ -71,8 +71,8 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-semibold`
-- `--cascivo-text-primary`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
 - `--cascivo-color-accent`
 - `--cascivo-space-*`

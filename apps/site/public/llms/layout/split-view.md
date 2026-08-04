@@ -18,14 +18,15 @@ _Copy-paste only — `SplitView` is not exported from `@cascivo/react`. Run the 
 
 ## Props
 
-| Prop           | Type        | Required | Default | Description                  |
-| -------------- | ----------- | -------- | ------- | ---------------------------- |
-| `start`        | `ReactNode` | yes      | —       | Left pane content            |
-| `end`          | `ReactNode` | yes      | —       | Right pane content           |
-| `defaultRatio` | `number`    | no       | `0.3`   | Initial split ratio (0–1)    |
-| `min`          | `number`    | no       | `0.2`   | Minimum ratio for start pane |
-| `max`          | `number`    | no       | `0.8`   | Maximum ratio for start pane |
-| `aria-label`   | `string`    | no       | —       | Label for the separator      |
+| Prop           | Type        | Required | Default | Description                                                                                                   |
+| -------------- | ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`    | `string`    | no       | —       | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `start`        | `ReactNode` | yes      | —       | Left pane content                                                                                             |
+| `end`          | `ReactNode` | yes      | —       | Right pane content                                                                                            |
+| `defaultRatio` | `number`    | no       | `0.3`   | Initial split ratio (0–1)                                                                                     |
+| `min`          | `number`    | no       | `0.2`   | Minimum ratio for start pane                                                                                  |
+| `max`          | `number`    | no       | `0.8`   | Maximum ratio for start pane                                                                                  |
+| `aria-label`   | `string`    | no       | —       | Label for the separator                                                                                       |
 
 ## Examples
 

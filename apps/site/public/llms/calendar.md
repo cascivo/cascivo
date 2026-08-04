@@ -2,11 +2,6 @@
 
 An accessible standalone month-grid date picker.
 
-> ⚠ **Name collision:** more than one cascivo entry is named `Calendar`.
-> This page documents `calendar` (npm @cascivo/react · or copy-paste). Others:
->
-> - `chart/calendar` — npm @cascivo/charts — /llms/chart/calendar.md
-
 ## Install
 
 Copy-paste the source (you own and can edit it):

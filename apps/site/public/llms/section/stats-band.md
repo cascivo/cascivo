@@ -18,10 +18,11 @@ _Copy-paste only — `StatsBand` is not exported from `@cascivo/react`. Run the 
 
 ## Props
 
-| Prop         | Type         | Required | Default         | Description                                                                                            |
-| ------------ | ------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------ |
-| `stats`      | `StatItem[]` | yes      | —               | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
-| `aria-label` | `string`     | no       | `"Key metrics"` | Accessible label for the stats region                                                                  |
+| Prop         | Type         | Required | Default         | Description                                                                                                   |
+| ------------ | ------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`  | `string`     | no       | —               | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `stats`      | `StatItem[]` | yes      | —               | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline        |
+| `aria-label` | `string`     | no       | `"Key metrics"` | Accessible label for the stats region                                                                         |
 
 ## Examples
 
@@ -51,9 +52,9 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-mono`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility

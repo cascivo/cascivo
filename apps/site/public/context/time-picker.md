@@ -58,7 +58,7 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
 - `--cascivo-color-accent`
-- `--cascivo-color-danger`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-radius-md`
 
@@ -93,7 +93,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 TimePicker is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-color-danger, --cascivo-radius-input, --cascivo-radius-md
+  --cascivo-color-surface, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-radius-md
 
 Accessibility: role "textbox", WCAG 2.2-AA, keyboard: Tab. Keep it AA.
 

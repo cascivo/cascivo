@@ -83,6 +83,9 @@ export const meta: ComponentMeta = {
     a11yRationale:
       'Renders a real <h1>–<h6> from the level prop so the heading appears in the accessibility tree at the correct level; visual size is decoupled so styling never forces an incorrect level',
     content: {
+      // Children are the page's authored prose, not chrome this component owns —
+      // so `audit --ai`'s raw-string rule must not flag every sentence.
+      contentPrimitive: true,
       tone: 'Concise, descriptive titles in sentence case',
       notes: 'Each page should have one h1',
     },

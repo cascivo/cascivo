@@ -1,6 +1,7 @@
 // Tooltip: KPI displays a single aggregate value — no data-point traversal.
 import type { ReactNode } from 'react'
 import { currentLocale } from '@cascivo/i18n'
+import { sentimentOf } from '@cascivo/core'
 import { Sparkline } from '../sparkline/sparkline'
 import styles from './kpi.module.css'
 
@@ -20,6 +21,19 @@ export interface KpiProps {
    * it receives the raw number and owns the entire string, sign included.
    */
   deltaFormat?: 'number' | 'percent' | ((delta: number) => string)
+  /**
+   * Which direction is *good* for this metric — the colour, independent of the arrow.
+   *
+   * The arrow follows the sign of `delta`; this says whether that movement is welcome.
+   * They coincide only for metrics where up is better, and assuming that made every
+   * error-rate, latency, cost and churn tile render its worst news in green. Negating
+   * `delta` to fix the colour also flips the arrow, so there was no correct answer.
+   *
+   * `'neutral'` keeps the arrow and drops the sentiment colour.
+   *
+   * @defaultValue `up`
+   */
+  goodDirection?: 'up' | 'down' | 'neutral'
   deltaLabel?: string
   icon?: ReactNode
   sparkline?: readonly number[]
@@ -38,6 +52,7 @@ export function Kpi({
   label,
   delta,
   deltaFormat = 'number',
+  goodDirection = 'up',
   deltaLabel,
   icon,
   sparkline,
@@ -45,6 +60,7 @@ export function Kpi({
 }: KpiProps) {
   const deltaPositive = delta != null && delta >= 0
   const deltaNegative = delta != null && delta < 0
+  const trend = deltaPositive ? 'up' : deltaNegative ? 'down' : 'flat'
 
   return (
     <div className={[styles['kpi'], className].filter(Boolean).join(' ')}>
@@ -60,7 +76,8 @@ export function Kpi({
           <span
             role="img"
             className={styles['delta']}
-            data-trend={deltaPositive ? 'up' : deltaNegative ? 'down' : 'flat'}
+            data-trend={trend}
+            data-sentiment={sentimentOf(trend, goodDirection)}
             aria-label={`Trend: ${formatDelta(delta, deltaFormat)}${deltaLabel ? ` ${deltaLabel}` : ''}`}
           >
             {deltaPositive ? '▲' : deltaNegative ? '▼' : '–'} {formatDelta(delta, deltaFormat)}

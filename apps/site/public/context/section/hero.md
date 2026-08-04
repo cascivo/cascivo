@@ -41,7 +41,7 @@ Renders a section with the page-level heading as its primary landmark.
 - `--cascivo-text-sm`
 - `--cascivo-font-mono`
 - `--cascivo-font-bold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-space-*`
 
 ## Examples
@@ -94,7 +94,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Hero is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-text-4xl, --cascivo-text-lg, --cascivo-text-sm, --cascivo-font-mono, --cascivo-font-bold, --cascivo-text-secondary, --cascivo-space-*
+  --cascivo-text-4xl, --cascivo-text-lg, --cascivo-text-sm, --cascivo-font-mono, --cascivo-font-bold, --cascivo-color-text-subtle, --cascivo-space-*
 
 Accessibility: role "region", WCAG 2.1-AA. Keep it AA.
 

@@ -33,6 +33,21 @@ export interface AxisProps {
    * see `autoLabelStride`, which computes this for you. Pass explicitly only to override.
    */
   labelEvery?: number | undefined
+  /**
+   * Axis title, drawn outside the tick labels — rotated for a vertical axis.
+   *
+   * On a dual-axis chart this is the whole mechanism for saying which series belongs to
+   * which scale. `secondAxis.label` was typed on `AreaChart`/`LineChart` for months and
+   * rendered nothing, so a two-series chart was unreadable without a legend workaround.
+   */
+  title?: string | undefined
+  /**
+   * Distance from the axis line to the title, in px. Should clear the widest tick label;
+   * callers already compute that width for their margins.
+   *
+   * @defaultValue `36`
+   */
+  titleOffset?: number | undefined
   transform?: string
 }
 
@@ -49,6 +64,8 @@ export function Axis({
   format = defaultFormat,
   tickCount = 5,
   labelEvery,
+  title,
+  titleOffset = 36,
   transform,
 }: AxisProps) {
   let ticks: Array<{ position: number; label: string }>
@@ -133,6 +150,24 @@ export function Axis({
           </text>
         </g>
       ))}
+      {title !== undefined &&
+        title !== '' && (
+          // Vertical axes rotate their title to run along the axis; `y` reads bottom-to-top
+          // and `y-right` top-to-bottom, which is the convention both d3 and Excel use.
+          <text
+            transform={
+              isX
+                ? `translate(${length / 2},${titleOffset})`
+                : `translate(${isRight ? titleOffset : -titleOffset},${length / 2}) rotate(${isRight ? 90 : -90})`
+            }
+            textAnchor="middle"
+            fill="var(--cascivo-chart-axis)"
+            fontSize={11}
+            fontWeight={500}
+          >
+            {title}
+          </text>
+        )}
     </g>
   )
 }

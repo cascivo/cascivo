@@ -67,6 +67,19 @@ Use as="span" inside other flow content
 </Text>
 ```
 
+### Icon beside text
+
+Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside a <p> is invalid HTML and the browser silently closes the outer one, breaking the layout.
+
+```tsx
+<Text>
+  <CheckIcon aria-hidden />
+  <Text as="span" weight="semibold">
+    Deployed
+  </Text>
+</Text>
+```
+
 ## Client JavaScript
 
 None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.

@@ -132,6 +132,7 @@
       ],
       "a11yRationale": "Renders a native <label> so the platform handles click-to-focus and accessible naming; the required marker pairs an aria-hidden asterisk with visually-hidden localized text so the requirement is both seen and announced",
       "content": {
+        "contentPrimitive": true,
         "tone": "Short noun phrase naming the field",
         "notes": "Sentence case, no trailing colon; let the required marker convey requirement"
       },

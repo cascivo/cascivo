@@ -3,7 +3,6 @@ import { join } from 'node:path'
 import { stdin, stdout } from 'node:process'
 import { createInterface } from 'node:readline/promises'
 import {
-  CASCIVO_HOST,
   detectPackageManager,
   THEMES,
   type PackageManager,
@@ -11,9 +10,18 @@ import {
 } from '../utils/config.js'
 import { flagValue, positionalArgs, resolvePackageManagerFlag } from '../utils/args.js'
 import { writeFileSafe } from '../utils/fs.js'
+import { CASCIVO_VERSIONS, SIGNALS_PEER } from '../generated/versions.js'
 
-/** Version specifier used for every `@cascivo/*` dependency in generated apps. */
-const CASCIVO_DEP = 'latest'
+/**
+ * Exact published versions, baked in at build time by `scripts/registry/cli-versions.ts`.
+ *
+ * This used to be the literal `'latest'` for every cascivo dependency — the loosest
+ * possible specifier on a set of independently-versioned 0.x packages, and the direct
+ * opposite of GETTING-STARTED.md's "pin **exact** versions (no `^`)". A scaffold that
+ * contradicts the docs on the very first file an adopter opens undermines every other rule
+ * those docs state, so the pins are generated rather than hand-written.
+ */
+const V = CASCIVO_VERSIONS
 
 /** Install-everything command for a package manager (`pnpm install`, `yarn`, …). */
 function installAllCommand(pm: PackageManager): string {
@@ -73,6 +81,28 @@ function pascalCase(label: string): string {
   return /^[0-9]/.test(safe) ? `Section${safe}` : safe
 }
 
+/**
+ * Short, human-readable brand for the shell header.
+ *
+ * The directory name is the wrong thing to render verbatim: a dated demo directory
+ * (`vercel-dashboard-2026-07-30-take2`) produced a 45-character brand in the top-left of
+ * every page. Take the leading words, title-case them, and stop — a brand is a label, not a
+ * slug. Bare numbers and `v2`-style segments are dropped rather than counted.
+ */
+export function brandName(name: string): string {
+  const words = name
+    .trim()
+    .split(/[^a-zA-Z0-9]+/)
+    .filter((w) => w !== '' && !/^\d+$/.test(w) && !/^v\d+$/i.test(w))
+  const kept: string[] = []
+  for (const word of words) {
+    if (kept.length >= 3) break
+    if (kept.length > 0 && kept.join(' ').length + 1 + word.length > 24) break
+    kept.push(word.charAt(0).toUpperCase() + word.slice(1))
+  }
+  return kept.join(' ') || 'App'
+}
+
 /** Normalize the project name into a valid npm package name. */
 function packageName(name: string): string {
   return (
@@ -117,19 +147,36 @@ function packageJson(opts: ScaffoldOptions): string {
       dev: 'vite',
       build: 'tsc && vite build',
       preview: 'vite preview',
+      typecheck: 'tsc --noEmit',
+      lint: 'eslint .',
     },
+    // Prebuilt path (Path B): `@cascivo/react` and `@cascivo/themes` only.
+    //
+    // `@cascivo/core` and `@cascivo/tokens` are deliberately absent. AI-RULES.md: "**Never**
+    // add `@cascivo/core` to a prebuilt-path app's package.json — it is only a transitive
+    // dependency there, and everything is re-exported from `@cascivo/react`."
+    // GETTING-STARTED.md says the same of `@cascivo/tokens`, which arrives with
+    // `@cascivo/themes` as a direct dependency. The scaffold used to declare both and then
+    // import from them, so it violated two documented rules and taught the pattern by example.
+    //
+    // `@preact/signals-react` IS declared: it is a required peer that the generated
+    // `App.tsx` calls into via `useSignals()`. It used to be omitted entirely and survived
+    // only by hoisting — a phantom dependency that breaks under pnpm's strict layout.
     dependencies: {
-      '@cascivo/core': CASCIVO_DEP,
-      '@cascivo/react': CASCIVO_DEP,
-      '@cascivo/themes': CASCIVO_DEP,
-      '@cascivo/tokens': CASCIVO_DEP,
+      '@cascivo/react': V['@cascivo/react']!,
+      '@cascivo/themes': V['@cascivo/themes']!,
+      '@preact/signals-react': SIGNALS_PEER,
       react: '^19.0.0',
       'react-dom': '^19.0.0',
     },
     devDependencies: {
+      '@cascivo/eslint-config': V['@cascivo/eslint-config']!,
+      '@eslint/js': '^9.0.0',
       '@types/react': '^19.0.0',
       '@types/react-dom': '^19.0.0',
       '@vitejs/plugin-react': '^5.0.0',
+      eslint: '^9.0.0',
+      'eslint-plugin-react-hooks': '^7.0.0',
       typescript: '^5.7.0',
       vite: '^7.0.0',
     },
@@ -180,7 +227,13 @@ function indexHtml(opts: ScaffoldOptions): string {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${opts.name}</title>
     <style>
-      @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;
+      @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
+        cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
+      /* cascivo.example is this app's own slot — above the component/blocks layers so your
+         styles win, below cascivo.override which stays free for one-off hotfixes. The
+         generated AGENTS.md tells the agent to write there, and this statement is what makes
+         that legal: a layer used but never declared falls to the end of the cascade and
+         beats everything, which is the opposite of what the ordering is for. */
       /* Third-party CSS goes in the low-priority vendor layer so it can't beat cascivo:
          @import url('some-lib/styles.css') layer(vendor); — see docs/THIRD-PARTY-CSS.md */
       @layer cascivo.reset {
@@ -251,12 +304,21 @@ function appTsx(opts: ScaffoldOptions, sections: Section[]): string {
     .map((s) => `      {section.value === '${s.key}' && <${s.component} />}`)
     .join('\n')
 
+  // Everything comes from `@cascivo/react` on the prebuilt path — it re-exports the
+  // `@cascivo/core` primitives, so importing from `@cascivo/core` directly would make it a
+  // phantom dependency (and AI-RULES.md forbids declaring it here). There is likewise no
+  // `import '@cascivo/tokens'`: the tokens arrive with the theme stylesheet.
   return `'use client'
-import { signal, useSignals } from '@cascivo/core'
-import { AppShell, ShellHeader, SideNav, type SideNavItem } from '@cascivo/react'
+import {
+  AppShell,
+  ShellHeader,
+  SideNav,
+  signal,
+  useSignals,
+  type SideNavItem,
+} from '@cascivo/react'
 ${sectionImports}
 
-import '@cascivo/tokens'
 import '@cascivo/themes/${opts.theme}.css'
 import '@cascivo/react/styles.css'
 
@@ -273,7 +335,7 @@ ${navItems}
 
   return (
     <AppShell
-      header={<ShellHeader brand={{ name: '${opts.name.replace(/'/g, "\\'")}' }} />}
+      header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}
       nav={<SideNav items={navItems} />}
     >
 ${renderedSections}
@@ -320,16 +382,29 @@ export function ${section.component}() {
 `
 }
 
-function cascivoConfig(opts: ScaffoldOptions): string {
-  return `import type { CascadeConfig } from 'cascivo'
+/**
+ * ESLint flat config for the scaffold.
+ *
+ * `@cascivo/eslint-config` is wired in from the start because
+ * `eslint-plugin-react-hooks@7`'s `recommended-latest` reports every `signal.value = next`
+ * — the idiom AI-RULES.md mandates and the generated `App.tsx` below uses — as
+ * `Error: This value cannot be modified`. Without this, `pnpm lint` on a freshly scaffolded
+ * app errors on every piece of state it ships with.
+ */
+function eslintConfig(): string {
+  return `import js from '@eslint/js'
+import reactHooks from 'eslint-plugin-react-hooks'
+import cascivo from '@cascivo/eslint-config'
 
-const config: CascadeConfig = {
-  registry: '${CASCIVO_HOST}/registry.json',
-  outputDir: 'src/components/ui',
-  theme: '${opts.theme}',
-}
-
-export default config
+export default [
+  js.configs.recommended,
+  reactHooks.configs['recommended-latest'],
+  // Spread LAST — flat config is last-wins. This turns off \`react-hooks/immutability\`,
+  // which reports cascivo's signal writes (\`signal.value = next\`) as errors.
+  // See https://cascivo.com/docs/using-with-strict-eslint.md
+  ...cascivo,
+  { ignores: ['dist/**'] },
+]
 `
 }
 
@@ -390,7 +465,7 @@ This app's declared layer order (in \`index.html\`):
 
 \`\`\`css
 @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
-  cascivo.theme, cascivo.blocks, cascivo.override;
+  cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
 \`\`\`
 
 ### Worked example — nesting, not new layers
@@ -421,7 +496,12 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
     { path: 'tsconfig.json', contents: tsconfig() },
     { path: 'vite.config.ts', contents: viteConfig() },
     { path: 'index.html', contents: indexHtml(opts) },
-    { path: 'cascivo.config.ts', contents: cascivoConfig(opts) },
+    // No `cascivo.config.ts`. It configures where `cascivo add` copies source, which a
+    // prebuilt-path app never does — and its presence was how `doctor` decided a project
+    // was copy-paste, so the scaffolder's own output failed `doctor --ci` and was told to
+    // install the two packages the docs forbid. `cascivo add` writes the config itself the
+    // first time it is used.
+    { path: 'eslint.config.js', contents: eslintConfig() },
     { path: '.gitignore', contents: gitignore() },
     { path: 'README.md', contents: readme(opts) },
     { path: 'AGENTS.md', contents: agentsMd(opts) },

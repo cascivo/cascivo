@@ -1,7 +1,7 @@
 import type { ComponentMeta } from '@cascivo/core'
 
 export const meta: ComponentMeta = {
-  name: 'AppShell',
+  name: 'AppFrame',
   description:
     'Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.',
   category: 'layout',
@@ -49,7 +49,7 @@ export const meta: ComponentMeta = {
     '--cascivo-ease-out',
     '--cascivo-color-border',
     '--cascivo-color-surface',
-    '--cascivo-font-size-xs',
+    '--cascivo-text-xs',
     '--cascivo-color-accent',
     '--cascivo-color-destructive',
     '--cascivo-color-destructive-subtle',
@@ -59,7 +59,7 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic',
-      code: '<AppShell header={<Header />} sideNav={<Nav />}>content</AppShell>',
+      code: '<AppFrame header={<Header />} sideNav={<Nav />}>content</AppFrame>',
       description: 'App shell with collapsible nav',
     },
   ],
@@ -81,7 +81,7 @@ export const meta: ComponentMeta = {
         name: 'AppShell (@cascivo/react)',
         relationship: 'alternative',
         reason:
-          'The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Same name, simpler prop surface (`nav` vs this shell’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste shell when you need persisted collapse, a progress bar, or a right aside.',
+          'The published, self-contained AppShell: header + a single `nav` slot with an animated accessible drawer, no persistence/progress/aside. Simpler prop surface (`nav` vs this frame’s `sideNav`/`aside`/`persistKey`/`state`). Use it for a quick drop-in; use this copy-paste frame when you need persisted collapse, a progress bar, or a right aside. This entry used to be called `AppShell` too — one name for two incompatible prop surfaces — and was renamed to `AppFrame` so an import can only mean one thing.',
       },
       {
         name: 'SidebarApp',

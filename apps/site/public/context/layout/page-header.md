@@ -36,11 +36,11 @@ Renders a header region with a top-level heading for screen reader page structur
 
 - `--cascivo-space-2`
 - `--cascivo-space-4`
-- `--cascivo-font-size-2xl`
-- `--cascivo-font-weight-bold`
+- `--cascivo-text-2xl`
+- `--cascivo-font-bold`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
-- `--cascivo-font-size-sm`
+- `--cascivo-text-sm`
 
 ## Examples
 
@@ -68,7 +68,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 PageHeader is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-space-2, --cascivo-space-4, --cascivo-font-size-2xl, --cascivo-font-weight-bold, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-font-size-sm
+  --cascivo-space-2, --cascivo-space-4, --cascivo-text-2xl, --cascivo-font-bold, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-text-sm
 
 Accessibility: role "banner", WCAG 2.1-AA. Keep it AA.
 

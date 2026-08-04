@@ -15,13 +15,27 @@ export interface DoctorResult {
   passed: boolean
 }
 
-/** Runtime packages copied cascivo source needs; the last is @cascivo/core's peer. */
+/** Runtime packages **copied** cascivo source needs; the last is @cascivo/core's peer. */
 const REQUIRED_RUNTIME_DEPS = [
   '@cascivo/core',
   '@cascivo/tokens',
   '@cascivo/themes',
   '@preact/signals-react',
 ]
+
+/** Runtime packages a **prebuilt** (Path B) app needs. */
+const REQUIRED_PREBUILT_DEPS = ['@cascivo/react', '@cascivo/themes', '@preact/signals-react']
+
+/**
+ * Packages a prebuilt app must NOT declare directly, with the rule each one breaks. They
+ * are transitive there, and everything they export is re-exported from `@cascivo/react`.
+ */
+const FORBIDDEN_PREBUILT_DEPS: Record<string, string> = {
+  '@cascivo/core':
+    'AI-RULES.md: never add @cascivo/core to a prebuilt-path app — it is transitive, and everything is re-exported from @cascivo/react',
+  '@cascivo/tokens':
+    'GETTING-STARTED.md: @cascivo/tokens comes with @cascivo/themes as a direct dependency — never install it by hand',
+}
 
 /** Installed on demand by `cascivo add` when a component/chart declares them. */
 const ON_DEMAND_DEPS = ['@cascivo/i18n', '@cascivo/charts']
@@ -31,9 +45,96 @@ export interface DependencyFinding {
   /** true = a runtime dep whose absence breaks the build; false = advisory. */
   required: boolean
   hint: string
+  /**
+   * What is wrong. `'missing'` (the default) means install it; `'forbidden'` means the
+   * project declares a package its install path must not. They need opposite advice, and
+   * reporting both under the "not in package.json — install it" template produced a
+   * self-contradicting message.
+   */
+  kind?: 'missing' | 'forbidden'
 }
 
 const CONFIG_FILES = ['cascivo.config.ts', 'cascivo.config.js', 'cascivo.config.mjs']
+
+/**
+ * How this project consumes cascivo.
+ *
+ * - `prebuilt` — Path B: depends on `@cascivo/react`, no copied source.
+ * - `copied`   — Path A: has vendored component source (or no `@cascivo/react`).
+ * - `hybrid`   — both: consumes the package AND copied something.
+ * - `unknown`  — no evidence either way; emit no dependency advice at all.
+ */
+export type InstallPath = 'prebuilt' | 'copied' | 'hybrid' | 'unknown'
+
+/**
+ * Infer the install path from evidence.
+ *
+ * This used to be `isAdopterProject()` — "does a `cascivo.config.*` exist?" — and
+ * `cascivo create` wrote that config into every scaffold, including prebuilt-path ones. So
+ * every scaffolded app was judged copy-paste and told to install `@cascivo/core` and
+ * `@cascivo/tokens`, which the docs explicitly forbid on that path. `doctor --ci` exited 1
+ * on a correctly-installed app, which made the CI gate the docs recommend
+ * (`cascivo doctor --ci && cascivo audit --ai src`) red on day one.
+ *
+ * A config file now only contributes evidence when it points at a directory that actually
+ * contains copied source, which is what it was ever meant to signal.
+ */
+export function detectInstallPath(cwd: string): InstallPath {
+  let deps: Record<string, unknown> = {}
+  let hasPackageJson = true
+  try {
+    const pkg = JSON.parse(readFileSync(join(cwd, 'package.json'), 'utf8')) as {
+      dependencies?: Record<string, unknown>
+      devDependencies?: Record<string, unknown>
+    }
+    deps = { ...pkg.dependencies, ...pkg.devDependencies }
+  } catch {
+    hasPackageJson = false
+  }
+
+  if (!hasPackageJson) return 'unknown'
+
+  const usesPackage = deps['@cascivo/react'] !== undefined
+  const copied = hasCopiedSource(cwd)
+
+  if (usesPackage && copied) return 'hybrid'
+  if (usesPackage) return 'prebuilt'
+  if (copied) return 'copied'
+  // No package dependency and no copied source yet. A config file alone is NOT evidence of
+  // a copy-paste app — it is what `cascivo add` writes before anything has been copied, and
+  // treating it as proof is precisely what broke prebuilt-path projects. Advise on nothing.
+  return 'unknown'
+}
+
+/** Whether the configured output directory holds vendored component source. */
+function hasCopiedSource(cwd: string): boolean {
+  for (const dir of outputDirCandidates(cwd)) {
+    const full = join(cwd, dir)
+    if (!existsSync(full)) continue
+    try {
+      if (readdirSync(full).some((f) => f.endsWith('.tsx'))) return true
+    } catch {
+      // unreadable directory — no evidence, keep looking
+    }
+  }
+  return false
+}
+
+/** `outputDir` from the config if it declares one, plus the documented default. */
+function outputDirCandidates(cwd: string): string[] {
+  const dirs = new Set<string>(['src/components/ui'])
+  for (const file of CONFIG_FILES) {
+    const full = join(cwd, file)
+    if (!existsSync(full)) continue
+    try {
+      const declared = /outputDir\s*:\s*['"]([^'"]+)['"]/.exec(readFileSync(full, 'utf8'))?.[1]
+      if (declared !== undefined) dirs.add(declared)
+    } catch {
+      // unreadable config — fall back to the default candidate
+    }
+  }
+  return [...dirs]
+}
 
 /** Whether cwd looks like a cascivo adopter project (has a generated config). */
 export function isAdopterProject(cwd: string): boolean {
@@ -41,12 +142,16 @@ export function isAdopterProject(cwd: string): boolean {
 }
 
 /**
- * Advisory check that the runtime dependencies copied source needs are declared
- * in the project's package.json. Turns the opaque "cannot find module
- * '@preact/signals-react'" build failure — the report's #4, where the peer was
- * invisible — into a diagnosed condition with a fix. Adopter-only (gated on a
- * cascivo.config by the caller); `@cascivo/i18n`/`@cascivo/charts` are advisory
- * since not every project uses them.
+ * Check that the runtime dependencies this project's install path needs are declared in its
+ * package.json — and, on the prebuilt path, that it declares none it must not.
+ *
+ * Turns the opaque "cannot find module '@preact/signals-react'" build failure into a
+ * diagnosed condition with a fix. What it demands depends on `detectInstallPath`: requiring
+ * `@cascivo/core` of a prebuilt app is not merely unhelpful, it is the opposite of what the
+ * docs say, and following the advice makes a correct project wrong.
+ *
+ * `@cascivo/i18n`/`@cascivo/charts` stay advisory since not every project uses them, and an
+ * `unknown` path emits nothing at all rather than guessing.
  */
 export function checkProjectDependencies(cwd: string): DependencyFinding[] {
   let deps: Record<string, unknown> = {}
@@ -59,19 +164,84 @@ export function checkProjectDependencies(cwd: string): DependencyFinding[] {
   } catch {
     return [] // No readable package.json — nothing reliable to advise on.
   }
+  const path = detectInstallPath(cwd)
+  if (path === 'unknown') return []
+
   const pm = detectPackageManager(cwd)
   const findings: DependencyFinding[] = []
-  for (const pkg of REQUIRED_RUNTIME_DEPS) {
+
+  const required = path === 'prebuilt' ? REQUIRED_PREBUILT_DEPS : REQUIRED_RUNTIME_DEPS
+  for (const pkg of required) {
     if (deps[pkg] === undefined) {
-      findings.push({ package: pkg, required: true, hint: installHint(pm, [pkg]) })
+      findings.push({
+        package: pkg,
+        required: true,
+        hint: `detected ${path} install path — ${installHint(pm, [pkg])}`,
+      })
     }
   }
+
+  // Only meaningful on a pure prebuilt app. A hybrid legitimately needs `@cascivo/core`
+  // for its copied source, so flagging it there would recreate the bug in mirror image.
+  if (path === 'prebuilt') {
+    for (const [pkg, reason] of Object.entries(FORBIDDEN_PREBUILT_DEPS)) {
+      if (deps[pkg] !== undefined) {
+        findings.push({ package: pkg, required: true, kind: 'forbidden', hint: reason })
+      }
+    }
+  }
+
   for (const pkg of ON_DEMAND_DEPS) {
     if (deps[pkg] === undefined) {
       findings.push({ package: pkg, required: false, hint: installHint(pm, [pkg]) })
     }
   }
   return findings
+}
+
+/**
+ * Two copies of `@cascivo/core` in one install.
+ *
+ * `@cascivo/react` and `@cascivo/charts` each depend on `@cascivo/core`, and the family
+ * versions independently on 0.x. If their ranges do not overlap, the package manager
+ * resolves a nested second copy — and because cascivo's reactivity is a module-level signal
+ * registry, two copies means two registries: a signal written through one is invisible to
+ * components subscribed through the other. Nothing errors. Handlers fire and the UI does
+ * not move, which is the single hardest cascivo symptom to diagnose.
+ *
+ * Turning that into a named finding is the cheap half of the version-sprawl problem
+ * (lockstep versioning is the expensive half, and is a policy decision).
+ */
+export interface DuplicateCoreFinding {
+  /** Version at the install root, if any. */
+  root: string | null
+  /** Nested copies, as `<owner> → <version>`. */
+  nested: string[]
+  hint: string
+}
+
+/** Packages that carry their own `@cascivo/core` dependency. */
+const CORE_DEPENDENTS = ['@cascivo/react', '@cascivo/charts', '@cascivo/flow', '@cascivo/editor']
+
+export async function checkDuplicateCore(cwd: string): Promise<DuplicateCoreFinding | null> {
+  const root = await readInstalledPackageVersion(cwd, '@cascivo/core')
+  const nested: string[] = []
+  for (const owner of CORE_DEPENDENTS) {
+    const ownerRoot = join(cwd, 'node_modules', owner)
+    if (!existsSync(ownerRoot)) continue
+    const version = await readInstalledPackageVersion(ownerRoot, '@cascivo/core')
+    // A nested copy only matters when it differs from the hoisted one.
+    if (version !== null && version !== root) nested.push(`${owner} → ${version}`)
+  }
+  if (nested.length === 0) return null
+  return {
+    root,
+    nested,
+    hint:
+      'Align the @cascivo/* versions (they are released together — see breaking-changes.json) ' +
+      'and reinstall. Two copies of @cascivo/core means two signal registries: writes through ' +
+      'one are invisible to components subscribed through the other, with no error.',
+  }
 }
 
 export interface SignalsCompatFinding {

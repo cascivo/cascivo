@@ -79,6 +79,20 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
    * only; to plot multiple fields from one row, give each series its own `y`.
    */
   y: (d: Datum) => number
+  /**
+   * ⚠ **Not rendered as a visible heading.** This becomes the chart's accessible name
+   * (the SVG `<caption>` / `aria-label`), which is why it is required — a chart with no
+   * accessible name is unusable with a screen reader.
+   *
+   * For a visible heading, put a `CardTitle`/`Heading` above the chart. The prop name
+   * promises a heading and an adopter wrote one, saw nothing, and ended up with a
+   * redundant `CardTitle` on every chart anyway.
+   *
+   * It is NOT renamed to `ariaLabel` (the catalog's name for an invisible accessible name)
+   * because an alias would have to make both optional, which drops the compile-time
+   * guarantee that every chart has an accessible name. The requirement is worth more than
+   * the naming consistency; this warning is the compensation.
+   */
   title: string
   description?: string
   /**
@@ -425,8 +439,16 @@ export function BarChart<Datum = { x: string; y: number }>({
           const innerH = h - margins.top - margins.bottom
           const isVertical = orientation === 'vertical'
           // Thin a crowded category axis automatically; an explicit stride prop wins.
+          // Horizontal bars run their categories down the y-axis, where labels stack and
+          // compete for height rather than width — so the direction has to travel with the
+          // length, or long category names strand a chart that has plenty of room.
           const labelEvery =
-            resolvedLabelEvery ?? autoLabelStride(categories, isVertical ? innerW : innerH)
+            resolvedLabelEvery ??
+            autoLabelStride(
+              categories,
+              isVertical ? innerW : innerH,
+              isVertical ? 'horizontal' : 'vertical',
+            )
 
           const catScale = bandScale(categories, isVertical ? [0, innerW] : [0, innerH], 0.2)
           const valScale = linearScale(

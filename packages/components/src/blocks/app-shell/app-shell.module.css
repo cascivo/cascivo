@@ -45,7 +45,7 @@
   }
 
   .sidebarLogo {
-    font-weight: var(--cascivo-font-extrabold);
+    font-weight: var(--cascivo-font-bold);
     font-size: var(--cascivo-text-xl);
     padding-block-end: var(--cascivo-space-6);
     padding-inline: var(--cascivo-space-2);
@@ -60,7 +60,7 @@
   .navLink {
     display: flex;
     align-items: center;
-    gap: var(--cascivo-space-2-5);
+    gap: var(--cascivo-space-3);
     padding: var(--cascivo-space-2) var(--cascivo-space-3);
     border-radius: var(--cascivo-radius-md);
     font-size: var(--cascivo-text-sm);
@@ -117,7 +117,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--cascivo-color-foreground-subtle);
+    color: var(--cascivo-color-text-subtle);
     font-size: var(--cascivo-text-sm);
   }
 

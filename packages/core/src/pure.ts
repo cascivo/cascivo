@@ -28,7 +28,15 @@
 export { cn, composeRefs, mergeProps } from './utils.ts'
 export { Slot } from './slot.tsx'
 export type { SlotProps } from './slot.tsx'
-export { normalizeTone, normalizeProgress } from './tone.ts'
-export type { Tone, ToneInput, Progress, ProgressInput } from './tone.ts'
+export { normalizeTone, normalizeProgress, sentimentOf } from './tone.ts'
+export type {
+  Tone,
+  ToneInput,
+  Progress,
+  ProgressInput,
+  Trend,
+  GoodDirection,
+  Sentiment,
+} from './tone.ts'
 export type { SpaceStep } from './space.ts'
 export { useId } from './use-id.ts'

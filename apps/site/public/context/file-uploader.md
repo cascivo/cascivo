@@ -58,8 +58,8 @@ The drop zone is a real <button> so it is keyboard-operable (Enter/Space open th
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
 - `--cascivo-color-success`
-- `--cascivo-color-danger`
-- `--cascivo-color-danger-subtle`
+- `--cascivo-color-destructive`
+- `--cascivo-color-destructive-subtle`
 
 ## Examples
 
@@ -111,7 +111,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 FileUploader is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-danger, --cascivo-color-danger-subtle
+  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-success, --cascivo-color-destructive, --cascivo-color-destructive-subtle
 
 Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 

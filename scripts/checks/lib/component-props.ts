@@ -78,18 +78,29 @@ function ownMembers(decl: InterfaceDeclaration | TypeAliasDeclaration): Set<stri
     for (const p of decl.getProperties()) names.add(unquote(p.getName()))
     return names
   }
-  // Type alias: take members from object-literal arms only. For an intersection
-  // `A & { … }` that means the inline `{ … }`, not the extended type `A`.
+  // Type alias: inline object-literal arms, plus a locally-declared `…BaseProps`
+  // interface referenced by an intersection.
+  //
+  // The `Base + XOR` pattern (`type XProps = XBaseProps & ({a} | {b})`) is how the catalog
+  // enforces "exactly one of these two is required" — `IconButton` and `Menubar` both use
+  // it for a required accessible name. Skipping the referenced base meant those components
+  // resolved to ZERO own props, so every guard keyed on this silently stopped covering
+  // them. The base's members are the component's own props by any useful definition.
   const typeNode = decl.getTypeNode()
-  const literals = typeNode
+  const arms = typeNode
     ? Node.isIntersectionTypeNode(typeNode)
       ? typeNode.getTypeNodes()
       : [typeNode]
     : []
-  for (const node of literals) {
+  for (const node of arms) {
     if (Node.isTypeLiteral(node)) {
       for (const p of node.getProperties()) names.add(unquote(p.getName()))
+      continue
     }
+    if (!Node.isTypeReference(node)) continue
+    const sourceFile = decl.getSourceFile()
+    const referenced = sourceFile.getInterface(node.getTypeName().getText())
+    if (referenced) for (const p of referenced.getProperties()) names.add(unquote(p.getName()))
   }
   return names
 }

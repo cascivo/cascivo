@@ -179,6 +179,18 @@ export interface IntentFlexibility {
 export interface IntentContent {
   tone: string
   notes?: string
+  /**
+   * True when the component is a **typography primitive** whose children are the page's
+   * authored prose, not chrome text the component owns.
+   *
+   * `cascivo audit --ai`'s `raw-string` rule warns on literal English inside a
+   * content-declaring component, to steer chrome labels ("Cancel", "No results") toward
+   * the `labels` prop / i18n. Applied to `Text`, `Heading` and friends it fires on every
+   * sentence of every page — `<Text>Automatic deployments</Text>` is page copy, not a
+   * component label — which trains adopters to ignore the rule and buries the real
+   * findings. The distinction is not recoverable from the string, so it is declared here.
+   */
+  contentPrimitive?: boolean
 }
 
 export interface ComponentIntent {

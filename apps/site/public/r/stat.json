@@ -57,6 +57,13 @@
         "default": "flat"
       },
       {
+        "name": "goodDirection",
+        "description": "Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour.",
+        "type": "'up' | 'down' | 'neutral'",
+        "required": false,
+        "default": "up"
+      },
+      {
         "name": "helpText",
         "type": "string",
         "required": false,

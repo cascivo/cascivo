@@ -68,9 +68,9 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - `--cascivo-text-sm`
 - `--cascivo-font-bold`
 - `--cascivo-font-semibold`
-- `--cascivo-text-secondary`
+- `--cascivo-color-text-subtle`
 - `--cascivo-color-border`
-- `--cascivo-surface-subtle`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-space-*`
 
 ## Accessibility

@@ -1,8 +1,16 @@
 {
-  "generatedFrom": ["packages/tokens/src/index.css", "packages/themes/src/light.css"],
+  "generatedFrom": [
+    "packages/tokens/src/index.css",
+    "packages/themes/src/light.css",
+    "packages/components/src/**/*.css (per-component author hooks)",
+    "packages/layouts/src/**/*.css (per-component author hooks)",
+    "packages/charts/src/**/*.css (per-component author hooks)",
+    "packages/flow/src/**/*.css (per-component author hooks)",
+    "packages/editor/src/**/*.css (per-component author hooks)"
+  ],
   "resolutionTheme": "light",
   "generatedAt": "2026-07-31",
-  "count": 266,
+  "count": 317,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -2405,6 +2413,465 @@
       "group": "color",
       "resolvedDefault": "oklch(0.967 0.002 264)",
       "resolvesPerTheme": true,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-aspect-ratio",
+      "value": "1",
+      "layer": "component",
+      "group": "aspect",
+      "resolvedDefault": "1",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-button-radius",
+      "value": "var(--cascivo-radius-control)",
+      "layer": "component",
+      "group": "button",
+      "resolvedDefault": "var(--cascivo-radius-control)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-calendar-bg",
+      "value": "var(--cascivo-color-surface)",
+      "layer": "component",
+      "group": "calendar",
+      "resolvedDefault": "var(--cascivo-color-surface)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-calendar-cell-size",
+      "value": "2.25rem",
+      "layer": "component",
+      "group": "calendar",
+      "resolvedDefault": "2.25rem",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-calendar-day-selected-bg",
+      "value": "var(--cascivo-color-accent)",
+      "layer": "component",
+      "group": "calendar",
+      "resolvedDefault": "var(--cascivo-color-accent)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-calendar-day-selected-fg",
+      "value": "var(\n      --cascivo-color-accent-foreground,\n      var(--cascivo-color-text-on-accent)\n    )",
+      "layer": "component",
+      "group": "calendar",
+      "resolvedDefault": "var(\n      --cascivo-color-accent-foreground,\n      var(--cascivo-color-text-on-accent)\n    )",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-calendar-day-today-color",
+      "value": "var(--cascivo-color-accent)",
+      "layer": "component",
+      "group": "calendar",
+      "resolvedDefault": "var(--cascivo-color-accent)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-calendar-radius",
+      "value": "var(--cascivo-radius-overlay)",
+      "layer": "component",
+      "group": "calendar",
+      "resolvedDefault": "var(--cascivo-radius-overlay)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-calendar-range-bg",
+      "value": "color-mix(in srgb, var(--cascivo-color-accent) 16%, transparent)",
+      "layer": "component",
+      "group": "calendar",
+      "resolvedDefault": "color-mix(in srgb, var(--cascivo-color-accent) 16%, transparent)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-chart-anim-dur",
+      "value": "320ms",
+      "layer": "component",
+      "group": "chart",
+      "resolvedDefault": "320ms",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-chart-anim-ease",
+      "value": "ease-out",
+      "layer": "component",
+      "group": "chart",
+      "resolvedDefault": "ease-out",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-chart-anim-props",
+      "value": "opacity, fill, fill-opacity",
+      "layer": "component",
+      "group": "chart",
+      "resolvedDefault": "opacity, fill, fill-opacity",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-color-picker-area-size",
+      "value": "9rem",
+      "layer": "component",
+      "group": "color",
+      "resolvedDefault": "9rem",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-color-picker-solid",
+      "value": "#000",
+      "layer": "component",
+      "group": "color",
+      "resolvedDefault": "#000",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-color-scrim",
+      "value": "oklch(0 0 0 / 40%)",
+      "layer": "component",
+      "group": "color",
+      "resolvedDefault": "oklch(0 0 0 / 40%)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-context-x",
+      "value": "0",
+      "layer": "component",
+      "group": "context",
+      "resolvedDefault": "0",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-context-y",
+      "value": "0",
+      "layer": "component",
+      "group": "context",
+      "resolvedDefault": "0",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-data-table-cell-gap",
+      "value": "var(--cascivo-space-4)",
+      "layer": "component",
+      "group": "data",
+      "resolvedDefault": "var(--cascivo-space-4)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-data-table-height",
+      "value": "400px",
+      "layer": "component",
+      "group": "data",
+      "resolvedDefault": "400px",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-data-table-max-height",
+      "value": "none",
+      "layer": "component",
+      "group": "data",
+      "resolvedDefault": "none",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-dialog-body-gap",
+      "value": "0 for full-bleed content. */\n    display: flex",
+      "layer": "component",
+      "group": "dialog",
+      "resolvedDefault": "0 for full-bleed content. */\n    display: flex",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-dropdown-anchor",
+      "value": "--dropdown-trigger",
+      "layer": "component",
+      "group": "dropdown",
+      "resolvedDefault": "--dropdown-trigger",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-bracket",
+      "value": "currentColor",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "currentColor",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-caret-line",
+      "value": "0",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "0",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-gutter-active",
+      "value": "var(--cascivo-editor-current-line)",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "var(--cascivo-editor-current-line)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-match",
+      "value": "rgba(125, 211, 252, 0.28)",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "rgba(125, 211, 252, 0.28)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-match-current",
+      "value": "rgba(250, 204, 21, 0.5)",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "rgba(250, 204, 21, 0.5)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-editor-tab-size",
+      "value": "2",
+      "layer": "component",
+      "group": "editor",
+      "resolvedDefault": "2",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-header-bg",
+      "value": "var(--cascivo-color-surface)",
+      "layer": "component",
+      "group": "header",
+      "resolvedDefault": "var(--cascivo-color-surface)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-kpi-padding",
+      "value": "var(--cascivo-space-4)",
+      "layer": "component",
+      "group": "kpi",
+      "resolvedDefault": "var(--cascivo-space-4)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-popover-anchor",
+      "value": "inherit",
+      "layer": "component",
+      "group": "popover",
+      "resolvedDefault": "inherit",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-progress-color",
+      "value": "var(--cascivo-color-primary)",
+      "layer": "component",
+      "group": "progress",
+      "resolvedDefault": "var(--cascivo-color-primary)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-progress-value",
+      "value": "0%",
+      "layer": "component",
+      "group": "progress",
+      "resolvedDefault": "0%",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-radial-color",
+      "value": "var(--cascivo-color-accent)",
+      "layer": "component",
+      "group": "radial",
+      "resolvedDefault": "var(--cascivo-color-accent)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-radial-progress",
+      "value": "0",
+      "layer": "component",
+      "group": "radial",
+      "resolvedDefault": "0",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-radial-size",
+      "value": "5rem",
+      "layer": "component",
+      "group": "radial",
+      "resolvedDefault": "5rem",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-radial-thickness",
+      "value": "0.375rem",
+      "layer": "component",
+      "group": "radial",
+      "resolvedDefault": "0.375rem",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-radius-pill",
+      "value": "9999px",
+      "layer": "component",
+      "group": "radius",
+      "resolvedDefault": "9999px",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-resizable-ratio",
+      "value": "0.5",
+      "layer": "component",
+      "group": "resizable",
+      "resolvedDefault": "0.5",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-scroll-area-height",
+      "value": "none",
+      "layer": "component",
+      "group": "scroll",
+      "resolvedDefault": "none",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-scroll-area-width",
+      "value": "none",
+      "layer": "component",
+      "group": "scroll",
+      "resolvedDefault": "none",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-sidenav-bg",
+      "value": "var(--cascivo-color-surface)",
+      "layer": "component",
+      "group": "sidenav",
+      "resolvedDefault": "var(--cascivo-color-surface)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-sidenav-inline-size",
+      "value": "16rem",
+      "layer": "component",
+      "group": "sidenav",
+      "resolvedDefault": "16rem",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-sidenav-rail-inline-size",
+      "value": "4rem",
+      "layer": "component",
+      "group": "sidenav",
+      "resolvedDefault": "4rem",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-skeleton-height",
+      "value": "var(--cascivo-space-10)",
+      "layer": "component",
+      "group": "skeleton",
+      "resolvedDefault": "var(--cascivo-space-10)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-skeleton-width",
+      "value": "100%",
+      "layer": "component",
+      "group": "skeleton",
+      "resolvedDefault": "100%",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-stack-index",
+      "value": "0",
+      "layer": "component",
+      "group": "stack",
+      "resolvedDefault": "0",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-stack-offset",
+      "value": "4px",
+      "layer": "component",
+      "group": "stack",
+      "resolvedDefault": "4px",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-tooltip-anchor",
+      "value": "attr(data-anchor)",
+      "layer": "component",
+      "group": "tooltip",
+      "resolvedDefault": "attr(data-anchor)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-tree-indent",
+      "value": "var(--cascivo-space-5)",
+      "layer": "component",
+      "group": "tree",
+      "resolvedDefault": "var(--cascivo-space-5)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-z-dock",
+      "value": "40",
+      "layer": "component",
+      "group": "z",
+      "resolvedDefault": "40",
+      "resolvesPerTheme": false,
       "canonical": true
     }
   ]

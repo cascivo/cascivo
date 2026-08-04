@@ -83,6 +83,11 @@
         "title": "Inline span",
         "code": "<Text as=\"span\" weight=\"semibold\">emphasis</Text>",
         "description": "Use as=\"span\" inside other flow content"
+      },
+      {
+        "title": "Icon beside text",
+        "code": "<Text>\n  <CheckIcon aria-hidden />\n  <Text as=\"span\" weight=\"semibold\">Deployed</Text>\n</Text>",
+        "description": "Text renders a <p> by default, so a nested Text needs as=\"span\" — a <p> inside a <p> is invalid HTML and the browser silently closes the outer one, breaking the layout."
       }
     ],
     "dependencies": ["@cascivo/core"],
@@ -113,6 +118,7 @@
       ],
       "a11yRationale": "Renders the chosen native element (p/span/div) without imposing roles; muted styling keeps contrast within AA so secondary text stays readable",
       "content": {
+        "contentPrimitive": true,
         "tone": "Plain body voice; the component does not constrain copy",
         "notes": "Use muted sparingly for genuinely secondary information"
       },

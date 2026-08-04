@@ -83,7 +83,7 @@ Required. Without client JavaScript this renders nothing useful, or a shell whos
 - `--cascivo-color-text-muted`
 - `--cascivo-color-text-subtle`
 - `--cascivo-color-accent`
-- `--cascivo-color-danger`
+- `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-radius-md`
 - `--cascivo-radius-sm`

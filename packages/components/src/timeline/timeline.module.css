@@ -93,6 +93,14 @@
     color: var(--cascivo-color-text-subtle);
   }
 
+  /* A failed entry must not read as an in-progress one. `error` used to collapse onto
+     `current`, so a failed deploy and a running deploy were pixel-identical. */
+  .item[data-status='error'] .marker {
+    border-color: var(--cascivo-color-destructive);
+    background-color: var(--cascivo-color-destructive);
+    color: var(--cascivo-color-text-on-destructive);
+  }
+
   /* Tone wins over status on the marker. Same specificity as the status rules above,
      so source order decides — deliberate: an entry that declares what kind of thing it
      is has said something more specific than where it sits in a sequence. */
@@ -160,5 +168,13 @@
   .item[data-status='current'] .marker {
     border-color: Highlight;
     background-color: Highlight;
+  }
+
+  /* Forced colours flatten the palette, so the glyph in the marker is what
+     distinguishes a failed entry here. */
+  .item[data-status='error'] .marker {
+    border-color: CanvasText;
+    background-color: Canvas;
+    color: CanvasText;
   }
 }
