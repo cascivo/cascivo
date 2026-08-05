@@ -1,0 +1,63 @@
+@layer cascivo.component {
+  .root {
+    position: relative;
+    inline-size: fit-content;
+  }
+
+  .column {
+    block-size: var(--_column-height);
+    overflow-y: auto;
+    /* The wheel itself: the platform owns momentum, rubber-banding and the snap. */
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    /* Half a column top and bottom so the first and last rows can reach the centre. */
+    padding-block: var(--_pad);
+    /* Drum falloff — rows dim towards the ends instead of being clipped flat. */
+    mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 75%, transparent 100%);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &:focus-visible {
+      outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);
+      outline-offset: 2px;
+      border-radius: var(--cascivo-radius-md);
+    }
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--_item-height);
+    scroll-snap-align: center;
+    padding-inline: var(--cascivo-space-4);
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-text-ui);
+    white-space: nowrap;
+    /* Rows are snap targets; a text selection drag would fight the wheel. */
+    user-select: none;
+
+    &[aria-selected='true'] {
+      color: var(--cascivo-color-foreground);
+      font-weight: var(--cascivo-font-semibold);
+    }
+  }
+
+  .band {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 50%;
+    translate: 0 -50%;
+    block-size: var(--_item-height);
+    border-block: 1px solid var(--cascivo-border-subtle);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .column {
+      scroll-behavior: smooth;
+    }
+  }
+}

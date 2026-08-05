@@ -8,7 +8,7 @@ _Last updated: 2026-07-05._
 
 ## Where we are today
 
-- **192 components** across inputs, display, overlay, navigation, layout, feedback,
+- **197 components** across inputs, display, overlay, navigation, layout, feedback,
   plus a **25-type chart family** (`@cascivo/charts`) built from scratch with zero
   runtime dependencies.
 - **12 first-party themes**, applied via a single `data-theme` attribute and

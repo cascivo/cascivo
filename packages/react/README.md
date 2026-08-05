@@ -249,7 +249,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-192 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+197 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -282,6 +282,7 @@ routing break after adding one of these, check that the import resolves to
 - **Radio** — Single choice from a set, grouped with RadioGroup
 - **RadioCard** — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - **RatingGroup** — Star rating input with accessible radio group pattern
+- **ReorderList** — List whose rows can be reordered by pointer drag or entirely by keyboard
 - **Search** — Search input with debounced search callback and clear button
 - **SegmentedControl** — Mutually exclusive toggle group
 - **Select** — Native select menu styled to match the design system
@@ -293,6 +294,7 @@ routing break after adding one of these, check that the import resolves to
 - **TimePicker** — Native time input wrapper with label, hint, error, and size variants
 - **Toggle** — On/off switch built as an accessible button
 - **ToggleGroup** — A set of toggle buttons for single or multiple selection
+- **WheelPicker** — iOS-style drum picker — a column of options that scrolls and snaps to a selection
 
 ### Display
 
@@ -353,6 +355,7 @@ routing break after adding one of these, check that the import resolves to
 - **TreeView** — Hierarchical, expandable tree of nodes with keyboard navigation and selection
 - **User** — Identity composite: an avatar with a name, description, and optional action slot
 - **UsersTablePage** — Full users management page with table, search, and invite action.
+- **VirtualList** — Renders only the rows inside the viewport, so list length costs no extra DOM
 - **VisuallyHidden** — Hides content visually while keeping it available to screen readers
 
 ### Overlay
@@ -381,6 +384,7 @@ routing break after adding one of these, check that the import resolves to
 - **Dock** — Fixed bottom navigation bar for mobile app shells with up to 5 items
 - **Header** — App top bar with brand, primary navigation links, and an actions slot
 - **HeaderPanel** — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
+- **LargeTitleHeader** — Scrolling region whose large title collapses into a compact sticky bar as it scrolls
 - **Link** — Styled anchor for navigation, standalone or inline within prose
 - **Menubar** — Horizontal application menu bar with keyboard-navigable dropdown menus
 - **MenuButton** — A button that opens an anchored action menu of one-shot commands
@@ -427,6 +431,7 @@ routing break after adding one of these, check that the import resolves to
 
 ### Feedback
 
+- **InfiniteScroll** — Loads the next page when the end of a list scrolls into view
 - **InlineLoading** — Compact inline status indicator that pairs a label with a loading, success, or error state
 - **Notification** — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
 - **Progress** — Horizontal bar showing the completion progress of a tracked operation

@@ -36,10 +36,12 @@ import { meta as headingMeta } from './heading/heading.meta'
 import { meta as hoverCardMeta } from './hover-card/hover-card.meta'
 import { meta as imageMeta } from './image/image.meta'
 import { meta as indicatorMeta } from './indicator/indicator.meta'
+import { meta as infiniteScrollMeta } from './infinite-scroll/infinite-scroll.meta'
 import { meta as inputMeta } from './input/input.meta'
 import { meta as inputGroupMeta } from './input-group/input-group.meta'
 import { meta as joinMeta } from './join/join.meta'
 import { meta as kbdMeta } from './kbd/kbd.meta'
+import { meta as largeTitleHeaderMeta } from './large-title-header/large-title-header.meta'
 import { meta as linkMeta } from './link/link.meta'
 import { meta as listMeta } from './list/list.meta'
 import { meta as menuMeta } from './menu/menu.meta'
@@ -63,6 +65,7 @@ import { meta as radioMeta } from './radio/radio.meta'
 import { meta as radioCardMeta } from './radio-card/radio-card.meta'
 import { meta as ratingGroupMeta } from './rating-group/rating-group.meta'
 import { meta as relativeTimeMeta } from './relative-time/relative-time.meta'
+import { meta as reorderListMeta } from './reorder-list/reorder-list.meta'
 import { meta as searchMeta } from './search/search.meta'
 import { meta as segmentedControlMeta } from './segmented-control/segmented-control.meta'
 import { meta as selectMeta } from './select/select.meta'
@@ -92,6 +95,8 @@ import { meta as tocMeta } from './toc/toc.meta'
 import { meta as toggleMeta } from './toggle/toggle.meta'
 import { meta as tooltipMeta } from './tooltip/tooltip.meta'
 import { meta as userMeta } from './user/user.meta'
+import { meta as virtualListMeta } from './virtual-list/virtual-list.meta'
+import { meta as wheelPickerMeta } from './wheel-picker/wheel-picker.meta'
 import { meta as visuallyHiddenMeta } from './visually-hidden/visually-hidden.meta'
 
 export const allMetas: ComponentMeta[] = [
@@ -132,10 +137,12 @@ export const allMetas: ComponentMeta[] = [
   hoverCardMeta,
   imageMeta,
   indicatorMeta,
+  infiniteScrollMeta,
   inputMeta,
   inputGroupMeta,
   joinMeta,
   kbdMeta,
+  largeTitleHeaderMeta,
   linkMeta,
   listMeta,
   menuMeta,
@@ -159,6 +166,7 @@ export const allMetas: ComponentMeta[] = [
   radioCardMeta,
   ratingGroupMeta,
   relativeTimeMeta,
+  reorderListMeta,
   searchMeta,
   segmentedControlMeta,
   selectMeta,
@@ -188,5 +196,7 @@ export const allMetas: ComponentMeta[] = [
   toggleMeta,
   tooltipMeta,
   userMeta,
+  virtualListMeta,
+  wheelPickerMeta,
   visuallyHiddenMeta,
 ]

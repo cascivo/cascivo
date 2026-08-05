@@ -1,0 +1,159 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'ReorderList',
+  description: 'List whose rows can be reordered by pointer drag or entirely by keyboard',
+  category: 'inputs',
+  clientJs: 'required',
+  states: ['idle', 'grabbed', 'disabled'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'value',
+      type: 'ReorderItem[]',
+      required: true,
+      description: 'The ordered items; the component is controlled',
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: ReorderItem[]) => void',
+      required: true,
+      description: 'Called with the new order whenever a row moves',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'When true, disables the control and removes it from the tab order.',
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: '{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'ReorderItem',
+      fields: [
+        { name: 'id', type: 'string', required: true, description: 'Stable identity for the row' },
+        {
+          name: 'label',
+          type: 'React.ReactNode',
+          required: true,
+          description: 'Row content',
+        },
+        {
+          name: 'name',
+          type: 'string',
+          required: false,
+          description: 'Plain-text name used in announcements when label is not a string',
+        },
+      ],
+    },
+  ],
+  tokens: [
+    '--cascivo-color-surface',
+    '--cascivo-color-surface-2',
+    '--cascivo-color-foreground',
+    '--cascivo-color-text-muted',
+    '--cascivo-color-accent',
+    '--cascivo-border-subtle',
+    '--cascivo-radius-sm',
+    '--cascivo-ring-width',
+    '--cascivo-ring-color',
+    '--cascivo-disabled-opacity',
+    '--cascivo-target-min-coarse',
+  ],
+  accessibility: {
+    role: 'list',
+    wcag: '2.2-AA',
+    keyboard: ['Space', 'Enter', 'ArrowUp', 'ArrowDown', 'Escape', 'Tab'],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: `<ReorderList
+  value={items}
+  onValueChange={setItems}
+/>`,
+      description: 'Controlled — the caller owns the order.',
+    },
+    {
+      title: 'Locked',
+      code: `<ReorderList value={items} onValueChange={setItems} disabled />`,
+      description: 'Handles are disabled and drop out of the tab order.',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  tags: ['inputs', 'reorder', 'sortable', 'drag', 'list', 'mobile', 'keyboard'],
+  intent: {
+    whenToUse: [
+      'A short, user-owned ordering such as playlist tracks, form fields, or dashboard cards',
+      'Any list whose order is meaningful data the user is expected to change',
+      'Touch surfaces where dragging a handle is the natural gesture',
+    ],
+    whenNotToUse: [
+      'Long or virtualized lists, where dragging to a far position is impractical — offer a "move to position" control',
+      'Ordering that is derived rather than authored (sort by name, date, rank) — use a sortable DataTable',
+      'Read-only lists — use List or StructuredList',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Rendering a drag handle with no keyboard path',
+        good: 'Keep the built-in handle, which is a real button with Space/Arrow/Escape support',
+        why: 'Pointer-only reordering is unusable by keyboard and screen-reader users; it is the standing accessibility gap in pointer-only implementations',
+      },
+      {
+        bad: 'Deriving row keys from array index',
+        good: 'Give every item a stable `id`',
+        why: 'Index keys make React reuse the wrong DOM nodes as rows move, so focus and animation land on the wrong row',
+      },
+    ],
+    related: [
+      {
+        name: 'List',
+        relationship: 'alternative',
+        reason: 'Plain list when the order is not user-editable',
+      },
+      {
+        name: 'DataTable',
+        relationship: 'alternative',
+        reason: 'Column sorting when the order is derived rather than authored',
+      },
+      {
+        name: 'SwipeItem',
+        relationship: 'pairs-with',
+        reason: 'Row-level swipe actions on the same touch list',
+      },
+    ],
+    a11yRationale:
+      'Every row carries a real button as its drag handle, so the entire interaction is reachable by keyboard: Space or Enter picks a row up, ArrowUp/ArrowDown move it, Space or Enter drops it, and Escape restores the order captured at pick-up. The handle exposes aria-pressed so assistive technology can tell held from idle, and each transition — picked up, moved, dropped, cancelled — is announced through a polite role="status" region using interpolated catalog strings that carry the item name and its position out of the total. The handle sets touch-action: none so a touch drag is not stolen by the scroller, and meets the coarse-pointer target floor. Item names for announcements come from `name` when the label is not plain text, so a rich label never produces an empty announcement.',
+    flexibility: [
+      {
+        area: 'value / onValueChange',
+        level: 'strict',
+        note: 'Always controlled — the component never holds the order itself',
+      },
+      {
+        area: 'labels',
+        level: 'flexible',
+        note: 'Every announcement string is overridable and supports {name}, {position} and {total}',
+      },
+      {
+        area: 'handle',
+        level: 'strict',
+        note: 'The handle is always a focusable button; there is no drag-anywhere mode',
+      },
+    ],
+  },
+}

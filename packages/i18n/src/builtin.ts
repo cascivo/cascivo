@@ -123,6 +123,17 @@ export const builtin = {
     label: 'Actions',
     cancel: 'Cancel',
   }),
+  reorderList: defineMessages('cascade.reorderList', {
+    handle: 'Reorder {name}',
+    grabbed: 'Picked up {name}. Position {position} of {total}.',
+    moved: 'Moved {name} to position {position} of {total}.',
+    dropped: 'Dropped {name} at position {position} of {total}.',
+    cancelled: 'Reordering cancelled. {name} returned to its original position.',
+  }),
+  infiniteScroll: defineMessages('cascade.infiniteScroll', {
+    loadMore: 'Load more',
+    loading: 'Loading more',
+  }),
   pullToRefresh: defineMessages('cascade.pullToRefresh', {
     pull: 'Pull to refresh',
     release: 'Release to refresh',
@@ -417,6 +428,17 @@ defineCatalog(builtin.bottomSheet, 'de', {
 defineCatalog(builtin.actionSheet, 'de', {
   label: 'Aktionen',
   cancel: 'Abbrechen',
+})
+defineCatalog(builtin.reorderList, 'de', {
+  handle: '{name} neu anordnen',
+  grabbed: '{name} aufgenommen. Position {position} von {total}.',
+  moved: '{name} auf Position {position} von {total} verschoben.',
+  dropped: '{name} auf Position {position} von {total} abgelegt.',
+  cancelled: 'Neuanordnung abgebrochen. {name} an der ursprünglichen Position.',
+})
+defineCatalog(builtin.infiniteScroll, 'de', {
+  loadMore: 'Mehr laden',
+  loading: 'Weitere werden geladen',
 })
 defineCatalog(builtin.pullToRefresh, 'de', {
   pull: 'Zum Aktualisieren ziehen',

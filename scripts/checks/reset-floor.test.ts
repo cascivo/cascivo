@@ -36,6 +36,7 @@ const LAYERS_CSS = join(REPO_ROOT, 'packages/tokens/src/layers.css')
 const SHIPPED_CSS_DIRS = [
   join(REPO_ROOT, 'packages/tokens/src'),
   join(REPO_ROOT, 'packages/themes/src'),
+  join(REPO_ROOT, 'packages/platform/src'),
   join(REPO_ROOT, 'packages/components/src'),
   join(REPO_ROOT, 'packages/layouts/src'),
 ]

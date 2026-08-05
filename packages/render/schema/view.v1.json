@@ -179,6 +179,7 @@
             "IconButton",
             "Image",
             "Indicator",
+            "InfiniteScroll",
             "InlineLoading",
             "Input",
             "InputGroup",
@@ -187,6 +188,7 @@
             "Kbd",
             "Kpi",
             "Label",
+            "LargeTitleHeader",
             "LineChart",
             "Link",
             "List",
@@ -229,6 +231,7 @@
             "RadioCard",
             "RatingGroup",
             "RelativeTime",
+            "ReorderList",
             "Resizable",
             "Sankey",
             "ScatterChart",
@@ -281,7 +284,9 @@
             "Treemap",
             "User",
             "UsersTablePage",
-            "VisuallyHidden"
+            "VirtualList",
+            "VisuallyHidden",
+            "WheelPicker"
           ]
         },
         "props": {
@@ -2160,6 +2165,35 @@
           "if": {
             "properties": {
               "component": {
+                "const": "InfiniteScroll"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "rootMargin": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["onLoadMore"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "InlineLoading"
               }
             },
@@ -2366,6 +2400,35 @@
                   }
                 },
                 "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "LargeTitleHeader"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "collapseDistance": {
+                    "type": "number"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["title", "children"]
               }
             }
           }
@@ -3394,6 +3457,32 @@
                   }
                 },
                 "required": ["date"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "ReorderList"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value", "onValueChange"]
               }
             }
           }
@@ -4667,6 +4756,41 @@
           "if": {
             "properties": {
               "component": {
+                "const": "VirtualList"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "itemHeight": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "overscan": {
+                    "type": "number"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items", "itemHeight", "height", "renderItem"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "VisuallyHidden"
               }
             },
@@ -4683,6 +4807,41 @@
                   }
                 },
                 "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "WheelPicker"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "visibleCount": {
+                    "type": "number"
+                  },
+                  "itemHeight": {
+                    "type": "number"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["options", "value", "onValueChange"]
               }
             }
           }

@@ -36,7 +36,7 @@ follow these rules whenever you generate or edit CSS:
 5. Style with `--cascivo-*` tokens, not raw values.
 
 Canonical layer order (lowest → highest priority):
-`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.myapp, cascivo.override;`
+`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.myapp, cascivo.override;`
 
 The full machine-readable guide is at https://cascivo.com/llms.txt.
 ```

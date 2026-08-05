@@ -1,0 +1,90 @@
+@layer cascivo.component {
+  /* Positioned so the visually-hidden live region anchors here rather than to some
+     arbitrary ancestor of the consumer's. */
+  .root {
+    position: relative;
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-2);
+    padding-block: var(--cascivo-space-2);
+    border-block-end: 1px solid var(--cascivo-border-subtle);
+    background: var(--cascivo-color-surface);
+
+    &:last-child {
+      border-block-end: none;
+    }
+
+    &[data-active] {
+      background: var(--cascivo-color-surface-2);
+    }
+  }
+
+  .handle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    padding: var(--cascivo-space-1);
+    border: none;
+    border-radius: var(--cascivo-radius-sm);
+    background: transparent;
+    color: var(--cascivo-color-text-muted);
+    /* The handle owns the gesture; without this the browser scrolls instead. */
+    touch-action: none;
+    cursor: grab;
+
+    &:focus-visible {
+      outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);
+      outline-offset: 2px;
+    }
+
+    &[aria-pressed='true'] {
+      color: var(--cascivo-color-accent);
+      cursor: grabbing;
+    }
+
+    &:disabled {
+      opacity: var(--cascivo-disabled-opacity);
+      cursor: not-allowed;
+    }
+
+    @media (pointer: coarse) {
+      min-inline-size: var(--cascivo-target-min-coarse, 2.75rem);
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+
+  .grip {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  .label {
+    min-inline-size: 0;
+    color: var(--cascivo-color-foreground);
+  }
+
+  .srOnly {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

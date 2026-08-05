@@ -1,0 +1,169 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'LargeTitleHeader',
+  description:
+    'Scrolling region whose large title collapses into a compact sticky bar as it scrolls',
+  category: 'navigation',
+  clientJs: 'none',
+  states: ['expanded', 'collapsed'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'title',
+      type: 'string',
+      required: true,
+      description: 'The page title, rendered as the large heading and mirrored in the compact bar',
+    },
+    {
+      name: 'children',
+      description: 'Content rendered inside the component.',
+      type: 'React.ReactNode',
+      required: true,
+    },
+    {
+      name: 'leading',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Leading slot of the compact bar — typically a back control',
+    },
+    {
+      name: 'actions',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Trailing slot of the compact bar — typically icon buttons',
+    },
+    {
+      name: 'level',
+      type: '1 | 2 | 3',
+      required: false,
+      default: '1',
+      description: 'Heading level for the title, mapping to h1–h3.',
+    },
+    {
+      name: 'collapseDistance',
+      type: 'number',
+      required: false,
+      default: '48',
+      description: 'Scroll distance (px) over which the large title collapses into the bar.',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
+  tokens: [
+    '--cascivo-color-surface',
+    '--cascivo-color-foreground',
+    '--cascivo-border-subtle',
+    '--cascivo-text-ui',
+    '--cascivo-text-heading-lg',
+    '--cascivo-font-semibold',
+    '--cascivo-font-bold',
+    '--cascivo-leading-tight',
+    '--cascivo-target-min-coarse',
+    '--cascivo-z-raised',
+  ],
+  accessibility: {
+    role: 'heading',
+    wcag: '2.2-AA',
+    keyboard: [],
+    reducedMotion: true,
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: `<LargeTitleHeader title="Library">
+  <List>
+    <ListItem>Recently Added</ListItem>
+    <ListItem>Artists</ListItem>
+    <ListItem>Albums</ListItem>
+  </List>
+</LargeTitleHeader>`,
+      description: 'The component owns the scroll container; give it a parent with a height.',
+    },
+    {
+      title: 'With a back control and actions',
+      code: `<LargeTitleHeader
+  title="Downloads"
+  leading={<IconButton label="Back" onClick={goBack}>←</IconButton>}
+  actions={<IconButton label="Sort">⇅</IconButton>}
+>
+  <FileList files={files} />
+</LargeTitleHeader>`,
+      description: 'Both slots stay in the compact bar and never scroll away.',
+    },
+    {
+      title: 'Longer collapse',
+      code: `<LargeTitleHeader title="Recently Played" collapseDistance={96}>
+  <TrackList tracks={tracks} />
+</LargeTitleHeader>`,
+      description: 'Stretches the reveal over more scroll distance.',
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['navigation', 'header', 'title', 'mobile', 'scroll', 'sticky', 'ios'],
+  intent: {
+    whenToUse: [
+      'A scrolling screen that should keep its title reachable after the heading scrolls away',
+      'Mobile and tablet layouts following the platform convention of a large title that collapses',
+      'Any page where a persistent back control or actions must stay pinned while content scrolls',
+    ],
+    whenNotToUse: [
+      'A site-wide navigation bar with links and a brand — use Header',
+      'An application chrome header spanning a sidebar layout — use ShellHeader',
+      'A screen whose scroll container is owned by the app shell or router — this component owns its own',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Rendering it inside a parent with no resolved height',
+        good: 'Give the parent a height (a grid/flex track, a dvh value, or 100% of a sized ancestor)',
+        why: 'The component is the scroll container at block-size 100%; with an auto-height parent it never scrolls, so the title never collapses',
+      },
+      {
+        bad: 'Passing the page heading again as the first child of the content below',
+        good: 'Let the component own the heading',
+        why: 'The component already renders a real h1–h3; repeating it duplicates the heading in the accessibility tree',
+      },
+    ],
+    related: [
+      {
+        name: 'Header',
+        relationship: 'alternative',
+        reason: 'Site-wide banner with brand, links and actions rather than a page title',
+      },
+      {
+        name: 'ShellHeader',
+        relationship: 'alternative',
+        reason: 'Application chrome for a shell layout rather than a scrolling page',
+      },
+      {
+        name: 'Dock',
+        relationship: 'pairs-with',
+        reason: 'Bottom navigation for the same mobile app shell',
+      },
+    ],
+    a11yRationale:
+      'The component owns the scroll container, so the sticky bar and the scroll timeline cannot be broken by surrounding markup. The title is a real h1–h3 in normal flow, so heading order and document outline are unaffected; the copy mirrored into the sticky bar is aria-hidden so screen readers announce the title exactly once. The collapse is a CSS scroll-driven animation with no client JavaScript, so the header is complete in server-rendered HTML and nothing depends on hydration. Where animation-timeline is unsupported the mirror stays hidden and the header degrades to a sticky bar above a heading — no content is lost. Under prefers-reduced-motion the reveal snaps with steps(1, jump-end) instead of interpolating. The bar clears the coarse-pointer target floor and pads for the top safe-area inset.',
+    flexibility: [
+      {
+        area: 'collapseDistance',
+        level: 'flexible',
+        note: 'Scroll distance over which the title collapses (default 48px)',
+      },
+      {
+        area: 'level',
+        level: 'flexible',
+        note: 'Heading level is caller-controlled so the page outline stays correct',
+      },
+      {
+        area: 'collapse mechanism',
+        level: 'strict',
+        note: 'Always a CSS scroll-driven animation — there is no JavaScript fallback path',
+      },
+    ],
+  },
+}

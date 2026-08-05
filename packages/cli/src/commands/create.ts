@@ -228,7 +228,7 @@ function indexHtml(opts: ScaffoldOptions): string {
     <title>${opts.name}</title>
     <style>
       @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
-        cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
+        cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
       /* cascivo.example is this app's own slot — above the component/blocks layers so your
          styles win, below cascivo.override which stays free for one-off hotfixes. The
          generated AGENTS.md tells the agent to write there, and this statement is what makes
@@ -465,7 +465,7 @@ This app's declared layer order (in \`index.html\`):
 
 \`\`\`css
 @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
-  cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
+  cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
 \`\`\`
 
 ### Worked example — nesting, not new layers

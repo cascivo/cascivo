@@ -176,7 +176,7 @@ cascivo styles live in cascade layers. Layer order beats selector specificity, s
 5. Style with `--cascivo-*` tokens, not raw values.
 
 Canonical order (lowest → highest priority):
-`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;`
+`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;`
 Full recipe: https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md.
 
 ## Reactivity & state (signals, not React hooks)
@@ -312,7 +312,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (204 entries — 192 components + 12 page blocks)
+## Component index (209 entries — 197 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -415,10 +415,12 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [timeline](https://cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line _(npm @cascivo/react · or copy-paste)_
 - [tree-view](https://cascivo.com/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection _(npm @cascivo/react · or copy-paste)_
 - [user](https://cascivo.com/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot _(npm @cascivo/react · or copy-paste)_
+- [virtual-list](https://cascivo.com/llms/virtual-list.md) — Renders only the rows inside the viewport, so list length costs no extra DOM _(npm @cascivo/react · or copy-paste)_
 - [visually-hidden](https://cascivo.com/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers _(npm @cascivo/react · or copy-paste)_
 
 ### feedback
 
+- [infinite-scroll](https://cascivo.com/llms/infinite-scroll.md) — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
 - [inline-loading](https://cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
 - [notification](https://cascivo.com/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action _(npm @cascivo/react · or copy-paste)_
 - [progress](https://cascivo.com/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation _(npm @cascivo/react · or copy-paste)_
@@ -459,6 +461,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [radio](https://cascivo.com/llms/radio.md) — Single choice from a set, grouped with RadioGroup _(npm @cascivo/react · or copy-paste)_
 - [radio-card](https://cascivo.com/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups. _(npm @cascivo/react · or copy-paste)_
 - [rating-group](https://cascivo.com/llms/rating-group.md) — Star rating input with accessible radio group pattern _(npm @cascivo/react · or copy-paste)_
+- [reorder-list](https://cascivo.com/llms/reorder-list.md) — List whose rows can be reordered by pointer drag or entirely by keyboard _(npm @cascivo/react · or copy-paste)_
 - [search](https://cascivo.com/llms/search.md) — Search input with debounced search callback and clear button _(npm @cascivo/react · or copy-paste)_
 - [segmented-control](https://cascivo.com/llms/segmented-control.md) — Mutually exclusive toggle group _(npm @cascivo/react · or copy-paste)_
 - [select](https://cascivo.com/llms/select.md) — Native select menu styled to match the design system _(npm @cascivo/react · or copy-paste)_
@@ -470,6 +473,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [time-picker](https://cascivo.com/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants _(npm @cascivo/react · or copy-paste)_
 - [toggle](https://cascivo.com/llms/toggle.md) — On/off switch built as an accessible button _(npm @cascivo/react · or copy-paste)_
 - [toggle-group](https://cascivo.com/llms/toggle-group.md) — A set of toggle buttons for single or multiple selection _(npm @cascivo/react · or copy-paste)_
+- [wheel-picker](https://cascivo.com/llms/wheel-picker.md) — iOS-style drum picker — a column of options that scrolls and snaps to a selection _(npm @cascivo/react · or copy-paste)_
 
 ### layout
 
@@ -517,6 +521,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [dock](https://cascivo.com/llms/dock.md) — Fixed bottom navigation bar for mobile app shells with up to 5 items _(npm @cascivo/react · or copy-paste)_
 - [header](https://cascivo.com/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot _(npm @cascivo/react · or copy-paste)_
 - [header-panel](https://cascivo.com/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings _(npm @cascivo/react · or copy-paste)_
+- [large-title-header](https://cascivo.com/llms/large-title-header.md) — Scrolling region whose large title collapses into a compact sticky bar as it scrolls _(npm @cascivo/react · or copy-paste)_
 - [link](https://cascivo.com/llms/link.md) — Styled anchor for navigation, standalone or inline within prose _(npm @cascivo/react · or copy-paste)_
 - [menu-button](https://cascivo.com/llms/menu-button.md) — A button that opens an anchored action menu of one-shot commands _(npm @cascivo/react · or copy-paste)_
 - [menubar](https://cascivo.com/llms/menubar.md) — Horizontal application menu bar with keyboard-navigable dropdown menus _(npm @cascivo/react · or copy-paste)_
@@ -667,6 +672,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [IconButton](https://cascivo.com/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
 - [Image](https://cascivo.com/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
 - [Indicator](https://cascivo.com/context/indicator.md) — Use when: Notification counts on icon buttons
+- [InfiniteScroll](https://cascivo.com/context/infinite-scroll.md) — Use when: A long, page-fetched feed or list where the user should keep reading without a page break
 - [InlineLoading](https://cascivo.com/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
 - [Input](https://cascivo.com/context/input.md) — Use when: Collecting a single line of free-form text from the user
 - [InputGroup](https://cascivo.com/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
@@ -674,6 +680,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Join](https://cascivo.com/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
 - [Kbd](https://cascivo.com/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
 - [Label](https://cascivo.com/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
+- [LargeTitleHeader](https://cascivo.com/context/large-title-header.md) — Use when: A scrolling screen that should keep its title reachable after the heading scrolls away
 - [AppFrame](https://cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
 - [AuthLayout](https://cascivo.com/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
 - [AutoGrid](https://cascivo.com/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width
@@ -717,6 +724,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [RadioCard](https://cascivo.com/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
 - [RatingGroup](https://cascivo.com/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
 - [RelativeTime](https://cascivo.com/context/relative-time.md) — Use when: Showing how long ago something happened in human terms ("3 minutes ago")
+- [ReorderList](https://cascivo.com/context/reorder-list.md) — Use when: A short, user-owned ordering such as playlist tracks, form fields, or dashboard cards
 - [Resizable](https://cascivo.com/context/resizable.md) — Use when: Letting users reallocate space between two adjacent regions, e.g. an editor and a preview
 - [ScrollArea](https://cascivo.com/context/scroll-area.md) — Use when: Constraining a region to a fixed height/width with overflow scrolling
 - [Search](https://cascivo.com/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch
@@ -760,6 +768,8 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Tooltip](https://cascivo.com/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
 - [TreeView](https://cascivo.com/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
 - [User](https://cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
+- [VirtualList](https://cascivo.com/context/virtual-list.md) — Use when: Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
+- [WheelPicker](https://cascivo.com/context/wheel-picker.md) — Use when: Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit
 
 _Generated: 2026-08-05 from registry v0.16.0_

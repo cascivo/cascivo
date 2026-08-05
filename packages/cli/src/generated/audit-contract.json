@@ -1118,6 +1118,16 @@
       ]
     },
     {
+      "name": "InfiniteScroll",
+      "props": [
+        { "name": "onLoadMore", "type": "() => Promise<unknown> | unknown", "required": true },
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "rootMargin", "type": "string", "required": false },
+        { "name": "labels", "type": "{ loadMore?: string; loading?: string }", "required": false },
+        { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
       "name": "InlineLoading",
       "props": [
         {
@@ -1178,6 +1188,18 @@
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "children", "type": "ReactNode", "required": true },
         { "name": "labels", "type": "{ required?: string }", "required": false }
+      ]
+    },
+    {
+      "name": "LargeTitleHeader",
+      "props": [
+        { "name": "title", "type": "string", "required": true },
+        { "name": "children", "type": "React.ReactNode", "required": true },
+        { "name": "leading", "type": "React.ReactNode", "required": false },
+        { "name": "actions", "type": "React.ReactNode", "required": false },
+        { "name": "level", "type": "1 | 2 | 3", "required": false },
+        { "name": "collapseDistance", "type": "number", "required": false },
+        { "name": "className", "type": "string", "required": false }
       ]
     },
     {
@@ -1529,6 +1551,20 @@
         { "name": "sync", "type": "boolean", "required": false },
         { "name": "now", "type": "number", "required": false },
         { "name": "format", "type": "Intl.RelativeTimeFormatOptions", "required": false }
+      ]
+    },
+    {
+      "name": "ReorderList",
+      "props": [
+        { "name": "value", "type": "ReorderItem[]", "required": true },
+        { "name": "onValueChange", "type": "(value: ReorderItem[]) => void", "required": true },
+        { "name": "disabled", "type": "boolean", "required": false },
+        {
+          "name": "labels",
+          "type": "{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }",
+          "required": false
+        },
+        { "name": "className", "type": "string", "required": false }
       ]
     },
     {
@@ -1985,8 +2021,36 @@
       ]
     },
     {
+      "name": "VirtualList",
+      "props": [
+        { "name": "items", "type": "Item[]", "required": true },
+        { "name": "itemHeight", "type": "number", "required": true },
+        { "name": "height", "type": "number", "required": true },
+        {
+          "name": "renderItem",
+          "type": "(item: Item, index: number) => React.ReactNode",
+          "required": true
+        },
+        { "name": "overscan", "type": "number", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
       "name": "VisuallyHidden",
       "props": [{ "name": "children", "type": "ReactNode", "required": true }]
+    },
+    {
+      "name": "WheelPicker",
+      "props": [
+        { "name": "options", "type": "WheelPickerOption[]", "required": true },
+        { "name": "value", "type": "string", "required": true },
+        { "name": "onValueChange", "type": "(value: string) => void", "required": true },
+        { "name": "visibleCount", "type": "number", "required": false },
+        { "name": "itemHeight", "type": "number", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "className", "type": "string", "required": false }
+      ]
     },
     {
       "name": "AppFrame",

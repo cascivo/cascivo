@@ -829,7 +829,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push('Canonical order (lowest → highest priority):')
   lines.push(
-    '`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;`',
+    '`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;`',
   )
   lines.push(`Full recipe: ${REPO}/blob/main/docs/CSS-LAYERS-PITFALL.md.`)
   lines.push('')

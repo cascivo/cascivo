@@ -58,7 +58,7 @@ const LAYER_CONTRACT = `CSS layer contract (follow when generating or editing CS
 3. Never nest layers deeper than the shipped cascivo.blocks.<name> pattern. For sub-elements use native CSS nesting inside one layer block, not new sublayers.
 4. Third-party CSS: @import url(…) layer(vendor); with vendor declared before the cascivo layers. Never import vendor CSS from JavaScript.
 5. Style with --cascivo-* tokens, not raw values.
-Canonical order (low→high): @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;`
+Canonical order (low→high): @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;`
 
 /** Build a configured McpServer exposing the cascade component registry. */
 export function createServer(options: ServerOptions = {}): McpServer {

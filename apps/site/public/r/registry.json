@@ -13293,6 +13293,147 @@
     },
     {
       "schemaVersion": 2,
+      "name": "infinite-scroll",
+      "type": "component",
+      "description": "Loads the next page when the end of a list scrolls into view",
+      "version": "0.16.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/infinite-scroll.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/infinite-scroll.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["feedback", "infinite-scroll", "pagination", "list", "scroll", "mobile", "lazy"],
+      "category": "feedback",
+      "registryDependencies": ["spinner"],
+      "meta": {
+        "name": "InfiniteScroll",
+        "description": "Loads the next page when the end of a list scrolls into view",
+        "category": "feedback",
+        "clientJs": "required",
+        "states": ["idle", "loading", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "onLoadMore",
+            "type": "() => Promise<unknown> | unknown",
+            "required": true,
+            "description": "Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "When true, stops observing and renders nothing — there are no more pages."
+          },
+          {
+            "name": "rootMargin",
+            "type": "string",
+            "required": false,
+            "default": "'200px'",
+            "description": "How far ahead of the end to start loading, as an IntersectionObserver root margin."
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "{ loadMore?: string; loading?: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-text-muted",
+          "--cascivo-color-border",
+          "--cascivo-color-surface-2",
+          "--cascivo-color-foreground",
+          "--cascivo-radius-md",
+          "--cascivo-ring-width",
+          "--cascivo-ring-color",
+          "--cascivo-text-ui",
+          "--cascivo-target-min-coarse"
+        ],
+        "accessibility": {
+          "role": "button",
+          "wcag": "2.2-AA",
+          "keyboard": ["Enter", "Space"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "registryDependencies": ["spinner"],
+        "tags": ["feedback", "infinite-scroll", "pagination", "list", "scroll", "mobile", "lazy"],
+        "intent": {
+          "whenToUse": [
+            "A long, page-fetched feed or list where the user should keep reading without a page break",
+            "Search or media results that stream in as the user scrolls",
+            "Mobile screens where numbered pagination would be awkward to hit"
+          ],
+          "whenNotToUse": [
+            "Content the user needs to navigate back into by position — use Pagination so URLs stay addressable",
+            "Lists with a footer below them, which infinite loading makes unreachable",
+            "A fixed, fully-loaded dataset — render it, or virtualize it, instead of faking pages"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Leaving `disabled` false after the last page",
+              "good": "Pass `disabled={!hasMore}` so the observer disconnects",
+              "why": "A sentinel that stays in view keeps re-firing `onLoadMore` against an exhausted source"
+            },
+            {
+              "bad": "Rendering it outside the element that scrolls",
+              "good": "Place it as the last child of the scrolling region",
+              "why": "The observer watches the sentinel against the nearest scroll root; outside it, intersection never changes"
+            }
+          ],
+          "related": [
+            {
+              "name": "Pagination",
+              "relationship": "alternative",
+              "reason": "Addressable, position-stable paging when back-navigation matters"
+            },
+            {
+              "name": "PullToRefresh",
+              "relationship": "pairs-with",
+              "reason": "Refreshes the head of the same list the InfiniteScroll extends"
+            },
+            {
+              "name": "Spinner",
+              "relationship": "contains",
+              "reason": "Shows the Spinner while the load promise settles"
+            }
+          ],
+          "a11yRationale": "The trigger is a real button, not a bare sentinel, so the next page is reachable by keyboard and by screen reader rather than only by scrolling — the standing accessibility complaint against scroll-only infinite lists. The IntersectionObserver activates the same code path the button does, so pointer and assistive-technology users converge on identical behaviour. While a page is in flight the button is replaced by a role=\"status\" region carrying the loading string from the i18n catalog, which announces politely. Re-entry is guarded on a loading flag, so a sentinel still in view after a short page cannot loop. Because the component requires client JavaScript, server-render the first page as real content rather than relying on it.",
+          "flexibility": [
+            {
+              "area": "rootMargin",
+              "level": "flexible",
+              "note": "How far ahead of the end loading starts (default 200px)"
+            },
+            {
+              "area": "onLoadMore",
+              "level": "flexible",
+              "note": "May return a promise; the spinner persists until it settles"
+            },
+            {
+              "area": "trigger",
+              "level": "strict",
+              "note": "Always renders an activatable button — there is no sentinel-only mode"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "inline-loading",
       "type": "component",
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -14075,6 +14216,159 @@
               "area": "label copy",
               "level": "flexible",
               "note": "Free, within tone guidance"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "large-title-header",
+      "type": "component",
+      "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
+      "version": "0.16.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["navigation", "header", "title", "mobile", "scroll", "sticky", "ios"],
+      "category": "navigation",
+      "meta": {
+        "name": "LargeTitleHeader",
+        "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
+        "category": "navigation",
+        "clientJs": "none",
+        "states": ["expanded", "collapsed"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "The page title, rendered as the large heading and mirrored in the compact bar"
+          },
+          {
+            "name": "children",
+            "description": "Content rendered inside the component.",
+            "type": "React.ReactNode",
+            "required": true
+          },
+          {
+            "name": "leading",
+            "type": "React.ReactNode",
+            "required": false,
+            "description": "Leading slot of the compact bar — typically a back control"
+          },
+          {
+            "name": "actions",
+            "type": "React.ReactNode",
+            "required": false,
+            "description": "Trailing slot of the compact bar — typically icon buttons"
+          },
+          {
+            "name": "level",
+            "type": "1 | 2 | 3",
+            "required": false,
+            "default": "1",
+            "description": "Heading level for the title, mapping to h1–h3."
+          },
+          {
+            "name": "collapseDistance",
+            "type": "number",
+            "required": false,
+            "default": "48",
+            "description": "Scroll distance (px) over which the large title collapses into the bar."
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-foreground",
+          "--cascivo-border-subtle",
+          "--cascivo-text-ui",
+          "--cascivo-text-heading-lg",
+          "--cascivo-font-semibold",
+          "--cascivo-font-bold",
+          "--cascivo-leading-tight",
+          "--cascivo-target-min-coarse",
+          "--cascivo-z-raised"
+        ],
+        "accessibility": {
+          "role": "heading",
+          "wcag": "2.2-AA",
+          "keyboard": [],
+          "reducedMotion": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["navigation", "header", "title", "mobile", "scroll", "sticky", "ios"],
+        "intent": {
+          "whenToUse": [
+            "A scrolling screen that should keep its title reachable after the heading scrolls away",
+            "Mobile and tablet layouts following the platform convention of a large title that collapses",
+            "Any page where a persistent back control or actions must stay pinned while content scrolls"
+          ],
+          "whenNotToUse": [
+            "A site-wide navigation bar with links and a brand — use Header",
+            "An application chrome header spanning a sidebar layout — use ShellHeader",
+            "A screen whose scroll container is owned by the app shell or router — this component owns its own"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Rendering it inside a parent with no resolved height",
+              "good": "Give the parent a height (a grid/flex track, a dvh value, or 100% of a sized ancestor)",
+              "why": "The component is the scroll container at block-size 100%; with an auto-height parent it never scrolls, so the title never collapses"
+            },
+            {
+              "bad": "Passing the page heading again as the first child of the content below",
+              "good": "Let the component own the heading",
+              "why": "The component already renders a real h1–h3; repeating it duplicates the heading in the accessibility tree"
+            }
+          ],
+          "related": [
+            {
+              "name": "Header",
+              "relationship": "alternative",
+              "reason": "Site-wide banner with brand, links and actions rather than a page title"
+            },
+            {
+              "name": "ShellHeader",
+              "relationship": "alternative",
+              "reason": "Application chrome for a shell layout rather than a scrolling page"
+            },
+            {
+              "name": "Dock",
+              "relationship": "pairs-with",
+              "reason": "Bottom navigation for the same mobile app shell"
+            }
+          ],
+          "a11yRationale": "The component owns the scroll container, so the sticky bar and the scroll timeline cannot be broken by surrounding markup. The title is a real h1–h3 in normal flow, so heading order and document outline are unaffected; the copy mirrored into the sticky bar is aria-hidden so screen readers announce the title exactly once. The collapse is a CSS scroll-driven animation with no client JavaScript, so the header is complete in server-rendered HTML and nothing depends on hydration. Where animation-timeline is unsupported the mirror stays hidden and the header degrades to a sticky bar above a heading — no content is lost. Under prefers-reduced-motion the reveal snaps with steps(1, jump-end) instead of interpolating. The bar clears the coarse-pointer target floor and pads for the top safe-area inset.",
+          "flexibility": [
+            {
+              "area": "collapseDistance",
+              "level": "flexible",
+              "note": "Scroll distance over which the title collapses (default 48px)"
+            },
+            {
+              "area": "level",
+              "level": "flexible",
+              "note": "Heading level is caller-controlled so the page outline stays correct"
+            },
+            {
+              "area": "collapse mechanism",
+              "level": "strict",
+              "note": "Always a CSS scroll-driven animation — there is no JavaScript fallback path"
             }
           ]
         }
@@ -19126,6 +19420,171 @@
               "area": "sync",
               "level": "flexible",
               "note": "Disable ticking for static contexts or long-past dates"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "reorder-list",
+      "type": "component",
+      "description": "List whose rows can be reordered by pointer drag or entirely by keyboard",
+      "version": "0.16.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "tags": ["inputs", "reorder", "sortable", "drag", "list", "mobile", "keyboard"],
+      "category": "inputs",
+      "meta": {
+        "name": "ReorderList",
+        "description": "List whose rows can be reordered by pointer drag or entirely by keyboard",
+        "category": "inputs",
+        "clientJs": "required",
+        "states": ["idle", "grabbed", "disabled"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "value",
+            "type": "ReorderItem[]",
+            "required": true,
+            "description": "The ordered items; the component is controlled"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: ReorderItem[]) => void",
+            "required": true,
+            "description": "Called with the new order whenever a row moves"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "default": "false",
+            "description": "When true, disables the control and removes it from the tab order."
+          },
+          {
+            "name": "labels",
+            "description": "Overrides for the component’s user-visible strings (i18n).",
+            "type": "{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }",
+            "required": false
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "ReorderItem",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true,
+                "description": "Stable identity for the row"
+              },
+              {
+                "name": "label",
+                "type": "React.ReactNode",
+                "required": true,
+                "description": "Row content"
+              },
+              {
+                "name": "name",
+                "type": "string",
+                "required": false,
+                "description": "Plain-text name used in announcements when label is not a string"
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-surface",
+          "--cascivo-color-surface-2",
+          "--cascivo-color-foreground",
+          "--cascivo-color-text-muted",
+          "--cascivo-color-accent",
+          "--cascivo-border-subtle",
+          "--cascivo-radius-sm",
+          "--cascivo-ring-width",
+          "--cascivo-ring-color",
+          "--cascivo-disabled-opacity",
+          "--cascivo-target-min-coarse"
+        ],
+        "accessibility": {
+          "role": "list",
+          "wcag": "2.2-AA",
+          "keyboard": ["Space", "Enter", "ArrowUp", "ArrowDown", "Escape", "Tab"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "tags": ["inputs", "reorder", "sortable", "drag", "list", "mobile", "keyboard"],
+        "intent": {
+          "whenToUse": [
+            "A short, user-owned ordering such as playlist tracks, form fields, or dashboard cards",
+            "Any list whose order is meaningful data the user is expected to change",
+            "Touch surfaces where dragging a handle is the natural gesture"
+          ],
+          "whenNotToUse": [
+            "Long or virtualized lists, where dragging to a far position is impractical — offer a \"move to position\" control",
+            "Ordering that is derived rather than authored (sort by name, date, rank) — use a sortable DataTable",
+            "Read-only lists — use List or StructuredList"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Rendering a drag handle with no keyboard path",
+              "good": "Keep the built-in handle, which is a real button with Space/Arrow/Escape support",
+              "why": "Pointer-only reordering is unusable by keyboard and screen-reader users; it is the standing accessibility gap in pointer-only implementations"
+            },
+            {
+              "bad": "Deriving row keys from array index",
+              "good": "Give every item a stable `id`",
+              "why": "Index keys make React reuse the wrong DOM nodes as rows move, so focus and animation land on the wrong row"
+            }
+          ],
+          "related": [
+            {
+              "name": "List",
+              "relationship": "alternative",
+              "reason": "Plain list when the order is not user-editable"
+            },
+            {
+              "name": "DataTable",
+              "relationship": "alternative",
+              "reason": "Column sorting when the order is derived rather than authored"
+            },
+            {
+              "name": "SwipeItem",
+              "relationship": "pairs-with",
+              "reason": "Row-level swipe actions on the same touch list"
+            }
+          ],
+          "a11yRationale": "Every row carries a real button as its drag handle, so the entire interaction is reachable by keyboard: Space or Enter picks a row up, ArrowUp/ArrowDown move it, Space or Enter drops it, and Escape restores the order captured at pick-up. The handle exposes aria-pressed so assistive technology can tell held from idle, and each transition — picked up, moved, dropped, cancelled — is announced through a polite role=\"status\" region using interpolated catalog strings that carry the item name and its position out of the total. The handle sets touch-action: none so a touch drag is not stolen by the scroller, and meets the coarse-pointer target floor. Item names for announcements come from `name` when the label is not plain text, so a rich label never produces an empty announcement.",
+          "flexibility": [
+            {
+              "area": "value / onValueChange",
+              "level": "strict",
+              "note": "Always controlled — the component never holds the order itself"
+            },
+            {
+              "area": "labels",
+              "level": "flexible",
+              "note": "Every announcement string is overridable and supports {name}, {position} and {total}"
+            },
+            {
+              "area": "handle",
+              "level": "strict",
+              "note": "The handle is always a focusable button; there is no drag-anywhere mode"
             }
           ]
         }
@@ -24630,6 +25089,146 @@
     },
     {
       "schemaVersion": 2,
+      "name": "virtual-list",
+      "type": "component",
+      "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
+      "version": "0.16.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["display", "virtual", "virtualization", "list", "performance", "scroll"],
+      "category": "display",
+      "meta": {
+        "name": "VirtualList",
+        "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
+        "category": "display",
+        "clientJs": "required",
+        "states": ["default"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "items",
+            "type": "Item[]",
+            "required": true,
+            "description": "The full collection; only the visible window is rendered"
+          },
+          {
+            "name": "itemHeight",
+            "type": "number",
+            "required": true,
+            "description": "Fixed row height in px — every row must be this tall"
+          },
+          {
+            "name": "height",
+            "type": "number",
+            "required": true,
+            "description": "Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it"
+          },
+          {
+            "name": "renderItem",
+            "type": "(item: Item, index: number) => React.ReactNode",
+            "required": true,
+            "description": "Renders one row"
+          },
+          {
+            "name": "overscan",
+            "type": "number",
+            "required": false,
+            "default": "3",
+            "description": "Extra rows rendered above and below the visible window, to cover fast scrolling."
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the list; label it when the list stands alone"
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "tokens": [],
+        "accessibility": {
+          "role": "list",
+          "wcag": "2.2-AA",
+          "keyboard": ["Tab"]
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["display", "virtual", "virtualization", "list", "performance", "scroll"],
+        "intent": {
+          "whenToUse": [
+            "Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)",
+            "Log, result and feed views where the collection is already fully in memory",
+            "Any list whose length is unbounded and rows are a uniform height"
+          ],
+          "whenNotToUse": [
+            "Short lists — the machinery costs more than it saves; use List",
+            "Rows of varying height, which this component cannot position without measuring",
+            "Content that must be findable with the browser’s in-page search, which cannot see unrendered rows"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Passing rows whose real height differs from `itemHeight`",
+              "good": "Fix the row height in CSS to match `itemHeight` exactly",
+              "why": "Positions are arithmetic, not measured, so a mismatch makes rows overlap or leave gaps that grow with scroll depth"
+            },
+            {
+              "bad": "Reaching for a percentage or `dvh` viewport height",
+              "good": "Measure the container and pass a px number",
+              "why": "`height` drives the visible row count, which cannot be derived from a relative length without measuring"
+            },
+            {
+              "bad": "Fetching the next page inside `renderItem`",
+              "good": "Pair with InfiniteScroll, or load before passing `items`",
+              "why": "renderItem runs for every row entering the window, including on scroll-back, so a fetch there fires repeatedly"
+            }
+          ],
+          "related": [
+            {
+              "name": "List",
+              "relationship": "alternative",
+              "reason": "Plain list when the collection is small enough to render whole"
+            },
+            {
+              "name": "InfiniteScroll",
+              "relationship": "pairs-with",
+              "reason": "Loads further pages into the collection this list renders"
+            },
+            {
+              "name": "DataTable",
+              "relationship": "alternative",
+              "reason": "Columnar data with sorting and selection rather than a flat row list"
+            }
+          ],
+          "a11yRationale": "The viewport is a role=\"list\" and each rendered row is a role=\"listitem\" carrying aria-setsize and aria-posinset for the entire collection, so assistive technology announces \"row 3 of 10000\" rather than the size of the rendered window — the defect that makes naive virtualization unusable with a screen reader. Rows are placed with transform rather than by mutating layout, so scrolling stays on the compositor. Because unrendered rows are absent from the DOM, browser in-page search cannot reach them; provide a real filter or search control alongside any virtualized list, and prefer a non-virtualized list when the collection is small.",
+          "flexibility": [
+            {
+              "area": "overscan",
+              "level": "flexible",
+              "note": "Rows rendered beyond the window (default 3)"
+            },
+            {
+              "area": "itemHeight",
+              "level": "strict",
+              "note": "Fixed and uniform — variable row heights are not supported"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
       "name": "visually-hidden",
       "type": "component",
       "description": "Hides content visually while keeping it available to screen readers",
@@ -24710,6 +25309,176 @@
               "area": "visibility technique",
               "level": "strict",
               "note": "Must keep content in the a11y tree — never display:none"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 2,
+      "name": "wheel-picker",
+      "type": "component",
+      "description": "iOS-style drum picker — a column of options that scrolls and snaps to a selection",
+      "version": "0.16.0",
+      "files": [
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.module.css"
+        }
+      ],
+      "dependencies": ["@cascivo/core"],
+      "tags": ["inputs", "picker", "wheel", "drum", "scroll-snap", "mobile", "ios"],
+      "category": "inputs",
+      "meta": {
+        "name": "WheelPicker",
+        "description": "iOS-style drum picker — a column of options that scrolls and snaps to a selection",
+        "category": "inputs",
+        "clientJs": "required",
+        "states": ["idle", "focused", "scrolling"],
+        "variants": [],
+        "sizes": [],
+        "props": [
+          {
+            "name": "options",
+            "type": "WheelPickerOption[]",
+            "required": true,
+            "description": "The rows of the wheel, in order"
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "description": "The selected option value; the component is controlled"
+          },
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "required": true,
+            "description": "Called with the new value when the wheel settles or a key moves the selection"
+          },
+          {
+            "name": "visibleCount",
+            "type": "number",
+            "required": false,
+            "default": "5",
+            "description": "How many rows are visible. Odd numbers keep the selection centred."
+          },
+          {
+            "name": "itemHeight",
+            "type": "number",
+            "required": false,
+            "default": "36",
+            "description": "Row height in px."
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "description": "Accessible label for the wheel — required when it has no visible label"
+          },
+          {
+            "name": "className",
+            "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "WheelPickerOption",
+            "fields": [
+              {
+                "name": "value",
+                "type": "string",
+                "required": true,
+                "description": "Value reported on change"
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true,
+                "description": "Visible row text"
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          "--cascivo-color-foreground",
+          "--cascivo-color-text-muted",
+          "--cascivo-border-subtle",
+          "--cascivo-text-ui",
+          "--cascivo-font-semibold",
+          "--cascivo-radius-md",
+          "--cascivo-ring-width",
+          "--cascivo-ring-color"
+        ],
+        "accessibility": {
+          "role": "listbox",
+          "wcag": "2.2-AA",
+          "keyboard": ["ArrowUp", "ArrowDown", "Home", "End", "PageUp", "PageDown", "Tab"],
+          "reducedMotion": true
+        },
+        "examples": [],
+        "dependencies": ["@cascivo/core"],
+        "tags": ["inputs", "picker", "wheel", "drum", "scroll-snap", "mobile", "ios"],
+        "intent": {
+          "whenToUse": [
+            "Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit",
+            "Mobile forms following the platform convention of a drum rather than a dropdown",
+            "Inside a BottomSheet or ActionSheet, where a native select would open a competing overlay"
+          ],
+          "whenNotToUse": [
+            "Long or unordered option lists, where scrolling to a value is slower than typing — use Combobox",
+            "Desktop, pointer-first forms — use Select or NativeSelect",
+            "Dates, which have their own affordances — use DatePicker or Calendar"
+          ],
+          "antiPatterns": [
+            {
+              "bad": "Rendering it uncontrolled and reading the value from the DOM",
+              "good": "Pass `value` and `onValueChange`",
+              "why": "The component is controlled; without a `value` it cannot scroll to the current selection or reflect an external change"
+            },
+            {
+              "bad": "Leaving `ariaLabel` off a wheel with no visible label",
+              "good": "Label every column — \"Hour\", \"Minute\"",
+              "why": "A listbox with no accessible name is announced only as a list, so the user cannot tell which field they are in"
+            }
+          ],
+          "related": [
+            {
+              "name": "Select",
+              "relationship": "alternative",
+              "reason": "Pointer-first single selection on desktop"
+            },
+            {
+              "name": "TimePicker",
+              "relationship": "alternative",
+              "reason": "Purpose-built time entry rather than a generic wheel"
+            },
+            {
+              "name": "BottomSheet",
+              "relationship": "pairs-with",
+              "reason": "The usual host for a wheel on a phone screen"
+            }
+          ],
+          "a11yRationale": "The column is a role=\"listbox\" with role=\"option\" rows, is focusable, and points aria-activedescendant at the selected row, so assistive technology tracks the selection without moving DOM focus per row. Selection follows focus — ArrowUp/ArrowDown, Home/End and PageUp/PageDown move the selection and scroll to match — which is the APG single-select listbox variant that needs no explicit commit; the pattern is deliberately not declared as `apgPattern: listbox` because that guard requires an Enter key this variant has nothing to bind. The wheel itself is CSS scroll-snap, so touch momentum and rubber-banding are the platform's own and remain correct under assistive gestures. Smooth scrolling is applied only under prefers-reduced-motion: no-preference. The selection band is decorative and aria-hidden.",
+          "flexibility": [
+            {
+              "area": "visibleCount / itemHeight",
+              "level": "flexible",
+              "note": "Wheel geometry is caller-controlled (defaults 5 rows of 36px)"
+            },
+            {
+              "area": "value / onValueChange",
+              "level": "strict",
+              "note": "Always controlled — the component never holds the value itself"
+            },
+            {
+              "area": "wheel mechanism",
+              "level": "strict",
+              "note": "Always CSS scroll-snap; there is no JavaScript-driven transform mode"
             }
           ]
         }

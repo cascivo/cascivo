@@ -13,6 +13,8 @@
  *   cascivo.base       minimal html font/color reset (@cascivo/themes/base.css)
  *   cascivo.tokens     primitive design tokens + @function helpers (@cascivo/tokens)
  *   cascivo.component  component + layout styles
+ *   cascivo.platform   platform-idiomatic geometry + motion (@cascivo/platform),
+ *                      keyed [data-platform] — see below
  *   cascivo.theme      semantic token values per [data-theme] (@cascivo/themes/*)
  *   cascivo.blocks     shipped composite blocks — each block gets its own
  *                      cascivo.blocks.<name> sublayer (packages/components/src/blocks/*)
@@ -29,10 +31,19 @@
  * sublayers (cascivo.example) are not shipped by any package; insert them between
  * cascivo.blocks and cascivo.override.
  *
+ * cascivo.platform sits ABOVE component and BELOW theme, and that placement encodes an
+ * invariant: **platform owns geometry, motion and interaction affordance; theme owns
+ * colour; neither writes the other's properties.** Above component, so a platform can
+ * re-tune the geometry a component chose. Below theme, so a platform can never win a
+ * colour decision — which is safe precisely because it is forbidden from setting one.
+ * `packages/platform/src/parity.test.ts` enforces the colour half mechanically. Keeping
+ * the two axes disjoint is what makes them compose additively (12 themes + N platforms)
+ * instead of multiplicatively.
+ *
  * Guard: scripts/checks/layer-order.test.ts asserts every shipped/scaffolded
  * @layer statement is an ordered subsequence of this one, and that every shipped
  * `@layer cascivo.* { … }` block uses a canonical name or the cascivo.blocks.<name>
  * pattern (depth ≤ 3) — no invented layer names.
  */
-@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks,
-  cascivo.override;
+@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform,
+  cascivo.theme, cascivo.blocks, cascivo.override;

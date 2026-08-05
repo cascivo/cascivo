@@ -157,6 +157,7 @@ describe('layer-order:check — one canonical @layer order, no drift', () => {
       'cascivo.base',
       'cascivo.tokens',
       'cascivo.component',
+      'cascivo.platform',
       'cascivo.theme',
       'cascivo.blocks',
       'cascivo.override',

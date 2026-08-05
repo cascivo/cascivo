@@ -2322,6 +2322,31 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "infinite-scroll",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "infinite-scroll/infinite-scroll.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "infinite-scroll/infinite-scroll.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Loads the next page when the end of a list scrolls into view",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "registryDependencies": ["https://cascivo.com/r/shadcn/spinner.json"],
+      "categories": ["feedback"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.16.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "inline-loading",
       "type": "registry:component",
       "files": [
@@ -2481,6 +2506,30 @@
       "description": "Accessible caption for a form control",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.16.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "large-title-header",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "large-title-header/large-title-header.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "large-title-header/large-title-header.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -3536,6 +3585,30 @@
       "description": "Displays a date as a localized phrase relative to now, auto-updating",
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.16.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "reorder-list",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "reorder-list/reorder-list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "reorder-list/reorder-list.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "List whose rows can be reordered by pointer drag or entirely by keyboard",
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "categories": ["inputs"],
       "meta": {
         "cascivo": {
           "type": "component",
@@ -4606,6 +4679,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "virtual-list",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "virtual-list/virtual-list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "virtual-list/virtual-list.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.16.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "visually-hidden",
       "type": "registry:component",
       "files": [
@@ -4621,6 +4718,30 @@
       "description": "Hides content visually while keeping it available to screen readers",
       "dependencies": ["@cascivo/core"],
       "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.16.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "wheel-picker",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "wheel-picker/wheel-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "wheel-picker/wheel-picker.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "iOS-style drum picker — a column of options that scrolls and snaps to a selection",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
       "meta": {
         "cascivo": {
           "type": "component",

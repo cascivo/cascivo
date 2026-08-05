@@ -1,0 +1,143 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'InfiniteScroll',
+  description: 'Loads the next page when the end of a list scrolls into view',
+  category: 'feedback',
+  clientJs: 'required',
+  states: ['idle', 'loading', 'disabled'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'onLoadMore',
+      type: '() => Promise<unknown> | unknown',
+      required: true,
+      description:
+        'Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'When true, stops observing and renders nothing — there are no more pages.',
+    },
+    {
+      name: 'rootMargin',
+      type: 'string',
+      required: false,
+      default: "'200px'",
+      description:
+        'How far ahead of the end to start loading, as an IntersectionObserver root margin.',
+    },
+    {
+      name: 'labels',
+      description: 'Overrides for the component’s user-visible strings (i18n).',
+      type: '{ loadMore?: string; loading?: string }',
+      required: false,
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
+  tokens: [
+    '--cascivo-color-text-muted',
+    '--cascivo-color-border',
+    '--cascivo-color-surface-2',
+    '--cascivo-color-foreground',
+    '--cascivo-radius-md',
+    '--cascivo-ring-width',
+    '--cascivo-ring-color',
+    '--cascivo-text-ui',
+    '--cascivo-target-min-coarse',
+  ],
+  accessibility: {
+    role: 'button',
+    wcag: '2.2-AA',
+    keyboard: ['Enter', 'Space'],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: `<InfiniteScroll onLoadMore={loadNextPage} />`,
+      description: 'Place it as the last child of the scrolling region, after the list.',
+    },
+    {
+      title: 'Stopping at the last page',
+      code: `<InfiniteScroll onLoadMore={loadNextPage} disabled={!hasMore} />`,
+      description: 'Renders nothing and stops observing once there is nothing left to load.',
+    },
+    {
+      title: 'Loading earlier',
+      code: `<InfiniteScroll onLoadMore={loadNextPage} rootMargin="600px" />`,
+      description: 'Starts the next page well before the user reaches the end.',
+    },
+  ],
+  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  registryDependencies: ['spinner'],
+  tags: ['feedback', 'infinite-scroll', 'pagination', 'list', 'scroll', 'mobile', 'lazy'],
+  intent: {
+    whenToUse: [
+      'A long, page-fetched feed or list where the user should keep reading without a page break',
+      'Search or media results that stream in as the user scrolls',
+      'Mobile screens where numbered pagination would be awkward to hit',
+    ],
+    whenNotToUse: [
+      'Content the user needs to navigate back into by position — use Pagination so URLs stay addressable',
+      'Lists with a footer below them, which infinite loading makes unreachable',
+      'A fixed, fully-loaded dataset — render it, or virtualize it, instead of faking pages',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Leaving `disabled` false after the last page',
+        good: 'Pass `disabled={!hasMore}` so the observer disconnects',
+        why: 'A sentinel that stays in view keeps re-firing `onLoadMore` against an exhausted source',
+      },
+      {
+        bad: 'Rendering it outside the element that scrolls',
+        good: 'Place it as the last child of the scrolling region',
+        why: 'The observer watches the sentinel against the nearest scroll root; outside it, intersection never changes',
+      },
+    ],
+    related: [
+      {
+        name: 'Pagination',
+        relationship: 'alternative',
+        reason: 'Addressable, position-stable paging when back-navigation matters',
+      },
+      {
+        name: 'PullToRefresh',
+        relationship: 'pairs-with',
+        reason: 'Refreshes the head of the same list the InfiniteScroll extends',
+      },
+      {
+        name: 'Spinner',
+        relationship: 'contains',
+        reason: 'Shows the Spinner while the load promise settles',
+      },
+    ],
+    a11yRationale:
+      'The trigger is a real button, not a bare sentinel, so the next page is reachable by keyboard and by screen reader rather than only by scrolling — the standing accessibility complaint against scroll-only infinite lists. The IntersectionObserver activates the same code path the button does, so pointer and assistive-technology users converge on identical behaviour. While a page is in flight the button is replaced by a role="status" region carrying the loading string from the i18n catalog, which announces politely. Re-entry is guarded on a loading flag, so a sentinel still in view after a short page cannot loop. Because the component requires client JavaScript, server-render the first page as real content rather than relying on it.',
+    flexibility: [
+      {
+        area: 'rootMargin',
+        level: 'flexible',
+        note: 'How far ahead of the end loading starts (default 200px)',
+      },
+      {
+        area: 'onLoadMore',
+        level: 'flexible',
+        note: 'May return a promise; the spinner persists until it settles',
+      },
+      {
+        area: 'trigger',
+        level: 'strict',
+        note: 'Always renders an activatable button — there is no sentinel-only mode',
+      },
+    ],
+  },
+}

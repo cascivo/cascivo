@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "infinite-scroll",
+  "type": "registry:component",
+  "files": [
+    {
+      "path": "infinite-scroll/infinite-scroll.tsx",
+      "type": "registry:component",
+      "content": "'use client'\n\nimport { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'\nimport { builtin, t } from '@cascivo/i18n'\nimport { useRef } from 'react'\nimport { Spinner } from '../spinner/spinner'\nimport styles from './infinite-scroll.module.css'\n\nexport interface InfiniteScrollProps {\n  /** Called when the sentinel comes into view, or the button is activated. */\n  onLoadMore: () => Promise<unknown> | unknown\n  /**\n   * When true, stops observing and renders nothing — there are no more pages.\n   *\n   * @defaultValue `false`\n   * @see the component manifest\n   */\n  disabled?: boolean\n  /**\n   * How far ahead of the end to start loading, as an IntersectionObserver root margin.\n   *\n   * @defaultValue `'200px'`\n   * @see the component manifest\n   */\n  rootMargin?: string\n  labels?: { loadMore?: string; loading?: string }\n  className?: string\n}\n\n/**\n * Loads the next page when the end of a list comes into view.\n *\n * Place it as the last child of the scrolling region, after the list. It renders a real\n * \"Load more\" button and auto-activates it via an `IntersectionObserver` — so the next\n * page is reachable by keyboard and by screen reader, not only by scrolling, which is the\n * standing accessibility complaint against scroll-only infinite lists. Re-entry is\n * guarded, so a sentinel that stays visible after a short page cannot loop.\n */\nexport function InfiniteScroll({\n  onLoadMore,\n  disabled = false,\n  rootMargin = '200px',\n  labels,\n  className,\n}: InfiniteScrollProps) {\n  useSignals()\n  const sentinelRef = useRef<HTMLDivElement>(null)\n  const loading = useSignal(false)\n\n  // Read at callback time, not to drive effect re-runs: the observer callback fires\n  // outside the tracking scope, so a signal here would be redundant and a tick stale.\n  const onLoadMoreRef = useRef(onLoadMore)\n  onLoadMoreRef.current = onLoadMore\n  const disabledRef = useRef(disabled)\n  disabledRef.current = disabled\n\n  const load = (): void => {\n    if (loading.value || disabledRef.current) return\n    loading.value = true\n    Promise.resolve(onLoadMoreRef.current()).then(\n      () => {\n        loading.value = false\n      },\n      () => {\n        loading.value = false\n      },\n    )\n  }\n  const loadRef = useRef(load)\n  loadRef.current = load\n\n  useSignalEffect(() => {\n    const el = sentinelRef.current\n    if (!el || disabled || typeof IntersectionObserver === 'undefined') return\n    const observer = new IntersectionObserver(\n      (entries) => {\n        if (entries.some((entry) => entry.isIntersecting)) loadRef.current()\n      },\n      { rootMargin },\n    )\n    observer.observe(el)\n    return () => observer.disconnect()\n  })\n\n  if (disabled) return null\n\n  return (\n    <div ref={sentinelRef} className={cn(styles['root'], className)}>\n      {loading.value ? (\n        <span className={styles['status']} role=\"status\">\n          {/* The Spinner carries its own role=\"status\"; nesting it live would announce\n              twice, so here it is decorative and this region owns the announcement. */}\n          <Spinner size=\"sm\" aria-hidden=\"true\" />\n          {labels?.loading ?? t(builtin.infiniteScroll.loading)}\n        </span>\n      ) : (\n        <button type=\"button\" className={styles['button']} onClick={load}>\n          {labels?.loadMore ?? t(builtin.infiniteScroll.loadMore)}\n        </button>\n      )}\n    </div>\n  )\n}\n"
+    },
+    {
+      "path": "infinite-scroll/infinite-scroll.module.css",
+      "type": "registry:component",
+      "content": "@layer cascivo.component {\n  .root {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding-block: var(--cascivo-space-4);\n  }\n\n  .status {\n    display: inline-flex;\n    align-items: center;\n    gap: var(--cascivo-space-2);\n    color: var(--cascivo-color-text-muted);\n    font-size: var(--cascivo-text-ui);\n  }\n\n  .button {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    padding-inline: var(--cascivo-space-4);\n    padding-block: var(--cascivo-space-2);\n    border: 1px solid var(--cascivo-color-border);\n    border-radius: var(--cascivo-radius-md);\n    background: transparent;\n    color: var(--cascivo-color-foreground);\n    font: inherit;\n    font-size: var(--cascivo-text-ui);\n    cursor: pointer;\n\n    &:hover {\n      background: var(--cascivo-color-surface-2);\n    }\n\n    &:focus-visible {\n      outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);\n      outline-offset: 2px;\n    }\n\n    @media (pointer: coarse) {\n      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);\n    }\n  }\n}\n"
+    }
+  ],
+  "description": "Loads the next page when the end of a list scrolls into view",
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "registryDependencies": ["https://cascivo.com/r/shadcn/spinner.json"],
+  "categories": ["feedback"],
+  "meta": {
+    "cascivo": {
+      "type": "component",
+      "version": "0.16.0"
+    }
+  }
+}

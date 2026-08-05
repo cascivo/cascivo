@@ -79,6 +79,7 @@ describe('buildScaffold', () => {
       'cascivo.base',
       'cascivo.tokens',
       'cascivo.component',
+      'cascivo.platform',
       'cascivo.theme',
       'cascivo.blocks',
       // The app's own slot. AGENTS.md tells the agent to write here; it used to be named

@@ -63,7 +63,7 @@ escape hatch. Name it after your app (`cascivo.myapp`, `cascivo.console`, …).
 The complete worked example — the order statement plus one rule:
 
 ```css
-@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme,
+@layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme,
   cascivo.blocks, cascivo.myapp, cascivo.override;
 
 @layer cascivo.myapp {
@@ -89,7 +89,7 @@ Declare the layer order **before any CSS loads** and wrap the reset inside the l
 ```html
 <!-- index.html -->
 <style>
-  @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme,
+  @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme,
     cascivo.blocks, cascivo.myapp, cascivo.override;
   @layer cascivo.reset {
     *,
