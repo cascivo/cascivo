@@ -1118,6 +1118,16 @@
       ]
     },
     {
+      "name": "InfiniteScroll",
+      "props": [
+        { "name": "onLoadMore", "type": "() => Promise<unknown> | unknown", "required": true },
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "rootMargin", "type": "string", "required": false },
+        { "name": "labels", "type": "{ loadMore?: string; loading?: string }", "required": false },
+        { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
       "name": "InlineLoading",
       "props": [
         {
@@ -1541,6 +1551,20 @@
         { "name": "sync", "type": "boolean", "required": false },
         { "name": "now", "type": "number", "required": false },
         { "name": "format", "type": "Intl.RelativeTimeFormatOptions", "required": false }
+      ]
+    },
+    {
+      "name": "ReorderList",
+      "props": [
+        { "name": "value", "type": "ReorderItem[]", "required": true },
+        { "name": "onValueChange", "type": "(value: ReorderItem[]) => void", "required": true },
+        { "name": "disabled", "type": "boolean", "required": false },
+        {
+          "name": "labels",
+          "type": "{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }",
+          "required": false
+        },
+        { "name": "className", "type": "string", "required": false }
       ]
     },
     {
@@ -1994,6 +2018,22 @@
         { "name": "name", "type": "ReactNode", "required": true },
         { "name": "description", "type": "ReactNode", "required": false },
         { "name": "avatarProps", "type": "AvatarProps", "required": false }
+      ]
+    },
+    {
+      "name": "VirtualList",
+      "props": [
+        { "name": "items", "type": "Item[]", "required": true },
+        { "name": "itemHeight", "type": "number", "required": true },
+        { "name": "height", "type": "number", "required": true },
+        {
+          "name": "renderItem",
+          "type": "(item: Item, index: number) => React.ReactNode",
+          "required": true
+        },
+        { "name": "overscan", "type": "number", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "className", "type": "string", "required": false }
       ]
     },
     {

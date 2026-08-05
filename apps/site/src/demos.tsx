@@ -126,6 +126,9 @@ import { Join } from '@cascivo/components/join'
 import { Indicator } from '@cascivo/components/indicator'
 import { ScrollArea } from '@cascivo/components/scroll-area'
 import { LargeTitleHeader } from '@cascivo/components/large-title-header'
+import { InfiniteScroll } from '@cascivo/components/infinite-scroll'
+import { ReorderList, type ReorderItem } from '@cascivo/components/reorder-list'
+import { VirtualList } from '@cascivo/components/virtual-list'
 import { LogViewer } from '@cascivo/components/log-viewer'
 import { Toc } from '@cascivo/components/toc'
 import { Info } from '@cascivo/icons'
@@ -833,6 +836,49 @@ export const demos: Record<string, () => JSX.Element> = {
         ))}
       </Col>
     </ScrollArea>
+  ),
+  'reorder-list': () => {
+    const [order, setOrder] = useState<ReorderItem[]>([
+      { id: 'a', label: 'Overview' },
+      { id: 'b', label: 'Activity' },
+      { id: 'c', label: 'Settings' },
+    ])
+    return (
+      <div style={{ maxWidth: '20rem' }}>
+        <ReorderList value={order} onValueChange={setOrder} />
+      </div>
+    )
+  },
+  'virtual-list': () => (
+    <div style={{ maxWidth: '20rem' }}>
+      <VirtualList
+        items={Array.from({ length: 5000 }, (_, i) => i)}
+        itemHeight={36}
+        height={180}
+        ariaLabel="Five thousand rows"
+        renderItem={(n) => <Text>Row {n + 1}</Text>}
+      />
+    </div>
+  ),
+  'infinite-scroll': () => (
+    <div
+      style={{
+        maxWidth: '22rem',
+        height: '10rem',
+        overflowY: 'auto',
+        border: '1px solid var(--cascivo-border-subtle)',
+        borderRadius: 'var(--cascivo-radius-md)',
+      }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '0.75rem' }}>
+        {Array.from({ length: 6 }, (_, i) => (
+          <Text key={i}>Result {i + 1}</Text>
+        ))}
+      </div>
+      {/* rootMargin 0 keeps the sentinel below the fold until the user scrolls, so the
+          demo settles on the button instead of auto-loading on mount. */}
+      <InfiniteScroll rootMargin="0px" onLoadMore={() => new Promise((r) => setTimeout(r, 800))} />
+    </div>
   ),
   'large-title-header': () => (
     <div

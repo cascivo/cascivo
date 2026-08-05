@@ -847,6 +847,23 @@
           "note": "All four corners are supported; top-end is the most common convention for notification counts"
         }
       ],
+      "InfiniteScroll": [
+        {
+          "area": "rootMargin",
+          "level": "flexible",
+          "note": "How far ahead of the end loading starts (default 200px)"
+        },
+        {
+          "area": "onLoadMore",
+          "level": "flexible",
+          "note": "May return a promise; the spinner persists until it settles"
+        },
+        {
+          "area": "trigger",
+          "level": "strict",
+          "note": "Always renders an activatable button — there is no sentinel-only mode"
+        }
+      ],
       "InlineLoading": [
         {
           "area": "label",
@@ -1336,6 +1353,23 @@
           "note": "Disable ticking for static contexts or long-past dates"
         }
       ],
+      "ReorderList": [
+        {
+          "area": "value / onValueChange",
+          "level": "strict",
+          "note": "Always controlled — the component never holds the order itself"
+        },
+        {
+          "area": "labels",
+          "level": "flexible",
+          "note": "Every announcement string is overridable and supports {name}, {position} and {total}"
+        },
+        {
+          "area": "handle",
+          "level": "strict",
+          "note": "The handle is always a focusable button; there is no drag-anywhere mode"
+        }
+      ],
       "Resizable": [
         {
           "area": "sizing",
@@ -1793,6 +1827,18 @@
           "area": "token names",
           "level": "strict",
           "note": "Name and description colors must resolve to --cascivo-* tokens"
+        }
+      ],
+      "VirtualList": [
+        {
+          "area": "overscan",
+          "level": "flexible",
+          "note": "Rows rendered beyond the window (default 3)"
+        },
+        {
+          "area": "itemHeight",
+          "level": "strict",
+          "note": "Fixed and uniform — variable row heights are not supported"
         }
       ],
       "VisuallyHidden": [
@@ -13714,6 +13760,121 @@
       "aiPrompt": "I am modifying the cascivo Indicator component (layout). Positions an overlay element (badge, dot, count) at a corner of its child\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nIndicator is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"none\", WCAG 2.2-AA. Keep it AA.\nFlexible: placement.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "InfiniteScroll",
+      "category": "feedback",
+      "description": "Loads the next page when the end of a list scrolls into view",
+      "intent": {
+        "whenToUse": [
+          "A long, page-fetched feed or list where the user should keep reading without a page break",
+          "Search or media results that stream in as the user scrolls",
+          "Mobile screens where numbered pagination would be awkward to hit"
+        ],
+        "whenNotToUse": [
+          "Content the user needs to navigate back into by position — use Pagination so URLs stay addressable",
+          "Lists with a footer below them, which infinite loading makes unreachable",
+          "A fixed, fully-loaded dataset — render it, or virtualize it, instead of faking pages"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Leaving `disabled` false after the last page",
+            "good": "Pass `disabled={!hasMore}` so the observer disconnects",
+            "why": "A sentinel that stays in view keeps re-firing `onLoadMore` against an exhausted source"
+          },
+          {
+            "bad": "Rendering it outside the element that scrolls",
+            "good": "Place it as the last child of the scrolling region",
+            "why": "The observer watches the sentinel against the nearest scroll root; outside it, intersection never changes"
+          }
+        ],
+        "related": [
+          {
+            "name": "Pagination",
+            "relationship": "alternative",
+            "reason": "Addressable, position-stable paging when back-navigation matters"
+          },
+          {
+            "name": "PullToRefresh",
+            "relationship": "pairs-with",
+            "reason": "Refreshes the head of the same list the InfiniteScroll extends"
+          },
+          {
+            "name": "Spinner",
+            "relationship": "contains",
+            "reason": "Shows the Spinner while the load promise settles"
+          }
+        ],
+        "a11yRationale": "The trigger is a real button, not a bare sentinel, so the next page is reachable by keyboard and by screen reader rather than only by scrolling — the standing accessibility complaint against scroll-only infinite lists. The IntersectionObserver activates the same code path the button does, so pointer and assistive-technology users converge on identical behaviour. While a page is in flight the button is replaced by a role=\"status\" region carrying the loading string from the i18n catalog, which announces politely. Re-entry is guarded on a loading flag, so a sentinel still in view after a short page cannot loop. Because the component requires client JavaScript, server-render the first page as real content rather than relying on it.",
+        "flexibility": [
+          {
+            "area": "rootMargin",
+            "level": "flexible",
+            "note": "How far ahead of the end loading starts (default 200px)"
+          },
+          {
+            "area": "onLoadMore",
+            "level": "flexible",
+            "note": "May return a promise; the spinner persists until it settles"
+          },
+          {
+            "area": "trigger",
+            "level": "strict",
+            "note": "Always renders an activatable button — there is no sentinel-only mode"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "onLoadMore",
+          "type": "() => Promise<unknown> | unknown",
+          "required": true,
+          "description": "Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "When true, stops observing and renders nothing — there are no more pages.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "rootMargin",
+          "type": "string",
+          "required": false,
+          "default": "'200px'",
+          "description": "How far ahead of the end to start loading, as an IntersectionObserver root margin.",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "type": "{ loadMore?: string; loading?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "className",
+          "description": "Additional CSS class names merged onto the root element.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        }
+      ],
+      "contextUrl": "/context/infinite-scroll.md",
+      "aiPrompt": "I am modifying the cascivo InfiniteScroll component (feedback). Loads the next page when the end of a list scrolls into view\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nInfiniteScroll is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text-muted, --cascivo-color-border, --cascivo-color-surface-2, --cascivo-color-foreground, --cascivo-radius-md, --cascivo-ring-width, --cascivo-ring-color, --cascivo-text-ui, --cascivo-target-min-coarse\n\nAccessibility: role \"button\", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.\n\nDo not change (strict): trigger — Always renders an activatable button — there is no sentinel-only mode\nFlexible: rootMargin, onLoadMore.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "InlineLoading",
       "category": "feedback",
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
@@ -18682,6 +18843,120 @@
       "aiPrompt": "I am modifying the cascivo RelativeTime component (display). Displays a date as a localized phrase relative to now, auto-updating\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nRelativeTime is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"time\", WCAG 2.2-AA. Keep it AA.\nFlexible: format, sync.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
+      "name": "ReorderList",
+      "category": "inputs",
+      "description": "List whose rows can be reordered by pointer drag or entirely by keyboard",
+      "intent": {
+        "whenToUse": [
+          "A short, user-owned ordering such as playlist tracks, form fields, or dashboard cards",
+          "Any list whose order is meaningful data the user is expected to change",
+          "Touch surfaces where dragging a handle is the natural gesture"
+        ],
+        "whenNotToUse": [
+          "Long or virtualized lists, where dragging to a far position is impractical — offer a \"move to position\" control",
+          "Ordering that is derived rather than authored (sort by name, date, rank) — use a sortable DataTable",
+          "Read-only lists — use List or StructuredList"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Rendering a drag handle with no keyboard path",
+            "good": "Keep the built-in handle, which is a real button with Space/Arrow/Escape support",
+            "why": "Pointer-only reordering is unusable by keyboard and screen-reader users; it is the standing accessibility gap in pointer-only implementations"
+          },
+          {
+            "bad": "Deriving row keys from array index",
+            "good": "Give every item a stable `id`",
+            "why": "Index keys make React reuse the wrong DOM nodes as rows move, so focus and animation land on the wrong row"
+          }
+        ],
+        "related": [
+          {
+            "name": "List",
+            "relationship": "alternative",
+            "reason": "Plain list when the order is not user-editable"
+          },
+          {
+            "name": "DataTable",
+            "relationship": "alternative",
+            "reason": "Column sorting when the order is derived rather than authored"
+          },
+          {
+            "name": "SwipeItem",
+            "relationship": "pairs-with",
+            "reason": "Row-level swipe actions on the same touch list"
+          }
+        ],
+        "a11yRationale": "Every row carries a real button as its drag handle, so the entire interaction is reachable by keyboard: Space or Enter picks a row up, ArrowUp/ArrowDown move it, Space or Enter drops it, and Escape restores the order captured at pick-up. The handle exposes aria-pressed so assistive technology can tell held from idle, and each transition — picked up, moved, dropped, cancelled — is announced through a polite role=\"status\" region using interpolated catalog strings that carry the item name and its position out of the total. The handle sets touch-action: none so a touch drag is not stolen by the scroller, and meets the coarse-pointer target floor. Item names for announcements come from `name` when the label is not plain text, so a rich label never produces an empty announcement.",
+        "flexibility": [
+          {
+            "area": "value / onValueChange",
+            "level": "strict",
+            "note": "Always controlled — the component never holds the order itself"
+          },
+          {
+            "area": "labels",
+            "level": "flexible",
+            "note": "Every announcement string is overridable and supports {name}, {position} and {total}"
+          },
+          {
+            "area": "handle",
+            "level": "strict",
+            "note": "The handle is always a focusable button; there is no drag-anywhere mode"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "value",
+          "type": "ReorderItem[]",
+          "required": true,
+          "description": "The ordered items; the component is controlled",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: ReorderItem[]) => void",
+          "required": true,
+          "description": "Called with the new order whenever a row moves",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "description": "When true, disables the control and removes it from the tab order.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
+          "name": "labels",
+          "description": "Overrides for the component’s user-visible strings (i18n).",
+          "type": "{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }",
+          "required": false,
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "className",
+          "description": "Additional CSS class names merged onto the root element.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        }
+      ],
+      "contextUrl": "/context/reorder-list.md",
+      "aiPrompt": "I am modifying the cascivo ReorderList component (inputs). List whose rows can be reordered by pointer drag or entirely by keyboard\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nReorderList is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-surface-2, --cascivo-color-foreground, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-border-subtle, --cascivo-radius-sm, --cascivo-ring-width, --cascivo-ring-color, --cascivo-disabled-opacity, --cascivo-target-min-coarse\n\nAccessibility: role \"list\", WCAG 2.2-AA, keyboard: Space/Enter/ArrowUp/ArrowDown/Escape/Tab. Keep it AA.\n\nDo not change (strict): value / onValueChange — Always controlled — the component never holds the order itself; handle — The handle is always a focusable button; there is no drag-anywhere mode\nFlexible: labels.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
       "name": "Resizable",
       "category": "layout",
       "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
@@ -23223,6 +23498,138 @@
       ],
       "contextUrl": "/context/user.md",
       "aiPrompt": "I am modifying the cascivo User component (display). Identity composite: an avatar with a name, description, and optional action slot\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nUser is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-text, --cascivo-color-text-muted, --cascivo-space-3, --cascivo-text-sm, --cascivo-text-xs\n\nAccessibility: role \"group\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Name and description colors must resolve to --cascivo-* tokens\nFlexible: description.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "VirtualList",
+      "category": "display",
+      "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
+      "intent": {
+        "whenToUse": [
+          "Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)",
+          "Log, result and feed views where the collection is already fully in memory",
+          "Any list whose length is unbounded and rows are a uniform height"
+        ],
+        "whenNotToUse": [
+          "Short lists — the machinery costs more than it saves; use List",
+          "Rows of varying height, which this component cannot position without measuring",
+          "Content that must be findable with the browser’s in-page search, which cannot see unrendered rows"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Passing rows whose real height differs from `itemHeight`",
+            "good": "Fix the row height in CSS to match `itemHeight` exactly",
+            "why": "Positions are arithmetic, not measured, so a mismatch makes rows overlap or leave gaps that grow with scroll depth"
+          },
+          {
+            "bad": "Reaching for a percentage or `dvh` viewport height",
+            "good": "Measure the container and pass a px number",
+            "why": "`height` drives the visible row count, which cannot be derived from a relative length without measuring"
+          },
+          {
+            "bad": "Fetching the next page inside `renderItem`",
+            "good": "Pair with InfiniteScroll, or load before passing `items`",
+            "why": "renderItem runs for every row entering the window, including on scroll-back, so a fetch there fires repeatedly"
+          }
+        ],
+        "related": [
+          {
+            "name": "List",
+            "relationship": "alternative",
+            "reason": "Plain list when the collection is small enough to render whole"
+          },
+          {
+            "name": "InfiniteScroll",
+            "relationship": "pairs-with",
+            "reason": "Loads further pages into the collection this list renders"
+          },
+          {
+            "name": "DataTable",
+            "relationship": "alternative",
+            "reason": "Columnar data with sorting and selection rather than a flat row list"
+          }
+        ],
+        "a11yRationale": "The viewport is a role=\"list\" and each rendered row is a role=\"listitem\" carrying aria-setsize and aria-posinset for the entire collection, so assistive technology announces \"row 3 of 10000\" rather than the size of the rendered window — the defect that makes naive virtualization unusable with a screen reader. Rows are placed with transform rather than by mutating layout, so scrolling stays on the compositor. Because unrendered rows are absent from the DOM, browser in-page search cannot reach them; provide a real filter or search control alongside any virtualized list, and prefer a non-virtualized list when the collection is small.",
+        "flexibility": [
+          {
+            "area": "overscan",
+            "level": "flexible",
+            "note": "Rows rendered beyond the window (default 3)"
+          },
+          {
+            "area": "itemHeight",
+            "level": "strict",
+            "note": "Fixed and uniform — variable row heights are not supported"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "items",
+          "type": "Item[]",
+          "required": true,
+          "description": "The full collection; only the visible window is rendered",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "itemHeight",
+          "type": "number",
+          "required": true,
+          "description": "Fixed row height in px — every row must be this tall",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": true,
+          "description": "Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "renderItem",
+          "type": "(item: Item, index: number) => React.ReactNode",
+          "required": true,
+          "description": "Renders one row",
+          "schema": {
+            "kind": "function"
+          }
+        },
+        {
+          "name": "overscan",
+          "type": "number",
+          "required": false,
+          "default": "3",
+          "description": "Extra rows rendered above and below the visible window, to cover fast scrolling.",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "description": "Accessible label for the list; label it when the list stands alone",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "className",
+          "description": "Additional CSS class names merged onto the root element.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        }
+      ],
+      "contextUrl": "/context/virtual-list.md",
+      "aiPrompt": "I am modifying the cascivo VirtualList component (display). Renders only the rows inside the viewport, so list length costs no extra DOM\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nVirtualList is strictly bound to these tokens — use only these, do not invent token names:\n  none declared\n\nAccessibility: role \"list\", WCAG 2.2-AA, keyboard: Tab. Keep it AA.\n\nDo not change (strict): itemHeight — Fixed and uniform — variable row heights are not supported\nFlexible: overscan.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "VisuallyHidden",

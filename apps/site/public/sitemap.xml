@@ -621,6 +621,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/infinite-scroll</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/inline-loading</loc>
     <priority>0.6</priority>
   </url>
@@ -825,6 +829,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/docs/components/reorder-list</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/docs/components/resizable</loc>
     <priority>0.6</priority>
   </url>
@@ -994,6 +1002,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/docs/components/user</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/docs/components/virtual-list</loc>
     <priority>0.6</priority>
   </url>
   <url>
@@ -1205,6 +1217,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/accessibility/infinite-scroll</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/accessibility/inline-loading</loc>
     <priority>0.6</priority>
   </url>
@@ -1353,6 +1369,10 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://cascivo.com/accessibility/reorder-list</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://cascivo.com/accessibility/resizable</loc>
     <priority>0.6</priority>
   </url>
@@ -1498,6 +1518,10 @@
   </url>
   <url>
     <loc>https://cascivo.com/accessibility/user</loc>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://cascivo.com/accessibility/virtual-list</loc>
     <priority>0.6</priority>
   </url>
   <url>

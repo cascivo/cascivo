@@ -50,6 +50,15 @@ const NON_COMPONENT_STORIES = new Set([
  */
 const COMPONENT_STORY_EXCLUSIONS = new Map<string, string>([
   ['action-sheet', 'both examples reference free identifiers (isOpen/setIsOpen, action handlers)'],
+  [
+    'infinite-scroll',
+    'every example references a free identifier (loadNextPage, hasMore) — the component is a callback into the caller\u2019s pager',
+  ],
+  [
+    'reorder-list',
+    'every example references free identifiers (items/setItems) — the component is controlled, so no example stands alone',
+  ],
+
   ['app-shell', 'both examples reference free identifiers (items, header, nav, open signal)'],
   [
     'bottom-sheet',

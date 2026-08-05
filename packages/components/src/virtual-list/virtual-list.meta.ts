@@ -1,0 +1,144 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'VirtualList',
+  description: 'Renders only the rows inside the viewport, so list length costs no extra DOM',
+  category: 'display',
+  clientJs: 'required',
+  states: ['default'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'items',
+      type: 'Item[]',
+      required: true,
+      description: 'The full collection; only the visible window is rendered',
+    },
+    {
+      name: 'itemHeight',
+      type: 'number',
+      required: true,
+      description: 'Fixed row height in px — every row must be this tall',
+    },
+    {
+      name: 'height',
+      type: 'number',
+      required: true,
+      description:
+        'Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it',
+    },
+    {
+      name: 'renderItem',
+      type: '(item: Item, index: number) => React.ReactNode',
+      required: true,
+      description: 'Renders one row',
+    },
+    {
+      name: 'overscan',
+      type: 'number',
+      required: false,
+      default: '3',
+      description:
+        'Extra rows rendered above and below the visible window, to cover fast scrolling.',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description: 'Accessible label for the list; label it when the list stands alone',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
+  tokens: [],
+  accessibility: {
+    role: 'list',
+    wcag: '2.2-AA',
+    keyboard: ['Tab'],
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: `<VirtualList
+  items={Array.from({ length: 10000 }, (_, i) => i)}
+  itemHeight={40}
+  height={320}
+  ariaLabel="Results"
+  renderItem={(n) => <span>Row {n + 1}</span>}
+/>`,
+      description: 'Ten thousand rows cost the same DOM as ten.',
+    },
+    {
+      title: 'Smoother fast scrolling',
+      code: `<VirtualList items={rows} itemHeight={40} height={320} overscan={10} renderItem={renderRow} />`,
+      description: 'A larger overscan trades DOM nodes for fewer blank frames when flinging.',
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['display', 'virtual', 'virtualization', 'list', 'performance', 'scroll'],
+  intent: {
+    whenToUse: [
+      'Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)',
+      'Log, result and feed views where the collection is already fully in memory',
+      'Any list whose length is unbounded and rows are a uniform height',
+    ],
+    whenNotToUse: [
+      'Short lists — the machinery costs more than it saves; use List',
+      'Rows of varying height, which this component cannot position without measuring',
+      'Content that must be findable with the browser’s in-page search, which cannot see unrendered rows',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Passing rows whose real height differs from `itemHeight`',
+        good: 'Fix the row height in CSS to match `itemHeight` exactly',
+        why: 'Positions are arithmetic, not measured, so a mismatch makes rows overlap or leave gaps that grow with scroll depth',
+      },
+      {
+        bad: 'Reaching for a percentage or `dvh` viewport height',
+        good: 'Measure the container and pass a px number',
+        why: '`height` drives the visible row count, which cannot be derived from a relative length without measuring',
+      },
+      {
+        bad: 'Fetching the next page inside `renderItem`',
+        good: 'Pair with InfiniteScroll, or load before passing `items`',
+        why: 'renderItem runs for every row entering the window, including on scroll-back, so a fetch there fires repeatedly',
+      },
+    ],
+    related: [
+      {
+        name: 'List',
+        relationship: 'alternative',
+        reason: 'Plain list when the collection is small enough to render whole',
+      },
+      {
+        name: 'InfiniteScroll',
+        relationship: 'pairs-with',
+        reason: 'Loads further pages into the collection this list renders',
+      },
+      {
+        name: 'DataTable',
+        relationship: 'alternative',
+        reason: 'Columnar data with sorting and selection rather than a flat row list',
+      },
+    ],
+    a11yRationale:
+      'The viewport is a role="list" and each rendered row is a role="listitem" carrying aria-setsize and aria-posinset for the entire collection, so assistive technology announces "row 3 of 10000" rather than the size of the rendered window — the defect that makes naive virtualization unusable with a screen reader. Rows are placed with transform rather than by mutating layout, so scrolling stays on the compositor. Because unrendered rows are absent from the DOM, browser in-page search cannot reach them; provide a real filter or search control alongside any virtualized list, and prefer a non-virtualized list when the collection is small.',
+    flexibility: [
+      {
+        area: 'overscan',
+        level: 'flexible',
+        note: 'Rows rendered beyond the window (default 3)',
+      },
+      {
+        area: 'itemHeight',
+        level: 'strict',
+        note: 'Fixed and uniform — variable row heights are not supported',
+      },
+    ],
+  },
+}

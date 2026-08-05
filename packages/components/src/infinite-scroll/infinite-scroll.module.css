@@ -1,0 +1,44 @@
+@layer cascivo.component {
+  .root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: var(--cascivo-space-4);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    color: var(--cascivo-color-text-muted);
+    font-size: var(--cascivo-text-ui);
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--cascivo-space-4);
+    padding-block: var(--cascivo-space-2);
+    border: 1px solid var(--cascivo-color-border);
+    border-radius: var(--cascivo-radius-md);
+    background: transparent;
+    color: var(--cascivo-color-foreground);
+    font: inherit;
+    font-size: var(--cascivo-text-ui);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--cascivo-color-surface-2);
+    }
+
+    &:focus-visible {
+      outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);
+      outline-offset: 2px;
+    }
+
+    @media (pointer: coarse) {
+      min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    }
+  }
+}

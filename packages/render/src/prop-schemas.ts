@@ -3290,6 +3290,31 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
   ],
+  InfiniteScroll: [
+    {
+      name: 'onLoadMore',
+      required: true,
+    },
+    {
+      name: 'disabled',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'rootMargin',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   InlineLoading: [
     {
       name: 'status',
@@ -4937,6 +4962,30 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  ReorderList: [
+    {
+      name: 'value',
+      required: true,
+    },
+    {
+      name: 'onValueChange',
+      required: true,
+    },
+    {
+      name: 'disabled',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'labels',
+      required: false,
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   Resizable: [
     {
       name: 'label',
@@ -6452,6 +6501,41 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'onInvite',
       required: false,
+    },
+  ],
+  VirtualList: [
+    {
+      name: 'items',
+      required: true,
+    },
+    {
+      name: 'itemHeight',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'height',
+      required: true,
+      primitives: ['number'],
+    },
+    {
+      name: 'renderItem',
+      required: true,
+    },
+    {
+      name: 'overscan',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
     },
   ],
   VisuallyHidden: [

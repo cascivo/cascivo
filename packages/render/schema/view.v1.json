@@ -179,6 +179,7 @@
             "IconButton",
             "Image",
             "Indicator",
+            "InfiniteScroll",
             "InlineLoading",
             "Input",
             "InputGroup",
@@ -230,6 +231,7 @@
             "RadioCard",
             "RatingGroup",
             "RelativeTime",
+            "ReorderList",
             "Resizable",
             "Sankey",
             "ScatterChart",
@@ -282,6 +284,7 @@
             "Treemap",
             "User",
             "UsersTablePage",
+            "VirtualList",
             "VisuallyHidden"
           ]
         },
@@ -2161,6 +2164,35 @@
           "if": {
             "properties": {
               "component": {
+                "const": "InfiniteScroll"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "rootMargin": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["onLoadMore"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "InlineLoading"
               }
             },
@@ -3432,6 +3464,32 @@
           "if": {
             "properties": {
               "component": {
+                "const": "ReorderList"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "disabled": {
+                    "type": "boolean"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["value", "onValueChange"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
                 "const": "Resizable"
               }
             },
@@ -4689,6 +4747,41 @@
                   }
                 },
                 "required": ["name"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "VirtualList"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "itemHeight": {
+                    "type": "number"
+                  },
+                  "height": {
+                    "type": "number"
+                  },
+                  "overscan": {
+                    "type": "number"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["items", "itemHeight", "height", "renderItem"]
               }
             }
           }

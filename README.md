@@ -11,7 +11,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-0079bf?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18%2B-0079bf?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
 ![CSS](https://img.shields.io/badge/CSS-native-0079bf?style=flat-square&logo=css3&logoColor=white)
-![components](https://img.shields.io/badge/components-193-0079bf?style=flat-square)
+![components](https://img.shields.io/badge/components-196-0079bf?style=flat-square)
 ![themes](https://img.shields.io/badge/themes-12-0079bf?style=flat-square)
 ![WCAG_2.2](https://img.shields.io/badge/WCAG_2.2-AA-0079bf?style=flat-square)
 [![AI--first](https://img.shields.io/badge/AI--first-MCP-8b5cf6?style=flat-square)](https://github.com/cascivo/cascivo/tree/main/packages/mcp)
@@ -30,7 +30,7 @@ You own the code. Like shadcn/ui, components are copy-pasted into your project v
 
 ## Highlights
 
-- **193 components, 7 categories** — inputs, display, overlay, navigation, layout, feedback, and 25 charts, all from a single token system.
+- **196 components, 7 categories** — inputs, display, overlay, navigation, layout, feedback, and 25 charts, all from a single token system.
 - **Interactive behavior included, not DIY** — dropdowns, menus, context menus, comboboxes, command palettes (⌘K), multi-selects, and tabs ship with keyboard navigation (arrow keys, Home/End, typeahead), focus trapping, and outside-click dismissal already wired, via native `<dialog>`/Popover APIs and `@cascivo/core` primitives (`useRovingFocus`, `FocusScope`, `DismissableLayer`, `useTypeahead`). Nothing to hand-roll or pair with a separate headless library.
 - **Data viz out of the box** — `@cascivo/charts` ships 25 chart types (line, area, bar, sparkline, KPI, heatmap, and more) on a shared scale/shape/decimation engine, token-scaled to match your theme. Pre-built dashboard blocks (`dashboard-charts`, `stats-cards`) and five full example apps (deploy/pulse/trade/pay/track) show them composed into real consoles.
 - **Modern CSS only** — `@layer` for predictable cascade, `@container` for slot-aware responsiveness, `:has()` for stateful styling. No Tailwind, no runtime style injection.
@@ -287,16 +287,16 @@ Not published to npm. `components` and `layouts` are the source of truth the CLI
 
 ## Components
 
-**193 components** — display 58 · inputs 40 · layout 27 · chart 25 · navigation 19 · overlay 16 · feedback 8.
+**196 components** — display 59 · inputs 41 · layout 27 · chart 25 · navigation 19 · overlay 16 · feedback 9.
 
 Browse the full catalog with live previews at [cascivo.com/docs/components](https://cascivo.com/docs/components), or read the machine index at [registry.json](https://cascivo.com/registry.json).
 
 <details>
-<summary>All 193 components by category</summary>
+<summary>All 196 components by category</summary>
 
-**display** (58) — alert, avatar, avatar-group, badge, block/console-app, block/dashboard-charts, block/empty-dashboard, block/login-page, block/notification-center, block/page-with-breadcrumb, block/settings-form-page, block/sidebar-app, block/stats-cards, block/users-table-page, blockquote, card, carousel, chat-bubble, code, code-snippet, collapsible, comparison, contained-list, data-list, data-table, editor/highlight, empty-state, flow/flow, flow/flow-background, flow/flow-canvas, flow/flow-controls, flow/flow-edge, flow/flow-handle, flow/flow-minimap, flow/flow-node, flow/flow-panel, flow/flow-story, heading, image, item, kbd, list, log-viewer, prose, qr-code, relative-time, separator, skeleton, stat, status, structured-list, swipe-item, tag, text, timeline, tree-view, user, visually-hidden
+**display** (59) — alert, avatar, avatar-group, badge, block/console-app, block/dashboard-charts, block/empty-dashboard, block/login-page, block/notification-center, block/page-with-breadcrumb, block/settings-form-page, block/sidebar-app, block/stats-cards, block/users-table-page, blockquote, card, carousel, chat-bubble, code, code-snippet, collapsible, comparison, contained-list, data-list, data-table, editor/highlight, empty-state, flow/flow, flow/flow-background, flow/flow-canvas, flow/flow-controls, flow/flow-edge, flow/flow-handle, flow/flow-minimap, flow/flow-node, flow/flow-panel, flow/flow-story, heading, image, item, kbd, list, log-viewer, prose, qr-code, relative-time, separator, skeleton, stat, status, structured-list, swipe-item, tag, text, timeline, tree-view, user, virtual-list, visually-hidden
 
-**inputs** (40) — button, button-group, calendar, checkbox, checkbox-card, color-picker, combobox, copy-button, date-picker, date-range-picker, editable, editor/code-editor, fab, field, file-uploader, filter, form, icon-button, input, input-group, label, multi-select, native-select, number-input, otp-input, password-input, radio, radio-card, rating-group, search, segmented-control, select, slider, swap, tags-input, textarea, tile, time-picker, toggle, toggle-group
+**inputs** (41) — button, button-group, calendar, checkbox, checkbox-card, color-picker, combobox, copy-button, date-picker, date-range-picker, editable, editor/code-editor, fab, field, file-uploader, filter, form, icon-button, input, input-group, label, multi-select, native-select, number-input, otp-input, password-input, radio, radio-card, rating-group, reorder-list, search, segmented-control, select, slider, swap, tags-input, textarea, tile, time-picker, toggle, toggle-group
 
 **layout** (27) — app-shell, aspect-ratio, indicator, join, layout/app-shell, layout/auth-layout, layout/auto-grid, layout/center, layout/columns, layout/dashboard-layout, layout/flex, layout/grid, layout/masonry, layout/page-header, layout/section, layout/settings-layout, layout/spacer, layout/split-view, resizable, scroll-area, section/cta, section/feature-grid, section/hero, section/media-masonry, section/page-footer, section/stats-band, stack
 
@@ -306,7 +306,7 @@ Browse the full catalog with live previews at [cascivo.com/docs/components](http
 
 **overlay** (16) — action-sheet, alert-dialog, bottom-sheet, command-menu, context-menu, drawer, dropdown, hover-card, menu, modal, overflow-menu, popover, sheet, toast, toggletip, tooltip
 
-**feedback** (8) — inline-loading, notification, progress, progress-bar, progress-circle, pull-to-refresh, radial-progress, spinner
+**feedback** (9) — infinite-scroll, inline-loading, notification, progress, progress-bar, progress-circle, pull-to-refresh, radial-progress, spinner
 
 </details>
 

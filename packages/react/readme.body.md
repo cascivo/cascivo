@@ -231,7 +231,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-193 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+196 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -264,6 +264,7 @@ routing break after adding one of these, check that the import resolves to
 - **Radio** — Single choice from a set, grouped with RadioGroup
 - **RadioCard** — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.
 - **RatingGroup** — Star rating input with accessible radio group pattern
+- **ReorderList** — List whose rows can be reordered by pointer drag or entirely by keyboard
 - **Search** — Search input with debounced search callback and clear button
 - **SegmentedControl** — Mutually exclusive toggle group
 - **Select** — Native select menu styled to match the design system
@@ -335,6 +336,7 @@ routing break after adding one of these, check that the import resolves to
 - **TreeView** — Hierarchical, expandable tree of nodes with keyboard navigation and selection
 - **User** — Identity composite: an avatar with a name, description, and optional action slot
 - **UsersTablePage** — Full users management page with table, search, and invite action.
+- **VirtualList** — Renders only the rows inside the viewport, so list length costs no extra DOM
 - **VisuallyHidden** — Hides content visually while keeping it available to screen readers
 
 ### Overlay
@@ -410,6 +412,7 @@ routing break after adding one of these, check that the import resolves to
 
 ### Feedback
 
+- **InfiniteScroll** — Loads the next page when the end of a list scrolls into view
 - **InlineLoading** — Compact inline status indicator that pairs a label with a loading, success, or error state
 - **Notification** — Inline, actionable notification banner that surfaces a titled message with an optional recovery action
 - **Progress** — Horizontal bar showing the completion progress of a tracked operation

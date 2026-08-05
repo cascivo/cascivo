@@ -24,7 +24,7 @@ the readings first, because picking one silently would be the expensive mistake:
 
 | # | Reading | What ships | Rough size |
 | - | ------- | ---------- | ---------- |
-| **I1** | **Platform skin.** The 193 components already in the registry _look and move_ like iOS or like Android, selected by an attribute. | A CSS axis + a token contract. No new components. | 1 package, ~6 weeks |
+| **I1** | **Platform skin.** The 196 components already in the registry _look and move_ like iOS or like Android, selected by an attribute. | A CSS axis + a token contract. No new components. | 1 package, ~6 weeks |
 | **I2** | **Mobile component set.** The ~7 primitives that a phone app needs and cascivo genuinely lacks (nav stack, large-title header, wheel picker, infinite scroll, reorder list, virtual list, list-header/note). | New registry components. | ~7 components |
 | **I3** | **App runtime.** Router outlet, page stack with memory management, gesture-driven swipe-back, hardware back-button handling, Capacitor plugin bridge, status-bar/keyboard/haptics APIs. | A framework. | A different product |
 
@@ -108,7 +108,7 @@ property cascade under a cascade layer, switchable at runtime, scopable to a sub
 | | Ionic 8 | Framework7 v9 | Konsta UI | cascivo today |
 | - | ------- | ------------- | --------- | ------------- |
 | Platform switch | `mode` class on `<html>` | build/config theme | `App theme=` (Tailwind) | **none** |
-| Component count | ~100 | ~60 | ~40 | **193** |
+| Component count | ~100 | ~60 | ~40 | **196** |
 | Styling escape hatch | CSS vars + `::part()` | CSS vars | edit Tailwind classes | **owned source + tokens + `data-cascivo-*`** |
 | Routing / page stack | ✅ owns it | ✅ owns it | ❌ | ❌ |
 | Native runtime | ✅ Capacitor | ✅ Capacitor/Cordova | ❌ | ❌ |
@@ -423,7 +423,7 @@ Answering §0 and §7's three questions, 2026-08-05:
 **I2 — the seven primitives: accepted, and promoted to first.** The original tranche order put T4
 after the axis; that was wrong. `InfiniteScroll`, `VirtualList`, `ListHeader`/`Note` and `ReorderList`
 are justified without reference to iOS or Android at all — they are gaps against shadcn and Carbon in a
-193-component system, so none of the work can be stranded by a later decision on the axis.
+196-component system, so none of the work can be stranded by a later decision on the axis.
 `LargeTitleHeader` leads because it is the clearest demonstration of the CSS-native thesis: Ionic drives
 the same collapse with JavaScript and an IntersectionObserver, and a scroll-driven animation does it on
 the compositor with `clientJs: 'none'`.
@@ -473,6 +473,34 @@ was not searched.
   opacity `0.00` at scroll 0, `0.50` at scroll 24, `1.00` at scroll 200, the hairline interpolates over the same
   range, and the bar's offset from the scroller top stays `0` throughout.
 
+- **2026-08-05 — T4.2 `ListHeader`/`Note` dropped, not built.** Re-verified against `main` before writing
+  it: `ContainedList` already ships a labelled header with an action slot — that is `ion-list-header` — and
+  `ItemDescription` covers `ion-note`'s secondary-text role. The M-1 list in §3 was wrong to include it;
+  this entry is C-2, already shipped. Building it would have duplicated two existing components.
+
+- **2026-08-05 — T4.3 `InfiniteScroll` shipped.** Renders a real button and auto-activates it with an
+  `IntersectionObserver`, rather than the bare sentinel Ionic uses — so the next page is reachable by
+  keyboard and by screen reader, not only by scrolling. Re-entry is guarded on a loading flag, so a sentinel
+  still in view after a short page cannot loop. Per the CLAUDE.md reactivity rule, the observer callback
+  reads plain refs (it fires outside the tracking scope, where a signal would be redundant and a tick stale).
+  The nested `Spinner` is `aria-hidden`: it carries its own `role="status"`, so leaving it live announced
+  the loading state twice.
+
+- **2026-08-05 — T4.4 `ReorderList` shipped.** Fully keyboard-operable reordering — Space/Enter to pick up,
+  Arrows to move, Space/Enter to drop, Escape to restore the order captured at pick-up — which is exactly
+  what pointer-only `ion-reorder` has no equivalent for. Every transition is announced through a polite
+  live region with the item name and its position out of the total. Pointer drag reflows rows as the
+  pointer crosses their midpoints, so there is no ghost element to keep in sync. `onValueChange` follows
+  the array-valued convention already set by `TagsInput` and `MultiSelect`.
+
+- **2026-08-05 — T4.5 `VirtualList` shipped**, taken ahead of `WheelPicker` because it is a gap that stands
+  regardless of the platform axis, where `WheelPicker` is purely platform-idiomatic. Fixed row height keeps
+  positions arithmetic rather than measured. Each rendered row carries `aria-setsize`/`aria-posinset` for
+  the **full** collection, so AT announces "row 3 of 10000" rather than the size of the rendered window —
+  the defect that makes naive virtualization unusable with a screen reader. Writing the tests exposed that
+  deriving the window end from a clamped start widened it by the whole overscan at the top of the list;
+  the range is now anchored on the first visible row.
+
 ---
 
 ## 8. What this proposal needs
@@ -481,8 +509,7 @@ All three questions are answered in §7. What remains open is the one §7 delibe
 §4.1 invariant survives contact with a real `ios.css`. T2 is the experiment that settles it, and this document
 is the record either way — of why the skins were cheap, or of why the project was stopped.
 
-Remaining T4 order: `ListHeader`/`Note` → `InfiniteScroll` → `ReorderList` → `WheelPicker` → `VirtualList`.
-`NavStack` stays last and droppable per §6.1.
+Remaining T4: `WheelPicker`. `NavStack` stays last and droppable per §6.1.
 
 ---
 

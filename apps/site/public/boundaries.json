@@ -732,6 +732,23 @@
         "note": "All four corners are supported; top-end is the most common convention for notification counts"
       }
     ],
+    "InfiniteScroll": [
+      {
+        "area": "rootMargin",
+        "level": "flexible",
+        "note": "How far ahead of the end loading starts (default 200px)"
+      },
+      {
+        "area": "onLoadMore",
+        "level": "flexible",
+        "note": "May return a promise; the spinner persists until it settles"
+      },
+      {
+        "area": "trigger",
+        "level": "strict",
+        "note": "Always renders an activatable button — there is no sentinel-only mode"
+      }
+    ],
     "InlineLoading": [
       {
         "area": "label",
@@ -1221,6 +1238,23 @@
         "note": "Disable ticking for static contexts or long-past dates"
       }
     ],
+    "ReorderList": [
+      {
+        "area": "value / onValueChange",
+        "level": "strict",
+        "note": "Always controlled — the component never holds the order itself"
+      },
+      {
+        "area": "labels",
+        "level": "flexible",
+        "note": "Every announcement string is overridable and supports {name}, {position} and {total}"
+      },
+      {
+        "area": "handle",
+        "level": "strict",
+        "note": "The handle is always a focusable button; there is no drag-anywhere mode"
+      }
+    ],
     "Resizable": [
       {
         "area": "sizing",
@@ -1678,6 +1712,18 @@
         "area": "token names",
         "level": "strict",
         "note": "Name and description colors must resolve to --cascivo-* tokens"
+      }
+    ],
+    "VirtualList": [
+      {
+        "area": "overscan",
+        "level": "flexible",
+        "note": "Rows rendered beyond the window (default 3)"
+      },
+      {
+        "area": "itemHeight",
+        "level": "strict",
+        "note": "Fixed and uniform — variable row heights are not supported"
       }
     ],
     "VisuallyHidden": [

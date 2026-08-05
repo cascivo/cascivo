@@ -312,7 +312,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (205 entries — 193 components + 12 page blocks)
+## Component index (208 entries — 196 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -415,10 +415,12 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [timeline](https://cascivo.com/llms/timeline.md) — Ordered sequence of events with status markers and a connector line _(npm @cascivo/react · or copy-paste)_
 - [tree-view](https://cascivo.com/llms/tree-view.md) — Hierarchical, expandable tree of nodes with keyboard navigation and selection _(npm @cascivo/react · or copy-paste)_
 - [user](https://cascivo.com/llms/user.md) — Identity composite: an avatar with a name, description, and optional action slot _(npm @cascivo/react · or copy-paste)_
+- [virtual-list](https://cascivo.com/llms/virtual-list.md) — Renders only the rows inside the viewport, so list length costs no extra DOM _(npm @cascivo/react · or copy-paste)_
 - [visually-hidden](https://cascivo.com/llms/visually-hidden.md) — Hides content visually while keeping it available to screen readers _(npm @cascivo/react · or copy-paste)_
 
 ### feedback
 
+- [infinite-scroll](https://cascivo.com/llms/infinite-scroll.md) — Loads the next page when the end of a list scrolls into view _(npm @cascivo/react · or copy-paste)_
 - [inline-loading](https://cascivo.com/llms/inline-loading.md) — Compact inline status indicator that pairs a label with a loading, success, or error state _(npm @cascivo/react · or copy-paste)_
 - [notification](https://cascivo.com/llms/notification.md) — Inline, actionable notification banner that surfaces a titled message with an optional recovery action _(npm @cascivo/react · or copy-paste)_
 - [progress](https://cascivo.com/llms/progress.md) — Horizontal bar showing the completion progress of a tracked operation _(npm @cascivo/react · or copy-paste)_
@@ -459,6 +461,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [radio](https://cascivo.com/llms/radio.md) — Single choice from a set, grouped with RadioGroup _(npm @cascivo/react · or copy-paste)_
 - [radio-card](https://cascivo.com/llms/radio-card.md) — Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups. _(npm @cascivo/react · or copy-paste)_
 - [rating-group](https://cascivo.com/llms/rating-group.md) — Star rating input with accessible radio group pattern _(npm @cascivo/react · or copy-paste)_
+- [reorder-list](https://cascivo.com/llms/reorder-list.md) — List whose rows can be reordered by pointer drag or entirely by keyboard _(npm @cascivo/react · or copy-paste)_
 - [search](https://cascivo.com/llms/search.md) — Search input with debounced search callback and clear button _(npm @cascivo/react · or copy-paste)_
 - [segmented-control](https://cascivo.com/llms/segmented-control.md) — Mutually exclusive toggle group _(npm @cascivo/react · or copy-paste)_
 - [select](https://cascivo.com/llms/select.md) — Native select menu styled to match the design system _(npm @cascivo/react · or copy-paste)_
@@ -668,6 +671,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [IconButton](https://cascivo.com/context/icon-button.md) — Use when: A compact, recognizable action where an icon alone communicates intent (close, edit, more)
 - [Image](https://cascivo.com/context/image.md) — Use when: Displaying a content image that should show a placeholder while loading and degrade gracefully on error
 - [Indicator](https://cascivo.com/context/indicator.md) — Use when: Notification counts on icon buttons
+- [InfiniteScroll](https://cascivo.com/context/infinite-scroll.md) — Use when: A long, page-fetched feed or list where the user should keep reading without a page break
 - [InlineLoading](https://cascivo.com/context/inline-loading.md) — Use when: Showing the progress of a single inline action — a Save button that becomes "Saving… / Saved / Failed"
 - [Input](https://cascivo.com/context/input.md) — Use when: Collecting a single line of free-form text from the user
 - [InputGroup](https://cascivo.com/context/input-group.md) — Use when: Attaching a prefix/suffix addon (protocol, currency, unit) to an Input so it reads as one field
@@ -719,6 +723,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [RadioCard](https://cascivo.com/context/radio-card.md) — Use when: Single-select from a few options where each choice needs a title plus supporting description (plans, tiers, shipping methods)
 - [RatingGroup](https://cascivo.com/context/rating-group.md) — Use when: Capturing a discrete subjective rating on a small fixed scale (e.g. 1–5 stars)
 - [RelativeTime](https://cascivo.com/context/relative-time.md) — Use when: Showing how long ago something happened in human terms ("3 minutes ago")
+- [ReorderList](https://cascivo.com/context/reorder-list.md) — Use when: A short, user-owned ordering such as playlist tracks, form fields, or dashboard cards
 - [Resizable](https://cascivo.com/context/resizable.md) — Use when: Letting users reallocate space between two adjacent regions, e.g. an editor and a preview
 - [ScrollArea](https://cascivo.com/context/scroll-area.md) — Use when: Constraining a region to a fixed height/width with overflow scrolling
 - [Search](https://cascivo.com/context/search.md) — Use when: A query field that filters or searches content, with a built-in clear button and debounced onSearch
@@ -762,6 +767,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Tooltip](https://cascivo.com/context/tooltip.md) — Use when: Labeling an icon-only control or clarifying a terse element on hover or focus
 - [TreeView](https://cascivo.com/context/tree-view.md) — Use when: Showing nested, parent/child data the user expands and collapses (file trees, org charts, nav)
 - [User](https://cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
+- [VirtualList](https://cascivo.com/context/virtual-list.md) — Use when: Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 
 _Generated: 2026-08-05 from registry v0.16.0_
@@ -10059,6 +10065,107 @@ _Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with 
 
 ---
 
+# InfiniteScroll
+
+Loads the next page when the end of a list scrolls into view
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add infinite-scroll
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { InfiniteScroll } from '@cascivo/react'
+```
+
+## Category
+
+`feedback`
+
+## States
+
+- `idle`
+- `loading`
+- `disabled`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onLoadMore` | `() => Promise<unknown> \| unknown` | yes | — | Called when the sentinel comes into view, or the button is activated; the spinner shows until it settles |
+| `disabled` | `boolean` | no | `false` | When true, stops observing and renders nothing — there are no more pages. |
+| `rootMargin` | `string` | no | `'200px'` | How far ahead of the end to start loading, as an IntersectionObserver root margin. |
+| `labels` | `{ loadMore?: string; loading?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+
+## Examples
+
+### Basic
+
+Place it as the last child of the scrolling region, after the list.
+
+```tsx
+<InfiniteScroll onLoadMore={loadNextPage} />
+```
+
+### Stopping at the last page
+
+Renders nothing and stops observing once there is nothing left to load.
+
+```tsx
+<InfiniteScroll onLoadMore={loadNextPage} disabled={!hasMore} />
+```
+
+### Loading earlier
+
+Starts the next page well before the user reaches the end.
+
+```tsx
+<InfiniteScroll onLoadMore={loadNextPage} rootMargin="600px" />
+```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
+## Design tokens
+
+- `--cascivo-color-text-muted`
+- `--cascivo-color-border`
+- `--cascivo-color-surface-2`
+- `--cascivo-color-foreground`
+- `--cascivo-radius-md`
+- `--cascivo-ring-width`
+- `--cascivo-ring-color`
+- `--cascivo-text-ui`
+- `--cascivo-target-min-coarse`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `button`
+- **Keyboard:** Enter, Space
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+feedback, infinite-scroll, pagination, list, scroll, mobile, lazy
+
+---
+
+_Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # InlineLoading
 
 Compact inline status indicator that pairs a label with a loading, success, or error state
@@ -14433,6 +14540,114 @@ _Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with 
 
 ---
 
+# ReorderList
+
+List whose rows can be reordered by pointer drag or entirely by keyboard
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add reorder-list
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { ReorderList } from '@cascivo/react'
+```
+
+## Category
+
+`inputs`
+
+## States
+
+- `idle`
+- `grabbed`
+- `disabled`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `ReorderItem[]` | yes | — | The ordered items; the component is controlled |
+| `onValueChange` | `(value: ReorderItem[]) => void` | yes | — | Called with the new order whenever a row moves |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `labels` | `{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+
+## Object types
+
+### `ReorderItem`
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | yes | Stable identity for the row |
+| `label` | `React.ReactNode` | yes | Row content |
+| `name` | `string` | no | Plain-text name used in announcements when label is not a string |
+
+## Examples
+
+### Basic
+
+Controlled — the caller owns the order.
+
+```tsx
+<ReorderList
+  value={items}
+  onValueChange={setItems}
+/>
+```
+
+### Locked
+
+Handles are disabled and drop out of the tab order.
+
+```tsx
+<ReorderList value={items} onValueChange={setItems} disabled />
+```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
+## Design tokens
+
+- `--cascivo-color-surface`
+- `--cascivo-color-surface-2`
+- `--cascivo-color-foreground`
+- `--cascivo-color-text-muted`
+- `--cascivo-color-accent`
+- `--cascivo-border-subtle`
+- `--cascivo-radius-sm`
+- `--cascivo-ring-width`
+- `--cascivo-ring-color`
+- `--cascivo-disabled-opacity`
+- `--cascivo-target-min-coarse`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `list`
+- **Keyboard:** Space, Enter, ArrowUp, ArrowDown, Escape, Tab
+
+## Dependencies
+
+- `@cascivo/core`
+- `@cascivo/i18n`
+
+## Tags
+
+inputs, reorder, sortable, drag, list, mobile, keyboard
+
+---
+
+_Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
 # Resizable
 
 Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space
@@ -18264,6 +18479,92 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Tags
 
 user, avatar, identity, display
+
+---
+
+_Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# VirtualList
+
+Renders only the rows inside the viewport, so list length costs no extra DOM
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add virtual-list
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { VirtualList } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## States
+
+- `default`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `Item[]` | yes | — | The full collection; only the visible window is rendered |
+| `itemHeight` | `number` | yes | — | Fixed row height in px — every row must be this tall |
+| `height` | `number` | yes | — | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
+| `renderItem` | `(item: Item, index: number) => React.ReactNode` | yes | — | Renders one row |
+| `overscan` | `number` | no | `3` | Extra rows rendered above and below the visible window, to cover fast scrolling. |
+| `ariaLabel` | `string` | no | — | Accessible label for the list; label it when the list stands alone |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+
+## Examples
+
+### Basic
+
+Ten thousand rows cost the same DOM as ten.
+
+```tsx
+<VirtualList
+  items={Array.from({ length: 10000 }, (_, i) => i)}
+  itemHeight={40}
+  height={320}
+  ariaLabel="Results"
+  renderItem={(n) => <span>Row {n + 1}</span>}
+/>
+```
+
+### Smoother fast scrolling
+
+A larger overscan trades DOM nodes for fewer blank frames when flinging.
+
+```tsx
+<VirtualList items={rows} itemHeight={40} height={320} overscan={10} renderItem={renderRow} />
+```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `list`
+- **Keyboard:** Tab
+
+## Dependencies
+
+- `@cascivo/core`
+
+## Tags
+
+display, virtual, virtualization, list, performance, scroll
 
 ---
 

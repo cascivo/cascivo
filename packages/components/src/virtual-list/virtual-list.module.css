@@ -1,0 +1,23 @@
+@layer cascivo.component {
+  .viewport {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* Rows are absolutely placed against this box. */
+    position: relative;
+  }
+
+  .canvas {
+    position: relative;
+    inline-size: 100%;
+  }
+
+  .row {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    display: flex;
+    align-items: center;
+    /* translateY does the placement; the compositor keeps it off the layout path. */
+    will-change: transform;
+  }
+}
