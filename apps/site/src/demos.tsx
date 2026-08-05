@@ -125,6 +125,7 @@ import { Stack } from '@cascivo/components/stack'
 import { Join } from '@cascivo/components/join'
 import { Indicator } from '@cascivo/components/indicator'
 import { ScrollArea } from '@cascivo/components/scroll-area'
+import { LargeTitleHeader } from '@cascivo/components/large-title-header'
 import { LogViewer } from '@cascivo/components/log-viewer'
 import { Toc } from '@cascivo/components/toc'
 import { Info } from '@cascivo/icons'
@@ -832,6 +833,32 @@ export const demos: Record<string, () => JSX.Element> = {
         ))}
       </Col>
     </ScrollArea>
+  ),
+  'large-title-header': () => (
+    <div
+      style={{
+        maxWidth: '22rem',
+        height: '11rem',
+        border: '1px solid var(--cascivo-border-subtle)',
+        borderRadius: 'var(--cascivo-radius-md)',
+        overflow: 'hidden',
+      }}
+    >
+      <LargeTitleHeader title="Library" actions={<Badge>12</Badge>}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.75rem',
+            padding: '0 1rem 1rem',
+          }}
+        >
+          {Array.from({ length: 10 }, (_, i) => (
+            <Text key={i}>Playlist {i + 1}</Text>
+          ))}
+        </div>
+      </LargeTitleHeader>
+    </div>
   ),
   'log-viewer': () => (
     <LogViewer

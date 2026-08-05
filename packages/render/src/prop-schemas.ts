@@ -3465,6 +3465,39 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  LargeTitleHeader: [
+    {
+      name: 'title',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'children',
+      required: true,
+    },
+    {
+      name: 'leading',
+      required: false,
+    },
+    {
+      name: 'actions',
+      required: false,
+    },
+    {
+      name: 'level',
+      required: false,
+    },
+    {
+      name: 'collapseDistance',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
   LineChart: [
     {
       name: 'series',

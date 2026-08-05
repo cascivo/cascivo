@@ -312,7 +312,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (204 entries — 192 components + 12 page blocks)
+## Component index (205 entries — 193 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -517,6 +517,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [dock](https://cascivo.com/llms/dock.md) — Fixed bottom navigation bar for mobile app shells with up to 5 items _(npm @cascivo/react · or copy-paste)_
 - [header](https://cascivo.com/llms/header.md) — App top bar with brand, primary navigation links, and an actions slot _(npm @cascivo/react · or copy-paste)_
 - [header-panel](https://cascivo.com/llms/header-panel.md) — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings _(npm @cascivo/react · or copy-paste)_
+- [large-title-header](https://cascivo.com/llms/large-title-header.md) — Scrolling region whose large title collapses into a compact sticky bar as it scrolls _(npm @cascivo/react · or copy-paste)_
 - [link](https://cascivo.com/llms/link.md) — Styled anchor for navigation, standalone or inline within prose _(npm @cascivo/react · or copy-paste)_
 - [menu-button](https://cascivo.com/llms/menu-button.md) — A button that opens an anchored action menu of one-shot commands _(npm @cascivo/react · or copy-paste)_
 - [menubar](https://cascivo.com/llms/menubar.md) — Horizontal application menu bar with keyboard-navigable dropdown menus _(npm @cascivo/react · or copy-paste)_
@@ -674,6 +675,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [Join](https://cascivo.com/context/join.md) — Use when: Input + button search groups where the two controls should appear as one unit
 - [Kbd](https://cascivo.com/context/kbd.md) — Use when: Showing a keyboard key or shortcut the user should press
 - [Label](https://cascivo.com/context/label.md) — Use when: Naming a single form control (input, select, checkbox) so clicking the text focuses it
+- [LargeTitleHeader](https://cascivo.com/context/large-title-header.md) — Use when: A scrolling screen that should keep its title reachable after the heading scrolls away
 - [AppFrame](https://cascivo.com/context/layout/app-shell.md) — Use when: A full-page application frame with header, collapsible sidebar, and content
 - [AuthLayout](https://cascivo.com/context/layout/auth-layout.md) — Use when: Centered card layout for authentication pages — login, register, reset
 - [AutoGrid](https://cascivo.com/context/layout/auto-grid.md) — Use when: Responsive card or tile grids that auto-fit columns to available width

@@ -187,6 +187,7 @@
             "Kbd",
             "Kpi",
             "Label",
+            "LargeTitleHeader",
             "LineChart",
             "Link",
             "List",
@@ -2366,6 +2367,35 @@
                   }
                 },
                 "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "LargeTitleHeader"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "collapseDistance": {
+                    "type": "number"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["title", "children"]
               }
             }
           }

@@ -1,8 +1,8 @@
 # cascivo — Roadmap v59: Platform-Idiomatic Components — a `data-platform` Axis for iOS 26 and Material 3 Expressive
 
 **Last updated:** 2026-08-05
-**Status:** 🔵 Proposal — nothing implemented. This document is the research + design; it asks for a
-go/no-go on the axis before any code lands.
+**Status:** 🟡 Accepted, in progress — see "Decisions taken" below. T4 (the missing primitives) runs
+**first**; the platform axis follows; the app runtime is out of scope permanently.
 **Question asked:** _"What would it mean for cascivo to also build components like the mobile components
 in iOS and Android — the way Ionic Framework does?"_
 **Builds on:** the 12-theme semantic layer keyed on `[data-theme]` (`packages/themes/src/*.css` in
@@ -24,7 +24,7 @@ the readings first, because picking one silently would be the expensive mistake:
 
 | # | Reading | What ships | Rough size |
 | - | ------- | ---------- | ---------- |
-| **I1** | **Platform skin.** The 192 components already in the registry _look and move_ like iOS or like Android, selected by an attribute. | A CSS axis + a token contract. No new components. | 1 package, ~6 weeks |
+| **I1** | **Platform skin.** The 193 components already in the registry _look and move_ like iOS or like Android, selected by an attribute. | A CSS axis + a token contract. No new components. | 1 package, ~6 weeks |
 | **I2** | **Mobile component set.** The ~7 primitives that a phone app needs and cascivo genuinely lacks (nav stack, large-title header, wheel picker, infinite scroll, reorder list, virtual list, list-header/note). | New registry components. | ~7 components |
 | **I3** | **App runtime.** Router outlet, page stack with memory management, gesture-driven swipe-back, hardware back-button handling, Capacitor plugin bridge, status-bar/keyboard/haptics APIs. | A framework. | A different product |
 
@@ -108,7 +108,7 @@ property cascade under a cascade layer, switchable at runtime, scopable to a sub
 | | Ionic 8 | Framework7 v9 | Konsta UI | cascivo today |
 | - | ------- | ------------- | --------- | ------------- |
 | Platform switch | `mode` class on `<html>` | build/config theme | `App theme=` (Tailwind) | **none** |
-| Component count | ~100 | ~60 | ~40 | **192** |
+| Component count | ~100 | ~60 | ~40 | **193** |
 | Styling escape hatch | CSS vars + `::part()` | CSS vars | edit Tailwind classes | **owned source + tokens + `data-cascivo-*`** |
 | Routing / page stack | ✅ owns it | ✅ owns it | ❌ | ❌ |
 | Native runtime | ✅ Capacitor | ✅ Capacitor/Cordova | ❌ | ❌ |
@@ -416,17 +416,73 @@ ever yes, it is yes now.
 
 ---
 
-## 7. What this proposal needs
+## 7. Decisions taken
 
-1. **Go/no-go on I1** (the `data-platform` axis). Everything else depends on it.
-2. **Go/no-go on I2** (the seven primitives) — separable; T4 stands alone and is worth doing even if I1 is
-   rejected, since `LargeTitleHeader`, `InfiniteScroll` and `VirtualList` are plain gaps in a web design
-   system regardless of platform skinning.
-3. **Confirmation that I3 stays out**, in writing, so `NavStack` scope creep has something to be measured
-   against.
+Answering §0 and §7's three questions, 2026-08-05:
 
-If T1 and T2 land and the §4.1 invariant survives contact with `ios.css`, the rest is mechanical. If the
-invariant breaks, this document is the record of why the project was stopped.
+**I2 — the seven primitives: accepted, and promoted to first.** The original tranche order put T4
+after the axis; that was wrong. `InfiniteScroll`, `VirtualList`, `ListHeader`/`Note` and `ReorderList`
+are justified without reference to iOS or Android at all — they are gaps against shadcn and Carbon in a
+193-component system, so none of the work can be stranded by a later decision on the axis.
+`LargeTitleHeader` leads because it is the clearest demonstration of the CSS-native thesis: Ionic drives
+the same collapse with JavaScript and an IntersectionObserver, and a scroll-driven animation does it on
+the compositor with `clientJs: 'none'`.
+
+**I3 — the app runtime: rejected, permanently.** Recorded here so `NavStack` scope creep has something to
+be measured against. cascivo already delegates navigation to the consumer's router via `setLinkComponent()`;
+I3 reverses a deliberate architectural stance rather than filling a gap. No routing, no page-stack memory
+management, no hardware back-button handling, no Capacitor plugin bridge — in this roadmap or a successor.
+
+**I1 — the platform axis: the mechanism is accepted, the fidelity skins are not yet.** §6.4's counter-argument
+stands and is not answered by §2's market timing: someone who needs pixel-accurate iOS 26 chrome is building a
+hybrid app and would still need Ionic or Framework7 for the router and the native bridge, both of which ship a
+skin too. What survives that critique is the axis itself — `data-theme` today conflates colour, geometry and
+motion across 12 themes, so "corporate colours, compact geometry" is not expressible, and that is a real
+limitation for adopters who will never render an iOS control.
+
+So T1 ships (it is nearly inert), and **T2 is a time-boxed spike whose deliverable is a yes/no on the §4.1
+invariant, not a shipped `ios.css`.** No public commitment to iOS 26 fidelity until that spike returns. If the
+invariant holds the skins become cheap and can be decided then with better information; if it does not, §6.3
+already says stop — one tranche spent instead of four.
+
+**What would change the I1 answer:** evidence of adopter demand. `ROADMAP.md` notes that real integration
+reports have shaped several items; a report asking for platform-idiomatic presentation outweighs the reasoning
+above, because it replaces market timing with evidence. None was found in the repository — the issue tracker
+was not searched.
+
+### Implementation log
+
+- **2026-08-05 — T4.1 `LargeTitleHeader` shipped.** `clientJs: 'none'`: the collapse is a CSS scroll-driven
+  animation, so the header is complete in server-rendered HTML and never hydrates. The title is a real
+  `h1`–`h3`; the copy mirrored into the sticky bar is `aria-hidden`, so it is announced once. Degrades on two
+  axes — where `animation-timeline` is unsupported the mirror stays hidden and the header is a plain sticky bar
+  above a heading, and under `prefers-reduced-motion` the reveal snaps via `steps(1, jump-end)` instead of
+  interpolating.
+
+  **It owns the scroll container, and that was not the first design.** The header initially rendered a wrapper
+  with the bar `position: sticky` inside it, on the assumption that the consumer's scrolling region would be the
+  ancestor. It is not: sticky is bounded by its containing block, so a bar nested in a short header wrapper
+  unsticks the moment the wrapper scrolls out — the bar has to be a **direct child of the scroller**. jsdom
+  evaluates neither `position: sticky` nor `animation-timeline`, so every unit test passed against the broken
+  version and the scroll-0 visual baseline was pixel-identical to the fixed one; it was caught only by driving
+  a real Chromium, scrolling, and reading computed styles. Taking ownership of the scroll container (the shape
+  `PullToRefresh` already uses, and Ionic's `ion-content`) makes both the sticky bar and the
+  `scroll(nearest block)` timeline correct by construction rather than by instruction.
+
+  **Verified in Chromium**, since no committed test can assert it: at `collapseDistance: 48` the mirror reads
+  opacity `0.00` at scroll 0, `0.50` at scroll 24, `1.00` at scroll 200, the hairline interpolates over the same
+  range, and the bar's offset from the scroller top stays `0` throughout.
+
+---
+
+## 8. What this proposal needs
+
+All three questions are answered in §7. What remains open is the one §7 deliberately left open: whether the
+§4.1 invariant survives contact with a real `ios.css`. T2 is the experiment that settles it, and this document
+is the record either way — of why the skins were cheap, or of why the project was stopped.
+
+Remaining T4 order: `ListHeader`/`Note` → `InfiniteScroll` → `ReorderList` → `WheelPicker` → `VirtualList`.
+`NavStack` stays last and droppable per §6.1.
 
 ---
 

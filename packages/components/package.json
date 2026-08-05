@@ -56,6 +56,7 @@
     "./join": "./src/join/join.tsx",
     "./kbd": "./src/kbd/kbd.tsx",
     "./label": "./src/label/label.tsx",
+    "./large-title-header": "./src/large-title-header/large-title-header.tsx",
     "./link": "./src/link/link.tsx",
     "./list": "./src/list/list.tsx",
     "./log-viewer": "./src/log-viewer/log-viewer.tsx",

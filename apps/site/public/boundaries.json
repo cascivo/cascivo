@@ -821,6 +821,23 @@
         "note": "Free, within tone guidance"
       }
     ],
+    "LargeTitleHeader": [
+      {
+        "area": "collapseDistance",
+        "level": "flexible",
+        "note": "Scroll distance over which the title collapses (default 48px)"
+      },
+      {
+        "area": "level",
+        "level": "flexible",
+        "note": "Heading level is caller-controlled so the page outline stays correct"
+      },
+      {
+        "area": "collapse mechanism",
+        "level": "strict",
+        "note": "Always a CSS scroll-driven animation — there is no JavaScript fallback path"
+      }
+    ],
     "Link": [
       {
         "area": "variant",

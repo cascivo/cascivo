@@ -936,6 +936,23 @@
           "note": "Free, within tone guidance"
         }
       ],
+      "LargeTitleHeader": [
+        {
+          "area": "collapseDistance",
+          "level": "flexible",
+          "note": "Scroll distance over which the title collapses (default 48px)"
+        },
+        {
+          "area": "level",
+          "level": "flexible",
+          "note": "Heading level is caller-controlled so the page outline stays correct"
+        },
+        {
+          "area": "collapse mechanism",
+          "level": "strict",
+          "note": "Always a CSS scroll-driven animation — there is no JavaScript fallback path"
+        }
+      ],
       "Link": [
         {
           "area": "variant",
@@ -14316,6 +14333,139 @@
       ],
       "contextUrl": "/context/label.md",
       "aiPrompt": "I am modifying the cascivo Label component (inputs). Accessible caption for a form control\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nLabel is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-space-1, --cascivo-font-sans, --cascivo-text-sm, --cascivo-font-medium, --cascivo-leading-snug, --cascivo-leading-none, --cascivo-color-text, --cascivo-color-destructive\n\nAccessibility: role \"label\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): token names — Colors and type must resolve to --cascivo-* semantic tokens\nFlexible: label copy.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "LargeTitleHeader",
+      "category": "navigation",
+      "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
+      "intent": {
+        "whenToUse": [
+          "A scrolling screen that should keep its title reachable after the heading scrolls away",
+          "Mobile and tablet layouts following the platform convention of a large title that collapses",
+          "Any page where a persistent back control or actions must stay pinned while content scrolls"
+        ],
+        "whenNotToUse": [
+          "A site-wide navigation bar with links and a brand — use Header",
+          "An application chrome header spanning a sidebar layout — use ShellHeader",
+          "A screen whose scroll container is owned by the app shell or router — this component owns its own"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "Rendering it inside a parent with no resolved height",
+            "good": "Give the parent a height (a grid/flex track, a dvh value, or 100% of a sized ancestor)",
+            "why": "The component is the scroll container at block-size 100%; with an auto-height parent it never scrolls, so the title never collapses"
+          },
+          {
+            "bad": "Passing the page heading again as the first child of the content below",
+            "good": "Let the component own the heading",
+            "why": "The component already renders a real h1–h3; repeating it duplicates the heading in the accessibility tree"
+          }
+        ],
+        "related": [
+          {
+            "name": "Header",
+            "relationship": "alternative",
+            "reason": "Site-wide banner with brand, links and actions rather than a page title"
+          },
+          {
+            "name": "ShellHeader",
+            "relationship": "alternative",
+            "reason": "Application chrome for a shell layout rather than a scrolling page"
+          },
+          {
+            "name": "Dock",
+            "relationship": "pairs-with",
+            "reason": "Bottom navigation for the same mobile app shell"
+          }
+        ],
+        "a11yRationale": "The component owns the scroll container, so the sticky bar and the scroll timeline cannot be broken by surrounding markup. The title is a real h1–h3 in normal flow, so heading order and document outline are unaffected; the copy mirrored into the sticky bar is aria-hidden so screen readers announce the title exactly once. The collapse is a CSS scroll-driven animation with no client JavaScript, so the header is complete in server-rendered HTML and nothing depends on hydration. Where animation-timeline is unsupported the mirror stays hidden and the header degrades to a sticky bar above a heading — no content is lost. Under prefers-reduced-motion the reveal snaps with steps(1, jump-end) instead of interpolating. The bar clears the coarse-pointer target floor and pads for the top safe-area inset.",
+        "flexibility": [
+          {
+            "area": "collapseDistance",
+            "level": "flexible",
+            "note": "Scroll distance over which the title collapses (default 48px)"
+          },
+          {
+            "area": "level",
+            "level": "flexible",
+            "note": "Heading level is caller-controlled so the page outline stays correct"
+          },
+          {
+            "area": "collapse mechanism",
+            "level": "strict",
+            "note": "Always a CSS scroll-driven animation — there is no JavaScript fallback path"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "description": "The page title, rendered as the large heading and mirrored in the compact bar",
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "children",
+          "description": "Content rendered inside the component.",
+          "type": "React.ReactNode",
+          "required": true,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "leading",
+          "type": "React.ReactNode",
+          "required": false,
+          "description": "Leading slot of the compact bar — typically a back control",
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "actions",
+          "type": "React.ReactNode",
+          "required": false,
+          "description": "Trailing slot of the compact bar — typically icon buttons",
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
+          "name": "level",
+          "type": "1 | 2 | 3",
+          "required": false,
+          "default": "1",
+          "description": "Heading level for the title, mapping to h1–h3.",
+          "schema": {
+            "kind": "other"
+          }
+        },
+        {
+          "name": "collapseDistance",
+          "type": "number",
+          "required": false,
+          "default": "48",
+          "description": "Scroll distance (px) over which the large title collapses into the bar.",
+          "schema": {
+            "kind": "number"
+          }
+        },
+        {
+          "name": "className",
+          "description": "Additional CSS class names merged onto the root element.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        }
+      ],
+      "contextUrl": "/context/large-title-header.md",
+      "aiPrompt": "I am modifying the cascivo LargeTitleHeader component (navigation). Scrolling region whose large title collapses into a compact sticky bar as it scrolls\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nLargeTitleHeader is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-foreground, --cascivo-border-subtle, --cascivo-text-ui, --cascivo-text-heading-lg, --cascivo-font-semibold, --cascivo-font-bold, --cascivo-leading-tight, --cascivo-target-min-coarse, --cascivo-z-raised\n\nAccessibility: role \"heading\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): collapse mechanism — Always a CSS scroll-driven animation — there is no JavaScript fallback path\nFlexible: collapseDistance, level.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "AppFrame",

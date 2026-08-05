@@ -2490,6 +2490,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "large-title-header",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "large-title-header/large-title-header.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "large-title-header/large-title-header.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["navigation"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.16.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "layout-app-shell",
       "type": "registry:block",
       "files": [

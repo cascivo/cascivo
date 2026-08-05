@@ -40,6 +40,7 @@ import { meta as inputMeta } from './input/input.meta'
 import { meta as inputGroupMeta } from './input-group/input-group.meta'
 import { meta as joinMeta } from './join/join.meta'
 import { meta as kbdMeta } from './kbd/kbd.meta'
+import { meta as largeTitleHeaderMeta } from './large-title-header/large-title-header.meta'
 import { meta as linkMeta } from './link/link.meta'
 import { meta as listMeta } from './list/list.meta'
 import { meta as menuMeta } from './menu/menu.meta'
@@ -136,6 +137,7 @@ export const allMetas: ComponentMeta[] = [
   inputGroupMeta,
   joinMeta,
   kbdMeta,
+  largeTitleHeaderMeta,
   linkMeta,
   listMeta,
   menuMeta,

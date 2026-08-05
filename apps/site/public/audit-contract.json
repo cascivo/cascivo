@@ -1181,6 +1181,18 @@
       ]
     },
     {
+      "name": "LargeTitleHeader",
+      "props": [
+        { "name": "title", "type": "string", "required": true },
+        { "name": "children", "type": "React.ReactNode", "required": true },
+        { "name": "leading", "type": "React.ReactNode", "required": false },
+        { "name": "actions", "type": "React.ReactNode", "required": false },
+        { "name": "level", "type": "1 | 2 | 3", "required": false },
+        { "name": "collapseDistance", "type": "number", "required": false },
+        { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
       "name": "Link",
       "props": [
         { "name": "variant", "type": "'standalone' | 'inline'", "required": false },

@@ -231,7 +231,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-192 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+193 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -363,6 +363,7 @@ routing break after adding one of these, check that the import resolves to
 - **Dock** — Fixed bottom navigation bar for mobile app shells with up to 5 items
 - **Header** — App top bar with brand, primary navigation links, and an actions slot
 - **HeaderPanel** — Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings
+- **LargeTitleHeader** — Scrolling region whose large title collapses into a compact sticky bar as it scrolls
 - **Link** — Styled anchor for navigation, standalone or inline within prose
 - **Menubar** — Horizontal application menu bar with keyboard-navigable dropdown menus
 - **MenuButton** — A button that opens an anchored action menu of one-shot commands

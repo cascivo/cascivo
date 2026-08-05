@@ -1,0 +1,103 @@
+@layer cascivo.component {
+  /* Owns the scroll container on purpose. `position: sticky` is bounded by the
+     containing block, so a bar nested inside a short header wrapper scrolls away with
+     it — the bar has to be a direct child of the scroller to stay put, and this is also
+     what `scroll(nearest block)` then resolves to. */
+  .root {
+    block-size: 100%;
+    overflow-y: auto;
+    background: var(--cascivo-color-surface);
+  }
+
+  .bar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: var(--cascivo-z-raised);
+    display: flex;
+    align-items: center;
+    gap: var(--cascivo-space-2);
+    /* Coarse-pointer floor is the same 44px, so this holds on every pointer type. */
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+    padding-inline: var(--cascivo-space-4);
+    padding-block-start: env(safe-area-inset-top, 0px);
+    background: var(--cascivo-color-surface);
+    /* Transparent, not absent: the collapsed state swaps in the hairline without
+       shifting layout by a pixel. */
+    border-block-end: 1px solid transparent;
+  }
+
+  .slot {
+    display: flex;
+    flex: 1 0 0;
+    align-items: center;
+    gap: var(--cascivo-space-1);
+    min-inline-size: 0;
+  }
+
+  .slotEnd {
+    justify-content: flex-end;
+  }
+
+  .compactTitle {
+    /* Fallback: without a scroll timeline the mirror would sit permanently beside
+       the large title, so it is simply absent. The heading below still carries the
+       title, so nothing is lost. */
+    display: none;
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    font-size: var(--cascivo-text-ui);
+    font-weight: var(--cascivo-font-semibold);
+    color: var(--cascivo-color-foreground);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .largeTitle {
+    margin: 0;
+    padding-inline: var(--cascivo-space-4);
+    padding-block: var(--cascivo-space-2) var(--cascivo-space-4);
+    font-size: var(--cascivo-text-heading-lg);
+    font-weight: var(--cascivo-font-bold);
+    line-height: var(--cascivo-leading-tight);
+    color: var(--cascivo-color-foreground);
+    letter-spacing: -0.02em;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .compactTitle {
+      display: block;
+      opacity: 0;
+      animation: cascivo-large-title-reveal linear both;
+      animation-timeline: scroll(nearest block);
+      animation-range: 0 var(--_collapse, 48px);
+    }
+
+    .bar {
+      animation: cascivo-large-title-hairline linear both;
+      animation-timeline: scroll(nearest block);
+      animation-range: 0 var(--_collapse, 48px);
+    }
+
+    /* Scroll-linked interpolation is still motion. Snap both properties at the end
+       of the range instead: the affordance survives, the tweening does not. */
+    @media (prefers-reduced-motion: reduce) {
+      .compactTitle,
+      .bar {
+        animation-timing-function: steps(1, jump-end);
+      }
+    }
+  }
+
+  @keyframes cascivo-large-title-reveal {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes cascivo-large-title-hairline {
+    to {
+      border-block-end-color: var(--cascivo-border-subtle);
+    }
+  }
+}
