@@ -36,7 +36,7 @@ cascivo layers:
 
 ```css
 @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
-  cascivo.theme, cascivo.blocks, cascivo.override;
+  cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;
 ```
 
 ## SSR: `cascivoSsr()`

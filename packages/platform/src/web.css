@@ -1,0 +1,46 @@
+/* cascivo — Web platform */
+/* The presentation cascivo has always had, stated explicitly as one point on the
+   `data-platform` axis. Every value here equals the @cascivo/tokens default it shadows,
+   so loading this file changes nothing — that inertness is the whole point of the axis
+   landing before any platform-specific values exist.
+
+   Also the unscoped default (`:root:not([data-platform])`), mirroring how
+   @cascivo/themes/light.css claims `:root:not([data-theme])`: a consumer who never sets
+   the attribute keeps today's look. */
+
+/* Self-imports tokens for standalone use; deduped by URL when combined (see ./all.css). */
+@import '@cascivo/tokens';
+
+@layer cascivo.platform {
+  [data-platform='web'],
+  :root:not([data-platform]) {
+    /* ── Geometry ───────────────────────────────────────
+       One root. @cascivo/tokens derives radius-control / -field / -item / -surface /
+       -overlay / -indicator from it, so a platform re-tunes the whole geometry family by
+       setting this alone. */
+    --cascivo-radius-base: 0.375rem; /* 6px */
+
+    /* Control heights. Density, not decoration: iOS and Material disagree here and web
+       disagrees with both. */
+    --cascivo-control-height-sm: 2rem; /* 32px */
+    --cascivo-control-height-md: 2.5rem; /* 40px */
+    --cascivo-control-height-lg: 3rem; /* 48px */
+
+    /* ── Motion ─────────────────────────────────────────
+       Duration + easing pairs. Material 3 Expressive replaces these with springs, which
+       is exactly the kind of substitution this axis exists to allow. */
+    --cascivo-motion-enter: var(--cascivo-duration-200) var(--cascivo-ease-out);
+    --cascivo-motion-exit: var(--cascivo-duration-150) var(--cascivo-ease-in);
+    --cascivo-motion-emphasis: var(--cascivo-duration-300) var(--cascivo-ease-in-out);
+
+    /* ── Interaction affordance ─────────────────────────
+       Minimum comfortable touch target under a coarse pointer. */
+    --cascivo-target-min-coarse: 2.75rem; /* 44px */
+
+    /* How far a list separator is inset from the row's leading edge. Zero on web and on
+       Material (full-bleed rules); iOS insets to the label so the rule starts under the
+       text rather than under the icon. Declared here so the contract is complete on every
+       platform, not bolted on when the first platform needs it. */
+    --cascivo-list-separator-inset: 0px;
+  }
+}

@@ -176,7 +176,7 @@ cascivo styles live in cascade layers. Layer order beats selector specificity, s
 5. Style with `--cascivo-*` tokens, not raw values.
 
 Canonical order (lowest → highest priority):
-`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.theme, cascivo.blocks, cascivo.override;`
+`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;`
 Full recipe: https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md.
 
 ## Reactivity & state (signals, not React hooks)

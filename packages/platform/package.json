@@ -1,0 +1,52 @@
+{
+  "name": "@cascivo/platform",
+  "version": "0.0.1",
+  "private": false,
+  "description": "Platform-idiomatic geometry and motion for cascivo, selected with data-platform. Orthogonal to @cascivo/themes, which owns colour.",
+  "keywords": [
+    "cascivo",
+    "css",
+    "design-system",
+    "ios",
+    "material-design",
+    "mobile",
+    "platform",
+    "react"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/platform#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/platform"
+  },
+  "files": [
+    "src/**/*.css",
+    "!src/**/*.test.ts"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./all": "./src/all.css",
+    "./all.css": "./src/all.css",
+    "./web": "./src/web.css",
+    "./web.css": "./src/web.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "echo 'platform: CSS-only, no build'",
+    "test": "vp test"
+  },
+  "dependencies": {
+    "@cascivo/tokens": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

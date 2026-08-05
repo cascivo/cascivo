@@ -27,7 +27,7 @@ no wrapper component.
 /* app.css — loaded before anything else */
 
 /* 1. Declare the order. `vendor` is first = lowest priority. */
-@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
+@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform,
   cascivo.theme, cascivo.blocks, cascivo.override;
 
 /* 2. Import the vendor stylesheet INTO the vendor layer. */

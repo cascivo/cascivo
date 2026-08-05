@@ -249,13 +249,18 @@ A new package, **`@cascivo/platform`**, mirroring `@cascivo/themes` exactly so t
 
 ```
 packages/platform/src/
-  base.css        # declares the platform token contract with web-default values
-  ios.css         # [data-platform='ios']       — iOS 26 / Liquid Glass
-  material.css    # [data-platform='material']  — Material 3 Expressive
-  web.css         # [data-platform='web']       — today's cascivo look, explicit
-  all.css
-  parity.test.ts  # every platform file defines the identical token set
+  web.css         # [data-platform='web'] + :root:not([data-platform]) — today's look
+  all.css         # tokens once, then every platform
+  parity.test.ts  # identical token set; no colour; layer discipline
+  ios.css         # [data-platform='ios']       — T2
+  material.css    # [data-platform='material']  — T2
 ```
+
+**As built, there is no `base.css`.** The proposal had one carrying the contract's default
+values, but `@cascivo/themes` already solves this: `light.css` claims
+`[data-theme='light'], :root:not([data-theme])`, folding the unscoped default into the
+platform file itself. `web.css` does the same, so a separate `base.css` would have been a
+verbatim duplicate of it and a second place to forget a token.
 
 ```html
 <html data-theme="dark" data-platform="ios">
@@ -516,6 +521,39 @@ was not searched.
   ever asserted `scrollTo` was *called* with the right offset, never that it *landed* there. Now `'instant'`
   for placement and `'smooth'` only for keyboard moves; confirmed by reading `scrollTop` immediately and
   after settling and getting the same value both times.
+
+- **2026-08-05 — T1 shipped: the axis, inert.** `cascivo.platform` inserted between
+  `cascivo.component` and `cascivo.theme`, and `@cascivo/platform` published with `web` as its
+  only platform, every value equal to the `@cascivo/tokens` default it shadows.
+
+  **The contract is nine tokens, and they are derivation roots that already existed** rather
+  than a parallel naming scheme: `--cascivo-radius-base` (which `radius-control`/`-field`/
+  `-item`/`-surface`/`-overlay`/`-indicator` all derive from, so one value re-tunes the whole
+  geometry family), the three `--cascivo-control-height-*`, the three `--cascivo-motion-*`,
+  `--cascivo-target-min-coarse`, and one genuinely new knob, `--cascivo-list-separator-inset`.
+  That the tokens tier was already factored this way is the strongest evidence yet that §4.1's
+  invariant is real and not wishful: the geometry roots were already separate from colour.
+
+  **The §4.1 invariant is now mechanically enforced**, not aspirational —
+  `packages/platform/src/parity.test.ts` fails the build if any platform stylesheet declares a
+  `--cascivo-color-*` property, if two platforms declare different token sets, or if a rule
+  lands outside `@layer cascivo.platform`. Verified by deliberately adding
+  `--cascivo-color-accent` and confirming the suite goes red, then removing it and confirming
+  green — a guard that has never been seen to fail is not yet a guard.
+
+  **Emitters touched: eight, not the five originally scoped.** `packages/vite-plugin/readme.body.md`
+  was missed in the survey, and — correcting §4.3 — `scripts/checks/layer-order.test.ts` does
+  need editing: it derives the canonical order from `layers.css` for the *subsequence* check,
+  but also asserts the full expected sequence as an explicit tripwire, which is exactly the
+  design that stops the order drifting silently. `scripts/checks/reset-floor.test.ts` needed
+  `packages/platform/src` adding to its scan roots, since it fails any canonical layer that no
+  shipped stylesheet fills. `packages/react/vite.config.ts` needed no edit — it reads
+  `layers.css` at build time.
+
+  **Inertness proven two ways.** The aggregate `@cascivo/react/styles.css` carries the new
+  layer *statement* but zero `[data-platform=` rules, so a web adopter pays no bytes for an
+  axis they never use; and the full visual suite passes unchanged against the committed
+  baselines, which is the claim that matters — the axis is installed and changes nothing.
 
 ---
 

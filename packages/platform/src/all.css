@@ -1,0 +1,25 @@
+/* cascivo — All-in-one platform bundle */
+/* Every first-party platform, in one import:
+
+     @import '@cascivo/platform/all.css';
+
+   It loads @cascivo/tokens exactly ONCE (here), then each platform (scoped by its own
+   [data-platform]). The per-platform files also self-import @cascivo/tokens for
+   standalone use; bundlers and browsers dedupe the identical @import URL, so tokens are
+   still emitted once.
+
+   Today `web` is the only platform, so this file and '@cascivo/platform/web.css' are
+   equivalent — import this one anyway and further platforms arrive without a code change.
+
+   ── What this axis is ─────────────────────────────────────────────────────
+   `data-platform` selects GEOMETRY, MOTION and INTERACTION AFFORDANCE.
+   `data-theme` selects COLOUR.
+   They are disjoint by rule and by test, which is what lets them compose additively:
+   twelve themes plus N platforms, not twelve times N. Set both on any element:
+
+     <html data-theme="dark" data-platform="web">
+
+   Absent `data-platform` means `web`, so nothing changes until you opt in. */
+
+@import '@cascivo/tokens';
+@import './web.css';
