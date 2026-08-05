@@ -129,6 +129,7 @@ import { LargeTitleHeader } from '@cascivo/components/large-title-header'
 import { InfiniteScroll } from '@cascivo/components/infinite-scroll'
 import { ReorderList, type ReorderItem } from '@cascivo/components/reorder-list'
 import { VirtualList } from '@cascivo/components/virtual-list'
+import { WheelPicker } from '@cascivo/components/wheel-picker'
 import { LogViewer } from '@cascivo/components/log-viewer'
 import { Toc } from '@cascivo/components/toc'
 import { Info } from '@cascivo/icons'
@@ -846,6 +847,32 @@ export const demos: Record<string, () => JSX.Element> = {
     return (
       <div style={{ maxWidth: '20rem' }}>
         <ReorderList value={order} onValueChange={setOrder} />
+      </div>
+    )
+  },
+  'wheel-picker': () => {
+    const [hour, setHour] = useState('10')
+    const [minute, setMinute] = useState('30')
+    return (
+      <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <WheelPicker
+          ariaLabel="Hour"
+          value={hour}
+          onValueChange={setHour}
+          options={Array.from({ length: 12 }, (_, i) => {
+            const v = String(i + 1).padStart(2, '0')
+            return { value: v, label: v }
+          })}
+        />
+        <WheelPicker
+          ariaLabel="Minute"
+          value={minute}
+          onValueChange={setMinute}
+          options={Array.from({ length: 12 }, (_, i) => {
+            const v = String(i * 5).padStart(2, '0')
+            return { value: v, label: v }
+          })}
+        />
       </div>
     )
   },

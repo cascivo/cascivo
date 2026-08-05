@@ -4724,6 +4724,30 @@
           "version": "0.16.0"
         }
       }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "wheel-picker",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "wheel-picker/wheel-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "wheel-picker/wheel-picker.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "iOS-style drum picker — a column of options that scrolls and snaps to a selection",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["inputs"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "0.16.0"
+        }
+      }
     }
   ]
 }

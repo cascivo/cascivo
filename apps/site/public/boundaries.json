@@ -1737,6 +1737,23 @@
         "level": "strict",
         "note": "Must keep content in the a11y tree — never display:none"
       }
+    ],
+    "WheelPicker": [
+      {
+        "area": "visibleCount / itemHeight",
+        "level": "flexible",
+        "note": "Wheel geometry is caller-controlled (defaults 5 rows of 36px)"
+      },
+      {
+        "area": "value / onValueChange",
+        "level": "strict",
+        "note": "Always controlled — the component never holds the value itself"
+      },
+      {
+        "area": "wheel mechanism",
+        "level": "strict",
+        "note": "Always CSS scroll-snap; there is no JavaScript-driven transform mode"
+      }
     ]
   }
 }

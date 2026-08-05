@@ -24,7 +24,7 @@ the readings first, because picking one silently would be the expensive mistake:
 
 | # | Reading | What ships | Rough size |
 | - | ------- | ---------- | ---------- |
-| **I1** | **Platform skin.** The 196 components already in the registry _look and move_ like iOS or like Android, selected by an attribute. | A CSS axis + a token contract. No new components. | 1 package, ~6 weeks |
+| **I1** | **Platform skin.** The 197 components already in the registry _look and move_ like iOS or like Android, selected by an attribute. | A CSS axis + a token contract. No new components. | 1 package, ~6 weeks |
 | **I2** | **Mobile component set.** The ~7 primitives that a phone app needs and cascivo genuinely lacks (nav stack, large-title header, wheel picker, infinite scroll, reorder list, virtual list, list-header/note). | New registry components. | ~7 components |
 | **I3** | **App runtime.** Router outlet, page stack with memory management, gesture-driven swipe-back, hardware back-button handling, Capacitor plugin bridge, status-bar/keyboard/haptics APIs. | A framework. | A different product |
 
@@ -108,7 +108,7 @@ property cascade under a cascade layer, switchable at runtime, scopable to a sub
 | | Ionic 8 | Framework7 v9 | Konsta UI | cascivo today |
 | - | ------- | ------------- | --------- | ------------- |
 | Platform switch | `mode` class on `<html>` | build/config theme | `App theme=` (Tailwind) | **none** |
-| Component count | ~100 | ~60 | ~40 | **196** |
+| Component count | ~100 | ~60 | ~40 | **197** |
 | Styling escape hatch | CSS vars + `::part()` | CSS vars | edit Tailwind classes | **owned source + tokens + `data-cascivo-*`** |
 | Routing / page stack | ✅ owns it | ✅ owns it | ❌ | ❌ |
 | Native runtime | ✅ Capacitor | ✅ Capacitor/Cordova | ❌ | ❌ |
@@ -423,7 +423,7 @@ Answering §0 and §7's three questions, 2026-08-05:
 **I2 — the seven primitives: accepted, and promoted to first.** The original tranche order put T4
 after the axis; that was wrong. `InfiniteScroll`, `VirtualList`, `ListHeader`/`Note` and `ReorderList`
 are justified without reference to iOS or Android at all — they are gaps against shadcn and Carbon in a
-196-component system, so none of the work can be stranded by a later decision on the axis.
+197-component system, so none of the work can be stranded by a later decision on the axis.
 `LargeTitleHeader` leads because it is the clearest demonstration of the CSS-native thesis: Ionic drives
 the same collapse with JavaScript and an IntersectionObserver, and a scroll-driven animation does it on
 the compositor with `clientJs: 'none'`.
@@ -501,6 +501,22 @@ was not searched.
   deriving the window end from a clamped start widened it by the whole overscan at the top of the list;
   the range is now anchored on the first visible row.
 
+- **2026-08-05 — T4.6 `WheelPicker` shipped**, closing T4 apart from `NavStack`. The wheel is **CSS
+  scroll-snap, not a JavaScript gesture engine**: momentum, rubber-banding and the snap are the platform's,
+  so the gesture runs on the compositor and feels native on every device — where Ionic and Framework7 both
+  hand-roll transform math. JavaScript only reads which row settled and moves the column when the value
+  changes from outside. Semantically a single-select listbox whose selection follows focus, so
+  Arrow/Home/End/PageUp/PageDown need no explicit commit; `apgPattern: 'listbox'` is deliberately **not**
+  declared, because that guard requires an `Enter` key this variant has nothing to bind, and a no-op
+  handler to satisfy a checker would be worse than the honest omission.
+
+  **Verified in Chromium**, and it caught a real defect no unit test could. `scrollTo({ behavior: 'auto' })`
+  does **not** mean instant — `auto` defers to the element's CSS `scroll-behavior`, which this component sets
+  to `smooth`, so the initial placement animated and the wheel visibly spun up on every mount. jsdom only
+  ever asserted `scrollTo` was *called* with the right offset, never that it *landed* there. Now `'instant'`
+  for placement and `'smooth'` only for keyboard moves; confirmed by reading `scrollTop` immediately and
+  after settling and getting the same value both times.
+
 ---
 
 ## 8. What this proposal needs
@@ -509,7 +525,7 @@ All three questions are answered in §7. What remains open is the one §7 delibe
 §4.1 invariant survives contact with a real `ios.css`. T2 is the experiment that settles it, and this document
 is the record either way — of why the skins were cheap, or of why the project was stopped.
 
-Remaining T4: `WheelPicker`. `NavStack` stays last and droppable per §6.1.
+T4 is complete apart from `NavStack`, which stays last and droppable per §6.1.
 
 ---
 

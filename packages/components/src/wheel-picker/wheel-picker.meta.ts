@@ -1,0 +1,173 @@
+import type { ComponentMeta } from '@cascivo/core'
+
+export const meta: ComponentMeta = {
+  name: 'WheelPicker',
+  description: 'iOS-style drum picker — a column of options that scrolls and snaps to a selection',
+  category: 'inputs',
+  clientJs: 'required',
+  states: ['idle', 'focused', 'scrolling'],
+  variants: [],
+  sizes: [],
+  props: [
+    {
+      name: 'options',
+      type: 'WheelPickerOption[]',
+      required: true,
+      description: 'The rows of the wheel, in order',
+    },
+    {
+      name: 'value',
+      type: 'string',
+      required: true,
+      description: 'The selected option value; the component is controlled',
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+      required: true,
+      description: 'Called with the new value when the wheel settles or a key moves the selection',
+    },
+    {
+      name: 'visibleCount',
+      type: 'number',
+      required: false,
+      default: '5',
+      description: 'How many rows are visible. Odd numbers keep the selection centred.',
+    },
+    {
+      name: 'itemHeight',
+      type: 'number',
+      required: false,
+      default: '36',
+      description: 'Row height in px.',
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      description: 'Accessible label for the wheel — required when it has no visible label',
+    },
+    {
+      name: 'className',
+      description: 'Additional CSS class names merged onto the root element.',
+      type: 'string',
+      required: false,
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'WheelPickerOption',
+      fields: [
+        { name: 'value', type: 'string', required: true, description: 'Value reported on change' },
+        { name: 'label', type: 'string', required: true, description: 'Visible row text' },
+      ],
+    },
+  ],
+  tokens: [
+    '--cascivo-color-foreground',
+    '--cascivo-color-text-muted',
+    '--cascivo-border-subtle',
+    '--cascivo-text-ui',
+    '--cascivo-font-semibold',
+    '--cascivo-radius-md',
+    '--cascivo-ring-width',
+    '--cascivo-ring-color',
+  ],
+  accessibility: {
+    role: 'listbox',
+    wcag: '2.2-AA',
+    keyboard: ['ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown', 'Tab'],
+    reducedMotion: true,
+  },
+  examples: [
+    {
+      title: 'Basic',
+      code: `<WheelPicker
+  ariaLabel="Hour"
+  value={hour}
+  onValueChange={setHour}
+  options={[
+    { value: '09', label: '09' },
+    { value: '10', label: '10' },
+    { value: '11', label: '11' },
+  ]}
+/>`,
+      description: 'Controlled — the caller owns the value.',
+    },
+    {
+      title: 'Taller wheel',
+      code: `<WheelPicker ariaLabel="Minute" value={minute} onValueChange={setMinute} options={minutes} visibleCount={7} />`,
+      description: 'Shows more rows around the selection.',
+    },
+    {
+      title: 'Several columns',
+      code: `<Flex gap="0">
+  <WheelPicker ariaLabel="Hour" value={hour} onValueChange={setHour} options={hours} />
+  <WheelPicker ariaLabel="Minute" value={minute} onValueChange={setMinute} options={minutes} />
+</Flex>`,
+      description: 'Compose one wheel per field; each column is independently operable.',
+    },
+  ],
+  dependencies: ['@cascivo/core'],
+  tags: ['inputs', 'picker', 'wheel', 'drum', 'scroll-snap', 'mobile', 'ios'],
+  intent: {
+    whenToUse: [
+      'Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit',
+      'Mobile forms following the platform convention of a drum rather than a dropdown',
+      'Inside a BottomSheet or ActionSheet, where a native select would open a competing overlay',
+    ],
+    whenNotToUse: [
+      'Long or unordered option lists, where scrolling to a value is slower than typing — use Combobox',
+      'Desktop, pointer-first forms — use Select or NativeSelect',
+      'Dates, which have their own affordances — use DatePicker or Calendar',
+    ],
+    antiPatterns: [
+      {
+        bad: 'Rendering it uncontrolled and reading the value from the DOM',
+        good: 'Pass `value` and `onValueChange`',
+        why: 'The component is controlled; without a `value` it cannot scroll to the current selection or reflect an external change',
+      },
+      {
+        bad: 'Leaving `ariaLabel` off a wheel with no visible label',
+        good: 'Label every column — "Hour", "Minute"',
+        why: 'A listbox with no accessible name is announced only as a list, so the user cannot tell which field they are in',
+      },
+    ],
+    related: [
+      {
+        name: 'Select',
+        relationship: 'alternative',
+        reason: 'Pointer-first single selection on desktop',
+      },
+      {
+        name: 'TimePicker',
+        relationship: 'alternative',
+        reason: 'Purpose-built time entry rather than a generic wheel',
+      },
+      {
+        name: 'BottomSheet',
+        relationship: 'pairs-with',
+        reason: 'The usual host for a wheel on a phone screen',
+      },
+    ],
+    a11yRationale:
+      'The column is a role="listbox" with role="option" rows, is focusable, and points aria-activedescendant at the selected row, so assistive technology tracks the selection without moving DOM focus per row. Selection follows focus — ArrowUp/ArrowDown, Home/End and PageUp/PageDown move the selection and scroll to match — which is the APG single-select listbox variant that needs no explicit commit; the pattern is deliberately not declared as `apgPattern: listbox` because that guard requires an Enter key this variant has nothing to bind. The wheel itself is CSS scroll-snap, so touch momentum and rubber-banding are the platform\'s own and remain correct under assistive gestures. Smooth scrolling is applied only under prefers-reduced-motion: no-preference. The selection band is decorative and aria-hidden.',
+    flexibility: [
+      {
+        area: 'visibleCount / itemHeight',
+        level: 'flexible',
+        note: 'Wheel geometry is caller-controlled (defaults 5 rows of 36px)',
+      },
+      {
+        area: 'value / onValueChange',
+        level: 'strict',
+        note: 'Always controlled — the component never holds the value itself',
+      },
+      {
+        area: 'wheel mechanism',
+        level: 'strict',
+        note: 'Always CSS scroll-snap; there is no JavaScript-driven transform mode',
+      },
+    ],
+  },
+}

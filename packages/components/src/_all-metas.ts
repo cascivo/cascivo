@@ -96,6 +96,7 @@ import { meta as toggleMeta } from './toggle/toggle.meta'
 import { meta as tooltipMeta } from './tooltip/tooltip.meta'
 import { meta as userMeta } from './user/user.meta'
 import { meta as virtualListMeta } from './virtual-list/virtual-list.meta'
+import { meta as wheelPickerMeta } from './wheel-picker/wheel-picker.meta'
 import { meta as visuallyHiddenMeta } from './visually-hidden/visually-hidden.meta'
 
 export const allMetas: ComponentMeta[] = [
@@ -196,5 +197,6 @@ export const allMetas: ComponentMeta[] = [
   tooltipMeta,
   userMeta,
   virtualListMeta,
+  wheelPickerMeta,
   visuallyHiddenMeta,
 ]

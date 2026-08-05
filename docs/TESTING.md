@@ -1,7 +1,7 @@
 # Testing cascivo components
 
 How to test UIs built with cascivo using Vitest + Testing Library. cascivo's
-own component suite (196 components, `packages/components/src/*/[name].test.tsx`)
+own component suite (197 components, `packages/components/src/*/[name].test.tsx`)
 uses exactly this stack; the patterns below are lifted from it.
 
 ## Setup

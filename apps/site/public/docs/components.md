@@ -218,5 +218,6 @@ Every component, chart, block, and layout in the registry, with its distribution
 | **User** — Identity composite: an avatar with a name, description, and optional action slot                                                                                                                                        | npm @cascivo/react · or copy-paste | `/llms/user.md`                       |
 | **VirtualList** — Renders only the rows inside the viewport, so list length costs no extra DOM                                                                                                                                     | npm @cascivo/react · or copy-paste | `/llms/virtual-list.md`               |
 | **VisuallyHidden** — Hides content visually while keeping it available to screen readers                                                                                                                                           | npm @cascivo/react · or copy-paste | `/llms/visually-hidden.md`            |
+| **WheelPicker** — iOS-style drum picker — a column of options that scrolls and snaps to a selection                                                                                                                                | npm @cascivo/react · or copy-paste | `/llms/wheel-picker.md`               |
 
 _registry v0.16.0 · generated 2026-08-05_

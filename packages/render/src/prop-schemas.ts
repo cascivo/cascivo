@@ -6544,4 +6544,39 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: true,
     },
   ],
+  WheelPicker: [
+    {
+      name: 'options',
+      required: true,
+    },
+    {
+      name: 'value',
+      required: true,
+      primitives: ['string'],
+    },
+    {
+      name: 'onValueChange',
+      required: true,
+    },
+    {
+      name: 'visibleCount',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'itemHeight',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+  ],
 }

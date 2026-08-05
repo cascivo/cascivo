@@ -58,6 +58,10 @@ const COMPONENT_STORY_EXCLUSIONS = new Map<string, string>([
     'reorder-list',
     'every example references free identifiers (items/setItems) — the component is controlled, so no example stands alone',
   ],
+  [
+    'wheel-picker',
+    'every example references free identifiers (hour/setHour, minutes) — the component is controlled, so no example stands alone',
+  ],
 
   ['app-shell', 'both examples reference free identifiers (items, header, nav, open signal)'],
   [

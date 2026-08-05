@@ -312,7 +312,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (208 entries — 196 components + 12 page blocks)
+## Component index (209 entries — 197 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -473,6 +473,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [time-picker](https://cascivo.com/llms/time-picker.md) — Native time input wrapper with label, hint, error, and size variants _(npm @cascivo/react · or copy-paste)_
 - [toggle](https://cascivo.com/llms/toggle.md) — On/off switch built as an accessible button _(npm @cascivo/react · or copy-paste)_
 - [toggle-group](https://cascivo.com/llms/toggle-group.md) — A set of toggle buttons for single or multiple selection _(npm @cascivo/react · or copy-paste)_
+- [wheel-picker](https://cascivo.com/llms/wheel-picker.md) — iOS-style drum picker — a column of options that scrolls and snaps to a selection _(npm @cascivo/react · or copy-paste)_
 
 ### layout
 
@@ -769,6 +770,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [User](https://cascivo.com/context/user.md) — Use when: Showing a person with their name and a secondary line (email, role) next to an avatar
 - [VirtualList](https://cascivo.com/context/virtual-list.md) — Use when: Lists long enough that rendering every row costs noticeable time or memory (roughly a thousand rows and up)
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
+- [WheelPicker](https://cascivo.com/context/wheel-picker.md) — Use when: Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit
 
 _Generated: 2026-08-05 from registry v0.16.0_
 
@@ -18632,6 +18634,128 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Tags
 
 accessibility, screen-reader, sr-only, hidden
+
+---
+
+_Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# WheelPicker
+
+iOS-style drum picker — a column of options that scrolls and snaps to a selection
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add wheel-picker
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { WheelPicker } from '@cascivo/react'
+```
+
+## Category
+
+`inputs`
+
+## States
+
+- `idle`
+- `focused`
+- `scrolling`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `WheelPickerOption[]` | yes | — | The rows of the wheel, in order |
+| `value` | `string` | yes | — | The selected option value; the component is controlled |
+| `onValueChange` | `(value: string) => void` | yes | — | Called with the new value when the wheel settles or a key moves the selection |
+| `visibleCount` | `number` | no | `5` | How many rows are visible. Odd numbers keep the selection centred. |
+| `itemHeight` | `number` | no | `36` | Row height in px. |
+| `ariaLabel` | `string` | no | — | Accessible label for the wheel — required when it has no visible label |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+
+## Object types
+
+### `WheelPickerOption`
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `value` | `string` | yes | Value reported on change |
+| `label` | `string` | yes | Visible row text |
+
+## Examples
+
+### Basic
+
+Controlled — the caller owns the value.
+
+```tsx
+<WheelPicker
+  ariaLabel="Hour"
+  value={hour}
+  onValueChange={setHour}
+  options={[
+    { value: '09', label: '09' },
+    { value: '10', label: '10' },
+    { value: '11', label: '11' },
+  ]}
+/>
+```
+
+### Taller wheel
+
+Shows more rows around the selection.
+
+```tsx
+<WheelPicker ariaLabel="Minute" value={minute} onValueChange={setMinute} options={minutes} visibleCount={7} />
+```
+
+### Several columns
+
+Compose one wheel per field; each column is independently operable.
+
+```tsx
+<Flex gap="0">
+  <WheelPicker ariaLabel="Hour" value={hour} onValueChange={setHour} options={hours} />
+  <WheelPicker ariaLabel="Minute" value={minute} onValueChange={setMinute} options={minutes} />
+</Flex>
+```
+
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
+## Design tokens
+
+- `--cascivo-color-foreground`
+- `--cascivo-color-text-muted`
+- `--cascivo-border-subtle`
+- `--cascivo-text-ui`
+- `--cascivo-font-semibold`
+- `--cascivo-radius-md`
+- `--cascivo-ring-width`
+- `--cascivo-ring-color`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `listbox`
+- **Keyboard:** ArrowUp, ArrowDown, Home, End, PageUp, PageDown, Tab
+
+## Dependencies
+
+- `@cascivo/core`
+
+## Tags
+
+inputs, picker, wheel, drum, scroll-snap, mobile, ios
 
 ---
 

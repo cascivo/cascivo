@@ -12,7 +12,7 @@ and they can coexist in one project.
 | Path                               | You get                                            | Choose it when                                            |
 | ---------------------------------- | -------------------------------------------------- | --------------------------------------------------------- |
 | **A. Copy-paste (CLI)**            | Component source (TSX + CSS) copied into your repo | You want to own and edit the code — the shadcn model      |
-| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 196 components        | You just want to _use_ the system; upgrades via `pnpm up` |
+| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 197 components        | You just want to _use_ the system; upgrades via `pnpm up` |
 
 Either way, one piece of wiring is **not optional**: importing the themes CSS
 and setting `data-theme`. Skip it and components render as correctly-structured

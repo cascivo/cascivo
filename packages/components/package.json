@@ -124,6 +124,7 @@
     "./tree-view": "./src/tree-view/tree-view.tsx",
     "./user": "./src/user/user.tsx",
     "./virtual-list": "./src/virtual-list/virtual-list.tsx",
+    "./wheel-picker": "./src/wheel-picker/wheel-picker.tsx",
     "./visually-hidden": "./src/visually-hidden/visually-hidden.tsx"
   },
   "scripts": {

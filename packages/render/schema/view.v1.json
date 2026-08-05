@@ -285,7 +285,8 @@
             "User",
             "UsersTablePage",
             "VirtualList",
-            "VisuallyHidden"
+            "VisuallyHidden",
+            "WheelPicker"
           ]
         },
         "props": {
@@ -4806,6 +4807,41 @@
                   }
                 },
                 "required": ["children"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "WheelPicker"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "visibleCount": {
+                    "type": "number"
+                  },
+                  "itemHeight": {
+                    "type": "number"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "className": {
+                    "type": "string"
+                  }
+                },
+                "required": ["options", "value", "onValueChange"]
               }
             }
           }

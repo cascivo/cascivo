@@ -249,7 +249,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-196 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+197 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -294,6 +294,7 @@ routing break after adding one of these, check that the import resolves to
 - **TimePicker** — Native time input wrapper with label, hint, error, and size variants
 - **Toggle** — On/off switch built as an accessible button
 - **ToggleGroup** — A set of toggle buttons for single or multiple selection
+- **WheelPicker** — iOS-style drum picker — a column of options that scrolls and snaps to a selection
 
 ### Display
 
