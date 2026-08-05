@@ -75,4 +75,4 @@ navigation, collapse, disclosure
 
 ---
 
-_Generated from registry v0.15.0 on 2026-08-03. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

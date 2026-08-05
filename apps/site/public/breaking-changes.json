@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-03",
+  "generatedAt": "2026-08-05",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,8 +15,15 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "releases": [
+        {
+          "version": "0.16.0",
+          "level": "minor",
+          "notes": [
+            "Record each component's client-JavaScript cost in its manifest, and stop shipping `'use client'` from components that do not need it."
+          ]
+        },
         {
           "version": "0.15.0",
           "level": "minor",
@@ -69,7 +76,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.7.0",
+      "version": "0.7.1",
       "releases": [
         {
           "version": "0.7.0",
@@ -120,8 +127,16 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "releases": [
+        {
+          "version": "0.16.0",
+          "level": "minor",
+          "notes": [
+            "Record each component's client-JavaScript cost in its manifest, and stop shipping `'use client'` from components that do not need it.",
+            "Add `@cascivo/core/pure`, and stop stamping `'use client'` on every `@cascivo/react` chunk."
+          ]
+        },
         {
           "version": "0.15.0",
           "level": "minor",
@@ -177,7 +192,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "releases": [
         {
           "version": "0.2.0",
@@ -190,7 +205,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -210,7 +225,7 @@
     },
     {
       "name": "@cascivo/eslint-config",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "releases": [
         {
           "version": "0.2.0",
@@ -223,12 +238,20 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.15.0",
-      "releases": []
+      "version": "0.16.0",
+      "releases": [
+        {
+          "version": "0.16.0",
+          "level": "minor",
+          "notes": [
+            "Record each component's client-JavaScript cost in its manifest, and stop shipping `'use client'` from components that do not need it."
+          ]
+        }
+      ]
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -244,7 +267,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.6",
+      "version": "0.3.7",
       "releases": [
         {
           "version": "0.3.0",
@@ -265,7 +288,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.6.2",
+      "version": "0.6.3",
       "releases": [
         {
           "version": "0.6.0",
@@ -307,8 +330,17 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "releases": [
+        {
+          "version": "0.16.0",
+          "level": "minor",
+          "notes": [
+            "Record each component's client-JavaScript cost in its manifest, and stop shipping `'use client'` from components that do not need it.",
+            "Add `@cascivo/core/pure`, and stop stamping `'use client'` on every `@cascivo/react` chunk.",
+            "Rebuild `Accordion` and `Collapsible` on native `<details>`/`<summary>`."
+          ]
+        },
         {
           "version": "0.15.0",
           "level": "minor",
@@ -408,7 +440,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.4",
+      "version": "0.2.5",
       "releases": [
         {
           "version": "0.2.0",
@@ -424,7 +456,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.15.0",
+      "version": "0.16.0",
       "releases": [
         {
           "version": "0.1.0",
@@ -435,7 +467,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.9",
+      "version": "0.4.10",
       "releases": [
         {
           "version": "0.4.0",
@@ -461,7 +493,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.7",
+      "version": "0.5.8",
       "releases": [
         {
           "version": "0.5.0",
@@ -492,7 +524,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.4",
+      "version": "0.1.5",
       "releases": [
         {
           "version": "0.1.0",
