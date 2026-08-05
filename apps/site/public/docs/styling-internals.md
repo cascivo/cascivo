@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/styling-internals.md
-  registry v0.15.0 · generated 2026-08-03
+  registry v0.16.0 · generated 2026-08-05
 -->
 
 # Styling a component's internals
