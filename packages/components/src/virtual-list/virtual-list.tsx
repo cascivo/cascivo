@@ -71,6 +71,10 @@ export function VirtualList<Item>({
       onScroll={onScroll}
       role="list"
       aria-label={ariaLabel}
+      // Rows carry no focusable content of their own, so without this the scroll
+      // container is unreachable by keyboard (axe scrollable-region-focusable).
+      // Focused, it takes the browser's native arrow/PageUp/PageDown scrolling.
+      tabIndex={0}
     >
       {/* Sized to the full collection so the scrollbar reflects real length. */}
       <div className={styles['canvas']} style={{ blockSize: `${items.length * itemHeight}px` }}>

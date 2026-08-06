@@ -25157,11 +25157,11 @@
             "required": false
           }
         ],
-        "tokens": [],
+        "tokens": ["--cascivo-color-accent"],
         "accessibility": {
           "role": "list",
           "wcag": "2.2-AA",
-          "keyboard": ["Tab"]
+          "keyboard": ["Tab", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End"]
         },
         "examples": [],
         "dependencies": ["@cascivo/core"],
@@ -25211,7 +25211,7 @@
               "reason": "Columnar data with sorting and selection rather than a flat row list"
             }
           ],
-          "a11yRationale": "The viewport is a role=\"list\" and each rendered row is a role=\"listitem\" carrying aria-setsize and aria-posinset for the entire collection, so assistive technology announces \"row 3 of 10000\" rather than the size of the rendered window — the defect that makes naive virtualization unusable with a screen reader. Rows are placed with transform rather than by mutating layout, so scrolling stays on the compositor. Because unrendered rows are absent from the DOM, browser in-page search cannot reach them; provide a real filter or search control alongside any virtualized list, and prefer a non-virtualized list when the collection is small.",
+          "a11yRationale": "The viewport is a role=\"list\" and each rendered row is a role=\"listitem\" carrying aria-setsize and aria-posinset for the entire collection, so assistive technology announces \"row 3 of 10000\" rather than the size of the rendered window — the defect that makes naive virtualization unusable with a screen reader. The viewport is also in the tab order, because rows hold plain content rather than focusable controls and a scroll container with nothing focusable inside it is otherwise unreachable without a pointer; once focused it takes the browser’s native arrow, Page and Home/End scrolling. Rows are placed with transform rather than by mutating layout, so scrolling stays on the compositor. Because unrendered rows are absent from the DOM, browser in-page search cannot reach them; provide a real filter or search control alongside any virtualized list, and prefer a non-virtualized list when the collection is small.",
           "flexibility": [
             {
               "area": "overscan",

@@ -64,11 +64,15 @@ A larger overscan trades DOM nodes for fewer blank frames when flinging.
 
 Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
 
+## Design tokens
+
+- `--cascivo-color-accent`
+
 ## Accessibility
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `list`
-- **Keyboard:** Tab
+- **Keyboard:** Tab, ArrowUp, ArrowDown, PageUp, PageDown, Home, End
 
 ## Dependencies
 
