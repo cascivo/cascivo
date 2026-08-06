@@ -64,6 +64,10 @@ const TYPE_MAP: Record<RegistryItemType, ShadcnItemType> = {
   block: 'registry:block',
   section: 'registry:block',
   chart: 'registry:component',
+  // Both ship as importable React components, like `chart` above — not as
+  // multi-file blocks — so they map to registry:component.
+  flow: 'registry:component',
+  editor: 'registry:component',
   theme: 'registry:theme',
   style: 'registry:style',
   template: 'registry:block',

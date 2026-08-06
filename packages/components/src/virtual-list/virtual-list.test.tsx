@@ -78,6 +78,13 @@ describe('VirtualList', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(3)
   })
 
+  it('keeps the scroll viewport reachable by keyboard', () => {
+    // Rows hold no focusable content, so the scroll container itself must be in the
+    // tab order — axe scrollable-region-focusable, which turned the axe sweep red.
+    renderList()
+    expect(screen.getByRole('list')).toHaveAttribute('tabindex', '0')
+  })
+
   it('sizes the viewport from the px height', () => {
     renderList()
     expect(screen.getByRole('list')).toHaveStyle({ blockSize: '200px' })

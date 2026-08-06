@@ -43,7 +43,7 @@
 
 ## Accessibility rationale
 
-The viewport is a role="list" and each rendered row is a role="listitem" carrying aria-setsize and aria-posinset for the entire collection, so assistive technology announces "row 3 of 10000" rather than the size of the rendered window — the defect that makes naive virtualization unusable with a screen reader. Rows are placed with transform rather than by mutating layout, so scrolling stays on the compositor. Because unrendered rows are absent from the DOM, browser in-page search cannot reach them; provide a real filter or search control alongside any virtualized list, and prefer a non-virtualized list when the collection is small.
+The viewport is a role="list" and each rendered row is a role="listitem" carrying aria-setsize and aria-posinset for the entire collection, so assistive technology announces "row 3 of 10000" rather than the size of the rendered window — the defect that makes naive virtualization unusable with a screen reader. The viewport is also in the tab order, because rows hold plain content rather than focusable controls and a scroll container with nothing focusable inside it is otherwise unreachable without a pointer; once focused it takes the browser’s native arrow, Page and Home/End scrolling. Rows are placed with transform rather than by mutating layout, so scrolling stays on the compositor. Because unrendered rows are absent from the DOM, browser in-page search cannot reach them; provide a real filter or search control alongside any virtualized list, and prefer a non-virtualized list when the collection is small.
 
 ## Props
 
@@ -56,6 +56,10 @@ The viewport is a role="list" and each rendered row is a role="listitem" carryin
 | `overscan`   | `number`                                         | No       | 3       | Extra rows rendered above and below the visible window, to cover fast scrolling.                              |
 | `ariaLabel`  | `string`                                         | No       | —       | Accessible label for the list; label it when the list stands alone                                            |
 | `className`  | `string`                                         | No       | —       | Additional CSS class names merged onto the root element.                                                      |
+
+## Tokens
+
+- `--cascivo-color-accent`
 
 ## Examples
 
@@ -104,9 +108,9 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 VirtualList is strictly bound to these tokens — use only these, do not invent token names:
-  none declared
+  --cascivo-color-accent
 
-Accessibility: role "list", WCAG 2.2-AA, keyboard: Tab. Keep it AA.
+Accessibility: role "list", WCAG 2.2-AA, keyboard: Tab/ArrowUp/ArrowDown/PageUp/PageDown/Home/End. Keep it AA.
 
 Do not change (strict): itemHeight — Fixed and uniform — variable row heights are not supported
 Flexible: overscan.

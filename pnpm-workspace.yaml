@@ -35,6 +35,14 @@ catalog:
   '@tsdown/css': ^0.22.2
   '@changesets/cli': ^2.31.0
   '@playwright/test': ^1.61.0
+  # Must stay on the same version as '@playwright/test' above. apps/bench/runner
+  # imports `chromium` from bare `playwright` for its own browser control AND runs
+  # `playwright test` for protocol conformance; @playwright/test depends on
+  # `playwright` in turn. Let the two float apart and the tree holds two copies of
+  # the test runner, so the CLI rejects the spec's `test.describe()` ("did not
+  # expect test.describe() to be called here") and collects zero tests. That is
+  # what made the weekly bench workflow fail every run from 2026-06-15 on.
+  playwright: ^1.61.0
   vitest: 4.1.9
   esbuild: ^0.28.0
   '@lhci/cli': ^0.15.1

@@ -4,6 +4,11 @@
     overscroll-behavior: contain;
     /* Rows are absolutely placed against this box. */
     position: relative;
+
+    &:focus-visible {
+      outline: 2px solid var(--cascivo-color-accent);
+      outline-offset: -2px;
+    }
   }
 
   .canvas {

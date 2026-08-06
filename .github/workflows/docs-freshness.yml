@@ -9,7 +9,21 @@ name: Docs freshness
 
 on:
   schedule:
-    - cron: '17 6 * * *' # daily, 06:17 UTC
+    # Daily, 00:23 UTC — 02:23 Berlin in summer (CEST), 01:23 in winter (CET).
+    #
+    # The probe compares THIS checkout's registry.json against npm and production,
+    # so it is only meaningful once the release train that published that version
+    # has finished. Merges — and therefore releases — happen during the Berlin
+    # working day, so the probe has to run while nobody is shipping. The previous
+    # 06:17 UTC slot did not: on 2026-08-05 the scheduler ran it late, at 09:05,
+    # two minutes before the Release workflow published, and it correctly reported
+    # a version it had simply asked about too early.
+    #
+    # Deep night gives that delay room to absorb — GitHub defers scheduled runs
+    # under load, sometimes by hours — and off-the-hour minutes are less deferred
+    # than :00. Overnight is also the maximum distance from the previous day's
+    # last release, so a slow CDN has had hours to propagate.
+    - cron: '23 0 * * *'
   workflow_dispatch: {}
 
 # Only one freshness probe at a time.

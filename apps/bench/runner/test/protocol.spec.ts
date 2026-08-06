@@ -6,6 +6,11 @@ declare global {
   }
 }
 
+// A table with no rows still renders one <tr>: DataTable's empty state, which marks
+// itself `data-empty-row`. Counting bare `tbody tr` therefore reads 1 after `clear`,
+// not 0. Exclude it so the count means "data rows".
+const DATA_ROWS = '[data-bench-root="table"] tbody tr:not([data-empty-row])'
+
 test.describe('bench protocol conformance', () => {
   test('table route implements all operations', async ({ page }) => {
     await page.goto('/table')
@@ -16,16 +21,16 @@ test.describe('bench protocol conformance', () => {
     }
 
     await page.click('[data-bench="create-1k"]')
-    await expect(page.locator('[data-bench-root="table"] tbody tr')).toHaveCount(1000)
+    await expect(page.locator(DATA_ROWS)).toHaveCount(1000)
 
     await page.click('[data-bench="update-every-10th"]')
-    await expect(page.locator('[data-bench-root="table"] tbody tr').first()).toContainText('!!!')
+    await expect(page.locator(DATA_ROWS).first()).toContainText('!!!')
 
     await page.click('[data-bench="clear"]')
-    await expect(page.locator('[data-bench-root="table"] tbody tr')).toHaveCount(0)
+    await expect(page.locator(DATA_ROWS)).toHaveCount(0)
 
     await page.click('[data-bench="create-10k"]')
-    await expect(page.locator('[data-bench-root="table"] tbody tr')).toHaveCount(10000, {
+    await expect(page.locator(DATA_ROWS)).toHaveCount(10000, {
       timeout: 30_000,
     })
   })
@@ -49,10 +54,13 @@ test.describe('bench protocol conformance', () => {
     await page.goto('/dialog')
     await page.waitForSelector('body[data-bench-ready="1"]')
 
+    // Match by ARIA role, not a `[role="dialog"]` attribute selector: Modal is a
+    // native <dialog>, which carries the role implicitly and so has no role attribute
+    // for a CSS selector to find.
     await page.click('[data-bench="open-dialog"]')
-    await expect(page.locator('[role="dialog"]')).toBeVisible()
+    await expect(page.getByRole('dialog')).toBeVisible()
     await page.click('[data-bench="close-dialog"]')
-    await expect(page.locator('[role="dialog"]')).toBeHidden()
+    await expect(page.getByRole('dialog')).toBeHidden()
   })
 
   test('commit counter is wired', async ({ page }) => {
