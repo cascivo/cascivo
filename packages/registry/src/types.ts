@@ -3,12 +3,20 @@ export interface RegistryFile {
   target?: string
 }
 
+/**
+ * Must stay a superset of the entry types `scripts/registry/generate.ts` emits —
+ * `flow` and `editor` were published for months while this union rejected them, so
+ * the directory validator failed on every first-party registry it read. The
+ * remaining members are for third-party registries, which cascivo itself never emits.
+ */
 export type RegistryItemType =
   | 'component'
   | 'layout'
   | 'block'
   | 'chart'
   | 'section'
+  | 'flow'
+  | 'editor'
   | 'theme'
   | 'style'
   | 'template'

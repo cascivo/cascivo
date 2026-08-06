@@ -6,12 +6,15 @@ export interface ValidationResult {
   warnings: string[]
 }
 
+// Keep in step with RegistryItemType in ./types.ts.
 const VALID_TYPES = new Set([
   'component',
   'layout',
   'block',
   'chart',
   'section',
+  'flow',
+  'editor',
   'theme',
   'style',
   'template',

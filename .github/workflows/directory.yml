@@ -25,5 +25,8 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      # `tsx` is not a dependency of this repo, so this step could never run — both
+      # times the workflow fired it died on "Command tsx not found". Node 22 strips
+      # types natively, which is how every other .ts script here is invoked.
       - name: Validate directory
-        run: pnpm exec tsx scripts/directory/validate.ts
+        run: node scripts/directory/validate.ts
