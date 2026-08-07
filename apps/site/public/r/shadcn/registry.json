@@ -186,7 +186,7 @@
         }
       ],
       "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/avatar.json"],
       "categories": ["display"],
       "meta": {
@@ -2989,7 +2989,7 @@
         }
       ],
       "description": "A button that opens an anchored action menu of one-shot commands",
-      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "dependencies": ["@cascivo/core"],
       "categories": ["navigation"],
       "meta": {
         "cascivo": {
@@ -3311,7 +3311,6 @@
         }
       ],
       "description": "Horizontal bar showing the completion progress of a tracked operation",
-      "dependencies": ["@cascivo/core"],
       "categories": ["feedback"],
       "meta": {
         "cascivo": {
@@ -4667,7 +4666,7 @@
         }
       ],
       "description": "Identity composite: an avatar with a name, description, and optional action slot",
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/avatar.json"],
       "categories": ["display"],
       "meta": {

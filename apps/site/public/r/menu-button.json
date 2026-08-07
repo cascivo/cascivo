@@ -12,7 +12,7 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
   "category": "navigation",
   "meta": {
@@ -107,7 +107,7 @@
         "code": "<MenuButton\n  label=\"Create\"\n  variant=\"primary\"\n  align=\"end\"\n  items={[\n    { id: 'doc', label: 'New document', onSelect: createDoc },\n    { id: 'folder', label: 'New folder', onSelect: createFolder },\n  ]}\n/>"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+    "dependencies": ["@cascivo/core"],
     "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
     "intent": {
       "whenToUse": [

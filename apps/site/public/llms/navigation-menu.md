@@ -27,20 +27,26 @@ import { NavigationMenu } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
-| `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
-| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | `horizontal` | Layout orientation of the component. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop          | Type                                   | Required | Default      | Description                                                                                                   |
+| ------------- | -------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`   | `string`                               | no       | —            | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `items`       | `NavigationMenuItem[]`                 | yes      | —            | The items to render.                                                                                          |
+| `aria-label`  | `string`                               | no       | —            | Accessible label used when no visible label is present.                                                       |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no       | `horizontal` | Layout orientation of the component.                                                                          |
+| `className`   | `string`                               | no       | —            | Additional CSS class names merged onto the root element.                                                      |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<NavigationMenu aria-label="Main" items={[{ id: "home", label: "Home", href: "/" }, { id: "products", label: "Products", content: <ul>…</ul> }]} />
+<NavigationMenu
+  aria-label="Main"
+  items={[
+    { id: 'home', label: 'Home', href: '/' },
+    { id: 'products', label: 'Products', content: <ul>…</ul> },
+  ]}
+/>
 ```
 
 ## Design tokens

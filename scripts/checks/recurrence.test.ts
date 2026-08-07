@@ -80,9 +80,7 @@ test('every open finding explains why it has no guard', () => {
 })
 
 test('every adopter report is triaged into the ledger', async () => {
-  const reports = (await readdir(DIR)).filter(
-    (f) => f.startsWith('feedback-') && f.endsWith('.md'),
-  )
+  const reports = (await readdir(DIR)).filter((f) => f.startsWith('feedback-') && f.endsWith('.md'))
   const referenced = new Set(data.findings.flatMap((f) => f.reports))
   // Reports predating the ledger are grandfathered: their findings are tracked in their own
   // plans. Everything from the 08-06 report on must appear here.
@@ -105,7 +103,8 @@ test('every referenced report and plan file exists', async () => {
   const missing: string[] = []
   for (const f of data.findings) {
     for (const ref of [...f.reports, ...f.plans]) {
-      if (!(await exists(join('docs', 'internal', 'feedback', ref)))) missing.push(`${f.id} → ${ref}`)
+      if (!(await exists(join('docs', 'internal', 'feedback', ref))))
+        missing.push(`${f.id} → ${ref}`)
     }
   }
   assert.deepEqual(missing, [], `dangling references in recurrence.json: ${missing.join(', ')}`)

@@ -15,6 +15,12 @@ export interface ComponentManifest {
   name: string
   description: string
   category: string
+  /**
+   * Present when the component is deprecated. Agents must surface this before recommending
+   * the component — the whole point is that it is visible at discovery time rather than after
+   * the source is already vendored.
+   */
+  deprecated?: { since: string; replacement: string; note?: string }
   states: string[]
   variants: string[]
   sizes: string[]
@@ -35,6 +41,8 @@ export interface RegistryComponent {
   files: string[]
   /** filename → sha256 of upstream content — lets agents detect drift between installed and current source. */
   fileHashes?: Record<string, string>
+  /** Present when the component is deprecated — surfaced by `list_components`/`get_component`. */
+  deprecated?: { since: string; replacement: string; note?: string }
   dependencies: string[]
   tags: string[]
   meta: ComponentManifest

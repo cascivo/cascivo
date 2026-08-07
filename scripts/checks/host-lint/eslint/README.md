@@ -7,7 +7,7 @@ every file `cascivo add` copies into their project.
 
 `pnpm lint:host-strict` (the sibling directory) was written for exactly this job. It runs
 **oxlint**, which does not implement the React-Compiler-backed `react-hooks/refs`,
-`react-hooks/purity`, or `react-hooks/static-components`. So it covers the *intersection* of
+`react-hooks/purity`, or `react-hooks/static-components`. So it covers the _intersection_ of
 two toolchains and is structurally blind to the difference.
 
 On 2026-08-06 an adopter reported 13 ESLint errors in vendored source. Running the real
@@ -22,11 +22,11 @@ authority.
 
 - **Zero errors** over `packages/components/src` under `eslint.config.js` — a TanStack Start
   scaffold's config with `@cascivo/eslint-config` spread last, exactly as the docs instruct.
-- **The run was not vacuous.** ESLint 10 silently *skips* files outside a flat config's base
+- **The run was not vacuous.** ESLint 10 silently _skips_ files outside a flat config's base
   path, with a warning rather than an error. The first version of this guard reported
   "298 files, 0 errors" while linting nothing at all. `run.mjs` now fails on any skipped file
   and on any parser error, and `fixture.test.js` asserts the sample is really linted.
-- **Every scope-off is load-bearing.** `fixture.test.js` lints the sample *without*
+- **Every scope-off is load-bearing.** `fixture.test.js` lints the sample _without_
   `@cascivo/eslint-config` and asserts each rule the fragment turns off genuinely fires. A
   scope-off with nothing behind it is dead config that reads as coverage, and gets deleted.
 - **`eslint.config.js` is the single owner of the published snippet.** The block in

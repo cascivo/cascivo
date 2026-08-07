@@ -13,6 +13,8 @@ export interface RegistryComponent {
   install?: string
   /** stylesheet the npm package requires, e.g. `@cascivo/charts/styles.css`. */
   styles?: string
+  /** Present when the component is deprecated — rendered by `list`, `search` and `add`. */
+  deprecated?: { since: string; replacement: string; note?: string }
   dependencies: string[]
   /**
    * Minimum published version required for each `@cascivo/*` dependency, e.g.

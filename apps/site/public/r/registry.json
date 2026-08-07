@@ -896,7 +896,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["avatar", "group", "stack", "overflow", "display"],
       "category": "display",
       "registryDependencies": ["avatar"],
@@ -954,7 +954,7 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "registryDependencies": ["avatar"],
         "tags": ["avatar", "group", "stack", "overflow", "display"],
         "intent": {
@@ -16088,7 +16088,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
       "category": "navigation",
       "meta": {
@@ -16172,7 +16172,7 @@
           "reducedMotion": true
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
         "intent": {
           "whenToUse": [
@@ -17496,6 +17496,11 @@
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "registryDependencies": ["dropdown"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"],
+        "deprecated": {
+          "since": "0.17.0",
+          "replacement": "menu",
+          "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+        },
         "intent": {
           "whenToUse": [
             "Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists",
@@ -17974,7 +17979,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core"],
+      "dependencies": [],
       "tags": ["progress", "loading", "upload", "bar"],
       "category": "feedback",
       "meta": {
@@ -18043,7 +18048,7 @@
           "reducedMotion": true
         },
         "examples": [],
-        "dependencies": ["@cascivo/core"],
+        "dependencies": [],
         "tags": ["progress", "loading", "upload", "bar"],
         "intent": {
           "whenToUse": [
@@ -24994,7 +24999,7 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["user", "avatar", "identity", "display"],
       "category": "display",
       "registryDependencies": ["avatar"],
@@ -25039,7 +25044,7 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "dependencies": ["@cascivo/core"],
         "registryDependencies": ["avatar"],
         "tags": ["user", "avatar", "identity", "display"],
         "intent": {

@@ -22,19 +22,21 @@ import { Breadcrumb } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ label: string; href?: string }[]` | yes | — | The items to render. |
-| `maxVisible` | `number` | no | — | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `ariaLabel` | `string` | no | `Breadcrumb` | Accessible label for the component. |
+| Prop         | Type                                 | Required | Default      | Description                                                                                   |
+| ------------ | ------------------------------------ | -------- | ------------ | --------------------------------------------------------------------------------------------- |
+| `items`      | `{ label: string; href?: string }[]` | yes      | —            | The items to render.                                                                          |
+| `maxVisible` | `number`                             | no       | —            | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
+| `className`  | `string`                             | no       | —            | Additional CSS class names merged onto the root element.                                      |
+| `ariaLabel`  | `string`                             | no       | `Breadcrumb` | Accessible label for the component.                                                           |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Breadcrumb' }]} />
+<Breadcrumb
+  items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Breadcrumb' }]}
+/>
 ```
 
 ### Collapsed
@@ -42,7 +44,15 @@ import { Breadcrumb } from '@cascivo/react'
 Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ```tsx
-<Breadcrumb maxVisible={3} items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }]} />
+<Breadcrumb
+  maxVisible={3}
+  items={[
+    { label: 'Home', href: '/' },
+    { label: 'Docs', href: '/docs' },
+    { label: 'Components', href: '/docs/components' },
+    { label: 'Breadcrumb' },
+  ]}
+/>
 ```
 
 ## Design tokens

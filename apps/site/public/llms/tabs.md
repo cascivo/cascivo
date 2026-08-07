@@ -27,18 +27,23 @@ import { Tabs } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
-| `value` | `string` | no | — | The controlled value. |
-| `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
+| Prop            | Type                      | Required | Default | Description                                |
+| --------------- | ------------------------- | -------- | ------- | ------------------------------------------ |
+| `defaultValue`  | `string`                  | no       | —       | The initial value when uncontrolled.       |
+| `value`         | `string`                  | no       | —       | The controlled value.                      |
+| `onValueChange` | `(value: string) => void` | no       | —       | Called with the new value when it changes. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Tabs defaultValue="account"><TabsList><TabsTrigger value="account">Account</TabsTrigger></TabsList><TabsContent value="account">…</TabsContent></Tabs>
+<Tabs defaultValue="account">
+  <TabsList>
+    <TabsTrigger value="account">Account</TabsTrigger>
+  </TabsList>
+  <TabsContent value="account">…</TabsContent>
+</Tabs>
 ```
 
 ## Design tokens

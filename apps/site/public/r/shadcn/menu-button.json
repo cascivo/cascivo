@@ -15,7 +15,7 @@
     }
   ],
   "description": "A button that opens an anchored action menu of one-shot commands",
-  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+  "dependencies": ["@cascivo/core"],
   "categories": ["navigation"],
   "meta": {
     "cascivo": {

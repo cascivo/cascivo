@@ -1,6 +1,7 @@
 /**
- * @deprecated OverflowMenu is deprecated. Use Menu from @cascivo/components/menu instead.
- * OverflowMenu is kept for registry compatibility and will be removed in v4.
+ * @deprecated Use `Menu` instead — `cascivo add menu` on the copy-paste path, or
+ * `import { Menu } from '@cascivo/react'` on the prebuilt path. Deprecated since 0.17.0;
+ * kept for registry compatibility and removed in v4.
  */
 'use client'
 import { cn, useSignals } from '@cascivo/core'

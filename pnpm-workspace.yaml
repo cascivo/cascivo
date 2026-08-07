@@ -67,6 +67,12 @@ overrides:
   axe-core: '4.11.4'
 
 allowBuilds:
+  # Native resolver behind eslint-plugin-import-x, pulled in by the host-lint ESLint
+  # fixture. Declined explicitly rather than left un-answered (an unanswered build script
+  # makes every `pnpm run` fail its deps-status check). The fixture resolves imports
+  # correctly on the JS fallback — it reports import/order and import resolution as
+  # expected — so the native binding buys speed we do not need in a lint gate.
+  unrs-resolver: false
   '@carbon/colors': true
   '@carbon/feature-flags': true
   '@carbon/grid': true
@@ -91,7 +97,6 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   sharp: true
-  unrs-resolver: set this to true or false
 
 minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-core@0.2.1'

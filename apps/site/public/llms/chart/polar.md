@@ -21,19 +21,19 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `PolarDatum[]` | yes | — | One entry per category: { label, value, color? }. |
-| `title` | `string` | yes | — | Chart title (also aria-label). |
-| `description` | `string` | no | — | Supporting description text. |
-| `mode` | `'bar' \| 'line' \| 'area'` | no | `bar` | Bars (rose), a polar line, or a filled polar area. |
-| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `rings` | `number` | no | `4` | Radial ring count. |
-| `max` | `number` | no | — | Domain top (full radius). Defaults to the largest value. |
-| `tooltip` | `boolean` | no | — | Enable hover tooltip. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | no | `false` | Marks only — no rings or labels. For micro/inline charts. |
+| Prop          | Type                        | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | --------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`        | `PolarDatum[]`              | yes      | —       | One entry per category: { label, value, color? }.                                                                                                                                                                                                                                                                                                                                             |
+| `title`       | `string`                    | yes      | —       | Chart title (also aria-label).                                                                                                                                                                                                                                                                                                                                                                |
+| `description` | `string`                    | no       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `mode`        | `'bar' \| 'line' \| 'area'` | no       | `bar`   | Bars (rose), a polar line, or a filled polar area.                                                                                                                                                                                                                                                                                                                                            |
+| `width`       | `number`                    | no       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`                    | no       | `320`   | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `rings`       | `number`                    | no       | `4`     | Radial ring count.                                                                                                                                                                                                                                                                                                                                                                            |
+| `max`         | `number`                    | no       | —       | Domain top (full radius). Defaults to the largest value.                                                                                                                                                                                                                                                                                                                                      |
+| `tooltip`     | `boolean`                   | no       | —       | Enable hover tooltip.                                                                                                                                                                                                                                                                                                                                                                         |
+| `className`   | `string`                    | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`                   | no       | `false` | Marks only — no rings or labels. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                     |
 
 ## Examples
 
@@ -41,8 +41,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Polar } from '@cascivo/charts'
-
-<Polar
+;<Polar
   title="Wind by direction"
   mode="bar"
   tooltip

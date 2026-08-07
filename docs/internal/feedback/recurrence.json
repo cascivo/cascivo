@@ -1,11 +1,11 @@
 {
   "$comment": [
     "Finding-level recurrence ledger. RECURRENCE.md is GENERATED from this file by",
-    "scripts/feedback/recurrence.ts (run via `pnpm regen`) — edit this, never the markdown.",
+    "scripts/feedback/recurrence.ts (run via `pnpm regen`) \u2014 edit this, never the markdown.",
     "",
     "THE BINDING RULE: `status: closed` requires a non-empty `guard`, and that guard must",
     "resolve to a real package.json script or a real file. 'Fixed in source' is not a",
-    "closure — a fix with nothing holding it in place is how twelve reports kept",
+    "closure \u2014 a fix with nothing holding it in place is how twelve reports kept",
     "re-reporting the same findings. If no guard can express the invariant, keep the",
     "finding open with `guard: null` and a `guardNote` saying why; the next plan lists it.",
     "",
@@ -34,78 +34,110 @@
     {
       "id": "eslint-flat-config-entry-point",
       "title": "Documented ESLint entry point is the legacy eslintrc shape, applies no rules",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "C",
       "guard": "lint:host-eslint:test",
       "status": "closed",
-      "note": "Same fact lived in three places and was wrong in two — plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner."
+      "note": "Same fact lived in three places and was wrong in two \u2014 plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner."
     },
     {
       "id": "phantom-unpublished-dependency",
       "title": "A manifest requires @cascivo/components, which is private and unpublishable",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "B",
       "guard": null,
       "status": "open",
-      "guardNote": "npm-dependency-reality — specced in WS-1, not yet written."
+      "guardNote": "npm-dependency-reality \u2014 specced in WS-1, not yet written."
     },
     {
       "id": "theming-path-a-unavailable",
       "title": "The documented theming API ships only in @cascivo/react, unreachable on the copy-paste path",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "A",
       "guard": null,
       "status": "open",
-      "guardNote": "path-a-parity — specced in WS-3. path-b-parity already exists; only one direction was ever built, which is why this was invisible."
+      "guardNote": "path-a-parity \u2014 specced in WS-3. path-b-parity already exists; only one direction was ever built, which is why this was invisible."
     },
     {
       "id": "tone-vocabulary-renders-inconsistently",
       "title": "Badge maps `neutral` to the brand accent while Tag, Status and Notification do not",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "A",
       "guard": null,
       "status": "open",
-      "guardNote": "tone-parity — specced in WS-4. normalizeTone guarantees the spelling converges; nothing checks the rendering does."
+      "guardNote": "tone-parity \u2014 specced in WS-4. normalizeTone guarantees the spelling converges; nothing checks the rendering does."
     },
     {
       "id": "charts-ignore-container-height",
       "title": "ChartFrame's measured-height signal is unreachable, so charts overflow fixed cells",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "E",
       "guard": null,
       "status": "open",
-      "guardNote": "chart-frame-parity + a computed:check fixed-height case — specced in WS-5."
+      "guardNote": "chart-frame-parity + a computed:check fixed-height case \u2014 specced in WS-5."
     },
     {
       "id": "shared-prop-doc-false-on-one-component",
       "title": "Meter carries the shared responsive-width doc but never uses ChartFrame",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "A",
       "guard": null,
       "status": "open",
-      "guardNote": "chart-frame-parity — specced in WS-5."
+      "guardNote": "chart-frame-parity \u2014 specced in WS-5."
     },
     {
       "id": "cli-installs-stale-versions",
       "title": "The CLI installs bare package names and resolves to a stale lockfile entry",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "E",
       "guard": null,
       "status": "open",
-      "guardNote": "Specced in WS-7b — a unit test on the spawned argv."
+      "guardNote": "Specced in WS-7b \u2014 a unit test on the spawned argv."
     },
     {
       "id": "doctor-clean-on-a-run-that-did-not-look",
       "title": "`cascivo doctor` prints 'No violations found' without running the drift check",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "A",
       "guard": null,
       "status": "open",
@@ -114,8 +146,12 @@
     {
       "id": "docs-describe-unreleased-state",
       "title": "Continuously-deployed docs describe a layer order the published packages do not have",
-      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
-      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
       "mechanism": "C",
       "guard": null,
       "status": "open",
@@ -124,12 +160,30 @@
     {
       "id": "types-react-version-skew",
       "title": "@types/react version skew changes which assertions and refs type-check",
-      "reports": ["feedback-incident-console-adopter-2026-07-28.md"],
-      "plans": ["fix-plan-incident-console-adopter-2026-07-28.md"],
+      "reports": [
+        "feedback-incident-console-adopter-2026-07-28.md"
+      ],
+      "plans": [
+        "fix-plan-incident-console-adopter-2026-07-28.md"
+      ],
       "mechanism": "E",
       "guard": null,
       "status": "open",
-      "guardNote": "Carried forward from the 07-28 plan §0.5, where the fixture DISPROVED the original diagnosis. Still open there; untouched by the 08-06 plan."
+      "guardNote": "Carried forward from the 07-28 plan \u00a70.5, where the fixture DISPROVED the original diagnosis. Still open there; untouched by the 08-06 plan."
+    },
+    {
+      "id": "deprecation-invisible-until-installed",
+      "title": "A deprecated component is only marked in source, after the adopter has vendored it",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "scripts/checks/deprecation-surfaces.test.ts",
+      "status": "closed",
+      "note": "ComponentMeta now carries `deprecated`, so list/add/MCP/docs all render it at discovery time. The guard asserts the replacement resolves, entry and manifest agree, and each surface reads the field \u2014 not merely that the type has it."
     }
   ]
 }

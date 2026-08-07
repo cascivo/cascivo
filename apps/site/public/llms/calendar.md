@@ -35,25 +35,25 @@ import { Calendar } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `isInRange` | `(date: Date) => boolean` | no | — | Highlight predicate for range previews (used by DateRangePicker). |
-| `isRangeStart` | `(date: Date) => boolean` | no | — | Predicate marking the range's start date for styling. |
-| `isRangeEnd` | `(date: Date) => boolean` | no | — | Predicate marking the range's end date for styling. |
-| `onDayHover` | `(date: Date \| null) => void` | no | — | Called with the hovered day (or null on leave) to drive range previews. |
-| `value` | `Date \| null` | no | — | Controlled selected date |
-| `defaultValue` | `Date` | no | — | Uncontrolled initial selected date |
-| `onValueChange` | `(date: Date) => void` | no | — | Called when a day is selected |
-| `min` | `Date` | no | — | Earliest selectable date |
-| `max` | `Date` | no | — | Latest selectable date |
-| `disabled` | `(date: Date) => boolean` | no | — | Predicate to disable individual days |
-| `locale` | `string` | no | — | BCP-47 locale; defaults to the current i18n locale |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Grid cell size |
-| `labels` | `CalendarLabels` | no | — | i18n label overrides for the nav buttons |
-| `month` | `number` | no | — | Controlled view month (0-11) |
-| `year` | `number` | no | — | Controlled view year |
-| `onViewChange` | `(view: { month: number; year: number }) => void` | no | — | Called when the visible month changes |
-| `hideNav` | `boolean` | no | `false` | Hides the prev/next nav so a parent can drive navigation |
+| Prop            | Type                                              | Required | Default | Description                                                             |
+| --------------- | ------------------------------------------------- | -------- | ------- | ----------------------------------------------------------------------- |
+| `isInRange`     | `(date: Date) => boolean`                         | no       | —       | Highlight predicate for range previews (used by DateRangePicker).       |
+| `isRangeStart`  | `(date: Date) => boolean`                         | no       | —       | Predicate marking the range's start date for styling.                   |
+| `isRangeEnd`    | `(date: Date) => boolean`                         | no       | —       | Predicate marking the range's end date for styling.                     |
+| `onDayHover`    | `(date: Date \| null) => void`                    | no       | —       | Called with the hovered day (or null on leave) to drive range previews. |
+| `value`         | `Date \| null`                                    | no       | —       | Controlled selected date                                                |
+| `defaultValue`  | `Date`                                            | no       | —       | Uncontrolled initial selected date                                      |
+| `onValueChange` | `(date: Date) => void`                            | no       | —       | Called when a day is selected                                           |
+| `min`           | `Date`                                            | no       | —       | Earliest selectable date                                                |
+| `max`           | `Date`                                            | no       | —       | Latest selectable date                                                  |
+| `disabled`      | `(date: Date) => boolean`                         | no       | —       | Predicate to disable individual days                                    |
+| `locale`        | `string`                                          | no       | —       | BCP-47 locale; defaults to the current i18n locale                      |
+| `size`          | `'sm' \| 'md' \| 'lg'`                            | no       | `md`    | Grid cell size                                                          |
+| `labels`        | `CalendarLabels`                                  | no       | —       | i18n label overrides for the nav buttons                                |
+| `month`         | `number`                                          | no       | —       | Controlled view month (0-11)                                            |
+| `year`          | `number`                                          | no       | —       | Controlled view year                                                    |
+| `onViewChange`  | `(view: { month: number; year: number }) => void` | no       | —       | Called when the visible month changes                                   |
+| `hideNav`       | `boolean`                                         | no       | `false` | Hides the prev/next nav so a parent can drive navigation                |
 
 ## Examples
 

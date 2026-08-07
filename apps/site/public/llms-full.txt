@@ -1506,7 +1506,7 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/components`
+- `@cascivo/i18n`
 
 ## Tags
 
@@ -12358,7 +12358,6 @@ Required. Without client JavaScript this renders nothing useful, or a shell whos
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/i18n`
 
 ## Tags
 
@@ -13561,10 +13560,6 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `progressbar`
-
-## Dependencies
-
-- `@cascivo/core`
 
 ## Tags
 
@@ -18478,7 +18473,6 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/components`
 
 ## Tags
 

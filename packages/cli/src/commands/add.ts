@@ -270,6 +270,20 @@ export async function add(
     console.error(`Component "${name}" not found in registry. Run "cascivo list".`)
   }
 
+  // Warn BEFORE copying, and only for what the caller actually asked for — a deprecated
+  // entry pulled in transitively is not their decision to make. The source's `@deprecated`
+  // JSDoc arrives too late: by the time it is read, the file is already vendored.
+  for (const { entry, requested } of resolved) {
+    if (!requested || !entry.deprecated) continue
+    const { replacement, since, note } = entry.deprecated
+    console.warn(
+      `\n⚠ "${entry.name}" is deprecated since ${since}. Use "${replacement}" instead:\n` +
+        `    cascivo add ${replacement}\n` +
+        (note ? `  ${note}\n` : '') +
+        `  Adding "${entry.name}" anyway — it still works.\n`,
+    )
+  }
+
   // Aggregate each resolved entry's peer-version floors (e.g. "install data-table
   // needs @cascivo/i18n >= 0.2.1") so we can verify what actually got installed.
   const peerFloors: Record<string, string> = {}

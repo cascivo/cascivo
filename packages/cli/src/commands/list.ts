@@ -17,9 +17,22 @@ const TYPE_LABELS: Record<string, string> = {
   editor: 'Editor (npm: @cascivo/editor)',
 }
 
+/**
+ * Deprecation marker for the listing.
+ *
+ * Shown at DISCOVERY time on purpose. `overflow-menu` carried a `@deprecated` JSDoc in its
+ * source for months, which an adopter only meets after they have already vendored the file —
+ * and it pointed at an import path that cannot resolve on either install path.
+ */
+export function deprecationSuffix(c: RegistryComponent): string {
+  return c.deprecated ? `  ⚠ deprecated → ${c.deprecated.replacement}` : ''
+}
+
 /** Render a group of entries as an aligned text table (no section header). */
 function formatGroup(entries: RegistryComponent[]): string {
-  const rows = entries.map((c) => [c.name, c.category, c.description] as const)
+  const rows = entries.map(
+    (c) => [c.name, c.category, c.description + deprecationSuffix(c)] as const,
+  )
   const headers = ['Name', 'Category', 'Description'] as const
   const widths = headers.map((h, i) => Math.max(h.length, ...rows.map((r) => (r[i] ?? '').length)))
 

@@ -45,7 +45,7 @@ export const meta: ComponentMeta = {
       code: '<User name="Jane Doe" description="Admin"><IconButton aria-label="More" /></User>',
     },
   ],
-  dependencies: ['@cascivo/core', '@cascivo/components'],
+  dependencies: ['@cascivo/core'],
   registryDependencies: ['avatar'],
   tags: ['user', 'avatar', 'identity', 'display'],
   intent: {

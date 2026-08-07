@@ -28,13 +28,13 @@ import { Checkbox } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
-| `checked` | `boolean` | no | — | Whether the control is checked (controlled). |
-| `indeterminate` | `boolean` | no | `false` | When true, renders the mixed/indeterminate state. |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `onChange` | `React.ChangeEventHandler<HTMLInputElement>` | no | — | Called when the value changes. |
+| Prop            | Type                                         | Required | Default | Description                                                        |
+| --------------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `label`         | `string`                                     | no       | —       | Text label for the control.                                        |
+| `checked`       | `boolean`                                    | no       | —       | Whether the control is checked (controlled).                       |
+| `indeterminate` | `boolean`                                    | no       | `false` | When true, renders the mixed/indeterminate state.                  |
+| `disabled`      | `boolean`                                    | no       | `false` | When true, disables the control and removes it from the tab order. |
+| `onChange`      | `React.ChangeEventHandler<HTMLInputElement>` | no       | —       | Called when the value changes.                                     |
 
 ## Examples
 

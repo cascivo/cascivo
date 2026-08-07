@@ -102,7 +102,7 @@ export const meta: ComponentMeta = {
 />`,
     },
   ],
-  dependencies: ['@cascivo/core', '@cascivo/i18n'],
+  dependencies: ['@cascivo/core'],
   tags: ['navigation', 'menu', 'actions', 'dropdown', 'floating'],
   intent: {
     whenToUse: [

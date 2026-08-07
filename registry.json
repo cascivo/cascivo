@@ -993,10 +993,10 @@
         "avatar-group.tsx": "sha256-9f37862c28bf567516492685881d8288302ccb23f2f3e59e0854f4a3876fb822",
         "avatar-group.module.css": "sha256-6a3367c2fa054dc6d0ff0ca768f0162a5c9f4de52f539c0d3f4090c39924c810"
       },
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
         "@cascivo/core": ">=0.16.0",
-        "@cascivo/components": ">=0.0.0"
+        "@cascivo/i18n": ">=0.16.0"
       },
       "tags": ["avatar", "group", "stack", "overflow", "display"],
       "meta": {
@@ -1066,7 +1066,7 @@
             "code": "<AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>"
           }
         ],
-        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "registryDependencies": ["avatar"],
         "tags": ["avatar", "group", "stack", "overflow", "display"],
         "intent": {
@@ -9619,10 +9619,9 @@
         "menu-button.tsx": "sha256-1ec67a4ae98af78b03b26790941e72035a309b1a527261d99d5c0f08334584fe",
         "menu-button.module.css": "sha256-37dfec8bd0bc3ea0b3820cfd73a83a35727d7f58df902b0aec6b61e08af25ee1"
       },
-      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.0"
       },
       "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
       "meta": {
@@ -9717,7 +9716,7 @@
             "code": "<MenuButton\n  label=\"Create\"\n  variant=\"primary\"\n  align=\"end\"\n  items={[\n    { id: 'doc', label: 'New document', onSelect: createDoc },\n    { id: 'folder', label: 'New folder', onSelect: createFolder },\n  ]}\n/>"
           }
         ],
-        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
         "intent": {
           "whenToUse": [
@@ -11059,13 +11058,18 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
       "fileHashes": {
-        "overflow-menu.tsx": "sha256-f658777cfab250f9727257ffb57e6cafbcfb547583efb761ccb8d49acf05d3f9",
+        "overflow-menu.tsx": "sha256-6d83c61d478833b77768af85cfdd9845c1678caf17d4126723ebef73646c8f72",
         "overflow-menu.module.css": "sha256-21f4c4a11b7f8dc0d8bf6ac885e922bf145a1d2ea68dc75ae3b77186112a89a9"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
         "@cascivo/core": ">=0.16.0",
         "@cascivo/i18n": ">=0.16.0"
+      },
+      "deprecated": {
+        "since": "0.17.0",
+        "replacement": "menu",
+        "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
       },
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
       "meta": {
@@ -11150,6 +11154,11 @@
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "registryDependencies": ["dropdown"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"],
+        "deprecated": {
+          "since": "0.17.0",
+          "replacement": "menu",
+          "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+        },
         "intent": {
           "whenToUse": [
             "Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists",
@@ -11670,10 +11679,7 @@
         "progress.tsx": "sha256-f040b25c27d4ec495a31775b8e137cdadbb4abce727b297e7dc263ead5c0e973",
         "progress.module.css": "sha256-b096cd775fd5682dce7112a207cea6072d9af8e513ef11a8065354446fbd449a"
       },
-      "dependencies": ["@cascivo/core"],
-      "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
-      },
+      "dependencies": [],
       "tags": ["progress", "loading", "upload", "bar"],
       "meta": {
         "name": "Progress",
@@ -11758,7 +11764,7 @@
             "code": "<Progress value={40} size=\"sm\" />"
           }
         ],
-        "dependencies": ["@cascivo/core"],
+        "dependencies": [],
         "tags": ["progress", "loading", "upload", "bar"],
         "intent": {
           "whenToUse": [
@@ -13184,7 +13190,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.module.css"
       ],
       "fileHashes": {
-        "relative-time.tsx": "sha256-1fb1a60ee2a500952d4e1a1aec78b875ac7a1e4f111b75f54743fdedd0c2ad43",
+        "relative-time.tsx": "sha256-cb6ad20b2c1ee1818c6a84b87241de0243ddc98330fa10893bc15161f3b43b37",
         "relative-time.module.css": "sha256-c25d05f5dceeb217bfc60eb61d6ba451c2c63e17843f853c46a0a925dbe185f1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -18580,7 +18586,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
       ],
       "fileHashes": {
-        "tree-view.tsx": "sha256-edb11d2489566ab55d92afe423e82ee3aafdfbafb840e58c2fb1a345fb55be62",
+        "tree-view.tsx": "sha256-bbe96e05e8551e1af2f2679037dd32ce5b9d7eed8c68cfe629473b42bf10029f",
         "tree-view.module.css": "sha256-88580b0ad4ee242e5a32187b3f1565425b6dd42356ba0369f529cc40ea50a193"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -18765,10 +18771,9 @@
         "user.tsx": "sha256-1ab8caa807fd142f03162f0c64b74789d5195b21bdd386512681715192a2b8d2",
         "user.module.css": "sha256-d94f57f12e1784e025f85c00e31de446bd532de9f13e49b14928d72d8053a8f7"
       },
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/components": ">=0.0.0"
+        "@cascivo/core": ">=0.16.0"
       },
       "tags": ["user", "avatar", "identity", "display"],
       "meta": {
@@ -18821,7 +18826,7 @@
             "code": "<User name=\"Jane Doe\" description=\"Admin\"><IconButton aria-label=\"More\" /></User>"
           }
         ],
-        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "dependencies": ["@cascivo/core"],
         "registryDependencies": ["avatar"],
         "tags": ["user", "avatar", "identity", "display"],
         "intent": {

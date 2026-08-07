@@ -15,7 +15,6 @@
     }
   ],
   "description": "Horizontal bar showing the completion progress of a tracked operation",
-  "dependencies": ["@cascivo/core"],
   "categories": ["feedback"],
   "meta": {
     "cascivo": {

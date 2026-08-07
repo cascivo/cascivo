@@ -33,17 +33,17 @@ import { CodeSnippet } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `code` | `string` | yes | — | The code to display (and copy). |
-| `variant` | `'inline' \| 'single' \| 'multi'` | no | `single` | inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>. |
-| `language` | `'bash' \| 'css' \| 'js' \| 'ts'` | no | — | Enables built-in syntax highlighting for the block variants; inline is never highlighted. |
-| `terminal` | `boolean` | no | `false` | Renders terminal-window chrome (title bar with dots). Block variants only. |
-| `title` | `string` | no | — | Optional label shown in the terminal title bar. |
-| `showLineNumbers` | `boolean` | no | — | Show line numbers (multi only; ignored when language is set). |
-| `showCopyButton` | `boolean` | no | — | Show the copy-to-clipboard button. Defaults true for single/multi, false for inline. |
-| `labels` | `{ copy?: string; copied?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop              | Type                                 | Required | Default  | Description                                                                               |
+| ----------------- | ------------------------------------ | -------- | -------- | ----------------------------------------------------------------------------------------- |
+| `code`            | `string`                             | yes      | —        | The code to display (and copy).                                                           |
+| `variant`         | `'inline' \| 'single' \| 'multi'`    | no       | `single` | inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>.                |
+| `language`        | `'bash' \| 'css' \| 'js' \| 'ts'`    | no       | —        | Enables built-in syntax highlighting for the block variants; inline is never highlighted. |
+| `terminal`        | `boolean`                            | no       | `false`  | Renders terminal-window chrome (title bar with dots). Block variants only.                |
+| `title`           | `string`                             | no       | —        | Optional label shown in the terminal title bar.                                           |
+| `showLineNumbers` | `boolean`                            | no       | —        | Show line numbers (multi only; ignored when language is set).                             |
+| `showCopyButton`  | `boolean`                            | no       | —        | Show the copy-to-clipboard button. Defaults true for single/multi, false for inline.      |
+| `labels`          | `{ copy?: string; copied?: string }` | no       | —        | Overrides for the component’s user-visible strings (i18n).                                |
+| `className`       | `string`                             | no       | —        | Additional CSS class names merged onto the root element.                                  |
 
 ## Examples
 
@@ -56,7 +56,9 @@ import { CodeSnippet } from '@cascivo/react'
 ### Inline
 
 ```tsx
-<p>Run <CodeSnippet variant="inline" code="pnpm build" /> first.</p>
+<p>
+  Run <CodeSnippet variant="inline" code="pnpm build" /> first.
+</p>
 ```
 
 ### Terminal block
