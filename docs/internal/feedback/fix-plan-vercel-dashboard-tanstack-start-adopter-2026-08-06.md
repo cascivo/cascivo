@@ -1,8 +1,52 @@
 # Fix plan — the 2026-08-06 Vercel-dashboard adopter (TanStack Start, registry `0.16.0`, CLI `0.7.1`)
 
-**Status: specced — not implemented.** Nothing in this plan has landed. Per
-[`README.md`](README.md), the PR that implements a workstream flips that workstream's status
-in the same PR, and the PR that publishes flips it to `published vX.Y.Z`.
+**Status: implemented on `claude/ui-library-analysis-plan-dxg5tw`; not yet published.**
+All nine workstreams have landed. Per [`README.md`](README.md), the PR that publishes to npm
+flips this to `published vX.Y.Z` — until then an adopter cannot `pnpm add` any of it.
+
+Per-workstream status, and what each one's guard is:
+
+| WS | Status | Guard |
+| --- | --- | --- |
+| WS-1 phantom dependency | merged | `npm-dependency-reality`, `deprecation-surfaces` |
+| WS-2 toolchain | merged | `lint:host-eslint` (+ its own fixture tests), `noUnusedLocals` |
+| WS-3 theming on Path A | merged | `path-a-parity` |
+| WS-4 tone vocabulary | merged | `tone:check` |
+| WS-5 chart sizing + Meter | merged | `chart-frame.size.test.tsx`, `chart-frame-parity` |
+| WS-6 composition gaps | merged | `tabs.test.tsx`, `aschild-docs` |
+| WS-7 CLI robustness | merged | `config.test.ts`, `init.test.ts`, `doctor.test.ts` |
+| WS-8 docs owners + skew | merged | `getting-started-contract`, `layer-order` |
+| WS-9 recurrence ledger | merged | `recurrence:check` |
+
+**The findings are tracked at finding level in [`RECURRENCE.md`](RECURRENCE.md)**, which is
+now the authority: a row may not be closed without naming a guard that exists.
+
+### Where the implementation diverged from this plan
+
+Written down because a plan that quietly disagrees with what shipped is the exact defect
+§0 is about:
+
+- **WS-2's counts were wrong, and the fixture is why.** This plan estimated the lint classes
+  by grep: 41 `react-hooks/refs` sites, 9 `static-components`, 8 `no-empty-object-type`,
+  1 `purity`. Real ESLint found 501 errors, of which 384 vanished once
+  `cascivoVendoredSource()` was called with a glob that matches where the source actually
+  lives — a trap the plan never spotted. The true remaining classes were 34 / 2 / 0 / 2.
+  `no-empty-object-type` never fired at all, so the source fix it prescribed was unnecessary.
+- **Both `react-hooks/purity` sites are documented exceptions, not fixes.** The plan called
+  `relative-time` "genuinely fixable". It is not: a relative time cannot render without a
+  clock, and the effect that corrects the server/client difference is the component's SSR
+  story rather than an oversight.
+- **`Meter` did not go through `ChartFrame`.** It has no data points, so the frame's tooltip,
+  zoom, toolbox and traversal machinery are dead weight, and `role="meter"` is not the
+  `role="img"` a frame gives an SVG. `chart-frame-parity` therefore checks the *claim*
+  (does it track its container?) rather than the *shape* (does it import `ChartFrame`?) —
+  which is the `ref-parity` lesson applied up front.
+- **A regex assertion added to `ref-parity` was deleted.** It flagged four false positives
+  (`AccordionTrigger` forwards via `summaryRef={ref}`), while `noUnusedParameters` catches
+  the same class with none. Mechanism F applies to guards written in this plan too.
+- **`computed:check` could not host the chart case** the plan specced: it renders static
+  markup with no hydration, so no `ResizeObserver` ever runs. The assertion lives in the
+  charts package instead.
 
 Report: [`feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md`](feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md).
 Twelfth report. 9 routes, ~45 vendored components, builds and hydrates clean. Six red flags,

@@ -58,7 +58,9 @@ the same defect as no guard.
 ## Current live tracker
 
 `fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md` is the newest plan
-(**specced — not implemented**). It triages the twelfth report: a Vercel-style dashboard on
+(**implemented on `claude/ui-library-analysis-plan-dxg5tw`; not yet published** — all nine
+workstreams landed; see its status header for the per-workstream guards and for where the
+implementation disagreed with the plan). It triages the twelfth report: a Vercel-style dashboard on
 TanStack Start 1.170, tested against registry `0.16.0` / CLI `0.7.1`, with 34 findings and 6
 red flags. Nine routes shipped and hydrated clean; nothing was a hard blocker, and that is
 the concern — every red flag is a thing an adopter had to work around silently.
