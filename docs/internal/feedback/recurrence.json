@@ -1,0 +1,135 @@
+{
+  "$comment": [
+    "Finding-level recurrence ledger. RECURRENCE.md is GENERATED from this file by",
+    "scripts/feedback/recurrence.ts (run via `pnpm regen`) — edit this, never the markdown.",
+    "",
+    "THE BINDING RULE: `status: closed` requires a non-empty `guard`, and that guard must",
+    "resolve to a real package.json script or a real file. 'Fixed in source' is not a",
+    "closure — a fix with nothing holding it in place is how twelve reports kept",
+    "re-reporting the same findings. If no guard can express the invariant, keep the",
+    "finding open with `guard: null` and a `guardNote` saying why; the next plan lists it.",
+    "",
+    "Enforced by scripts/checks/recurrence.test.ts."
+  ],
+  "findings": [
+    {
+      "id": "vendored-source-fails-host-toolchain",
+      "title": "Vendored source fails the adopter's strict lint/type toolchain",
+      "reports": [
+        "feedback-tanstack-start-adopter-2026-07-18.md",
+        "feedback-tanstack-start-adopter-2026-07-22.md",
+        "feedback-incident-console-adopter-2026-07-28.md",
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-tanstack-start-adopter-2026-07-18.md",
+        "fix-plan-tanstack-start-adopter-2026-07-22.md",
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "F",
+      "guard": "lint:host-eslint",
+      "status": "closed",
+      "note": "Closed only once the guard ran the adopter's REAL toolchain. The previous guard (lint:host-strict, oxlint) was written for this exact finding and could not express the rules that fired: it found 0, real ESLint found 501."
+    },
+    {
+      "id": "eslint-flat-config-entry-point",
+      "title": "Documented ESLint entry point is the legacy eslintrc shape, applies no rules",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "C",
+      "guard": "lint:host-eslint:test",
+      "status": "closed",
+      "note": "Same fact lived in three places and was wrong in two — plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner."
+    },
+    {
+      "id": "phantom-unpublished-dependency",
+      "title": "A manifest requires @cascivo/components, which is private and unpublishable",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "B",
+      "guard": null,
+      "status": "open",
+      "guardNote": "npm-dependency-reality — specced in WS-1, not yet written."
+    },
+    {
+      "id": "theming-path-a-unavailable",
+      "title": "The documented theming API ships only in @cascivo/react, unreachable on the copy-paste path",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "A",
+      "guard": null,
+      "status": "open",
+      "guardNote": "path-a-parity — specced in WS-3. path-b-parity already exists; only one direction was ever built, which is why this was invisible."
+    },
+    {
+      "id": "tone-vocabulary-renders-inconsistently",
+      "title": "Badge maps `neutral` to the brand accent while Tag, Status and Notification do not",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "A",
+      "guard": null,
+      "status": "open",
+      "guardNote": "tone-parity — specced in WS-4. normalizeTone guarantees the spelling converges; nothing checks the rendering does."
+    },
+    {
+      "id": "charts-ignore-container-height",
+      "title": "ChartFrame's measured-height signal is unreachable, so charts overflow fixed cells",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "E",
+      "guard": null,
+      "status": "open",
+      "guardNote": "chart-frame-parity + a computed:check fixed-height case — specced in WS-5."
+    },
+    {
+      "id": "shared-prop-doc-false-on-one-component",
+      "title": "Meter carries the shared responsive-width doc but never uses ChartFrame",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "A",
+      "guard": null,
+      "status": "open",
+      "guardNote": "chart-frame-parity — specced in WS-5."
+    },
+    {
+      "id": "cli-installs-stale-versions",
+      "title": "The CLI installs bare package names and resolves to a stale lockfile entry",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "E",
+      "guard": null,
+      "status": "open",
+      "guardNote": "Specced in WS-7b — a unit test on the spawned argv."
+    },
+    {
+      "id": "doctor-clean-on-a-run-that-did-not-look",
+      "title": "`cascivo doctor` prints 'No violations found' without running the drift check",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "A",
+      "guard": null,
+      "status": "open",
+      "guardNote": "Specced in WS-7c."
+    },
+    {
+      "id": "docs-describe-unreleased-state",
+      "title": "Continuously-deployed docs describe a layer order the published packages do not have",
+      "reports": ["feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "plans": ["fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"],
+      "mechanism": "C",
+      "guard": null,
+      "status": "open",
+      "guardNote": "Specced in WS-8a: generate the layer statement from layers.css, and version-stamp llms.txt so a reader can tell what it describes."
+    },
+    {
+      "id": "types-react-version-skew",
+      "title": "@types/react version skew changes which assertions and refs type-check",
+      "reports": ["feedback-incident-console-adopter-2026-07-28.md"],
+      "plans": ["fix-plan-incident-console-adopter-2026-07-28.md"],
+      "mechanism": "E",
+      "guard": null,
+      "status": "open",
+      "guardNote": "Carried forward from the 07-28 plan §0.5, where the fixture DISPROVED the original diagnosis. Still open there; untouched by the 08-06 plan."
+    }
+  ]
+}

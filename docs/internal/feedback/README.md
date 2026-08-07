@@ -35,6 +35,26 @@ Therefore:
 This is the process analogue of the repo's generated-artifact **drift check**: the
 status must not drift from what actually shipped.
 
+## The recurrence ledger is binding too
+
+Status hygiene above tracks **plans**. It cannot see the failure mode the reports actually
+complain about, because that one lives *between* plans: a finding is closed in plan N and
+re-reported in plan N+2 without either plan being dishonest about itself.
+
+[`RECURRENCE.md`](RECURRENCE.md) tracks **findings**, one row each, generated from
+[`recurrence.json`](recurrence.json). One rule:
+
+> **A finding may not be marked closed without naming a guard that exists.**
+
+"Fixed in source" is not a closure. If no guard can express the invariant, the finding stays
+open with a note saying why, and the next plan lists it. `pnpm recurrence:check` fails on a
+closed row with a missing or unresolvable guard, and on any `feedback-*.md` report that no
+row references — a new report has to be triaged into the table, not just filed.
+
+When you close a row, the guard you name must have been **demonstrated failing on the
+pre-fix state**. A guard that has only ever been green is untested, and an untested guard is
+the same defect as no guard.
+
 ## Current live tracker
 
 `fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md` is the newest plan
