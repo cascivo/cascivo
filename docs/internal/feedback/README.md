@@ -37,7 +37,31 @@ status must not drift from what actually shipped.
 
 ## Current live tracker
 
-`fix-plan-incident-console-adopter-2026-07-28.md` is the newest plan (**implemented on
+`fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md` is the newest plan
+(**specced — not implemented**). It triages the twelfth report: a Vercel-style dashboard on
+TanStack Start 1.170, tested against registry `0.16.0` / CLI `0.7.1`, with 34 findings and 6
+red flags. Nine routes shipped and hydrated clean; nothing was a hard blocker, and that is
+the concern — every red flag is a thing an adopter had to work around silently.
+
+It carries forward **one item**: the 07-28 plan's C1 `@types/react` mechanism (§0.5), which
+stays open there and is untouched by the new plan.
+
+The 08-06 plan adds **Mechanism F** to the taxonomy below: *the guard re-implements the
+adopter's tool instead of running it.* `pnpm lint:host-strict` was written specifically to
+stop shipped source carrying lint failures adopters did not write — and it runs **oxlint**,
+which does not implement the React-Compiler-backed `react-hooks/refs|purity|static-components`
+where all 13 of the reporter's errors live. `@cascivo/eslint-config`'s `cascivoVendoredSource()`
+has the same shape one layer up: authored from a list of rules someone had seen fire, never
+executed against the source it claims to cover.
+
+It also adds the process change the recurrence itself demands: a **finding-level ledger**
+(`RECURRENCE.md`), with the binding rule that **a finding may not be marked closed without
+naming the guard that keeps it closed.** The status hygiene below tracks *plans*; findings
+recur *across* plans, which is invisible at plan granularity.
+
+### Previous tracker
+
+`fix-plan-incident-console-adopter-2026-07-28.md` (**implemented on
 `claude/ui-library-analysis-plan-iyopig`; not yet published**; four items explicitly open —
 see its status header). It triages the eleventh report: a local-first incident console on Astro-then-Vite,
 tested against published `0.13.0`, with 19 findings and 3 blockers.
@@ -109,3 +133,19 @@ fixes but no gates produces the next report:
   tarballs (`isolated:check`) and a bare page with no app CSS and several stacked components
   (`bare-page:check`) — asserted in CI (07-28 plan WS-13). When a report's finding is
   "reproduced on a default install", check Mechanism E before anything else.
+- **F — the guard re-implements the adopter's tool instead of running it.** (Added by the
+  2026-08-06 Vercel dashboard.) `pnpm lint:host-strict` exists to stop shipped source carrying
+  lint failures adopters did not write; its own header says it enforces those classes
+  "**in oxlint**". oxlint does not implement `react-hooks/refs`, `react-hooks/purity`, or
+  `react-hooks/static-components` — where all 13 of the reporter's errors were, across 41
+  render-phase ref writes and 9 `getLinkComponent()` sites the guard has never been able to
+  see. `@cascivo/eslint-config`'s `cascivoVendoredSource()` repeats the shape: it scopes off
+  eight *stylistic* rules, was authored from a list of rules someone had seen fire, and has
+  never been executed against the source it claims to cover. Mechanism F is E's sibling — E is
+  "we never ran it in the adopter's *environment*", F is "we never ran the adopter's *tool*" —
+  and it is worse, because the guard's existence reads as coverage.
+  → **Fix:** run the adopter's actual tool, pinned, in CI, over the artefact the adopter
+  receives. A re-implementation can only cover the intersection, and the gap is structurally
+  invisible from inside it. Where a fragment claims to make a toolchain pass, a test must
+  *run that toolchain* and assert zero findings — otherwise the claim is prose (Mechanism A)
+  wearing a guard's clothes.
