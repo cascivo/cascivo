@@ -33,7 +33,7 @@ this table, not just filed.
 | Badge maps `neutral` to the brand accent while Tag, Status and Notification do not | 1 (08-06) | A | **none** | tone-parity — specced in WS-4. normalizeTone guarantees the spelling converges; nothing checks the rendering does. |
 | @types/react version skew changes which assertions and refs type-check | 1 (07-28) | E | **none** | Carried forward from the 07-28 plan §0.5, where the fixture DISPROVED the original diagnosis. Still open there; untouched by the 08-06 plan. |
 
-## Closed — 3
+## Closed — 4
 
 Each row names the guard that makes it stay closed.
 
@@ -42,6 +42,7 @@ Each row names the guard that makes it stay closed.
 | Vendored source fails the adopter's strict lint/type toolchain | 4 (07-18, 07-22, 07-28, 08-06) | F | `lint:host-eslint` | Closed only once the guard ran the adopter's REAL toolchain. The previous guard (lint:host-strict, oxlint) was written for this exact finding and could not express the rules that fired: it found 0, real ESLint found 501. |
 | A deprecated component is only marked in source, after the adopter has vendored it | 1 (08-06) | A | `scripts/checks/deprecation-surfaces.test.ts` | ComponentMeta now carries `deprecated`, so list/add/MCP/docs all render it at discovery time. The guard asserts the replacement resolves, entry and manifest agree, and each surface reads the field — not merely that the type has it. |
 | Documented ESLint entry point is the legacy eslintrc shape, applies no rules | 1 (08-06) | C | `lint:host-eslint:test` | Same fact lived in three places and was wrong in two — plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner. |
+| Vendored source carries dead bindings the adopter's first `tsc --noEmit` reports | 1 (08-06) | E | `tsconfig.base.json` | noUnusedLocals/noUnusedParameters on, matching the official TanStack Start scaffolder. Found 11, not the 1 reported: five leftover useSignal imports from the useEffectPropSignal migration, a discarded fetchRegistry network call in `cascivo generate`, a fillColor() taking min/max and ignoring them, and SkipNavLink wrapped in forwardRef while never attaching the ref — consumers got null with no type error, and ref-parity had counted it compliant because it checks the wrapper, not the wiring. |
 
 ## Mechanisms
 

@@ -32,7 +32,7 @@ export const SkipNavLink = forwardRef<HTMLAnchorElement, SkipNavLinkProps>(funct
   useSignals()
   const label = labels?.label ?? t(builtin.skipNav.label)
   return (
-    <a href={`#${targetId}`} className={cn(styles['link'], className)} {...props}>
+    <a ref={ref} href={`#${targetId}`} className={cn(styles['link'], className)} {...props}>
       {label}
     </a>
   )

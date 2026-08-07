@@ -1,7 +1,7 @@
 'use client'
 import { useRef, type RefObject } from 'react'
 import { useEffectPropSignal } from './effect-prop.ts'
-import { useSignal, useSignalEffect } from './signals.ts'
+import { useSignalEffect } from './signals.ts'
 
 export interface UseInfiniteScrollOptions {
   /** Whether more items remain to load. */

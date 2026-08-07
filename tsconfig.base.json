@@ -6,6 +6,14 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
+    // On because the official TanStack Start scaffolder turns them on, and component source
+    // is COPIED INTO adopter projects — so their tsconfig, not ours, decides whether it
+    // compiles. Without these the repo could not see six dead bindings an adopter's very
+    // first `tsc --noEmit` reported. Five were leftover `useSignal` imports from the
+    // `useEffectPropSignal` migration: that migration landed without a strictness gate,
+    // and this is the gate.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "noEmit": true

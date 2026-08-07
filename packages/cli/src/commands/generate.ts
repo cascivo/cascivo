@@ -1,7 +1,6 @@
 import { writeFileSync } from 'node:fs'
 import { basename, dirname, join } from 'node:path'
 import type { CascadeConfig } from '../utils/config.js'
-import { fetchRegistry } from '../utils/registry.js'
 
 // Inline validation types to avoid runtime dep on @cascivo/render
 interface PropMeta {
@@ -245,8 +244,9 @@ export async function generate(args: string[], config: CascadeConfig): Promise<v
   const configJson = readFileSync(inputArg, 'utf-8')
   const viewConfig = JSON.parse(configJson) as ViewConfig
 
-  // prop metas not available from CLI registry type — pass empty map
-  const _registry = await fetchRegistry(config.registry)
+  // Prop metas are not available from the CLI registry type, so this passes an empty map.
+  // (There used to be a `fetchRegistry` call here whose result was discarded — a network
+  // round-trip on every `cascivo generate` that fed nothing. `noUnusedLocals` surfaced it.)
   const propMetas = new Map<string, PropMeta[]>()
 
   const componentsDir = componentsDirArg ?? config.outputDir ?? './src/components/ui'

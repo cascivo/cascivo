@@ -184,6 +184,20 @@
       "guard": "scripts/checks/deprecation-surfaces.test.ts",
       "status": "closed",
       "note": "ComponentMeta now carries `deprecated`, so list/add/MCP/docs all render it at discovery time. The guard asserts the replacement resolves, entry and manifest agree, and each surface reads the field \u2014 not merely that the type has it."
+    },
+    {
+      "id": "unused-bindings-in-vendored-source",
+      "title": "Vendored source carries dead bindings the adopter's first `tsc --noEmit` reports",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "E",
+      "guard": "tsconfig.base.json",
+      "status": "closed",
+      "note": "noUnusedLocals/noUnusedParameters on, matching the official TanStack Start scaffolder. Found 11, not the 1 reported: five leftover useSignal imports from the useEffectPropSignal migration, a discarded fetchRegistry network call in `cascivo generate`, a fillColor() taking min/max and ignoring them, and SkipNavLink wrapped in forwardRef while never attaching the ref \u2014 consumers got null with no type error, and ref-parity had counted it compliant because it checks the wrapper, not the wiring."
     }
   ]
 }

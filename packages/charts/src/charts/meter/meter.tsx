@@ -43,7 +43,11 @@ export interface MeterProps {
   height?: number
 }
 
-function fillColor(value: number, min: number, max: number, thresholds?: MeterThresholds): string {
+/**
+ * Thresholds are absolute values compared against `value`, so the scale bounds play no part.
+ * (This took `min`/`max` and ignored them until `noUnusedParameters` said so.)
+ */
+function fillColor(value: number, thresholds?: MeterThresholds): string {
   if (!thresholds) return 'var(--cascivo-chart-1)'
   const { warning, critical } = thresholds
   if (critical != null && value >= critical) return 'var(--cascivo-color-destructive)'
@@ -63,7 +67,7 @@ export function Meter({
 }: MeterProps) {
   const clamped = Math.min(max, Math.max(min, value))
   const ratio = max > min ? (clamped - min) / (max - min) : 0
-  const color = fillColor(value, min, max, thresholds)
+  const color = fillColor(value, thresholds)
 
   if (variant === 'gauge') {
     const svgH = height ?? 100

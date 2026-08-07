@@ -1,6 +1,6 @@
 import { createInterface } from 'node:readline/promises'
 import { stdin, stdout } from 'node:process'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
   DEFAULT_CONFIG,
@@ -79,6 +79,57 @@ function hintEslintIfPresent(cwd: string): void {
   console.log('  Scope them off your components dir — see docs/USING-WITH-STRICT-ESLINT.md')
 }
 
+/** Formatter ignore files, in the order a project is likely to use them. */
+const FORMATTER_IGNORES = [
+  {
+    config: ['.prettierrc', '.prettierrc.json', '.prettierrc.js', 'prettier.config.js'],
+    ignore: '.prettierignore',
+  },
+  { config: ['.oxfmtrc', '.oxfmtrc.json'], ignore: '.oxfmtignore' },
+] as const
+
+/**
+ * Exclude the vendored components dir from the project's formatter.
+ *
+ * Owning the code means your formatter reformats it, and then `cascivo update` reports drift
+ * on files you never touched. This ACTS rather than hints: the ESLint equivalent below only
+ * prints a pointer, and an adopter ran `prettier --write .` before ever reading it.
+ *
+ * Idempotent, and never rewrites an existing line.
+ */
+function ensureFormatterIgnore(cwd: string, outputDir: string): void {
+  const line = `${outputDir.replace(/\/+$/, '')}/`
+  for (const { config, ignore } of FORMATTER_IGNORES) {
+    const hasFormatter =
+      config.some((f) => existsSync(join(cwd, f))) || hasPrettierKeyInPackageJson(cwd, ignore)
+    if (!hasFormatter) continue
+
+    const path = join(cwd, ignore)
+    const current = existsSync(path) ? readFileSync(path, 'utf8') : ''
+    if (current.split('\n').some((l) => l.trim() === line)) continue
+
+    const banner = '# cascivo: vendored component source — you own it, so do not reformat it\n'
+    const next =
+      current === '' ? banner + line + '\n' : `${current.replace(/\n*$/, '\n')}\n${banner}${line}\n`
+    writeFileSync(path, next, 'utf8')
+    console.log(
+      `\nAdded "${line}" to ${ignore} (so your formatter does not rewrite copied source).`,
+    )
+  }
+}
+
+/** `prettier` key in package.json counts as a Prettier config — only relevant to .prettierignore. */
+function hasPrettierKeyInPackageJson(cwd: string, ignore: string): boolean {
+  if (ignore !== '.prettierignore') return false
+  const pkgPath = join(cwd, 'package.json')
+  if (!existsSync(pkgPath)) return false
+  try {
+    return 'prettier' in (JSON.parse(readFileSync(pkgPath, 'utf8')) as Record<string, unknown>)
+  } catch {
+    return false
+  }
+}
+
 /** The "here's everything you need" summary, printed once at the end of init. */
 function printDependencySummary(): void {
   console.log('\nDependencies')
@@ -135,6 +186,7 @@ export async function init(args: string[] = [], cwd: string = process.cwd()): Pr
   console.log(`  <html data-theme="${theme}">`)
 
   printDependencySummary()
+  ensureFormatterIgnore(cwd, DEFAULT_CONFIG.outputDir)
   hintEslintIfPresent(cwd)
 
   console.log('\nAdd components with: cascivo add <name>')

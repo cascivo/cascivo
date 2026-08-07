@@ -189,7 +189,7 @@ export function Radar({
               ))}
             {/* Axis labels */}
             {!plain &&
-              spokeEnds.map((pt, i) => {
+              spokeEnds.map((_pt, i) => {
                 const angle = (i / n) * 2 * Math.PI - Math.PI / 2
                 const lx = quantize(cx + Math.cos(angle) * (r + 18))
                 const ly = quantize(cy + Math.sin(angle) * (r + 18))

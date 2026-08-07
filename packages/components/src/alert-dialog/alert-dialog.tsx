@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { focusElement, useEffectPropSignal, useId, useSignal, useSignalEffect } from '@cascivo/core'
+import { focusElement, useEffectPropSignal, useId, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './alert-dialog.module.css'
 
