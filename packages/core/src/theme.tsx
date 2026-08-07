@@ -1,10 +1,10 @@
 'use client'
-import { useSignalEffect, useSignals, type Signal } from '@cascivo/core'
+import { useSignalEffect, useSignals } from './signals.ts'
+import type { Signal } from './signals.ts'
 import { useRef, type ReactNode, type RefObject } from 'react'
-// Reach the sibling package's source directly — the same relative-import pattern
-// the layout primitives use below (see index.ts). persistedSignal is SSR-safe:
-// with no `window` its driver is a no-op, so the signal still works on the server.
-import { persistedSignal } from '../../storage/src/persisted-signal'
+// `persistedSignal` is SSR-safe: with no `window` its driver is a no-op, so the signal
+// still works on the server.
+import { persistedSignal } from './persisted-signal.ts'
 
 const DEFAULT_KEY = 'cascivo-theme'
 const DEFAULT_ATTR = 'data-theme'

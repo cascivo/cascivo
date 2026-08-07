@@ -27,7 +27,7 @@ const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 
 describe('doc/API drift — useTheme contract', () => {
   it('useTheme returns a string first element (not a Signal)', () => {
-    const src = readFileSync(join(REPO_ROOT, 'packages/react/src/theme.tsx'), 'utf8')
+    const src = readFileSync(join(REPO_ROOT, 'packages/core/src/theme.tsx'), 'utf8')
     // The explicit return annotation of `export function useTheme(): <here>`.
     const m = src.match(/export function useTheme\(\):\s*([^{]+)\{/)
     assert.ok(m, 'could not find useTheme return annotation in theme.tsx')

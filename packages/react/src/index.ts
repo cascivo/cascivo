@@ -287,6 +287,8 @@ export * from '../../layouts/src/page-header/page-header' // PageHeader
 // Reusable, SSR-safe theme runtime (ThemeProvider / useTheme / setTheme /
 // applyTheme / themePreloadScript / themeSignal). Packages the data-theme wiring
 // apps otherwise hand-roll.
+// Re-exported from @cascivo/core (where it moved so the copy-paste path can reach it too).
+// Same names, same behaviour — nothing changes for consumers of this package.
 export {
   ThemeProvider,
   useTheme,
@@ -295,4 +297,4 @@ export {
   applyTheme,
   themePreloadScript,
   type ThemeProviderProps,
-} from './theme'
+} from '@cascivo/core'

@@ -19,7 +19,7 @@ empty, or does not resolve to a real npm script or file fails CI. It also fails 
 `feedback-*.md` report exists that no row references — a new report must be triaged into
 this table, not just filed.
 
-## Open — 9
+## Open — 8
 
 | Finding | Reports | Mech. | Guard | Why still open |
 | --- | --- | --- | --- | --- |
@@ -29,11 +29,10 @@ this table, not just filed.
 | `cascivo doctor` prints 'No violations found' without running the drift check | 1 (08-06) | A | **none** | Specced in WS-7c. |
 | A manifest requires @cascivo/components, which is private and unpublishable | 1 (08-06) | B | **none** | npm-dependency-reality — specced in WS-1, not yet written. |
 | Meter carries the shared responsive-width doc but never uses ChartFrame | 1 (08-06) | A | **none** | chart-frame-parity — specced in WS-5. |
-| The documented theming API ships only in @cascivo/react, unreachable on the copy-paste path | 1 (08-06) | A | **none** | path-a-parity — specced in WS-3. path-b-parity already exists; only one direction was ever built, which is why this was invisible. |
 | Badge maps `neutral` to the brand accent while Tag, Status and Notification do not | 1 (08-06) | A | **none** | tone-parity — specced in WS-4. normalizeTone guarantees the spelling converges; nothing checks the rendering does. |
 | @types/react version skew changes which assertions and refs type-check | 1 (07-28) | E | **none** | Carried forward from the 07-28 plan §0.5, where the fixture DISPROVED the original diagnosis. Still open there; untouched by the 08-06 plan. |
 
-## Closed — 4
+## Closed — 5
 
 Each row names the guard that makes it stay closed.
 
@@ -42,6 +41,7 @@ Each row names the guard that makes it stay closed.
 | Vendored source fails the adopter's strict lint/type toolchain | 4 (07-18, 07-22, 07-28, 08-06) | F | `lint:host-eslint` | Closed only once the guard ran the adopter's REAL toolchain. The previous guard (lint:host-strict, oxlint) was written for this exact finding and could not express the rules that fired: it found 0, real ESLint found 501. |
 | A deprecated component is only marked in source, after the adopter has vendored it | 1 (08-06) | A | `scripts/checks/deprecation-surfaces.test.ts` | ComponentMeta now carries `deprecated`, so list/add/MCP/docs all render it at discovery time. The guard asserts the replacement resolves, entry and manifest agree, and each surface reads the field — not merely that the type has it. |
 | Documented ESLint entry point is the legacy eslintrc shape, applies no rules | 1 (08-06) | C | `lint:host-eslint:test` | Same fact lived in three places and was wrong in two — plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner. |
+| The documented theming API ships only in @cascivo/react, unreachable on the copy-paste path | 1 (08-06) | A | `scripts/checks/path-a-parity.test.ts` | The theme runtime moved to @cascivo/core (with persistedSignal and the sync drivers, which had to move too or core->storage->core would cycle); @cascivo/react re-exports every name unchanged, so Path B sees no difference. path-a-parity is the twin of the path-b-parity guard that already existed: only one direction had ever been built, which is why this was invisible. It also fails when a doc names a Path-B-only API without saying so — the half that would actually have caught this. |
 | Vendored source carries dead bindings the adopter's first `tsc --noEmit` reports | 1 (08-06) | E | `tsconfig.base.json` | noUnusedLocals/noUnusedParameters on, matching the official TanStack Start scaffolder. Found 11, not the 1 reported: five leftover useSignal imports from the useEffectPropSignal migration, a discarded fetchRegistry network call in `cascivo generate`, a fillColor() taking min/max and ignoring them, and SkipNavLink wrapped in forwardRef while never attaching the ref — consumers got null with no type error, and ref-parity had counted it compliant because it checks the wrapper, not the wiring. |
 
 ## Mechanisms

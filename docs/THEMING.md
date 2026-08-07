@@ -76,12 +76,30 @@ themes is in [GETTING-STARTED.md](./GETTING-STARTED.md#theme-export--data-theme-
 
 ## Switching themes at runtime
 
-`data-theme` is the *what*; `ThemeProvider` (from `@cascivo/react`) is the *how* — it
+### Which package do I import it from?
+
+**`@cascivo/core`, on both install paths.** The theme runtime lives there precisely so the
+copy-paste path can reach it: `@cascivo/core` is the one cascivo package `cascivo init`
+installs for you.
+
+```ts
+import { ThemeProvider, useTheme, setTheme, applyTheme, themePreloadScript } from '@cascivo/core'
+```
+
+`@cascivo/react` re-exports all of it under the same names, so if you are on the prebuilt
+path and already import from `@cascivo/react`, keep doing that — it is the same code.
+
+> Until 0.17.0 these shipped only from `@cascivo/react`, which is the prebuilt distribution
+> of every component. A copy-paste adopter reading "from `@cascivo/react`" was being told to
+> install 197 components to get a theme signal, so one hand-wrote the provider, the
+> persistence, the preload script and the `data-theme` wiring instead.
+
+`data-theme` is the *what*; `ThemeProvider` is the *how* — it
 persists the choice, drives the attribute, and is SSR-safe, so you never hand-wire a theme
 toggle (and never write a `useEffect` that toggles a `.dark` class):
 
 ```tsx
-import { ThemeProvider, useTheme } from '@cascivo/react'
+import { ThemeProvider, useTheme } from '@cascivo/core'
 
 function App() {
   return (
@@ -124,7 +142,7 @@ function ThemeToggle() {
   carrying the attribute (usually `<html>`), or React 19 logs a hydration mismatch:
 
 ```tsx
-import { themePreloadScript } from '@cascivo/react'
+import { themePreloadScript } from '@cascivo/core'
 
 // server-rendered document
 <html suppressHydrationWarning>

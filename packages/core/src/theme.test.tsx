@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest'
 import { createRef } from 'react'
-import { act, render } from '@testing-library/react'
+import { act, cleanup, render } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import {
   applyTheme,
@@ -9,11 +9,17 @@ import {
   themePreloadScript,
   themeSignal,
   useTheme,
-} from './theme'
+} from './theme.tsx'
 
 function currentTheme(): string | null {
   return document.documentElement.getAttribute('data-theme')
 }
+
+// Explicit, because this package's vitest config does not set `globals: true`, so
+// @testing-library/react never registers its automatic afterEach cleanup. Without it a
+// ThemeProvider mounted by an earlier test stays subscribed to the theme signal and writes
+// `data-theme` on <html> during a later test that asserts the root was left alone.
+afterEach(cleanup)
 
 let keySeq = 0
 /** A fresh storageKey per test so the module theme singleton rebuilds (the same

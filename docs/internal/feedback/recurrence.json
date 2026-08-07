@@ -69,9 +69,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "A",
-      "guard": null,
-      "status": "open",
-      "guardNote": "path-a-parity \u2014 specced in WS-3. path-b-parity already exists; only one direction was ever built, which is why this was invisible."
+      "guard": "scripts/checks/path-a-parity.test.ts",
+      "status": "closed",
+      "note": "The theme runtime moved to @cascivo/core (with persistedSignal and the sync drivers, which had to move too or core->storage->core would cycle); @cascivo/react re-exports every name unchanged, so Path B sees no difference. path-a-parity is the twin of the path-b-parity guard that already existed: only one direction had ever been built, which is why this was invisible. It also fails when a doc names a Path-B-only API without saying so \u2014 the half that would actually have caught this."
     },
     {
       "id": "tone-vocabulary-renders-inconsistently",

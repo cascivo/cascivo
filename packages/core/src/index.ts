@@ -106,3 +106,33 @@ export type { SpaceStep } from './space.ts'
 // plus the alias normalizers every component that models either uses.
 export { normalizeTone, normalizeProgress, sentimentOf } from './tone.ts'
 export type { Tone, ToneAlias, ToneInput, Progress, ProgressAlias, ProgressInput } from './tone.ts'
+
+// Persisted signals — localStorage/IndexedDB-backed, SSR-safe. They live here rather than
+// in `@cascivo/storage` because the theme runtime below needs them and `@cascivo/storage`
+// depends on this package; the other direction would be a cycle. `@cascivo/storage`
+// re-exports these unchanged, so its public API is untouched.
+export { persistedSignal } from './persisted-signal.ts'
+export type { PersistedSignal, PersistedSignalOptions } from './persisted-signal.ts'
+export { localStorageDriver, memoryDriver } from './drivers.ts'
+export type { StorageDriver } from './drivers.ts'
+
+// Theme runtime — SSR-safe, persisted, no-FOUC.
+//
+// In `@cascivo/core` and not `@cascivo/react` because `@cascivo/react` is the PREBUILT
+// DISTRIBUTION OF EVERY COMPONENT. A copy-paste-path (Path A) adopter installs this package
+// and not that one, so shipping the documented theming API only from there told them to
+// install 197 components to get a theme signal. One reported build checked all 114 core
+// exports, concluded theming was unavailable, and hand-wrote the provider, the persistence,
+// the preload script and the `data-theme`/`color-scheme` wiring — all of it a
+// re-implementation of documented library behaviour, on the path `cascivo init` configures.
+//
+// `@cascivo/react` re-exports these under the same names, so Path B sees no change.
+export {
+  ThemeProvider,
+  useTheme,
+  themeSignal,
+  setTheme,
+  applyTheme,
+  themePreloadScript,
+} from './theme.tsx'
+export type { ThemeProviderProps } from './theme.tsx'
