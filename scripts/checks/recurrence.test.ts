@@ -123,3 +123,34 @@ test('RECURRENCE.md is regenerated (no drift)', async () => {
     )
   }
 })
+
+test('no open finding names a guard that already exists', async () => {
+  // Stale bookkeeping in the other direction: a row left `open` with a guardNote saying the
+  // guard is "not yet written" while the file sits in the tree. That happened — the WS-1
+  // guard shipped and passed while its row still read "specced, not yet written", because
+  // the script that was supposed to close it wrote a different file. The ledger is only
+  // useful if it is wrong in neither direction.
+  const stale: string[] = []
+  for (const f of data.findings) {
+    if (f.status !== 'open' || !f.guardNote) continue
+    for (const m of f.guardNote.matchAll(/([\w./-]+\.test\.ts|[a-z-]+:[a-z-]+)/g)) {
+      const named = m[1]!
+      if (pkg.scripts[named]) {
+        stale.push(`${f.id} → "${named}" is a real npm script`)
+        continue
+      }
+      for (const dir of ['scripts/checks/', '']) {
+        if (await exists(dir + named)) {
+          stale.push(`${f.id} → ${dir}${named} exists`)
+          break
+        }
+      }
+    }
+  }
+  assert.deepEqual(
+    [...new Set(stale)],
+    [],
+    'These findings are still marked open, but the guard their note says is missing now ' +
+      `exists. Close the row (or correct the note):\n  ${[...new Set(stale)].join('\n  ')}`,
+  )
+})

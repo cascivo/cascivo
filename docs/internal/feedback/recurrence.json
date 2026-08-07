@@ -55,9 +55,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "B",
-      "guard": null,
-      "status": "open",
-      "guardNote": "npm-dependency-reality \u2014 specced in WS-1, not yet written."
+      "guard": "scripts/checks/npm-dependency-reality.test.ts",
+      "status": "closed",
+      "note": "Both directions guarded: a declared dependency the source never imports, and an imported package the manifest omits. Found three more phantom deps beyond the report (progress, menu-button, and avatar-group's missing @cascivo/i18n) plus @cascivo/layouts presented as installable in a cookbook. The registry generator now throws on a private or 0.0.0 peer floor rather than emitting '>=0.0.0'."
     },
     {
       "id": "theming-path-a-unavailable",
@@ -159,7 +159,7 @@
     },
     {
       "id": "types-react-version-skew",
-      "title": "@types/react version skew changes which assertions and refs type-check",
+      "title": "React types unresolvable from inside a cascivo .d.ts, so every prop vanishes",
       "reports": [
         "feedback-incident-console-adopter-2026-07-28.md"
       ],
@@ -167,9 +167,9 @@
         "fix-plan-incident-console-adopter-2026-07-28.md"
       ],
       "mechanism": "E",
-      "guard": null,
-      "status": "open",
-      "guardNote": "Carried forward from the 07-28 plan \u00a70.5, where the fixture DISPROVED the original diagnosis. Still open there; untouched by the 08-06 plan."
+      "guard": "isolated:check",
+      "status": "closed",
+      "note": "Reproduced 2026-08-07 after two plans could not. The trigger is pnpm `hoist: false`: the default layout's hidden .pnpm/node_modules supplies React's types by accident, which is why the original fixture passed with the peer REMOVED and concluded the mechanism was unreproducible \u2014 it was measuring the hoist. With hoisting off, removing the peer produces `Property 'children' does not exist on type 'CardProps'` for every component: the report verbatim. isolated:check now builds both layouts and the no-hoist case is observed failing on its pre-fix state. The Astro tsconfig hypothesis was checked and disproved."
     },
     {
       "id": "deprecation-invisible-until-installed",

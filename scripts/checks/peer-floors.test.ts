@@ -24,12 +24,16 @@
  *    each package's own `tsc --noEmit` passes. That is Mechanism E — see
  *    `docs/internal/feedback/README.md`.
  *
- *    ⚠ **The exact C1 mechanism is not reproduced.** `pnpm isolated:check` type-checks the
- *    packed tarballs in a strict, non-hoisted pnpm workspace on the reporter's own
- *    TypeScript version, and cascivo's types resolve there even *without* this peer — see
- *    that file's header for the full negative result. The peer is still correct: it is the
- *    convention for typed React libraries and makes resolution deliberate rather than
- *    dependent on a layout accident. This guard keeps it from regressing.
+ *    ✅ **The C1 mechanism is reproduced, and this peer is what fixes it.** `pnpm
+ *    isolated:check` builds a second workspace with pnpm `hoist: false` and type-checks the
+ *    packed tarballs there. With this peer removed it reports `Property 'children' does not
+ *    exist on type 'CardProps'` for every component — the report verbatim; with it present,
+ *    zero errors. pnpm's DEFAULT layout hides the bug, because its hidden
+ *    `node_modules/.pnpm/node_modules/` supplies React's types by accident; turn hoisting
+ *    off and the declared peer is the only thing left putting them on the path.
+ *
+ *    So this is not a convention-following nicety. Removing it breaks every adopter whose
+ *    pnpm config restricts hoisting, with a symptom that names the wrong culprit.
  *
  *    Optional, not required: a JS-only consumer must not get an install warning for types
  *    they will never read. And a peer rather than a `dependency`, because a bundled copy
