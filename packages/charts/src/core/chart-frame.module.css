@@ -7,6 +7,14 @@
        onto the next line — reported as a label wrapping to three lines beside a
        Sparkline in a 19rem card. With this the SVG's max-inline-size: 100% can bite. */
     min-inline-size: 0;
+    /* Charts render as `[ChartFrame, Legend]` inside a column flex container. Without
+       these, the frame's flex base size is its content (the SVG), so a constrained parent
+       cannot hand the plot the space left over after the legend — and `min-block-size:
+       auto` would refuse to shrink it. With them, the frame's height comes FROM the
+       container, so writing the measured height back onto the SVG cannot feed back into
+       the measurement. In an auto-height parent both are inert and the 300px seed stands. */
+    flex: 1 1 auto;
+    min-block-size: 0;
   }
 
   /* Clamp the SVG to the frame so an explicit `width` larger than the container
@@ -16,6 +24,9 @@
   .frame > svg {
     max-inline-size: 100%;
     block-size: auto;
+    /* Belt and braces for the fixed-`height`-in-a-short-slot case: the viewBox makes this
+       scale rather than clip. Responsive charts are already sized to fit. */
+    max-block-size: 100%;
   }
 
   /* Enter + update transitions — progressive enhancement, fully off under

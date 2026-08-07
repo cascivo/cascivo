@@ -46,8 +46,17 @@ export interface ChartFrameProps {
    * container (`max-inline-size: 100%`) so it can never overflow its card.
    */
   width?: number | undefined
-  /** SVG height in px. Defaults to 300 (48 in `plain` mode). Unlike `width`, height
-   * does not track the container — set it to change the chart's aspect. */
+  /**
+   * Height of the **plot area** in px — the SVG only. The title, description and legend
+   * render OUTSIDE it (the legend is a sibling of this frame), so the rendered block is
+   * taller than `height` by whatever chrome the chart shows. Sizing a card to `height`
+   * exactly is what clips a legend.
+   *
+   * **Omit it (the default) for a responsive chart.** Like `width`, height now tracks the
+   * container via `ResizeObserver`: in a parent with a definite block size the plot fills
+   * the space left over after the legend, and in an auto-height parent it falls back to
+   * 300px. Set it only to force a fixed aspect.
+   */
   height?: number | undefined
   fallback?: ReactNode
   children: (size: { width: number; height: number }) => ReactNode
@@ -94,7 +103,7 @@ export function ChartFrame({
   title,
   description,
   width: fixedWidth,
-  height: fixedHeight = 300,
+  height: fixedHeight,
   fallback,
   children,
   className,
@@ -117,7 +126,15 @@ export function ChartFrame({
   const id = useId()
   const descId = `${id}-desc`
   const ariaLiveId = `${id}-live`
-  const { ref, width, height } = useChartSize(fixedWidth ?? 400, fixedHeight)
+  // 400x300 are SEEDS, not defaults: `useChartSize` overwrites both from the
+  // ResizeObserver, and only ever writes a measurement > 0, so a collapsed or unmeasured
+  // container keeps the seed rather than rendering a zero-height chart.
+  //
+  // `height` used to default to 300 in the destructure above, which made `fixedHeight`
+  // always defined and so made `fixedHeight ?? height.value` below unconditionally 300 —
+  // the measured height signal was computed on every resize and never read. A chart in a
+  // 240px grid cell rendered a 300px SVG and spilled 35px past its card border.
+  const { ref, width, height } = useChartSize(fixedWidth ?? 400, 300)
 
   // Must be called unconditionally (rules of hooks)
   const focusedIndex = useSignal<number | null>(null)

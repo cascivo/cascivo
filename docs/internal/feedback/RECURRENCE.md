@@ -19,27 +19,27 @@ empty, or does not resolve to a real npm script or file fails CI. It also fails 
 `feedback-*.md` report exists that no row references — a new report must be triaged into
 this table, not just filed.
 
-## Open — 7
+## Open — 5
 
 | Finding | Reports | Mech. | Guard | Why still open |
 | --- | --- | --- | --- | --- |
-| ChartFrame's measured-height signal is unreachable, so charts overflow fixed cells | 1 (08-06) | E | **none** | chart-frame-parity + a computed:check fixed-height case — specced in WS-5. |
 | The CLI installs bare package names and resolves to a stale lockfile entry | 1 (08-06) | E | **none** | Specced in WS-7b — a unit test on the spawned argv. |
 | Continuously-deployed docs describe a layer order the published packages do not have | 1 (08-06) | C | **none** | Specced in WS-8a: generate the layer statement from layers.css, and version-stamp llms.txt so a reader can tell what it describes. |
 | `cascivo doctor` prints 'No violations found' without running the drift check | 1 (08-06) | A | **none** | Specced in WS-7c. |
 | A manifest requires @cascivo/components, which is private and unpublishable | 1 (08-06) | B | **none** | npm-dependency-reality — specced in WS-1, not yet written. |
-| Meter carries the shared responsive-width doc but never uses ChartFrame | 1 (08-06) | A | **none** | chart-frame-parity — specced in WS-5. |
 | @types/react version skew changes which assertions and refs type-check | 1 (07-28) | E | **none** | Carried forward from the 07-28 plan §0.5, where the fixture DISPROVED the original diagnosis. Still open there; untouched by the 08-06 plan. |
 
-## Closed — 6
+## Closed — 8
 
 Each row names the guard that makes it stay closed.
 
 | Finding | Reports | Mech. | Guard | How it holds |
 | --- | --- | --- | --- | --- |
 | Vendored source fails the adopter's strict lint/type toolchain | 4 (07-18, 07-22, 07-28, 08-06) | F | `lint:host-eslint` | Closed only once the guard ran the adopter's REAL toolchain. The previous guard (lint:host-strict, oxlint) was written for this exact finding and could not express the rules that fired: it found 0, real ESLint found 501. |
+| ChartFrame's measured-height signal is unreachable, so charts overflow fixed cells | 1 (08-06) | E | `packages/charts/src/core/chart-frame.size.test.tsx` | ChartFrame's `height` no longer defaults to 300 in the destructure, so `fixedHeight ?? height.value` finally reads the measured signal; the frame is a shrinkable flex item so a constrained parent can hand the plot the space left after the legend. Every pre-existing ChartFrame test passed an explicit height — the one case that was never broken — so the new tests cover the omitted-height path and were demonstrated failing against the old default. computed:check cannot cover this: it renders static markup with no hydration, so no ResizeObserver ever runs. |
 | A deprecated component is only marked in source, after the adopter has vendored it | 1 (08-06) | A | `scripts/checks/deprecation-surfaces.test.ts` | ComponentMeta now carries `deprecated`, so list/add/MCP/docs all render it at discovery time. The guard asserts the replacement resolves, entry and manifest agree, and each surface reads the field — not merely that the type has it. |
 | Documented ESLint entry point is the legacy eslintrc shape, applies no rules | 1 (08-06) | C | `lint:host-eslint:test` | Same fact lived in three places and was wrong in two — plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner. |
+| Meter carries the shared responsive-width doc but never uses ChartFrame | 1 (08-06) | A | `scripts/checks/chart-frame-parity.test.ts` | Checks the CLAIM, not the shape: a chart whose `width` doc promises container tracking must reach useChartSize (directly or via ChartFrame) and carry a viewBox. A 'must import ChartFrame' rule would have forced Meter — which has no data points and needs none of the frame's tooltip/zoom machinery — into a worse design. Found two more beyond the report: sparkline and bullet both carried the responsive boilerplate while hard-coding a width default, and sparkline's documented default (80) did not match its code (120). |
 | The documented theming API ships only in @cascivo/react, unreachable on the copy-paste path | 1 (08-06) | A | `scripts/checks/path-a-parity.test.ts` | The theme runtime moved to @cascivo/core (with persistedSignal and the sync drivers, which had to move too or core->storage->core would cycle); @cascivo/react re-exports every name unchanged, so Path B sees no difference. path-a-parity is the twin of the path-b-parity guard that already existed: only one direction had ever been built, which is why this was invisible. It also fails when a doc names a Path-B-only API without saying so — the half that would actually have caught this. |
 | Badge maps `neutral` to the brand accent while Tag, Status and Notification do not | 1 (08-06) | A | `tone:check` | Badge neutral now maps to the subtle look, matching Tag/Status/Notification; the accent look stays reachable as variant="primary". tone-parity asserts each canonical tone reads from its own token family in all four components, and that neutral is never accent/primary. It checks families rather than exact tokens, because each component legitimately presents tone differently (filled chip, quiet chip, dot, tinted card). |
 | Vendored source carries dead bindings the adopter's first `tsc --noEmit` reports | 1 (08-06) | E | `tsconfig.base.json` | noUnusedLocals/noUnusedParameters on, matching the official TanStack Start scaffolder. Found 11, not the 1 reported: five leftover useSignal imports from the useEffectPropSignal migration, a discarded fetchRegistry network call in `cascivo generate`, a fillColor() taking min/max and ignoring them, and SkipNavLink wrapped in forwardRef while never attaching the ref — consumers got null with no type error, and ref-parity had counted it compliant because it checks the wrapper, not the wiring. |

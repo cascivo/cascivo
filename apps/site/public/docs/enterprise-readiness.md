@@ -117,7 +117,7 @@ a flash" wiring; only an app-local copy existed in `apps/site/src/theme.ts`.
 `[data-theme='…']`. FOUC isn't solved by a React effect at all; it's solved by a
 pre-paint script in the document head.
 
-**The shipped answer** is [`ThemeProvider`](https://github.com/cascivo/cascivo/blob/main/packages/react/src/theme.tsx), now exported
+**The shipped answer** is [`ThemeProvider`](https://github.com/cascivo/cascivo/blob/main/packages/core/src/theme.tsx), now exported
 from `@cascivo/react`. It packages the exact reference wiring, rules-compliant: the DOM
 write happens in `useSignalEffect` (not `useEffect`), the active theme is a module-level
 signal (not React context), and it drives the real `data-theme` attribute.

@@ -97,9 +97,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "E",
-      "guard": null,
-      "status": "open",
-      "guardNote": "chart-frame-parity + a computed:check fixed-height case \u2014 specced in WS-5."
+      "guard": "packages/charts/src/core/chart-frame.size.test.tsx",
+      "status": "closed",
+      "note": "ChartFrame's `height` no longer defaults to 300 in the destructure, so `fixedHeight ?? height.value` finally reads the measured signal; the frame is a shrinkable flex item so a constrained parent can hand the plot the space left after the legend. Every pre-existing ChartFrame test passed an explicit height \u2014 the one case that was never broken \u2014 so the new tests cover the omitted-height path and were demonstrated failing against the old default. computed:check cannot cover this: it renders static markup with no hydration, so no ResizeObserver ever runs."
     },
     {
       "id": "shared-prop-doc-false-on-one-component",
@@ -111,9 +111,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "A",
-      "guard": null,
-      "status": "open",
-      "guardNote": "chart-frame-parity \u2014 specced in WS-5."
+      "guard": "scripts/checks/chart-frame-parity.test.ts",
+      "status": "closed",
+      "note": "Checks the CLAIM, not the shape: a chart whose `width` doc promises container tracking must reach useChartSize (directly or via ChartFrame) and carry a viewBox. A 'must import ChartFrame' rule would have forced Meter \u2014 which has no data points and needs none of the frame's tooltip/zoom machinery \u2014 into a worse design. Found two more beyond the report: sparkline and bullet both carried the responsive boilerplate while hard-coding a width default, and sparkline's documented default (80) did not match its code (120)."
     },
     {
       "id": "cli-installs-stale-versions",

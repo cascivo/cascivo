@@ -448,7 +448,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.module.css"
       ],
       "fileHashes": {
-        "alert-dialog.tsx": "sha256-52e6d5da37d3f574401afea70ed04a9f3f043249c8d8343928e313098d87b1e0",
+        "alert-dialog.tsx": "sha256-d790560d1c7408a3f63c355a6eced4cdf88f0a4afc3c95d25fdab91e50423425",
         "alert-dialog.module.css": "sha256-fa35d8ba7ddbe3232ba2d374d79467bd622e5f9d7f64b793df32ed375021dd74"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -1127,7 +1127,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
       ],
       "fileHashes": {
-        "badge.tsx": "sha256-0a4143e1d92e139095e24eb9c3726101ce726e1ce6ca3fb7c66915f9fb064034",
+        "badge.tsx": "sha256-2b88cac50728b21cb426735da01ed6db2104b574a1d5d4129f08014e36b999af",
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0"
       },
       "dependencies": ["@cascivo/core"],
@@ -2601,7 +2601,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
       ],
       "fileHashes": {
-        "checkbox.tsx": "sha256-118b9b26632157a46bce78896bc20a39045193167f414a06f52a401f8f4ad01d",
+        "checkbox.tsx": "sha256-a441a23078ff9884e0f9775169690102be9951844456ab675237aa804e477bc7",
         "checkbox.module.css": "sha256-67ab94d2766e3fdff0c3cbbd2fd178f3bc1b489af3825ddd31292de6281295f2"
       },
       "dependencies": ["@cascivo/core"],
@@ -7002,7 +7002,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.module.css"
       ],
       "fileHashes": {
-        "header-panel.tsx": "sha256-042c8eacce59e716e02f5560a35bfd25a4078e51227217fb1634747946e0ada3",
+        "header-panel.tsx": "sha256-13df66711076353f267cd06e38cbc001862bb0dbffe63a98ffd46fbfedd77bea",
         "index.ts": "sha256-3f1a80fd0b1d20520c3db44229ab73ae023c447c9fa92325a9e78b4b40d5db25",
         "header-panel.module.css": "sha256-a1b424f1c33c6b5ba16e54398d94d7222757b5c6a61e06d70454d5cce540d923"
       },
@@ -9930,7 +9930,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.module.css"
       ],
       "fileHashes": {
-        "modal.tsx": "sha256-e636737c30cce65a550f31cfe5ae1c5af371691ed86977a1b92948513dc043bd",
+        "modal.tsx": "sha256-07e32271db75a37e9fe332fc66ec709a9f3878e115e5820cfd31a50abb7ab3b2",
         "modal.module.css": "sha256-e33879eb178b1ef5e414a2139c89c8720b0419a3a7e503e010642d31cfba0409"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -14351,7 +14351,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.module.css"
       ],
       "fileHashes": {
-        "sheet.tsx": "sha256-b82faec2513e6f7f6b739002dfe1c15ce7db26945b177d1bd295b62d3c7c319b",
+        "sheet.tsx": "sha256-255bdc52d94f4b082ab4f59f91e7bc6c7ad8f5698cd3b730035e56f0e46dc8a3",
         "sheet.module.css": "sha256-c61931317af5a3c08d8af91223f8e05f358295258143b92ca18326d644fde4c2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -15077,7 +15077,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.module.css"
       ],
       "fileHashes": {
-        "skip-nav.tsx": "sha256-e4cfe50276ec36622e180de125d03142fb5a9dab4a09ad2b1f82cdd1c7b941b3",
+        "skip-nav.tsx": "sha256-545eb2b2b0f47a75cf905d477e984296448e84846f06f23aad8817333115dadb",
         "skip-nav.module.css": "sha256-1e0452730a3b255759d417aca101a6cac9c8e0853150fdb4bcea3e57e5d4ee5c"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -16662,7 +16662,7 @@
       ],
       "fileHashes": {
         "tag.tsx": "sha256-9269c753d98ed8269377c05ed01f8c2a19462c59fb2e8bbb748c08e3bae48505",
-        "tag.module.css": "sha256-3d745266aa1b7b4cafa28646918b2374dd2dc850a6bd1700284a9af12407f91f"
+        "tag.module.css": "sha256-b675515cee8562e789a8943932f256280fe06abb235bf9cdfa68e0bf3447cb4b"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -22334,7 +22334,7 @@
           },
           {
             "name": "width",
-            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+            "description": "SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 300px rather than a container-filling chart. Pass a number to change it. The catalogue-wide \"omit for a responsive chart\" note does not apply to this chart.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -24948,7 +24948,7 @@
           },
           {
             "name": "width",
-            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+            "description": "SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide \"omit for a responsive chart\" note does not apply to this chart.",
             "type": "number",
             "required": false,
             "default": "80"

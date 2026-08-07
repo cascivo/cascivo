@@ -1,0 +1,39 @@
+@layer cascivo.component {
+  .meter {
+    /* Fill the slot so the ResizeObserver has a width to report; without this the wrapper
+       is content-sized and every measurement echoes back the SVG's own width. */
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  .svg {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    max-inline-size: 100%;
+  }
+
+  .label {
+    font-size: var(--cascivo-text-xs);
+    color: var(--cascivo-color-foreground-muted);
+    margin-block-start: var(--cascivo-space-1);
+  }
+
+  .gaugeLabel {
+    text-align: center;
+    font-size: var(--cascivo-text-sm);
+    color: var(--cascivo-color-foreground-muted);
+  }
+
+  .fill {
+    transform-origin: left center;
+    /* scaleX is compositor-safe (GPU-composited transform), unlike animating width. */
+    transition: transform 400ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fill {
+      transition: none;
+    }
+  }
+}
