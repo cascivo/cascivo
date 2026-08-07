@@ -176,15 +176,42 @@ export function detectPackageManager(
   return 'npm'
 }
 
+/**
+ * Pin every `@cascivo/*` package to an explicit version specifier.
+ *
+ * A bare name lets the package manager reuse whatever it already has resolvable. In a pnpm
+ * workspace a sibling package's lockfile entry won and `@cascivo/i18n` resolved to **0.2.14**
+ * while latest was **0.16.0** — then cascivo warned the adopter about the version it had
+ * just installed itself. `add name@latest` (or the registry's known floor) makes the intent
+ * explicit instead of leaving it to resolution order.
+ *
+ * Non-cascivo packages (`@preact/signals-react`) keep their bare name: their version is the
+ * app's business, and cascivo has no floor to assert.
+ */
+export function pinSpecifier(pkg: string, floors: Record<string, string> = {}): string {
+  if (!pkg.startsWith('@cascivo/') && pkg !== 'cascivo') return pkg
+  if (pkg.includes('@', 1)) return pkg // already carries an explicit version
+  const floor = floors[pkg]
+  // `>=x.y.z` is not an installable specifier on its own; widen it to a range the package
+  // manager understands, so a known floor is honoured rather than silently ignored.
+  if (floor?.startsWith('>=')) return `${pkg}@${floor.slice(2)} - x`
+  return `${pkg}@latest`
+}
+
 /** The install subcommand each package manager uses to add dependencies. */
 export function installCommand(
   pm: PackageManager,
   packages: string[],
-  opts: { dev?: boolean } = {},
+  opts: { dev?: boolean; floors?: Record<string, string>; pin?: string } = {},
 ): [string, string[]] {
   const verb = pm === 'npm' ? 'install' : 'add'
   const devFlag = opts.dev ? [pm === 'npm' ? '--save-dev' : '-D'] : []
-  return [pm, [verb, ...devFlag, ...packages]]
+  const specs = packages.map((p) =>
+    opts.pin && (p.startsWith('@cascivo/') || p === 'cascivo')
+      ? `${p}@${opts.pin}`
+      : pinSpecifier(p, opts.floors ?? {}),
+  )
+  return [pm, [verb, ...devFlag, ...specs]]
 }
 
 /** Human-readable install command a user can copy-paste, e.g. `pnpm add -D cascivo`. */

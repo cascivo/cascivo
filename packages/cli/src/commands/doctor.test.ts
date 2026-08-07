@@ -7,6 +7,7 @@ import {
   checkSignalsCompat,
   checkDuplicateCore,
   checkSsrConfig,
+  checkFormatterIgnore,
   detectInstallPath,
   isAdopterProject,
   runDoctor,
@@ -374,5 +375,39 @@ describe('checkDuplicateCore', () => {
     const finding = await checkDuplicateCore(root)
     expect(finding?.root).toBe('0.7.1')
     expect(finding?.nested).toEqual(['@cascivo/charts → 0.6.0'])
+  })
+})
+
+describe('checkFormatterIgnore', () => {
+  const dirs: string[] = []
+  const tmp = () => {
+    const d = mkdtempSync(join(tmpdir(), 'cascivo-fmt-'))
+    dirs.push(d)
+    return d
+  }
+  afterEach(() => {
+    for (const d of dirs.splice(0)) rmSync(d, { recursive: true, force: true })
+  })
+
+  it('flags a formatter config with no exclusion for the vendored dir', () => {
+    const dir = tmp()
+    writeFileSync(join(dir, '.prettierrc'), '{}\n')
+    const hint = checkFormatterIgnore(dir, 'src/components/ui')
+    expect(hint).toContain('src/components/ui/')
+    expect(hint).toContain('.prettierignore')
+  })
+
+  it('is quiet once the exclusion is present, with or without a trailing slash', () => {
+    const dir = tmp()
+    writeFileSync(join(dir, '.prettierrc'), '{}\n')
+    writeFileSync(join(dir, '.prettierignore'), 'dist\nsrc/components/ui/\n')
+    expect(checkFormatterIgnore(dir, 'src/components/ui')).toBeNull()
+
+    writeFileSync(join(dir, '.prettierignore'), 'src/components/ui\n')
+    expect(checkFormatterIgnore(dir, 'src/components/ui')).toBeNull()
+  })
+
+  it('says nothing when the project has no formatter at all', () => {
+    expect(checkFormatterIgnore(tmp(), 'src/components/ui')).toBeNull()
   })
 })

@@ -16,17 +16,44 @@ import { fetchRegistry, findComponent } from '../utils/registry.js'
  *     mode (DataTable referencing an i18n builtin key an older published
  *     @cascivo/i18n build doesn't have).
  */
+/**
+ * What a drift run actually managed to do.
+ *
+ * `runDoctorDrift` used to return void, so the default `cascivo doctor` could not run it and
+ * still say something honest. That is how "No violations found." got printed by a run that
+ * had never looked: the two were disjoint branches, and `--drift` reported five real issues
+ * on the same project.
+ */
+export interface DriftOutcome {
+  /** False when the check could not run at all (no lockfile, offline, unreachable registry). */
+  ran: boolean
+  /** Why it could not run — printed instead of an unqualified "clean". */
+  reason?: string
+  issues: number
+}
+
 export async function runDoctorDrift(
   config: CascadeConfig,
   cwd: string = process.cwd(),
-): Promise<void> {
+): Promise<DriftOutcome> {
   const lock = await readLock(cwd)
   if (!lock || Object.keys(lock.items).length === 0) {
     console.log('No installed components found in cascivo.lock.')
-    return
+    return {
+      ran: false,
+      reason: 'no components installed (cascivo.lock is empty or missing)',
+      issues: 0,
+    }
   }
 
-  const registry = await fetchRegistry(config.registry)
+  let registry: Awaited<ReturnType<typeof fetchRegistry>>
+  try {
+    registry = await fetchRegistry(config.registry)
+  } catch (error) {
+    const reason = `could not reach the registry (${error instanceof Error ? error.message : String(error)})`
+    console.log(`Drift check skipped: ${reason}`)
+    return { ran: false, reason, issues: 0 }
+  }
   let driftCount = 0
 
   for (const [name, entry] of Object.entries(lock.items)) {
@@ -62,4 +89,5 @@ export async function runDoctorDrift(
   } else {
     console.log('No drift detected — installed components match the registry.')
   }
+  return { ran: true, issues: driftCount }
 }

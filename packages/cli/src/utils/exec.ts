@@ -11,11 +11,22 @@ import { detectPackageManager, installCommand, installHint, type PackageManager 
 export function installPackages(
   packages: string[],
   cwd: string = process.cwd(),
-  opts: { pm?: PackageManager; dev?: boolean } = {},
+  opts: {
+    pm?: PackageManager
+    dev?: boolean
+    /** Registry peer floors, so a known minimum is honoured rather than silently ignored. */
+    floors?: Record<string, string>
+    /** `--pin <version>` escape hatch: install every `@cascivo/*` at exactly this version. */
+    pin?: string
+  } = {},
 ): boolean {
   if (packages.length === 0) return true
   const pm = opts.pm ?? detectPackageManager(cwd)
-  const [cmd, args] = installCommand(pm, packages, { dev: opts.dev ?? false })
+  const [cmd, args] = installCommand(pm, packages, {
+    dev: opts.dev ?? false,
+    ...(opts.floors ? { floors: opts.floors } : {}),
+    ...(opts.pin ? { pin: opts.pin } : {}),
+  })
   console.log(`Installing ${packages.join(', ')} with ${cmd}…`)
   const result = spawnSync(cmd, args, {
     cwd,

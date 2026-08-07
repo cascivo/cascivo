@@ -307,6 +307,40 @@ const VITE_CONFIG_FILES = ['vite.config.ts', 'vite.config.js', 'vite.config.mjs'
  * cliff the 2026-07-20 report hit (blocker #1). A text match, not a gate. Returns
  * null when there's no Vite SSR framework or the config already handles it.
  */
+/**
+ * Warn when the vendored components dir is not excluded from the project's formatter.
+ *
+ * Owning the code means your formatter rewrites it, and `cascivo update` then reports drift
+ * on files you never edited. `cascivo init` writes the exclusion for you, but a project that
+ * adopted cascivo before that existed — or that added Prettier afterwards — never got it.
+ */
+export function checkFormatterIgnore(cwd: string, outputDir: string): string | null {
+  const pairs = [
+    {
+      configs: ['.prettierrc', '.prettierrc.json', '.prettierrc.js', 'prettier.config.js'],
+      ignore: '.prettierignore',
+    },
+    { configs: ['.oxfmtrc', '.oxfmtrc.json'], ignore: '.oxfmtignore' },
+  ]
+  const dir = outputDir.replace(/\/+$/, '')
+  for (const { configs, ignore } of pairs) {
+    if (!configs.some((f) => existsSync(join(cwd, f)))) continue
+    let content = ''
+    try {
+      content = readFileSync(join(cwd, ignore), 'utf8')
+    } catch {
+      /* no ignore file at all */
+    }
+    if (content.split('\n').some((l) => l.trim().replace(/\/+$/, '') === dir)) continue
+    return (
+      `"${dir}/" is not excluded from your formatter. Running it will rewrite code you own, ` +
+      `and \`cascivo update\` will then report drift on files you never edited. ` +
+      `Add "${dir}/" to ${ignore}.`
+    )
+  }
+  return null
+}
+
 export function checkSsrConfig(cwd: string): string | null {
   let deps: Record<string, unknown> = {}
   try {

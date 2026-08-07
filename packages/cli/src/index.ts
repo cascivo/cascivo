@@ -277,6 +277,7 @@ export async function run(args: string[]): Promise<void> {
       const ci = rest.includes('--ci')
       const drift = rest.includes('--drift')
       if (drift) {
+        // `--drift` keeps its meaning: drift ONLY.
         const { runDoctorDrift } = await import('./commands/drift.js')
         await runDoctorDrift(await loadConfig())
       } else {
@@ -284,6 +285,7 @@ export async function run(args: string[]): Promise<void> {
         const result = await runDoctor(cwd)
         const {
           checkDuplicateCore,
+          checkFormatterIgnore,
           checkProjectDependencies,
           checkSignalsCompat,
           checkSsrConfig,
@@ -299,15 +301,34 @@ export async function run(args: string[]): Promise<void> {
         const signalsError = signalsCompat?.severity === 'error'
         const ssrHint = adopter ? checkSsrConfig(cwd) : null
         const duplicateCore = adopter ? await checkDuplicateCore(cwd) : null
+        const formatterHint = adopter
+          ? checkFormatterIgnore(cwd, (await loadConfig()).outputDir)
+          : null
+
+        // Run the drift check as part of the DEFAULT invocation. These used to be disjoint
+        // branches, so `cascivo doctor` printed "No violations found." on a project where
+        // `cascivo doctor --drift` reported five real issues. A clean report from a run that
+        // never looked is worse than no report.
+        const { runDoctorDrift } = await import('./commands/drift.js')
+        const driftOutcome = adopter
+          ? await runDoctorDrift(await loadConfig(), cwd)
+          : { ran: false, reason: 'no cascivo install detected', issues: 0 }
 
         if (
           result.passed &&
           deps.length === 0 &&
           signalsCompat === null &&
           ssrHint === null &&
-          duplicateCore === null
+          duplicateCore === null &&
+          formatterHint === null &&
+          driftOutcome.issues === 0
         ) {
-          console.log('No violations found.')
+          // Never an unqualified "clean" when part of the check could not run.
+          console.log(
+            driftOutcome.ran
+              ? 'No violations found.'
+              : `No violations found (drift: not checked — ${driftOutcome.reason}).`,
+          )
         } else {
           for (const v of result.violations) {
             console.error(`[${v.rule}] ${v.detail}\n  ${v.file}`)
@@ -330,6 +351,9 @@ export async function run(args: string[]): Promise<void> {
           if (ssrHint) {
             console.log(`[ssr-config] ${ssrHint}`)
           }
+          if (formatterHint) {
+            console.log(`[formatter-drift] ${formatterHint}`)
+          }
           if (duplicateCore) {
             console.error(
               `[duplicate-core] More than one @cascivo/core is installed ` +
@@ -347,7 +371,8 @@ export async function run(args: string[]): Promise<void> {
             (result.violations.length > 0 ||
               missingRequired.length > 0 ||
               signalsError ||
-              duplicateCore !== null)
+              duplicateCore !== null ||
+              driftOutcome.issues > 0)
           ) {
             process.exitCode = 1
           }

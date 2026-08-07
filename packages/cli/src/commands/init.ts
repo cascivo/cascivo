@@ -79,6 +79,41 @@ function hintEslintIfPresent(cwd: string): void {
   console.log('  Scope them off your components dir — see docs/USING-WITH-STRICT-ESLINT.md')
 }
 
+/**
+ * Write dependency entries into `package.json` so a failed install still leaves a
+ * DECLARATIVE-complete project, one `install` away from working.
+ *
+ * The reported failure: one unrelated bad version range elsewhere in the adopter's
+ * `package.json` made `pnpm add` exit non-zero. cascivo had already written
+ * `cascivo.config.ts`, so the project claimed to be cascivo-configured with none of the
+ * runtime present, and the printed advice ("install them yourself") was the same command
+ * that had just failed. Recording the dependencies is the difference between "recoverable
+ * with one command" and "figure out what was supposed to be here".
+ *
+ * Never overwrites an entry that already exists — the app's own pin wins.
+ */
+function recordDependencies(cwd: string, packages: string[], opts: { dev: boolean }): string[] {
+  const pkgPath = join(cwd, 'package.json')
+  if (!existsSync(pkgPath)) return []
+  let pkg: Record<string, unknown>
+  try {
+    pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as Record<string, unknown>
+  } catch {
+    return []
+  }
+  const field = opts.dev ? 'devDependencies' : 'dependencies'
+  const deps = (pkg[field] ??= {}) as Record<string, string>
+  const added: string[] = []
+  for (const name of packages) {
+    if (deps[name] !== undefined) continue
+    deps[name] = 'latest'
+    added.push(name)
+  }
+  if (added.length === 0) return []
+  writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`, 'utf8')
+  return added
+}
+
 /** Formatter ignore files, in the order a project is likely to use them. */
 const FORMATTER_IGNORES = [
   {
@@ -177,7 +212,28 @@ export async function init(args: string[] = [], cwd: string = process.cwd()): Pr
   } else {
     const runtimeOk = installPackages(RUNTIME_DEPS, cwd, { pm })
     const devOk = installPackages(DEV_DEPS, cwd, { pm, dev: true })
-    if (!runtimeOk || !devOk) process.exitCode = 1
+    if (!runtimeOk || !devOk) {
+      // Never leave a project "configured but not installed". Record what it needs, say
+      // plainly what state it is in, and give a command that is not the one that just failed.
+      const recorded = [
+        ...(runtimeOk ? [] : recordDependencies(cwd, RUNTIME_DEPS, { dev: false })),
+        ...(devOk ? [] : recordDependencies(cwd, DEV_DEPS, { dev: true })),
+      ]
+      console.error(
+        '\nInstall failed — cascivo.config.ts was written but the packages are not installed.',
+      )
+      if (recorded.length > 0) {
+        console.error(
+          `Wrote ${recorded.length} dependency entries to package.json: ${recorded.join(', ')}`,
+        )
+        console.error(`Recover with:\n  ${pm} install`)
+      } else {
+        console.error(
+          `Recover with:\n  ${installHint(pm, RUNTIME_DEPS)}\n  ${installHint(pm, DEV_DEPS, { dev: true })}`,
+        )
+      }
+      process.exitCode = 1
+    }
   }
 
   console.log('\nImport the theme in your root CSS or entry file:')

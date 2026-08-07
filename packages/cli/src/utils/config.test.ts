@@ -143,21 +143,55 @@ describe('installCommand', () => {
   it('adds the dev flag per package manager', () => {
     expect(installCommand('npm', ['cascivo'], { dev: true })).toEqual([
       'npm',
-      ['install', '--save-dev', 'cascivo'],
+      ['install', '--save-dev', 'cascivo@latest'],
     ])
     expect(installCommand('pnpm', ['cascivo'], { dev: true })).toEqual([
       'pnpm',
-      ['add', '-D', 'cascivo'],
+      ['add', '-D', 'cascivo@latest'],
     ])
+  })
+
+  it('pins every cascivo package to an explicit version', () => {
+    // A bare name lets the package manager reuse whatever it already has resolvable. In a
+    // pnpm workspace a sibling's lockfile entry won and @cascivo/i18n resolved to 0.2.14
+    // while latest was 0.16.0 — then cascivo warned about the version it had just installed.
+    const [, args] = installCommand('pnpm', ['@cascivo/core', '@cascivo/tokens'])
+    for (const arg of args.slice(1)) {
+      expect(arg, `${arg} must carry a version specifier`).toMatch(/@cascivo\/[a-z-]+@.+/)
+    }
+  })
+
+  it("leaves non-cascivo packages bare — their version is the app's business", () => {
+    expect(installCommand('pnpm', ['@preact/signals-react'])).toEqual([
+      'pnpm',
+      ['add', '@preact/signals-react'],
+    ])
+  })
+
+  it('honours a registry peer floor instead of silently ignoring it', () => {
+    const [, args] = installCommand('pnpm', ['@cascivo/i18n'], {
+      floors: { '@cascivo/i18n': '>=0.2.1' },
+    })
+    // `>=x.y.z` is not installable on its own, so it is widened to a real range.
+    expect(args).toEqual(['add', '@cascivo/i18n@0.2.1 - x'])
+  })
+
+  it('respects an explicit --pin', () => {
+    const [, args] = installCommand('pnpm', ['@cascivo/core'], { pin: '0.16.0' })
+    expect(args).toEqual(['add', '@cascivo/core@0.16.0'])
   })
 })
 
 describe('installHint', () => {
   it('renders a copy-pasteable command string', () => {
+    // Delegates to installCommand, so the hint is exactly what the CLI itself runs —
+    // a recovery command that differs from the failed one is a trap.
     expect(installHint('pnpm', ['@cascivo/core', '@cascivo/tokens'])).toBe(
-      'pnpm add @cascivo/core @cascivo/tokens',
+      'pnpm add @cascivo/core@latest @cascivo/tokens@latest',
     )
-    expect(installHint('npm', ['cascivo'], { dev: true })).toBe('npm install --save-dev cascivo')
+    expect(installHint('npm', ['cascivo'], { dev: true })).toBe(
+      'npm install --save-dev cascivo@latest',
+    )
   })
 })
 

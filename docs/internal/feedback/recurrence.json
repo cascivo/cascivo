@@ -125,9 +125,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "E",
-      "guard": null,
-      "status": "open",
-      "guardNote": "Specced in WS-7b \u2014 a unit test on the spawned argv."
+      "guard": "packages/cli/src/utils/config.test.ts",
+      "status": "closed",
+      "note": "installCommand pins every @cascivo/* to an explicit specifier (@latest, or the registry floor widened to an installable range), with a --pin escape hatch. Non-cascivo packages stay bare \u2014 their version is the app's business. installHint delegates to the same function, so the printed recovery command is exactly what the CLI runs; a recovery command that differs from the failed one is a trap."
     },
     {
       "id": "doctor-clean-on-a-run-that-did-not-look",
@@ -139,9 +139,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "A",
-      "guard": null,
-      "status": "open",
-      "guardNote": "Specced in WS-7c."
+      "guard": "packages/cli/src/commands/doctor.test.ts",
+      "status": "closed",
+      "note": "runDoctorDrift now returns a DriftOutcome, so the default `cascivo doctor` runs it and can still say something honest: when drift cannot run (no lockfile, unreachable registry) it prints 'drift: not checked \u2014 <reason>' rather than an unqualified clean. --drift keeps its meaning as drift-only. Also adds a formatter-drift finding for the projects that predate `init` writing the exclusion."
     },
     {
       "id": "docs-describe-unreleased-state",
