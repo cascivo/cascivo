@@ -53,8 +53,10 @@ Twelfth report. 9 routes, ~45 vendored components, builds and hydrates clean. Si
 34 findings.
 
 **Carried forward from [`fix-plan-incident-console-adopter-2026-07-28.md`](fix-plan-incident-console-adopter-2026-07-28.md):**
-its one open item (the C1 `@types/react` mechanism, §0.5) stays open there. This plan adds
-nothing to it and takes nothing from it.
+its one open item, the C1 `@types/react` mechanism, is now **closed** — see that plan's §0.6.
+It reproduces under pnpm `hoist: false`; the earlier fixture passed with the peer removed
+because pnpm's hidden hoist was supplying React's types by accident. **No finding in
+[`RECURRENCE.md`](RECURRENCE.md) is open.**
 
 ---
 

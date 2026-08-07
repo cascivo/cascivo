@@ -65,8 +65,9 @@ TanStack Start 1.170, tested against registry `0.16.0` / CLI `0.7.1`, with 34 fi
 red flags. Nine routes shipped and hydrated clean; nothing was a hard blocker, and that is
 the concern — every red flag is a thing an adopter had to work around silently.
 
-It carries forward **one item**: the 07-28 plan's C1 `@types/react` mechanism (§0.5), which
-stays open there and is untouched by the new plan.
+It carried forward one item — the 07-28 plan's C1 `@types/react` mechanism — and that is now
+**closed** (07-28 plan §0.6): it reproduces under pnpm `hoist: false`, and the peer that plan
+shipped is what fixes it. **No finding in [`RECURRENCE.md`](RECURRENCE.md) is open.**
 
 The 08-06 plan adds **Mechanism F** to the taxonomy below: *the guard re-implements the
 adopter's tool instead of running it.* `pnpm lint:host-strict` was written specifically to
@@ -83,9 +84,8 @@ recur *across* plans, which is invisible at plan granularity.
 
 ### Previous tracker
 
-`fix-plan-incident-console-adopter-2026-07-28.md` (**implemented on
-`claude/ui-library-analysis-plan-iyopig`; not yet published**; four items explicitly open —
-see its status header). It triages the eleventh report: a local-first incident console on Astro-then-Vite,
+`fix-plan-incident-console-adopter-2026-07-28.md` (**implemented; not yet published; no open
+items** — its last one, the C1 mechanism, closed on 2026-08-07; see its §0.6). It triages the eleventh report: a local-first incident console on Astro-then-Vite,
 tested against published `0.13.0`, with 19 findings and 3 blockers.
 
 It carries **nothing forward**. The 07-26 plan's only open item was WS-15a (publish), and it is
@@ -97,9 +97,16 @@ The 07-28 plan adds **Mechanism E** to the taxonomy below: *the defect is only o
 consumer-shaped environment, and every guard runs in the monorepo.* Two of its blockers — the
 `cascivo.reset` layer shipping empty, and closed popover panels swallowing clicks — were
 invisible to the entire existing guard suite for exactly that reason. The third
-(`@types/react`) was diagnosed as Mechanism E and **the fixture disproved it**; see the plan's
-§0.5. That is the mechanism working as intended: it converts a plausible diagnosis into a
-tested one, in either direction.
+(`@types/react`) was diagnosed as Mechanism E, and the fixture appeared to disprove it — then
+on 2026-08-07 **the fixture turned out to be wrong**: it ran under pnpm's default hoisting,
+whose hidden `.pnpm/node_modules` supplied React's types by accident. With `hoist: false` the
+mechanism reproduces exactly and the peer is what fixes it (plan §0.6).
+
+That reversal is the sharpest lesson in this directory. §0.5 was careful, honest, and wrong,
+because nobody falsified the *passing* case — and a fixture that passes for the wrong reason
+is more dangerous than one that fails, since it closes the question. It is why the ledger's
+closure rule requires a guard **demonstrated failing on its pre-fix state**, not merely a
+guard that is green.
 
 **Keep this pointer current.** It went two plans stale (still naming the 07-23 plan after
 the 07-24 plan landed, even though that plan's own §10c told the implementer to update it),
