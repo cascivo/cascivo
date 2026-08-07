@@ -48,3 +48,67 @@ describe('Tabs', () => {
     expect(panel.getAttribute('aria-labelledby')).toBe(tab.getAttribute('id'))
   })
 })
+
+describe('TabsTrigger asChild — URL-driven tabs', () => {
+  it('renders the slotted element while keeping every tab behaviour', () => {
+    render(
+      <Tabs defaultValue="overview">
+        <TabsList>
+          <TabsTrigger value="overview" asChild>
+            <a href="/projects/1/overview">Overview</a>
+          </TabsTrigger>
+          <TabsTrigger value="settings" asChild>
+            <a href="/projects/1/settings">Settings</a>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    )
+
+    const overview = screen.getByRole('tab', { name: 'Overview' })
+    // A real anchor: this is the whole point — middle-click, cmd-click and crawlable hrefs
+    // all come from the element, not from an onClick handler.
+    expect(overview.tagName).toBe('A')
+    expect(overview.getAttribute('href')).toBe('/projects/1/overview')
+
+    // …and it is still a tab.
+    expect(overview.getAttribute('aria-selected')).toBe('true')
+    expect(overview.getAttribute('data-state')).toBe('active')
+    expect(overview.getAttribute('tabindex')).toBe('0')
+    expect(overview.getAttribute('aria-controls')).toBeTruthy()
+
+    const settings = screen.getByRole('tab', { name: 'Settings' })
+    expect(settings.getAttribute('aria-selected')).toBe('false')
+    expect(settings.getAttribute('tabindex')).toBe('-1')
+  })
+
+  it('never puts `type` or `disabled` on a slotted anchor', () => {
+    render(
+      <Tabs defaultValue="a">
+        <TabsList>
+          <TabsTrigger value="a" asChild disabled>
+            <a href="/a">A</a>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    )
+    const tab = screen.getByRole('tab', { name: 'A' })
+    // `type` on an <a> means something else entirely, and `disabled` is not a valid
+    // anchor attribute — it would be dropped silently, leaving the tab fully operable.
+    expect(tab.hasAttribute('type')).toBe(false)
+    expect(tab.hasAttribute('disabled')).toBe(false)
+    expect(tab.getAttribute('aria-disabled')).toBe('true')
+  })
+
+  it('still renders a real <button> without asChild', () => {
+    render(
+      <Tabs defaultValue="a">
+        <TabsList>
+          <TabsTrigger value="a">A</TabsTrigger>
+        </TabsList>
+      </Tabs>,
+    )
+    const tab = screen.getByRole('tab', { name: 'A' })
+    expect(tab.tagName).toBe('BUTTON')
+    expect(tab.getAttribute('type')).toBe('button')
+  })
+})

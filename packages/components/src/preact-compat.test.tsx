@@ -36,7 +36,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { render } from 'react-dom'
 import { Dropdown } from './dropdown/dropdown'
-import { Menu } from './menu/menu'
+import { Menu, MenuItem, MenuTrigger } from './menu/menu'
 import { MenuButton } from './menu-button/menu-button'
 import { Combobox } from './combobox/combobox'
 import { MultiSelect } from './multi-select/multi-select'
@@ -158,8 +158,22 @@ const cases: Case[] = [
     restoresFocusToTrigger: true,
   },
   {
+    // Menu takes CHILDREN, not `trigger`/`items` — this case was copy-pasted from the
+    // Dropdown case above (which really does take those props), so it passed unknown props,
+    // rendered nothing at all, and asserted "no console error" about an empty tree for
+    // months. Exactly the vacuous-pass this file's header warns about. `Menu`'s dev-time
+    // "requires a <MenuTrigger> child" error is what surfaced it.
     name: 'Menu',
-    tree: () => <Menu trigger={<TriggerButton>Open</TriggerButton>} items={items} />,
+    tree: () => (
+      <Menu>
+        <MenuTrigger>
+          <TriggerButton>Open</TriggerButton>
+        </MenuTrigger>
+        {items.map((i) => (
+          <MenuItem key={i.value}>{i.label}</MenuItem>
+        ))}
+      </Menu>
+    ),
   },
   { name: 'MenuButton', tree: () => <MenuButton label="Open" items={items} /> },
   { name: 'Combobox', tree: () => <Combobox options={options} /> },

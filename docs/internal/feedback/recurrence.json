@@ -198,6 +198,20 @@
       "guard": "tsconfig.base.json",
       "status": "closed",
       "note": "noUnusedLocals/noUnusedParameters on, matching the official TanStack Start scaffolder. Found 11, not the 1 reported: five leftover useSignal imports from the useEffectPropSignal migration, a discarded fetchRegistry network call in `cascivo generate`, a fillColor() taking min/max and ignoring them, and SkipNavLink wrapped in forwardRef while never attaching the ref \u2014 consumers got null with no type error, and ref-parity had counted it compliant because it checks the wrapper, not the wiring."
+    },
+    {
+      "id": "composition-gaps-tabs-menu-link-barrels",
+      "title": "Tabs cannot render links; Menu reads children positionally; Link doubles its external arrow",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "packages/components/src/tabs/tabs.test.tsx",
+      "status": "closed",
+      "note": "TabsTrigger gains asChild (aschild-docs forces the router-guide entry). Menu and ContextMenu partition children by component identity with a dev-time error naming the contract \u2014 which immediately caught a preact-compat test that passed `trigger`/`items` props Menu does not have, rendered nothing, and had been asserting 'no console error' about an empty tree. Link suppresses its generated arrow via :has() when the link ends in its own icon. Barrels are generated for all 138 component dirs, so the 6-of-132 half-convention is gone."
     }
   ]
 }

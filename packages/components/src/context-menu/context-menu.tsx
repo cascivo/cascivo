@@ -1,12 +1,20 @@
 'use client'
 
-import { useRef } from 'react'
+import { Children, isValidElement, useRef } from 'react'
 import type { KeyboardEvent, ReactNode, MouseEvent as ReactMouseEvent } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import styles from './context-menu.module.css'
 
 export interface ContextMenuProps {
   children: ReactNode
+}
+
+/** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so this
+ * browser-facing source needs no `@types/node`, and it's safe where `process` is absent
+ * (bundlers replace `process.env.NODE_ENV` in app builds). Matches `field.tsx`. */
+function isDev(): boolean {
+  const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
+  return env?.NODE_ENV !== 'production'
 }
 
 export function ContextMenu({ children }: ContextMenuProps) {
@@ -96,8 +104,21 @@ export function ContextMenu({ children }: ContextMenuProps) {
     isOpen.value = true
   }
 
-  const childArray = Array.isArray(children) ? children : [children]
-  const [trigger, ...menuItems] = childArray
+  // Partitioned by component IDENTITY, not by position: everything that is a
+  // `ContextMenuItem` belongs in the menu, everything else is the content you right-click.
+  // Positional destructuring meant a fragment-wrapped target, or a conditional first item,
+  // silently swapped the two.
+  const childArray = Children.toArray(children)
+  const menuItems = childArray.filter((c) => isValidElement(c) && c.type === ContextMenuItem)
+  const trigger = childArray.filter((c) => !menuItems.includes(c))
+
+  if (menuItems.length === 0 && isDev()) {
+    throw new Error(
+      '<ContextMenu> requires at least one <ContextMenuItem> child. Items are matched by ' +
+        'component identity, so they must be direct children — not wrapped in a fragment ' +
+        'or another component.',
+    )
+  }
 
   return (
     <div ref={containerRef} onContextMenu={handleContextMenu} className={styles.wrapper}>

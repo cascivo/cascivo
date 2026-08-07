@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignals } from '@cascivo/core'
+import { cn, Slot, useSignal, useSignals } from '@cascivo/core'
 import type { Signal } from '@cascivo/core'
 import { createContext, forwardRef, useId, useRef } from 'react'
 import type { HTMLAttributes, KeyboardEvent, Ref, ReactNode } from 'react'
@@ -85,6 +85,26 @@ export function TabsList({ className, children, ...props }: HTMLAttributes<HTMLD
 export interface TabsTriggerProps extends HTMLAttributes<HTMLButtonElement> {
   value: string
   disabled?: boolean
+  /**
+   * Render your own element instead of the `<button>`, keeping every tab behaviour
+   * (`role="tab"`, `aria-selected`, `aria-controls`, the roving `tabIndex`, `data-state`)
+   * and the tab styling.
+   *
+   * This exists for **URL-driven tabs**, the canonical dashboard shape: one route per tab.
+   * Navigating from `onValueChange` instead loses middle-click, cmd-click, open-in-new-tab
+   * and a crawlable `href` — a real anchor gives you all four for free.
+   *
+   * ```tsx
+   * <TabsTrigger value="overview" asChild>
+   *   <Link to="/projects/$id/overview">Overview</Link>
+   * </TabsTrigger>
+   * ```
+   *
+   * With `asChild`, `disabled` becomes `aria-disabled`: it is not a valid attribute on an
+   * anchor, and a slotted element gets no `type` either. See
+   * [USING-WITH-A-ROUTER.md](../../../../docs/USING-WITH-A-ROUTER.md) for the full recipe.
+   */
+  asChild?: boolean
 }
 
 /**
@@ -109,14 +129,19 @@ function TabsTriggerInner({
   children,
   disabled,
   buttonRef,
+  asChild = false,
   ...props
 }: TabsTriggerProps & { store: TabsStore; buttonRef?: Ref<HTMLButtonElement> }) {
   useSignals()
   const selected = store.active.value === value
+  // Matches `popover.tsx`: `type` and `disabled` go only on a real <button>. A slotted
+  // router <Link> renders an <a>, where `type` means something else entirely and
+  // `disabled` is not a valid attribute.
+  const Comp = asChild ? Slot : 'button'
 
   return (
-    <button
-      type="button"
+    <Comp
+      type={asChild ? undefined : 'button'}
       role="tab"
       id={`${store.baseId}-trigger-${value}`}
       aria-selected={selected}
@@ -124,14 +149,14 @@ function TabsTriggerInner({
       tabIndex={selected ? 0 : -1}
       data-state={selected ? 'active' : 'inactive'}
       data-value={value}
-      disabled={disabled}
+      {...(asChild ? { 'aria-disabled': disabled || undefined } : { disabled })}
       className={cn(styles['trigger'], className)}
       onClick={() => store.setValue(value)}
       ref={buttonRef}
       {...props}
     >
       {children}
-    </button>
+    </Comp>
   )
 }
 
