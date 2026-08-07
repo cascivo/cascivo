@@ -83,9 +83,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "A",
-      "guard": null,
-      "status": "open",
-      "guardNote": "tone-parity \u2014 specced in WS-4. normalizeTone guarantees the spelling converges; nothing checks the rendering does."
+      "guard": "tone:check",
+      "status": "closed",
+      "note": "Badge neutral now maps to the subtle look, matching Tag/Status/Notification; the accent look stays reachable as variant=\"primary\". tone-parity asserts each canonical tone reads from its own token family in all four components, and that neutral is never accent/primary. It checks families rather than exact tokens, because each component legitimately presents tone differently (filled chip, quiet chip, dot, tinted card)."
     },
     {
       "id": "charts-ignore-container-height",
