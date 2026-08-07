@@ -21,17 +21,17 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop        | Type       | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-| ----------- | ---------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`     | `number`   | yes      | —       | Current measure value                                                                                                                                                                                                                                                                                                                                                                         |
-| `target`    | `number`   | yes      | —       | Target marker value                                                                                                                                                                                                                                                                                                                                                                           |
-| `ranges`    | `number[]` | yes      | —       | Qualitative range breakpoints (sorted ascending)                                                                                                                                                                                                                                                                                                                                              |
-| `label`     | `string`   | yes      | —       | Text label for the control.                                                                                                                                                                                                                                                                                                                                                                   |
-| `min`       | `number`   | no       | `0`     | Minimum allowed value.                                                                                                                                                                                                                                                                                                                                                                        |
-| `max`       | `number`   | no       | —       | Domain maximum (defaults to last range)                                                                                                                                                                                                                                                                                                                                                       |
-| `width`     | `number`   | no       | `300`   | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height`    | `number`   | no       | `40`    | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
-| `className` | `string`   | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | yes | — | Current measure value |
+| `target` | `number` | yes | — | Target marker value |
+| `ranges` | `number[]` | yes | — | Qualitative range breakpoints (sorted ascending) |
+| `label` | `string` | yes | — | Text label for the control. |
+| `min` | `number` | no | `0` | Minimum allowed value. |
+| `max` | `number` | no | — | Domain maximum (defaults to last range) |
+| `width` | `number` | no | `300` | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `40` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -39,7 +39,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ```tsx
 import { Bullet } from '@cascivo/charts'
-;<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
+
+<Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
 
 ## Design tokens

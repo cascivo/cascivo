@@ -868,6 +868,8 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(
     "  ⚠ LINT: `eslint-plugin-react-hooks@7` (`recommended-latest`) enables `react-hooks/immutability`, which reports EVERY `signal.value = next` as `Error: This value cannot be modified`. It fires on this documented idiom, in the app's own page code, on both install paths — one reported build hit it 8 times and had no doc to reach for. Fix: `pnpm add -D @cascivo/eslint-config` and spread `...cascivo` LAST in `eslint.config.js`, or set `'react-hooks/immutability': 'off'`. Scoping it to a vendored-source glob does NOT work. See /docs/using-with-strict-eslint.md.",
+    "  ⚠ FLAT CONFIG ENTRY POINT: the plugin exports BOTH `configs['recommended-latest']` (legacy eslintrc) and `configs.flat['recommended-latest']`. In an `eslint.config.js` you MUST use `reactHooks.configs.flat['recommended-latest']` — the other one is accepted silently and applies no rules at all, so lint passes while checking nothing.",
+    "  ⚠ VENDORED-SOURCE GLOB: `...cascivo` scopes its vendored-source rules to `src/components/ui/**`. If your `outputDir` differs, call `cascivoVendoredSource('<your-outputDir>/**')` instead — with the default glob every rule it scopes off silently stays on. cascivo runs real ESLint over every file `cascivo add` copies in CI (scripts/checks/host-lint/eslint), so the published config is executed, not asserted.",
   )
   lines.push(
     '- Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.',

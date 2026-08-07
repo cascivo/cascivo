@@ -33,19 +33,19 @@ import '@cascivo/flow/styles.css' // required stylesheet
 
 ## Props
 
-| Prop          | Type                                     | Required | Default  | Description                                                                           |
-| ------------- | ---------------------------------------- | -------- | -------- | ------------------------------------------------------------------------------------- |
-| `sourceX`     | `number`                                 | yes      | —        | Source anchor x (flow coords).                                                        |
-| `sourceY`     | `number`                                 | yes      | —        | Y coordinate of the edge’s source point.                                              |
-| `targetX`     | `number`                                 | yes      | —        | X coordinate of the edge’s target point.                                              |
-| `targetY`     | `number`                                 | yes      | —        | Y coordinate of the edge’s target point.                                              |
-| `type`        | `'bezier' \| 'straight' \| 'smoothstep'` | no       | `bezier` | Edge path style ('bezier' \| 'straight' \| 'smoothstep').                             |
-| `animated`    | `boolean`                                | no       | `false`  | When true, animates the edge path (dashed flow).                                      |
-| `label`       | `ReactNode`                              | no       | —        | Text label for the control.                                                           |
-| `selected`    | `boolean`                                | no       | `false`  | Whether the edge is rendered as selected.                                             |
-| `markerStart` | `boolean`                                | no       | `false`  | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
-| `markerEnd`   | `boolean`                                | no       | `true`   | Arrowhead at the target. Set false for an undirected line.                            |
-| `className`   | `string`                                 | no       | —        | Additional CSS class names merged onto the root element.                              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `sourceX` | `number` | yes | — | Source anchor x (flow coords). |
+| `sourceY` | `number` | yes | — | Y coordinate of the edge’s source point. |
+| `targetX` | `number` | yes | — | X coordinate of the edge’s target point. |
+| `targetY` | `number` | yes | — | Y coordinate of the edge’s target point. |
+| `type` | `'bezier' \| 'straight' \| 'smoothstep'` | no | `bezier` | Edge path style ('bezier' \| 'straight' \| 'smoothstep'). |
+| `animated` | `boolean` | no | `false` | When true, animates the edge path (dashed flow). |
+| `label` | `ReactNode` | no | — | Text label for the control. |
+| `selected` | `boolean` | no | `false` | Whether the edge is rendered as selected. |
+| `markerStart` | `boolean` | no | `false` | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
+| `markerEnd` | `boolean` | no | `true` | Arrowhead at the target. Set false for an undirected line. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -54,7 +54,7 @@ import '@cascivo/flow/styles.css' // required stylesheet
 Bezier, straight, smoothstep, and an animated edge.
 
 ```tsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 220 }}>
     <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} type="bezier" label="bezier" />
     <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} type="smoothstep" label="step" />
@@ -68,27 +68,12 @@ Bezier, straight, smoothstep, and an animated edge.
 Forward (default), backward, bidirectional, or undirected — via markerStart/markerEnd.
 
 ```tsx
-;() => (
+() => (
   <div style={{ position: 'relative', height: 260 }}>
     <FlowEdge sourceX={20} sourceY={30} targetX={260} targetY={30} label="forward" />
-    <FlowEdge
-      sourceX={20}
-      sourceY={90}
-      targetX={260}
-      targetY={90}
-      markerEnd={false}
-      markerStart
-      label="backward"
-    />
+    <FlowEdge sourceX={20} sourceY={90} targetX={260} targetY={90} markerEnd={false} markerStart label="backward" />
     <FlowEdge sourceX={20} sourceY={150} targetX={260} targetY={150} markerStart label="both" />
-    <FlowEdge
-      sourceX={20}
-      sourceY={210}
-      targetX={260}
-      targetY={210}
-      markerEnd={false}
-      label="undirected"
-    />
+    <FlowEdge sourceX={20} sourceY={210} targetX={260} targetY={210} markerEnd={false} label="undirected" />
   </div>
 )
 ```

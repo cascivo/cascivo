@@ -3,6 +3,10 @@ packages:
   - 'apps/*'
   - 'apps/examples/*'
   - 'apps/bench/*'
+  # Consumer-shaped ESLint fixture: runs the adopter's real toolchain (ESLint +
+  # eslint-plugin-react-hooks) over the source `cascivo add` copies. See
+  # scripts/checks/host-lint/eslint/README.md for why a re-implementation is not enough.
+  - 'scripts/checks/host-lint/eslint'
 
 catalogMode: prefer
 
@@ -87,6 +91,7 @@ allowBuilds:
   '@parcel/watcher': true
   esbuild: true
   sharp: true
+  unrs-resolver: set this to true or false
 
 minimumReleaseAgeExclude:
   - '@voidzero-dev/vite-plus-core@0.2.1'

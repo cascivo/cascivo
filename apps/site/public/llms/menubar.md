@@ -27,22 +27,19 @@ import { Menubar } from '@cascivo/react'
 
 ## Props
 
-| Prop         | Type            | Required | Default | Description                                                                                                                                                                                                                                      |
-| ------------ | --------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ariaLabel`  | `string`        | no       | —       | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. |
-| `menus`      | `MenubarMenu[]` | yes      | —       | The top-level menus to render.                                                                                                                                                                                                                   |
-| `aria-label` | `string`        | no       | —       | Accessible label used when no visible label is present.                                                                                                                                                                                          |
-| `className`  | `string`        | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                         |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. |
+| `menus` | `MenubarMenu[]` | yes | — | The top-level menus to render. |
+| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Basic
 
 ```tsx
-<Menubar
-  aria-label="Main"
-  menus={[{ id: 'file', label: 'File', items: [{ id: 'new', label: 'New', onSelect: () => {} }] }]}
-/>
+<Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />
 ```
 
 ## Client JavaScript

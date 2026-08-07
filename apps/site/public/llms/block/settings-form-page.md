@@ -18,9 +18,9 @@ _Copy-paste only — `SettingsFormPage` is not exported from `@cascivo/react`. R
 
 ## Props
 
-| Prop     | Type                               | Required | Default | Description                             |
-| -------- | ---------------------------------- | -------- | ------- | --------------------------------------- |
-| `onSave` | `(values: SettingsValues) => void` | no       | —       | Called with valid form values on submit |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onSave` | `(values: SettingsValues) => void` | no | — | Called with valid form values on submit |
 
 ## Examples
 

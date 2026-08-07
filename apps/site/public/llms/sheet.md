@@ -27,12 +27,12 @@ import { Sheet } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                    | Required | Default | Description                                 |
-| --------- | --------------------------------------- | -------- | ------- | ------------------------------------------- |
-| `open`    | `boolean`                               | yes      | —       | Whether the component is open (controlled). |
-| `onClose` | `() => void`                            | yes      | —       | Called when the component is closed.        |
-| `title`   | `React.ReactNode`                       | no       | —       | Title text for the component.               |
-| `side`    | `'start' \| 'end' \| 'top' \| 'bottom'` | no       | `end`   | Edge the component is anchored to.          |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | yes | — | Whether the component is open (controlled). |
+| `onClose` | `() => void` | yes | — | Called when the component is closed. |
+| `title` | `React.ReactNode` | no | — | Title text for the component. |
+| `side` | `'start' \| 'end' \| 'top' \| 'bottom'` | no | `end` | Edge the component is anchored to. |
 
 ## Examples
 

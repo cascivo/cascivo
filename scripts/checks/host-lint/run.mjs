@@ -1,9 +1,17 @@
 #!/usr/bin/env node
 /**
- * `pnpm lint:host-strict` — enforces, in oxlint, the objective lint classes a
- * strict host ESLint config (e.g. @tanstack/eslint-config) flags in the source
- * `cascivo add` copies into adopter projects (packages/components/src), so a
- * fresh adopter never inherits lint failures in code they didn't write.
+ * `pnpm lint:host-strict` — a FAST SUBSET of the host-lint contract, in oxlint.
+ *
+ * ⚠ This guard covers only the classes oxlint can express. It is NOT the authority on
+ * "does vendored source pass a strict host config", and reading it as such is how 117
+ * real ESLint errors shipped: oxlint implements none of the React-Compiler-backed
+ * `react-hooks/refs`, `react-hooks/purity`, or `react-hooks/static-components`, and this
+ * file's header used to claim it enforced "the objective lint classes a strict host
+ * ESLint config flags" without that caveat.
+ *
+ * The authority is `pnpm lint:host-eslint` (scripts/checks/host-lint/eslint), which runs
+ * real ESLint with the adopter's real plugins. Keep this one for speed: it is offline and
+ * needs no node_modules beyond what vp already ships.
  *
  * It invokes the real oxlint binary directly with the config beside this file:
  * `vp lint` injects its own `-c` (its curated rule set) and rejects a second

@@ -61,6 +61,12 @@ export function RelativeTime({
   useSignals()
   const target = toTimestamp(date)
   const isControlled = nowProp !== undefined
+  // Seeding from the wall clock during render is impure, and deliberately so: a relative
+  // time has no meaning without "now", and seeding from anything stable would render
+  // "just now" for every date on the server. The server's clock and the client's differ,
+  // so the first client paint is corrected by the effect below — that correction is the
+  // component's whole SSR story, not an oversight. Pass `now` to make it pure (tests do).
+  // eslint-disable-next-line react-hooks/purity -- see below: the impurity is the feature.
   const now = useSignal(nowProp ?? Date.now())
   if (isControlled) now.value = nowProp as number
 
