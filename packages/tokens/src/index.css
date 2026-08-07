@@ -126,6 +126,22 @@
     --cascivo-text-3xl: 1.875rem; /* 30px */
     --cascivo-text-4xl: 2.25rem; /* 36px */
 
+    /* `--cascivo-font-size-*` aliases of the `--cascivo-text-*` scale above.
+       The split is a trap for anyone typing from memory — and agents type from memory:
+       `--cascivo-text-*` is the SIZE while `--cascivo-font-*` is weight and family, so
+       `--cascivo-font-size-sm` is the natural guess and used to resolve to nothing (an
+       invalid custom property is silently dropped, with no error anywhere). Aliasing costs
+       nothing and removes the trap instead of documenting it. `--cascivo-text-*` remains
+       canonical; these forward to it and can never drift, because they are `var()` refs. */
+    --cascivo-font-size-xs: var(--cascivo-text-xs);
+    --cascivo-font-size-sm: var(--cascivo-text-sm);
+    --cascivo-font-size-base: var(--cascivo-text-base);
+    --cascivo-font-size-lg: var(--cascivo-text-lg);
+    --cascivo-font-size-xl: var(--cascivo-text-xl);
+    --cascivo-font-size-2xl: var(--cascivo-text-2xl);
+    --cascivo-font-size-3xl: var(--cascivo-text-3xl);
+    --cascivo-font-size-4xl: var(--cascivo-text-4xl);
+
     --cascivo-font-normal: 400;
     --cascivo-font-medium: 500;
     --cascivo-font-semibold: 600;

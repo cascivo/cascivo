@@ -4,7 +4,7 @@
  * Reads registry.json and outputs to apps/site/public/.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { reactExportedModules, reactExportedNames } from '../registry/react-exports.ts'
@@ -468,6 +468,28 @@ function componentMarkdown(
   return lines.join('\n')
 }
 
+/**
+ * Published `@cascivo/*` package versions, read from the workspace at generation time.
+ *
+ * Derived rather than hand-listed: a hand-kept version line is the same Mechanism-B defect
+ * as a hand-kept dependency list, and it would go stale on the first release.
+ */
+function packageVersions(): [string, string][] {
+  const dir = join(ROOT, 'packages')
+  const out: [string, string][] = []
+  for (const entry of readdirSync(dir)) {
+    let pkg: { name?: string; version?: string; private?: boolean }
+    try {
+      pkg = JSON.parse(readFileSync(join(dir, entry, 'package.json'), 'utf8')) as typeof pkg
+    } catch {
+      continue
+    }
+    if (pkg.private === true || !pkg.name || !pkg.version) continue
+    out.push([pkg.name, pkg.version])
+  }
+  return out.sort((a, b) => a[0].localeCompare(b[0]))
+}
+
 function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   // Root-served (cascivo.com) vs docs-served (docs.cascivo.com). Per-component
   // markdown, context, and catalogs live only on the docs site, so link to them
@@ -517,6 +539,21 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `_registry v${registry.version} · generated ${registry.generatedAt} · docs track \`main\`; ` +
       `compare with ${SITE}/registry.json \`.version\` for staleness, and ${DOCS}/breaking-changes.json for installed-vs-documented API drift._`,
+  )
+  lines.push('')
+  // Name the package versions these docs describe. The abstract "docs track `main`" above
+  // is not actionable: these docs deploy continuously while the packages ship versioned, so
+  // llms.txt can describe unreleased behaviour. It did — `cascivo.platform` was added to the
+  // canonical @layer order one day before an adopter read this file, compared it against the
+  // `@cascivo/tokens` in their node_modules, and correctly reported a contradiction. With
+  // the versions named, a reader can tell in one line whether this page describes what they
+  // have installed.
+  lines.push(
+    `_Describes: ${packageVersions()
+      .map(([name, version]) => `${name}@${version}`)
+      .join(
+        ' · ',
+      )}. If your installed versions are lower, a documented behaviour may not have shipped yet._`,
   )
   lines.push('')
   lines.push('cascivo is a React design system you can consume two ways: copy-paste the source')

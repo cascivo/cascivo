@@ -270,6 +270,20 @@ export async function add(
     console.error(`Component "${name}" not found in registry. Run "cascivo list".`)
   }
 
+  // Announce the CHANNEL before anything else runs. `cascivo add area-chart` reads like
+  // every other add — same syntax, same "you own the code" framing — but copies no source:
+  // it installs an npm package. That was only stated inside the install log, which scrolls
+  // past. Say it first, once per package, for what the caller actually asked for.
+  const announced = new Set<string>()
+  for (const { entry, requested } of resolved) {
+    if (!requested || !entry.install || announced.has(entry.install)) continue
+    announced.add(entry.install)
+    console.log(
+      `\n"${entry.name}" ships in the ${entry.install} npm package — no source is copied ` +
+        'into your project. Updates come from your package manager, not `cascivo update`.',
+    )
+  }
+
   // Warn BEFORE copying, and only for what the caller actually asked for — a deprecated
   // entry pulled in transitively is not their decision to make. The source's `@deprecated`
   // JSDoc arrives too late: by the time it is read, the file is already vendored.

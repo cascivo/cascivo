@@ -9185,7 +9185,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.module.css"
       ],
       "fileHashes": {
-        "link.tsx": "sha256-5f13623c278677a64d8b57a805847eaa861eac3e0b65052720a3cca9a5b074de",
+        "link.tsx": "sha256-0b5822b68e64cbd3706b24a104ccbf0af3a310e5f420b79bf75aafd0ea4a67b0",
         "index.ts": "sha256-b38bcec272a5dd95d54c6621068a03373bdbc5fbeb9a987638bcf011b8edc12f",
         "link.module.css": "sha256-70b9c6a6b5fcbb4b9c3c7b3191fbf271de0deda543e176cf90b3f560e9e7b761"
       },

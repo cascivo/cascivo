@@ -236,10 +236,36 @@ export async function init(args: string[] = [], cwd: string = process.cwd()): Pr
     }
   }
 
-  console.log('\nImport the theme in your root CSS or entry file:')
-  console.log(`  import '@cascivo/themes/${theme}.css'`)
-  console.log('Then set the theme on your root element:')
+  // The COMPLETE stylesheet wiring, in import order. Printing only the theme line left an
+  // adopter to discover the tokens sheet by debugging a grayscale app, and the charts sheet
+  // by shipping a chart whose screen-reader data table rendered visibly.
+  console.log('\nStylesheets — import these once, in this order, in your entry file:')
+  console.log(
+    `  import '@cascivo/tokens'                 // primitive tokens — every --cascivo-* value`,
+  )
+  console.log(
+    `  import '@cascivo/themes/${theme}.css'${' '.repeat(Math.max(1, 16 - theme.length))}// the ${theme} theme's semantic values`,
+  )
+  console.log(
+    `  // …then your component CSS (\`cascivo add\` writes .module.css beside each component)`,
+  )
+  console.log('\nThen set the theme on your root element:')
   console.log(`  <html data-theme="${theme}">`)
+  console.log('\nSwitching themes at runtime? Use a bundle instead of the single theme:')
+  console.log("  import '@cascivo/themes/light-dark.css'  // light + dark — the common case")
+  console.log("  import '@cascivo/themes/all.css'         // all twelve themes")
+  console.log("  import { ThemeProvider } from '@cascivo/core'")
+  // The single most likely first-day bug, and it has no error message: a component that
+  // reads `signal.value` in render never re-renders without this, so handlers fire and the
+  // UI just sits there. Consumer apps run no signals transform, so it is never automatic.
+  console.log('\nIn YOUR components, when you read a signal during render:')
+  console.log("  import { useSignals } from '@cascivo/core'")
+  console.log('  function MyComponent() {')
+  console.log('    useSignals()   // ← first statement, or the component never re-renders')
+  console.log('    return <span>{count.value}</span>')
+  console.log('  }')
+  console.log('\nAdding a chart later? Charts ship as an npm package with their own stylesheet:')
+  console.log("  import '@cascivo/charts/styles.css'      // `cascivo add <chart>` reminds you")
 
   printDependencySummary()
   ensureFormatterIgnore(cwd, DEFAULT_CONFIG.outputDir)

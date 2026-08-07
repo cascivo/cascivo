@@ -2242,6 +2242,174 @@
       }
     },
     {
+      "name": "--cascivo-font-size-2xl",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "1.5rem",
+        "brutalist": "1.5rem",
+        "corporate": "1.5rem",
+        "cyberpunk": "1.5rem",
+        "dark": "1.5rem",
+        "flat": "1.5rem",
+        "light-dark": "1.5rem",
+        "light": "1.5rem",
+        "midnight": "1.5rem",
+        "minimal": "1.5rem",
+        "pastel": "1.5rem",
+        "tailwind": "1.5rem",
+        "terminal": "1.5rem",
+        "warm": "1.5rem"
+      }
+    },
+    {
+      "name": "--cascivo-font-size-3xl",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "1.875rem",
+        "brutalist": "1.875rem",
+        "corporate": "1.875rem",
+        "cyberpunk": "1.875rem",
+        "dark": "1.875rem",
+        "flat": "1.875rem",
+        "light-dark": "1.875rem",
+        "light": "1.875rem",
+        "midnight": "1.875rem",
+        "minimal": "1.875rem",
+        "pastel": "1.875rem",
+        "tailwind": "1.875rem",
+        "terminal": "1.875rem",
+        "warm": "1.875rem"
+      }
+    },
+    {
+      "name": "--cascivo-font-size-4xl",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "2.25rem",
+        "brutalist": "2.25rem",
+        "corporate": "2.25rem",
+        "cyberpunk": "2.25rem",
+        "dark": "2.25rem",
+        "flat": "2.25rem",
+        "light-dark": "2.25rem",
+        "light": "2.25rem",
+        "midnight": "2.25rem",
+        "minimal": "2.25rem",
+        "pastel": "2.25rem",
+        "tailwind": "2.25rem",
+        "terminal": "2.25rem",
+        "warm": "2.25rem"
+      }
+    },
+    {
+      "name": "--cascivo-font-size-base",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "1rem",
+        "brutalist": "1rem",
+        "corporate": "1rem",
+        "cyberpunk": "1rem",
+        "dark": "1rem",
+        "flat": "1rem",
+        "light-dark": "1rem",
+        "light": "1rem",
+        "midnight": "1rem",
+        "minimal": "1rem",
+        "pastel": "1rem",
+        "tailwind": "1rem",
+        "terminal": "1rem",
+        "warm": "1rem"
+      }
+    },
+    {
+      "name": "--cascivo-font-size-lg",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "1.125rem",
+        "brutalist": "1.125rem",
+        "corporate": "1.125rem",
+        "cyberpunk": "1.125rem",
+        "dark": "1.125rem",
+        "flat": "1.125rem",
+        "light-dark": "1.125rem",
+        "light": "1.125rem",
+        "midnight": "1.125rem",
+        "minimal": "1.125rem",
+        "pastel": "1.125rem",
+        "tailwind": "1.125rem",
+        "terminal": "1.125rem",
+        "warm": "1.125rem"
+      }
+    },
+    {
+      "name": "--cascivo-font-size-sm",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "0.875rem",
+        "brutalist": "0.875rem",
+        "corporate": "0.875rem",
+        "cyberpunk": "0.875rem",
+        "dark": "0.875rem",
+        "flat": "0.875rem",
+        "light-dark": "0.875rem",
+        "light": "0.875rem",
+        "midnight": "0.875rem",
+        "minimal": "0.875rem",
+        "pastel": "0.875rem",
+        "tailwind": "0.875rem",
+        "terminal": "0.875rem",
+        "warm": "0.875rem"
+      }
+    },
+    {
+      "name": "--cascivo-font-size-xl",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "1.25rem",
+        "brutalist": "1.25rem",
+        "corporate": "1.25rem",
+        "cyberpunk": "1.25rem",
+        "dark": "1.25rem",
+        "flat": "1.25rem",
+        "light-dark": "1.25rem",
+        "light": "1.25rem",
+        "midnight": "1.25rem",
+        "minimal": "1.25rem",
+        "pastel": "1.25rem",
+        "tailwind": "1.25rem",
+        "terminal": "1.25rem",
+        "warm": "1.25rem"
+      }
+    },
+    {
+      "name": "--cascivo-font-size-xs",
+      "layer": "semantic",
+      "group": "font",
+      "byTheme": {
+        "arcade": "0.75rem",
+        "brutalist": "0.75rem",
+        "corporate": "0.75rem",
+        "cyberpunk": "0.75rem",
+        "dark": "0.75rem",
+        "flat": "0.75rem",
+        "light-dark": "0.75rem",
+        "light": "0.75rem",
+        "midnight": "0.75rem",
+        "minimal": "0.75rem",
+        "pastel": "0.75rem",
+        "tailwind": "0.75rem",
+        "terminal": "0.75rem",
+        "warm": "0.75rem"
+      }
+    },
+    {
       "name": "--cascivo-hover-opacity",
       "layer": "semantic",
       "group": "hover",

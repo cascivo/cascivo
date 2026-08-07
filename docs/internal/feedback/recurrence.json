@@ -153,9 +153,9 @@
         "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
       ],
       "mechanism": "C",
-      "guard": null,
-      "status": "open",
-      "guardNote": "Specced in WS-8a: generate the layer statement from layers.css, and version-stamp llms.txt so a reader can tell what it describes."
+      "guard": "scripts/checks/layer-order.test.ts",
+      "status": "closed",
+      "note": "layer-order already scanned docs/**/*.md and asserts every statement is an ordered subsequence of layers.css, so the layer fact had one owner already \u2014 the real gap was version skew. llms.txt now names the exact published package versions it describes, derived from the workspace rather than hand-listed, so a reader comparing against their node_modules can tell in one line whether a documented behaviour has shipped."
     },
     {
       "id": "types-react-version-skew",
@@ -212,6 +212,20 @@
       "guard": "packages/components/src/tabs/tabs.test.tsx",
       "status": "closed",
       "note": "TabsTrigger gains asChild (aschild-docs forces the router-guide entry). Menu and ContextMenu partition children by component identity with a dev-time error naming the contract \u2014 which immediately caught a preact-compat test that passed `trigger`/`items` props Menu does not have, rendered nothing, and had been asserting 'no console error' about an empty tree. Link suppresses its generated arrow via :has() when the link ends in its own icon. Barrels are generated for all 138 component dirs, so the 6-of-132 half-convention is gone."
+    },
+    {
+      "id": "first-day-facts-missing-from-cli-output",
+      "title": "`cascivo init` prints an incomplete stylesheet wiring, and `add` hides the npm channel",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "D",
+      "guard": "scripts/checks/getting-started-contract.test.ts",
+      "status": "closed",
+      "note": "The CLI's own output is now one of the guard's first-day surfaces \u2014 for most adopters it is the FIRST surface, since `cascivo init` runs before any doc is opened, and it had never been checked. Adding it immediately demanded the two facts init never printed: useSignals() and the theme bundles. `cascivo add` now announces an npm-channel entry before the install log rather than inside it. Token naming gains --cascivo-font-size-* aliases, so the natural guess resolves instead of being silently dropped by CSS."
     }
   ]
 }
