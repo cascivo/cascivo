@@ -362,8 +362,16 @@ import cannot resolve, `extends HTMLAttributes<…>` collapses to an error type 
 interface keeps only its _own_ members. `skipLibCheck: true` (which most setups enable)
 hides the diagnostic that would explain it.
 
+**When it happens:** only when your package manager's hoisting is restricted. pnpm's default
+layout builds a hidden `node_modules/.pnpm/node_modules/` holding every transitive package,
+and TypeScript finds React's types there by accident — so most installs never hit this. Set
+`hoist: false` (or a `hoist-pattern` that excludes `@types/*`) and that safety net is gone.
+If your `pnpm-workspace.yaml` or `.npmrc` restricts hoisting, this is your bug.
+
 **Fix:** upgrade to `@cascivo/react` ≥ 0.14.0 — every package that ships React types now
-declares `@types/react` as an optional peer, so pnpm puts it on the resolution path.
+declares `@types/react` as an optional peer, so pnpm puts it on the resolution path even with
+hoisting off. `pnpm isolated:check` verifies this in CI against a `hoist: false` workspace,
+and it is observed failing when the peer is removed.
 
 On an older version, add it yourself:
 
