@@ -18,6 +18,68 @@ export default [
 
 That covers both problems on this page. Read on for what it does and why.
 
+### If your `outputDir` is not `src/components/ui`
+
+`...cascivo` scopes its vendored-source rules to `src/components/ui/**`. If `cascivo add`
+writes somewhere else, pass your `outputDir` — **with the default glob, every rule the
+fragment scopes off silently stays on**, and you get the full error list back:
+
+```js
+import { cascivoSignals, cascivoVendoredSource } from '@cascivo/eslint-config'
+
+export default [
+  // …your existing config…
+  cascivoSignals,
+  cascivoVendoredSource('app/ui/**'), // ← your outputDir, as a glob
+]
+```
+
+### The exact config cascivo tests against
+
+This is not an illustration. The block below is
+[`scripts/checks/host-lint/eslint/eslint.config.js`](../scripts/checks/host-lint/eslint/eslint.config.js),
+copied here by a test that fails if the two drift — and CI runs real ESLint with it over
+every file `cascivo add` copies, asserting zero errors. It is a TanStack Start scaffold's
+config with `@cascivo/eslint-config` added:
+
+<!-- host-lint:eslint-config -->
+
+```js
+import { tanstackConfig } from '@tanstack/eslint-config'
+import reactHooks from 'eslint-plugin-react-hooks'
+import { cascivoSignals, cascivoVendoredSource } from '@cascivo/eslint-config'
+
+export default [
+  ...tanstackConfig,
+  // NOTE the `.flat` — `reactHooks.configs['recommended-latest']` is the legacy
+  // eslintrc shape and does nothing in a flat config.
+  reactHooks.configs.flat['recommended-latest'],
+  // Spread LAST — flat config is last-wins.
+  cascivoSignals,
+  // Pass YOUR `outputDir` from cascivo.config.ts. The no-argument default is
+  // 'src/components/ui/**'; if your outputDir differs and you rely on the default,
+  // every rule this fragment scopes off silently stays on.
+  cascivoVendoredSource('packages/components/src/**'),
+]
+```
+
+⚠ **`reactHooks.configs.flat['recommended-latest']`, not
+`reactHooks.configs['recommended-latest']`.** The plugin exports both; the second is the
+legacy eslintrc shape and applies nothing in a flat config, with no error to tell you.
+
+### Formatting: exclude vendored source from your formatter
+
+Owning the code means your formatter will reformat it, and `cascivo update` will then
+report drift on files you never edited. Add your `outputDir` to `.prettierignore` (or
+`.oxfmtignore`):
+
+```
+src/components/ui/
+```
+
+`cascivo init` writes this for you when it finds a formatter config, and `cascivo doctor`
+reports it as a finding if it is missing.
+
 ---
 
 ## 1. `react-hooks/immutability` errors on every signal write

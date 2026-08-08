@@ -1,5 +1,14 @@
 // Tooltip: meter displays a single value, not a discrete datum set — no data-point traversal.
+//
+// Meter does NOT go through `ChartFrame`: it has no data points, so the tooltip, zoom,
+// toolbox and keyboard-traversal machinery would all be dead weight, and its `role="meter"`
+// + `aria-valuenow` semantics are not the `role="img"` a frame gives an SVG. It DOES use
+// `useChartSize`, because its `width` prop documents container-tracking behaviour and until
+// 2026-08 it hard-coded `width = 200` with no viewBox — the doc was simply false. That
+// mismatch is what `chart-frame-parity` now checks.
+import { useChartSize } from '../../core/use-chart'
 import { arcPath } from '../../engine/shape'
+import styles from './meter.module.css'
 
 export interface MeterThresholds {
   warning?: number
@@ -43,7 +52,11 @@ export interface MeterProps {
   height?: number
 }
 
-function fillColor(value: number, min: number, max: number, thresholds?: MeterThresholds): string {
+/**
+ * Thresholds are absolute values compared against `value`, so the scale bounds play no part.
+ * (This took `min`/`max` and ignored them until `noUnusedParameters` said so.)
+ */
+function fillColor(value: number, thresholds?: MeterThresholds): string {
   if (!thresholds) return 'var(--cascivo-chart-1)'
   const { warning, critical } = thresholds
   if (critical != null && value >= critical) return 'var(--cascivo-color-destructive)'
@@ -58,12 +71,16 @@ export function Meter({
   label,
   variant = 'bar',
   thresholds,
-  width = 200,
+  width: fixedWidth,
   height,
 }: MeterProps) {
+  // 200 is a SEED, not a default: `useChartSize` overwrites it from the ResizeObserver and
+  // only ever writes a measurement > 0, so an unmeasured container keeps the seed.
+  const { ref, width: measured } = useChartSize(200, 100)
+  const width = fixedWidth ?? measured.value
   const clamped = Math.min(max, Math.max(min, value))
   const ratio = max > min ? (clamped - min) / (max - min) : 0
-  const color = fillColor(value, min, max, thresholds)
+  const color = fillColor(value, thresholds)
 
   if (variant === 'gauge') {
     const svgH = height ?? 100
@@ -81,23 +98,25 @@ export function Meter({
 
     return (
       <div
+        ref={ref}
+        className={styles['meter']}
         aria-label={label}
         role="meter"
         aria-valuenow={value}
         aria-valuemin={min}
         aria-valuemax={max}
       >
-        <svg width={svgW} height={svgH} aria-hidden="true">
+        <svg
+          className={styles['svg']}
+          width={svgW}
+          height={svgH}
+          viewBox={`0 0 ${svgW} ${svgH}`}
+          aria-hidden="true"
+        >
           <path d={totalPath} fill="var(--cascivo-color-border)" />
           {fillPath && <path d={fillPath} fill={color} />}
         </svg>
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: 'var(--cascivo-text-sm)',
-            color: 'var(--cascivo-color-foreground-muted)',
-          }}
-        >
+        <div className={styles['gaugeLabel']}>
           {label}: {value}
         </div>
       </div>
@@ -111,13 +130,21 @@ export function Meter({
 
   return (
     <div
+      ref={ref}
+      className={styles['meter']}
       aria-label={label}
       role="meter"
       aria-valuenow={value}
       aria-valuemin={min}
       aria-valuemax={max}
     >
-      <svg width={barW} height={barH} aria-hidden="true" style={{ display: 'block' }}>
+      <svg
+        className={styles['svg']}
+        width={barW}
+        height={barH}
+        viewBox={`0 0 ${barW} ${barH}`}
+        aria-hidden="true"
+      >
         <rect
           x={0}
           y={0}
@@ -133,23 +160,11 @@ export function Meter({
           height={barH}
           rx={barH / 2}
           fill={color}
-          style={{
-            transformOrigin: 'left center',
-            transform: `scaleX(${ratio})`,
-            // scaleX is compositor-safe (GPU-composited transform)
-            transition: 'transform 400ms ease',
-          }}
+          className={styles['fill']}
+          style={{ transform: `scaleX(${ratio})` }}
         />
       </svg>
-      <div
-        style={{
-          marginTop: 'var(--cascivo-space-1)',
-          fontSize: 'var(--cascivo-text-xs)',
-          color: 'var(--cascivo-color-foreground-muted)',
-        }}
-      >
-        {label}
-      </div>
+      <div className={styles['label']}>{label}</div>
     </div>
   )
 }

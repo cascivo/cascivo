@@ -154,6 +154,31 @@ export interface ComponentMeta {
   styleHooks?: string[]
   tags: string[]
   intent?: ComponentIntent
+  /**
+   * Marks the component as deprecated.
+   *
+   * Declaring it here is what makes the deprecation **discoverable before installation** —
+   * every surface renders it: `cascivo list`, `cascivo search`, `cascivo add` (warned before
+   * the copy), the MCP `list_components`/`get_component` tools, the docs site, and
+   * `llms.txt`. A `@deprecated` JSDoc tag in the source is not enough: the adopter only sees
+   * it after they have already vendored the file.
+   *
+   * A deprecated component keeps working. This is signposting, not removal.
+   */
+  deprecated?: ComponentDeprecation
+}
+
+export interface ComponentDeprecation {
+  /** Version the deprecation was announced in, e.g. `'0.17.0'`. */
+  since: string
+  /**
+   * Registry name of the replacement, e.g. `'menu'`. Must resolve to a real registry entry —
+   * `scripts/checks/deprecation-surfaces.test.ts` fails otherwise, so a deprecation can never
+   * point at something an adopter cannot install.
+   */
+  replacement: string
+  /** One sentence on what changes for the caller. */
+  note?: string
 }
 
 export interface IntentAntiPattern {

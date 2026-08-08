@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
     }
   ],
@@ -98,6 +101,11 @@
     "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "registryDependencies": ["dropdown"],
     "tags": ["overlay", "menu", "actions", "kebab", "table"],
+    "deprecated": {
+      "since": "0.17.0",
+      "replacement": "menu",
+      "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+    },
     "intent": {
       "whenToUse": [
         "Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists",

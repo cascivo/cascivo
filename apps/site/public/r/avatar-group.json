@@ -9,10 +9,13 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/components"],
+  "dependencies": ["@cascivo/core", "@cascivo/i18n"],
   "tags": ["avatar", "group", "stack", "overflow", "display"],
   "category": "display",
   "registryDependencies": ["avatar"],
@@ -83,7 +86,7 @@
         "code": "<AvatarGroup isGrid max={8}>{avatars}</AvatarGroup>"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/components"],
+    "dependencies": ["@cascivo/core", "@cascivo/i18n"],
     "registryDependencies": ["avatar"],
     "tags": ["avatar", "group", "stack", "overflow", "display"],
     "intent": {

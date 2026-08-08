@@ -72,7 +72,7 @@ export const meta: ComponentMeta = {
     { title: 'Success variant', code: '<Progress value={100} variant="success" />' },
     { title: 'Small', code: '<Progress value={40} size="sm" />' },
   ],
-  dependencies: ['@cascivo/core'],
+  dependencies: [],
   tags: ['progress', 'loading', 'upload', 'bar'],
   intent: {
     whenToUse: [

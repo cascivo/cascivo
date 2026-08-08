@@ -6,6 +6,9 @@
     font-family: var(--cascivo-font-sans);
     font-weight: var(--cascivo-font-medium);
     border-radius: var(--cascivo-radius-badge);
+    /* Transparent by default so each tone can opt into a visible edge without shifting
+       layout — same base as Badge. Without a border-style, a tone's `border-color` is inert. */
+    border: 1px solid transparent;
     white-space: nowrap;
 
     &[data-size='sm'] {
@@ -25,6 +28,9 @@
     &[data-variant='default'] {
       background-color: var(--cascivo-color-bg-subtle);
       color: var(--cascivo-color-text-subtle);
+      /* Subtle bg on a subtle surface is nearly invisible in dark themes; the border is
+         what keeps a neutral tag reading as a chip rather than as loose text. */
+      border-color: var(--cascivo-color-border);
     }
 
     &[data-variant='info'] {

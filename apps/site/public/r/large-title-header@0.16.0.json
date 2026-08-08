@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.module.css"
     }
   ],

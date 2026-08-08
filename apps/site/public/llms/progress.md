@@ -97,10 +97,6 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `progressbar`
 
-## Dependencies
-
-- `@cascivo/core`
-
 ## Tags
 
 progress, loading, upload, bar

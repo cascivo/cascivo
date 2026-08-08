@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.module.css"
     }
   ],

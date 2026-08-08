@@ -171,6 +171,37 @@ the printed diff).
 
 Release-specific upgrade guides, newest first:
 
+- **`<Badge>` with no `variant` is no longer the brand colour** (`@cascivo/react` minor) —
+  `neutral` (and its alias `default`, which is what you get when you pass nothing) now
+  renders the subtle look instead of `--cascivo-color-accent`.
+
+  Badge was the only one of the four tone-taking components that did this: `Tag`, `Status`
+  and `Notification` all render `neutral` quietly, so a single domain enum driving all four
+  produced a primary-blue pill in one place and a grey chip in the others. `pnpm tone:check`
+  now enforces that a tone reads from its own token family in every component.
+
+  Migration: if you were relying on the accent look, ask for it explicitly.
+
+  ```tsx
+  // before — accent, by accident
+  <Badge>Production</Badge>
+  // after — accent, on purpose
+  <Badge variant="primary">Production</Badge>
+  ```
+
+  A neutral `<Tag>` also gains a 1px border, so it reads as a chip rather than as loose text
+  on dark themes. No API change.
+
+- **The theme runtime moved to `@cascivo/core`** (`@cascivo/core` minor, `@cascivo/react`
+  unchanged) — `ThemeProvider`, `useTheme`, `setTheme`, `themeSignal`, `applyTheme` and
+  `themePreloadScript` are now exported from `@cascivo/core`, so the copy-paste path can
+  reach them without installing the whole prebuilt component distribution.
+
+  **No migration needed.** `@cascivo/react` re-exports all of them under the same names.
+  `persistedSignal` and the synchronous drivers moved the same way and are still re-exported
+  from `@cascivo/storage`; the persisted value format is unchanged, so stored themes survive
+  the upgrade.
+
 - **`useTheme()` returns a string, not a signal** (`@cascivo/react` minor) — the
   first tuple element of `useTheme()` is now the theme **name** (a plain `string`)
   instead of a `Signal<string>`. Migration: drop `.value`.

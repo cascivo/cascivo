@@ -95,8 +95,8 @@ export const SELF_SUBSCRIBING_HOOKS: readonly SelfSubscribingHook[] = [
   },
   {
     name: 'useTheme',
-    source: 'packages/react/src/theme.tsx',
-    test: 'packages/react/src/theme.test.tsx',
+    source: 'packages/core/src/theme.tsx',
+    test: 'packages/core/src/theme.test.tsx',
   },
   {
     name: 'useForm',

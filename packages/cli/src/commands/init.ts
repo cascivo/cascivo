@@ -1,6 +1,6 @@
 import { createInterface } from 'node:readline/promises'
 import { stdin, stdout } from 'node:process'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
   DEFAULT_CONFIG,
@@ -79,6 +79,92 @@ function hintEslintIfPresent(cwd: string): void {
   console.log('  Scope them off your components dir — see docs/USING-WITH-STRICT-ESLINT.md')
 }
 
+/**
+ * Write dependency entries into `package.json` so a failed install still leaves a
+ * DECLARATIVE-complete project, one `install` away from working.
+ *
+ * The reported failure: one unrelated bad version range elsewhere in the adopter's
+ * `package.json` made `pnpm add` exit non-zero. cascivo had already written
+ * `cascivo.config.ts`, so the project claimed to be cascivo-configured with none of the
+ * runtime present, and the printed advice ("install them yourself") was the same command
+ * that had just failed. Recording the dependencies is the difference between "recoverable
+ * with one command" and "figure out what was supposed to be here".
+ *
+ * Never overwrites an entry that already exists — the app's own pin wins.
+ */
+function recordDependencies(cwd: string, packages: string[], opts: { dev: boolean }): string[] {
+  const pkgPath = join(cwd, 'package.json')
+  if (!existsSync(pkgPath)) return []
+  let pkg: Record<string, unknown>
+  try {
+    pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as Record<string, unknown>
+  } catch {
+    return []
+  }
+  const field = opts.dev ? 'devDependencies' : 'dependencies'
+  const deps = (pkg[field] ??= {}) as Record<string, string>
+  const added: string[] = []
+  for (const name of packages) {
+    if (deps[name] !== undefined) continue
+    deps[name] = 'latest'
+    added.push(name)
+  }
+  if (added.length === 0) return []
+  writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`, 'utf8')
+  return added
+}
+
+/** Formatter ignore files, in the order a project is likely to use them. */
+const FORMATTER_IGNORES = [
+  {
+    config: ['.prettierrc', '.prettierrc.json', '.prettierrc.js', 'prettier.config.js'],
+    ignore: '.prettierignore',
+  },
+  { config: ['.oxfmtrc', '.oxfmtrc.json'], ignore: '.oxfmtignore' },
+] as const
+
+/**
+ * Exclude the vendored components dir from the project's formatter.
+ *
+ * Owning the code means your formatter reformats it, and then `cascivo update` reports drift
+ * on files you never touched. This ACTS rather than hints: the ESLint equivalent below only
+ * prints a pointer, and an adopter ran `prettier --write .` before ever reading it.
+ *
+ * Idempotent, and never rewrites an existing line.
+ */
+function ensureFormatterIgnore(cwd: string, outputDir: string): void {
+  const line = `${outputDir.replace(/\/+$/, '')}/`
+  for (const { config, ignore } of FORMATTER_IGNORES) {
+    const hasFormatter =
+      config.some((f) => existsSync(join(cwd, f))) || hasPrettierKeyInPackageJson(cwd, ignore)
+    if (!hasFormatter) continue
+
+    const path = join(cwd, ignore)
+    const current = existsSync(path) ? readFileSync(path, 'utf8') : ''
+    if (current.split('\n').some((l) => l.trim() === line)) continue
+
+    const banner = '# cascivo: vendored component source — you own it, so do not reformat it\n'
+    const next =
+      current === '' ? banner + line + '\n' : `${current.replace(/\n*$/, '\n')}\n${banner}${line}\n`
+    writeFileSync(path, next, 'utf8')
+    console.log(
+      `\nAdded "${line}" to ${ignore} (so your formatter does not rewrite copied source).`,
+    )
+  }
+}
+
+/** `prettier` key in package.json counts as a Prettier config — only relevant to .prettierignore. */
+function hasPrettierKeyInPackageJson(cwd: string, ignore: string): boolean {
+  if (ignore !== '.prettierignore') return false
+  const pkgPath = join(cwd, 'package.json')
+  if (!existsSync(pkgPath)) return false
+  try {
+    return 'prettier' in (JSON.parse(readFileSync(pkgPath, 'utf8')) as Record<string, unknown>)
+  } catch {
+    return false
+  }
+}
+
 /** The "here's everything you need" summary, printed once at the end of init. */
 function printDependencySummary(): void {
   console.log('\nDependencies')
@@ -126,15 +212,63 @@ export async function init(args: string[] = [], cwd: string = process.cwd()): Pr
   } else {
     const runtimeOk = installPackages(RUNTIME_DEPS, cwd, { pm })
     const devOk = installPackages(DEV_DEPS, cwd, { pm, dev: true })
-    if (!runtimeOk || !devOk) process.exitCode = 1
+    if (!runtimeOk || !devOk) {
+      // Never leave a project "configured but not installed". Record what it needs, say
+      // plainly what state it is in, and give a command that is not the one that just failed.
+      const recorded = [
+        ...(runtimeOk ? [] : recordDependencies(cwd, RUNTIME_DEPS, { dev: false })),
+        ...(devOk ? [] : recordDependencies(cwd, DEV_DEPS, { dev: true })),
+      ]
+      console.error(
+        '\nInstall failed — cascivo.config.ts was written but the packages are not installed.',
+      )
+      if (recorded.length > 0) {
+        console.error(
+          `Wrote ${recorded.length} dependency entries to package.json: ${recorded.join(', ')}`,
+        )
+        console.error(`Recover with:\n  ${pm} install`)
+      } else {
+        console.error(
+          `Recover with:\n  ${installHint(pm, RUNTIME_DEPS)}\n  ${installHint(pm, DEV_DEPS, { dev: true })}`,
+        )
+      }
+      process.exitCode = 1
+    }
   }
 
-  console.log('\nImport the theme in your root CSS or entry file:')
-  console.log(`  import '@cascivo/themes/${theme}.css'`)
-  console.log('Then set the theme on your root element:')
+  // The COMPLETE stylesheet wiring, in import order. Printing only the theme line left an
+  // adopter to discover the tokens sheet by debugging a grayscale app, and the charts sheet
+  // by shipping a chart whose screen-reader data table rendered visibly.
+  console.log('\nStylesheets — import these once, in this order, in your entry file:')
+  console.log(
+    `  import '@cascivo/tokens'                 // primitive tokens — every --cascivo-* value`,
+  )
+  console.log(
+    `  import '@cascivo/themes/${theme}.css'${' '.repeat(Math.max(1, 16 - theme.length))}// the ${theme} theme's semantic values`,
+  )
+  console.log(
+    `  // …then your component CSS (\`cascivo add\` writes .module.css beside each component)`,
+  )
+  console.log('\nThen set the theme on your root element:')
   console.log(`  <html data-theme="${theme}">`)
+  console.log('\nSwitching themes at runtime? Use a bundle instead of the single theme:')
+  console.log("  import '@cascivo/themes/light-dark.css'  // light + dark — the common case")
+  console.log("  import '@cascivo/themes/all.css'         // all twelve themes")
+  console.log("  import { ThemeProvider } from '@cascivo/core'")
+  // The single most likely first-day bug, and it has no error message: a component that
+  // reads `signal.value` in render never re-renders without this, so handlers fire and the
+  // UI just sits there. Consumer apps run no signals transform, so it is never automatic.
+  console.log('\nIn YOUR components, when you read a signal during render:')
+  console.log("  import { useSignals } from '@cascivo/core'")
+  console.log('  function MyComponent() {')
+  console.log('    useSignals()   // ← first statement, or the component never re-renders')
+  console.log('    return <span>{count.value}</span>')
+  console.log('  }')
+  console.log('\nAdding a chart later? Charts ship as an npm package with their own stylesheet:')
+  console.log("  import '@cascivo/charts/styles.css'      // `cascivo add <chart>` reminds you")
 
   printDependencySummary()
+  ensureFormatterIgnore(cwd, DEFAULT_CONFIG.outputDir)
   hintEslintIfPresent(cwd)
 
   console.log('\nAdd components with: cascivo add <name>')

@@ -1,6 +1,7 @@
-import { effect, signal } from '@cascivo/core'
-import type { ReadonlySignal, Signal } from '@cascivo/core'
-import { localStorageDriver, type StorageDriver } from './drivers'
+import { effect, signal } from './signals.ts'
+import type { ReadonlySignal, Signal } from './signals.ts'
+import { localStorageDriver } from './drivers.ts'
+import type { StorageDriver } from './drivers.ts'
 
 interface Envelope {
   v: number

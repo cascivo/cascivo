@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext } from 'react'
+import { Children, createContext, isValidElement } from 'react'
 import type { KeyboardEvent, ReactNode } from 'react'
 import { useSignalEffect, useSignals, useTypeahead } from '@cascivo/core'
 import { usePopover } from '../popover/use-popover'
@@ -103,10 +103,32 @@ function MenuPanel({ children }: { children: ReactNode }) {
   )
 }
 
+/** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so this
+ * browser-facing source needs no `@types/node`, and it's safe where `process` is absent
+ * (bundlers replace `process.env.NODE_ENV` in app builds). Matches `field.tsx`. */
+function isDev(): boolean {
+  const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
+  return env?.NODE_ENV !== 'production'
+}
+
 export function Menu({ children }: MenuProps) {
   const popover = usePopover()
-  const childArray = Array.isArray(children) ? children : [children]
-  const [trigger, ...items] = childArray
+  // Partitioned by component IDENTITY, not by position. This used to be
+  // `const [trigger, ...items] = childArray`, so wrapping the trigger in a fragment, or
+  // putting a conditional item first, silently moved the trigger into the panel and left
+  // the menu with nothing to open it — with no error to explain why.
+  const childArray = Children.toArray(children)
+  const trigger = childArray.find((c) => isValidElement(c) && c.type === MenuTrigger)
+  const items = childArray.filter((c) => c !== trigger)
+
+  if (trigger === undefined && isDev()) {
+    throw new Error(
+      '<Menu> requires a <MenuTrigger> child. It is matched by component identity, so it ' +
+        'may appear in any order — but it must be a direct child, not wrapped in a ' +
+        'fragment or another component.',
+    )
+  }
+
   return (
     <MenuContext.Provider value={popover}>
       {trigger}

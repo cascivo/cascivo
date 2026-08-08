@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.module.css"
     }
   ],

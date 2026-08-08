@@ -83,7 +83,7 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/components`
+- `@cascivo/i18n`
 
 ## Tags
 

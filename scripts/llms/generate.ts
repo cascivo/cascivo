@@ -4,7 +4,7 @@
  * Reads registry.json and outputs to apps/site/public/.
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { reactExportedModules, reactExportedNames } from '../registry/react-exports.ts'
@@ -468,6 +468,28 @@ function componentMarkdown(
   return lines.join('\n')
 }
 
+/**
+ * Published `@cascivo/*` package versions, read from the workspace at generation time.
+ *
+ * Derived rather than hand-listed: a hand-kept version line is the same Mechanism-B defect
+ * as a hand-kept dependency list, and it would go stale on the first release.
+ */
+function packageVersions(): [string, string][] {
+  const dir = join(ROOT, 'packages')
+  const out: [string, string][] = []
+  for (const entry of readdirSync(dir)) {
+    let pkg: { name?: string; version?: string; private?: boolean }
+    try {
+      pkg = JSON.parse(readFileSync(join(dir, entry, 'package.json'), 'utf8')) as typeof pkg
+    } catch {
+      continue
+    }
+    if (pkg.private === true || !pkg.name || !pkg.version) continue
+    out.push([pkg.name, pkg.version])
+  }
+  return out.sort((a, b) => a[0].localeCompare(b[0]))
+}
+
 function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   // Root-served (cascivo.com) vs docs-served (docs.cascivo.com). Per-component
   // markdown, context, and catalogs live only on the docs site, so link to them
@@ -517,6 +539,21 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `_registry v${registry.version} · generated ${registry.generatedAt} · docs track \`main\`; ` +
       `compare with ${SITE}/registry.json \`.version\` for staleness, and ${DOCS}/breaking-changes.json for installed-vs-documented API drift._`,
+  )
+  lines.push('')
+  // Name the package versions these docs describe. The abstract "docs track `main`" above
+  // is not actionable: these docs deploy continuously while the packages ship versioned, so
+  // llms.txt can describe unreleased behaviour. It did — `cascivo.platform` was added to the
+  // canonical @layer order one day before an adopter read this file, compared it against the
+  // `@cascivo/tokens` in their node_modules, and correctly reported a contradiction. With
+  // the versions named, a reader can tell in one line whether this page describes what they
+  // have installed.
+  lines.push(
+    `_Describes: ${packageVersions()
+      .map(([name, version]) => `${name}@${version}`)
+      .join(
+        ' · ',
+      )}. If your installed versions are lower, a documented behaviour may not have shipped yet._`,
   )
   lines.push('')
   lines.push('cascivo is a React design system you can consume two ways: copy-paste the source')
@@ -868,6 +905,8 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(
     "  ⚠ LINT: `eslint-plugin-react-hooks@7` (`recommended-latest`) enables `react-hooks/immutability`, which reports EVERY `signal.value = next` as `Error: This value cannot be modified`. It fires on this documented idiom, in the app's own page code, on both install paths — one reported build hit it 8 times and had no doc to reach for. Fix: `pnpm add -D @cascivo/eslint-config` and spread `...cascivo` LAST in `eslint.config.js`, or set `'react-hooks/immutability': 'off'`. Scoping it to a vendored-source glob does NOT work. See /docs/using-with-strict-eslint.md.",
+    "  ⚠ FLAT CONFIG ENTRY POINT: the plugin exports BOTH `configs['recommended-latest']` (legacy eslintrc) and `configs.flat['recommended-latest']`. In an `eslint.config.js` you MUST use `reactHooks.configs.flat['recommended-latest']` — the other one is accepted silently and applies no rules at all, so lint passes while checking nothing.",
+    "  ⚠ VENDORED-SOURCE GLOB: `...cascivo` scopes its vendored-source rules to `src/components/ui/**`. If your `outputDir` differs, call `cascivoVendoredSource('<your-outputDir>/**')` instead — with the default glob every rule it scopes off silently stays on. cascivo runs real ESLint over every file `cascivo add` copies in CI (scripts/checks/host-lint/eslint), so the published config is executed, not asserted.",
   )
   lines.push(
     '- Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.',
@@ -884,7 +923,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '- Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.',
   )
   lines.push(
-    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.',
+    '- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` — import from **`@cascivo/core`** on BOTH install paths (`@cascivo/react` re-exports the same names; before 0.17.0 it shipped only from `@cascivo/react`, which told copy-paste adopters to install all 197 components to get a theme signal): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.',
   )
   lines.push(
     "- Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).",

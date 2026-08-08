@@ -4,32 +4,32 @@
       "name": "radio",
       "label": "Radio",
       "primitive": "Native <input type=\"radio\">",
-      "loc": 171,
-      "files": 2,
+      "loc": 173,
+      "files": 3,
       "deps": 0
     },
     {
       "name": "checkbox",
       "label": "Checkbox",
       "primitive": "Native <input type=\"checkbox\">",
-      "loc": 134,
-      "files": 2,
+      "loc": 136,
+      "files": 3,
       "deps": 0
     },
     {
       "name": "toggle",
       "label": "Switch",
       "primitive": "Accessible <button> + :has()",
-      "loc": 163,
-      "files": 2,
+      "loc": 165,
+      "files": 3,
       "deps": 0
     },
     {
       "name": "modal",
       "label": "Dialog",
       "primitive": "Native <dialog> + showModal()",
-      "loc": 348,
-      "files": 2,
+      "loc": 349,
+      "files": 3,
       "deps": 0
     },
     {

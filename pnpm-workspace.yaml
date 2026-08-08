@@ -3,6 +3,10 @@ packages:
   - 'apps/*'
   - 'apps/examples/*'
   - 'apps/bench/*'
+  # Consumer-shaped ESLint fixture: runs the adopter's real toolchain (ESLint +
+  # eslint-plugin-react-hooks) over the source `cascivo add` copies. See
+  # scripts/checks/host-lint/eslint/README.md for why a re-implementation is not enough.
+  - 'scripts/checks/host-lint/eslint'
 
 catalogMode: prefer
 
@@ -63,6 +67,12 @@ overrides:
   axe-core: '4.11.4'
 
 allowBuilds:
+  # Native resolver behind eslint-plugin-import-x, pulled in by the host-lint ESLint
+  # fixture. Declined explicitly rather than left un-answered (an unanswered build script
+  # makes every `pnpm run` fail its deps-status check). The fixture resolves imports
+  # correctly on the JS fallback — it reports import/order and import resolution as
+  # expected — so the native binding buys speed we do not need in a lint gate.
+  unrs-resolver: false
   '@carbon/colors': true
   '@carbon/feature-flags': true
   '@carbon/grid': true

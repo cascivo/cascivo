@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { memoryDriver, type StorageDriver } from './drivers'
-import { persistedSignal } from './persisted-signal'
+import { memoryDriver, type StorageDriver } from './drivers.ts'
+import { persistedSignal } from './persisted-signal.ts'
 
 beforeEach(() => {
   localStorage.clear()

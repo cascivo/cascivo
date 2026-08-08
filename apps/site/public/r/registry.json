@@ -14,6 +14,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.module.css"
         }
       ],
@@ -122,6 +125,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.module.css"
@@ -279,6 +285,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/alert.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/alert.module.css"
         }
       ],
@@ -408,6 +417,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.module.css"
@@ -560,6 +572,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
         }
       ],
@@ -686,6 +701,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.module.css"
         }
       ],
@@ -773,6 +791,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.module.css"
@@ -893,10 +914,13 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "tags": ["avatar", "group", "stack", "overflow", "display"],
       "category": "display",
       "registryDependencies": ["avatar"],
@@ -954,7 +978,7 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "registryDependencies": ["avatar"],
         "tags": ["avatar", "group", "stack", "overflow", "display"],
         "intent": {
@@ -1011,6 +1035,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
@@ -1999,6 +2026,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.module.css"
         }
       ],
@@ -2093,6 +2123,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.module.css"
@@ -2265,6 +2298,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.module.css"
         }
       ],
@@ -2373,6 +2409,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.module.css"
@@ -2516,6 +2555,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.module.css"
         }
       ],
@@ -2638,6 +2680,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.module.css"
@@ -2847,6 +2892,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.module.css"
         }
       ],
@@ -2946,6 +2994,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/carousel.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/carousel.module.css"
@@ -3927,7 +3978,7 @@
           },
           {
             "name": "width",
-            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+            "description": "SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 300px rather than a container-filling chart. Pass a number to change it. The catalogue-wide \"omit for a responsive chart\" note does not apply to this chart.",
             "type": "number",
             "required": false,
             "default": "300"
@@ -6389,7 +6440,7 @@
           },
           {
             "name": "width",
-            "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+            "description": "SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide \"omit for a responsive chart\" note does not apply to this chart.",
             "type": "number",
             "required": false,
             "default": "80"
@@ -6833,6 +6884,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.module.css"
         }
       ],
@@ -6958,6 +7012,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
@@ -7219,6 +7276,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/code.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/code.module.css"
         }
       ],
@@ -7315,6 +7375,9 @@
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/highlight.ts"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
@@ -7481,6 +7544,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.module.css"
         }
       ],
@@ -7606,6 +7672,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
@@ -7753,6 +7822,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
@@ -7959,6 +8031,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
@@ -8175,6 +8250,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.module.css"
         }
       ],
@@ -8325,6 +8403,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/contained-list.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/contained-list.module.css"
         }
       ],
@@ -8430,6 +8511,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/context-menu.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/context-menu.module.css"
         }
       ],
@@ -8522,6 +8606,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.module.css"
@@ -8637,6 +8724,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.module.css"
         }
       ],
@@ -8744,6 +8834,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
@@ -9074,6 +9167,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
         }
       ],
@@ -9271,6 +9367,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.module.css"
         }
       ],
@@ -9442,6 +9541,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.module.css"
         }
       ],
@@ -9554,6 +9656,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.module.css"
@@ -9720,6 +9825,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
         }
       ],
@@ -9854,6 +9962,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.module.css"
@@ -10323,6 +10434,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.module.css"
         }
       ],
@@ -10443,6 +10557,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.module.css"
@@ -10599,6 +10716,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
         }
       ],
@@ -10745,6 +10865,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
@@ -10916,6 +11039,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
@@ -12321,6 +12447,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/standard-schema.ts"
         },
         {
@@ -12436,6 +12565,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/header.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/header.module.css"
@@ -12686,6 +12818,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.module.css"
         }
       ],
@@ -12794,6 +12929,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/hover-card.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/hover-card.module.css"
@@ -12910,6 +13048,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
@@ -13062,6 +13203,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/image.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/image.module.css"
         }
       ],
@@ -13211,6 +13355,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.module.css"
         }
       ],
@@ -13300,6 +13447,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/infinite-scroll.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/infinite-scroll.module.css"
@@ -13443,6 +13593,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/inline-loading.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/inline-loading.module.css"
         }
       ],
@@ -13555,6 +13708,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.module.css"
@@ -13700,6 +13856,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/input-group.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/input-group.module.css"
         }
       ],
@@ -13807,6 +13966,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.module.css"
@@ -13917,6 +14079,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.module.css"
         }
       ],
@@ -14005,6 +14170,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/kbd.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/kbd.module.css"
         }
       ],
@@ -14091,6 +14259,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.module.css"
@@ -14230,6 +14401,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.module.css"
@@ -14385,6 +14559,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/shell-state.ts"
         },
         {
@@ -14519,6 +14696,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.module.css"
         }
       ],
@@ -14602,6 +14782,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.module.css"
         }
       ],
@@ -14674,6 +14857,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.module.css"
         }
       ],
@@ -14742,6 +14928,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.module.css"
@@ -14819,6 +15008,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.module.css"
@@ -14900,6 +15092,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.module.css"
@@ -15010,6 +15205,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
         }
       ],
@@ -15105,6 +15303,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.module.css"
         }
       ],
@@ -15180,6 +15381,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.module.css"
@@ -15283,6 +15487,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.module.css"
         }
       ],
@@ -15360,6 +15567,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.module.css"
         }
       ],
@@ -15435,6 +15645,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.module.css"
         }
       ],
@@ -15498,6 +15711,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.module.css"
@@ -15600,6 +15816,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.module.css"
@@ -15723,6 +15942,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.module.css"
         }
       ],
@@ -15818,6 +16040,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.module.css"
@@ -15977,6 +16202,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu/menu.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu/menu.module.css"
         }
       ],
@@ -16085,10 +16313,13 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
       "category": "navigation",
       "meta": {
@@ -16172,7 +16403,7 @@
           "reducedMotion": true
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+        "dependencies": ["@cascivo/core"],
         "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
         "intent": {
           "whenToUse": [
@@ -16250,6 +16481,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.module.css"
@@ -16375,6 +16609,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.module.css"
@@ -16529,6 +16766,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.module.css"
         }
       ],
@@ -16671,6 +16911,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.module.css"
@@ -16824,6 +17067,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
         }
       ],
@@ -16944,6 +17190,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.module.css"
@@ -17096,6 +17345,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.module.css"
@@ -17295,6 +17547,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/otp-input.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/otp-input.module.css"
         }
       ],
@@ -17416,6 +17671,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
         }
       ],
@@ -17496,6 +17754,11 @@
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
         "registryDependencies": ["dropdown"],
         "tags": ["overlay", "menu", "actions", "kebab", "table"],
+        "deprecated": {
+          "since": "0.17.0",
+          "replacement": "menu",
+          "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+        },
         "intent": {
           "whenToUse": [
             "Collapsing secondary row-level or item-level actions behind a kebab trigger in dense layouts like tables and lists",
@@ -17559,6 +17822,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/pagination.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/pagination.module.css"
@@ -17700,6 +17966,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/password-input.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/password-input.module.css"
@@ -17971,10 +18240,13 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core"],
+      "dependencies": [],
       "tags": ["progress", "loading", "upload", "bar"],
       "category": "feedback",
       "meta": {
@@ -18043,7 +18315,7 @@
           "reducedMotion": true
         },
         "examples": [],
-        "dependencies": ["@cascivo/core"],
+        "dependencies": [],
         "tags": ["progress", "loading", "upload", "bar"],
         "intent": {
           "whenToUse": [
@@ -18098,6 +18370,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/progress-bar.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/progress-bar.module.css"
@@ -18230,6 +18505,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
         }
       ],
@@ -18343,6 +18621,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.module.css"
@@ -18460,6 +18741,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.module.css"
         }
       ],
@@ -18573,6 +18857,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.module.css"
@@ -18699,6 +18986,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/encode.ts"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
         }
       ],
@@ -18818,6 +19108,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.module.css"
@@ -18959,6 +19252,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.module.css"
@@ -19205,6 +19501,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/rating-group.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/rating-group.module.css"
         }
       ],
@@ -19336,6 +19635,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.module.css"
         }
       ],
@@ -19434,6 +19736,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.module.css"
@@ -19601,6 +19906,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.module.css"
         }
       ],
@@ -19735,6 +20043,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.module.css"
         }
       ],
@@ -19848,6 +20159,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
@@ -20638,6 +20952,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.module.css"
         }
       ],
@@ -20761,6 +21078,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.module.css"
@@ -20903,6 +21223,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.module.css"
         }
       ],
@@ -20991,6 +21314,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.module.css"
@@ -21360,6 +21686,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
         }
       ],
@@ -21540,6 +21869,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.module.css"
         }
       ],
@@ -21653,6 +21985,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.module.css"
         }
       ],
@@ -21758,6 +22093,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.module.css"
@@ -21895,6 +22233,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.module.css"
         }
       ],
@@ -21988,6 +22329,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/stack.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/stack.module.css"
@@ -22088,6 +22432,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
@@ -22227,6 +22574,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.module.css"
         }
       ],
@@ -22332,6 +22682,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.module.css"
@@ -22459,6 +22812,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
@@ -22598,6 +22954,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
@@ -22740,6 +23099,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.module.css"
@@ -22961,6 +23323,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.module.css"
         }
       ],
@@ -23066,6 +23431,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/tag.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/tag.module.css"
@@ -23190,6 +23558,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.module.css"
@@ -23322,6 +23693,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.module.css"
         }
       ],
@@ -23440,6 +23814,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.module.css"
@@ -23573,6 +23950,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.module.css"
@@ -23728,6 +24108,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
@@ -23900,6 +24283,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.module.css"
         }
       ],
@@ -24002,6 +24388,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/toast.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/toast.module.css"
@@ -24122,6 +24511,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/use-toc-from-region.ts"
@@ -24245,6 +24637,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.module.css"
@@ -24385,6 +24780,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.module.css"
@@ -24543,6 +24941,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/toggletip.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/toggletip.module.css"
         }
       ],
@@ -24697,6 +25098,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.module.css"
         }
       ],
@@ -24820,6 +25224,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
@@ -24991,10 +25398,13 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.module.css"
         }
       ],
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core"],
       "tags": ["user", "avatar", "identity", "display"],
       "category": "display",
       "registryDependencies": ["avatar"],
@@ -25039,7 +25449,7 @@
           "keyboard": []
         },
         "examples": [],
-        "dependencies": ["@cascivo/core", "@cascivo/components"],
+        "dependencies": ["@cascivo/core"],
         "registryDependencies": ["avatar"],
         "tags": ["user", "avatar", "identity", "display"],
         "intent": {
@@ -25096,6 +25506,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.module.css"
@@ -25238,6 +25651,9 @@
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/visually-hidden.tsx"
         },
         {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/index.ts"
+        },
+        {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/visually-hidden.module.css"
         }
       ],
@@ -25323,6 +25739,9 @@
       "files": [
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.tsx"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/index.ts"
         },
         {
           "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.module.css"

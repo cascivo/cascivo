@@ -112,7 +112,6 @@ Required. Without client JavaScript this renders nothing useful, or a shell whos
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/i18n`
 
 ## Tags
 

@@ -11,23 +11,32 @@
  * every `aria-*` prop missing from every component, and fixed it with a
  * `publicHoistPattern` for `@types/react`.
  *
- * ⚠ **This fixture does NOT reproduce that report, and the C1 mechanism is not fully
- * understood.** Built against the *pre-fix* tarballs (no `@types/react` peer), in a
- * workspace, on pnpm 11 with TypeScript 6.0.3 — the reporter's exact TS version — cascivo's
- * types resolve cleanly and no prop goes missing. The virtual store is exactly as the
- * report describes (`@cascivo/react`'s own `node_modules` holds only `@cascivo`, `@preact`,
- * `react`, `react-dom`), yet TypeScript still finds `@types/react` by walking up from the
- * symlinked path into the app's own `node_modules`.
+ * ✅ **C1 IS REPRODUCED, and the `@types/react` peer is the fix.** The missing configuration
+ * — which two earlier plans looked for and did not find — is **`hoist: false`**.
  *
- * The one setting found to break resolution this way is `preserveSymlinks: true`, which
- * also breaks `@types/react`'s own `csstype` import — i.e. it is a consumer tsconfig
- * problem, not a cascivo packaging one. The reporter's app began on Astro, whose TS preset
- * is a plausible source. **If you can reproduce C1, add the configuration here** — that is
- * the missing piece.
+ * pnpm's default layout is not as strict as it looks: it builds a hidden hoisted directory
+ * at `node_modules/.pnpm/node_modules/` holding every transitive package, and that directory
+ * sits on TypeScript's upward walk from a cascivo `.d.ts`'s real path. React's types are
+ * therefore reachable from inside cascivo whether or not cascivo declares them. **That is
+ * why the first version of this fixture passed with the peer removed and concluded C1 did
+ * not reproduce** — a fixture that passed for the wrong reason, which is the failure mode
+ * this whole directory documents.
  *
- * The `@types/react` optional peer was added regardless: it is the convention every typed
- * React library converged on, it makes the types reachable under every layout rather than
- * by accident of hoisting, and it costs a JS-only consumer nothing.
+ * With `hoist: false` the hidden directory is gone and the peer is the only thing putting
+ * React's types on cascivo's resolution path. Measured, both arms:
+ *
+ *   peer present → `.pnpm/@cascivo+react@X/node_modules/` contains `@types` → 0 errors
+ *   peer removed → it does not → `Property 'children' does not exist on type 'CardProps'`,
+ *                  and the same for CardHeader/CardTitle/CardContent/CardFooter/…
+ *
+ * That is the 2026-07-28 report verbatim. The reporter's own fix — a `publicHoistPattern`
+ * for `@types/react` — is the sibling setting: it puts the package back on the resolution
+ * path by hand, which is exactly what the declared peer now does automatically.
+ *
+ * ⚠ The setting lives in `pnpm-workspace.yaml`, not `.npmrc`: pnpm 11 reads `hoist` from the
+ * workspace manifest and silently ignores it in `.npmrc`. Setting it in the wrong place is
+ * how this fixture briefly "had hoisting off" while the hidden directory was still fully
+ * populated — caught only by the non-vacuity assertion below.
  *
  * What this fixture DOES prove, which nothing else did: the published tarballs install and
  * type-check in a strict, non-hoisted workspace under `strict: true` with lib checking ON.
@@ -73,12 +82,20 @@ const built = NEEDS_DIST.every((p) => existsSync(join(REPO_ROOT, 'packages', p, 
 
 let work: string
 let app: string
+/** The `hoist=false` twin — see NO_HOIST_NPMRC. */
+let workNoHoist: string
+let appNoHoist: string
 
 /**
  * The app under test. Deliberately uses the exact props that vanished when the types could
  * not resolve — `children`, `className`, `onClick`, `style`, `aria-label` — across a mix of
  * components, plus a `ref` (C10) and a chart (so `@cascivo/charts` types are exercised too).
  */
+// NOTE: reads `count.value` rather than rendering the Signal directly. Rendering a bare
+// Signal as a child relies on @preact/signals-react augmenting `React.ReactNode`, and that
+// augmentation is not reachable under `hoist=false` — so the fixture would fail on a
+// THIRD-PARTY type detail instead of on cascivo's. Reading `.value` is also what
+// docs/AI-RULES.md tells adopters to write.
 const APP_TSX = `
 import { createRef } from 'react'
 import {
@@ -119,7 +136,7 @@ export function App() {
                 applyTheme('dark')
               }}
             >
-              Clicked {count} times
+              Clicked {count.value} times
             </Button>
             <Input className="field" placeholder="name" onChange={(e) => e.currentTarget.value} />
             {/* ref must be declared on the props type (C10) */}
@@ -197,6 +214,62 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
       }
     }
 
+    // Both layouts are built from the same tarballs. See NO_HOIST_NPMRC for why the second
+    // one exists and what the first one was quietly failing to test.
+    work = buildWorkspace(tarballFor, DEFAULT_NPMRC)
+    app = join(work, 'packages', 'app')
+    workNoHoist = buildWorkspace(tarballFor, NO_HOIST_NPMRC, 'hoist: false\n')
+    appNoHoist = join(workNoHoist, 'packages', 'app')
+  })
+
+  /**
+   * pnpm's stock strict layout: no `publicHoistPattern`, no `node-linker=hoisted`.
+   *
+   * It is NOT as strict as it looks. pnpm still builds a hidden hoisted directory at
+   * `node_modules/.pnpm/node_modules/` holding every transitive package — and that directory
+   * sits on TypeScript's upward walk from a cascivo `.d.ts`'s real path. So React's types are
+   * reachable from inside cascivo whether or not cascivo declares them.
+   */
+  const DEFAULT_NPMRC = 'strict-peer-dependencies=false\n'
+
+  /**
+   * The configuration that reproduces C1 — the missing piece the 2026-07-28 plan asked for.
+   *
+   * `hoist=false` removes `node_modules/.pnpm/node_modules/`, so the only way React's types
+   * reach a cascivo `.d.ts` is if cascivo DECLARES them and pnpm links them into its own
+   * virtual-store directory. That is precisely what the `@types/react` peer does, and the
+   * reporter's fix — a `publicHoistPattern` for `@types/react` — is the sibling setting that
+   * puts the package back on the resolution path by hand.
+   *
+   * Measured, both arms, on this workspace:
+   *
+   *   peer present  → `.pnpm/@cascivo+react@X/node_modules/` contains `@types` → 0 errors
+   *   peer removed  → it does not → `Property 'children' does not exist on type 'CardProps'`
+   *
+   * That second line is the report, verbatim. With `skipLibCheck: true` — the default in every
+   * framework preset, and what the reporter had — the "cannot find module 'react'" diagnostic
+   * inside cascivo's own `.d.ts` is suppressed and only the baffling downstream error survives.
+   *
+   * ⚠ This supersedes the negative result this file used to carry. The old single-layout
+   * fixture passed with the peer REMOVED, and concluded C1 did not reproduce. It passed
+   * because pnpm's default hidden hoist was supplying the types by accident — a fixture that
+   * passed for the wrong reason, which is the failure mode this whole directory documents.
+   */
+  const NO_HOIST_NPMRC = 'strict-peer-dependencies=false\nhoist=false\n'
+
+  /**
+   * Builds one isolated workspace from the packed tarballs and installs it.
+   *
+   * `npmrc` is the variable under test: pnpm's hoisting settings decide whether React's types
+   * are reachable from inside a cascivo `.d.ts` at all. See NO_HOIST_NPMRC.
+   */
+  function buildWorkspace(
+    tarballFor: (pkg: string) => string,
+    npmrc: string,
+    workspaceSettings = '',
+  ): string {
+    const work = mkdtempSync(join(tmpdir(), 'cascivo-isolated-'))
+
     // A WORKSPACE, not a single package — this is what makes the fixture faithful.
     //
     // In a single-package app, `node_modules/@types/react` sits at the app root, and
@@ -224,7 +297,7 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
     const overrides = PACKAGES.map((p) => `  '@cascivo/${p}': '${tarballFor(p)}'`).join('\n')
     writeFileSync(
       join(work, 'pnpm-workspace.yaml'),
-      `packages:\n  - 'packages/*'\noverrides:\n${overrides}\n`,
+      `packages:\n  - 'packages/*'\n${workspaceSettings}overrides:\n${overrides}\n`,
     )
     writeFileSync(
       join(work, 'package.json'),
@@ -233,9 +306,9 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
     // pnpm's STRICT default layout is the whole point: no publicHoistPattern, no
     // node-linker=hoisted. With hoisting on, @types/react lands on the resolution path by
     // accident and this fixture stops testing anything.
-    writeFileSync(join(work, '.npmrc'), 'strict-peer-dependencies=false\n')
+    writeFileSync(join(work, '.npmrc'), npmrc)
 
-    app = join(work, 'packages', 'app')
+    const app = join(work, 'packages', 'app')
     mkdirSync(app, { recursive: true })
     writeFileSync(
       join(app, 'package.json'),
@@ -263,10 +336,12 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
 
     // Install from the workspace ROOT so `.pnpm` lands there, not beside the app.
     execFileSync('pnpm', ['install', '--no-frozen-lockfile'], { cwd: work, stdio: 'pipe' })
-  })
+    return work
+  }
 
   after(() => {
     if (work) rmSync(work, { recursive: true, force: true })
+    if (workNoHoist) rmSync(workNoHoist, { recursive: true, force: true })
   })
 
   it('a strict, non-hoisted install type-checks with skipLibCheck OFF', { skip: !built }, () => {
@@ -314,21 +389,70 @@ describe('isolated-install — cascivo type-checks in a real consumer install', 
   })
 
   it(
-    '@types/react really is NOT hoisted in the fixture (guards against a false pass)',
+    'the no-hoist layout really has no hidden hoist (guards against a false pass)',
     { skip: !built },
     () => {
-      // If some future pnpm default or .npmrc change starts hoisting types into the app's
-      // top-level node_modules, the check above would pass for the wrong reason forever.
-      // The fixture's own dependency on @types/react is expected at the top level; what must
-      // NOT happen is @cascivo/react resolving it through a hoisted path it does not declare.
-      const pkgDir = join(app, 'node_modules', '@cascivo', 'react')
-      assert.ok(existsSync(pkgDir), '@cascivo/react was not installed into the fixture')
-      const nested = join(pkgDir, 'node_modules')
-      if (existsSync(nested)) {
-        // pnpm links a package's own declared deps here. @types/react may appear because it
-        // is now a declared (optional) peer — that is the fix working, not a false pass.
-        assert.ok(true)
-      }
+      // Without this, the case below could pass because pnpm quietly reinstated the hoisted
+      // directory — and a canary that passes for the wrong reason is how C1 stayed
+      // "unreproducible" for two plans. The previous version of this test asserted
+      // `assert.ok(true)`.
+      const hidden = join(workNoHoist, 'node_modules', '.pnpm', 'node_modules', '@types')
+      assert.ok(
+        !existsSync(hidden),
+        `hoist=false should remove ${hidden}, but it exists — pnpm's hoisting default may ` +
+          'have changed, and this fixture is no longer testing what it claims.',
+      )
     },
   )
+
+  it(
+    'the @types/react peer is what puts React types on cascivo’s resolution path',
+    { skip: !built },
+    () => {
+      // The mechanism itself, asserted directly rather than inferred from a passing tsc:
+      // with no hidden hoist, `@types` is inside cascivo's OWN virtual-store directory only
+      // because the package declares the peer. Remove the peer and this directory loses it,
+      // which is the pre-fix state that produces the report's symptom.
+      const store = join(workNoHoist, 'node_modules', '.pnpm')
+      const dir = readdirSync(store).find((d) => d.startsWith('@cascivo+react@'))
+      assert.ok(dir, `no @cascivo/react entry in the virtual store at ${store}`)
+      const linked = readdirSync(join(store, dir, 'node_modules'))
+      assert.ok(
+        linked.includes('@types'),
+        'With hoist=false, React types reach cascivo ONLY through the declared ' +
+          `@types/react peer. @cascivo/react's virtual store holds: ${linked.join(', ')}. ` +
+          'If @types is missing, the peer was dropped and every component is about to lose ' +
+          'children/className/style/onClick/aria-*.',
+      )
+    },
+  )
+
+  it('cascivo type-checks with pnpm hoisting OFF — the C1 configuration', { skip: !built }, () => {
+    let output = ''
+    try {
+      output = execFileSync('pnpm', ['exec', 'tsc', '--noEmit'], {
+        cwd: appNoHoist,
+        encoding: 'utf8',
+        stdio: 'pipe',
+      })
+    } catch (error) {
+      const e = error as { stdout?: string; stderr?: string }
+      output = `${e.stdout ?? ''}${e.stderr ?? ''}`
+    }
+    const relevant = output
+      .split('\n')
+      .filter((line) => /error TS\d+/.test(line))
+      .filter((line) => !line.includes('node_modules/') || line.includes('@cascivo'))
+
+    assert.deepEqual(
+      relevant,
+      [],
+      'cascivo does not type-check with pnpm `hoist=false`.\n\n' +
+        'This is the C1 configuration, and unlike the default-layout case above it has ' +
+        'been observed failing on its pre-fix state: with the @types/react peer removed ' +
+        "it reports `Property 'children' does not exist on type 'CardProps'` — the " +
+        '2026-07-28 report verbatim.\n\n' +
+        `Errors attributable to cascivo:\n${relevant.join('\n')}\n\nFull tsc output:\n${output}`,
+    )
+  })
 })

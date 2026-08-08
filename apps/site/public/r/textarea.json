@@ -9,6 +9,9 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.module.css"
     }
   ],

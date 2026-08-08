@@ -184,6 +184,25 @@ ${Object.entries(ALIASES)
       `| ${canonical.replace('--cascivo-color-', '')} | \`${canonical}\` | \`${alias}\` |`,
   )
   .join('\n')}
+
+## Naming map — what each prefix means
+
+The prefix tells you the *property*, not the concept, and several pairs read alike but are not:
+
+| If you want… | The token is… | NOT |
+| ------------ | ------------- | --- |
+| a font **size** | \`--cascivo-text-sm\` (alias: \`--cascivo-font-size-sm\`) | — |
+| a font **weight** | \`--cascivo-font-medium\` | \`--cascivo-text-medium\` |
+| a font **family** | \`--cascivo-font-sans\` | \`--cascivo-text-sans\` |
+| a **line height** | \`--cascivo-leading-normal\` | \`--cascivo-text-leading\` |
+| **text colour** | \`--cascivo-color-text\` | \`--cascivo-text-color\` |
+
+\`--cascivo-text-*\` is the **size** scale; \`--cascivo-font-*\` is weight and family. That
+split is a trap for anyone typing from memory — and agents type from memory — so the
+\`--cascivo-font-size-*\` spellings are aliased to the \`--cascivo-text-*\` scale rather than
+left to resolve to nothing. An unknown custom property is silently dropped by CSS, with no
+error anywhere, which is what makes this class expensive to debug. \`--cascivo-text-*\`
+remains canonical.
 `
 
 for (const category of sortedCategories) {

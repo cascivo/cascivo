@@ -2,7 +2,7 @@
 
 import { useId, useRef } from 'react'
 import type { ReactNode } from 'react'
-import { useEffectPropSignal, useSignal, useSignalEffect } from '@cascivo/core'
+import { useEffectPropSignal, useSignalEffect } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import styles from './sheet.module.css'
 

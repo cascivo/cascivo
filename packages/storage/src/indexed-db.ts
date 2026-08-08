@@ -1,4 +1,5 @@
-import { memoryDriver, type StorageDriver } from './drivers'
+import { memoryDriver } from '@cascivo/core'
+import type { StorageDriver } from '@cascivo/core'
 
 /** Minimal key-value driver over indexedDB — async hydration, no `idb` dependency. */
 export function indexedDBDriver(dbName = 'cascivo', storeName = 'kv'): StorageDriver {

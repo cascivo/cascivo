@@ -3,6 +3,7 @@
  * manager is spawned; we assert on which packages init would install and on the
  * guidance it prints.
  */
+import { existsSync } from 'node:fs'
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -94,5 +95,57 @@ describe('init', () => {
     await writeFile(join(dir, 'eslint.config.js'), 'export default []\n')
     await init(['--yes', '--no-install'], dir)
     expect(logs.join('\n')).toContain('USING-WITH-STRICT-ESLINT.md')
+  })
+
+  it('excludes the vendored dir from the formatter only when a formatter config exists', async () => {
+    // No formatter config -> no ignore file invented.
+    await init(['--yes', '--no-install'], dir)
+    expect(existsSync(join(dir, '.prettierignore'))).toBe(false)
+
+    await writeFile(join(dir, '.prettierrc'), '{}\n')
+    await init(['--yes', '--no-install'], dir)
+    expect(await readFile(join(dir, '.prettierignore'), 'utf8')).toContain('src/components/ui/')
+  })
+
+  it('is idempotent and preserves an existing .prettierignore', async () => {
+    await writeFile(join(dir, '.prettierrc'), '{}\n')
+    await writeFile(join(dir, '.prettierignore'), 'dist\n')
+
+    await init(['--yes', '--no-install'], dir)
+    await init(['--yes', '--no-install'], dir)
+
+    const content = await readFile(join(dir, '.prettierignore'), 'utf8')
+    expect(content).toContain('dist')
+    // Exactly once, however many times init runs.
+    expect(content.match(/src\/components\/ui\//g)).toHaveLength(1)
+  })
+
+  it('records dependencies in package.json when the install fails', async () => {
+    // The reported failure: one unrelated bad range elsewhere in package.json made
+    // `pnpm add` exit non-zero. cascivo.config.ts was already written, so the project
+    // claimed to be configured with none of the runtime present — and the advice was the
+    // same command that had just failed.
+    vi.mocked(installPackages).mockReturnValue(false)
+    await writeFile(join(dir, 'package.json'), JSON.stringify({ name: 'app' }, null, 2))
+
+    await init(['--yes'], dir)
+
+    const pkg = JSON.parse(await readFile(join(dir, 'package.json'), 'utf8'))
+    expect(Object.keys(pkg.dependencies)).toEqual(expect.arrayContaining(RUNTIME))
+    expect(Object.keys(pkg.devDependencies)).toContain('cascivo')
+    expect(process.exitCode).toBe(1)
+  })
+
+  it('never overwrites a dependency the app already pinned', async () => {
+    vi.mocked(installPackages).mockReturnValue(false)
+    await writeFile(
+      join(dir, 'package.json'),
+      JSON.stringify({ name: 'app', dependencies: { '@cascivo/core': '0.15.0' } }, null, 2),
+    )
+
+    await init(['--yes'], dir)
+
+    const pkg = JSON.parse(await readFile(join(dir, 'package.json'), 'utf8'))
+    expect(pkg.dependencies['@cascivo/core']).toBe('0.15.0')
   })
 })

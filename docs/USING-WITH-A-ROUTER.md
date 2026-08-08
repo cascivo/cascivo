@@ -87,6 +87,7 @@ copy silently wins over the parts you did not copy.
 | `Tile` | `<a>` / router `Link` — a selectable card that navigates |
 | `ContainedListItem` | `<a>` / router `Link` — a list row inside a `ContainedList` |
 | `PopoverTrigger` | your own trigger element |
+| `TabsTrigger` | router `Link` — one route per tab (see below) |
 | `Label` | a custom label element |
 
 <!-- /generated: asChild-support -->
@@ -94,6 +95,50 @@ copy silently wins over the parts you did not copy.
 The table is checked against the source by
 `scripts/checks/aschild-docs.test.ts` — a component that gains `asChild` and is not listed
 here fails CI.
+
+### URL-driven tabs
+
+One route per tab is the canonical dashboard shape, and it is the case `asChild` on
+`TabsTrigger` exists for. Navigating from `onValueChange` instead loses middle-click,
+cmd-click, open-in-new-tab, and a crawlable `href`; a real anchor gives you all four.
+
+Keep `Tabs` controlled from the router so the browser's back button stays authoritative:
+
+```tsx
+// TanStack Router
+import { Link, Outlet, useMatchRoute } from '@tanstack/react-router'
+
+function ProjectTabs({ id }: { id: string }) {
+  const matchRoute = useMatchRoute()
+  const active = matchRoute({ to: '/projects/$id/settings' }) ? 'settings' : 'overview'
+
+  return (
+    <Tabs value={active}>
+      <TabsList>
+        <TabsTrigger value="overview" asChild>
+          <Link to="/projects/$id/overview" params={{ id }}>Overview</Link>
+        </TabsTrigger>
+        <TabsTrigger value="settings" asChild>
+          <Link to="/projects/$id/settings" params={{ id }}>Settings</Link>
+        </TabsTrigger>
+      </TabsList>
+      {/* The router owns the panel, so there is no TabsContent — render the Outlet. */}
+      <Outlet />
+    </Tabs>
+  )
+}
+```
+
+Next.js App Router is the same shape with `usePathname()` in place of `useMatchRoute()`
+and `next/link` in place of `Link`.
+
+Two things to know:
+
+- **`value` is still required** on each trigger. It is what `aria-controls` and
+  `data-state` key on, so the selected tab is announced correctly even though the router,
+  not `Tabs`, decides which one is active.
+- **`disabled` becomes `aria-disabled`** under `asChild`: `disabled` is not a valid
+  attribute on an anchor. Guard the navigation yourself if a tab must be inert.
 
 ## 3. What `asChild` guarantees
 

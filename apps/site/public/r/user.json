@@ -9,10 +9,13 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core", "@cascivo/components"],
+  "dependencies": ["@cascivo/core"],
   "tags": ["user", "avatar", "identity", "display"],
   "category": "display",
   "registryDependencies": ["avatar"],
@@ -66,7 +69,7 @@
         "code": "<User name=\"Jane Doe\" description=\"Admin\"><IconButton aria-label=\"More\" /></User>"
       }
     ],
-    "dependencies": ["@cascivo/core", "@cascivo/components"],
+    "dependencies": ["@cascivo/core"],
     "registryDependencies": ["avatar"],
     "tags": ["user", "avatar", "identity", "display"],
     "intent": {

@@ -1,5 +1,5 @@
 'use client'
-import { cn, composeRefs, useEffectPropSignal, useSignal, useSignalEffect } from '@cascivo/core'
+import { cn, composeRefs, useEffectPropSignal, useSignalEffect } from '@cascivo/core'
 import { forwardRef, useRef } from 'react'
 import type { InputHTMLAttributes } from 'react'
 import styles from './checkbox.module.css'

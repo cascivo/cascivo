@@ -48,7 +48,7 @@ destructive`) identical to cascivo's. That parity makes the port almost mechanic
 | `.pg-wizard-profile-menu` | `Menu` / `MenuTrigger` / `MenuItem` | `@cascivo/react` |
 | `.pg-wizard-dots` (step dots) | `ProgressIndicator` | `@cascivo/react` |
 | `.pg-wizard-qr-canvas` | `QrCode` | `@cascivo/react` |
-| `.pg-landing-*`, `.pg-wizard-*` (hero/steps/facts/footer/summary) | `Section` / `Center` / `Stack` + above | `@cascivo/layouts` |
+| `.pg-landing-*`, `.pg-wizard-*` (hero/steps/facts/footer/summary) | `Section` / `Center` / `Stack` + above | `cascivo add layout/*` (`Center` also in `@cascivo/react`) |
 
 ---
 
@@ -58,7 +58,9 @@ Each step states a **verify** check (per the project's goal-driven convention).
 
 ```
 Phase 0 — Scaffold
-  1. Vite + React app, install @cascivo/react @cascivo/layouts @cascivo/themes
+  1. Vite + React app, install @cascivo/react @cascivo/themes
+     (layout primitives: `cascivo add layout/section layout/stack` — there is no
+      installable @cascivo/layouts package)
      → verify: app boots, `import '@cascivo/react/styles.css'` resolves
   2. Add the `pagome` theme file + set <html data-theme>
      → verify: background/foreground match #fafaf8 / #1c1917 in light, dark flips
@@ -398,11 +400,17 @@ indicator's tokens — no component change.
 ### Recipe 11 — Landing composition (`.pg-landing-*` → layout primitives)
 
 The hero/steps/facts/footer are page-specific compositions, not components. Build them from
-`@cascivo/layouts`:
+the layout primitives.
+
+⚠ There is no installable `@cascivo/layouts` package — `packages/layouts` is private registry
+source. The primitives reach you through two channels, and which one depends on the
+primitive: `Center` is exported from `@cascivo/react`, while `Section` and `Stack` are
+copy-paste only. Get them with `cascivo add layout/section layout/stack`.
 
 ```tsx
-import { Section, Center, Stack } from '@cascivo/layouts'
-import { Button } from '@cascivo/react'
+import { Center, Button } from '@cascivo/react'
+import { Section } from './components/ui/section/section' // cascivo add layout/section
+import { Stack } from './components/ui/stack/stack' // cascivo add layout/stack
 
 // .pg-landing-hero
 <Section width="content" gap={8}>
@@ -426,7 +434,7 @@ import { Button } from '@cascivo/react'
 - `Stack`: `direction?`, `gap?`, `align?`, `justify?`, `wrap?`.
 
 The `.pg-landing-steps` / `.pg-landing-facts` grids map to `Grid` / `AutoGrid` from
-`@cascivo/layouts`. The footer is a `Section width="full"` with a `Stack`.
+the layout primitives. The footer is a `Section width="full"` with a `Stack`.
 
 ---
 

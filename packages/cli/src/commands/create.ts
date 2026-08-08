@@ -398,7 +398,9 @@ import cascivo from '@cascivo/eslint-config'
 
 export default [
   js.configs.recommended,
-  reactHooks.configs['recommended-latest'],
+  // NOTE the \`.flat\` — the plugin exports both \`configs['recommended-latest']\` (the legacy
+  // eslintrc shape, which applies NOTHING here and reports no error) and this one.
+  reactHooks.configs.flat['recommended-latest'],
   // Spread LAST — flat config is last-wins. This turns off \`react-hooks/immutability\`,
   // which reports cascivo's signal writes (\`signal.value = next\`) as errors.
   // See https://cascivo.com/docs/using-with-strict-eslint.md

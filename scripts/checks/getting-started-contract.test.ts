@@ -39,6 +39,11 @@ const SURFACES: { label: string; path: string }[] = [
     path: 'apps/site/src/pages/GettingStartedPage.tsx',
   },
   { label: 'llms.txt (generator)', path: 'scripts/llms/generate.ts' },
+  // The CLI's OWN OUTPUT is a first-day surface — for most adopters it is the first one,
+  // since `cascivo init` runs before any doc is opened. It was never checked here, and it
+  // showed the theme import alone: not the tokens sheet (debugged as a greyscale app), not
+  // light-dark.css (needed the moment you add a toggle), not @cascivo/charts/styles.css.
+  { label: 'the `cascivo init` completion output', path: 'packages/cli/src/commands/init.ts' },
 ]
 
 /**

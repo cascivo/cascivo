@@ -93,6 +93,51 @@ export function cascivoVendoredSource(glob = 'src/components/ui/**') {
       'react/no-array-index-key': 'off', // stable-content lists key by index intentionally
       'no-shadow': 'off', // false-positives on TS declaration merging (compound components)
       'no-control-regex': 'off', // e.g. the log viewer strips ANSI escapes (\x1b) on purpose
+
+      // ---------------------------------------------------------------------------------
+      // Everything below was DERIVED FROM A RUN, not authored from memory.
+      // scripts/checks/host-lint/eslint runs real ESLint over the vendored source in CI and
+      // fails if any of these stops firing (a scope-off with nothing behind it is removed)
+      // or if a new class appears. Before that fixture existed this list covered only
+      // stylistic rules and the eight below were invisible — 117 errors an adopter saw and
+      // cascivo did not. See docs/internal/feedback/README.md, Mechanism F.
+      // ---------------------------------------------------------------------------------
+
+      // 34 sites. cascivo's house style PRESCRIBES the render-phase ref write:
+      // CLAUDE.md, "Syncing a controlled React prop into a signal" —
+      //     const onCloseRef = useRef(onClose)
+      //     onCloseRef.current = onClose // sync during render
+      // It is how a `useSignalEffect` body reaches the *current* callback without
+      // re-subscribing the effect to it. The remaining sites pass a ref into
+      // `composeRefs()`/`cloneElement()`, which the rule cannot prove is deferred.
+      // Rewriting 41 call sites to satisfy a rule the documented idiom contradicts is the
+      // wrong trade; turning it off costs you the rule's protection against genuine
+      // render-phase ref *reads* elsewhere in the vendored files only.
+      'react-hooks/refs': 'off',
+
+      // 2 sites, both `const LinkComponent = getLinkComponent()`. The value is deliberately
+      // swappable at runtime via `setLinkComponent()` — that is the entire point of the
+      // router-integration seam — so it cannot be hoisted to module scope. The state-reset
+      // the rule warns about does not occur: the registry holds one stable component
+      // identity between `setLinkComponent` calls.
+      'react-hooks/static-components': 'off',
+
+      // 69 sites. TYPE-AWARE, and its verdict depends on which `@types/react` resolves in
+      // YOUR project. The bulk are deliberate cross-version escape hatches:
+      // `{ anchorName } as CSSProperties` (CSS Anchor Positioning is absent from older
+      // `CSSProperties`) and `ref as never` (ref variance changed in @types/react 19).
+      // "Unnecessary" under one version is load-bearing under another, so removing them on
+      // the rule's advice would break adopters on a different version — the exact failure
+      // mode tracked in docs/internal/feedback as the `@types/react` mechanism.
+      '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+
+      // 10 sites, all exhaustive-union final branches and runtime-nullable DOM reads:
+      // the closing `else if (placement === 'right')` of an if-chain TS has already
+      // narrowed, `if (phase === 'dismissing')` closing an FSM switch, `el.textContent ?? ''`
+      // (typed non-null on Element, nullable at runtime on some node types). Writing the
+      // final branch explicitly is clearer than a bare `else`, and dropping the `??` would
+      // be a real regression. Also type-aware, so also tsconfig-dependent.
+      '@typescript-eslint/no-unnecessary-condition': 'off',
     },
     linterOptions: {
       // cascivo's rule-scoped `eslint-disable` directives may target rule ids your config

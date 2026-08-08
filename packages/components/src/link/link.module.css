@@ -48,8 +48,11 @@
       text-decoration: underline;
     }
 
-    /* External indicator — alt text '' keeps it out of the accessibility tree */
-    &[data-external]::after {
+    /* External indicator — alt text '' keeps it out of the accessibility tree.
+       Suppressed when the link already ends in its own icon: composing
+       `<Link external><span/><ExternalLink /></Link>` is the obvious thing to write, and
+       it used to render TWO arrows. `:has()` is already in the browser support target. */
+    &[data-external]:not(:has(> svg:last-child))::after {
       content: '\2197' / '';
       font-size: 0.8em;
       margin-inline-start: var(--cascivo-space-1);

@@ -129,7 +129,7 @@ export function buildMarket(instrument: Instrument): SeedMarket {
 }
 
 /** A short backlog of trades so the tape isn't empty on first paint. */
-function seedTrades(seed: number, lastPrice: number, book: Book): Trade[] {
+function seedTrades(seed: number, _lastPrice: number, book: Book): Trade[] {
   const rng = seededRandom(seed ^ 0x7ade)
   const out: Trade[] = []
   let t = NOW - 20 * 1500

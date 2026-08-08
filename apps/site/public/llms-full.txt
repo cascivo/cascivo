@@ -2,6 +2,8 @@
 
 _registry v0.16.0 · generated 2026-08-05 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
+_Describes: @cascivo/ai@0.16.0 · @cascivo/charts@0.16.0 · @cascivo/core@0.16.0 · @cascivo/docs@0.2.3 · @cascivo/editor@0.16.0 · @cascivo/eslint-config@0.2.1 · @cascivo/flow@0.16.0 · @cascivo/i18n@0.16.0 · @cascivo/icons@0.3.7 · @cascivo/mcp@0.6.3 · @cascivo/platform@0.0.1 · @cascivo/react@0.16.0 · @cascivo/registry@0.2.5 · @cascivo/storage@0.16.0 · @cascivo/themes@0.4.10 · @cascivo/tokens@0.5.8 · @cascivo/vite-plugin@0.1.5 · cascivo@0.7.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
+
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
 `@cascivo/react` package (use without copying). Components are signal-driven (Preact
@@ -195,13 +197,15 @@ statement, or it never re-renders. When you do own reactive state, use these:
 
 - Local state -> `useSignal(initial)`; derived -> `useComputed(fn)`. The signal IS the state.
   ⚠ LINT: `eslint-plugin-react-hooks@7` (`recommended-latest`) enables `react-hooks/immutability`, which reports EVERY `signal.value = next` as `Error: This value cannot be modified`. It fires on this documented idiom, in the app's own page code, on both install paths — one reported build hit it 8 times and had no doc to reach for. Fix: `pnpm add -D @cascivo/eslint-config` and spread `...cascivo` LAST in `eslint.config.js`, or set `'react-hooks/immutability': 'off'`. Scoping it to a vendored-source glob does NOT work. See /docs/using-with-strict-eslint.md.
+  ⚠ FLAT CONFIG ENTRY POINT: the plugin exports BOTH `configs['recommended-latest']` (legacy eslintrc) and `configs.flat['recommended-latest']`. In an `eslint.config.js` you MUST use `reactHooks.configs.flat['recommended-latest']` — the other one is accepted silently and applies no rules at all, so lint passes while checking nothing.
+  ⚠ VENDORED-SOURCE GLOB: `...cascivo` scopes its vendored-source rules to `src/components/ui/**`. If your `outputDir` differs, call `cascivoVendoredSource('<your-outputDir>/**')` instead — with the default glob every rule it scopes off silently stays on. cascivo runs real ESLint over every file `cascivo add` copies in CI (scripts/checks/host-lint/eslint), so the published config is executed, not asserted.
 - Controlled/uncontrolled prop bridged to a signal -> `useControllableSignal({ value, defaultValue, onChange })`.
 - Side effects (DOM, listeners) -> `useSignalEffect(fn)`, never `useEffect`.
 - Shared/app-wide state -> a module-level signal, imported anywhere. No React context needed.
 - Per-route / per-tenant effect disposal -> `useScope()` / `createScope()` (disposes on unmount; prevents signal leaks across navigation).
 - Genuine internal state machine -> `createMachine` / `useMachine`.
 - Forms -> `createForm` / `useForm` / `<Form>` / `field()` (`@cascivo/react`): a signal-backed store with sync/async + Standard Schema (zod/valibot) validation and optional `validateOnChange` — keystroke validation, zero re-renders.
-- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` (`@cascivo/react`): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
+- Theming -> `<ThemeProvider>` + `useTheme()` / `setTheme()` + `themePreloadScript()` — import from **`@cascivo/core`** on BOTH install paths (`@cascivo/react` re-exports the same names; before 0.17.0 it shipped only from `@cascivo/react`, which told copy-paste adopters to install all 197 components to get a theme signal): persists the choice and drives `data-theme`, SSR no-FOUC. `useTheme()` returns a TUPLE `[string, setTheme]` — the first element is the current theme **name** (a plain string; the component re-renders on change, no signal handling). Do NOT destructure `{ theme, setTheme }` (that is next-themes’ shape). Signal-native code (computed/effect/Preact) can grab the underlying signal via `themeSignal()`. ThemeProvider warns in dev if it sets a `data-theme` for which no `--cascivo-color-*` token resolves (you forgot the `@cascivo/themes` CSS import → grayscale app). `setTheme()` writes the SIGNAL; the mounted `<ThemeProvider>` writes the `data-theme` attribute — with no provider mounted the signal updates, `useTheme()` reports the new value, and nothing restyles (dev warns). Outside React (imperative shell, pre-hydration script) use `applyTheme(theme, target?)`, which writes the attribute directly and keeps the signal in sync. CSS bundles: `@cascivo/themes/light-dark.css` = light + dark (the common case); `@cascivo/themes/all.css` = all twelve themes; `@cascivo/themes/<name>.css` = one theme. Initial-theme precedence: persisted > `defaultTheme` (if passed) > OS `prefers-color-scheme` > light; pass `defaultTheme` to override the OS. Controlled `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter); for the persisted flow add `suppressHydrationWarning` to the `<html>` the preload script writes to. Never write a `useEffect` that toggles a `.dark` class.
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
@@ -1504,7 +1508,7 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/components`
+- `@cascivo/i18n`
 
 ## Tags
 
@@ -3845,7 +3849,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `label` | `string` | yes | — | Text label for the control. |
 | `min` | `number` | no | `0` | Minimum allowed value. |
 | `max` | `number` | no | — | Domain maximum (defaults to last range) |
-| `width` | `number` | no | `300` | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `width` | `number` | no | `300` | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 300px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
 | `height` | `number` | no | `40` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
@@ -5303,7 +5307,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `number[]` | yes | — | Array of numeric values |
 | `label` | `string` | no | — | Accessible name for the chart (invisible — rendered as the SVG `<title>`). |
 | `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
-| `width` | `number` | no | `80` | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `width` | `number` | no | `80` | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
 | `height` | `number` | no | `32` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `color` | `string` | no | — | Stroke color (CSS value) |
 | `endDot` | `boolean` | no | — | Show dot at last data point |
@@ -12356,7 +12360,6 @@ Required. Without client JavaScript this renders nothing useful, or a shell whos
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/i18n`
 
 ## Tags
 
@@ -13559,10 +13562,6 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 - **WCAG level:** 2.2-AA
 - **ARIA role:** `progressbar`
-
-## Dependencies
-
-- `@cascivo/core`
 
 ## Tags
 
@@ -18476,7 +18475,6 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 ## Dependencies
 
 - `@cascivo/core`
-- `@cascivo/components`
 
 ## Tags
 

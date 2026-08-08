@@ -9,10 +9,13 @@
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.tsx"
     },
     {
+      "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/index.ts"
+    },
+    {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
     }
   ],
-  "dependencies": ["@cascivo/core"],
+  "dependencies": [],
   "tags": ["progress", "loading", "upload", "bar"],
   "category": "feedback",
   "meta": {
@@ -98,7 +101,7 @@
         "code": "<Progress value={40} size=\"sm\" />"
       }
     ],
-    "dependencies": ["@cascivo/core"],
+    "dependencies": [],
     "tags": ["progress", "loading", "upload", "bar"],
     "intent": {
       "whenToUse": [

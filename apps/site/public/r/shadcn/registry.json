@@ -13,6 +13,10 @@
           "type": "registry:component"
         },
         {
+          "path": "accordion/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "accordion/accordion.module.css",
           "type": "registry:component"
         }
@@ -34,6 +38,10 @@
       "files": [
         {
           "path": "action-sheet/action-sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "action-sheet/index.ts",
           "type": "registry:component"
         },
         {
@@ -61,6 +69,10 @@
           "type": "registry:component"
         },
         {
+          "path": "alert/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "alert/alert.module.css",
           "type": "registry:component"
         }
@@ -82,6 +94,10 @@
       "files": [
         {
           "path": "alert-dialog/alert-dialog.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "alert-dialog/index.ts",
           "type": "registry:component"
         },
         {
@@ -109,6 +125,10 @@
           "type": "registry:component"
         },
         {
+          "path": "app-shell/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "app-shell/app-shell.module.css",
           "type": "registry:component"
         }
@@ -130,6 +150,10 @@
       "files": [
         {
           "path": "aspect-ratio/aspect-ratio.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "aspect-ratio/index.ts",
           "type": "registry:component"
         },
         {
@@ -157,6 +181,10 @@
           "type": "registry:component"
         },
         {
+          "path": "avatar/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "avatar/avatar.module.css",
           "type": "registry:component"
         }
@@ -181,12 +209,16 @@
           "type": "registry:component"
         },
         {
+          "path": "avatar-group/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "avatar-group/avatar-group.module.css",
           "type": "registry:component"
         }
       ],
       "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/avatar.json"],
       "categories": ["display"],
       "meta": {
@@ -203,6 +235,10 @@
       "files": [
         {
           "path": "badge/badge.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "badge/index.ts",
           "type": "registry:component"
         },
         {
@@ -740,6 +776,10 @@
           "type": "registry:component"
         },
         {
+          "path": "blockquote/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "blockquote/blockquote.module.css",
           "type": "registry:component"
         }
@@ -761,6 +801,10 @@
       "files": [
         {
           "path": "bottom-sheet/bottom-sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "bottom-sheet/index.ts",
           "type": "registry:component"
         },
         {
@@ -788,6 +832,10 @@
           "type": "registry:component"
         },
         {
+          "path": "breadcrumb/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "breadcrumb/breadcrumb.module.css",
           "type": "registry:component"
         }
@@ -809,6 +857,10 @@
       "files": [
         {
           "path": "button/button.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "button/index.ts",
           "type": "registry:component"
         },
         {
@@ -837,6 +889,10 @@
           "type": "registry:component"
         },
         {
+          "path": "button-group/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "button-group/button-group.module.css",
           "type": "registry:component"
         }
@@ -858,6 +914,10 @@
       "files": [
         {
           "path": "calendar/calendar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "calendar/index.ts",
           "type": "registry:component"
         },
         {
@@ -885,6 +945,10 @@
           "type": "registry:component"
         },
         {
+          "path": "card/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "card/card.module.css",
           "type": "registry:component"
         }
@@ -906,6 +970,10 @@
       "files": [
         {
           "path": "carousel/carousel.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "carousel/index.ts",
           "type": "registry:component"
         },
         {
@@ -1308,6 +1376,10 @@
           "type": "registry:component"
         },
         {
+          "path": "chat-bubble/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "chat-bubble/chat-bubble.module.css",
           "type": "registry:component"
         }
@@ -1328,6 +1400,10 @@
       "files": [
         {
           "path": "checkbox/checkbox.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "checkbox/index.ts",
           "type": "registry:component"
         },
         {
@@ -1383,6 +1459,10 @@
           "type": "registry:component"
         },
         {
+          "path": "code/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "code/code.module.css",
           "type": "registry:component"
         }
@@ -1411,6 +1491,10 @@
           "type": "registry:component"
         },
         {
+          "path": "code-snippet/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "code-snippet/code-snippet.module.css",
           "type": "registry:component"
         }
@@ -1432,6 +1516,10 @@
       "files": [
         {
           "path": "collapsible/collapsible.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "collapsible/index.ts",
           "type": "registry:component"
         },
         {
@@ -1459,6 +1547,10 @@
           "type": "registry:component"
         },
         {
+          "path": "color-picker/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "color-picker/color-picker.module.css",
           "type": "registry:component"
         }
@@ -1483,6 +1575,10 @@
           "type": "registry:component"
         },
         {
+          "path": "combobox/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "combobox/combobox.module.css",
           "type": "registry:component"
         }
@@ -1504,6 +1600,10 @@
       "files": [
         {
           "path": "command-menu/command-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "command-menu/index.ts",
           "type": "registry:component"
         },
         {
@@ -1535,6 +1635,10 @@
           "type": "registry:component"
         },
         {
+          "path": "comparison/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "comparison/comparison.module.css",
           "type": "registry:component"
         }
@@ -1556,6 +1660,10 @@
       "files": [
         {
           "path": "contained-list/contained-list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "contained-list/index.ts",
           "type": "registry:component"
         },
         {
@@ -1583,6 +1691,10 @@
           "type": "registry:component"
         },
         {
+          "path": "context-menu/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "context-menu/context-menu.module.css",
           "type": "registry:component"
         }
@@ -1604,6 +1716,10 @@
       "files": [
         {
           "path": "copy-button/copy-button.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "copy-button/index.ts",
           "type": "registry:component"
         },
         {
@@ -1631,6 +1747,10 @@
           "type": "registry:component"
         },
         {
+          "path": "data-list/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "data-list/data-list.module.css",
           "type": "registry:component"
         }
@@ -1652,6 +1772,10 @@
       "files": [
         {
           "path": "data-table/data-table.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "data-table/index.ts",
           "type": "registry:component"
         },
         {
@@ -1683,6 +1807,10 @@
           "type": "registry:component"
         },
         {
+          "path": "date-picker/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "date-picker/date-picker.module.css",
           "type": "registry:component"
         }
@@ -1704,6 +1832,10 @@
       "files": [
         {
           "path": "date-range-picker/date-range-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "date-range-picker/index.ts",
           "type": "registry:component"
         },
         {
@@ -1732,6 +1864,10 @@
           "type": "registry:component"
         },
         {
+          "path": "dock/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "dock/dock.module.css",
           "type": "registry:component"
         }
@@ -1753,6 +1889,10 @@
       "files": [
         {
           "path": "drawer/drawer.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "drawer/index.ts",
           "type": "registry:component"
         },
         {
@@ -1780,6 +1920,10 @@
           "type": "registry:component"
         },
         {
+          "path": "dropdown/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "dropdown/dropdown.module.css",
           "type": "registry:component"
         }
@@ -1801,6 +1945,10 @@
       "files": [
         {
           "path": "editable/editable.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "editable/index.ts",
           "type": "registry:component"
         },
         {
@@ -1858,6 +2006,10 @@
           "type": "registry:component"
         },
         {
+          "path": "empty-state/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "empty-state/empty-state.module.css",
           "type": "registry:component"
         }
@@ -1882,6 +2034,10 @@
           "type": "registry:component"
         },
         {
+          "path": "fab/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "fab/fab.module.css",
           "type": "registry:component"
         }
@@ -1903,6 +2059,10 @@
       "files": [
         {
           "path": "field/field.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "field/index.ts",
           "type": "registry:component"
         },
         {
@@ -1931,6 +2091,10 @@
           "type": "registry:component"
         },
         {
+          "path": "file-uploader/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "file-uploader/file-uploader.module.css",
           "type": "registry:component"
         }
@@ -1953,6 +2117,10 @@
       "files": [
         {
           "path": "filter/filter.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "filter/index.ts",
           "type": "registry:component"
         },
         {
@@ -2130,6 +2298,10 @@
           "type": "registry:component"
         },
         {
+          "path": "form/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "form/standard-schema.ts",
           "type": "registry:component"
         },
@@ -2155,6 +2327,10 @@
       "files": [
         {
           "path": "header/header.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "header/index.ts",
           "type": "registry:component"
         },
         {
@@ -2210,6 +2386,10 @@
           "type": "registry:component"
         },
         {
+          "path": "heading/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "heading/heading.module.css",
           "type": "registry:component"
         }
@@ -2231,6 +2411,10 @@
       "files": [
         {
           "path": "hover-card/hover-card.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "hover-card/index.ts",
           "type": "registry:component"
         },
         {
@@ -2259,6 +2443,10 @@
           "type": "registry:component"
         },
         {
+          "path": "icon-button/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "icon-button/icon-button.module.css",
           "type": "registry:component"
         }
@@ -2280,6 +2468,10 @@
       "files": [
         {
           "path": "image/image.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "image/index.ts",
           "type": "registry:component"
         },
         {
@@ -2307,6 +2499,10 @@
           "type": "registry:component"
         },
         {
+          "path": "indicator/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "indicator/indicator.module.css",
           "type": "registry:component"
         }
@@ -2327,6 +2523,10 @@
       "files": [
         {
           "path": "infinite-scroll/infinite-scroll.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "infinite-scroll/index.ts",
           "type": "registry:component"
         },
         {
@@ -2355,6 +2555,10 @@
           "type": "registry:component"
         },
         {
+          "path": "inline-loading/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "inline-loading/inline-loading.module.css",
           "type": "registry:component"
         }
@@ -2377,6 +2581,10 @@
       "files": [
         {
           "path": "input/input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "input/index.ts",
           "type": "registry:component"
         },
         {
@@ -2404,6 +2612,10 @@
           "type": "registry:component"
         },
         {
+          "path": "input-group/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "input-group/input-group.module.css",
           "type": "registry:component"
         }
@@ -2425,6 +2637,10 @@
       "files": [
         {
           "path": "item/item.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "item/index.ts",
           "type": "registry:component"
         },
         {
@@ -2452,6 +2668,10 @@
           "type": "registry:component"
         },
         {
+          "path": "join/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "join/join.module.css",
           "type": "registry:component"
         }
@@ -2472,6 +2692,10 @@
       "files": [
         {
           "path": "kbd/kbd.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "kbd/index.ts",
           "type": "registry:component"
         },
         {
@@ -2499,6 +2723,10 @@
           "type": "registry:component"
         },
         {
+          "path": "label/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "label/label.module.css",
           "type": "registry:component"
         }
@@ -2523,6 +2751,10 @@
           "type": "registry:component"
         },
         {
+          "path": "large-title-header/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "large-title-header/large-title-header.module.css",
           "type": "registry:component"
         }
@@ -2544,6 +2776,10 @@
       "files": [
         {
           "path": "layout-app-shell/app-shell.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-app-shell/index.ts",
           "type": "registry:block"
         },
         {
@@ -2575,6 +2811,10 @@
           "type": "registry:block"
         },
         {
+          "path": "layout-auth-layout/index.ts",
+          "type": "registry:block"
+        },
+        {
           "path": "layout-auth-layout/auth-layout.module.css",
           "type": "registry:block"
         }
@@ -2596,6 +2836,10 @@
       "files": [
         {
           "path": "layout-auto-grid/auto-grid.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-auto-grid/index.ts",
           "type": "registry:block"
         },
         {
@@ -2623,6 +2867,10 @@
           "type": "registry:block"
         },
         {
+          "path": "layout-center/index.ts",
+          "type": "registry:block"
+        },
+        {
           "path": "layout-center/center.module.css",
           "type": "registry:block"
         }
@@ -2644,6 +2892,10 @@
       "files": [
         {
           "path": "layout-columns/columns.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-columns/index.ts",
           "type": "registry:block"
         },
         {
@@ -2671,6 +2923,10 @@
           "type": "registry:block"
         },
         {
+          "path": "layout-dashboard-layout/index.ts",
+          "type": "registry:block"
+        },
+        {
           "path": "layout-dashboard-layout/dashboard-layout.module.css",
           "type": "registry:block"
         }
@@ -2692,6 +2948,10 @@
       "files": [
         {
           "path": "layout-flex/flex.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-flex/index.ts",
           "type": "registry:block"
         },
         {
@@ -2719,6 +2979,10 @@
           "type": "registry:block"
         },
         {
+          "path": "layout-grid/index.ts",
+          "type": "registry:block"
+        },
+        {
           "path": "layout-grid/grid.module.css",
           "type": "registry:block"
         }
@@ -2740,6 +3004,10 @@
       "files": [
         {
           "path": "layout-masonry/masonry.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-masonry/index.ts",
           "type": "registry:block"
         },
         {
@@ -2767,6 +3035,10 @@
           "type": "registry:block"
         },
         {
+          "path": "layout-page-header/index.ts",
+          "type": "registry:block"
+        },
+        {
           "path": "layout-page-header/page-header.module.css",
           "type": "registry:block"
         }
@@ -2788,6 +3060,10 @@
       "files": [
         {
           "path": "layout-section/section.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-section/index.ts",
           "type": "registry:block"
         },
         {
@@ -2815,6 +3091,10 @@
           "type": "registry:block"
         },
         {
+          "path": "layout-settings-layout/index.ts",
+          "type": "registry:block"
+        },
+        {
           "path": "layout-settings-layout/settings-layout.module.css",
           "type": "registry:block"
         }
@@ -2836,6 +3116,10 @@
       "files": [
         {
           "path": "layout-spacer/spacer.tsx",
+          "type": "registry:block"
+        },
+        {
+          "path": "layout-spacer/index.ts",
           "type": "registry:block"
         },
         {
@@ -2863,6 +3147,10 @@
           "type": "registry:block"
         },
         {
+          "path": "layout-split-view/index.ts",
+          "type": "registry:block"
+        },
+        {
           "path": "layout-split-view/split-view.module.css",
           "type": "registry:block"
         }
@@ -2884,6 +3172,10 @@
       "files": [
         {
           "path": "link/link.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "link/index.ts",
           "type": "registry:component"
         },
         {
@@ -2911,6 +3203,10 @@
           "type": "registry:component"
         },
         {
+          "path": "list/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "list/list.module.css",
           "type": "registry:component"
         }
@@ -2935,6 +3231,10 @@
           "type": "registry:component"
         },
         {
+          "path": "log-viewer/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "log-viewer/log-viewer.module.css",
           "type": "registry:component"
         }
@@ -2956,6 +3256,10 @@
       "files": [
         {
           "path": "menu/menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "menu/index.ts",
           "type": "registry:component"
         },
         {
@@ -2984,12 +3288,16 @@
           "type": "registry:component"
         },
         {
+          "path": "menu-button/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "menu-button/menu-button.module.css",
           "type": "registry:component"
         }
       ],
       "description": "A button that opens an anchored action menu of one-shot commands",
-      "dependencies": ["@cascivo/core", "@cascivo/i18n"],
+      "dependencies": ["@cascivo/core"],
       "categories": ["navigation"],
       "meta": {
         "cascivo": {
@@ -3005,6 +3313,10 @@
       "files": [
         {
           "path": "menubar/menubar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "menubar/index.ts",
           "type": "registry:component"
         },
         {
@@ -3032,6 +3344,10 @@
           "type": "registry:component"
         },
         {
+          "path": "modal/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "modal/modal.module.css",
           "type": "registry:component"
         }
@@ -3053,6 +3369,10 @@
       "files": [
         {
           "path": "multi-select/multi-select.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "multi-select/index.ts",
           "type": "registry:component"
         },
         {
@@ -3081,6 +3401,10 @@
           "type": "registry:component"
         },
         {
+          "path": "native-select/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "native-select/native-select.module.css",
           "type": "registry:component"
         }
@@ -3102,6 +3426,10 @@
       "files": [
         {
           "path": "navigation-menu/navigation-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "navigation-menu/index.ts",
           "type": "registry:component"
         },
         {
@@ -3129,6 +3457,10 @@
           "type": "registry:component"
         },
         {
+          "path": "notification/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "notification/notification.module.css",
           "type": "registry:component"
         }
@@ -3150,6 +3482,10 @@
       "files": [
         {
           "path": "number-input/number-input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "number-input/index.ts",
           "type": "registry:component"
         },
         {
@@ -3177,6 +3513,10 @@
           "type": "registry:component"
         },
         {
+          "path": "otp-input/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "otp-input/otp-input.module.css",
           "type": "registry:component"
         }
@@ -3198,6 +3538,10 @@
       "files": [
         {
           "path": "overflow-menu/overflow-menu.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "overflow-menu/index.ts",
           "type": "registry:component"
         },
         {
@@ -3226,6 +3570,10 @@
           "type": "registry:component"
         },
         {
+          "path": "pagination/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "pagination/pagination.module.css",
           "type": "registry:component"
         }
@@ -3247,6 +3595,10 @@
       "files": [
         {
           "path": "password-input/password-input.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "password-input/index.ts",
           "type": "registry:component"
         },
         {
@@ -3306,12 +3658,15 @@
           "type": "registry:component"
         },
         {
+          "path": "progress/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "progress/progress.module.css",
           "type": "registry:component"
         }
       ],
       "description": "Horizontal bar showing the completion progress of a tracked operation",
-      "dependencies": ["@cascivo/core"],
       "categories": ["feedback"],
       "meta": {
         "cascivo": {
@@ -3327,6 +3682,10 @@
       "files": [
         {
           "path": "progress-bar/progress-bar.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress-bar/index.ts",
           "type": "registry:component"
         },
         {
@@ -3354,6 +3713,10 @@
           "type": "registry:component"
         },
         {
+          "path": "progress-circle/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "progress-circle/progress-circle.module.css",
           "type": "registry:component"
         }
@@ -3375,6 +3738,10 @@
       "files": [
         {
           "path": "progress-indicator/progress-indicator.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "progress-indicator/index.ts",
           "type": "registry:component"
         },
         {
@@ -3402,6 +3769,10 @@
           "type": "registry:component"
         },
         {
+          "path": "prose/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "prose/prose.module.css",
           "type": "registry:component"
         }
@@ -3423,6 +3794,10 @@
       "files": [
         {
           "path": "pull-to-refresh/pull-to-refresh.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "pull-to-refresh/index.ts",
           "type": "registry:component"
         },
         {
@@ -3455,6 +3830,10 @@
           "type": "registry:component"
         },
         {
+          "path": "qr-code/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "qr-code/qr-code.module.css",
           "type": "registry:component"
         }
@@ -3479,6 +3858,10 @@
           "type": "registry:component"
         },
         {
+          "path": "radial-progress/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "radial-progress/radial-progress.module.css",
           "type": "registry:component"
         }
@@ -3499,6 +3882,10 @@
       "files": [
         {
           "path": "radio/radio.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "radio/index.ts",
           "type": "registry:component"
         },
         {
@@ -3554,6 +3941,10 @@
           "type": "registry:component"
         },
         {
+          "path": "rating-group/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "rating-group/rating-group.module.css",
           "type": "registry:component"
         }
@@ -3575,6 +3966,10 @@
       "files": [
         {
           "path": "relative-time/relative-time.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "relative-time/index.ts",
           "type": "registry:component"
         },
         {
@@ -3602,6 +3997,10 @@
           "type": "registry:component"
         },
         {
+          "path": "reorder-list/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "reorder-list/reorder-list.module.css",
           "type": "registry:component"
         }
@@ -3623,6 +4022,10 @@
       "files": [
         {
           "path": "resizable/resizable.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "resizable/index.ts",
           "type": "registry:component"
         },
         {
@@ -3650,6 +4053,10 @@
           "type": "registry:component"
         },
         {
+          "path": "scroll-area/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "scroll-area/scroll-area.module.css",
           "type": "registry:component"
         }
@@ -3671,6 +4078,10 @@
       "files": [
         {
           "path": "search/search.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "search/index.ts",
           "type": "registry:component"
         },
         {
@@ -3854,6 +4265,10 @@
           "type": "registry:component"
         },
         {
+          "path": "segmented-control/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "segmented-control/segmented-control.module.css",
           "type": "registry:component"
         }
@@ -3875,6 +4290,10 @@
       "files": [
         {
           "path": "select/select.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "select/index.ts",
           "type": "registry:component"
         },
         {
@@ -3902,6 +4321,10 @@
           "type": "registry:component"
         },
         {
+          "path": "separator/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "separator/separator.module.css",
           "type": "registry:component"
         }
@@ -3923,6 +4346,10 @@
       "files": [
         {
           "path": "sheet/sheet.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "sheet/index.ts",
           "type": "registry:component"
         },
         {
@@ -3979,6 +4406,10 @@
           "type": "registry:component"
         },
         {
+          "path": "side-nav/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "side-nav/side-nav.module.css",
           "type": "registry:component"
         }
@@ -4007,6 +4438,10 @@
           "type": "registry:component"
         },
         {
+          "path": "skeleton/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "skeleton/skeleton.module.css",
           "type": "registry:component"
         }
@@ -4028,6 +4463,10 @@
       "files": [
         {
           "path": "skip-nav/skip-nav.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "skip-nav/index.ts",
           "type": "registry:component"
         },
         {
@@ -4055,6 +4494,10 @@
           "type": "registry:component"
         },
         {
+          "path": "slider/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "slider/slider.module.css",
           "type": "registry:component"
         }
@@ -4076,6 +4519,10 @@
       "files": [
         {
           "path": "spinner/spinner.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "spinner/index.ts",
           "type": "registry:component"
         },
         {
@@ -4103,6 +4550,10 @@
           "type": "registry:component"
         },
         {
+          "path": "stack/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "stack/stack.module.css",
           "type": "registry:component"
         }
@@ -4123,6 +4574,10 @@
       "files": [
         {
           "path": "stat/stat.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "stat/index.ts",
           "type": "registry:component"
         },
         {
@@ -4150,6 +4605,10 @@
           "type": "registry:component"
         },
         {
+          "path": "status/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "status/status.module.css",
           "type": "registry:component"
         }
@@ -4171,6 +4630,10 @@
       "files": [
         {
           "path": "steps/steps.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "steps/index.ts",
           "type": "registry:component"
         },
         {
@@ -4198,6 +4661,10 @@
           "type": "registry:component"
         },
         {
+          "path": "structured-list/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "structured-list/structured-list.module.css",
           "type": "registry:component"
         }
@@ -4222,6 +4689,10 @@
           "type": "registry:component"
         },
         {
+          "path": "swap/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "swap/swap.module.css",
           "type": "registry:component"
         }
@@ -4243,6 +4714,10 @@
       "files": [
         {
           "path": "swipe-item/swipe-item.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "swipe-item/index.ts",
           "type": "registry:component"
         },
         {
@@ -4298,6 +4773,10 @@
           "type": "registry:component"
         },
         {
+          "path": "tabs/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "tabs/tabs.module.css",
           "type": "registry:component"
         }
@@ -4319,6 +4798,10 @@
       "files": [
         {
           "path": "tag/tag.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tag/index.ts",
           "type": "registry:component"
         },
         {
@@ -4346,6 +4829,10 @@
           "type": "registry:component"
         },
         {
+          "path": "tags-input/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "tags-input/tags-input.module.css",
           "type": "registry:component"
         }
@@ -4367,6 +4854,10 @@
       "files": [
         {
           "path": "text/text.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "text/index.ts",
           "type": "registry:component"
         },
         {
@@ -4394,6 +4885,10 @@
           "type": "registry:component"
         },
         {
+          "path": "textarea/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "textarea/textarea.module.css",
           "type": "registry:component"
         }
@@ -4415,6 +4910,10 @@
       "files": [
         {
           "path": "tile/tile.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tile/index.ts",
           "type": "registry:component"
         },
         {
@@ -4442,6 +4941,10 @@
           "type": "registry:component"
         },
         {
+          "path": "time-picker/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "time-picker/time-picker.module.css",
           "type": "registry:component"
         }
@@ -4463,6 +4966,10 @@
       "files": [
         {
           "path": "timeline/timeline.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "timeline/index.ts",
           "type": "registry:component"
         },
         {
@@ -4490,6 +4997,10 @@
           "type": "registry:component"
         },
         {
+          "path": "toast/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "toast/toast.module.css",
           "type": "registry:component"
         }
@@ -4511,6 +5022,10 @@
       "files": [
         {
           "path": "toc/toc.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toc/index.ts",
           "type": "registry:component"
         },
         {
@@ -4542,6 +5057,10 @@
           "type": "registry:component"
         },
         {
+          "path": "toggle/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "toggle/toggle.module.css",
           "type": "registry:component"
         }
@@ -4563,6 +5082,10 @@
       "files": [
         {
           "path": "toggle-group/toggle-group.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "toggle-group/index.ts",
           "type": "registry:component"
         },
         {
@@ -4590,6 +5113,10 @@
           "type": "registry:component"
         },
         {
+          "path": "toggletip/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "toggletip/toggletip.module.css",
           "type": "registry:component"
         }
@@ -4611,6 +5138,10 @@
       "files": [
         {
           "path": "tooltip/tooltip.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "tooltip/index.ts",
           "type": "registry:component"
         },
         {
@@ -4638,6 +5169,10 @@
           "type": "registry:component"
         },
         {
+          "path": "tree-view/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "tree-view/tree-view.module.css",
           "type": "registry:component"
         }
@@ -4662,12 +5197,16 @@
           "type": "registry:component"
         },
         {
+          "path": "user/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "user/user.module.css",
           "type": "registry:component"
         }
       ],
       "description": "Identity composite: an avatar with a name, description, and optional action slot",
-      "dependencies": ["@cascivo/core", "@cascivo/components"],
+      "dependencies": ["@cascivo/core"],
       "registryDependencies": ["https://cascivo.com/r/shadcn/avatar.json"],
       "categories": ["display"],
       "meta": {
@@ -4684,6 +5223,10 @@
       "files": [
         {
           "path": "virtual-list/virtual-list.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "virtual-list/index.ts",
           "type": "registry:component"
         },
         {
@@ -4711,6 +5254,10 @@
           "type": "registry:component"
         },
         {
+          "path": "visually-hidden/index.ts",
+          "type": "registry:component"
+        },
+        {
           "path": "visually-hidden/visually-hidden.module.css",
           "type": "registry:component"
         }
@@ -4732,6 +5279,10 @@
       "files": [
         {
           "path": "wheel-picker/wheel-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "wheel-picker/index.ts",
           "type": "registry:component"
         },
         {

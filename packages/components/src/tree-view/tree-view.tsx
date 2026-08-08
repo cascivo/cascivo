@@ -188,6 +188,10 @@ export function TreeView({
       default: {
         if (event.key.length === 1 && !event.metaKey && !event.ctrlKey && !event.altKey) {
           const ta = typeahead.current
+          // TODO: migrate this hand-rolled key buffer to `useTypeahead` from
+          // @cascivo/core, which CLAUDE.md requires for type-to-select and which the
+          // sibling menus already use; the disable below goes away with it.
+          // eslint-disable-next-line react-hooks/purity -- keydown handler, not render; the rule cannot tell a handler defined during render from render itself.
           const now = Date.now()
           ta.buffer = now - ta.at > 500 ? event.key : ta.buffer + event.key
           ta.at = now

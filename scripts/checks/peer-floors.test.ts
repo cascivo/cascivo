@@ -24,12 +24,16 @@
  *    each package's own `tsc --noEmit` passes. That is Mechanism E — see
  *    `docs/internal/feedback/README.md`.
  *
- *    ⚠ **The exact C1 mechanism is not reproduced.** `pnpm isolated:check` type-checks the
- *    packed tarballs in a strict, non-hoisted pnpm workspace on the reporter's own
- *    TypeScript version, and cascivo's types resolve there even *without* this peer — see
- *    that file's header for the full negative result. The peer is still correct: it is the
- *    convention for typed React libraries and makes resolution deliberate rather than
- *    dependent on a layout accident. This guard keeps it from regressing.
+ *    ✅ **The C1 mechanism is reproduced, and this peer is what fixes it.** `pnpm
+ *    isolated:check` builds a second workspace with pnpm `hoist: false` and type-checks the
+ *    packed tarballs there. With this peer removed it reports `Property 'children' does not
+ *    exist on type 'CardProps'` for every component — the report verbatim; with it present,
+ *    zero errors. pnpm's DEFAULT layout hides the bug, because its hidden
+ *    `node_modules/.pnpm/node_modules/` supplies React's types by accident; turn hoisting
+ *    off and the declared peer is the only thing left putting them on the path.
+ *
+ *    So this is not a convention-following nicety. Removing it breaks every adopter whose
+ *    pnpm config restricts hoisting, with a symptom that names the wrong culprit.
  *
  *    Optional, not required: a JS-only consumer must not get an install warning for types
  *    they will never read. And a peer rather than a `dependency`, because a bundled copy
@@ -37,8 +41,8 @@
  */
 
 import assert from 'node:assert/strict'
-import { readFileSync, readdirSync, statSync } from 'node:fs'
-import { join } from 'node:path'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
 import { describe, it } from 'node:test'
 
 const REPO_ROOT = join(import.meta.dirname, '../..')
@@ -126,6 +130,29 @@ function importsReactTypes(source: string): boolean {
 }
 
 /**
+ * True when a file re-exports source from OUTSIDE its own package that imports React types.
+ *
+ * `@cascivo/react` is the case that needs this: it is a barrel whose `index.ts` re-exports
+ * `../../components/src/**` and `../../layouts/src/**`, so its emitted `.d.ts` is full of
+ * React types while its own `src/` may contain not one `from 'react'`. That became true the
+ * moment `theme.tsx` moved to `@cascivo/core`, and the guard's vacuity check caught the
+ * package silently dropping off the list — which is the whole reason that check exists.
+ *
+ * One hop is enough: the barrel re-exports component source directly.
+ */
+function reExportsReactTypedSource(file: string): boolean {
+  const source = readFileSync(file, 'utf8')
+  for (const m of source.matchAll(/from\s+['"](\.\.\/\.\.\/[^'"]+)['"]/g)) {
+    const target = resolve(dirname(file), m[1]!)
+    for (const candidate of [`${target}.ts`, `${target}.tsx`, join(target, 'index.ts')]) {
+      if (!existsSync(candidate)) continue
+      if (importsReactTypes(readFileSync(candidate, 'utf8'))) return true
+    }
+  }
+  return false
+}
+
+/**
  * Published packages whose emitted types will reference React's own types.
  *
  * Derived from the source rather than from a hand-kept list — the Mechanism-B lesson:
@@ -143,9 +170,10 @@ function publishedPackagesUsingReactTypes(): string[] {
       continue
     }
     if (pkg.private === true) continue
-    const usesReact = sourceFiles(join(PACKAGES_DIR, dir, 'src')).some((file) =>
-      importsReactTypes(readFileSync(file, 'utf8')),
-    )
+    const own = sourceFiles(join(PACKAGES_DIR, dir, 'src'))
+    const usesReact =
+      own.some((file) => importsReactTypes(readFileSync(file, 'utf8'))) ||
+      own.some((file) => reExportsReactTypedSource(file))
     if (usesReact) out.push(dir)
   }
   return out

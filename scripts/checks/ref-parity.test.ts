@@ -18,6 +18,19 @@
  * The rule: if an exported component spreads `{...props}` onto exactly one **intrinsic**
  * element (`<button>`, `<input>`, `<a>`, …), it must be a `forwardRef`.
  *
+ * This guard checks the WRAPPER. The other half — that the `ref` a wrapper receives actually
+ * reaches an element — is enforced by **`noUnusedParameters` in tsconfig.base.json**, not
+ * here. `SkipNavLink` was wrapped in `forwardRef`, documented as forwarding, counted by this
+ * guard as compliant, and never put `ref` on its `<a>`: consumers got `null` with no type
+ * error. `noUnusedParameters` reported it as `TS6133: 'ref' is declared but its value is
+ * never read` the moment it was switched on.
+ *
+ * A regex version of that second check was written here first and deleted: it read
+ * `ref={…}` / `composeRefs(…)` and so called `AccordionTrigger` broken for forwarding via
+ * `summaryRef={ref}` — four false positives. The compiler understands every forwarding shape
+ * and has none. Re-implementing a tool that already runs is how the host-lint guard missed
+ * 117 errors (Mechanism F); don't reintroduce it here.
+ *
  * Scope is **per exported component**, not per file. An earlier revision reasoned per file
  * and had to allowlist `accordion` and `tabs` wholesale, because it could not express
  * "`AccordionTrigger` forwards, `AccordionItem` does not" — which meant three real gaps hid

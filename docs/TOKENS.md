@@ -28,6 +28,25 @@ are kept for backwards-compatibility (no token has been removed).
 | destructive-foreground | `--cascivo-color-destructive-foreground` | `--cascivo-color-destructive-content` |
 | primary-fg | `--cascivo-color-primary-fg` | `--cascivo-color-primary-content` |
 
+## Naming map — what each prefix means
+
+The prefix tells you the *property*, not the concept, and several pairs read alike but are not:
+
+| If you want… | The token is… | NOT |
+| ------------ | ------------- | --- |
+| a font **size** | `--cascivo-text-sm` (alias: `--cascivo-font-size-sm`) | — |
+| a font **weight** | `--cascivo-font-medium` | `--cascivo-text-medium` |
+| a font **family** | `--cascivo-font-sans` | `--cascivo-text-sans` |
+| a **line height** | `--cascivo-leading-normal` | `--cascivo-text-leading` |
+| **text colour** | `--cascivo-color-text` | `--cascivo-text-color` |
+
+`--cascivo-text-*` is the **size** scale; `--cascivo-font-*` is weight and family. That
+split is a trap for anyone typing from memory — and agents type from memory — so the
+`--cascivo-font-size-*` spellings are aliased to the `--cascivo-text-*` scale rather than
+left to resolve to nothing. An unknown custom property is silently dropped by CSS, with no
+error anywhere, which is what makes this class expensive to debug. `--cascivo-text-*`
+remains canonical.
+
 ## color
 
 | Token | Value | Notes |
@@ -180,6 +199,14 @@ are kept for backwards-compatibility (no token has been removed).
 | **`--cascivo-font-normal`** | `400` |  |
 | **`--cascivo-font-sans`** | `ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif` |  |
 | **`--cascivo-font-semibold`** | `600` |  |
+| **`--cascivo-font-size-2xl`** | `var(--cascivo-text-2xl)` |  |
+| **`--cascivo-font-size-3xl`** | `var(--cascivo-text-3xl)` |  |
+| **`--cascivo-font-size-4xl`** | `var(--cascivo-text-4xl)` |  |
+| **`--cascivo-font-size-base`** | `var(--cascivo-text-base)` |  |
+| **`--cascivo-font-size-lg`** | `var(--cascivo-text-lg)` |  |
+| **`--cascivo-font-size-sm`** | `var(--cascivo-text-sm)` |  |
+| **`--cascivo-font-size-xl`** | `var(--cascivo-text-xl)` |  |
+| **`--cascivo-font-size-xs`** | `var(--cascivo-text-xs)` |  |
 | **`--cascivo-leading-none`** | `1` |  |
 | **`--cascivo-leading-normal`** | `1.5` |  |
 | **`--cascivo-leading-relaxed`** | `1.625` |  |

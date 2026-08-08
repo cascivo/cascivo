@@ -118,6 +118,13 @@ interface RegistryComponent {
    * screen-reader data-table fallback renders visibly.
    */
   styles?: string
+  /**
+   * Present when the component is deprecated. Hoisted out of `meta` so every consumer of the
+   * registry (`cascivo list`/`search`/`add`, the MCP tools, the docs site) can render the
+   * marker without loading the full manifest — the point of the field is that an adopter sees
+   * it BEFORE installing, and a surface that has to dig for it will not show it.
+   */
+  deprecated?: ComponentMeta['deprecated']
   dependencies: string[]
   /**
    * Minimum published version of each `@cascivo/*` npm dependency this entry's
@@ -201,7 +208,17 @@ async function resolveStylesheet(installPkg: string): Promise<string | null> {
 
 const workspaceVersionCache = new Map<string, string | null>()
 
-/** Resolves a `@cascivo/<pkg>` dependency to its current workspace version, or null if not a workspace package. */
+/**
+ * Resolves a `@cascivo/<pkg>` dependency to its current workspace version, or null if not a
+ * workspace package.
+ *
+ * Throws when the package is private or version-less. A private workspace package can never
+ * be a legal `meta.dependencies` entry — an adopter cannot install it — so being asked to
+ * floor one means a manifest is wrong, and the generator should say so rather than emit a
+ * number. `packages/components` is `"private": true, "version": "0.0.0"`, and two manifests
+ * listed it: the floor came out as `>=0.0.0`, a constraint that constrains nothing, printed
+ * by `cascivo doctor --drift` as a requirement no install could ever satisfy.
+ */
 async function resolveWorkspaceVersion(dep: string): Promise<string | null> {
   if (workspaceVersionCache.has(dep)) return workspaceVersionCache.get(dep) ?? null
   const m = /^@cascivo\/(.+)$/.exec(dep)
@@ -209,17 +226,34 @@ async function resolveWorkspaceVersion(dep: string): Promise<string | null> {
     workspaceVersionCache.set(dep, null)
     return null
   }
+  let pkg: { version?: string; private?: boolean }
   try {
-    const pkg = JSON.parse(
+    pkg = JSON.parse(
       await readFile(join(REPO_ROOT, 'packages', m[1]!, 'package.json'), 'utf8'),
-    ) as { version?: string }
-    const version = typeof pkg.version === 'string' ? pkg.version : null
-    workspaceVersionCache.set(dep, version)
-    return version
+    ) as {
+      version?: string
+      private?: boolean
+    }
   } catch {
+    // Not a workspace package at all (e.g. a future external scope) — no floor to emit.
     workspaceVersionCache.set(dep, null)
     return null
   }
+  if (pkg.private === true) {
+    throw new Error(
+      `registry: "${dep}" is a PRIVATE workspace package and cannot be a component dependency — ` +
+        'no adopter can install it. Remove it from the manifest that lists it ' +
+        '(`pnpm meta:check` names which one).',
+    )
+  }
+  if (typeof pkg.version !== 'string' || pkg.version === '0.0.0') {
+    throw new Error(
+      `registry: "${dep}" has no publishable version (${pkg.version ?? 'undefined'}), so its ` +
+        'peer floor would constrain nothing. Fix the package version or the manifest.',
+    )
+  }
+  workspaceVersionCache.set(dep, pkg.version)
+  return pkg.version
 }
 
 /** Builds the `>=x.y.z` peer-version floor map for a component's `@cascivo/*` dependencies. */
@@ -268,6 +302,7 @@ async function buildEntry(
     ...(fileNames.length > 0 ? { fileHashes } : {}),
     dependencies: meta.dependencies,
     ...(peerVersions ? { peerVersions } : {}),
+    ...(meta.deprecated ? { deprecated: meta.deprecated } : {}),
     tags: meta.tags,
     meta,
   }

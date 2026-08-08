@@ -32,13 +32,9 @@ subpaths; Flex/Stack comparison table; `minimumReleaseAge` entry) ·
 **WS-13** ✅ (`isolated:check` and `bare-page:check`; **all four** bare-page cases now
 observed failing on their pre-fix state).
 
-**What remains open.** One item, and it is investigative rather than unshipped:
-
-**The C1 mechanism** (§0.5). The fix shipped, and the packed pre-fix tarballs still
-type-check cleanly in a strict, non-hoisted pnpm workspace on the reporter's own TypeScript
-6.0.3. Something in their environment broke React type resolution and this repo cannot yet
-say what. `scripts/checks/isolated-install.test.ts` carries the negative result and the
-invitation to add the configuration if anyone reproduces it.
+**What remains open: nothing.** The last item — the C1 mechanism (§0.5) — was **closed on
+2026-08-07**: it reproduces under pnpm `hoist: false`, and the `@types/react` peer this plan
+shipped is what fixes it. See §0.6.
 
 **Everything else in this plan is closed**, including four items an earlier revision of this
 header listed as open:
@@ -143,7 +139,12 @@ on the pre-fix state. A fix without a failing-first guard is how all three §0.2
 here. Where a workstream is documentation-only, "its guard" means a parity check that fails when
 the doc and the code disagree — never "the doc was updated".
 
-### §0.5 Correction — C1's mechanism does not reproduce
+### §0.5 Correction — C1's mechanism does not reproduce (SUPERSEDED by §0.6)
+
+> ⚠ **Superseded 2026-08-07.** Everything below was accurate about the fixture as it then
+> existed, and its conclusion was wrong: the fixture was passing for the wrong reason. See
+> §0.6 for the reproduction. Kept unedited because the reasoning is the useful part — a
+> negative result from a fixture nobody had falsified.
 
 **Added after implementation. The triage row above was written before the fixture existed.**
 
@@ -184,6 +185,56 @@ source, but that is a hypothesis, not a finding.
 
 The fixture is kept regardless. It proves something nothing else did: the published tarballs
 install and type-check in a strict, non-hoisted workspace with lib checking on.
+
+---
+
+### §0.6 C1 reproduces under pnpm `hoist: false` — and the peer is the fix
+
+**Added 2026-08-07.** This closes the plan's last open item and reverses §0.5's conclusion.
+
+**The missing configuration is `hoist: false`.**
+
+§0.5's fixture was not strict enough, and in a way that is invisible unless you look for it.
+pnpm's default layout builds a **hidden hoisted directory** at
+`node_modules/.pnpm/node_modules/` holding every transitive package. That directory sits on
+TypeScript's upward walk from a cascivo `.d.ts`'s real path, so React's types are reachable
+from inside cascivo **whether or not cascivo declares them**. §0.5's fixture removed the peer,
+found the types anyway, and concluded the peer was unproven. It was measuring the hoist.
+
+With `hoist: false` the hidden directory is gone. Measured, both arms, same workspace:
+
+| `@types/react` peer | `.pnpm/@cascivo+react@X/node_modules/` | `tsc --noEmit` |
+| --- | --- | --- |
+| present | contains `@types` | **0 errors** |
+| removed | does not | `Property 'children' does not exist on type 'CardProps'` — and `CardHeaderProps`, `CardTitleProps`, `CardContentProps`, `CardFooterProps`, … |
+
+That second row is the report verbatim. With `skipLibCheck: true` — the default in every
+framework preset, and what the reporter had — the "cannot find module 'react'" diagnostic
+inside cascivo's own `.d.ts` is suppressed, leaving only `Property 'children' does not
+exist`, which names the wrong culprit entirely.
+
+And it explains the reporter's own fix: a `publicHoistPattern` for `@types/react` is the
+sibling setting. It puts the package back on the resolution path by hand — exactly what the
+declared peer now does automatically.
+
+**So the peer is not the convention-following nicety §0.5 settled for.** It is load-bearing
+for every adopter whose pnpm config restricts hoisting, and `peer-floors`' header has been
+corrected to say so.
+
+**Three things this cost, worth recording:**
+
+1. **A fixture that passes for the wrong reason outranks a fixture that fails.** §0.5 was
+   careful, honest, and wrong, because nobody falsified the passing case. The rule the
+   08-06 plan adopted — *a guard must be demonstrated failing on its pre-fix state* — would
+   have caught this in one run, and is now applied to this fixture's new case.
+2. **`hoist` must go in `pnpm-workspace.yaml`, not `.npmrc`.** pnpm 11 reads it from the
+   workspace manifest and silently ignores it in `.npmrc`. Setting it in the wrong place
+   left the fixture claiming hoisting was off while the hidden directory was fully
+   populated — caught only by a non-vacuity assertion added alongside. This is the same
+   pnpm-11 migration CLAUDE.md already documents for `overrides`.
+3. **The Astro hypothesis was wrong.** §0.5 named Astro's TS preset as the plausible source.
+   `astro/tsconfigs/{base,strict,strictest}.json` at 7.2.0 set no `preserveSymlinks` and
+   nothing else that affects type resolution. Recorded so the next reader does not re-run it.
 
 ---
 
