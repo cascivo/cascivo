@@ -84,4 +84,4 @@ toc, table-of-contents, navigation, scroll-spy, anchor
 
 ---
 
-_Generated from registry v0.16.0 on 2026-08-05. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+_Generated from registry v0.16.1 on 2026-08-09. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._

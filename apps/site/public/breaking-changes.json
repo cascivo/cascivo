@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-05",
+  "generatedAt": "2026-08-09",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,7 +15,7 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.16.0",
@@ -76,7 +76,7 @@
     },
     {
       "name": "cascivo",
-      "version": "0.7.1",
+      "version": "0.7.2",
       "releases": [
         {
           "version": "0.7.0",
@@ -127,7 +127,7 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.16.0",
@@ -192,7 +192,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "releases": [
         {
           "version": "0.2.0",
@@ -205,7 +205,7 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.2.0",
@@ -225,7 +225,7 @@
     },
     {
       "name": "@cascivo/eslint-config",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "releases": [
         {
           "version": "0.2.0",
@@ -238,7 +238,7 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.16.0",
@@ -251,7 +251,7 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.2.0",
@@ -267,7 +267,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.7",
+      "version": "0.3.8",
       "releases": [
         {
           "version": "0.3.0",
@@ -288,7 +288,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "releases": [
         {
           "version": "0.6.0",
@@ -329,8 +329,13 @@
       ]
     },
     {
+      "name": "@cascivo/platform",
+      "version": "0.0.2",
+      "releases": []
+    },
+    {
       "name": "@cascivo/react",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.16.0",
@@ -440,7 +445,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.5",
+      "version": "0.2.6",
       "releases": [
         {
           "version": "0.2.0",
@@ -456,7 +461,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "releases": [
         {
           "version": "0.1.0",
@@ -467,7 +472,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.10",
+      "version": "0.4.11",
       "releases": [
         {
           "version": "0.4.0",
@@ -493,7 +498,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.8",
+      "version": "0.5.9",
       "releases": [
         {
           "version": "0.5.0",
@@ -524,7 +529,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.5",
+      "version": "0.1.6",
       "releases": [
         {
           "version": "0.1.0",
