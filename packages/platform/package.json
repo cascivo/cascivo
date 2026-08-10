@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/platform",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "description": "Platform-idiomatic geometry and motion for cascivo, selected with data-platform. Orthogonal to @cascivo/themes, which owns colour.",
   "keywords": [

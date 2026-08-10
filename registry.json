@@ -1,13 +1,13 @@
 {
-  "version": "0.16.0",
-  "generatedAt": "2026-08-05",
+  "version": "0.16.1",
+  "generatedAt": "2026-08-09",
   "components": [
     {
       "name": "accordion",
       "type": "component",
       "description": "Vertically stacked, collapsible content sections",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/index.ts",
@@ -20,7 +20,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["navigation", "collapse", "disclosure"],
       "meta": {
@@ -127,7 +127,7 @@
       "type": "component",
       "description": "Bottom-rising sheet of discrete actions (iOS action-sheet pattern) with a Cancel button",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/action-sheet.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/action-sheet/index.ts",
@@ -140,8 +140,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "action-sheet", "menu", "mobile", "sheet"],
       "meta": {
@@ -298,7 +298,7 @@
       "type": "component",
       "description": "Highlights a short, important message inline",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/alert.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/index.ts",
@@ -311,8 +311,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["notification", "message", "feedback"],
       "meta": {
@@ -448,7 +448,7 @@
       "type": "component",
       "description": "Confirmation dialog requiring explicit user action; no light-dismiss",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/index.ts",
@@ -461,8 +461,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "dialog", "confirm", "destructive"],
       "meta": {
@@ -613,7 +613,7 @@
       "type": "component",
       "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/index.ts",
@@ -626,7 +626,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
       "meta": {
@@ -754,7 +754,7 @@
       "type": "component",
       "description": "Constrains content to a fixed width-to-height ratio",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/aspect-ratio.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/aspect-ratio/index.ts",
@@ -767,7 +767,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "ratio", "image", "video", "responsive"],
       "meta": {
@@ -857,7 +857,7 @@
       "type": "component",
       "description": "Displays a user image with initials fallback",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/avatar.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar/index.ts",
@@ -870,7 +870,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["user", "profile", "image"],
       "meta": {
@@ -998,7 +998,7 @@
       "type": "component",
       "description": "Overlapping stack of avatars with a max cap and an i18n-labelled +N overflow chip",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/avatar-group.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/avatar-group/index.ts",
@@ -1011,8 +1011,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["avatar", "group", "stack", "overflow", "display"],
       "meta": {
@@ -1137,7 +1137,7 @@
       "type": "component",
       "description": "Small status label or category indicator",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/index.ts",
@@ -1150,7 +1150,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["label", "status", "tag"],
       "meta": {
@@ -1277,7 +1277,7 @@
       "type": "component",
       "description": "Quoted passage with optional attribution footer",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/blockquote.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blockquote/index.ts",
@@ -1290,7 +1290,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["typography", "quote", "blockquote", "citation"],
       "meta": {
@@ -1388,7 +1388,7 @@
       "type": "component",
       "description": "Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/bottom-sheet.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/bottom-sheet/index.ts",
@@ -1401,8 +1401,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "sheet", "bottom-sheet", "mobile", "drag", "detent", "gesture"],
       "meta": {
@@ -1574,7 +1574,7 @@
       "type": "component",
       "description": "Shows the current page location within a navigation hierarchy",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/index.ts",
@@ -1587,8 +1587,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["breadcrumb", "navigation", "hierarchy"],
       "meta": {
@@ -1700,7 +1700,7 @@
       "type": "component",
       "description": "Triggers an action or event",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/index.ts",
@@ -1713,7 +1713,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["action", "form", "interactive"],
       "meta": {
@@ -1864,7 +1864,7 @@
       "type": "component",
       "description": "Visually joins a set of related buttons into a single segmented control",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/index.ts",
@@ -1877,7 +1877,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["action", "segmented", "toolbar", "layout"],
       "meta": {
@@ -2002,7 +2002,7 @@
       "type": "component",
       "description": "An accessible standalone month-grid date picker.",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/index.ts",
@@ -2015,8 +2015,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["calendar", "date", "month", "grid", "picker", "input"],
       "meta": {
@@ -2231,7 +2231,7 @@
       "type": "component",
       "description": "Container for grouping related content",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/index.ts",
@@ -2244,7 +2244,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["container", "layout", "surface"],
       "meta": {
@@ -2342,7 +2342,7 @@
       "type": "component",
       "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/carousel.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/carousel/index.ts",
@@ -2355,8 +2355,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["slider", "gallery", "slideshow", "deck", "scroll-snap"],
       "meta": {
@@ -2486,7 +2486,7 @@
       "type": "component",
       "description": "Message bubble for chat and messaging UIs with avatar, name, and timestamp support",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/index.ts",
@@ -2631,7 +2631,7 @@
       "type": "component",
       "description": "Binary toggle for forms, with indeterminate support",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/index.ts",
@@ -2644,7 +2644,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "toggle", "boolean"],
       "meta": {
@@ -2778,7 +2778,7 @@
       "type": "component",
       "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/checkbox-card.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox-card/index.ts",
@@ -2791,7 +2791,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["checkbox", "card", "selectable", "form"],
       "meta": {
@@ -2912,7 +2912,7 @@
       "type": "component",
       "description": "Inline code span for identifiers, commands, and short snippets",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/code.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code/index.ts",
@@ -2925,7 +2925,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["typography", "code", "inline", "mono"],
       "meta": {
@@ -3026,7 +3026,7 @@
       "type": "component",
       "description": "Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/highlight.ts",
@@ -3041,8 +3041,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": [
         "display",
@@ -3212,7 +3212,7 @@
       "type": "component",
       "description": "A single disclosure region toggled open and closed by its trigger",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/collapsible.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/collapsible/index.ts",
@@ -3225,7 +3225,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["disclosure", "collapse", "expand", "toggle", "show-hide"],
       "meta": {
@@ -3353,7 +3353,7 @@
       "type": "component",
       "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/index.ts",
@@ -3366,8 +3366,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["color", "input", "form", "picker", "hue", "alpha"],
       "meta": {
@@ -3515,7 +3515,7 @@
       "type": "component",
       "description": "Filterable single-select with an animated custom listbox, built on the dropdown open/close machine",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/index.ts",
@@ -3528,8 +3528,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["select", "combobox", "dropdown", "filter", "search"],
       "meta": {
@@ -3732,7 +3732,7 @@
       "type": "component",
       "description": "Cmd+K command palette with fuzzy search over grouped commands",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/index.ts",
@@ -3745,8 +3745,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard", "scope", "fuzzy"],
       "meta": {
@@ -3962,7 +3962,7 @@
       "type": "component",
       "description": "Reveals the difference between two layers with a draggable divider",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/index.ts",
@@ -3975,8 +3975,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["comparison", "before-after", "image", "slider", "display"],
       "meta": {
@@ -4131,7 +4131,7 @@
       "type": "component",
       "description": "Labelled list of rows inside a bordered container",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/contained-list.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/contained-list/index.ts",
@@ -4144,7 +4144,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["list", "container", "rows", "group"],
       "meta": {
@@ -4250,7 +4250,7 @@
       "type": "component",
       "description": "Right-click context menu anchored at pointer coordinates via CSS custom properties",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/context-menu.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/context-menu/index.ts",
@@ -4263,7 +4263,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["overlay", "menu", "context", "right-click"],
       "meta": {
@@ -4358,7 +4358,7 @@
       "type": "component",
       "description": "Icon button that copies a value to the clipboard with copied feedback",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/copy-button.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/copy-button/index.ts",
@@ -4371,8 +4371,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["clipboard", "copy", "button", "snippet"],
       "meta": {
@@ -4491,7 +4491,7 @@
       "type": "component",
       "description": "Key-value pairs rendered as a description list",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/index.ts",
@@ -4504,7 +4504,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["key-value", "description", "metadata", "details"],
       "meta": {
@@ -4614,7 +4614,7 @@
       "type": "component",
       "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/index.ts",
@@ -4627,8 +4627,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
       "meta": {
@@ -4962,7 +4962,7 @@
       "type": "component",
       "description": "An accessible date-picker with a calendar popover.",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/index.ts",
@@ -4975,8 +4975,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["date", "calendar", "picker", "input", "form"],
       "meta": {
@@ -5181,7 +5181,7 @@
       "type": "component",
       "description": "A dual-calendar picker for selecting a contiguous date range.",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/date-range-picker.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-range-picker/index.ts",
@@ -5194,8 +5194,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["date", "range", "calendar", "picker", "input", "form"],
       "meta": {
@@ -5374,7 +5374,7 @@
       "type": "component",
       "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/index.ts",
@@ -5387,8 +5387,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["dock", "tab-bar", "bottom-nav", "mobile", "navigation", "app-shell"],
       "meta": {
@@ -5505,7 +5505,7 @@
       "type": "component",
       "description": "Edge-anchored dialog panel that slides in from a screen edge with CSS-only enter/exit motion",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/drawer.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/drawer/index.ts",
@@ -5518,8 +5518,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
       "meta": {
@@ -5685,7 +5685,7 @@
       "type": "component",
       "description": "Menu of actions revealed from a trigger",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/index.ts",
@@ -5698,7 +5698,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["overlay", "menu", "actions"],
       "meta": {
@@ -5831,7 +5831,7 @@
       "type": "component",
       "description": "Inline click-to-edit text field",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/index.ts",
@@ -5844,7 +5844,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "editable", "inline", "input", "text"],
       "meta": {
@@ -5977,7 +5977,7 @@
       "type": "component",
       "description": "Placeholder for views that have no data to display",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/empty-state.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/empty-state/index.ts",
@@ -5990,7 +5990,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["empty", "placeholder", "zero-state", "no-data"],
       "meta": {
@@ -6113,7 +6113,7 @@
       "type": "component",
       "description": "Floating action button anchored to a screen corner, with an optional speed-dial of secondary actions",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/index.ts",
@@ -6126,7 +6126,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["inputs", "fab", "floating-action-button", "mobile", "speed-dial"],
       "meta": {
@@ -6286,7 +6286,7 @@
       "type": "component",
       "description": "Form-field wrapper composing label, control, description, and error",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/index.ts",
@@ -6299,7 +6299,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "layout", "validation", "accessibility"],
       "meta": {
@@ -6453,7 +6453,7 @@
       "type": "component",
       "description": "Drag-and-drop file upload zone with file list and status indicators.",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/index.ts",
@@ -6466,8 +6466,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["upload", "file", "drop", "drag", "input", "form"],
       "meta": {
@@ -6646,7 +6646,7 @@
       "type": "component",
       "description": "A group of toggleable pill or outline buttons for filtering content by category",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/index.ts",
@@ -6659,7 +6659,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["filter", "chip", "tag", "pill", "facet", "category"],
       "meta": {
@@ -6817,7 +6817,7 @@
       "type": "component",
       "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/form.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/form/index.ts",
@@ -6832,7 +6832,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "validation", "signals", "input"],
       "meta": {
@@ -6943,7 +6943,7 @@
       "type": "component",
       "description": "App top bar with brand, primary navigation links, and an actions slot",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/header.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header/index.ts",
@@ -6956,8 +6956,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["navigation", "app-shell", "top-bar", "banner"],
       "meta": {
@@ -7083,7 +7083,7 @@
       "type": "component",
       "description": "Non-modal panel anchored below the shell header at the inline-end edge — hosts notifications, app switcher, user settings",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/header-panel.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/header-panel/index.ts",
@@ -7096,8 +7096,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["navigation", "panel", "shell", "console", "overlay", "notifications"],
       "meta": {
@@ -7219,7 +7219,7 @@
       "type": "component",
       "description": "Section heading with semantic level decoupled from visual size",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/heading.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/heading/index.ts",
@@ -7232,7 +7232,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["typography", "heading", "title"],
       "meta": {
@@ -7348,7 +7348,7 @@
       "type": "component",
       "description": "Hover-triggered popover with configurable open/close delay",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/hover-card.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/hover-card/index.ts",
@@ -7361,7 +7361,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["overlay", "hover", "preview", "floating"],
       "meta": {
@@ -7478,7 +7478,7 @@
       "type": "component",
       "description": "Square, icon-only button with a required accessible label",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/index.ts",
@@ -7491,7 +7491,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["action", "icon", "compact", "toolbar"],
       "meta": {
@@ -7646,7 +7646,7 @@
       "type": "component",
       "description": "Image with load state, blur-up placeholder, graceful fallback, and optional zoom",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/image.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/image/index.ts",
@@ -7659,7 +7659,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["image", "media", "display", "loading"],
       "meta": {
@@ -7817,7 +7817,7 @@
       "type": "component",
       "description": "Positions an overlay element (badge, dot, count) at a corner of its child",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/index.ts",
@@ -7926,7 +7926,7 @@
       "type": "component",
       "description": "Loads the next page when the end of a list scrolls into view",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/infinite-scroll.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/infinite-scroll/index.ts",
@@ -7939,8 +7939,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["feedback", "infinite-scroll", "pagination", "list", "scroll", "mobile", "lazy"],
       "meta": {
@@ -8089,7 +8089,7 @@
       "type": "component",
       "description": "Compact inline status indicator that pairs a label with a loading, success, or error state",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/inline-loading.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/inline-loading/index.ts",
@@ -8102,8 +8102,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["loading", "status", "progress", "feedback", "spinner"],
       "meta": {
@@ -8222,7 +8222,7 @@
       "type": "component",
       "description": "Text input field with optional label, hint, and error state",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/index.ts",
@@ -8235,7 +8235,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "text", "input"],
       "meta": {
@@ -8379,7 +8379,7 @@
       "type": "component",
       "description": "Prefix/suffix addon wrapper for Input; InputGroupAddon renders inline icons/units inside the field border; ButtonGroup collapses adjacent button borders",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/input-group.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input-group/index.ts",
@@ -8392,7 +8392,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "input", "addon", "group", "layout"],
       "meta": {
@@ -8510,7 +8510,7 @@
       "type": "component",
       "description": "Generic content row primitive with media, content, and action regions",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/index.ts",
@@ -8523,7 +8523,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["row", "primitive", "list-item", "layout"],
       "meta": {
@@ -8632,7 +8632,7 @@
       "type": "component",
       "description": "Groups adjacent children into a seamless joined element by removing interior borders and radii",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/index.ts",
@@ -8738,7 +8738,7 @@
       "type": "component",
       "description": "Displays a keyboard key or shortcut",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/kbd.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/kbd/index.ts",
@@ -8751,7 +8751,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["keyboard", "shortcut", "hotkey"],
       "meta": {
@@ -8845,7 +8845,7 @@
       "type": "component",
       "description": "Accessible caption for a form control",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/label.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/label/index.ts",
@@ -8858,8 +8858,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["form", "caption", "accessibility"],
       "meta": {
@@ -9004,7 +9004,7 @@
       "type": "component",
       "description": "Scrolling region whose large title collapses into a compact sticky bar as it scrolls",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/index.ts",
@@ -9017,7 +9017,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["navigation", "header", "title", "mobile", "scroll", "sticky", "ios"],
       "meta": {
@@ -9178,7 +9178,7 @@
       "type": "component",
       "description": "Styled anchor for navigation, standalone or inline within prose",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/index.ts",
@@ -9191,7 +9191,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["link", "anchor", "navigation"],
       "meta": {
@@ -9319,7 +9319,7 @@
       "type": "component",
       "description": "Styled unordered or ordered list with ListItem",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/index.ts",
@@ -9332,7 +9332,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["typography", "list", "ul", "ol"],
       "meta": {
@@ -9435,7 +9435,7 @@
       "type": "component",
       "description": "Virtualized monospace console for high-frequency log and stream output",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/log-viewer.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/log-viewer/index.ts",
@@ -9448,8 +9448,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["log", "stream", "virtual", "console", "terminal", "monospace"],
       "meta": {
@@ -9612,7 +9612,7 @@
       "type": "component",
       "description": "Dropdown menu with keyboard navigation, built on usePopover",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu/menu.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu/index.ts",
@@ -9625,7 +9625,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["overlay", "menu", "dropdown", "floating"],
       "meta": {
@@ -9734,7 +9734,7 @@
       "type": "component",
       "description": "A button that opens an anchored action menu of one-shot commands",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/menu-button.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menu-button/index.ts",
@@ -9747,7 +9747,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["navigation", "menu", "actions", "dropdown", "floating"],
       "meta": {
@@ -9917,7 +9917,7 @@
       "type": "component",
       "description": "Horizontal application menu bar with keyboard-navigable dropdown menus",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/menubar.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/menubar/index.ts",
@@ -9930,7 +9930,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["navigation", "menubar", "menu", "application"],
       "meta": {
@@ -10052,7 +10052,7 @@
       "type": "component",
       "description": "Accessible dialog overlay using native <dialog> element",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/modal.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/modal/index.ts",
@@ -10065,8 +10065,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "dialog", "popup"],
       "meta": {
@@ -10215,7 +10215,7 @@
       "type": "component",
       "description": "Searchable multi-value select with popover listbox",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/multi-select.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/multi-select/index.ts",
@@ -10228,8 +10228,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["form", "select", "multi", "input", "popover"],
       "meta": {
@@ -10370,7 +10370,7 @@
       "type": "component",
       "description": "A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/index.ts",
@@ -10383,7 +10383,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["inputs", "select", "native", "form", "dropdown"],
       "meta": {
@@ -10539,7 +10539,7 @@
       "type": "component",
       "description": "Site navigation bar with links and dropdown flyout panels",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/index.ts",
@@ -10552,7 +10552,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["navigation", "menu", "flyout", "site-nav"],
       "meta": {
@@ -10671,7 +10671,7 @@
       "type": "component",
       "description": "Inline, actionable notification banner that surfaces a titled message with an optional recovery action",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/index.ts",
@@ -10684,8 +10684,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["notification", "banner", "message", "feedback", "actionable"],
       "meta": {
@@ -10842,7 +10842,7 @@
       "type": "component",
       "description": "Numeric input with stepper buttons, clamping, precision, and locale formatting",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/index.ts",
@@ -10855,8 +10855,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["form", "number", "input", "spinbutton", "stepper"],
       "meta": {
@@ -11058,7 +11058,7 @@
       "type": "component",
       "description": "Segmented one-time code input",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/otp-input.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/otp-input/index.ts",
@@ -11071,8 +11071,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["form", "otp", "code", "input", "verification"],
       "meta": {
@@ -11194,7 +11194,7 @@
       "type": "component",
       "description": "Kebab icon button revealing a menu of row-level actions",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/index.ts",
@@ -11207,8 +11207,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "deprecated": {
         "since": "0.17.0",
@@ -11364,7 +11364,7 @@
       "type": "component",
       "description": "Controls for navigating paged data sets, with page size selection",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/pagination.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pagination/index.ts",
@@ -11377,8 +11377,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["pagination", "navigation", "table", "data", "pages"],
       "meta": {
@@ -11524,7 +11524,7 @@
       "type": "component",
       "description": "Password input with reveal toggle and optional strength meter",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/password-input.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/password-input/index.ts",
@@ -11537,8 +11537,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["form", "password", "input", "security"],
       "meta": {
@@ -11677,7 +11677,7 @@
       "type": "component",
       "description": "Anchored floating panel built on CSS Anchor Positioning + Popover API",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/popover.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/popover/index.ts",
@@ -11692,7 +11692,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["overlay", "floating", "anchor", "popover"],
       "meta": {
@@ -11818,7 +11818,7 @@
       "type": "component",
       "description": "Horizontal bar showing the completion progress of a tracked operation",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/index.ts",
@@ -11966,7 +11966,7 @@
       "type": "component",
       "description": "Shows determinate or indeterminate progress of a task",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/progress-bar.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-bar/index.ts",
@@ -11979,7 +11979,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["progress", "loading", "status", "feedback"],
       "meta": {
@@ -12114,7 +12114,7 @@
       "type": "component",
       "description": "Circular determinate progress indicator rendered as an SVG arc",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/index.ts",
@@ -12127,7 +12127,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["progress", "loading", "circle", "feedback"],
       "meta": {
@@ -12247,7 +12247,7 @@
       "type": "component",
       "description": "Shows progress through the steps of a multi-step flow",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/progress-indicator.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-indicator/index.ts",
@@ -12260,7 +12260,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["steps", "wizard", "stepper", "progress", "navigation"],
       "meta": {
@@ -12376,7 +12376,7 @@
       "type": "component",
       "description": "Wrapper that styles raw descendant HTML — headings, lists, code, quotes, tables",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/prose.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/prose/index.ts",
@@ -12389,7 +12389,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["typography", "prose", "content", "markdown", "article"],
       "meta": {
@@ -12506,7 +12506,7 @@
       "type": "component",
       "description": "Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/pull-to-refresh.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/pull-to-refresh/index.ts",
@@ -12519,8 +12519,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["feedback", "pull-to-refresh", "mobile", "gesture", "scroll", "refresh"],
       "meta": {
@@ -12644,7 +12644,7 @@
       "type": "component",
       "description": "Encodes a URL or short text into a scannable SVG QR code",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/encode.ts",
@@ -12659,8 +12659,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["qr", "qr-code", "barcode", "encode", "display"],
       "meta": {
@@ -12786,7 +12786,7 @@
       "type": "component",
       "description": "Circular progress indicator using conic-gradient, with percentage label and variant colors",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/index.ts",
@@ -12945,7 +12945,7 @@
       "type": "component",
       "description": "Single choice from a set, grouped with RadioGroup",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/index.ts",
@@ -12958,7 +12958,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "choice", "group"],
       "meta": {
@@ -13076,7 +13076,7 @@
       "type": "component",
       "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/radio-card.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio-card/index.ts",
@@ -13089,7 +13089,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["radio", "card", "selectable", "form"],
       "meta": {
@@ -13207,7 +13207,7 @@
       "type": "component",
       "description": "Star rating input with accessible radio group pattern",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/rating-group.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/rating-group/index.ts",
@@ -13220,7 +13220,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "rating", "stars", "input", "feedback"],
       "meta": {
@@ -13352,7 +13352,7 @@
       "type": "component",
       "description": "Displays a date as a localized phrase relative to now, auto-updating",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/relative-time.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/relative-time/index.ts",
@@ -13365,8 +13365,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["time", "date", "relative", "i18n", "display"],
       "meta": {
@@ -13476,7 +13476,7 @@
       "type": "component",
       "description": "List whose rows can be reordered by pointer drag or entirely by keyboard",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/reorder-list.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/reorder-list/index.ts",
@@ -13489,8 +13489,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["inputs", "reorder", "sortable", "drag", "list", "mobile", "keyboard"],
       "meta": {
@@ -13658,7 +13658,7 @@
       "type": "component",
       "description": "Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/index.ts",
@@ -13671,8 +13671,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["splitter", "panes", "layout", "resize", "divider"],
       "meta": {
@@ -13807,7 +13807,7 @@
       "type": "component",
       "description": "A scroll container with styled, slim scrollbars and overflow shadows",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/index.ts",
@@ -13820,7 +13820,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["scroll", "overflow", "scrollbar", "container", "layout"],
       "meta": {
@@ -13936,7 +13936,7 @@
       "type": "component",
       "description": "Search input with debounced search callback and clear button",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/index.ts",
@@ -13949,8 +13949,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["search", "input", "filter", "form"],
       "meta": {
@@ -14136,7 +14136,7 @@
       "type": "component",
       "description": "Mutually exclusive toggle group",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/segmented-control.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/segmented-control/index.ts",
@@ -14149,7 +14149,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "toggle", "group", "segmented", "input"],
       "meta": {
@@ -14271,7 +14271,7 @@
       "type": "component",
       "description": "Native select menu styled to match the design system",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/index.ts",
@@ -14284,7 +14284,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "dropdown", "menu"],
       "meta": {
@@ -14425,7 +14425,7 @@
       "type": "component",
       "description": "Visual or semantic divider between content",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/index.ts",
@@ -14438,7 +14438,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["divider", "rule", "layout"],
       "meta": {
@@ -14529,7 +14529,7 @@
       "type": "component",
       "description": "Slide-in panel from any edge, using popover=manual and @starting-style animations",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/index.ts",
@@ -14542,8 +14542,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "drawer", "panel", "slide"],
       "meta": {
@@ -14659,7 +14659,7 @@
       "type": "component",
       "description": "Console application header: brand with prefix, dropdown nav menus, global icon actions, hamburger, skip-to-content",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/shell-header.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/shell-header/index.ts",
@@ -14672,8 +14672,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["navigation", "header", "shell", "console", "menu", "app-shell"],
       "meta": {
@@ -14925,7 +14925,7 @@
       "type": "component",
       "description": "Collapsible sidebar navigation with optional icons and one level of grouping",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/index.ts",
@@ -14938,8 +14938,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
       "meta": {
@@ -15130,7 +15130,7 @@
       "type": "component",
       "description": "Animated loading placeholder that mirrors the shape of pending content",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/index.ts",
@@ -15143,7 +15143,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["loading", "placeholder", "shimmer"],
       "meta": {
@@ -15261,7 +15261,7 @@
       "type": "component",
       "description": "Skip link that jumps keyboard users past the navigation to the main content",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/skip-nav.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skip-nav/index.ts",
@@ -15274,8 +15274,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["accessibility", "skip-link", "keyboard", "navigation"],
       "meta": {
@@ -15390,7 +15390,7 @@
       "type": "component",
       "description": "Range input for selecting a value within bounds",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/index.ts",
@@ -15403,7 +15403,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "range", "input"],
       "meta": {
@@ -15539,7 +15539,7 @@
       "type": "component",
       "description": "Indeterminate loading indicator",
       "category": "feedback",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/index.ts",
@@ -15552,8 +15552,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["loading", "progress", "feedback"],
       "meta": {
@@ -15649,7 +15649,7 @@
       "type": "component",
       "description": "Overlaps children in a CSS grid stack with a configurable offset to create a card-pile effect",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/stack.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stack/index.ts",
@@ -15762,7 +15762,7 @@
       "type": "component",
       "description": "Displays a key metric with optional delta, trend direction and help text",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/index.ts",
@@ -15775,7 +15775,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["stat", "kpi", "metric", "number"],
       "meta": {
@@ -15922,7 +15922,7 @@
       "type": "component",
       "description": "Colored dot with a label communicating the state of a system or entity",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/index.ts",
@@ -15935,7 +15935,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["status", "indicator", "dot", "badge"],
       "meta": {
@@ -16048,7 +16048,7 @@
       "type": "component",
       "description": "Visual progress indicator for multi-step flows with horizontal and vertical orientations",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/index.ts",
@@ -16061,8 +16061,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["steps", "wizard", "stepper", "progress", "navigation", "onboarding", "checkout"],
       "meta": {
@@ -16197,7 +16197,7 @@
       "type": "component",
       "description": "Tabular row list for scannable data, optionally single-selectable",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/index.ts",
@@ -16210,7 +16210,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["display", "list", "table", "data"],
       "meta": {
@@ -16350,7 +16350,7 @@
       "type": "component",
       "description": "Animated toggle between two icon/content states with rotate or flip transition",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/index.ts",
@@ -16363,7 +16363,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["toggle", "icon", "animate", "switch", "flip", "rotate"],
       "meta": {
@@ -16508,7 +16508,7 @@
       "type": "component",
       "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/swipe-item.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swipe-item/index.ts",
@@ -16521,7 +16521,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["display", "swipe", "list", "mobile", "gesture", "actions"],
       "meta": {
@@ -16637,7 +16637,7 @@
       "type": "component",
       "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/index.ts",
@@ -16650,8 +16650,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
       "meta": {
@@ -16750,7 +16750,7 @@
       "type": "component",
       "description": "Switch between related panels of content",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/index.ts",
@@ -16763,7 +16763,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["navigation", "tabs", "sections"],
       "meta": {
@@ -16867,7 +16867,7 @@
       "type": "component",
       "description": "Compact chip for labeling, categorizing, or filtering content",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/tag.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/index.ts",
@@ -16880,8 +16880,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["chip", "label", "filter", "category"],
       "meta": {
@@ -17011,7 +17011,7 @@
       "type": "component",
       "description": "Free-form multi-value chip input",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/index.ts",
@@ -17024,8 +17024,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["form", "tags", "chips", "multi", "input"],
       "meta": {
@@ -17152,7 +17152,7 @@
       "type": "component",
       "description": "Body text with size, weight, and muted variants",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/index.ts",
@@ -17165,7 +17165,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["typography", "text", "paragraph", "body"],
       "meta": {
@@ -17296,7 +17296,7 @@
       "type": "component",
       "description": "Multi-line text input with optional label, hint, and error state",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/index.ts",
@@ -17309,7 +17309,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["form", "text", "multiline"],
       "meta": {
@@ -17443,7 +17443,7 @@
       "type": "component",
       "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/tile.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tile/index.ts",
@@ -17456,7 +17456,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["inputs", "tile", "card", "selectable", "choice"],
       "meta": {
@@ -17613,7 +17613,7 @@
       "type": "component",
       "description": "Native time input wrapper with label, hint, error, and size variants",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/index.ts",
@@ -17626,7 +17626,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["time", "input", "form"],
       "meta": {
@@ -17793,7 +17793,7 @@
       "type": "component",
       "description": "Ordered sequence of events with status markers and a connector line",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/index.ts",
@@ -17806,7 +17806,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["timeline", "steps", "history", "progress", "events"],
       "meta": {
@@ -17912,7 +17912,7 @@
       "type": "component",
       "description": "Transient notification surfaced via the useToast hook",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/toast.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/index.ts",
@@ -17925,8 +17925,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "notification", "feedback"],
       "meta": {
@@ -18050,7 +18050,7 @@
       "type": "component",
       "description": "Table of contents with scroll-spy highlighting of the active section",
       "category": "navigation",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/index.ts",
@@ -18065,8 +18065,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["toc", "table-of-contents", "navigation", "scroll-spy", "anchor"],
       "meta": {
@@ -18188,7 +18188,7 @@
       "type": "component",
       "description": "On/off switch built as an accessible button",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/index.ts",
@@ -18201,7 +18201,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["switch", "form", "boolean"],
       "meta": {
@@ -18342,7 +18342,7 @@
       "type": "component",
       "description": "A set of toggle buttons for single or multiple selection",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/index.ts",
@@ -18355,7 +18355,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["selection", "segmented", "toolbar", "choice"],
       "meta": {
@@ -18512,7 +18512,7 @@
       "type": "component",
       "description": "A click-triggered info popover for supplementary, selectable content",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/toggletip.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggletip/index.ts",
@@ -18525,8 +18525,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["overlay", "toggletip", "info", "popover", "floating"],
       "meta": {
@@ -18683,7 +18683,7 @@
       "type": "component",
       "description": "Contextual label shown on hover or focus",
       "category": "overlay",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/index.ts",
@@ -18696,7 +18696,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["overlay", "hint", "popover"],
       "meta": {
@@ -18818,7 +18818,7 @@
       "type": "component",
       "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/index.ts",
@@ -18831,8 +18831,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["display", "tree", "hierarchy", "navigation", "files"],
       "meta": {
@@ -19002,7 +19002,7 @@
       "type": "component",
       "description": "Identity composite: an avatar with a name, description, and optional action slot",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/user.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/user/index.ts",
@@ -19015,7 +19015,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["user", "avatar", "identity", "display"],
       "meta": {
@@ -19123,7 +19123,7 @@
       "type": "component",
       "description": "Renders only the rows inside the viewport, so list length costs no extra DOM",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/index.ts",
@@ -19136,7 +19136,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["display", "virtual", "virtualization", "list", "performance", "scroll"],
       "meta": {
@@ -19279,7 +19279,7 @@
       "type": "component",
       "description": "Hides content visually while keeping it available to screen readers",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/visually-hidden.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/visually-hidden/index.ts",
@@ -19292,7 +19292,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["accessibility", "screen-reader", "sr-only", "hidden"],
       "meta": {
@@ -19381,7 +19381,7 @@
       "type": "component",
       "description": "iOS-style drum picker — a column of options that scrolls and snaps to a selection",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/index.ts",
@@ -19394,7 +19394,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["inputs", "picker", "wheel", "drum", "scroll-snap", "mobile", "ios"],
       "meta": {
@@ -19572,7 +19572,7 @@
       "type": "layout",
       "description": "Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/app-shell.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/app-shell/index.ts",
@@ -19587,9 +19587,9 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n", "@cascivo/storage"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0",
-        "@cascivo/storage": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1",
+        "@cascivo/storage": ">=0.16.1"
       },
       "tags": ["layout", "shell", "sidebar", "navigation"],
       "meta": {
@@ -19718,7 +19718,7 @@
       "type": "layout",
       "description": "Centered card layout for authentication pages (login, register, forgot password).",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/auth-layout.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auth-layout/index.ts",
@@ -19731,7 +19731,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "auth", "login", "page"],
       "meta": {
@@ -19812,7 +19812,7 @@
       "type": "layout",
       "description": "Media-query-free responsive grid — columns auto-fill based on available space.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/auto-grid.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/auto-grid/index.ts",
@@ -19825,7 +19825,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "grid", "responsive"],
       "meta": {
@@ -19895,7 +19895,7 @@
       "type": "layout",
       "description": "Horizontally centered container with a configurable max-width.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/center.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/center/index.ts",
@@ -19908,7 +19908,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "center", "wrapper"],
       "meta": {
@@ -19976,7 +19976,7 @@
       "type": "layout",
       "description": "Equal-width multi-column layout that collapses to single column on narrow viewports.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/columns.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/columns/index.ts",
@@ -19989,7 +19989,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "grid", "columns"],
       "meta": {
@@ -20064,7 +20064,7 @@
       "type": "layout",
       "description": "Dashboard page layout with stats strip, main content area, and optional aside.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/dashboard-layout.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/dashboard-layout/index.ts",
@@ -20077,7 +20077,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "dashboard", "page"],
       "meta": {
@@ -20156,7 +20156,7 @@
       "type": "layout",
       "description": "Flex layout primitive for vertical or horizontal stacking with gap control. ⚠ Unlike CSS `flex-direction`, `direction` defaults to `vertical` — pass `direction=\"horizontal\"` for a row.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/flex.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/flex/index.ts",
@@ -20169,7 +20169,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "flex", "stack", "spacing"],
       "meta": {
@@ -20280,7 +20280,7 @@
       "type": "layout",
       "description": "CSS grid layout primitive with responsive column collapsing. Establishes its own containment, so responsive `cols` adapt to the grid’s own slot width with no wrapper or container ancestor required.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/index.ts",
@@ -20293,7 +20293,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "grid", "columns"],
       "meta": {
@@ -20391,7 +20391,7 @@
       "type": "layout",
       "description": "Masonry layout — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders items top-to-bottom per column).",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/masonry.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/masonry/index.ts",
@@ -20404,7 +20404,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "masonry", "gallery"],
       "meta": {
@@ -20479,7 +20479,7 @@
       "type": "layout",
       "description": "Page-level header with title, description, breadcrumb, and actions slots.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/index.ts",
@@ -20492,7 +20492,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "header", "page"],
       "meta": {
@@ -20591,7 +20591,7 @@
       "type": "layout",
       "description": "Page-section shell with block padding, centered inner width, and stack gap.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/section.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/section/index.ts",
@@ -20604,7 +20604,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "section", "page"],
       "meta": {
@@ -20679,7 +20679,7 @@
       "type": "layout",
       "description": "Two-column settings page layout with a fixed-width menu and fluid content area.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/settings-layout.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/settings-layout/index.ts",
@@ -20692,7 +20692,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "settings", "page"],
       "meta": {
@@ -20765,7 +20765,7 @@
       "type": "layout",
       "description": "Fixed-height spacing block using design token steps.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/spacer.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/spacer/index.ts",
@@ -20778,7 +20778,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "spacer", "spacing"],
       "meta": {
@@ -20841,7 +20841,7 @@
       "type": "layout",
       "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/index.ts",
@@ -20854,7 +20854,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["layout", "split", "resizable", "pane"],
       "meta": {
@@ -20954,7 +20954,7 @@
       "type": "block",
       "description": "Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/console-app/console-app.module.css"
@@ -20965,8 +20965,8 @@
       },
       "dependencies": ["@cascivo/react", "@cascivo/icons"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0",
-        "@cascivo/icons": ">=0.3.7"
+        "@cascivo/react": ">=0.16.1",
+        "@cascivo/icons": ">=0.3.8"
       },
       "tags": ["block", "console", "shell", "navigation", "carbon-parity"],
       "meta": {
@@ -21036,7 +21036,7 @@
       "type": "block",
       "description": "Dashboard layout with KPI tiles, line chart, bar chart, and pie chart.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/dashboard-charts/dashboard-charts.tsx"
       ],
@@ -21045,8 +21045,8 @@
       },
       "dependencies": ["@cascivo/charts", "@cascivo/react"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0",
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1",
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "dashboard", "charts", "kpi"],
       "meta": {
@@ -21115,7 +21115,7 @@
       "type": "block",
       "description": "Dashboard page showing an empty state with a call-to-action button.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/empty-dashboard/empty-dashboard.tsx"
       ],
@@ -21124,7 +21124,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "dashboard", "empty-state", "page"],
       "meta": {
@@ -21187,7 +21187,7 @@
       "type": "block",
       "description": "Authentication login page with email and password form.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/login-page/login-page.tsx"
       ],
@@ -21196,7 +21196,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "login", "auth", "form", "page"],
       "meta": {
@@ -21259,7 +21259,7 @@
       "type": "block",
       "description": "A list of notification alerts with a mark-all-read action.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/notification-center/notification-center.tsx"
       ],
@@ -21268,7 +21268,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "notifications", "alerts"],
       "meta": {
@@ -21338,7 +21338,7 @@
       "type": "block",
       "description": "A centered content page with a breadcrumb navigation and page header.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/page-with-breadcrumb/page-with-breadcrumb.tsx"
       ],
@@ -21347,7 +21347,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "breadcrumb", "page", "navigation"],
       "meta": {
@@ -21404,7 +21404,7 @@
       "type": "block",
       "description": "Settings page with profile form inside a two-column settings layout.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
       ],
@@ -21413,7 +21413,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "settings", "form", "page"],
       "meta": {
@@ -21476,7 +21476,7 @@
       "type": "block",
       "description": "Full app shell with collapsible side navigation and top header.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/sidebar-app/sidebar-app.tsx"
       ],
@@ -21485,7 +21485,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "sidebar", "navigation", "app-shell"],
       "meta": {
@@ -21547,7 +21547,7 @@
       "type": "block",
       "description": "Grid of KPI stat cards with trend badges.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/stats-cards/stats-cards.tsx"
       ],
@@ -21556,7 +21556,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "stats", "kpi", "cards"],
       "meta": {
@@ -21624,7 +21624,7 @@
       "type": "block",
       "description": "Full users management page with table, search, and invite action.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/users-table-page/users-table-page.tsx"
       ],
@@ -21633,7 +21633,7 @@
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
-        "@cascivo/react": ">=0.16.0"
+        "@cascivo/react": ">=0.16.1"
       },
       "tags": ["block", "users", "table", "page"],
       "meta": {
@@ -21703,11 +21703,11 @@
       "type": "chart",
       "description": "Area chart with optional stacking, multi-series support, and hover tooltip.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "area", "data-viz"],
       "meta": {
@@ -21964,11 +21964,11 @@
       "type": "chart",
       "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "bar", "data-viz"],
       "meta": {
@@ -22308,11 +22308,11 @@
       "type": "chart",
       "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "boxplot", "box-whisker", "statistics", "data-viz"],
       "meta": {
@@ -22426,11 +22426,11 @@
       "type": "chart",
       "description": "Bubble chart mapping x, y, and size dimensions; radius is area-proportional via sqrt scale.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "bubble", "scatter", "three-dimensional", "data-viz"],
       "meta": {
@@ -22556,11 +22556,11 @@
       "type": "chart",
       "description": "Bullet chart with background range bands, measure bar, and target tick.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "bullet", "kpi", "progress", "data-viz"],
       "meta": {
@@ -22683,11 +22683,11 @@
       "type": "chart",
       "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "calendar", "heatmap", "time", "data-viz"],
       "meta": {
@@ -22815,11 +22815,11 @@
       "type": "chart",
       "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
       "meta": {
@@ -22997,11 +22997,11 @@
       "type": "chart",
       "description": "Combination bar + line chart on shared or dual y-axes.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
       "meta": {
@@ -23135,11 +23135,11 @@
       "type": "chart",
       "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "funnel", "conversion", "flow", "data-viz"],
       "meta": {
@@ -23265,11 +23265,11 @@
       "type": "chart",
       "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],
       "meta": {
@@ -23414,11 +23414,11 @@
       "type": "chart",
       "description": "Two-dimensional heatmap with band scales and color-mix cell interpolation.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "heatmap", "matrix", "data-viz"],
       "meta": {
@@ -23530,11 +23530,11 @@
       "type": "chart",
       "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],
       "meta": {
@@ -23651,11 +23651,11 @@
       "type": "chart",
       "description": "KPI card showing a primary metric with optional delta indicator, icon, and sparkline.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "kpi", "metric", "dashboard", "data-viz"],
       "meta": {
@@ -23773,11 +23773,11 @@
       "type": "chart",
       "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "line", "time-series", "data-viz"],
       "meta": {
@@ -24046,11 +24046,11 @@
       "type": "chart",
       "description": "Progress meter in bar or gauge variant with threshold coloring.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "meter", "gauge", "progress", "data-viz"],
       "meta": {
@@ -24163,11 +24163,11 @@
       "type": "chart",
       "description": "Pie or donut chart with hover segments and optional legend.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "pie", "donut", "data-viz"],
       "meta": {
@@ -24420,11 +24420,11 @@
       "type": "chart",
       "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "polar", "rose", "radial", "data-viz"],
       "meta": {
@@ -24569,11 +24569,11 @@
       "type": "chart",
       "description": "Radar / spider chart with polar grid rings, spokes, and multi-series polygon overlays.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "radar", "spider", "polar", "data-viz"],
       "meta": {
@@ -24694,11 +24694,11 @@
       "type": "chart",
       "description": "Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "radial", "gauge", "progress", "data-viz"],
       "meta": {
@@ -24866,11 +24866,11 @@
       "type": "chart",
       "description": "Flow diagram — ranked nodes connected by throughput-sized link ribbons.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "sankey", "flow", "network", "data-viz"],
       "meta": {
@@ -24995,11 +24995,11 @@
       "type": "chart",
       "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "scatter", "plot", "data-viz"],
       "meta": {
@@ -25188,11 +25188,11 @@
       "type": "chart",
       "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],
       "meta": {
@@ -25298,11 +25298,11 @@
       "type": "chart",
       "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "stream", "streamgraph", "area", "data-viz"],
       "meta": {
@@ -25447,11 +25447,11 @@
       "type": "chart",
       "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "sunburst", "hierarchy", "radial", "data-viz"],
       "meta": {
@@ -25576,11 +25576,11 @@
       "type": "chart",
       "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
       "category": "chart",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["chart", "treemap", "hierarchy", "part-to-whole", "data-viz"],
       "meta": {
@@ -25694,12 +25694,12 @@
       "type": "editor",
       "description": "Lightweight code editor — a native textarea overlaid on a syntax-highlighted layer, with line numbers and Tab indent.",
       "category": "inputs",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["editor", "code", "syntax-highlighting", "textarea", "inputs"],
       "meta": {
@@ -25947,12 +25947,12 @@
       "type": "editor",
       "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/i18n": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/i18n": ">=0.16.1"
       },
       "tags": ["editor", "code", "syntax-highlighting", "display", "read-only"],
       "meta": {
@@ -26060,7 +26060,7 @@
       "type": "section",
       "description": "Call-to-action band — quiet hairline-bordered section with title, description, and centered actions. Replace demo content before shipping.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/cta/cta.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/cta/cta.module.css"
@@ -26071,7 +26071,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["section", "cta", "marketing"],
       "meta": {
@@ -26167,7 +26167,7 @@
       "type": "section",
       "description": "Feature section — AutoGrid of items with optional title, description, and icon slots. Icons are optional; the grid works text-only. Replace demo content before shipping.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/feature-grid/feature-grid.module.css"
@@ -26178,7 +26178,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["section", "features", "grid"],
       "meta": {
@@ -26283,7 +26283,7 @@
       "type": "section",
       "description": "Page hero section — centered or split layout with eyebrow, title, description, actions and media slots. Replace demo content before shipping.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/hero/hero.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/hero/hero.module.css"
@@ -26294,7 +26294,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["section", "hero", "marketing"],
       "meta": {
@@ -26414,7 +26414,7 @@
       "type": "section",
       "description": "Masonry gallery section — native CSS masonry where supported, multi-column fallback elsewhere (fallback orders tiles top-to-bottom per column). Tiles style themselves; section provides only the layout shell.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/media-masonry/media-masonry.module.css"
@@ -26425,7 +26425,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["section", "gallery", "masonry"],
       "meta": {
@@ -26528,7 +26528,7 @@
       "type": "section",
       "description": "Site footer — AutoGrid of link groups with a brand/meta bottom row. Renders a <footer> element with a <nav aria-label=\"Footer\"> wrapping the link columns.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/page-footer/page-footer.module.css"
@@ -26539,7 +26539,7 @@
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["section", "footer", "navigation"],
       "meta": {
@@ -26624,7 +26624,7 @@
       "type": "section",
       "description": "KPI strip — horizontal band of stats with optional delta and inline sparkline trend. Wraps via AutoGrid on narrow containers. No visible heading; provide aria-label for accessibility.",
       "category": "layout",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
@@ -26635,8 +26635,8 @@
       },
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0",
-        "@cascivo/charts": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1",
+        "@cascivo/charts": ">=0.16.1"
       },
       "tags": ["section", "stats", "kpi", "charts"],
       "meta": {
@@ -26727,11 +26727,11 @@
       "type": "flow",
       "description": "The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "graph", "declarative", "diagram", "ai-first"],
       "meta": {
@@ -26913,11 +26913,11 @@
       "type": "flow",
       "description": "Decorative dots / grid / cross canvas background, drawn purely in CSS gradients.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "background", "grid", "dots", "canvas"],
       "meta": {
@@ -27024,11 +27024,11 @@
       "type": "flow",
       "description": "Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "controls", "zoom", "chrome"],
       "meta": {
@@ -27149,11 +27149,11 @@
       "type": "flow",
       "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "edge", "connector", "animated", "svg"],
       "meta": {
@@ -27312,11 +27312,11 @@
       "type": "flow",
       "description": "A connection port on a node edge — where edges attach and interactive connect starts.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "handle", "port", "connect"],
       "meta": {
@@ -27416,11 +27416,11 @@
       "type": "flow",
       "description": "A scaled SVG overview of the graph with a draggable viewport rectangle.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "minimap", "overview", "chrome"],
       "meta": {
@@ -27540,11 +27540,11 @@
       "type": "flow",
       "description": "An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "node", "draggable", "graph"],
       "meta": {
@@ -27695,11 +27695,11 @@
       "type": "flow",
       "description": "An absolutely-positioned slot for custom flow-canvas UI (legend, toolbar).",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "panel", "slot", "chrome"],
       "meta": {
@@ -27775,11 +27775,11 @@
       "type": "flow",
       "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],
       "meta": {
@@ -27952,11 +27952,11 @@
       "type": "flow",
       "description": "The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.",
       "category": "display",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [],
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
-        "@cascivo/core": ">=0.16.0"
+        "@cascivo/core": ">=0.16.1"
       },
       "tags": ["flow", "canvas", "viewport", "pan", "zoom"],
       "meta": {
@@ -28084,7 +28084,7 @@
       "displayName": "App Shell",
       "description": "Two-column layout with collapsible sidebar, nav links, and content area.",
       "category": "shell",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/app-shell/app-shell.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/app-shell/app-shell.module.css"
@@ -28126,7 +28126,7 @@
       "displayName": "Login Form",
       "description": "Email + password login with remember-me checkbox and forgot-password link.",
       "category": "auth",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-login/auth-login.module.css"
@@ -28168,7 +28168,7 @@
       "displayName": "Sign Up Form",
       "description": "Full-name, email, password, confirm-password sign-up form with terms checkbox.",
       "category": "auth",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/auth-signup/auth-signup.module.css"
@@ -28209,7 +28209,7 @@
       "displayName": "Dashboard Overview",
       "description": "Welcome header with four KPI stat cards (revenue, users, orders, conversion).",
       "category": "dashboard",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-overview/dashboard-overview.module.css"
@@ -28254,7 +28254,7 @@
       "displayName": "Dashboard Table",
       "description": "Searchable, sortable, paginated data table with export button.",
       "category": "dashboard",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/dashboard-table/dashboard-table.module.css"
@@ -28294,7 +28294,7 @@
       "displayName": "FAQ Accordion",
       "description": "Frequently-asked-questions section composed from the Accordion component, with a centered, readable measure.",
       "category": "marketing",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/faq/faq.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/faq/faq.module.css"
@@ -28335,7 +28335,7 @@
       "displayName": "Feature Grid",
       "description": "Three-column responsive feature grid with icon, title, and description per cell.",
       "category": "marketing",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-features/marketing-features.module.css"
@@ -28376,7 +28376,7 @@
       "displayName": "Hero Section",
       "description": "Full-width hero with headline, subtitle, CTA pair, and trust badges.",
       "category": "marketing",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/marketing-hero/marketing-hero.module.css"
@@ -28423,7 +28423,7 @@
       "displayName": "Pricing Tiers",
       "description": "Responsive three-tier pricing section composed from Card, Badge, and Button, with a highlighted featured plan.",
       "category": "marketing",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/pricing/pricing.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/pricing/pricing.module.css"
@@ -28469,7 +28469,7 @@
       "displayName": "Settings — Profile",
       "description": "Two-section settings form: personal info fields + preference toggles.",
       "category": "shell",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/settings-profile/settings-profile.module.css"
@@ -28510,7 +28510,7 @@
       "displayName": "Site Footer",
       "description": "Multi-column site footer composed from Link and Separator, with a brand blurb, link columns, and a legal row.",
       "category": "marketing",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/site-footer/site-footer.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/site-footer/site-footer.module.css"
@@ -28551,7 +28551,7 @@
       "displayName": "Testimonials",
       "description": "Responsive testimonial grid composed from Card and Avatar, with a quote and attribution per card.",
       "category": "marketing",
-      "version": "0.16.0",
+      "version": "0.16.1",
       "files": [
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/testimonials/testimonials.tsx",
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/blocks/testimonials/testimonials.module.css"

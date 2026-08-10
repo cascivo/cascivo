@@ -1,8 +1,8 @@
 # cascivo — The CSS-native, signal-driven, AI-first React design system
 
-_registry v0.16.0 · generated 2026-08-05 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
+_registry v0.16.1 · generated 2026-08-09 · docs track `main`; compare with https://cascivo.com/registry.json `.version` for staleness, and https://cascivo.com/breaking-changes.json for installed-vs-documented API drift._
 
-_Describes: @cascivo/ai@0.16.0 · @cascivo/charts@0.16.0 · @cascivo/core@0.16.0 · @cascivo/docs@0.2.3 · @cascivo/editor@0.16.0 · @cascivo/eslint-config@0.2.1 · @cascivo/flow@0.16.0 · @cascivo/i18n@0.16.0 · @cascivo/icons@0.3.7 · @cascivo/mcp@0.6.3 · @cascivo/platform@0.0.1 · @cascivo/react@0.16.0 · @cascivo/registry@0.2.5 · @cascivo/storage@0.16.0 · @cascivo/themes@0.4.10 · @cascivo/tokens@0.5.8 · @cascivo/vite-plugin@0.1.5 · cascivo@0.7.1. If your installed versions are lower, a documented behaviour may not have shipped yet._
+_Describes: @cascivo/ai@0.16.1 · @cascivo/charts@0.16.1 · @cascivo/core@0.16.1 · @cascivo/docs@0.2.4 · @cascivo/editor@0.16.1 · @cascivo/eslint-config@0.2.2 · @cascivo/flow@0.16.1 · @cascivo/i18n@0.16.1 · @cascivo/icons@0.3.8 · @cascivo/mcp@0.6.4 · @cascivo/platform@0.0.2 · @cascivo/react@0.16.1 · @cascivo/registry@0.2.6 · @cascivo/storage@0.16.1 · @cascivo/themes@0.4.11 · @cascivo/tokens@0.5.9 · @cascivo/vite-plugin@0.1.6 · cascivo@0.7.2. If your installed versions are lower, a documented behaviour may not have shipped yet._
 
 cascivo is a React design system you can consume two ways: copy-paste the source
 (`npx cascivo add <name>` — shadcn model, you own the code) or install the prebuilt
@@ -776,4 +776,4 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [VisuallyHidden](https://cascivo.com/context/visually-hidden.md) — Use when: Giving an icon-only control an accessible name without showing text
 - [WheelPicker](https://cascivo.com/context/wheel-picker.md) — Use when: Touch surfaces picking one value from a short, ordered, homogeneous range — an hour, a minute, a unit
 
-_Generated: 2026-08-05 from registry v0.16.0_
+_Generated: 2026-08-09 from registry v0.16.1_
