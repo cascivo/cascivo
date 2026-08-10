@@ -33,12 +33,12 @@ Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem trigg
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | No | — | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. |
-| `menus` | `MenubarMenu[]` | Yes | — | The top-level menus to render. |
-| `aria-label` | `string` | No | — | Accessible label used when no visible label is present. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name         | Type            | Required | Default | Description                                                                                                                                                                                                                                      |
+| ------------ | --------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ariaLabel`  | `string`        | No       | —       | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. |
+| `menus`      | `MenubarMenu[]` | Yes      | —       | The top-level menus to render.                                                                                                                                                                                                                   |
+| `aria-label` | `string`        | No       | —       | Accessible label used when no visible label is present.                                                                                                                                                                                          |
+| `className`  | `string`        | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                         |
 
 ## Tokens
 
@@ -55,15 +55,18 @@ Implements the WAI-ARIA menubar pattern: a roving-tabindex row of menuitem trigg
 ### Basic
 
 ```jsx
-<Menubar aria-label="Main" menus={[{ id: "file", label: "File", items: [{ id: "new", label: "New", onSelect: () => {} }] }]} />
+<Menubar
+  aria-label="Main"
+  menus={[{ id: 'file', label: 'File', items: [{ id: 'new', label: 'New', onSelect: () => {} }] }]}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area         | Level  | Note                                                                               |
+| ------------ | ------ | ---------------------------------------------------------------------------------- |
 | menu content | strict | Menus are described by data (menus prop) so roles and keyboard wiring stay correct |
-| token names | strict | Surface, borders, and focus ring must resolve to --cascivo-* tokens |
+| token names  | strict | Surface, borders, and focus ring must resolve to --cascivo-\* tokens               |
 
 ## AI context prompt
 

@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/styling-internals.md
   registry v0.16.1 · generated 2026-08-09
 -->
+
 # Styling a component's internals
 
 cascivo components ship CSS Modules, so their inner elements carry **hashed** class names
@@ -46,14 +47,14 @@ keeps your intent explicit and survives later refactors of your own stylesheet.
 
 ## The hooks
 
-| Attribute | Component | Element |
-| --- | --- | --- |
-| `data-cascivo-appshell-nav` | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width |
-| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container |
-| `data-cascivo-modal-body` | `Modal` | the scrollable content region between header and footer |
-| `data-cascivo-modal-footer` | `Modal` | the right-aligned action row (rendered only when `footer` is passed) |
-| `data-cascivo-drawer-body` | `Drawer` | the scrollable content region |
-| `data-cascivo-sheet-body` | `Sheet` | the scrollable content region |
+| Attribute                    | Component  | Element                                                              |
+| ---------------------------- | ---------- | -------------------------------------------------------------------- |
+| `data-cascivo-appshell-nav`  | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width    |
+| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container                                        |
+| `data-cascivo-modal-body`    | `Modal`    | the scrollable content region between header and footer              |
+| `data-cascivo-modal-footer`  | `Modal`    | the right-aligned action row (rendered only when `footer` is passed) |
+| `data-cascivo-drawer-body`   | `Drawer`   | the scrollable content region                                        |
+| `data-cascivo-sheet-body`    | `Sheet`    | the scrollable content region                                        |
 
 ## Prefer a token, then a prop, then a hook
 
@@ -71,7 +72,7 @@ If you need a hook that isn't listed, [open an issue](https://github.com/cascivo
 Adding one is cheap; discovering after the fact that everyone is depending on a hashed class
 name is not.
 
-## What is *not* a contract
+## What is _not_ a contract
 
 Everything else about a component's internals: the hashed class names, the element nesting,
 the tag names, and any `data-testid` (those exist for cascivo's own tests and can change

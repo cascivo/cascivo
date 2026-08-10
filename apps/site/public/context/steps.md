@@ -34,13 +34,13 @@ Rendered as an ordered list (<ol>) with aria-label; the active item carries aria
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | No | — | Accessible label for the steps navigation; defaults to the built-in i18n string. |
-| `steps` | `Step[]` | Yes | — | Array of step objects with label and optional explicit state |
-| `activeStep` | `number` | No | 0 | Index of the currently active step (0-based) |
-| `orientation` | `'horizontal' \| 'vertical'` | No | 'horizontal' | Layout direction of the steps |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name          | Type                         | Required | Default      | Description                                                                      |
+| ------------- | ---------------------------- | -------- | ------------ | -------------------------------------------------------------------------------- |
+| `ariaLabel`   | `string`                     | No       | —            | Accessible label for the steps navigation; defaults to the built-in i18n string. |
+| `steps`       | `Step[]`                     | Yes      | —            | Array of step objects with label and optional explicit state                     |
+| `activeStep`  | `number`                     | No       | 0            | Index of the currently active step (0-based)                                     |
+| `orientation` | `'horizontal' \| 'vertical'` | No       | 'horizontal' | Layout direction of the steps                                                    |
+| `className`   | `string`                     | No       | —            | Additional CSS class names merged onto the root element.                         |
 
 ## Tokens
 
@@ -66,12 +66,7 @@ Standard checkout or onboarding progress tracker
 
 ```jsx
 <Steps
-  steps={[
-    { label: 'Cart' },
-    { label: 'Shipping' },
-    { label: 'Payment' },
-    { label: 'Confirm' },
-  ]}
+  steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }, { label: 'Confirm' }]}
   activeStep={1}
 />
 ```
@@ -83,11 +78,7 @@ Sidebar-style progress for tall forms
 ```jsx
 <Steps
   orientation="vertical"
-  steps={[
-    { label: 'Account info' },
-    { label: 'Profile details' },
-    { label: 'Preferences' },
-  ]}
+  steps={[{ label: 'Account info' }, { label: 'Profile details' }, { label: 'Preferences' }]}
   activeStep={0}
 />
 ```
@@ -98,21 +89,17 @@ Override derived state on a specific step
 
 ```jsx
 <Steps
-  steps={[
-    { label: 'Upload' },
-    { label: 'Validate', state: 'error' },
-    { label: 'Process' },
-  ]}
+  steps={[{ label: 'Upload' }, { label: 'Validate', state: 'error' }, { label: 'Process' }]}
   activeStep={1}
 />
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| step state | flexible | Each step can override derived pending/active/complete state via step.state |
-| orientation | flexible | Horizontal for top progress bars, vertical for sidebar wizards |
+| Area        | Level    | Note                                                                        |
+| ----------- | -------- | --------------------------------------------------------------------------- |
+| step state  | flexible | Each step can override derived pending/active/complete state via step.state |
+| orientation | flexible | Horizontal for top progress bars, vertical for sidebar wizards              |
 
 ## AI context prompt
 

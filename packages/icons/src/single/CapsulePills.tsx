@@ -5,7 +5,14 @@ export const CapsulePills = createIcon(
   'CapsulePills',
   <>
     <circle cx="20.25" cy="7.825" r="2.749" />
-    <rect x="4.239" y="-0.348" width="7.893" height="17.067" rx="3.946" transform="rotate(45 8.185 8.185)" />
+    <rect
+      x="4.239"
+      y="-0.348"
+      width="7.893"
+      height="17.067"
+      rx="3.946"
+      transform="rotate(45 8.185 8.185)"
+    />
     <path d="M4.626 11.113l1.2-1.2M5.395 5.395l5.023 5.023" />
     <circle cx="15.748" cy="17.86" r="5.14" />
     <path d="M13.567 16.601l6.632 3.828M11.297 15.29l2.27 1.311" />

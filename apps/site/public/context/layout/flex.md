@@ -34,13 +34,13 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `direction` | `'vertical' \| 'horizontal'` | No | vertical | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No | 4 | Spacing token step |
-| `align` | `'start'\|'center'\|'end'\|'stretch'` | No | — | align-items |
-| `justify` | `'start'\|'center'\|'end'\|'between'` | No | — | justify-content |
-| `wrap` | `boolean` | No | false | Allow wrapping |
+| Name        | Type                                  | Required | Default  | Description                                                                                                                                                                                               |
+| ----------- | ------------------------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `direction` | `'vertical' \| 'horizontal'`          | No       | vertical | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
+| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | No       | 4        | Spacing token step                                                                                                                                                                                        |
+| `align`     | `'start'\|'center'\|'end'\|'stretch'` | No       | —        | align-items                                                                                                                                                                                               |
+| `justify`   | `'start'\|'center'\|'end'\|'between'` | No       | —        | justify-content                                                                                                                                                                                           |
+| `wrap`      | `boolean`                             | No       | false    | Allow wrapping                                                                                                                                                                                            |
 
 ## Tokens
 
@@ -53,7 +53,10 @@ Pure layout primitive with no semantic role; does not affect the accessibility t
 Default vertical stack
 
 ```jsx
-<Flex gap={4}><div>A</div><div>B</div></Flex>
+<Flex gap={4}>
+  <div>A</div>
+  <div>B</div>
+</Flex>
 ```
 
 ### Horizontal
@@ -61,7 +64,10 @@ Default vertical stack
 Row layout
 
 ```jsx
-<Flex direction="horizontal" gap={2}><div>A</div><div>B</div></Flex>
+<Flex direction="horizontal" gap={2}>
+  <div>A</div>
+  <div>B</div>
+</Flex>
 ```
 
 ## AI context prompt

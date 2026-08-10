@@ -18,10 +18,10 @@ _Copy-paste only — `SettingsLayout` is not exported from `@cascivo/react`. Run
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `menu` | `ReactNode` | yes | — | Side navigation menu |
-| `children` | `ReactNode` | yes | — | Settings content area |
+| Prop       | Type        | Required | Default | Description           |
+| ---------- | ----------- | -------- | ------- | --------------------- |
+| `menu`     | `ReactNode` | yes      | —       | Side navigation menu  |
+| `children` | `ReactNode` | yes      | —       | Settings content area |
 
 ## Examples
 
@@ -30,7 +30,9 @@ _Copy-paste only — `SettingsLayout` is not exported from `@cascivo/react`. Run
 Menu + content layout
 
 ```tsx
-<SettingsLayout menu={<nav>Menu</nav>}><div>Settings</div></SettingsLayout>
+<SettingsLayout menu={<nav>Menu</nav>}>
+  <div>Settings</div>
+</SettingsLayout>
 ```
 
 ## Client JavaScript

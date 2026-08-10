@@ -21,27 +21,27 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `series` | `ScatterChartSeries[]` | yes | — | The data series to plot. |
-| `title` | `string` | yes | — | Title text for the component. |
-| `description` | `string` | no | — | Supporting description text. |
-| `r` | `number \| ((d: ScatterDatum) => number)` | no | `4` | Point radius or accessor |
-| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `xTicks` | `number` | no | `5` | Approximate number of ticks on the x-axis. |
-| `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
-| `legend` | `boolean` | no | — | Whether to show the legend. |
-| `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
-| `annotations` | `Annotation[]` | no | — | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
-| `onSelect` | `(point: ChartPoint) => void` | no | — | Fired when a point is clicked or activated (Enter/Space) — for drill-down. |
-| `glyph` | `GlyphShape \| ((d, seriesId) => GlyphShape)` | no | — | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape. |
-| `renderer` | `'svg' \| 'canvas' \| 'auto'` | no | `svg` | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer. |
-| `visualMap` | `VisualMapOptions` | no | — | Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range. |
-| `toolbox` | `boolean \| ToolboxOptions` | no | — | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter). |
-| `format` | `(value: number \| string \| Date) => string` | no | — | Format each X-axis tick label. |
+| Prop          | Type                                          | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | --------------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `series`      | `ScatterChartSeries[]`                        | yes      | —       | The data series to plot.                                                                                                                                                                                                                                                                                                                                                                      |
+| `title`       | `string`                                      | yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
+| `description` | `string`                                      | no       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `r`           | `number \| ((d: ScatterDatum) => number)`     | no       | `4`     | Point radius or accessor                                                                                                                                                                                                                                                                                                                                                                      |
+| `width`       | `number`                                      | no       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`                                      | no       | `300`   | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `xTicks`      | `number`                                      | no       | `5`     | Approximate number of ticks on the x-axis.                                                                                                                                                                                                                                                                                                                                                    |
+| `yTicks`      | `number`                                      | no       | `5`     | Approximate number of ticks on the y-axis.                                                                                                                                                                                                                                                                                                                                                    |
+| `legend`      | `boolean`                                     | no       | —       | Whether to show the legend.                                                                                                                                                                                                                                                                                                                                                                   |
+| `tooltip`     | `boolean`                                     | no       | —       | Enable hover/keyboard tooltip                                                                                                                                                                                                                                                                                                                                                                 |
+| `className`   | `string`                                      | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`                                     | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
+| `annotations` | `Annotation[]`                                | no       | —       | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).                                                                                                                                                                                                                                                                                                |
+| `onSelect`    | `(point: ChartPoint) => void`                 | no       | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                                                                                                                                                                                                                                                                                    |
+| `glyph`       | `GlyphShape \| ((d, seriesId) => GlyphShape)` | no       | —       | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.                                                                                                                                                                                                                                                                    |
+| `renderer`    | `'svg' \| 'canvas' \| 'auto'`                 | no       | `svg`   | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer.                                                                                                                                                                                                                                                     |
+| `visualMap`   | `VisualMapOptions`                            | no       | —       | Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range.                                                                                                                                                                                                                                                                               |
+| `toolbox`     | `boolean \| ToolboxOptions`                   | no       | —       | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).                                                                                                                                                                                                                                                                     |
+| `format`      | `(value: number \| string \| Date) => string` | no       | —       | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
 
 ## Object types
 
@@ -49,26 +49,26 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 Shape of the `series` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | yes | — |
-| `label` | `string` | yes | — |
-| `data` | `readonly ScatterDatum[]` | yes | — |
-| `color` | `string` | no | — |
+| Field   | Type                      | Required | Description |
+| ------- | ------------------------- | -------- | ----------- |
+| `id`    | `string`                  | yes      | —           |
+| `label` | `string`                  | yes      | —           |
+| `data`  | `readonly ScatterDatum[]` | yes      | —           |
+| `color` | `string`                  | no       | —           |
 
 ### `VisualMapOptions`
 
 Shape of the `visualMap` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `min` | `number` | yes | Domain minimum (value mapped to ramp t=0). |
-| `max` | `number` | yes | Domain maximum (value mapped to ramp t=1). |
-| `mode` | `VisualMode` | no | `continuous` ramp (default) or `piecewise` buckets. |
-| `channel` | `VisualChannel` | no | Which visual channel(s) the value drives. |
-| `ramp` | `RampKind` | no | Ramp family — CVD-safe `sequential` (default) or `diverging`. |
-| `pieces` | `number` | no | Bucket count for `piecewise` (default 5). |
-| `sizeRange` | `[number, number]` | no | [min, max] mark radius in px for the `size` channel (default [3, 14]). |
+| Field       | Type               | Required | Description                                                            |
+| ----------- | ------------------ | -------- | ---------------------------------------------------------------------- |
+| `min`       | `number`           | yes      | Domain minimum (value mapped to ramp t=0).                             |
+| `max`       | `number`           | yes      | Domain maximum (value mapped to ramp t=1).                             |
+| `mode`      | `VisualMode`       | no       | `continuous` ramp (default) or `piecewise` buckets.                    |
+| `channel`   | `VisualChannel`    | no       | Which visual channel(s) the value drives.                              |
+| `ramp`      | `RampKind`         | no       | Ramp family — CVD-safe `sequential` (default) or `diverging`.          |
+| `pieces`    | `number`           | no       | Bucket count for `piecewise` (default 5).                              |
+| `sizeRange` | `[number, number]` | no       | [min, max] mark radius in px for the `size` channel (default [3, 14]). |
 
 ## Examples
 

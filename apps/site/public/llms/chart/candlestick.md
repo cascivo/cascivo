@@ -21,27 +21,27 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `CandlestickDatum[]` | yes | — | One candle per period: { t, open, high, low, close, volume? }. |
-| `title` | `string` | yes | — | Chart title (also aria-label). |
-| `description` | `string` | no | — | Supporting description text. |
-| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
-| `upColor` | `string` | no | — | Colour for up candles (close ≥ open). |
-| `downColor` | `string` | no | — | Colour for down candles (close < open). |
-| `volume` | `boolean` | no | `false` | Render volume bars beneath the candles. |
-| `tooltip` | `boolean` | no | — | Enable hover tooltip (OHLC). |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | no | `false` | Marks only — no axes. For micro/inline charts. |
-| `annotations` | `Annotation[]` | no | — | Reference lines/bands/markers over the plot (e.g. a last-price rule). |
-| `brush` | `boolean` | no | — | Keyboard-operable Brush below the plot to subset the candles to a window. |
-| `dataZoom` | `boolean` | no | — | DataZoom slider below the plot — a Brush whose body also pans the window. |
-| `zoom` | `boolean` | no | — | In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window. |
-| `syncId` | `string` | no | — | Connect charts sharing this id — they mirror the zoom window. |
-| `tooltipMode` | `'item' \| 'axis'` | no | `item` | item (nearest candle) or axis (crosshair + OHLC at the hovered x). |
-| `format` | `(value: number \| string \| Date) => string` | no | — | Format each X-axis tick label. |
+| Prop          | Type                                          | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | --------------------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`        | `CandlestickDatum[]`                          | yes      | —       | One candle per period: { t, open, high, low, close, volume? }.                                                                                                                                                                                                                                                                                                                                |
+| `title`       | `string`                                      | yes      | —       | Chart title (also aria-label).                                                                                                                                                                                                                                                                                                                                                                |
+| `description` | `string`                                      | no       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `width`       | `number`                                      | no       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`                                      | no       | `320`   | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `yTicks`      | `number`                                      | no       | `5`     | Approximate number of ticks on the y-axis.                                                                                                                                                                                                                                                                                                                                                    |
+| `upColor`     | `string`                                      | no       | —       | Colour for up candles (close ≥ open).                                                                                                                                                                                                                                                                                                                                                         |
+| `downColor`   | `string`                                      | no       | —       | Colour for down candles (close < open).                                                                                                                                                                                                                                                                                                                                                       |
+| `volume`      | `boolean`                                     | no       | `false` | Render volume bars beneath the candles.                                                                                                                                                                                                                                                                                                                                                       |
+| `tooltip`     | `boolean`                                     | no       | —       | Enable hover tooltip (OHLC).                                                                                                                                                                                                                                                                                                                                                                  |
+| `className`   | `string`                                      | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`                                     | no       | `false` | Marks only — no axes. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                                |
+| `annotations` | `Annotation[]`                                | no       | —       | Reference lines/bands/markers over the plot (e.g. a last-price rule).                                                                                                                                                                                                                                                                                                                         |
+| `brush`       | `boolean`                                     | no       | —       | Keyboard-operable Brush below the plot to subset the candles to a window.                                                                                                                                                                                                                                                                                                                     |
+| `dataZoom`    | `boolean`                                     | no       | —       | DataZoom slider below the plot — a Brush whose body also pans the window.                                                                                                                                                                                                                                                                                                                     |
+| `zoom`        | `boolean`                                     | no       | —       | In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window.                                                                                                                                                                                                                                                                                                                    |
+| `syncId`      | `string`                                      | no       | —       | Connect charts sharing this id — they mirror the zoom window.                                                                                                                                                                                                                                                                                                                                 |
+| `tooltipMode` | `'item' \| 'axis'`                            | no       | `item`  | item (nearest candle) or axis (crosshair + OHLC at the hovered x).                                                                                                                                                                                                                                                                                                                            |
+| `format`      | `(value: number \| string \| Date) => string` | no       | —       | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
 
 ## Object types
 
@@ -49,14 +49,14 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 
 Shape of the `data` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `t` | `string` | yes | Period label (date string or index). |
-| `open` | `number` | yes | — |
-| `high` | `number` | yes | — |
-| `low` | `number` | yes | — |
-| `close` | `number` | yes | — |
-| `volume` | `number` | no | Render volume bars beneath the candles. |
+| Field    | Type     | Required | Description                             |
+| -------- | -------- | -------- | --------------------------------------- |
+| `t`      | `string` | yes      | Period label (date string or index).    |
+| `open`   | `number` | yes      | —                                       |
+| `high`   | `number` | yes      | —                                       |
+| `low`    | `number` | yes      | —                                       |
+| `close`  | `number` | yes      | —                                       |
+| `volume` | `number` | no       | Render volume bars beneath the candles. |
 
 ## Examples
 
@@ -64,8 +64,7 @@ Shape of the `data` prop.
 
 ```tsx
 import { Candlestick } from '@cascivo/charts'
-
-<Candlestick
+;<Candlestick
   title="ACME daily"
   tooltip
   data={[

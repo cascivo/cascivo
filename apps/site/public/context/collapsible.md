@@ -32,14 +32,14 @@ Built on a native <details>/<summary>, so the button role, the expanded state, a
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | No | — | Controlled open state |
-| `defaultOpen` | `boolean` | No | false | Initial open state for uncontrolled use |
-| `onOpenChange` | `(open: boolean) => void` | No | — | Called whenever the open state should change |
-| `trigger` | `ReactNode` | Yes | — | Content rendered inside the built-in trigger button |
-| `disabled` | `boolean` | No | false | Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable |
-| `children` | `ReactNode` | No | — | Content of the collapsible region |
+| Name           | Type                      | Required | Default | Description                                                                                                                                                       |
+| -------------- | ------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `open`         | `boolean`                 | No       | —       | Controlled open state                                                                                                                                             |
+| `defaultOpen`  | `boolean`                 | No       | false   | Initial open state for uncontrolled use                                                                                                                           |
+| `onOpenChange` | `(open: boolean) => void` | No       | —       | Called whenever the open state should change                                                                                                                      |
+| `trigger`      | `ReactNode`               | Yes      | —       | Content rendered inside the built-in trigger button                                                                                                               |
+| `disabled`     | `boolean`                 | No       | false   | Disables the trigger. Enforced in the enhancement layer — <details> has no native disabled state, so with JavaScript off a disabled Collapsible is still operable |
+| `children`     | `ReactNode`               | No       | —       | Content of the collapsible region                                                                                                                                 |
 
 ## Tokens
 
@@ -73,10 +73,10 @@ Built on a native <details>/<summary>, so the button role, the expanded state, a
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| open state | flexible | Controlled or uncontrolled via open / defaultOpen |
-| trigger markup | strict | Always rendered as a native button for keyboard and a11y correctness |
+| Area           | Level    | Note                                                                 |
+| -------------- | -------- | -------------------------------------------------------------------- |
+| open state     | flexible | Controlled or uncontrolled via open / defaultOpen                    |
+| trigger markup | strict   | Always rendered as a native button for keyboard and a11y correctness |
 
 ## AI context prompt
 

@@ -23,15 +23,15 @@ Exposes a keyboard-operable separator with role="separator" and aria-valuenow fo
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | No | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
-| `start` | `ReactNode` | Yes | — | Left pane content |
-| `end` | `ReactNode` | Yes | — | Right pane content |
-| `defaultRatio` | `number` | No | 0.3 | Initial split ratio (0–1) |
-| `min` | `number` | No | 0.2 | Minimum ratio for start pane |
-| `max` | `number` | No | 0.8 | Maximum ratio for start pane |
-| `aria-label` | `string` | No | — | Label for the separator |
+| Name           | Type        | Required | Default | Description                                                                                                   |
+| -------------- | ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`    | `string`    | No       | —       | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `start`        | `ReactNode` | Yes      | —       | Left pane content                                                                                             |
+| `end`          | `ReactNode` | Yes      | —       | Right pane content                                                                                            |
+| `defaultRatio` | `number`    | No       | 0.3     | Initial split ratio (0–1)                                                                                     |
+| `min`          | `number`    | No       | 0.2     | Minimum ratio for start pane                                                                                  |
+| `max`          | `number`    | No       | 0.8     | Maximum ratio for start pane                                                                                  |
+| `aria-label`   | `string`    | No       | —       | Label for the separator                                                                                       |
 
 ## Tokens
 

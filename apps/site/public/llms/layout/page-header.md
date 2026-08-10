@@ -22,13 +22,13 @@ import { PageHeader } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `string` | yes | — | Page title |
-| `description` | `string` | no | — | Supporting description |
-| `breadcrumb` | `ReactNode` | no | — | Breadcrumb slot |
-| `actions` | `ReactNode` | no | — | Action buttons slot |
-| `className` | `string` | no | — | Additional CSS class |
+| Prop          | Type        | Required | Default | Description            |
+| ------------- | ----------- | -------- | ------- | ---------------------- |
+| `title`       | `string`    | yes      | —       | Page title             |
+| `description` | `string`    | no       | —       | Supporting description |
+| `breadcrumb`  | `ReactNode` | no       | —       | Breadcrumb slot        |
+| `actions`     | `ReactNode` | no       | —       | Action buttons slot    |
+| `className`   | `string`    | no       | —       | Additional CSS class   |
 
 ## Examples
 

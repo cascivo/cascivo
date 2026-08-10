@@ -29,16 +29,16 @@ import { Notification } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `ReactNode` | yes | — | Title text for the component. |
-| `description` | `ReactNode` | no | — | Supporting description text. |
-| `variant` | `'info' \| 'success' \| 'warning' \| 'error'` | no | `info` | Selects the visual style variant. |
-| `dismissible` | `boolean` | no | `false` | When true, shows a control to dismiss the component. |
-| `onDismiss` | `() => void` | no | — | Called when the component is dismissed. |
-| `actions` | `ReactNode` | no | — | Action elements shown in the notification. |
-| `icon` | `ReactNode` | no | — | Icon element rendered in the component. |
-| `labels` | `{ dismiss?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| Prop          | Type                                          | Required | Default | Description                                                |
+| ------------- | --------------------------------------------- | -------- | ------- | ---------------------------------------------------------- |
+| `title`       | `ReactNode`                                   | yes      | —       | Title text for the component.                              |
+| `description` | `ReactNode`                                   | no       | —       | Supporting description text.                               |
+| `variant`     | `'info' \| 'success' \| 'warning' \| 'error'` | no       | `info`  | Selects the visual style variant.                          |
+| `dismissible` | `boolean`                                     | no       | `false` | When true, shows a control to dismiss the component.       |
+| `onDismiss`   | `() => void`                                  | no       | —       | Called when the component is dismissed.                    |
+| `actions`     | `ReactNode`                                   | no       | —       | Action elements shown in the notification.                 |
+| `icon`        | `ReactNode`                                   | no       | —       | Icon element rendered in the component.                    |
+| `labels`      | `{ dismiss?: string }`                        | no       | —       | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
 
@@ -57,7 +57,12 @@ import { Notification } from '@cascivo/react'
 ### Actionable
 
 ```tsx
-<Notification variant="error" title="Upload failed" description="The connection dropped." actions={<Button onClick={retry}>Retry</Button>} />
+<Notification
+  variant="error"
+  title="Upload failed"
+  description="The connection dropped."
+  actions={<Button onClick={retry}>Retry</Button>}
+/>
 ```
 
 ## Design tokens

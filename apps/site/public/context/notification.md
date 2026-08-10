@@ -34,16 +34,16 @@ role="alert" for warning and error so assistive tech announces them assertively,
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `ReactNode` | Yes | — | Title text for the component. |
-| `description` | `ReactNode` | No | — | Supporting description text. |
-| `variant` | `'info' \| 'success' \| 'warning' \| 'error'` | No | info | Selects the visual style variant. |
-| `dismissible` | `boolean` | No | false | When true, shows a control to dismiss the component. |
-| `onDismiss` | `() => void` | No | — | Called when the component is dismissed. |
-| `actions` | `ReactNode` | No | — | Action elements shown in the notification. |
-| `icon` | `ReactNode` | No | — | Icon element rendered in the component. |
-| `labels` | `{ dismiss?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| Name          | Type                                          | Required | Default | Description                                                |
+| ------------- | --------------------------------------------- | -------- | ------- | ---------------------------------------------------------- |
+| `title`       | `ReactNode`                                   | Yes      | —       | Title text for the component.                              |
+| `description` | `ReactNode`                                   | No       | —       | Supporting description text.                               |
+| `variant`     | `'info' \| 'success' \| 'warning' \| 'error'` | No       | info    | Selects the visual style variant.                          |
+| `dismissible` | `boolean`                                     | No       | false   | When true, shows a control to dismiss the component.       |
+| `onDismiss`   | `() => void`                                  | No       | —       | Called when the component is dismissed.                    |
+| `actions`     | `ReactNode`                                   | No       | —       | Action elements shown in the notification.                 |
+| `icon`        | `ReactNode`                                   | No       | —       | Icon element rendered in the component.                    |
+| `labels`      | `{ dismiss?: string }`                        | No       | —       | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 
@@ -74,16 +74,21 @@ role="alert" for warning and error so assistive tech announces them assertively,
 ### Actionable
 
 ```jsx
-<Notification variant="error" title="Upload failed" description="The connection dropped." actions={<Button onClick={retry}>Retry</Button>} />
+<Notification
+  variant="error"
+  title="Upload failed"
+  description="The connection dropped."
+  actions={<Button onClick={retry}>Retry</Button>}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| icon | flexible | A variant-appropriate icon is supplied by default; override with the icon prop |
-| actions | flexible | Any ReactNode (typically Buttons) can fill the actions slot |
-| role mapping | strict | warning/error must use role="alert"; info/success use role="status" |
+| Area         | Level    | Note                                                                           |
+| ------------ | -------- | ------------------------------------------------------------------------------ |
+| icon         | flexible | A variant-appropriate icon is supplied by default; override with the icon prop |
+| actions      | flexible | Any ReactNode (typically Buttons) can fill the actions slot                    |
+| role mapping | strict   | warning/error must use role="alert"; info/success use role="status"            |
 
 ## AI context prompt
 

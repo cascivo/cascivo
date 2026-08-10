@@ -33,14 +33,14 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string[]` | Yes | — | The controlled value. |
-| `onValueChange` | `(v: string[]) => void` | Yes | — | Called with the new value when it changes. |
-| `placeholder` | `string` | No | — | Placeholder text shown when the field is empty. |
-| `validate` | `(tag: string) => boolean` | No | — | Returns whether a candidate tag is allowed. |
-| `max` | `number` | No | — | Maximum allowed value. |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| Name            | Type                       | Required | Default | Description                                                        |
+| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `value`         | `string[]`                 | Yes      | —       | The controlled value.                                              |
+| `onValueChange` | `(v: string[]) => void`    | Yes      | —       | Called with the new value when it changes.                         |
+| `placeholder`   | `string`                   | No       | —       | Placeholder text shown when the field is empty.                    |
+| `validate`      | `(tag: string) => boolean` | No       | —       | Returns whether a candidate tag is allowed.                        |
+| `max`           | `number`                   | No       | —       | Maximum allowed value.                                             |
+| `disabled`      | `boolean`                  | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 
@@ -63,10 +63,10 @@ The typing surface is a real <input> and each tag exposes a dedicated remove but
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| tag values | flexible | Free text, optionally constrained by the validate predicate and max count |
-| commit keys | strict | Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract |
+| Area        | Level    | Note                                                                                           |
+| ----------- | -------- | ---------------------------------------------------------------------------------------------- |
+| tag values  | flexible | Free text, optionally constrained by the validate predicate and max count                      |
+| commit keys | strict   | Enter and comma commit a tag; Backspace on empty removes the last — fixed interaction contract |
 
 ## AI context prompt
 
