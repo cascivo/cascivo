@@ -90,6 +90,35 @@ export const meta: ComponentMeta = {
       description: 'Marks only — no legend. For micro/inline charts.',
     },
   ],
+  typeDefs: [
+    {
+      name: 'RadialBarDatum',
+      description: 'Shape of the `data` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'color',
+          type: 'string',
+          required: false,
+          description: 'CSS color overriding the positional palette for this ring.',
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-chart-1',
     '--cascivo-chart-2',

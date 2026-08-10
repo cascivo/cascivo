@@ -56,6 +56,22 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `transition`    | `boolean \| { duration?: number; easing?: string; properties?: string[] }`                                              | No       | —        | Tune the reduced-motion-gated enter/update transitions (false disables). Always suppressed under prefers-reduced-motion.                                                                                                                                                                                                                |
 | `onBeforeDraw`  | `(ctx: { width: number; height: number }) => ReactNode`                                                                 | No       | —        | Render custom SVG behind the marks (watermark/region) — a lightweight extension seam.                                                                                                                                                                                                                                                   |
 | `onAfterDraw`   | `(ctx: { width: number; height: number }) => ReactNode`                                                                 | No       | —        | Render custom SVG over the marks (overlay/extra series) — a lightweight extension seam.                                                                                                                                                                                                                                                 |
+| `secondAxis`    | `{ label?: string; format?: (value: number) => string }`                                                                | No       | —        | Add a right-hand y-axis for series with `axis: 'right'` (e.g.                                                                                                                                                                                                                                                                           |
+
+## Object types
+
+### `LineChartSeries`
+
+Shape of the `series` prop.
+
+| Field   | Type                   | Required | Description                                   |
+| ------- | ---------------------- | -------- | --------------------------------------------- |
+| `id`    | `string`               | Yes      | —                                             |
+| `label` | `string`               | Yes      | —                                             |
+| `data`  | `readonly Datum[]`     | Yes      | —                                             |
+| `color` | `string`               | No       | Series colour.                                |
+| `axis`  | `'left' \| 'right'`    | No       | Which y-axis this series is measured against. |
+| `y`     | `(d: Datum) => number` | No       | Per-series Y accessor.                        |
 
 ## Tokens
 

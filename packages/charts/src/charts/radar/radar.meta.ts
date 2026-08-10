@@ -63,6 +63,29 @@ export const meta: ComponentMeta = {
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
   ],
+  typeDefs: [
+    {
+      name: 'RadarSeries',
+      description: 'Shape of the `series` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'values',
+          type: 'number[]',
+          required: true,
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-chart-1',
     '--cascivo-chart-2',

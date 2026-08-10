@@ -70,6 +70,30 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
+    {
+      name: 'onMeasure',
+      type: '(size: NodeSize) => void',
+      required: false,
+      description: 'Reports the rendered box size so edges can anchor to the real node bounds.',
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'XYPosition',
+      description: 'Shared geometry + graph types for the flow engine.',
+      fields: [
+        {
+          name: 'x',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'y',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

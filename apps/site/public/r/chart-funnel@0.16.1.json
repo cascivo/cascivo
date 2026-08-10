@@ -76,6 +76,35 @@
         "description": "Marks only — no labels. For micro/inline charts."
       }
     ],
+    "typeDefs": [
+      {
+        "name": "FunnelStage",
+        "description": "Shape of the `data` prop.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "CSS color overriding the positional palette for this stage."
+          }
+        ]
+      }
+    ],
     "tokens": [
       "--cascivo-chart-1",
       "--cascivo-chart-2",

@@ -32,6 +32,18 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `className`   | `string`                                                             | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                                                            | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
 | `glyph`       | `GlyphShape \| ((d, seriesId) => GlyphShape)`                        | no       | —       | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.                                                                                                                                                                                                                                                                    |
+| `format`      | `(value: number \| string \| Date) => string`                        | no       | —       | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
+
+## Object types
+
+### `BubbleSeries`
+
+Shape of the `series` prop.
+
+| Field  | Type            | Required | Description |
+| ------ | --------------- | -------- | ----------- |
+| `name` | `string`        | yes      | —           |
+| `data` | `BubbleDatum[]` | yes      | —           |
 
 ## Examples
 

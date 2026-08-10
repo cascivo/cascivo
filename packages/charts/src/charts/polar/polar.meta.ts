@@ -77,6 +77,29 @@ export const meta: ComponentMeta = {
       description: 'Marks only — no rings or labels. For micro/inline charts.',
     },
   ],
+  typeDefs: [
+    {
+      name: 'PolarDatum',
+      description: 'Shape of the `data` prop.',
+      fields: [
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'color',
+          type: 'string',
+          required: false,
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-chart-1',
     '--cascivo-chart-2',

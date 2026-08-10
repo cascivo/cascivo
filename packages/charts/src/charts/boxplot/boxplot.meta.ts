@@ -49,6 +49,35 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'format',
+      type: '(value: number | string | Date) => string',
+      required: false,
+      description: 'Format each category/x-axis tick label.',
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'BoxplotSeries',
+      description: 'Shape of the `series` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'values',
+          type: 'number[]',
+          required: true,
+        },
+      ],
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

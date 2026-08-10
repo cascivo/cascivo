@@ -41,6 +41,34 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `renderer`    | `'svg' \| 'canvas' \| 'auto'`                 | no       | `svg`   | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer.                                                                                                                                                                                                                                                     |
 | `visualMap`   | `VisualMapOptions`                            | no       | —       | Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range.                                                                                                                                                                                                                                                                               |
 | `toolbox`     | `boolean \| ToolboxOptions`                   | no       | —       | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).                                                                                                                                                                                                                                                                     |
+| `format`      | `(value: number \| string \| Date) => string` | no       | —       | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
+
+## Object types
+
+### `ScatterChartSeries`
+
+Shape of the `series` prop.
+
+| Field   | Type                      | Required | Description |
+| ------- | ------------------------- | -------- | ----------- |
+| `id`    | `string`                  | yes      | —           |
+| `label` | `string`                  | yes      | —           |
+| `data`  | `readonly ScatterDatum[]` | yes      | —           |
+| `color` | `string`                  | no       | —           |
+
+### `VisualMapOptions`
+
+Shape of the `visualMap` prop.
+
+| Field       | Type               | Required | Description                                                            |
+| ----------- | ------------------ | -------- | ---------------------------------------------------------------------- |
+| `min`       | `number`           | yes      | Domain minimum (value mapped to ramp t=0).                             |
+| `max`       | `number`           | yes      | Domain maximum (value mapped to ramp t=1).                             |
+| `mode`      | `VisualMode`       | no       | `continuous` ramp (default) or `piecewise` buckets.                    |
+| `channel`   | `VisualChannel`    | no       | Which visual channel(s) the value drives.                              |
+| `ramp`      | `RampKind`         | no       | Ramp family — CVD-safe `sequential` (default) or `diverging`.          |
+| `pieces`    | `number`           | no       | Bucket count for `piecewise` (default 5).                              |
+| `sizeRange` | `[number, number]` | no       | [min, max] mark radius in px for the `size` channel (default [3, 14]). |
 
 ## Examples
 

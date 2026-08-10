@@ -26,6 +26,7 @@ import { join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { resolvePropSets, resolvePropSetsFromSource } from './lib/component-props.ts'
+import { resolveEntrySources } from './lib/registry-source.ts'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 
@@ -55,12 +56,6 @@ const ALLOWLIST: Record<string, string> = {
 /** Own props never required in a manifest (framework passthrough / DOM). */
 const SKIP_OWN = new Set(['className', 'children', 'style', 'key', 'ref'])
 
-/** Repo-relative path from a registry file URL (`…/main/packages/x` → `packages/x`). */
-function repoRelative(url: string): string {
-  const i = url.indexOf('/packages/')
-  return i === -1 ? url : url.slice(i + 1)
-}
-
 function loadRegistry(): RegistryComponent[] {
   const registry = JSON.parse(readFileSync(join(REPO_ROOT, 'registry.json'), 'utf8')) as {
     components: RegistryComponent[]
@@ -79,8 +74,11 @@ interface Checkable {
 function collectCheckable(): Checkable[] {
   const out: Checkable[] = []
   for (const c of loadRegistry()) {
-    const tsx = (c.files ?? []).filter((f) => f.endsWith('.tsx')).map(repoRelative)
-    if (tsx.length === 0) continue // npm-installed (charts/flow/editor): no source
+    // Resolves BOTH copy-paste entries (via files[]) and npm-shipped ones (charts, flow,
+    // editor) whose files[] is empty. This used to `continue` on the empty case, which left
+    // 37 entries — every chart — unchecked for the life of the guard (2026-08-08 report B).
+    const tsx = resolveEntrySources(REPO_ROOT, c)
+    if (tsx.length === 0) continue
     const propsType = `${c.meta.name}Props`
     const sets = resolvePropSets(tsx, propsType)
     if (!sets) continue // no exported <Pascal>Props (compound/imperative/no-props)
@@ -99,11 +97,37 @@ describe('props-parity — manifest props match the TypeScript interface', () =>
     )
   })
 
+  it('covers the npm-shipped packages, not just the copy-paste ones', () => {
+    // The hole this closes: charts/flow/editor ship via npm, so their registry `files[]` is
+    // empty, and both parity guards used to `continue` on that — leaving 37 entries
+    // unchecked for the life of the guard. `AreaChart.format` was real, documented in TSDoc,
+    // and invisible to registry.json/llms.txt because of it (2026-08-08 report B).
+    //
+    // Asserting a floor per prefix means a future entry that stops resolving fails loudly
+    // instead of quietly dropping back out of coverage.
+    for (const [prefix, floor] of [
+      ['chart/', 20],
+      ['flow/', 8],
+      ['editor/', 2],
+    ] as const) {
+      const covered = checkable.filter((c) => c.name.startsWith(prefix)).length
+      assert.ok(
+        covered >= floor,
+        `only ${covered} '${prefix}' entries resolved a props type (expected >= ${floor}). ` +
+          'These are npm-shipped, so their source comes from resolveEntrySources(), not files[].',
+      )
+    }
+  })
+
   it('Direction A — no manifest documents a prop that does not exist on the type', () => {
     const errors: string[] = []
     for (const c of checkable) {
       for (const p of c.metaProps) {
         if (c.sets.resolvedAll.has(p.name)) continue
+        // `ref` is supplied by forwardRef, not declared on the props interface, but it IS
+        // part of the component's public API — documenting an imperative handle is right.
+        // Direction B already skips it for the same reason.
+        if (p.name === 'ref') continue
         if (ALLOWLIST[`${c.name}.${p.name}`] !== undefined) continue
         errors.push(`  ${c.name} (${c.propsType}): meta documents '${p.name}', not on the type`)
       }

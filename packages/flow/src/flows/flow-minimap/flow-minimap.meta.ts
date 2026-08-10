@@ -60,6 +60,84 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
+    {
+      name: 'label',
+      type: 'string | undefined',
+      required: false,
+      description: 'Accessible name for the minimap region.',
+    },
+    {
+      name: 'nodeColor',
+      type: 'string | undefined',
+      required: false,
+      description: 'Fill colour for node rectangles in the minimap.',
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'FlowNode',
+      description: 'A graph node.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'position',
+          type: 'XYPosition',
+          required: true,
+        },
+        {
+          name: 'data',
+          type: 'Data',
+          required: false,
+        },
+        {
+          name: 'type',
+          type: 'string',
+          required: false,
+          description: 'Custom renderer key resolved via `nodeTypes`.',
+        },
+        {
+          name: 'selected',
+          type: 'boolean',
+          required: false,
+        },
+        {
+          name: 'width',
+          type: 'number',
+          required: false,
+          description: 'Explicit/measured size used for handle anchors + bounding boxes.',
+        },
+        {
+          name: 'height',
+          type: 'number',
+          required: false,
+        },
+      ],
+    },
+    {
+      name: 'Viewport',
+      description: 'The pan/zoom state of the canvas pane.',
+      fields: [
+        {
+          name: 'x',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'y',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'zoom',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
   ],
   tokens: ['--cascivo-color-surface', '--cascivo-color-border-strong', '--cascivo-color-accent'],
   accessibility: {

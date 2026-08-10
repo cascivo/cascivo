@@ -33,6 +33,19 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `height`      | `number`                                            | No       | 320     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
 | `className`   | `string`                                            | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                                           | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
+| `format`      | `(value: number \| string \| Date) => string`       | No       | —       | Format each category/x-axis tick label.                                                                                                                                                                                                                                                                                                                                                       |
+
+## Object types
+
+### `BoxplotSeries`
+
+Shape of the `series` prop.
+
+| Field    | Type       | Required | Description |
+| -------- | ---------- | -------- | ----------- |
+| `id`     | `string`   | Yes      | —           |
+| `label`  | `string`   | Yes      | —           |
+| `values` | `number[]` | Yes      | —           |
 
 ## Tokens
 

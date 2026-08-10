@@ -35,6 +35,20 @@ Renders role="img" with a title and a fallback path/value table.
 | `className`   | `string`   | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`  | No       | false   | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
 
+## Object types
+
+### `HierNode`
+
+Shape of the `data` prop.
+
+| Field      | Type         | Required | Description |
+| ---------- | ------------ | -------- | ----------- |
+| `id`       | `string`     | No       | —           |
+| `label`    | `string`     | Yes      | —           |
+| `value`    | `number`     | No       | —           |
+| `color`    | `string`     | No       | —           |
+| `children` | `HierNode[]` | No       | —           |
+
 ## Tokens
 
 - `--cascivo-chart-1`

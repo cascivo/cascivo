@@ -58,6 +58,22 @@ The native <textarea> is the editing surface, so caret, selection, IME, undo, an
 | `commands`        | `SlashCommand[]`                                    | No       | —         | Slash-command entries; typing "/" opens a filtered menu. Omit to disable.                      |
 | `ref`             | `Ref<CodeEditorHandle>`                             | No       | —         | Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu |
 | `className`       | `string`                                            | No       | —         | Additional CSS class names merged onto the root element.                                       |
+| `virtualize`      | `boolean`                                           | No       | —         | Render only the visible lines for large documents.                                             |
+
+## Object types
+
+### `SlashCommand`
+
+A slash-command entry.
+
+| Field      | Type                                 | Required | Description                                                                 |
+| ---------- | ------------------------------------ | -------- | --------------------------------------------------------------------------- |
+| `id`       | `string`                             | Yes      | Stable id (menu key).                                                       |
+| `label`    | `string`                             | Yes      | Shown in the menu and matched against the query.                            |
+| `hint`     | `string`                             | No       | Optional right-aligned hint (e.g.                                           |
+| `keywords` | `readonly string[]`                  | No       | Extra match terms beyond the label.                                         |
+| `insert`   | `string`                             | No       | Text inserted in place of the `/query` (an undoable edit).                  |
+| `run`      | `(editor: CodeEditorHandle) => void` | No       | Side effect run after the `/query` is removed (receives the editor handle). |
 
 ## Tokens
 

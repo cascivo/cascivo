@@ -41,6 +41,52 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `autoPlay`     | `boolean`                | no       | `true`  | When true, starts playback automatically on mount.                                    |
 | `interactive`  | `boolean`                | no       | `false` | A storyline is a view by default — set true to allow selecting/dragging/connecting.   |
 | `className`    | `string`                 | no       | —       | Additional CSS class names merged onto the root element.                              |
+| `background`   | `boolean`                | no       | —       | Render the dotted background pane behind the flow.                                    |
+| `clock`        | `StoryClock`             | no       | —       | Injectable clock for deterministic tests.                                             |
+| `labels`       | `FlowStoryLabels`        | no       | —       | Label overrides for the story playback controls.                                      |
+
+## Object types
+
+### `StoryClock`
+
+Shape of the `clock` prop.
+
+| Field          | Type                                            | Required | Description |
+| -------------- | ----------------------------------------------- | -------- | ----------- |
+| `setTimeout`   | `(callback: () => void, ms: number) => unknown` | yes      | —           |
+| `clearTimeout` | `(handle: unknown) => void`                     | yes      | —           |
+
+### `FlowNode`
+
+A graph node.
+
+| Field      | Type         | Required | Description                                                      |
+| ---------- | ------------ | -------- | ---------------------------------------------------------------- |
+| `id`       | `string`     | yes      | —                                                                |
+| `position` | `XYPosition` | yes      | —                                                                |
+| `data`     | `Data`       | no       | —                                                                |
+| `type`     | `string`     | no       | Custom renderer key resolved via `nodeTypes`.                    |
+| `selected` | `boolean`    | no       | —                                                                |
+| `width`    | `number`     | no       | Explicit/measured size used for handle anchors + bounding boxes. |
+| `height`   | `number`     | no       | —                                                                |
+
+### `FlowEdge`
+
+A directed connection between two nodes' handles.
+
+| Field          | Type                     | Required | Description                                                                 |
+| -------------- | ------------------------ | -------- | --------------------------------------------------------------------------- |
+| `id`           | `string`                 | yes      | —                                                                           |
+| `source`       | `string`                 | yes      | —                                                                           |
+| `target`       | `string`                 | yes      | —                                                                           |
+| `sourceHandle` | `string`                 | no       | —                                                                           |
+| `targetHandle` | `string`                 | no       | —                                                                           |
+| `type`         | `EdgePathType \| string` | no       | Custom renderer key resolved via `edgeTypes`.                               |
+| `animated`     | `boolean`                | no       | —                                                                           |
+| `label`        | `string`                 | no       | —                                                                           |
+| `selected`     | `boolean`                | no       | —                                                                           |
+| `markerStart`  | `boolean`                | no       | Arrowhead at the source end (points back toward the source). Default false. |
+| `markerEnd`    | `boolean`                | no       | Arrowhead at the target end (points at the target). Default true.           |
 
 ## Examples
 

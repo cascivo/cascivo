@@ -33,6 +33,20 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `className`   | `string`   | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`  | no       | `false` | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
 
+## Object types
+
+### `HierNode`
+
+Shape of the `data` prop.
+
+| Field      | Type         | Required | Description |
+| ---------- | ------------ | -------- | ----------- |
+| `id`       | `string`     | no       | —           |
+| `label`    | `string`     | yes      | —           |
+| `value`    | `number`     | no       | —           |
+| `color`    | `string`     | no       | —           |
+| `children` | `HierNode[]` | no       | —           |
+
 ## Examples
 
 ### Sunburst

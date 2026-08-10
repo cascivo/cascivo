@@ -131,6 +131,88 @@
         "type": "boolean | ToolboxOptions",
         "required": false,
         "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "ScatterChartSeries",
+        "description": "Shape of the `series` prop.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "data",
+            "type": "readonly ScatterDatum[]",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false
+          }
+        ]
+      },
+      {
+        "name": "VisualMapOptions",
+        "description": "Shape of the `visualMap` prop.",
+        "fields": [
+          {
+            "name": "min",
+            "type": "number",
+            "required": true,
+            "description": "Domain minimum (value mapped to ramp t=0)."
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": true,
+            "description": "Domain maximum (value mapped to ramp t=1)."
+          },
+          {
+            "name": "mode",
+            "type": "VisualMode",
+            "required": false,
+            "description": "`continuous` ramp (default) or `piecewise` buckets."
+          },
+          {
+            "name": "channel",
+            "type": "VisualChannel",
+            "required": false,
+            "description": "Which visual channel(s) the value drives."
+          },
+          {
+            "name": "ramp",
+            "type": "RampKind",
+            "required": false,
+            "description": "Ramp family — CVD-safe `sequential` (default) or `diverging`."
+          },
+          {
+            "name": "pieces",
+            "type": "number",
+            "required": false,
+            "description": "Bucket count for `piecewise` (default 5)."
+          },
+          {
+            "name": "sizeRange",
+            "type": "[number, number]",
+            "required": false,
+            "description": "[min, max] mark radius in px for the `size` channel (default [3, 14])."
+          }
+        ]
       }
     ],
     "tokens": [

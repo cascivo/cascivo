@@ -47,6 +47,22 @@ import '@cascivo/editor/styles.css' // required stylesheet
 | `commands`        | `SlashCommand[]`                                    | no       | —           | Slash-command entries; typing "/" opens a filtered menu. Omit to disable.                      |
 | `ref`             | `Ref<CodeEditorHandle>`                             | no       | —           | Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu |
 | `className`       | `string`                                            | no       | —           | Additional CSS class names merged onto the root element.                                       |
+| `virtualize`      | `boolean`                                           | no       | —           | Render only the visible lines for large documents.                                             |
+
+## Object types
+
+### `SlashCommand`
+
+A slash-command entry.
+
+| Field      | Type                                 | Required | Description                                                                 |
+| ---------- | ------------------------------------ | -------- | --------------------------------------------------------------------------- |
+| `id`       | `string`                             | yes      | Stable id (menu key).                                                       |
+| `label`    | `string`                             | yes      | Shown in the menu and matched against the query.                            |
+| `hint`     | `string`                             | no       | Optional right-aligned hint (e.g.                                           |
+| `keywords` | `readonly string[]`                  | no       | Extra match terms beyond the label.                                         |
+| `insert`   | `string`                             | no       | Text inserted in place of the `/query` (an undoable edit).                  |
+| `run`      | `(editor: CodeEditorHandle) => void` | no       | Side effect run after the `/query` is removed (receives the editor handle). |
 
 ## Examples
 

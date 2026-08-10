@@ -33,6 +33,34 @@ role="img" with an i18n-defaulted label describing the overview.
 | `position`         | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | No       | bottom-right | Position of the component.                                |
 | `onViewportChange` | `(viewport: Viewport) => void`                                 | No       | —            | Called with the new viewport when the minimap is dragged. |
 | `className`        | `string`                                                       | No       | —            | Additional CSS class names merged onto the root element.  |
+| `label`            | `string \| undefined`                                          | No       | —            | Accessible name for the minimap region.                   |
+| `nodeColor`        | `string \| undefined`                                          | No       | —            | Fill colour for node rectangles in the minimap.           |
+
+## Object types
+
+### `FlowNode`
+
+A graph node.
+
+| Field      | Type         | Required | Description                                                      |
+| ---------- | ------------ | -------- | ---------------------------------------------------------------- |
+| `id`       | `string`     | Yes      | —                                                                |
+| `position` | `XYPosition` | Yes      | —                                                                |
+| `data`     | `Data`       | No       | —                                                                |
+| `type`     | `string`     | No       | Custom renderer key resolved via `nodeTypes`.                    |
+| `selected` | `boolean`    | No       | —                                                                |
+| `width`    | `number`     | No       | Explicit/measured size used for handle anchors + bounding boxes. |
+| `height`   | `number`     | No       | —                                                                |
+
+### `Viewport`
+
+The pan/zoom state of the canvas pane.
+
+| Field  | Type     | Required | Description |
+| ------ | -------- | -------- | ----------- |
+| `x`    | `number` | Yes      | —           |
+| `y`    | `number` | Yes      | —           |
+| `zoom` | `number` | Yes      | —           |
 
 ## Tokens
 

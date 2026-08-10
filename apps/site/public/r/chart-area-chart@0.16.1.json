@@ -189,6 +189,59 @@
         "type": "boolean | ToolboxOptions",
         "required": false,
         "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom)."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      },
+      {
+        "name": "secondAxis",
+        "type": "{ label?: string; format?: (value: number) => string }",
+        "required": false,
+        "description": "Add a right-hand y-axis for series with `axis: 'right'` (non-stacked only)."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "AreaChartSeries",
+        "description": "Shape of the `series` prop.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "data",
+            "type": "readonly Datum[]",
+            "required": true
+          },
+          {
+            "name": "color",
+            "type": "string",
+            "required": false,
+            "description": "Series colour."
+          },
+          {
+            "name": "axis",
+            "type": "'left' | 'right'",
+            "required": false,
+            "description": "Which y-axis this series is measured against (ignored when `stacked`)."
+          },
+          {
+            "name": "y",
+            "type": "(d: Datum) => number",
+            "required": false,
+            "description": "Per-series Y accessor."
+          }
+        ]
       }
     ],
     "tokens": [

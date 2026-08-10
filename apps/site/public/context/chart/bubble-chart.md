@@ -34,6 +34,18 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `className`   | `string`                                                             | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                                                            | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
 | `glyph`       | `GlyphShape \| ((d, seriesId) => GlyphShape)`                        | No       | —       | Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape.                                                                                                                                                                                                                                                                    |
+| `format`      | `(value: number \| string \| Date) => string`                        | No       | —       | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
+
+## Object types
+
+### `BubbleSeries`
+
+Shape of the `series` prop.
+
+| Field  | Type            | Required | Description |
+| ------ | --------------- | -------- | ----------- |
+| `name` | `string`        | Yes      | —           |
+| `data` | `BubbleDatum[]` | Yes      | —           |
 
 ## Tokens
 

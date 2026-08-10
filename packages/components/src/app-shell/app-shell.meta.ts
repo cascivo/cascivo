@@ -54,6 +54,16 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Fired when the nav requests open/close (burger, Escape, scrim).',
     },
+    {
+      name: 'padding',
+      type: "SpaceStep | 'none'",
+      required: false,
+      default: '6',
+      description:
+        'Inset around the main content area, as a space-scale step. Defaults to 6 — `<main>` ' +
+        'shipped unpadded for three releases and every adopter wrote the same wrapper div. ' +
+        "Pass 'none' for a full-bleed layout that owns its own insets.",
+    },
   ],
   tokens: [
     '--cascivo-shell-aside-inline-size',

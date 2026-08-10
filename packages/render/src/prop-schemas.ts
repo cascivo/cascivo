@@ -204,6 +204,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'onOpenChange',
       required: false,
     },
+    {
+      name: 'padding',
+      required: false,
+    },
   ],
   AreaChart: [
     {
@@ -341,6 +345,14 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'toolbox',
+      required: false,
+    },
+    {
+      name: 'format',
+      required: false,
+    },
+    {
+      name: 'secondAxis',
       required: false,
     },
   ],
@@ -565,6 +577,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       enum: ['dots', 'lines', 'cross'],
     },
+    {
+      name: 'format',
+      required: false,
+    },
   ],
   Blockquote: [
     {
@@ -663,6 +679,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'format',
+      required: false,
+    },
   ],
   Breadcrumb: [
     {
@@ -727,6 +747,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'glyph',
+      required: false,
+    },
+    {
+      name: 'format',
       required: false,
     },
   ],
@@ -1056,6 +1080,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       enum: ['item', 'axis'],
     },
+    {
+      name: 'format',
+      required: false,
+    },
   ],
   Card: [
     {
@@ -1299,6 +1327,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'virtualize',
+      required: false,
+      primitives: ['boolean'],
+    },
   ],
   CodeSnippet: [
     {
@@ -1481,6 +1514,30 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'annotations',
       required: false,
+    },
+    {
+      name: 'barsLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'format',
+      required: false,
+    },
+    {
+      name: 'legend',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'lineLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'xLabelEvery',
+      required: false,
+      primitives: ['number'],
     },
   ],
   Combobox: [
@@ -2418,6 +2475,24 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'activeDirection',
+      required: false,
+    },
+    {
+      name: 'activeEdgeId',
+      required: false,
+    },
+    {
+      name: 'maxZoom',
+      required: false,
+      primitives: ['number'],
+    },
+    {
+      name: 'minZoom',
+      required: false,
+      primitives: ['number'],
+    },
   ],
   FlowBackground: [
     {
@@ -2488,6 +2563,22 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'className',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'chrome',
+      required: false,
+    },
+    {
+      name: 'controller',
+      required: false,
+    },
+    {
+      name: 'defaultViewport',
+      required: false,
+    },
+    {
+      name: 'flow',
+      required: false,
     },
   ],
   FlowControls: [
@@ -2583,6 +2674,27 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'active',
+      required: false,
+    },
+    {
+      name: 'direction',
+      required: false,
+    },
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'sourcePosition',
+      required: false,
+    },
+    {
+      name: 'targetPosition',
+      required: false,
+    },
   ],
   FlowHandle: [
     {
@@ -2654,6 +2766,14 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'label',
+      required: false,
+    },
+    {
+      name: 'nodeColor',
+      required: false,
+    },
   ],
   FlowNode: [
     {
@@ -2705,6 +2825,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'className',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'onMeasure',
+      required: false,
     },
   ],
   FlowPanel: [
@@ -2784,6 +2908,19 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'className',
       required: false,
       primitives: ['string'],
+    },
+    {
+      name: 'background',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'clock',
+      required: false,
+    },
+    {
+      name: 'labels',
+      required: false,
     },
   ],
   Form: [
@@ -3052,6 +3189,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'toolbox',
       required: false,
     },
+    {
+      name: 'format',
+      required: false,
+    },
   ],
   Hero: [
     {
@@ -3120,6 +3261,14 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'gutterRef',
+      required: false,
+    },
+    {
+      name: 'preRef',
+      required: false,
+    },
   ],
   Histogram: [
     {
@@ -3165,6 +3314,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'format',
+      required: false,
     },
   ],
   HoverCard: [
@@ -3669,6 +3822,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onAfterDraw',
+      required: false,
+    },
+    {
+      name: 'secondAxis',
       required: false,
     },
   ],
@@ -4429,6 +4586,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'onSelect',
       required: false,
     },
+    {
+      name: 'tooltip',
+      required: false,
+      primitives: ['boolean'],
+    },
   ],
   Polar: [
     {
@@ -5155,6 +5317,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'toolbox',
       required: false,
     },
+    {
+      name: 'format',
+      required: false,
+    },
   ],
   ScrollArea: [
     {
@@ -5807,6 +5973,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'plain',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'format',
+      required: false,
     },
   ],
   StructuredList: [

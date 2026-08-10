@@ -63,6 +63,18 @@
         "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
+      },
+      {
+        "name": "gutterRef",
+        "type": "Ref<HTMLDivElement>",
+        "required": false,
+        "description": "Ref to the gutter column (used by `CodeEditor` for scroll-sync)."
+      },
+      {
+        "name": "preRef",
+        "type": "Ref<HTMLPreElement>",
+        "required": false,
+        "description": "Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync)."
       }
     ],
     "tokens": [

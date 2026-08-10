@@ -146,6 +146,56 @@
         "description": "Additional CSS class names merged onto the root element.",
         "type": "string",
         "required": false
+      },
+      {
+        "name": "virtualize",
+        "type": "boolean",
+        "required": false,
+        "description": "Render only the visible lines for large documents."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "SlashCommand",
+        "description": "A slash-command entry.",
+        "fields": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": true,
+            "description": "Stable id (menu key)."
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "description": "Shown in the menu and matched against the query."
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "description": "Optional right-aligned hint (e.g."
+          },
+          {
+            "name": "keywords",
+            "type": "readonly string[]",
+            "required": false,
+            "description": "Extra match terms beyond the label."
+          },
+          {
+            "name": "insert",
+            "type": "string",
+            "required": false,
+            "description": "Text inserted in place of the `/query` (an undoable edit)."
+          },
+          {
+            "name": "run",
+            "type": "(editor: CodeEditorHandle) => void",
+            "required": false,
+            "description": "Side effect run after the `/query` is removed (receives the editor handle)."
+          }
+        ]
       }
     ],
     "tokens": [

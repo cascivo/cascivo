@@ -33,6 +33,28 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `className`   | `string`       | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`      | no       | `false` | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
 
+## Object types
+
+### `SankeyLink`
+
+Shape of the `links` prop.
+
+| Field    | Type     | Required | Description |
+| -------- | -------- | -------- | ----------- |
+| `source` | `string` | yes      | —           |
+| `target` | `string` | yes      | —           |
+| `value`  | `number` | yes      | —           |
+
+### `SankeyNode`
+
+Shape of the `nodes` prop.
+
+| Field   | Type     | Required | Description |
+| ------- | -------- | -------- | ----------- |
+| `id`    | `string` | yes      | —           |
+| `label` | `string` | yes      | —           |
+| `color` | `string` | no       | —           |
+
 ## Examples
 
 ### Sankey flow

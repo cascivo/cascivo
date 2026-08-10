@@ -81,6 +81,41 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'false',
     },
+    {
+      name: 'format',
+      type: '(value: number | string | Date) => string',
+      required: false,
+      description: 'Format each category/x-axis tick label.',
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'StreamSeries',
+      description: 'Shape of the `series` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'values',
+          type: 'number[]',
+          required: true,
+          description: 'One value per category, aligned with `categories`.',
+        },
+        {
+          name: 'color',
+          type: 'string',
+          required: false,
+        },
+      ],
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

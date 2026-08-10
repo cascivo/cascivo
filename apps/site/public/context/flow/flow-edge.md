@@ -31,19 +31,24 @@ Decorative SVG (aria-hidden); animation is disabled under prefers-reduced-motion
 
 ## Props
 
-| Name          | Type                                     | Required | Default | Description                                                                           |
-| ------------- | ---------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------- |
-| `sourceX`     | `number`                                 | Yes      | —       | Source anchor x (flow coords).                                                        |
-| `sourceY`     | `number`                                 | Yes      | —       | Y coordinate of the edge’s source point.                                              |
-| `targetX`     | `number`                                 | Yes      | —       | X coordinate of the edge’s target point.                                              |
-| `targetY`     | `number`                                 | Yes      | —       | Y coordinate of the edge’s target point.                                              |
-| `type`        | `'bezier' \| 'straight' \| 'smoothstep'` | No       | bezier  | Edge path style ('bezier' \| 'straight' \| 'smoothstep').                             |
-| `animated`    | `boolean`                                | No       | false   | When true, animates the edge path (dashed flow).                                      |
-| `label`       | `ReactNode`                              | No       | —       | Text label for the control.                                                           |
-| `selected`    | `boolean`                                | No       | false   | Whether the edge is rendered as selected.                                             |
-| `markerStart` | `boolean`                                | No       | false   | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
-| `markerEnd`   | `boolean`                                | No       | true    | Arrowhead at the target. Set false for an undirected line.                            |
-| `className`   | `string`                                 | No       | —       | Additional CSS class names merged onto the root element.                              |
+| Name             | Type                                     | Required | Default | Description                                                                           |
+| ---------------- | ---------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------- |
+| `sourceX`        | `number`                                 | Yes      | —       | Source anchor x (flow coords).                                                        |
+| `sourceY`        | `number`                                 | Yes      | —       | Y coordinate of the edge’s source point.                                              |
+| `targetX`        | `number`                                 | Yes      | —       | X coordinate of the edge’s target point.                                              |
+| `targetY`        | `number`                                 | Yes      | —       | Y coordinate of the edge’s target point.                                              |
+| `type`           | `'bezier' \| 'straight' \| 'smoothstep'` | No       | bezier  | Edge path style ('bezier' \| 'straight' \| 'smoothstep').                             |
+| `animated`       | `boolean`                                | No       | false   | When true, animates the edge path (dashed flow).                                      |
+| `label`          | `ReactNode`                              | No       | —       | Text label for the control.                                                           |
+| `selected`       | `boolean`                                | No       | false   | Whether the edge is rendered as selected.                                             |
+| `markerStart`    | `boolean`                                | No       | false   | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
+| `markerEnd`      | `boolean`                                | No       | true    | Arrowhead at the target. Set false for an undirected line.                            |
+| `className`      | `string`                                 | No       | —       | Additional CSS class names merged onto the root element.                              |
+| `active`         | `boolean \| undefined`                   | No       | —       | Highlight the edge (used by FlowStory's active step).                                 |
+| `direction`      | `'forward' \| 'reverse' \| undefined`    | No       | —       | Direction the dash travels when animated.                                             |
+| `id`             | `string`                                 | No       | —       | Edge identifier, used to target it via `activeEdgeId`.                                |
+| `sourcePosition` | `HandlePosition \| undefined`            | No       | —       | Handle side the edge leaves from.                                                     |
+| `targetPosition` | `HandlePosition \| undefined`            | No       | —       | Handle side the edge arrives at.                                                      |
 
 ## Tokens
 

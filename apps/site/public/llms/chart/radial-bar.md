@@ -39,6 +39,19 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `className`   | `string`           | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`          | no       | `false` | Marks only — no legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                              |
 
+## Object types
+
+### `RadialBarDatum`
+
+Shape of the `data` prop.
+
+| Field   | Type     | Required | Description                                                |
+| ------- | -------- | -------- | ---------------------------------------------------------- |
+| `id`    | `string` | yes      | —                                                          |
+| `label` | `string` | yes      | —                                                          |
+| `value` | `number` | yes      | —                                                          |
+| `color` | `string` | no       | CSS color overriding the positional palette for this ring. |
+
 ## Examples
 
 ### Goal progress rings
