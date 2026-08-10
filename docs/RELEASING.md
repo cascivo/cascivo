@@ -107,11 +107,41 @@ From the second release onward the workflow publishes tokenlessly via OIDC — n
    path: `changeset publish` runs, packages are published to npm with provenance,
    git tags are created, and GitHub release notes are generated.
 
+## Release cadence is a correctness property, not a preference
+
+A fix that is merged but unpublished does not exist for an adopter. This is not a
+theoretical concern — it is [Mechanism G](internal/feedback/README.md), and it is the reason
+two adopters on 2026-08-08 re-reported four findings the recurrence ledger listed as closed:
+
+| Date | Event |
+| --- | --- |
+| 2026-08-05 | `@cascivo/react@0.16.0` / `cascivo@0.7.1` published |
+| 2026-08-06 | Report #12's nine workstreams **merged**, not published |
+| 2026-08-08 | Two adopters build against `0.16.0` — the newest version that exists — and re-hit four of the fixed findings |
+| 2026-08-10 | `0.16.1` / `0.7.2` published, carrying the fixes |
+
+Four days of merged-but-unpublished cost two full adopter reports. Therefore:
+
+1. **A plan whose workstreams are all `merged` triggers a release.** The plan's status header
+   may not read `implemented` for more than one business day without either a published
+   version or a stated reason in the header itself.
+2. **The release PR sets `shippedIn` on every ledger row it publishes**
+   (`docs/internal/feedback/recurrence.json`), then `pnpm regen`. Until it does,
+   `RECURRENCE.md` lists the row under **"Closed — awaiting release"**, which is where it
+   honestly belongs.
+3. **Run `pnpm recurrence:shipped` before cutting the release and after publishing.** It is
+   expected to be RED between merge and publish — that red *is* the backlog becoming
+   visible. It goes green when step 2 is done. It is not part of `pnpm ready` because it
+   needs the network and a contributor cannot clear it on their own.
+
 ## Verification after a release
 
 ```bash
 # Check the new version on npm
 npm view @cascivo/core version
+
+# Every ledger row claiming to have shipped really has, and nothing is stranded
+pnpm recurrence:shipped
 
 # Check provenance (appears on the package page on npmjs.com)
 npm view @cascivo/core dist-tags

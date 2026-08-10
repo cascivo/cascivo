@@ -62,6 +62,7 @@
     "llms:generate": "node scripts/llms/generate.ts",
     "recurrence:generate": "node --experimental-strip-types scripts/feedback/recurrence.ts",
     "recurrence:check": "node --experimental-strip-types --test scripts/checks/recurrence.test.ts",
+    "recurrence:shipped": "node --experimental-strip-types --test scripts/checks/recurrence-shipped.test.ts",
     "compat:generate": "node scripts/compat/generate.ts",
     "docs-md:generate": "node scripts/docs-md/generate.ts",
     "sitemap:generate": "node scripts/sitemap/generate.ts",

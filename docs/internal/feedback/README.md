@@ -195,3 +195,22 @@ fixes but no gates produces the next report:
   invisible from inside it. Where a fragment claims to make a toolchain pass, a test must
   *run that toolchain* and assert zero findings — otherwise the claim is prose (Mechanism A)
   wearing a guard's clothes.
+- **G — closed on `main`, absent from the registry the adopter installs.** (Added by the
+  2026-08-08 adopter pair.) The recurrence ledger's `status: closed` is a property of the
+  **working tree**; an adopter's experience is a property of the **published tarball**.
+  Nothing connected the two, so the ledger could read `Open — 0` while every fix it named was
+  unreachable by `pnpm add`. On 2026-08-08 two adopters, on two different frameworks, re-hit
+  four findings the ledger listed as closed: `0.16.0` / CLI `0.7.1` were published 08-05, the
+  08-06 plan's nine workstreams merged on 08-06 and published on **08-10** — two days after
+  both reports. The adopters were on the newest version that existed. No plan was dishonest
+  and no fix regressed; the ledger simply had no field for the question.
+
+  This README already warns against reaching for "not yet published" as an *unchecked
+  excuse*, because that sentence was carried through three plans as an unverified reason.
+  Mechanism G is the other half of that rule: it is banned as an excuse and **required as a
+  checked fact**. `npm view <pkg> time --json` is the check.
+  → **Fix:** rows carry `shippedIn`; `RECURRENCE.md` renders "Closed — awaiting release"
+  separately from "Closed — shipped"; `pnpm recurrence:shipped` verifies the claim against
+  npm and fails when the unshipped backlog grows past one plan's worth. It is expected to be
+  red between merge and publish — that red *is* the backlog becoming visible — and
+  `docs/RELEASING.md` makes draining it part of the release, not a follow-up.

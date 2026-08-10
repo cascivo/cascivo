@@ -1,8 +1,49 @@
 # Fix plan — the 2026-08-08 adopter pair (Vercel dashboards on TanStack Start and React Router)
 
-**Status: planned — not implemented.** No workstream below has landed. Per
-[`README.md`](README.md), the PR that implements a workstream flips its row in the table in
-§10 in the *same* PR, and the PR that publishes flips it to `published vX.Y.Z`.
+**Status: implemented on `claude/ui-library-analysis-plan-5emlbu`; NOT YET PUBLISHED.**
+All nine workstreams have landed. Per [`README.md`](README.md), the PR that publishes to npm
+sets `shippedIn` on each [`RECURRENCE.md`](RECURRENCE.md) row and flips this header — until
+then every fix below is Mechanism G, which is the mechanism this plan exists to name.
+
+| WS | Status | Guard |
+| --- | --- | --- |
+| WS-1 render-phase prop mirrors | merged | `primitives:check` (`render-phase-mirror.test.ts`), `data-table.controlled.test.tsx` |
+| WS-2 scaffold toolchain | merged | `scaffold:check` (`scaffold-lint.test.ts`, runs real ESLint) |
+| WS-3 CSS/layout defects | merged | `computed:check`, `unlayered:check` |
+| WS-4a timeScale ticks | merged | `scale-time.test.ts`, `axis.time.test.tsx` |
+| WS-4b chart manifest parity | merged | `meta:check` (`props-parity`, `typedefs-parity`) |
+| WS-5 prop vocabulary | merged | `meta:check` (`vocabulary.test.ts`) |
+| WS-6 docs findability | merged | `meta:check` (`doc-surface.test.ts`) |
+| WS-7 composition gaps | merged | `meta:check` (`link-item-id-parity`), `area-chart.test.tsx` |
+| WS-9 Mechanism G ledger | merged | `recurrence:check`, `recurrence:shipped` |
+
+### Where the implementation disagreed with this plan
+
+Written down because a plan that quietly disagrees with what shipped is the defect §0 is
+about:
+
+- **`useControllableSignal` was NOT the fix for `DataTable`, and the plan's step 2 was the
+  reason that was caught.** The primitive performs the same render-phase write; an eager-write
+  variant was tried and reverted because it broke `useDisclosure`'s contract, letting a
+  parent-rejected change flash on screen. Selection now reads the controlled prop directly —
+  nothing derives from it, so the mirror bought nothing at all.
+- **`rows`/`columns` DO need their mirror.** The plan said to delete it and read the props
+  directly in the computeds. That is wrong: `useComputed` memoises across renders, so a
+  computed closing over a plain prop serves the first render's value forever. Doing it the
+  plan's way froze the flow example's search filter while all 1221 component tests passed —
+  caught only by an example-app test.
+- **The mirror guard found four sites the plan's grep missed** (`app-shell`, `search`, `swap`,
+  `toc`), for twelve total rather than nine.
+- **`timeScale` had a second, independent defect.** `tickFormat()` was dead code — declared,
+  implemented, called by nothing — so every time axis fell through to `toLocaleDateString()`
+  and would have rendered the same label on every tick even with the tick ladder fixed.
+- **The parity scope fix surfaced far more than `format`:** 39 undocumented props and 114
+  missing `typeDefs` entries across 20 components, in charts, flow AND editor.
+- **A trailing-slash bug in the new resolver briefly made the whole sweep look clean.**
+  `REPO_ROOT` carries a trailing slash in the test but not in a probe, so a `slice`-based
+  path calculation silently produced unloadable paths that read as "no source found" — the
+  same false-clean shape as the `continue` it replaced. Fixed with `path.relative`.
+- **WS-8 (the four unreproduced items) is not merged.** See §9.
 
 Reports (thirteenth and fourteenth):
 
