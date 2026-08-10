@@ -51,6 +51,8 @@ let CardContent: any
 let CardHeader: any
 let Link: any
 let Stat: any
+let AppShell: any
+let Checkbox: any
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
 const STYLES = readFileSync(join(ROOT, 'packages/react/dist/styles.css'), 'utf8')
@@ -84,7 +86,7 @@ before(async () => {
   // per-component `.css` side effects, which a bare Node loader cannot resolve (the exact
   // failure documented in docs/USING-WITH-VITE-SSR.md). The stylesheet is loaded separately,
   // exactly as a browser does.
-  ;({ Button, Card, CardContent, CardHeader, Link, Stat } = await import(
+  ;({ AppShell, Button, Card, CardContent, CardHeader, Checkbox, Link, Stat } = await import(
     new URL('../../packages/react/dist/node/index.js', import.meta.url).href
   ))
   // Playwright pins an exact Chromium build and refuses to launch anything else, so a dev
@@ -223,6 +225,76 @@ describe('Stat and Kpi read as one system', () => {
       await computed('#carded', 'border-top-width'),
       '0px',
       '`<Stat card>` must ship the same chrome as Kpi so a mixed dashboard reads as one system',
+    )
+  })
+})
+
+/*
+ * Three defects an adopter can only see in a real browser, all reported 2026-08-08 (report A).
+ * None is expressible in jsdom: two are about hit-testing, one about a containing block.
+ */
+describe('Card establishes a containing block', () => {
+  it('a stretched link inside a Card does not cover the page', async () => {
+    await mount(
+      h('div', { id: 'page', style: { position: 'relative', blockSize: '600px' } }, [
+        h(
+          'button',
+          { key: 'b', id: 'outside', style: { position: 'absolute', top: '400px' } },
+          'Nav',
+        ),
+        h(Card, { key: 'c' }, h('a', { href: '#x', id: 'stretched' }, 'Open project')),
+      ]),
+    )
+    // The stretched-link idiom: an ::after overlay filling the nearest positioned ancestor.
+    await page.addStyleTag({
+      content: '#stretched::after { content: ""; position: absolute; inset: 0; }',
+    })
+    const hit = await page.$eval('#outside', (el: Element) => {
+      const r = el.getBoundingClientRect()
+      const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+      return top?.id ?? top?.tagName ?? '?'
+    })
+    assert.equal(
+      hit,
+      'outside',
+      'A stretched link inside a Card resolved its overlay against the VIEWPORT and swallowed ' +
+        'every click on the page. Card must be `position: relative`.',
+    )
+  })
+})
+
+describe('AppShell insets its content', () => {
+  it('main has padding by default', async () => {
+    await mount(h(AppShell, { header: h('div', null, 'Header') } as never, 'Body'))
+    const pad = await computed('#cascade-main', 'padding-top')
+    assert.notEqual(
+      pad,
+      '0px',
+      'AppShell main shipped `padding: 0` for three releases, so every adopter wrote the same ' +
+        'wrapper div and every first screenshot had clipped buttons.',
+    )
+  })
+
+  it('padding="none" opts out for full-bleed layouts', async () => {
+    await mount(h(AppShell, { header: h('div', null, 'Header'), padding: 'none' } as never, 'Body'))
+    assert.equal(await computed('#cascade-main', 'padding-top'), '0px')
+  })
+})
+
+describe('Checkbox decoration does not intercept pointer events', () => {
+  it('hit-testing the control resolves to the input or its label', async () => {
+    await mount(h(Checkbox, { label: 'Select row', id: 'cb' } as never))
+    const tag = await page.evaluate(() => {
+      const control = document.querySelector('[class*="control"]') as HTMLElement
+      const r = control.getBoundingClientRect()
+      const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)
+      return top?.tagName ?? '?'
+    })
+    assert.ok(
+      tag === 'INPUT' || tag === 'LABEL',
+      `Hit-testing the checkbox control resolved to <${tag}>. The visually-hidden <input> sits ` +
+        'beneath the decoration, so every Playwright .check() in every adopter suite fails ' +
+        'with "intercepts pointer events" and needs { force: true }.',
     )
   })
 })

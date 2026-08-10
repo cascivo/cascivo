@@ -27,6 +27,12 @@
 
   .control {
     --_check-color: transparent;
+    /* The real <input> is visually hidden BENEATH this decoration, so without this every
+       `page.getByRole('checkbox').check()` in every adopter's test suite fails with
+       "<span> intercepts pointer events" and needs `{ force: true }`. Real users click the
+       label and never notice, which is exactly why it survived to be reported (2026-08-08,
+       report A). The label still forwards clicks, so behaviour is unchanged. */
+    pointer-events: none;
     display: inline-flex;
     flex-shrink: 0;
     inline-size: 1.125rem;

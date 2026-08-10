@@ -1,5 +1,6 @@
 'use client'
 import { cn, useControllableSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import type { SpaceStep } from '@cascivo/core'
 import { cloneElement, isValidElement, useRef } from 'react'
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react'
 import styles from './app-shell.module.css'
@@ -39,6 +40,20 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
   defaultOpen?: boolean
   /** Fired when the nav requests open/close (burger, Escape, scrim). */
   onOpenChange?: ((open: boolean) => void) | undefined
+  /**
+   * Inset around the main content area, as a space-scale step.
+   *
+   * ⚠ It **defaults to `6`**, not to none. `<main>` shipped with `padding: 0` for three
+   * releases, so every adopter wrote the same wrapper `<div style={{ padding: … }}>` and
+   * every app's first screenshot had its buttons clipped against the viewport edge — the CLI's
+   * own generated dashboard modelled the workaround with an inline style its sibling
+   * AGENTS.md forbids. Reported three times (2026-07-24, 2026-08-06, 2026-08-08).
+   *
+   * Pass `'none'` for a full-bleed layout that owns its own insets (a map, a split pane).
+   *
+   * @defaultValue `6`
+   */
+  padding?: SpaceStep | 'none'
   className?: string | undefined
 }
 
@@ -68,6 +83,7 @@ export function AppShell({
   open,
   defaultOpen,
   onOpenChange,
+  padding = 6,
   className,
   ...props
 }: AppShellProps) {
@@ -168,6 +184,7 @@ export function AppShell({
           tabIndex={-1}
           className={styles['main']}
           data-cascivo-appshell-main=""
+          data-padding={padding === 'none' ? 'none' : String(padding)}
         >
           {children}
         </main>

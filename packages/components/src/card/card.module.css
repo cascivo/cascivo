@@ -1,5 +1,12 @@
 @layer cascivo.component {
   .card {
+    /* Containing block for the stretched-link pattern (an <a> with
+       `::after { position: absolute; inset: 0 }` making the whole card clickable — what every
+       dashboard project grid does). Without it the overlay resolves against the VIEWPORT and
+       covers the entire application: the sidebar and header stop responding to clicks, with
+       nothing on screen to suggest why. Reported 2026-08-08 (report A) after a Playwright
+       click timed out; a human would only have found it by being very confused. */
+    position: relative;
     background-color: var(--cascivo-color-surface);
     border-radius: var(--cascivo-radius-surface);
     overflow: hidden;

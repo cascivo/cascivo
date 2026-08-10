@@ -245,10 +245,12 @@ function indexHtml(opts: ScaffoldOptions): string {
           padding: 0;
         }
       }
-      html,
-      body,
-      #root {
-        height: 100%;
+      @layer cascivo.base {
+        html,
+        body,
+        #root {
+          height: 100%;
+        }
       }
     </style>
   </head>
