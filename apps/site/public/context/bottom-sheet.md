@@ -34,20 +34,20 @@ Renders role="dialog" with aria-modal; the title labels it via aria-labelledby a
 
 ## Props
 
-| Name           | Type                                  | Required | Default     | Description                                                   |
-| -------------- | ------------------------------------- | -------- | ----------- | ------------------------------------------------------------- |
-| `open`         | `boolean`                             | No       | —           | Whether the component is open (controlled).                   |
-| `defaultOpen`  | `boolean`                             | No       | —           | Whether the component is open on first render (uncontrolled). |
-| `onOpenChange` | `(open: boolean) => void`             | No       | —           | Called with the next open state when it changes.              |
-| `snapPoints`   | `number[]`                            | No       | [0.5, 0.92] | Detent heights as ascending fractions of the viewport (0–1)   |
-| `activeSnap`   | `number`                              | No       | —           | The controlled snap-point index.                              |
-| `defaultSnap`  | `number`                              | No       | 0           | The initial snap-point index when uncontrolled.               |
-| `onSnapChange` | `(index: number) => void`             | No       | —           | Called with the new snap-point index when it changes.         |
-| `title`        | `React.ReactNode`                     | No       | —           | Title text for the component.                                 |
-| `description`  | `React.ReactNode`                     | No       | —           | Supporting description text.                                  |
-| `children`     | `React.ReactNode`                     | No       | —           | Content rendered inside the component.                        |
-| `labels`       | `{ close?: string; handle?: string }` | No       | —           | Overrides for the component’s user-visible strings (i18n).    |
-| `className`    | `string`                              | No       | —           | Additional CSS class names merged onto the root element.      |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `open` | `boolean` | No | — | Whether the component is open (controlled). |
+| `defaultOpen` | `boolean` | No | — | Whether the component is open on first render (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void` | No | — | Called with the next open state when it changes. |
+| `snapPoints` | `number[]` | No | [0.5, 0.92] | Detent heights as ascending fractions of the viewport (0–1) |
+| `activeSnap` | `number` | No | — | The controlled snap-point index. |
+| `defaultSnap` | `number` | No | 0 | The initial snap-point index when uncontrolled. |
+| `onSnapChange` | `(index: number) => void` | No | — | Called with the new snap-point index when it changes. |
+| `title` | `React.ReactNode` | No | — | Title text for the component. |
+| `description` | `React.ReactNode` | No | — | Supporting description text. |
+| `children` | `React.ReactNode` | No | — | Content rendered inside the component. |
+| `labels` | `{ close?: string; handle?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -82,11 +82,11 @@ Snaps between three detents by dragging the handle; opens at half height.
 
 ## Boundaries
 
-| Area          | Level    | Note                                                                   |
-| ------------- | -------- | ---------------------------------------------------------------------- |
-| snapPoints    | flexible | Any ascending list of viewport fractions; the sheet snaps between them |
-| open state    | flexible | Controlled (open/onOpenChange) or uncontrolled (defaultOpen)           |
-| active detent | flexible | Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)     |
+| Area | Level | Note |
+|------|-------|------|
+| snapPoints | flexible | Any ascending list of viewport fractions; the sheet snaps between them |
+| open state | flexible | Controlled (open/onOpenChange) or uncontrolled (defaultOpen) |
+| active detent | flexible | Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap) |
 
 ## AI context prompt
 

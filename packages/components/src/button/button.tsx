@@ -4,6 +4,16 @@ import type { ButtonHTMLAttributes } from 'react'
 import { Spinner } from '../spinner/spinner'
 import styles from './button.module.css'
 
+/**
+ * Button.
+ *
+ * ⚠ **DOM shape:** children are wrapped in an inner `<span>` so the loading `Spinner` can be
+ * a sibling rather than being nested inside the label. Layout CSS written against
+ * `.my-button > span` therefore targets that wrapper, not your content — one adopter's
+ * `> span { display: flex }` hit the wrapper and collapsed the spacing inside it. The wrapper
+ * is already a flex row that inherits the button's `gap`, so composing an icon with a label
+ * needs no CSS of your own.
+ */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * Selects the visual style variant.

@@ -24,21 +24,21 @@ Renders with role="img"; the value and range are in the fallback table.
 
 ## Props
 
-| Name          | Type                                | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------- | ----------------------------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`       | `number`                            | Yes      | —       | The value the needle points to.                                                                                                                                                                                                                                                                                                                                                               |
-| `min`         | `number`                            | No       | 0       | Minimum allowed value.                                                                                                                                                                                                                                                                                                                                                                        |
-| `max`         | `number`                            | No       | 100     | Maximum allowed value.                                                                                                                                                                                                                                                                                                                                                                        |
-| `thresholds`  | `{ upTo: number; color: string }[]` | No       | —       | Coloured zones from min upward; the last should reach max.                                                                                                                                                                                                                                                                                                                                    |
-| `unit`        | `string`                            | No       | —       | Suffix after the centre value.                                                                                                                                                                                                                                                                                                                                                                |
-| `sweep`       | `number`                            | No       | 270     | Total sweep angle in degrees (270 = a speedometer arc).                                                                                                                                                                                                                                                                                                                                       |
-| `ticks`       | `number`                            | No       | 5       | Major tick count.                                                                                                                                                                                                                                                                                                                                                                             |
-| `title`       | `string`                            | Yes      | —       | Chart title (also aria-label).                                                                                                                                                                                                                                                                                                                                                                |
-| `description` | `string`                            | No       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
-| `width`       | `number`                            | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height`      | `number`                            | No       | 240     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
-| `className`   | `string`                            | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
-| `plain`       | `boolean`                           | No       | false   | Marks only — no ticks/labels. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                        |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | Yes | — | The value the needle points to. |
+| `min` | `number` | No | 0 | Minimum allowed value. |
+| `max` | `number` | No | 100 | Maximum allowed value. |
+| `thresholds` | `{ upTo: number; color: string }[]` | No | — | Coloured zones from min upward; the last should reach max. |
+| `unit` | `string` | No | — | Suffix after the centre value. |
+| `sweep` | `number` | No | 270 | Total sweep angle in degrees (270 = a speedometer arc). |
+| `ticks` | `number` | No | 5 | Major tick count. |
+| `title` | `string` | Yes | — | Chart title (also aria-label). |
+| `description` | `string` | No | — | Supporting description text. |
+| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | No | 240 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | Marks only — no ticks/labels. For micro/inline charts. |
 
 ## Object types
 
@@ -46,10 +46,10 @@ Renders with role="img"; the value and range are in the fallback table.
 
 Shape of the `thresholds` prop.
 
-| Field   | Type     | Required | Description                                         |
-| ------- | -------- | -------- | --------------------------------------------------- |
-| `upTo`  | `number` | Yes      | Upper bound of this coloured zone (in value units). |
-| `color` | `string` | Yes      | —                                                   |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `upTo` | `number` | Yes | Upper bound of this coloured zone (in value units). |
+| `color` | `string` | Yes | — |
 
 ## Tokens
 
@@ -63,7 +63,8 @@ Shape of the `thresholds` prop.
 
 ```jsx
 import { Gauge } from '@cascivo/charts'
-;<Gauge
+
+<Gauge
   title="CPU load"
   value={72}
   unit="%"

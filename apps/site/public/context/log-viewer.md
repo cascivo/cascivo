@@ -34,17 +34,17 @@ The scroll region is role="log" with aria-live="polite" so assistive tech announ
 
 ## Props
 
-| Name             | Type                                                       | Required | Default | Description                                                     |
-| ---------------- | ---------------------------------------------------------- | -------- | ------- | --------------------------------------------------------------- |
-| `lines`          | `ReadonlySignal<readonly LogLine[]> \| readonly LogLine[]` | Yes      | —       | The log lines to display (a signal or array).                   |
-| `rowHeight`      | `number`                                                   | No       | 20      | Height of each row in pixels, used for virtualization.          |
-| `overscan`       | `number`                                                   | No       | 8       | Number of extra rows rendered above and below the viewport.     |
-| `follow`         | `boolean`                                                  | No       | —       | Whether the view auto-scrolls to follow new lines (controlled). |
-| `onFollowChange` | `(follow: boolean) => void`                                | No       | —       | Called with the new follow state when it changes.               |
-| `ansi`           | `boolean`                                                  | No       | false   | When true, parses ANSI color escape codes into colored spans.   |
-| `search`         | `string`                                                   | No       | —       | Query used to filter and highlight matching lines.              |
-| `maxHeight`      | `string`                                                   | No       | '24rem' | Maximum height of the scroll viewport (CSS length).             |
-| `labels`         | `LogViewerLabels`                                          | No       | —       | Overrides for the component’s user-visible strings (i18n).      |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `lines` | `ReadonlySignal<readonly LogLine[]> \| readonly LogLine[]` | Yes | — | The log lines to display (a signal or array). |
+| `rowHeight` | `number` | No | 20 | Height of each row in pixels, used for virtualization. |
+| `overscan` | `number` | No | 8 | Number of extra rows rendered above and below the viewport. |
+| `follow` | `boolean` | No | — | Whether the view auto-scrolls to follow new lines (controlled). |
+| `onFollowChange` | `(follow: boolean) => void` | No | — | Called with the new follow state when it changes. |
+| `ansi` | `boolean` | No | false | When true, parses ANSI color escape codes into colored spans. |
+| `search` | `string` | No | — | Query used to filter and highlight matching lines. |
+| `maxHeight` | `string` | No | '24rem' | Maximum height of the scroll viewport (CSS length). |
+| `labels` | `LogViewerLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 
@@ -76,12 +76,7 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 ### Static log with levels
 
 ```jsx
-<LogViewer
-  lines={[
-    { id: 1, text: 'Build started', level: 'info' },
-    { id: 2, text: 'Type error', level: 'error' },
-  ]}
-/>
+<LogViewer lines={[{ id: 1, text: "Build started", level: "info" }, { id: 2, text: "Type error", level: "error" }]} />
 ```
 
 ### ANSI colored output
@@ -92,11 +87,11 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                               |
-| ----------- | -------- | ---------------------------------------------------------------------------------- |
-| data source | flexible | Accepts a live signal or a plain array                                             |
-| rowHeight   | strict   | Virtualization assumes a fixed row height; variable-height lines are not supported |
-| coloring    | flexible | Per-line level or ANSI SGR-16 escapes                                              |
+| Area | Level | Note |
+|------|-------|------|
+| data source | flexible | Accepts a live signal or a plain array |
+| rowHeight | strict | Virtualization assumes a fixed row height; variable-height lines are not supported |
+| coloring | flexible | Per-line level or ANSI SGR-16 escapes |
 
 ## AI context prompt
 

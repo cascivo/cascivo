@@ -34,11 +34,11 @@ role="status" with aria-live="polite" announces the label when the status change
 
 ## Props
 
-| Name     | Type                                                     | Required | Default | Description                                                |
-| -------- | -------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------- |
-| `status` | `'inactive' \| 'active' \| 'finished' \| 'error'`        | Yes      | —       | Status state.                                              |
-| `label`  | `ReactNode`                                              | No       | —       | Text label for the control.                                |
-| `labels` | `{ active?: string; finished?: string; error?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n). |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `status` | `'inactive' \| 'active' \| 'finished' \| 'error'` | Yes | — | Status state. |
+| `label` | `ReactNode` | No | — | Text label for the control. |
+| `labels` | `{ active?: string; finished?: string; error?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Tokens
 
@@ -70,10 +70,10 @@ role="status" with aria-live="polite" announces the label when the status change
 
 ## Boundaries
 
-| Area             | Level    | Note                                                                                             |
-| ---------------- | -------- | ------------------------------------------------------------------------------------------------ |
-| label            | flexible | Defaults come from the i18n catalog per status; override with label or the per-status labels map |
-| status semantics | strict   | active must show a spinner, finished a success icon, error an error icon — do not repurpose      |
+| Area | Level | Note |
+|------|-------|------|
+| label | flexible | Defaults come from the i18n catalog per status; override with label or the per-status labels map |
+| status semantics | strict | active must show a spinner, finished a success icon, error an error icon — do not repurpose |
 
 ## AI context prompt
 

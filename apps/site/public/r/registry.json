@@ -2932,7 +2932,7 @@
           },
           {
             "name": "padding",
-            "description": "Inner padding of the component.",
+            "description": "Inner padding of the CARD BOX. ⚠ `padding=\"none\"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means \"let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge\"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child.",
             "type": "'none' | 'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -9749,7 +9749,7 @@
           },
           {
             "name": "density",
-            "description": "Row density — 'compact', 'normal', or 'relaxed'.",
+            "description": "Row density — 'compact', 'normal', or 'relaxed'. ⚠ It sets a row **height floor**, so it is invisible whenever the cell content is already taller: a two-line cell or a Badge stack looks identical at every density. Reported as \"barely distinguishable\" — the prop works, the content is winning. Shrink the cell content, or set `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too.",
             "type": "'compact' | 'normal' | 'relaxed'",
             "required": false,
             "default": "'normal'"
@@ -9845,7 +9845,7 @@
                 "name": "width",
                 "type": "string",
                 "required": false,
-                "description": "Explicit column width (any CSS length, e.g. `120px`)."
+                "description": "Preferred column width (any CSS length, e.g. `120px`), with an automatic content floor. ⚠ Sizing EVERY column switches the table to `table-layout: fixed`. ⚠ \"Leave one unsized\" is necessary but NOT sufficient: the leftover width is split by content weight, so if the sized columns nearly fill the table the remainder can be narrower than the content needs and long tokens wrap mid-word. Leave the widest free-form column unsized, keep sized columns to ~2/3 of the table, and give the free-form one a `minWidth` when the data has long unbreakable tokens."
               }
             ]
           },

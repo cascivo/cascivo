@@ -36,6 +36,14 @@ export interface Column<Row> {
    * can exceed its container — the extra columns are reachable by horizontal scroll, not
    * dropped. Leave at least one free-form column unsized unless you specifically want
    * page-stable widths.
+   *
+   * ⚠ **"Leave one unsized" is necessary, not sufficient.** The leftover width is split
+   * between the unsized columns by `table-layout: auto`, which weighs them by content — so
+   * if the sized columns nearly fill the table, what remains can be narrower than the
+   * content needs and long tokens wrap mid-word (`acme-` / `storefront`). Reported at
+   * 6-of-8 columns sized. Rules of thumb: leave the widest free-form column unsized, keep
+   * the sized columns to roughly two thirds of the table, and give the free-form one a
+   * `minWidth` when the data has long unbreakable tokens like slugs or IDs.
    */
   width?: string
   /**
@@ -83,6 +91,18 @@ export interface DataTableProps<Row> {
   selection?: { mode: 'single' | 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }
   batchActions?: { id?: string; label: string; onClick: (selectedIds: string[]) => void }[]
   renderExpandedRow?: (row: Row) => ReactNode
+  /**
+   * Row height preset.
+   *
+   * ⚠ It sets a row **height floor** (`--_row-height`), so it is invisible whenever the cell
+   * content is already taller — a two-line cell or a cell containing a `Badge` stack looks
+   * identical at every density. Reported as "barely distinguishable"; the prop is working,
+   * the content is simply winning. Shrink the cell content, or set
+   * `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too.
+   *
+   * @defaultValue `normal`
+   * @see the component manifest
+   */
   density?: 'compact' | 'normal' | 'relaxed'
   /**
    * When true, applies alternating row striping.

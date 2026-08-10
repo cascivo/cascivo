@@ -19,8 +19,8 @@
 
 ### Positions are arithmetic, not measured, so a mismatch makes rows overlap or leave gaps that grow with scroll depth
 
-**Bad:** `Passing rows whose real height differs from `itemHeight`` 
-**Good:**`Fix the row height in CSS to match `itemHeight` exactly`  
+**Bad:** `Passing rows whose real height differs from `itemHeight``  
+**Good:** `Fix the row height in CSS to match `itemHeight` exactly`  
 **Why:** Positions are arithmetic, not measured, so a mismatch makes rows overlap or leave gaps that grow with scroll depth
 
 ### `height` drives the visible row count, which cannot be derived from a relative length without measuring
@@ -47,15 +47,15 @@ The viewport is a role="list" and each rendered row is a role="listitem" carryin
 
 ## Props
 
-| Name         | Type                                             | Required | Default | Description                                                                                                   |
-| ------------ | ------------------------------------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `items`      | `Item[]`                                         | Yes      | —       | The full collection; only the visible window is rendered                                                      |
-| `itemHeight` | `number`                                         | Yes      | —       | Fixed row height in px — every row must be this tall                                                          |
-| `height`     | `number`                                         | Yes      | —       | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
-| `renderItem` | `(item: Item, index: number) => React.ReactNode` | Yes      | —       | Renders one row                                                                                               |
-| `overscan`   | `number`                                         | No       | 3       | Extra rows rendered above and below the visible window, to cover fast scrolling.                              |
-| `ariaLabel`  | `string`                                         | No       | —       | Accessible label for the list; label it when the list stands alone                                            |
-| `className`  | `string`                                         | No       | —       | Additional CSS class names merged onto the root element.                                                      |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `Item[]` | Yes | — | The full collection; only the visible window is rendered |
+| `itemHeight` | `number` | Yes | — | Fixed row height in px — every row must be this tall |
+| `height` | `number` | Yes | — | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
+| `renderItem` | `(item: Item, index: number) => React.ReactNode` | Yes | — | Renders one row |
+| `overscan` | `number` | No | 3 | Extra rows rendered above and below the visible window, to cover fast scrolling. |
+| `ariaLabel` | `string` | No | — | Accessible label for the list; label it when the list stands alone |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -87,10 +87,10 @@ A larger overscan trades DOM nodes for fewer blank frames when flinging.
 
 ## Boundaries
 
-| Area       | Level    | Note                                                       |
-| ---------- | -------- | ---------------------------------------------------------- |
-| overscan   | flexible | Rows rendered beyond the window (default 3)                |
-| itemHeight | strict   | Fixed and uniform — variable row heights are not supported |
+| Area | Level | Note |
+|------|-------|------|
+| overscan | flexible | Rows rendered beyond the window (default 3) |
+| itemHeight | strict | Fixed and uniform — variable row heights are not supported |
 
 ## AI context prompt
 

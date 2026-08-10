@@ -32,16 +32,16 @@ Single mode renders role="radiogroup" with role="radio" + aria-checked items; mu
 
 ## Props
 
-| Name            | Type                                                                              | Required | Default    | Description                                                                    |
-| --------------- | --------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------------------------------------------------ |
-| `type`          | `'single' \| 'multiple'`                                                          | Yes      | —          | Whether one or multiple items can be pressed at once ('single' \| 'multiple'). |
-| `value`         | `string \| string[]`                                                              | No       | —          | The controlled value.                                                          |
-| `defaultValue`  | `string \| string[]`                                                              | No       | —          | The initial value when uncontrolled.                                           |
-| `onValueChange` | `(value: string \| string[]) => void`                                             | No       | —          | Called with the new value when it changes.                                     |
-| `items`         | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | Yes      | —          | The items to render.                                                           |
-| `orientation`   | `'horizontal' \| 'vertical'`                                                      | No       | horizontal | Layout orientation of the component.                                           |
-| `size`          | `'sm' \| 'md' \| 'lg'`                                                            | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                          |
-| `disabled`      | `boolean`                                                                         | No       | false      | When true, disables the control and removes it from the tab order.             |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `type` | `'single' \| 'multiple'` | Yes | — | Whether one or multiple items can be pressed at once ('single' \| 'multiple'). |
+| `value` | `string \| string[]` | No | — | The controlled value. |
+| `defaultValue` | `string \| string[]` | No | — | The initial value when uncontrolled. |
+| `onValueChange` | `(value: string \| string[]) => void` | No | — | Called with the new value when it changes. |
+| `items` | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | Yes | — | The items to render. |
+| `orientation` | `'horizontal' \| 'vertical'` | No | horizontal | Layout orientation of the component. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 
@@ -61,36 +61,21 @@ Single mode renders role="radiogroup" with role="radio" + aria-checked items; mu
 ### Single selection
 
 ```jsx
-<ToggleGroup
-  type="single"
-  defaultValue="left"
-  items={[
-    { value: 'left', label: 'Left' },
-    { value: 'center', label: 'Center' },
-    { value: 'right', label: 'Right' },
-  ]}
-/>
+<ToggleGroup type="single" defaultValue="left" items={[{ value: "left", label: "Left" }, { value: "center", label: "Center" }, { value: "right", label: "Right" }]} />
 ```
 
 ### Multiple selection
 
 ```jsx
-<ToggleGroup
-  type="multiple"
-  defaultValue={['bold']}
-  items={[
-    { value: 'bold', label: 'Bold' },
-    { value: 'italic', label: 'Italic' },
-  ]}
-/>
+<ToggleGroup type="multiple" defaultValue={["bold"]} items={[{ value: "bold", label: "Bold" }, { value: "italic", label: "Italic" }]} />
 ```
 
 ## Boundaries
 
-| Area         | Level    | Note                                                                                 |
-| ------------ | -------- | ------------------------------------------------------------------------------------ |
-| token names  | strict   | Item height must resolve to --cascivo-control-height-\* to align with other controls |
-| item content | flexible | Items may use a text label, an icon, or both; consumer owns the icon set             |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Item height must resolve to --cascivo-control-height-* to align with other controls |
+| item content | flexible | Items may use a text label, an icon, or both; consumer owns the icon set |
 
 ## AI context prompt
 

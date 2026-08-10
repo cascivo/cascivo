@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/troubleshooting.md
   registry v0.16.1 · generated 2026-08-09
 -->
-
 # Troubleshooting cascivo
 
 The failures adopters actually hit, in FAQ form. Each entry: symptom → cause →
@@ -189,11 +188,11 @@ from somewhere.
 
 **Fix — it depends where the signal came from:**
 
-| Where your signal came from                                                               | What you need                                                                                                                                       |
-| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Where your signal came from | What you need |
+| --- | --- |
 | A cascivo hook — `useSignal`, `useComputed`, `useDisclosure`, `useMachine`, `useTheme`, … | **Nothing.** These subscribe you automatically. (On `@cascivo/core` < 0.6, `useSignal`/`useComputed` did **not** — upgrade, or add `useSignals()`.) |
-| A module-level `signal()`, or a signal passed in as a prop                                | `useSignals()` as the component's first statement                                                                                                   |
-| `currentLocale()` from `@cascivo/i18n` (a plain function, so it can't subscribe you)      | `useSignals()` as the component's first statement                                                                                                   |
+| A module-level `signal()`, or a signal passed in as a prop | `useSignals()` as the component's first statement |
+| `currentLocale()` from `@cascivo/i18n` (a plain function, so it can't subscribe you) | `useSignals()` as the component's first statement |
 
 ```tsx
 import { signal } from '@cascivo/core'
@@ -232,12 +231,12 @@ above any signal read.
 
 **Cause:** cascivo ships everything in cascade layers
 (`cascivo.base < cascivo.theme < cascivo.component`). If your override is
-_inside a layer_ that is ordered before `cascivo.component`, it loses no matter
+*inside a layer* that is ordered before `cascivo.component`, it loses no matter
 how specific it is.
 
 **Fix:** unlayered author CSS beats **every** cascivo layer regardless of
 specificity — a plain stylesheet override just wins. To override from within a
-layer, declare your layer ordered _after_ `cascivo.component`.
+layer, declare your layer ordered *after* `cascivo.component`.
 
 The inverse pitfall also exists: a global reset like `* { margin: 0; padding: 0 }`
 written **outside** any layer beats all cascivo layers too, zeroing out every
@@ -275,11 +274,11 @@ CSS. The recommended pattern (a brand indirection variable) is in
 
 ## `cascivo add` / `cascivo list` fails offline or the registry is unreachable
 
-**Behavior:** the registry _index_ is fetched network-first with an offline
+**Behavior:** the registry *index* is fetched network-first with an offline
 fallback — the CLI caches every fetched copy under `~/.cascivo/cache` and, when
 the network fails, falls back to the last cached copy with a
-`Could not reach … — using the last cached copy.` notice. Component _file
-payloads_ are never cached (they must be fresh, and a truncated install must
+`Could not reach … — using the last cached copy.` notice. Component *file
+payloads* are never cached (they must be fresh, and a truncated install must
 fail), so `cascivo add` itself needs a working connection.
 
 **Fix:** check connectivity and the `registry` URL in `cascivo.config.ts`
@@ -359,7 +358,7 @@ once, usually a dozen-plus errors from one small file.
 **Cause:** `@types/react` is not resolvable from `@cascivo/*`. cascivo's `.d.ts` files
 `import { HTMLAttributes } from 'react'` and most interfaces `extend` those types; when the
 import cannot resolve, `extends HTMLAttributes<…>` collapses to an error type and each
-interface keeps only its _own_ members. `skipLibCheck: true` (which most setups enable)
+interface keeps only its *own* members. `skipLibCheck: true` (which most setups enable)
 hides the diagnostic that would explain it.
 
 **When it happens:** only when your package manager's hoisting is restricted. pnpm's default
@@ -386,10 +385,10 @@ publicHoistPattern:
 
 ## The page has a horizontal scrollbar I didn't create
 
-Often a _second_, vertical one appears next to it: the horizontal bar makes the document
+Often a *second*, vertical one appears next to it: the horizontal bar makes the document
 taller than the viewport.
 
-**Cause:** no global `box-sizing: border-box`. Components that are `width: 100%` _and_
+**Cause:** no global `box-sizing: border-box`. Components that are `width: 100%` *and*
 padded (`Textarea`, `Input`, `Select`) compute wider than their container under the
 browser's `content-box` default.
 
@@ -461,7 +460,7 @@ import '@cascivo/charts/styles.css'
 
 `useTheme()` reports the new theme, no error is thrown, and `data-theme` never changes.
 
-**Cause:** `setTheme()` writes the theme _signal_; the mounted `<ThemeProvider>` is what
+**Cause:** `setTheme()` writes the theme *signal*; the mounted `<ThemeProvider>` is what
 writes the attribute. With no provider mounted, the signal updates and the DOM does not.
 
 **Fix:** wrap your app in `<ThemeProvider>` (SSR-safe, and it persists the choice). If you
@@ -516,7 +515,7 @@ provider, nothing to buy into. Start with a single button.
 
 **Do I need Tailwind?** No. Styling is modern platform CSS — `@layer`, custom
 properties, container queries — driven by a three-tier token system. Using
-Tailwind v4 _alongside_ cascivo works too: [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md).
+Tailwind v4 *alongside* cascivo works too: [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md).
 
 **Does it work with Next.js / React Server Components?** Yes — components ship
 `'use client'` preserved. Setup in [USING-WITH-NEXTJS.md](/docs/using-with-nextjs.md).

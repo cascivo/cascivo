@@ -3228,7 +3228,7 @@ import { Card } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `actions` | `ReactNode` | no | — | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card. |
 | `variant` | `'default' \| 'outlined' \| 'elevated'` | no | `default` | Selects the visual style variant. |
-| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | no | `md` | Inner padding of the component. |
+| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | no | `md` | Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child. |
 
 ## Examples
 
@@ -7314,7 +7314,7 @@ import { DataTable } from '@cascivo/react'
 | `selection` | `{ mode: 'single' \| 'multi'; selected?: string[]; onChange?: (ids: string[]) => void }` | no | — | Row-selection configuration (mode and selected ids). |
 | `batchActions` | `{ label: string; onClick: (selectedIds: string[]) => void }[]` | no | — | Actions applied to the currently selected rows. |
 | `renderExpandedRow` | `(row: Row) => ReactNode` | no | — | Renders the expanded content for a row. |
-| `density` | `'compact' \| 'normal' \| 'relaxed'` | no | `'normal'` | Row density — 'compact', 'normal', or 'relaxed'. |
+| `density` | `'compact' \| 'normal' \| 'relaxed'` | no | `'normal'` | Row density — 'compact', 'normal', or 'relaxed'. ⚠ It sets a row **height floor**, so it is invisible whenever the cell content is already taller: a two-line cell or a Badge stack looks identical at every density. Reported as "barely distinguishable" — the prop works, the content is winning. Shrink the cell content, or set `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too. |
 | `zebra` | `boolean` | no | `false` | When true, applies alternating row striping. |
 | `stickyHeader` | `boolean` | no | `false` | When true, the header stays fixed while the body scrolls. |
 | `loading` | `boolean` | no | `false` | When true, shows a loading state. |
@@ -7337,7 +7337,7 @@ A single column definition. `render` is the escape hatch for custom cell content
 | `sortable` | `boolean` | no | When true, the header toggles sort on this column. |
 | `render` | `(row: Row) => ReactNode` | no | Custom cell renderer. Return a Badge, icon + link, or formatted value. Omit to render `String(row[key])`. |
 | `align` | `'start' \| 'end'` | no | Cell/text alignment. Use 'end' for numbers and timestamps. |
-| `width` | `string` | no | Explicit column width (any CSS length, e.g. `120px`). |
+| `width` | `string` | no | Preferred column width (any CSS length, e.g. `120px`), with an automatic content floor. ⚠ Sizing EVERY column switches the table to `table-layout: fixed`. ⚠ "Leave one unsized" is necessary but NOT sufficient: the leftover width is split by content weight, so if the sized columns nearly fill the table the remainder can be narrower than the content needs and long tokens wrap mid-word. Leave the widest free-form column unsized, keep sized columns to ~2/3 of the table, and give the free-form one a `minWidth` when the data has long unbreakable tokens. |
 
 ### `SortState`
 

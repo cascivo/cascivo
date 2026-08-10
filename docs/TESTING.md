@@ -124,6 +124,26 @@ polyfill is required unless your own code calls it unguarded.
 The full reference setup lives at
 [`packages/components/src/setup.ts`](../packages/components/src/setup.ts).
 
+## Selecting a checkbox or a table row
+
+`Checkbox` (and therefore `DataTable`'s row selection) renders a real `<input type="checkbox">`
+that is visually hidden, with a styled `<span>` painted on top. The span carries
+`pointer-events: none`, so a normal click passes through to the input:
+
+```ts
+await page.getByRole('checkbox', { name: 'Select row' }).check()          // ✓
+await page.getByRole('row', { name: /storefront/ }).getByRole('checkbox').check()
+```
+
+If you are on a version before this was fixed, that call fails with
+`<span …> intercepts pointer events` and needs `{ force: true }` — or you can click the label,
+which is what a real user does. It is worth knowing which you are looking at: the symptom
+looks like a broken selector, and it made every table-selection test in one adopter's suite
+fail confusingly (2026-08-08 report A).
+
+The same shape applies to `Radio`, `Toggle` and `Switch`: query by **role**, not by the
+decorative element.
+
 ## Don't write timing-dependent tests
 
 Never assert after a real `setTimeout`/sleep — flaky by construction. For

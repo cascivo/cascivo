@@ -1714,9 +1714,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.module.css"
       ],
       "fileHashes": {
-        "button.tsx": "sha256-491998c651771badb072d1d5e9f9c284ccf6af39d5876899b6c8edb843786b19",
+        "button.tsx": "sha256-b6c15a5e744ecea0d4978ca59f7fed3d17a40ab59488481e7f305c39d82adaa7",
         "index.ts": "sha256-7979b137663ece5f57327ba1c8f891ed0d3882d1da13d9424d6d8bfdc1d1aeaf",
-        "button.module.css": "sha256-b6ff24230a9cc0e6c45aa64b2b3bef77efa1fa0f56fe132e2d0765e79fcdc039"
+        "button.module.css": "sha256-c91691a7249abc049ef9e5b3227621ea296919b52555c79295ae018fe1c8d776"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -2245,7 +2245,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.module.css"
       ],
       "fileHashes": {
-        "card.tsx": "sha256-5475c78c37ce44f8624dd276426d95623981a692fc1fda1bc347eb77699dc2b6",
+        "card.tsx": "sha256-ac5232bf7b237095c38eefc890eac6162dfa8f90835a0d035f17de577bd7d3a1",
         "index.ts": "sha256-27d4f144329873a2f2124423ec77094366cc0854d2a9312796078391fb9eee34",
         "card.module.css": "sha256-f9fe20c39b2bb2dc0c5dfa99c1d6cad6f7402a19d6ac81fad709f3cffaac20b3"
       },
@@ -2278,7 +2278,7 @@
           },
           {
             "name": "padding",
-            "description": "Inner padding of the component.",
+            "description": "Inner padding of the CARD BOX. ⚠ `padding=\"none\"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means \"let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge\"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child.",
             "type": "'none' | 'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
@@ -4628,9 +4628,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-74c98fc0c9def9d885dbbf2be29b9e71d90528669e21271553a1918275c3f628",
+        "data-table.tsx": "sha256-3ebbab55210f33cb9b66f1e524db9f695c403dc63ad44be91b1fc9ee61317478",
         "index.ts": "sha256-c80f45d421cd7701697b4d4df9641a323a710143f2e78c9596f3c1e63b0e316f",
-        "data-table.module.css": "sha256-12bcb1921e33beeca2ecc3a11cabb389e3e6b42576ee2a85447d773e0e2ec41b"
+        "data-table.module.css": "sha256-9c509caa1e2d07a2d1d49c152d924d3a4919e7ea4b9e194a4c356769f0d394c2"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -4750,7 +4750,7 @@
           },
           {
             "name": "density",
-            "description": "Row density — 'compact', 'normal', or 'relaxed'.",
+            "description": "Row density — 'compact', 'normal', or 'relaxed'. ⚠ It sets a row **height floor**, so it is invisible whenever the cell content is already taller: a two-line cell or a Badge stack looks identical at every density. Reported as \"barely distinguishable\" — the prop works, the content is winning. Shrink the cell content, or set `--cascivo-data-table-cell-gap` to tighten the horizontal rhythm too.",
             "type": "'compact' | 'normal' | 'relaxed'",
             "required": false,
             "default": "'normal'"
@@ -4846,7 +4846,7 @@
                 "name": "width",
                 "type": "string",
                 "required": false,
-                "description": "Explicit column width (any CSS length, e.g. `120px`)."
+                "description": "Preferred column width (any CSS length, e.g. `120px`), with an automatic content floor. ⚠ Sizing EVERY column switches the table to `table-layout: fixed`. ⚠ \"Leave one unsized\" is necessary but NOT sufficient: the leftover width is split by content weight, so if the sized columns nearly fill the table the remainder can be narrower than the content needs and long tokens wrap mid-word. Leave the widest free-form column unsized, keep sized columns to ~2/3 of the table, and give the free-form one a `minWidth` when the data has long unbreakable tokens."
               }
             ]
           },
@@ -6302,7 +6302,7 @@
       "fileHashes": {
         "field.tsx": "sha256-ca7d2211925e35431487ed420fa77d3abddd6b9df024facfb8616cc8e71b49c1",
         "index.ts": "sha256-af9db7b6453ad1385895c6cb7a00e21f34729a76014d4be1cbde318800c44ebc",
-        "field.module.css": "sha256-0aeb9ff8562b462d119eef97fec7766d80452366edc87eeee633d1ca24ea9468"
+        "field.module.css": "sha256-306fd830d6ebc013654c1149ddfdcc8dea64b9897fd32d8e6822336250df0e81"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -20296,7 +20296,7 @@
       "fileHashes": {
         "grid.tsx": "sha256-937196d1c470c009c7d7ef58ded8b592b560eb6000c425caa2076374144c0604",
         "index.ts": "sha256-21d70762c13307b349141181d6df3e8f53a4015d21a169fcb559c7b7ada19b99",
-        "grid.module.css": "sha256-5d51fec5a0b0f52866e5d78f515261f98384f071cbf3c0eaf2a683fa08f196a8"
+        "grid.module.css": "sha256-ca25ef5472e81dc9e98d3890c0871769520285c8315c7633a3c8eae12fcbd59d"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {

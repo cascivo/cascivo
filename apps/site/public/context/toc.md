@@ -32,13 +32,13 @@ Rendered as a <nav> landmark with a label; entries are real anchor links and the
 
 ## Props
 
-| Name             | Type                                              | Required | Default | Description                                                      |
-| ---------------- | ------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------- |
-| `items`          | `{ id: string; label: string; level?: number }[]` | Yes      | —       | The items to render.                                             |
-| `activeId`       | `string`                                          | No       | —       | Controlled active item id; disables built-in scroll-spy when set |
-| `onActiveChange` | `(id: string) => void`                            | No       | —       | Called with the id of the active section when it changes.        |
-| `labels`         | `{ nav?: string }`                                | No       | —       | Overrides for the component’s user-visible strings (i18n).       |
-| `className`      | `string`                                          | No       | —       | Additional CSS class names merged onto the root element.         |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id: string; label: string; level?: number }[]` | Yes | — | The items to render. |
+| `activeId` | `string` | No | — | Controlled active item id; disables built-in scroll-spy when set |
+| `onActiveChange` | `(id: string) => void` | No | — | Called with the id of the active section when it changes. |
+| `labels` | `{ nav?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -54,13 +54,7 @@ Rendered as a <nav> landmark with a label; entries are real anchor links and the
 ### Basic
 
 ```jsx
-<Toc
-  items={[
-    { id: 'intro', label: 'Introduction' },
-    { id: 'usage', label: 'Usage' },
-    { id: 'api', label: 'API', level: 3 },
-  ]}
-/>
+<Toc items={[{ id: 'intro', label: 'Introduction' }, { id: 'usage', label: 'Usage' }, { id: 'api', label: 'API', level: 3 }]} />
 ```
 
 ### Controlled active item
@@ -68,21 +62,15 @@ Rendered as a <nav> landmark with a label; entries are real anchor links and the
 Pass activeId to drive the highlight yourself; scroll-spy is disabled.
 
 ```jsx
-<Toc
-  activeId="usage"
-  items={[
-    { id: 'intro', label: 'Introduction' },
-    { id: 'usage', label: 'Usage' },
-  ]}
-/>
+<Toc activeId="usage" items={[{ id: 'intro', label: 'Introduction' }, { id: 'usage', label: 'Usage' }]} />
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                     |
-| ----------- | -------- | ------------------------------------------------------------------------ |
-| activeId    | flexible | Control the highlight externally, or omit it for built-in scroll-spy     |
-| token names | strict   | Colors, focus ring, and touch target must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| activeId | flexible | Control the highlight externally, or omit it for built-in scroll-spy |
+| token names | strict | Colors, focus ring, and touch target must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

@@ -85,6 +85,34 @@ Charts are the single biggest win: `@cascivo/charts` is a real charting engine, 
 console typically renders charts on one or two routes out of six. Splitting those routes
 keeps the engine out of the initial chunk entirely.
 
+> ### ⚠ …but only if your landing page has no chart on it, and this recipe tells you to put one there
+>
+> These two pieces of advice work against each other, and an adopter hit it head-on
+> (2026-08-08 report B). They split `/analytics` exactly as above and measured:
+>
+> ```
+> dist/assets/index-*.js     524.70 kB   ← still over the limit
+> dist/assets/analytics-*.js   2.88 kB   ← the "big" chart route
+> ```
+>
+> The analytics chunk was 2.9 kB because `@cascivo/charts` was *already* in the entry chunk:
+> the Overview page uses `Sparkline` in its KPI tiles and project cards — which is what
+> ["Composing a KPI tile with a sparkline"](#composing-a-kpi-tile-with-a-sparkline) below
+> recommends. One `Sparkline` on the landing route pulls the engine in and route-splitting the
+> chart pages buys almost nothing.
+>
+> Pick one, deliberately:
+>
+> - **Sparklines on the landing page** (the better-looking dashboard). Accept one eager chunk
+>   around 525 kB / 172 kB gzip and silence Vite's warning with
+>   `build.chunkSizeWarningLimit`. This is the option most consoles should take: the engine is
+>   loaded once and every later chart route is then nearly free.
+> - **A genuinely small initial load.** Keep the landing route chart-free — use `Stat` without
+>   `visual`, or a plain delta — and split every route that draws anything.
+>
+> There is no third option today: `@cascivo/charts` has no sparkline-only subpath, so
+> importing `Sparkline` imports the engine.
+
 The CSS number behaves differently and needs no action — per-component tree-shaking already
 dropped ~40% of the aggregate sheet (166 KB of 273 KB) — **except under SSR**, where the
 aggregate import is required; see

@@ -28,13 +28,13 @@ import { RadioCard } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type        | Required | Default | Description                                                    |
-| --------------- | ----------- | -------- | ------- | -------------------------------------------------------------- |
-| `hideIndicator` | `boolean`   | no       | —       | Hide the radio indicator glyph, showing only the card content. |
-| `value`         | `string`    | yes      | —       | Radio value                                                    |
-| `title`         | `ReactNode` | yes      | —       | Card title                                                     |
-| `description`   | `ReactNode` | no       | —       | Optional description                                           |
-| `disabled`      | `boolean`   | no       | —       | Disables the card                                              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `hideIndicator` | `boolean` | no | — | Hide the radio indicator glyph, showing only the card content. |
+| `value` | `string` | yes | — | Radio value |
+| `title` | `ReactNode` | yes | — | Card title |
+| `description` | `ReactNode` | no | — | Optional description |
+| `disabled` | `boolean` | no | — | Disables the card |
 
 ## Examples
 
