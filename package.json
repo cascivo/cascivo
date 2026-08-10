@@ -85,7 +85,7 @@
     "icons:generate": "node scripts/icons/generate.mjs",
     "glyphs:generate": "node scripts/icons/generate-glyphs.mjs",
     "cli-versions:generate": "node scripts/registry/cli-versions.ts",
-    "scaffold:check": "node --experimental-strip-types --test scripts/checks/scaffold-contract.test.ts",
+    "scaffold:check": "node --experimental-strip-types --test scripts/checks/scaffold-contract.test.ts scripts/checks/scaffold-lint.test.ts",
     "regen": "pnpm barrels:generate && pnpm registry:generate && pnpm cli-versions:generate && pnpm deps:check && pnpm icons:generate && pnpm glyphs:generate && pnpm stories:generate && pnpm schema:generate && pnpm catalog:generate && pnpm variants:generate && pnpm specs:generate && pnpm context:generate && pnpm audit-contract:generate && pnpm changes:generate && pnpm parity:generate && pnpm migration:generate && pnpm simplicity:generate && pnpm tokens:generate && pnpm tsdoc:generate && pnpm readme:index && pnpm readme:generate && pnpm llms:generate && pnpm compat:generate && pnpm docs-md:generate && pnpm sitemap:generate && pnpm blog-feed:generate && pnpm recurrence:generate",
     "dev:docs": "vp run @cascivo/site#dev",
     "dev:landing": "vp run @cascivo/site#dev",
