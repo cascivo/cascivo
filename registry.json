@@ -16651,7 +16651,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-b94fce6e8bd0e80c4fb4d33baeb8e8a6b810180ad2cea72551633690eab39b42",
+        "switcher.tsx": "sha256-ebcc012a2d9eccb4787a3a031d1f648fe817e259a9c89281bb29d676bc8e6878",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
         "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
@@ -21913,7 +21913,7 @@
         "typeDefs": [
           {
             "name": "AreaChartSeries",
-            "description": "Shape of the `series` prop.",
+            "description": "One series. Pass via the `series` prop; set `type: 'line'` to draw it unfilled.",
             "fields": [
               {
                 "name": "id",

@@ -60,7 +60,7 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ### `AreaChartSeries`
 
-Shape of the `series` prop.
+One series. Pass via the `series` prop; set `type: 'line'` to draw it unfilled.
 
 | Field   | Type                   | Required | Description                                                            |
 | ------- | ---------------------- | -------- | ---------------------------------------------------------------------- |

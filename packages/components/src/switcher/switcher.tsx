@@ -5,6 +5,16 @@ import type { ReactNode } from 'react'
 import styles from './switcher.module.css'
 
 export interface SwitcherLink {
+  /**
+   * Stable React key. Provide when `label`/`href` may repeat (e.g. placeholder `#` links).
+   *
+   * Without it the rows key on `href`, so three sibling teams that all link to `/` produce
+   * duplicate-key warnings on every render and the adopter has to make the hrefs artificially
+   * distinct (2026-08-08 report A). `SideNavItem`, `ShellHeaderNavLink`,
+   * `ShellHeaderNavMenuItem`, `HeaderLink` and `CommandItem` all carry this field already;
+   * `Switcher` was missed by that sweep.
+   */
+  id?: string
   label: string
   href: string
   active?: boolean
@@ -41,7 +51,7 @@ export function Switcher({ items, label, className }: SwitcherProps) {
             <span role="separator" aria-orientation="horizontal" className={styles['divider']} />
           </li>
         ) : (
-          <li key={entry.href}>
+          <li key={entry.id ?? entry.href}>
             <LinkComponent
               href={entry.href}
               aria-current={entry.active ? 'page' : undefined}

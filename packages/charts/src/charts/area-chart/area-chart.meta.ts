@@ -199,7 +199,8 @@ export const meta: ComponentMeta = {
   typeDefs: [
     {
       name: 'AreaChartSeries',
-      description: 'Shape of the `series` prop.',
+      description:
+        "One series. Pass via the `series` prop; set `type: 'line'` to draw it unfilled.",
       fields: [
         {
           name: 'id',
