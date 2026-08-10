@@ -408,6 +408,81 @@
    "status": "closed",
    "shippedIn": null,
    "note": "Three sibling teams all linking to \"/\" produced React duplicate-key warnings on every render. SideNavItem, ShellHeaderNavLink and four others gained `id` in an earlier sweep; Switcher was missed. The guard asserts each link-shaped type declares it AND that the component keys on it rather than merely declaring it."
+  },
+  {
+   "id": "scaffold-build-skips-typecheck",
+   "title": "Scaffolded `build` could go green with type errors",
+   "reports": [
+    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+   ],
+   "plans": [
+    "fix-plan-adopter-pair-2026-08-08.md"
+   ],
+   "mechanism": "D",
+   "guard": "scaffold:check",
+   "status": "closed",
+   "shippedIn": null,
+   "note": "Reported against the adopter's own project, not the scaffold: `vite build` passed while 37 type errors sat in the tree, because tsc is not part of it. The scaffold already ran `tsc && vite build`, so nothing needed fixing — but nothing asserted it either, so it could regress silently. scaffold-contract now requires `build` to invoke tsc, alongside the lint/typecheck/format scripts."
+  },
+  {
+   "id": "zebra-token-aliased-to-surface",
+   "title": "DataTable zebra striping paints rows the colour they already are",
+   "reports": [
+    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+   ],
+   "plans": [
+    "fix-plan-adopter-pair-2026-08-08.md"
+   ],
+   "mechanism": "E",
+   "guard": "computed:check",
+   "status": "closed",
+   "shippedIn": null,
+   "note": "Reported as \"no visible effect in the dark theme\"; it was worse and not theme-specific. Every theme aliases --cascivo-color-bg-subtle straight to --cascivo-color-surface, so striping a table that sits on a surface — a table in a Card, the normal composition — was a no-op with measured ΔL of exactly 0.0000 in all three themes. Replaced with a translucent foreground overlay that darkens on light themes and lightens on dark. Only observable in a browser: the declaration looks correct in source, and the first replacement named a token that does not exist, which computes to transparent and is indistinguishable from the original bug except by measuring painted alpha."
+  },
+  {
+   "id": "button-icon-label-no-gap",
+   "title": "An icon composed next to a label inside a Button renders touching",
+   "reports": [
+    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+   ],
+   "plans": [
+    "fix-plan-adopter-pair-2026-08-08.md"
+   ],
+   "mechanism": "A",
+   "guard": "computed:check",
+   "status": "closed",
+   "shippedIn": null,
+   "note": "All children go into ONE inner span, so the button's flex `gap` applied between the loading Spinner and that wrapper and never between an icon and its label. The wrapper is now a flex row inheriting the gap, so composing an icon with a label needs no adopter CSS — which also removes the reason to write layout CSS against the undocumented `> span`."
+  },
+  {
+   "id": "griditem-child-does-not-stretch",
+   "title": "A Card inside a spanning GridItem leaves a hole in the row",
+   "reports": [
+    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+   ],
+   "plans": [
+    "fix-plan-adopter-pair-2026-08-08.md"
+   ],
+   "mechanism": "E",
+   "guard": "computed:check",
+   "status": "closed",
+   "shippedIn": null,
+   "note": "The GridItem stretched to the row height (the grid's align-items: stretch) but, as a plain block container, could not pass that height to its child. Making it a grid container stretches the child by default, which is what an adopter already expects from the row. Reported as \"Grid's align prop didn't fix it\" — correctly, because the item was never the element failing to stretch."
+  },
+  {
+   "id": "field-rows-absorb-grid-slack",
+   "title": "Fields in a Grid row put their inputs at different heights",
+   "reports": [
+    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+   ],
+   "plans": [
+    "fix-plan-adopter-pair-2026-08-08.md"
+   ],
+   "mechanism": "E",
+   "guard": "computed:check",
+   "status": "closed",
+   "shippedIn": null,
+   "note": "Reproduced at 13.6px, but not for the reported reason: Field renders label -> control -> description, so the description sits BELOW the input and cannot push it down. The cause was .field being a grid with the default align-content: stretch, so as a cell in a taller row its rows absorbed the slack and a three-row field distributed it differently from a two-row one. align-content: start pins them to their natural sizes."
   }
  ]
 }

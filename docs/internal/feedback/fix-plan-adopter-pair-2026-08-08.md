@@ -15,6 +15,7 @@ then every fix below is Mechanism G, which is the mechanism this plan exists to 
 | WS-5 prop vocabulary | merged | `meta:check` (`vocabulary.test.ts`) |
 | WS-6 docs findability | merged | `meta:check` (`doc-surface.test.ts`) |
 | WS-7 composition gaps | merged | `meta:check` (`link-item-id-parity`), `area-chart.test.tsx` |
+| WS-8 the four unreproduced items | merged | `computed:check` |
 | WS-9 Mechanism G ledger | merged | `recurrence:check`, `recurrence:shipped` |
 
 ### Where the implementation disagreed with this plan
@@ -43,7 +44,17 @@ about:
   `REPO_ROOT` carries a trailing slash in the test but not in a probe, so a `slice`-based
   path calculation silently produced unloadable paths that read as "no source found" — the
   same false-clean shape as the `continue` it replaced. Fixed with `path.relative`.
-- **WS-8 (the four unreproduced items) is not merged.** See §9.
+- **WS-8 landed, and two of its four items were not what the report said they were.**
+  Zebra striping was not "too subtle in dark": `--cascivo-color-bg-subtle` is aliased to
+  `--cascivo-color-surface` in *every* theme, so the stripes were exactly the colour they were
+  striping (measured ΔL 0.0000 ×3). The `Field` misalignment was real at 13.6px but had nothing
+  to do with the description's position — `Field` renders label → control → description, so the
+  description is *below* the input; the cause was `.field`'s rows absorbing slack from a taller
+  grid row. Both diagnoses changed the fix, which is why the plan required a probe before a spec.
+- **The first zebra replacement named a token that does not exist.** `--cascivo-color-fg` is not
+  a cascivo token; an invalid `color-mix` computes to transparent, which looks *identical* to the
+  bug being fixed. It was caught only because the probe measures painted alpha rather than the
+  declaration — a source-level or manifest-level check would have gone green on it.
 
 Reports (thirteenth and fourteenth):
 
@@ -56,10 +67,13 @@ Both tested **registry `0.16.0` / CLI `0.7.1`**. Both built, typechecked, and li
 and neither hit a hard blocker. That is again the concern rather than the comfort: every red
 flag is something an adopter silently worked around.
 
-**Carried forward:** [`RECURRENCE.md`](RECURRENCE.md) shows `Open — 0` as of the 08-06 plan.
-This plan re-opens nothing on the merits — all fifteen closed rows stayed fixed on `main`.
-It adds a sixteenth row for a blind spot the ledger structurally could not see (§0), and
-twelve new rows (§9).
+**Carried forward:** [`RECURRENCE.md`](RECURRENCE.md) showed `Open — 0` as of the 08-06 plan.
+This plan re-opened nothing on the merits — all fifteen closed rows stayed fixed on `main`.
+It adds **sixteen** rows: one for the blind spot the ledger structurally could not see (§0.1,
+Mechanism G) and fifteen for the findings below. Every one is `closed` with a guard that was
+demonstrated failing on its pre-fix state, and every one currently sits under **"Closed —
+awaiting release"** — which is the honest state until this ships, and is what
+`pnpm recurrence:shipped` reports.
 
 ---
 
@@ -598,12 +612,20 @@ Four items are plausible but unverified; each needs a probe before it gets a fix
 them as work rather than as findings, because speccing an unreproduced defect is how the
 07-28 `@types/react` item cost two plans.
 
-| Item | Probe |
-| --- | --- |
-| A8b `DataTable zebra` invisible in dark | `computed:check`: assert odd/even row `background-color` differ by a measurable ΔL in all three themes |
-| A8e Icon+text `Button` gap inconsistent | repro `<ExternalLink />Visit` vs `<Plus />Add new`; likely a `:has()` selector that misses one child shape |
-| B9b `Field` baseline misalignment in `Grid` | `computed:check`: two `Field`s, one with `description`, assert equal input `offsetTop` |
-| B9c `GridItem` children don't stretch | `computed:check`: `Card` in `GridItem span={2}` next to a taller sibling, assert equal `offsetHeight` |
+**Outcome: all four reproduced, and two of the four diagnoses were wrong.** That is the
+return on requiring the probe — each wrong diagnosis pointed at a different fix.
+
+| Item | What the probe found | Fix |
+| --- | --- | --- |
+| A8b `DataTable zebra` invisible in dark | **Worse and not theme-specific.** Every theme aliases `--cascivo-color-bg-subtle` to `--cascivo-color-surface`, so striping a table on a surface repainted each row its own colour. ΔL exactly `0.0000` in all three. | Translucent foreground overlay that adapts per theme |
+| A8e Icon+text `Button` gap inconsistent | **Reproduced at 0.00px.** All children go into ONE inner `<span>`, so the button's flex `gap` applied between the Spinner and that wrapper, never between an icon and its label. | The wrapper is a flex row inheriting the gap |
+| B9b `Field` baseline misalignment in `Grid` | **Reproduced at 13.6px, wrong cause.** `Field` renders label → **control** → description, so the description is *below* the input and cannot push it down. `.field`'s own rows were absorbing slack from a taller grid row. | `align-content: start` on `.field` |
+| B9c `GridItem` children don't stretch | **Reproduced (74px vs 250px).** The item stretched to the row, but a block container cannot pass that height to its child — which is why the reporter's `Grid align` attempt did nothing. | `.grid-item` is a grid container |
+
+The zebra probe deserves one more note: the **first** replacement named `--cascivo-color-fg`,
+which is not a cascivo token. An invalid `color-mix` computes to `transparent`, so the "fix"
+rendered identically to the bug. Only a probe that measures **painted alpha** catches that —
+one asserting on the declaration, the manifest, or the source would have gone green.
 
 ---
 
@@ -632,25 +654,38 @@ them as work rather than as findings, because speccing an unreproduced defect is
 
 ---
 
-## §11 — Recurrence ledger rows to add
+## §11 — Recurrence ledger rows
 
-Add to `docs/internal/feedback/recurrence.json`, then `pnpm regen`. All open until their
-guard exists **and has been demonstrated failing on the pre-fix state**.
+All sixteen are in `docs/internal/feedback/recurrence.json` and `closed`, each naming a guard
+that **was demonstrated failing on its pre-fix state** before the row was closed — including
+`link-item-id-parity`, which was written after its fix and so had only ever been green until
+the fix was reverted to watch it fail.
+
+All sixteen also carry `shippedIn: null`, so [`RECURRENCE.md`](RECURRENCE.md) lists them under
+**"Closed — awaiting release"** rather than under "Closed — shipped". That is the honest state,
+and draining it is a release (§10), not a fix.
+
+Four rows beyond the twelve originally planned came out of WS-8, whose items the plan had
+declined to spec before reproducing them.
 
 | id | Title | Mech. | Guard (must exist before closing) |
 | --- | --- | --- | --- |
-| `closed-on-main-not-published` | Findings closed in the ledger are unreachable by `pnpm add` for days | **G** | `npm:parity` + `recurrence:check` published-floor assertion |
+| `closed-on-main-not-published` | Findings closed in the ledger are unreachable by `pnpm add` for days | **G** | `recurrence:shipped` (npm-verified) + `recurrence:check` shippedIn assertions |
 | `render-phase-prop-mirror` | Components hand-roll the forbidden render-phase prop mirror | — | `render-phase-mirror.test.ts` |
 | `scaffold-lints-nothing` | `cascivo create`'s ESLint config inspects zero TypeScript files | F | `scaffold-lint.test.ts` (runs real ESLint, asserts file count) |
 | `scaffold-build-skips-typecheck` | Scaffold `build` goes green with type errors | D | `scaffold-contract.test.ts` |
-| `chart-manifests-unguarded` | 26 chart components have never been props-parity checked | F | `props-parity` (scoped), `typedefs-parity` (scoped) |
+| `chart-manifests-unguarded` | 37 npm-shipped entries have never been props-parity checked | F | `props-parity` (scoped), `typedefs-parity` (scoped) |
 | `timescale-subday-one-tick` | Sub-day time domains render a single date tick | — | `scale-time.test.ts` domain table |
 | `card-no-containing-block` | `Card` is not `position: relative`; stretched links cover the viewport | A | `computed:check` `elementFromPoint` case |
 | `appshell-no-content-padding` | `AppShell` content sits flush; every adopter writes the same wrapper | A | `computed:check` + `scaffold-contract` no-inline-style |
 | `checkbox-decoration-eats-pointers` | Decorative control intercepts pointer events, breaking `.check()` | A | `computed:check` `elementFromPoint` case |
 | `unlayered-css-in-cli-templates` | Generated `index.html` emits unlayered CSS | D | `unlayered:check` (scoped to CLI templates) |
 | `prop-name-vocabulary` | Prop **names** are unpredictable across the catalog | A | `vocabulary.test.ts` prop-name axis |
-| `link-item-id-parity` | Link-shaped item types lack `id`, forcing `href` keys | D | link-item `id` parity sweep |
+| `link-item-id-parity` | Link-shaped item types lack `id`, forcing `href` keys | D | `link-item-id-parity.test.ts` |
+| `zebra-token-aliased-to-surface` | Zebra striping paints rows the colour they already are | E | `computed:check` painted-alpha probe |
+| `button-icon-label-no-gap` | An icon next to a label inside a Button renders touching | A | `computed:check` |
+| `griditem-child-does-not-stretch` | A Card in a spanning GridItem leaves a hole in the row | E | `computed:check` |
+| `field-rows-absorb-grid-slack` | Fields in a Grid row put their inputs at different heights | E | `computed:check` |
 
 ---
 
@@ -670,9 +705,45 @@ the rest reaches an adopter.
 
 ### Definition of done for this plan
 
-1. Every workstream row in the table above reads `merged` **and** the plan header names the
-   published version.
-2. `pnpm ready` green; `pnpm recurrence:check` green with every new row either `open` with a
-   `guardNote` or `closed` with a guard **demonstrated failing first**.
-3. `RECURRENCE.md` shows no row under "Closed — awaiting release" at the time the header is
-   flipped to `published`.
+| # | Criterion | State |
+| --- | --- | --- |
+| 1 | Every workstream row reads `merged` | ✅ all nine |
+| 2 | `pnpm ready` green | ✅ exit 0 |
+| 3 | `pnpm recurrence:check` green, every new row `closed` with a guard **demonstrated failing first** | ✅ sixteen rows |
+| 4 | Every CI gate outside `ready` that these changes touch, run directly | ✅ see below |
+| 5 | The plan header names the **published** version | ⛔ **not done — this is a release** |
+| 6 | `RECURRENCE.md` shows no row under "Closed — awaiting release" | ⛔ **sixteen rows waiting** |
+
+Criteria 5 and 6 are one action: merge, let the changeset cut the Version PR, publish, then
+set `shippedIn` on the sixteen rows and flip this header. **Until that happens, every fix in
+this plan is Mechanism G** — fixed, guarded, and unreachable by `pnpm add`. That is not an
+observation about process hygiene; it is the exact state in which the 08-06 plan's fixes sat
+while the two reports this plan triages were being written.
+
+`pnpm recurrence:shipped` reports it, and is expected to be red until then.
+
+#### Criterion 4 — the gates `pnpm ready` does not run
+
+`CLAUDE.md` notes that `ready` is not a strict superset of CI, and says to run the absent
+gates directly if you touched what they cover. These changes touch component CSS, charts, the
+CLI templates and the manifests, so all of them apply. Every one was run on the final tree:
+
+| Gate | Result | Why it applies here |
+| --- | --- | --- |
+| `bare-page:check` | ✅ 6 | Card/AppShell/Checkbox/zebra CSS, against shipped `styles.css` and nothing else |
+| `no-js:check` | ✅ 7 | server HTML never hydrated — the `clientJs: 'enhancement'` contract |
+| `isolated:check` | ✅ 4 | packed tarballs type-checked outside the repo with `skipLibCheck` OFF |
+| `pack:check` | ✅ 18 pkgs | publint + attw over the packed artifacts |
+| `docs:coverage` | ✅ 1362 props | the 39 newly documented props land here |
+| `audit:stories` | ✅ 113/130 | stories are generated from the manifests this plan edited |
+| `deps:check` / `deps:smoke` | ✅ | manifest dependency edits across charts/flow/editor |
+| `audit:animation` | ✅ | `prefers-reduced-motion` over the changed CSS |
+| `audit:signals` | ✅ | the twelve `useSignals()` call sites the mirror migration touched |
+| `links:check` | ✅ 25 routes | new doc sections and cross-links |
+| `fallback:check` | ✅ | the new `color-mix` zebra declaration |
+| `breakpoint:check` | ✅ 2 | no off-scale literals in the new CSS |
+| `demos:storage:check` | ✅ 6 | unchanged, run for completeness |
+
+`npm:parity` is deliberately **not** in that list: it compares the published tarball against
+this checkout, so it is red by construction until the release. That is the same fact criteria
+5 and 6 record, measured a different way.
