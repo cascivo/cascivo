@@ -32,13 +32,13 @@ Renders a native <a> so role, Enter activation, and focus come from the platform
 
 ## Props
 
-| Name       | Type                       | Required | Default    | Description                                                                                                                                                                                                                                                                                     |
-| ---------- | -------------------------- | -------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `variant`  | `'standalone' \| 'inline'` | No       | standalone | Selects the visual style variant.                                                                                                                                                                                                                                                               |
-| `size`     | `'sm' \| 'md' \| 'lg'`     | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                           |
-| `external` | `boolean`                  | No       | false      | When true, treats the link as external (opens in a new tab with rel safety).                                                                                                                                                                                                                    |
-| `href`     | `string`                   | No       | —          | The destination URL.                                                                                                                                                                                                                                                                            |
-| `asChild`  | `boolean`                  | No       | false      | Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md. |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'standalone' \| 'inline'` | No | standalone | Selects the visual style variant. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `external` | `boolean` | No | false | When true, treats the link as external (opens in a new tab with rel safety). |
+| `href` | `string` | No | — | The destination URL. |
+| `asChild` | `boolean` | No | false | Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md. |
 
 ## Tokens
 
@@ -62,13 +62,7 @@ Renders a native <a> so role, Enter activation, and focus come from the platform
 Inline links inherit the surrounding font size and stay underlined.
 
 ```jsx
-<p>
-  Read the{' '}
-  <Link variant="inline" href="/guide">
-    guide
-  </Link>{' '}
-  first.
-</p>
+<p>Read the <Link variant="inline" href="/guide">guide</Link> first.</p>
 ```
 
 ### External
@@ -76,17 +70,15 @@ Inline links inherit the surrounding font size and stay underlined.
 Opens in a new tab with rel="noreferrer" and a visual indicator.
 
 ```jsx
-<Link external href="https://example.com">
-  Example
-</Link>
+<Link external href="https://example.com">Example</Link>
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                             |
-| ----------- | -------- | ---------------------------------------------------------------- |
-| variant     | flexible | standalone vs inline depending on whether the link sits in prose |
-| token names | strict   | Accent colors and focus ring must resolve to --cascivo-\* tokens |
+| Area | Level | Note |
+|------|-------|------|
+| variant | flexible | standalone vs inline depending on whether the link sits in prose |
+| token names | strict | Accent colors and focus ring must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

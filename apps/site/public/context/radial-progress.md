@@ -35,15 +35,15 @@ Renders a div with role="progressbar", aria-valuenow (clamped 0–100), aria-val
 
 ## Props
 
-| Name         | Type                                                       | Required | Default | Description                                                                                                   |
-| ------------ | ---------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `ariaLabel`  | `string`                                                   | No       | —       | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
-| `value`      | `number`                                                   | Yes      | —       | The controlled value.                                                                                         |
-| `size`       | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                         |
-| `variant`    | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                                                                             |
-| `children`   | `React.ReactNode`                                          | No       | —       | Content rendered inside the component.                                                                        |
-| `aria-label` | `string`                                                   | No       | —       | Accessible label used when no visible label is present.                                                       |
-| `className`  | `string`                                                   | No       | —       | Additional CSS class names merged onto the root element.                                                      |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | No | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `value` | `number` | Yes | — | The controlled value. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No | primary | Selects the visual style variant. |
+| `children` | `React.ReactNode` | No | — | Content rendered inside the component. |
+| `aria-label` | `string` | No | — | Accessible label used when no visible label is present. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -80,17 +80,15 @@ Completed state with success color at large size
 Override the default percentage label with custom content
 
 ```jsx
-<RadialProgress value={45} variant="warning">
-  45 GB
-</RadialProgress>
+<RadialProgress value={45} variant="warning">45 GB</RadialProgress>
 ```
 
 ## Boundaries
 
-| Area  | Level    | Note                                                                         |
-| ----- | -------- | ---------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | label | flexible | Default is the percentage string; pass children to override with any content |
-| color | strict   | Color resolves through --cascivo-color-\* semantic tokens via data-variant   |
+| color | strict | Color resolves through --cascivo-color-* semantic tokens via data-variant |
 
 ## AI context prompt
 

@@ -18,9 +18,9 @@ _Copy-paste only — `LoginPage` is not exported from `@cascivo/react`. Run the 
 
 ## Props
 
-| Prop       | Type                            | Required | Default | Description                             |
-| ---------- | ------------------------------- | -------- | ------- | --------------------------------------- |
-| `onSubmit` | `(values: LoginValues) => void` | no       | —       | Called with valid form values on submit |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onSubmit` | `(values: LoginValues) => void` | no | — | Called with valid form values on submit |
 
 ## Examples
 

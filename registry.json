@@ -1151,7 +1151,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
       ],
       "fileHashes": {
-        "badge.tsx": "sha256-2b88cac50728b21cb426735da01ed6db2104b574a1d5d4129f08014e36b999af",
+        "badge.tsx": "sha256-4b168f7c6e4304c80957d3a1f66a40bf253d1b37d5fcd92e6373b060339e438e",
         "index.ts": "sha256-99f606cb9765238a88c7adcff6c4dd017be53641d16d394da96fcf9196be2e8b",
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0"
       },

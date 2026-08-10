@@ -24,16 +24,16 @@ Renders with role="meter" exposing min, max, and current value to assistive tech
 
 ## Props
 
-| Name         | Type               | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------ | ------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`      | `number`           | Yes      | —       | Current value                                                                                                                                                                                                                                                                                                                                                                                 |
-| `label`      | `string`           | Yes      | —       | Text label for the control.                                                                                                                                                                                                                                                                                                                                                                   |
-| `min`        | `number`           | No       | 0       | Minimum allowed value.                                                                                                                                                                                                                                                                                                                                                                        |
-| `max`        | `number`           | No       | 100     | Maximum allowed value.                                                                                                                                                                                                                                                                                                                                                                        |
-| `variant`    | `'bar' \| 'gauge'` | No       | bar     | Selects the visual style variant.                                                                                                                                                                                                                                                                                                                                                             |
-| `thresholds` | `MeterThresholds`  | No       | —       | Color breakpoints                                                                                                                                                                                                                                                                                                                                                                             |
-| `width`      | `number`           | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height`     | `number`           | No       | —       | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `number` | Yes | — | Current value |
+| `label` | `string` | Yes | — | Text label for the control. |
+| `min` | `number` | No | 0 | Minimum allowed value. |
+| `max` | `number` | No | 100 | Maximum allowed value. |
+| `variant` | `'bar' \| 'gauge'` | No | bar | Selects the visual style variant. |
+| `thresholds` | `MeterThresholds` | No | — | Color breakpoints |
+| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | No | — | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 
 ## Object types
 
@@ -41,10 +41,10 @@ Renders with role="meter" exposing min, max, and current value to assistive tech
 
 Shape of the `thresholds` prop.
 
-| Field      | Type     | Required | Description |
-| ---------- | -------- | -------- | ----------- |
-| `warning`  | `number` | No       | —           |
-| `critical` | `number` | No       | —           |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `warning` | `number` | No | — |
+| `critical` | `number` | No | — |
 
 ## Tokens
 
@@ -56,7 +56,8 @@ Shape of the `thresholds` prop.
 
 ```jsx
 import { Meter } from '@cascivo/charts'
-;<Meter value={72} label="CPU usage" />
+
+<Meter value={72} label="CPU usage" />
 ```
 
 ## AI context prompt

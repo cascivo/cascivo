@@ -28,23 +28,23 @@ import { ReorderList } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                                                                                          | Required | Default | Description                                                        |
-| --------------- | --------------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `value`         | `ReorderItem[]`                                                                               | yes      | —       | The ordered items; the component is controlled                     |
-| `onValueChange` | `(value: ReorderItem[]) => void`                                                              | yes      | —       | Called with the new order whenever a row moves                     |
-| `disabled`      | `boolean`                                                                                     | no       | `false` | When true, disables the control and removes it from the tab order. |
-| `labels`        | `{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n).         |
-| `className`     | `string`                                                                                      | no       | —       | Additional CSS class names merged onto the root element.           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `ReorderItem[]` | yes | — | The ordered items; the component is controlled |
+| `onValueChange` | `(value: ReorderItem[]) => void` | yes | — | Called with the new order whenever a row moves |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `labels` | `{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Object types
 
 ### `ReorderItem`
 
-| Field   | Type              | Required | Description                                                      |
-| ------- | ----------------- | -------- | ---------------------------------------------------------------- |
-| `id`    | `string`          | yes      | Stable identity for the row                                      |
-| `label` | `React.ReactNode` | yes      | Row content                                                      |
-| `name`  | `string`          | no       | Plain-text name used in announcements when label is not a string |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | yes | Stable identity for the row |
+| `label` | `React.ReactNode` | yes | Row content |
+| `name` | `string` | no | Plain-text name used in announcements when label is not a string |
 
 ## Examples
 
@@ -53,7 +53,10 @@ import { ReorderList } from '@cascivo/react'
 Controlled — the caller owns the order.
 
 ```tsx
-<ReorderList value={items} onValueChange={setItems} />
+<ReorderList
+  value={items}
+  onValueChange={setItems}
+/>
 ```
 
 ### Locked

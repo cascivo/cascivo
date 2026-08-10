@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/compatibility.md
   registry v0.16.1 · generated 2026-08-09
 -->
-
 # Compatibility & support matrix
 
 What cascivo runs on, which package versions go together, and the build-tooling
@@ -13,15 +12,15 @@ baseline. If an integration surprises you, start here.
 
 ## Frameworks
 
-| Framework                   | Supported             | Notes                                                                                                                                                                                                                                                                                    |
-| --------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| React 18 / 19               | ✅ Yes                | Primary target. Components ship `'use client'` preserved.                                                                                                                                                                                                                                |
-| Next.js App Router (RSC)    | ✅ Yes                | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. Working example: [`apps/examples/react-next`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next). See [`USING-WITH-NEXTJS.md`](/docs/using-with-nextjs.md).                |
-| Vite + React (CSR/SPA)      | ✅ Yes                | Reference setup. See `apps/examples/react-vite`.                                                                                                                                                                                                                                         |
-| Vite SSR / TanStack Start   | ✅ Yes¹               | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite-ssr). See [`USING-WITH-VITE-SSR.md`](/docs/using-with-vite-ssr.md).                   |
-| Preact 10 (`preact/compat`) | ✅ **CSR only**       | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](/docs/using-with-preact.md). |
-| Astro (React islands)       | ⚠️ **Partial**        | `client:only` ✅. Under `client:load` / `client:visible` Astro drops the per-component CSS, so islands render unstyled — import the aggregate `@cascivo/react/styles.css` in a shared layout as a workaround (+308 KB). See [`USING-WITH-ASTRO.md`](/docs/using-with-astro.md).          |
-| Vue / Svelte / Angular      | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React.                                                                                                                                                                                              |
+| Framework                  | Supported | Notes                                                                                   |
+| -------------------------- | --------- | --------------------------------------------------------------------------------------- |
+| React 18 / 19              | ✅ Yes    | Primary target. Components ship `'use client'` preserved.                                |
+| Next.js App Router (RSC)   | ✅ Yes    | Import the CSS once in a Server Component (e.g. `app/layout.tsx`); components are client. Working example: [`apps/examples/react-next`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next). See [`USING-WITH-NEXTJS.md`](/docs/using-with-nextjs.md). |
+| Vite + React (CSR/SPA)     | ✅ Yes    | Reference setup. See `apps/examples/react-vite`.                                         |
+| Vite SSR / TanStack Start  | ✅ Yes¹   | Requires `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin). Working example: [`apps/examples/react-vite-ssr`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-vite-ssr). See [`USING-WITH-VITE-SSR.md`](/docs/using-with-vite-ssr.md). |
+| Preact 10 (`preact/compat`) | ✅ **CSR only** | Verified on Vite CSR (`@preact/preset-vite`) — components, signals, overlays and charts all behave as on React, at roughly half the JS. **Not verified under SSR/prerender**, and known to fail under Astro's compat aliasing. See [`USING-WITH-PREACT.md`](/docs/using-with-preact.md). |
+| Astro (React islands)      | ⚠️ **Partial** | `client:only` ✅. Under `client:load` / `client:visible` Astro drops the per-component CSS, so islands render unstyled — import the aggregate `@cascivo/react/styles.css` in a shared layout as a workaround (+308 KB). See [`USING-WITH-ASTRO.md`](/docs/using-with-astro.md). |
+| Vue / Svelte / Angular     | ⚠️ Tokens/themes only | `@cascivo/tokens` + `@cascivo/themes` are framework-agnostic CSS; the components are React. |
 
 ¹ The published `@cascivo/react` bundle ships per-component CSS as static
 side-effect imports. Bundlers resolve these; a bare server-side ESM loader
@@ -36,14 +35,14 @@ its recipe imports the aggregate stylesheet in a Server Component.
 cascivo targets the **last 2 versions of Chrome, Firefox, and Safari**. It relies
 on modern CSS that is broadly shipped as of 2025:
 
-| Feature                         | Min support                     | Used for                                 |
-| ------------------------------- | ------------------------------- | ---------------------------------------- |
-| `@layer`                        | Chrome 99, FF 97, Saf 15.4      | predictable cascade ordering             |
-| `@container`                    | Chrome 105, FF 110, Saf 16      | slot-aware responsive components         |
-| `:has()`                        | Chrome 105, FF 121, Saf 15.4    | stateful styling without JS              |
-| `oklch()`                       | Chrome 111, FF 113, Saf 15.4    | the entire color system                  |
-| Popover API / `@starting-style` | Chrome 114+, FF 125+, Saf 17.4+ | overlays (Sheet, Drawer, Popover)        |
-| CSS `@function` / `if()`        | Chrome 133+ only                | **progressive enhancement only** (below) |
+| Feature                       | Min support              | Used for                                  |
+| ----------------------------- | ------------------------ | ----------------------------------------- |
+| `@layer`                      | Chrome 99, FF 97, Saf 15.4 | predictable cascade ordering              |
+| `@container`                  | Chrome 105, FF 110, Saf 16 | slot-aware responsive components          |
+| `:has()`                      | Chrome 105, FF 121, Saf 15.4 | stateful styling without JS               |
+| `oklch()`                     | Chrome 111, FF 113, Saf 15.4 | the entire color system                   |
+| Popover API / `@starting-style` | Chrome 114+, FF 125+, Saf 17.4+ | overlays (Sheet, Drawer, Popover)     |
+| CSS `@function` / `if()`      | Chrome 133+ only         | **progressive enhancement only** (below)  |
 
 ### CSS `@function` is opt-in
 
@@ -85,17 +84,17 @@ CI's drift check — it cannot go stale. (It once sat thirteen minors behind, cl
 
 <!-- BEGIN GENERATED: package-compatibility (scripts/compat/generate.ts) -->
 
-| Package            | Version | Peer requirements                                                                                             |
-| ------------------ | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `@cascivo/core`    | 0.16.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/tokens`  | 0.5.x   | none (CSS only)                                                                                               |
-| `@cascivo/themes`  | 0.4.x   | `@cascivo/tokens` (direct dep) — themes `@import` it                                                          |
-| `@cascivo/react`   | 0.16.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/icons`   | 0.3.x   | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`                                                        |
-| `@cascivo/charts`  | 0.16.x  | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
-| `@cascivo/i18n`    | 0.16.x  | `@preact/signals-react >=3.0.0`                                                                               |
-| `@cascivo/storage` | 0.16.x  | `@preact/signals-react >=3.0.0`                                                                               |
-| `@cascivo/mcp`     | 0.6.x   | (server; run via `npx`)                                                                                       |
+| Package | Version | Peer requirements |
+| ------- | ------- | ----------------- |
+| `@cascivo/core` | 0.16.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/tokens` | 0.5.x | none (CSS only) |
+| `@cascivo/themes` | 0.4.x | `@cascivo/tokens` (direct dep) — themes `@import` it |
+| `@cascivo/react` | 0.16.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/icons` | 0.3.x | `@types/react >=18.0.0` _(optional)_, `react >=18.0.0` |
+| `@cascivo/charts` | 0.16.x | `@preact/signals-react >=3.0.0`, `@types/react >=18.0.0` _(optional)_, `react >=18.0.0`, `react-dom >=18.0.0` |
+| `@cascivo/i18n` | 0.16.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/storage` | 0.16.x | `@preact/signals-react >=3.0.0` |
+| `@cascivo/mcp` | 0.6.x | (server; run via `npx`) |
 
 <!-- END GENERATED: package-compatibility -->
 

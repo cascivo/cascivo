@@ -160,6 +160,124 @@ describe('the accessible-name prop is one name, everywhere', () => {
   })
 })
 
+/*
+ * ── Prop-NAME vocabulary ───────────────────────────────────────────────────────────────
+ *
+ * Everything above guards prop VALUES (the Tone and Progress unions). This guards prop
+ * NAMES, which is where the 2026-08-08 adopter lost nine compile cycles: `shape` vs
+ * `variant`, `rows` vs `items`, `type` vs `kind` as a union tag.
+ *
+ * Only the mechanically decidable rules live here. "Is this collection config-driven?" is a
+ * judgement call made at review time against the table in docs/AI-RULES.md; "does a type
+ * named `<X>Shape` correspond to a `shape` prop?" is not.
+ */
+describe('prop-name vocabulary', () => {
+  const registry = JSON.parse(readFileSync(join(ROOT, 'registry.json'), 'utf8')) as {
+    components: Array<{
+      name: string
+      meta: { name: string; props?: Array<{ name: string; type: string }> }
+    }>
+  }
+
+  it('no component declares both `items` and `rows`', () => {
+    const offenders = registry.components
+      .filter((c) => {
+        const names = new Set((c.meta.props ?? []).map((p) => p.name))
+        return names.has('items') && names.has('rows')
+      })
+      .map((c) => c.name)
+    assert.deepEqual(
+      offenders,
+      [],
+      'A component taking both `items` and `rows` makes the collection prop a coin flip. ' +
+        'Pick `items`; `DataTable.rows` is the one exception and it takes only `rows`.',
+    )
+  })
+
+  it('no component types a visual-style prop as `shape`', () => {
+    // `variant` is the catalog word. `shape` survives only where it means literal geometry
+    // (Avatar's circle/square), which is a shape, not a style enum.
+    const GEOMETRY = new Set(['avatar', 'avatar-group', 'skeleton', 'spinner'])
+    const offenders = registry.components
+      .filter((c) => !GEOMETRY.has(c.name))
+      .filter((c) => (c.meta.props ?? []).some((p) => p.name === 'shape'))
+      .map((c) => c.name)
+    assert.deepEqual(
+      offenders,
+      [],
+      'Use `variant` for a visual-style enum. `shape` is reserved for literal geometry.',
+    )
+  })
+
+  it('no exported type is named `<X>Shape` unless its component has a `shape` prop', () => {
+    // The BadgeShape trap: a type named for a prop that does not exist sits directly above
+    // the props interface in the generated .d.ts and reads as that prop's type.
+    const offenders: string[] = []
+    for (const file of tsxFiles(COMPONENTS)) {
+      const code = readFileSync(file, 'utf8')
+      for (const m of code.matchAll(/^(?:export )?type (\w+)Shape\b/gm)) {
+        if (/^\s+shape\??:/m.test(code)) continue
+        offenders.push(`${file.slice(ROOT.length + 1)}: ${m[1]}Shape`)
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'A type named `<X>Shape` next to a component with no `shape` prop is read as that ' +
+        "prop's type — `BadgeShape` cost an adopter four files. Name the type after the " +
+        'prop it actually types (`BadgeVariant`).',
+    )
+  })
+
+  it('discriminated-union props tag on `kind`, not `type`', () => {
+    // Union-typed props whose manifest type string spells out an inline discriminant.
+    const offenders: string[] = []
+    for (const c of registry.components) {
+      for (const p of c.meta.props ?? []) {
+        if (!/\btype:\s*'/.test(p.type)) continue
+        offenders.push(`${c.name}.${p.name}: ${p.type.slice(0, 60)}`)
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'Discriminated unions tag on `kind`. `type` is reserved for HTML-ish meanings ' +
+        "(`input type`, renderer keys). An adopter wrote `{ type: 'line' }` for " +
+        'AreaChart.annotations and had to discover the tag was `kind`.',
+    )
+  })
+
+  it('every row of the published vocabulary table names a real prop', () => {
+    // Keeps the docs from rotting: the table in AI-RULES.md is the contract, so each
+    // component it names must actually carry the prop it is cited for.
+    const claims: Array<[string, string]> = [
+      ['data-list', 'items'],
+      ['structured-list', 'items'],
+      ['timeline', 'items'],
+      ['data-table', 'rows'],
+      ['badge', 'variant'],
+      ['notification', 'actions'],
+      ['notification', 'description'],
+      ['app-shell', 'padding'],
+    ]
+    const missing: string[] = []
+    for (const [comp, prop] of claims) {
+      const c = registry.components.find((x) => x.name === comp)
+      if (!c) {
+        missing.push(`${comp} (no registry entry)`)
+        continue
+      }
+      if (!(c.meta.props ?? []).some((p) => p.name === prop)) missing.push(`${comp}.${prop}`)
+    }
+    assert.deepEqual(
+      missing,
+      [],
+      'docs/AI-RULES.md "Data and shape props" cites props that do not exist:\n  ' +
+        missing.join('\n  '),
+    )
+  })
+})
+
 /** Component `.tsx` files under a directory, excluding tests. */
 function tsxFiles(dir: string): string[] {
   const out: string[] = []

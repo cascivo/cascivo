@@ -32,14 +32,14 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 
 ## Props
 
-| Name               | Type                                                       | Required | Default | Description                                                                                                                        |
-| ------------------ | ---------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `ariaLabel`        | `string`                                                   | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
-| `aria-label`       | `string`                                                   | No       | —       | Accessible label when no visible label is present.                                                                                 |
-| `aria-describedby` | `string`                                                   | No       | —       | Id of an element describing the progress bar.                                                                                      |
-| `value`            | `number`                                                   | No       | —       | 0–100. Omit for indeterminate state.                                                                                               |
-| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                                                                                                  |
-| `size`             | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                              |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | No | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
+| `aria-label` | `string` | No | — | Accessible label when no visible label is present. |
+| `aria-describedby` | `string` | No | — | Id of an element describing the progress bar. |
+| `value` | `number` | No | — | 0–100. Omit for indeterminate state. |
+| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No | primary | Selects the visual style variant. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 
@@ -81,10 +81,10 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                  |
-| ----------- | -------- | --------------------------------------------------------------------- |
-| variant     | flexible | Choose the variant that matches the semantic meaning of the operation |
-| token names | strict   | Colors must resolve to --cascivo-\* tokens                            |
+| Area | Level | Note |
+|------|-------|------|
+| variant | flexible | Choose the variant that matches the semantic meaning of the operation |
+| token names | strict | Colors must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

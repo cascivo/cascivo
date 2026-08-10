@@ -23,9 +23,9 @@ Form fields are labeled and validation messages are associated for screen reader
 
 ## Props
 
-| Name     | Type                               | Required | Default | Description                             |
-| -------- | ---------------------------------- | -------- | ------- | --------------------------------------- |
-| `onSave` | `(values: SettingsValues) => void` | No       | —       | Called with valid form values on submit |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `onSave` | `(values: SettingsValues) => void` | No | — | Called with valid form values on submit |
 
 ## Examples
 

@@ -33,21 +33,21 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description                                                        |
-| --------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `value`         | `string`                  | No       | —       | Controlled value (HH:mm)                                           |
-| `defaultValue`  | `string`                  | No       | —       | The initial value when uncontrolled.                               |
-| `onValueChange` | `(value: string) => void` | No       | —       | Called with the new HH:MM time string when the value changes.      |
-| `onChange`      | `(value: string) => void` | No       | —       | Deprecated: use onValueChange (same time string).                  |
-| `min`           | `string`                  | No       | —       | Minimum allowed value.                                             |
-| `max`           | `string`                  | No       | —       | Maximum allowed value.                                             |
-| `step`          | `number`                  | No       | —       | Increment between allowed values.                                  |
-| `label`         | `string`                  | No       | —       | Text label for the control.                                        |
-| `hint`          | `string`                  | No       | —       | Supplementary hint text shown with the control.                    |
-| `error`         | `string`                  | No       | —       | Error message shown when the value is invalid.                     |
-| `size`          | `'sm' \| 'md' \| 'lg'`    | No       | 'md'    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
-| `disabled`      | `boolean`                 | No       | —       | When true, disables the control and removes it from the tab order. |
-| `className`     | `string`                  | No       | —       | Additional CSS class names merged onto the root element.           |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string` | No | — | Controlled value (HH:mm) |
+| `defaultValue` | `string` | No | — | The initial value when uncontrolled. |
+| `onValueChange` | `(value: string) => void` | No | — | Called with the new HH:MM time string when the value changes. |
+| `onChange` | `(value: string) => void` | No | — | Deprecated: use onValueChange (same time string). |
+| `min` | `string` | No | — | Minimum allowed value. |
+| `max` | `string` | No | — | Maximum allowed value. |
+| `step` | `number` | No | — | Increment between allowed values. |
+| `label` | `string` | No | — | Text label for the control. |
+| `hint` | `string` | No | — | Supplementary hint text shown with the control. |
+| `error` | `string` | No | — | Error message shown when the value is invalid. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | 'md' | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | No | — | When true, disables the control and removes it from the tab order. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -72,10 +72,10 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 
 ## Boundaries
 
-| Area         | Level    | Note                                                            |
-| ------------ | -------- | --------------------------------------------------------------- |
-| value format | strict   | Value is a 24-hour HH:mm string driven by the native time input |
-| min/max/step | flexible | Consumer-defined bounds and step granularity                    |
+| Area | Level | Note |
+|------|-------|------|
+| value format | strict | Value is a 24-hour HH:mm string driven by the native time input |
+| min/max/step | flexible | Consumer-defined bounds and step granularity |
 
 ## AI context prompt
 

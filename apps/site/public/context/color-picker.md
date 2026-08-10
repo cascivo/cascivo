@@ -33,17 +33,17 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description                                                        |
-| --------------- | ------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `labels`        | `ColorPickerLabels`       | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
-| `value`         | `string`                  | No       | —       | Controlled hex color value                                         |
-| `defaultValue`  | `string`                  | No       | #3b82f6 | The initial value when uncontrolled.                               |
-| `onValueChange` | `(value: string) => void` | No       | —       | Called with the new value when it changes.                         |
-| `presets`       | `string[]`                | No       | —       | Preset swatch colors                                               |
-| `alpha`         | `boolean`                 | No       | true    | When true, enables alpha (opacity) selection.                      |
-| `label`         | `string`                  | No       | —       | Text label for the control.                                        |
-| `disabled`      | `boolean`                 | No       | false   | When true, disables the control and removes it from the tab order. |
-| `size`          | `'sm' \| 'md' \| 'lg'`    | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `labels` | `ColorPickerLabels` | No | — | Overrides for the component’s user-visible strings (i18n). |
+| `value` | `string` | No | — | Controlled hex color value |
+| `defaultValue` | `string` | No | #3b82f6 | The initial value when uncontrolled. |
+| `onValueChange` | `(value: string) => void` | No | — | Called with the new value when it changes. |
+| `presets` | `string[]` | No | — | Preset swatch colors |
+| `alpha` | `boolean` | No | true | When true, enables alpha (opacity) selection. |
+| `label` | `string` | No | — | Text label for the control. |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Tokens
 
@@ -66,15 +66,15 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 ### With presets
 
 ```jsx
-<ColorPicker presets={['#ef4444', '#3b82f6', '#10b981']} alpha={false} />
+<ColorPicker presets={["#ef4444", "#3b82f6", "#10b981"]} alpha={false} />
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                       |
-| ----------- | -------- | -------------------------------------------------------------------------- |
+| Area | Level | Note |
+|------|-------|------|
 | color model | flexible | Values are stored as hex; consumers can convert to rgb/hsl/oklch as needed |
-| token names | strict   | Surfaces, borders and focus ring must resolve to --cascivo-\* tokens       |
+| token names | strict | Surfaces, borders and focus ring must resolve to --cascivo-* tokens |
 
 ## AI context prompt
 

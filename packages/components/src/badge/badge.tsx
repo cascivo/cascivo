@@ -3,8 +3,16 @@ import type { ToneInput } from '@cascivo/core'
 import type { HTMLAttributes } from 'react'
 import styles from './badge.module.css'
 
-/** Badge-only looks that aren't a severity tone. */
-type BadgeShape = 'secondary' | 'outline' | 'primary'
+/**
+ * Badge-only looks that aren't a severity tone.
+ *
+ * Named for the PROP it types, not for a prop that does not exist. As `BadgeShape` it sat
+ * directly above `BadgeProps` in the generated `.d.ts` and read as the type of a `shape`
+ * prop, so an adopter wrote `<Badge shape="outline">` in four files before the compiler
+ * disagreed (2026-08-08 report A). A type named after a prop the component does not have is
+ * a trap of our own making.
+ */
+type BadgeVariant = 'secondary' | 'outline' | 'primary'
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /**
@@ -13,7 +21,7 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
    * (`default`, `destructive`, `error`) — they are aliases of the same tones, so one domain
    * enum can drive `Badge`, `Tag`, `Status` and `Notification` with no lookup table.
    */
-  variant?: ToneInput | BadgeShape
+  variant?: ToneInput | BadgeVariant
   size?: 'sm' | 'md'
 }
 

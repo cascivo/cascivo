@@ -641,6 +641,30 @@ event. The `docs/AI-RULES.md` "Event-handler naming" table is the published cont
 it in sync. (A handful of pre-existing components still accept a deprecated value-carrying
 `onChange` alias alongside `onValueChange`; do not add more.)
 
+#### Prop-name vocabulary — name the prop by what it carries
+
+The sibling of the handler rule, and the highest-frequency friction an adopter reports: nine
+wrong prop-name guesses in one small dashboard (2026-08-08), one of which (`gap="4"`) cost 20
+type errors in a single run. Predictability IS the product for an AI-first system.
+
+- A config-driven **collection**: **`items`**. Never `rows`/`data`/`entries`. `DataTable.rows`
+  is the sole exception — it renders a `<table>`, where "rows" is the domain word.
+- A **visual style** enum: **`variant`**. Never `shape`/`kind`/`type`/`appearance`. **Name the
+  TYPE after the prop too** — `type BadgeShape` sitting above `BadgeProps` in the `.d.ts` read
+  as the type of a `shape` prop that does not exist and cost an adopter four files.
+- The **tag of a discriminated union**: **`kind`**. Never `type` — that is reserved for
+  HTML-ish meanings (`input type`, renderer keys).
+- A **space-scale step**: numeric **`SpaceStep`** (`gap={4}`), never a string. Every other
+  size-ish prop is a string union, so this one is genuinely surprising — document it on the
+  prop.
+- A **rich replaceable slot**: **`actions`** typed `ReactNode`. Do not add another
+  `action={{ label, onClick }}` shorthand; `Alert.action` is the last of those.
+- **Body text** on a feedback component: **`description`**. A component whose children render
+  nothing must not accept children.
+
+`docs/AI-RULES.md` "Data and shape props" is the published contract and
+`scripts/checks/vocabulary.test.ts` enforces the mechanical half; keep both in sync.
+
 #### Checklist before committing a component
 
 1. No `useState`, `useContext`, `useEffect`, `useLayoutEffect`, `useReducer` imports anywhere in the file.
