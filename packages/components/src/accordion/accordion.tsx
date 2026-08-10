@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, useControllableSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import type { Signal } from '@cascivo/core'
 import { createContext, forwardRef, useId, useRef } from 'react'
 import type { Ref, HTMLAttributes, ReactNode } from 'react'
@@ -38,8 +38,13 @@ export function Accordion({
   children,
 }: AccordionProps) {
   const baseId = useId()
-  const open = useSignal<string[]>(toArray(value ?? defaultValue))
-  if (value !== undefined) open.value = toArray(value)
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [open] = useControllableSignal<string[]>({
+    value: value === undefined ? undefined : toArray(value),
+    defaultValue: toArray(defaultValue),
+  })
 
   const store: AccordionStore = {
     open,

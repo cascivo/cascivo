@@ -1,5 +1,13 @@
 'use client'
-import { batch, cn, useComputed, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  batch,
+  cn,
+  useComputed,
+  useControllableSignal,
+  useSignal,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { Fragment, useId, useRef } from 'react'
 import type { KeyboardEvent, ReactNode } from 'react'
@@ -188,17 +196,42 @@ export function DataTable<Row>({
   }
   const l = resolvedLabels
 
-  // Sync props into signals during render so computeds see fresh data.
-  const rowsSignal = useSignal(rows)
-  rowsSignal.value = rows
-  const columnsSignal = useSignal(columns)
-  columnsSignal.value = columns
+  /*
+   * Every prop the `useComputed` chain below reads must reach it as a SIGNAL.
+   *
+   * `useComputed` memoises across renders and only re-runs when a signal it tracked changes,
+   * so a computed closing over a plain prop silently serves the first render's value forever
+   * — a filtered `rows` array stops updating and the table freezes on stale data. (Observed:
+   * dropping these two mirrors broke the flow example's search filter while every DataTable
+   * unit test still passed.)
+   *
+   * They go through the shared primitive rather than a hand-rolled `sig.value = prop`, which
+   * is the shape CLAUDE.md forbids and the one that made controlled selection warn "Cannot
+   * update a component while rendering a different component" under React 19 (2026-08-08
+   * report A). `rows`/`columns` are always parent-owned, so they are always controlled.
+   */
+  const [rowsSignal] = useControllableSignal<Row[]>({ value: rows })
+  const [columnsSignal] = useControllableSignal<Column<Row>[]>({ value: columns })
+  const [sortSignal, setSort] = useControllableSignal<SortState | undefined>({
+    value: sort,
+    defaultValue: defaultSort,
+  })
 
-  const sortSignal = useSignal<SortState | undefined>(sort ?? defaultSort)
-  if (sort !== undefined) sortSignal.value = sort
-
-  const selectedSignal = useSignal<string[]>(selection?.selected ?? [])
-  if (selection?.selected !== undefined) selectedSignal.value = selection.selected
+  /*
+   * Selection deliberately does NOT mirror the controlled prop into a signal.
+   *
+   * Nothing derives from it — no `useComputed` reads it, only render and handlers do — so a
+   * mirror bought nothing and cost the React 19 "Cannot update a component while rendering a
+   * different component" warning that made the documented controlled API unusable
+   * (2026-08-08 report A). Reading the prop directly is both simpler and correct: the parent
+   * is the source of truth on every render, with no window in which the two disagree.
+   */
+  const uncontrolledSelected = useSignal<string[]>([])
+  const selectedIds = selection?.selected ?? uncontrolledSelected.value
+  const setSelected = (ids: string[]) => {
+    if (selection?.selected === undefined) uncontrolledSelected.value = ids
+    selection?.onChange?.(ids)
+  }
 
   const querySignal = useSignal('')
   const pageSignal = useSignal(1)
@@ -283,7 +316,7 @@ export function DataTable<Row>({
     else if (current.direction === 'asc') next = { key, direction: 'desc' }
     else next = undefined
     batch(() => {
-      if (sort === undefined) sortSignal.value = next
+      setSort(next)
       pageSignal.value = 1
     })
     onSortChange?.(next)
@@ -317,13 +350,8 @@ export function DataTable<Row>({
     next?.focus()
   }
 
-  const setSelected = (ids: string[]) => {
-    if (selection?.selected === undefined) selectedSignal.value = ids
-    selection?.onChange?.(ids)
-  }
-
   const toggleRow = (id: string) => {
-    const current = selectedSignal.value
+    const current = selectedIds
     if (selection?.mode === 'single') {
       setSelected(current.includes(id) ? [] : [id])
     } else {
@@ -339,7 +367,6 @@ export function DataTable<Row>({
   }
 
   const pageEntries = paged.value
-  const selectedIds = selectedSignal.value
   const expanded = expandedSignal.value
   const allPageSelected =
     pageEntries.length > 0 && pageEntries.every((entry) => selectedIds.includes(entry.id))
@@ -386,7 +413,7 @@ export function DataTable<Row>({
       data-fixed-layout={columns.every((col) => col.width !== undefined) || undefined}
     >
       <span aria-live="polite" className={styles['srOnly']}>
-        {selectedSignal.value.length > 0 ? l.itemsSelected(selectedSignal.value.length) : ''}
+        {selectedIds.length > 0 ? l.itemsSelected(selectedIds.length) : ''}
       </span>
       {(title !== undefined || description !== undefined || searchable) && (
         <div className={styles['toolbar']}>

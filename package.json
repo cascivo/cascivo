@@ -36,7 +36,7 @@
     "doc-urls:check": "node --experimental-strip-types --test scripts/checks/doc-urls.test.ts",
     "visual:baselines:check": "node --experimental-strip-types --test scripts/checks/visual-baselines.test.ts",
     "unlayered:check": "node --experimental-strip-types --test scripts/checks/unlayered.test.ts",
-    "primitives:check": "node --experimental-strip-types --test scripts/checks/primitive-adoption.test.ts",
+    "primitives:check": "node --experimental-strip-types --test scripts/checks/primitive-adoption.test.ts scripts/checks/render-phase-mirror.test.ts",
     "claims:check": "node --experimental-strip-types --test scripts/checks/claims.test.ts scripts/checks/version-pins.test.ts scripts/checks/bench-stats.test.ts scripts/checks/md-tables.test.ts",
     "release:check": "node --experimental-strip-types --test scripts/checks/release-filter.test.ts",
     "regen:check": "node --experimental-strip-types --test scripts/checks/regen-determinism.test.ts",

@@ -39,8 +39,24 @@ export function useControllableSignal<T>(
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
 
-  // Controlled: mirror the prop into the signal each render (no-op if unchanged).
-  if (isControlled) sig.value = value as T
+  /*
+   * Controlled: mirror the prop into the signal, skipping the write when it already matches.
+   *
+   * The `Object.is` guard is not an optimisation. A render-phase write notifies the
+   * subscriptions opened by the *previous* render, so the signals runtime calls
+   * `forceStoreRerender` from inside the current render pass and React 19 reports "Cannot
+   * update a component while rendering a different component" (2026-08-08 report A). Writing
+   * an unchanged value used to pay that cost for nothing.
+   *
+   * ⚠ A genuinely changed controlled value still writes here, and still costs one forced
+   * re-render. That is unavoidable while the value is both written in render and read by a
+   * subscribed component — deferring it would render one tick stale, and writing it eagerly
+   * in `setValue` would let a rejected change flash on screen, which is what `useDisclosure`
+   * exists to prevent. Components that read the value only in render (never through a
+   * `useComputed` chain) should read the prop directly instead of mirroring it at all; see
+   * `DataTable`'s selection for the pattern.
+   */
+  if (isControlled && !Object.is(sig.peek(), value)) sig.value = value as T
 
   const setValue = (next: T): void => {
     if (!isControlled) sig.value = next
