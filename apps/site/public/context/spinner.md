@@ -33,10 +33,10 @@ role="status" with an accessible label (default "Loading", i18n-driven) so assis
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `label` | `string` | No | Loading | Accessible label announced by screen readers |
+| Name    | Type                   | Required | Default | Description                                           |
+| ------- | ---------------------- | -------- | ------- | ----------------------------------------------------- |
+| `size`  | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `label` | `string`               | No       | Loading | Accessible label announced by screen readers          |
 
 ## Tokens
 
@@ -58,10 +58,10 @@ role="status" with an accessible label (default "Loading", i18n-driven) so assis
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| size | flexible | sm/md/lg to fit inline vs standalone use |
-| token names | strict | Radius must resolve to --cascivo-radius-full |
+| Area        | Level    | Note                                         |
+| ----------- | -------- | -------------------------------------------- |
+| size        | flexible | sm/md/lg to fit inline vs standalone use     |
+| token names | strict   | Radius must resolve to --cascivo-radius-full |
 
 ## AI context prompt
 

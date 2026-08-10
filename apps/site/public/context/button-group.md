@@ -32,14 +32,14 @@ Exposes role="group" so assistive tech treats the buttons as one labeled set; op
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `orientation` | `'horizontal' \| 'vertical'` | No | horizontal | Layout orientation of the component. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `roving` | `boolean` | No | false | When true, uses roving tabindex so arrow keys move focus between buttons. |
-| `loop` | `boolean` | No | false | When true, navigation wraps around from end to start. |
-| `aria-label` | `string` | No | — | Accessible label used when no visible label is present. |
-| `aria-labelledby` | `string` | No | — | Id of the element that labels this component. |
+| Name              | Type                         | Required | Default    | Description                                                               |
+| ----------------- | ---------------------------- | -------- | ---------- | ------------------------------------------------------------------------- |
+| `orientation`     | `'horizontal' \| 'vertical'` | No       | horizontal | Layout orientation of the component.                                      |
+| `size`            | `'sm' \| 'md' \| 'lg'`       | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                     |
+| `roving`          | `boolean`                    | No       | false      | When true, uses roving tabindex so arrow keys move focus between buttons. |
+| `loop`            | `boolean`                    | No       | false      | When true, navigation wraps around from end to start.                     |
+| `aria-label`      | `string`                     | No       | —          | Accessible label used when no visible label is present.                   |
+| `aria-labelledby` | `string`                     | No       | —          | Id of the element that labels this component.                             |
 
 ## Tokens
 
@@ -51,21 +51,28 @@ Exposes role="group" so assistive tech treats the buttons as one labeled set; op
 ### Joined actions
 
 ```jsx
-<ButtonGroup aria-label="Text alignment"><Button>Left</Button><Button>Center</Button><Button>Right</Button></ButtonGroup>
+<ButtonGroup aria-label="Text alignment">
+  <Button>Left</Button>
+  <Button>Center</Button>
+  <Button>Right</Button>
+</ButtonGroup>
 ```
 
 ### Vertical with roving focus
 
 ```jsx
-<ButtonGroup orientation="vertical" roving aria-label="View"><Button>List</Button><Button>Grid</Button></ButtonGroup>
+<ButtonGroup orientation="vertical" roving aria-label="View">
+  <Button>List</Button>
+  <Button>Grid</Button>
+</ButtonGroup>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons |
-| children | flexible | Any focusable controls (Button, IconButton, links) may be grouped |
+| Area        | Level    | Note                                                                                                               |
+| ----------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
+| token names | strict   | Outer corner radius must resolve to --cascivo-button-radius / --cascivo-radius-control to match standalone buttons |
+| children    | flexible | Any focusable controls (Button, IconButton, links) may be grouped                                                  |
 
 ## AI context prompt
 

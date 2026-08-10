@@ -22,10 +22,10 @@ import { AutoGrid } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `min` | `string` | no | `"16rem"` | Minimum track width before items wrap to fewer columns |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8. |
+| Prop  | Type                          | Required | Default   | Description                                                                                              |
+| ----- | ----------------------------- | -------- | --------- | -------------------------------------------------------------------------------------------------------- |
+| `min` | `string`                      | no       | `"16rem"` | Minimum track width before items wrap to fewer columns                                                   |
+| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no       | `4`       | Spacing token step. Maps to the --cascivo-space-\* scale, which intentionally skips 7/9/11 — use 6 or 8. |
 
 ## Examples
 
@@ -34,7 +34,11 @@ import { AutoGrid } from '@cascivo/react'
 Items fill available space and wrap when narrower than 12rem
 
 ```tsx
-<AutoGrid min="12rem" gap={4}><div>Card 1</div><div>Card 2</div><div>Card 3</div></AutoGrid>
+<AutoGrid min="12rem" gap={4}>
+  <div>Card 1</div>
+  <div>Card 2</div>
+  <div>Card 3</div>
+</AutoGrid>
 ```
 
 ## Client JavaScript

@@ -24,28 +24,28 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `PieChartDatum[]` | Yes | — | Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice. |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `description` | `string` | No | — | Supporting description text. |
-| `donut` | `boolean` | No | — | Render as donut chart |
-| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | No | 300 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `size` | `number` | No | — | Square shorthand: sets width === height. Explicit width/height win. |
-| `thickness` | `number` | No | — | Ring width in px (donut only); defaults to 0.4 × radius. |
-| `innerRadius` | `number` | No | — | Inner radius in px (donut only); takes precedence over thickness; clamped to [0, outerRadius). |
-| `centerValue` | `string` | No | — | Center value text rendered in the donut hole (donut only). |
-| `centerLabel` | `string` | No | — | Center label text rendered below the value (donut only). |
-| `centerSlot` | `ReactNode` | No | — | Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel. |
-| `emptyLabel` | `string` | No | — | Visible placeholder text when data is empty. Defaults to the i18n "No data". |
-| `tooltipFormat` | `(p: ChartPoint) => string` | No | — | Custom tooltip formatter. Defaults to "value (pct%)" in the slice color. |
-| `legend` | `boolean` | No | — | Whether to show the legend. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
-| `labels` | `boolean \| { format?: (v: number) => string; position?: string }` | No | — | Print each value as a label on the mark (collision-aware, decorative/aria-hidden). |
-| `onSelect` | `(point: ChartPoint) => void` | No | — | Fired when a point is clicked or activated (Enter/Space) — for drill-down. |
-| `tooltip` | `boolean` | No | true | Show tooltips. Parity with Area/Bar/Line/Combo, which all take this. |
+| Name            | Type                                                               | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------- | ------------------------------------------------------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`          | `PieChartDatum[]`                                                  | Yes      | —       | Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice.                                                                                                                                                                                                                                                     |
+| `title`         | `string`                                                           | Yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
+| `description`   | `string`                                                           | No       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `donut`         | `boolean`                                                          | No       | —       | Render as donut chart                                                                                                                                                                                                                                                                                                                                                                         |
+| `width`         | `number`                                                           | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`        | `number`                                                           | No       | 300     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `size`          | `number`                                                           | No       | —       | Square shorthand: sets width === height. Explicit width/height win.                                                                                                                                                                                                                                                                                                                           |
+| `thickness`     | `number`                                                           | No       | —       | Ring width in px (donut only); defaults to 0.4 × radius.                                                                                                                                                                                                                                                                                                                                      |
+| `innerRadius`   | `number`                                                           | No       | —       | Inner radius in px (donut only); takes precedence over thickness; clamped to [0, outerRadius).                                                                                                                                                                                                                                                                                                |
+| `centerValue`   | `string`                                                           | No       | —       | Center value text rendered in the donut hole (donut only).                                                                                                                                                                                                                                                                                                                                    |
+| `centerLabel`   | `string`                                                           | No       | —       | Center label text rendered below the value (donut only).                                                                                                                                                                                                                                                                                                                                      |
+| `centerSlot`    | `ReactNode`                                                        | No       | —       | Arbitrary content for the donut hole; takes precedence over centerValue/centerLabel.                                                                                                                                                                                                                                                                                                          |
+| `emptyLabel`    | `string`                                                           | No       | —       | Visible placeholder text when data is empty. Defaults to the i18n "No data".                                                                                                                                                                                                                                                                                                                  |
+| `tooltipFormat` | `(p: ChartPoint) => string`                                        | No       | —       | Custom tooltip formatter. Defaults to "value (pct%)" in the slice color.                                                                                                                                                                                                                                                                                                                      |
+| `legend`        | `boolean`                                                          | No       | —       | Whether to show the legend.                                                                                                                                                                                                                                                                                                                                                                   |
+| `className`     | `string`                                                           | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`         | `boolean`                                                          | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
+| `labels`        | `boolean \| { format?: (v: number) => string; position?: string }` | No       | —       | Print each value as a label on the mark (collision-aware, decorative/aria-hidden).                                                                                                                                                                                                                                                                                                            |
+| `onSelect`      | `(point: ChartPoint) => void`                                      | No       | —       | Fired when a point is clicked or activated (Enter/Space) — for drill-down.                                                                                                                                                                                                                                                                                                                    |
+| `tooltip`       | `boolean`                                                          | No       | true    | Show tooltips. Parity with Area/Bar/Line/Combo, which all take this.                                                                                                                                                                                                                                                                                                                          |
 
 ## Object types
 
@@ -53,23 +53,23 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 
 One slice. Pass via the `data` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | No | Stable identity (used for legend toggle state). |
-| `label` | `string` | Yes | — |
-| `value` | `number` | Yes | — |
-| `color` | `string` | No | Any CSS color overriding the positional palette (--cascivo-chart-N) for this slice. |
+| Field   | Type     | Required | Description                                                                         |
+| ------- | -------- | -------- | ----------------------------------------------------------------------------------- |
+| `id`    | `string` | No       | Stable identity (used for legend toggle state).                                     |
+| `label` | `string` | Yes      | —                                                                                   |
+| `value` | `number` | Yes      | —                                                                                   |
+| `color` | `string` | No       | Any CSS color overriding the positional palette (--cascivo-chart-N) for this slice. |
 
 ### `ChartPoint`
 
 Argument passed to the `tooltipFormat` callback.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `label` | `string` | Yes | Slice label. |
-| `value` | `number \| string` | Yes | — |
-| `percent` | `number` | No | Share of the whole, 0–100. Used by the default "value (pct%)" formatter. |
-| `color` | `string` | No | Resolved slice color (the default tooltip tints its text with this). |
+| Field     | Type               | Required | Description                                                              |
+| --------- | ------------------ | -------- | ------------------------------------------------------------------------ |
+| `label`   | `string`           | Yes      | Slice label.                                                             |
+| `value`   | `number \| string` | Yes      | —                                                                        |
+| `percent` | `number`           | No       | Share of the whole, 0–100. Used by the default "value (pct%)" formatter. |
+| `color`   | `string`           | No       | Resolved slice color (the default tooltip tints its text with this).     |
 
 ## Tokens
 
@@ -88,16 +88,20 @@ Argument passed to the `tooltipFormat` callback.
 
 ```jsx
 import { PieChart } from '@cascivo/charts'
-
-<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title="Market share" />
+;<PieChart
+  data={[
+    { label: 'A', value: 60 },
+    { label: 'B', value: 40 },
+  ]}
+  title="Market share"
+/>
 ```
 
 ### Donut with center total and custom thickness
 
 ```jsx
 import { PieChart } from '@cascivo/charts'
-
-<PieChart
+;<PieChart
   donut
   size={220}
   thickness={28}

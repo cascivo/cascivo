@@ -14,7 +14,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/accordion/accordion.module.css"
       ],
       "fileHashes": {
-        "accordion.tsx": "sha256-a61f8af9363948fecdb0e28480c163cde927b13f3e4840e44e6977a021643a15",
+        "accordion.tsx": "sha256-d7e00e58277f10fc6350c1e92953bfad4ae376a0cd89f94e56463f6d25d1173d",
         "index.ts": "sha256-4e44786f6a7d08d54dcaad59e3c423ec89a6248852ddaa13e133cdbaa9e83cea",
         "accordion.module.css": "sha256-d559585cd5a3803d10319a19e7d62ccc0a4efc1a3d1ba569af28c9fdbd4f0a4c"
       },
@@ -620,9 +620,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/app-shell/app-shell.module.css"
       ],
       "fileHashes": {
-        "app-shell.tsx": "sha256-56c790b924626d3f3c82a193f0f337f1f02e4c4f92305f500c9fd99b33324fa1",
+        "app-shell.tsx": "sha256-ac0b9d9738874858a23ba6714e54b59bd09161dbb5dd206d90fbfb330af0d95a",
         "index.ts": "sha256-62a878a63857df7eac4e7176389932ece54eca36fad54def65fcd6153ef8d22a",
-        "app-shell.module.css": "sha256-c6073eee79d04775c0a91d6c7bae4da01c7724b1b791055b12ed03a84cbc4884"
+        "app-shell.module.css": "sha256-6b09b8bb283496a1cb4a11f934acf17c9afa8ad328491100e491e34af2dd2882"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -678,6 +678,13 @@
             "type": "(open: boolean) => void",
             "required": false,
             "description": "Fired when the nav requests open/close (burger, Escape, scrim)."
+          },
+          {
+            "name": "padding",
+            "type": "SpaceStep | 'none'",
+            "required": false,
+            "default": "6",
+            "description": "Inset around the main content area, as a space-scale step. Defaults to 6 — `<main>` shipped unpadded for three releases and every adopter wrote the same wrapper div. Pass 'none' for a full-bleed layout that owns its own insets."
           }
         ],
         "tokens": [
@@ -1144,7 +1151,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
       ],
       "fileHashes": {
-        "badge.tsx": "sha256-2b88cac50728b21cb426735da01ed6db2104b574a1d5d4129f08014e36b999af",
+        "badge.tsx": "sha256-4b168f7c6e4304c80957d3a1f66a40bf253d1b37d5fcd92e6373b060339e438e",
         "index.ts": "sha256-99f606cb9765238a88c7adcff6c4dd017be53641d16d394da96fcf9196be2e8b",
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0"
       },
@@ -2009,7 +2016,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/calendar/calendar.module.css"
       ],
       "fileHashes": {
-        "calendar.tsx": "sha256-e39927d4b19844a35a052fb3e57bcbd6335cb3db6b8f44fba6fc256144c7d11a",
+        "calendar.tsx": "sha256-5a65d71e1f9a90ede81cdea2b6cd9308fec1f188857c2dceabb7b54d166918c6",
         "index.ts": "sha256-ae3b2f525ef2bd6b9234b69a7823b7eafcc9dbef7fa351fadca8e2d7b7d6f016",
         "calendar.module.css": "sha256-b963f6d9f94387973c7b2163f62fc89cfa1346b61e9ffa7131de2a44480433ee"
       },
@@ -2240,7 +2247,7 @@
       "fileHashes": {
         "card.tsx": "sha256-5475c78c37ce44f8624dd276426d95623981a692fc1fda1bc347eb77699dc2b6",
         "index.ts": "sha256-27d4f144329873a2f2124423ec77094366cc0854d2a9312796078391fb9eee34",
-        "card.module.css": "sha256-c25ebadc3082572c5e43f979f7f6ececc6cc7bb8db007bba75f99729c4499368"
+        "card.module.css": "sha256-f9fe20c39b2bb2dc0c5dfa99c1d6cad6f7402a19d6ac81fad709f3cffaac20b3"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -2640,7 +2647,7 @@
       "fileHashes": {
         "checkbox.tsx": "sha256-a441a23078ff9884e0f9775169690102be9951844456ab675237aa804e477bc7",
         "index.ts": "sha256-cb76713df13a750d36ce3458f7b9b829986de64e69802681e0e66ea302612b84",
-        "checkbox.module.css": "sha256-67ab94d2766e3fdff0c3cbbd2fd178f3bc1b489af3825ddd31292de6281295f2"
+        "checkbox.module.css": "sha256-40acb3223bd3d3f176aba0803625cc7d2df7a461ef339194e8816d26d4c36ec8"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -3522,7 +3529,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
       ],
       "fileHashes": {
-        "combobox.tsx": "sha256-9e92ad7533c4f4dabc78f7108974c22801cee44f9e7e20ae8bc2a309fd148cbc",
+        "combobox.tsx": "sha256-4fdd7e42d4594eb18adadf8ef1c01b0c40637c782e9b8fbef075db72b10a04e8",
         "index.ts": "sha256-f653ac077476020e84fec2daaa5c3ff850b2c3340b4e38002798c3f2c249034b",
         "combobox.module.css": "sha256-cc7cd8b4087667c0df3b737f588c92bbdb03e7a1c94e52ef9d8f321ea74575f5"
       },
@@ -4621,7 +4628,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-b73715453fed5a6827bdc4cdc7c416ce61f0d0edd0f68d1ca48fd273e3f2c53a",
+        "data-table.tsx": "sha256-74c98fc0c9def9d885dbbf2be29b9e71d90528669e21271553a1918275c3f628",
         "index.ts": "sha256-c80f45d421cd7701697b4d4df9641a323a710143f2e78c9596f3c1e63b0e316f",
         "data-table.module.css": "sha256-12bcb1921e33beeca2ecc3a11cabb389e3e6b42576ee2a85447d773e0e2ec41b"
       },
@@ -4969,7 +4976,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "fileHashes": {
-        "date-picker.tsx": "sha256-0e93430d7aae5119b0f90a6cfc06dbe49d8c097d3e280d58e66ee3539e3293fa",
+        "date-picker.tsx": "sha256-442b388b9266bfd98456b0348d4d023c08a924c628fe407aa6210f1b5d0074b8",
         "index.ts": "sha256-6cb1709f7c2b98a82a3951dd8facba6bdefe2f491efd6f4808661b6d6ff5da4d",
         "date-picker.module.css": "sha256-e816d0d00db6d3d3dc52f49c8671c11eaa1710e2aa8a4d6ef8f3356207dee47e"
       },
@@ -13943,7 +13950,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-2b3e684710576190ed81e0ccbdeb97443ca36f7d3aa40af9ccde478ec37e8feb",
+        "search.tsx": "sha256-ddd9c41ebe7907acdfb96c4e49505701a729529361714120dec1dec5debb2dc0",
         "index.ts": "sha256-47249a52c6a441ee459d54591b48acc65feafdc50ecb7e6ab3eb3a05e292b8a7",
         "search.module.css": "sha256-bb8b8f5650d1f3623aed5b21b05f5bc6894a82c8399ed8ab7ce53cd213b7c709"
       },
@@ -14932,7 +14939,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-7c57c2afe972e4b06696c14b25da3f0066fc47ce13d13cc3d11fe4533e97e659",
+        "side-nav.tsx": "sha256-fd571942c32c59dc8602c07c75c422f5755b4a1590d33385c14fd8f2f3e6ca61",
         "index.ts": "sha256-2c4c28ca1ec620b0e05a118ce458eed465026fa548102eebd4f450c260d7e157",
         "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
       },
@@ -16357,7 +16364,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
       ],
       "fileHashes": {
-        "swap.tsx": "sha256-7283136643030e5d41b774a9581b60ca19c294a22865a798151c68cd3c69e3d9",
+        "swap.tsx": "sha256-74011952bcee1541b8973be23cdb25703b05bced91455d5a214802297a615da7",
         "index.ts": "sha256-95c7a8c5b037db337aec24ba3316cf77dc780a37d95a73ed36d1a3f757a53b71",
         "swap.module.css": "sha256-69738c9cf9a9f3da5d4da1d17ab6229af3f45772739251bfa39dcc447e3984b1"
       },
@@ -16644,7 +16651,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-b94fce6e8bd0e80c4fb4d33baeb8e8a6b810180ad2cea72551633690eab39b42",
+        "switcher.tsx": "sha256-ebcc012a2d9eccb4787a3a031d1f648fe817e259a9c89281bb29d676bc8e6878",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
         "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
@@ -16757,7 +16764,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.module.css"
       ],
       "fileHashes": {
-        "tabs.tsx": "sha256-05042c06d3330a0a179fe906f054ba6a645f8a42c9a1ab554c45fa62866a0d1e",
+        "tabs.tsx": "sha256-c3ed33689333ec04082cd0bb9a5067612f47c65721cdda1b4cabf8777828631f",
         "index.ts": "sha256-9dd19a218ef88f01cab5cbe7d82fa98b8b6e87ed5992b3eb6cb25735f2d94cc1",
         "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5"
       },
@@ -18058,7 +18065,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toc/toc.module.css"
       ],
       "fileHashes": {
-        "toc.tsx": "sha256-2d93993153c517e76606a18146669beab6b25293acf0f3b166e4cf720cbb0429",
+        "toc.tsx": "sha256-7e0ab136c0ae29ae4a988c3f994df31dd9bf80f41c34237e8d6c1d2991838747",
         "index.ts": "sha256-d56b23f5d0760540dd1cd9ec3c6f05d8ba7177103da1a7a76b3f02cac75a43a6",
         "use-toc-from-region.ts": "sha256-c5c7455a80e1e4584579ae548bd7447904f7ca6f4ac8ac577b805ce95bd42c56",
         "toc.module.css": "sha256-52e93175cedcbe261dc2093c7f30d68dd294640599e0bb2a0e54ca505f5198d4"
@@ -21889,6 +21896,59 @@
             "type": "boolean | ToolboxOptions",
             "required": false,
             "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom)."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each X-axis tick label."
+          },
+          {
+            "name": "secondAxis",
+            "type": "{ label?: string; format?: (value: number) => string }",
+            "required": false,
+            "description": "Add a right-hand y-axis for series with `axis: 'right'` (non-stacked only)."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "AreaChartSeries",
+            "description": "One series. Pass via the `series` prop; set `type: 'line'` to draw it unfilled.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "readonly Datum[]",
+                "required": true
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false,
+                "description": "Series colour."
+              },
+              {
+                "name": "axis",
+                "type": "'left' | 'right'",
+                "required": false,
+                "description": "Which y-axis this series is measured against (ignored when `stacked`)."
+              },
+              {
+                "name": "y",
+                "type": "(d: Datum) => number",
+                "required": false,
+                "description": "Per-series Y accessor."
+              }
+            ]
           }
         ],
         "tokens": [
@@ -22137,6 +22197,12 @@
             "type": "'dots' | 'lines' | 'cross'",
             "required": false,
             "description": "Pattern motif when fill=\"pattern\"."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each category/x-axis tick label."
           }
         ],
         "typeDefs": [
@@ -22366,6 +22432,35 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each category/x-axis tick label."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "BoxplotSeries",
+            "description": "Shape of the `series` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "values",
+                "type": "number[]",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": [
@@ -22496,6 +22591,30 @@
             "type": "GlyphShape | ((d, seriesId) => GlyphShape)",
             "required": false,
             "description": "Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each X-axis tick label."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "BubbleSeries",
+            "description": "Shape of the `series` prop.",
+            "fields": [
+              {
+                "name": "name",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "BubbleDatum[]",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": [
@@ -22767,6 +22886,72 @@
             "description": "Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range."
           }
         ],
+        "typeDefs": [
+          {
+            "name": "CalendarHeatmapDatum",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "day",
+                "type": "string | Date",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "VisualMapOptions",
+            "description": "Shape of the `visualMap` prop.",
+            "fields": [
+              {
+                "name": "min",
+                "type": "number",
+                "required": true,
+                "description": "Domain minimum (value mapped to ramp t=0)."
+              },
+              {
+                "name": "max",
+                "type": "number",
+                "required": true,
+                "description": "Domain maximum (value mapped to ramp t=1)."
+              },
+              {
+                "name": "mode",
+                "type": "VisualMode",
+                "required": false,
+                "description": "`continuous` ramp (default) or `piecewise` buckets."
+              },
+              {
+                "name": "channel",
+                "type": "VisualChannel",
+                "required": false,
+                "description": "Which visual channel(s) the value drives."
+              },
+              {
+                "name": "ramp",
+                "type": "RampKind",
+                "required": false,
+                "description": "Ramp family — CVD-safe `sequential` (default) or `diverging`."
+              },
+              {
+                "name": "pieces",
+                "type": "number",
+                "required": false,
+                "description": "Bucket count for `piecewise` (default 5)."
+              },
+              {
+                "name": "sizeRange",
+                "type": "[number, number]",
+                "required": false,
+                "description": "[min, max] mark radius in px for the `size` channel (default [3, 14])."
+              }
+            ]
+          }
+        ],
         "tokens": ["--cascivo-chart-2"],
         "accessibility": {
           "role": "img",
@@ -22942,6 +23127,52 @@
             "required": false,
             "default": "item",
             "description": "item (nearest candle) or axis (crosshair + OHLC at the hovered x)."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each X-axis tick label."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "CandlestickDatum",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "t",
+                "type": "string",
+                "required": true,
+                "description": "Period label (date string or index)."
+              },
+              {
+                "name": "open",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "high",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "low",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "close",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "volume",
+                "type": "number",
+                "required": false,
+                "description": "Render volume bars beneath the candles."
+              }
+            ]
           }
         ],
         "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],
@@ -23079,6 +23310,71 @@
             "type": "Annotation[]",
             "required": false,
             "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+          },
+          {
+            "name": "barsLabel",
+            "type": "string",
+            "required": false,
+            "description": "Legend label for the bar series."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each X-axis tick label."
+          },
+          {
+            "name": "legend",
+            "type": "boolean",
+            "required": false,
+            "description": "Show the legend."
+          },
+          {
+            "name": "lineLabel",
+            "type": "string",
+            "required": false,
+            "description": "Legend label for the line series."
+          },
+          {
+            "name": "xLabelEvery",
+            "type": "number",
+            "required": false,
+            "description": "Render every Nth category label."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "ComboChartBar",
+            "description": "Shape of the `bars` prop.",
+            "fields": [
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "ComboChartPoint",
+            "description": "Shape of the `line` prop.",
+            "fields": [
+              {
+                "name": "x",
+                "type": "number",
+                "required": true,
+                "description": "Index into `bars` — point `i` is drawn at the centre of bar `i`."
+              },
+              {
+                "name": "y",
+                "type": "number",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": ["--cascivo-chart-1", "--cascivo-chart-2"],
@@ -23206,6 +23502,35 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no labels. For micro/inline charts."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "FunnelStage",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false,
+                "description": "CSS color overriding the positional palette for this stage."
+              }
+            ]
           }
         ],
         "tokens": [
@@ -23365,6 +23690,25 @@
             "description": "Marks only — no ticks/labels. For micro/inline charts."
           }
         ],
+        "typeDefs": [
+          {
+            "name": "GaugeThreshold",
+            "description": "Shape of the `thresholds` prop.",
+            "fields": [
+              {
+                "name": "upTo",
+                "type": "number",
+                "required": true,
+                "description": "Upper bound of this coloured zone (in value units)."
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": true
+              }
+            ]
+          }
+        ],
         "tokens": ["--cascivo-color-accent", "--cascivo-color-foreground", "--cascivo-chart-grid"],
         "accessibility": {
           "role": "img",
@@ -23484,6 +23828,83 @@
             "type": "boolean | ToolboxOptions",
             "required": false,
             "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each category/x-axis tick label."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "HeatmapDatum",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "x",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "y",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "VisualMapOptions",
+            "description": "Shape of the `visualMap` prop.",
+            "fields": [
+              {
+                "name": "min",
+                "type": "number",
+                "required": true,
+                "description": "Domain minimum (value mapped to ramp t=0)."
+              },
+              {
+                "name": "max",
+                "type": "number",
+                "required": true,
+                "description": "Domain maximum (value mapped to ramp t=1)."
+              },
+              {
+                "name": "mode",
+                "type": "VisualMode",
+                "required": false,
+                "description": "`continuous` ramp (default) or `piecewise` buckets."
+              },
+              {
+                "name": "channel",
+                "type": "VisualChannel",
+                "required": false,
+                "description": "Which visual channel(s) the value drives."
+              },
+              {
+                "name": "ramp",
+                "type": "RampKind",
+                "required": false,
+                "description": "Ramp family — CVD-safe `sequential` (default) or `diverging`."
+              },
+              {
+                "name": "pieces",
+                "type": "number",
+                "required": false,
+                "description": "Bucket count for `piecewise` (default 5)."
+              },
+              {
+                "name": "sizeRange",
+                "type": "[number, number]",
+                "required": false,
+                "description": "[min, max] mark radius in px for the `size` channel (default [3, 14])."
+              }
+            ]
           }
         ],
         "tokens": ["--cascivo-chart-1", "--cascivo-gray-100"],
@@ -23600,6 +24021,12 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each X-axis tick label."
           }
         ],
         "tokens": ["--cascivo-chart-1"],
@@ -23977,6 +24404,53 @@
             "type": "(ctx: { width: number; height: number }) => ReactNode",
             "required": false,
             "description": "Render custom SVG over the marks (overlay/extra series) — a lightweight extension seam."
+          },
+          {
+            "name": "secondAxis",
+            "type": "{ label?: string; format?: (value: number) => string }",
+            "required": false,
+            "description": "Add a right-hand y-axis for series with `axis: 'right'` (e.g."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "LineChartSeries",
+            "description": "Shape of the `series` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "readonly Datum[]",
+                "required": true
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false,
+                "description": "Series colour."
+              },
+              {
+                "name": "axis",
+                "type": "'left' | 'right'",
+                "required": false,
+                "description": "Which y-axis this series is measured against."
+              },
+              {
+                "name": "y",
+                "type": "(d: Datum) => number",
+                "required": false,
+                "description": "Per-series Y accessor."
+              }
+            ]
           }
         ],
         "tokens": [
@@ -24112,6 +24586,24 @@
             "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
             "type": "number",
             "required": false
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "MeterThresholds",
+            "description": "Shape of the `thresholds` prop.",
+            "fields": [
+              {
+                "name": "warning",
+                "type": "number",
+                "required": false
+              },
+              {
+                "name": "critical",
+                "type": "number",
+                "required": false
+              }
+            ]
           }
         ],
         "tokens": ["--cascivo-chart-1"],
@@ -24293,6 +24785,13 @@
             "type": "(point: ChartPoint) => void",
             "required": false,
             "description": "Fired when a point is clicked or activated (Enter/Space) — for drill-down."
+          },
+          {
+            "name": "tooltip",
+            "type": "boolean",
+            "required": false,
+            "default": "true",
+            "description": "Show tooltips. Parity with Area/Bar/Line/Combo, which all take this."
           }
         ],
         "typeDefs": [
@@ -24506,6 +25005,29 @@
             "description": "Marks only — no rings or labels. For micro/inline charts."
           }
         ],
+        "typeDefs": [
+          {
+            "name": "PolarDatum",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false
+              }
+            ]
+          }
+        ],
         "tokens": [
           "--cascivo-chart-1",
           "--cascivo-chart-2",
@@ -24639,6 +25161,29 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "RadarSeries",
+            "description": "Shape of the `series` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "values",
+                "type": "number[]",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": [
@@ -24803,6 +25348,35 @@
             "description": "Marks only — no legend. For micro/inline charts."
           }
         ],
+        "typeDefs": [
+          {
+            "name": "RadialBarDatum",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false,
+                "description": "CSS color overriding the positional palette for this ring."
+              }
+            ]
+          }
+        ],
         "tokens": [
           "--cascivo-chart-1",
           "--cascivo-chart-2",
@@ -24936,6 +25510,50 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "SankeyLink",
+            "description": "Shape of the `links` prop.",
+            "fields": [
+              {
+                "name": "source",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "target",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "SankeyNode",
+            "description": "Shape of the `nodes` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false
+              }
+            ]
           }
         ],
         "tokens": [
@@ -25123,6 +25741,88 @@
             "type": "boolean | ToolboxOptions",
             "required": false,
             "description": "Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter)."
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each X-axis tick label."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "ScatterChartSeries",
+            "description": "Shape of the `series` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "readonly ScatterDatum[]",
+                "required": true
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false
+              }
+            ]
+          },
+          {
+            "name": "VisualMapOptions",
+            "description": "Shape of the `visualMap` prop.",
+            "fields": [
+              {
+                "name": "min",
+                "type": "number",
+                "required": true,
+                "description": "Domain minimum (value mapped to ramp t=0)."
+              },
+              {
+                "name": "max",
+                "type": "number",
+                "required": true,
+                "description": "Domain maximum (value mapped to ramp t=1)."
+              },
+              {
+                "name": "mode",
+                "type": "VisualMode",
+                "required": false,
+                "description": "`continuous` ramp (default) or `piecewise` buckets."
+              },
+              {
+                "name": "channel",
+                "type": "VisualChannel",
+                "required": false,
+                "description": "Which visual channel(s) the value drives."
+              },
+              {
+                "name": "ramp",
+                "type": "RampKind",
+                "required": false,
+                "description": "Ramp family — CVD-safe `sequential` (default) or `diverging`."
+              },
+              {
+                "name": "pieces",
+                "type": "number",
+                "required": false,
+                "description": "Bucket count for `piecewise` (default 5)."
+              },
+              {
+                "name": "sizeRange",
+                "type": "[number, number]",
+                "required": false,
+                "description": "[min, max] mark radius in px for the `size` channel (default [3, 14])."
+              }
+            ]
           }
         ],
         "tokens": [
@@ -25388,6 +26088,41 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "format",
+            "type": "(value: number | string | Date) => string",
+            "required": false,
+            "description": "Format each category/x-axis tick label."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "StreamSeries",
+            "description": "Shape of the `series` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "values",
+                "type": "number[]",
+                "required": true,
+                "description": "One value per category, aligned with `categories`."
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false
+              }
+            ]
           }
         ],
         "tokens": [
@@ -25519,6 +26254,39 @@
             "default": "false"
           }
         ],
+        "typeDefs": [
+          {
+            "name": "HierNode",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": false
+              },
+              {
+                "name": "color",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "children",
+                "type": "HierNode[]",
+                "required": false
+              }
+            ]
+          }
+        ],
         "tokens": [
           "--cascivo-chart-1",
           "--cascivo-chart-2",
@@ -25634,6 +26402,29 @@
             "required": false,
             "default": "false",
             "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "TreemapDatum",
+            "description": "Shape of the `data` prop.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "number",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": [
@@ -25838,6 +26629,56 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "virtualize",
+            "type": "boolean",
+            "required": false,
+            "description": "Render only the visible lines for large documents."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "SlashCommand",
+            "description": "A slash-command entry.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true,
+                "description": "Stable id (menu key)."
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": true,
+                "description": "Shown in the menu and matched against the query."
+              },
+              {
+                "name": "hint",
+                "type": "string",
+                "required": false,
+                "description": "Optional right-aligned hint (e.g."
+              },
+              {
+                "name": "keywords",
+                "type": "readonly string[]",
+                "required": false,
+                "description": "Extra match terms beyond the label."
+              },
+              {
+                "name": "insert",
+                "type": "string",
+                "required": false,
+                "description": "Text inserted in place of the `/query` (an undoable edit)."
+              },
+              {
+                "name": "run",
+                "type": "(editor: CodeEditorHandle) => void",
+                "required": false,
+                "description": "Side effect run after the `/query` is removed (receives the editor handle)."
+              }
+            ]
           }
         ],
         "tokens": [
@@ -26008,6 +26849,18 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "gutterRef",
+            "type": "Ref<HTMLDivElement>",
+            "required": false,
+            "description": "Ref to the gutter column (used by `CodeEditor` for scroll-sync)."
+          },
+          {
+            "name": "preRef",
+            "type": "Ref<HTMLPreElement>",
+            "required": false,
+            "description": "Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync)."
           }
         ],
         "tokens": [
@@ -26824,6 +27677,139 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "activeDirection",
+            "type": "'forward' | 'reverse' | undefined",
+            "required": false,
+            "description": "Direction the active edge's dash travels."
+          },
+          {
+            "name": "activeEdgeId",
+            "type": "string | undefined",
+            "required": false,
+            "description": "Highlight + animate a single edge (used by FlowStory's active step)."
+          },
+          {
+            "name": "maxZoom",
+            "type": "number",
+            "required": false,
+            "description": "Maximum zoom scale the viewport can reach."
+          },
+          {
+            "name": "minZoom",
+            "type": "number",
+            "required": false,
+            "description": "Minimum zoom scale the viewport can reach."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "FlowNode",
+            "description": "A graph node. Positioned in flow coordinates; renders as themed HTML.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "position",
+                "type": "XYPosition",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "Data",
+                "required": false
+              },
+              {
+                "name": "type",
+                "type": "string",
+                "required": false,
+                "description": "Custom renderer key resolved via `nodeTypes`."
+              },
+              {
+                "name": "selected",
+                "type": "boolean",
+                "required": false
+              },
+              {
+                "name": "width",
+                "type": "number",
+                "required": false,
+                "description": "Explicit/measured size used for handle anchors + bounding boxes."
+              },
+              {
+                "name": "height",
+                "type": "number",
+                "required": false
+              }
+            ]
+          },
+          {
+            "name": "FlowEdge",
+            "description": "A directed connection between two nodes' handles.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "source",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "target",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "sourceHandle",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "targetHandle",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "type",
+                "type": "EdgePathType | string",
+                "required": false,
+                "description": "Custom renderer key resolved via `edgeTypes`."
+              },
+              {
+                "name": "animated",
+                "type": "boolean",
+                "required": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "selected",
+                "type": "boolean",
+                "required": false
+              },
+              {
+                "name": "markerStart",
+                "type": "boolean",
+                "required": false,
+                "description": "Arrowhead at the source end (points back toward the source). Default false."
+              },
+              {
+                "name": "markerEnd",
+                "type": "boolean",
+                "required": false,
+                "description": "Arrowhead at the target end (points at the target). Default true."
+              }
+            ]
           }
         ],
         "tokens": ["--cascivo-color-bg", "--cascivo-color-surface", "--cascivo-color-accent"],
@@ -27234,6 +28220,36 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "active",
+            "type": "boolean | undefined",
+            "required": false,
+            "description": "Highlight the edge (used by FlowStory's active step)."
+          },
+          {
+            "name": "direction",
+            "type": "'forward' | 'reverse' | undefined",
+            "required": false,
+            "description": "Direction the dash travels when animated."
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "description": "Edge identifier, used to target it via `activeEdgeId`."
+          },
+          {
+            "name": "sourcePosition",
+            "type": "HandlePosition | undefined",
+            "required": false,
+            "description": "Handle side the edge leaves from."
+          },
+          {
+            "name": "targetPosition",
+            "type": "HandlePosition | undefined",
+            "required": false,
+            "description": "Handle side the edge arrives at."
           }
         ],
         "tokens": [
@@ -27487,6 +28503,84 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "label",
+            "type": "string | undefined",
+            "required": false,
+            "description": "Accessible name for the minimap region."
+          },
+          {
+            "name": "nodeColor",
+            "type": "string | undefined",
+            "required": false,
+            "description": "Fill colour for node rectangles in the minimap."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "FlowNode",
+            "description": "A graph node.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "position",
+                "type": "XYPosition",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "Data",
+                "required": false
+              },
+              {
+                "name": "type",
+                "type": "string",
+                "required": false,
+                "description": "Custom renderer key resolved via `nodeTypes`."
+              },
+              {
+                "name": "selected",
+                "type": "boolean",
+                "required": false
+              },
+              {
+                "name": "width",
+                "type": "number",
+                "required": false,
+                "description": "Explicit/measured size used for handle anchors + bounding boxes."
+              },
+              {
+                "name": "height",
+                "type": "number",
+                "required": false
+              }
+            ]
+          },
+          {
+            "name": "Viewport",
+            "description": "The pan/zoom state of the canvas pane.",
+            "fields": [
+              {
+                "name": "x",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "y",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "zoom",
+                "type": "number",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": [
@@ -27624,6 +28718,30 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "onMeasure",
+            "type": "(size: NodeSize) => void",
+            "required": false,
+            "description": "Reports the rendered box size so edges can anchor to the real node bounds."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "XYPosition",
+            "description": "Shared geometry + graph types for the flow engine.",
+            "fields": [
+              {
+                "name": "x",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "y",
+                "type": "number",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": [
@@ -27873,6 +28991,149 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "background",
+            "type": "boolean",
+            "required": false,
+            "description": "Render the dotted background pane behind the flow."
+          },
+          {
+            "name": "clock",
+            "type": "StoryClock",
+            "required": false,
+            "description": "Injectable clock for deterministic tests."
+          },
+          {
+            "name": "labels",
+            "type": "FlowStoryLabels",
+            "required": false,
+            "description": "Label overrides for the story playback controls."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "StoryClock",
+            "description": "Shape of the `clock` prop.",
+            "fields": [
+              {
+                "name": "setTimeout",
+                "type": "(callback: () => void, ms: number) => unknown",
+                "required": true
+              },
+              {
+                "name": "clearTimeout",
+                "type": "(handle: unknown) => void",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "FlowNode",
+            "description": "A graph node.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "position",
+                "type": "XYPosition",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "Data",
+                "required": false
+              },
+              {
+                "name": "type",
+                "type": "string",
+                "required": false,
+                "description": "Custom renderer key resolved via `nodeTypes`."
+              },
+              {
+                "name": "selected",
+                "type": "boolean",
+                "required": false
+              },
+              {
+                "name": "width",
+                "type": "number",
+                "required": false,
+                "description": "Explicit/measured size used for handle anchors + bounding boxes."
+              },
+              {
+                "name": "height",
+                "type": "number",
+                "required": false
+              }
+            ]
+          },
+          {
+            "name": "FlowEdge",
+            "description": "A directed connection between two nodes' handles.",
+            "fields": [
+              {
+                "name": "id",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "source",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "target",
+                "type": "string",
+                "required": true
+              },
+              {
+                "name": "sourceHandle",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "targetHandle",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "type",
+                "type": "EdgePathType | string",
+                "required": false,
+                "description": "Custom renderer key resolved via `edgeTypes`."
+              },
+              {
+                "name": "animated",
+                "type": "boolean",
+                "required": false
+              },
+              {
+                "name": "label",
+                "type": "string",
+                "required": false
+              },
+              {
+                "name": "selected",
+                "type": "boolean",
+                "required": false
+              },
+              {
+                "name": "markerStart",
+                "type": "boolean",
+                "required": false,
+                "description": "Arrowhead at the source end (points back toward the source). Default false."
+              },
+              {
+                "name": "markerEnd",
+                "type": "boolean",
+                "required": false,
+                "description": "Arrowhead at the target end (points at the target). Default true."
+              }
+            ]
           }
         ],
         "tokens": [
@@ -28025,6 +29286,150 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "chrome",
+            "type": "ReactNode",
+            "required": false,
+            "description": "Screen-fixed overlay (controls, minimap, panels) — rendered outside the transformed pane."
+          },
+          {
+            "name": "controller",
+            "type": "UseViewportReturn",
+            "required": false,
+            "description": "Use a viewport controller owned by a parent (e.g."
+          },
+          {
+            "name": "defaultViewport",
+            "type": "Viewport",
+            "required": false,
+            "description": "Initial viewport (x, y, zoom) when uncontrolled."
+          },
+          {
+            "name": "flow",
+            "type": "FlowStore",
+            "required": false,
+            "description": "Share an external store (e.g."
+          }
+        ],
+        "typeDefs": [
+          {
+            "name": "UseViewportReturn",
+            "description": "Shape of the `controller` prop.",
+            "fields": [
+              {
+                "name": "containerRef",
+                "type": "RefObject<HTMLDivElement | null>",
+                "required": true,
+                "description": "Outer clipping container — attach for wheel + size measurement."
+              },
+              {
+                "name": "panHandleRef",
+                "type": "RefObject<HTMLElement | null>",
+                "required": true,
+                "description": "Background drag-surface (behind nodes) — the pan handle."
+              },
+              {
+                "name": "viewport",
+                "type": "Signal<Viewport>",
+                "required": true
+              },
+              {
+                "name": "pan",
+                "type": "(dx: number, dy: number) => void",
+                "required": true,
+                "description": "Translate the viewport by a screen-space delta."
+              },
+              {
+                "name": "zoomTo",
+                "type": "(zoom: number, center?: XYPosition) => void",
+                "required": true,
+                "description": "Set zoom (clamped), optionally keeping `center` (container coords) fixed."
+              },
+              {
+                "name": "zoomIn",
+                "type": "() => void",
+                "required": true
+              },
+              {
+                "name": "zoomOut",
+                "type": "() => void",
+                "required": true
+              },
+              {
+                "name": "fitView",
+                "type": "(size?: Size) => void",
+                "required": true,
+                "description": "Frame all nodes."
+              }
+            ]
+          },
+          {
+            "name": "Viewport",
+            "description": "The pan/zoom state of the canvas pane.",
+            "fields": [
+              {
+                "name": "x",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "y",
+                "type": "number",
+                "required": true
+              },
+              {
+                "name": "zoom",
+                "type": "number",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "FlowStore",
+            "description": "Shape of the `flow` prop.",
+            "fields": [
+              {
+                "name": "nodes",
+                "type": "Signal<FlowNode[]>",
+                "required": true
+              },
+              {
+                "name": "edges",
+                "type": "Signal<FlowEdge[]>",
+                "required": true
+              },
+              {
+                "name": "viewport",
+                "type": "Signal<Viewport>",
+                "required": true
+              },
+              {
+                "name": "setNodes",
+                "type": "(nodes: FlowNode[]) => void",
+                "required": true
+              },
+              {
+                "name": "updateNode",
+                "type": "(id: string, patch: Partial<FlowNode>) => void",
+                "required": true
+              },
+              {
+                "name": "setEdges",
+                "type": "(edges: FlowEdge[]) => void",
+                "required": true
+              },
+              {
+                "name": "addEdge",
+                "type": "(edge: FlowEdge) => void",
+                "required": true
+              },
+              {
+                "name": "setViewport",
+                "type": "(viewport: Viewport) => void",
+                "required": true
+              }
+            ]
           }
         ],
         "tokens": ["--cascivo-color-bg", "--cascivo-radius-surface"],

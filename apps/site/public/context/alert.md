@@ -33,14 +33,14 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | No | default | Selects the visual style variant. |
-| `title` | `string` | No | — | Title text for the component. |
-| `icon` | `ReactNode` | No | — | Icon element rendered in the component. |
-| `dismissible` | `boolean` | No | false | When true, shows a control to dismiss the component. |
-| `onDismiss` | `() => void` | No | — | Called when the component is dismissed. |
-| `action` | `{ label: string; onClick: () => void }` | No | — | Primary action shown in the component. |
+| Name          | Type                                                             | Required | Default | Description                                          |
+| ------------- | ---------------------------------------------------------------- | -------- | ------- | ---------------------------------------------------- |
+| `variant`     | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | No       | default | Selects the visual style variant.                    |
+| `title`       | `string`                                                         | No       | —       | Title text for the component.                        |
+| `icon`        | `ReactNode`                                                      | No       | —       | Icon element rendered in the component.              |
+| `dismissible` | `boolean`                                                        | No       | false   | When true, shows a control to dismiss the component. |
+| `onDismiss`   | `() => void`                                                     | No       | —       | Called when the component is dismissed.              |
+| `action`      | `{ label: string; onClick: () => void }`                         | No       | —       | Primary action shown in the component.               |
 
 ## Tokens
 
@@ -56,27 +56,33 @@ role="alert" makes assistive tech announce the message when it appears; the dism
 ### Info
 
 ```jsx
-<Alert variant="info" title="Heads up">Your trial ends soon.</Alert>
+<Alert variant="info" title="Heads up">
+  Your trial ends soon.
+</Alert>
 ```
 
 ### Dismissible
 
 ```jsx
-<Alert variant="success" dismissible title="Saved">Changes saved.</Alert>
+<Alert variant="success" dismissible title="Saved">
+  Changes saved.
+</Alert>
 ```
 
 ### Actionable
 
 ```jsx
-<Alert variant="warning" title="Update available" action={{ label: 'Update now', onClick: update }}>A new version is ready.</Alert>
+<Alert variant="warning" title="Update available" action={{ label: 'Update now', onClick: update }}>
+  A new version is ready.
+</Alert>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant | flexible | Choose the severity variant that matches the message; default is neutral |
-| token names | strict | Severity colors must resolve to --cascivo-color-info/success/warning/destructive |
+| Area        | Level    | Note                                                                             |
+| ----------- | -------- | -------------------------------------------------------------------------------- |
+| variant     | flexible | Choose the severity variant that matches the message; default is neutral         |
+| token names | strict   | Severity colors must resolve to --cascivo-color-info/success/warning/destructive |
 
 ## AI context prompt
 

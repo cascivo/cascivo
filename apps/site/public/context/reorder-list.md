@@ -41,23 +41,23 @@ Every row carries a real button as its drag handle, so the entire interaction is
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `ReorderItem[]` | Yes | — | The ordered items; the component is controlled |
-| `onValueChange` | `(value: ReorderItem[]) => void` | Yes | — | Called with the new order whenever a row moves |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `labels` | `{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name            | Type                                                                                          | Required | Default | Description                                                        |
+| --------------- | --------------------------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `value`         | `ReorderItem[]`                                                                               | Yes      | —       | The ordered items; the component is controlled                     |
+| `onValueChange` | `(value: ReorderItem[]) => void`                                                              | Yes      | —       | Called with the new order whenever a row moves                     |
+| `disabled`      | `boolean`                                                                                     | No       | false   | When true, disables the control and removes it from the tab order. |
+| `labels`        | `{ handle?: string; grabbed?: string; moved?: string; dropped?: string; cancelled?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).         |
+| `className`     | `string`                                                                                      | No       | —       | Additional CSS class names merged onto the root element.           |
 
 ## Object types
 
 ### `ReorderItem`
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | Stable identity for the row |
-| `label` | `React.ReactNode` | Yes | Row content |
-| `name` | `string` | No | Plain-text name used in announcements when label is not a string |
+| Field   | Type              | Required | Description                                                      |
+| ------- | ----------------- | -------- | ---------------------------------------------------------------- |
+| `id`    | `string`          | Yes      | Stable identity for the row                                      |
+| `label` | `React.ReactNode` | Yes      | Row content                                                      |
+| `name`  | `string`          | No       | Plain-text name used in announcements when label is not a string |
 
 ## Tokens
 
@@ -80,10 +80,7 @@ Every row carries a real button as its drag handle, so the entire interaction is
 Controlled — the caller owns the order.
 
 ```jsx
-<ReorderList
-  value={items}
-  onValueChange={setItems}
-/>
+<ReorderList value={items} onValueChange={setItems} />
 ```
 
 ### Locked
@@ -96,11 +93,11 @@ Handles are disabled and drop out of the tab order.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| value / onValueChange | strict | Always controlled — the component never holds the order itself |
-| labels | flexible | Every announcement string is overridable and supports {name}, {position} and {total} |
-| handle | strict | The handle is always a focusable button; there is no drag-anywhere mode |
+| Area                  | Level    | Note                                                                                 |
+| --------------------- | -------- | ------------------------------------------------------------------------------------ |
+| value / onValueChange | strict   | Always controlled — the component never holds the order itself                       |
+| labels                | flexible | Every announcement string is overridable and supports {name}, {position} and {total} |
+| handle                | strict   | The handle is always a focusable button; there is no drag-anywhere mode              |
 
 ## AI context prompt
 

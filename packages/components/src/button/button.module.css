@@ -1,4 +1,18 @@
 @layer cascivo.component {
+  /*
+   * Children are wrapped in a single element so the loading Spinner can be a sibling. That
+   * wrapper has to be a flex row itself: with a plain <span>, the button's own `gap` applies
+   * between the spinner and the wrapper, and an icon composed next to a label INSIDE it gets
+   * no spacing at all — `<Button><ExternalLink />Visit</Button>` rendered touching
+   * (2026-08-08 report A). The wrapper's DOM shape is documented on ButtonProps, because
+   * layout CSS written against `.button > span` targets this element and not the label.
+   */
+  .label {
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+  }
+
   .button {
     display: inline-flex;
     align-items: center;

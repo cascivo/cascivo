@@ -4,6 +4,14 @@
     gap: var(--cascivo-space-2);
     font-family: var(--cascivo-font-sans);
 
+    /* Keep the label/description/control rows at their natural heights when the field itself
+       is stretched — e.g. as a cell in a `Grid` row taller than its own content. Without
+       this the default `align-content: stretch` redistributes the slack across the rows, so
+       two Fields side by side put their inputs at different heights for reasons unrelated to
+       their content (2026-08-08 report B). The remaining offset is then exactly the
+       description block, which is the documented label → description → control order. */
+    align-content: start;
+
     &[data-disabled] {
       opacity: 0.5;
     }

@@ -22,13 +22,13 @@ import { Flex } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `direction` | `'vertical' \| 'horizontal'` | no | `vertical` | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step |
-| `align` | `'start'\|'center'\|'end'\|'stretch'` | no | — | align-items |
-| `justify` | `'start'\|'center'\|'end'\|'between'` | no | — | justify-content |
-| `wrap` | `boolean` | no | `false` | Allow wrapping |
+| Prop        | Type                                  | Required | Default    | Description                                                                                                                                                                                               |
+| ----------- | ------------------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `direction` | `'vertical' \| 'horizontal'`          | no       | `vertical` | Flex direction. ⚠ Defaults to `vertical`, unlike CSS `flex-direction` (and unlike Chakra/MUI/Radix `Flex`, which default to a row) — `<Flex justify="between">` alone produces a centered vertical stack. |
+| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`         | no       | `4`        | Spacing token step                                                                                                                                                                                        |
+| `align`     | `'start'\|'center'\|'end'\|'stretch'` | no       | —          | align-items                                                                                                                                                                                               |
+| `justify`   | `'start'\|'center'\|'end'\|'between'` | no       | —          | justify-content                                                                                                                                                                                           |
+| `wrap`      | `boolean`                             | no       | `false`    | Allow wrapping                                                                                                                                                                                            |
 
 ## Examples
 
@@ -37,7 +37,10 @@ import { Flex } from '@cascivo/react'
 Default vertical stack
 
 ```tsx
-<Flex gap={4}><div>A</div><div>B</div></Flex>
+<Flex gap={4}>
+  <div>A</div>
+  <div>B</div>
+</Flex>
 ```
 
 ### Horizontal
@@ -45,7 +48,10 @@ Default vertical stack
 Row layout
 
 ```tsx
-<Flex direction="horizontal" gap={2}><div>A</div><div>B</div></Flex>
+<Flex direction="horizontal" gap={2}>
+  <div>A</div>
+  <div>B</div>
+</Flex>
 ```
 
 ## Client JavaScript

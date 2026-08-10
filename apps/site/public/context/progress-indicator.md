@@ -32,12 +32,12 @@ role="list" structures the steps in order; the current step is conveyed as text/
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `steps` | `{ label: string; description?: string }[]` | Yes | — | Ordered list of steps |
-| `currentIndex` | `number` | Yes | — | Index of the current step (0-based) |
-| `vertical` | `boolean` | No | false | When true, lays the steps out vertically. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name           | Type                                        | Required | Default | Description                                              |
+| -------------- | ------------------------------------------- | -------- | ------- | -------------------------------------------------------- |
+| `steps`        | `{ label: string; description?: string }[]` | Yes      | —       | Ordered list of steps                                    |
+| `currentIndex` | `number`                                    | Yes      | —       | Index of the current step (0-based)                      |
+| `vertical`     | `boolean`                                   | No       | false   | When true, lays the steps out vertically.                |
+| `className`    | `string`                                    | No       | —       | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -56,21 +56,28 @@ role="list" structures the steps in order; the current step is conveyed as text/
 ### Horizontal
 
 ```jsx
-<ProgressIndicator steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }]} currentIndex={1} />
+<ProgressIndicator
+  steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }]}
+  currentIndex={1}
+/>
 ```
 
 ### Vertical with descriptions
 
 ```jsx
-<ProgressIndicator vertical steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]} currentIndex={0} />
+<ProgressIndicator
+  vertical
+  steps={[{ label: 'Account', description: 'Your details' }, { label: 'Confirm' }]}
+  currentIndex={0}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| orientation | flexible | horizontal or vertical to fit the layout |
-| token names | strict | Step and connector colors must resolve to --cascivo-* tokens |
+| Area        | Level    | Note                                                          |
+| ----------- | -------- | ------------------------------------------------------------- |
+| orientation | flexible | horizontal or vertical to fit the layout                      |
+| token names | strict   | Step and connector colors must resolve to --cascivo-\* tokens |
 
 ## AI context prompt
 

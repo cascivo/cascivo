@@ -35,15 +35,15 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Text label for the control. |
-| `hint` | `string` | No | — | Supplementary hint text shown with the control. |
-| `error` | `string` | No | — | Error message shown when the value is invalid. |
-| `placeholder` | `string` | No | — | Placeholder text shown when the field is empty. |
-| `options` | `{ value: string; label: string; disabled?: boolean }[]` | Yes | — | The selectable options. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| Name          | Type                                                     | Required | Default | Description                                                        |
+| ------------- | -------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
+| `label`       | `string`                                                 | No       | —       | Text label for the control.                                        |
+| `hint`        | `string`                                                 | No       | —       | Supplementary hint text shown with the control.                    |
+| `error`       | `string`                                                 | No       | —       | Error message shown when the value is invalid.                     |
+| `placeholder` | `string`                                                 | No       | —       | Placeholder text shown when the field is empty.                    |
+| `options`     | `{ value: string; label: string; disabled?: boolean }[]` | Yes      | —       | The selectable options.                                            |
+| `size`        | `'sm' \| 'md' \| 'lg'`                                   | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| `disabled`    | `boolean`                                                | No       | false   | When true, disables the control and removes it from the tab order. |
 
 ## Tokens
 
@@ -59,7 +59,7 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 ### Basic
 
 ```jsx
-<Select label="Role" options={[{ value: "admin", label: "Admin" }]} />
+<Select label="Role" options={[{ value: 'admin', label: 'Admin' }]} />
 ```
 
 ### With placeholder
@@ -70,10 +70,10 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Visual props must resolve to --cascivo-color-* / radius / focus-ring tokens |
-| option labels | flexible | Free, supplied by the consumer via the options array |
+| Area          | Level    | Note                                                                         |
+| ------------- | -------- | ---------------------------------------------------------------------------- |
+| token names   | strict   | Visual props must resolve to --cascivo-color-\* / radius / focus-ring tokens |
+| option labels | flexible | Free, supplied by the consumer via the options array                         |
 
 ## AI context prompt
 

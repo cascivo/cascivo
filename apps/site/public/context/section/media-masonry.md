@@ -23,14 +23,14 @@ Renders a section shell; tiles supply their own accessible content.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `children` | `ReactNode` | Yes | — | Tile elements (images, cards, quotes) — consumer-provided and self-styled |
-| `title` | `ReactNode` | No | — | Section heading above the gallery |
-| `description` | `ReactNode` | No | — | Subheading below the section title |
-| `headingLevel` | `1 \| 2 \| 3` | No | 2 | HTML heading level for the section title |
-| `cols` | `number` | No | 3 | Number of masonry columns |
-| `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No | 4 | Gap between tiles (spacing token step) |
+| Name           | Type                          | Required | Default | Description                                                               |
+| -------------- | ----------------------------- | -------- | ------- | ------------------------------------------------------------------------- |
+| `children`     | `ReactNode`                   | Yes      | —       | Tile elements (images, cards, quotes) — consumer-provided and self-styled |
+| `title`        | `ReactNode`                   | No       | —       | Section heading above the gallery                                         |
+| `description`  | `ReactNode`                   | No       | —       | Subheading below the section title                                        |
+| `headingLevel` | `1 \| 2 \| 3`                 | No       | 2       | HTML heading level for the section title                                  |
+| `cols`         | `number`                      | No       | 3       | Number of masonry columns                                                 |
+| `gap`          | `1\|2\|3\|4\|5\|6\|8\|10\|12` | No       | 4       | Gap between tiles (spacing token step)                                    |
 
 ## Tokens
 
@@ -47,7 +47,11 @@ Renders a section shell; tiles supply their own accessible content.
 Masonry gallery with three image tiles; falls back to CSS columns in unsupported browsers
 
 ```jsx
-<MediaMasonry title="Customer stories" cols={3} gap={4}><img src="/photo-1.jpg" alt="Team at desk" /><img src="/photo-2.jpg" alt="Product screenshot" /><img src="/photo-3.jpg" alt="Dashboard view" /></MediaMasonry>
+<MediaMasonry title="Customer stories" cols={3} gap={4}>
+  <img src="/photo-1.jpg" alt="Team at desk" />
+  <img src="/photo-2.jpg" alt="Product screenshot" />
+  <img src="/photo-3.jpg" alt="Dashboard view" />
+</MediaMasonry>
 ```
 
 ## AI context prompt
