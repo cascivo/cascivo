@@ -1,7 +1,8 @@
 # TEMPORARY diagnostic workflow — delete before merging.
-# Reproduces the Release job's `build:release` failure
-# (`Failed to spawn process: Resource temporarily unavailable (os error 11)`)
-# on a real runner and isolates whether `--concurrency-limit 1` is implicated.
+# Round 1 showed `build:release` succeeds from a plain bash step, with or without
+# `--concurrency-limit 1`, and with vast resource headroom. The Release job's only
+# remaining difference: the build runs INSIDE changesets/action, so its stdout is a
+# pipe owned by that action's Node process. Round 2 tests exactly that.
 name: TMP diag
 
 on:
@@ -21,55 +22,44 @@ jobs:
       - run: npm install -g npm@latest
       - run: pnpm install --frozen-lockfile
 
-      - name: Limits
+      # How @actions/exec runs a command: stdio piped, output collected by
+      # listeners and forwarded. `drainMs` optionally delays the reader to model
+      # a busy consumer.
+      - name: Write the pipe harness
         run: |
-          ulimit -a
-          echo "nproc=$(nproc)"
-          free -m
-          echo "pids.max=$(cat /sys/fs/cgroup/pids.max 2>/dev/null || echo n/a)"
-          echo "threads-max=$(cat /proc/sys/kernel/threads-max)"
-          echo "pid_max=$(cat /proc/sys/kernel/pid_max)"
-          echo "procs=$(ps -e --no-headers | wc -l) threads=$(ps -eL --no-headers | wc -l)"
+          cat > /tmp/piped.cjs <<'EOF'
+          const { spawn } = require('node:child_process')
+          const drainMs = Number(process.env.DRAIN_MS ?? 0)
+          const child = spawn('pnpm', ['run', 'build:release'], { stdio: ['ignore', 'pipe', 'pipe'] })
+          let bytes = 0
+          for (const stream of [child.stdout, child.stderr]) {
+            stream.on('data', (chunk) => {
+              bytes += chunk.length
+              process.stdout.write(chunk)
+              if (drainMs > 0) { stream.pause(); setTimeout(() => stream.resume(), drainMs) }
+            })
+          }
+          child.on('close', (code) => {
+            console.log(`\n[harness] exit=${code} bytes=${bytes} drainMs=${drainMs}`)
+            process.exit(code ?? 1)
+          })
+          EOF
 
-      - name: Release preamble (regen + check), as the Release job runs it
-        run: |
-          pnpm run regen
-          pnpm exec vp check --fix
-
-      - name: A — build:release WITH --concurrency-limit 1 (the failing command)
-        id: a
+      - name: C — build:release under a Node-owned pipe (fast drain)
+        id: c
         continue-on-error: true
-        run: |
-          (while true; do
-             echo "$(date +%T) procs=$(ps -e --no-headers | wc -l) threads=$(ps -eL --no-headers | wc -l) mem_avail_mb=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)"
-             sleep 1
-           done) > /tmp/sample-a.log 2>&1 &
-          echo $! > /tmp/sampler.pid
-          pnpm run build:release
+        run: node /tmp/piped.cjs
 
-      - name: A — sampler tail
-        run: |
-          kill "$(cat /tmp/sampler.pid)" 2>/dev/null || true
-          tail -40 /tmp/sample-a.log
-
-      - name: B — same filters, default concurrency, from a cold cache
-        id: b
+      - name: D — same, with a slow reader (10ms per chunk)
+        id: d
         continue-on-error: true
+        env:
+          DRAIN_MS: '10'
         run: |
           pnpm run clean
-          (while true; do
-             echo "$(date +%T) procs=$(ps -e --no-headers | wc -l) threads=$(ps -eL --no-headers | wc -l) mem_avail_mb=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)"
-             sleep 1
-           done) > /tmp/sample-b.log 2>&1 &
-          echo $! > /tmp/sampler.pid
-          pnpm exec vp run -F @cascivo/ai -F @cascivo/core -F @cascivo/docs -F @cascivo/editor -F @cascivo/eslint-config -F @cascivo/flow -F @cascivo/i18n -F @cascivo/icons -F @cascivo/charts -F @cascivo/mcp -F @cascivo/platform -F @cascivo/react -F @cascivo/registry -F @cascivo/storage -F @cascivo/themes -F @cascivo/tokens -F @cascivo/vite-plugin -F cascivo build
-
-      - name: B — sampler tail
-        run: |
-          kill "$(cat /tmp/sampler.pid)" 2>/dev/null || true
-          tail -40 /tmp/sample-b.log
+          node /tmp/piped.cjs
 
       - name: Verdict
         run: |
-          echo "A (--concurrency-limit 1): ${{ steps.a.outcome }}"
-          echo "B (default concurrency):   ${{ steps.b.outcome }}"
+          echo "C (Node pipe, fast drain): ${{ steps.c.outcome }}"
+          echo "D (Node pipe, slow drain): ${{ steps.d.outcome }}"
