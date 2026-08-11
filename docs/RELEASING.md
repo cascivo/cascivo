@@ -182,6 +182,22 @@ failed release does not restart it — the staged changesets sit unreleased unti
 lands. Re-run it by hand: **Actions → Release → Run workflow** on `main`. With no staged
 changesets it no-ops safely.
 
+### Release fails with `Failed to spawn process: Resource temporarily unavailable (os error 11)`
+
+The runner refused a `fork(2)` while `build:release` was starting its next step — an
+environment failure, not a build failure (os error 11 is `EAGAIN`). It hit the 0.17.0 release
+on 2026-08-11: the version bump was already on `main`, the build died between
+`@cascivo/react` and its type-flattening step, and nothing published.
+
+`pnpm release` now runs the build through `scripts/release/retry-transient.mjs`, which
+retries up to 3 times — but **only** when the failed command's output carries the
+spawn-failure signature. A type error or a failing guard still fails on the first attempt,
+and `changeset publish` deliberately stays outside the retry so a partial publish is never
+re-driven. `pnpm release:check` guards both properties.
+
+If all three attempts fail, the runner is genuinely out of resources: re-run the workflow
+(**Actions → Release → Run workflow** on `main`) once it is not.
+
 ### Release fails with `TypeError: Cannot read properties of undefined (reading 'includes')`
 
 Stack trace points at `isAlreadyPublishedError` / `internalPublish` inside
