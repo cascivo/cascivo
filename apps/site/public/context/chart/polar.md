@@ -38,6 +38,18 @@ Renders with role="img"; values are in the fallback table.
 | `className`   | `string`                    | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                   | No       | false   | Marks only — no rings or labels. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                     |
 
+## Object types
+
+### `PolarDatum`
+
+Shape of the `data` prop.
+
+| Field   | Type     | Required | Description |
+| ------- | -------- | -------- | ----------- |
+| `label` | `string` | Yes      | —           |
+| `value` | `number` | Yes      | —           |
+| `color` | `string` | No       | —           |
+
 ## Tokens
 
 - `--cascivo-chart-1`

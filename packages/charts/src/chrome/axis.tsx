@@ -57,11 +57,24 @@ function defaultFormat(value: number | string | Date): string {
   return String(value)
 }
 
+/**
+ * Default label formatter for a time axis.
+ *
+ * `TimeScale.tickFormat()` has always known the right `Intl` options for the density it
+ * produced, and nothing ever called it — so every time axis fell through to
+ * `defaultFormat`'s `toLocaleDateString()` and an hourly axis rendered the same date on
+ * every tick (2026-08-08 report B). An explicit `format` prop still wins.
+ */
+function timeFormatter(scale: TimeScale, tickCount: number): (value: Date) => string {
+  const fmt = new Intl.DateTimeFormat(undefined, scale.tickFormat(tickCount))
+  return (value) => fmt.format(value)
+}
+
 export function Axis({
   scale,
   orientation,
   length,
-  format = defaultFormat,
+  format,
   tickCount = 5,
   labelEvery,
   title,
@@ -71,6 +84,7 @@ export function Axis({
   let ticks: Array<{ position: number; label: string }>
 
   if (isBand(scale)) {
+    const bandFormat = format ?? defaultFormat
     const last = scale.domain.length - 1
     const strided = labelEvery != null && labelEvery > 1
     // The last strided index before the always-drawn final label. When the stride doesn't
@@ -84,13 +98,14 @@ export function Axis({
     let dropPenultimate = false
     if (strided && penultimate !== last && penultimate >= 0) {
       const posOf = (i: number) => (scale.map(scale.domain[i]!) ?? 0) + scale.bandwidth / 2
-      const widest = scale.domain.reduce((m, d) => Math.max(m, format(d).length), 0) * AXIS_CHAR_PX
+      const widest =
+        scale.domain.reduce((m, d) => Math.max(m, bandFormat(d).length), 0) * AXIS_CHAR_PX
       dropPenultimate = posOf(last) - posOf(penultimate) < widest
     }
     ticks = scale.domain
       .map((d, i) => ({
         position: (scale.map(d) ?? 0) + scale.bandwidth / 2,
-        label: format(d),
+        label: bandFormat(d),
         i,
       }))
       // Thin labels for crowded categorical axes: keep every Nth and always the last.
@@ -101,15 +116,16 @@ export function Axis({
         return i % labelEvery === 0
       })
   } else if (isTime(scale)) {
+    const label = format ?? timeFormatter(scale, tickCount)
     ticks = scale.ticks(tickCount).map((d) => ({
       position: scale.map(d),
-      label: format(d),
+      label: label(d),
     }))
   } else {
     const s = scale as LinearScale | LogScale
     ticks = s.ticks(tickCount).map((v) => ({
       position: s.map(v),
-      label: format(v as number),
+      label: (format ?? defaultFormat)(v as number),
     }))
   }
 

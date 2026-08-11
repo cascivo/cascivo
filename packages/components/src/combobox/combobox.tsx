@@ -3,6 +3,7 @@ import {
   cn,
   createMachine,
   focusElement,
+  useControllableSignal,
   useMachine,
   useSignal,
   useSignalEffect,
@@ -101,8 +102,13 @@ export function Combobox({
   const resolvedSearch = labels?.search ?? t(builtin.combobox.search)
 
   // Controlled vs. uncontrolled selected value
-  const selectedSignal = useSignal<string | undefined>(value ?? defaultValue)
-  if (value !== undefined) selectedSignal.value = value
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [selectedSignal] = useControllableSignal<string | undefined>({
+    value,
+    defaultValue,
+  })
 
   const query = useSignal('')
   const activeIndex = useSignal(0)

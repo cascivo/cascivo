@@ -56,6 +56,12 @@ export const meta: ComponentMeta = {
       default: 'false',
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
+    {
+      name: 'format',
+      type: '(value: number | string | Date) => string',
+      required: false,
+      description: 'Format each X-axis tick label.',
+    },
   ],
   tokens: ['--cascivo-chart-1'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: [] },

@@ -167,6 +167,54 @@ Guessing across components is the failure this prevents: an adopter wrote
 `IconButton` and got two type errors — `OverflowMenu` takes `ariaLabel` and `value`. The
 per-component pages were correct; the cost was that the convention was never stated.
 
+## Data and shape props — the vocabulary an agent has to guess
+
+The two tables above cover _handlers_ and _names_. This one covers the props that carry the
+**data and the look**, which is where a 2026-08-08 adopter lost nine compile cycles in one
+small dashboard — the single largest friction in that report.
+
+| The prop carries                          | Prop name                   | Never                                 | Why                                                                                                                                    |
+| ----------------------------------------- | --------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| A config-driven **collection**            | **`items`**                 | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                           |
+| The rows of a **table**                   | **`rows`**                  | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                    |
+| A **visual style** enum                   | **`variant`**               | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                              |
+| The **tag of a discriminated union**      | **`kind`**                  | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys) |
+| A **space-scale step**                    | numeric **`gap={4}`**       | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                      |
+| A **rich, replaceable slot**              | **`actions`** (`ReactNode`) | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy  |
+| The **body text** of a feedback component | **`description`**           | children                              | `Notification`, `Alert`, `EmptyState`, `Field` — passing children renders nothing                                                      |
+
+> ### ⚠ `gap` takes a NUMBER, and it is the one prop that breaks the pattern
+>
+> Every other size-ish prop in the catalog is a **string** union — `size="sm"`,
+> `padding="md"`, `density="compact"`. The space scale is a **numeric** `SpaceStep`
+> (`1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12`), so it is `gap={4}`, not `gap="4"`.
+>
+> This is deliberate: the steps are a scale with an order, and a string union would let
+> `gap="7"` type-check into a token that does not exist. But it is genuinely surprising, and
+> one adopter's `gap="4"` produced **20 type errors in a single run** — by far the largest
+> single cost in their build. Write the braces.
+
+### Items-prop-driven vs children-driven — and the types that look like components
+
+`DataList`, `StructuredList`, `Timeline` and `Steps` are **items-prop-driven**: they take an
+array and render it. `ListItem`, `ContainedListItem`, `MenuItem` and `TabsTrigger` are
+**children-driven**: you compose them as elements. Nothing in the name tells you which, so
+the catalog's export list mixes real components with the interfaces that describe their
+items — `DataListItem` is an **interface**, not a component, and
+
+```tsx
+<DataList>
+  <DataListItem label="Domain">{project.domain}</DataListItem>   {/* ✗ not a component */}
+</DataList>
+
+<DataList items={[{ label: 'Domain', value: project.domain }]} /> {/* ✓ */}
+```
+
+`DataList`'s items are `{ label, value }`. They render into a `<dl>`, so `term`/`description`
+is the natural guess from the HTML and it is wrong — `label`/`value` is the catalog-wide
+naming (see the accessible-name table above), and consistency across components beats
+mirroring one element's vocabulary.
+
 ## Status and progress vocabularies — one set of words
 
 Four display components and two sequence components used to ship six overlapping enums for

@@ -196,9 +196,23 @@
     background-color: var(--cascivo-color-surface);
   }
 
-  /* Zebra striping — of .row keeps expansion rows out of the count */
+  /* Zebra striping — `of .row` keeps expansion rows out of the count.
+     
+     NOT `--cascivo-color-bg-subtle`: every theme aliases that straight to
+     `--cascivo-color-surface` (`themes/src/*.css`), so striping a table that sits on a
+     surface — a table in a Card, which is the normal composition — painted the row the
+     exact colour it already was. Measured ΔL of 0.0000 in all three themes; the prop was
+     wired and did nothing, which is what the adopter reported as "no visible effect"
+     (2026-08-08 report A).
+     
+     A translucent foreground overlay adapts instead of assuming: it darkens on light themes
+     and lightens on dark ones, and it works on ANY background the table is placed on rather
+     than only on the page background. */
   .root[data-zebra='true'] .table tbody tr:nth-child(even of .row) {
-    background-color: var(--cascivo-color-bg-subtle);
+    background-color: var(
+      --cascivo-table-zebra-bg,
+      color-mix(in oklab, var(--cascivo-color-text) 5%, transparent)
+    );
   }
 
   /* Control columns (expand button / checkbox) */

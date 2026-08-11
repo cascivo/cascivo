@@ -50,6 +50,29 @@ export const meta: ComponentMeta = {
       description: 'Marks only — no axes, grid lines, or legend. For micro/inline charts.',
     },
   ],
+  typeDefs: [
+    {
+      name: 'TreemapDatum',
+      description: 'Shape of the `data` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-chart-1',
     '--cascivo-chart-2',

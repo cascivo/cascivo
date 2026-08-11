@@ -96,6 +96,25 @@ export const meta: ComponentMeta = {
       description: 'Marks only — no ticks/labels. For micro/inline charts.',
     },
   ],
+  typeDefs: [
+    {
+      name: 'GaugeThreshold',
+      description: 'Shape of the `thresholds` prop.',
+      fields: [
+        {
+          name: 'upTo',
+          type: 'number',
+          required: true,
+          description: 'Upper bound of this coloured zone (in value units).',
+        },
+        {
+          name: 'color',
+          type: 'string',
+          required: true,
+        },
+      ],
+    },
+  ],
   tokens: ['--cascivo-color-accent', '--cascivo-color-foreground', '--cascivo-chart-grid'],
   accessibility: { role: 'img', wcag: '2.1-AA', keyboard: ['Tab (focus chart)'] },
   examples: [

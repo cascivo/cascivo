@@ -35,6 +35,31 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `plain`       | `boolean`                | no       | `false` | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
 | `visualMap`   | `VisualMapOptions`       | no       | —       | Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range.                                                                                                                                                                                                                                                                      |
 
+## Object types
+
+### `CalendarHeatmapDatum`
+
+Shape of the `data` prop.
+
+| Field   | Type             | Required | Description |
+| ------- | ---------------- | -------- | ----------- |
+| `day`   | `string \| Date` | yes      | —           |
+| `value` | `number`         | yes      | —           |
+
+### `VisualMapOptions`
+
+Shape of the `visualMap` prop.
+
+| Field       | Type               | Required | Description                                                            |
+| ----------- | ------------------ | -------- | ---------------------------------------------------------------------- |
+| `min`       | `number`           | yes      | Domain minimum (value mapped to ramp t=0).                             |
+| `max`       | `number`           | yes      | Domain maximum (value mapped to ramp t=1).                             |
+| `mode`      | `VisualMode`       | no       | `continuous` ramp (default) or `piecewise` buckets.                    |
+| `channel`   | `VisualChannel`    | no       | Which visual channel(s) the value drives.                              |
+| `ramp`      | `RampKind`         | no       | Ramp family — CVD-safe `sequential` (default) or `diverging`.          |
+| `pieces`    | `number`           | no       | Bucket count for `piecewise` (default 5).                              |
+| `sizeRange` | `[number, number]` | no       | [min, max] mark radius in px for the `size` channel (default [3, 14]). |
+
 ## Examples
 
 ### Contribution calendar

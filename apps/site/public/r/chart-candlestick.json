@@ -130,6 +130,52 @@
         "required": false,
         "default": "item",
         "description": "item (nearest candle) or axis (crosshair + OHLC at the hovered x)."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "CandlestickDatum",
+        "description": "Shape of the `data` prop.",
+        "fields": [
+          {
+            "name": "t",
+            "type": "string",
+            "required": true,
+            "description": "Period label (date string or index)."
+          },
+          {
+            "name": "open",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "high",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "low",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "close",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "volume",
+            "type": "number",
+            "required": false,
+            "description": "Render volume bars beneath the candles."
+          }
+        ]
       }
     ],
     "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],

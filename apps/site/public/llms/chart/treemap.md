@@ -31,6 +31,18 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `className`   | `string`                                         | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                                        | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
 
+## Object types
+
+### `TreemapDatum`
+
+Shape of the `data` prop.
+
+| Field   | Type     | Required | Description |
+| ------- | -------- | -------- | ----------- |
+| `id`    | `string` | yes      | —           |
+| `label` | `string` | yes      | —           |
+| `value` | `number` | yes      | —           |
+
 ## Examples
 
 ### Basic treemap

@@ -53,6 +53,24 @@ export const meta: ComponentMeta = {
       required: false,
     },
   ],
+  typeDefs: [
+    {
+      name: 'MeterThresholds',
+      description: 'Shape of the `thresholds` prop.',
+      fields: [
+        {
+          name: 'warning',
+          type: 'number',
+          required: false,
+        },
+        {
+          name: 'critical',
+          type: 'number',
+          required: false,
+        },
+      ],
+    },
+  ],
   tokens: ['--cascivo-chart-1'],
   accessibility: { role: 'meter', wcag: '2.1-AA', keyboard: [] },
   examples: [

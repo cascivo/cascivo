@@ -1684,6 +1684,9 @@ importers:
       '@cascivo/eslint-config':
         specifier: workspace:*
         version: link:../../../../packages/eslint-config
+      '@eslint/js':
+        specifier: ^9.0.0
+        version: 9.39.5
       '@tanstack/eslint-config':
         specifier: 0.4.0
         version: 0.4.0(@typescript-eslint/utils@8.66.0(eslint@10.8.0(jiti@2.7.0))(typescript@5.9.3))(eslint@10.8.0(jiti@2.7.0))(typescript@5.9.3)
@@ -2696,6 +2699,10 @@ packages:
     peerDependenciesMeta:
       eslint:
         optional: true
+
+  '@eslint/js@9.39.5':
+    resolution: {integrity: sha512-QywQuszQh77pIXCsq998c8hbhSTI/azTty1Z6N53dmAudKHhy573j3yvRLsX2BSp8YpLtoCEG8E9DJe+8zUh4A==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/object-schema@3.0.5':
     resolution: {integrity: sha512-vqTaUEgxzm+YDSdElad6PiRoX4t8VGDjCtt05zn4nU810UIx/uNEV7/lZJ6KwFThKZOzOxzXy48da+No7HZaMw==}
@@ -10251,6 +10258,8 @@ snapshots:
   '@eslint/js@10.0.1(eslint@10.8.0(jiti@2.7.0))':
     optionalDependencies:
       eslint: 10.8.0(jiti@2.7.0)
+
+  '@eslint/js@9.39.5': {}
 
   '@eslint/object-schema@3.0.5': {}
 

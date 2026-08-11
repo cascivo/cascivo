@@ -35,6 +35,18 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `className`   | `string`                    | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                   | no       | `false` | Marks only — no rings or labels. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                     |
 
+## Object types
+
+### `PolarDatum`
+
+Shape of the `data` prop.
+
+| Field   | Type     | Required | Description |
+| ------- | -------- | -------- | ----------- |
+| `label` | `string` | yes      | —           |
+| `value` | `number` | yes      | —           |
+| `color` | `string` | no       | —           |
+
 ## Examples
 
 ### Wind rose

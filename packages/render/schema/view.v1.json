@@ -488,6 +488,10 @@
                   },
                   "defaultOpen": {
                     "type": "boolean"
+                  },
+                  "padding": {
+                    "type": "string",
+                    "enum": ["SpaceStep", "none"]
                   }
                 },
                 "required": ["header", "children"]
@@ -5891,6 +5895,18 @@
                   },
                   "plain": {
                     "type": "boolean"
+                  },
+                  "barsLabel": {
+                    "type": "string"
+                  },
+                  "legend": {
+                    "type": "boolean"
+                  },
+                  "lineLabel": {
+                    "type": "string"
+                  },
+                  "xLabelEvery": {
+                    "type": "number"
                   }
                 },
                 "required": ["bars", "line", "title"]
@@ -6323,6 +6339,9 @@
                     "type": "string"
                   },
                   "plain": {
+                    "type": "boolean"
+                  },
+                  "tooltip": {
                     "type": "boolean"
                   }
                 },
@@ -6825,6 +6844,9 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "virtualize": {
+                    "type": "boolean"
                   }
                 }
               }
@@ -7100,6 +7122,20 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "activeDirection": {
+                    "type": "string",
+                    "enum": ["forward", "reverse", "undefined"]
+                  },
+                  "activeEdgeId": {
+                    "type": "string",
+                    "enum": ["string", "undefined"]
+                  },
+                  "maxZoom": {
+                    "type": "number"
+                  },
+                  "minZoom": {
+                    "type": "number"
                   }
                 },
                 "required": ["nodes", "edges"]
@@ -7226,6 +7262,25 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "active": {
+                    "type": "string",
+                    "enum": ["boolean", "undefined"]
+                  },
+                  "direction": {
+                    "type": "string",
+                    "enum": ["forward", "reverse", "undefined"]
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "sourcePosition": {
+                    "type": "string",
+                    "enum": ["HandlePosition", "undefined"]
+                  },
+                  "targetPosition": {
+                    "type": "string",
+                    "enum": ["HandlePosition", "undefined"]
                   }
                 },
                 "required": ["sourceX", "sourceY", "targetX", "targetY"]
@@ -7306,6 +7361,14 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "label": {
+                    "type": "string",
+                    "enum": ["string", "undefined"]
+                  },
+                  "nodeColor": {
+                    "type": "string",
+                    "enum": ["string", "undefined"]
                   }
                 },
                 "required": ["nodes", "viewport"]
@@ -7436,6 +7499,17 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "background": {
+                    "type": "boolean"
+                  },
+                  "clock": {
+                    "type": "string",
+                    "enum": ["StoryClock"]
+                  },
+                  "labels": {
+                    "type": "string",
+                    "enum": ["FlowStoryLabels"]
                   }
                 },
                 "required": ["nodes", "edges", "script"]
@@ -7478,6 +7552,22 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "chrome": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "controller": {
+                    "type": "string",
+                    "enum": ["UseViewportReturn"]
+                  },
+                  "defaultViewport": {
+                    "type": "string",
+                    "enum": ["Viewport"]
+                  },
+                  "flow": {
+                    "type": "string",
+                    "enum": ["FlowStore"]
                   }
                 }
               }

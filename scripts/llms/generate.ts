@@ -934,6 +934,15 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     '- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.',
   )
+  lines.push(
+    `- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard): a config-driven collection -> **\`items\`** (DataList, StructuredList, Timeline, Steps, CommandMenu, OverflowMenu, Switcher); table rows -> **\`rows\`** (DataTable ONLY, because it renders a <table>); a visual style enum -> **\`variant\`**, never \`shape\`/\`kind\`/\`type\`; a discriminated-union tag -> **\`kind\`**, never \`type\` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **\`actions\`** as ReactNode (Notification, CardHeader, PageHeader — only \`Alert.action\` is the {label,onClick} shorthand); body text on a feedback component -> **\`description\`**, NOT children (Notification renders nothing for children).`,
+  )
+  lines.push(
+    `- ⚠ \`gap\` takes a NUMBER: \`gap={4}\`, not \`gap="4"\`. Every other size-ish prop is a string union (\`size="sm"\`, \`padding="md"\`), but the space scale is a numeric \`SpaceStep\` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid \`gap\` and \`AppShell.padding\`. One adopter wrote \`gap="4"\` and got 20 type errors in a single run.`,
+  )
+  lines.push(
+    `- Items-prop-driven vs children-driven: \`DataList\`/\`StructuredList\`/\`Timeline\`/\`Steps\` take an \`items\` ARRAY; \`ListItem\`/\`ContainedListItem\`/\`MenuItem\`/\`TabsTrigger\` are composed as children. \`DataListItem\` is an INTERFACE, not a component — write <DataList items={[{ label, value }]} />, not <DataList><DataListItem/></DataList>. DataList items are { label, value } (NOT { term, description }, despite rendering a <dl>).`,
+  )
   lines.push('')
   lines.push(
     `Full behavior/headless catalog: ${REPO}/blob/main/docs/HEADLESS.md. Enterprise friction -> primitive map: ${REPO}/blob/main/docs/ENTERPRISE-READINESS.md.`,

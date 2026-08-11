@@ -1,4 +1,4 @@
-import { useSignal, useSignals } from '@cascivo/core'
+import { useControllableSignal, useSignals } from '@cascivo/core'
 import styles from './swap.module.css'
 
 export type SwapMode = 'rotate' | 'flip'
@@ -39,8 +39,10 @@ export function Swap({
   ...aria
 }: SwapProps) {
   useSignals()
-  const isChecked = useSignal(checked)
-  isChecked.value = checked
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [isChecked] = useControllableSignal<boolean>({ value: checked })
 
   function handleClick() {
     const next = !isChecked.value

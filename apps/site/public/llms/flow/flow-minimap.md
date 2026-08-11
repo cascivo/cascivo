@@ -32,6 +32,34 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `position`         | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no       | `bottom-right` | Position of the component.                                |
 | `onViewportChange` | `(viewport: Viewport) => void`                                 | no       | —              | Called with the new viewport when the minimap is dragged. |
 | `className`        | `string`                                                       | no       | —              | Additional CSS class names merged onto the root element.  |
+| `label`            | `string \| undefined`                                          | no       | —              | Accessible name for the minimap region.                   |
+| `nodeColor`        | `string \| undefined`                                          | no       | —              | Fill colour for node rectangles in the minimap.           |
+
+## Object types
+
+### `FlowNode`
+
+A graph node.
+
+| Field      | Type         | Required | Description                                                      |
+| ---------- | ------------ | -------- | ---------------------------------------------------------------- |
+| `id`       | `string`     | yes      | —                                                                |
+| `position` | `XYPosition` | yes      | —                                                                |
+| `data`     | `Data`       | no       | —                                                                |
+| `type`     | `string`     | no       | Custom renderer key resolved via `nodeTypes`.                    |
+| `selected` | `boolean`    | no       | —                                                                |
+| `width`    | `number`     | no       | Explicit/measured size used for handle anchors + bounding boxes. |
+| `height`   | `number`     | no       | —                                                                |
+
+### `Viewport`
+
+The pan/zoom state of the canvas pane.
+
+| Field  | Type     | Required | Description |
+| ------ | -------- | -------- | ----------- |
+| `x`    | `number` | yes      | —           |
+| `y`    | `number` | yes      | —           |
+| `zoom` | `number` | yes      | —           |
 
 ## Examples
 

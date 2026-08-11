@@ -43,6 +43,52 @@ roving-focus navs.
 `LinkComponentProps` is exported from **both** `@cascivo/react` (Path B) and `@cascivo/core`
 (Path A), so you never need to add `@cascivo/core` as a direct dependency just for the type.
 
+### Marking the active item — the prefix-match helper you would otherwise write twice
+
+`SideNav`, `ShellHeader` and `Dock` are **config-driven**: you tell them which item is
+active, they do not ask your router. That is deliberate — a nav that reached into your router
+would have to know about five of them — but it means every integration writes the same
+matcher, and two adopters in a row wrote it wrong the same way.
+
+Exact equality is the wrong test. `item.href === pathname` lights nothing on
+`/projects/storefront` when the nav item is `/projects`, and nothing on `/analytics?view=speed`
+when the item is `/analytics`. This is the version to copy:
+
+```tsx
+/**
+ * True when `href` is the current location or one of its ancestors.
+ *
+ * - Ignores query strings and hashes — `/analytics?view=speed` matches `/analytics`.
+ * - Matches on SEGMENT boundaries, so `/project` does not match `/projects`.
+ * - Treats `/` as exact-only, or every item would match every route.
+ */
+function isActive(href: string, pathname: string): boolean {
+  const path = href.split(/[?#]/)[0]!.replace(/\/$/, '')
+  const here = pathname.split(/[?#]/)[0]!.replace(/\/$/, '')
+  if (path === '') return here === ''
+  return here === path || here.startsWith(`${path}/`)
+}
+
+const items = NAV.map((item) => ({ ...item, active: isActive(item.href, pathname) }))
+```
+
+Feed `pathname` from whatever your router exposes — `useLocation().pathname` (React Router),
+`useRouterState({ select: (s) => s.location.pathname })` (TanStack Router), `usePathname()`
+(Next.js).
+
+**When two items would both match**, keep only the longest — otherwise `/projects` and
+`/projects/new` both light up:
+
+```tsx
+const best = items.filter((i) => i.active).sort((a, b) => b.href.length - a.href.length)[0]
+const items2 = items.map((i) => ({ ...i, active: i === best }))
+```
+
+Give every item a stable **`id`** while you are here (`SideNavItem`, `ShellHeaderNavLink`,
+`SwitcherLink`, … all take one). Items keyed only by `href` collide as soon as two of them
+point at `/` — a placeholder link, or three teams in a switcher — and React logs a
+duplicate-key warning on every render.
+
 ## 2. Links in page content — `asChild`
 
 `asChild` renders **your** element with cascivo's styling applied to it, instead of cascivo's

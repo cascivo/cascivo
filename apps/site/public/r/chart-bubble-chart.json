@@ -73,6 +73,30 @@
         "type": "GlyphShape | ((d, seriesId) => GlyphShape)",
         "required": false,
         "description": "Point glyph shape (circle/square/diamond/triangle/cross/star) — a fixed shape or a function to encode a category by shape."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "BubbleSeries",
+        "description": "Shape of the `series` prop.",
+        "fields": [
+          {
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "data",
+            "type": "BubbleDatum[]",
+            "required": true
+          }
+        ]
       }
     ],
     "tokens": [

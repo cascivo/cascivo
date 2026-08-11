@@ -50,6 +50,18 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
+    {
+      name: 'gutterRef',
+      type: 'Ref<HTMLDivElement>',
+      required: false,
+      description: 'Ref to the gutter column (used by `CodeEditor` for scroll-sync).',
+    },
+    {
+      name: 'preRef',
+      type: 'Ref<HTMLPreElement>',
+      required: false,
+      description: 'Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).',
+    },
   ],
   tokens: [
     '--cascivo-editor-bg',

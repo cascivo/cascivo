@@ -24,6 +24,7 @@ import { join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { resolveNamedObjectProps } from './lib/component-props.ts'
+import { resolveEntrySources } from './lib/registry-source.ts'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 
@@ -102,12 +103,6 @@ function loadRegistry(): RegistryComponent[] {
   return registry.components
 }
 
-/** Repo-relative path from a registry file URL (`…/main/packages/x` → `packages/x`). */
-function repoRelative(url: string): string {
-  const i = url.indexOf('/packages/')
-  return i === -1 ? url : url.slice(i + 1)
-}
-
 interface Checkable {
   name: string
   objectProps: Map<string, string>
@@ -117,8 +112,11 @@ interface Checkable {
 function collectCheckable(): Checkable[] {
   const out: Checkable[] = []
   for (const c of loadRegistry()) {
-    const tsx = (c.files ?? []).filter((f) => f.endsWith('.tsx')).map(repoRelative)
-    if (tsx.length === 0) continue // npm-installed (charts/flow/editor): no source
+    // Resolves BOTH copy-paste entries (via files[]) and npm-shipped ones (charts, flow,
+    // editor) whose files[] is empty. This used to `continue` on the empty case, which left
+    // 37 entries — every chart — unchecked for the life of the guard (2026-08-08 report B).
+    const tsx = resolveEntrySources(REPO_ROOT, c)
+    if (tsx.length === 0) continue
     const objectProps = resolveNamedObjectProps(tsx, `${c.meta.name}Props`)
     if (!objectProps || objectProps.size === 0) continue
     const typeDefBaseNames = new Set((c.meta.typeDefs ?? []).map((d) => baseName(d.name)))

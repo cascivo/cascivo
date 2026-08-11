@@ -199,10 +199,31 @@ describe('scaffold-contract — cascivo create obeys cascivo’s own docs', () =
     assert.ok(cascivoAt > pluginAt, '...cascivo must be spread AFTER recommended-latest')
   })
 
-  it('ships lint/typecheck scripts so the app drops into a CI pipeline', () => {
-    for (const script of ['lint', 'typecheck', 'build']) {
+  it('ships lint/typecheck/format scripts so the app drops into a CI pipeline', () => {
+    for (const script of ['lint', 'typecheck', 'build', 'format']) {
       assert.ok(pkg().scripts?.[script] !== undefined, `missing "${script}" script`)
     }
+    // `build` must typecheck. `vite build` alone goes green with type errors, which is how a
+    // reporter shipped 37 of them without noticing (2026-08-08 report A).
+    assert.match(pkg().scripts!['build']!, /tsc/, '`build` must run tsc, not just vite build')
+  })
+
+  it('writes no inline styles — the rule its own AGENTS.md gives the agent', () => {
+    // The generated AGENTS.md says "CSS custom properties only — no inline styles", and the
+    // generated section components then used `style={{ padding: … }}` to work around
+    // AppShell having no content inset. AppShell now owns that inset, so the workaround —
+    // and the contradiction it taught by example — is gone (2026-08-08 report B).
+    const offenders: string[] = []
+    for (const [path, contents] of files) {
+      if (!/\.tsx?$/.test(path)) continue
+      if (/style=\{\{/.test(contents)) offenders.push(path)
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'Generated source uses inline styles, which the generated AGENTS.md forbids. Use ' +
+        'cascivo layout primitives (Flex/Grid) and AppShell `padding` instead.',
+    )
   })
 
   it('every generated import resolves to a declared dependency or a relative path', () => {

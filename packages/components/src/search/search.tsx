@@ -1,5 +1,12 @@
 'use client'
-import { cn, focusElement, useId, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import {
+  cn,
+  focusElement,
+  useControllableSignal,
+  useId,
+  useSignalEffect,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { ChangeEvent, KeyboardEvent } from 'react'
@@ -99,8 +106,10 @@ export function Search({
   const inputId = id ?? generatedId
 
   const isControlled = value !== undefined
-  const current = useSignal(isControlled ? value : defaultValue)
-  if (isControlled) current.value = value
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [current] = useControllableSignal<string>({ value, defaultValue })
 
   const onSearchRef = useRef(onSearch)
   onSearchRef.current = onSearch

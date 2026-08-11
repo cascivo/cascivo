@@ -139,3 +139,60 @@ describe('AreaChart', () => {
     })
   })
 })
+
+/*
+ * Per-series mark type (2026-08-08 report A).
+ *
+ * A dual-axis "requests vs errors" chart rendered two opaque fills, the smaller hidden
+ * behind the larger. `fill` is chart-level so it could not make just one translucent, and
+ * ComboChart is bar+line rather than area+line, so the shape was simply not expressible.
+ */
+describe('AreaChart per-series type', () => {
+  const data = [
+    { x: 0, y: 10 },
+    { x: 1, y: 20 },
+    { x: 2, y: 15 },
+  ]
+
+  function paths(container: HTMLElement, seriesId: string): SVGPathElement[] {
+    const g = container.querySelector(`[data-series="${seriesId}"]`)!
+    return [...g.querySelectorAll('path')]
+  }
+
+  it("a series with type='line' paints a stroke and no fill", () => {
+    const { container } = render(
+      <AreaChart
+        title="Requests vs errors"
+        series={[
+          { id: 'requests', label: 'Requests', data },
+          { id: 'errors', label: 'Errors', data, type: 'line' },
+        ]}
+        x={(d: { x: number }) => d.x}
+        y={(d: { y: number }) => d.y}
+      />,
+    )
+    const errorPaths = paths(container, 'errors')
+    expect(errorPaths).toHaveLength(1)
+    expect(errorPaths[0]!.getAttribute('fill')).toBe('none')
+
+    // The default series is unchanged: a fill plus its stroke.
+    expect(paths(container, 'requests').length).toBeGreaterThan(1)
+  })
+
+  it('the remaining area keeps full opacity when nothing overlaps it', () => {
+    const { container } = render(
+      <AreaChart
+        title="Requests vs errors"
+        series={[
+          { id: 'requests', label: 'Requests', data },
+          { id: 'errors', label: 'Errors', data, type: 'line' },
+        ]}
+        x={(d: { x: number }) => d.x}
+        y={(d: { y: number }) => d.y}
+      />,
+    )
+    const areaFill = paths(container, 'requests')[0]!
+    expect(areaFill.getAttribute('style') ?? '').toContain('--cascivo-chart-fill-opacity')
+    expect(areaFill.getAttribute('style') ?? '').not.toContain('overlap')
+  })
+})

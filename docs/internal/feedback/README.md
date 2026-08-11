@@ -57,9 +57,24 @@ the same defect as no guard.
 
 ## Current live tracker
 
-`fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md` is the newest plan
-(**implemented on `claude/ui-library-analysis-plan-dxg5tw`; not yet published** — all nine
-workstreams landed; see its status header for the per-workstream guards and for where the
+[`fix-plan-adopter-pair-2026-08-08.md`](fix-plan-adopter-pair-2026-08-08.md) is the newest
+plan (**planned — not implemented**). It triages the thirteenth and fourteenth reports: two
+Vercel-style dashboards built the same day against registry `0.16.0` / CLI `0.7.1`, one on
+TanStack Start (SSR) and one on React Router (CSR). Neither hit a hard blocker; both worked
+around every red flag silently.
+
+It adds **Mechanism G** — *closed on `main`, absent from the registry the adopter installs*.
+The ledger read `Open — 0` while both adopters re-hit closed findings, because `status:
+closed` is a property of the working tree and an adopter's experience is a property of the
+published tarball. Verified from npm rather than assumed: `0.16.1` and CLI `0.7.2` carry the
+08-06 plan's fixes and were published `2026-08-10T05:09Z`, two days *after* both reports.
+That plan's own §0 warns against reaching for "not yet published" as an unchecked excuse —
+so it was checked. WS-9 of the new plan makes the ledger able to see it.
+
+The previous plan is
+[`fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md`](fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md)
+(**implemented; published in `@cascivo/react@0.16.1` / `cascivo@0.7.2` on 2026-08-10** — all
+nine workstreams landed; see its status header for the per-workstream guards and for where the
 implementation disagreed with the plan). It triages the twelfth report: a Vercel-style dashboard on
 TanStack Start 1.170, tested against registry `0.16.0` / CLI `0.7.1`, with 34 findings and 6
 red flags. Nine routes shipped and hydrated clean; nothing was a hard blocker, and that is
@@ -67,7 +82,9 @@ the concern — every red flag is a thing an adopter had to work around silently
 
 It carried forward one item — the 07-28 plan's C1 `@types/react` mechanism — and that is now
 **closed** (07-28 plan §0.6): it reproduces under pnpm `hoist: false`, and the peer that plan
-shipped is what fixes it. **No finding in [`RECURRENCE.md`](RECURRENCE.md) is open.**
+shipped is what fixes it. Every finding in [`RECURRENCE.md`](RECURRENCE.md) was closed at that
+point — which is exactly the state in which the 08-08 pair re-hit four of them, because
+"closed" then meant "closed on `main`". See Mechanism G above.
 
 The 08-06 plan adds **Mechanism F** to the taxonomy below: *the guard re-implements the
 adopter's tool instead of running it.* `pnpm lint:host-strict` was written specifically to
@@ -178,3 +195,22 @@ fixes but no gates produces the next report:
   invisible from inside it. Where a fragment claims to make a toolchain pass, a test must
   *run that toolchain* and assert zero findings — otherwise the claim is prose (Mechanism A)
   wearing a guard's clothes.
+- **G — closed on `main`, absent from the registry the adopter installs.** (Added by the
+  2026-08-08 adopter pair.) The recurrence ledger's `status: closed` is a property of the
+  **working tree**; an adopter's experience is a property of the **published tarball**.
+  Nothing connected the two, so the ledger could read `Open — 0` while every fix it named was
+  unreachable by `pnpm add`. On 2026-08-08 two adopters, on two different frameworks, re-hit
+  four findings the ledger listed as closed: `0.16.0` / CLI `0.7.1` were published 08-05, the
+  08-06 plan's nine workstreams merged on 08-06 and published on **08-10** — two days after
+  both reports. The adopters were on the newest version that existed. No plan was dishonest
+  and no fix regressed; the ledger simply had no field for the question.
+
+  This README already warns against reaching for "not yet published" as an *unchecked
+  excuse*, because that sentence was carried through three plans as an unverified reason.
+  Mechanism G is the other half of that rule: it is banned as an excuse and **required as a
+  checked fact**. `npm view <pkg> time --json` is the check.
+  → **Fix:** rows carry `shippedIn`; `RECURRENCE.md` renders "Closed — awaiting release"
+  separately from "Closed — shipped"; `pnpm recurrence:shipped` verifies the claim against
+  npm and fails when the unshipped backlog grows past one plan's worth. It is expected to be
+  red between merge and publish — that red *is* the backlog becoming visible — and
+  `docs/RELEASING.md` makes draining it part of the release, not a follow-up.

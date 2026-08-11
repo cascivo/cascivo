@@ -71,6 +71,24 @@
         "required": false
       }
     ],
+    "typeDefs": [
+      {
+        "name": "MeterThresholds",
+        "description": "Shape of the `thresholds` prop.",
+        "fields": [
+          {
+            "name": "warning",
+            "type": "number",
+            "required": false
+          },
+          {
+            "name": "critical",
+            "type": "number",
+            "required": false
+          }
+        ]
+      }
+    ],
     "tokens": ["--cascivo-chart-1"],
     "accessibility": {
       "role": "meter",

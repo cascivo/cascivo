@@ -65,6 +65,19 @@ export interface AreaChartSeries<Datum> {
   /** Which y-axis this series is measured against (ignored when `stacked`). Default 'left'. */
   axis?: 'left' | 'right'
   /**
+   * Draw this series as a stroked line with no fill.
+   *
+   * The case this exists for: a dual-axis chart plotting requests (left) against errors
+   * (right). As two areas the smaller series hides behind the larger one, and `fill` is
+   * chart-level so it cannot make just the second translucent. `ComboChart` does not help —
+   * it is bar+line, not area+line (2026-08-08 report A).
+   *
+   * Ignored when `stacked`, where every series must be an area for the stack to read.
+   *
+   * @defaultValue `'area'`
+   */
+  type?: 'area' | 'line'
+  /**
    * Per-series Y accessor. Overrides the chart-level `y` for this series only —
    * use it to plot two series from one shared `data` row against different fields
    * (e.g. `y: (d) => d.requests` on one series, `y: (d) => d.errors` on another).
@@ -289,7 +302,9 @@ export function AreaChart<Datum = { x: number; y: number }>({
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
   // Overlapping solid areas must not hide each other — see solidFillStyle.
-  const fillStyle = solidFillStyle(series.length, stacked)
+  // Count only the series that actually paint a fill: with `type: 'line'` on the second
+  // series there is nothing to overlap, so the remaining area should keep full opacity.
+  const fillStyle = solidFillStyle(series.filter((s) => s.type !== 'line').length, stacked)
 
   // Per-series Y accessor: a series may override the chart-level `y` (e.g. to plot
   // a different field from a shared data row). Falls back to the chart-level `y`.
@@ -583,12 +598,14 @@ export function AreaChart<Datum = { x: number; y: number }>({
                       const decPts = dec.map((p) => [p[0], p[1]] as Point)
                       return (
                         <g key={s.id} data-series={s.id}>
-                          <path
-                            d={areaPath(decPts, baseline, curve)}
-                            fill={fillFor(defsId, s.id, fill, color)}
-                            style={fill === 'solid' ? fillStyle : undefined}
-                            stroke="none"
-                          />
+                          {s.type !== 'line' && (
+                            <path
+                              d={areaPath(decPts, baseline, curve)}
+                              fill={fillFor(defsId, s.id, fill, color)}
+                              style={fill === 'solid' ? fillStyle : undefined}
+                              stroke="none"
+                            />
+                          )}
                           <path
                             d={linePath(decPts, curve)}
                             fill="none"
@@ -600,12 +617,14 @@ export function AreaChart<Datum = { x: number; y: number }>({
                     }
                     return (
                       <g key={s.id} data-series={s.id}>
-                        <path
-                          d={areaPath(points, baseline, curve)}
-                          fill={fillFor(defsId, s.id, fill, color)}
-                          style={fill === 'solid' ? fillStyle : undefined}
-                          stroke="none"
-                        />
+                        {s.type !== 'line' && (
+                          <path
+                            d={areaPath(points, baseline, curve)}
+                            fill={fillFor(defsId, s.id, fill, color)}
+                            style={fill === 'solid' ? fillStyle : undefined}
+                            stroke="none"
+                          />
+                        )}
                         <path
                           d={linePath(points, curve)}
                           fill="none"

@@ -63,6 +63,39 @@ export const meta: ComponentMeta = {
       default: 'false',
     },
   ],
+  typeDefs: [
+    {
+      name: 'HierNode',
+      description: 'Shape of the `data` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: false,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'number',
+          required: false,
+        },
+        {
+          name: 'color',
+          type: 'string',
+          required: false,
+        },
+        {
+          name: 'children',
+          type: 'HierNode[]',
+          required: false,
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-chart-1',
     '--cascivo-chart-2',

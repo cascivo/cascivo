@@ -62,6 +62,50 @@ export const meta: ComponentMeta = {
       default: 'false',
     },
   ],
+  typeDefs: [
+    {
+      name: 'SankeyLink',
+      description: 'Shape of the `links` prop.',
+      fields: [
+        {
+          name: 'source',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'target',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'SankeyNode',
+      description: 'Shape of the `nodes` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'color',
+          type: 'string',
+          required: false,
+        },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-chart-1',
     '--cascivo-chart-2',

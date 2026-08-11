@@ -204,6 +204,53 @@ export const meta: ComponentMeta = {
       description:
         'Render custom SVG over the marks (overlay/extra series) — a lightweight extension seam.',
     },
+    {
+      name: 'secondAxis',
+      type: '{ label?: string; format?: (value: number) => string }',
+      required: false,
+      description: "Add a right-hand y-axis for series with `axis: 'right'` (e.g.",
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'LineChartSeries',
+      description: 'Shape of the `series` prop.',
+      fields: [
+        {
+          name: 'id',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'data',
+          type: 'readonly Datum[]',
+          required: true,
+        },
+        {
+          name: 'color',
+          type: 'string',
+          required: false,
+          description: 'Series colour.',
+        },
+        {
+          name: 'axis',
+          type: "'left' | 'right'",
+          required: false,
+          description: 'Which y-axis this series is measured against.',
+        },
+        {
+          name: 'y',
+          type: '(d: Datum) => number',
+          required: false,
+          description: 'Per-series Y accessor.',
+        },
+      ],
+    },
   ],
   tokens: [
     '--cascivo-chart-1',

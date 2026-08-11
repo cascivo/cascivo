@@ -1,5 +1,6 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, useControllableSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import type { SpaceStep } from '@cascivo/core'
 import { cloneElement, isValidElement, useRef } from 'react'
 import type { HTMLAttributes, ReactElement, ReactNode } from 'react'
 import styles from './app-shell.module.css'
@@ -39,6 +40,20 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
   defaultOpen?: boolean
   /** Fired when the nav requests open/close (burger, Escape, scrim). */
   onOpenChange?: ((open: boolean) => void) | undefined
+  /**
+   * Inset around the main content area, as a space-scale step.
+   *
+   * ⚠ It **defaults to `6`**, not to none. `<main>` shipped with `padding: 0` for three
+   * releases, so every adopter wrote the same wrapper `<div style={{ padding: … }}>` and
+   * every app's first screenshot had its buttons clipped against the viewport edge — the CLI's
+   * own generated dashboard modelled the workaround with an inline style its sibling
+   * AGENTS.md forbids. Reported three times (2026-07-24, 2026-08-06, 2026-08-08).
+   *
+   * Pass `'none'` for a full-bleed layout that owns its own insets (a map, a split pane).
+   *
+   * @defaultValue `6`
+   */
+  padding?: SpaceStep | 'none'
   className?: string | undefined
 }
 
@@ -68,14 +83,19 @@ export function AppShell({
   open,
   defaultOpen,
   onOpenChange,
+  padding = 6,
   className,
   ...props
 }: AppShellProps) {
   useSignals()
   const controlled = open !== undefined
-  const isOpen = useSignal(open ?? defaultOpen ?? true)
-  // Sync a controlled prop into the signal during render (no-op if unchanged).
-  if (controlled) isOpen.value = open
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [isOpen] = useControllableSignal<boolean>({
+    value: open,
+    defaultValue: defaultOpen ?? true,
+  })
 
   const navWrapperRef = useRef<HTMLDivElement>(null)
   const toggleOriginRef = useRef<HTMLElement | null>(null)
@@ -164,6 +184,7 @@ export function AppShell({
           tabIndex={-1}
           className={styles['main']}
           data-cascivo-appshell-main=""
+          data-padding={padding === 'none' ? 'none' : String(padding)}
         >
           {children}
         </main>

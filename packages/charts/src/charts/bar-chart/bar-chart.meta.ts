@@ -177,6 +177,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Pattern motif when fill="pattern".',
     },
+    {
+      name: 'format',
+      type: '(value: number | string | Date) => string',
+      required: false,
+      description: 'Format each category/x-axis tick label.',
+    },
   ],
   typeDefs: [
     {

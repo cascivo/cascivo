@@ -44,6 +44,18 @@ Focusable group; Enter/Space select. Visual states (hover/focus/selected) are CS
 | `onSelect`         | `(id: string) => void`           | No       | —       | Called with the selected value.                                                                                                          |
 | `children`         | `ReactNode`                      | No       | —       | Any cascivo content.                                                                                                                     |
 | `className`        | `string`                         | No       | —       | Additional CSS class names merged onto the root element.                                                                                 |
+| `onMeasure`        | `(size: NodeSize) => void`       | No       | —       | Reports the rendered box size so edges can anchor to the real node bounds.                                                               |
+
+## Object types
+
+### `XYPosition`
+
+Shared geometry + graph types for the flow engine.
+
+| Field | Type     | Required | Description |
+| ----- | -------- | -------- | ----------- |
+| `x`   | `number` | Yes      | —           |
+| `y`   | `number` | Yes      | —           |
 
 ## Tokens
 

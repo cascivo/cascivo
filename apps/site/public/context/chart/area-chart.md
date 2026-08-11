@@ -53,6 +53,23 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `tooltipMode` | `'item' \| 'axis'`                                                                                                      | No       | item     | Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x).                                                                                                                                                                                                                                                                        |
 | `decimate`    | `boolean \| { method?: 'lttb' \| 'minmax'; threshold?: number }`                                                        | No       | —        | Downsample dense non-stacked series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data.                                                                                                                                                                                                                                                                   |
 | `toolbox`     | `boolean \| ToolboxOptions`                                                                                             | No       | —        | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom).                                                                                                                                                                                                                                                                                     |
+| `format`      | `(value: number \| string \| Date) => string`                                                                           | No       | —        | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
+| `secondAxis`  | `{ label?: string; format?: (value: number) => string }`                                                                | No       | —        | Add a right-hand y-axis for series with `axis: 'right'` (non-stacked only).                                                                                                                                                                                                                                                                                                                   |
+
+## Object types
+
+### `AreaChartSeries`
+
+One series. Pass via the `series` prop; set `type: 'line'` to draw it unfilled.
+
+| Field   | Type                   | Required | Description                                                            |
+| ------- | ---------------------- | -------- | ---------------------------------------------------------------------- |
+| `id`    | `string`               | Yes      | —                                                                      |
+| `label` | `string`               | Yes      | —                                                                      |
+| `data`  | `readonly Datum[]`     | Yes      | —                                                                      |
+| `color` | `string`               | No       | Series colour.                                                         |
+| `axis`  | `'left' \| 'right'`    | No       | Which y-axis this series is measured against (ignored when `stacked`). |
+| `y`     | `(d: Datum) => number` | No       | Per-series Y accessor.                                                 |
 
 ## Tokens
 

@@ -88,6 +88,41 @@
     flex: 1 1 auto;
     min-inline-size: 0;
     overflow-y: auto; /* the single scroll container */
+
+    /* Content inset. Defaults to step 6 rather than 0 — see AppShell's `padding` prop for
+       why (three reports of clipped first screenshots). `[data-padding='none']` opts out. */
+    padding: var(--cascivo-space-6);
+  }
+
+  .main[data-padding='none'] {
+    padding: 0;
+  }
+  .main[data-padding='1'] {
+    padding: var(--cascivo-space-1);
+  }
+  .main[data-padding='2'] {
+    padding: var(--cascivo-space-2);
+  }
+  .main[data-padding='3'] {
+    padding: var(--cascivo-space-3);
+  }
+  .main[data-padding='4'] {
+    padding: var(--cascivo-space-4);
+  }
+  .main[data-padding='5'] {
+    padding: var(--cascivo-space-5);
+  }
+  .main[data-padding='6'] {
+    padding: var(--cascivo-space-6);
+  }
+  .main[data-padding='8'] {
+    padding: var(--cascivo-space-8);
+  }
+  .main[data-padding='10'] {
+    padding: var(--cascivo-space-10);
+  }
+  .main[data-padding='12'] {
+    padding: var(--cascivo-space-12);
   }
 
   .footer {

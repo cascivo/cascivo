@@ -1,5 +1,5 @@
 'use client'
-import { batch, cn, useSignal, useSignals } from '@cascivo/core'
+import { batch, cn, useControllableSignal, useSignal, useSignals } from '@cascivo/core'
 import { builtin, currentLocale, t } from '@cascivo/i18n'
 import type { KeyboardEvent } from 'react'
 import styles from './calendar.module.css'
@@ -138,13 +138,18 @@ export function Calendar({
   const today = new Date()
 
   const initial = selected ?? defaultValue ?? today
-  const viewYear = useSignal(initial.getUTCFullYear())
-  const viewMonth = useSignal(initial.getUTCMonth())
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [viewYear] = useControllableSignal<number>({
+    value: year,
+    defaultValue: initial.getUTCFullYear(),
+  })
+  const [viewMonth] = useControllableSignal<number>({
+    value: month,
+    defaultValue: initial.getUTCMonth(),
+  })
   const focusedDate = useSignal<Date>(initial)
-
-  // Controlled view: mirror parent-owned month/year into local signals each render.
-  if (month !== undefined) viewMonth.value = month
-  if (year !== undefined) viewYear.value = year
 
   const weekStart = getWeekStart(locale)
   const grid = getMonthGrid(viewYear.value, viewMonth.value, weekStart)

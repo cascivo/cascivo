@@ -1,5 +1,5 @@
 'use client'
-import { cn, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
+import { cn, useControllableSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { useRef } from 'react'
 import type { CSSProperties } from 'react'
@@ -29,9 +29,13 @@ export interface TocProps {
 export function Toc({ items, activeId, onActiveChange, labels, className }: TocProps) {
   useSignals()
   const controlled = activeId !== undefined
-  const active = useSignal(activeId ?? items[0]?.id ?? '')
-  // Sync a controlled prop into the signal during render (no-op if unchanged).
-  if (controlled) active.value = activeId
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [active] = useControllableSignal<string>({
+    value: activeId,
+    defaultValue: items[0]?.id ?? '',
+  })
 
   // Keep the callback current without re-subscribing the observer.
   const onActiveChangeRef = useRef(onActiveChange)

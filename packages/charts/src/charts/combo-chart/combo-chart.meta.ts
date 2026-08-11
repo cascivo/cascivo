@@ -74,6 +74,71 @@ export const meta: ComponentMeta = {
       description:
         'Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).',
     },
+    {
+      name: 'barsLabel',
+      type: 'string',
+      required: false,
+      description: 'Legend label for the bar series.',
+    },
+    {
+      name: 'format',
+      type: '(value: number | string | Date) => string',
+      required: false,
+      description: 'Format each X-axis tick label.',
+    },
+    {
+      name: 'legend',
+      type: 'boolean',
+      required: false,
+      description: 'Show the legend.',
+    },
+    {
+      name: 'lineLabel',
+      type: 'string',
+      required: false,
+      description: 'Legend label for the line series.',
+    },
+    {
+      name: 'xLabelEvery',
+      type: 'number',
+      required: false,
+      description: 'Render every Nth category label.',
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'ComboChartBar',
+      description: 'Shape of the `bars` prop.',
+      fields: [
+        {
+          name: 'label',
+          type: 'string',
+          required: true,
+        },
+        {
+          name: 'value',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'ComboChartPoint',
+      description: 'Shape of the `line` prop.',
+      fields: [
+        {
+          name: 'x',
+          type: 'number',
+          required: true,
+          description: 'Index into `bars` — point `i` is drawn at the centre of bar `i`.',
+        },
+        {
+          name: 'y',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
   ],
   tokens: ['--cascivo-chart-1', '--cascivo-chart-2'],
   accessibility: {

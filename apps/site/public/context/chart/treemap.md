@@ -34,6 +34,18 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `className`   | `string`                                         | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                                        | No       | false   | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
 
+## Object types
+
+### `TreemapDatum`
+
+Shape of the `data` prop.
+
+| Field   | Type     | Required | Description |
+| ------- | -------- | -------- | ----------- |
+| `id`    | `string` | Yes      | —           |
+| `label` | `string` | Yes      | —           |
+| `value` | `number` | Yes      | —           |
+
 ## Tokens
 
 - `--cascivo-chart-1`

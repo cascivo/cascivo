@@ -93,6 +93,88 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
+    {
+      name: 'activeDirection',
+      type: "'forward' | 'reverse' | undefined",
+      required: false,
+      description: "Direction the active edge's dash travels.",
+    },
+    {
+      name: 'activeEdgeId',
+      type: 'string | undefined',
+      required: false,
+      description: "Highlight + animate a single edge (used by FlowStory's active step).",
+    },
+    {
+      name: 'maxZoom',
+      type: 'number',
+      required: false,
+      description: 'Maximum zoom scale the viewport can reach.',
+    },
+    {
+      name: 'minZoom',
+      type: 'number',
+      required: false,
+      description: 'Minimum zoom scale the viewport can reach.',
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'FlowNode',
+      description: 'A graph node. Positioned in flow coordinates; renders as themed HTML.',
+      fields: [
+        { name: 'id', type: 'string', required: true },
+        { name: 'position', type: 'XYPosition', required: true },
+        { name: 'data', type: 'Data', required: false },
+        {
+          name: 'type',
+          type: 'string',
+          required: false,
+          description: 'Custom renderer key resolved via `nodeTypes`.',
+        },
+        { name: 'selected', type: 'boolean', required: false },
+        {
+          name: 'width',
+          type: 'number',
+          required: false,
+          description: 'Explicit/measured size used for handle anchors + bounding boxes.',
+        },
+        { name: 'height', type: 'number', required: false },
+      ],
+    },
+    {
+      name: 'FlowEdge',
+      description: "A directed connection between two nodes' handles.",
+      fields: [
+        { name: 'id', type: 'string', required: true },
+        { name: 'source', type: 'string', required: true },
+        { name: 'target', type: 'string', required: true },
+        { name: 'sourceHandle', type: 'string', required: false },
+        { name: 'targetHandle', type: 'string', required: false },
+        {
+          name: 'type',
+          type: 'EdgePathType | string',
+          required: false,
+          description: 'Custom renderer key resolved via `edgeTypes`.',
+        },
+        { name: 'animated', type: 'boolean', required: false },
+        { name: 'label', type: 'string', required: false },
+        { name: 'selected', type: 'boolean', required: false },
+        {
+          name: 'markerStart',
+          type: 'boolean',
+          required: false,
+          description:
+            'Arrowhead at the source end (points back toward the source). Default false.',
+        },
+        {
+          name: 'markerEnd',
+          type: 'boolean',
+          required: false,
+          description: 'Arrowhead at the target end (points at the target). Default true.',
+        },
+      ],
+    },
   ],
   tokens: ['--cascivo-color-bg', '--cascivo-color-surface', '--cascivo-color-accent'],
   accessibility: {

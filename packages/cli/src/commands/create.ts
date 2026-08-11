@@ -149,6 +149,8 @@ function packageJson(opts: ScaffoldOptions): string {
       preview: 'vite preview',
       typecheck: 'tsc --noEmit',
       lint: 'eslint .',
+      format: 'prettier --write .',
+      'format:check': 'prettier --check .',
     },
     // Prebuilt path (Path B): `@cascivo/react` and `@cascivo/themes` only.
     //
@@ -177,7 +179,13 @@ function packageJson(opts: ScaffoldOptions): string {
       '@vitejs/plugin-react': '^5.0.0',
       eslint: '^9.0.0',
       'eslint-plugin-react-hooks': '^7.0.0',
+      prettier: '^3.0.0',
       typescript: '^5.7.0',
+      // Registers the TypeScript parser AND the `files` patterns that make ESLint look at
+      // .ts/.tsx at all. Without it ESLint 9's default `files` is **/*.{js,cjs,mjs}, so
+      // `lint` on a TypeScript-only app exits 0 having inspected zero files — a green check
+      // that proves nothing (2026-08-08 report B).
+      'typescript-eslint': '^8.0.0',
       vite: '^7.0.0',
     },
   }
@@ -245,10 +253,12 @@ function indexHtml(opts: ScaffoldOptions): string {
           padding: 0;
         }
       }
-      html,
-      body,
-      #root {
-        height: 100%;
+      @layer cascivo.base {
+        html,
+        body,
+        #root {
+          height: 100%;
+        }
       }
     </style>
   </head>
@@ -346,24 +356,21 @@ ${renderedSections}
 }
 
 function sectionTsx(section: Section): string {
-  return `import { Card, CardContent, CardHeader, CardTitle, Heading, Text } from '@cascivo/react'
+  // No inline styles: the generated AGENTS.md tells the agent not to write them, and a
+  // scaffold that models the opposite teaches the opposite. The page inset comes from
+  // AppShell's own \`padding\` prop, and the stacking from \`Flex\` — note \`gap\` takes a
+  // NUMBER (a space-scale step), not a string.
+  return `import { Card, CardContent, CardHeader, CardTitle, Flex, Heading, Text } from '@cascivo/react'
 
 export function ${section.component}() {
   return (
-    <div
-      style={{
-        display: 'grid',
-        gap: 'var(--cascivo-space-6)',
-        padding: 'var(--cascivo-space-6)',
-        maxWidth: '64rem',
-      }}
-    >
-      <div style={{ display: 'grid', gap: 'var(--cascivo-space-2)' }}>
+    <Flex gap={6}>
+      <Flex gap={2}>
         <Heading level={1}>${section.label}</Heading>
         <Text muted>
           Edit <code>src/sections/${section.component}.tsx</code> to build out this page.
         </Text>
-      </div>
+      </Flex>
 
       <Card>
         <CardHeader>
@@ -376,7 +383,7 @@ export function ${section.component}() {
           </Text>
         </CardContent>
       </Card>
-    </div>
+    </Flex>
   )
 }
 `
@@ -393,20 +400,41 @@ export function ${section.component}() {
  */
 function eslintConfig(): string {
   return `import js from '@eslint/js'
+import tseslint from 'typescript-eslint'
 import reactHooks from 'eslint-plugin-react-hooks'
 import cascivo from '@cascivo/eslint-config'
 
 export default [
+  { ignores: ['dist/**'] },
   js.configs.recommended,
+  // Registers the TypeScript parser and the .ts/.tsx \`files\` patterns. WITHOUT THIS ESLINT
+  // LINTS NOTHING: its default \`files\` is **/*.{js,cjs,mjs}, so every file in this app is
+  // skipped with "File ignored because no matching configuration was supplied" and the
+  // \`lint\` script exits 0 having checked zero files.
+  ...tseslint.configs.recommended,
   // NOTE the \`.flat\` — the plugin exports both \`configs['recommended-latest']\` (the legacy
   // eslintrc shape, which applies NOTHING here and reports no error) and this one.
   reactHooks.configs.flat['recommended-latest'],
   // Spread LAST — flat config is last-wins. This turns off \`react-hooks/immutability\`,
-  // which reports cascivo's signal writes (\`signal.value = next\`) as errors.
-  // See https://cascivo.com/docs/using-with-strict-eslint.md
+  // which reports cascivo's signal writes (\`signal.value = next\`) as errors. That rule
+  // fires on the very first \`signal.value = x\` you write, so this is not optional wiring:
+  // see https://cascivo.com/docs/using-with-strict-eslint.md
   ...cascivo,
-  { ignores: ['dist/**'] },
 ]
+`
+}
+
+/** Prettier config matching the style the scaffold's own generated source is written in. */
+function prettierrc(): string {
+  return JSON.stringify({ semi: false, singleQuote: true, printWidth: 100 }, null, 2) + '\n'
+}
+
+function prettierIgnore(): string {
+  return `dist
+node_modules
+# Vendored cascivo source is formatted upstream — reformatting it makes every
+# \`cascivo add\` update a merge conflict.
+src/components/ui/
 `
 }
 
@@ -504,6 +532,8 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
     // install the two packages the docs forbid. `cascivo add` writes the config itself the
     // first time it is used.
     { path: 'eslint.config.js', contents: eslintConfig() },
+    { path: '.prettierrc', contents: prettierrc() },
+    { path: '.prettierignore', contents: prettierIgnore() },
     { path: '.gitignore', contents: gitignore() },
     { path: 'README.md', contents: readme(opts) },
     { path: 'AGENTS.md', contents: agentsMd(opts) },

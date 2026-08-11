@@ -50,6 +50,23 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `tooltipMode` | `'item' \| 'axis'`                                                                                                      | no       | `item`     | Tooltip trigger — item (nearest point) or axis (a crosshair + a shared tooltip listing every series at the hovered x).                                                                                                                                                                                                                                                                        |
 | `decimate`    | `boolean \| { method?: 'lttb' \| 'minmax'; threshold?: number }`                                                        | no       | —          | Downsample dense non-stacked series before drawing (LTTB or min-max). Visual only — the fallback table keeps the full data.                                                                                                                                                                                                                                                                   |
 | `toolbox`     | `boolean \| ToolboxOptions`                                                                                             | no       | —          | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset zoom).                                                                                                                                                                                                                                                                                     |
+| `format`      | `(value: number \| string \| Date) => string`                                                                           | no       | —          | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
+| `secondAxis`  | `{ label?: string; format?: (value: number) => string }`                                                                | no       | —          | Add a right-hand y-axis for series with `axis: 'right'` (non-stacked only).                                                                                                                                                                                                                                                                                                                   |
+
+## Object types
+
+### `AreaChartSeries`
+
+One series. Pass via the `series` prop; set `type: 'line'` to draw it unfilled.
+
+| Field   | Type                   | Required | Description                                                            |
+| ------- | ---------------------- | -------- | ---------------------------------------------------------------------- |
+| `id`    | `string`               | yes      | —                                                                      |
+| `label` | `string`               | yes      | —                                                                      |
+| `data`  | `readonly Datum[]`     | yes      | —                                                                      |
+| `color` | `string`               | no       | Series colour.                                                         |
+| `axis`  | `'left' \| 'right'`    | no       | Which y-axis this series is measured against (ignored when `stacked`). |
+| `y`     | `(d: Datum) => number` | no       | Per-series Y accessor.                                                 |
 
 ## Examples
 

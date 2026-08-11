@@ -40,6 +40,17 @@ Renders with role="img"; the value and range are in the fallback table.
 | `className`   | `string`                            | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                           | No       | false   | Marks only — no ticks/labels. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                        |
 
+## Object types
+
+### `GaugeThreshold`
+
+Shape of the `thresholds` prop.
+
+| Field   | Type     | Required | Description                                         |
+| ------- | -------- | -------- | --------------------------------------------------- |
+| `upTo`  | `number` | Yes      | Upper bound of this coloured zone (in value units). |
+| `color` | `string` | Yes      | —                                                   |
+
 ## Tokens
 
 - `--cascivo-color-accent`

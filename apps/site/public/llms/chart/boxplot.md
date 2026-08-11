@@ -30,6 +30,19 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `height`      | `number`                                            | no       | `320`   | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
 | `className`   | `string`                                            | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                                           | no       | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
+| `format`      | `(value: number \| string \| Date) => string`       | no       | —       | Format each category/x-axis tick label.                                                                                                                                                                                                                                                                                                                                                       |
+
+## Object types
+
+### `BoxplotSeries`
+
+Shape of the `series` prop.
+
+| Field    | Type       | Required | Description |
+| -------- | ---------- | -------- | ----------- |
+| `id`     | `string`   | yes      | —           |
+| `label`  | `string`   | yes      | —           |
+| `values` | `number[]` | yes      | —           |
 
 ## Examples
 

@@ -11,7 +11,12 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
    */
   variant?: 'default' | 'outlined' | 'elevated'
   /**
-   * Inner padding of the component.
+   * Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the
+   * padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a
+   * flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge";
+   * zeroing both put the title flush against the border and made the mode unusable with the
+   * composition it exists for. For an edge-to-edge table, skip CardContent and pass the
+   * table as a direct child.
    *
    * @defaultValue `md`
    * @see the component manifest

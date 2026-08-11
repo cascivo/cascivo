@@ -44,6 +44,34 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `renderer`    | `'svg' \| 'canvas' \| 'auto'`                 | No       | svg     | Renderer — svg (default), canvas (force), or auto (canvas past ~2000 points). Canvas keeps the full a11y fallback table + keyboard layer.                                                                                                                                                                                                                                                     |
 | `visualMap`   | `VisualMapOptions`                            | No       | —       | Map each point’s y → CVD-safe colour and/or size via a keyboard-operable legend that filters the visible range.                                                                                                                                                                                                                                                                               |
 | `toolbox`     | `boolean \| ToolboxOptions`                   | No       | —       | Render a keyboard-reachable toolbox — PNG/SVG export, a data-view table toggle, and restore (reset the visualMap filter).                                                                                                                                                                                                                                                                     |
+| `format`      | `(value: number \| string \| Date) => string` | No       | —       | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
+
+## Object types
+
+### `ScatterChartSeries`
+
+Shape of the `series` prop.
+
+| Field   | Type                      | Required | Description |
+| ------- | ------------------------- | -------- | ----------- |
+| `id`    | `string`                  | Yes      | —           |
+| `label` | `string`                  | Yes      | —           |
+| `data`  | `readonly ScatterDatum[]` | Yes      | —           |
+| `color` | `string`                  | No       | —           |
+
+### `VisualMapOptions`
+
+Shape of the `visualMap` prop.
+
+| Field       | Type               | Required | Description                                                            |
+| ----------- | ------------------ | -------- | ---------------------------------------------------------------------- |
+| `min`       | `number`           | Yes      | Domain minimum (value mapped to ramp t=0).                             |
+| `max`       | `number`           | Yes      | Domain maximum (value mapped to ramp t=1).                             |
+| `mode`      | `VisualMode`       | No       | `continuous` ramp (default) or `piecewise` buckets.                    |
+| `channel`   | `VisualChannel`    | No       | Which visual channel(s) the value drives.                              |
+| `ramp`      | `RampKind`         | No       | Ramp family — CVD-safe `sequential` (default) or `diverging`.          |
+| `pieces`    | `number`           | No       | Bucket count for `piecewise` (default 5).                              |
+| `sizeRange` | `[number, number]` | No       | [min, max] mark radius in px for the `size` channel (default [3, 14]). |
 
 ## Tokens
 

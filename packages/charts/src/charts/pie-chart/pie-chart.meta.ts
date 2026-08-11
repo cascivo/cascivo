@@ -120,6 +120,13 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Fired when a point is clicked or activated (Enter/Space) — for drill-down.',
     },
+    {
+      name: 'tooltip',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Show tooltips. Parity with Area/Bar/Line/Combo, which all take this.',
+    },
   ],
   typeDefs: [
     {

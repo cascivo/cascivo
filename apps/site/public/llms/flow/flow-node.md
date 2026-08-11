@@ -41,6 +41,18 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `onSelect`         | `(id: string) => void`           | no       | —       | Called with the selected value.                                                                                                          |
 | `children`         | `ReactNode`                      | no       | —       | Any cascivo content.                                                                                                                     |
 | `className`        | `string`                         | no       | —       | Additional CSS class names merged onto the root element.                                                                                 |
+| `onMeasure`        | `(size: NodeSize) => void`       | no       | —       | Reports the rendered box size so edges can anchor to the real node bounds.                                                               |
+
+## Object types
+
+### `XYPosition`
+
+Shared geometry + graph types for the flow engine.
+
+| Field | Type     | Required | Description |
+| ----- | -------- | -------- | ----------- |
+| `x`   | `number` | yes      | —           |
+| `y`   | `number` | yes      | —           |
 
 ## Examples
 

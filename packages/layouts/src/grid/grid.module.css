@@ -55,6 +55,14 @@
   .grid-item {
     grid-column: span var(--_span, 1);
 
+    /* The item stretches to the row (the grid's `align-items: stretch`), but a plain block
+       container does not pass that height to its child — so a Card inside a spanning
+       GridItem stopped at its own content height and left a visible hole beside a taller
+       sibling (2026-08-08 report B). A grid container stretches its children by default,
+       which is what an adopter already expects from the row. */
+    display: grid;
+    align-content: stretch;
+
     /* Responsive span — same per-tier fallback chain against the grid's inline size. */
     &[data-responsive] {
       @container (min-width: 30rem) {

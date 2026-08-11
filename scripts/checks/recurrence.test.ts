@@ -23,6 +23,7 @@ interface Finding {
   mechanism: string
   guard: string | null
   status: 'open' | 'closed'
+  shippedIn?: string | null
   note?: string
   guardNote?: string
 }
@@ -77,6 +78,37 @@ test('every open finding explains why it has no guard', () => {
     .filter((f) => !f.guardNote || f.guardNote.trim() === '')
     .map((f) => f.id)
   assert.deepEqual(silent, [], `open findings need a guardNote saying what is missing: ${silent}`)
+})
+
+/*
+ * Mechanism G. `status: 'closed'` describes the working tree; an adopter's experience
+ * describes the published tarball. On 2026-08-08 two adopters re-hit four findings this
+ * ledger listed as closed, because the fixes had been merged and unpublished for four days.
+ * The ledger read `Open — 0` and was not lying — it simply had no field for the question.
+ *
+ * The network half (is `shippedIn` actually on npm?) lives in `pnpm recurrence:shipped`,
+ * which the daily docs-freshness workflow runs. `pnpm ready` stays offline.
+ */
+test('every closed finding declares whether it has shipped', () => {
+  const undeclared = data.findings
+    .filter((f) => f.status === 'closed')
+    .filter((f) => !('shippedIn' in f))
+    .map((f) => f.id)
+  assert.deepEqual(
+    undeclared,
+    [],
+    'A closed finding must carry `shippedIn`: either the published version an adopter can ' +
+      'install the fix from (e.g. "@cascivo/react@0.16.1"), or null for merged-but-unpublished. ' +
+      `Without it the ledger cannot tell "done" from "promised": ${undeclared.join(', ')}`,
+  )
+})
+
+test('shippedIn is a resolvable package@version', () => {
+  const malformed = data.findings
+    .filter((f) => f.status === 'closed' && f.shippedIn)
+    .filter((f) => !/^(@[\w-]+\/)?[\w-]+@\d+\.\d+\.\d+$/.test(f.shippedIn!))
+    .map((f) => `${f.id} → ${f.shippedIn}`)
+  assert.deepEqual(malformed, [], `shippedIn must be "<package>@<semver>": ${malformed.join(', ')}`)
 })
 
 test('every adopter report is triaged into the ledger', async () => {

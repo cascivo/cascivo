@@ -1,5 +1,5 @@
 'use client'
-import { cn, Slot, useSignal, useSignals } from '@cascivo/core'
+import { cn, Slot, useControllableSignal, useSignals } from '@cascivo/core'
 import type { Signal } from '@cascivo/core'
 import { createContext, forwardRef, useId, useRef } from 'react'
 import type { HTMLAttributes, KeyboardEvent, Ref, ReactNode } from 'react'
@@ -23,8 +23,13 @@ export interface TabsProps {
 
 export function Tabs({ defaultValue, value, onValueChange, className, children }: TabsProps) {
   const baseId = useId()
-  const active = useSignal(value ?? defaultValue ?? '')
-  if (value !== undefined) active.value = value
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [active] = useControllableSignal<string>({
+    value,
+    defaultValue: defaultValue ?? '',
+  })
 
   const store: TabsStore = {
     active,

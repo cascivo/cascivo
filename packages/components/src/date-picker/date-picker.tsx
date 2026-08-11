@@ -3,6 +3,7 @@ import {
   batch,
   cn,
   createMachine,
+  useControllableSignal,
   useMachine,
   useSignal,
   useSignalEffect,
@@ -134,8 +135,13 @@ export function DatePicker({
   const today = new Date()
   const todayISO = toISO(today)
 
-  const selectedISO = useSignal<string | undefined>(value ?? defaultValue)
-  if (value !== undefined) selectedISO.value = value
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [selectedISO] = useControllableSignal<string | undefined>({
+    value,
+    defaultValue,
+  })
 
   const viewYear = useSignal(
     selectedISO.value ? fromISO(selectedISO.value).getUTCFullYear() : today.getUTCFullYear(),

@@ -1,5 +1,12 @@
 'use client'
-import { cn, focusElement, getLinkComponent, useSignal, useSignals } from '@cascivo/core'
+import {
+  cn,
+  focusElement,
+  getLinkComponent,
+  useControllableSignal,
+  useSignal,
+  useSignals,
+} from '@cascivo/core'
 import { builtin, t } from '@cascivo/i18n'
 import { Fragment, useId } from 'react'
 import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode, RefObject } from 'react'
@@ -374,8 +381,13 @@ export function SideNav({
   const resolvedExpandLabel = expandLabel ?? t(builtin.sideNav.expand)
   const baseId = useId()
 
-  const isCollapsed = useSignal(collapsed ?? defaultCollapsed)
-  if (collapsed !== undefined) isCollapsed.value = collapsed
+  // Controlled mirror goes through the shared primitive: a bare `sig.value = prop` in render
+  // notifies the previous render's subscriptions, which React 19 reports as a setState during
+  // render (2026-08-08 report A). The primitive skips the write when the value is unchanged.
+  const [isCollapsed] = useControllableSignal<boolean>({
+    value: collapsed,
+    defaultValue: defaultCollapsed,
+  })
 
   const effectiveGroups: SideNavGroup[] = groups ?? (items ? [{ items }] : [{ items: [] }])
 

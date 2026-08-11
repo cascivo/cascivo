@@ -37,6 +37,17 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `className`   | `string`                            | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
 | `plain`       | `boolean`                           | no       | `false` | Marks only — no ticks/labels. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                        |
 
+## Object types
+
+### `GaugeThreshold`
+
+Shape of the `thresholds` prop.
+
+| Field   | Type     | Required | Description                                         |
+| ------- | -------- | -------- | --------------------------------------------------- |
+| `upTo`  | `number` | yes      | Upper bound of this coloured zone (in value units). |
+| `color` | `string` | yes      | —                                                   |
+
 ## Examples
 
 ### Speedometer with zones

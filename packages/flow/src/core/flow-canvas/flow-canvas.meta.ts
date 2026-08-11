@@ -68,6 +68,151 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
+    {
+      name: 'chrome',
+      type: 'ReactNode',
+      required: false,
+      description:
+        'Screen-fixed overlay (controls, minimap, panels) — rendered outside the transformed pane.',
+    },
+    {
+      name: 'controller',
+      type: 'UseViewportReturn',
+      required: false,
+      description: 'Use a viewport controller owned by a parent (e.g.',
+    },
+    {
+      name: 'defaultViewport',
+      type: 'Viewport',
+      required: false,
+      description: 'Initial viewport (x, y, zoom) when uncontrolled.',
+    },
+    {
+      name: 'flow',
+      type: 'FlowStore',
+      required: false,
+      description: 'Share an external store (e.g.',
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'UseViewportReturn',
+      description: 'Shape of the `controller` prop.',
+      fields: [
+        {
+          name: 'containerRef',
+          type: 'RefObject<HTMLDivElement | null>',
+          required: true,
+          description: 'Outer clipping container — attach for wheel + size measurement.',
+        },
+        {
+          name: 'panHandleRef',
+          type: 'RefObject<HTMLElement | null>',
+          required: true,
+          description: 'Background drag-surface (behind nodes) — the pan handle.',
+        },
+        {
+          name: 'viewport',
+          type: 'Signal<Viewport>',
+          required: true,
+        },
+        {
+          name: 'pan',
+          type: '(dx: number, dy: number) => void',
+          required: true,
+          description: 'Translate the viewport by a screen-space delta.',
+        },
+        {
+          name: 'zoomTo',
+          type: '(zoom: number, center?: XYPosition) => void',
+          required: true,
+          description: 'Set zoom (clamped), optionally keeping `center` (container coords) fixed.',
+        },
+        {
+          name: 'zoomIn',
+          type: '() => void',
+          required: true,
+        },
+        {
+          name: 'zoomOut',
+          type: '() => void',
+          required: true,
+        },
+        {
+          name: 'fitView',
+          type: '(size?: Size) => void',
+          required: true,
+          description: 'Frame all nodes.',
+        },
+      ],
+    },
+    {
+      name: 'Viewport',
+      description: 'The pan/zoom state of the canvas pane.',
+      fields: [
+        {
+          name: 'x',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'y',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'zoom',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'FlowStore',
+      description: 'Shape of the `flow` prop.',
+      fields: [
+        {
+          name: 'nodes',
+          type: 'Signal<FlowNode[]>',
+          required: true,
+        },
+        {
+          name: 'edges',
+          type: 'Signal<FlowEdge[]>',
+          required: true,
+        },
+        {
+          name: 'viewport',
+          type: 'Signal<Viewport>',
+          required: true,
+        },
+        {
+          name: 'setNodes',
+          type: '(nodes: FlowNode[]) => void',
+          required: true,
+        },
+        {
+          name: 'updateNode',
+          type: '(id: string, patch: Partial<FlowNode>) => void',
+          required: true,
+        },
+        {
+          name: 'setEdges',
+          type: '(edges: FlowEdge[]) => void',
+          required: true,
+        },
+        {
+          name: 'addEdge',
+          type: '(edge: FlowEdge) => void',
+          required: true,
+        },
+        {
+          name: 'setViewport',
+          type: '(viewport: Viewport) => void',
+          required: true,
+        },
+      ],
+    },
   ],
   tokens: ['--cascivo-color-bg', '--cascivo-radius-surface'],
   accessibility: {
