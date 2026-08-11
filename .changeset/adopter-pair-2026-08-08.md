@@ -1,60 +1,88 @@
 ---
-'@cascivo/core': patch
-'@cascivo/react': patch
-'@cascivo/charts': patch
-'@cascivo/themes': patch
-'cascivo': patch
+'@cascivo/core': minor
+'@cascivo/react': minor
+'@cascivo/charts': minor
+'@cascivo/editor': minor
+'@cascivo/flow': minor
+'cascivo': minor
 ---
 
 Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Start and React Router).
 
-**Correctness**
+## ⚠ One behaviour change to check before upgrading
 
-- `DataTable` controlled selection no longer logs "Cannot update a component while rendering a
-  different component" under React 19. The documented controlled API was unusable without
-  console noise, and under concurrent rendering the render-phase write was a real hazard. Eleven
-  other components carrying the same shape are migrated, and a guard keeps it out.
-- `timeScale` returns a usable number of ticks for sub-day domains. A "last 24 hours" chart —
-  the canonical dashboard panel — rendered a single date tick and ignored `xTicks` entirely.
-  `TimeScale.tickFormat()` is now wired into `Axis`, so a sub-day axis formats as times instead
-  of repeating the same date on every tick.
+**`AppShell` now insets its content by default** (`padding` defaults to space step `6`).
+`<main>` shipped with `padding: 0` for three releases, so every adopter wrote the same wrapper
+`<div>` — the reports say so explicitly, and the CLI's own generated dashboard did it too. If
+your app has one, you will now get **double** padding. Remove your wrapper, or pass
+`padding="none"` to keep owning the inset yourself:
 
-**Layout and interaction**
+```tsx
+<AppShell padding="none" header={…}>{…}</AppShell>
+```
 
-- `Card` is `position: relative`, so the stretched-link pattern no longer covers the whole page
-  with an invisible overlay that swallows every click.
-- `AppShell` gains `padding`, defaulting to space step 6. Content no longer sits flush against
-  the viewport edge; pass `padding="none"` for full-bleed layouts.
-- `Checkbox`'s decoration no longer intercepts pointer events, so `.check()` works in Playwright
-  without `{ force: true }`.
-- `DataTable` zebra striping is visible. It was painted with a token every theme aliases to the
-  surface colour, so the stripes were exactly the colour they were striping.
-- An icon composed next to a label inside a `Button` now gets the button's `gap`.
-- A `Card` inside a spanning `GridItem` fills the row height instead of leaving a hole, and
-  `Field`s in a `Grid` row keep their inputs aligned.
+## Correctness
 
-**API**
+- **`DataTable` controlled selection** no longer logs "Cannot update a component while
+  rendering a different component" under React 19. The documented controlled API was unusable
+  without console noise, and under concurrent rendering the render-phase write was a real
+  hazard, not just a warning. Eleven other components carrying the same shape are migrated.
+- **`timeScale` returns a usable number of ticks for sub-day domains.** A "last 24 hours"
+  chart — the canonical dashboard panel — rendered a single date tick and ignored `xTicks`
+  entirely. Separately, `TimeScale.tickFormat()` was never called by anything, so a time axis
+  fell through to `toLocaleDateString()` and would have repeated the same date on every tick
+  even once the ticks were right. Both fixed; `AreaChart`/`LineChart` axes now format
+  sub-day ticks as times.
 
-- `SwitcherLink` gains `id`, so sibling entries pointing at the same `href` no longer produce
-  duplicate-key warnings.
-- `AreaChartSeries` gains `type: 'area' | 'line'`, making a dual-axis requests-vs-errors chart
-  expressible — previously two opaque fills hid each other and no prop could separate them.
-- Badge's internal `BadgeShape` type is renamed `BadgeVariant`. It typed the `variant` prop while
-  reading as the type of a `shape` prop that does not exist.
+## Layout and interaction
 
-**Documentation**
+- **`Card` is `position: relative`.** The stretched-link pattern (`<a>` with
+  `::after { inset: 0 }`, what every dashboard project grid uses) resolved its overlay against
+  the viewport and swallowed every click in the app, with nothing on screen to explain why.
+- **`Checkbox`'s decoration no longer intercepts pointer events**, so
+  `getByRole('checkbox').check()` works in Playwright without `{ force: true }`. This affected
+  every `DataTable` row-selection test in every adopter's suite.
+- **`DataTable` zebra striping is visible.** It was painted with `--cascivo-color-bg-subtle`,
+  which every theme aliases to `--cascivo-color-surface` — so striping a table on a surface
+  repainted each row its own colour, in all three themes rather than only dark.
+- **An icon composed next to a label inside a `Button` gets the button's `gap`** instead of
+  rendering flush against it.
+- **A `Card` inside a spanning `GridItem` fills the row height** instead of leaving a hole, and
+  **`Field`s in a `Grid` row keep their inputs aligned** when one of them has a `description`.
 
-- 39 previously undocumented props and 114 missing type definitions across charts, flow and
-  editor now reach `registry.json`, `llms.txt` and the docs site — including `AreaChart.format`,
-  which was the fix for the tick bug above and was invisible to every generated surface.
-- A published prop-name vocabulary (`items` vs `rows`, `variant` vs `shape`, `kind` as the union
-  tag, and the numeric `gap={4}`) in `AI-RULES.md`, `llms.txt` and `CLAUDE.md`.
-- Router active-item prefix matching, `Card padding="none"` semantics, `DataTable` density and
-  column sizing, `Button`'s DOM shape, checkbox testing, and the sparkline/code-splitting
-  trade-off are all documented on every surface that should carry them.
+## New API
 
-**CLI**
+- **`AppShell.padding`** — `SpaceStep | 'none'`, default `6`. See the note above.
+- **`SwitcherLink.id`** — stable React key. Sibling entries pointing at the same `href` (three
+  teams that all link to `/`, placeholder `#` links) produced duplicate-key warnings on every
+  render, fixable only by distorting the data.
+- **`AreaChartSeries.type`** — `'area' | 'line'`. A dual-axis requests-vs-errors chart was not
+  expressible: two opaque fills hid each other, `fill` is chart-level, and `ComboChart` is
+  bar+line rather than area+line.
+- **`BadgeShape` is renamed `BadgeVariant`** (internal type, surfaced in the `.d.ts`). It typed
+  the `variant` prop while reading as the type of a `shape` prop that does not exist.
 
-- `cascivo create` scaffolds a project whose `lint` actually inspects TypeScript. It previously
-  exited 0 having checked zero files. It also scaffolds Prettier, and its generated pages no
-  longer use the inline styles its own `AGENTS.md` forbids.
+## Documentation
+
+- **39 previously undocumented props and 114 missing type definitions** across `@cascivo/charts`,
+  `@cascivo/flow` and `@cascivo/editor` now reach `registry.json`, `llms.txt`, the `.d.ts` and
+  the docs site. Both parity guards had been resolving source through the registry's `files[]`,
+  which is empty for npm-shipped packages, so 37 entries had never been checked. `AreaChart.format`
+  was the visible casualty — real, documented in TSDoc, invisible to every generated surface,
+  and the fix for the tick bug above.
+- **A published prop-name vocabulary** (`items` vs `rows`, `variant` vs `shape`, `kind` as the
+  discriminated-union tag, and the numeric `gap={4}`) in `AI-RULES.md`, `llms.txt` and
+  `CLAUDE.md`. Nine wrong prop-name guesses in one small dashboard was the largest single
+  friction reported.
+- Router active-item **prefix matching**, `Card padding="none"` semantics, `DataTable` density
+  and column sizing, `Button`'s inner-`<span>` DOM shape, checkbox testing, and the
+  sparkline/code-splitting trade-off are documented on every surface that should carry them.
+
+## CLI
+
+- **`cascivo create` scaffolds a project whose `lint` actually inspects TypeScript.** It
+  previously exited 0 having checked **zero files**: the flat config registered no TS parser and
+  no `files` pattern, so ESLint 9 skipped every `.ts`/`.tsx`.
+- The scaffold now ships Prettier, and its generated pages no longer use the inline styles its
+  own `AGENTS.md` forbids — they use `Flex` with a numeric `gap`, modelling the space-scale
+  convention instead of contradicting it.
