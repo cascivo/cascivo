@@ -182,6 +182,39 @@ failed release does not restart it — the staged changesets sit unreleased unti
 lands. Re-run it by hand: **Actions → Release → Run workflow** on `main`. With no staged
 changesets it no-ops safely.
 
+### Release fails with `Failed to spawn process: Resource temporarily unavailable (os error 11)`
+
+Nothing failed to spawn. `vp` prints that message for **any** `io::Error` from a task,
+including a failed *write*: it writes a package's bundle listing into stdout, and when stdout
+is a non-blocking pipe whose reader is behind, the write returns `EAGAIN` (os error 11) and
+the task dies part-way through its output.
+
+It killed the 0.17.0 release twice on 2026-08-11, leaving the version bump on `main` with
+nothing on npm. It is not resource exhaustion: a runner instrumented mid-build showed 180
+processes and 365 threads against a 63,838 limit with 14 GB free, and the same commit's CI
+job built the same packages fine. What made the release job different was **where** the build
+ran — inside `changesets/action`'s publish command, whose stdout is a pipe owned by that
+action's Node process. Reproduced on a runner by feeding the build's stdout to a Node pipe:
+
+| Build stdout                             | Result                          |
+| ---------------------------------------- | ------------------------------- |
+| plain shell step (either concurrency)    | passes                          |
+| Node-owned pipe, reader drains promptly  | passes                          |
+| Node-owned pipe, reader lags 10ms/chunk  | **fails at ~31 kB of output**   |
+
+The victim is whichever package overruns the pipe buffer first — `@cascivo/react` in the two
+real failures (~760 listing lines: `preserveModules` emits a browser chunk, a node-twin chunk
+and a stylesheet per component), `@cascivo/icons` in the reproduction. Which one, and whether
+it happens at all, is down to how promptly the reader drains — which is why the 0.16.1
+release survived the identical command.
+
+So `release.yml` builds in its own step (`pnpm run release:build`), where stdout belongs to
+the runner, and leaves `changesets/action` with nothing but `changeset publish` — a few lines
+per package. Keep it that way: moving the build back under the action re-arms this.
+
+A release stranded this way has already consumed its changesets, so nothing re-triggers the
+workflow — re-run it by hand (**Actions → Release → Run workflow** on `main`).
+
 ### Release fails with `TypeError: Cannot read properties of undefined (reading 'includes')`
 
 Stack trace points at `isAlreadyPublishedError` / `internalPublish` inside
