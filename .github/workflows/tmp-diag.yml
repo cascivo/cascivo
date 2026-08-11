@@ -1,0 +1,75 @@
+# TEMPORARY diagnostic workflow — delete before merging.
+# Reproduces the Release job's `build:release` failure
+# (`Failed to spawn process: Resource temporarily unavailable (os error 11)`)
+# on a real runner and isolates whether `--concurrency-limit 1` is implicated.
+name: TMP diag
+
+on:
+  push:
+    branches: [claude/ci-failure-investigation-f46fh7]
+
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: npm install -g npm@latest
+      - run: pnpm install --frozen-lockfile
+
+      - name: Limits
+        run: |
+          ulimit -a
+          echo "nproc=$(nproc)"
+          free -m
+          echo "pids.max=$(cat /sys/fs/cgroup/pids.max 2>/dev/null || echo n/a)"
+          echo "threads-max=$(cat /proc/sys/kernel/threads-max)"
+          echo "pid_max=$(cat /proc/sys/kernel/pid_max)"
+          echo "procs=$(ps -e --no-headers | wc -l) threads=$(ps -eL --no-headers | wc -l)"
+
+      - name: Release preamble (regen + check), as the Release job runs it
+        run: |
+          pnpm run regen
+          pnpm exec vp check --fix
+
+      - name: A — build:release WITH --concurrency-limit 1 (the failing command)
+        id: a
+        continue-on-error: true
+        run: |
+          (while true; do
+             echo "$(date +%T) procs=$(ps -e --no-headers | wc -l) threads=$(ps -eL --no-headers | wc -l) mem_avail_mb=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)"
+             sleep 1
+           done) > /tmp/sample-a.log 2>&1 &
+          echo $! > /tmp/sampler.pid
+          pnpm run build:release
+
+      - name: A — sampler tail
+        run: |
+          kill "$(cat /tmp/sampler.pid)" 2>/dev/null || true
+          tail -40 /tmp/sample-a.log
+
+      - name: B — same filters, default concurrency, from a cold cache
+        id: b
+        continue-on-error: true
+        run: |
+          pnpm run clean
+          (while true; do
+             echo "$(date +%T) procs=$(ps -e --no-headers | wc -l) threads=$(ps -eL --no-headers | wc -l) mem_avail_mb=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)"
+             sleep 1
+           done) > /tmp/sample-b.log 2>&1 &
+          echo $! > /tmp/sampler.pid
+          pnpm exec vp run -F @cascivo/ai -F @cascivo/core -F @cascivo/docs -F @cascivo/editor -F @cascivo/eslint-config -F @cascivo/flow -F @cascivo/i18n -F @cascivo/icons -F @cascivo/charts -F @cascivo/mcp -F @cascivo/platform -F @cascivo/react -F @cascivo/registry -F @cascivo/storage -F @cascivo/themes -F @cascivo/tokens -F @cascivo/vite-plugin -F cascivo build
+
+      - name: B — sampler tail
+        run: |
+          kill "$(cat /tmp/sampler.pid)" 2>/dev/null || true
+          tail -40 /tmp/sample-b.log
+
+      - name: Verdict
+        run: |
+          echo "A (--concurrency-limit 1): ${{ steps.a.outcome }}"
+          echo "B (default concurrency):   ${{ steps.b.outcome }}"
