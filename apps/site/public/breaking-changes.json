@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-08-09",
+  "generatedAt": "2026-08-11",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -15,8 +15,15 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
+        {
+          "version": "0.17.0",
+          "level": "minor",
+          "notes": [
+            "Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Start and React Router)."
+          ]
+        },
         {
           "version": "0.16.0",
           "level": "minor",
@@ -76,8 +83,15 @@
     },
     {
       "name": "cascivo",
-      "version": "0.7.2",
+      "version": "0.8.0",
       "releases": [
+        {
+          "version": "0.8.0",
+          "level": "minor",
+          "notes": [
+            "Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Start and React Router)."
+          ]
+        },
         {
           "version": "0.7.0",
           "level": "minor",
@@ -127,8 +141,15 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
+        {
+          "version": "0.17.0",
+          "level": "minor",
+          "notes": [
+            "Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Start and React Router)."
+          ]
+        },
         {
           "version": "0.16.0",
           "level": "minor",
@@ -205,8 +226,15 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
+        {
+          "version": "0.17.0",
+          "level": "minor",
+          "notes": [
+            "Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Start and React Router)."
+          ]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -238,8 +266,15 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
+        {
+          "version": "0.17.0",
+          "level": "minor",
+          "notes": [
+            "Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Start and React Router)."
+          ]
+        },
         {
           "version": "0.16.0",
           "level": "minor",
@@ -251,7 +286,7 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
         {
           "version": "0.2.0",
@@ -335,8 +370,15 @@
     },
     {
       "name": "@cascivo/react",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
+        {
+          "version": "0.17.0",
+          "level": "minor",
+          "notes": [
+            "Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Start and React Router)."
+          ]
+        },
         {
           "version": "0.16.0",
           "level": "minor",
@@ -461,7 +503,7 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.16.1",
+      "version": "0.17.0",
       "releases": [
         {
           "version": "0.1.0",

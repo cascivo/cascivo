@@ -7,9 +7,9 @@
  * and GETTING-STARTED.md tells adopters to pin exactly. Regenerate with `pnpm regen`.
  */
 export const CASCIVO_VERSIONS: Record<string, string> = {
-  '@cascivo/react': '0.16.1',
+  '@cascivo/react': '0.17.0',
   '@cascivo/themes': '0.4.11',
-  '@cascivo/charts': '0.16.1',
+  '@cascivo/charts': '0.17.0',
   '@cascivo/icons': '0.3.8',
   '@cascivo/eslint-config': '0.2.2',
 }
