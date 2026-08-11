@@ -73,12 +73,28 @@ jobs:
             exit 1
           fi
 
+      # Build (and lint the packed artifacts) in a plain shell step rather than
+      # inside changesets/action's publish command, where this used to live.
+      # @cascivo/react's build prints its ~760-line bundle listing in one burst;
+      # writing that burst into the pipe owned by the action's Node process
+      # killed the build twice on 2026-08-11 with
+      #   ✗ Failed to spawn process: Resource temporarily unavailable (os error 11)
+      # and stranded 0.17.0 (version bump on `main`, nothing on npm). The same
+      # command from a runner-owned step is not affected — it is what CI's
+      # `Build (vp run -r build)` step has always done with the same output.
+      #
+      # Unconditional on purpose: `changeset publish` must never run against a
+      # stale dist/, and deciding "are changesets pending?" here would duplicate
+      # the action's own answer with no way to keep the two in sync.
+      - name: Build the publishable packages
+        run: pnpm run release:build
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm run version-packages
-          publish: pnpm run release
+          publish: pnpm exec changeset publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
