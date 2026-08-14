@@ -1151,7 +1151,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/badge/badge.module.css"
       ],
       "fileHashes": {
-        "badge.tsx": "sha256-4b168f7c6e4304c80957d3a1f66a40bf253d1b37d5fcd92e6373b060339e438e",
+        "badge.tsx": "sha256-ff710455d38c01f10b237958eb84eaddf2ac1403daab4fcf9079f5974c3db180",
         "index.ts": "sha256-99f606cb9765238a88c7adcff6c4dd017be53641d16d394da96fcf9196be2e8b",
         "badge.module.css": "sha256-bb304c5e6e2464f9e80255b587281b5b654bc9020c9dfa6e77d189afd6cef1e0"
       },
@@ -1588,7 +1588,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.module.css"
       ],
       "fileHashes": {
-        "breadcrumb.tsx": "sha256-2caeec1b09256242f9ab5df90786c7e2a9440fcd6c02021cc0c100ef5f31f060",
+        "breadcrumb.tsx": "sha256-f2f810763a67c0ece4767826214084951a6ba5dccd152874519a38ab969fbac4",
         "index.ts": "sha256-9dd930cf8c9cc0b75ccb7c17d47ea90d02ef39b84235ac5b9364093b88d46524",
         "breadcrumb.module.css": "sha256-f75bb68385f2664591666d0cfa8017ce32440ffb9bef2e9d42ef5f512d46637d"
       },
@@ -3041,7 +3041,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.module.css"
       ],
       "fileHashes": {
-        "code-snippet.tsx": "sha256-7373bcf0419064e03de71ce758c8487efe213c88f6c3697b173485d68a7b516f",
+        "code-snippet.tsx": "sha256-05cc8956133077cb5324e51dfe00102c80f790b7164900ca5f1e6c50752b17e6",
         "highlight.ts": "sha256-252064dd28611c901ce64e2804a11fd5725555af31421768d3178aeba15badea",
         "index.ts": "sha256-f36499ede047cbe5afebdecb12696b34918c8eabcd93fe8448026eb329956b1a",
         "code-snippet.module.css": "sha256-8fc59484d1db377346646a7144fec2d4d8b5f3d616277d203849ca63125a1130"
@@ -3074,9 +3074,15 @@
         "props": [
           {
             "name": "code",
-            "description": "The code to display (and copy).",
+            "description": "The code to display (and copy). Equivalent to passing a plain string as `children`; `code` wins if both are given, and one of the two is required. A string rather than a ReactNode because the content is tokenized for highlighting and handed to the clipboard.",
             "type": "string",
-            "required": true
+            "required": false
+          },
+          {
+            "name": "children",
+            "description": "The code, as children — `<CodeSnippet>npm i foo</CodeSnippet>`. Must be a plain string (interpolation is fine, arbitrary elements are not).",
+            "type": "string",
+            "required": false
           },
           {
             "name": "variant",
@@ -5048,7 +5054,7 @@
             "name": "label",
             "type": "string",
             "required": false,
-            "description": "Field label"
+            "description": "Visible field label rendered above the input; it also names the control."
           },
           {
             "name": "hint",
@@ -5388,7 +5394,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.module.css"
       ],
       "fileHashes": {
-        "dock.tsx": "sha256-cd3fa5b8c31cf479458ef7c06eae07b38fbb97474f6e92637250037a23441bfb",
+        "dock.tsx": "sha256-6ffc2568b2df198fdf99c194fa26a1c0f0339cf22822339012a0f1d9ec17d746",
         "index.ts": "sha256-b32d5f7a69013069a0a1c471de4cfc5be05a34926f756c1eb776d74f6a3ffaee",
         "dock.module.css": "sha256-181c821754d69a349531b945047e28daf17e981d6a20addfdd19c97122574503"
       },
@@ -6533,7 +6539,7 @@
             "name": "label",
             "type": "string",
             "required": false,
-            "description": "Field label"
+            "description": "Visible field label rendered above the drop zone; it also names the control."
           },
           {
             "name": "hint",
@@ -9770,7 +9776,7 @@
             "name": "label",
             "type": "ReactNode",
             "required": true,
-            "description": "Trigger button content"
+            "description": "Visible content rendered inside the trigger button."
           },
           {
             "name": "items",
@@ -15776,7 +15782,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.module.css"
       ],
       "fileHashes": {
-        "stat.tsx": "sha256-db2c4e53b112c1870fb3add3f30091760038dae61524df8c2e14560fbd58a567",
+        "stat.tsx": "sha256-b98769afb7bb644f5490872cdf84a8804ddc2ef491544e2861f1e6f5fe14a8bb",
         "index.ts": "sha256-1a01e5db5791b875486076c8c753ab42c16151d8679a793e414880274ce73d29",
         "stat.module.css": "sha256-9ed322b9a80279a9ade2de1940f925ccc6741141ff95c9d164b54c19b7ca7874"
       },
@@ -15805,7 +15811,7 @@
             "name": "label",
             "type": "string",
             "required": true,
-            "description": "What the metric measures"
+            "description": "What the metric measures — rendered visibly above the value."
           },
           {
             "name": "value",
@@ -15936,7 +15942,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/status/status.module.css"
       ],
       "fileHashes": {
-        "status.tsx": "sha256-2326dc7afd6805898fba3e82b0aa267da1eb4b0c99bf01352d396453ea170404",
+        "status.tsx": "sha256-989cb60e66eb3f639d5c6bc6fe89ac268b574f23b1047d775020b9453c44daac",
         "index.ts": "sha256-4a631f54851ecd0f6a6ad2a844e14127cd568d53945c871e40f070c16029c05e",
         "status.module.css": "sha256-bd74f83a9465a3a9a9948a51a291ddc29b07e323540d9a1b328d2fad979fa96f"
       },
@@ -20493,7 +20499,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.module.css"
       ],
       "fileHashes": {
-        "page-header.tsx": "sha256-1750eec9ec543f2dc8bf3ce10218ebd866279fa04b1ecb60832c1f64610a8662",
+        "page-header.tsx": "sha256-1c1eab61ce2a39a30cf5237d5eacb434e78cd354d7ef8511632cdc18533f07df",
         "index.ts": "sha256-79937b347d022425887d682b658169f648e0a39b3190daea7f60d34310de1936",
         "page-header.module.css": "sha256-f5a39930488fb3107318f673616818dbc750556b756df9328d0e830bed65d646"
       },
@@ -20513,15 +20519,15 @@
         "props": [
           {
             "name": "title",
-            "type": "string",
+            "type": "ReactNode",
             "required": true,
-            "description": "Page title"
+            "description": "Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`."
           },
           {
             "name": "description",
-            "type": "string",
+            "type": "ReactNode",
             "required": false,
-            "description": "Supporting description"
+            "description": "Supporting line under the title, rendered as a `<p>`. Accepts nodes."
           },
           {
             "name": "breadcrumb",
@@ -23994,7 +24000,7 @@
             "name": "label",
             "type": "string",
             "required": true,
-            "description": "X-axis label"
+            "description": "X-axis label — rendered visibly beneath the axis."
           },
           {
             "name": "description",
@@ -24110,7 +24116,7 @@
             "name": "label",
             "type": "string",
             "required": true,
-            "description": "Metric label"
+            "description": "Metric label — rendered visibly at the top of the tile."
           },
           {
             "name": "delta",
@@ -24809,7 +24815,7 @@
               {
                 "name": "id",
                 "type": "string",
-                "required": false,
+                "required": true,
                 "description": "Stable identity (used for legend toggle state)."
               },
               {
@@ -24878,7 +24884,7 @@
         "examples": [
           {
             "title": "Basic pie chart",
-            "code": "import { PieChart } from '@cascivo/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
+            "code": "import { PieChart } from '@cascivo/charts'\n\n<PieChart data={[{id:'a',label:'A',value:60},{id:'b',label:'B',value:40}]} title=\"Market share\" />"
           },
           {
             "title": "Donut with center total and custom thickness",
