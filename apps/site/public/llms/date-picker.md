@@ -45,7 +45,7 @@ import { DatePicker } from '@cascivo/react'
 | `min`           | `string`                               | no       | —       | Minimum ISO date                                                                |
 | `max`           | `string`                               | no       | —       | Maximum ISO date                                                                |
 | `clearable`     | `boolean`                              | no       | `false` | Shows a clear button                                                            |
-| `label`         | `string`                               | no       | —       | Field label                                                                     |
+| `label`         | `string`                               | no       | —       | Visible field label rendered above the input; it also names the control.        |
 | `hint`          | `string`                               | no       | —       | Hint text                                                                       |
 | `error`         | `string`                               | no       | —       | Error message                                                                   |
 | `size`          | `'sm' \| 'md' \| 'lg'`                 | no       | `md`    | Field size                                                                      |

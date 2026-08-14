@@ -38,7 +38,7 @@
         "name": "label",
         "type": "string",
         "required": true,
-        "description": "What the metric measures"
+        "description": "What the metric measures — rendered visibly above the value."
       },
       {
         "name": "value",

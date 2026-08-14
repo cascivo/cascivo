@@ -21,7 +21,12 @@ export const meta: ComponentMeta = {
       description: 'Explicit bin count (defaults to Freedman–Diaconis)',
     },
     { name: 'title', description: 'Title text for the component.', type: 'string', required: true },
-    { name: 'label', type: 'string', required: true, description: 'X-axis label' },
+    {
+      name: 'label',
+      type: 'string',
+      required: true,
+      description: 'X-axis label — rendered visibly beneath the axis.',
+    },
     {
       name: 'description',
       description: 'Supporting description text.',

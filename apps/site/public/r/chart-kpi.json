@@ -29,7 +29,7 @@
         "name": "label",
         "type": "string",
         "required": true,
-        "description": "Metric label"
+        "description": "Metric label — rendered visibly at the top of the tile."
       },
       {
         "name": "delta",

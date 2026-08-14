@@ -4598,7 +4598,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `number[]` | yes | — | Array of numeric values to bin |
 | `bins` | `number` | no | — | Explicit bin count (defaults to Freedman–Diaconis) |
 | `title` | `string` | yes | — | Title text for the component. |
-| `label` | `string` | yes | — | X-axis label |
+| `label` | `string` | yes | — | X-axis label — rendered visibly beneath the axis. |
 | `description` | `string` | no | — | Supporting description text. |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
@@ -4666,7 +4666,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `value` | `string \| number` | yes | — | Primary metric value |
-| `label` | `string` | yes | — | Metric label |
+| `label` | `string` | yes | — | Metric label — rendered visibly at the top of the tile. |
 | `delta` | `number` | no | — | Change value (positive = up, negative = down) |
 | `deltaFormat` | `'number' \| 'percent' \| ((delta: number) => string)` | no | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included. |
 | `goodDirection` | `'up' \| 'down' \| 'neutral'` | no | `up` | Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
@@ -7528,7 +7528,7 @@ import { DatePicker } from '@cascivo/react'
 | `min` | `string` | no | — | Minimum ISO date |
 | `max` | `string` | no | — | Maximum ISO date |
 | `clearable` | `boolean` | no | `false` | Shows a clear button |
-| `label` | `string` | no | — | Field label |
+| `label` | `string` | no | — | Visible field label rendered above the input; it also names the control. |
 | `hint` | `string` | no | — | Hint text |
 | `error` | `string` | no | — | Error message |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Field size |
@@ -8621,7 +8621,7 @@ import { FileUploader } from '@cascivo/react'
 | `accept` | `string` | no | — | Accepted file types (MIME or extension) |
 | `maxSize` | `number` | no | — | Maximum file size in bytes |
 | `onRejected` | `(files: File[], reason: 'size' \| 'type') => void` | no | — | Called with rejected files |
-| `label` | `string` | no | — | Field label |
+| `label` | `string` | no | — | Visible field label rendered above the drop zone; it also names the control. |
 | `hint` | `string` | no | — | Hint text below the drop zone |
 | `labels` | `FileUploaderLabels` | no | — | i18n label overrides |
 | `disabled` | `boolean` | no | `false` | Disables the upload zone |
@@ -12827,7 +12827,7 @@ import { MenuButton } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `ReactNode` | yes | — | Trigger button content |
+| `label` | `ReactNode` | yes | — | Visible content rendered inside the trigger button. |
 | `items` | `MenuButtonItem[]` | yes | — | Action items: { id, label, onSelect?, disabled? } |
 | `variant` | `'primary' \| 'secondary' \| 'ghost'` | no | `'secondary'` | Trigger visual variant |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `'md'` | Trigger size |
@@ -16940,7 +16940,7 @@ import { Stat } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `card` | `boolean` | no | `false` | Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control. |
-| `label` | `string` | yes | — | What the metric measures |
+| `label` | `string` | yes | — | What the metric measures — rendered visibly above the value. |
 | `value` | `string \| number` | yes | — | The metric value |
 | `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
 | `trend` | `'up' \| 'down' \| 'flat'` | no | `flat` | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |

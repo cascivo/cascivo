@@ -130,6 +130,11 @@ jobs:
       - name: CSS-contract guard (CSS-shipping packages import their own CSS + ship a node twin)
         run: pnpm run css-contract:check
 
+      # Adopters read the shipped .d.ts as the primary prop reference. A build that dropped
+      # its TSDoc would still typecheck and every other guard would stay green.
+      - name: dts-TSDoc guard (the build does not strip prop documentation)
+        run: pnpm run dts-tsdoc:check
+
       # The consumer-shaped fixture: packs the real tarballs and type-checks them in a
       # strict, non-hoisted pnpm WORKSPACE outside the repo, with skipLibCheck OFF. Every
       # other guard runs inside the monorepo, where @types/react is root-hoisted — see

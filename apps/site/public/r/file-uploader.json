@@ -75,7 +75,7 @@
         "name": "label",
         "type": "string",
         "required": false,
-        "description": "Field label"
+        "description": "Visible field label rendered above the drop zone; it also names the control."
       },
       {
         "name": "hint",

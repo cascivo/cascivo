@@ -5302,7 +5302,7 @@
             "name": "label",
             "type": "string",
             "required": true,
-            "description": "X-axis label"
+            "description": "X-axis label — rendered visibly beneath the axis."
           },
           {
             "name": "description",
@@ -5410,7 +5410,7 @@
             "name": "label",
             "type": "string",
             "required": true,
-            "description": "Metric label"
+            "description": "Metric label — rendered visibly at the top of the tile."
           },
           {
             "name": "delta",
@@ -10038,7 +10038,7 @@
             "name": "label",
             "type": "string",
             "required": false,
-            "description": "Field label"
+            "description": "Visible field label rendered above the input; it also names the control."
           },
           {
             "name": "hint",
@@ -11795,7 +11795,7 @@
             "name": "label",
             "type": "string",
             "required": false,
-            "description": "Field label"
+            "description": "Visible field label rendered above the drop zone; it also names the control."
           },
           {
             "name": "hint",
@@ -17753,7 +17753,7 @@
             "name": "label",
             "type": "ReactNode",
             "required": true,
-            "description": "Trigger button content"
+            "description": "Visible content rendered inside the trigger button."
           },
           {
             "name": "items",
@@ -23881,7 +23881,7 @@
             "name": "label",
             "type": "string",
             "required": true,
-            "description": "What the metric measures"
+            "description": "What the metric measures — rendered visibly above the value."
           },
           {
             "name": "value",

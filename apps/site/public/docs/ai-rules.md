@@ -173,15 +173,31 @@ The two tables above cover _handlers_ and _names_. This one covers the props tha
 **data and the look**, which is where a 2026-08-08 adopter lost nine compile cycles in one
 small dashboard — the single largest friction in that report.
 
-| The prop carries                          | Prop name                   | Never                                 | Why                                                                                                                                    |
-| ----------------------------------------- | --------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| A config-driven **collection**            | **`items`**                 | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                           |
-| The rows of a **table**                   | **`rows`**                  | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                    |
-| A **visual style** enum                   | **`variant`**               | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                              |
-| The **tag of a discriminated union**      | **`kind`**                  | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys) |
-| A **space-scale step**                    | numeric **`gap={4}`**       | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                      |
-| A **rich, replaceable slot**              | **`actions`** (`ReactNode`) | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy  |
-| The **body text** of a feedback component | **`description`**           | children                              | `Notification`, `Alert`, `EmptyState`, `Field` — passing children renders nothing                                                      |
+| The prop carries                          | Prop name                   | Never                                 | Why                                                                                                                                       |
+| ----------------------------------------- | --------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| A config-driven **collection**            | **`items`**                 | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                              |
+| The rows of a **table**                   | **`rows`**                  | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                       |
+| A **visual style** enum                   | **`variant`**               | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                                 |
+| The **tag of a discriminated union**      | **`kind`**                  | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys)    |
+| A **space-scale step**                    | numeric **`gap={4}`**       | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                         |
+| A **rich, replaceable slot**              | **`actions`** (`ReactNode`) | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy     |
+| The **body text** of a feedback component | **`description`**           | children                              | `Notification`, `Alert`, `EmptyState`, `Field` — passing children renders nothing                                                         |
+| A **visible** text label                  | **`label`**                 | `title`, `text`, `caption`            | The default: ~25 components render `label` on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below |
+| An **invisible** accessible name          | **`ariaLabel`**             | `label`                               | `Sparkline`, `Spinner`, `Fab`, `ProgressCircle`, `Resizable`. Always accepted alongside the raw `aria-label`                              |
+
+> ### ⚠ `label` renders on screen — check the prop docs before assuming it is a11y-only
+>
+> A 2026-08-14 adopter learned `label` from `Sparkline`, where it is explicitly an invisible
+> accessible name, and passed `<Toggle label="Automatic deployments">` into a settings row
+> that already had a visible title. The string rendered **next to the switch**, duplicating
+> the row's own heading.
+>
+> The catalog rule is: **`label` is visible unless its own description says otherwise, and
+> `ariaLabel` is never visible.** When a row, heading or `Field` already labels the control,
+> omit `label` and pass `aria-label` instead — every component forwards it.
+>
+> Enforced by `vocabulary.test.ts`: a `label` prop whose manifest description states neither
+> fails `pnpm meta:check`. Silence is the bug — the reader cannot tell it from either case.
 
 > ### ⚠ `gap` takes a NUMBER, and it is the one prop that breaks the pattern
 >

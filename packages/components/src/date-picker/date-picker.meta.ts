@@ -49,7 +49,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Shows a clear button',
     },
-    { name: 'label', type: 'string', required: false, description: 'Field label' },
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      description: 'Visible field label rendered above the input; it also names the control.',
+    },
     { name: 'hint', type: 'string', required: false, description: 'Hint text' },
     { name: 'error', type: 'string', required: false, description: 'Error message' },
     {

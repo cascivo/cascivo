@@ -11,7 +11,12 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     { name: 'value', type: 'string | number', required: true, description: 'Primary metric value' },
-    { name: 'label', type: 'string', required: true, description: 'Metric label' },
+    {
+      name: 'label',
+      type: 'string',
+      required: true,
+      description: 'Metric label — rendered visibly at the top of the tile.',
+    },
     {
       name: 'delta',
       type: 'number',
