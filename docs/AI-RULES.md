@@ -176,7 +176,7 @@ small dashboard — the single largest friction in that report.
 | A **space-scale step** | numeric **`gap={4}`** | `gap="4"` | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern |
 | A **rich, replaceable slot** | **`actions`** (`ReactNode`) | `action={{ label, onClick }}` | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy |
 | The **body text** of a feedback component | **`description`** | children | `Notification`, `Alert`, `EmptyState`, `Field` — passing children renders nothing |
-| A **visible** text label | **`label`** | `title`, `text`, `caption` | The default: ~25 components render `label` on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below |
+| A **visible** text label | **`label`** | `title`, `text`, `caption` | The default — most components that take `label` render it on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below |
 | An **invisible** accessible name | **`ariaLabel`** | `label` | `Sparkline`, `Spinner`, `Fab`, `ProgressCircle`, `Resizable`. Always accepted alongside the raw `aria-label` |
 
 > ### ⚠ `label` renders on screen — check the prop docs before assuming it is a11y-only
