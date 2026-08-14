@@ -28,6 +28,16 @@ export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childre
    * a `Card` you control; `Kpi` always brings its own chrome, which made a `Stat` row and
    * a `Kpi` row on adjacent pages of one dashboard look like different products. Set this
    * when you are mixing the two, or use it instead of hand-wrapping every `Stat` in a `Card`.
+   *
+   * ⚠ **`card` matches the CHROME only — the internal layout still differs, so do not mix
+   * `Stat` and `Kpi` in one app.** `Kpi` puts value and delta on one line with the sparkline
+   * below; `Stat` stacks value → delta → help text and puts `visual` in a trailing slot.
+   * With `card` set they share surface, border, radius and padding and still read as two
+   * tile designs (2026-08-14 report §6 — the exact symptom this prop was added to cure, on
+   * an overview page using `Stat card` next to an analytics page using `Kpi`).
+   *
+   * Pick one per app: `Kpi` when you have a numeric delta it should format and a sparkline;
+   * `Stat` otherwise.
    */
   card?: boolean
   /** Trailing visual, e.g. a `Sparkline` from the separate `@cascivo/charts` package (not exported from `@cascivo/react`; `pnpm add @cascivo/charts`). Purely decorative — mark it `aria-hidden` yourself if it duplicates the value/delta already announced. */

@@ -29,15 +29,15 @@
     "props": [
       {
         "name": "title",
-        "type": "string",
+        "type": "ReactNode",
         "required": true,
-        "description": "Page title"
+        "description": "Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`."
       },
       {
         "name": "description",
-        "type": "string",
+        "type": "ReactNode",
         "required": false,
-        "description": "Supporting description"
+        "description": "Supporting line under the title, rendered as a `<p>`. Accepts nodes."
       },
       {
         "name": "breadcrumb",

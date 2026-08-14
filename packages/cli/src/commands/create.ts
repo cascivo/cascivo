@@ -290,7 +290,8 @@ function viteEnv(): string {
   return `/// <reference types="vite/client" />\n`
 }
 
-function appTsx(opts: ScaffoldOptions, sections: Section[]): string {
+// No `opts`: the theme import and the brand moved to `Shell.tsx`, which owns the app chrome.
+function appTsx(sections: Section[]): string {
   const sectionImports = sections
     .map((s) => `import { ${s.component} } from './sections/${s.component}'`)
     .join('\n')
@@ -628,7 +629,7 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
     { path: 'AGENTS.md', contents: agentsMd(opts) },
     { path: 'src/main.tsx', contents: mainTsx() },
     { path: 'src/vite-env.d.ts', contents: viteEnv() },
-    { path: 'src/App.tsx', contents: appTsx(opts, sections) },
+    { path: 'src/App.tsx', contents: appTsx(sections) },
     { path: 'src/Shell.tsx', contents: shellTsx(opts) },
     ...sections.map((s) => ({
       path: `src/sections/${s.component}.tsx`,

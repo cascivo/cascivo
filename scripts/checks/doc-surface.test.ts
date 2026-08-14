@@ -110,6 +110,16 @@ const FACTS: Fact[] = [
     pattern: /no-bundler|automatic/i,
   },
   {
+    id: 'stat-card-matches-chrome-not-layout',
+    report: '2026-08-14 §6 — `card` was added to cure this and the rows still differ',
+    surfaces: [
+      'packages/components/src/stat/stat.tsx',
+      'packages/charts/src/charts/kpi/kpi.tsx',
+      'docs/RECIPE-DASHBOARD.md',
+    ],
+    pattern: /chrome.*not.*layout|not its layout|Pick one per app/i,
+  },
+  {
     id: 'sparkline-is-fixed-width',
     report: '2026-08-14 §4 — 120 vs 80 and shrink-to-fit vs fixed, across two docs',
     surfaces: [

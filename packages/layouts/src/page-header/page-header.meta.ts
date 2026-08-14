@@ -9,8 +9,19 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'title', type: 'string', required: true, description: 'Page title' },
-    { name: 'description', type: 'string', required: false, description: 'Supporting description' },
+    {
+      name: 'title',
+      type: 'ReactNode',
+      required: true,
+      description:
+        'Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`.',
+    },
+    {
+      name: 'description',
+      type: 'ReactNode',
+      required: false,
+      description: 'Supporting line under the title, rendered as a `<p>`. Accepts nodes.',
+    },
     { name: 'breadcrumb', type: 'ReactNode', required: false, description: 'Breadcrumb slot' },
     { name: 'actions', type: 'ReactNode', required: false, description: 'Action buttons slot' },
     { name: 'className', type: 'string', required: false, description: 'Additional CSS class' },

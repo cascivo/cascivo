@@ -24,13 +24,13 @@ Renders a header region with a top-level heading for screen reader page structur
 
 ## Props
 
-| Name          | Type        | Required | Default | Description            |
-| ------------- | ----------- | -------- | ------- | ---------------------- |
-| `title`       | `string`    | Yes      | —       | Page title             |
-| `description` | `string`    | No       | —       | Supporting description |
-| `breadcrumb`  | `ReactNode` | No       | —       | Breadcrumb slot        |
-| `actions`     | `ReactNode` | No       | —       | Action buttons slot    |
-| `className`   | `string`    | No       | —       | Additional CSS class   |
+| Name          | Type        | Required | Default | Description                                                                                                                                                                                                         |
+| ------------- | ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`       | `ReactNode` | Yes      | —       | Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`. |
+| `description` | `ReactNode` | No       | —       | Supporting line under the title, rendered as a `<p>`. Accepts nodes.                                                                                                                                                |
+| `breadcrumb`  | `ReactNode` | No       | —       | Breadcrumb slot                                                                                                                                                                                                     |
+| `actions`     | `ReactNode` | No       | —       | Action buttons slot                                                                                                                                                                                                 |
+| `className`   | `string`    | No       | —       | Additional CSS class                                                                                                                                                                                                |
 
 ## Tokens
 

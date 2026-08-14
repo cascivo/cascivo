@@ -6081,7 +6081,7 @@
               {
                 "name": "id",
                 "type": "string",
-                "required": false,
+                "required": true,
                 "description": "Stable identity (used for legend toggle state)."
               },
               {
@@ -8208,9 +8208,15 @@
         "props": [
           {
             "name": "code",
-            "description": "The code to display (and copy).",
+            "description": "The code to display (and copy). Equivalent to passing a plain string as `children`; `code` wins if both are given, and one of the two is required. A string rather than a ReactNode because the content is tokenized for highlighting and handed to the clipboard.",
             "type": "string",
-            "required": true
+            "required": false
+          },
+          {
+            "name": "children",
+            "description": "The code, as children — `<CodeSnippet>npm i foo</CodeSnippet>`. Must be a plain string (interpolation is fine, arbitrary elements are not).",
+            "type": "string",
+            "required": false
           },
           {
             "name": "variant",
@@ -16821,15 +16827,15 @@
         "props": [
           {
             "name": "title",
-            "type": "string",
+            "type": "ReactNode",
             "required": true,
-            "description": "Page title"
+            "description": "Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`."
           },
           {
             "name": "description",
-            "type": "string",
+            "type": "ReactNode",
             "required": false,
-            "description": "Supporting description"
+            "description": "Supporting line under the title, rendered as a `<p>`. Accepts nodes."
           },
           {
             "name": "breadcrumb",

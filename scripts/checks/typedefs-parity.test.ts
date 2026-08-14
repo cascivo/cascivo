@@ -30,7 +30,7 @@ const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 
 interface TypeDefMeta {
   name: string
-  fields: { name: string }[]
+  fields: { name: string; required?: boolean }[]
 }
 interface RegistryComponent {
   name: string
@@ -145,6 +145,50 @@ describe('typedefs-parity — object-typed props declare their field shapes', ()
       [],
       `These object-typed props have no typeDefs, so their fields appear in no AI doc ` +
         `(add a typeDefs entry to the .meta.ts + \`pnpm regen\`, or allowlist with a reason):\n${errors.join('\n')}`,
+    )
+  })
+
+  it('every typeDefs field agrees with its source interface on required-ness', () => {
+    // `typedefs-parity` checked that a typeDefs ENTRY exists; nothing checked the entries'
+    // contents. `PieChartDatum.id` is `id: string` in source and was declared
+    // `required: false` in the manifest, so every generated props table said the field was
+    // optional — and the manifest's own "Basic pie chart" example duly omitted it and did not
+    // typecheck. Only the shipped .d.ts told the truth (2026-08-14 report §13).
+    const errors: string[] = []
+    for (const component of loadRegistry()) {
+      for (const typeDef of component.meta?.typeDefs ?? []) {
+        for (const file of resolveEntrySources(REPO_ROOT, component)) {
+          let source: string
+          try {
+            source = readFileSync(join(REPO_ROOT, file), 'utf8')
+          } catch {
+            continue
+          }
+          const body = new RegExp(
+            `export interface ${typeDef.name}\\b[^{]*\\{([\\s\\S]*?)\\n\\}`,
+          ).exec(source)?.[1]
+          if (body === undefined) continue
+          for (const field of typeDef.fields ?? []) {
+            const optional = new RegExp(`^\\s{2}${field.name}\\?:`, 'm').test(body)
+            const required = new RegExp(`^\\s{2}${field.name}:`, 'm').test(body)
+            if (!optional && !required) continue // inherited / spread — not comparable
+            if (required !== (field.required === true)) {
+              errors.push(
+                `  ${component.name}: ${typeDef.name}.${field.name} — manifest says ` +
+                  `required: ${field.required === true}, source says ${required}`,
+              )
+            }
+          }
+        }
+      }
+    }
+    assert.deepEqual(
+      errors,
+      [],
+      'These typeDefs fields disagree with their source interface about being required. The ' +
+        'manifest drives every generated docs table, so a field marked optional that is not ' +
+        'produces examples that do not compile:\n' +
+        `${errors.join('\n')}`,
     )
   })
 

@@ -14,7 +14,7 @@
  * component the registry knows, every prop it is passed must exist. It deliberately reuses
  * the audit's own scanner, so the docs are held to the rule adopters are held to.
  */
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { strict as assert } from 'node:assert'
 import { describe, it } from 'node:test'
@@ -97,6 +97,58 @@ describe('manifest examples type-check against the components they use', () => {
       [],
       'Manifest examples are published verbatim to llms/*.md and the docs site, and are the ' +
         'snippets adopters copy. These pass props that do not exist:\n' +
+        `${errors.join('\n')}`,
+    )
+  })
+
+  it('every chart example passes the required keys of its datum type', () => {
+    // The sibling of the prop check, one level down. `example-props` validates props ON the
+    // component; nothing looked INSIDE `data={[{…}]}`, so PieChart's "Basic pie chart"
+    // example — the first one an adopter copies — omitted the `id` that `PieChartDatum`
+    // requires, while a later example on the same page included it. Only the .d.ts said so
+    // (2026-08-14 report §13).
+    const metaFiles = (dir: string): string[] => {
+      const out: string[] = []
+      for (const entry of readdirSync(dir)) {
+        const full = join(dir, entry)
+        if (statSync(full).isDirectory()) out.push(...metaFiles(full))
+        else if (entry.endsWith('.meta.ts')) out.push(full)
+      }
+      return out
+    }
+    const CHARTS = join(ROOT, 'packages/charts/src')
+    const errors: string[] = []
+    for (const metaPath of metaFiles(CHARTS)) {
+      const source = readFileSync(metaPath, 'utf8')
+      const tsx = metaPath.replace('.meta.ts', '.tsx')
+      let required: string[] = []
+      try {
+        const declaration = /export interface (\w*Datum)\b[^{]*\{([\s\S]*?)\n\}/.exec(
+          readFileSync(tsx, 'utf8'),
+        )
+        // `name:` without `?` — an optional key is not required.
+        if (declaration)
+          required = [...declaration[2]!.matchAll(/^\s{2}(\w+):/gm)].map((m) => m[1]!)
+      } catch {
+        continue
+      }
+      if (required.length === 0) continue
+      for (const example of source.matchAll(/data=\{\[\s*\{([^}]*)\}/g)) {
+        const keys = [...example[1]!.matchAll(/(\w+)\s*:/g)].map((m) => m[1]!)
+        const missing = required.filter((key) => !keys.includes(key))
+        if (missing.length > 0) {
+          errors.push(
+            `  ${metaPath.split('/').pop()}: data item {${keys.join(', ')}} is missing ` +
+              `required ${missing.map((k) => `\`${k}\``).join(', ')}`,
+          )
+        }
+      }
+    }
+    assert.deepEqual(
+      errors,
+      [],
+      'These manifest examples build a chart datum without every required key, so the ' +
+        'snippet an adopter copies does not typecheck:\n' +
         `${errors.join('\n')}`,
     )
   })

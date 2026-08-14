@@ -11,9 +11,17 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'code',
-      description: 'The code to display (and copy).',
+      description:
+        'The code to display (and copy). Equivalent to passing a plain string as `children`; `code` wins if both are given, and one of the two is required. A string rather than a ReactNode because the content is tokenized for highlighting and handed to the clipboard.',
       type: 'string',
-      required: true,
+      required: false,
+    },
+    {
+      name: 'children',
+      description:
+        'The code, as children — `<CodeSnippet>npm i foo</CodeSnippet>`. Must be a plain string (interpolation is fine, arbitrary elements are not).',
+      type: 'string',
+      required: false,
     },
     {
       name: 'variant',

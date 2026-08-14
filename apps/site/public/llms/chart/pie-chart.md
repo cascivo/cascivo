@@ -57,7 +57,7 @@ One slice. Pass via the `data` prop.
 
 | Field   | Type     | Required | Description                                                                         |
 | ------- | -------- | -------- | ----------------------------------------------------------------------------------- |
-| `id`    | `string` | no       | Stable identity (used for legend toggle state).                                     |
+| `id`    | `string` | yes      | Stable identity (used for legend toggle state).                                     |
 | `label` | `string` | yes      | —                                                                                   |
 | `value` | `number` | yes      | —                                                                                   |
 | `color` | `string` | no       | Any CSS color overriding the positional palette (--cascivo-chart-N) for this slice. |
@@ -81,8 +81,8 @@ Argument passed to the `tooltipFormat` callback.
 import { PieChart } from '@cascivo/charts'
 ;<PieChart
   data={[
-    { label: 'A', value: 60 },
-    { label: 'B', value: 40 },
+    { id: 'a', label: 'A', value: 60 },
+    { id: 'b', label: 'B', value: 40 },
   ]}
   title="Market share"
 />

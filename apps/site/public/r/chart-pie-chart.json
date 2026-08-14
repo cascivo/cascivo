@@ -151,7 +151,7 @@
           {
             "name": "id",
             "type": "string",
-            "required": false,
+            "required": true,
             "description": "Stable identity (used for legend toggle state)."
           },
           {
@@ -220,7 +220,7 @@
     "examples": [
       {
         "title": "Basic pie chart",
-        "code": "import { PieChart } from '@cascivo/charts'\n\n<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title=\"Market share\" />"
+        "code": "import { PieChart } from '@cascivo/charts'\n\n<PieChart data={[{id:'a',label:'A',value:60},{id:'b',label:'B',value:40}]} title=\"Market share\" />"
       },
       {
         "title": "Donut with center total and custom thickness",
