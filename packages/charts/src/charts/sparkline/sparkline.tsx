@@ -12,12 +12,18 @@ interface SparklineBaseProps {
    * 120px rather than a container-filling chart. Pass a number to change it. The
    * catalogue-wide "omit for a responsive chart" note does not apply to this chart.
    *
-   * @defaultValue `80`
+   * @defaultValue `120`
    * @see the component manifest
    */
   width?: number
   height?: number
   color?: string
+  /**
+   * Show dot at last data point
+   *
+   * @defaultValue `true`
+   * @see the component manifest
+   */
   endDot?: boolean
 }
 

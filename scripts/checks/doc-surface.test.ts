@@ -103,6 +103,16 @@ const FACTS: Fact[] = [
     surfaces: ['packages/components/src/app-shell/app-shell.tsx', 'registry.json'],
     pattern: /padding/,
   },
+  {
+    id: 'sparkline-is-fixed-width',
+    report: '2026-08-14 §4 — 120 vs 80 and shrink-to-fit vs fixed, across two docs',
+    surfaces: [
+      'packages/charts/src/charts/sparkline/sparkline.tsx',
+      'docs/RECIPE-DASHBOARD.md',
+      'registry.json',
+    ],
+    pattern: /fixed-width/i,
+  },
 ]
 
 /**

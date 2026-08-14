@@ -32,6 +32,7 @@ export const meta: ComponentMeta = {
       type: 'boolean',
       required: false,
       description: 'Render line on a secondary right y-axis',
+      default: 'false',
     },
     {
       name: 'width',
@@ -79,6 +80,7 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
       description: 'Legend label for the bar series.',
+      default: "'Bars'",
     },
     {
       name: 'format',
@@ -97,6 +99,7 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
       description: 'Legend label for the line series.',
+      default: "'Line'",
     },
     {
       name: 'xLabelEvery',

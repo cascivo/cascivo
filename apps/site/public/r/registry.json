@@ -4409,13 +4409,15 @@
             "name": "upColor",
             "type": "string",
             "required": false,
-            "description": "Colour for up candles (close ≥ open)."
+            "description": "Colour for up candles (close ≥ open).",
+            "default": "'var(--cascivo-chart-2)'"
           },
           {
             "name": "downColor",
             "type": "string",
             "required": false,
-            "description": "Colour for down candles (close < open)."
+            "description": "Colour for down candles (close < open).",
+            "default": "'var(--cascivo-chart-4)'"
           },
           {
             "name": "volume",
@@ -4611,7 +4613,8 @@
             "name": "secondAxis",
             "type": "boolean",
             "required": false,
-            "description": "Render line on a secondary right y-axis"
+            "description": "Render line on a secondary right y-axis",
+            "default": "false"
           },
           {
             "name": "width",
@@ -4655,7 +4658,8 @@
             "name": "barsLabel",
             "type": "string",
             "required": false,
-            "description": "Legend label for the bar series."
+            "description": "Legend label for the bar series.",
+            "default": "'Bars'"
           },
           {
             "name": "format",
@@ -4673,7 +4677,8 @@
             "name": "lineLabel",
             "type": "string",
             "required": false,
-            "description": "Legend label for the line series."
+            "description": "Legend label for the line series.",
+            "default": "'Line'"
           },
           {
             "name": "xLabelEvery",
@@ -4959,7 +4964,8 @@
             "name": "unit",
             "type": "string",
             "required": false,
-            "description": "Suffix after the centre value."
+            "description": "Suffix after the centre value.",
+            "default": "''"
           },
           {
             "name": "sweep",
@@ -5964,7 +5970,8 @@
             "name": "donut",
             "type": "boolean",
             "required": false,
-            "description": "Render as donut chart"
+            "description": "Render as donut chart",
+            "default": "false"
           },
           {
             "name": "width",
@@ -7143,7 +7150,7 @@
             "description": "SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide \"omit for a responsive chart\" note does not apply to this chart.",
             "type": "number",
             "required": false,
-            "default": "80"
+            "default": "120"
           },
           {
             "name": "height",
@@ -7156,13 +7163,15 @@
             "name": "color",
             "type": "string",
             "required": false,
-            "description": "Stroke color (CSS value)"
+            "description": "Stroke color (CSS value)",
+            "default": "'var(--cascivo-chart-1)'"
           },
           {
             "name": "endDot",
             "type": "boolean",
             "required": false,
-            "description": "Show dot at last data point"
+            "description": "Show dot at last data point",
+            "default": "true"
           }
         ],
         "tokens": ["--cascivo-chart-1"],
@@ -12924,7 +12933,8 @@
             "name": "direction",
             "type": "'forward' | 'reverse' | undefined",
             "required": false,
-            "description": "Direction the dash travels when animated."
+            "description": "Direction the dash travels when animated.",
+            "default": "'forward'"
           },
           {
             "name": "id",
@@ -12936,13 +12946,15 @@
             "name": "sourcePosition",
             "type": "HandlePosition | undefined",
             "required": false,
-            "description": "Handle side the edge leaves from."
+            "description": "Handle side the edge leaves from.",
+            "default": "'right'"
           },
           {
             "name": "targetPosition",
             "type": "HandlePosition | undefined",
             "required": false,
-            "description": "Handle side the edge arrives at."
+            "description": "Handle side the edge arrives at.",
+            "default": "'left'"
           }
         ],
         "tokens": [
@@ -13643,7 +13655,8 @@
             "name": "background",
             "type": "boolean",
             "required": false,
-            "description": "Render the dotted background pane behind the flow."
+            "description": "Render the dotted background pane behind the flow.",
+            "default": "true"
           },
           {
             "name": "clock",

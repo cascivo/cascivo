@@ -39,7 +39,12 @@ export interface ComboChartProps {
   line: ComboChartPoint[]
   title: string
   description?: string
-  /** Measure the line on its own right-hand axis (use when the two metrics differ in scale). */
+  /**
+   * Render line on a secondary right y-axis
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
   secondAxis?: boolean
   /** Legend label for the bar series. Defaults to `'Bars'`. */
   barsLabel?: string

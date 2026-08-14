@@ -4091,8 +4091,8 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `yTicks` | `number` | no | `5` | Approximate number of ticks on the y-axis. |
-| `upColor` | `string` | no | — | Colour for up candles (close ≥ open). |
-| `downColor` | `string` | no | — | Colour for down candles (close < open). |
+| `upColor` | `string` | no | `'var(--cascivo-chart-2)'` | Colour for up candles (close ≥ open). |
+| `downColor` | `string` | no | `'var(--cascivo-chart-4)'` | Colour for down candles (close < open). |
 | `volume` | `boolean` | no | `false` | Render volume bars beneath the candles. |
 | `tooltip` | `boolean` | no | — | Enable hover tooltip (OHLC). |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -4207,17 +4207,17 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `line` | `{ x: number; y: number }[]` | yes | — | Line series data points |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `secondAxis` | `boolean` | no | — | Render line on a secondary right y-axis |
+| `secondAxis` | `boolean` | no | `false` | Render line on a secondary right y-axis |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
 | `annotations` | `Annotation[]` | no | — | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
-| `barsLabel` | `string` | no | — | Legend label for the bar series. |
+| `barsLabel` | `string` | no | `'Bars'` | Legend label for the bar series. |
 | `format` | `(value: number \| string \| Date) => string` | no | — | Format each X-axis tick label. |
 | `legend` | `boolean` | no | — | Show the legend. |
-| `lineLabel` | `string` | no | — | Legend label for the line series. |
+| `lineLabel` | `string` | no | `'Line'` | Legend label for the line series. |
 | `xLabelEvery` | `number` | no | — | Render every Nth category label. |
 
 ## Object types
@@ -4404,7 +4404,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `min` | `number` | no | `0` | Minimum allowed value. |
 | `max` | `number` | no | `100` | Maximum allowed value. |
 | `thresholds` | `{ upTo: number; color: string }[]` | no | — | Coloured zones from min upward; the last should reach max. |
-| `unit` | `string` | no | — | Suffix after the centre value. |
+| `unit` | `string` | no | `''` | Suffix after the centre value. |
 | `sweep` | `number` | no | `270` | Total sweep angle in degrees (270 = a speedometer arc). |
 | `ticks` | `number` | no | `5` | Major tick count. |
 | `title` | `string` | yes | — | Chart title (also aria-label). |
@@ -4958,7 +4958,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `PieChartDatum[]` | yes | — | Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `donut` | `boolean` | no | — | Render as donut chart |
+| `donut` | `boolean` | no | `false` | Render as donut chart |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `size` | `number` | no | — | Square shorthand: sets width === height. Explicit width/height win. |
@@ -5612,10 +5612,10 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | `data` | `number[]` | yes | — | Array of numeric values |
 | `label` | `string` | no | — | Accessible name for the chart (invisible — rendered as the SVG `<title>`). |
 | `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
-| `width` | `number` | no | `80` | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
+| `width` | `number` | no | `120` | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
 | `height` | `number` | no | `32` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `color` | `string` | no | — | Stroke color (CSS value) |
-| `endDot` | `boolean` | no | — | Show dot at last data point |
+| `color` | `string` | no | `'var(--cascivo-chart-1)'` | Stroke color (CSS value) |
+| `endDot` | `boolean` | no | `true` | Show dot at last data point |
 
 ## Examples
 
@@ -9290,10 +9290,10 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `markerEnd` | `boolean` | no | `true` | Arrowhead at the target. Set false for an undirected line. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `active` | `boolean \| undefined` | no | — | Highlight the edge (used by FlowStory's active step). |
-| `direction` | `'forward' \| 'reverse' \| undefined` | no | — | Direction the dash travels when animated. |
+| `direction` | `'forward' \| 'reverse' \| undefined` | no | `'forward'` | Direction the dash travels when animated. |
 | `id` | `string` | no | — | Edge identifier, used to target it via `activeEdgeId`. |
-| `sourcePosition` | `HandlePosition \| undefined` | no | — | Handle side the edge leaves from. |
-| `targetPosition` | `HandlePosition \| undefined` | no | — | Handle side the edge arrives at. |
+| `sourcePosition` | `HandlePosition \| undefined` | no | `'right'` | Handle side the edge leaves from. |
+| `targetPosition` | `HandlePosition \| undefined` | no | `'left'` | Handle side the edge arrives at. |
 
 ## Examples
 
@@ -9753,7 +9753,7 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `autoPlay` | `boolean` | no | `true` | When true, starts playback automatically on mount. |
 | `interactive` | `boolean` | no | `false` | A storyline is a view by default — set true to allow selecting/dragging/connecting. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `background` | `boolean` | no | — | Render the dotted background pane behind the flow. |
+| `background` | `boolean` | no | `true` | Render the dotted background pane behind the flow. |
 | `clock` | `StoryClock` | no | — | Injectable clock for deterministic tests. |
 | `labels` | `FlowStoryLabels` | no | — | Label overrides for the story playback controls. |
 

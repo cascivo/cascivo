@@ -92,6 +92,7 @@ export const meta: ComponentMeta = {
       type: "'forward' | 'reverse' | undefined",
       required: false,
       description: 'Direction the dash travels when animated.',
+      default: "'forward'",
     },
     {
       name: 'id',
@@ -104,12 +105,14 @@ export const meta: ComponentMeta = {
       type: 'HandlePosition | undefined',
       required: false,
       description: 'Handle side the edge leaves from.',
+      default: "'right'",
     },
     {
       name: 'targetPosition',
       type: 'HandlePosition | undefined',
       required: false,
       description: 'Handle side the edge arrives at.',
+      default: "'left'",
     },
   ],
   tokens: ['--cascivo-color-border-strong', '--cascivo-color-accent', '--cascivo-color-surface'],

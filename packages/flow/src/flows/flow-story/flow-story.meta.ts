@@ -95,6 +95,7 @@ export const meta: ComponentMeta = {
       type: 'boolean',
       required: false,
       description: 'Render the dotted background pane behind the flow.',
+      default: 'true',
     },
     {
       name: 'clock',

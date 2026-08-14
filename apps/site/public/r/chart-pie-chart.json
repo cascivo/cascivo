@@ -40,7 +40,8 @@
         "name": "donut",
         "type": "boolean",
         "required": false,
-        "description": "Render as donut chart"
+        "description": "Render as donut chart",
+        "default": "false"
       },
       {
         "name": "width",

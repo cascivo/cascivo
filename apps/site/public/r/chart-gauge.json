@@ -48,7 +48,8 @@
         "name": "unit",
         "type": "string",
         "required": false,
-        "description": "Suffix after the centre value."
+        "description": "Suffix after the centre value.",
+        "default": "''"
       },
       {
         "name": "sweep",

@@ -54,12 +54,14 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
       description: 'Colour for up candles (close ≥ open).',
+      default: "'var(--cascivo-chart-2)'",
     },
     {
       name: 'downColor',
       type: 'string',
       required: false,
       description: 'Colour for down candles (close < open).',
+      default: "'var(--cascivo-chart-4)'",
     },
     {
       name: 'volume',

@@ -28,6 +28,7 @@ import { join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { resolvePropSets } from './lib/component-props.ts'
+import { resolveEntrySources } from './lib/registry-source.ts'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 const AI_RULES = join(REPO_ROOT, 'docs/AI-RULES.md')
@@ -69,11 +70,6 @@ function loadRegistry(): RegistryComponent[] {
   return [...registry.components, ...(registry.blocks ?? [])]
 }
 
-function repoRelative(url: string): string {
-  const i = url.indexOf('/packages/')
-  return i === -1 ? url : url.slice(i + 1)
-}
-
 /**
  * Resolved property names for a component's `<Pascal>Props`, or null if unresolvable.
  *
@@ -91,7 +87,10 @@ function propsOf(displayName: string): Set<string> | null {
       .filter((c) => displayName.startsWith(nameOf(c)))
       .sort((a, b) => nameOf(b).length - nameOf(a).length)[0]
   if (!entry) return null
-  const tsx = (entry.files ?? []).filter((f) => f.endsWith('.tsx')).map(repoRelative)
+  // Fourth consumer of the `files[]` dead branch, found by the 2026-08-14 sweep. `files[]` is
+  // empty for every npm-shipped entry (charts, flow, editor), so this returned null for all of
+  // them and the handler-naming rule was never checked against a single chart.
+  const tsx = resolveEntrySources(REPO_ROOT, entry)
   if (tsx.length === 0) return null
   return resolvePropSets(tsx, `${displayName}Props`)?.resolvedAll ?? null
 }

@@ -5324,6 +5324,7 @@
           "type": "string",
           "required": false,
           "description": "Colour for up candles (close ≥ open).",
+          "default": "'var(--cascivo-chart-2)'",
           "schema": {
             "kind": "string"
           }
@@ -5333,6 +5334,7 @@
           "type": "string",
           "required": false,
           "description": "Colour for down candles (close < open).",
+          "default": "'var(--cascivo-chart-4)'",
           "schema": {
             "kind": "string"
           }
@@ -5515,6 +5517,7 @@
           "type": "boolean",
           "required": false,
           "description": "Render line on a secondary right y-axis",
+          "default": "false",
           "schema": {
             "kind": "boolean"
           }
@@ -5580,6 +5583,7 @@
           "type": "string",
           "required": false,
           "description": "Legend label for the bar series.",
+          "default": "'Bars'",
           "schema": {
             "kind": "string"
           }
@@ -5607,6 +5611,7 @@
           "type": "string",
           "required": false,
           "description": "Legend label for the line series.",
+          "default": "'Line'",
           "schema": {
             "kind": "string"
           }
@@ -5810,6 +5815,7 @@
           "type": "string",
           "required": false,
           "description": "Suffix after the centre value.",
+          "default": "''",
           "schema": {
             "kind": "string"
           }
@@ -6766,6 +6772,7 @@
           "type": "boolean",
           "required": false,
           "description": "Render as donut chart",
+          "default": "false",
           "schema": {
             "kind": "boolean"
           }
@@ -7729,7 +7736,7 @@
           "description": "SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide \"omit for a responsive chart\" note does not apply to this chart.",
           "type": "number",
           "required": false,
-          "default": "80",
+          "default": "120",
           "schema": {
             "kind": "number"
           }
@@ -7749,6 +7756,7 @@
           "type": "string",
           "required": false,
           "description": "Stroke color (CSS value)",
+          "default": "'var(--cascivo-chart-1)'",
           "schema": {
             "kind": "string"
           }
@@ -7758,6 +7766,7 @@
           "type": "boolean",
           "required": false,
           "description": "Show dot at last data point",
+          "default": "true",
           "schema": {
             "kind": "boolean"
           }
@@ -12640,6 +12649,7 @@
           "type": "'forward' | 'reverse' | undefined",
           "required": false,
           "description": "Direction the dash travels when animated.",
+          "default": "'forward'",
           "schema": {
             "kind": "other"
           }
@@ -12658,6 +12668,7 @@
           "type": "HandlePosition | undefined",
           "required": false,
           "description": "Handle side the edge leaves from.",
+          "default": "'right'",
           "schema": {
             "kind": "other"
           }
@@ -12667,6 +12678,7 @@
           "type": "HandlePosition | undefined",
           "required": false,
           "description": "Handle side the edge arrives at.",
+          "default": "'left'",
           "schema": {
             "kind": "other"
           }
@@ -13295,6 +13307,7 @@
           "type": "boolean",
           "required": false,
           "description": "Render the dotted background pane behind the flow.",
+          "default": "true",
           "schema": {
             "kind": "boolean"
           }

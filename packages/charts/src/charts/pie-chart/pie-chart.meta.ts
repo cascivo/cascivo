@@ -22,7 +22,13 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
-    { name: 'donut', type: 'boolean', required: false, description: 'Render as donut chart' },
+    {
+      name: 'donut',
+      type: 'boolean',
+      required: false,
+      description: 'Render as donut chart',
+      default: 'false',
+    },
     {
       name: 'width',
       description:

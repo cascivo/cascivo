@@ -41,7 +41,7 @@ import '@cascivo/flow/styles.css' // required stylesheet
 | `autoPlay`     | `boolean`                | no       | `true`  | When true, starts playback automatically on mount.                                    |
 | `interactive`  | `boolean`                | no       | `false` | A storyline is a view by default — set true to allow selecting/dragging/connecting.   |
 | `className`    | `string`                 | no       | —       | Additional CSS class names merged onto the root element.                              |
-| `background`   | `boolean`                | no       | —       | Render the dotted background pane behind the flow.                                    |
+| `background`   | `boolean`                | no       | `true`  | Render the dotted background pane behind the flow.                                    |
 | `clock`        | `StoryClock`             | no       | —       | Injectable clock for deterministic tests.                                             |
 | `labels`       | `FlowStoryLabels`        | no       | —       | Label overrides for the story playback controls.                                      |
 
