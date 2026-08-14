@@ -3,7 +3,7 @@
   "name": "chart/combo-chart",
   "type": "chart",
   "description": "Combination bar + line chart on shared or dual y-axes.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],

@@ -3,7 +3,7 @@
   "name": "chart/candlestick",
   "type": "chart",
   "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],

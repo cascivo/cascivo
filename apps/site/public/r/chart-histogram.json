@@ -3,7 +3,7 @@
   "name": "chart/histogram",
   "type": "chart",
   "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "histogram", "distribution", "frequency", "data-viz"],

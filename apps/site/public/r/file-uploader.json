@@ -3,7 +3,7 @@
   "name": "file-uploader",
   "type": "component",
   "description": "Drag-and-drop file upload zone with file list and status indicators.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.tsx"

@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/candlestick",
+  "type": "chart",
+  "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+  "version": "0.17.1",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
+  "meta": {
+    "name": "Candlestick",
+    "description": "OHLC financial chart — each period a high–low wick and an open↔close body, coloured up/down.",
+    "category": "chart",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "data",
+        "type": "CandlestickDatum[]",
+        "required": true,
+        "description": "One candle per period: { t, open, high, low, close, volume? }."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "Chart title (also aria-label)."
+      },
+      {
+        "name": "description",
+        "description": "Supporting description text.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "width",
+        "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+        "type": "number",
+        "required": false,
+        "default": "320"
+      },
+      {
+        "name": "yTicks",
+        "description": "Approximate number of ticks on the y-axis.",
+        "type": "number",
+        "required": false,
+        "default": "5"
+      },
+      {
+        "name": "upColor",
+        "type": "string",
+        "required": false,
+        "description": "Colour for up candles (close ≥ open)."
+      },
+      {
+        "name": "downColor",
+        "type": "string",
+        "required": false,
+        "description": "Colour for down candles (close < open)."
+      },
+      {
+        "name": "volume",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Render volume bars beneath the candles."
+      },
+      {
+        "name": "tooltip",
+        "type": "boolean",
+        "required": false,
+        "description": "Enable hover tooltip (OHLC)."
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no axes. For micro/inline charts."
+      },
+      {
+        "name": "annotations",
+        "type": "Annotation[]",
+        "required": false,
+        "description": "Reference lines/bands/markers over the plot (e.g. a last-price rule)."
+      },
+      {
+        "name": "brush",
+        "type": "boolean",
+        "required": false,
+        "description": "Keyboard-operable Brush below the plot to subset the candles to a window."
+      },
+      {
+        "name": "dataZoom",
+        "type": "boolean",
+        "required": false,
+        "description": "DataZoom slider below the plot — a Brush whose body also pans the window."
+      },
+      {
+        "name": "zoom",
+        "type": "boolean",
+        "required": false,
+        "description": "In-plot wheel/drag/keyboard zoom-pan (+/-/0) over the candle index window."
+      },
+      {
+        "name": "syncId",
+        "type": "string",
+        "required": false,
+        "description": "Connect charts sharing this id — they mirror the zoom window."
+      },
+      {
+        "name": "tooltipMode",
+        "type": "'item' | 'axis'",
+        "required": false,
+        "default": "item",
+        "description": "item (nearest candle) or axis (crosshair + OHLC at the hovered x)."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "CandlestickDatum",
+        "description": "Shape of the `data` prop.",
+        "fields": [
+          {
+            "name": "t",
+            "type": "string",
+            "required": true,
+            "description": "Period label (date string or index)."
+          },
+          {
+            "name": "open",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "high",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "low",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "close",
+            "type": "number",
+            "required": true
+          },
+          {
+            "name": "volume",
+            "type": "number",
+            "required": false,
+            "description": "Render volume bars beneath the candles."
+          }
+        ]
+      }
+    ],
+    "tokens": ["--cascivo-chart-2", "--cascivo-chart-4", "--cascivo-chart-grid"],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": [
+        "Tab (focus chart)",
+        "ArrowLeft/ArrowRight (navigate candles)",
+        "+/- (zoom), 0 (reset) when zoom enabled",
+        "Escape (clear focus)"
+      ]
+    },
+    "examples": [
+      {
+        "title": "OHLC price series",
+        "code": "import { Candlestick } from '@cascivo/charts'\n\n<Candlestick\n  title=\"ACME daily\"\n  tooltip\n  data={[\n    { t: 'Mon', open: 10, high: 14, low: 9, close: 13 },\n    { t: 'Tue', open: 13, high: 15, low: 11, close: 11 },\n    { t: 'Wed', open: 11, high: 12, low: 8, close: 9 },\n  ]}\n/>"
+      },
+      {
+        "title": "Zoomable with a last-price rule",
+        "code": "<Candlestick\n  title=\"ACME daily\"\n  data={candles}\n  volume\n  zoom\n  dataZoom\n  tooltipMode=\"axis\"\n  annotations={[{ kind: 'line', axis: 'y', value: lastClose, label: '42.77' }]}\n/>"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "candlestick", "ohlc", "financial", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Showing open/high/low/close price movement over time",
+        "Financial or trading dashboards needing per-period range + direction"
+      ],
+      "whenNotToUse": [
+        "A single value trend — use LineChart",
+        "Non-financial categorical data — use BarChart"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "LineChart",
+          "relationship": "alternative",
+          "reason": "Use when only the closing price trend matters"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\"; OHLC values are in the fallback table and tooltip.",
+      "flexibility": []
+    }
+  }
+}

@@ -3,7 +3,7 @@
   "name": "flow/flow-edge",
   "type": "flow",
   "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "edge", "connector", "animated", "svg"],

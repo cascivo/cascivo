@@ -3,7 +3,7 @@
   "name": "code-snippet",
   "type": "component",
   "description": "Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/code-snippet/code-snippet.tsx"

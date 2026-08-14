@@ -3,7 +3,7 @@
   "name": "layout/page-header",
   "type": "layout",
   "description": "Page-level header with title, description, breadcrumb, and actions slots.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/page-header/page-header.tsx"

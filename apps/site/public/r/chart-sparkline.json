@@ -3,7 +3,7 @@
   "name": "chart/sparkline",
   "type": "chart",
   "description": "Compact inline sparkline for embedding trend data in dashboards or KPI cards.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "sparkline", "inline", "trend", "data-viz"],

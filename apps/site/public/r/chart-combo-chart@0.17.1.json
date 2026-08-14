@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 2,
+  "name": "chart/combo-chart",
+  "type": "chart",
+  "description": "Combination bar + line chart on shared or dual y-axes.",
+  "version": "0.17.1",
+  "files": [],
+  "dependencies": ["@cascivo/charts"],
+  "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
+  "category": "chart",
+  "install": "@cascivo/charts",
+  "styles": "@cascivo/charts/styles.css",
+  "meta": {
+    "name": "ComboChart",
+    "description": "Combination bar + line chart on shared or dual y-axes.",
+    "category": "chart",
+    "states": [],
+    "variants": [],
+    "sizes": [],
+    "props": [
+      {
+        "name": "bars",
+        "type": "{ label: string; value: number }[]",
+        "required": true,
+        "description": "Bar series data"
+      },
+      {
+        "name": "line",
+        "type": "{ x: number; y: number }[]",
+        "required": true,
+        "description": "Line series data points"
+      },
+      {
+        "name": "title",
+        "description": "Title text for the component.",
+        "type": "string",
+        "required": true
+      },
+      {
+        "name": "description",
+        "description": "Supporting description text.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "secondAxis",
+        "type": "boolean",
+        "required": false,
+        "description": "Render line on a secondary right y-axis"
+      },
+      {
+        "name": "width",
+        "description": "Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally.",
+        "type": "number",
+        "required": false
+      },
+      {
+        "name": "height",
+        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+        "type": "number",
+        "required": false,
+        "default": "320"
+      },
+      {
+        "name": "tooltip",
+        "type": "boolean",
+        "required": false,
+        "description": "Enable hover/keyboard tooltip"
+      },
+      {
+        "name": "className",
+        "description": "Additional CSS class names merged onto the root element.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "plain",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks only — no axes, grid lines, or legend. For micro/inline charts."
+      },
+      {
+        "name": "annotations",
+        "type": "Annotation[]",
+        "required": false,
+        "description": "Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line)."
+      },
+      {
+        "name": "barsLabel",
+        "type": "string",
+        "required": false,
+        "description": "Legend label for the bar series."
+      },
+      {
+        "name": "format",
+        "type": "(value: number | string | Date) => string",
+        "required": false,
+        "description": "Format each X-axis tick label."
+      },
+      {
+        "name": "legend",
+        "type": "boolean",
+        "required": false,
+        "description": "Show the legend."
+      },
+      {
+        "name": "lineLabel",
+        "type": "string",
+        "required": false,
+        "description": "Legend label for the line series."
+      },
+      {
+        "name": "xLabelEvery",
+        "type": "number",
+        "required": false,
+        "description": "Render every Nth category label."
+      }
+    ],
+    "typeDefs": [
+      {
+        "name": "ComboChartBar",
+        "description": "Shape of the `bars` prop.",
+        "fields": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "ComboChartPoint",
+        "description": "Shape of the `line` prop.",
+        "fields": [
+          {
+            "name": "x",
+            "type": "number",
+            "required": true,
+            "description": "Index into `bars` — point `i` is drawn at the centre of bar `i`."
+          },
+          {
+            "name": "y",
+            "type": "number",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "tokens": ["--cascivo-chart-1", "--cascivo-chart-2"],
+    "accessibility": {
+      "role": "img",
+      "wcag": "2.1-AA",
+      "keyboard": [
+        "Tab (focus chart)",
+        "ArrowLeft/ArrowRight (navigate points)",
+        "Home/End (first/last point)",
+        "Escape (clear focus)"
+      ]
+    },
+    "examples": [
+      {
+        "title": "Basic combo chart",
+        "code": "import { ComboChart } from '@cascivo/charts'\n\nconst bars = [{label:'Jan',value:100},{label:'Feb',value:120},{label:'Mar',value:90}]\nconst line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]\n<ComboChart bars={bars} line={line} title=\"Sales vs Target\" />"
+      }
+    ],
+    "dependencies": ["@cascivo/charts"],
+    "tags": ["chart", "combo", "bar", "line", "dual-axis", "data-viz"],
+    "intent": {
+      "whenToUse": [
+        "Overlaying two related metrics with different scales (e.g. volume bars + rate line)",
+        "Pairing categorical totals with a continuous trend on a dual y-axis"
+      ],
+      "whenNotToUse": [
+        "Both metrics share a scale and type — use BarChart or LineChart",
+        "More than two series of differing types — clarity breaks down"
+      ],
+      "antiPatterns": [],
+      "related": [
+        {
+          "name": "BarChart",
+          "relationship": "alternative",
+          "reason": "Use when all series are categorical comparisons"
+        },
+        {
+          "name": "LineChart",
+          "relationship": "alternative",
+          "reason": "Use when all series are trends on one scale"
+        }
+      ],
+      "a11yRationale": "Renders with role=\"img\" and requires a title prop for screen reader labeling.",
+      "flexibility": []
+    }
+  }
+}

@@ -3,7 +3,7 @@
   "name": "chart/gauge",
   "type": "chart",
   "description": "A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [],
   "dependencies": ["@cascivo/charts"],
   "tags": ["chart", "gauge", "speedometer", "kpi", "data-viz"],

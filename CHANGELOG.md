@@ -9,23 +9,23 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 
 | Package                  | Version | Latest feature release                                                                    | Changelog                                        |
 | ------------------------ | ------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `@cascivo/ai`            | 0.17.0  | 0.2.0 — AI-layer delivery (audit wave 3):                                                 | [CHANGELOG](packages/ai/CHANGELOG.md)            |
-| `@cascivo/charts`        | 0.17.0  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/charts/CHANGELOG.md)        |
-| `cascivo`                | 0.8.0   | 0.8.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta  | [CHANGELOG](packages/cli/CHANGELOG.md)           |
-| `@cascivo/core`          | 0.17.0  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/core/CHANGELOG.md)          |
-| `@cascivo/docs`          | 0.2.4   | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)          |
-| `@cascivo/editor`        | 0.17.0  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/editor/CHANGELOG.md)        |
-| `@cascivo/eslint-config` | 0.2.2   | 0.2.0 — Add `@cascivo/eslint-config`, and fix the scaffolder + doctor to obey cascivo's   | [CHANGELOG](packages/eslint-config/CHANGELOG.md) |
-| `@cascivo/flow`          | 0.17.0  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/flow/CHANGELOG.md)          |
-| `@cascivo/i18n`          | 0.17.0  | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                 | [CHANGELOG](packages/i18n/CHANGELOG.md)          |
-| `@cascivo/icons`         | 0.3.8   | 0.3.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/icons/CHANGELOG.md)         |
-| `@cascivo/mcp`           | 0.6.4   | 0.6.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/mcp/CHANGELOG.md)           |
-| `@cascivo/platform`      | 0.0.2   | —                                                                                         | [CHANGELOG](packages/platform/CHANGELOG.md)      |
-| `@cascivo/react`         | 0.17.0  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/react/CHANGELOG.md)         |
-| `@cascivo/registry`      | 0.2.6   | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/registry/CHANGELOG.md)      |
-| `@cascivo/storage`       | 0.17.0  | 0.1.0 — Initial public release of the cascivo design system. Includes:                    | [CHANGELOG](packages/storage/CHANGELOG.md)       |
-| `@cascivo/themes`        | 0.4.11  | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/themes/CHANGELOG.md)        |
-| `@cascivo/tokens`        | 0.5.9   | 0.5.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/tokens/CHANGELOG.md)        |
-| `@cascivo/vite-plugin`   | 0.1.6   | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)   |
+| `@cascivo/ai`            | 0.17.1  | 0.2.0 — AI-layer delivery (audit wave 3):                                                 | [CHANGELOG](packages/ai/CHANGELOG.md)            |
+| `@cascivo/charts`        | 0.17.1  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/charts/CHANGELOG.md)        |
+| `cascivo`                | 0.8.1   | 0.8.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta  | [CHANGELOG](packages/cli/CHANGELOG.md)           |
+| `@cascivo/core`          | 0.17.1  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/core/CHANGELOG.md)          |
+| `@cascivo/docs`          | 0.2.5   | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/docs/CHANGELOG.md)          |
+| `@cascivo/editor`        | 0.17.1  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/editor/CHANGELOG.md)        |
+| `@cascivo/eslint-config` | 0.2.3   | 0.2.0 — Add `@cascivo/eslint-config`, and fix the scaffolder + doctor to obey cascivo's   | [CHANGELOG](packages/eslint-config/CHANGELOG.md) |
+| `@cascivo/flow`          | 0.17.1  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/flow/CHANGELOG.md)          |
+| `@cascivo/i18n`          | 0.17.1  | 0.2.0 — Adoption-audit fixes (waves 1–2):                                                 | [CHANGELOG](packages/i18n/CHANGELOG.md)          |
+| `@cascivo/icons`         | 0.3.9   | 0.3.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/icons/CHANGELOG.md)         |
+| `@cascivo/mcp`           | 0.6.5   | 0.6.0 — Ship the entire docs surface as an npm package so it's reachable with no website  | [CHANGELOG](packages/mcp/CHANGELOG.md)           |
+| `@cascivo/platform`      | 0.0.3   | —                                                                                         | [CHANGELOG](packages/platform/CHANGELOG.md)      |
+| `@cascivo/react`         | 0.17.1  | 0.17.0 — Fixes for the 2026-08-08 adopter pair (two Vercel-style dashboards, TanStack Sta | [CHANGELOG](packages/react/CHANGELOG.md)         |
+| `@cascivo/registry`      | 0.2.7   | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/registry/CHANGELOG.md)      |
+| `@cascivo/storage`       | 0.17.1  | 0.1.0 — Initial public release of the cascivo design system. Includes:                    | [CHANGELOG](packages/storage/CHANGELOG.md)       |
+| `@cascivo/themes`        | 0.4.12  | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/themes/CHANGELOG.md)        |
+| `@cascivo/tokens`        | 0.5.10  | 0.5.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`       | [CHANGELOG](packages/tokens/CHANGELOG.md)        |
+| `@cascivo/vite-plugin`   | 0.1.7   | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                        | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)   |
 
 See [docs/UPGRADING.md](docs/UPGRADING.md) for upgrade guidance.

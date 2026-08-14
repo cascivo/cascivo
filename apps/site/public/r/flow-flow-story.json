@@ -3,7 +3,7 @@
   "name": "flow/flow-story",
   "type": "flow",
   "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [],
   "dependencies": ["@cascivo/core"],
   "tags": ["flow", "animation", "storyline", "walkthrough", "sequence"],

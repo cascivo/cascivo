@@ -3,7 +3,7 @@
   "name": "stat",
   "type": "component",
   "description": "Displays a key metric with optional delta, trend direction and help text",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "files": [
     {
       "url": "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/stat/stat.tsx"

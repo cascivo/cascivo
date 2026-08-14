@@ -1,5 +1,18 @@
 # @cascivo/icons
 
+## 0.3.9
+
+### Patch Changes
+
+- 3fcf3f1: Bump every published package so the next release run publishes the whole set.
+
+  The 0.17.0 bump landed on `main` but never reached npm: the release job's build
+  died inside `changesets/action` with `Failed to spawn process: Resource
+temporarily unavailable (os error 11)` — an `EAGAIN` write to that action's
+  stdout pipe, not a build failure. This changeset re-cuts the whole set on top of
+  the workflow fix, so every package publishes from a release that runs its build
+  in a runner-owned step.
+
 ## 0.3.8
 
 ### Patch Changes
