@@ -122,7 +122,7 @@ export function SaveButton() {
 
 If your own client component reads a signal's `.value` during render, call
 `useSignals()` (from `@cascivo/core`) as its first statement — see the gotcha in
-[TESTING.md](https://github.com/cascivo/cascivo/blob/main/docs/TESTING.md#the-usesignals-gotcha) and
+[TESTING.md](/docs/testing.md#the-usesignals-gotcha) and
 [TROUBLESHOOTING.md](/docs/troubleshooting.md).
 
 ## Copy-paste flow in Next.js
@@ -182,5 +182,5 @@ boundary placement for signal-driven components.
 
 - [COMPATIBILITY.md](/docs/compatibility.md) — framework and browser matrix.
 - [GETTING-STARTED.md](/docs/getting-started.md) — install paths and the theme wiring.
-- [CSS-LAYERS-PITFALL.md](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md) — before adding a global reset
+- [CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md) — before adding a global reset
   to `globals.css`.

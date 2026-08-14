@@ -256,7 +256,7 @@ reload or a hand-rolled copy of cascivo's link CSS — both were reported by ado
 component you place, so it takes the child you hand it. **Never copy cascivo's link CSS into
 your own layer** — override the tokens (`--cascivo-link-color`) instead.
 
-Full guide: [USING-WITH-A-ROUTER.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-A-ROUTER.md).
+Full guide: [USING-WITH-A-ROUTER.md](/docs/using-with-a-router.md).
 
 ## Overriding styles the sanctioned way
 
@@ -379,11 +379,11 @@ type-only declaration — no runtime effect.
 
 ## See also
 
-- [USING-WITH-A-ROUTER.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-A-ROUTER.md) — `setLinkComponent` vs `asChild`.
+- [USING-WITH-A-ROUTER.md](/docs/using-with-a-router.md) — `setLinkComponent` vs `asChild`.
 - [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md) — the SSR `ssr.noExternal` recipe.
-- [CSS-LAYERS-PITFALL.md](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md) — the canonical order and the
+- [CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md) — the canonical order and the
   `cascivo.override` escape hatch.
-- [THIRD-PARTY-CSS.md](https://github.com/cascivo/cascivo/blob/main/docs/THIRD-PARTY-CSS.md) — the `layer(vendor)` recipe.
+- [THIRD-PARTY-CSS.md](/docs/third-party-css.md) — the `layer(vendor)` recipe.
 - [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md) — running cascivo alongside an
   existing Tailwind v4 setup.
 - [TOKENS.md](/docs/tokens.md) — the full token catalog.

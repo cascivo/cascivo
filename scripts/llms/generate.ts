@@ -870,6 +870,44 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(`Full recipe: ${REPO}/blob/main/docs/CSS-LAYERS-PITFALL.md.`)
   lines.push('')
+  lines.push('## Routing (two kinds of link, wired two different ways)')
+  lines.push('')
+  lines.push(
+    'Getting this wrong is the single most-reported friction in adopter reports. There is no',
+  )
+  lines.push('third mechanism — do not intercept `onClick`, and do not wrap nav items by hand.')
+  lines.push('')
+  lines.push(
+    '1. **Config-driven navs** (SideNav, ShellHeader, Breadcrumb, Switcher, Dock) render through a',
+  )
+  lines.push('   module singleton. Register your router `Link` ONCE at app startup:')
+  lines.push('   ```tsx')
+  lines.push("   import { setLinkComponent } from '@cascivo/react'")
+  lines.push("   import type { LinkComponentProps } from '@cascivo/react'")
+  lines.push("   import { Link } from 'react-router' // or '@tanstack/react-router'")
+  lines.push(
+    "   setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)",
+  )
+  lines.push('   ```')
+  lines.push(
+    "   React Router's `to` is required, so supply a fallback — cascivo passes `href: undefined`",
+  )
+  lines.push("   for a disabled item. Next.js's `Link` takes `href`, so `setLinkComponent(Link)`.")
+  lines.push(
+    '2. **Links you write in page content** use `asChild`, which puts cascivo styling on YOUR element:',
+  )
+  lines.push('   ```tsx')
+  lines.push('   <Link asChild><RouterLink to="/projects/alpha">alpha</RouterLink></Link>')
+  lines.push('   ```')
+  lines.push(
+    '   `Button`, `TabsTrigger` and the other `asChild`-capable components take the same treatment —',
+  )
+  lines.push('   URL-driven tabs should be real anchors, not `onValueChange` navigations.')
+  lines.push('')
+  lines.push(
+    `Full guide (active-item prefix matching, URL-driven tabs, what \`asChild\` guarantees): ${SITE}/docs/using-with-a-router.md`,
+  )
+  lines.push('')
   lines.push('## Reactivity & state (signals, not React hooks)')
   lines.push('')
   lines.push(
@@ -977,6 +1015,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Reactivity & headless behavior primitives: ${SITE}/docs/headless.md`)
   lines.push(
     `- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): ${SITE}/docs/enterprise-readiness.md`,
+  )
+  lines.push(
+    `- Using cascivo with a router (React Router / TanStack Router / Next.js): ${SITE}/docs/using-with-a-router.md`,
   )
   lines.push(`- Theming & branding: ${SITE}/docs/theming.md`)
   lines.push(`- Using cascivo with Preact: ${SITE}/docs/using-with-preact.md`)

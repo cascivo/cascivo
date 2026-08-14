@@ -242,7 +242,7 @@ layer, declare your layer ordered _after_ `cascivo.component`.
 The inverse pitfall also exists: a global reset like `* { margin: 0; padding: 0 }`
 written **outside** any layer beats all cascivo layers too, zeroing out every
 component's padding. Wrap resets in a lowest-priority layer. Full recipe:
-[CSS-LAYERS-PITFALL.md](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md).
+[CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md).
 
 ---
 
@@ -255,7 +255,7 @@ CSS beats every cascivo layer regardless of specificity.
 cascivo layers — `@import url('lib/styles.css') layer(vendor);`. Native CSS, no build
 tooling. If you're importing the stylesheet from JavaScript
 (`import 'lib/styles.css'`), it can't be layered from there — move it into a CSS file
-first. Full recipe: [THIRD-PARTY-CSS.md](https://github.com/cascivo/cascivo/blob/main/docs/THIRD-PARTY-CSS.md).
+first. Full recipe: [THIRD-PARTY-CSS.md](/docs/third-party-css.md).
 
 ---
 

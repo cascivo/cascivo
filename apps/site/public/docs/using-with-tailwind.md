@@ -65,8 +65,8 @@ Two practical consequences:
 
 - **Unlayered author CSS still beats every layered rule** — yours and cascivo's
   and Tailwind's utilities-in-a-layer. That's normal CSS cascade; see
-  [`CSS-LAYERS-PITFALL.md`](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md). The same technique tames any
-  other library's global CSS — [`THIRD-PARTY-CSS.md`](https://github.com/cascivo/cascivo/blob/main/docs/THIRD-PARTY-CSS.md).
+  [`CSS-LAYERS-PITFALL.md`](/docs/css-layers-pitfall.md). The same technique tames any
+  other library's global CSS — [`THIRD-PARTY-CSS.md`](/docs/third-party-css.md).
 - If a Tailwind utility and a cascivo component rule collide on the same element,
   add the utility you want to win as an **unlayered** class, or scope it — don't
   fight specificity.

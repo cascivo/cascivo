@@ -9192,7 +9192,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.module.css"
       ],
       "fileHashes": {
-        "link.tsx": "sha256-0b5822b68e64cbd3706b24a104ccbf0af3a310e5f420b79bf75aafd0ea4a67b0",
+        "link.tsx": "sha256-7d8c4037726ced3509b584b630f7bcfe8395217a4333d4f14cf7185036d3f3d6",
         "index.ts": "sha256-b38bcec272a5dd95d54c6621068a03373bdbc5fbeb9a987638bcf011b8edc12f",
         "link.module.css": "sha256-70b9c6a6b5fcbb4b9c3c7b3191fbf271de0deda543e176cf90b3f560e9e7b761"
       },
@@ -9239,7 +9239,7 @@
           },
           {
             "name": "asChild",
-            "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md.",
+            "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See https://cascivo.com/docs/using-with-a-router.md.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -16764,7 +16764,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tabs/tabs.module.css"
       ],
       "fileHashes": {
-        "tabs.tsx": "sha256-c3ed33689333ec04082cd0bb9a5067612f47c65721cdda1b4cabf8777828631f",
+        "tabs.tsx": "sha256-c9b035ab225636f27f98a531617a9d20cda09b26ae965838c24e184300633da6",
         "index.ts": "sha256-9dd19a218ef88f01cab5cbe7d82fa98b8b6e87ed5992b3eb6cb25735f2d94cc1",
         "tabs.module.css": "sha256-fac5d943843ba4a6f4843370aae9d570e1cf4425a0e29bc4e9553e0599d1e2d5"
       },

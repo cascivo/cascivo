@@ -391,6 +391,37 @@ export function App() {
 
 ---
 
+## Wiring your router
+
+If your app has a router — most do — wire it **once**, at startup, before the nav
+components render anything:
+
+```tsx
+import { setLinkComponent } from '@cascivo/react'
+import type { LinkComponentProps } from '@cascivo/react'
+import { Link } from 'react-router' // or '@tanstack/react-router'
+
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)
+```
+
+That one call makes `SideNav`, `ShellHeader`, `Breadcrumb`, `Switcher` and `Dock` render
+real router links — client-side navigation, and still real `<a>`s, so middle-click and
+open-in-new-tab keep working.
+
+It does **not** cover links you write yourself in page content. Those use `asChild`:
+
+```tsx
+<Link asChild>
+  <RouterLink to="/projects/alpha">alpha</RouterLink>
+</Link>
+```
+
+Two kinds of link, two mechanisms — the most-reported friction in adopter reports.
+Full guide, including active-item matching and URL-driven tabs:
+[USING-WITH-A-ROUTER.md](./USING-WITH-A-ROUTER.md).
+
+---
+
 ## State: call `useSignals()` in your own components
 
 **Read this before you write a component that holds state.** It is the single most likely
@@ -440,6 +471,10 @@ Full reactivity model, including which React hooks map to which cascivo primitiv
 
 ## Where to go next
 
+- [USING-WITH-A-ROUTER.md](./USING-WITH-A-ROUTER.md) — **any router** (React Router,
+  TanStack Router, Next.js). cascivo links come in two kinds wired two different ways:
+  `setLinkComponent` for the config-driven navs (SideNav, ShellHeader, Breadcrumb) and
+  `<Link asChild>` for links you write in page content. Read this before writing any link.
 - [RECIPE-DASHBOARD.md](./RECIPE-DASHBOARD.md) — building a console/dashboard
   page (project switcher, cards, KPIs, sparklines/charts): the exact
   component for each need, plus pre-built blocks and reference apps.

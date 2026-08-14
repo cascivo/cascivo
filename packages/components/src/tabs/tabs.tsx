@@ -107,7 +107,8 @@ export interface TabsTriggerProps extends HTMLAttributes<HTMLButtonElement> {
    *
    * With `asChild`, `disabled` becomes `aria-disabled`: it is not a valid attribute on an
    * anchor, and a slotted element gets no `type` either. See
-   * [USING-WITH-A-ROUTER.md](../../../../docs/USING-WITH-A-ROUTER.md) for the full recipe.
+   * https://cascivo.com/docs/using-with-a-router.md for the full recipe — offline:
+   * `npx -y @cascivo/docs guide using-with-a-router`.
    */
   asChild?: boolean
 }
