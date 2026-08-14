@@ -215,6 +215,16 @@ per package. Keep it that way: moving the build back under the action re-arms th
 A release stranded this way has already consumed its changesets, so nothing re-triggers the
 workflow — re-run it by hand (**Actions → Release → Run workflow** on `main`).
 
+Re-run it **before** landing another changeset. `changesets/action` publishes only when zero
+changesets are staged; with one staged it takes the version path, so the manual re-run opens a
+Version Packages PR, publishes nothing, and still reports success — the stranded version stays
+off npm indefinitely while `main`, the docs and npm disagree. That is exactly what the 0.17.0
+recovery hit: the workflow fix above carried its own changeset, so the re-run on 2026-08-11
+went green having published nothing, and the daily `docs-freshness` probe was correctly red
+every night after. The `Publish any stranded versions` step now covers this case — it runs
+`changeset publish` on the version path, which ships only versions npm does not already have —
+but the ordering is still the cheaper habit.
+
 ### Release fails with `TypeError: Cannot read properties of undefined (reading 'includes')`
 
 Stack trace points at `isAlreadyPublishedError` / `internalPublish` inside

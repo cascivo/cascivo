@@ -91,6 +91,36 @@ jobs:
       - name: Build the publishable packages
         run: pnpm run release:build
 
+      # `changesets/action` publishes only when ZERO changesets are staged; with any
+      # staged it takes the version path instead. So a release whose publish failed —
+      # version bump on `main`, nothing on npm — is masked permanently by the next
+      # changeset to land: every run from then on opens a Version Packages PR while
+      # npm stays behind, and the run goes green while publishing nothing. That is
+      # what happened to 0.17.0 after the EAGAIN failures above, because the workflow
+      # fix that followed carried its own changeset.
+      #
+      # Publish the already-versioned packages on exactly that path, before the
+      # action's `version` rewrites those versions out of the tree. `changeset
+      # publish` ships only versions npm does not already have, so with nothing
+      # stranded it is a no-op. Deliberately NOT run on the publish path: there the
+      # action must own the publish so it also writes the tags and GitHub releases.
+      - name: Detect staged changesets
+        id: staged
+        run: |
+          count=$(find .changeset -maxdepth 1 -name '*.md' ! -name 'README.md' | wc -l)
+          echo "$count changeset(s) staged"
+          if [ "$count" -gt 0 ]; then echo 'any=true' >> "$GITHUB_OUTPUT"; else echo 'any=false' >> "$GITHUB_OUTPUT"; fi
+
+      - name: Publish any stranded versions
+        if: steps.staged.outputs.any == 'true'
+        run: |
+          pnpm exec changeset publish
+          # `changeset publish` tags what it published. The tags are lightweight, so
+          # `--follow-tags` (which only pushes annotated ones) would silently skip them.
+          git push origin --tags
+        env:
+          NPM_CONFIG_PROVENANCE: true
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@v1
