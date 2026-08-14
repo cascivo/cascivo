@@ -1,7 +1,78 @@
 # Fix plan — the 2026-08-14 Vercel-style dashboard (Vite + React Router)
 
-**Status: SPEC ONLY. Nothing implemented.** Hand this to an implementer with
-[`README.md`](README.md) and [`RECURRENCE.md`](RECURRENCE.md) open.
+**Status: implemented on `claude/ui-library-analysis-plan-eu3gzy`; NOT YET PUBLISHED.**
+All nine workstreams have landed. Per [`README.md`](README.md), the PR that publishes to npm
+sets `shippedIn` on each [`RECURRENCE.md`](RECURRENCE.md) row and flips this header — until
+then every fix below is Mechanism G.
+
+| WS | Status | Guard |
+| --- | --- | --- |
+| WS-1 publish the router guide | merged | `meta:check` (`doc-surface`), `doc-urls:check` |
+| WS-2 prop-defaults-parity scope + sparkline | merged | `meta:check` (`prop-defaults-parity`, `handler-naming-parity`) |
+| WS-3 vocabulary types on Path B | merged | `type-exports:check` |
+| WS-4 one CSS story | merged | `meta:check` (`doc-surface`), `scaffold:check` |
+| WS-5 `cascivo create` | merged | `scaffold:check`, `packages/cli/src/utils/config.test.ts` |
+| WS-6 composition gaps | merged | `meta:check` (`link-item-id-parity`, `example-props`, `typedefs-parity`) |
+| WS-7 Stat vs Kpi | merged | `meta:check` (`doc-surface`) |
+| WS-8 `.d.ts` TSDoc | merged | `dts-tsdoc:check`, `meta:check` (`vocabulary`) |
+| WS-9 roadmap + troubleshooting | merged | — (prose) |
+
+### Where the implementation disagreed with this plan
+
+Written down because a plan that quietly disagrees with what shipped is the defect §0 is
+about:
+
+- **§2a's SPA route was wrong and was not built.** The five sibling `USING-WITH-*` guides have
+  no `DOCS_ROUTES` entry — they are static `.md` only. Adding one for the router guide would
+  have made it *more* routed than any sibling and needed a new page component. Matching
+  sibling parity (`GUIDES` + regen) is exactly what fixes the two 404s the adopter hit.
+- **Publishing one guide was not enough: the guards found three more unpublished ones.**
+  `doc-surface` found `docs/TESTING.md` (linked from three published guides); the new
+  repo-relative-path guard found `docs/CSS-LAYERS-PITFALL.md` — cited by `@cascivo/react`'s own
+  npm README and by `cascivo audit` — and `docs/THIRD-PARTY-CSS.md`, cited by the scaffold.
+  17 published guides → 21.
+- **§0.2 undercounted: there was a fourth `files[]` consumer, not a third.** The plan predicted
+  others and told the implementer to sweep. `handler-naming-parity` resolved
+  `entry.files ?? []` too, so the event-handler naming rule had never been checked against a
+  single chart, flow node or editor component. Also: migrating `prop-defaults-parity` surfaced
+  **13** undocumented defaults beyond the sparkline mismatch.
+- **The coverage floor's metric changed.** The plan said to port `props-parity`'s floors
+  verbatim. Ported literally they fail: `props-parity` counts entries that resolve a *props
+  type*, while only 13 of 25 charts apply any signature default. The floor now counts entries
+  whose *source resolved*, so it tracks resolver health rather than authoring choices.
+- **§4's Option B was measured and rejected; the plan's premise was already true.**
+  `@cascivo/core` is *already* external to the dts bundler, so the plan's "make it external"
+  spike had nothing to do. The alias comes from the component sources importing those names
+  directly, so a re-export binds the same external name twice. Both a dedicated
+  `export type { … }` statement and folding the names into the existing
+  `export { … } from '@cascivo/core'` block produce `ToneInput as ToneInput$1`, after which
+  every prop reads the aliased name. Option A shipped.
+- **§9's reproduce-first found no defect, which is the finding.** Report §5 is factually
+  wrong: `npm pack @cascivo/react@0.17.0` — the exact artifact the adopter installed — carries
+  `Toggle.label`'s full four-line note. H1 (build strips TSDoc) is disproved by 749 clean
+  source↔dist pairs; H2 (Mechanism G) by the publish timestamp. No `labelVisibility` prop, no
+  change to `Toggle`. The `dts-tsdoc-parity` guard landed anyway, as the plan required, and
+  the real underlying issue — nothing states whether `label` renders — became its own fix.
+- **§5c's bundle-size ceiling was not built.** The plan asked `scaffold:check` to assert a
+  built-entry-CSS ceiling. The decision is "do not import the aggregate sheet", and a byte
+  ceiling would mean a full install + `vite build` per CI run to observe a consequence of a
+  line the test reads directly. Asserted on the import instead, plus a twin assertion that a
+  theme import must still be present. The byte count was measured once, by hand, on a real
+  generated app: **39.65 kB** entry CSS (6.90 kB gzip).
+- **Deriving the link-item guard found a third instance.** `BreadcrumbItem` was the reported
+  one; the derived sweep also found `DockItem`, keying on the raw array index.
+- **§7d was two defects.** `PieChartDatum.id` is required in source but the manifest's
+  `typeDefs` declared `required: false`, so every generated props table said optional — which
+  is *why* the example omitted it. Two guards, not one; each found exactly one instance
+  catalog-wide.
+- **§8 confirmed the docs were already right.** `Stat.card`'s TSDoc already said "surface,
+  border, radius, padding". Nothing needed correcting; the *decision* — which tile to pick, and
+  that `card` does not unify layout — was what was missing.
+- **Two existing scaffold guards were moved, not loosened.** The brand-length check reads
+  `Shell.tsx` and gained a `<title>` assertion. `every generated import resolves to a declared
+  dependency` correctly rejected a `react-router` import line inside `Shell.tsx`'s doc comment
+  — an adopter copying it would need a package the scaffold does not install — so the comment
+  points at the README instead of inlining the snippet.
 
 Report: `feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md` (the fifteenth).
 Adopter stack: Vite 7 · React 19 · React Router 7 · TS 5.9, prebuilt path, registry v0.17.0
