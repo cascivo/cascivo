@@ -112,6 +112,23 @@ import {
 } from '@cascivo/react'
 import { BarChart } from '@cascivo/charts'
 import { useSignal, useSignals } from '@cascivo/core'
+// The vocabulary types ship from a SUBPATH, so this line exercises the \`exports\` map itself
+// — the half a dist-relative probe inside the monorepo cannot reach. \`Tone\` names the type of
+// props an adopter must pass, and @cascivo/core is a transitive dep here that the docs forbid
+// declaring, so if this subpath does not resolve there is no supported import at all
+// (2026-08-14 §3).
+import type { SpaceStep, Tone } from '@cascivo/react/types'
+
+// The assignability that makes the subpath worth having: a Tone named here must satisfy the
+// main entry's prop types. Two separate entry points declaring the same nominal type is
+// exactly how that can silently stop being true.
+type DeployState = 'building' | 'ready' | 'error'
+const DEPLOY_TONE: Record<DeployState, Tone> = {
+  building: 'info',
+  ready: 'success',
+  error: 'danger',
+}
+const CARD_GAP: SpaceStep = 4
 
 export function App() {
   useSignals()
@@ -121,11 +138,13 @@ export function App() {
 
   return (
     <ThemeProvider defaultTheme="light">
-      <main className="app" style={{ padding: 16 }} data-theme={theme}>
+      <main className="app" style={{ padding: CARD_GAP * 4 }} data-theme={theme}>
         <Card className="card">
           <CardContent>
             {/* children + variant */}
             <Badge variant="success">healthy</Badge>
+            {/* A Tone from the ./types subpath must satisfy the main entry's prop type. */}
+            <Badge variant={DEPLOY_TONE.ready}>deployed</Badge>
             {/* children + className + onClick + aria-label */}
             <Button
               className="cta"
