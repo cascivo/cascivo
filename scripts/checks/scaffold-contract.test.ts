@@ -291,11 +291,20 @@ describe('scaffold-contract — cascivo create obeys cascivo’s own docs', () =
       [CLI, 'create', 'vercel-dashboard-clone-2026-07-30-take2', '--yes', '--theme', 'dark'],
       { cwd: workdir, stdio: 'pipe' },
     )
-    const app = readFileSync(join(long, 'src/App.tsx'), 'utf8')
-    const brand = /brand=\{\{ name: '([^']*)' \}\}/.exec(app)?.[1]
-    assert.ok(brand !== undefined, 'could not find the seeded brand in App.tsx')
+    // The brand lives in Shell.tsx — the shell owns the app chrome, and it is the file that
+    // survives a migration to a router.
+    const shell = readFileSync(join(long, 'src/Shell.tsx'), 'utf8')
+    const brand = /brand=\{\{ name: '([^']*)' \}\}/.exec(shell)?.[1]
+    assert.ok(brand !== undefined, 'could not find the seeded brand in Shell.tsx')
     assert.ok(brand.length <= 24, `brand "${brand}" is ${brand.length} chars`)
-    assert.match(file('src/App.tsx'), /brand=\{\{ name: 'Acme Console' \}\}/)
+    assert.match(file('src/Shell.tsx'), /brand=\{\{ name: 'Acme Console' \}\}/)
+    // Same rule for the browser tab: the raw directory name shipped as the <title>, so
+    // `2026-08-14-vercel-dashboard-vite-react-router` was the tab label (2026-08-14 §11).
+    const title = /<title>([^<]*)<\/title>/.exec(
+      readFileSync(join(long, 'index.html'), 'utf8'),
+    )?.[1]
+    assert.ok(title !== undefined, 'could not find <title> in index.html')
+    assert.ok(title.length <= 24, `<title> "${title}" is ${title.length} chars`)
   })
 
   it('the pinned versions match the workspace', () => {

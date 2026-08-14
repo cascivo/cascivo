@@ -233,7 +233,7 @@ function indexHtml(opts: ScaffoldOptions): string {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${opts.name}</title>
+    <title>${brandName(opts.name)}</title>
     <style>
       @layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
         cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.example, cascivo.override;
@@ -319,22 +319,9 @@ function appTsx(opts: ScaffoldOptions, sections: Section[]): string {
   // phantom dependency (and AI-RULES.md forbids declaring it here). There is likewise no
   // `import '@cascivo/tokens'`: the tokens arrive with the theme stylesheet.
   return `'use client'
-import {
-  AppShell,
-  ShellHeader,
-  SideNav,
-  signal,
-  useSignals,
-  type SideNavItem,
-} from '@cascivo/react'
+import { signal, useSignals, type SideNavItem } from '@cascivo/react'
+import { Shell } from './Shell'
 ${sectionImports}
-
-import '@cascivo/themes/${opts.theme}.css'
-// No '@cascivo/react/styles.css' here. On a bundler build each component imports its
-// own CSS, so you ship exactly what you use — this app emits well under 100 kB of entry
-// CSS instead of the ~273 kB aggregate sheet. Import the aggregate ONLY if you drop the
-// bundler (CDN / single-file setup). See https://cascivo.com/docs/getting-started.md
-// The theme import above is always required — themes are never automatic.
 
 type Section = ${unionType}
 
@@ -348,11 +335,63 @@ ${navItems}
   ]
 
   return (
+    <Shell navItems={navItems}>
+${renderedSections}
+    </Shell>
+  )
+}
+`
+}
+
+/**
+ * The app shell, as its own component with a `children` slot.
+ *
+ * Split out of `App.tsx` because the shell composition — AppShell + ShellHeader + SideNav —
+ * is the valuable part of the scaffold, and it used to be welded to the signal-driven
+ * section switcher. A 2026-08-14 adopter prompted for "a dashboard with Vite and React
+ * Router", then deleted `App.tsx` and all of `src/sections/` — the majority of what `create`
+ * generated — and re-derived this wiring by hand.
+ *
+ * Now adding a router means deleting `App.tsx` + `src/sections/` and rendering `<Shell>` from
+ * the root route's layout, with `navItems` carrying `href` instead of `onClick`. Nothing in
+ * here needs to change.
+ */
+function shellTsx(opts: ScaffoldOptions): string {
+  return `'use client'
+import { AppShell, ShellHeader, SideNav, type SideNavItem } from '@cascivo/react'
+import type { ReactNode } from 'react'
+
+import '@cascivo/themes/${opts.theme}.css'
+// No '@cascivo/react/styles.css' here. On a bundler build each component imports its
+// own CSS, so you ship exactly what you use — this app emits well under 100 kB of entry
+// CSS instead of the ~273 kB aggregate sheet. Import the aggregate ONLY if you drop the
+// bundler (CDN / single-file setup). See https://cascivo.com/docs/getting-started.md
+// The theme import above is always required — themes are never automatic.
+
+export interface ShellProps {
+  /** Side-nav entries. Use \`href\` for a routed app, \`onClick\` for local state. */
+  navItems: SideNavItem[]
+  children: ReactNode
+}
+
+/**
+ * App shell: header + side nav + a content slot.
+ *
+ * Adding a router? Keep this file. Delete \`App.tsx\` and \`src/sections/\`, render
+ * \`<Shell navItems={…}>\` from your root route's layout with your \`<Outlet />\` as children,
+ * and give each nav item an \`href\` instead of an \`onClick\`.
+ *
+ * For those hrefs to become real router links, call \`setLinkComponent\` ONCE at startup in
+ * \`main.tsx\` — see the "Adding a router" section of README.md for the exact snippet, or
+ * https://cascivo.com/docs/using-with-a-router.md for the full recipe.
+ */
+export function Shell({ navItems, children }: ShellProps) {
+  return (
     <AppShell
       header={<ShellHeader brand={{ name: '${brandName(opts.name).replace(/'/g, "\\'")}' }} />}
       nav={<SideNav items={navItems} />}
     >
-${renderedSections}
+      {children}
     </AppShell>
   )
 }
@@ -466,10 +505,34 @@ ${runScriptCommand(pm, 'dev')}
 
 ## Structure
 
-- \`src/App.tsx\` — app shell, navigation, and section routing
+- \`src/Shell.tsx\` — the app shell (header + side nav + content slot). Router-agnostic.
+- \`src/App.tsx\` — nav items and which section is showing
 - \`src/sections/\` — one component per nav item
 
 Add more components with \`npx cascivo add <component>\`.
+
+## Adding a router
+
+This app switches sections with a signal, not a router. To add one (React Router,
+TanStack Router, …):
+
+1. **Keep \`src/Shell.tsx\`.** Delete \`src/App.tsx\` and \`src/sections/\`.
+2. Render \`<Shell navItems={…}>\` from your root route's layout, with your \`<Outlet />\`
+   as its children.
+3. Give each nav item an \`href\` instead of \`onClick\`.
+4. Register your router's Link **once** at startup, in \`src/main.tsx\`:
+
+\`\`\`tsx
+import { setLinkComponent } from '@cascivo/react'
+import type { LinkComponentProps } from '@cascivo/react'
+import { Link } from 'react-router'
+
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)
+\`\`\`
+
+That one call makes \`SideNav\`, \`ShellHeader\` and \`Breadcrumb\` render real router links.
+Links you write in page content use \`<Link asChild>\` instead — two kinds of link, two
+mechanisms. Full recipe: https://cascivo.com/docs/using-with-a-router.md
 `
 }
 
@@ -518,6 +581,28 @@ This app's declared layer order (in \`index.html\`):
 }
 \`\`\`
 
+## Routing
+
+If you add a router, keep \`src/Shell.tsx\` and delete \`src/App.tsx\` + \`src/sections/\`.
+
+cascivo links come in **two kinds**, wired two different ways. Do not intercept
+\`onClick\`, and do not hand-wrap nav items:
+
+1. **Config-driven navs** (\`SideNav\`, \`ShellHeader\`, \`Breadcrumb\`, \`Switcher\`) render
+   through a module singleton. Register your router's Link once, in \`src/main.tsx\`:
+   \`setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)\`
+2. **Links in page content** use \`asChild\`:
+   \`<Link asChild><RouterLink to="/x">x</RouterLink></Link>\`
+
+Full recipe: https://cascivo.com/docs/using-with-a-router.md
+
+## Types
+
+The vocabulary types are on a subpath: \`import type { Tone } from '@cascivo/react/types'\`
+(also \`Progress\`, \`SpaceStep\`). \`Status.status\` and \`Badge.variant\` use them, so a
+\`Record<MyState, Tone>\` is the supported way to map domain states onto tones. **Never**
+add \`@cascivo/core\` to this app's dependencies — it is transitive here.
+
 More: cascivo's machine-readable guide is at https://cascivo.com/llms.txt.
 `
 }
@@ -544,6 +629,7 @@ export function buildScaffold(opts: ScaffoldOptions): ScaffoldFile[] {
     { path: 'src/main.tsx', contents: mainTsx() },
     { path: 'src/vite-env.d.ts', contents: viteEnv() },
     { path: 'src/App.tsx', contents: appTsx(opts, sections) },
+    { path: 'src/Shell.tsx', contents: shellTsx(opts) },
     ...sections.map((s) => ({
       path: `src/sections/${s.component}.tsx`,
       contents: sectionTsx(s),
@@ -573,9 +659,15 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     process.exitCode = 1
     return
   }
-  // A brand-new project has no lock file yet, so detection leans on the PM that
-  // invoked the CLI (npm_config_user_agent) via detectPackageManager.
-  const pm = detectPackageManager(cwd, pmFlag.pm ? { override: pmFlag.pm } : {})
+  // The new project has no lock file of its own, but the directory it lands IN usually does
+  // — scaffolding into an existing workspace is the common case. `preferLockfileOverUserAgent`
+  // makes that walk-up outrank `npm_config_user_agent`, which `npx` always reports as npm no
+  // matter what the surrounding repo uses (2026-08-14 §11). With no lock file anywhere up the
+  // tree, detection still falls back to the launcher.
+  const pm = detectPackageManager(cwd, {
+    preferLockfileOverUserAgent: true,
+    ...(pmFlag.pm ? { override: pmFlag.pm } : {}),
+  })
 
   const interactive = !yes && stdin.isTTY
   const rl = interactive ? createInterface({ input: stdin, output: stdout }) : null
@@ -639,6 +731,14 @@ export async function create(args: string[], cwd: string = process.cwd()): Promi
     console.log(`  cd ${name}`)
     console.log(`  ${installAllCommand(pm)}`)
     console.log(`  ${runScriptCommand(pm, 'dev')}`)
+    // Two things the output used to leave the adopter to discover (2026-08-14 §11, §1).
+    console.log('\nGood to know:')
+    console.log('  No cascivo.config.ts is written — this app uses the prebuilt @cascivo/react')
+    console.log('  packages and never copies source. `cascivo add <component>` writes the')
+    console.log('  config itself the first time you vendor a component.')
+    console.log('\n  Adding a router? Keep src/Shell.tsx, delete src/App.tsx + src/sections/,')
+    console.log('  and register your Link once with setLinkComponent — see')
+    console.log('  https://cascivo.com/docs/using-with-a-router.md')
   } finally {
     rl?.close()
   }

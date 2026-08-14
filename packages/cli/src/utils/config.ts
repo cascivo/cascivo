@@ -147,7 +147,22 @@ function pmFromPackageJson(dir: string): PackageManager | undefined {
  */
 export function detectPackageManager(
   cwd: string = process.cwd(),
-  opts: { override?: string; env?: NodeJS.ProcessEnv } = {},
+  opts: {
+    override?: string
+    env?: NodeJS.ProcessEnv
+    /**
+     * Let a lock file found by walking up from `cwd` outrank `npm_config_user_agent`.
+     *
+     * For `init`/`add`, which run *inside* an existing project, the user agent is the right
+     * first signal: it is the tool the developer just invoked. For `create` it is the wrong
+     * one. `npx cascivo create` always reports a `npm/…` agent regardless of what the
+     * surrounding workspace uses, and it short-circuited before the walk-up ever ran — so a
+     * 2026-08-14 adopter scaffolding into a pnpm workspace with a root `pnpm-lock.yaml` was
+     * told to run `npm install`. Where the new project LANDS is a stronger signal than which
+     * launcher started the CLI.
+     */
+    preferLockfileOverUserAgent?: boolean
+  } = {},
 ): PackageManager {
   const env = opts.env ?? process.env
 
@@ -157,7 +172,7 @@ export function detectPackageManager(
   if (isPackageManager(envPm)) return envPm
 
   const uaPm = pmFromUserAgent(env.npm_config_user_agent)
-  if (uaPm) return uaPm
+  if (uaPm && !opts.preferLockfileOverUserAgent) return uaPm
 
   let current = cwd
   for (;;) {
@@ -173,7 +188,9 @@ export function detectPackageManager(
     current = parent
   }
 
-  return 'npm'
+  // No lock file anywhere up the tree: fall back to the launcher, which for a brand-new
+  // project in an empty directory is the only signal there is.
+  return uaPm ?? 'npm'
 }
 
 /**

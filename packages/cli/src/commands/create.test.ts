@@ -64,7 +64,9 @@ describe('buildScaffold', () => {
 
   it('wires the chosen theme into html and the entry CSS', () => {
     expect(map.get('index.html')).toContain('data-theme="dark"')
-    expect(map.get('src/App.tsx')).toContain("import '@cascivo/themes/dark.css'")
+    // The theme import lives with the shell, which owns the app chrome and survives a
+    // migration to a router (App.tsx does not).
+    expect(map.get('src/Shell.tsx')).toContain("import '@cascivo/themes/dark.css'")
   })
 
   it('declares the canonical layer order with a vendor slot for third-party CSS', () => {
@@ -105,14 +107,30 @@ describe('buildScaffold', () => {
     expect(app).toContain("const section = signal<Section>('dashboard')")
     // Reads a signal during render in a React app → must subscribe explicitly.
     expect(app).toContain('useSignals()')
-    expect(app).toContain('AppShell')
-    expect(app).toContain('SideNav')
-    expect(app).toContain('ShellHeader')
+    expect(app).toContain('<Shell navItems={navItems}>')
+  })
+
+  it('puts the shell composition in its own component with a children slot', () => {
+    // The shell is the valuable part of the scaffold and it used to be welded to the
+    // signal-driven section switcher, so a router prompt meant deleting most of what
+    // `create` generated and re-deriving this by hand (2026-08-14 §1). Keeping it separate
+    // means adding a router is: delete App.tsx + sections/, render <Shell> from the route
+    // layout.
+    const shell = map.get('src/Shell.tsx')!
+    expect(shell).toContain('AppShell')
+    expect(shell).toContain('SideNav')
+    expect(shell).toContain('ShellHeader')
+    expect(shell).toContain('children')
+    expect(shell).toContain('navItems: SideNavItem[]')
+    // Router-agnostic: the shell must not reach for the section signal.
+    expect(shell).not.toContain('section.value')
+    // and it must point at the router recipe, since that is the migration it exists for.
+    expect(shell).toContain('using-with-a-router')
   })
 
   it('escapes the brand name into ShellHeader', () => {
-    const app = map.get('src/App.tsx')!
-    expect(app).toContain("brand={{ name: 'My App' }}")
+    const shell = map.get('src/Shell.tsx')!
+    expect(shell).toContain("brand={{ name: 'My App' }}")
   })
 
   it('derives unique keys and component names for duplicate labels', () => {
