@@ -193,6 +193,37 @@ small dashboard — the single largest friction in that report.
 > Enforced by `vocabulary.test.ts`: a `label` prop whose manifest description states neither
 > fails `pnpm meta:check`. Silence is the bug — the reader cannot tell it from either case.
 
+### Importing the shared types
+
+`Tone`, `Progress` and `SpaceStep` are the *types of published props* — `Status.status` and
+`Badge.variant` are `ToneInput`, every layout `gap` is a `SpaceStep` — so the first thing a
+typed dashboard writes needs them:
+
+```tsx
+// Path B (prebuilt, `@cascivo/react`) — the vocabulary types ship from a subpath:
+import type { Tone } from '@cascivo/react/types'
+// Path A (copied source) — import from core directly, which you already depend on:
+import type { Tone } from '@cascivo/core'
+
+const DEPLOY_TONE: Record<DeployState, Tone> = {
+  building: 'info',
+  ready: 'success',
+  error: 'danger',
+}
+<Status status={DEPLOY_TONE[deployment.state]} />
+```
+
+`@cascivo/react/types` re-exports `Tone`, `ToneAlias`, `ToneInput`, `Progress`,
+`ProgressAlias`, `ProgressInput`, `SpaceStep` and `RovingOrientation`. Do **not** add
+`@cascivo/core` to a prebuilt app's dependencies to reach them — on that path it is a
+transitive dep, and pinning it invites a lockstep-version trap.
+
+They sit on a subpath rather than the main entry for a mechanical reason: the component
+sources already import those names from core, so re-exporting them from `@cascivo/react`
+makes the dts bundler emit `ToneInput as ToneInput$1` and every prop switches to the aliased
+name. `type-exports-parity` fails the build when a core type naming a published prop is
+reachable from neither entry.
+
 > ### ⚠ `gap` takes a NUMBER, and it is the one prop that breaks the pattern
 >
 > Every other size-ish prop in the catalog is a **string** union — `size="sm"`,

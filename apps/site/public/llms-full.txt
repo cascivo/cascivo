@@ -181,6 +181,19 @@ Canonical order (lowest → highest priority):
 `@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;`
 Full recipe: https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md.
 
+## Shared vocabulary types (importing Tone / SpaceStep)
+
+`Status.status` and `Badge.variant` are typed `ToneInput`; every layout `gap` is a numeric
+`SpaceStep`. To name those types — e.g. a `Record<DeployState, Tone>` map, which
+almost every dashboard writes:
+
+- Prebuilt path: `import type { Tone } from '@cascivo/react/types'`
+- Copied-source path: `import type { Tone } from '@cascivo/core'`
+
+The subpath exports Tone, ToneAlias, ToneInput, Progress, ProgressAlias, ProgressInput,
+SpaceStep, RovingOrientation. Do NOT add @cascivo/core to a prebuilt app to reach them —
+it is a transitive dependency there and pinning it creates a lockstep-version trap.
+
 ## Routing (two kinds of link, wired two different ways)
 
 Getting this wrong is the single most-reported friction in adopter reports. There is no

@@ -870,6 +870,25 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   )
   lines.push(`Full recipe: ${REPO}/blob/main/docs/CSS-LAYERS-PITFALL.md.`)
   lines.push('')
+  lines.push('## Shared vocabulary types (importing Tone / SpaceStep)')
+  lines.push('')
+  lines.push(
+    '`Status.status` and `Badge.variant` are typed `ToneInput`; every layout `gap` is a numeric',
+  )
+  lines.push('`SpaceStep`. To name those types — e.g. a `Record<DeployState, Tone>` map, which')
+  lines.push('almost every dashboard writes:')
+  lines.push('')
+  lines.push("- Prebuilt path: `import type { Tone } from '@cascivo/react/types'`")
+  lines.push("- Copied-source path: `import type { Tone } from '@cascivo/core'`")
+  lines.push('')
+  lines.push(
+    'The subpath exports Tone, ToneAlias, ToneInput, Progress, ProgressAlias, ProgressInput,',
+  )
+  lines.push(
+    'SpaceStep, RovingOrientation. Do NOT add @cascivo/core to a prebuilt app to reach them —',
+  )
+  lines.push('it is a transitive dependency there and pinning it creates a lockstep-version trap.')
+  lines.push('')
   lines.push('## Routing (two kinds of link, wired two different ways)')
   lines.push('')
   lines.push(

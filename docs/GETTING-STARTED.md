@@ -180,6 +180,14 @@ import a component — your bundler includes styles only for the components you
 use. There is no component-CSS import to add. (No bundler at all? Import the
 aggregate `@cascivo/react/styles.css` instead.)
 
+> **Typing a status map?** The shared vocabulary types ship from a subpath:
+> `import type { Tone } from '@cascivo/react/types'` (also `Progress`, `SpaceStep`,
+> `RovingOrientation` and the `*Input`/`*Alias` spellings). `Status.status` and
+> `Badge.variant` are typed with these, so a `Record<DeployState, Tone>` is the
+> supported way to map your domain states onto them. **Do not add `@cascivo/core`**
+> to reach them — on this path it is a transitive dependency, and pinning it puts
+> you in a two-package lockstep.
+
 > **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** On
 > `@cascivo/react` **0.10+** SSR works with **zero Vite config** — the package ships
 > a CSS-free `node`-condition build that a bare server loader imports cleanly. The

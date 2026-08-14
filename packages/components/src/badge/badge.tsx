@@ -20,6 +20,11 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
    * (`neutral | info | success | warning | danger`) as well as Badge's historical spellings
    * (`default`, `destructive`, `error`) — they are aliases of the same tones, so one domain
    * enum can drive `Badge`, `Tag`, `Status` and `Notification` with no lookup table.
+   *
+   * To name this type in your own code, import it: `import type { Tone } from
+   * '@cascivo/react/types'` on the prebuilt path, or from `@cascivo/core` if you copied the
+   * source. Do not add `@cascivo/core` to a prebuilt app just for this; it is a transitive
+   * dependency there.
    */
   variant?: ToneInput | BadgeVariant
   size?: 'sm' | 'md'

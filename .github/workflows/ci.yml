@@ -135,6 +135,11 @@ jobs:
       - name: dts-TSDoc guard (the build does not strip prop documentation)
         run: pnpm run dts-tsdoc:check
 
+      # A missing VALUE export fails loudly at runtime; a missing TYPE export is invisible —
+      # everything compiles, the adopter just cannot name the type of a prop they must pass.
+      - name: Type-exports parity (core types naming published props are importable)
+        run: pnpm run type-exports:check
+
       # The consumer-shaped fixture: packs the real tarballs and type-checks them in a
       # strict, non-hoisted pnpm WORKSPACE outside the repo, with skipLibCheck OFF. Every
       # other guard runs inside the monorepo, where @types/react is root-hoisted — see
