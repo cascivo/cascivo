@@ -4,7 +4,7 @@
  * Quickstart:
  * ```tsx
  * import { LineChart } from '@cascivo/charts'
- * import '@cascivo/charts/styles.css'   // required
+ * import '@cascivo/charts/styles.css'   // only for no-bundler / SSR-externalised setups
  * import '@cascivo/themes/dark.css'     // any cascivo theme drives the colors
  * <LineChart data={data} />             // responsive by default — omit width; height defaults to 300
  * ```

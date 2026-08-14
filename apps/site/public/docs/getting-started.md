@@ -328,6 +328,35 @@ contains the themes you actually set:
 `ThemeProvider` warns in dev when you set a `data-theme` whose CSS is not loaded, naming
 the import to add.
 
+### Which stylesheets do I import?
+
+Themes are always yours to import. **Component CSS is not** — every cascivo package that
+ships components imports its own stylesheet from its entry, so a bundler pulls it in when
+you import the component and tree-shakes what you don't use.
+
+The exception is the `node` export condition. Vite-SSR frameworks externalise dependencies
+on the server, and a bare `.css` side-effect import is unloadable by a plain Node ESM loader
+(`ERR_UNKNOWN_FILE_EXTENSION`) — so cascivo ships a CSS-free `node/` twin for those packages.
+On that path nothing loads the CSS for you, and you import the sheet yourself.
+
+| Package           | Bundler (Vite/Next/webpack)                        | No bundler                   | SSR, externalised (`node` condition) |
+| ----------------- | -------------------------------------------------- | ---------------------------- | ------------------------------------ |
+| `@cascivo/themes` | **always import a bundle**                         | same                         | same                                 |
+| `@cascivo/react`  | automatic per component                            | `@cascivo/react/styles.css`  | `@cascivo/react/styles.css`          |
+| `@cascivo/charts` | automatic (`dist/index.js` imports `./charts.css`) | `@cascivo/charts/styles.css` | `@cascivo/charts/styles.css`         |
+
+> **`@cascivo/charts/styles.css` is redundant on a bundler build, not required.** It used to
+> be required — until 0.14 the charts entry never imported its own sheet and charts rendered
+> unstyled — and several docs still said so after the fix. Importing it anyway is harmless
+> (the bundler dedupes it), so if you are unsure, import it. What you must not do is _skip_
+> it on an SSR/externalised setup: the chart's screen-reader data-table fallback is hidden by
+> that stylesheet, so without it the fallback renders visibly as a table of numbers under
+> every chart.
+>
+> Enforced by `pnpm css-contract:check`: a package that ships a stylesheet and declares
+> `sideEffects: ["**/*.css"]` must import it from its entry **and** ship the CSS-free `node`
+> twin. Fixing only the first half trades a styling bug for an SSR blocker.
+
 ### Runtime switching & SSR (no-flash)
 
 For a user-selectable theme, use the runtime from `@cascivo/react`:

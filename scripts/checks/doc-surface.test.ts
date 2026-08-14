@@ -104,6 +104,12 @@ const FACTS: Fact[] = [
     pattern: /padding/,
   },
   {
+    id: 'component-css-is-automatic-on-a-bundler',
+    report: '2026-08-14 §10 — two packages in one install, opposite stated CSS defaults',
+    surfaces: ['docs/GETTING-STARTED.md', 'packages/charts/src/index.ts'],
+    pattern: /no-bundler|automatic/i,
+  },
+  {
     id: 'sparkline-is-fixed-width',
     report: '2026-08-14 §4 — 120 vs 80 and shrink-to-fit vs fixed, across two docs',
     surfaces: [

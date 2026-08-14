@@ -130,10 +130,13 @@ npx cascivo add button card
 Required CSS import order (both paths): components -> tokens+theme -> brand overrides (last).
 `@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.
 
-Charts, the code editor, and flow ship their own stylesheet: when you use them, import the
-matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
-`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
-common mistake: the chart's screen-reader data-table fallback then renders visibly.
+Charts, the code editor, and flow ship their own stylesheet — and import it themselves, so on
+a BUNDLER build there is nothing to add: `dist/index.js` starts with `import "./charts.css"`.
+Import `'@cascivo/charts/styles.css'` (likewise `@cascivo/editor/styles.css`,
+`@cascivo/flow/styles.css`) only for a NO-BUNDLER build, or an SSR setup that externalises
+dependencies — there the CSS-free `node` export condition loads and nothing pulls the sheet in.
+Skipping it on those paths renders the chart's screen-reader data-table fallback visibly.
+Importing it when you did not need to is harmless; the bundler dedupes it.
 
 SSR (Vite SSR / TanStack Start / Remix / workerd): works with ZERO Vite config on
 `@cascivo/react` >= 0.10 — no `ssr.noExternal`, no plugin, no `<ClientOnly>` wrappers. The

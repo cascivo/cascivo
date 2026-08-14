@@ -322,10 +322,14 @@ function componentMarkdown(
     lines.push('```tsx')
     lines.push(`import { ${exportName} } from '${entry.install}'`)
     if (entry.styles) {
+      // Not "required": the package entry imports its own stylesheet, so a bundler already
+      // has it. It IS required on a no-bundler or SSR-externalised build, where the CSS-free
+      // `node` twin is what loads (2026-08-14 §10 — two packages, opposite stated defaults).
       const note =
         entry.type === 'chart'
-          ? 'required — without it the screen-reader data-table fallback renders visibly'
-          : 'required stylesheet'
+          ? 'bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where ' +
+            'skipping it renders the screen-reader data-table fallback visibly'
+          : 'bundler: automatic. Needed only for no-bundler / SSR-externalised builds'
       lines.push(`import '${entry.styles}' // ${note}`)
     }
     lines.push('```')
@@ -778,13 +782,22 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('`@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.')
   lines.push('')
   lines.push(
-    'Charts, the code editor, and flow ship their own stylesheet: when you use them, import the',
+    'Charts, the code editor, and flow ship their own stylesheet — and import it themselves, so on',
   )
-  lines.push("matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise")
   lines.push(
-    '`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a',
+    'a BUNDLER build there is nothing to add: `dist/index.js` starts with `import "./charts.css"`.',
   )
-  lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
+  lines.push("Import `'@cascivo/charts/styles.css'` (likewise `@cascivo/editor/styles.css`,")
+  lines.push(
+    '`@cascivo/flow/styles.css`) only for a NO-BUNDLER build, or an SSR setup that externalises',
+  )
+  lines.push(
+    'dependencies — there the CSS-free `node` export condition loads and nothing pulls the sheet in.',
+  )
+  lines.push(
+    "Skipping it on those paths renders the chart's screen-reader data-table fallback visibly.",
+  )
+  lines.push('Importing it when you did not need to is harmless; the bundler dedupes it.')
   lines.push('')
   // SSR: state the CURRENT truth first. This block used to lead with "Two required steps:
   // ssr.noExternal …", which stopped being true at @cascivo/react 0.10 — and llms.txt is the

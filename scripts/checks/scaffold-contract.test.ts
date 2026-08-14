@@ -120,6 +120,42 @@ describe('scaffold-contract — cascivo create obeys cascivo’s own docs', () =
     )
   })
 
+  it('does not import the aggregate stylesheet on the bundler path', () => {
+    // The scaffold shipped `import '@cascivo/react/styles.css'`, which getting-started
+    // describes as the NO-BUNDLER option (~273 kB / ~37 kB gzip). On a Vite build each
+    // component imports its own CSS and tree-shakes, so the aggregate is pure overhead —
+    // the 2026-08-14 adopter deleted it and went from ~273 kB to 59 kB of entry CSS with no
+    // visual change. Every new app started from the heavier default (§12).
+    //
+    // Asserted on the import rather than on a built bundle's byte count: the decision IS
+    // "do not import the aggregate", and measuring it would mean a full install + vite build
+    // per CI run to observe a consequence of the line this test can read directly.
+    const offenders = [...files.entries()]
+      // An actual import statement, not a mention: the generated App.tsx carries a comment
+      // explaining why the aggregate sheet is deliberately absent.
+      .filter(([, contents]) => /^\s*import\s+'@cascivo\/react\/styles\.css'/m.test(contents))
+      .map(([path]) => path)
+    assert.deepEqual(
+      offenders,
+      [],
+      'A bundler-path scaffold must not import the aggregate component stylesheet — per-\n' +
+        'component CSS auto-includes and tree-shakes. The theme import is the one that IS\n' +
+        `required. Found in:\n${offenders.join('\n')}`,
+    )
+  })
+
+  it('imports a theme stylesheet, which is never automatic', () => {
+    // The twin of the assertion above: dropping the aggregate sheet must not drop colour.
+    // Themes are the one stylesheet no package imports for you — skip it and every
+    // --cascivo-color-* is unresolved and the app renders greyscale.
+    const themed = [...files.values()].some((c) => /@cascivo\/themes\/[\w-]+\.css/.test(c))
+    assert.ok(
+      themed,
+      'No generated file imports a @cascivo/themes stylesheet. Component CSS is automatic on ' +
+        'a bundler; theme CSS never is, and without it the app renders greyscale.',
+    )
+  })
+
   it('every @cascivo import in generated source is a declared dependency', () => {
     // The general form of violations 2-4: a phantom dependency is an import with no
     // matching entry in package.json, whatever the package happens to be.

@@ -330,7 +330,11 @@ import {
 ${sectionImports}
 
 import '@cascivo/themes/${opts.theme}.css'
-import '@cascivo/react/styles.css'
+// No '@cascivo/react/styles.css' here. On a bundler build each component imports its
+// own CSS, so you ship exactly what you use — this app emits well under 100 kB of entry
+// CSS instead of the ~273 kB aggregate sheet. Import the aggregate ONLY if you drop the
+// bundler (CDN / single-file setup). See https://cascivo.com/docs/getting-started.md
+// The theme import above is always required — themes are never automatic.
 
 type Section = ${unionType}
 

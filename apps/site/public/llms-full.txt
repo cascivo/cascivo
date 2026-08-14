@@ -130,10 +130,13 @@ npx cascivo add button card
 Required CSS import order (both paths): components -> tokens+theme -> brand overrides (last).
 `@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.
 
-Charts, the code editor, and flow ship their own stylesheet: when you use them, import the
-matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
-`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
-common mistake: the chart's screen-reader data-table fallback then renders visibly.
+Charts, the code editor, and flow ship their own stylesheet — and import it themselves, so on
+a BUNDLER build there is nothing to add: `dist/index.js` starts with `import "./charts.css"`.
+Import `'@cascivo/charts/styles.css'` (likewise `@cascivo/editor/styles.css`,
+`@cascivo/flow/styles.css`) only for a NO-BUNDLER build, or an SSR setup that externalises
+dependencies — there the CSS-free `node` export condition loads and nothing pulls the sheet in.
+Skipping it on those paths renders the chart's screen-reader data-table fallback visibly.
+Importing it when you did not need to is harmless; the bundler dedupes it.
 
 SSR (Vite SSR / TanStack Start / Remix / workerd): works with ZERO Vite config on
 `@cascivo/react` >= 0.10 — no `ssr.noExternal`, no plugin, no `<ClientOnly>` wrappers. The
@@ -3405,7 +3408,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { AreaChart } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -3556,7 +3559,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { BarChart } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -3738,7 +3741,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Boxplot } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -3828,7 +3831,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { BubbleChart } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -3917,7 +3920,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Bullet } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -3988,7 +3991,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { CalendarHeatmap } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4087,7 +4090,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Candlestick } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4205,7 +4208,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { ComboChart } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4304,7 +4307,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Funnel } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4402,7 +4405,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Gauge } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4497,7 +4500,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Heatmap } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4597,7 +4600,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Histogram } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4667,7 +4670,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Kpi } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4739,7 +4742,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { LineChart } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4865,7 +4868,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Meter } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -4952,7 +4955,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { PieChart } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5099,7 +5102,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Polar } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5200,7 +5203,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Radar } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5289,7 +5292,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { RadialBar } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5395,7 +5398,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Sankey } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5497,7 +5500,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { ScatterChart } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5611,7 +5614,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Sparkline } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5681,7 +5684,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Stream } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5781,7 +5784,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Sunburst } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -5877,7 +5880,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Treemap } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -8097,7 +8100,7 @@ pnpm add @cascivo/editor
 
 ```tsx
 import { CodeEditor } from '@cascivo/editor'
-import '@cascivo/editor/styles.css' // required stylesheet
+import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -8245,7 +8248,7 @@ pnpm add @cascivo/editor
 
 ```tsx
 import { Highlight } from '@cascivo/editor'
-import '@cascivo/editor/styles.css' // required stylesheet
+import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -8828,7 +8831,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { Flow } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -8983,7 +8986,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowBackground } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9078,7 +9081,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowCanvas } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9196,7 +9199,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowControls } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9268,7 +9271,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowEdge } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9378,7 +9381,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowHandle } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9466,7 +9469,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowMiniMap } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9573,7 +9576,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowNode } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9669,7 +9672,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowPanel } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
@@ -9737,7 +9740,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { FlowStory } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category
