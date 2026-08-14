@@ -12,7 +12,7 @@ pnpm add @cascivo/editor
 
 ```tsx
 import { Highlight } from '@cascivo/editor'
-import '@cascivo/editor/styles.css' // required stylesheet
+import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category

@@ -56,7 +56,7 @@
       },
       {
         "name": "asChild",
-        "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md.",
+        "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See https://cascivo.com/docs/using-with-a-router.md.",
         "type": "boolean",
         "required": false,
         "default": "false"

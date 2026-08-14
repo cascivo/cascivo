@@ -12,7 +12,7 @@ scoped to a `data-theme` value. You match a brand by overriding tokens — never
 forking components. This page is the end-to-end recipe.
 
 For the underlying cascade-layer rules see
-[`CSS-LAYERS-PITFALL.md`](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md); for the full token list see
+[`CSS-LAYERS-PITFALL.md`](/docs/css-layers-pitfall.md); for the full token list see
 [`TOKENS.md`](/docs/tokens.md). For the full list of the twelve first-party themes with their
 import path ↔ `data-theme` value mapping, see
 [GETTING-STARTED.md → Theme export → `data-theme` value](/docs/getting-started.md#theme-export--data-theme-value).

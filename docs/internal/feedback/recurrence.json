@@ -1,488 +1,698 @@
 {
- "$comment": [
-  "Finding-level recurrence ledger. RECURRENCE.md is GENERATED from this file by",
-  "scripts/feedback/recurrence.ts (run via `pnpm regen`) — edit this, never the markdown.",
-  "",
-  "THE BINDING RULE: `status: closed` requires a non-empty `guard`, and that guard must",
-  "resolve to a real package.json script or a real file. 'Fixed in source' is not a",
-  "closure — a fix with nothing holding it in place is how twelve reports kept",
-  "re-reporting the same findings. If no guard can express the invariant, keep the",
-  "finding open with `guard: null` and a `guardNote` saying why; the next plan lists it.",
-  "",
-  "Enforced by scripts/checks/recurrence.test.ts."
- ],
- "findings": [
-  {
-   "id": "vendored-source-fails-host-toolchain",
-   "title": "Vendored source fails the adopter's strict lint/type toolchain",
-   "reports": [
-    "feedback-tanstack-start-adopter-2026-07-18.md",
-    "feedback-tanstack-start-adopter-2026-07-22.md",
-    "feedback-incident-console-adopter-2026-07-28.md",
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-tanstack-start-adopter-2026-07-18.md",
-    "fix-plan-tanstack-start-adopter-2026-07-22.md",
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "F",
-   "guard": "lint:host-eslint",
-   "status": "closed",
-   "note": "Closed only once the guard ran the adopter's REAL toolchain. The previous guard (lint:host-strict, oxlint) was written for this exact finding and could not express the rules that fired: it found 0, real ESLint found 501.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "eslint-flat-config-entry-point",
-   "title": "Documented ESLint entry point is the legacy eslintrc shape, applies no rules",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "C",
-   "guard": "lint:host-eslint:test",
-   "status": "closed",
-   "note": "Same fact lived in three places and was wrong in two — plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "phantom-unpublished-dependency",
-   "title": "A manifest requires @cascivo/components, which is private and unpublishable",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "B",
-   "guard": "scripts/checks/npm-dependency-reality.test.ts",
-   "status": "closed",
-   "note": "Both directions guarded: a declared dependency the source never imports, and an imported package the manifest omits. Found three more phantom deps beyond the report (progress, menu-button, and avatar-group's missing @cascivo/i18n) plus @cascivo/layouts presented as installable in a cookbook. The registry generator now throws on a private or 0.0.0 peer floor rather than emitting '>=0.0.0'.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "theming-path-a-unavailable",
-   "title": "The documented theming API ships only in @cascivo/react, unreachable on the copy-paste path",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "A",
-   "guard": "scripts/checks/path-a-parity.test.ts",
-   "status": "closed",
-   "note": "The theme runtime moved to @cascivo/core (with persistedSignal and the sync drivers, which had to move too or core->storage->core would cycle); @cascivo/react re-exports every name unchanged, so Path B sees no difference. path-a-parity is the twin of the path-b-parity guard that already existed: only one direction had ever been built, which is why this was invisible. It also fails when a doc names a Path-B-only API without saying so — the half that would actually have caught this.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "tone-vocabulary-renders-inconsistently",
-   "title": "Badge maps `neutral` to the brand accent while Tag, Status and Notification do not",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "A",
-   "guard": "tone:check",
-   "status": "closed",
-   "note": "Badge neutral now maps to the subtle look, matching Tag/Status/Notification; the accent look stays reachable as variant=\"primary\". tone-parity asserts each canonical tone reads from its own token family in all four components, and that neutral is never accent/primary. It checks families rather than exact tokens, because each component legitimately presents tone differently (filled chip, quiet chip, dot, tinted card).",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "charts-ignore-container-height",
-   "title": "ChartFrame's measured-height signal is unreachable, so charts overflow fixed cells",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "E",
-   "guard": "packages/charts/src/core/chart-frame.size.test.tsx",
-   "status": "closed",
-   "note": "ChartFrame's `height` no longer defaults to 300 in the destructure, so `fixedHeight ?? height.value` finally reads the measured signal; the frame is a shrinkable flex item so a constrained parent can hand the plot the space left after the legend. Every pre-existing ChartFrame test passed an explicit height — the one case that was never broken — so the new tests cover the omitted-height path and were demonstrated failing against the old default. computed:check cannot cover this: it renders static markup with no hydration, so no ResizeObserver ever runs.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "shared-prop-doc-false-on-one-component",
-   "title": "Meter carries the shared responsive-width doc but never uses ChartFrame",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "A",
-   "guard": "scripts/checks/chart-frame-parity.test.ts",
-   "status": "closed",
-   "note": "Checks the CLAIM, not the shape: a chart whose `width` doc promises container tracking must reach useChartSize (directly or via ChartFrame) and carry a viewBox. A 'must import ChartFrame' rule would have forced Meter — which has no data points and needs none of the frame's tooltip/zoom machinery — into a worse design. Found two more beyond the report: sparkline and bullet both carried the responsive boilerplate while hard-coding a width default, and sparkline's documented default (80) did not match its code (120).",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "cli-installs-stale-versions",
-   "title": "The CLI installs bare package names and resolves to a stale lockfile entry",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "E",
-   "guard": "packages/cli/src/utils/config.test.ts",
-   "status": "closed",
-   "note": "installCommand pins every @cascivo/* to an explicit specifier (@latest, or the registry floor widened to an installable range), with a --pin escape hatch. Non-cascivo packages stay bare — their version is the app's business. installHint delegates to the same function, so the printed recovery command is exactly what the CLI runs; a recovery command that differs from the failed one is a trap.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "doctor-clean-on-a-run-that-did-not-look",
-   "title": "`cascivo doctor` prints 'No violations found' without running the drift check",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "A",
-   "guard": "packages/cli/src/commands/doctor.test.ts",
-   "status": "closed",
-   "note": "runDoctorDrift now returns a DriftOutcome, so the default `cascivo doctor` runs it and can still say something honest: when drift cannot run (no lockfile, unreachable registry) it prints 'drift: not checked — <reason>' rather than an unqualified clean. --drift keeps its meaning as drift-only. Also adds a formatter-drift finding for the projects that predate `init` writing the exclusion.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "docs-describe-unreleased-state",
-   "title": "Continuously-deployed docs describe a layer order the published packages do not have",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "C",
-   "guard": "scripts/checks/layer-order.test.ts",
-   "status": "closed",
-   "note": "layer-order already scanned docs/**/*.md and asserts every statement is an ordered subsequence of layers.css, so the layer fact had one owner already — the real gap was version skew. llms.txt now names the exact published package versions it describes, derived from the workspace rather than hand-listed, so a reader comparing against their node_modules can tell in one line whether a documented behaviour has shipped.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "types-react-version-skew",
-   "title": "React types unresolvable from inside a cascivo .d.ts, so every prop vanishes",
-   "reports": [
-    "feedback-incident-console-adopter-2026-07-28.md"
-   ],
-   "plans": [
-    "fix-plan-incident-console-adopter-2026-07-28.md"
-   ],
-   "mechanism": "E",
-   "guard": "isolated:check",
-   "status": "closed",
-   "note": "Reproduced 2026-08-07 after two plans could not. The trigger is pnpm `hoist: false`: the default layout's hidden .pnpm/node_modules supplies React's types by accident, which is why the original fixture passed with the peer REMOVED and concluded the mechanism was unreproducible — it was measuring the hoist. With hoisting off, removing the peer produces `Property 'children' does not exist on type 'CardProps'` for every component: the report verbatim. isolated:check now builds both layouts and the no-hoist case is observed failing on its pre-fix state. The Astro tsconfig hypothesis was checked and disproved.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "deprecation-invisible-until-installed",
-   "title": "A deprecated component is only marked in source, after the adopter has vendored it",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "A",
-   "guard": "scripts/checks/deprecation-surfaces.test.ts",
-   "status": "closed",
-   "note": "ComponentMeta now carries `deprecated`, so list/add/MCP/docs all render it at discovery time. The guard asserts the replacement resolves, entry and manifest agree, and each surface reads the field — not merely that the type has it.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "unused-bindings-in-vendored-source",
-   "title": "Vendored source carries dead bindings the adopter's first `tsc --noEmit` reports",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "E",
-   "guard": "tsconfig.base.json",
-   "status": "closed",
-   "note": "noUnusedLocals/noUnusedParameters on, matching the official TanStack Start scaffolder. Found 11, not the 1 reported: five leftover useSignal imports from the useEffectPropSignal migration, a discarded fetchRegistry network call in `cascivo generate`, a fillColor() taking min/max and ignoring them, and SkipNavLink wrapped in forwardRef while never attaching the ref — consumers got null with no type error, and ref-parity had counted it compliant because it checks the wrapper, not the wiring.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "composition-gaps-tabs-menu-link-barrels",
-   "title": "Tabs cannot render links; Menu reads children positionally; Link doubles its external arrow",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "A",
-   "guard": "packages/components/src/tabs/tabs.test.tsx",
-   "status": "closed",
-   "note": "TabsTrigger gains asChild (aschild-docs forces the router-guide entry). Menu and ContextMenu partition children by component identity with a dev-time error naming the contract — which immediately caught a preact-compat test that passed `trigger`/`items` props Menu does not have, rendered nothing, and had been asserting 'no console error' about an empty tree. Link suppresses its generated arrow via :has() when the link ends in its own icon. Barrels are generated for all 138 component dirs, so the 6-of-132 half-convention is gone.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "first-day-facts-missing-from-cli-output",
-   "title": "`cascivo init` prints an incomplete stylesheet wiring, and `add` hides the npm channel",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "plans": [
-    "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
-   ],
-   "mechanism": "D",
-   "guard": "scripts/checks/getting-started-contract.test.ts",
-   "status": "closed",
-   "note": "The CLI's own output is now one of the guard's first-day surfaces — for most adopters it is the FIRST surface, since `cascivo init` runs before any doc is opened, and it had never been checked. Adding it immediately demanded the two facts init never printed: useSignals() and the theme bundles. `cascivo add` now announces an npm-channel entry before the install log rather than inside it. Token naming gains --cascivo-font-size-* aliases, so the natural guess resolves instead of being silently dropped by CSS.",
-   "shippedIn": "@cascivo/react@0.16.1"
-  },
-  {
-   "id": "closed-on-main-not-published",
-   "title": "Findings closed in the ledger are unreachable by `pnpm add` for days",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md",
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "G",
-   "guard": "recurrence:shipped",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "The ledger read `Open — 0` while two adopters re-hit four closed findings. Verified from npm rather than assumed: 0.16.1 and CLI 0.7.2 carry the 08-06 fixes and were published 2026-08-10T05:09Z, two days AFTER both reports, which tested the newest version that existed. Rows now carry `shippedIn`, RECURRENCE.md separates \"awaiting release\" from \"shipped\", and recurrence:shipped compares the two against the npm registry."
-  },
-  {
-   "id": "render-phase-prop-mirror",
-   "title": "Components hand-roll the forbidden render-phase prop mirror",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "A",
-   "guard": "primitives:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "CLAUDE.md forbids `const s = useSignal(prop); s.value = prop` and nothing checked it, so DataTable shipped four and controlled selection warned on every click under React 19. The guard found four sites beyond the eight the plan listed (app-shell, search, swap, toc); all twelve migrated. DataTable selection now reads the prop directly — nothing derives from it, so the mirror bought nothing. rows/columns keep a mirror because useComputed memoises across renders: dropping it froze the flow example on stale data while all 1221 unit tests passed."
-  },
-  {
-   "id": "timescale-subday-one-tick",
-   "title": "Sub-day time domains render a single date tick",
-   "reports": [
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "B",
-   "guard": "packages/charts/src/engine/scale-time.test.ts",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "pickInterval had one entry per unit and took the first that fit, accepting a 1-tick undershoot over 23 ticks. Replaced with a step ladder choosing the candidate closest to the requested count in log space. A second, independent defect surfaced while fixing it: TimeScale.tickFormat() was dead code called by nothing, so every time axis fell through to toLocaleDateString() and would have rendered the same date on each tick even with correct ticks."
-  },
-  {
-   "id": "chart-manifests-unguarded",
-   "title": "37 npm-shipped registry entries have never been props-parity checked",
-   "reports": [
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "F",
-   "guard": "meta:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "props-parity and typedefs-parity resolved source through registry files[], which is empty for npm-shipped packages, so both hit `if (tsx.length === 0) continue`. Every chart, flow node and editor was unchecked for the life of the guard — which is why AreaChart.format was real, documented in TSDoc, and invisible to registry.json/llms.txt. Turning it on surfaced 39 undocumented props and 114 missing typeDefs. A per-prefix coverage floor now fails loudly if an entry drops back out."
-  },
-  {
-   "id": "scaffold-lints-nothing",
-   "title": "`cascivo create`'s ESLint config inspects zero TypeScript files",
-   "reports": [
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "F",
-   "guard": "scaffold:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "scaffold-contract had a test named \"pre-wires the react-hooks/immutability escape so lint passes on a fresh app\" that string-matched the config text and passed the whole time. The template registered no TS parser and no `files` pattern, so ESLint 9 skipped every .ts/.tsx. scaffold-lint now runs the REAL ESLint over an app generated by the REAL built CLI and asserts the file count it reported on equals the number of TypeScript files generated, plus a control case (an unused local must error) so the immutability assertion cannot be satisfied by a config that lints nothing."
-  },
-  {
-   "id": "card-no-containing-block",
-   "title": "Card is not `position: relative`; a stretched link covers the viewport",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "A",
-   "guard": "computed:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "The stretched-link idiom is what every dashboard project grid uses. Without a containing block the ::after overlay resolved against the viewport and swallowed every click in the app, silently — found only because a Playwright click timed out. The probe hit-tests a button outside the card."
-  },
-  {
-   "id": "appshell-no-content-padding",
-   "title": "AppShell content sits flush; every adopter writes the same wrapper",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md",
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "A",
-   "guard": "computed:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "Reported three times (07-24, 08-06, 08-08). Documenting it was chosen twice and re-reported twice, so `padding` now DEFAULTS to space step 6 with `none` as the opt-out. The CLI's generated dashboard drops the inline style it used to model the workaround with — the very thing its sibling AGENTS.md forbids."
-  },
-  {
-   "id": "checkbox-decoration-eats-pointers",
-   "title": "Checkbox's decoration intercepts pointer events, breaking .check()",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "A",
-   "guard": "computed:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "The real input is visually hidden beneath the decoration, so every getByRole(checkbox).check() in every adopter suite failed with \"intercepts pointer events\" and needed { force: true }. Real users click the label and never notice, which is why it survived. The probe hit-tests the control centre."
-  },
-  {
-   "id": "unlayered-css-in-cli-templates",
-   "title": "Generated index.html emits unlayered CSS",
-   "reports": [
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "D",
-   "guard": "unlayered:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "unlayered:check globbed packages/**/src/**/*.css, so the one template every adopter starts from was exempt from the rule it teaches — its sibling AGENTS.md says \"never emit it\". The guard now parses <style> blocks inside packages/cli/src/commands/*.ts."
-  },
-  {
-   "id": "prop-name-vocabulary",
-   "title": "Prop NAMES are unpredictable across the catalog",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "A",
-   "guard": "meta:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "Nine wrong guesses in one small dashboard; gap=\"4\" alone cost 20 type errors. vocabulary.test.ts already guarded prop VALUES (Tone/Progress) and now guards NAMES too. `type BadgeShape` — a type named for a prop that does not exist, sitting directly above BadgeProps in the .d.ts — is renamed BadgeVariant, and the `<X>Shape` rule was demonstrated failing on it. The contract is published in AI-RULES.md, llms.txt and CLAUDE.md."
-  },
-  {
-   "id": "link-item-id-parity",
-   "title": "Link-shaped item types lack `id`, forcing href keys",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "D",
-   "guard": "meta:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "Three sibling teams all linking to \"/\" produced React duplicate-key warnings on every render. SideNavItem, ShellHeaderNavLink and four others gained `id` in an earlier sweep; Switcher was missed. The guard asserts each link-shaped type declares it AND that the component keys on it rather than merely declaring it."
-  },
-  {
-   "id": "scaffold-build-skips-typecheck",
-   "title": "Scaffolded `build` could go green with type errors",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "D",
-   "guard": "scaffold:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "Reported against the adopter's own project, not the scaffold: `vite build` passed while 37 type errors sat in the tree, because tsc is not part of it. The scaffold already ran `tsc && vite build`, so nothing needed fixing — but nothing asserted it either, so it could regress silently. scaffold-contract now requires `build` to invoke tsc, alongside the lint/typecheck/format scripts."
-  },
-  {
-   "id": "zebra-token-aliased-to-surface",
-   "title": "DataTable zebra striping paints rows the colour they already are",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "E",
-   "guard": "computed:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "Reported as \"no visible effect in the dark theme\"; it was worse and not theme-specific. Every theme aliases --cascivo-color-bg-subtle straight to --cascivo-color-surface, so striping a table that sits on a surface — a table in a Card, the normal composition — was a no-op with measured ΔL of exactly 0.0000 in all three themes. Replaced with a translucent foreground overlay that darkens on light themes and lightens on dark. Only observable in a browser: the declaration looks correct in source, and the first replacement named a token that does not exist, which computes to transparent and is indistinguishable from the original bug except by measuring painted alpha."
-  },
-  {
-   "id": "button-icon-label-no-gap",
-   "title": "An icon composed next to a label inside a Button renders touching",
-   "reports": [
-    "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "A",
-   "guard": "computed:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "All children go into ONE inner span, so the button's flex `gap` applied between the loading Spinner and that wrapper and never between an icon and its label. The wrapper is now a flex row inheriting the gap, so composing an icon with a label needs no adopter CSS — which also removes the reason to write layout CSS against the undocumented `> span`."
-  },
-  {
-   "id": "griditem-child-does-not-stretch",
-   "title": "A Card inside a spanning GridItem leaves a hole in the row",
-   "reports": [
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "E",
-   "guard": "computed:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "The GridItem stretched to the row height (the grid's align-items: stretch) but, as a plain block container, could not pass that height to its child. Making it a grid container stretches the child by default, which is what an adopter already expects from the row. Reported as \"Grid's align prop didn't fix it\" — correctly, because the item was never the element failing to stretch."
-  },
-  {
-   "id": "field-rows-absorb-grid-slack",
-   "title": "Fields in a Grid row put their inputs at different heights",
-   "reports": [
-    "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
-   ],
-   "plans": [
-    "fix-plan-adopter-pair-2026-08-08.md"
-   ],
-   "mechanism": "E",
-   "guard": "computed:check",
-   "status": "closed",
-   "shippedIn": null,
-   "note": "Reproduced at 13.6px, but not for the reported reason: Field renders label -> control -> description, so the description sits BELOW the input and cannot push it down. The cause was .field being a grid with the default align-content: stretch, so as a cell in a taller row its rows absorbed the slack and a three-row field distributed it differently from a two-row one. align-content: start pins them to their natural sizes."
-  }
- ]
+  "$comment": [
+    "Finding-level recurrence ledger. RECURRENCE.md is GENERATED from this file by",
+    "scripts/feedback/recurrence.ts (run via `pnpm regen`) — edit this, never the markdown.",
+    "",
+    "THE BINDING RULE: `status: closed` requires a non-empty `guard`, and that guard must",
+    "resolve to a real package.json script or a real file. 'Fixed in source' is not a",
+    "closure — a fix with nothing holding it in place is how twelve reports kept",
+    "re-reporting the same findings. If no guard can express the invariant, keep the",
+    "finding open with `guard: null` and a `guardNote` saying why; the next plan lists it.",
+    "",
+    "Enforced by scripts/checks/recurrence.test.ts."
+  ],
+  "findings": [
+    {
+      "id": "vendored-source-fails-host-toolchain",
+      "title": "Vendored source fails the adopter's strict lint/type toolchain",
+      "reports": [
+        "feedback-tanstack-start-adopter-2026-07-18.md",
+        "feedback-tanstack-start-adopter-2026-07-22.md",
+        "feedback-incident-console-adopter-2026-07-28.md",
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-tanstack-start-adopter-2026-07-18.md",
+        "fix-plan-tanstack-start-adopter-2026-07-22.md",
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "F",
+      "guard": "lint:host-eslint",
+      "status": "closed",
+      "note": "Closed only once the guard ran the adopter's REAL toolchain. The previous guard (lint:host-strict, oxlint) was written for this exact finding and could not express the rules that fired: it found 0, real ESLint found 501.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "eslint-flat-config-entry-point",
+      "title": "Documented ESLint entry point is the legacy eslintrc shape, applies no rules",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "C",
+      "guard": "lint:host-eslint:test",
+      "status": "closed",
+      "note": "Same fact lived in three places and was wrong in two — plus a fourth nobody had checked: the CLI's own `cascivo create` scaffold. eslint.config.js in the fixture is now the single owner.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "phantom-unpublished-dependency",
+      "title": "A manifest requires @cascivo/components, which is private and unpublishable",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "B",
+      "guard": "scripts/checks/npm-dependency-reality.test.ts",
+      "status": "closed",
+      "note": "Both directions guarded: a declared dependency the source never imports, and an imported package the manifest omits. Found three more phantom deps beyond the report (progress, menu-button, and avatar-group's missing @cascivo/i18n) plus @cascivo/layouts presented as installable in a cookbook. The registry generator now throws on a private or 0.0.0 peer floor rather than emitting '>=0.0.0'.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "theming-path-a-unavailable",
+      "title": "The documented theming API ships only in @cascivo/react, unreachable on the copy-paste path",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "scripts/checks/path-a-parity.test.ts",
+      "status": "closed",
+      "note": "The theme runtime moved to @cascivo/core (with persistedSignal and the sync drivers, which had to move too or core->storage->core would cycle); @cascivo/react re-exports every name unchanged, so Path B sees no difference. path-a-parity is the twin of the path-b-parity guard that already existed: only one direction had ever been built, which is why this was invisible. It also fails when a doc names a Path-B-only API without saying so — the half that would actually have caught this.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "tone-vocabulary-renders-inconsistently",
+      "title": "Badge maps `neutral` to the brand accent while Tag, Status and Notification do not",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "tone:check",
+      "status": "closed",
+      "note": "Badge neutral now maps to the subtle look, matching Tag/Status/Notification; the accent look stays reachable as variant=\"primary\". tone-parity asserts each canonical tone reads from its own token family in all four components, and that neutral is never accent/primary. It checks families rather than exact tokens, because each component legitimately presents tone differently (filled chip, quiet chip, dot, tinted card).",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "charts-ignore-container-height",
+      "title": "ChartFrame's measured-height signal is unreachable, so charts overflow fixed cells",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "E",
+      "guard": "packages/charts/src/core/chart-frame.size.test.tsx",
+      "status": "closed",
+      "note": "ChartFrame's `height` no longer defaults to 300 in the destructure, so `fixedHeight ?? height.value` finally reads the measured signal; the frame is a shrinkable flex item so a constrained parent can hand the plot the space left after the legend. Every pre-existing ChartFrame test passed an explicit height — the one case that was never broken — so the new tests cover the omitted-height path and were demonstrated failing against the old default. computed:check cannot cover this: it renders static markup with no hydration, so no ResizeObserver ever runs.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "shared-prop-doc-false-on-one-component",
+      "title": "Meter carries the shared responsive-width doc but never uses ChartFrame",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "scripts/checks/chart-frame-parity.test.ts",
+      "status": "closed",
+      "note": "Checks the CLAIM, not the shape: a chart whose `width` doc promises container tracking must reach useChartSize (directly or via ChartFrame) and carry a viewBox. A 'must import ChartFrame' rule would have forced Meter — which has no data points and needs none of the frame's tooltip/zoom machinery — into a worse design. Found two more beyond the report: sparkline and bullet both carried the responsive boilerplate while hard-coding a width default, and sparkline's documented default (80) did not match its code (120).",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "cli-installs-stale-versions",
+      "title": "The CLI installs bare package names and resolves to a stale lockfile entry",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "E",
+      "guard": "packages/cli/src/utils/config.test.ts",
+      "status": "closed",
+      "note": "installCommand pins every @cascivo/* to an explicit specifier (@latest, or the registry floor widened to an installable range), with a --pin escape hatch. Non-cascivo packages stay bare — their version is the app's business. installHint delegates to the same function, so the printed recovery command is exactly what the CLI runs; a recovery command that differs from the failed one is a trap.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "doctor-clean-on-a-run-that-did-not-look",
+      "title": "`cascivo doctor` prints 'No violations found' without running the drift check",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "packages/cli/src/commands/doctor.test.ts",
+      "status": "closed",
+      "note": "runDoctorDrift now returns a DriftOutcome, so the default `cascivo doctor` runs it and can still say something honest: when drift cannot run (no lockfile, unreachable registry) it prints 'drift: not checked — <reason>' rather than an unqualified clean. --drift keeps its meaning as drift-only. Also adds a formatter-drift finding for the projects that predate `init` writing the exclusion.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "docs-describe-unreleased-state",
+      "title": "Continuously-deployed docs describe a layer order the published packages do not have",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "C",
+      "guard": "scripts/checks/layer-order.test.ts",
+      "status": "closed",
+      "note": "layer-order already scanned docs/**/*.md and asserts every statement is an ordered subsequence of layers.css, so the layer fact had one owner already — the real gap was version skew. llms.txt now names the exact published package versions it describes, derived from the workspace rather than hand-listed, so a reader comparing against their node_modules can tell in one line whether a documented behaviour has shipped.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "types-react-version-skew",
+      "title": "React types unresolvable from inside a cascivo .d.ts, so every prop vanishes",
+      "reports": [
+        "feedback-incident-console-adopter-2026-07-28.md"
+      ],
+      "plans": [
+        "fix-plan-incident-console-adopter-2026-07-28.md"
+      ],
+      "mechanism": "E",
+      "guard": "isolated:check",
+      "status": "closed",
+      "note": "Reproduced 2026-08-07 after two plans could not. The trigger is pnpm `hoist: false`: the default layout's hidden .pnpm/node_modules supplies React's types by accident, which is why the original fixture passed with the peer REMOVED and concluded the mechanism was unreproducible — it was measuring the hoist. With hoisting off, removing the peer produces `Property 'children' does not exist on type 'CardProps'` for every component: the report verbatim. isolated:check now builds both layouts and the no-hoist case is observed failing on its pre-fix state. The Astro tsconfig hypothesis was checked and disproved.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "deprecation-invisible-until-installed",
+      "title": "A deprecated component is only marked in source, after the adopter has vendored it",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "scripts/checks/deprecation-surfaces.test.ts",
+      "status": "closed",
+      "note": "ComponentMeta now carries `deprecated`, so list/add/MCP/docs all render it at discovery time. The guard asserts the replacement resolves, entry and manifest agree, and each surface reads the field — not merely that the type has it.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "unused-bindings-in-vendored-source",
+      "title": "Vendored source carries dead bindings the adopter's first `tsc --noEmit` reports",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "E",
+      "guard": "tsconfig.base.json",
+      "status": "closed",
+      "note": "noUnusedLocals/noUnusedParameters on, matching the official TanStack Start scaffolder. Found 11, not the 1 reported: five leftover useSignal imports from the useEffectPropSignal migration, a discarded fetchRegistry network call in `cascivo generate`, a fillColor() taking min/max and ignoring them, and SkipNavLink wrapped in forwardRef while never attaching the ref — consumers got null with no type error, and ref-parity had counted it compliant because it checks the wrapper, not the wiring.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "composition-gaps-tabs-menu-link-barrels",
+      "title": "Tabs cannot render links; Menu reads children positionally; Link doubles its external arrow",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "A",
+      "guard": "packages/components/src/tabs/tabs.test.tsx",
+      "status": "closed",
+      "note": "TabsTrigger gains asChild (aschild-docs forces the router-guide entry). Menu and ContextMenu partition children by component identity with a dev-time error naming the contract — which immediately caught a preact-compat test that passed `trigger`/`items` props Menu does not have, rendered nothing, and had been asserting 'no console error' about an empty tree. Link suppresses its generated arrow via :has() when the link ends in its own icon. Barrels are generated for all 138 component dirs, so the 6-of-132 half-convention is gone.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "first-day-facts-missing-from-cli-output",
+      "title": "`cascivo init` prints an incomplete stylesheet wiring, and `add` hides the npm channel",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-tanstack-start-adopter-2026-08-06.md"
+      ],
+      "mechanism": "D",
+      "guard": "scripts/checks/getting-started-contract.test.ts",
+      "status": "closed",
+      "note": "The CLI's own output is now one of the guard's first-day surfaces — for most adopters it is the FIRST surface, since `cascivo init` runs before any doc is opened, and it had never been checked. Adding it immediately demanded the two facts init never printed: useSignals() and the theme bundles. `cascivo add` now announces an npm-channel entry before the install log rather than inside it. Token naming gains --cascivo-font-size-* aliases, so the natural guess resolves instead of being silently dropped by CSS.",
+      "shippedIn": "@cascivo/react@0.16.1"
+    },
+    {
+      "id": "closed-on-main-not-published",
+      "title": "Findings closed in the ledger are unreachable by `pnpm add` for days",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md",
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "G",
+      "guard": "recurrence:shipped",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "The ledger read `Open — 0` while two adopters re-hit four closed findings. Verified from npm rather than assumed: 0.16.1 and CLI 0.7.2 carry the 08-06 fixes and were published 2026-08-10T05:09Z, two days AFTER both reports, which tested the newest version that existed. Rows now carry `shippedIn`, RECURRENCE.md separates \"awaiting release\" from \"shipped\", and recurrence:shipped compares the two against the npm registry."
+    },
+    {
+      "id": "render-phase-prop-mirror",
+      "title": "Components hand-roll the forbidden render-phase prop mirror",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "A",
+      "guard": "primitives:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "CLAUDE.md forbids `const s = useSignal(prop); s.value = prop` and nothing checked it, so DataTable shipped four and controlled selection warned on every click under React 19. The guard found four sites beyond the eight the plan listed (app-shell, search, swap, toc); all twelve migrated. DataTable selection now reads the prop directly — nothing derives from it, so the mirror bought nothing. rows/columns keep a mirror because useComputed memoises across renders: dropping it froze the flow example on stale data while all 1221 unit tests passed."
+    },
+    {
+      "id": "timescale-subday-one-tick",
+      "title": "Sub-day time domains render a single date tick",
+      "reports": [
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "B",
+      "guard": "packages/charts/src/engine/scale-time.test.ts",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "pickInterval had one entry per unit and took the first that fit, accepting a 1-tick undershoot over 23 ticks. Replaced with a step ladder choosing the candidate closest to the requested count in log space. A second, independent defect surfaced while fixing it: TimeScale.tickFormat() was dead code called by nothing, so every time axis fell through to toLocaleDateString() and would have rendered the same date on each tick even with correct ticks."
+    },
+    {
+      "id": "chart-manifests-unguarded",
+      "title": "37 npm-shipped registry entries have never been props-parity checked",
+      "reports": [
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "F",
+      "guard": "meta:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "props-parity and typedefs-parity resolved source through registry files[], which is empty for npm-shipped packages, so both hit `if (tsx.length === 0) continue`. Every chart, flow node and editor was unchecked for the life of the guard — which is why AreaChart.format was real, documented in TSDoc, and invisible to registry.json/llms.txt. Turning it on surfaced 39 undocumented props and 114 missing typeDefs. A per-prefix coverage floor now fails loudly if an entry drops back out."
+    },
+    {
+      "id": "scaffold-lints-nothing",
+      "title": "`cascivo create`'s ESLint config inspects zero TypeScript files",
+      "reports": [
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "F",
+      "guard": "scaffold:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "scaffold-contract had a test named \"pre-wires the react-hooks/immutability escape so lint passes on a fresh app\" that string-matched the config text and passed the whole time. The template registered no TS parser and no `files` pattern, so ESLint 9 skipped every .ts/.tsx. scaffold-lint now runs the REAL ESLint over an app generated by the REAL built CLI and asserts the file count it reported on equals the number of TypeScript files generated, plus a control case (an unused local must error) so the immutability assertion cannot be satisfied by a config that lints nothing."
+    },
+    {
+      "id": "card-no-containing-block",
+      "title": "Card is not `position: relative`; a stretched link covers the viewport",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "A",
+      "guard": "computed:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "The stretched-link idiom is what every dashboard project grid uses. Without a containing block the ::after overlay resolved against the viewport and swallowed every click in the app, silently — found only because a Playwright click timed out. The probe hit-tests a button outside the card."
+    },
+    {
+      "id": "appshell-no-content-padding",
+      "title": "AppShell content sits flush; every adopter writes the same wrapper",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md",
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "A",
+      "guard": "computed:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "Reported three times (07-24, 08-06, 08-08). Documenting it was chosen twice and re-reported twice, so `padding` now DEFAULTS to space step 6 with `none` as the opt-out. The CLI's generated dashboard drops the inline style it used to model the workaround with — the very thing its sibling AGENTS.md forbids."
+    },
+    {
+      "id": "checkbox-decoration-eats-pointers",
+      "title": "Checkbox's decoration intercepts pointer events, breaking .check()",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "A",
+      "guard": "computed:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "The real input is visually hidden beneath the decoration, so every getByRole(checkbox).check() in every adopter suite failed with \"intercepts pointer events\" and needed { force: true }. Real users click the label and never notice, which is why it survived. The probe hit-tests the control centre."
+    },
+    {
+      "id": "unlayered-css-in-cli-templates",
+      "title": "Generated index.html emits unlayered CSS",
+      "reports": [
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "D",
+      "guard": "unlayered:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "unlayered:check globbed packages/**/src/**/*.css, so the one template every adopter starts from was exempt from the rule it teaches — its sibling AGENTS.md says \"never emit it\". The guard now parses <style> blocks inside packages/cli/src/commands/*.ts."
+    },
+    {
+      "id": "prop-name-vocabulary",
+      "title": "Prop NAMES are unpredictable across the catalog",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "A",
+      "guard": "meta:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "Nine wrong guesses in one small dashboard; gap=\"4\" alone cost 20 type errors. vocabulary.test.ts already guarded prop VALUES (Tone/Progress) and now guards NAMES too. `type BadgeShape` — a type named for a prop that does not exist, sitting directly above BadgeProps in the .d.ts — is renamed BadgeVariant, and the `<X>Shape` rule was demonstrated failing on it. The contract is published in AI-RULES.md, llms.txt and CLAUDE.md."
+    },
+    {
+      "id": "link-item-id-parity",
+      "title": "Link-shaped item types lack `id`, forcing href keys",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "D",
+      "guard": "meta:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "Three sibling teams all linking to \"/\" produced React duplicate-key warnings on every render. SideNavItem, ShellHeaderNavLink and four others gained `id` in an earlier sweep; Switcher was missed. The guard asserts each link-shaped type declares it AND that the component keys on it rather than merely declaring it."
+    },
+    {
+      "id": "scaffold-build-skips-typecheck",
+      "title": "Scaffolded `build` could go green with type errors",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "D",
+      "guard": "scaffold:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "Reported against the adopter's own project, not the scaffold: `vite build` passed while 37 type errors sat in the tree, because tsc is not part of it. The scaffold already ran `tsc && vite build`, so nothing needed fixing — but nothing asserted it either, so it could regress silently. scaffold-contract now requires `build` to invoke tsc, alongside the lint/typecheck/format scripts."
+    },
+    {
+      "id": "zebra-token-aliased-to-surface",
+      "title": "DataTable zebra striping paints rows the colour they already are",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "E",
+      "guard": "computed:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "Reported as \"no visible effect in the dark theme\"; it was worse and not theme-specific. Every theme aliases --cascivo-color-bg-subtle straight to --cascivo-color-surface, so striping a table that sits on a surface — a table in a Card, the normal composition — was a no-op with measured ΔL of exactly 0.0000 in all three themes. Replaced with a translucent foreground overlay that darkens on light themes and lightens on dark. Only observable in a browser: the declaration looks correct in source, and the first replacement named a token that does not exist, which computes to transparent and is indistinguishable from the original bug except by measuring painted alpha."
+    },
+    {
+      "id": "button-icon-label-no-gap",
+      "title": "An icon composed next to a label inside a Button renders touching",
+      "reports": [
+        "feedback-vercel-dashboard-tanstack-start-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "A",
+      "guard": "computed:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "All children go into ONE inner span, so the button's flex `gap` applied between the loading Spinner and that wrapper and never between an icon and its label. The wrapper is now a flex row inheriting the gap, so composing an icon with a label needs no adopter CSS — which also removes the reason to write layout CSS against the undocumented `> span`."
+    },
+    {
+      "id": "griditem-child-does-not-stretch",
+      "title": "A Card inside a spanning GridItem leaves a hole in the row",
+      "reports": [
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "E",
+      "guard": "computed:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "The GridItem stretched to the row height (the grid's align-items: stretch) but, as a plain block container, could not pass that height to its child. Making it a grid container stretches the child by default, which is what an adopter already expects from the row. Reported as \"Grid's align prop didn't fix it\" — correctly, because the item was never the element failing to stretch."
+    },
+    {
+      "id": "field-rows-absorb-grid-slack",
+      "title": "Fields in a Grid row put their inputs at different heights",
+      "reports": [
+        "feedback-vercel-dashboard-react-router-adopter-2026-08-08.md"
+      ],
+      "plans": [
+        "fix-plan-adopter-pair-2026-08-08.md"
+      ],
+      "mechanism": "E",
+      "guard": "computed:check",
+      "status": "closed",
+      "shippedIn": null,
+      "note": "Reproduced at 13.6px, but not for the reported reason: Field renders label -> control -> description, so the description sits BELOW the input and cannot push it down. The cause was .field being a grid with the default align-content: stretch, so as a cell in a taller row its rows absorbed the slack and a three-row field distributed it differently from a two-row one. align-content: start pins them to their natural sizes."
+    },
+    {
+      "id": "router-guide-unpublished",
+      "title": "A guide is content-guarded and unpublished, so its `.d.ts` pointers 404",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "D",
+      "guard": "meta:check",
+      "status": "closed",
+      "note": "docs/USING-WITH-A-ROUTER.md was registered in doc-surface.test.ts as the surface carrying the active-item prefix-matching fact, and aschild-docs regenerated a table INSIDE it on every CI run, while it was absent from the GUIDES array — so it reached no cascivo.com URL, no `npx @cascivo/docs` slug and no SPA route. link.tsx, link.meta.ts and tabs.tsx all told adopters to read it. Surfaces are now classified: a docs/*.md surface must be in GUIDES, and a repo-relative doc path baked into published source (TSDoc becomes the .d.ts, .meta.ts becomes registry.json) must resolve to a published guide — nothing rewrites those on the way out, unlike links inside the guides. The first guard immediately found docs/TESTING.md; the second found docs/CSS-LAYERS-PITFALL.md (cited by @cascivo/react's own npm README) and docs/THIRD-PARTY-CSS.md. 17 published guides -> 21.",
+      "shippedIn": null
+    },
+    {
+      "id": "sparkline-default-mismatch-survived-closure",
+      "title": "A default documented as 80 and applied as 120 survived being found and \"closed\"",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "F",
+      "guard": "meta:check",
+      "status": "closed",
+      "note": "prop-defaults-parity carries a test named \"no documented default contradicts the signature\" with an empty allowlist, and it was green the whole time: it resolved source through the registry entry's files[], which is empty for every npm-shipped entry, so the loop body was dead for all 37. That is the same branch migrated to resolveEntrySources() for props-parity and typedefs-parity on 08-08; this third consumer was missed, which is why the mismatch was found on 08-06, written into the ledger as closed, and re-reported on 08-14. Migrated and observed failing on chart/sparkline. Turning it on surfaced 13 more undocumented defaults across charts and flow. The sweep found a FOURTH consumer of the same branch — handler-naming-parity — so the event-handler naming rule had never been checked against a single chart. Coverage floors ported, measured on source resolution rather than on how many entries happen to apply a default.",
+      "shippedIn": null
+    },
+    {
+      "id": "catalog-types-unimportable-path-b",
+      "title": "Catalog-wide vocabulary types are unimportable on the prebuilt path",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "D",
+      "guard": "type-exports:check",
+      "status": "closed",
+      "note": "path-a-parity and path-b-parity both check VALUES; nothing checked TYPES, and a missing type export is invisible — everything compiles, the adopter just cannot name the type of a prop they must pass. ToneInput, the type of Status.status and Badge.variant, was reachable on neither path. The report called it a one-line export; it is not — both a separate `export type` statement and folding the names into the existing core re-export make the dts bundler emit `ToneInput as ToneInput$1`, after which every prop reads the aliased name and check-styles-complete fails the build. Measured both, then shipped @cascivo/react/types, a types-only subpath with no collision. The new guard derives every core name the published surface references from the built .d.ts and found NavigationMenu.orientation (RovingOrientation) on its first run.",
+      "shippedIn": null
+    },
+    {
+      "id": "link-item-id-sweep-missed-again",
+      "title": "A link-shaped item type is missed by the `id` sweep, again",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "B",
+      "guard": "meta:check",
+      "status": "closed",
+      "note": "The guard that closed the Switcher miss enumerated its five subjects by hand, so BreadcrumbItem slipped through exactly as Switcher had — the same failure one level up. Subjects are now DERIVED from the source shape (an exported interface with `label` and optional `href`), with the hand list kept only as a fixture that fails if discovery stops finding the known ones. The derived sweep found a third instance on its first run that no report mentioned: DockItem, keying on the raw array index.",
+      "shippedIn": null
+    },
+    {
+      "id": "scaffold-ships-aggregate-stylesheet",
+      "title": "The scaffold hands every new app the 273 kB aggregate stylesheet",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "A",
+      "guard": "scaffold:check",
+      "status": "closed",
+      "note": "getting-started describes the aggregate sheet as the no-bundler option, and the Vite scaffold imported it anyway, so every new app started from the heavier baseline for nothing. Dropped, with the trade named in a comment so the next reader does not re-add it. Two assertions, both demonstrated firing: no aggregate import, and a theme import must still be present — themes are the one stylesheet no package imports for you, so dropping the aggregate must not quietly drop colour. Measured on a real generated app: 39.65 kB entry CSS (6.90 kB gzip).",
+      "shippedIn": null
+    },
+    {
+      "id": "create-prints-wrong-package-manager",
+      "title": "`cascivo create` prints npm inside a pnpm workspace",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "D",
+      "guard": "packages/cli/src/utils/config.test.ts",
+      "status": "closed",
+      "note": "detectPackageManager consulted npm_config_user_agent BEFORE the lock-file walk-up. Right for init/add, which run inside an existing project; wrong for create, where `npx` always reports an npm agent no matter what the surrounding workspace uses. create now passes preferLockfileOverUserAgent — where the project lands beats which launcher started the CLI — and the empty-directory case still falls back to the launcher. Both directions tested.",
+      "shippedIn": null
+    },
+    {
+      "id": "charts-css-required-or-redundant",
+      "title": "One CSS-loading story per package, three answers in the docs",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "C",
+      "guard": "meta:check",
+      "status": "closed",
+      "note": "Established from the built artifacts, not assumed: packages/charts/dist/index.js line 2 imports ./charts.css and the node twin has none, so css-contract's C11 fix did land and the explicit import is redundant on a bundler build. Three surfaces still called it required, describing the pre-fix world. The honest answer is per-path and saying so IS the fix: automatic on a bundler, required with no bundler, required on an SSR setup that externalises deps — where the CSS-free node twin loads and skipping it renders the screen-reader data-table fallback visibly. Now one table in getting-started, registered as a doc-surface fact.",
+      "shippedIn": null
+    },
+    {
+      "id": "dts-tsdoc-unguarded",
+      "title": "No guard asserts the shipped `.d.ts` keeps the docs it is praised for",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "A",
+      "guard": "dts-tsdoc:check",
+      "status": "closed",
+      "note": "Report §5 claimed Toggle.label's .d.ts entry was bare. Reproduce-first disproved both hypotheses: `npm pack @cascivo/react@0.17.0` — the exact artifact the adopter installed — carries the full four-line note, 749 source<->dist prop pairs compare clean with zero stripped, and 0.17.0 postdates the note. So no defect, and no labelVisibility prop. But adopters keep naming the shipped .d.ts as cascivo's best documentation surface and nothing asserted the build carries the comments through; a removeComments regression would still typecheck and leave every guard green. Guard added and demonstrated failing against a mutated dist, where it names Toggle.label. Scoped to build integrity: the 235-of-445 props with a manifest description but no source TSDoc are an authoring gap, tracked separately.",
+      "shippedIn": null
+    },
+    {
+      "id": "label-visibility-is-a-coin-flip",
+      "title": "`label` renders visibly on 25 components and is a11y-only on 8, unstated",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "A",
+      "guard": "meta:check",
+      "status": "closed",
+      "note": "The adopter's inference was reasonable — they learned `label` from Sparkline, where it is explicitly an invisible accessible name, and passed it to Toggle, which rendered the string next to the switch and duplicated the settings row's own title. Surveying the catalog, neither behaviour is rare and the rule was written down nowhere. Now published in the AI-RULES vocabulary table (visible by default; ariaLabel never visible; omit label when a row already has a heading) and enforced: a `label` prop whose manifest description states neither fails meta:check. That found nine silent ones.",
+      "shippedIn": null
+    },
+    {
+      "id": "pageheader-title-string-only",
+      "title": "PageHeader.title is `string`, so no page title can contain a link or badge",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "A",
+      "guard": "packages/layouts/src/page-header/page-header.test.tsx",
+      "status": "closed",
+      "note": "breadcrumb and actions were ReactNode while title and description were string, and RECIPE-DASHBOARD tells adopters not to hand-compose PageHeader — so the canonical deploy-console header (project name + status badge, domain as a link) had no sanctioned form. Widened after checking for string-dependent uses; there are none, it renders straight into the h1.",
+      "shippedIn": null
+    },
+    {
+      "id": "codesnippet-rejects-children",
+      "title": "CodeSnippet takes `code`, not children, alone among content components",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "A",
+      "guard": "packages/components/src/code-snippet/code-snippet.test.tsx",
+      "status": "closed",
+      "note": "The only compile error in the adopter's whole build. Children now work as an alias, with `code` winning if both are given and a dev-time error when neither is. It stays typed string rather than ReactNode and the TSDoc now says why — the content is tokenized for highlighting and handed to the clipboard, so nodes would silently produce an uncopyable snippet. The missing `why` was the actual defect; the shape was defensible and unexplained.",
+      "shippedIn": null
+    },
+    {
+      "id": "chart-example-omits-required-datum-key",
+      "title": "A manifest example builds a chart datum without its required keys",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "B",
+      "guard": "meta:check",
+      "status": "closed",
+      "note": "PieChart's \"Basic pie chart\" example — the first one an adopter copies — omitted the id that PieChartDatum requires, while a later example on the same page included it. example-props validated props ON the component and never looked inside data={[{…}]}. Fixing it surfaced a second, independent defect: the manifest's typeDefs declared id as required:false while the source has `id: string`, so every generated props table said optional. Both classes now guarded — required datum keys in examples, and typeDefs field required-ness against the source interface. Each found exactly one instance catalog-wide.",
+      "shippedIn": null
+    },
+    {
+      "id": "stat-kpi-still-look-different",
+      "title": "`Stat card` and `Kpi` share chrome and still read as two tile designs",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "A",
+      "guard": "meta:check",
+      "status": "closed",
+      "note": "Reported as the symptom the `card` prop was introduced to cure. Verified: the card TSDoc was already accurate — it says surface, border, radius, padding — and the layouts genuinely differ (Kpi puts value and delta on one line with the sparkline below; Stat stacks value, delta, help text with visual trailing). Not converged: different packages, different data shapes (Stat.delta is a pre-formatted string, Kpi.delta a number it formats), out of proportion to the finding. What was missing was the decision, which now appears on both components and the recipe: card matches the chrome and NOT the layout, so pick one per app.",
+      "shippedIn": null
+    },
+    {
+      "id": "scaffold-welds-shell-to-section-switcher",
+      "title": "`cascivo create` models \"no router\" as the default architecture",
+      "reports": [
+        "feedback-vercel-dashboard-vite-react-router-adopter-2026-08-14.md"
+      ],
+      "plans": [
+        "fix-plan-vercel-dashboard-vite-react-router-2026-08-14.md"
+      ],
+      "mechanism": "A",
+      "guard": "scaffold:check",
+      "status": "closed",
+      "note": "The generated App.tsx welded the shell composition — the valuable part — to a module-level signal section switcher, so a router prompt meant deleting most of what create generated and re-deriving the wiring by hand. The shell is now its own Shell.tsx with a children slot and no router opinion; adding a router means deleting App.tsx and src/sections/ and rendering <Shell> from the route layout. The migration is spelled out in the generated README, AGENTS.md and the CLI's next-steps output. A --router flag was considered and deferred to the roadmap: three router templates is three more surfaces to keep green.",
+      "shippedIn": null
+    }
+  ]
 }

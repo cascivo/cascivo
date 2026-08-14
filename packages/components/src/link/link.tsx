@@ -22,7 +22,8 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
    * styling lands on your router's `Link`. **This is the supported way to style an
    * in-content router link** — `setLinkComponent` only covers the config-driven nav
    * components (SideNav, ShellHeader, Breadcrumb, …), not links you write in page
-   * content. See `docs/USING-WITH-A-ROUTER.md`.
+   * content. See https://cascivo.com/docs/using-with-a-router.md — offline:
+   * `npx -y @cascivo/docs guide using-with-a-router`.
    *
    * ```tsx
    * <Link asChild><RouterLink to="/projects/a">Project A</RouterLink></Link>

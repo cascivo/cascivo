@@ -17,6 +17,11 @@ export interface StatusProps extends HTMLAttributes<HTMLSpanElement> {
    * Severity tone. Accepts the catalog-wide `Tone` vocabulary
    * (`neutral | info | success | warning | danger`) plus Status's historical spellings
    * (`error`, `destructive`, `default`).
+   *
+   * To name this type in your own code — a `Record<DeployState, Tone>` is the usual shape —
+   * import it: `import type { Tone } from '@cascivo/react/types'` on the prebuilt path, or
+   * from `@cascivo/core` if you copied the source. Do not add `@cascivo/core` to a prebuilt
+   * app just for this; it is a transitive dependency there.
    */
   status?: ToneInput
   /**

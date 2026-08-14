@@ -322,10 +322,14 @@ function componentMarkdown(
     lines.push('```tsx')
     lines.push(`import { ${exportName} } from '${entry.install}'`)
     if (entry.styles) {
+      // Not "required": the package entry imports its own stylesheet, so a bundler already
+      // has it. It IS required on a no-bundler or SSR-externalised build, where the CSS-free
+      // `node` twin is what loads (2026-08-14 §10 — two packages, opposite stated defaults).
       const note =
         entry.type === 'chart'
-          ? 'required — without it the screen-reader data-table fallback renders visibly'
-          : 'required stylesheet'
+          ? 'bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where ' +
+            'skipping it renders the screen-reader data-table fallback visibly'
+          : 'bundler: automatic. Needed only for no-bundler / SSR-externalised builds'
       lines.push(`import '${entry.styles}' // ${note}`)
     }
     lines.push('```')
@@ -778,13 +782,22 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('`@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.')
   lines.push('')
   lines.push(
-    'Charts, the code editor, and flow ship their own stylesheet: when you use them, import the',
+    'Charts, the code editor, and flow ship their own stylesheet — and import it themselves, so on',
   )
-  lines.push("matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise")
   lines.push(
-    '`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a',
+    'a BUNDLER build there is nothing to add: `dist/index.js` starts with `import "./charts.css"`.',
   )
-  lines.push("common mistake: the chart's screen-reader data-table fallback then renders visibly.")
+  lines.push("Import `'@cascivo/charts/styles.css'` (likewise `@cascivo/editor/styles.css`,")
+  lines.push(
+    '`@cascivo/flow/styles.css`) only for a NO-BUNDLER build, or an SSR setup that externalises',
+  )
+  lines.push(
+    'dependencies — there the CSS-free `node` export condition loads and nothing pulls the sheet in.',
+  )
+  lines.push(
+    "Skipping it on those paths renders the chart's screen-reader data-table fallback visibly.",
+  )
+  lines.push('Importing it when you did not need to is harmless; the bundler dedupes it.')
   lines.push('')
   // SSR: state the CURRENT truth first. This block used to lead with "Two required steps:
   // ssr.noExternal …", which stopped being true at @cascivo/react 0.10 — and llms.txt is the
@@ -869,6 +882,63 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     '`@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;`',
   )
   lines.push(`Full recipe: ${REPO}/blob/main/docs/CSS-LAYERS-PITFALL.md.`)
+  lines.push('')
+  lines.push('## Shared vocabulary types (importing Tone / SpaceStep)')
+  lines.push('')
+  lines.push(
+    '`Status.status` and `Badge.variant` are typed `ToneInput`; every layout `gap` is a numeric',
+  )
+  lines.push('`SpaceStep`. To name those types — e.g. a `Record<DeployState, Tone>` map, which')
+  lines.push('almost every dashboard writes:')
+  lines.push('')
+  lines.push("- Prebuilt path: `import type { Tone } from '@cascivo/react/types'`")
+  lines.push("- Copied-source path: `import type { Tone } from '@cascivo/core'`")
+  lines.push('')
+  lines.push(
+    'The subpath exports Tone, ToneAlias, ToneInput, Progress, ProgressAlias, ProgressInput,',
+  )
+  lines.push(
+    'SpaceStep, RovingOrientation. Do NOT add @cascivo/core to a prebuilt app to reach them —',
+  )
+  lines.push('it is a transitive dependency there and pinning it creates a lockstep-version trap.')
+  lines.push('')
+  lines.push('## Routing (two kinds of link, wired two different ways)')
+  lines.push('')
+  lines.push(
+    'Getting this wrong is the single most-reported friction in adopter reports. There is no',
+  )
+  lines.push('third mechanism — do not intercept `onClick`, and do not wrap nav items by hand.')
+  lines.push('')
+  lines.push(
+    '1. **Config-driven navs** (SideNav, ShellHeader, Breadcrumb, Switcher, Dock) render through a',
+  )
+  lines.push('   module singleton. Register your router `Link` ONCE at app startup:')
+  lines.push('   ```tsx')
+  lines.push("   import { setLinkComponent } from '@cascivo/react'")
+  lines.push("   import type { LinkComponentProps } from '@cascivo/react'")
+  lines.push("   import { Link } from 'react-router' // or '@tanstack/react-router'")
+  lines.push(
+    "   setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)",
+  )
+  lines.push('   ```')
+  lines.push(
+    "   React Router's `to` is required, so supply a fallback — cascivo passes `href: undefined`",
+  )
+  lines.push("   for a disabled item. Next.js's `Link` takes `href`, so `setLinkComponent(Link)`.")
+  lines.push(
+    '2. **Links you write in page content** use `asChild`, which puts cascivo styling on YOUR element:',
+  )
+  lines.push('   ```tsx')
+  lines.push('   <Link asChild><RouterLink to="/projects/alpha">alpha</RouterLink></Link>')
+  lines.push('   ```')
+  lines.push(
+    '   `Button`, `TabsTrigger` and the other `asChild`-capable components take the same treatment —',
+  )
+  lines.push('   URL-driven tabs should be real anchors, not `onValueChange` navigations.')
+  lines.push('')
+  lines.push(
+    `Full guide (active-item prefix matching, URL-driven tabs, what \`asChild\` guarantees): ${SITE}/docs/using-with-a-router.md`,
+  )
   lines.push('')
   lines.push('## Reactivity & state (signals, not React hooks)')
   lines.push('')
@@ -977,6 +1047,9 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Reactivity & headless behavior primitives: ${SITE}/docs/headless.md`)
   lines.push(
     `- Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): ${SITE}/docs/enterprise-readiness.md`,
+  )
+  lines.push(
+    `- Using cascivo with a router (React Router / TanStack Router / Next.js): ${SITE}/docs/using-with-a-router.md`,
   )
   lines.push(`- Theming & branding: ${SITE}/docs/theming.md`)
   lines.push(`- Using cascivo with Preact: ${SITE}/docs/using-with-preact.md`)

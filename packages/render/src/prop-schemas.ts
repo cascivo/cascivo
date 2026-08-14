@@ -1336,7 +1336,12 @@ export const propSchemas: Record<string, PropSchema[]> = {
   CodeSnippet: [
     {
       name: 'code',
-      required: true,
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'children',
+      required: false,
       primitives: ['string'],
     },
     {
@@ -4400,12 +4405,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'title',
       required: true,
-      primitives: ['string'],
     },
     {
       name: 'description',
       required: false,
-      primitives: ['string'],
     },
     {
       name: 'breadcrumb',

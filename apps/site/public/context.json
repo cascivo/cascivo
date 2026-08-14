@@ -5324,6 +5324,7 @@
           "type": "string",
           "required": false,
           "description": "Colour for up candles (close ≥ open).",
+          "default": "'var(--cascivo-chart-2)'",
           "schema": {
             "kind": "string"
           }
@@ -5333,6 +5334,7 @@
           "type": "string",
           "required": false,
           "description": "Colour for down candles (close < open).",
+          "default": "'var(--cascivo-chart-4)'",
           "schema": {
             "kind": "string"
           }
@@ -5515,6 +5517,7 @@
           "type": "boolean",
           "required": false,
           "description": "Render line on a secondary right y-axis",
+          "default": "false",
           "schema": {
             "kind": "boolean"
           }
@@ -5580,6 +5583,7 @@
           "type": "string",
           "required": false,
           "description": "Legend label for the bar series.",
+          "default": "'Bars'",
           "schema": {
             "kind": "string"
           }
@@ -5607,6 +5611,7 @@
           "type": "string",
           "required": false,
           "description": "Legend label for the line series.",
+          "default": "'Line'",
           "schema": {
             "kind": "string"
           }
@@ -5810,6 +5815,7 @@
           "type": "string",
           "required": false,
           "description": "Suffix after the centre value.",
+          "default": "''",
           "schema": {
             "kind": "string"
           }
@@ -6076,7 +6082,7 @@
           "name": "label",
           "type": "string",
           "required": true,
-          "description": "X-axis label",
+          "description": "X-axis label — rendered visibly beneath the axis.",
           "schema": {
             "kind": "string"
           }
@@ -6184,7 +6190,7 @@
           "name": "label",
           "type": "string",
           "required": true,
-          "description": "Metric label",
+          "description": "Metric label — rendered visibly at the top of the tile.",
           "schema": {
             "kind": "string"
           }
@@ -6766,6 +6772,7 @@
           "type": "boolean",
           "required": false,
           "description": "Render as donut chart",
+          "default": "false",
           "schema": {
             "kind": "boolean"
           }
@@ -7729,7 +7736,7 @@
           "description": "SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide \"omit for a responsive chart\" note does not apply to this chart.",
           "type": "number",
           "required": false,
-          "default": "80",
+          "default": "120",
           "schema": {
             "kind": "number"
           }
@@ -7749,6 +7756,7 @@
           "type": "string",
           "required": false,
           "description": "Stroke color (CSS value)",
+          "default": "'var(--cascivo-chart-1)'",
           "schema": {
             "kind": "string"
           }
@@ -7758,6 +7766,7 @@
           "type": "boolean",
           "required": false,
           "description": "Show dot at last data point",
+          "default": "true",
           "schema": {
             "kind": "boolean"
           }
@@ -8565,9 +8574,18 @@
       "props": [
         {
           "name": "code",
-          "description": "The code to display (and copy).",
+          "description": "The code to display (and copy). Equivalent to passing a plain string as `children`; `code` wins if both are given, and one of the two is required. A string rather than a ReactNode because the content is tokenized for highlighting and handed to the clipboard.",
           "type": "string",
-          "required": true,
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "children",
+          "description": "The code, as children — `<CodeSnippet>npm i foo</CodeSnippet>`. Must be a plain string (interpolation is fine, arbitrary elements are not).",
+          "type": "string",
+          "required": false,
           "schema": {
             "kind": "string"
           }
@@ -10149,7 +10167,7 @@
           "name": "label",
           "type": "string",
           "required": false,
-          "description": "Field label",
+          "description": "Visible field label rendered above the input; it also names the control.",
           "schema": {
             "kind": "string"
           }
@@ -11712,7 +11730,7 @@
           "name": "label",
           "type": "string",
           "required": false,
-          "description": "Field label",
+          "description": "Visible field label rendered above the drop zone; it also names the control.",
           "schema": {
             "kind": "string"
           }
@@ -12640,6 +12658,7 @@
           "type": "'forward' | 'reverse' | undefined",
           "required": false,
           "description": "Direction the dash travels when animated.",
+          "default": "'forward'",
           "schema": {
             "kind": "other"
           }
@@ -12658,6 +12677,7 @@
           "type": "HandlePosition | undefined",
           "required": false,
           "description": "Handle side the edge leaves from.",
+          "default": "'right'",
           "schema": {
             "kind": "other"
           }
@@ -12667,6 +12687,7 @@
           "type": "HandlePosition | undefined",
           "required": false,
           "description": "Handle side the edge arrives at.",
+          "default": "'left'",
           "schema": {
             "kind": "other"
           }
@@ -13295,6 +13316,7 @@
           "type": "boolean",
           "required": false,
           "description": "Render the dotted background pane behind the flow.",
+          "default": "true",
           "schema": {
             "kind": "boolean"
           }
@@ -15648,20 +15670,20 @@
       "props": [
         {
           "name": "title",
-          "type": "string",
+          "type": "ReactNode",
           "required": true,
-          "description": "Page title",
+          "description": "Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`.",
           "schema": {
-            "kind": "string"
+            "kind": "node"
           }
         },
         {
           "name": "description",
-          "type": "string",
+          "type": "ReactNode",
           "required": false,
-          "description": "Supporting description",
+          "description": "Supporting line under the title, rendered as a `<p>`. Accepts nodes.",
           "schema": {
-            "kind": "string"
+            "kind": "node"
           }
         },
         {
@@ -16026,7 +16048,7 @@
         },
         {
           "name": "asChild",
-          "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See docs/USING-WITH-A-ROUTER.md.",
+          "description": "Render the single child element instead of cascivo's own `<a>`, so the link styling lands on your router's Link. ⚠ This — not `setLinkComponent` — is how you style an in-content link in a routed app; `setLinkComponent` only covers the config-driven navs. See https://cascivo.com/docs/using-with-a-router.md.",
           "type": "boolean",
           "required": false,
           "default": "false",
@@ -16396,7 +16418,7 @@
           "name": "label",
           "type": "ReactNode",
           "required": true,
-          "description": "Trigger button content",
+          "description": "Visible content rendered inside the trigger button.",
           "schema": {
             "kind": "node"
           }
@@ -21392,7 +21414,7 @@
           "name": "label",
           "type": "string",
           "required": true,
-          "description": "What the metric measures",
+          "description": "What the metric measures — rendered visibly above the value.",
           "schema": {
             "kind": "string"
           }

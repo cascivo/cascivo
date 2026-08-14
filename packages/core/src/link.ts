@@ -65,10 +65,19 @@ let linkComponent: LinkComponent = 'a'
  * import type { LinkComponentProps } from '@cascivo/react' // or '@cascivo/core' for copied source
  * setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)
  *
+ * // React Router — its Link takes `to`, and `to` is REQUIRED, so supply a fallback
+ * // for the disabled-item case where cascivo passes `href: undefined`:
+ * import { Link } from 'react-router'
+ * import type { LinkComponentProps } from '@cascivo/react' // or '@cascivo/core' for copied source
+ * setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)
+ *
  * // Next.js — its Link takes `href` directly:
  * import Link from 'next/link'
  * setLinkComponent(Link)
  * ```
+ *
+ * Full guide: https://cascivo.com/docs/using-with-a-router.md — offline:
+ * `npx -y @cascivo/docs guide using-with-a-router`.
  */
 // Overload 1: an inline function adapter. The parameter is contextually typed as
 // LinkComponentProps, so `({ href, ...rest }) => <Link to={href} {...rest} />`

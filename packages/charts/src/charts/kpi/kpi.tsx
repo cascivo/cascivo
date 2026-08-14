@@ -47,6 +47,23 @@ function formatDelta(delta: number, format: KpiProps['deltaFormat']): string {
   return format === 'percent' ? `${sign}${n}%` : `${sign}${n}`
 }
 
+/**
+ * A metric tile with its own card chrome: label, then value and delta on one line, then an
+ * optional sparkline below.
+ *
+ * ## `Kpi` or `Stat`? Pick one per app.
+ *
+ * `Stat` (`@cascivo/react`) is the sibling tile, and they are **not two skins of one
+ * component**. `Kpi` takes a numeric `delta` and formats it for you (sign, arrow, colour,
+ * unit) and always brings card chrome. `Stat` takes a pre-formatted `string` delta, stacks
+ * value → delta → help text, puts its `visual` in a trailing slot, and is layout-only unless
+ * you set `card`.
+ *
+ * `<Stat card>` matches this component's **chrome** — surface, border, radius, padding — and
+ * not its layout, so a `Stat` row and a `Kpi` row in one app still read as two tile designs
+ * (2026-08-14 report §6). Use `Kpi` when you have a numeric delta and a sparkline; use `Stat`
+ * otherwise; do not mix them.
+ */
 export function Kpi({
   value,
   label,

@@ -197,7 +197,7 @@ in page content (a project name in a card title, a branch in a table cell) is st
 A bare `<Link href="/x">` in a routed app is a full page reload, and copying cascivo's link
 CSS into your own layer drifts on every release — override `--cascivo-link-color` instead.
 Full guide, including every `asChild`-capable component:
-[USING-WITH-A-ROUTER.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-A-ROUTER.md).
+[USING-WITH-A-ROUTER.md](/docs/using-with-a-router.md).
 
 ## Recipe: an accessible menu from primitives
 

@@ -41,7 +41,7 @@ import { MenuButton } from '@cascivo/react'
 
 | Prop       | Type                                  | Required | Default       | Description                                             |
 | ---------- | ------------------------------------- | -------- | ------------- | ------------------------------------------------------- |
-| `label`    | `ReactNode`                           | yes      | —             | Trigger button content                                  |
+| `label`    | `ReactNode`                           | yes      | —             | Visible content rendered inside the trigger button.     |
 | `items`    | `MenuButtonItem[]`                    | yes      | —             | Action items: { id, label, onSelect?, disabled? }       |
 | `variant`  | `'primary' \| 'secondary' \| 'ghost'` | no       | `'secondary'` | Trigger visual variant                                  |
 | `size`     | `'sm' \| 'md' \| 'lg'`                | no       | `'md'`        | Trigger size                                            |

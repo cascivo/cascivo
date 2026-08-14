@@ -180,6 +180,14 @@ import a component — your bundler includes styles only for the components you
 use. There is no component-CSS import to add. (No bundler at all? Import the
 aggregate `@cascivo/react/styles.css` instead.)
 
+> **Typing a status map?** The shared vocabulary types ship from a subpath:
+> `import type { Tone } from '@cascivo/react/types'` (also `Progress`, `SpaceStep`,
+> `RovingOrientation` and the `*Input`/`*Alias` spellings). `Status.status` and
+> `Badge.variant` are typed with these, so a `Record<DeployState, Tone>` is the
+> supported way to map your domain states onto them. **Do not add `@cascivo/core`**
+> to reach them — on this path it is a transitive dependency, and pinning it puts
+> you in a two-package lockstep.
+
 > **Server-rendering with Vite (TanStack Start, Remix, vite-ssr, workerd)?** On
 > `@cascivo/react` **0.10+** SSR works with **zero Vite config** — the package ships
 > a CSS-free `node`-condition build that a bare server loader imports cleanly. The
@@ -314,6 +322,35 @@ contains the themes you actually set:
 `ThemeProvider` warns in dev when you set a `data-theme` whose CSS is not loaded, naming
 the import to add.
 
+### Which stylesheets do I import?
+
+Themes are always yours to import. **Component CSS is not** — every cascivo package that
+ships components imports its own stylesheet from its entry, so a bundler pulls it in when
+you import the component and tree-shakes what you don't use.
+
+The exception is the `node` export condition. Vite-SSR frameworks externalise dependencies
+on the server, and a bare `.css` side-effect import is unloadable by a plain Node ESM loader
+(`ERR_UNKNOWN_FILE_EXTENSION`) — so cascivo ships a CSS-free `node/` twin for those packages.
+On that path nothing loads the CSS for you, and you import the sheet yourself.
+
+| Package | Bundler (Vite/Next/webpack) | No bundler | SSR, externalised (`node` condition) |
+| --- | --- | --- | --- |
+| `@cascivo/themes` | **always import a bundle** | same | same |
+| `@cascivo/react` | automatic per component | `@cascivo/react/styles.css` | `@cascivo/react/styles.css` |
+| `@cascivo/charts` | automatic (`dist/index.js` imports `./charts.css`) | `@cascivo/charts/styles.css` | `@cascivo/charts/styles.css` |
+
+> **`@cascivo/charts/styles.css` is redundant on a bundler build, not required.** It used to
+> be required — until 0.14 the charts entry never imported its own sheet and charts rendered
+> unstyled — and several docs still said so after the fix. Importing it anyway is harmless
+> (the bundler dedupes it), so if you are unsure, import it. What you must not do is *skip*
+> it on an SSR/externalised setup: the chart's screen-reader data-table fallback is hidden by
+> that stylesheet, so without it the fallback renders visibly as a table of numbers under
+> every chart.
+>
+> Enforced by `pnpm css-contract:check`: a package that ships a stylesheet and declares
+> `sideEffects: ["**/*.css"]` must import it from its entry **and** ship the CSS-free `node`
+> twin. Fixing only the first half trades a styling bug for an SSR blocker.
+
 ### Runtime switching & SSR (no-flash)
 
 For a user-selectable theme, use the runtime from `@cascivo/react`:
@@ -391,6 +428,37 @@ export function App() {
 
 ---
 
+## Wiring your router
+
+If your app has a router — most do — wire it **once**, at startup, before the nav
+components render anything:
+
+```tsx
+import { setLinkComponent } from '@cascivo/react'
+import type { LinkComponentProps } from '@cascivo/react'
+import { Link } from 'react-router' // or '@tanstack/react-router'
+
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)
+```
+
+That one call makes `SideNav`, `ShellHeader`, `Breadcrumb`, `Switcher` and `Dock` render
+real router links — client-side navigation, and still real `<a>`s, so middle-click and
+open-in-new-tab keep working.
+
+It does **not** cover links you write yourself in page content. Those use `asChild`:
+
+```tsx
+<Link asChild>
+  <RouterLink to="/projects/alpha">alpha</RouterLink>
+</Link>
+```
+
+Two kinds of link, two mechanisms — the most-reported friction in adopter reports.
+Full guide, including active-item matching and URL-driven tabs:
+[USING-WITH-A-ROUTER.md](./USING-WITH-A-ROUTER.md).
+
+---
+
 ## State: call `useSignals()` in your own components
 
 **Read this before you write a component that holds state.** It is the single most likely
@@ -440,6 +508,10 @@ Full reactivity model, including which React hooks map to which cascivo primitiv
 
 ## Where to go next
 
+- [USING-WITH-A-ROUTER.md](./USING-WITH-A-ROUTER.md) — **any router** (React Router,
+  TanStack Router, Next.js). cascivo links come in two kinds wired two different ways:
+  `setLinkComponent` for the config-driven navs (SideNav, ShellHeader, Breadcrumb) and
+  `<Link asChild>` for links you write in page content. Read this before writing any link.
 - [RECIPE-DASHBOARD.md](./RECIPE-DASHBOARD.md) — building a console/dashboard
   page (project switcher, cards, KPIs, sparklines/charts): the exact
   component for each need, plus pre-built blocks and reference apps.

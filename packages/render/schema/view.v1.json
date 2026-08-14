@@ -1050,6 +1050,9 @@
                   "code": {
                     "type": "string"
                   },
+                  "children": {
+                    "type": "string"
+                  },
                   "variant": {
                     "type": "string",
                     "enum": ["inline", "single", "multi"]
@@ -1073,8 +1076,7 @@
                   "className": {
                     "type": "string"
                   }
-                },
-                "required": ["code"]
+                }
               }
             }
           }
@@ -5122,10 +5124,12 @@
                 "type": "object",
                 "properties": {
                   "title": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["ReactNode"]
                   },
                   "description": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["ReactNode"]
                   },
                   "breadcrumb": {
                     "type": "string",

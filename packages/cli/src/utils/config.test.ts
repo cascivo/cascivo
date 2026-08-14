@@ -101,6 +101,31 @@ describe('detectPackageManager', () => {
     ).toBe('pnpm')
   })
 
+  it('lets a lock file outrank the user agent when preferLockfileOverUserAgent is set', async () => {
+    // `cascivo create` passes this. `npx cascivo create` always reports an npm user agent
+    // regardless of the surrounding workspace, and that used to short-circuit before the
+    // lock-file walk-up ran — so scaffolding into a pnpm workspace printed `npm install`
+    // (2026-08-14 §11). Where the project lands beats which launcher started the CLI.
+    await writeFile(join(dir, 'pnpm-lock.yaml'), '')
+    expect(
+      detectPackageManager(dir, {
+        preferLockfileOverUserAgent: true,
+        env: { npm_config_user_agent: 'npm/10.9.0 node/v22' },
+      }),
+    ).toBe('pnpm')
+  })
+
+  it('still falls back to the user agent when no lock file exists anywhere', async () => {
+    // The empty-directory case `create` was originally written for: with nothing to walk up
+    // to, the launcher is the only signal there is.
+    expect(
+      detectPackageManager(dir, {
+        preferLockfileOverUserAgent: true,
+        env: { npm_config_user_agent: 'yarn/4.2.0 npm/? node/v22' },
+      }),
+    ).toBe('yarn')
+  })
+
   it('prefers the CASCIVO_PACKAGE_MANAGER env var over the user agent', async () => {
     expect(
       detectPackageManager(dir, {

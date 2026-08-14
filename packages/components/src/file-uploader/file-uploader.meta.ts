@@ -47,7 +47,12 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Called with rejected files',
     },
-    { name: 'label', type: 'string', required: false, description: 'Field label' },
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      description: 'Visible field label rendered above the drop zone; it also names the control.',
+    },
     { name: 'hint', type: 'string', required: false, description: 'Hint text below the drop zone' },
     {
       name: 'labels',

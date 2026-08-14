@@ -12,7 +12,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Radar } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category

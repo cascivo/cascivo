@@ -120,6 +120,42 @@ describe('scaffold-contract — cascivo create obeys cascivo’s own docs', () =
     )
   })
 
+  it('does not import the aggregate stylesheet on the bundler path', () => {
+    // The scaffold shipped `import '@cascivo/react/styles.css'`, which getting-started
+    // describes as the NO-BUNDLER option (~273 kB / ~37 kB gzip). On a Vite build each
+    // component imports its own CSS and tree-shakes, so the aggregate is pure overhead —
+    // the 2026-08-14 adopter deleted it and went from ~273 kB to 59 kB of entry CSS with no
+    // visual change. Every new app started from the heavier default (§12).
+    //
+    // Asserted on the import rather than on a built bundle's byte count: the decision IS
+    // "do not import the aggregate", and measuring it would mean a full install + vite build
+    // per CI run to observe a consequence of the line this test can read directly.
+    const offenders = [...files.entries()]
+      // An actual import statement, not a mention: the generated App.tsx carries a comment
+      // explaining why the aggregate sheet is deliberately absent.
+      .filter(([, contents]) => /^\s*import\s+'@cascivo\/react\/styles\.css'/m.test(contents))
+      .map(([path]) => path)
+    assert.deepEqual(
+      offenders,
+      [],
+      'A bundler-path scaffold must not import the aggregate component stylesheet — per-\n' +
+        'component CSS auto-includes and tree-shakes. The theme import is the one that IS\n' +
+        `required. Found in:\n${offenders.join('\n')}`,
+    )
+  })
+
+  it('imports a theme stylesheet, which is never automatic', () => {
+    // The twin of the assertion above: dropping the aggregate sheet must not drop colour.
+    // Themes are the one stylesheet no package imports for you — skip it and every
+    // --cascivo-color-* is unresolved and the app renders greyscale.
+    const themed = [...files.values()].some((c) => /@cascivo\/themes\/[\w-]+\.css/.test(c))
+    assert.ok(
+      themed,
+      'No generated file imports a @cascivo/themes stylesheet. Component CSS is automatic on ' +
+        'a bundler; theme CSS never is, and without it the app renders greyscale.',
+    )
+  })
+
   it('every @cascivo import in generated source is a declared dependency', () => {
     // The general form of violations 2-4: a phantom dependency is an import with no
     // matching entry in package.json, whatever the package happens to be.
@@ -255,11 +291,20 @@ describe('scaffold-contract — cascivo create obeys cascivo’s own docs', () =
       [CLI, 'create', 'vercel-dashboard-clone-2026-07-30-take2', '--yes', '--theme', 'dark'],
       { cwd: workdir, stdio: 'pipe' },
     )
-    const app = readFileSync(join(long, 'src/App.tsx'), 'utf8')
-    const brand = /brand=\{\{ name: '([^']*)' \}\}/.exec(app)?.[1]
-    assert.ok(brand !== undefined, 'could not find the seeded brand in App.tsx')
+    // The brand lives in Shell.tsx — the shell owns the app chrome, and it is the file that
+    // survives a migration to a router.
+    const shell = readFileSync(join(long, 'src/Shell.tsx'), 'utf8')
+    const brand = /brand=\{\{ name: '([^']*)' \}\}/.exec(shell)?.[1]
+    assert.ok(brand !== undefined, 'could not find the seeded brand in Shell.tsx')
     assert.ok(brand.length <= 24, `brand "${brand}" is ${brand.length} chars`)
-    assert.match(file('src/App.tsx'), /brand=\{\{ name: 'Acme Console' \}\}/)
+    assert.match(file('src/Shell.tsx'), /brand=\{\{ name: 'Acme Console' \}\}/)
+    // Same rule for the browser tab: the raw directory name shipped as the <title>, so
+    // `2026-08-14-vercel-dashboard-vite-react-router` was the tab label (2026-08-14 §11).
+    const title = /<title>([^<]*)<\/title>/.exec(
+      readFileSync(join(long, 'index.html'), 'utf8'),
+    )?.[1]
+    assert.ok(title !== undefined, 'could not find <title> in index.html')
+    assert.ok(title.length <= 24, `<title> "${title}" is ${title.length} chars`)
   })
 
   it('the pinned versions match the workspace', () => {

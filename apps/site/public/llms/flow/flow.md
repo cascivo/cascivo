@@ -12,7 +12,7 @@ pnpm add @cascivo/flow
 
 ```tsx
 import { Flow } from '@cascivo/flow'
-import '@cascivo/flow/styles.css' // required stylesheet
+import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds
 ```
 
 ## Category

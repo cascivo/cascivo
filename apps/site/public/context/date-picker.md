@@ -43,7 +43,7 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the ca
 | `min`           | `string`                               | No       | —       | Minimum ISO date                                                                |
 | `max`           | `string`                               | No       | —       | Maximum ISO date                                                                |
 | `clearable`     | `boolean`                              | No       | false   | Shows a clear button                                                            |
-| `label`         | `string`                               | No       | —       | Field label                                                                     |
+| `label`         | `string`                               | No       | —       | Visible field label rendered above the input; it also names the control.        |
 | `hint`          | `string`                               | No       | —       | Hint text                                                                       |
 | `error`         | `string`                               | No       | —       | Error message                                                                   |
 | `size`          | `'sm' \| 'md' \| 'lg'`                 | No       | md      | Field size                                                                      |

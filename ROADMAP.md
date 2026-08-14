@@ -37,6 +37,14 @@ _Last updated: 2026-07-05._
   its output directly to the CLI, so "design a theme in the browser" ends in an
   installable theme rather than a copy-paste.
 
+- **A routed scaffold.** `cascivo create` now ships the app shell as its own
+  `Shell.tsx` with a `children` slot, so adding a router means deleting `App.tsx`
+  and `src/sections/` rather than re-deriving the shell. The next step is a
+  `--router react-router|tanstack|none` flag so the happy path never generates an
+  architecture the adopter immediately guts (2026-08-14 report §1). Deliberately
+  deferred: three router templates is three more surfaces to keep green, and the
+  shell split plus the published router guide captured most of the value.
+
 ## Later (next quarter)
 
 - **Ecosystem growth.** More first-party registries and templates beyond the seed
@@ -46,6 +54,13 @@ _Last updated: 2026-07-05._
 - **Versioned docs.** Pin documentation to released versions so upgrade guidance
   stays accurate across majors.
 - **Design-tool bridge.** A Figma kit mapped to the same tokens the code reads.
+- **Domain-state primitives, maybe.** Every deploy console in this space
+  hand-writes the same `deploy state → tone → label` map; `Status` takes a tone,
+  not a semantic state (2026-08-14 report §13). Held here rather than built,
+  because a `DeploymentStatus` component bakes one vendor's vocabulary into a
+  general design system. The cheap 80% already shipped: `Tone` is importable from
+  `@cascivo/react/types`, so that map is three typed lines instead of an untyped
+  string union.
 
 ## How this is decided
 

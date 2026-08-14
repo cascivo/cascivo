@@ -64,6 +64,30 @@ describe('CodeSnippet', () => {
     })
   })
 
+  describe('children as an alias for `code`', () => {
+    // Every other content component in the catalog takes children, so `<CodeSnippet>…` was
+    // the natural guess and the one compile error in a 2026-08-14 adopter's build (§8).
+    it('renders a plain-string child', () => {
+      render(<CodeSnippet>npm i @cascivo/react</CodeSnippet>)
+      expect(screen.getByText('npm i @cascivo/react')).toBeInTheDocument()
+    })
+
+    it('highlights and line-numbers children the same as `code`', () => {
+      const { container } = render(
+        <CodeSnippet variant="multi" language="bash">
+          {'$ npx cascivo'}
+        </CodeSnippet>,
+      )
+      expect(container.querySelector("[data-tok='prompt']")?.textContent).toBe('$')
+    })
+
+    it('prefers `code` when both are given', () => {
+      render(<CodeSnippet code="from-prop">from-children</CodeSnippet>)
+      expect(screen.getByText('from-prop')).toBeInTheDocument()
+      expect(screen.queryByText('from-children')).not.toBeInTheDocument()
+    })
+  })
+
   describe('terminal', () => {
     it('renders window chrome with a title and marks the prompt token', () => {
       const { container } = render(

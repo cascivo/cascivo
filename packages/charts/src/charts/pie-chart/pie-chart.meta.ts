@@ -22,7 +22,13 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
-    { name: 'donut', type: 'boolean', required: false, description: 'Render as donut chart' },
+    {
+      name: 'donut',
+      type: 'boolean',
+      required: false,
+      description: 'Render as donut chart',
+      default: 'false',
+    },
     {
       name: 'width',
       description:
@@ -136,7 +142,7 @@ export const meta: ComponentMeta = {
         {
           name: 'id',
           type: 'string',
-          required: false,
+          required: true,
           description: 'Stable identity (used for legend toggle state).',
         },
         { name: 'label', type: 'string', required: true },
@@ -187,7 +193,7 @@ export const meta: ComponentMeta = {
       title: 'Basic pie chart',
       code: `import { PieChart } from '@cascivo/charts'
 
-<PieChart data={[{label:'A',value:60},{label:'B',value:40}]} title="Market share" />`,
+<PieChart data={[{id:'a',label:'A',value:60},{id:'b',label:'B',value:40}]} title="Market share" />`,
     },
     {
       title: 'Donut with center total and custom thickness',

@@ -17,7 +17,12 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'false',
     },
-    { name: 'label', type: 'string', required: true, description: 'What the metric measures' },
+    {
+      name: 'label',
+      type: 'string',
+      required: true,
+      description: 'What the metric measures — rendered visibly above the value.',
+    },
     { name: 'value', type: 'string | number', required: true, description: 'The metric value' },
     {
       name: 'delta',

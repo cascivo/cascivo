@@ -45,7 +45,7 @@ The trigger is a real <button> exposing aria-haspopup="menu", aria-expanded refl
 
 | Name       | Type                                  | Required | Default     | Description                                             |
 | ---------- | ------------------------------------- | -------- | ----------- | ------------------------------------------------------- |
-| `label`    | `ReactNode`                           | Yes      | —           | Trigger button content                                  |
+| `label`    | `ReactNode`                           | Yes      | —           | Visible content rendered inside the trigger button.     |
 | `items`    | `MenuButtonItem[]`                    | Yes      | —           | Action items: { id, label, onSelect?, disabled? }       |
 | `variant`  | `'primary' \| 'secondary' \| 'ghost'` | No       | 'secondary' | Trigger visual variant                                  |
 | `size`     | `'sm' \| 'md' \| 'lg'`                | No       | 'md'        | Trigger size                                            |

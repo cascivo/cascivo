@@ -103,11 +103,73 @@ const FACTS: Fact[] = [
     surfaces: ['packages/components/src/app-shell/app-shell.tsx', 'registry.json'],
     pattern: /padding/,
   },
+  {
+    id: 'component-css-is-automatic-on-a-bundler',
+    report: '2026-08-14 §10 — two packages in one install, opposite stated CSS defaults',
+    surfaces: ['docs/GETTING-STARTED.md', 'packages/charts/src/index.ts'],
+    pattern: /no-bundler|automatic/i,
+  },
+  {
+    id: 'stat-card-matches-chrome-not-layout',
+    report: '2026-08-14 §6 — `card` was added to cure this and the rows still differ',
+    surfaces: [
+      'packages/components/src/stat/stat.tsx',
+      'packages/charts/src/charts/kpi/kpi.tsx',
+      'docs/RECIPE-DASHBOARD.md',
+    ],
+    pattern: /chrome.*not.*layout|not its layout|Pick one per app/i,
+  },
+  {
+    id: 'sparkline-is-fixed-width',
+    report: '2026-08-14 §4 — 120 vs 80 and shrink-to-fit vs fixed, across two docs',
+    surfaces: [
+      'packages/charts/src/charts/sparkline/sparkline.tsx',
+      'docs/RECIPE-DASHBOARD.md',
+      'registry.json',
+    ],
+    pattern: /fixed-width/i,
+  },
 ]
+
+/**
+ * The `src` filenames in `scripts/docs-md/generate.ts`'s `GUIDES` array — the curated set
+ * published to `apps/site/public/docs/<slug>.md`, which is also what `@cascivo/docs` bundles
+ * and therefore the ONLY way a `docs/*.md` guide reaches an adopter.
+ */
+function publishedGuideSources(): Set<string> {
+  const source = readFileSync(join(ROOT, 'scripts/docs-md/generate.ts'), 'utf8')
+  const block = /const GUIDES:[^=]*=\s*\[([\s\S]*?)\n\]/.exec(source)
+  assert.ok(block, 'could not find the GUIDES array in scripts/docs-md/generate.ts')
+  return new Set([...block[1]!.matchAll(/src:\s*'([^']+)'/g)].map((m) => m[1]!))
+}
 
 describe('doc-surface — every fact reaches every surface an adopter reads', () => {
   it('covers a meaningful number of facts', () => {
     assert.ok(FACTS.length >= 8, `only ${FACTS.length} facts tracked — table gutted?`)
+  })
+
+  it('every docs/*.md surface is actually published to adopters', () => {
+    // A repo path is not a surface. `docs/USING-WITH-A-ROUTER.md` was registered here as the
+    // surface carrying the active-item prefix-matching fact while being absent from GUIDES —
+    // so it reached no cascivo.com URL, no `npx @cascivo/docs` slug and no SPA route, while
+    // `aschild-docs` regenerated a table INSIDE it on every CI run. The library shipped
+    // `.d.ts` pointers to a document it did not distribute, and two of them 404'd for the
+    // 2026-08-14 adopter. This guard exists to stop Mechanism D; registering an unreachable
+    // file as a "surface" is Mechanism D wearing the guard's own clothes.
+    const published = publishedGuideSources()
+    const unreachable = [...new Set(FACTS.flatMap((f) => f.surfaces))]
+      .filter((s) => s.startsWith('docs/') && s.endsWith('.md'))
+      .filter((s) => !s.startsWith('docs/internal/'))
+      .filter((s) => !published.has(s.slice('docs/'.length)))
+    assert.deepEqual(
+      unreachable,
+      [],
+      'These are registered as adopter-facing surfaces but are NOT in the GUIDES array in ' +
+        'scripts/docs-md/generate.ts, so no adopter can read them — not at ' +
+        'cascivo.com/docs/<slug>.md, not via `npx @cascivo/docs`.\n' +
+        'Add them to GUIDES and run `pnpm regen`, or drop the surface from the FACTS row.\n  ' +
+        unreachable.join('\n  '),
+    )
   })
 
   for (const fact of FACTS) {

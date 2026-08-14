@@ -12,7 +12,7 @@ pnpm add @cascivo/charts
 
 ```tsx
 import { Kpi } from '@cascivo/charts'
-import '@cascivo/charts/styles.css' // required — without it the screen-reader data-table fallback renders visibly
+import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bundler / SSR-externalised builds, where skipping it renders the screen-reader data-table fallback visibly
 ```
 
 ## Category
@@ -24,7 +24,7 @@ import '@cascivo/charts/styles.css' // required — without it the screen-reader
 | Prop            | Type                                                   | Required | Default  | Description                                                                                                                                                                                                                                                                            |
 | --------------- | ------------------------------------------------------ | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `value`         | `string \| number`                                     | yes      | —        | Primary metric value                                                                                                                                                                                                                                                                   |
-| `label`         | `string`                                               | yes      | —        | Metric label                                                                                                                                                                                                                                                                           |
+| `label`         | `string`                                               | yes      | —        | Metric label — rendered visibly at the top of the tile.                                                                                                                                                                                                                                |
 | `delta`         | `number`                                               | no       | —        | Change value (positive = up, negative = down)                                                                                                                                                                                                                                          |
 | `deltaFormat`   | `'number' \| 'percent' \| ((delta: number) => string)` | no       | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included.                                                                                                      |
 | `goodDirection` | `'up' \| 'down' \| 'neutral'`                          | no       | `up`     | Which direction is _good_ for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |

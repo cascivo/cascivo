@@ -7,9 +7,33 @@ import styles from './code-snippet.module.css'
 
 export type { CodeLang }
 
+/** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so this
+ * browser-facing source needs no `@types/node`, and it's safe where `process` is absent
+ * (bundlers replace `process.env.NODE_ENV` in app builds). Matches `field.tsx`. */
+function isDev(): boolean {
+  const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
+  return env?.NODE_ENV !== 'production'
+}
+
 export interface CodeSnippetProps {
-  /** The code to display (and copy). */
-  code: string
+  /**
+   * The code to display (and copy). Equivalent to passing a plain string as `children`;
+   * `code` wins if you pass both.
+   *
+   * One of the two is required. It is a **string**, not a `ReactNode`, because the content
+   * is tokenized for highlighting and handed to the clipboard — neither works on arbitrary
+   * JSX, so accepting nodes here would silently produce an uncopyable snippet.
+   */
+  code?: string
+  /**
+   * The code, as children — `<CodeSnippet>npm i foo</CodeSnippet>`.
+   *
+   * Every other content component in the catalog takes children, so this was the natural
+   * guess and the only compile error in a 2026-08-14 adopter's whole build (§8). Must be a
+   * plain string for the reason on `code` above; interpolation is fine
+   * (`{`npm i ${pkg}`}`), arbitrary elements are not.
+   */
+  children?: string
   /**
    * inline = a <code> span; single = one-line <pre>; multi = multi-line <pre>.
    *
@@ -63,6 +87,7 @@ function Highlighted({ code, language }: { code: string; language: CodeLang }) {
  */
 export function CodeSnippet({
   code,
+  children,
   variant = 'single',
   language,
   terminal = false,
@@ -73,6 +98,16 @@ export function CodeSnippet({
   className,
 }: CodeSnippetProps) {
   useSignals()
+  const source = code ?? children ?? ''
+  if (isDev() && code === undefined && children === undefined) {
+    // Neither form given. Both props are optional so either spelling compiles, so this is
+    // the only place the contract can be stated — silently rendering an empty <pre> would
+    // look like a data bug rather than a usage one.
+    console.error(
+      'CodeSnippet: pass the code either as the `code` prop or as a plain-string child. ' +
+        'Rendering nothing.',
+    )
+  }
   const { copied, copy } = useClipboard()
   const copyLabel = labels?.copy ?? t(builtin.codeSnippet.copy)
   const copiedLabel = labels?.copied ?? t(builtin.codeSnippet.copied)
@@ -84,7 +119,7 @@ export function CodeSnippet({
       aria-label={copied.value ? copiedLabel : copyLabel}
       data-state={copied.value ? 'copied' : 'idle'}
       className={styles['copy']}
-      onClick={() => void copy(code)}
+      onClick={() => void copy(source)}
     >
       {copied.value ? (
         <svg aria-hidden="true" viewBox="0 0 16 16" className={styles['icon']}>
@@ -123,13 +158,13 @@ export function CodeSnippet({
   if (variant === 'inline') {
     return (
       <span className={cn(styles['root'], className)} data-variant="inline">
-        <code className={styles['inlineCode']}>{code}</code>
+        <code className={styles['inlineCode']}>{source}</code>
         {copyButton}
       </span>
     )
   }
 
-  const lines = code.split('\n')
+  const lines = source.split('\n')
   const withNumbers = variant === 'multi' && showLineNumbers && !language
 
   return (
@@ -161,9 +196,9 @@ export function CodeSnippet({
             ))}
           </code>
         ) : language ? (
-          <Highlighted code={code} language={language} />
+          <Highlighted code={source} language={language} />
         ) : (
-          <code className={styles['code']}>{code}</code>
+          <code className={styles['code']}>{source}</code>
         )}
       </pre>
       {copyButton}

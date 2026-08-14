@@ -696,7 +696,8 @@
     {
       "name": "CodeSnippet",
       "props": [
-        { "name": "code", "type": "string", "required": true },
+        { "name": "code", "type": "string", "required": false },
+        { "name": "children", "type": "string", "required": false },
         { "name": "variant", "type": "'inline' | 'single' | 'multi'", "required": false },
         { "name": "language", "type": "'bash' | 'css' | 'js' | 'ts'", "required": false },
         { "name": "terminal", "type": "boolean", "required": false },
@@ -2142,8 +2143,8 @@
     {
       "name": "PageHeader",
       "props": [
-        { "name": "title", "type": "string", "required": true },
-        { "name": "description", "type": "string", "required": false },
+        { "name": "title", "type": "ReactNode", "required": true },
+        { "name": "description", "type": "ReactNode", "required": false },
         { "name": "breadcrumb", "type": "ReactNode", "required": false },
         { "name": "actions", "type": "ReactNode", "required": false },
         { "name": "className", "type": "string", "required": false }

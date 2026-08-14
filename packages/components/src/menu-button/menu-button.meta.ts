@@ -9,7 +9,12 @@ export const meta: ComponentMeta = {
   variants: ['primary', 'secondary', 'ghost'],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'label', type: 'ReactNode', required: true, description: 'Trigger button content' },
+    {
+      name: 'label',
+      type: 'ReactNode',
+      required: true,
+      description: 'Visible content rendered inside the trigger button.',
+    },
     {
       name: 'items',
       type: 'MenuButtonItem[]',

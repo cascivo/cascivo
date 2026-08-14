@@ -29,7 +29,7 @@ Renders with role="img" and requires a title prop for screen reader labeling.
 | `data`          | `PieChartDatum[]`                                                  | Yes      | —       | Array of { id, label, value, color? } datums. Optional per-datum `color` (any CSS color) overrides the positional palette for that slice.                                                                                                                                                                                                                                                     |
 | `title`         | `string`                                                           | Yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
 | `description`   | `string`                                                           | No       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
-| `donut`         | `boolean`                                                          | No       | —       | Render as donut chart                                                                                                                                                                                                                                                                                                                                                                         |
+| `donut`         | `boolean`                                                          | No       | false   | Render as donut chart                                                                                                                                                                                                                                                                                                                                                                         |
 | `width`         | `number`                                                           | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height`        | `number`                                                           | No       | 300     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
 | `size`          | `number`                                                           | No       | —       | Square shorthand: sets width === height. Explicit width/height win.                                                                                                                                                                                                                                                                                                                           |
@@ -55,7 +55,7 @@ One slice. Pass via the `data` prop.
 
 | Field   | Type     | Required | Description                                                                         |
 | ------- | -------- | -------- | ----------------------------------------------------------------------------------- |
-| `id`    | `string` | No       | Stable identity (used for legend toggle state).                                     |
+| `id`    | `string` | Yes      | Stable identity (used for legend toggle state).                                     |
 | `label` | `string` | Yes      | —                                                                                   |
 | `value` | `number` | Yes      | —                                                                                   |
 | `color` | `string` | No       | Any CSS color overriding the positional palette (--cascivo-chart-N) for this slice. |
@@ -90,8 +90,8 @@ Argument passed to the `tooltipFormat` callback.
 import { PieChart } from '@cascivo/charts'
 ;<PieChart
   data={[
-    { label: 'A', value: 60 },
-    { label: 'B', value: 40 },
+    { id: 'a', label: 'A', value: 60 },
+    { id: 'b', label: 'B', value: 40 },
   ]}
   title="Market share"
 />

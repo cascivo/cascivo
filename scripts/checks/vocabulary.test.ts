@@ -175,7 +175,7 @@ describe('prop-name vocabulary', () => {
   const registry = JSON.parse(readFileSync(join(ROOT, 'registry.json'), 'utf8')) as {
     components: Array<{
       name: string
-      meta: { name: string; props?: Array<{ name: string; type: string }> }
+      meta: { name: string; props?: Array<{ name: string; type: string; description?: string }> }
     }>
   }
 
@@ -191,6 +191,34 @@ describe('prop-name vocabulary', () => {
       [],
       'A component taking both `items` and `rows` makes the collection prop a coin flip. ' +
         'Pick `items`; `DataTable.rows` is the one exception and it takes only `rows`.',
+    )
+  })
+
+  it('every `label` prop says whether it renders visibly', () => {
+    // `label` is visible on 25 components and an invisible accessible name on ~8. An adopter
+    // who learned it from `Sparkline` (invisible, and explicit about it) reasonably assumed
+    // `Toggle.label` was the same and got a string rendered next to the switch, duplicating
+    // the settings row's own title (2026-08-14 §5). The catalog rule is "visible unless the
+    // description says otherwise" — so the minority MUST say otherwise, and the majority is
+    // still better off saying so, because the reader cannot tell silence from either case.
+    const VISIBLE = /visible|beside|shown|displayed|rendered|text label|caption|above the/i
+    const INVISIBLE = /accessible (?:name|label)|screen[- ]reader|invisible|not rendered|aria/i
+    const silent = registry.components
+      .filter((c) => {
+        const label = (c.meta.props ?? []).find((p) => p.name === 'label')
+        if (!label) return false
+        const description = label.description ?? ''
+        return !VISIBLE.test(description) && !INVISIBLE.test(description)
+      })
+      .map((c) => c.name)
+    assert.deepEqual(
+      silent,
+      [],
+      'These components take a `label` prop whose manifest description does not say whether ' +
+        'it RENDERS or is only an accessible name. Both exist in the catalog, so silence ' +
+        'makes it a coin flip — and guessing wrong puts duplicate text on screen.\n' +
+        'Say which in the .meta.ts description (and the TSDoc), then `pnpm regen`:\n  ' +
+        silent.join('\n  '),
     )
   })
 

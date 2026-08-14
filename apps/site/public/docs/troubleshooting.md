@@ -242,7 +242,7 @@ layer, declare your layer ordered _after_ `cascivo.component`.
 The inverse pitfall also exists: a global reset like `* { margin: 0; padding: 0 }`
 written **outside** any layer beats all cascivo layers too, zeroing out every
 component's padding. Wrap resets in a lowest-priority layer. Full recipe:
-[CSS-LAYERS-PITFALL.md](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md).
+[CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md).
 
 ---
 
@@ -255,7 +255,7 @@ CSS beats every cascivo layer regardless of specificity.
 cascivo layers — `@import url('lib/styles.css') layer(vendor);`. Native CSS, no build
 tooling. If you're importing the stylesheet from JavaScript
 (`import 'lib/styles.css'`), it can't be layered from there — move it into a CSS file
-first. Full recipe: [THIRD-PARTY-CSS.md](https://github.com/cascivo/cascivo/blob/main/docs/THIRD-PARTY-CSS.md).
+first. Full recipe: [THIRD-PARTY-CSS.md](/docs/third-party-css.md).
 
 ---
 
@@ -454,6 +454,45 @@ were fixed together.) On an older version, import it explicitly:
 ```ts
 import '@cascivo/charts/styles.css'
 ```
+
+**Still unstyled on a current version?** You are probably on the `node` export condition.
+Vite-SSR frameworks externalise dependencies on the server, and cascivo ships a CSS-free
+`node/` twin for those packages (a bare `.css` import is unloadable by a plain Node ESM
+loader). On that path nothing imports the sheet for you, so the explicit import above **is**
+required — and skipping it renders the chart's screen-reader data-table fallback visibly, as
+a table of numbers under every chart. See the stylesheet table in
+[GETTING-STARTED.md](/docs/getting-started.md).
+
+---
+
+## I need a type that lives in `@cascivo/core`, but I'm on the prebuilt path
+
+`Status.status` and `Badge.variant` are typed `ToneInput`; every layout `gap` is a
+`SpaceStep`. Those declarations live in `@cascivo/core`, which on the prebuilt path is a
+**transitive** dependency — so `import type { Tone } from '@cascivo/core'` is a phantom
+import under pnpm's strict layout, and adding it as a direct dependency puts you in a
+two-package version lockstep.
+
+**Fix:** import them from the subpath.
+
+```ts
+import type { Tone } from '@cascivo/react/types'
+
+const DEPLOY_TONE: Record<DeployState, Tone> = { ready: 'success', error: 'danger' }
+```
+
+`@cascivo/react/types` exports `Tone`, `ToneAlias`, `ToneInput`, `Progress`, `ProgressAlias`,
+`ProgressInput`, `SpaceStep` and `RovingOrientation`. On the copied-source path, import from
+`@cascivo/core` directly — you depend on it there.
+
+**Reading core's `.d.ts` from a terminal.** It is a transitive dep, so it sits under pnpm's
+content-addressed store rather than top-level `node_modules`. Let Node find it:
+
+```sh
+node -p "require.resolve('@cascivo/core/package.json')"
+```
+
+Or skip the trip entirely: `npx -y @cascivo/docs` serves the whole documentation set offline.
 
 ---
 

@@ -40,6 +40,7 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
       description: 'Suffix after the centre value.',
+      default: "''",
     },
     {
       name: 'sweep',

@@ -173,15 +173,62 @@ The two tables above cover _handlers_ and _names_. This one covers the props tha
 **data and the look**, which is where a 2026-08-08 adopter lost nine compile cycles in one
 small dashboard — the single largest friction in that report.
 
-| The prop carries                          | Prop name                   | Never                                 | Why                                                                                                                                    |
-| ----------------------------------------- | --------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| A config-driven **collection**            | **`items`**                 | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                           |
-| The rows of a **table**                   | **`rows`**                  | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                    |
-| A **visual style** enum                   | **`variant`**               | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                              |
-| The **tag of a discriminated union**      | **`kind`**                  | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys) |
-| A **space-scale step**                    | numeric **`gap={4}`**       | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                      |
-| A **rich, replaceable slot**              | **`actions`** (`ReactNode`) | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy  |
-| The **body text** of a feedback component | **`description`**           | children                              | `Notification`, `Alert`, `EmptyState`, `Field` — passing children renders nothing                                                      |
+| The prop carries                          | Prop name                   | Never                                 | Why                                                                                                                                                      |
+| ----------------------------------------- | --------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A config-driven **collection**            | **`items`**                 | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                                             |
+| The rows of a **table**                   | **`rows`**                  | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                                      |
+| A **visual style** enum                   | **`variant`**               | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                                                |
+| The **tag of a discriminated union**      | **`kind`**                  | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys)                   |
+| A **space-scale step**                    | numeric **`gap={4}`**       | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                                        |
+| A **rich, replaceable slot**              | **`actions`** (`ReactNode`) | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy                    |
+| The **body text** of a feedback component | **`description`**           | children                              | `Notification`, `Alert`, `EmptyState`, `Field` — passing children renders nothing                                                                        |
+| A **visible** text label                  | **`label`**                 | `title`, `text`, `caption`            | The default — most components that take `label` render it on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below |
+| An **invisible** accessible name          | **`ariaLabel`**             | `label`                               | `Sparkline`, `Spinner`, `Fab`, `ProgressCircle`, `Resizable`. Always accepted alongside the raw `aria-label`                                             |
+
+> ### ⚠ `label` renders on screen — check the prop docs before assuming it is a11y-only
+>
+> A 2026-08-14 adopter learned `label` from `Sparkline`, where it is explicitly an invisible
+> accessible name, and passed `<Toggle label="Automatic deployments">` into a settings row
+> that already had a visible title. The string rendered **next to the switch**, duplicating
+> the row's own heading.
+>
+> The catalog rule is: **`label` is visible unless its own description says otherwise, and
+> `ariaLabel` is never visible.** When a row, heading or `Field` already labels the control,
+> omit `label` and pass `aria-label` instead — every component forwards it.
+>
+> Enforced by `vocabulary.test.ts`: a `label` prop whose manifest description states neither
+> fails `pnpm meta:check`. Silence is the bug — the reader cannot tell it from either case.
+
+### Importing the shared types
+
+`Tone`, `Progress` and `SpaceStep` are the _types of published props_ — `Status.status` and
+`Badge.variant` are `ToneInput`, every layout `gap` is a `SpaceStep` — so the first thing a
+typed dashboard writes needs them:
+
+```tsx
+// Path B (prebuilt, `@cascivo/react`) — the vocabulary types ship from a subpath:
+import type { Tone } from '@cascivo/react/types'
+// Path A (copied source) — import from core directly, which you already depend on:
+import type { Tone } from '@cascivo/core'
+
+const DEPLOY_TONE: Record<DeployState, Tone> = {
+  building: 'info',
+  ready: 'success',
+  error: 'danger',
+}
+<Status status={DEPLOY_TONE[deployment.state]} />
+```
+
+`@cascivo/react/types` re-exports `Tone`, `ToneAlias`, `ToneInput`, `Progress`,
+`ProgressAlias`, `ProgressInput`, `SpaceStep` and `RovingOrientation`. Do **not** add
+`@cascivo/core` to a prebuilt app's dependencies to reach them — on that path it is a
+transitive dep, and pinning it invites a lockstep-version trap.
+
+They sit on a subpath rather than the main entry for a mechanical reason: the component
+sources already import those names from core, so re-exporting them from `@cascivo/react`
+makes the dts bundler emit `ToneInput as ToneInput$1` and every prop switches to the aliased
+name. `type-exports-parity` fails the build when a core type naming a published prop is
+reachable from neither entry.
 
 > ### ⚠ `gap` takes a NUMBER, and it is the one prop that breaks the pattern
 >
@@ -256,7 +303,7 @@ reload or a hand-rolled copy of cascivo's link CSS — both were reported by ado
 component you place, so it takes the child you hand it. **Never copy cascivo's link CSS into
 your own layer** — override the tokens (`--cascivo-link-color`) instead.
 
-Full guide: [USING-WITH-A-ROUTER.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-A-ROUTER.md).
+Full guide: [USING-WITH-A-ROUTER.md](/docs/using-with-a-router.md).
 
 ## Overriding styles the sanctioned way
 
@@ -379,11 +426,11 @@ type-only declaration — no runtime effect.
 
 ## See also
 
-- [USING-WITH-A-ROUTER.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-A-ROUTER.md) — `setLinkComponent` vs `asChild`.
+- [USING-WITH-A-ROUTER.md](/docs/using-with-a-router.md) — `setLinkComponent` vs `asChild`.
 - [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md) — the SSR `ssr.noExternal` recipe.
-- [CSS-LAYERS-PITFALL.md](https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md) — the canonical order and the
+- [CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md) — the canonical order and the
   `cascivo.override` escape hatch.
-- [THIRD-PARTY-CSS.md](https://github.com/cascivo/cascivo/blob/main/docs/THIRD-PARTY-CSS.md) — the `layer(vendor)` recipe.
+- [THIRD-PARTY-CSS.md](/docs/third-party-css.md) — the `layer(vendor)` recipe.
 - [USING-WITH-TAILWIND.md](/docs/using-with-tailwind.md) — running cascivo alongside an
   existing Tailwind v4 setup.
 - [TOKENS.md](/docs/tokens.md) — the full token catalog.

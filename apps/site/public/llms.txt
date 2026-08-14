@@ -130,10 +130,13 @@ npx cascivo add button card
 Required CSS import order (both paths): components -> tokens+theme -> brand overrides (last).
 `@cascivo/react/styles.css` is structure-only and needs a theme + tokens for color.
 
-Charts, the code editor, and flow ship their own stylesheet: when you use them, import the
-matching CSS once too — `import '@cascivo/charts/styles.css'` (likewise
-`@cascivo/editor/styles.css`, `@cascivo/flow/styles.css`). Skipping the charts stylesheet is a
-common mistake: the chart's screen-reader data-table fallback then renders visibly.
+Charts, the code editor, and flow ship their own stylesheet — and import it themselves, so on
+a BUNDLER build there is nothing to add: `dist/index.js` starts with `import "./charts.css"`.
+Import `'@cascivo/charts/styles.css'` (likewise `@cascivo/editor/styles.css`,
+`@cascivo/flow/styles.css`) only for a NO-BUNDLER build, or an SSR setup that externalises
+dependencies — there the CSS-free `node` export condition loads and nothing pulls the sheet in.
+Skipping it on those paths renders the chart's screen-reader data-table fallback visibly.
+Importing it when you did not need to is harmless; the bundler dedupes it.
 
 SSR (Vite SSR / TanStack Start / Remix / workerd): works with ZERO Vite config on
 `@cascivo/react` >= 0.10 — no `ssr.noExternal`, no plugin, no `<ClientOnly>` wrappers. The
@@ -180,6 +183,43 @@ cascivo styles live in cascade layers. Layer order beats selector specificity, s
 Canonical order (lowest → highest priority):
 `@layer vendor, cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component, cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;`
 Full recipe: https://github.com/cascivo/cascivo/blob/main/docs/CSS-LAYERS-PITFALL.md.
+
+## Shared vocabulary types (importing Tone / SpaceStep)
+
+`Status.status` and `Badge.variant` are typed `ToneInput`; every layout `gap` is a numeric
+`SpaceStep`. To name those types — e.g. a `Record<DeployState, Tone>` map, which
+almost every dashboard writes:
+
+- Prebuilt path: `import type { Tone } from '@cascivo/react/types'`
+- Copied-source path: `import type { Tone } from '@cascivo/core'`
+
+The subpath exports Tone, ToneAlias, ToneInput, Progress, ProgressAlias, ProgressInput,
+SpaceStep, RovingOrientation. Do NOT add @cascivo/core to a prebuilt app to reach them —
+it is a transitive dependency there and pinning it creates a lockstep-version trap.
+
+## Routing (two kinds of link, wired two different ways)
+
+Getting this wrong is the single most-reported friction in adopter reports. There is no
+third mechanism — do not intercept `onClick`, and do not wrap nav items by hand.
+
+1. **Config-driven navs** (SideNav, ShellHeader, Breadcrumb, Switcher, Dock) render through a
+   module singleton. Register your router `Link` ONCE at app startup:
+   ```tsx
+   import { setLinkComponent } from '@cascivo/react'
+   import type { LinkComponentProps } from '@cascivo/react'
+   import { Link } from 'react-router' // or '@tanstack/react-router'
+   setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href ?? '#'} {...rest} />)
+   ```
+   React Router's `to` is required, so supply a fallback — cascivo passes `href: undefined`
+   for a disabled item. Next.js's `Link` takes `href`, so `setLinkComponent(Link)`.
+2. **Links you write in page content** use `asChild`, which puts cascivo styling on YOUR element:
+   ```tsx
+   <Link asChild><RouterLink to="/projects/alpha">alpha</RouterLink></Link>
+   ```
+   `Button`, `TabsTrigger` and the other `asChild`-capable components take the same treatment —
+   URL-driven tabs should be real anchors, not `onValueChange` navigations.
+
+Full guide (active-item prefix matching, URL-driven tabs, what `asChild` guarantees): https://cascivo.com/docs/using-with-a-router.md
 
 ## Reactivity & state (signals, not React hooks)
 
@@ -231,6 +271,7 @@ All guides are fetchable as plain markdown at https://cascivo.com/docs/<slug>.md
 - Getting started (install, themes, SSR): https://cascivo.com/docs/getting-started.md
 - Reactivity & headless behavior primitives: https://cascivo.com/docs/headless.md
 - Enterprise readiness (friction -> primitive map: state, layout, theming, forms, tokens): https://cascivo.com/docs/enterprise-readiness.md
+- Using cascivo with a router (React Router / TanStack Router / Next.js): https://cascivo.com/docs/using-with-a-router.md
 - Theming & branding: https://cascivo.com/docs/theming.md
 - Using cascivo with Preact: https://cascivo.com/docs/using-with-preact.md
 - Using cascivo with Next.js (App Router / RSC): https://cascivo.com/docs/using-with-nextjs.md

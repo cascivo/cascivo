@@ -38,12 +38,16 @@ const GUIDES: { src: string; slug: string }[] = [
   { src: 'ENTERPRISE-READINESS.md', slug: 'enterprise-readiness' },
   { src: 'AI-RULES.md', slug: 'ai-rules' },
   { src: 'TROUBLESHOOTING.md', slug: 'troubleshooting' },
+  { src: 'TESTING.md', slug: 'testing' },
+  { src: 'USING-WITH-A-ROUTER.md', slug: 'using-with-a-router' },
   { src: 'USING-WITH-NEXTJS.md', slug: 'using-with-nextjs' },
   { src: 'USING-WITH-VITE-SSR.md', slug: 'using-with-vite-ssr' },
   { src: 'USING-WITH-TAILWIND.md', slug: 'using-with-tailwind' },
   { src: 'USING-WITH-PREACT.md', slug: 'using-with-preact' },
   { src: 'USING-WITH-ASTRO.md', slug: 'using-with-astro' },
   { src: 'STYLING-INTERNALS.md', slug: 'styling-internals' },
+  { src: 'CSS-LAYERS-PITFALL.md', slug: 'css-layers-pitfall' },
+  { src: 'THIRD-PARTY-CSS.md', slug: 'third-party-css' },
   { src: 'USING-WITH-STRICT-ESLINT.md', slug: 'using-with-strict-eslint' },
 ]
 

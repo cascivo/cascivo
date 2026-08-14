@@ -23,6 +23,7 @@ import { join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { comparableDefault, isLiteralDefault, signatureDefaults } from './lib/prop-defaults.ts'
+import { resolveEntrySources } from './lib/registry-source.ts'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
 
@@ -51,12 +52,6 @@ function loadRegistry(): RegistryComponent[] {
   return [...registry.components, ...(registry.blocks ?? [])]
 }
 
-/** `…/main/packages/x` → `packages/x`. */
-function repoRelative(url: string): string {
-  const i = url.indexOf('/packages/')
-  return i === -1 ? url : url.slice(i + 1)
-}
-
 interface Found {
   entry: string
   prop: string
@@ -69,8 +64,17 @@ function collect(): Found[] {
   for (const component of loadRegistry()) {
     const meta = component.meta
     if (!meta) continue
-    for (const url of (component.files ?? []).filter((f) => f.endsWith('.tsx'))) {
-      const file = join(REPO_ROOT, repoRelative(url))
+    // Resolves BOTH copy-paste entries (via files[]) and npm-shipped ones (charts, flow,
+    // editor) whose files[] is empty. This used to read `component.files ?? []` directly, so
+    // the loop body was dead for all 37 npm-shipped entries — including the test below named
+    // "no documented default contradicts the signature", which sat green while
+    // `chart/sparkline` documented `width: 80` and applied 120. That mismatch was found on
+    // 2026-08-06, written into the ledger as closed, and re-reported on 2026-08-14.
+    //
+    // props-parity and typedefs-parity were migrated to resolveEntrySources() for exactly
+    // this reason on 2026-08-08; this third consumer of the same dead branch was missed.
+    for (const url of resolveEntrySources(REPO_ROOT, component)) {
+      const file = join(REPO_ROOT, url)
       if (!existsSync(file)) continue
       for (const [prop, signature] of signatureDefaults(file, meta.name)) {
         const documented = (meta.props ?? []).find((p) => p.name === prop)
@@ -90,6 +94,31 @@ describe('prop-defaults-parity — every applied default is documented', () => {
       found.length > 150,
       `only ${found.length} signature defaults resolved — is the extractor broken?`,
     )
+  })
+
+  it('covers the npm-shipped packages, not just the copy-paste ones', () => {
+    // Ported verbatim from props-parity. Without a floor, this guard can silently regress to
+    // zero coverage for charts/flow/editor — which is exactly what it did for the whole life
+    // of the guard, while carrying a test named "no documented default contradicts the
+    // signature" and an empty allowlist. `chart/sparkline` documented 80 and applied 120 that
+    // entire time (2026-08-06 found it, 2026-08-14 re-reported it).
+    // The floor is on entries whose SOURCE RESOLVED, not on entries that happen to apply a
+    // default — plenty of charts legitimately have none, so counting defaults would make the
+    // floor track authoring choices instead of resolver health.
+    for (const [prefix, floor] of [
+      ['chart/', 22],
+      ['flow/', 8],
+      ['editor/', 2],
+    ] as const) {
+      const covered = loadRegistry()
+        .filter((c) => c.name.startsWith(prefix) && c.meta)
+        .filter((c) => resolveEntrySources(REPO_ROOT, c).length > 0).length
+      assert.ok(
+        covered >= floor,
+        `only ${covered} '${prefix}' entries resolved their source (expected >= ${floor}). ` +
+          'These are npm-shipped, so their source comes from resolveEntrySources(), not files[].',
+      )
+    }
   })
 
   it('no component applies a default its manifest does not document', () => {

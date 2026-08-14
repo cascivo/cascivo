@@ -47,7 +47,7 @@ The caption is an aria-live region announced each step; play/pause/prev/next mak
 | `autoPlay`     | `boolean`                | No       | true    | When true, starts playback automatically on mount.                                    |
 | `interactive`  | `boolean`                | No       | false   | A storyline is a view by default — set true to allow selecting/dragging/connecting.   |
 | `className`    | `string`                 | No       | —       | Additional CSS class names merged onto the root element.                              |
-| `background`   | `boolean`                | No       | —       | Render the dotted background pane behind the flow.                                    |
+| `background`   | `boolean`                | No       | true    | Render the dotted background pane behind the flow.                                    |
 | `clock`        | `StoryClock`             | No       | —       | Injectable clock for deterministic tests.                                             |
 | `labels`       | `FlowStoryLabels`        | No       | —       | Label overrides for the story playback controls.                                      |
 

@@ -81,6 +81,43 @@ try {
 `
 
   writeFileSync(join(pkgRoot, 'dist', 'index.d.ts'), `${BANNER}${cleaned}`)
+
+  // `@cascivo/react/types` — the catalog vocabulary types (Tone, SpaceStep, …), which are
+  // the types of published props but live in @cascivo/core, a transitive dep a prebuilt
+  // adopter is told not to install (2026-08-14 §3). They cannot ride in index.d.ts: the
+  // component sources already import those names from core, so a re-export makes the dts
+  // bundler emit `ToneInput as ToneInput$1` and every prop switches to the aliased name —
+  // measured, and rejected by check-styles-complete's WS-F rule.
+  //
+  // Written directly rather than bundled: the module is nothing but re-exports of external
+  // types, so a dts bundler run would emit this exact line and cost a second `vp pack`.
+  // `check-types-flat.mjs` asserts it names no internal source path.
+  const TYPES_DTS = `/**
+ * The catalog-wide vocabulary types, importable on the prebuilt path.
+ *
+ * \`Status.status\` and \`Badge.variant\` are \`ToneInput\`; every layout \`gap\` is a
+ * \`SpaceStep\`. These declarations are the same ones the main entry's props reference, so
+ * a value typed here is assignable there.
+ *
+ *   import type { Tone } from '@cascivo/react/types'
+ *   const TONE: Record<DeployState, Tone> = { ready: 'success', error: 'danger' }
+ *   <Status status={TONE[deployment.state]} />
+ */
+export type {
+  Tone,
+  ToneAlias,
+  ToneInput,
+  Progress,
+  ProgressAlias,
+  ProgressInput,
+  SpaceStep,
+  RovingOrientation,
+} from '@cascivo/core'
+`
+  writeFileSync(join(pkgRoot, 'dist', 'types.d.ts'), TYPES_DTS)
+  // A types-only module still needs a runtime file: `import type` is erased, but the
+  // `import` condition must resolve or publint/attw flag the subpath as broken.
+  writeFileSync(join(pkgRoot, 'dist', 'types.js'), 'export {}\n')
 } finally {
   rmSync(outDir, { recursive: true, force: true })
   // Remove any stale nested tree from a previous tsc-based build.
