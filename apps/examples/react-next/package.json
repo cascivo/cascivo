@@ -9,7 +9,7 @@
     "build": "NEXT_TELEMETRY_DISABLED=1 next build",
     "start": "next start",
     "check": "tsc --noEmit",
-    "test": "echo 'next example: no tests yet'"
+    "test": "node ./test/rsc-css.mjs"
   },
   "dependencies": {
     "@cascivo/core": "workspace:*",

@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/testing.md
-  registry v0.17.0 · generated 2026-08-11
+  registry v0.17.1 · generated 2026-08-11
 -->
 
 # Testing cascivo components

@@ -49,6 +49,10 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-text`

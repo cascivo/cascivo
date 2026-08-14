@@ -1602,6 +1602,7 @@
         "name": "Breadcrumb",
         "description": "Shows the current page location within a navigation hierarchy",
         "category": "navigation",
+        "clientJs": "enhancement",
         "states": [],
         "variants": [],
         "sizes": [],
@@ -6977,6 +6978,7 @@
         "name": "Header",
         "description": "App top bar with brand, primary navigation links, and an actions slot",
         "category": "navigation",
+        "clientJs": "enhancement",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -9024,7 +9026,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/large-title-header/large-title-header.module.css"
       ],
       "fileHashes": {
-        "large-title-header.tsx": "sha256-e508ab452e55e47ae671edc7cd8109530a2bc38a22eea7b4cf92cb3eaca76701",
+        "large-title-header.tsx": "sha256-014efd6680c9dae4f1efb1b1eb51c5bb5dc4107aa7449bd15ad261643389e3c3",
         "index.ts": "sha256-733bd0cc4cf5b29b8a93f0556e7185804d74e996f01d9ec6401fccf6c12c43d3",
         "large-title-header.module.css": "sha256-a51de8e5cbf51b1da6246dbd44ca0433ad885977bf9060c8a046ca96ca7d08ed"
       },
@@ -12680,6 +12682,7 @@
         "name": "QrCode",
         "description": "Encodes a URL or short text into a scannable SVG QR code",
         "category": "display",
+        "clientJs": "enhancement",
         "states": ["default"],
         "variants": [],
         "sizes": [],
@@ -15573,6 +15576,7 @@
         "name": "Spinner",
         "description": "Indeterminate loading indicator",
         "category": "feedback",
+        "clientJs": "enhancement",
         "states": [],
         "variants": [],
         "sizes": ["sm", "md", "lg"],
@@ -16370,7 +16374,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
       ],
       "fileHashes": {
-        "swap.tsx": "sha256-74011952bcee1541b8973be23cdb25703b05bced91455d5a214802297a615da7",
+        "swap.tsx": "sha256-ea3b8bcc5328e4670603926373d1981dab214b62c98d95be7191c6c87c70a958",
         "index.ts": "sha256-95c7a8c5b037db337aec24ba3316cf77dc780a37d95a73ed36d1a3f757a53b71",
         "swap.module.css": "sha256-69738c9cf9a9f3da5d4da1d17ab6229af3f45772739251bfa39dcc447e3984b1"
       },
@@ -16383,6 +16387,7 @@
         "name": "Swap",
         "description": "Animated toggle between two icon/content states with rotate or flip transition",
         "category": "inputs",
+        "clientJs": "required",
         "states": ["unchecked", "checked"],
         "variants": ["rotate", "flip"],
         "sizes": [],
@@ -16671,6 +16676,7 @@
         "name": "Switcher",
         "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
         "category": "navigation",
+        "clientJs": "enhancement",
         "states": ["default"],
         "variants": [],
         "sizes": [],

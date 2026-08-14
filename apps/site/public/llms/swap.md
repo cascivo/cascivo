@@ -62,6 +62,10 @@ Heart icon that flips to filled on activation
 <Swap on={<HeartFilledIcon />} off={<HeartIcon />} mode="flip" aria-label="Favorite" />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-ring-width`

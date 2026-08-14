@@ -40,7 +40,7 @@
         "name": "label",
         "type": "string",
         "required": true,
-        "description": "X-axis label"
+        "description": "X-axis label — rendered visibly beneath the axis."
       },
       {
         "name": "description",

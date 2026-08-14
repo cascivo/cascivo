@@ -408,17 +408,19 @@ client-only rendering:
    `cascivoSsr()` plugin from `@cascivo/vite-plugin`. This makes Vite process the
    packages' per-component CSS imports instead of leaving them for the server
    runtime to load raw.
-2. Import `@cascivo/react/styles.css` once in the root route/entry. Don't rely on
-   per-component CSS imports server-side.
+2. Import a theme (`@cascivo/themes/light-dark.css`) once in the root route/entry.
+   Do **not** import `@cascivo/react/styles.css`: per-component CSS rides the client
+   module graph and tree-shakes, and the aggregate replaces the few KB you use with
+   all 197 components' worth.
 
 No `<ClientOnly>` wrappers are needed — components ship `'use client'` and render
-their server HTML normally. **Next.js App Router needs none of this** (its recipe
-imports the aggregate sheet in a Server Component), and plain **Vite CSR/SPA**
-needs none of it either — only Vite _SSR_ runtimes do. Full recipe:
+their server HTML normally. **Next.js App Router needs none of this** (the
+`react-server` export condition handles it), and plain **Vite CSR/SPA** needs none
+of it either — only Vite _SSR_ runtimes do. Full recipe:
 [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md).
 
-**TypeScript + CSS imports.** The `import '@cascivo/react/styles.css'` (and
-`@cascivo/themes/all.css`) side-effect imports need ambient CSS-module types under
+**TypeScript + CSS imports.** The `import '@cascivo/themes/light-dark.css'` (and
+`@cascivo/react/styles.css`) side-effect imports need ambient CSS-module types under
 `tsc --noEmit`, or they error with `TS2307` (`TS2882` under
 `noUncheckedSideEffectImports`). Add `src/vite-env.d.ts` with
 `/// <reference types="vite/client" />`, or `declare module '*.css'`. This is a

@@ -1,4 +1,4 @@
-import { signal } from '@cascivo/core'
+import { signal } from '@preact/signals-react'
 import { currentLocale } from './locale'
 import type { Message, MessageValue, PluralForms, TArgs } from './types'
 

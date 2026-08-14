@@ -560,11 +560,12 @@ Tailwind v4 _alongside_ cascivo works too: [USING-WITH-TAILWIND.md](/docs/using-
 **Does it work with Next.js / React Server Components?** Yes — components ship
 `'use client'` preserved. Setup in [USING-WITH-NEXTJS.md](/docs/using-with-nextjs.md).
 
-**Does it work with Vite SSR / TanStack Start / Remix / workerd?** Yes — add one
-line, `ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin), and import
-`@cascivo/react/styles.css` once. Without it the server loader throws
-`Unknown file extension ".css"` (see the entry above). Full recipe:
-[USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md).
+**Does it work with Vite SSR / TanStack Start / Remix / workerd?** Yes — install,
+import a theme once, and render. On `@cascivo/react` < 0.10 add
+`ssr.noExternal: [/^@cascivo\//]` (or the `cascivoSsr()` plugin), or the server
+loader throws `Unknown file extension ".css"` (see the entry above). You do not need
+`@cascivo/react/styles.css`: component CSS rides the module graph and tree-shakes.
+Full recipe: [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md).
 
 **How is this different from shadcn/ui?** Same ownership model (you own copied
 source), plus signal reactivity, a closed token system, twelve themes, built-in

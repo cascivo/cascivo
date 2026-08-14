@@ -18,8 +18,10 @@
  * Each component ships its own CSS, pulled in automatically on import and
  * tree-shaken per component by the consumer's bundler; the aggregate
  * '@cascivo/react/styles.css' (which also bundles the light & dark themes) is for
- * no-bundler setups. Skip the theme import and components render grayscale —
- * ThemeProvider warns in dev when that happens.
+ * no-bundler setups. That holds under SSR and RSC too — the `react-server` export
+ * condition keeps the CSS edges on the server graph, so a server-rendered page
+ * ships only the components it uses. Skip the theme import and components render
+ * grayscale — ThemeProvider warns in dev when that happens.
  *
  * The wider family (separate installs):
  * - `@cascivo/charts` — LineChart, AreaChart, BarChart, Sparkline, 25 chart types

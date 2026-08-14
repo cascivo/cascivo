@@ -78,6 +78,23 @@ Each component pulls in its own stylesheet when you import it — Next.js
 use and tree-shakes the rest. There is **no** component-CSS import to add or
 maintain; the themes import above is the only global CSS wiring.
 
+This holds for Server Components as well as client ones. RSC resolves a dependency
+with the `react-server` export condition, which `@cascivo/react` points at its
+CSS-bearing build; the CSS-free `node/` twin stays reserved for bare-Node SSR loaders
+that cannot `import` a `.css` file at all.
+
+> **Fixed in 0.18.0.** Before that release there was no `react-server` condition, so
+> RSC fell through to `node` and every component _without_ a `'use client'` directive
+> — exactly the `clientJs: 'none'` ones — rendered on the server from a build with no
+> CSS edges. Their stylesheets were never collected and they painted unstyled. The
+> documented workaround was to import the 328 KB aggregate
+> `@cascivo/react/styles.css` in the root layout, which is why an SSR page shipped
+> ~384 KB of CSS. If you are still doing that, delete the import: measured on
+> [`apps/examples/react-next`](https://github.com/cascivo/cascivo/tree/main/apps/examples/react-next), the same page drops to
+> 34 KB. [`test/rsc-css.mjs`](https://github.com/cascivo/cascivo/blob/main/apps/examples/react-next/test/rsc-css.mjs) asserts
+> every class in the prerendered HTML has a matching rule, so this cannot regress
+> silently again.
+
 ## How the server/client split works
 
 - **Every cascivo component is a client component.** Interactivity is driven by

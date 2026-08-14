@@ -25,8 +25,17 @@
  */
 
 import assert from 'node:assert/strict'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+
+/**
+ * Ungzipped ceiling for the whole client stylesheet. Measured 29 KB — the light+dark theme
+ * bundle plus the three components on the page. The aggregate `@cascivo/react/styles.css`
+ * alone is 328 KB, so this budget is what keeps it out: per-component CSS rides the client
+ * module graph and tree-shakes, and Vite emits it as the render-blocking <link> that styles
+ * the server-rendered first paint. See docs/plans/ssr-css-and-client-js-plan.md.
+ */
+const CSS_BUDGET_BYTES = 60_000
 
 const BUNDLE = new URL('../dist/server/entry-server.js', import.meta.url)
 
@@ -51,5 +60,42 @@ assert.equal(typeof html, 'string', 'render() must return an HTML string')
 assert.match(html, /role="menubar"/, 'expected the Menubar to server-render')
 assert.match(html, /Get started/, 'expected the Button label to server-render')
 assert.match(html, /data-theme="light"/, 'expected the themed root to server-render')
+
+// The client build is what actually styles that markup: it emits one <link> carrying the
+// CSS of exactly the components in the module graph. Assert both halves of that contract —
+// nothing rendered is unstyled, and nothing unused rode along.
+const ASSETS = fileURLToPath(new URL('../dist/client/assets', import.meta.url))
+if (existsSync(ASSETS)) {
+  const sheets = readdirSync(ASSETS).filter((f) => f.endsWith('.css'))
+  const css = sheets.map((f) => readFileSync(`${ASSETS}/${f}`, 'utf8')).join('\n')
+
+  // Vite's CSS-Modules transform emits `_<name>_<hash>_<line>` class names, so every match
+  // in the server HTML came from a cascivo component stylesheet.
+  const rendered = [
+    ...new Set([...html.matchAll(/_[A-Za-z0-9]+_[a-z0-9]{4,6}_\d+/g)].map((m) => m[0])),
+  ]
+  assert.ok(
+    rendered.length >= 3,
+    `expected server-rendered cascivo component classes, found ${rendered.length} — the page ` +
+      'or the class-name format changed and this assertion no longer measures anything',
+  )
+  const unstyled = rendered.filter((cls) => !css.includes(cls))
+  assert.deepEqual(
+    unstyled,
+    [],
+    `Server-rendered classes with no rule in the client CSS (they paint unstyled):\n  ${unstyled.join('\n  ')}`,
+  )
+
+  const bytes = sheets.reduce((n, f) => n + readFileSync(`${ASSETS}/${f}`).byteLength, 0)
+  assert.ok(
+    bytes <= CSS_BUDGET_BYTES,
+    `client CSS is ${bytes} bytes, over the ${CSS_BUDGET_BYTES} budget. A ~330 KB jump means ` +
+      'someone re-added `import "@cascivo/react/styles.css"` — the aggregate is for ' +
+      'no-bundler setups, not for a bundled SSR app.',
+  )
+  console.log(
+    `SSR CSS OK — ${rendered.length} rendered component classes all styled, ${bytes} bytes across ${sheets.length} sheet(s).`,
+  )
+}
 
 console.log(`SSR smoke OK — server-rendered ${html.length} bytes of cascivo markup.`)

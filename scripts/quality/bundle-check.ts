@@ -55,6 +55,32 @@ const BUDGETS: Record<string, number> = {
   cascivo: 45,
 }
 
+/**
+ * Gzipped-KB ceilings for the LARGEST single stylesheet a package exports — the sheet an
+ * adopter pays for on the "one import" path.
+ *
+ * CSS had no ceiling anywhere in CI until 2026-08-14, which is how `@cascivo/react`'s
+ * 328 KB aggregate came to be the documented SSR recipe: a one-card page shipped ~384 KB of
+ * CSS and nothing objected. Every package that exports a `.css` subpath must appear here.
+ * The largest sheet is measured rather than the sum, because the exported sheets overlap
+ * (the aggregate is a concatenation of the per-component ones) and a consumer imports one.
+ */
+const CSS_BUDGETS: Record<string, number> = {
+  // The full-catalog aggregate: every component's CSS plus tokens and the light/dark themes.
+  // For no-bundler / CDN setups only — bundled apps get per-component CSS through the module
+  // graph and tree-shake it. Measured 47.0 KB gzip (328 KB raw).
+  '@cascivo/react': 60,
+  '@cascivo/charts': 30,
+  '@cascivo/editor': 15,
+  '@cascivo/flow': 15,
+  // Source stylesheets, so the largest single file is one theme, not the bundle: `all.css`
+  // and `light-dark.css` are @import manifests a few hundred bytes long.
+  '@cascivo/themes': 6,
+  '@cascivo/tokens': 8,
+  '@cascivo/platform': 8,
+  '@cascivo/icons': 4, // glyphs.css — the optional icon-font sheet. Measured 1.3 KB gzip.
+}
+
 /** Published packages that ship no JS entry, with why. Anything else must be measured. */
 const NO_JS_BUDGET: Record<string, string> = {
   '@cascivo/tokens': 'CSS-only — exports src/index.css, no JS entry',
@@ -103,6 +129,26 @@ function jsEntry(pkg: PackageJson): string | null {
     if (c.endsWith('.css')) return null
   }
   return null
+}
+
+/**
+ * Every distinct stylesheet reachable through the package's `exports` map. Resolved from
+ * `exports` for the same reason `jsEntry` is: a renamed sheet moves the measurement with it
+ * instead of silently un-measuring the package.
+ */
+function cssEntries(pkg: PackageJson): string[] {
+  const out = new Set<string>()
+  const visit = (value: unknown): void => {
+    if (typeof value === 'string') {
+      if (value.endsWith('.css')) out.add(value)
+      return
+    }
+    if (typeof value === 'object' && value !== null) {
+      for (const v of Object.values(value as Record<string, unknown>)) visit(v)
+    }
+  }
+  visit(pkg.exports)
+  return [...out]
 }
 
 /** Every `.js`/`.mjs` under a directory — for a code-split barrel whose entry is a stub. */
@@ -180,6 +226,53 @@ for (const { dir, pkg } of readPackages()) {
     failures.push(`${name}: ${kb.toFixed(1)} KB gzip > budget ${budget} KB (${scope})`)
   } else {
     measured.push(`✓ ${name}: ${kb.toFixed(1)} KB gzip (budget ${budget} KB — ${scope})`)
+  }
+}
+
+for (const { dir, pkg } of readPackages()) {
+  const name = pkg.name!
+  const sheets = cssEntries(pkg)
+  const budget = CSS_BUDGETS[name]
+
+  if (sheets.length === 0) {
+    if (budget !== undefined) {
+      failures.push(`${name}: has a CSS budget but exports no .css subpath. Remove the budget.`)
+    }
+    continue
+  }
+  if (budget === undefined) {
+    failures.push(
+      `${name}: exports ${sheets.length} stylesheet(s) but has no budget. Add one to CSS_BUDGETS.`,
+    )
+    continue
+  }
+
+  const missing = sheets.filter((s) => !existsSync(join(dir, s)))
+  if (missing.length > 0) {
+    failures.push(
+      `${name}: exported stylesheet(s) missing — ${missing.join(', ')}. Run \`pnpm build\` first; ` +
+        'a budget check that skips a package measures nothing.',
+    )
+    continue
+  }
+
+  let largest = sheets[0]!
+  let largestKB = 0
+  for (const sheet of sheets) {
+    const kb = gzipKB([join(dir, sheet)])
+    if (kb > largestKB) {
+      largestKB = kb
+      largest = sheet
+    }
+  }
+
+  if (largestKB > budget) {
+    failures.push(`${name}: CSS ${largestKB.toFixed(1)} KB gzip > budget ${budget} KB (${largest})`)
+  } else {
+    measured.push(
+      `✓ ${name}: CSS ${largestKB.toFixed(1)} KB gzip (budget ${budget} KB — largest of ` +
+        `${sheets.length} exported sheet(s), ${largest})`,
+    )
   }
 }
 

@@ -2894,6 +2894,10 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 <Breadcrumb maxVisible={3} items={[{ label: 'Home', href: '/' }, { label: 'Docs', href: '/docs' }, { label: 'Components', href: '/docs/components' }, { label: 'Breadcrumb' }]} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-text`
@@ -10041,6 +10045,10 @@ import { Header } from '@cascivo/react'
 <Header sticky brand="cascivo" links={links} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-header-bg`
@@ -14641,6 +14649,10 @@ import { QrCode } from '@cascivo/react'
 <QrCode value="cascivo" fill="var(--cascivo-color-accent)" background="var(--cascivo-color-surface)" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-text`
@@ -16839,6 +16851,10 @@ import { Spinner } from '@cascivo/react'
 <Spinner size="lg" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-radius-full`
@@ -17393,6 +17409,10 @@ Heart icon that flips to filled on activation
 <Swap on={<HeartFilledIcon />} off={<HeartIcon />} mode="flip" aria-label="Favorite" />
 ```
 
+## Client JavaScript
+
+Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+
 ## Design tokens
 
 - `--cascivo-ring-width`
@@ -17563,6 +17583,10 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
   ]}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
 
 ## Design tokens
 

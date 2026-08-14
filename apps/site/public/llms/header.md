@@ -55,6 +55,10 @@ import { Header } from '@cascivo/react'
 <Header sticky brand="cascivo" links={links} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-header-bg`

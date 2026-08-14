@@ -260,12 +260,18 @@ per-component incremental cost. Per-component CSS is auto-included and tree-shak
 bundler, so a real app ships a fraction of the aggregate sheet (a ~45-component dashboard
 measured 137 KB / 19 KB gzip of the 273 KB).
 
-> ⚠ **That measurement is client-only (SPA).** Under SSR — TanStack Start, Remix,
-> Next — you must import the aggregate `@cascivo/react/styles.css` for
-> server-rendered HTML to be styled on first paint, and an aggregate is by
-> definition not tree-shakeable. Budget for the full sheet, not the 137 KB.
-> [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md#the-cost-per-component-css-tree-shaking-does-not-apply-under-ssr)
-> explains the tradeoff and what you can still do about it.
+> **SSR gets the same saving.** TanStack Start, Remix and Next collect component CSS
+> through the same module graph, so budget the fraction, not the full sheet — a
+> server-rendered card measured 29 KB of CSS end to end. Import a theme and let the
+> component CSS ride along; the aggregate `@cascivo/react/styles.css` is for setups
+> with no bundler.
+> [USING-WITH-VITE-SSR.md](./USING-WITH-VITE-SSR.md#per-component-css-tree-shaking-under-ssr)
+> has the measurements.
+>
+> Before 0.18.0 this said the opposite, because it was true: with no `react-server`
+> export condition, RSC resolved the CSS-free server build and every server-rendered
+> component lost its stylesheet, so the aggregate really was the only way to get a
+> styled page. That was a bug, and it is fixed.
 
 > **TypeScript setup for the CSS imports.** A bare CSS side-effect import
 > (`import '@cascivo/react/styles.css'`) has no types on its own, so a `tsc --noEmit`
@@ -328,16 +334,22 @@ Themes are always yours to import. **Component CSS is not** — every cascivo pa
 ships components imports its own stylesheet from its entry, so a bundler pulls it in when
 you import the component and tree-shakes what you don't use.
 
+That holds for SSR too — Vite SSR, TanStack Start, Remix and Next all collect component
+CSS from the same module graph, so you import a theme and nothing else.
+
 The exception is the `node` export condition. Vite-SSR frameworks externalise dependencies
 on the server, and a bare `.css` side-effect import is unloadable by a plain Node ESM loader
 (`ERR_UNKNOWN_FILE_EXTENSION`) — so cascivo ships a CSS-free `node/` twin for those packages.
-On that path nothing loads the CSS for you, and you import the sheet yourself.
+That twin is only ever the *server* half of the build: the client (and, via the
+`react-server` condition, the RSC) graph still carries the CSS edges, which is what styles
+the server-rendered HTML. You import the aggregate yourself only when **no** bundler walks
+the graph at all — a CDN `<link>`, or an island runtime that strips the edges (Astro).
 
-| Package | Bundler (Vite/Next/webpack) | No bundler | SSR, externalised (`node` condition) |
-| --- | --- | --- | --- |
-| `@cascivo/themes` | **always import a bundle** | same | same |
-| `@cascivo/react` | automatic per component | `@cascivo/react/styles.css` | `@cascivo/react/styles.css` |
-| `@cascivo/charts` | automatic (`dist/index.js` imports `./charts.css`) | `@cascivo/charts/styles.css` | `@cascivo/charts/styles.css` |
+| Package | Bundler (Vite/Next/webpack), SPA or SSR | No bundler / CDN |
+| --- | --- | --- |
+| `@cascivo/themes` | **always import a bundle** | same |
+| `@cascivo/react` | automatic per component | `@cascivo/react/styles.css` |
+| `@cascivo/charts` | automatic (`dist/index.js` imports `./charts.css`) | `@cascivo/charts/styles.css` |
 
 > **`@cascivo/charts/styles.css` is redundant on a bundler build, not required.** It used to
 > be required — until 0.14 the charts entry never imported its own sheet and charts rendered
@@ -348,8 +360,11 @@ On that path nothing loads the CSS for you, and you import the sheet yourself.
 > every chart.
 >
 > Enforced by `pnpm css-contract:check`: a package that ships a stylesheet and declares
-> `sideEffects: ["**/*.css"]` must import it from its entry **and** ship the CSS-free `node`
-> twin. Fixing only the first half trades a styling bug for an SSR blocker.
+> `sideEffects: ["**/*.css"]` must import it from its entry, **and** ship the CSS-free `node`
+> twin, **and** — if it also ships modules that render on the RSC server — offer a
+> `react-server` condition pointing back at the CSS-bearing build. Each half without the
+> others just trades one bug for another: a styling bug for an SSR blocker, then the SSR
+> blocker back for a styling bug that only shows up in Server Components.
 
 ### Runtime switching & SSR (no-flash)
 

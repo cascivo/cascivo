@@ -1,8 +1,13 @@
-// Load-bearing: importing the aggregate stylesheet + a theme once. On SSR with
-// `ssr.noExternal` (the cascivoSsr() plugin), Vite processes these CSS imports
-// during the server build instead of leaving them for the raw Node loader.
-import '@cascivo/react/styles.css'
-import '@cascivo/themes/all.css'
+// Themes only — tokens, the reset floor, base typography, light and dark.
+//
+// Component CSS is deliberately NOT imported: @cascivo/react ships a `.css`
+// side-effect import beside every component chunk, so the client build pulls in
+// exactly the stylesheets the components below need and tree-shakes the rest.
+// Vite emits them as one render-blocking <link> in the generated index.html, which
+// is what styles the server-rendered first paint. Importing the aggregate
+// '@cascivo/react/styles.css' on top of this replaces ~3 KB of used component CSS
+// with all 197 components' worth (measured: 357 KB → 29 KB when dropped).
+import '@cascivo/themes/light-dark.css'
 import { Button, Card, CardContent, CardHeader, CardTitle, Menubar } from '@cascivo/react'
 import './app.css'
 

@@ -55,6 +55,10 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+
 ## Design tokens
 
 - `--cascivo-color-text`

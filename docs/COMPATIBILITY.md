@@ -20,10 +20,12 @@ baseline. If an integration surprises you, start here.
 ¹ The published `@cascivo/react` bundle ships per-component CSS as static
 side-effect imports. Bundlers resolve these; a bare server-side ESM loader
 (Node native, workerd) does not and throws `Unknown file extension ".css"`.
-Marking `@cascivo/*` `ssr.noExternal` makes Vite process those imports during
-SSR. The [Vite SSR guide](./USING-WITH-VITE-SSR.md) has the full recipe (one
-config line + the aggregate `styles.css`). Next.js RSC never hits this because
-its recipe imports the aggregate stylesheet in a Server Component.
+Since 0.10 the `node` export condition selects a CSS-free server twin, so no
+config is needed; `ssr.noExternal` (or `cascivoSsr()`) remains the fallback for
+pinned older versions. Since 0.18.0 a `react-server` condition points RSC back at
+the CSS-bearing build, so component CSS tree-shakes under SSR the same way it does
+in an SPA — no aggregate stylesheet in either recipe. The
+[Vite SSR guide](./USING-WITH-VITE-SSR.md) has the measurements.
 
 ## Browsers
 
@@ -54,8 +56,10 @@ import '@cascivo/tokens/functions.css' // Chrome 133+ progressive enhancement
 ## Build tooling
 
 - **Bundlers:** Vite/Rolldown, webpack, esbuild, and any bundler that honors the
-  package `exports` map. Always import the `@cascivo/react/styles.css` specifier —
-  never the underlying `dist/cascivo.css` path (strict `exports` blocks it).
+  package `exports` map. On a bundler you import no component CSS at all — it rides
+  the module graph. If you do need the aggregate (CDN, no build step), import the
+  `@cascivo/react/styles.css` specifier — never the underlying `dist/cascivo.css`
+  path (strict `exports` blocks it).
 - **CSS minifiers:** cssnano and esbuild handle the shipped CSS as-is.
   lightningcss (Tailwind v4) works too **as long as you don't opt into**
   `@cascivo/tokens/functions.css` (see above).
@@ -113,12 +117,13 @@ every package manager, with or without `auto-install-peers`.
 ### Required CSS import order
 
 ```ts
-import '@cascivo/react/styles.css' // components (no tokens/colors on their own)
 import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 import './my-theme.css' // optional brand overrides — always LAST
 ```
 
-`@cascivo/react/styles.css` defines component structure only — it references
-`var(--cascivo-*)` values that don't exist until a theme + tokens are loaded, so
-importing it alone yields correctly-structured but uncolored components. See
-[`THEMING.md`](./THEMING.md).
+Component CSS is not in that list because it is not yours to import: each component
+chunk carries its own stylesheet and your bundler collects only what you use. The
+no-bundler path adds `@cascivo/react/styles.css` **first**; it defines component
+structure only — it references `var(--cascivo-*)` values that don't exist until a
+theme + tokens are loaded, so importing it alone yields correctly-structured but
+uncolored components. See [`THEMING.md`](./THEMING.md).

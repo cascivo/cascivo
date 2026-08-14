@@ -22,6 +22,7 @@
     "name": "Breadcrumb",
     "description": "Shows the current page location within a navigation hierarchy",
     "category": "navigation",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

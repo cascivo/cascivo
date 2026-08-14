@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Swap',
   description: 'Animated toggle between two icon/content states with rotate or flip transition',
   category: 'inputs',
+  // The component is a toggle: with JS off the button renders but cannot swap, so the
+  // 'off' child is all you ever see. Interactivity is the feature, not a polish layer.
+  clientJs: 'required',
   states: ['unchecked', 'checked'],
   variants: ['rotate', 'flip'],
   sizes: [],
