@@ -233,3 +233,86 @@ pnpm exec vp run @cascivo/example-react-next#test       # style completeness + C
 
 `rsc:check` and `css-contract:check` read `dist/`, so they run after the build — both in
 `pnpm ready` and as their own CI steps.
+
+---
+
+## Part 5 — Open decisions, in recommended order
+
+Everything in Parts 1–4 is shipped and green (`pnpm ready`, plus the CI-only checks that
+sit in the blast radius: `pack:check` 18/18 clean, `isolated:check`, `bare-page:check`,
+`no-js:check`, `docs:coverage`, `audit:stories`, `deps:check`, `links:check`,
+`audit:signals`). What follows is what is left, and what I would do about each.
+
+### 1. Verify the 72 `enhancement` claims — the one real gap
+
+`client-js-parity.test.ts` machine-checks `'none'` in both directions. It cannot check
+`'enhancement'`, and that is the direction where being wrong hurts: `'required'` written
+where `'enhancement'` was true costs an adopter a needless hydration, while
+`'enhancement'` written where `'required'` was true tells them "this works without JS" and
+they ship something broken. 72 manifests now make that claim on my judgment alone.
+
+**Recommendation: make the classification harness permanent.** The probe that produced
+these labels compiled each manifest's own first example into an SSR harness and rendered
+it. As a check it becomes: *every `clientJs: 'enhancement'` component must server-render
+non-trivial content* — cheap to run, and it converts 72 opinions into 72 assertions. It
+also pays for itself later: the same harness answers "what does this component look like
+with JS off?" for every future component.
+
+Not free — the harness needs real prop shapes for the ~15 examples that would not render,
+and a decision about what "non-trivial" means for image-only components (`Avatar`,
+`Carousel`, `Comparison` all legitimately render zero text). Budget half a day.
+
+### 2. Review three labels I would most expect to be overruled
+
+- **`Stream`** (`required`) — the only chart not `enhancement`. A live feed frozen at one
+  server-rendered frame is not the component, but if you consider the initial frame a
+  legitimate chart, it is `enhancement`.
+- **`FileUploader`** (`required`) — renders a native `<input type="file">`, so a bare
+  upload does work; I weighted drag-and-drop, the file list and status as the component.
+- **`TagsInput`** (`required`) — renders a native input, but the value is the chip list and
+  that cannot change without JS.
+
+Each is a two-line edit; the reason is in the manifest, so no re-derivation is needed.
+
+### 3. Open the PR
+
+Two commits on `claude/ui-library-ssr-client-opt-nxdhvm`. Not opened per instruction.
+
+### 4. `@cascivo/i18n` declares `@cascivo/core` but no longer imports it
+
+The RSC fix removed the last import. The dependency stayed because
+`version-lockstep.test.ts` uses that edge to hold i18n in the changesets `fixed` group,
+and losing lockstep would let i18n drift from the components referencing its `builtin.*`
+keys — the skew `messages.ts` already has defensive code for.
+
+**Recommendation: fix the guard's rule rather than keep the phantom.** Lockstep exists to
+stop two copies of the *signal registry* resolving. i18n now depends on
+`@preact/signals-react` directly, which **is** that registry — so the honest rule is
+"depends on `@cascivo/core` **or** peers `@preact/signals-react`", after which the unused
+dependency can go. Low urgency (a phantom dep costs an adopter nothing here, since
+`@cascivo/react` pulls both), but it removes a lie from a published manifest.
+
+### 5. Document that an i18n default label makes a component a client boundary
+
+`Spinner`, `Breadcrumb`, `Header`, `SkipNav`, `QrCode` and `Switcher` are client
+components solely because `t(builtin.…)` reads the locale signal, so `useSignals()` and
+`'use client'` follow. That is a deliberate consequence of provider-free runtime i18n, and
+it is now declared per-component — but the *rule* is nowhere, so the next component with a
+default label will surprise its author too.
+
+**Recommendation: one paragraph in `docs/HEADLESS.md`** next to the reactivity contract.
+Do not change `t()`'s tracking semantics to avoid it — that would silently break runtime
+locale switching for anyone using it, to save a boundary on components that are already
+fully server-rendered.
+
+### 6. Astro islands — leave as documented
+
+Confirmed **not** the same root cause as the RSC bug: adding
+`vite: { ssr: { noExternal: [/^@cascivo\//] } }` to the Astro example changes nothing —
+`load` and `visible` islands still emit `._card_…` with no matching rule. It is Astro's
+island CSS collection, and `client:only` or the aggregate stylesheet remain the
+workarounds.
+
+**Recommendation: no further work** unless Astro becomes a target audience. Keep the
+⚠️ Partial grade; `apps/examples/astro-islands` already reports the reproduction on every
+build, so it will announce itself if Astro fixes it upstream.
