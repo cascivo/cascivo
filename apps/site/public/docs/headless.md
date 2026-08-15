@@ -145,6 +145,38 @@ so it creates no runtime edge, and routing types through two specifiers makes th
 Adding to this subpath is a packaging decision, not a convenience — anything unexportable
 from a Server Component belongs in the main entry.
 
+**The boundary is transitive, and that is the part people miss.** It is not enough for your
+own imports to be clean: a module you import must also be clean. `@cascivo/i18n` used to take
+`signal` from `@cascivo/core`, so `Label`, `AvatarGroup` and `InlineLoading` — all
+`clientJs: 'none'`, all importing only `/pure` themselves — still crashed RSC with `Attempted
+to call signal() from the server`, two hops out. `scripts/checks/rsc-boundary.test.ts` walks
+the published module graph and fails on any such path, so you get a build error naming the
+hop instead of a framework error naming the symptom.
+
+Rendering a client component from a Server Component stays legal and is not flagged —
+`Button` renders `Spinner`, `Field` renders `Label`. What breaks is _calling_ a function that
+lives behind the boundary, or reading a property off it.
+
+### A default i18n label makes a component a client component
+
+`t(builtin.…)` reads the i18n locale and catalog signals so labels re-render when either
+changes at runtime. Reading a signal in render means the component must call `useSignals()`,
+and that means `'use client'`. So:
+
+> **Any component that resolves a user-visible default string through `t()` is a client
+> component, even when its markup is otherwise entirely static.**
+
+Six shipped components are client components for this reason alone — `Spinner`, `Breadcrumb`,
+`Header`, `SkipNav`, `QrCode`, `Switcher`. Their markup is fully server-rendered; the
+boundary buys only live re-labelling on a locale change. They declare
+`clientJs: 'enhancement'` accordingly.
+
+This is the price of provider-free runtime i18n, and it is deliberate: the alternative —
+resolving defaults without tracking — would silently stop locale switching from updating
+mounted components, which is a far worse failure than a boundary on a `Spinner`. Know the
+rule when you author: a component with no default strings can be `clientJs: 'none'`; add one
+`t(builtin.…)` call and it cannot.
+
 ## Router integration — client-side nav links
 
 cascivo's config-driven nav components render plain `<a href>` by default. To make

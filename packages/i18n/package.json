@@ -45,9 +45,6 @@
     "test": "vp test",
     "dev": "vp pack --watch"
   },
-  "dependencies": {
-    "@cascivo/core": "workspace:^"
-  },
   "devDependencies": {
     "@preact/signals-react": "catalog:",
     "typescript": "catalog:",

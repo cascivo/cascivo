@@ -1,7 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    // The enhancement-renders test imports component SOURCE across packages (charts, editor,
+    // flow, layouts) so it can server-render every clientJs:'enhancement' component. Those
+    // packages write relative imports with explicit .ts/.tsx extensions, exactly as
+    // packages/components does — and packages/components already sets this for the same
+    // reason. Safe here: this package never emits from tsc (`check` is --noEmit; the build
+    // is vite).
+    "allowImportingTsExtensions": true
   },
   "include": ["src"]
 }

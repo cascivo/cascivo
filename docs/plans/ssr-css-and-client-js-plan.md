@@ -133,15 +133,17 @@ declare it** — including `data-table`, `calendar`, `carousel`, `form`, `toast`
 chart. `client-js-parity.test.ts` never noticed, because it only validates manifests that
 *do* declare the field: a missing value looked exactly like a value under no rule.
 
-All 209 now declare it. **74 `none` · 72 `enhancement` · 63 `required`.**
+All 209 now declare it. **74 `none` · 73 `enhancement` · 62 `required`** (Part 5 corrects
+`Stream` from `required` after the harness rendered it).
 
 The labels are grounded in what the components actually emit, not in what their names
 suggest. Two probes did the work:
 
 - **Charts** — server-rendered the family through `renderToString`. Every chart emits the
   SVG *and* the accessible `<table>` fallback carrying the real data points, so a chart
-  reads with JS off → `enhancement`. `stream` is the exception: a live feed frozen at one
-  frame is not what the component is for → `required`.
+  reads with JS off → `enhancement`. (`stream` was first labelled `required` on the theory
+  that a frozen frame is not a live feed; the harness in Part 5 rendered it and disproved
+  that — see below.)
 - **Components and blocks** — compiled each manifest's own first example into an SSR
   harness and rendered it, recording bytes, visible text, and how many native inputs,
   anchors and JS-only buttons reached the HTML. That is what separated `TimePicker` (a
@@ -236,83 +238,77 @@ pnpm exec vp run @cascivo/example-react-next#test       # style completeness + C
 
 ---
 
-## Part 5 — Open decisions, in recommended order
+## Part 5 — The follow-through (all six items, resolved)
 
-Everything in Parts 1–4 is shipped and green (`pnpm ready`, plus the CI-only checks that
-sit in the blast radius: `pack:check` 18/18 clean, `isolated:check`, `bare-page:check`,
-`no-js:check`, `docs:coverage`, `audit:stories`, `deps:check`, `links:check`,
-`audit:signals`). What follows is what is left, and what I would do about each.
+Part 5 was a list of open decisions. All six were taken; this is what each turned into.
 
-### 1. Verify the 72 `enhancement` claims — the one real gap
+### 1. The 72 `enhancement` claims are now tested — and one of them was wrong
 
-`client-js-parity.test.ts` machine-checks `'none'` in both directions. It cannot check
-`'enhancement'`, and that is the direction where being wrong hurts: `'required'` written
-where `'enhancement'` was true costs an adopter a needless hydration, while
-`'enhancement'` written where `'required'` was true tells them "this works without JS" and
-they ship something broken. 72 manifests now make that claim on my judgment alone.
+`packages/react/src/enhancement-renders.test.tsx` renders every `clientJs: 'enhancement'`
+component with `renderToString` — no hydration, no browser — and asserts the server HTML
+carries something a person can perceive or use. Coverage is asserted **both ways**: every
+such manifest must have a fixture, and every fixture must still match a live manifest, so
+neither adding a component nor re-labelling one can silently shrink what the file proves.
 
-**Recommendation: make the classification harness permanent.** The probe that produced
-these labels compiled each manifest's own first example into an SSR harness and rendered
-it. As a check it becomes: *every `clientJs: 'enhancement'` component must server-render
-non-trivial content* — cheap to run, and it converts 72 opinions into 72 assertions. It
-also pays for itself later: the same harness answers "what does this component look like
-with JS off?" for every future component.
+Two assertions, because "renders something" is not the claim:
 
-Not free — the harness needs real prop shapes for the ~15 examples that would not render,
-and a decision about what "non-trivial" means for image-only components (`Avatar`,
-`Carousel`, `Comparison` all legitimately render zero text). Budget half a day.
+- **Perceivable** — visible text, a replaced element (`img`/`svg`/form control/link/table),
+  or an accessible name. That third clause exists because `Spinner` server-renders exactly
+  `<span role="status" aria-label="Loading">`: no text, no element, and entirely correct
+  with JS off, since the spinner is a CSS animation. A stricter rule demanded
+  `clientJs: 'required'` on a component that needs no JavaScript at all.
+- **Content reachable** — for components where content could plausibly be gated behind an
+  open signal, the content the fixture passed in must survive to the server HTML. This is
+  the assertion that matches what `clientJs` actually means. `Collapsible` and `Accordion`
+  pass because they are built on native `<details>`; rebuild either on a signal and this
+  test fails.
 
-### 2. Review three labels I would most expect to be overruled
+**It immediately earned its keep: `Stream` was mislabelled `required` — by me.** The
+reasoning had been "a live feed frozen at one frame is not the component". Rendered, it
+emits the SVG *and* the full accessible table — `Mon 10 1 Tue 20 2 Wed 15 1`. The "live"
+part is the app pushing data through `createStreamBuffer`; that is the app's JavaScript,
+not the component's. Corrected to `enhancement`, which also makes the chart family
+uniform. Coverage is now 73 `enhancement` / 62 `required` / 74 `none`.
 
-- **`Stream`** (`required`) — the only chart not `enhancement`. A live feed frozen at one
-  server-rendered frame is not the component, but if you consider the initial frame a
-  legitimate chart, it is `enhancement`.
-- **`FileUploader`** (`required`) — renders a native `<input type="file">`, so a bare
-  upload does work; I weighted drag-and-drop, the file list and status as the component.
-- **`TagsInput`** (`required`) — renders a native input, but the value is the chip list and
-  that cannot change without JS.
+Verified non-vacuous by mutation: flipping `Toast` to `enhancement` fails the coverage
+assertion, and both of the harness's own early failures (`Spinner`, `CodeSnippet`) were
+real signals rather than noise.
 
-Each is a two-line edit; the reason is in the manifest, so no re-derivation is needed.
+### 2. The other two contested labels stand — now on evidence, not judgement
 
-### 3. Open the PR
+- **`FileUploader`** (`required`) — its `<input type="file">` is `aria-hidden="true"` with
+  `tabIndex={-1}` and no `name`. The visible affordance is a `<button type="button">` that
+  clicks the input from JS. With JS off the input is unreachable *and* unsubmittable.
+- **`TagsInput`** (`required`) — the input carries no `name`, its value lives in a signal,
+  and Enter is handled in `onKeyDown`. Chips render; nothing can be added, removed or
+  submitted.
 
-Two commits on `claude/ui-library-ssr-client-opt-nxdhvm`. Not opened per instruction.
+### 3. PR opened
 
-### 4. `@cascivo/i18n` declares `@cascivo/core` but no longer imports it
+### 4. `version-lockstep` now keys on the signal registry, and the phantom dependency is gone
 
-The RSC fix removed the last import. The dependency stayed because
-`version-lockstep.test.ts` uses that edge to hold i18n in the changesets `fixed` group,
-and losing lockstep would let i18n drift from the components referencing its `builtin.*`
-keys — the skew `messages.ts` already has defensive code for.
+The guard demanded `@cascivo/core` as a dependency, which is why `@cascivo/i18n` kept one it
+no longer imported. But lockstep exists to stop two copies of the **signal registry**
+resolving, and i18n now depends on `@preact/signals-react` — which *is* the registry;
+`@cascivo/core` only re-exports it. The family is now "depends on `@cascivo/core` **or**
+peers `@preact/signals-react`", and `@cascivo/i18n` declares no unused dependency.
 
-**Recommendation: fix the guard's rule rather than keep the phantom.** Lockstep exists to
-stop two copies of the *signal registry* resolving. i18n now depends on
-`@preact/signals-react` directly, which **is** that registry — so the honest rule is
-"depends on `@cascivo/core` **or** peers `@preact/signals-react`", after which the unused
-dependency can go. Low urgency (a phantom dep costs an adopter nothing here, since
-`@cascivo/react` pulls both), but it removes a lie from a published manifest.
+### 5. The i18n boundary rule is documented
 
-### 5. Document that an i18n default label makes a component a client boundary
+`docs/HEADLESS.md` gains two things next to the `@cascivo/core/pure` section: that the client
+boundary is **transitive** (the `Label` → `@cascivo/i18n` → `@cascivo/core` chain that
+crashed RSC, with `rsc-boundary.test.ts` as the guard), and the rule itself —
 
-`Spinner`, `Breadcrumb`, `Header`, `SkipNav`, `QrCode` and `Switcher` are client
-components solely because `t(builtin.…)` reads the locale signal, so `useSignals()` and
-`'use client'` follow. That is a deliberate consequence of provider-free runtime i18n, and
-it is now declared per-component — but the *rule* is nowhere, so the next component with a
-default label will surprise its author too.
+> Any component that resolves a user-visible default string through `t()` is a client
+> component, even when its markup is otherwise entirely static.
 
-**Recommendation: one paragraph in `docs/HEADLESS.md`** next to the reactivity contract.
-Do not change `t()`'s tracking semantics to avoid it — that would silently break runtime
-locale switching for anyone using it, to save a boundary on components that are already
-fully server-rendered.
+with the six components that pay it and why the alternative (untracked defaults) is worse.
 
-### 6. Astro islands — leave as documented
+### 6. Astro — closed, not deferred
 
-Confirmed **not** the same root cause as the RSC bug: adding
-`vite: { ssr: { noExternal: [/^@cascivo\//] } }` to the Astro example changes nothing —
-`load` and `visible` islands still emit `._card_…` with no matching rule. It is Astro's
-island CSS collection, and `client:only` or the aggregate stylesheet remain the
-workarounds.
-
-**Recommendation: no further work** unless Astro becomes a target audience. Keep the
-⚠️ Partial grade; `apps/examples/astro-islands` already reports the reproduction on every
-build, so it will announce itself if Astro fixes it upstream.
+Tested rather than assumed: adding `vite: { ssr: { noExternal: [/^@cascivo\//] } }` to the
+Astro example changes nothing — `load` and `visible` islands still emit `._card_…` with no
+matching rule. It is **not** the export-condition bug; it is Astro's island CSS collection.
+The ⚠️ Partial grade and the `client:only` / aggregate workarounds stand, and
+`apps/examples/astro-islands` reports the reproduction on every build, so it will announce
+itself if Astro fixes it upstream.

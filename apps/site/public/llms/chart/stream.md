@@ -68,7 +68,7 @@ import { Stream } from '@cascivo/charts'
 
 ## Client JavaScript
 
-Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 

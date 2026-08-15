@@ -14,7 +14,7 @@
     "name": "Stream",
     "description": "Streamgraph — stacked areas on a centered (silhouette) flowing baseline.",
     "category": "chart",
-    "clientJs": "required",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],
