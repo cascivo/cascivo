@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Wraps a scrollable region and triggers a refresh when pulled down past a threshold at the top',
   category: 'feedback',
+  // A pointer gesture is the entire trigger.
+  clientJs: 'required',
   states: ['idle', 'pulling', 'ready', 'refreshing'],
   variants: [],
   sizes: [],

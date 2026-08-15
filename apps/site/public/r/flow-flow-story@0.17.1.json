@@ -14,6 +14,7 @@
     "name": "FlowStory",
     "description": "A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.",
     "category": "display",
+    "clientJs": "required",
     "states": ["playing", "paused"],
     "variants": [],
     "sizes": [],
@@ -106,7 +107,8 @@
         "name": "background",
         "type": "boolean",
         "required": false,
-        "description": "Render the dotted background pane behind the flow."
+        "description": "Render the dotted background pane behind the flow.",
+        "default": "true"
       },
       {
         "name": "clock",

@@ -49,6 +49,10 @@ import { Carousel } from '@cascivo/react'
 <Carousel loop slides={[<Slide1 />, <Slide2 />, <Slide3 />]} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-accent`

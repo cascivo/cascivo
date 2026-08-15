@@ -20,6 +20,16 @@
  *      Node ESM loader (`ERR_UNKNOWN_FILE_EXTENSION`), the default state of an
  *      externalized dependency in every Vite SSR framework. Fixing the first invariant
  *      without the second just trades a styling bug for an SSR blocker.
+ *   3. If the package ALSO ships modules that render inside the RSC server graph (JSX, no
+ *      `'use client'`), it must offer a `react-server` condition resolving to the
+ *      CSS-bearing build. Invariant 2 without this one trades the SSR blocker back for a
+ *      styling bug: React Server Components resolve `react-server` then `node`, so without
+ *      a `react-server` entry every `clientJs: 'none'` component renders from the CSS-free
+ *      twin and its stylesheet is never collected. Measured on `apps/examples/react-next`:
+ *      6 of the 11 hashed class names in the prerendered HTML had no rule anywhere in the
+ *      emitted CSS — all six from server-rendered components. The workaround was to import
+ *      the 328 KB aggregate `styles.css`, which is why an SSR page shipped ~384 KB of CSS
+ *      to render one card. See docs/plans/ssr-css-and-client-js-plan.md.
  *
  * Needs a prior `pnpm build` — it reads `dist/`, i.e. what an adopter actually installs.
  * Skips cleanly when dist is absent so `pnpm ready`'s pre-build stages stay runnable.
@@ -93,6 +103,22 @@ function candidates(): Candidate[] {
   return out
 }
 
+/**
+ * Chunks that can render inside the RSC *server* graph: they emit JSX and carry no
+ * `'use client'` directive, so an RSC bundler executes them on the server rather than
+ * turning them into a client reference. These are the modules invariant 3 protects — a
+ * `'use client'` chunk is re-resolved by the client bundler under browser conditions and
+ * keeps its CSS either way.
+ */
+function serverRenderableChunks(c: Candidate): string[] {
+  return c.jsFiles.filter((f) => {
+    const code = readFileSync(f, 'utf8')
+    if (!code.includes('react/jsx-runtime')) return false
+    const firstLine = code.split('\n').find((l) => l.trim() !== '') ?? ''
+    return !/^\s*(['"])use client\1;?\s*$/.test(firstLine)
+  })
+}
+
 const built = existsSync(join(PACKAGES_DIR, 'charts/dist'))
 
 describe('css-contract — a package that declares CSS side effects imports its own CSS', () => {
@@ -151,6 +177,58 @@ describe('css-contract — a package that declares CSS side effects imports its 
         offenders.join('\n  '),
     )
   })
+
+  it(
+    'a package with server-renderable modules offers a react-server condition',
+    { skip: !built },
+    () => {
+      const offenders: string[] = []
+      for (const c of candidates()) {
+        const entry = c.pkg.exports?.['.'] as Record<string, string> | string | undefined
+        if (typeof entry !== 'object' || entry === null) continue
+        if (entry['node'] === undefined) continue
+        const serverRenderable = serverRenderableChunks(c)
+        if (serverRenderable.length === 0) continue
+
+        const target = entry['react-server']
+        if (target === undefined) {
+          offenders.push(
+            `${c.name}: ships ${serverRenderable.length} server-renderable module(s) but has ` +
+              'no "react-server" export condition, so RSC falls through to "node" (CSS-free)',
+          )
+          continue
+        }
+        if (target === entry['node'] || target.includes('/node/')) {
+          offenders.push(
+            `${c.name}: "react-server" points at the CSS-free node twin (${target}) — it must ` +
+              'resolve to the CSS-bearing build',
+          )
+          continue
+        }
+        if (!existsSync(join(c.dir, target))) {
+          offenders.push(`${c.name}: "react-server" points at ${target}, which is missing`)
+          continue
+        }
+        const order = Object.keys(entry)
+        if (order.indexOf('react-server') > order.indexOf('node')) {
+          offenders.push(
+            `${c.name}: "react-server" is listed after "node" — export conditions match in ` +
+              'declaration order, so "node" would win and the CSS-free twin would be used',
+          )
+        }
+      }
+      assert.deepEqual(
+        offenders,
+        [],
+        'React Server Components resolve with the `react-server` condition and then `node`. A ' +
+          'package that ships a CSS-free `node/` twin for bare-Node SSR must therefore point ' +
+          '`react-server` at the CSS-BEARING build, or every component that renders on the ' +
+          "server (exactly the `clientJs: 'none'` ones) loses its stylesheet silently — the " +
+          'adopter is left importing the whole aggregate to get a styled page.\n  ' +
+          offenders.join('\n  '),
+      )
+    },
+  )
 
   it(
     'finds the packages it is meant to cover (guards against silent skips)',

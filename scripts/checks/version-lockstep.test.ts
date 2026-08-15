@@ -14,9 +14,17 @@
  * packages that happen to be bumped in the same release, so drift remains possible, which is
  * precisely the state being fixed.
  *
- * This guard keeps the group honest: **a new package that depends on `@cascivo/core` must
+ * This guard keeps the group honest: **a new package that shares the signal registry must
  * join it.** Without that, the next package added quietly reintroduces the whole problem, and
  * the config would look correct while covering less and less of the family.
+ *
+ * "Shares the registry" is the rule, not "depends on `@cascivo/core`". Those were the same
+ * thing until 2026-08-14, when `@cascivo/i18n` stopped importing `signal` through
+ * `@cascivo/core` (whose bundle carries a `'use client'` banner, which crashed RSC — see
+ * `rsc-boundary.test.ts`) and took it from `@preact/signals-react` directly. It still holds a
+ * module-level signal, so it still must not resolve a second copy; only the edge it holds it
+ * through changed. Keying on the dependency alone would have quietly ejected it from the
+ * group — or forced a dependency it does not use to be kept for the guard's benefit.
  *
  * `cascivo doctor` also reports an installed duplicate (`checkDuplicateCore`). That stays as
  * defense in depth: lockstep prevents incompatible *ranges*, but a lockfile carried over from
@@ -38,6 +46,7 @@ interface PackageJson {
   private?: boolean
   version?: string
   dependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
 }
 
 function publishedPackages(): PackageJson[] {
@@ -64,10 +73,19 @@ describe('version-lockstep — the core-sharing family releases as one', () => {
   const packages = publishedPackages()
   const groups = fixedGroups()
 
-  /** Published packages that carry `@cascivo/core` as a direct dependency, plus core itself. */
+  /**
+   * Published packages that share the module-level signal registry: `@cascivo/core` itself,
+   * anything depending on it, and anything holding `@preact/signals-react` directly (which
+   * IS the registry — `@cascivo/core` only re-exports it).
+   */
   const family = new Set(
     packages
-      .filter((p) => p.name === '@cascivo/core' || p.dependencies?.['@cascivo/core'] !== undefined)
+      .filter(
+        (p) =>
+          p.name === '@cascivo/core' ||
+          p.dependencies?.['@cascivo/core'] !== undefined ||
+          p.peerDependencies?.['@preact/signals-react'] !== undefined,
+      )
       .map((p) => p.name!),
   )
 
@@ -100,7 +118,7 @@ describe('version-lockstep — the core-sharing family releases as one', () => {
     )
   })
 
-  it('the fixed group contains nothing that does not share core', () => {
+  it('the fixed group contains nothing that does not share the registry', () => {
     // An unrelated package in the group takes a version bump on every family release for no
     // reason, which makes the churn look arbitrary and invites someone to delete the group.
     const group = groups[0] ?? []

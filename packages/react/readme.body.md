@@ -55,26 +55,27 @@ RSC without any extra wrapper.
 
 > **No bundler? (CDN, import maps, plain `<link>`)** Import the aggregate sheet
 > `@cascivo/react/styles.css` — every component's CSS **plus the tokens and the
-> light & dark themes** in one file (~305 KB / ~40 KB gzip, not tree-shaken). It is
+> light & dark themes** in one file (~328 KB / ~47 KB gzip, not tree-shaken). It is
 > self-contained: this single import gives you a fully-colored app with no separate
-> `@cascivo/themes` import. With a bundler (CSR) you don't need it; import it only if
-> you prefer one explicit stylesheet over per-component tree-shaking, or for Vite SSR
-> (below), where it is required.
+> `@cascivo/themes` import. On **any** bundler — CSR, SSR or RSC alike — you don't
+> need it, and importing it costs you the per-component tree-shaking; reach for it
+> only when nothing walks the module graph.
 
 > **Vite SSR / TanStack Start / Remix / workerd?** The 4-line SSR checklist (full
 > recipe: [USING-WITH-VITE-SSR.md](https://github.com/cascivo/cascivo/blob/main/docs/USING-WITH-VITE-SSR.md)):
 >
-> 1. **`ssr: { noExternal: [/^@cascivo\//] }`** in `vite.config` (or the
->    `cascivoSsr()` plugin from `@cascivo/vite-plugin`). Without it a bare
->    server-side ESM loader can't resolve the per-component `.css` side-effect
->    imports and throws `Unknown file extension ".css"`.
+> 1. **No Vite config needed** on 0.10+ — the `node` export condition ships a
+>    CSS-free server build a bare ESM loader can import. Pinned below 0.10? Add
+>    `ssr: { noExternal: [/^@cascivo\//] }` (or the `cascivoSsr()` plugin from
+>    `@cascivo/vite-plugin`), else the loader throws `Unknown file extension ".css"`.
 > 2. **`@preact/signals-react` 3.x** — on React 19 the 2.x line fails to load. The
 >    peer range enforces `>=3`.
-> 3. **Import the CSS once** in your root entry: `@cascivo/react/styles.css` +
->    `@cascivo/themes/all` (+ `@cascivo/charts/styles.css` if you use charts). If you
->    typecheck (`tsc --noEmit`), these bare `.css` imports need ambient types — add
->    `src/vite-env.d.ts` with `/// <reference types="vite/client" />` or
->    `declare module '*.css'`, else TS2307/TS2882.
+> 3. **Import a theme once** in your root entry: `@cascivo/themes/light-dark.css`
+>    (+ `@cascivo/charts/styles.css` if you use charts). Component CSS is automatic
+>    here too — don't add the aggregate. If you typecheck (`tsc --noEmit`), these
+>    bare `.css` imports need ambient types — add `src/vite-env.d.ts` with
+>    `/// <reference types="vite/client" />` or `declare module '*.css'`, else
+>    TS2307/TS2882.
 > 4. **Theme without a mismatch:** inline `themePreloadScript()` in `<head>` and add
 >    `suppressHydrationWarning` to `<html>`, or hard-code `data-theme` for a fixed theme.
 >

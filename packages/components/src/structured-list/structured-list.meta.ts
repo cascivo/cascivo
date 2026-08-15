@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'StructuredList',
   description: 'Tabular row list for scannable data, optionally single-selectable',
   category: 'display',
+  // All rows render; JS only adds the optional roving-focus selection.
+  clientJs: 'enhancement',
   states: ['default', 'selected'],
   variants: ['static', 'selectable'],
   sizes: [],

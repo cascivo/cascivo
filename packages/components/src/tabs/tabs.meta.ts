@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'Tabs',
   description: 'Switch between related panels of content',
   category: 'navigation',
+  // Only the active panel renders; switching is JS-only, so the other panels are unreachable.
+  clientJs: 'required',
   states: ['active', 'inactive'],
   variants: [],
   sizes: [],

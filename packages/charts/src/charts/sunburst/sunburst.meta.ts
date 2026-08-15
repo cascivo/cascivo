@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Radial hierarchy — concentric rings where each node is an annular segment sized by value.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with the real values, so the
+  // chart reads with JS off; JS adds hover, tooltips and transitions.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

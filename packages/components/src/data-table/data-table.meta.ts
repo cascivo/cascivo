@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets',
   category: 'display',
+  // Rows render, but sort, filter, selection and pagination are what the component is for;
+  // with JS off only page one is reachable.
+  clientJs: 'required',
   states: ['default', 'loading', 'empty'],
   variants: [],
   sizes: ['compact', 'normal', 'relaxed'],

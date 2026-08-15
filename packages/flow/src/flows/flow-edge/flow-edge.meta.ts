@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.',
   category: 'display',
+  // A plain SVG path with its arrowhead and label; the geometry is server-rendered.
+  clientJs: 'enhancement',
   states: ['default', 'selected', 'animated'],
   variants: ['bezier', 'straight', 'smoothstep'],
   sizes: [],

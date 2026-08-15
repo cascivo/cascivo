@@ -4,6 +4,10 @@ export const meta: ComponentMeta = {
   name: 'Stream',
   description: 'Streamgraph — stacked areas on a centered (silhouette) flowing baseline.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with every value, so the
+  // streamgraph reads with JS off. The "live" part is the app pushing new data through
+  // createStreamBuffer — that is the app's JavaScript, not the component's.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

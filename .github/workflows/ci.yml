@@ -130,6 +130,12 @@ jobs:
       - name: CSS-contract guard (CSS-shipping packages import their own CSS + ship a node twin)
         run: pnpm run css-contract:check
 
+      # Reads the published module graph, so it also has to run after the build. Catches the
+      # transitive shape a per-file lint cannot: a clientJs:'none' component whose imports
+      # reach a 'use client' module, which crashes an RSC build at "Collecting page data".
+      - name: RSC-boundary guard (server-renderable components stay server-safe)
+        run: pnpm run rsc:check
+
       # Adopters read the shipped .d.ts as the primary prop reference. A build that dropped
       # its TSDoc would still typecheck and every other guard would stay green.
       - name: dts-TSDoc guard (the build does not strip prop documentation)

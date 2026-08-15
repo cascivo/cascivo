@@ -33,6 +33,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "react-server": "./dist/index.js",
       "node": "./dist/node/index.js",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
@@ -63,6 +64,7 @@
     "@cascivo/components": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "jsdom": "catalog:",

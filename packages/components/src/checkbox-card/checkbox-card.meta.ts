@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.',
   category: 'inputs',
+  // Backed by a native checkbox, so selection works and submits without JS.
+  clientJs: 'enhancement',
   states: ['default', 'checked', 'disabled'],
   variants: [],
   sizes: [],

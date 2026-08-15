@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Inline, actionable notification banner that surfaces a titled message with an optional recovery action',
   category: 'feedback',
+  // The title and message render in full; JS only drives the optional action and dismissal.
+  clientJs: 'enhancement',
   states: [],
   variants: ['info', 'success', 'warning', 'error'],
   sizes: [],

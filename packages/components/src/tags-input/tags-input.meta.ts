@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'TagsInput',
   description: 'Free-form multi-value chip input',
   category: 'inputs',
+  // Adding and removing chips is the component; with JS off the value cannot change.
+  clientJs: 'required',
   states: ['idle', 'focused', 'disabled'],
   variants: [],
   sizes: [],

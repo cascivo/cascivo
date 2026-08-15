@@ -22,6 +22,7 @@
     "name": "Alert",
     "description": "Highlights a short, important message inline",
     "category": "display",
+    "clientJs": "enhancement",
     "states": [],
     "variants": ["default", "info", "success", "warning", "destructive"],
     "sizes": [],

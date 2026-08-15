@@ -13,9 +13,22 @@
  *   2. a component whose source scans clean but whose manifest claims `'enhancement'` or
  *      `'required'` → fail (the claim understates it, and the free RSC win is lost).
  *
- * `'enhancement'` vs `'required'` is deliberately NOT decided here. The difference is
- * whether content is merely hidden or genuinely unreachable with JS off, which no static
- * scan can tell — a manifest that says neither is treated as unclassified, not as a defect.
+ * `'enhancement'` vs `'required'` is deliberately NOT decided here, but the definition is
+ * fixed, because the two halves of this docstring used to disagree and the catalog was
+ * labelled against both. The test is **function-based, not content-based**:
+ *
+ *   `'enhancement'` — the component still does its job with JS off. JS adds polish.
+ *                     `Toc` renders real anchors; `TimePicker` wraps a native time input;
+ *                     a chart's server HTML carries the SVG *and* the accessible data table.
+ *   `'required'`    — the component's primary job needs JS, even when its markup is all
+ *                     there. `Calendar` server-renders the whole month grid and cannot pick
+ *                     a date; `Tabs` renders one panel and cannot reach the others;
+ *                     `OverflowMenu` has its items in the HTML, hidden and inert.
+ *
+ * Content-based was the older reading and it is the optimistic one: it would call all four
+ * of those `'enhancement'`, and an adopter trusting that would ship a dead Calendar. The
+ * field exists to answer "can I render this from a Server Component and never hydrate?",
+ * so it answers that.
  *
  * Third rule, which follows from the first: a `clientJs: 'none'` component must not declare
  * `'use client'`. The directive is copied verbatim into adopter projects by

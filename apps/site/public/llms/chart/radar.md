@@ -57,6 +57,10 @@ const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 <Radar axes={axes} series={series} title="Model comparison" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`

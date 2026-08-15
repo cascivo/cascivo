@@ -14,6 +14,7 @@
     "name": "Polar",
     "description": "A polar coordinate plot — categories around the circle, value as radius. Bars (a rose), or a polar line/area.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

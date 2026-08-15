@@ -4,6 +4,10 @@ export const meta: ComponentMeta = {
   name: 'Header',
   description: 'App top bar with brand, primary navigation links, and an actions slot',
   category: 'navigation',
+  // Markup is fully server-rendered; the only client-side work is re-resolving the
+  // default label when the i18n locale or catalog changes, which is why the source
+  // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
+  clientJs: 'enhancement',
   states: ['default'],
   variants: [],
   sizes: [],

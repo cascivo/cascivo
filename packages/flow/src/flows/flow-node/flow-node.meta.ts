@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'An HTML node box positioned in the viewport pane — draggable, selectable, with arbitrary children.',
   category: 'display',
+  // Position comes from the viewport signal and the box is draggable.
+  clientJs: 'required',
   states: ['default', 'dragging', 'selected', 'focus'],
   variants: [],
   sizes: [],

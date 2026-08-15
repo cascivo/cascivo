@@ -1,4 +1,4 @@
-import { cn } from '@cascivo/core'
+import { cn } from '@cascivo/core/pure'
 import type { CSSProperties, ReactNode } from 'react'
 import styles from './large-title-header.module.css'
 

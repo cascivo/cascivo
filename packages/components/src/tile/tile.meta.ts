@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard',
   category: 'inputs',
+  // Selection rides on role=radio/checkbox over a click handler, not a native input, so
+  // nothing can be selected without JS.
+  clientJs: 'required',
   states: ['default', 'selected', 'focus', 'disabled'],
   variants: ['single', 'multi'],
   sizes: [],

@@ -5,6 +5,9 @@ export const meta: BlockMeta = {
   displayName: 'Login Form',
   description: 'Email + password login with remember-me checkbox and forgot-password link.',
   category: 'auth',
+  // Native inputs and the submit button render, so the form is fillable and submittable
+  // without JS.
+  clientJs: 'enhancement',
   tags: ['auth', 'login', 'form', 'email', 'password'],
   screenshot: {
     light: '/blocks/screenshots/auth-login-light.png',

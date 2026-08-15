@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'EmptyDashboard',
   description: 'Dashboard page showing an empty state with a call-to-action button.',
   category: 'display',
+  // A static empty state plus a call-to-action — nothing needs a browser.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

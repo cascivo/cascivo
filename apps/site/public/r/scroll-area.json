@@ -22,6 +22,7 @@
     "name": "ScrollArea",
     "description": "A scroll container with styled, slim scrollbars and overflow shadows",
     "category": "layout",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

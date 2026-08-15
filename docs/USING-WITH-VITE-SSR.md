@@ -3,7 +3,12 @@
 **As of `@cascivo/react` 0.10, SSR works with zero Vite config.** The package
 ships a CSS-free server build selected by the `node` export condition, so a bare
 server-side ESM loader — Node's native loader, or a workerd/Cloudflare runtime —
-imports it cleanly. You just install, import the stylesheet once, and render.
+imports it cleanly. You just install, import a theme once, and render.
+
+**As of 0.18.0 the aggregate stylesheet is no longer part of the SSR recipe.** A
+`react-server` export condition keeps the per-component CSS edges intact on the RSC
+graph too, so component CSS tree-shakes under SSR exactly as it does in an SPA — see
+[Per-component CSS tree-shaking under SSR](#per-component-css-tree-shaking-under-ssr).
 
 Historically (`@cascivo/react` **< 0.10**) the published bundle shipped
 per-component CSS as static side-effect imports (`import './button.css'` inside
@@ -29,15 +34,22 @@ Vite config to add** — the three items below are all that's left.
 (`SyntaxError: … '__SECRET_INTERNALS…'`); the peer range enforces `>=3`. If a
 lockfile pinned 2.x, run `cascivo doctor`.
 
-**2. Import the CSS once** in your root route / server entry — this is what styles
-the server-rendered first paint (the CSS-free server build carries no per-component
-CSS, by design, so the aggregate stylesheet is how the server HTML gets styled):
+**2. Import a theme once** in your root route / server entry. That is all — component
+CSS is not yours to import. Each component chunk carries its own `.css` side-effect
+import, so your bundler pulls in exactly the stylesheets your components need and
+tree-shakes the rest, then emits them as the render-blocking `<link>` that styles the
+server-rendered first paint:
 
 ```tsx
-import '@cascivo/react/styles.css' // all component structure, one stylesheet
 import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 import '@cascivo/charts/styles.css' // only if you use @cascivo/charts
 ```
+
+Do **not** add `@cascivo/react/styles.css` here. It is the full-catalog aggregate for
+setups with no bundler (CDN, plain `<link>`); importing it in a bundled app replaces
+the handful of KB your page uses with all 197 components' worth. Measured on
+[`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/): **357 KB → 29 KB**
+of CSS when the aggregate import was dropped.
 
 **3. Theme without a hydration mismatch** (runtime theme switching only): inline
 `themePreloadScript()` in `<head>` and add `suppressHydrationWarning` to `<html>`,
@@ -88,65 +100,53 @@ export default defineConfig({
 but it is no longer required — the `node` export condition handles the server
 build. Upgrading to 0.10+ lets you delete the config entirely.
 
-## Why import the aggregate `styles.css`?
+## Per-component CSS tree-shaking under SSR
 
-The per-component CSS imports work great in a **client** bundle: each component
-pulls only its own stylesheet and unused component CSS tree-shakes away. The
-server build carries no per-component CSS at all (that's what makes it load under a
-bare Node loader), so importing `@cascivo/react/styles.css` once is how the
-server-rendered HTML gets styled on first paint — it is required, not optional,
-under SSR:
+It works, and you get it by doing nothing. Each component chunk in `@cascivo/react`
+carries a `.css` side-effect import, so your **client** build pulls in only the
+stylesheets of components in the module graph and tree-shakes the rest — and that
+emitted stylesheet is a render-blocking `<link>` in the document `<head>`, which is
+exactly what styles the server-rendered first paint. The server build never needs CSS
+of its own: CSS does not apply during `renderToString`.
 
-- It carries the canonical `@layer` order statement, so the cascade is
-  deterministic even before a theme loads.
-- It guarantees server-rendered HTML is fully styled on first paint — no reliance
-  on per-component CSS arriving through the module graph during SSR.
+Measured on [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/), a page
+of Menubar + Card + Button: **29 KB** of CSS, of which ~26 KB is the light+dark theme
+bundle. The same page importing the aggregate as well: 357 KB. Its
+[smoke test](../apps/examples/react-vite-ssr/test/ssr-smoke.mjs) asserts both halves —
+that every class in the server HTML has a rule in the emitted CSS, and that the total
+stays under budget.
 
-`styles.css` is **structure only**; it references `var(--cascivo-*)` values that
-don't exist until tokens + a theme load, so always pair it with
-`@cascivo/themes/all` (or an individual theme). Order: components → tokens+theme →
-your brand overrides (last).
+> **This page used to say the opposite** — that the aggregate was required under SSR and
+> that "there is no flag that makes the aggregate shakeable". That was wrong, and the
+> cause was a genuine bug rather than a law of physics: `@cascivo/react` offered no
+> `react-server` export condition, so React Server Components fell through to `node` and
+> got the CSS-free server twin, silently dropping the stylesheet of every component that
+> renders on the server. The aggregate hid it. Fixed in 0.18.0 — see
+> [docs/plans/ssr-css-and-client-js-plan.md](./plans/ssr-css-and-client-js-plan.md).
 
-### The cost: per-component CSS tree-shaking does not apply under SSR
+### When the aggregate *is* right
 
-[GETTING-STARTED.md](./GETTING-STARTED.md#css-size) advertises per-component CSS
-tree-shaking — a ~45-component dashboard measured 137 KB / 19 KB gzip of the
-273 KB aggregate. **That measurement is client-only (SPA), and the saving is not
-available to you here.** Importing the aggregate is what makes SSR work, and the
-aggregate is by definition not tree-shakeable.
+`@cascivo/react/styles.css` remains supported and correct for setups where no bundler
+walks the module graph:
 
-Worse, you get both: the client build still emits per-component chunks for the
-components it sees in the module graph, so a measured TanStack Start build
-produced a 306 KB `index-*.css` **plus** ~12 per-component chunks duplicating a
-subset of it.
+- a plain `<link rel="stylesheet">` from a CDN, or any no-build page;
+- an environment that strips the CSS edges before your bundler sees them — Astro's
+  `client:load` / `client:visible` islands do this today (see
+  [USING-WITH-ASTRO.md](./USING-WITH-ASTRO.md)).
 
-This is a real, currently-unavoidable tradeoff, not an oversight — and since
-TanStack Start, Remix and Next are where most new dashboards get built, it is
-worth stating plainly rather than leaving the two numbers to contradict each other.
-
-**What you can do today:**
-
-- Ship one theme instead of `all.css` (see GETTING-STARTED Recipe B) — the theme
-  layer is the larger half of the aggregate for most apps.
-- Accept the duplication: it is CSS, it gzips well, and it is served once.
-- If your framework can defer hydration CSS, the per-component chunks are the
-  redundant half — not the aggregate.
-
-**What we are not going to pretend:** there is no flag that makes the aggregate
-shakeable. A client-shakeable `styles.css` would have to drop the `@layer` order
-statement that makes the cascade deterministic before a theme loads, which is the
-other half of why the import is required.
+It is **structure only**, plus tokens and the light/dark themes; if you pair it with a
+`@cascivo/themes` bundle as well you are shipping tokens and both themes twice. Order:
+components → tokens+theme → your brand overrides (last).
 
 ## TanStack Start
 
-TanStack Start is Vite under the hood, so the TL;DR applies directly. Put the
-config in the app's `vite.config.ts` and the imports in your root route
-(`app/routes/__root.tsx`):
+TanStack Start is Vite under the hood, so the TL;DR applies directly — put the theme
+import in your root route (`app/routes/__root.tsx`) and let component CSS ride the
+module graph:
 
 ```tsx
 // app/routes/__root.tsx
-import '@cascivo/react/styles.css'
-import '@cascivo/themes/all.css'
+import '@cascivo/themes/light-dark.css'
 import { createRootRoute } from '@tanstack/react-router'
 
 export const Route = createRootRoute({
@@ -185,7 +185,7 @@ pnpm add @cascivo/charts
 ```
 
 ```tsx
-import '@cascivo/charts/styles.css' // once, alongside @cascivo/react/styles.css
+import '@cascivo/charts/styles.css' // once, alongside your theme import
 import { AreaChart, BarChart, PieChart } from '@cascivo/charts'
 ```
 
@@ -314,9 +314,14 @@ server-rendered `<html>` — it never mismatches. Full API in
   `import '@cascivo/themes/all.css'` — your tsconfig enables
   `noUncheckedSideEffectImports` (the TanStack Start scaffold does). Use the
   `.css`-suffixed specifier: `import '@cascivo/themes/all.css'`.
-- **Components render but are unstyled on the server** — you skipped
-  `@cascivo/react/styles.css`, or imported it after a component rendered. Import it
-  once, at the top of your root entry, before any brand overrides.
+- **Components render but are unstyled on the server** — you skipped the theme
+  import, so every `var(--cascivo-*)` is unresolved and components paint greyscale.
+  Import `@cascivo/themes/light-dark.css` (or a single theme) once, at the top of your
+  root entry, before any brand overrides. If the markup has no styling *at all* rather
+  than missing colors, your resolver is picking the CSS-free `node` build for modules
+  that render on the server — confirm nothing in your config forces the `node`
+  condition for the client/RSC graphs, and see
+  [the aggregate escape hatch](#when-the-aggregate-is-right).
 - **Charts show a visible data table** — you didn't import
   `@cascivo/charts/styles.css`. The accessible table is the fallback that the chart
   CSS hides.

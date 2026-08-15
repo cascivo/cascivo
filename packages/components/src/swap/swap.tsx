@@ -1,3 +1,4 @@
+'use client'
 import { useControllableSignal, useSignals } from '@cascivo/core'
 import styles from './swap.module.css'
 

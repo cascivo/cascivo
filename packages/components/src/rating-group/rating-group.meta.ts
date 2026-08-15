@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'RatingGroup',
   description: 'Star rating input with accessible radio group pattern',
   category: 'inputs',
+  // The stars are buttons with role=radio, not native inputs, so no rating can be set without
+  // JS.
+  clientJs: 'required',
   states: ['idle', 'disabled', 'readOnly'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

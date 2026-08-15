@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.',
   category: 'display',
+  // A read-only code block; tokenizing happens during render, so the highlighted markup is
+  // server HTML.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

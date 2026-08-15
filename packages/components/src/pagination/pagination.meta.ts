@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'Pagination',
   description: 'Controls for navigating paged data sets, with page size selection',
   category: 'navigation',
+  // Page controls render as buttons plus a select, none of which navigate without JS.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

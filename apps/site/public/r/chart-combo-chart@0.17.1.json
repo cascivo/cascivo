@@ -14,6 +14,7 @@
     "name": "ComboChart",
     "description": "Combination bar + line chart on shared or dual y-axes.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],
@@ -46,7 +47,8 @@
         "name": "secondAxis",
         "type": "boolean",
         "required": false,
-        "description": "Render line on a secondary right y-axis"
+        "description": "Render line on a secondary right y-axis",
+        "default": "false"
       },
       {
         "name": "width",
@@ -90,7 +92,8 @@
         "name": "barsLabel",
         "type": "string",
         "required": false,
-        "description": "Legend label for the bar series."
+        "description": "Legend label for the bar series.",
+        "default": "'Bars'"
       },
       {
         "name": "format",
@@ -108,7 +111,8 @@
         "name": "lineLabel",
         "type": "string",
         "required": false,
-        "description": "Legend label for the line series."
+        "description": "Legend label for the line series.",
+        "default": "'Line'"
       },
       {
         "name": "xLabelEvery",

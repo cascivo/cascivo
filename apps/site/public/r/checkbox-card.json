@@ -22,6 +22,7 @@
     "name": "CheckboxCard",
     "description": "Multi-selectable card backed by a native checkbox. Use multiple independent CheckboxCards for multi-select scenarios.",
     "category": "inputs",
+    "clientJs": "enhancement",
     "states": ["default", "checked", "disabled"],
     "variants": [],
     "sizes": [],

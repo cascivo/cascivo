@@ -14,6 +14,7 @@
     "name": "Bullet",
     "description": "Bullet chart with background range bands, measure bar, and target tick.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

@@ -14,6 +14,7 @@
     "name": "Sunburst",
     "description": "Radial hierarchy — concentric rings where each node is an annular segment sized by value.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

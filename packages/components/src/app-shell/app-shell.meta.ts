@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.',
   category: 'layout',
+  // Header, nav and content all render; JS drives the collapse toggle and scroll sync.
+  clientJs: 'enhancement',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Comparison',
   description: 'Reveals the difference between two layers with a draggable divider',
   category: 'display',
+  // The reveal is the component: without the draggable divider you see one layer and cannot
+  // reach the other.
+  clientJs: 'required',
   states: ['default'],
   variants: [],
   sizes: [],

@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Concentric radial bars (a circular gauge family) — each datum is a ring whose sweep is proportional to its value.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with the real values, so the
+  // chart reads with JS off; JS adds hover, tooltips and transitions.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

@@ -17,6 +17,7 @@
     "name": "SettingsFormPage",
     "description": "Settings page with profile form inside a two-column settings layout.",
     "category": "display",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

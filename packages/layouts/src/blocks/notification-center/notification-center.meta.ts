@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'NotificationCenter',
   description: 'A list of notification alerts with a mark-all-read action.',
   category: 'display',
+  // The alert list renders in full; JS only drives mark-all-read.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

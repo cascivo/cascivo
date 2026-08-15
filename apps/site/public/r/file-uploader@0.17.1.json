@@ -23,6 +23,7 @@
     "name": "FileUploader",
     "description": "Drag-and-drop file upload zone with file list and status indicators.",
     "category": "inputs",
+    "clientJs": "required",
     "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
     "variants": [],
     "sizes": [],
@@ -75,7 +76,7 @@
         "name": "label",
         "type": "string",
         "required": false,
-        "description": "Field label"
+        "description": "Visible field label rendered above the drop zone; it also names the control."
       },
       {
         "name": "hint",

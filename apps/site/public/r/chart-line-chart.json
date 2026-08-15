@@ -14,6 +14,7 @@
     "name": "LineChart",
     "description": "Time-series or numeric line chart with multi-series support, hover tooltip, and legend.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

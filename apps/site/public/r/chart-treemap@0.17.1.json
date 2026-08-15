@@ -14,6 +14,7 @@
     "name": "Treemap",
     "description": "Squarified treemap for visualizing part-to-whole hierarchical data.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

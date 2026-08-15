@@ -22,6 +22,7 @@
     "name": "Dock",
     "description": "Fixed bottom navigation bar for mobile app shells with up to 5 items",
     "category": "navigation",
+    "clientJs": "enhancement",
     "states": ["default", "active"],
     "variants": [],
     "sizes": [],

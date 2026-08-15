@@ -4,6 +4,10 @@ export const meta: ComponentMeta = {
   name: 'Breadcrumb',
   description: 'Shows the current page location within a navigation hierarchy',
   category: 'navigation',
+  // Markup is fully server-rendered; the only client-side work is re-resolving the
+  // default label when the i18n locale or catalog changes, which is why the source
+  // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

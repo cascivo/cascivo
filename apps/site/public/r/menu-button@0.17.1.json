@@ -31,7 +31,7 @@
         "name": "label",
         "type": "ReactNode",
         "required": true,
-        "description": "Trigger button content"
+        "description": "Visible content rendered inside the trigger button."
       },
       {
         "name": "items",

@@ -417,9 +417,13 @@ function componentMarkdown(
     const RUNTIME_COST: Record<string, string> = {
       none: 'None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.',
       enhancement:
-        'Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.',
+        'Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.',
+      // Deliberately function-based, not content-based: the markup may be entirely present
+      // and the component still count as `required`. Calendar server-renders a complete
+      // month grid whose days are JS-only buttons, so no date can be picked; Tabs renders
+      // one panel and cannot reach the others. See client-js-parity.test.ts.
       required:
-        'Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.',
+        "Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.",
     }
     lines.push('## Client JavaScript')
     lines.push('')

@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'PieChart',
   description: 'Pie or donut chart with hover segments and optional legend.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with the real values, so the
+  // chart reads with JS off; JS adds hover, tooltips and transitions.
+  clientJs: 'enhancement',
   states: [],
   variants: ['pie', 'donut'],
   sizes: [],

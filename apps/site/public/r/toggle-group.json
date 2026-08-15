@@ -22,6 +22,7 @@
     "name": "ToggleGroup",
     "description": "A set of toggle buttons for single or multiple selection",
     "category": "inputs",
+    "clientJs": "required",
     "states": ["on", "off"],
     "variants": ["single", "multiple"],
     "sizes": ["sm", "md", "lg"],

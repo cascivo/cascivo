@@ -22,6 +22,7 @@
     "name": "StructuredList",
     "description": "Tabular row list for scannable data, optionally single-selectable",
     "category": "display",
+    "clientJs": "enhancement",
     "states": ["default", "selected"],
     "variants": ["static", "selectable"],
     "sizes": [],

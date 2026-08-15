@@ -5,6 +5,8 @@ export const meta: BlockMeta = {
   displayName: 'App Shell',
   description: 'Two-column layout with collapsible sidebar, nav links, and content area.',
   category: 'shell',
+  // Nav links are real anchors and the content area renders; JS only collapses the sidebar.
+  clientJs: 'enhancement',
   tags: ['shell', 'layout', 'sidebar', 'navigation', 'responsive'],
   screenshot: {
     light: '/blocks/screenshots/app-shell-light.png',

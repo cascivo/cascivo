@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Full-page application shell with persisted collapsible sidebar. Includes a signal-driven top progress bar with determinate progress, error state, and dismissible error strip.',
   category: 'layout',
+  // Header, nav and content render; JS drives the persisted collapse and the progress bar.
+  clientJs: 'enhancement',
   states: ['expanded', 'collapsed', 'loading', 'error'],
   variants: [],
   sizes: [],

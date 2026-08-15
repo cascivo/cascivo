@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Toggletip',
   description: 'A click-triggered info popover for supplementary, selectable content',
   category: 'overlay',
+  // The content is gated behind the open signal, so it is absent from the server HTML
+  // entirely.
+  clientJs: 'required',
   states: ['open', 'closed'],
   variants: [],
   sizes: [],

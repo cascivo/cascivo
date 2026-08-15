@@ -17,6 +17,7 @@
     "name": "UsersTablePage",
     "description": "Full users management page with table, search, and invite action.",
     "category": "display",
+    "clientJs": "required",
     "states": [],
     "variants": [],
     "sizes": [],

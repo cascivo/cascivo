@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Visual progress indicator for multi-step flows with horizontal and vertical orientations',
   category: 'navigation',
+  // A static progress indicator; every step and its state render on the server.
+  clientJs: 'enhancement',
   states: ['pending', 'active', 'complete', 'error'],
   variants: [],
   sizes: [],

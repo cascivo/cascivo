@@ -14,6 +14,7 @@
     "name": "ScatterChart",
     "description": "Scatter plot with variable point radius, multi-series, and hover tooltip.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

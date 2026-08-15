@@ -22,6 +22,7 @@
     "name": "LogViewer",
     "description": "Virtualized monospace console for high-frequency log and stream output",
     "category": "display",
+    "clientJs": "required",
     "states": ["following", "paused", "empty"],
     "variants": [],
     "sizes": [],

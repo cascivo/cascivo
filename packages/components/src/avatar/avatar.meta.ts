@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Avatar',
   description: 'Displays a user image with initials fallback',
   category: 'display',
+  // The <img> (or initials fallback) is in the server HTML; the machine only swaps in the
+  // fallback after a load error.
+  clientJs: 'enhancement',
   states: ['loading', 'loaded', 'error'],
   variants: [],
   sizes: ['xs', 'sm', 'md', 'lg', 'xl'],

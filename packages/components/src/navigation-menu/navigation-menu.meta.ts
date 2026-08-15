@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'NavigationMenu',
   description: 'Site navigation bar with links and dropdown flyout panels',
   category: 'navigation',
+  // Top-level items are real anchors so the site stays navigable; only the flyout panels need
+  // JS.
+  clientJs: 'enhancement',
   states: ['closed', 'open'],
   variants: [],
   sizes: [],

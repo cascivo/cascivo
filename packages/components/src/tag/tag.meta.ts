@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'Tag',
   description: 'Compact chip for labeling, categorizing, or filtering content',
   category: 'display',
+  // The chip and its label render; only the optional dismiss button needs JS.
+  clientJs: 'enhancement',
   states: [],
   variants: ['default', 'info', 'success', 'warning', 'error'],
   sizes: ['sm', 'md'],

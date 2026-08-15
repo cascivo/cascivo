@@ -22,6 +22,7 @@
     "name": "TagsInput",
     "description": "Free-form multi-value chip input",
     "category": "inputs",
+    "clientJs": "required",
     "states": ["idle", "focused", "disabled"],
     "variants": [],
     "sizes": [],

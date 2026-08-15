@@ -5,6 +5,9 @@ export const meta: BlockMeta = {
   displayName: 'Settings — Profile',
   description: 'Two-section settings form: personal info fields + preference toggles.',
   category: 'shell',
+  // Fields and toggles render as native controls, so the form is usable; JS only adds live
+  // feedback.
+  clientJs: 'enhancement',
   tags: ['settings', 'profile', 'form', 'toggles', 'preferences'],
   screenshot: {
     light: '/blocks/screenshots/settings-profile-light.png',

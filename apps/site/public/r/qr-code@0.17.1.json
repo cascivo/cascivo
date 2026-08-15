@@ -25,6 +25,7 @@
     "name": "QrCode",
     "description": "Encodes a URL or short text into a scannable SVG QR code",
     "category": "display",
+    "clientJs": "enhancement",
     "states": ["default"],
     "variants": [],
     "sizes": [],

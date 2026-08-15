@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Interactive color selection widget with saturation/lightness area, hue and alpha sliders',
   category: 'inputs',
+  // A color is produced only by dragging the saturation area; with JS off there is no value
+  // to submit.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

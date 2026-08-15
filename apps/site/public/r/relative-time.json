@@ -22,6 +22,7 @@
     "name": "RelativeTime",
     "description": "Displays a date as a localized phrase relative to now, auto-updating",
     "category": "display",
+    "clientJs": "enhancement",
     "states": ["default"],
     "variants": [],
     "sizes": [],

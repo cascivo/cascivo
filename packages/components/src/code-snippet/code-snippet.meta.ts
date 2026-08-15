@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Displays code (inline, single-line, or multi-line) with an optional copy button, lightweight built-in syntax highlighting for bash/css/js/ts, and an optional terminal-window look',
   category: 'display',
+  // The code and its syntax highlighting are server-rendered; only the copy button needs JS.
+  clientJs: 'enhancement',
   states: ['idle', 'copied'],
   variants: ['inline', 'single', 'multi'],
   sizes: [],

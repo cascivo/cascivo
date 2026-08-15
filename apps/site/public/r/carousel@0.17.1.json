@@ -22,6 +22,7 @@
     "name": "Carousel",
     "description": "Scroll-snap slide deck with previous/next controls and dot indicators",
     "category": "display",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

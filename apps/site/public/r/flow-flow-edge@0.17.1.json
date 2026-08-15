@@ -14,6 +14,7 @@
     "name": "FlowEdge",
     "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
     "category": "display",
+    "clientJs": "enhancement",
     "states": ["default", "selected", "animated"],
     "variants": ["bezier", "straight", "smoothstep"],
     "sizes": [],
@@ -99,7 +100,8 @@
         "name": "direction",
         "type": "'forward' | 'reverse' | undefined",
         "required": false,
-        "description": "Direction the dash travels when animated."
+        "description": "Direction the dash travels when animated.",
+        "default": "'forward'"
       },
       {
         "name": "id",
@@ -111,13 +113,15 @@
         "name": "sourcePosition",
         "type": "HandlePosition | undefined",
         "required": false,
-        "description": "Handle side the edge leaves from."
+        "description": "Handle side the edge leaves from.",
+        "default": "'right'"
       },
       {
         "name": "targetPosition",
         "type": "HandlePosition | undefined",
         "required": false,
-        "description": "Handle side the edge arrives at."
+        "description": "Handle side the edge arrives at.",
+        "default": "'left'"
       }
     ],
     "tokens": [

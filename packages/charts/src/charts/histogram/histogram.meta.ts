@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Histogram',
   description: 'Frequency histogram using Freedman–Diaconis binning with hover tooltips.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with the real values, so the
+  // chart reads with JS off; JS adds hover, tooltips and transitions.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

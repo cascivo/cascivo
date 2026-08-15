@@ -5,6 +5,10 @@ export const meta: ComponentMeta = {
   description:
     'App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers',
   category: 'navigation',
+  // Markup is fully server-rendered; the only client-side work is re-resolving the
+  // default label when the i18n locale or catalog changes, which is why the source
+  // calls useSignals() and carries 'use client'. Nothing is unreachable with JS off.
+  clientJs: 'enhancement',
   states: ['default'],
   variants: [],
   sizes: [],

@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with the real values, so the
+  // chart reads with JS off; JS adds hover, tooltips and transitions.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

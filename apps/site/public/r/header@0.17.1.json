@@ -22,6 +22,7 @@
     "name": "Header",
     "description": "App top bar with brand, primary navigation links, and an actions slot",
     "category": "navigation",
+    "clientJs": "enhancement",
     "states": ["default"],
     "variants": [],
     "sizes": [],

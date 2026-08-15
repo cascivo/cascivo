@@ -5,6 +5,8 @@ export const meta: BlockMeta = {
   displayName: 'Dashboard Overview',
   description: 'Welcome header with four KPI stat cards (revenue, users, orders, conversion).',
   category: 'dashboard',
+  // Static heading and KPI cards — nothing here needs a browser.
+  clientJs: 'enhancement',
   tags: ['dashboard', 'stats', 'kpi', 'cards', 'overview'],
   screenshot: {
     light: '/blocks/screenshots/dashboard-overview-light.png',

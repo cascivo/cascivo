@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'Filter',
   description: 'A group of toggleable pill or outline buttons for filtering content by category',
   category: 'inputs',
+  // The pills are JS-only buttons — with JS off nothing can be filtered.
+  clientJs: 'required',
   states: ['default', 'selected', 'hover', 'focus'],
   variants: ['pill', 'outline'],
   sizes: [],

@@ -72,6 +72,10 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 <ComboChart bars={bars} line={line} title="Sales vs Target" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`

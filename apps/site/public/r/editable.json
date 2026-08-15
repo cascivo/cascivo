@@ -22,6 +22,7 @@
     "name": "Editable",
     "description": "Inline click-to-edit text field",
     "category": "inputs",
+    "clientJs": "required",
     "states": ["preview", "editing", "disabled"],
     "variants": [],
     "sizes": [],

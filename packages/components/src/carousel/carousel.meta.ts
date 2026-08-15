@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Carousel',
   description: 'Scroll-snap slide deck with previous/next controls and dot indicators',
   category: 'display',
+  // All slides are in the server HTML and the track is a CSS scroll-snap container, so it
+  // scrolls natively; JS adds the arrows and dots.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

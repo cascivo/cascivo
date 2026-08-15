@@ -54,6 +54,10 @@ import { ColorPicker } from '@cascivo/react'
 <ColorPicker presets={['#ef4444', '#3b82f6', '#10b981']} alpha={false} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-accent`

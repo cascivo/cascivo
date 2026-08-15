@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'UsersTablePage',
   description: 'Full users management page with table, search, and invite action.',
   category: 'display',
+  // Built on a searchable DataTable — search and paging are the page's purpose.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],
