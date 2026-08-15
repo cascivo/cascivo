@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'OtpInput',
   description: 'Segmented one-time code input',
   category: 'inputs',
+  // Six native inputs render, so the code can be typed and submitted; JS adds auto-advance
+  // and paste splitting.
+  clientJs: 'enhancement',
   states: ['idle', 'focused', 'filled', 'disabled'],
   variants: [],
   sizes: [],

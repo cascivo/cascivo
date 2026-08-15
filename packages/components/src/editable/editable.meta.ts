@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'Editable',
   description: 'Inline click-to-edit text field',
   category: 'inputs',
+  // The text renders, but click-to-edit is the feature and it needs JS.
+  clientJs: 'required',
   states: ['preview', 'editing', 'disabled'],
   variants: [],
   sizes: [],

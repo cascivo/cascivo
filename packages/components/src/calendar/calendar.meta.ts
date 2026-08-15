@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Calendar',
   description: 'An accessible standalone month-grid date picker.',
   category: 'inputs',
+  // The full month grid server-renders (6.9 KB, 32 buttons) but every day is a JS-only
+  // button, so no date can be picked.
+  clientJs: 'required',
   states: ['default', 'selected', 'today', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

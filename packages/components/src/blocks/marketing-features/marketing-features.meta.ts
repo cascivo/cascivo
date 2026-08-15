@@ -5,6 +5,8 @@ export const meta: BlockMeta = {
   displayName: 'Feature Grid',
   description: 'Three-column responsive feature grid with icon, title, and description per cell.',
   category: 'marketing',
+  // A static feature grid — nothing here needs a browser.
+  clientJs: 'enhancement',
   tags: ['marketing', 'features', 'grid', 'icons'],
   screenshot: {
     light: '/blocks/screenshots/marketing-features-light.png',

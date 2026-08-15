@@ -22,6 +22,7 @@
     "name": "RadioCard",
     "description": "Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.",
     "category": "inputs",
+    "clientJs": "enhancement",
     "states": ["default", "checked", "disabled"],
     "variants": [],
     "sizes": [],

@@ -23,6 +23,7 @@
     "name": "FileUploader",
     "description": "Drag-and-drop file upload zone with file list and status indicators.",
     "category": "inputs",
+    "clientJs": "required",
     "states": ["idle", "dragover", "uploading", "complete", "error", "disabled"],
     "variants": [],
     "sizes": [],

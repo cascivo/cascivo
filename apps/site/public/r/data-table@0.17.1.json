@@ -23,6 +23,7 @@
     "name": "DataTable",
     "description": "Signal-driven data table with client/server sort, filter, pagination, multi-selection, expandable rows, and CSS content-visibility row containment for large datasets",
     "category": "display",
+    "clientJs": "required",
     "states": ["default", "loading", "empty"],
     "variants": [],
     "sizes": ["compact", "normal", "relaxed"],

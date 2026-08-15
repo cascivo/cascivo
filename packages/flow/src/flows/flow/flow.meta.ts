@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'The declarative, AI-first flow surface — render a node/edge graph from plain serializable data.',
   category: 'display',
+  // The surface owns viewport, selection and connection state; with JS off the graph does not
+  // lay out.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

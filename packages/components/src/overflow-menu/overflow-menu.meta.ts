@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'OverflowMenu',
   description: 'Kebab icon button revealing a menu of row-level actions',
   category: 'overlay',
+  // Menu items are in the HTML but hidden and inert — every action is a JS-only button.
+  clientJs: 'required',
   states: ['closed', 'open'],
   variants: [],
   sizes: ['sm', 'md'],

@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity',
   category: 'display',
+  // Actions are revealed by a horizontal swipe gesture and are unreachable otherwise.
+  clientJs: 'required',
   states: ['closed', 'leading', 'trailing'],
   variants: [],
   sizes: [],

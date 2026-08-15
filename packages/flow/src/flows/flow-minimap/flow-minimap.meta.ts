@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'FlowMiniMap',
   description: 'A scaled SVG overview of the graph with a draggable viewport rectangle.',
   category: 'display',
+  // The overview tracks a live viewport and its rectangle is dragged.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

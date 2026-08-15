@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'TreeView',
   description: 'Hierarchical, expandable tree of nodes with keyboard navigation and selection',
   category: 'display',
+  // Collapsed branches are not rendered, so most of the tree is unreachable without JS.
+  clientJs: 'required',
   states: ['default', 'expanded', 'collapsed', 'selected'],
   variants: ['single', 'multi'],
   sizes: [],

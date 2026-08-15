@@ -22,6 +22,7 @@
     "name": "Tile",
     "description": "A selectable card with radio (single) or checkbox (multi) semantics, toggled by click or keyboard",
     "category": "inputs",
+    "clientJs": "required",
     "states": ["default", "selected", "focus", "disabled"],
     "variants": ["single", "multi"],
     "sizes": [],

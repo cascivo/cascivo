@@ -17,6 +17,7 @@
     "name": "LoginPage",
     "description": "Authentication login page with email and password form.",
     "category": "display",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

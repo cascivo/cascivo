@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'A scripted, sequenced, looping flow animation — walks a graph step by step with fade-in captions.',
   category: 'display',
+  // A scripted, timed animation — the whole component is a runtime sequence.
+  clientJs: 'required',
   states: ['playing', 'paused'],
   variants: [],
   sizes: [],

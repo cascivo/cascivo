@@ -5,6 +5,9 @@ export const meta: BlockMeta = {
   displayName: 'Sign Up Form',
   description: 'Full-name, email, password, confirm-password sign-up form with terms checkbox.',
   category: 'auth',
+  // Native inputs and the submit button render, so the form is fillable and submittable
+  // without JS.
+  clientJs: 'enhancement',
   tags: ['auth', 'signup', 'register', 'form'],
   screenshot: {
     light: '/blocks/screenshots/auth-signup-light.png',

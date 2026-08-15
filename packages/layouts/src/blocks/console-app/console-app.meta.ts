@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Carbon-parity console shell: ShellHeader + icon-rail SideNav + HeaderPanel notifications/switcher + collapsible aside + main content.',
   category: 'display',
+  // Shell chrome, nav and main content all render; JS drives the panels and the switcher.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

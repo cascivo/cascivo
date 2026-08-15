@@ -22,6 +22,7 @@
     "name": "Toggletip",
     "description": "A click-triggered info popover for supplementary, selectable content",
     "category": "overlay",
+    "clientJs": "required",
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

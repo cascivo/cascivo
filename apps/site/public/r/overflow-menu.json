@@ -23,6 +23,7 @@
     "name": "OverflowMenu",
     "description": "Kebab icon button revealing a menu of row-level actions",
     "category": "overlay",
+    "clientJs": "required",
     "states": ["closed", "open"],
     "variants": [],
     "sizes": ["sm", "md"],

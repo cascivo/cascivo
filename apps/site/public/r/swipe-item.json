@@ -22,6 +22,7 @@
     "name": "SwipeItem",
     "description": "List row whose leading/trailing actions are revealed by a horizontal swipe, with keyboard parity",
     "category": "display",
+    "clientJs": "required",
     "states": ["closed", "leading", "trailing"],
     "variants": [],
     "sizes": [],

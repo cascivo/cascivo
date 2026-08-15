@@ -22,6 +22,7 @@
     "name": "TreeView",
     "description": "Hierarchical, expandable tree of nodes with keyboard navigation and selection",
     "category": "display",
+    "clientJs": "required",
     "states": ["default", "expanded", "collapsed", "selected"],
     "variants": ["single", "multi"],
     "sizes": [],

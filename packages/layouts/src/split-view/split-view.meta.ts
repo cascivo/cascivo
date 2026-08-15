@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'SplitView',
   description: 'Resizable two-pane split layout with keyboard and pointer drag support.',
   category: 'layout',
+  // Both panes render, but resizing by drag or keyboard is the component.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

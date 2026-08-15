@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'TimePicker',
   description: 'Native time input wrapper with label, hint, error, and size variants',
   category: 'inputs',
+  // Wraps a native <input type="time">, so a value can be picked and submitted with JS off.
+  clientJs: 'enhancement',
   states: ['idle', 'focused', 'error'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

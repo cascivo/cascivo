@@ -81,6 +81,10 @@ Predicate disables individual days
 <Calendar disabled={(d) => [0, 6].includes(d.getUTCDay())} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-calendar-bg`

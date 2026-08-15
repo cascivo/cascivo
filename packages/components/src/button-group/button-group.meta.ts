@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'ButtonGroup',
   description: 'Visually joins a set of related buttons into a single segmented control',
   category: 'inputs',
+  // A layout wrapper that joins its children visually; the buttons themselves are the
+  // caller's.
+  clientJs: 'enhancement',
   states: ['idle'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

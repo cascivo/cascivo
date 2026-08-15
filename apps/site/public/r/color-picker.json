@@ -22,6 +22,7 @@
     "name": "ColorPicker",
     "description": "Interactive color selection widget with saturation/lightness area, hue and alpha sliders",
     "category": "inputs",
+    "clientJs": "required",
     "states": [],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

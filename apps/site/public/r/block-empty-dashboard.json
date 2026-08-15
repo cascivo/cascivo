@@ -17,6 +17,7 @@
     "name": "EmptyDashboard",
     "description": "Dashboard page showing an empty state with a call-to-action button.",
     "category": "display",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'LogViewer',
   description: 'Virtualized monospace console for high-frequency log and stream output',
   category: 'display',
+  // Virtualized rendering plus a live stream — with JS off the viewport renders no rows.
+  clientJs: 'required',
   states: ['following', 'paused', 'empty'],
   variants: [],
   sizes: [],

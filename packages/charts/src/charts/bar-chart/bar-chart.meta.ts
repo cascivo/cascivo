@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with the real values, so the
+  // chart reads with JS off; JS adds hover, tooltips and transitions.
+  clientJs: 'enhancement',
   states: [],
   variants: ['grouped', 'stacked', 'percent'],
   sizes: [],

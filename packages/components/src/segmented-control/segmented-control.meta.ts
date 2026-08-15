@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'SegmentedControl',
   description: 'Mutually exclusive toggle group',
   category: 'inputs',
+  // Mutually exclusive selection through JS-only buttons — nothing can be selected without
+  // JS.
+  clientJs: 'required',
   states: ['idle', 'selected', 'disabled'],
   variants: [],
   sizes: ['sm', 'md', 'lg'],

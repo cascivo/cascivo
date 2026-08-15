@@ -14,6 +14,7 @@
     "name": "BarChart",
     "description": "Bar chart with vertical/horizontal orientation, grouped or stacked modes, and multi-series support.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": ["grouped", "stacked", "percent"],
     "sizes": [],

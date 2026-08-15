@@ -58,6 +58,10 @@ import { RatingGroup } from '@cascivo/react'
 <RatingGroup value={4} readOnly />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-warning`

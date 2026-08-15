@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'SettingsFormPage',
   description: 'Settings page with profile form inside a two-column settings layout.',
   category: 'display',
+  // The profile form renders as native controls inside a static two-column layout.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

@@ -61,6 +61,10 @@ Relative text is clock-dependent, so it is hydration-safe by default (the server
 <RelativeTime date={date} now={serverNow} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Accessibility
 
 - **WCAG level:** 2.2-AA

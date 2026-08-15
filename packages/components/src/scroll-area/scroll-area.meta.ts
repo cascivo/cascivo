@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'ScrollArea',
   description: 'A scroll container with styled, slim scrollbars and overflow shadows',
   category: 'layout',
+  // Scrolling is native and the content is all present; JS only adds the overflow shadows.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

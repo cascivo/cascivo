@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'A speedometer gauge — a value arc over a min–max sweep with threshold zones, ticks, and a needle.',
   category: 'chart',
+  // Server HTML carries the SVG plus the accessible data <table> with the real values, so the
+  // chart reads with JS off; JS adds hover, tooltips and transitions.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

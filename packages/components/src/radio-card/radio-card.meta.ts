@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Selectable card backed by a native radio input. Use RadioCardGroup for single-select groups.',
   category: 'inputs',
+  // Backed by a native radio input, so selection works and submits without JS.
+  clientJs: 'enhancement',
   states: ['default', 'checked', 'disabled'],
   variants: [],
   sizes: [],

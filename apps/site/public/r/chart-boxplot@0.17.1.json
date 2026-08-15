@@ -14,6 +14,7 @@
     "name": "Boxplot",
     "description": "Box-and-whisker plot with five-number summary and outlier dots per series.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

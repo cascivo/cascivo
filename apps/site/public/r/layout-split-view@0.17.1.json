@@ -22,6 +22,7 @@
     "name": "SplitView",
     "description": "Resizable two-pane split layout with keyboard and pointer drag support.",
     "category": "layout",
+    "clientJs": "required",
     "states": [],
     "variants": [],
     "sizes": [],

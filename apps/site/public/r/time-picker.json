@@ -22,6 +22,7 @@
     "name": "TimePicker",
     "description": "Native time input wrapper with label, hint, error, and size variants",
     "category": "inputs",
+    "clientJs": "enhancement",
     "states": ["idle", "focused", "error"],
     "variants": [],
     "sizes": ["sm", "md", "lg"],

@@ -877,7 +877,7 @@ import { Accordion } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -974,7 +974,7 @@ Escape and outside press still dismiss the sheet.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -1072,6 +1072,10 @@ import { Alert } from '@cascivo/react'
 ```tsx
 <Alert variant="warning" title="Update available" action={{ label: 'Update now', onClick: update }}>A new version is ready.</Alert>
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -1176,7 +1180,7 @@ import { AlertDialog } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -1272,6 +1276,10 @@ The burger in ShellHeader toggles the SideNav automatically.
   …
 </AppShell>
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -1451,6 +1459,10 @@ Derives initials automatically; also sets the accessible label.
 ```tsx
 <Avatar name="Jane Doe" status="online" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -1820,6 +1832,10 @@ Full console shell demo
 <ConsoleApp />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-shell-header-block-size`
@@ -2016,6 +2032,10 @@ Empty dashboard
 <EmptyDashboard />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Accessibility
 
 - **WCAG level:** 2.1-AA
@@ -2104,6 +2124,10 @@ Login page
 ```tsx
 <LoginPage />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Accessibility
 
@@ -2230,6 +2254,10 @@ Notification center
 ```tsx
 <NotificationCenter />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Accessibility
 
@@ -2374,6 +2402,10 @@ Settings form page
 ```tsx
 <SettingsFormPage />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Accessibility
 
@@ -2649,6 +2681,10 @@ Demo users table
 <UsersTablePage />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Accessibility
 
 - **WCAG level:** 2.1-AA
@@ -2813,7 +2849,7 @@ Snaps between three detents by dragging the handle; opens at half height.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -2896,7 +2932,7 @@ Long trails collapse to the first item, an ellipsis, and the trailing items.
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -3100,6 +3136,10 @@ import { ButtonGroup } from '@cascivo/react'
 <ButtonGroup orientation="vertical" roving aria-label="View"><Button>List</Button><Button>Grid</Button></ButtonGroup>
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-button-radius`
@@ -3207,6 +3247,10 @@ Predicate disables individual days
 ```tsx
 <Calendar disabled={(d) => [0, 6].includes(d.getUTCDay())} />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -3367,6 +3411,10 @@ import { Carousel } from '@cascivo/react'
 <Carousel loop slides={[<Slide1 />, <Slide2 />, <Slide3 />]} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -3517,6 +3565,10 @@ const data = [
   y={d => d.y}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -3701,6 +3753,10 @@ const rows = [
 <BarChart mode="stacked" tooltip {...toStackedSeries(rows)} title="Throughput" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -3791,6 +3847,10 @@ const series = [
 <Boxplot series={series} title="Comparison" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -3879,6 +3939,10 @@ const series = [{ name: 'Group A', data: [{x:1,y:2,size:10},{x:3,y:4,size:30}] }
 <BubbleChart series={series} title="Bubble" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -3954,6 +4018,10 @@ import { Bullet } from '@cascivo/charts'
 
 <Bullet value={72} target={80} ranges={[40, 70, 100]} label="Revenue %" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -4055,6 +4123,10 @@ import { CalendarHeatmap } from '@cascivo/charts'
   data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -4172,6 +4244,10 @@ import { Candlestick } from '@cascivo/charts'
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-2`
@@ -4272,6 +4348,10 @@ const line = [{x:0,y:50},{x:1,y:70},{x:2,y:60}]
 <ComboChart bars={bars} line={line} title="Sales vs Target" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -4363,6 +4443,10 @@ import { Funnel } from '@cascivo/charts'
   ]}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -4463,6 +4547,10 @@ import { Gauge } from '@cascivo/charts'
   ]}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -4566,6 +4654,10 @@ const data = [
 <Heatmap data={data} title="Activity" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -4636,6 +4728,10 @@ import { Histogram } from '@cascivo/charts'
 const data = Array.from({length:100}, () => Math.random() * 100)
 <Histogram data={data} title="Distribution" label="Value" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -4826,6 +4922,10 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y
   annotations={[{ kind: 'line', axis: 'y', value: 200, label: 'SLO' }]}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -5062,6 +5162,10 @@ import { PieChart } from '@cascivo/charts'
 <PieChart data={[]} title="Share" emptyLabel="Nothing tracked yet" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -5161,6 +5265,10 @@ import { Polar } from '@cascivo/charts'
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -5251,6 +5359,10 @@ const axes = ['Speed','Power','Range','Efficiency','Cost']
 const series = [{ id:'a', label:'Model A', values:[80,70,60,90,50] }]
 <Radar axes={axes} series={series} title="Model comparison" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -5356,6 +5468,10 @@ import { RadialBar } from '@cascivo/charts'
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -5458,6 +5574,10 @@ import { Sankey } from '@cascivo/charts'
   links={[{ source: 'a', target: 'b', value: 30 }, { source: 'b', target: 'c', value: 12 }]}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -5572,6 +5692,10 @@ import { ScatterChart } from '@cascivo/charts'
 const series = [{ id: 'a', label: 'Group A', data: [{x:1,y:2},{x:3,y:4}] }]
 <ScatterChart series={series} title="Scatter" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -5743,6 +5867,10 @@ import { Stream } from '@cascivo/charts'
 />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -5839,6 +5967,10 @@ import { Sunburst } from '@cascivo/charts'
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`
@@ -5930,6 +6062,10 @@ const data = [
 ]
 <Treemap data={data} title="Market share" />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -6109,7 +6245,7 @@ import { Checkbox } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -6192,6 +6328,10 @@ Multi-select feature toggles
   <CheckboxCard title="Audit log" description="Requires Team plan" disabled />
 </div>
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -6383,6 +6523,10 @@ Multi-line shell transcript with terminal-window chrome.
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-font-mono`
@@ -6473,7 +6617,7 @@ import { Collapsible } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -6562,6 +6706,10 @@ import { ColorPicker } from '@cascivo/react'
 ```tsx
 <ColorPicker presets={["#ef4444", "#3b82f6", "#10b981"]} alpha={false} />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -6666,7 +6814,7 @@ import { Combobox } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -6807,7 +6955,7 @@ A scope chip filters to Clusters, matched glyphs are highlighted, each row carri
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -6911,6 +7059,10 @@ import { Comparison } from '@cascivo/react'
 <Comparison position={position} onPositionChange={setPosition} before={<Before />} after={<After />} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-radius-md`
@@ -6998,6 +7150,10 @@ import { ContainedList } from '@cascivo/react'
 </ContainedList>
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -7083,7 +7239,7 @@ import { ContextMenu } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -7176,6 +7332,10 @@ Override the built-in copy/copied strings per instance
 ```tsx
 <CopyButton value="token" labels={{ copy: 'Copy token', copied: 'Token copied' }} />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -7455,6 +7615,10 @@ Use Column.render to return any ReactNode per cell — a Badge for status, an ic
 />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -7584,7 +7748,7 @@ Date range constraint
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -7699,7 +7863,7 @@ Limits the selectable dates
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -7797,6 +7961,10 @@ Link-based dock items for standard navigation
   ]}
 />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -7896,7 +8064,7 @@ Dragging the header past a threshold toward the edge dismisses the panel.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -7977,7 +8145,7 @@ import { Dropdown } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -8059,6 +8227,10 @@ import { Editable } from '@cascivo/react'
 ```tsx
 <Editable value="" onValueChange={() => {}} placeholder="Enter text" />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -8202,7 +8374,7 @@ const commands = [
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -8284,6 +8456,10 @@ import '@cascivo/editor/styles.css'
 
 <Highlight language="json" value={'{ "ok": true }'} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -8470,7 +8646,7 @@ The main button toggles a menu of secondary actions.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -8673,6 +8849,10 @@ Shows file list
 <FileUploader files={[{ id:'1', name:'report.pdf', size:102400, status:'complete' }]} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -8788,6 +8968,10 @@ import { Filter } from '@cascivo/react'
   aria-label="Filter by framework"
 />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -8950,6 +9134,10 @@ Let the dependency-free layered layout arrange a small DAG.
   />
 )
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -9165,6 +9353,10 @@ Shape of the `flow` prop.
 )
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-bg`
@@ -9235,6 +9427,10 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
   </div>
 )
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -9346,6 +9542,10 @@ Forward (default), backward, bidirectional, or undirected — via markerStart/ma
   </div>
 )
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -9542,6 +9742,10 @@ The pan/zoom state of the canvas pane.
 )
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -9634,6 +9838,10 @@ Shared geometry + graph types for the flow engine.
   </div>
 )
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -9876,6 +10084,10 @@ Each stage animates and is captioned in turn.
 )
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -9964,6 +10176,10 @@ function Demo() {
 }
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-space-4`
@@ -10047,7 +10263,7 @@ import { Header } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -10133,7 +10349,7 @@ Pair with a ShellHeader action: action active=open, onAction toggles open
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -10320,7 +10536,7 @@ import { HoverCard } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -10528,6 +10744,10 @@ import { Image } from '@cascivo/react'
 <Image src="/photo.jpg" alt="A photo" zoom />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-radius-none`
@@ -10700,7 +10920,7 @@ Starts the next page well before the user reaches the end.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -10885,7 +11105,7 @@ import { Input } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -11516,6 +11736,10 @@ App shell with collapsible nav
 ```tsx
 <AppFrame header={<Header />} sideNav={<Nav />}>content</AppFrame>
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -12402,6 +12626,10 @@ Two-pane split with draggable divider
 <SplitView start={<FileTree />} end={<Editor />} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -12683,6 +12911,10 @@ const logs = useStreamBuffer<LogLine>({ capacity: 1000 })
 <LogViewer ansi lines={ansiLines} maxHeight="32rem" />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-font-mono`
@@ -12777,7 +13009,7 @@ import { Menu } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -12895,7 +13127,7 @@ Aligns the menu to the trigger end edge
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -12980,7 +13212,7 @@ import { Menubar } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -13069,7 +13301,7 @@ import { Modal } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -13149,7 +13381,7 @@ import { MultiSelect } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -13343,6 +13575,10 @@ import { NavigationMenu } from '@cascivo/react'
 <NavigationMenu aria-label="Main" items={[{ id: "home", label: "Home", href: "/" }, { id: "products", label: "Products", content: <ul>…</ul> }]} />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -13434,6 +13670,10 @@ import { Notification } from '@cascivo/react'
 ```tsx
 <Notification variant="error" title="Upload failed" description="The connection dropped." actions={<Button onClick={retry}>Retry</Button>} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -13544,7 +13784,7 @@ import { NumberInput } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -13630,6 +13870,10 @@ import { OtpInput } from '@cascivo/react'
 ```tsx
 <OtpInput length={4} value="" onValueChange={() => {}} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -13719,6 +13963,10 @@ import { OverflowMenu } from '@cascivo/react'
 <OverflowMenu size="sm" placement="bottom-start" items={items} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-text`
@@ -13804,6 +14052,10 @@ import { Pagination } from '@cascivo/react'
 ```tsx
 <Pagination page={1} pageSize={10} totalItems={42} onPageChange={setPage} labels={{ previous: 'Zurück', next: 'Weiter' }} />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -13901,7 +14153,7 @@ import { PasswordInput } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -13996,7 +14248,7 @@ import { Popover } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -14566,6 +14818,10 @@ Requires a longer pull before a refresh is triggered.
 </PullToRefresh>
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-text-muted`
@@ -14651,7 +14907,7 @@ import { QrCode } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -14911,6 +15167,10 @@ Single-select plan picker
 </RadioCardGroup>
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -14997,6 +15257,10 @@ import { RatingGroup } from '@cascivo/react'
 ```tsx
 <RatingGroup value={4} readOnly />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -15087,6 +15351,10 @@ Relative text is clock-dependent, so it is hydration-safe by default (the server
 ```tsx
 <RelativeTime date={date} now={serverNow} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Accessibility
 
@@ -15179,7 +15447,7 @@ Handles are disabled and drop out of the tab order.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -15271,6 +15539,10 @@ import { Resizable } from '@cascivo/react'
 </Resizable>
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-border`
@@ -15348,6 +15620,10 @@ import { ScrollArea } from '@cascivo/react'
   <table>…</table>
 </ScrollArea>
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -15452,7 +15728,7 @@ import { Search } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -16005,6 +16281,10 @@ import { SegmentedControl } from '@cascivo/react'
 <SegmentedControl options={[{label:'Day',value:'day'},{label:'Week',value:'week'},{label:'Month',value:'month'}]} value="day" onValueChange={() => {}} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-bg-subtle`
@@ -16097,7 +16377,7 @@ import { Select } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -16254,7 +16534,7 @@ import { Sheet } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -16400,7 +16680,7 @@ center takes the header’s spare width, so the trigger grows and shrinks with t
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -16512,7 +16792,7 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -16691,7 +16971,7 @@ SkipNavLink must be the first focusable element on the page
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -16853,7 +17133,7 @@ import { Spinner } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -17220,6 +17500,10 @@ Override derived state on a specific step
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-accent`
@@ -17314,6 +17598,10 @@ import { StructuredList } from '@cascivo/react'
 ```tsx
 <StructuredList selectable defaultValue="a" items={[{ id: "a", cells: ["Ada"] }, { id: "b", cells: ["Grace"] }]} onSelect={(id) => set(id)} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -17411,7 +17699,7 @@ Heart icon that flips to filled on activation
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -17503,6 +17791,10 @@ import { SwipeItem } from '@cascivo/react'
 </SwipeItem>
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -17586,7 +17878,7 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -17660,6 +17952,10 @@ import { Tabs } from '@cascivo/react'
 ```tsx
 <Tabs defaultValue="account"><TabsList><TabsTrigger value="account">Account</TabsTrigger></TabsList><TabsContent value="account">…</TabsContent></Tabs>
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -17755,6 +18051,10 @@ Renders a trailing remove button labeled by dismissLabel
 <Tag onDismiss={() => removeFilter()}>Filter: Active</Tag>
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-bg-subtle`
@@ -17837,6 +18137,10 @@ import { TagsInput } from '@cascivo/react'
 ```tsx
 <TagsInput value={['react', 'vue']} onValueChange={() => {}} placeholder="Add tag…" />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -18037,7 +18341,7 @@ import { Textarea } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -18138,6 +18442,10 @@ Multi tiles toggle on and off like a checkbox.
 </Tile>
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-bg`
@@ -18228,6 +18536,10 @@ import { TimePicker } from '@cascivo/react'
 ```tsx
 <TimePicker label="Meeting time" onChange={(v) => console.log(v)} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -18419,6 +18731,10 @@ const { toast } = useToast()
 toast({ title: "Saved", variant: "success" })
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface-overlay`
@@ -18496,6 +18812,10 @@ Pass activeId to drive the highlight yourself; scroll-spy is disabled.
 ```tsx
 <Toc activeId="usage" items={[{ id: 'intro', label: 'Introduction' }, { id: 'usage', label: 'Usage' }]} />
 ```
+
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -18587,7 +18907,7 @@ import { Toggle } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 
@@ -18681,6 +19001,10 @@ import { ToggleGroup } from '@cascivo/react'
 ```tsx
 <ToggleGroup type="multiple" defaultValue={["bold"]} items={[{ value: "bold", label: "Bold" }, { value: "italic", label: "Italic" }]} />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -18781,6 +19105,10 @@ Drive the open state from the parent
 </Toggletip>
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface`
@@ -18861,7 +19189,7 @@ import { Tooltip } from '@cascivo/react'
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -18952,6 +19280,10 @@ import { TreeView } from '@cascivo/react'
 ```tsx
 <TreeView selectionMode="multi" items={nodes} onSelectChange={(ids) => set(ids)} />
 ```
+
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -19129,7 +19461,7 @@ A larger overscan trades DOM nodes for fewer blank frames when flinging.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 
@@ -19311,7 +19643,7 @@ Compose one wheel per field; each column is independently operable.
 
 ## Client JavaScript
 
-Required. Without client JavaScript this renders nothing useful, or a shell whose content is unreachable.
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
 
 ## Design tokens
 

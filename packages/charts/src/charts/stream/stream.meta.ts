@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Stream',
   description: 'Streamgraph — stacked areas on a centered (silhouette) flowing baseline.',
   category: 'chart',
+  // The component IS the live feed: with no JS it renders one frozen frame of whatever data
+  // the server had, which is not what a stream chart is for.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

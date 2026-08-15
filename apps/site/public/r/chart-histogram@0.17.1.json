@@ -14,6 +14,7 @@
     "name": "Histogram",
     "description": "Frequency histogram using Freedman–Diaconis binning with hover tooltips.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'CopyButton',
   description: 'Icon button that copies a value to the clipboard with copied feedback',
   category: 'inputs',
+  // Writing to the clipboard is its only job, and that is a browser API.
+  clientJs: 'required',
   states: ['idle', 'copied'],
   variants: [],
   sizes: ['sm', 'md'],

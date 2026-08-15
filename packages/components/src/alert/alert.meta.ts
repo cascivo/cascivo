@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'Alert',
   description: 'Highlights a short, important message inline',
   category: 'display',
+  // The message renders in full; only the optional dismiss button needs JS.
+  clientJs: 'enhancement',
   states: [],
   variants: ['default', 'info', 'success', 'warning', 'destructive'],
   sizes: [],

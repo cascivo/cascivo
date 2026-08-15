@@ -66,6 +66,10 @@ import { Image } from '@cascivo/react'
 <Image src="/photo.jpg" alt="A photo" zoom />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-radius-none`

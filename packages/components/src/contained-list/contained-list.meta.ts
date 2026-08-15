@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'ContainedList',
   description: 'Labelled list of rows inside a bordered container',
   category: 'display',
+  // A static bordered list — the rows are all in the server HTML.
+  clientJs: 'enhancement',
   states: [],
   variants: ['on-page', 'disclosed'],
   sizes: [],

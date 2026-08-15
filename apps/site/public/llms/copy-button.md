@@ -60,6 +60,10 @@ Override the built-in copy/copied strings per instance
 <CopyButton value="token" labels={{ copy: 'Copy token', copied: 'Token copied' }} />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface`

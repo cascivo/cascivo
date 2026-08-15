@@ -48,6 +48,10 @@ import { ScrollArea } from '@cascivo/react'
 </ScrollArea>
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-border`

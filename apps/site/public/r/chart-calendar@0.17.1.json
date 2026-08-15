@@ -14,6 +14,7 @@
     "name": "CalendarHeatmap",
     "description": "Calendar heatmap — a week-column grid of day cells colored by value (GitHub-style).",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

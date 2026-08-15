@@ -22,6 +22,7 @@
     "name": "Comparison",
     "description": "Reveals the difference between two layers with a draggable divider",
     "category": "display",
+    "clientJs": "required",
     "states": ["default"],
     "variants": [],
     "sizes": [],

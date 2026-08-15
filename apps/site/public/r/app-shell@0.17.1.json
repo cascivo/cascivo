@@ -22,6 +22,7 @@
     "name": "AppShell",
     "description": "Sticky-header + full-height side-nav + single-scroll-container layout with an animated, accessible nav toggle.",
     "category": "layout",
+    "clientJs": "enhancement",
     "states": ["open", "closed"],
     "variants": [],
     "sizes": [],

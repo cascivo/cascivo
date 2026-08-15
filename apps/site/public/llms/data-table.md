@@ -147,6 +147,10 @@ Use Column.render to return any ReactNode per cell — a Badge for status, an ic
 />
 ```
 
+## Client JavaScript
+
+Required. The component's primary job needs client JavaScript, so do not render it from a Server Component without hydrating — even if some or all of its markup appears in the server HTML.
+
 ## Design tokens
 
 - `--cascivo-color-surface`

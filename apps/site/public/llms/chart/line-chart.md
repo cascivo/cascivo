@@ -93,6 +93,10 @@ const series = [{ id: 'a', label: 'Revenue', data: [{x:1,y:10},{x:2,y:20},{x:3,y
 />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-chart-1`

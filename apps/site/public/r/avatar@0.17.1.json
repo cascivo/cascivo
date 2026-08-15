@@ -22,6 +22,7 @@
     "name": "Avatar",
     "description": "Displays a user image with initials fallback",
     "category": "display",
+    "clientJs": "enhancement",
     "states": ["loading", "loaded", "error"],
     "variants": [],
     "sizes": ["xs", "sm", "md", "lg", "xl"],

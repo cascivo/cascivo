@@ -6,6 +6,8 @@ export const meta: ComponentMeta = {
   importSymbols: 'ToastProvider, useToast',
   description: 'Transient notification surfaced via the useToast hook',
   category: 'overlay',
+  // A toast only exists because useToast() created it at runtime; the server renders nothing.
+  clientJs: 'required',
   states: ['visible', 'dismissing', 'gone'],
   variants: ['default', 'success', 'warning', 'destructive'],
   sizes: [],

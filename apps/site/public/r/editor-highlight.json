@@ -14,6 +14,7 @@
     "name": "Highlight",
     "description": "Read-only syntax-highlighted code block — the same owned tokenizer as CodeEditor, without the textarea.",
     "category": "display",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

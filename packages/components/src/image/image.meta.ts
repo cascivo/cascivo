@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Image',
   description: 'Image with load state, blur-up placeholder, graceful fallback, and optional zoom',
   category: 'display',
+  // A plain <img> is in the server HTML; the machine only handles the blur-up and error
+  // fallback.
+  clientJs: 'enhancement',
   states: ['loading', 'loaded', 'error'],
   variants: [],
   sizes: [],

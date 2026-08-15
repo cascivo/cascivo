@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'ToggleGroup',
   description: 'A set of toggle buttons for single or multiple selection',
   category: 'inputs',
+  // Selection runs through JS-only buttons — nothing can be toggled without JS.
+  clientJs: 'required',
   states: ['on', 'off'],
   variants: ['single', 'multiple'],
   sizes: ['sm', 'md', 'lg'],

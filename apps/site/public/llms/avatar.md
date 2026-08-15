@@ -73,6 +73,10 @@ Derives initials automatically; also sets the accessible label.
 <Avatar name="Jane Doe" status="online" />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Design tokens
 
 - `--cascivo-color-accent-subtle`

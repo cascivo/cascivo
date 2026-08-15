@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'FlowControls',
   description: 'Zoom in / out / fit-view controls for a flow canvas — real, i18n-labeled buttons.',
   category: 'display',
+  // Zoom-in/out/fit are buttons that only call into the canvas at runtime.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

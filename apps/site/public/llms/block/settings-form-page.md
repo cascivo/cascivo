@@ -32,6 +32,10 @@ Settings form page
 <SettingsFormPage />
 ```
 
+## Client JavaScript
+
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
+
 ## Accessibility
 
 - **WCAG level:** 2.1-AA

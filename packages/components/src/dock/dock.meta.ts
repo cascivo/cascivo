@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Dock',
   description: 'Fixed bottom navigation bar for mobile app shells with up to 5 items',
   category: 'navigation',
+  // Items with an href render as real anchors, so navigation works; JS only adds the
+  // active-state animation.
+  clientJs: 'enhancement',
   states: ['default', 'active'],
   variants: [],
   sizes: [],

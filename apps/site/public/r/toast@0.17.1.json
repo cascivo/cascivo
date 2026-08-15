@@ -23,6 +23,7 @@
     "importSymbols": "ToastProvider, useToast",
     "description": "Transient notification surfaced via the useToast hook",
     "category": "overlay",
+    "clientJs": "required",
     "states": ["visible", "dismissing", "gone"],
     "variants": ["default", "success", "warning", "destructive"],
     "sizes": [],

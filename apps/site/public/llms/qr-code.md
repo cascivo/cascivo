@@ -62,7 +62,7 @@ import { QrCode } from '@cascivo/react'
 
 ## Client JavaScript
 
-Enhancement only. The server-rendered HTML is correct and no content is unreachable with JavaScript disabled; client JS adds interaction on top.
+Enhancement only. The component still does its job with JavaScript disabled — the server-rendered HTML is correct and nothing is unreachable; client JS adds polish on top.
 
 ## Design tokens
 

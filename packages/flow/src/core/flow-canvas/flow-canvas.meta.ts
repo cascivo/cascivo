@@ -5,6 +5,9 @@ export const meta: ComponentMeta = {
   description:
     'The pan/zoom canvas pane — a single CSS-transformed layer driven by the viewport signal.',
   category: 'display',
+  // A CSS-transformed pan/zoom layer driven by the viewport signal — with JS off there is no
+  // viewport.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

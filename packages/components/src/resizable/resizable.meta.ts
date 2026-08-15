@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Two-pane splitter whose divider can be dragged or keyboard-nudged to reallocate space',
   category: 'layout',
+  // Reallocating space by drag or keyboard is the component.
+  clientJs: 'required',
   states: [],
   variants: [],
   sizes: [],

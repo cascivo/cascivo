@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'Toc',
   description: 'Table of contents with scroll-spy highlighting of the active section',
   category: 'navigation',
+  // The entries are real anchors, so the document stays navigable; JS only adds scroll-spy
+  // highlighting.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

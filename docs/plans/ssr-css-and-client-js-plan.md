@@ -125,29 +125,48 @@ not a defect, and changing `t()`'s tracking semantics would silently break local
 for anyone who does use it. **So we declare the cost rather than change the behaviour**:
 these six get `clientJs: 'enhancement'` with the reason recorded.
 
-### The actual 1.0 blocker this uncovered
+### The actual 1.0 blocker this uncovered — now closed
 
 `ComponentMeta.clientJs` is the field an agent or adopter reads to decide whether a component
-can render from a Server Component without hydrating. **96 of 209 manifests (46%) do not
-declare it at all** — including `data-table`, `calendar`, `carousel`, `form`, `toast` and
-every chart.
+can render from a Server Component without hydrating. **96 of 209 manifests (46%) did not
+declare it** — including `data-table`, `calendar`, `carousel`, `form`, `toast` and every
+chart. `client-js-parity.test.ts` never noticed, because it only validates manifests that
+*do* declare the field: a missing value looked exactly like a value under no rule.
 
-`client-js-parity.test.ts` never noticed, because it only validates manifests that *do*
-declare the field. A silent 46% hole in the field that carries the entire RSC story is not
-shippable at 1.0 for a system whose thesis is "the manifest is ground truth".
+All 209 now declare it. **74 `none` · 72 `enhancement` · 63 `required`.**
 
-The `'enhancement'` vs `'required'` split is explicitly author judgment (the guard's own
-docstring says a static scan cannot decide it), so filling 96 values by inference would put
-96 unverified claims into `registry.json`. Instead:
+The labels are grounded in what the components actually emit, not in what their names
+suggest. Two probes did the work:
 
-- Declare the values that are **decidable with evidence** (the six above).
-- Add a **coverage ratchet** — `scripts/checks/client-js-coverage.test.ts` — carrying the
-  currently-undeclared manifests in an explicit, shrinking allowlist. A new manifest without
-  `clientJs` fails immediately; an existing one can only leave the list, never join it, and a
-  stale entry (declared since, or deleted) fails too so the list cannot rot into a permanent
-  exemption. Same pattern the repo already uses for `primitive-adoption`'s allowlist.
-- The remaining backlog is **90 manifests**, listed by path in that file. Working it is a
-  per-component judgment call, deliberately left to a human rather than inferred here.
+- **Charts** — server-rendered the family through `renderToString`. Every chart emits the
+  SVG *and* the accessible `<table>` fallback carrying the real data points, so a chart
+  reads with JS off → `enhancement`. `stream` is the exception: a live feed frozen at one
+  frame is not what the component is for → `required`.
+- **Components and blocks** — compiled each manifest's own first example into an SSR
+  harness and rendered it, recording bytes, visible text, and how many native inputs,
+  anchors and JS-only buttons reached the HTML. That is what separated `TimePicker` (a
+  native `<input type="time">` → `enhancement`) from `RatingGroup` (buttons with
+  `role="radio"` → `required`), and `Toc` (real anchors → `enhancement`) from `Pagination`
+  (buttons plus a select, none of which navigate → `required`).
+
+Every declaration carries a one-line reason in its manifest citing what the server HTML
+contains, so a maintainer can audit or overrule any call in seconds rather than re-deriving
+it.
+
+**The definition was the hard part, and the two halves of the guard disagreed.**
+`client-js-parity.test.ts` described the split as *"whether content is merely hidden or
+genuinely unreachable"* (content-based) while also saying `clientJs` records what a component
+needs *"to be correct"* (function-based). Those readings disagree on ~30 components:
+`Calendar` server-renders a complete 32-button month grid and cannot pick a date; `DataTable`
+renders every row and cannot sort or page; `Tabs` renders one panel and cannot reach the
+others. Content-based calls all three `enhancement`.
+
+Settled function-based, and the guard's docstring now says so: `'required'` whenever the
+component's primary job needs JS, even when the markup is all there. Content-based is the
+optimistic reading, and an adopter trusting it would ship a dead Calendar.
+
+`scripts/checks/client-js-coverage.test.ts` holds the line — a manifest without `clientJs`
+fails.
 
 ---
 

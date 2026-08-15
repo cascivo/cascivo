@@ -14,6 +14,7 @@
     "name": "FlowEdge",
     "description": "An SVG edge with bezier/straight/smoothstep paths, an arrowhead, an optional label, and animation.",
     "category": "display",
+    "clientJs": "enhancement",
     "states": ["default", "selected", "animated"],
     "variants": ["bezier", "straight", "smoothstep"],
     "sizes": [],

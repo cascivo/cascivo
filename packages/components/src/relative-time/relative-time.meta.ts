@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'RelativeTime',
   description: 'Displays a date as a localized phrase relative to now, auto-updating',
   category: 'display',
+  // The formatted phrase is server-rendered; JS only re-ticks it as the clock moves.
+  clientJs: 'enhancement',
   states: ['default'],
   variants: [],
   sizes: [],

@@ -4,6 +4,9 @@ export const meta: ComponentMeta = {
   name: 'FileUploader',
   description: 'Drag-and-drop file upload zone with file list and status indicators.',
   category: 'inputs',
+  // Drag-and-drop, the file list and status all need JS; the bare native input alone is not
+  // this component.
+  clientJs: 'required',
   states: ['idle', 'dragover', 'uploading', 'complete', 'error', 'disabled'],
   variants: [],
   sizes: [],

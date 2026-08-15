@@ -17,6 +17,7 @@
     "name": "NotificationCenter",
     "description": "A list of notification alerts with a mark-all-read action.",
     "category": "display",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

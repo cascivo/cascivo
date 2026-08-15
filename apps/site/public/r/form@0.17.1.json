@@ -25,6 +25,7 @@
     "name": "Form",
     "description": "Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper",
     "category": "inputs",
+    "clientJs": "required",
     "states": ["idle", "submitting"],
     "variants": [],
     "sizes": [],

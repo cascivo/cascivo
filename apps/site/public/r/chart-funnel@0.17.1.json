@@ -14,6 +14,7 @@
     "name": "Funnel",
     "description": "Vertical conversion funnel — each stage is a trapezoid narrowing toward the next, with optional conversion labels.",
     "category": "chart",
+    "clientJs": "enhancement",
     "states": [],
     "variants": [],
     "sizes": [],

@@ -5,6 +5,9 @@ export const meta: BlockMeta = {
   displayName: 'Dashboard Table',
   description: 'Searchable, sortable, paginated data table with export button.',
   category: 'dashboard',
+  // Search, sort and pagination are the point of this block; with JS off you get one unsorted
+  // page.
+  clientJs: 'required',
   tags: ['dashboard', 'table', 'data', 'search', 'sort', 'pagination'],
   screenshot: {
     light: '/blocks/screenshots/dashboard-table-light.png',

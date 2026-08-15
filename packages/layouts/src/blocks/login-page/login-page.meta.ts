@@ -4,6 +4,8 @@ export const meta: ComponentMeta = {
   name: 'LoginPage',
   description: 'Authentication login page with email and password form.',
   category: 'display',
+  // Native inputs and a submit button render, so the form is usable without JS.
+  clientJs: 'enhancement',
   states: [],
   variants: [],
   sizes: [],

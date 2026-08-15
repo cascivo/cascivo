@@ -5,6 +5,8 @@ export const meta: ComponentMeta = {
   description:
     'Typed signal-based form store (createForm/useForm) with sync/async validation and a thin Form element wrapper',
   category: 'inputs',
+  // A signal-based form store with sync/async validation; it is client state by definition.
+  clientJs: 'required',
   states: ['idle', 'submitting'],
   variants: [],
   sizes: [],
