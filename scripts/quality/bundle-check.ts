@@ -87,6 +87,8 @@ const NO_JS_BUDGET: Record<string, string> = {
   '@cascivo/themes': 'CSS-only — twelve theme stylesheets, no JS entry',
   '@cascivo/platform': 'CSS-only — platform geometry/motion stylesheets, no JS entry',
   '@cascivo/docs': 'content-only — markdown + JSON reference bundle, no JS entry',
+  '@cascivo/docspack':
+    'content-only — .llms/ chunk markdown + manifest for the docspack indexer, no JS entry',
 }
 
 interface PackageJson {
