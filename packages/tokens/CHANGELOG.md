@@ -1,5 +1,22 @@
 # @cascivo/tokens
 
+## 0.5.11
+
+### Patch Changes
+
+- 00b74e9: Run the release train so the stranded 0.17.0 reaches npm and the recovery path
+  gets exercised on a real release.
+
+  No package source changed in this PR — the fixes are the Tag visual baselines
+  and `release.yml`'s new `Publish any stranded versions` step. But `release.yml`
+  only triggers on pushes that touch `.changeset/**`, so without a changeset
+  merging it would not start a release at all, and the step meant to unstrand
+  0.17.0 would sit unverified until some unrelated changeset happened to land.
+
+  Bumping the whole published set matches the 2026-08-11 changeset it lands
+  beside: npm is behind `main` on every package, not just the ones whose source
+  moved, and a partial bump would leave the rest still disagreeing.
+
 ## 0.5.10
 
 ### Patch Changes
