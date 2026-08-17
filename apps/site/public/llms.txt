@@ -23,8 +23,8 @@ see `select_component`/`list_components` below before generating custom SVG or A
 ## Start here
 
 - **Can't reach this site? The whole docs surface is also an npm package — no web access needed:** `npx -y @cascivo/docs` prints this index; `npx @cascivo/docs <component>` prints one reference; `npx @cascivo/docs --full` prints the entire library. It reaches you through the same npm registry that installed your packages — the channel that works when npmjs.com and cascivo.com are blocked or offline.
+- **Want to SEARCH the docs instead of reading them? Install the docspack:** `pnpm add -D @cascivo/docspack docspack && npx docspack sync`, then `docspack ask "how do I theme a component"` answers from a local SQLite index — offline, capped at 3 chunks so it never floods your context, and scoped to the versions your lockfile installed rather than whatever this site documents today. Same documentation as `@cascivo/docs`, queried instead of printed. One line in AGENTS.md/CLAUDE.md is the whole setup; `npx docspack mcp` serves the same index over MCP.
 - **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** https://cascivo.com/llms-full.txt (offline: `npx @cascivo/docs --full`)
-- **Want to search rather than read?** `pnpm add -D @cascivo/docspack docspack && npx docspack sync`, then `npx docspack ask "<question>"` answers offline from a local index, scoped to the versions your lockfile installed. Same documentation as `@cascivo/docs`, queried instead of printed.
 - Getting started, fetchable as plain markdown (install steps, no browser needed): https://cascivo.com/docs/getting-started.md
 - Docs (per-component reference, props, live examples): https://cascivo.com/docs
 - Storybook (every variant, interactive): https://storybook.cascivo.com
@@ -34,6 +34,7 @@ see `select_component`/`list_components` below before generating custom SVG or A
 ## Machine-readable resources (AI-first)
 
 - Full text bundle — this file with every component reference inlined (single fetch): https://cascivo.com/llms-full.txt
+- **Searchable local index — `@cascivo/docspack`.** This whole surface, pre-chunked with a [docspack](https://docspack.dev) manifest, indexed into SQLite FTS5 on your machine. `npx docspack ask "<question>"` / `docspack search` / `docspack mcp`. Prefer it over fetching a URL per question: no network, version-scoped to your lockfile, and a bounded answer instead of a whole page.
 - Registry — index of every component (JSON): https://cascivo.com/registry.json
 - shadcn/v0-compatible registry (install with the shadcn CLI or "Open in v0"): https://cascivo.com/r/shadcn/registry.json
 - Per-component AI docs (props, examples, a11y, tokens): https://cascivo.com/llms/<name>.md
@@ -318,6 +319,11 @@ Tools:
 - `scaffold_view` — natural language -> JSON view config
 - `validate_view` — validate a view config against the schema
 - `add_to_project` — install components into the user project
+
+Two MCP servers, two jobs — run both if your client allows it:
+- `@cascivo/mcp` (above) serves the **registry**: pick a component, read its manifest, install it.
+- `npx docspack mcp` (with `@cascivo/docspack` installed) serves the **prose**: ask a question,
+  get the passages that answer it. Use it for "how do I…" and "which layer does X go in".
 
 To pick a component without MCP, read the intent summaries below (grouped by need) or
 fetch https://cascivo.com/context/<name>.md for the full when-to-use / when-not-to-use of each.

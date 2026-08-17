@@ -609,12 +609,16 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
       'that installed your packages — the channel that works when npmjs.com and cascivo.com are blocked or offline.',
   )
   lines.push(
-    `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt (offline: \`npx @cascivo/docs --full\`)`,
+    '- **Want to SEARCH the docs instead of reading them? Install the docspack:** ' +
+      '`pnpm add -D @cascivo/docspack docspack && npx docspack sync`, then ' +
+      '`docspack ask "how do I theme a component"` answers from a local SQLite index — offline, ' +
+      'capped at 3 chunks so it never floods your context, and scoped to the versions your ' +
+      'lockfile installed rather than whatever this site documents today. Same documentation as ' +
+      '`@cascivo/docs`, queried instead of printed. One line in AGENTS.md/CLAUDE.md is the whole setup; ' +
+      '`npx docspack mcp` serves the same index over MCP.',
   )
   lines.push(
-    '- **Want to search rather than read?** `pnpm add -D @cascivo/docspack docspack && npx docspack sync`, then ' +
-      '`npx docspack ask "<question>"` answers offline from a local index, scoped to the versions your lockfile ' +
-      'installed. Same documentation as `@cascivo/docs`, queried instead of printed.',
+    `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt (offline: \`npx @cascivo/docs --full\`)`,
   )
   lines.push(
     `- Getting started, fetchable as plain markdown (install steps, no browser needed): ${SITE}/docs/getting-started.md`,
@@ -628,6 +632,13 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('')
   lines.push(
     `- Full text bundle — this file with every component reference inlined (single fetch): ${SITE}/llms-full.txt`,
+  )
+  lines.push(
+    '- **Searchable local index — `@cascivo/docspack`.** This whole surface, pre-chunked with a ' +
+      '[docspack](https://docspack.dev) manifest, indexed into SQLite FTS5 on your machine. ' +
+      '`npx docspack ask "<question>"` / `docspack search` / `docspack mcp`. Prefer it over ' +
+      'fetching a URL per question: no network, version-scoped to your lockfile, and a bounded ' +
+      'answer instead of a whole page.',
   )
   lines.push(`- Registry — index of every component (JSON): ${SITE}/registry.json`)
   lines.push(
@@ -1125,6 +1136,17 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('- `scaffold_view` — natural language -> JSON view config')
   lines.push('- `validate_view` — validate a view config against the schema')
   lines.push('- `add_to_project` — install components into the user project')
+  lines.push('')
+  lines.push('Two MCP servers, two jobs — run both if your client allows it:')
+  lines.push(
+    '- `@cascivo/mcp` (above) serves the **registry**: pick a component, read its manifest, install it.',
+  )
+  lines.push(
+    '- `npx docspack mcp` (with `@cascivo/docspack` installed) serves the **prose**: ask a question,',
+  )
+  lines.push(
+    '  get the passages that answer it. Use it for "how do I…" and "which layer does X go in".',
+  )
   lines.push('')
   lines.push(
     'To pick a component without MCP, read the intent summaries below (grouped by need) or',

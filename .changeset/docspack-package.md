@@ -12,7 +12,7 @@ access, scoped to the versions the lockfile installed. One line in `AGENTS.md` o
 the whole agent setup, and `npx docspack mcp` serves the same index over MCP for clients that
 prefer a declared tool.
 
-The payload is generated from the same `apps/site/public/` surface `pnpm regen` produces — 605
+The payload is generated from the same `apps/site/public/` surface `pnpm regen` produces — ~600
 chunks covering every component, chart, block, layout, section, flow and editor reference, the
 concept guides, and the overview — so it cannot lag the source. Chunks carry the tags, variants,
 states and prop names from `registry.json`, which a generic Markdown build cannot know, and each

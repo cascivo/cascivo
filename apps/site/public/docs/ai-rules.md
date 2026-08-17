@@ -11,6 +11,35 @@ Drop this into your AI agent's system prompt, Cursor rules (`.cursor/rules`), or
 `cascivo create` scaffolds an `AGENTS.md` with the same contract automatically; this
 page is for **existing** projects.
 
+## Looking things up (copy-paste)
+
+Add this first. The contracts below tell an agent the rules; this tells it where to
+check anything the rules don't cover — against the versions you actually installed,
+rather than whatever it remembers or whatever cascivo.com documents today.
+
+Install the docs as a local search index:
+
+```sh
+pnpm add -D @cascivo/docspack docspack
+npx docspack sync
+```
+
+Then give the agent one line:
+
+```md
+Run `docspack ask "<question>"` for documentation on this project's
+dependencies, including cascivo. It answers offline from the installed
+versions. Prefer it over recalled knowledge and over anything fetched from
+cascivo.com, which documents the latest release rather than ours. Ask a
+question, not a name — `docspack ask "verify a theme is applied"` beats
+`docspack ask "theming"` — and prefer several narrow questions over one
+broad one, because an answer is capped at three chunks.
+```
+
+Answers are bounded (three chunks, ~3,000 tokens), so asking costs a fraction of
+fetching the page that holds the answer. Without an index, `https://cascivo.com/llms.txt`
+and `npx -y @cascivo/docs` are the read-everything fallbacks.
+
 ## The CSS layer contract (copy-paste)
 
 ```md
@@ -428,6 +457,8 @@ type-only declaration — no runtime effect.
 
 ## See also
 
+- [`@cascivo/docspack`](https://github.com/cascivo/cascivo/tree/main/packages/docspack) —
+  every guide on this page as a searchable offline index (`docspack ask`, `docspack mcp`).
 - [USING-WITH-A-ROUTER.md](/docs/using-with-a-router.md) — `setLinkComponent` vs `asChild`.
 - [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md) — the SSR `ssr.noExternal` recipe.
 - [CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md) — the canonical order and the
