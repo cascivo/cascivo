@@ -1,7 +1,7 @@
 <!--
   Generated from docs/ — do not edit here; run `pnpm regen`.
   Canonical: https://cascivo.com/docs/using-with-nextjs.md
-  registry v0.17.1 · generated 2026-08-11
+  registry v0.18.0 · generated 2026-08-17
 -->
 
 # Using cascivo with Next.js (App Router / RSC)

@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-08-11",
+  "generatedAt": "2026-08-17",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -15,8 +20,13 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.17.0",
           "level": "minor",
@@ -83,8 +93,13 @@
     },
     {
       "name": "cascivo",
-      "version": "0.8.1",
+      "version": "0.9.0",
       "releases": [
+        {
+          "version": "0.9.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.8.0",
           "level": "minor",
@@ -141,8 +156,13 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.17.0",
           "level": "minor",
@@ -213,7 +233,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.5",
+      "version": "0.2.6",
       "releases": [
         {
           "version": "0.2.0",
@@ -225,9 +245,27 @@
       ]
     },
     {
-      "name": "@cascivo/editor",
-      "version": "0.17.1",
+      "name": "@cascivo/docspack",
+      "version": "0.2.0",
       "releases": [
+        {
+          "version": "0.2.0",
+          "level": "minor",
+          "notes": [
+            "New package: `@cascivo/docspack` — cascivo's documentation in the [docspack](https://docspack.dev)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@cascivo/editor",
+      "version": "0.18.0",
+      "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.17.0",
           "level": "minor",
@@ -253,7 +291,7 @@
     },
     {
       "name": "@cascivo/eslint-config",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "releases": [
         {
           "version": "0.2.0",
@@ -266,8 +304,13 @@
     },
     {
       "name": "@cascivo/flow",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.17.0",
           "level": "minor",
@@ -286,8 +329,13 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -302,7 +350,7 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.9",
+      "version": "0.3.10",
       "releases": [
         {
           "version": "0.3.0",
@@ -323,7 +371,7 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.6.5",
+      "version": "0.6.6",
       "releases": [
         {
           "version": "0.6.0",
@@ -365,13 +413,21 @@
     },
     {
       "name": "@cascivo/platform",
-      "version": "0.0.3",
+      "version": "0.0.4",
       "releases": []
     },
     {
       "name": "@cascivo/react",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +",
+            "Fix: server-rendered components lost their CSS under RSC, forcing every SSR app onto the"
+          ]
+        },
         {
           "version": "0.17.0",
           "level": "minor",
@@ -487,7 +543,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "releases": [
         {
           "version": "0.2.0",
@@ -503,8 +559,13 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.17.1",
+      "version": "0.18.0",
       "releases": [
+        {
+          "version": "0.18.0",
+          "level": "minor",
+          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+        },
         {
           "version": "0.1.0",
           "level": "minor",
@@ -514,7 +575,7 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.12",
+      "version": "0.4.13",
       "releases": [
         {
           "version": "0.4.0",
@@ -540,7 +601,7 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.10",
+      "version": "0.5.11",
       "releases": [
         {
           "version": "0.5.0",
@@ -571,7 +632,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.7",
+      "version": "0.1.8",
       "releases": [
         {
           "version": "0.1.0",
