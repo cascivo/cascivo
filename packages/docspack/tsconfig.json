@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "types": ["node"]
+  },
+  "include": ["src", "scripts"],
+  // `vitest` is provided by `vp test`, not a direct dependency — same exclusion as @cascivo/mcp.
+  "exclude": ["src/**/*.test.ts"]
+}

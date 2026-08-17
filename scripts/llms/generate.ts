@@ -612,6 +612,11 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `- **Everything in ONE file (no follow-up fetches — fetch this if you can only fetch once):** ${SITE}/llms-full.txt (offline: \`npx @cascivo/docs --full\`)`,
   )
   lines.push(
+    '- **Want to search rather than read?** `pnpm add -D @cascivo/docspack docspack && npx docspack sync`, then ' +
+      '`npx docspack ask "<question>"` answers offline from a local index, scoped to the versions your lockfile ' +
+      'installed. Same documentation as `@cascivo/docs`, queried instead of printed.',
+  )
+  lines.push(
     `- Getting started, fetchable as plain markdown (install steps, no browser needed): ${SITE}/docs/getting-started.md`,
   )
   lines.push(`- Docs (per-component reference, props, live examples): ${SITE}/docs`)
@@ -669,7 +674,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
     `${iconCount} stroked 24×24 \`currentColor\` SVG icons ship as tree-shakeable named exports`,
   )
   lines.push("from `@cascivo/icons` (e.g. `import { Camera, Anchor } from '@cascivo/icons'`).")
-  lines.push(`Browse and search them at ${DOCS}/icons; the full machine-readable list (names,`)
+  lines.push(`Browse and search them at ${DOCS}/docs/icons; the full machine-readable list (names,`)
   lines.push(`keywords, aliases, categories) is ${DOCS}/icons.catalog.json.`)
   lines.push('')
   lines.push(
