@@ -1,0 +1,57 @@
+{
+  "name": "@cascivo/docspack",
+  "version": "0.1.0",
+  "private": false,
+  "description": "cascivo's documentation as a docspack package — `docspack sync` once, then `docspack ask` answers offline from the version you installed",
+  "keywords": [
+    "agents",
+    "ai",
+    "cascivo",
+    "docs",
+    "docspack",
+    "documentation",
+    "llms.txt",
+    "mcp",
+    "offline",
+    "rag"
+  ],
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/docspack#readme",
+  "bugs": "https://github.com/cascivo/cascivo/issues",
+  "license": "MIT",
+  "author": "urbanisierung",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cascivo/cascivo.git",
+    "directory": "packages/docspack"
+  },
+  "files": [
+    ".llms",
+    "llms.txt"
+  ],
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./llms.txt": "./llms.txt",
+    "./manifest.json": "./.llms/manifest.json",
+    "./chunks/*": "./.llms/chunks/*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "node scripts/build-payload.ts",
+    "check": "tsc --noEmit",
+    "doctor": "node scripts/build-payload.ts && docspack doctor --strict",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "docspack": "^0.2.0",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "docspack": {
+    "documents": "@cascivo/react"
+  }
+}

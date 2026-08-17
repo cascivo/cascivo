@@ -22,6 +22,11 @@ but uncolored markup — see [What it looks like when you forget](#the-critical-
 > also an npm package: `npx -y @cascivo/docs` (index), `npx @cascivo/docs <component>`
 > (one reference), `npx @cascivo/docs guide getting-started`. No website needed —
 > it comes through the same registry that installs the packages.
+>
+> **Working with an AI agent?** Install the docs as a searchable index instead:
+> `pnpm add -D @cascivo/docspack docspack && npx docspack sync`, then
+> `npx docspack ask "<question>"` answers offline from the versions in your
+> lockfile. See [Searching the docs](#searching-the-docs-instead-of-reading-them).
 
 ## Where the documentation lives
 
@@ -44,6 +49,44 @@ The `@cascivo/docs` package ships two directories that look alike:
 `llms/<name>.md` is the full per-component reference, and `context/<name>.md` is
 the condensed intent summary (when to use, when not to, related components) meant
 for pasting into an agent's context window.
+
+### Searching the docs instead of reading them
+
+`@cascivo/docs` prints whole files. **`@cascivo/docspack`** ships the same content
+pre-chunked in the [docspack](https://docspack.dev) format, so an agent can query it:
+
+```sh
+pnpm add -D @cascivo/docspack docspack
+npx docspack sync                                   # index it, once per machine
+npx docspack ask "which CSS layer do my overrides go in"
+```
+
+`sync` builds a local SQLite index; `ask`, `search` and `list` then make no network
+requests at all. Two properties matter for an agent: the answer is **version-scoped**
+to what your lockfile installed rather than what cascivo.com documents today, and it
+is **bounded** — three chunks, ~3,000 tokens — so asking a question costs a fraction
+of fetching the page that contains the answer.
+
+**Run the installed binary, not `npx`.** Measured on this ~600-chunk index, a query takes
+**83–92 ms** through `node_modules/.bin/docspack` and about **400 ms** through `npx`,
+which re-resolves the package every time. Add a script rather than paying that on every
+question:
+
+```json
+{ "scripts": { "ask": "docspack ask" } }
+```
+
+One line in `AGENTS.md` or `CLAUDE.md` is the whole setup:
+
+```text
+Run `docspack ask "<question>"` for documentation on this project's
+dependencies. It answers from the installed versions.
+```
+
+For clients that prefer a declared tool, `npx docspack mcp` serves the same index over
+MCP. That is complementary to [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp),
+which serves the component _registry_ — use `@cascivo/mcp` to pick and install a
+component, and docspack to answer a "how do I…" question about one.
 
 **This is not layout-only.** Alongside the CSS-native layout system, cascivo ships:
 
