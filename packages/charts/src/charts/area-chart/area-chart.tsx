@@ -1,7 +1,7 @@
 'use client'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { warnNonFinite, warnScaleMismatch } from '../../core/dev-warn'
+import { warnDualAxisAreas, warnNonFinite, warnScaleMismatch } from '../../core/dev-warn'
 import {
   DEFAULT_MARGINS,
   leftMarginForLabels,
@@ -125,9 +125,11 @@ export interface AreaChartProps<Datum = { x: number; y: number }> {
    */
   curve?: Curve
   /**
-   * Area fill style — solid, a top→bottom gradient, or a pattern.
+   * Area fill style — solid, a top→bottom gradient, or a pattern. A single non-stacked
+   * series defaults to `gradient` (a lone solid area reads as a heavy block); stacked and
+   * overlapping series default to `solid`.
    *
-   * @defaultValue `solid`
+   * @defaultValue `gradient for one non-stacked series, solid otherwise`
    * @see the component manifest
    */
   fill?: FillKind
@@ -233,7 +235,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   description,
   stacked = false,
   curve = 'monotone',
-  fill = 'solid',
+  fill: fillProp,
   patternKind,
   width: fixedWidth,
   height,
@@ -298,6 +300,22 @@ export function AreaChart<Datum = { x: number; y: number }>({
     : rawSeries
   // A right y-axis is added only when a (non-stacked) series opts in; otherwise
   // the layout and scales are byte-identical to the single-axis default.
+  /*
+   * A lone area defaults to a gradient; anything else keeps the solid fill.
+   *
+   * A single solid area renders as a block of colour from the curve to the baseline, which
+   * reads much heavier than the rest of the system — "the default reads heavier than the
+   * rest of the (otherwise restrained) system" (2026-08-21 report item 8). Console
+   * dashboards conventionally use a low-opacity gradient, and the code path already existed;
+   * only the default was wrong.
+   *
+   * Scoped to the single-series, non-stacked case on purpose. Stacked areas are read as
+   * areas — a gradient makes the bands ambiguous — and overlapping areas already drop to
+   * `--cascivo-chart-fill-opacity-overlap`, which a gradient would fight. Pass `fill`
+   * explicitly to override in either direction.
+   */
+  const fill: FillKind = fillProp ?? (series.length === 1 && !stacked ? 'gradient' : 'solid')
+
   const hasRight = !plain && !stacked && series.some((s) => s.axis === 'right')
   const resolvedHeight = height ?? (plain ? 48 : 300)
   const showLegend = plain ? false : (legend ?? series.length > 1)
@@ -327,6 +345,14 @@ export function AreaChart<Datum = { x: number; y: number }>({
         label: s.label,
         max: Math.max(0, ...s.data.map((d) => yFor(s)(d)).filter((v) => Number.isFinite(v))),
       })),
+    )
+  }
+  // The sibling of the warning above, for the state it steers callers into: two areas now
+  // on two scales, still overlapping, still compositing to a muddy third colour.
+  if (hasRight) {
+    warnDualAxisAreas(
+      'AreaChart',
+      series.filter((s) => s.type !== 'line').map((s) => s.label),
     )
   }
   warnNonFinite('AreaChart', () => [...leftYvals, ...rightYvals])

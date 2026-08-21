@@ -118,6 +118,17 @@ keeps the engine out of the initial chunk entirely.
 > a shared chunk that every chart route reuses; the landing page fetches it in parallel with
 > its own chunk rather than serialised behind the entry.
 >
+> **One sparkline and no engine at all.** If a page wants a trend line but draws no real
+> charts — a marketing page, a KPI strip — import from the engine-free subpath instead:
+>
+> ```tsx
+> import { Sparkline } from '@cascivo/charts/sparkline'   // ~3.5 kB gzip, no chart engine
+> ```
+>
+> Same chart, same props, same markup; the one difference is that it has no hover tooltip,
+> because the tooltip is what requires the engine. Use the main entry when the page draws
+> other charts anyway — the engine is then already paid for and the subpath saves nothing.
+>
 > Two footnotes:
 >
 > - **Do not pre-emptively raise `build.chunkSizeWarningLimit`.** The 2026-08-21 adopter set

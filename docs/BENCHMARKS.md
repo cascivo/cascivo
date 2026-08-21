@@ -41,6 +41,17 @@
 - Button only: 4.93KB gz
 - Full bundle: 44.97KB gz
 
+### `@cascivo/charts` entry points (gzip, whole transitive closure of the built entry)
+
+| Entry | gzip | What you get |
+| --- | ---: | --- |
+| `@cascivo/charts` | 40.4KB | Every chart, plus the engine: tooltips, voronoi hit-testing, canvas layer, zoom/pan, toolbox, PNG/SVG export |
+| `@cascivo/charts/sparkline` | 3.5KB | `Sparkline` only, on a minimal frame. Same markup, no hover tooltip |
+
+Measured from `packages/charts/dist` after `pnpm build`, following static imports. The subpath
+is held to a budget by `scripts/checks/sparkline-subpath-size.test.ts` — a lite entry that
+quietly regains the engine is worse than none, because the docs keep promising the saving.
+
 ## Interaction latency (Chrome trace, click→paint)
 
 Median of ≥12 samples at 4× CPU throttle; IQR in parentheses.

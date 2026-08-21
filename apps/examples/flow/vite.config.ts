@@ -26,6 +26,7 @@ export default defineConfig({
       '@cascivo/render': resolve(root, 'packages/render/src/index.ts'),
       '@cascivo/ai': resolve(root, 'packages/ai/src/index.ts'),
       '@cascivo/icons': resolve(root, 'packages/icons/src/index.tsx'),
+      '@cascivo/charts/sparkline': resolve(root, 'packages/charts/src/sparkline.ts'),
       '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
       '@cascivo/example-kit': resolve(__dirname, '../kit/src/index.ts'),
     },

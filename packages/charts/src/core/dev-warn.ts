@@ -74,6 +74,36 @@ export function warnScaleMismatch(
   )
 }
 
+/**
+ * Warn when a dual-axis chart paints two area fills.
+ *
+ * `warnScaleMismatch` above solves the *scaling* problem it names — it tells you to move the
+ * small series to its own axis — and stops there, by design. That leaves a second problem it
+ * created: two areas on two scales now cover the same plot area, and their fills composite
+ * into a muddy third colour wherever they cross. The 2026-08-21 reporter applied the fix,
+ * got correct scaling, and described the result as "legible but not good" (item 7).
+ *
+ * Dual-axis comparisons are conventionally line-over-area, and `AreaChart` already supports
+ * it per series via `type: 'line'` — `solidFillStyle` even excludes line series from the
+ * overlap count so the remaining area keeps full opacity. The capability was there and
+ * nothing said so.
+ *
+ * Warn rather than silently switch: changing what an existing chart draws on a minor release
+ * is a worse trade than one dev-only line, and the caller may genuinely want two fills.
+ */
+export function warnDualAxisAreas(chart: string, filled: readonly string[]): void {
+  if (isProd()) return
+  if (filled.length < 2) return
+  const [primary, secondary] = [filled[0]!, filled[filled.length - 1]!]
+  warnOnce(
+    `${chart}:dual-axis-areas`,
+    `${chart}: "${primary}" and "${secondary}" are on different axes but both paint an area ` +
+      'fill, so they composite to a third colour wherever they cross. Dual-axis comparisons ' +
+      `read as line-over-area: set \`type: 'line'\` on "${secondary}" (the secondary series), ` +
+      'or split it into a second chart.',
+  )
+}
+
 /** Test-only: clear the dedupe set so a warning can be asserted more than once. */
 export function __resetChartWarnings(): void {
   warned.clear()

@@ -3493,7 +3493,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | `description` | `string` | no | — | Supporting description text. |
 | `stacked` | `boolean` | no | — | Stack series areas |
 | `curve` | `'linear' \| 'monotone' \| 'step' \| 'stepBefore' \| 'stepAfter' \| 'natural' \| 'basis' \| 'cardinal' \| 'catmullRom'` | no | `monotone` | Line/area interpolation curve. |
-| `fill` | `'solid' \| 'gradient' \| 'pattern'` | no | `solid` | Area fill style — solid, a top→bottom gradient, or a pattern. |
+| `fill` | `'solid' \| 'gradient' \| 'pattern'` | no | `gradient for one non-stacked series, solid otherwise` | Area fill style — solid, a top→bottom gradient, or a pattern. A single non-stacked series defaults to `gradient` (a lone solid area reads as a heavy block); stacked and overlapping series default to `solid`. |
 | `patternKind` | `'dots' \| 'lines' \| 'cross'` | no | — | Pattern motif when fill="pattern". |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |

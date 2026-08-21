@@ -18,6 +18,10 @@ const isWin = process.platform === 'win32'
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 const outDir = mkdtempSync(join(tmpdir(), 'cascivo-react-dts-'))
 
+// Published entries, each getting its own flat .d.ts. `sparkline` is the engine-free
+// subpath — see src/sparkline.ts.
+const ENTRIES = ['index', 'sparkline']
+
 try {
   // Generate the bundled .d.mts into a throwaway dir (we only keep the types).
   execFileSync(
@@ -30,7 +34,7 @@ try {
       isWin ? `"${outDir}"` : outDir,
       '--dts',
       '--no-clean',
-      'src/index.ts',
+      ...ENTRIES.map((e) => `src/${e}.ts`),
     ],
     {
       cwd: pkgRoot,
@@ -40,15 +44,17 @@ try {
     },
   )
 
-  const bundled = readFileSync(join(outDir, 'index.d.mts'), 'utf8')
-  // Drop vp's `//#region <source path>` / `//#endregion` navigation comments so
-  // no internal source path strings survive in the published declaration.
-  const cleaned = bundled
-    .split('\n')
-    .filter((line) => !/^\s*\/\/#(region|endregion)\b/.test(line))
-    .join('\n')
+  for (const entry of ENTRIES) {
+    const bundled = readFileSync(join(outDir, `${entry}.d.mts`), 'utf8')
+    // Drop vp's `//#region <source path>` / `//#endregion` navigation comments so
+    // no internal source path strings survive in the published declaration.
+    const cleaned = bundled
+      .split('\n')
+      .filter((line) => !/^\s*\/\/#(region|endregion)\b/.test(line))
+      .join('\n')
 
-  writeFileSync(join(pkgRoot, 'dist', 'index.d.ts'), cleaned)
+    writeFileSync(join(pkgRoot, 'dist', `${entry}.d.ts`), cleaned)
+  }
 } finally {
   rmSync(outDir, { recursive: true, force: true })
   // Remove any stale nested tree from a previous tsc-based build.

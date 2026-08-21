@@ -130,6 +130,12 @@ jobs:
       - name: CSS-contract guard (CSS-shipping packages import their own CSS + ship a node twin)
         run: pnpm run css-contract:check
 
+      # Measures the real built artifact, so it also has to run after the build. The
+      # @cascivo/charts/sparkline subpath exists to be small; an import added to the lite
+      # path can silently drag the whole chart engine back in with every test still green.
+      - name: Sparkline-subpath size budget (the lite entry stays engine-free)
+        run: pnpm run sparkline:size:check
+
       # Reads the published module graph, so it also has to run after the build. Catches the
       # transitive shape a per-file lint cannot: a clientJs:'none' component whose imports
       # reach a 'use client' module, which crashes an RSC build at "Collecting page data".

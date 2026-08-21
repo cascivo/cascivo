@@ -66,8 +66,8 @@
         "name": "fill",
         "type": "'solid' | 'gradient' | 'pattern'",
         "required": false,
-        "default": "solid",
-        "description": "Area fill style — solid, a top→bottom gradient, or a pattern."
+        "default": "gradient for one non-stacked series, solid otherwise",
+        "description": "Area fill style — solid, a top→bottom gradient, or a pattern. A single non-stacked series defaults to `gradient` (a lone solid area reads as a heavy block); stacked and overlapping series default to `solid`."
       },
       {
         "name": "patternKind",
