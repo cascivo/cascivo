@@ -20,7 +20,8 @@ The column is generated from `registry.json` and checked by
 
 | Need | Use | Registry id | Channel | Notes |
 | --- | --- | --- | --- | --- |
-| Project/workspace switcher (top-left) | `Switcher`, or `Dropdown` for a richer trigger | `switcher`, `dropdown` | `@cascivo/react` | `Switcher` is a static nav list; use `Dropdown` if the trigger itself needs a button/avatar with a menu. |
+| Workspace/project switcher — **collapsed trigger** (the usual console shape) | `Dropdown` | `dropdown` | `@cascivo/react` | What Vercel, Linear and GitHub all ship: one row showing the current workspace, a menu on click. Put an `Avatar` + name in the trigger. |
+| Workspace list — **always visible** in the sidebar | `Switcher` | `switcher` | `@cascivo/react` | Renders every entry, permanently, at full height — budget the vertical space. Despite the name it does not collapse; an adopter picked it from the name and got both teams stacked in the rail (2026-08-21 report item 5). |
 | Command palette (⌘K) | `CommandMenu` | `command-menu` | `@cascivo/react` | Full keyboard nav, fuzzy search, page-stack; native `<dialog>` focus trap built in. |
 | Right-click / row actions | `ContextMenu`, or `OverflowMenu` for a visible "⋯" trigger | `context-menu`, `overflow-menu` | `@cascivo/react` | Right-click is undiscoverable on touch — pair `ContextMenu` with a visible `OverflowMenu`/`Dropdown` for the same actions, don't ship it as the only path. |
 | Page structure (shell content, toolbars, card grids) | `Grid`/`GridItem`, `AutoGrid`, `Flex` | `layout/grid`, `layout/auto-grid`, `layout/flex` | `@cascivo/react` | `Grid`/`GridItem` take responsive object props (`cols={{ base: 1, md: 2, lg: 3 }}`); `AutoGrid` fills columns by width with no media queries; `Flex` is the gap-based flex container. Reach for these before writing custom layout CSS. |
@@ -123,6 +124,10 @@ keeps the engine out of the initial chunk entirely.
 >   it to 700 on the strength of an earlier version of this box, measured, and deleted it
 >   again — it was never needed. Raise it only after you have measured and decided the number
 >   is fine.
+> - **Expect a `HydrateFallback` warning** once your routes are lazy — it is React Router's,
+>   not cascivo's, and
+>   [USING-WITH-A-ROUTER.md](./USING-WITH-A-ROUTER.md#4-code-splitting--and-the-hydratefallback-warning-it-produces)
+>   has the two-line fix.
 > - **Verify rather than assume.** `grep` the built bundles for a chart-engine symbol to
 >   confirm which chunk it landed in. Chunking is a property of your import graph, not of
 >   cascivo.

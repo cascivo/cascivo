@@ -252,11 +252,14 @@ Trade-off vs Path A: you cannot edit component internals, but you upgrade with a
 version bump instead of a merge. Full details in the
 [`@cascivo/react` README](https://github.com/cascivo/cascivo/blob/main/packages/react/README.md).
 
-> **All packages are 0.x.** They version independently via changesets, so a low
-> number on one package doesn't mean the system is behind. Pin **exact** versions
-> (no `^`) and watch
-> [`breaking-changes.json`](https://cascivo.com/breaking-changes.json) for API drift
-> before upgrading.
+> **All packages are 0.x, and they version independently.** A low number on one package
+> means it has had fewer releases, not that it is less finished — `@cascivo/platform@0.0.4`
+> is new, not immature. Compatibility is per-entry `peerVersions` in `registry.json`, not
+> version equality, so nothing has to move in lockstep.
+>
+> Pin **exact** versions (no `^`). Before any upgrade, run **`cascivo doctor --drift`** — it
+> reads [`breaking-changes.json`](https://cascivo.com/breaking-changes.json) (published per
+> package, machine-readable) and tells you what changed under you.
 
 ---
 

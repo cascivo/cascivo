@@ -1,7 +1,7 @@
 # Switcher
 
 **Category:** navigation  
-**Description:** App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+**Description:** Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 
 ## When to use
 
@@ -13,6 +13,7 @@
 
 - Primary in-app navigation — use SideNav
 - A small action menu attached to a control — use Dropdown
+- A COLLAPSED workspace/team switcher with one visible row and a menu on click — use Dropdown. Switcher renders every entry, permanently: it is an always-visible list, not a collapsing control, and the name misleads (2026-08-21 report item 5)
 
 ## Anti-patterns
 
@@ -77,7 +78,7 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 Copy this into an LLM context bar before editing this component:
 
 ```text
-I am modifying the cascivo Switcher component (navigation). App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+I am modifying the cascivo Switcher component (navigation). Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 
 Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.

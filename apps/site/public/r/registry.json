@@ -9631,7 +9631,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -24939,7 +24939,7 @@
       "schemaVersion": 2,
       "name": "switcher",
       "type": "component",
-      "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+      "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
       "version": "0.18.0",
       "files": [
         {
@@ -24957,7 +24957,7 @@
       "category": "navigation",
       "meta": {
         "name": "Switcher",
-        "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+        "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
         "category": "navigation",
         "clientJs": "enhancement",
         "states": ["default"],
@@ -25016,7 +25016,8 @@
           ],
           "whenNotToUse": [
             "Primary in-app navigation — use SideNav",
-            "A small action menu attached to a control — use Dropdown"
+            "A small action menu attached to a control — use Dropdown",
+            "A COLLAPSED workspace/team switcher with one visible row and a menu on click — use Dropdown. Switcher renders every entry, permanently: it is an always-visible list, not a collapsing control, and the name misleads (2026-08-21 report item 5)"
           ],
           "antiPatterns": [
             {
@@ -25473,7 +25474,7 @@
           },
           {
             "name": "muted",
-            "description": "When true, renders in a muted/subtle color.",
+            "description": "When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`.",
             "type": "boolean",
             "required": false,
             "default": "false"

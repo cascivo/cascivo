@@ -240,6 +240,25 @@ small dashboard — the single largest friction in that report.
 > Enforced by `vocabulary.test.ts`: a `label` prop whose manifest description states neither
 > fails `pnpm meta:check`. Silence is the bug — the reader cannot tell it from either case.
 
+### ⚠ Near-miss prop names — what you probably wrote, and what the prop is
+
+Every row here is a real wrong guess from an adopter report, not a hypothetical. They are
+near-misses rather than blunders: each one is the name the rest of the system, or the rest of
+the ecosystem, would lead you to. Where the fix was to accept both spellings we did; where
+accepting both would have made something else worse, the reason is in the last column.
+
+| You probably wrote                                 | The prop is                                         | On                                               | Why not just accept yours                                                                                                                                                             |
+| -------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tone="subtle"`                                    | **`muted`** (boolean)                               | `Text`                                           | `tone` is the catalog's _severity_ vocabulary (`Status`, `Badge`, `Timeline`, `SideNav`). Text emphasis is a different idea; a third meaning for `tone` would cost more than it saves |
+| `gap="4"`                                          | **`gap={4}`** (numeric `SpaceStep`)                 | every layout                                     | A string union would let `gap="7"` type-check into a token that does not exist                                                                                                        |
+| `<Flex justify="between">` with no `direction`     | it is already **vertical**                          | `Flex`                                           | `direction="vertical"` is the default, unlike CSS and unlike Chakra/MUI/Radix. Pass `direction="horizontal"` for a row                                                                |
+| `const { theme } = useTheme()`                     | a **tuple**: `const [theme, setTheme] = useTheme()` | `@cascivo/core`                                  | The object shape is next-themes'; the tuple is `useState`'s                                                                                                                           |
+| `orientation="vertical"` meaning "stack the items" | it stacks the **value under its label**             | `DataList`                                       | Items stack vertically in both modes; `orientation` moves the value relative to its label                                                                                             |
+| `<DataListItem>` as a component                    | `DataList` takes **`items`**                        | `DataList`                                       | `DataListItem` is the _interface_ describing an item, not a component                                                                                                                 |
+| `import { Switch }`                                | **`Toggle`** — and `Switch` now works too           | `@cascivo/react`                                 | Fixed: `Switch` is exported as an alias, and `cascivo add switch` resolves                                                                                                            |
+| `<OverflowMenu label=…>`                           | **`ariaLabel`** — and `label` now works too         | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Steps` | Fixed: both spellings are accepted everywhere either was                                                                                                                              |
+| `<Field hint=…>`                                   | **`description`** — and `hint` now works too        | `Field`                                          | Fixed: `hint` is the form-control word, `description` the feedback word; `Field` takes both                                                                                           |
+
 ### Importing the shared types
 
 `Tone`, `Progress` and `SpaceStep` are the _types of published props_ — `Status.status` and

@@ -50,7 +50,7 @@
       },
       {
         "name": "muted",
-        "description": "When true, renders in a muted/subtle color.",
+        "description": "When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`.",
         "type": "boolean",
         "required": false,
         "default": "false"

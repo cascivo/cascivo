@@ -43,6 +43,14 @@ export interface SwitcherProps {
   className?: string | undefined
 }
 
+/**
+ * An **always-visible** list of apps/workspaces. Every entry renders at once and stays on
+ * screen — despite the name, nothing collapses and there is no trigger.
+ *
+ * For the shape most consoles want — one row showing the current workspace, a menu on click
+ * — use `Dropdown`. An adopter picked `Switcher` from its name for a Vercel-style team
+ * switcher and got both teams stacked permanently in the sidebar (2026-08-21 report item 5).
+ */
 export function Switcher({ items, label, ariaLabel, className }: SwitcherProps) {
   useSignals()
   const LinkComponent = getLinkComponent()

@@ -11,7 +11,13 @@ export interface DataListItem {
 export interface DataListProps extends HTMLAttributes<HTMLDListElement> {
   items: DataListItem[]
   /**
-   * Layout orientation of the component.
+   * Where each **value** sits relative to its own label — not the axis of the list.
+   *
+   * `'horizontal'` puts the value beside its label; `'vertical'` puts it underneath. Items
+   * are stacked vertically either way, which is the part the name does not say: an adopter
+   * read `orientation="vertical"` as "lay the items out vertically" and got a very tall
+   * block from six rows (2026-08-21 report item 9). In a summary card, prefer
+   * `'horizontal'`.
    *
    * @defaultValue `horizontal`
    * @see the component manifest

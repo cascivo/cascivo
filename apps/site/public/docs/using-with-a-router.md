@@ -222,12 +222,60 @@ colour and can end up with near-white text on a near-white background. Override 
 properties, and the cascade stays on your side. See
 [CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md).
 
-## 4. Checklist
+## 4. Code splitting — and the `HydrateFallback` warning it produces
+
+[RECIPE-DASHBOARD.md](/docs/recipe-dashboard.md) tells you to route-split a console, and it is
+right, but the consequences land here — in the router — so they are documented here.
+
+**Split every route, including the index one.** "Split the chart routes" reads as _not_
+including the landing page, and an adopter took it that way: their entry chunk stayed at
+524.70 kB because one `Sparkline` on an eagerly-loaded `/` pulled the whole chart engine into
+it. A later adopter made `/` lazy like everything else and measured 413.07 kB with the
+sparklines still there (2026-08-21 report).
+
+```tsx
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Shell />,
+    // `HydrateFallback` — see below. Without it React Router warns on every page load.
+    HydrateFallback: () => <Spinner label="Loading" />,
+    children: [
+      { index: true, lazy: () => import('./routes/overview') },
+      { path: 'projects', lazy: () => import('./routes/projects') },
+      { path: 'analytics', lazy: () => import('./routes/analytics') },
+    ],
+  },
+])
+```
+
+**The warning.** With `lazy` routes on a data router, React Router logs on every page load:
+
+```
+No HydrateFallback element provided to render during initial hydration
+```
+
+That is React Router's warning, not cascivo's, and nothing is broken — it is telling you
+there is no element to show while the first lazy route module is in flight. It is noise an
+adopter following the splitting advice above will hit, which is why it is called out here.
+Give the root route a `HydrateFallback` and it goes away:
+
+```tsx
+import { Spinner } from '@cascivo/react'
+
+HydrateFallback: () => <Spinner label="Loading" />
+```
+
+Any component works; `Spinner` and `Skeleton` are the two that read as "this is coming",
+and `Spinner`'s `label` is a screen-reader-only name, so it announces without painting text.
+
+## 5. Checklist
 
 1. `setLinkComponent(...)` once at startup — covers every config-driven nav.
 2. `<Link asChild>` for in-content links; `<Button asChild>` for CTAs.
 3. Never a bare `<Link href>` in a routed app — that is a full page reload.
 4. Never a copy of cascivo's link CSS in your own layer.
+5. Route-split every route **including the index**, and give the root a `HydrateFallback`.
 
 ## See also
 

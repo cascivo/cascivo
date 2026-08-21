@@ -47,10 +47,19 @@ const SURFACES: { label: string; path: string }[] = [
 ]
 
 /**
- * Facts a first-day adopter must not be able to miss, each with the patterns that prove
- * it is present. Every pattern must match on every surface.
+ * The root README. Not in SURFACES because it is a pitch page, not a walkthrough — it does
+ * not teach `useSignals()` or the theme imports and should not have to. It IS where a
+ * procurement reviewer meets the version numbers, so the versioning fact names it
+ * explicitly via a fact-level `surfaces` override.
  */
-const FACTS: { name: string; why: string; patterns: RegExp[] }[] = [
+const README = { label: 'README.md', path: 'README.md' }
+
+/**
+ * Facts a first-day adopter must not be able to miss, each with the patterns that prove
+ * it is present. Every pattern must match on every surface — all of SURFACES unless the
+ * fact narrows or extends the list itself.
+ */
+const FACTS: { name: string; why: string; patterns: RegExp[]; surfaces?: typeof SURFACES }[] = [
   {
     name: 'useSignals() is required in the consumer’s own components',
     why:
@@ -65,6 +74,18 @@ const FACTS: { name: string; why: string; patterns: RegExp[] }[] = [
       'greyscale. all.css naming cost adopters real time (2026-07-28 report C4).',
     patterns: [/@cascivo\/themes\/light-dark/, /@cascivo\/themes\/all/],
   },
+  {
+    name: 'packages version independently, and how to check for drift before upgrading',
+    why:
+      'An install list reading @cascivo/react@0.18.0 next to @cascivo/platform@0.0.4 reads ' +
+      'as "half of this is pre-alpha" — a 2026-08-21 reporter said a procurement reviewer ' +
+      'will ask. The answer already existed (independent changesets versioning, ' +
+      'breaking-changes.json, `cascivo doctor --drift`) but sat 249 lines into one guide, ' +
+      'nowhere near where the numbers are first seen. The mitigation is only a mitigation ' +
+      'if you can find it without knowing it exists.',
+    patterns: [/breaking-changes\.json/, /doctor --drift/],
+    surfaces: [...SURFACES, README],
+  },
 ]
 
 function read(path: string): string {
@@ -75,7 +96,7 @@ describe('getting-started-contract — first-day facts reach every first-day sur
   for (const fact of FACTS) {
     it(`every surface states: ${fact.name}`, () => {
       const missing: string[] = []
-      for (const surface of SURFACES) {
+      for (const surface of fact.surfaces ?? SURFACES) {
         const source = read(surface.path)
         for (const pattern of fact.patterns) {
           if (!pattern.test(source)) {
@@ -97,7 +118,7 @@ describe('getting-started-contract — first-day facts reach every first-day sur
   }
 
   it('every listed surface exists (guards against passing vacuously)', () => {
-    for (const surface of SURFACES) {
+    for (const surface of [...SURFACES, README]) {
       assert.doesNotThrow(
         () => read(surface.path),
         `${surface.label} (${surface.path}) is unreadable — if it moved, update SURFACES; ` +

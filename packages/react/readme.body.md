@@ -378,7 +378,7 @@ routing break after adding one of these, check that the import resolves to
 - **SideNav** — Collapsible sidebar navigation with optional icons and one level of grouping
 - **SkipNav** — Skip link that jumps keyboard users past the navigation to the main content
 - **Steps** — Visual progress indicator for multi-step flows with horizontal and vertical orientations
-- **Switcher** — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+- **Switcher** — Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 - **Tabs** — Switch between related panels of content
 - **Toc** — Table of contents with scroll-spy highlighting of the active section
 

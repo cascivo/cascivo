@@ -1,6 +1,6 @@
 # Switcher
 
-App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 
 ## Install
 

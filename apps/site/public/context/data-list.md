@@ -32,12 +32,12 @@ Rendered as semantic dl with dt/dd pairs so the label-to-value association is na
 
 ## Props
 
-| Name          | Type                                                    | Required | Default    | Description                                           |
-| ------------- | ------------------------------------------------------- | -------- | ---------- | ----------------------------------------------------- |
-| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | Yes      | —          | The items to render.                                  |
-| `orientation` | `'horizontal' \| 'vertical'`                            | No       | horizontal | Layout orientation of the component.                  |
-| `dividers`    | `boolean`                                               | No       | false      | When true, shows dividers between items.              |
-| `size`        | `'sm' \| 'md'`                                          | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Name          | Type                                                    | Required | Default    | Description                                                                                                                                                                            |
+| ------------- | ------------------------------------------------------- | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | Yes      | —          | The items to render.                                                                                                                                                                   |
+| `orientation` | `'horizontal' \| 'vertical'`                            | No       | horizontal | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
+| `dividers`    | `boolean`                                               | No       | false      | When true, shows dividers between items.                                                                                                                                               |
+| `size`        | `'sm' \| 'md'`                                          | No       | md         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                  |
 
 ## Tokens
 
@@ -56,6 +56,20 @@ Rendered as semantic dl with dt/dd pairs so the label-to-value association is na
   items={[
     { label: 'Name', value: 'Ada Lovelace' },
     { label: 'Role', value: 'Mathematician' },
+  ]}
+/>
+```
+
+### Vertical — value under its label, not "items stacked vertically"
+
+Both modes stack the items vertically. `orientation` moves the VALUE: beside its label (horizontal) or under it (vertical).
+
+```jsx
+<DataList
+  orientation="vertical"
+  items={[
+    { label: 'Region', value: 'fra1' },
+    { label: 'Branch', value: 'main' },
   ]}
 />
 ```

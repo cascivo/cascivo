@@ -1051,6 +1051,11 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     `- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard): a config-driven collection -> **\`items\`** (DataList, StructuredList, Timeline, Steps, CommandMenu, OverflowMenu, Switcher); table rows -> **\`rows\`** (DataTable ONLY, because it renders a <table>); a visual style enum -> **\`variant\`**, never \`shape\`/\`kind\`/\`type\`; a discriminated-union tag -> **\`kind\`**, never \`type\` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **\`actions\`** as ReactNode (Notification, CardHeader, PageHeader — only \`Alert.action\` is the {label,onClick} shorthand); body text on a feedback component -> **\`description\`**, NOT children (Notification renders nothing for children).`,
   )
+  // The near-miss table from docs/AI-RULES.md, compressed. Every row is a real wrong guess
+  // from a dated adopter report; `doc-api-drift.test.ts` fails if a row stops being true.
+  lines.push(
+    '- Near-miss prop names (each one a real adopter\'s wrong guess): `<Text tone=…>` -> **`muted`** (a boolean; `tone` is the SEVERITY vocabulary on Status/Badge/Timeline/SideNav, not text emphasis); `gap="4"` -> **`gap={4}`** (numeric SpaceStep); `<Flex justify=…>` with no `direction` is already VERTICAL (the default, unlike CSS/Chakra/MUI/Radix); `const { theme } = useTheme()` -> a TUPLE `const [theme, setTheme]`; `DataList orientation="vertical"` moves the VALUE under its label, it does not stack the items (they stack either way); `<DataListItem>` is an INTERFACE, not a component (`DataList` takes `items`). Three former near-misses are now accepted both ways and cost nothing: `import { Switch }` (= `Toggle`), `<OverflowMenu label=…>` (= `ariaLabel`), `<Field hint=…>` (= `description`).',
+  )
   lines.push(
     `- ⚠ \`gap\` takes a NUMBER: \`gap={4}\`, not \`gap="4"\`. Every other size-ish prop is a string union (\`size="sm"\`, \`padding="md"\`), but the space scale is a numeric \`SpaceStep\` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid \`gap\` and \`AppShell.padding\`. One adopter wrote \`gap="4"\` and got 20 type errors in a single run.`,
   )

@@ -172,6 +172,23 @@ function Counter() {
 import '@cascivo/themes/all.css'`}
         />
       </section>
+
+      <section style={cardStyle}>
+        <h2>Versioning and stability</h2>
+        <p>
+          Every package is <code>0.x</code>, and they version <strong>independently</strong> via
+          changesets. A low number means fewer releases, not less finished —{' '}
+          <code>@cascivo/platform@0.0.4</code> is new, not immature. Compatibility is per-entry{' '}
+          <code>peerVersions</code> in <code>registry.json</code>, not version equality, so nothing
+          moves in lockstep.
+        </p>
+        <p>
+          Pin exact versions (no <code>^</code>). Before upgrading, run{' '}
+          <code>cascivo doctor --drift</code>: it reads{' '}
+          <a href="/breaking-changes.json">breaking-changes.json</a> — published per package,
+          machine-readable — and reports what changed under you.
+        </p>
+      </section>
     </article>
   )
 }

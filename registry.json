@@ -4557,7 +4557,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-list/data-list.module.css"
       ],
       "fileHashes": {
-        "data-list.tsx": "sha256-2307d2a76bddaf4bd5431eba4b3d56a3eef24a8e2d54fcfef6c17033213d4534",
+        "data-list.tsx": "sha256-4a1be9a925a15c46f3ce8636e578b3986e5a16c733708df13ae2e60eeaf90723",
         "index.ts": "sha256-e66b774146ac0f07c45044fc335f97290bd3ee96df1764ca00f0cd0a1cd804a2",
         "data-list.module.css": "sha256-2543d44f539a0b05d7f4ee26b3d5b481797444173fe4d9f5e5f14ceaeea7242d"
       },
@@ -4583,7 +4583,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -4619,6 +4619,11 @@
           {
             "title": "Horizontal data list",
             "code": "<DataList\n  items={[\n    { label: 'Name', value: 'Ada Lovelace' },\n    { label: 'Role', value: 'Mathematician' },\n  ]}\n/>"
+          },
+          {
+            "title": "Vertical — value under its label, not \"items stacked vertically\"",
+            "description": "Both modes stack the items vertically. `orientation` moves the VALUE: beside its label (horizontal) or under it (vertical).",
+            "code": "<DataList\n  orientation=\"vertical\"\n  items={[\n    { label: 'Region', value: 'fra1' },\n    { label: 'Branch', value: 'main' },\n  ]}\n/>"
           },
           {
             "title": "Vertical with dividers",
@@ -16888,7 +16893,7 @@
     {
       "name": "switcher",
       "type": "component",
-      "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+      "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
       "category": "navigation",
       "version": "0.18.0",
       "files": [
@@ -16897,7 +16902,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-e7dbc9b817115cc888f3abcebcf8b46291d4cf6c7b7fbc37524aa0740a552673",
+        "switcher.tsx": "sha256-2320332df10d4e6d22a0c696a8eecc63de2bb13992aee25dd81ec8e0c4056570",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
         "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
@@ -16909,7 +16914,7 @@
       "tags": ["navigation", "switcher", "shell", "console", "app-switcher"],
       "meta": {
         "name": "Switcher",
-        "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+        "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
         "category": "navigation",
         "clientJs": "enhancement",
         "states": ["default"],
@@ -16974,7 +16979,8 @@
           ],
           "whenNotToUse": [
             "Primary in-app navigation — use SideNav",
-            "A small action menu attached to a control — use Dropdown"
+            "A small action menu attached to a control — use Dropdown",
+            "A COLLAPSED workspace/team switcher with one visible row and a menu on click — use Dropdown. Switcher renders every entry, permanently: it is an always-visible list, not a collapsing control, and the name misleads (2026-08-21 report item 5)"
           ],
           "antiPatterns": [
             {
@@ -17426,7 +17432,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.module.css"
       ],
       "fileHashes": {
-        "text.tsx": "sha256-a1aca1c42ef8e4abcadcc29d0c663e769682ee1f439c3fd76afc4fad0957f031",
+        "text.tsx": "sha256-8ce548eefd342639d9a2fa34fcaf8547e45d26fd91c220ee6e17e26da41b2cff",
         "index.ts": "sha256-f95252720c83969d779056af603457df6ee0ebf5aaf9707cede576035ddcf3e4",
         "text.module.css": "sha256-5d7d11e88320100b61c66160ec1bb43006a1c5e995280e47aa4a73dd8788c24e"
       },
@@ -17467,7 +17473,7 @@
           },
           {
             "name": "muted",
-            "description": "When true, renders in a muted/subtle color.",
+            "description": "When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`.",
             "type": "boolean",
             "required": false,
             "default": "false"

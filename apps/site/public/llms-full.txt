@@ -258,6 +258,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
 - Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard): a config-driven collection -> **`items`** (DataList, StructuredList, Timeline, Steps, CommandMenu, OverflowMenu, Switcher); table rows -> **`rows`** (DataTable ONLY, because it renders a <table>); a visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
+- Near-miss prop names (each one a real adopter's wrong guess): `<Text tone=…>` -> **`muted`** (a boolean; `tone` is the SEVERITY vocabulary on Status/Badge/Timeline/SideNav, not text emphasis); `gap="4"` -> **`gap={4}`** (numeric SpaceStep); `<Flex justify=…>` with no `direction` is already VERTICAL (the default, unlike CSS/Chakra/MUI/Radix); `const { theme } = useTheme()` -> a TUPLE `const [theme, setTheme]`; `DataList orientation="vertical"` moves the VALUE under its label, it does not stack the items (they stack either way); `<DataListItem>` is an INTERFACE, not a component (`DataList` takes `items`). Three former near-misses are now accepted both ways and cost nothing: `import { Switch }` (= `Toggle`), `<OverflowMenu label=…>` (= `ariaLabel`), `<Field hint=…>` (= `description`).
 - ⚠ `gap` takes a NUMBER: `gap={4}`, not `gap="4"`. Every other size-ish prop is a string union (`size="sm"`, `padding="md"`), but the space scale is a numeric `SpaceStep` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid `gap` and `AppShell.padding`. One adopter wrote `gap="4"` and got 20 type errors in a single run.
 - Items-prop-driven vs children-driven: `DataList`/`StructuredList`/`Timeline`/`Steps` take an `items` ARRAY; `ListItem`/`ContainedListItem`/`MenuItem`/`TabsTrigger` are composed as children. `DataListItem` is an INTERFACE, not a component — write <DataList items={[{ label, value }]} />, not <DataList><DataListItem/></DataList>. DataList items are { label, value } (NOT { term, description }, despite rendering a <dl>).
 
@@ -593,7 +594,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [side-nav](https://cascivo.com/llms/side-nav.md) — Collapsible sidebar navigation with optional icons and one level of grouping _(npm @cascivo/react · or copy-paste)_
 - [skip-nav](https://cascivo.com/llms/skip-nav.md) — Skip link that jumps keyboard users past the navigation to the main content _(npm @cascivo/react (SkipNavLink, SkipNavLinkProps, SkipNavTarget, SkipNavTargetProps) · the SkipNav component itself is copy-paste)_
 - [steps](https://cascivo.com/llms/steps.md) — Visual progress indicator for multi-step flows with horizontal and vertical orientations _(npm @cascivo/react · or copy-paste)_
-- [switcher](https://cascivo.com/llms/switcher.md) — App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers _(npm @cascivo/react · or copy-paste)_
+- [switcher](https://cascivo.com/llms/switcher.md) — Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown. _(npm @cascivo/react · or copy-paste)_
 - [tabs](https://cascivo.com/llms/tabs.md) — Switch between related panels of content _(npm @cascivo/react · or copy-paste)_
 - [toc](https://cascivo.com/llms/toc.md) — Table of contents with scroll-spy highlighting of the active section _(npm @cascivo/react · or copy-paste)_
 
@@ -7424,7 +7425,7 @@ import { DataList } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `items` | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes | — | The items to render. |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
 | `dividers` | `boolean` | no | `false` | When true, shows dividers between items. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
@@ -7437,6 +7438,20 @@ import { DataList } from '@cascivo/react'
   items={[
     { label: 'Name', value: 'Ada Lovelace' },
     { label: 'Role', value: 'Mathematician' },
+  ]}
+/>
+```
+
+### Vertical — value under its label, not "items stacked vertically"
+
+Both modes stack the items vertically. `orientation` moves the VALUE: beside its label (horizontal) or under it (vertical).
+
+```tsx
+<DataList
+  orientation="vertical"
+  items={[
+    { label: 'Region', value: 'fra1' },
+    { label: 'Branch', value: 'main' },
   ]}
 />
 ```
@@ -17865,7 +17880,7 @@ _Generated from registry v0.18.0 on 2026-08-17. Docs track `main`; compare with 
 
 # Switcher
 
-App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 
 ## Install
 
@@ -18254,7 +18269,7 @@ import { Text } from '@cascivo/react'
 | `as` | `'p' \| 'span' \| 'div'` | no | `p` | The HTML element to render as. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `weight` | `'normal' \| 'medium' \| 'semibold'` | no | `normal` | Font weight ('normal' \| 'medium' \| 'semibold'). |
-| `muted` | `boolean` | no | `false` | When true, renders in a muted/subtle color. |
+| `muted` | `boolean` | no | `false` | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
 
 ## Examples
 

@@ -13,7 +13,8 @@ export interface TextProps extends HTMLAttributes<HTMLElement> {
   size?: 'sm' | 'md' | 'lg'
   weight?: 'normal' | 'medium' | 'semibold'
   /**
-   * When true, renders in a muted/subtle color.
+   * When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the
+   * severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`.
    *
    * @defaultValue `false`
    * @see the component manifest

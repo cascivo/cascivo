@@ -271,5 +271,13 @@ export async function init(args: string[] = [], cwd: string = process.cwd()): Pr
   ensureFormatterIgnore(cwd, DEFAULT_CONFIG.outputDir)
   hintEslintIfPresent(cwd)
 
+  // The version spread (`@cascivo/react@0.18.x` next to `@cascivo/platform@0.0.x`) is first
+  // seen HERE, in the install list this command just printed — not 249 lines into a guide.
+  // A 2026-08-21 reporter flagged that it reads as "half of this is pre-alpha" and that the
+  // answer, while documented, was only reachable if you already knew to look for it.
+  console.log('\nPackages version independently (changesets), so a low number means fewer')
+  console.log('releases, not less finished. Pin exact versions, and before upgrading run:')
+  console.log('  cascivo doctor --drift    # reads breaking-changes.json, reports API drift')
+
   console.log('\nAdd components with: cascivo add <name>')
 }

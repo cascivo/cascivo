@@ -262,6 +262,46 @@ React re-render of the whole form. `Field` wires the label, description, and `ar
 
 ---
 
+## 7 — For a procurement reviewer: the 0.x question
+
+The question comes up before any of the above, and it comes up looking at an install list:
+
+```
+@cascivo/react@0.18.0   @cascivo/themes@0.4.13   @cascivo/icons@0.3.10
+@cascivo/platform@0.0.4  cascivo@0.9.0
+```
+
+A 2026-08-21 evaluator put it plainly: a `0.0.4` next to a `0.18.0` "reads as _half of this
+is pre-alpha_. A procurement reviewer will ask." Here is the answer, in the order it is
+usually asked.
+
+**Why the numbers differ.** Packages version independently via
+[changesets](https://github.com/changesets/changesets). The number counts releases of that
+package, not maturity of the system: `@cascivo/platform` is the newest package, not the
+least finished. Compatibility is expressed per registry entry as `peerVersions` in
+`registry.json` — a real constraint the CLI checks — rather than by keeping every number in
+lockstep, which would make each version meaningless.
+
+**What 0.x costs you, honestly.** Semver gives no stability promise below 1.0, and that is
+the real exposure. Three things bound it:
+
+- **[`breaking-changes.json`](https://cascivo.com/breaking-changes.json)** — every
+  major/minor release of every package, with notes, machine-readable. Published, not a
+  changelog you have to read.
+- **`cascivo doctor --drift`** — reads that file against your lockfile and tells you what
+  changed under you. Run it before an upgrade, in CI if you like.
+- **A published deprecation policy** — a component marked `deprecated` in its manifest keeps
+  working and is signposted at _discovery_ time: `cascivo list`, `cascivo search`, `cascivo
+add` (warned before the copy), the MCP tools, the docs site and `llms.txt` all render it, so
+  it reaches you before the source is vendored rather than after.
+
+**What you own.** On the copy-paste path the component source is in your repository, under
+your review, and upgrades are a diff you accept. That is the strongest answer to the 0.x
+question available: the worst case for a component you have already copied is that you stop
+upgrading it.
+
+---
+
 ## The meta-lesson
 
 The report's premise — "these frictions prove cascivo isn't enterprise-ready" — inverted
