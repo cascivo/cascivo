@@ -33,7 +33,7 @@ import { NavigationMenu } from '@cascivo/react'
 | `ariaLabel`   | `string`                               | no       | —            | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `items`       | `NavigationMenuItem[]`                 | yes      | —            | The items to render.                                                                                                                              |
 | `aria-label`  | `string`                               | no       | —            | Accessible label used when no visible label is present.                                                                                           |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no       | `horizontal` | Layout orientation of the component.                                                                                                              |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no       | `horizontal` | Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).            |
 | `className`   | `string`                               | no       | —            | Additional CSS class names merged onto the root element.                                                                                          |
 
 ## Examples

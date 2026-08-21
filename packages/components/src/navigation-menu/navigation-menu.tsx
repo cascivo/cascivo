@@ -40,7 +40,8 @@ export interface NavigationMenuProps {
   label?: string
   'aria-label'?: string
   /**
-   * Layout orientation of the component.
+   * Which arrow keys move focus, and the axis the items lay out on: `horizontal`
+   * (Left/Right), `vertical` (Up/Down), or `both` (all four).
    *
    * @defaultValue `horizontal`
    * @see the component manifest

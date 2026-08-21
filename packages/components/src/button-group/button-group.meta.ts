@@ -13,7 +13,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Axis the buttons flow along: `horizontal` puts them in a row, `vertical` stacks them in a column. The seams between them are collapsed either way.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',

@@ -72,7 +72,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        '`pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.',
       type: "'pill' | 'outline'",
       required: false,
       default: 'pill',

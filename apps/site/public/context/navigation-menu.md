@@ -39,7 +39,7 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 | `ariaLabel`   | `string`                               | No       | —          | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `items`       | `NavigationMenuItem[]`                 | Yes      | —          | The items to render.                                                                                                                              |
 | `aria-label`  | `string`                               | No       | —          | Accessible label used when no visible label is present.                                                                                           |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No       | horizontal | Layout orientation of the component.                                                                                                              |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | No       | horizontal | Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).            |
 | `className`   | `string`                               | No       | —          | Additional CSS class names merged onto the root element.                                                                                          |
 
 ## Tokens

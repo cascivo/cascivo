@@ -305,7 +305,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "type": "'default' | 'info' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
@@ -476,7 +476,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`destructive` styles the confirm button as a danger action; `default` styles it as the primary action. Use `destructive` for anything that deletes.",
             "type": "'destructive' | 'default'",
             "required": false,
             "default": "default"
@@ -1067,7 +1067,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
             "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
             "required": false,
             "default": "default"
@@ -2457,7 +2457,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes.",
             "type": "'primary' | 'secondary' | 'ghost' | 'destructive'",
             "required": false,
             "default": "primary"
@@ -2600,7 +2600,7 @@
         "props": [
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the buttons flow along: `horizontal` puts them in a row, `vertical` stacks them in a column. The seams between them are collapsed either way.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -2945,7 +2945,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.",
             "type": "'default' | 'outlined' | 'elevated'",
             "required": false,
             "default": "default"
@@ -3495,7 +3495,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Direction the bars grow. `vertical` puts the categories on the x-axis and grows bars upward (columns); `horizontal` puts them on the y-axis and grows bars rightward — the better choice for long category names.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -5888,7 +5888,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`bar` draws a straight horizontal track; `gauge` draws a half-donut dial.",
             "type": "'bar' | 'gauge'",
             "required": false,
             "default": "bar"
@@ -7759,7 +7759,7 @@
           },
           {
             "name": "side",
-            "description": "Edge the component is anchored to.",
+            "description": "Which side of the thread the bubble sits on: `start` for an incoming message (avatar first), `end` for an outgoing one (right-aligned, avatar last).",
             "type": "'start' | 'end'",
             "required": false,
             "default": "start"
@@ -9170,7 +9170,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -10762,7 +10762,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-start"
@@ -11590,7 +11590,7 @@
           },
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way.",
             "type": "'bottom-end' | 'bottom-start'",
             "required": false,
             "default": "bottom-end"
@@ -12115,7 +12115,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.",
             "type": "'pill' | 'outline'",
             "required": false,
             "default": "pill"
@@ -12883,7 +12883,7 @@
         "props": [
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas corner the control cluster is pinned to: `bottom-left`, `bottom-right`, `top-left` or `top-right`.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-left"
@@ -13319,7 +13319,7 @@
           },
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas corner the minimap is pinned to: `bottom-right`, `bottom-left`, `top-left` or `top-right`.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-right"
@@ -13656,7 +13656,7 @@
         "props": [
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas edge slot the panel occupies: `top-right`, `top-center`, `top-left`, `bottom-left`, `bottom-center` or `bottom-right`.",
             "type": "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
             "required": false,
             "default": "top-right"
@@ -14670,7 +14670,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface.",
             "type": "'ghost' | 'outline' | 'filled'",
             "required": false,
             "default": "ghost"
@@ -14970,7 +14970,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Corner of the wrapped element the dot or count sits on: `top-end`, `top-start`, `bottom-start` or `bottom-end`.",
             "type": "'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "top-end"
@@ -15580,7 +15580,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`muted` gives the row a subtle background — for a selected or highlighted item; `default` leaves it transparent.",
             "type": "'default' | 'muted'",
             "required": false,
             "default": "default"
@@ -15690,7 +15690,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the joined children flow along: `horizontal` for a row, `vertical` for a column. Inner corners are squared off either way.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -17433,7 +17433,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`standalone` uses the system's own type and underlines on hover — for a link that stands on its own. `inline` inherits the surrounding prose font and stays underlined — for a link inside a paragraph.",
             "type": "'standalone' | 'inline'",
             "required": false,
             "default": "standalone"
@@ -17557,7 +17557,7 @@
         "props": [
           {
             "name": "as",
-            "description": "The HTML element to render as.",
+            "description": "`ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling.",
             "type": "'ul' | 'ol'",
             "required": false,
             "default": "ul"
@@ -18712,7 +18712,7 @@
           {
             "name": "orientation",
             "default": "horizontal",
-            "description": "Layout orientation of the component.",
+            "description": "Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).",
             "type": "'horizontal' | 'vertical' | 'both'",
             "required": false
           },
@@ -18831,7 +18831,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Notification's historical spellings (`error`, `destructive` → danger).",
             "type": "'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "info"
@@ -19314,7 +19314,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-end"
@@ -19770,7 +19770,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Side of the trigger the panel opens on: `bottom`, `top`, `left` or `right`.",
             "type": "'top' | 'bottom' | 'left' | 'right'",
             "required": false,
             "default": "bottom"
@@ -19912,7 +19912,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
@@ -20804,7 +20804,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
@@ -21605,7 +21605,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -22923,7 +22923,7 @@
         "props": [
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -23034,7 +23034,7 @@
           },
           {
             "name": "side",
-            "description": "Edge the component is anchored to.",
+            "description": "Edge the sheet slides in from: `end` (the inline end — right in LTR), `start`, `top` or `bottom`.",
             "type": "'start' | 'end' | 'top' | 'bottom'",
             "required": false,
             "default": "end"
@@ -23577,7 +23577,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).",
             "type": "'text' | 'circle' | 'rect'",
             "required": false,
             "default": "text"
@@ -24433,7 +24433,7 @@
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "'horizontal'",
-            "description": "Layout direction of the steps"
+            "description": "Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page."
           },
           {
             "name": "className",
@@ -25191,7 +25191,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger).",
             "type": "'default' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "default"
@@ -25453,7 +25453,7 @@
         "props": [
           {
             "name": "as",
-            "description": "The HTML element to render as.",
+            "description": "`p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.",
             "type": "'p' | 'span' | 'div'",
             "required": false,
             "default": "p"
@@ -26053,7 +26053,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -26167,7 +26167,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "type": "'default' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
@@ -26579,7 +26579,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the options flow along: `horizontal` for a segmented row, `vertical` for a stacked column.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -26873,7 +26873,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`.",
             "type": "'top' | 'right' | 'bottom' | 'left'",
             "required": false,
             "default": "top"

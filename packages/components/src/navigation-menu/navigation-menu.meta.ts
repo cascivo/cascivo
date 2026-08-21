@@ -42,7 +42,8 @@ export const meta: ComponentMeta = {
     {
       name: 'orientation',
       default: 'horizontal',
-      description: 'Layout orientation of the component.',
+      description:
+        'Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).',
       type: "'horizontal' | 'vertical' | 'both'",
       required: false,
     },

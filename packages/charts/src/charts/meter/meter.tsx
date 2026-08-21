@@ -33,7 +33,7 @@ export interface MeterProps {
   max?: number
   label: string
   /**
-   * Selects the visual style variant.
+   * `bar` draws a straight horizontal track; `gauge` draws a half-donut dial.
    *
    * @defaultValue `bar`
    * @see the component manifest

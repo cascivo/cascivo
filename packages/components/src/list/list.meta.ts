@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'as',
-      description: 'The HTML element to render as.',
+      description:
+        '`ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling.',
       type: "'ul' | 'ol'",
       required: false,
       default: 'ul',

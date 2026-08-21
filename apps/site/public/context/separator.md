@@ -32,10 +32,10 @@ role="separator" when meaningful so screen readers announce the division; settin
 
 ## Props
 
-| Name          | Type                         | Required | Default    | Description                                                              |
-| ------------- | ---------------------------- | -------- | ---------- | ------------------------------------------------------------------------ |
-| `orientation` | `'horizontal' \| 'vertical'` | No       | horizontal | Layout orientation of the component.                                     |
-| `decorative`  | `boolean`                    | No       | false      | When true, the separator is purely visual and hidden from assistive tech |
+| Name          | Type                         | Required | Default    | Description                                                                                                                 |
+| ------------- | ---------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `orientation` | `'horizontal' \| 'vertical'` | No       | horizontal | Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row. |
+| `decorative`  | `boolean`                    | No       | false      | When true, the separator is purely visual and hidden from assistive tech                                                    |
 
 ## Tokens
 

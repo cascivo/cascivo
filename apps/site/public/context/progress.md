@@ -39,7 +39,7 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 | `aria-label`       | `string`                                                   | No       | —       | Accessible label when no visible label is present.                                                                                                                     |
 | `aria-describedby` | `string`                                                   | No       | —       | Id of an element describing the progress bar.                                                                                                                          |
 | `value`            | `number`                                                   | No       | —       | 0–100. Omit for indeterminate state.                                                                                                                                   |
-| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                                                                                                                                      |
+| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.                                                                 |
 | `size`             | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                  |
 
 ## Tokens

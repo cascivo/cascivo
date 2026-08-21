@@ -41,7 +41,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'position',
-      description: 'Position of the component.',
+      description:
+        'Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way.',
       type: "'bottom-end' | 'bottom-start'",
       required: false,
       default: 'bottom-end',

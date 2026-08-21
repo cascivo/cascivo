@@ -11,7 +11,9 @@ export interface ToastOptions {
   title: string
   description?: string
   /**
-   * Selects the visual style variant.
+   * Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon
+   * and the accent colour. Unlike Badge/Tag/Notification this is a private union, not
+   * `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.
    *
    * @defaultValue `default`
    * @see the component manifest

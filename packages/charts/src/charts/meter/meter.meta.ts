@@ -33,7 +33,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description: '`bar` draws a straight horizontal track; `gauge` draws a half-donut dial.',
       type: "'bar' | 'gauge'",
       required: false,
       default: 'bar',

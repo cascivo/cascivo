@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        'Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).',
       type: "'text' | 'circle' | 'rect'",
       required: false,
       default: 'text',

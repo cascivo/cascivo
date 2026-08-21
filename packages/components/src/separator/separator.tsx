@@ -4,7 +4,8 @@ import styles from './separator.module.css'
 
 export interface SeparatorProps extends HTMLAttributes<HTMLElement> {
   /**
-   * Layout orientation of the component.
+   * Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height
+   * one that stretches to its flex row.
    *
    * @defaultValue `horizontal`
    * @see the component manifest

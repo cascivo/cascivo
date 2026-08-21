@@ -8,7 +8,8 @@ export interface RadialProgressProps {
   value: number
   size?: RadialProgressSize
   /**
-   * Selects the visual style variant.
+   * Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`,
+   * `warning`, `error`.
    *
    * @defaultValue `primary`
    * @see the component manifest

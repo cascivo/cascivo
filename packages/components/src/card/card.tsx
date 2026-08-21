@@ -4,7 +4,8 @@ import styles from './card.module.css'
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Selects the visual style variant.
+   * `default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for
+   * a shadow.
    *
    * @defaultValue `default`
    * @see the component manifest

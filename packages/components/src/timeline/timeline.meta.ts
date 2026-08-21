@@ -17,7 +17,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across.',
       type: "'vertical' | 'horizontal'",
       required: false,
       default: 'vertical',

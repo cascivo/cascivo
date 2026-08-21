@@ -305,7 +305,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert/alert.module.css"
       ],
       "fileHashes": {
-        "alert.tsx": "sha256-e614b15b860d5e476bfa79bbf3e3bb556bf4a8849f77bb53339f2c6aed08ad9e",
+        "alert.tsx": "sha256-efa3d6322171fff06b4e410c3c79006dbf00dc3f7c8548f9b68ffeb899c39b07",
         "index.ts": "sha256-9dc074958383f841fd75ca7eb7c9172cbf7841de2e8a01b71699ec2360a3a8a1",
         "alert.module.css": "sha256-10072baa13db3ed9408bf6d163c3785a3544c91dbd3e77388599fc03e3cc2621"
       },
@@ -326,7 +326,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "type": "'default' | 'info' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
@@ -456,7 +456,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/alert-dialog/alert-dialog.module.css"
       ],
       "fileHashes": {
-        "alert-dialog.tsx": "sha256-d790560d1c7408a3f63c355a6eced4cdf88f0a4afc3c95d25fdab91e50423425",
+        "alert-dialog.tsx": "sha256-bcf96ba6283c5b9039f529c3e2f36c8f99987e33307fbff5860f56e3e8e71a5a",
         "index.ts": "sha256-16e70fe8a254ae23756f3bd5f19ca303f0e6bf543c6a95c36112a6fc9f11c2de",
         "alert-dialog.module.css": "sha256-fa35d8ba7ddbe3232ba2d374d79467bd622e5f9d7f64b793df32ed375021dd74"
       },
@@ -514,7 +514,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`destructive` styles the confirm button as a danger action; `default` styles it as the primary action. Use `destructive` for anything that deletes.",
             "type": "'destructive' | 'default'",
             "required": false,
             "default": "default"
@@ -1177,7 +1177,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
             "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
             "required": false,
             "default": "default"
@@ -1729,7 +1729,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button/button.module.css"
       ],
       "fileHashes": {
-        "button.tsx": "sha256-b6c15a5e744ecea0d4978ca59f7fed3d17a40ab59488481e7f305c39d82adaa7",
+        "button.tsx": "sha256-b030a070e63464a0c099f418b240f579484974e48bdc0dc3ff35fc7d4f47f2e7",
         "index.ts": "sha256-7979b137663ece5f57327ba1c8f891ed0d3882d1da13d9424d6d8bfdc1d1aeaf",
         "button.module.css": "sha256-c91691a7249abc049ef9e5b3227621ea296919b52555c79295ae018fe1c8d776"
       },
@@ -1749,7 +1749,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes.",
             "type": "'primary' | 'secondary' | 'ghost' | 'destructive'",
             "required": false,
             "default": "primary"
@@ -1893,7 +1893,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/button-group/button-group.module.css"
       ],
       "fileHashes": {
-        "button-group.tsx": "sha256-9ef2a7967c5270c6185a555488fa5dfdf91c370c88b8e9aa4bb3bae3eb7c8002",
+        "button-group.tsx": "sha256-55a44b4ad5defe34a68f04554f23d3fb9b7c2baac7675392277e791593c6c22c",
         "index.ts": "sha256-0ed106fd13169589eb81c3b59fcb93a180bac8511d66dbdb12734aafd2fd3ae7",
         "button-group.module.css": "sha256-38ef0e5c125f8d4300ddf2afcce6cfccd0be37b90d2cbb7c9c3d464b3afa065d"
       },
@@ -1913,7 +1913,7 @@
         "props": [
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the buttons flow along: `horizontal` puts them in a row, `vertical` stacks them in a column. The seams between them are collapsed either way.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -2262,7 +2262,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.module.css"
       ],
       "fileHashes": {
-        "card.tsx": "sha256-ac5232bf7b237095c38eefc890eac6162dfa8f90835a0d035f17de577bd7d3a1",
+        "card.tsx": "sha256-38853515a032ce3158bbf51bf386ca649a13531d6392ae3515b67b970618d5a3",
         "index.ts": "sha256-27d4f144329873a2f2124423ec77094366cc0854d2a9312796078391fb9eee34",
         "card.module.css": "sha256-f9fe20c39b2bb2dc0c5dfa99c1d6cad6f7402a19d6ac81fad709f3cffaac20b3"
       },
@@ -2288,7 +2288,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.",
             "type": "'default' | 'outlined' | 'elevated'",
             "required": false,
             "default": "default"
@@ -2518,7 +2518,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/chat-bubble/chat-bubble.module.css"
       ],
       "fileHashes": {
-        "chat-bubble.tsx": "sha256-7824de05c1de8c39d41891e063194103676cf2918ad948bb9d08cb5d2aaf1485",
+        "chat-bubble.tsx": "sha256-333523aff3d09931648544fb7dc66199493fcb54af1f56924aea403cd834c804",
         "index.ts": "sha256-60c31be4b82d8ee45b93e2216fa79a2e1e92013a82c734709ae61d5703f6ce17",
         "chat-bubble.module.css": "sha256-057b48821b086f66878e1f2557b1f233847315d6487dd33fb3a5feadfbda16b1"
       },
@@ -2541,7 +2541,7 @@
           },
           {
             "name": "side",
-            "description": "Edge the component is anchored to.",
+            "description": "Which side of the thread the bubble sits on: `start` for an incoming message (avatar first), `end` for an outgoing one (right-aligned, avatar last).",
             "type": "'start' | 'end'",
             "required": false,
             "default": "start"
@@ -4016,7 +4016,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.module.css"
       ],
       "fileHashes": {
-        "comparison.tsx": "sha256-abf391b72197102426db33d75262a396bb382ecdd41a1a617b8374f9e939ba0a",
+        "comparison.tsx": "sha256-d31ee8fa7ea0d6f64da2e7867f7d889ebe6ca8abc59c0d6c0f085978a383bebb",
         "index.ts": "sha256-ba53e6c6743020216aa95767b7b4242cf208f5172df936118948f5afac94a4da",
         "comparison.module.css": "sha256-aca33593240a1f285f5b2b96e077e9c78d592e67582938b093a65418a44ea34c"
       },
@@ -4068,7 +4068,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -5776,7 +5776,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
       ],
       "fileHashes": {
-        "dropdown.tsx": "sha256-ddfd6a4a08bcdf1dfeef2194b68eb198929e464bf0911d226501f2a4421909f8",
+        "dropdown.tsx": "sha256-9bbf35120647043f4ac082dc755c4862b8cbea8321e0a5d5beda46690771a933",
         "index.ts": "sha256-eadb4744bbbc90705110af4f638d0bbf19cf334f548adea9ac0e6296dd83e6ff",
         "dropdown.module.css": "sha256-ec2a02c41f49dd3f859b26e4eefe651c26c3d0ff9b58baa68a086072c8683c5c"
       },
@@ -5815,7 +5815,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-start"
@@ -6207,7 +6207,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.module.css"
       ],
       "fileHashes": {
-        "fab.tsx": "sha256-01365860c7f5475439facbb7d1ba96e8fa6dd05bfe19ce3494b94cbf30c3ce47",
+        "fab.tsx": "sha256-0379577f2339256cb16a3190b009168a0734ff96fba7dea9a44ecfd2f9f46a9e",
         "index.ts": "sha256-2cc152f990c3ce5c8aa631cb71a0d63475b70be88afd522fbe7ad37774b905fd",
         "fab.module.css": "sha256-829a972d999ba2199e07711e7c51683bf92fe268214fd20cb3d8ae8bc83511e8"
       },
@@ -6259,7 +6259,7 @@
           },
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way.",
             "type": "'bottom-end' | 'bottom-start'",
             "required": false,
             "default": "bottom-end"
@@ -6757,7 +6757,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
       ],
       "fileHashes": {
-        "filter.tsx": "sha256-338dbaddb26d24b2f2c4bc99d5c1b7cf0e1b384eddff73e307be407867aaa4e3",
+        "filter.tsx": "sha256-a4533503c2c64c6509e618601eef5383e0a75fc5039cfdd95ef0517f063c5cf0",
         "index.ts": "sha256-24fb4e877d4acbafec2b2e3de672486b429a97b973e27e5543905abf34bdb696",
         "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
       },
@@ -6835,7 +6835,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.",
             "type": "'pill' | 'outline'",
             "required": false,
             "default": "pill"
@@ -7601,7 +7601,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/icon-button/icon-button.module.css"
       ],
       "fileHashes": {
-        "icon-button.tsx": "sha256-ba00c324206db5f53555e1ef1a4d77a2f2728a378aa47ff8736e340788aa64b9",
+        "icon-button.tsx": "sha256-eed28666863329e5cb4fab6f20280c5c9839ecc0a12a615ee8dec7418f453068",
         "index.ts": "sha256-322b88c8eab2b291254a58ff36de08bc879756521a7585818b679bd93c0e948f",
         "icon-button.module.css": "sha256-6318b21f5f7783f201cff842754b07c4c4e4fa16a6287e509bc220da4bdf47cb"
       },
@@ -7641,7 +7641,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface.",
             "type": "'ghost' | 'outline' | 'filled'",
             "required": false,
             "default": "ghost"
@@ -7943,7 +7943,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/indicator/indicator.module.css"
       ],
       "fileHashes": {
-        "indicator.tsx": "sha256-063a4cd409d8ce2884b3e2c07af7f7cd1be5cc40e99836a4a18e74f214c5ded6",
+        "indicator.tsx": "sha256-449602743c2521710aeb277f60a94448ae027679142c6cf673fa5d1ac883bebf",
         "index.ts": "sha256-5d8398504f61bd01953da105acc592a83fd8a682cd3cbfd1b13cd2f5350b6f7d",
         "indicator.module.css": "sha256-7e1f689d9f7baad0fb1b022aa6ae71ab80ba0d642ad99cd1ac5268eeab4d4d1c"
       },
@@ -7972,7 +7972,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Corner of the wrapped element the dot or count sits on: `top-end`, `top-start`, `bottom-start` or `bottom-end`.",
             "type": "'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "top-end"
@@ -8639,7 +8639,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/item/item.module.css"
       ],
       "fileHashes": {
-        "item.tsx": "sha256-d664833d0ffa3d169e567da47a30aa807a805697aecaba01c7443aa7f3e3c5b3",
+        "item.tsx": "sha256-fd07d4befa48fe172782ee65b8cb23492a19ac62a525a3c537f18a23fa63e1a6",
         "index.ts": "sha256-84212d924cfe3c356480999817f4c784759b8dfa835ebef03fd639084f7cc276",
         "item.module.css": "sha256-74573cd2cf2265a0813d0e323ae4f6a54d4daf479fe06ec0ce6bbb4dfe1e1f6f"
       },
@@ -8666,7 +8666,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`muted` gives the row a subtle background — for a selected or highlighted item; `default` leaves it transparent.",
             "type": "'default' | 'muted'",
             "required": false,
             "default": "default"
@@ -8761,7 +8761,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/join/join.module.css"
       ],
       "fileHashes": {
-        "join.tsx": "sha256-79ce9c40780832ef4decbc068d4455fcefc168cb0bf4161cc35809df638db449",
+        "join.tsx": "sha256-ee5e05deead03fe07c135909dec14fede05ca14023f5e88c14b85d0f6c79b59b",
         "index.ts": "sha256-26c5aa34c90219944aca0c48a1d687edba484d84f9b98a6df0d01f87af443a62",
         "join.module.css": "sha256-fa3d06236cc6f4fd6e650fa73184c4ce5a820512a72ccae8eaeed4912d3a5e33"
       },
@@ -8784,7 +8784,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the joined children flow along: `horizontal` for a row, `vertical` for a column. Inner corners are squared off either way.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -9307,7 +9307,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/link/link.module.css"
       ],
       "fileHashes": {
-        "link.tsx": "sha256-7d8c4037726ced3509b584b630f7bcfe8395217a4333d4f14cf7185036d3f3d6",
+        "link.tsx": "sha256-9deef687fc6b08e66d1ddf6229a3a37320d7d3a440a059bc7a13f58933930247",
         "index.ts": "sha256-b38bcec272a5dd95d54c6621068a03373bdbc5fbeb9a987638bcf011b8edc12f",
         "link.module.css": "sha256-70b9c6a6b5fcbb4b9c3c7b3191fbf271de0deda543e176cf90b3f560e9e7b761"
       },
@@ -9327,7 +9327,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`standalone` uses the system's own type and underlines on hover — for a link that stands on its own. `inline` inherits the surrounding prose font and stays underlined — for a link inside a paragraph.",
             "type": "'standalone' | 'inline'",
             "required": false,
             "default": "standalone"
@@ -9448,7 +9448,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/list/list.module.css"
       ],
       "fileHashes": {
-        "list.tsx": "sha256-388545286df96ea367bea325dffb4baef882ddb3bab67ccd4d9e13631c2df36f",
+        "list.tsx": "sha256-719e49867ca9589144ccc6c68f54f2506f4b402dc40bdada914bad7c5281d4f8",
         "index.ts": "sha256-5208a9e9f2a1f5a7bd4c191a837048189909030343bc840145fc61341eb3c1e5",
         "list.module.css": "sha256-04cff38d1581297fbc1bf783c65c2f3525bd2ad12986a45fd173004173186fae"
       },
@@ -9468,7 +9468,7 @@
         "props": [
           {
             "name": "as",
-            "description": "The HTML element to render as.",
+            "description": "`ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling.",
             "type": "'ul' | 'ol'",
             "required": false,
             "default": "ul"
@@ -10673,7 +10673,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
       ],
       "fileHashes": {
-        "navigation-menu.tsx": "sha256-baeff3f813c75e5df7c97a94add73b2885388df9ce12cfb4d635dcaa297097c6",
+        "navigation-menu.tsx": "sha256-ca1f07477299c845ae4ed3fdb3e02db25882db8c3fb1a70ae8bc8f7bd72eb92d",
         "index.ts": "sha256-b6a075ea16b94e7a27b95bc268e44abdabf46f4d3d25a224eb3c9e1f6dada9c9",
         "navigation-menu.module.css": "sha256-27871a11da58d30b376d8194b52813d9c6b608b7bbd4b2fd053496d38a102f04"
       },
@@ -10720,7 +10720,7 @@
           {
             "name": "orientation",
             "default": "horizontal",
-            "description": "Layout orientation of the component.",
+            "description": "Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).",
             "type": "'horizontal' | 'vertical' | 'both'",
             "required": false
           },
@@ -10814,7 +10814,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/notification/notification.module.css"
       ],
       "fileHashes": {
-        "notification.tsx": "sha256-d6fa61f74a1526df4c72c1f1abe88d5f8fe82d46239adbc02bb7345c261114ca",
+        "notification.tsx": "sha256-96d50c30208d15362532218d153b262964d7c08c21fac82575ae9bac97027e7a",
         "index.ts": "sha256-745a045b5c161dd4f4d53eccc0685b4d7aea58f12317abbed47dee0486e62f74",
         "notification.module.css": "sha256-5c7995e8eb4ea44832527a3850890609daffeaf2b50776e6fb56511a0c49fb13"
       },
@@ -10847,7 +10847,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Notification's historical spellings (`error`, `destructive` → danger).",
             "type": "'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "info"
@@ -11342,7 +11342,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
       "fileHashes": {
-        "overflow-menu.tsx": "sha256-d5d067cef88dc583b08fe6c16353df34a1fc6868a419155987e1c2958ede19ea",
+        "overflow-menu.tsx": "sha256-9b9e3a36e0ab72610e965a6c3e042a8041d65195e4fcdd0af8f6a77bb7d5df8f",
         "index.ts": "sha256-7070c62d17b5995930ae65e66e40a55dc3532334befe4f899aab9692957447e5",
         "overflow-menu.module.css": "sha256-21f4c4a11b7f8dc0d8bf6ac885e922bf145a1d2ea68dc75ae3b77186112a89a9"
       },
@@ -11381,7 +11381,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-end"
@@ -11877,7 +11877,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Side of the trigger the panel opens on: `bottom`, `top`, `left` or `right`.",
             "type": "'top' | 'bottom' | 'left' | 'right'",
             "required": false,
             "default": "bottom"
@@ -11978,7 +11978,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
       ],
       "fileHashes": {
-        "progress.tsx": "sha256-fc3e2d4fdea2f3dd62d94503afd976fe15d7a3f44a8ee5076461741d4658303a",
+        "progress.tsx": "sha256-8b265b5b24bc91b4ad7922cb18e4f1ca87629fa79bddbea8e1861cde3327a845",
         "index.ts": "sha256-996541f1ccb91118a11a1d6aee31abf7c382d6fa21e3008d94f58ad2e6473b95",
         "progress.module.css": "sha256-b096cd775fd5682dce7112a207cea6072d9af8e513ef11a8065354446fbd449a"
       },
@@ -12027,7 +12027,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
@@ -12973,7 +12973,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.module.css"
       ],
       "fileHashes": {
-        "radial-progress.tsx": "sha256-0b2d27595546565637e24a91bb4fb653ee12cfe225554d95bf1fdb5093dde5dc",
+        "radial-progress.tsx": "sha256-35c638284a9e80993e17eb179d2ffb34f074ed82544399014e03b059b0cb0f78",
         "index.ts": "sha256-72ec18fe41ebd9fd292d92da7fa3010ce4dd7404cc5de6d91898e4198c253137",
         "radial-progress.module.css": "sha256-14b34c799619dbe66ace841bb48cd9bdbb90b8976601b3ab45aa89c8b1f5fdc4"
       },
@@ -13017,7 +13017,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
@@ -13858,7 +13858,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.module.css"
       ],
       "fileHashes": {
-        "resizable.tsx": "sha256-d9d286a20e36870e4ae21f023b959c5eb7b7afda8ea5940395224270c4bec90a",
+        "resizable.tsx": "sha256-3f400b035ecb1a5484e58e2f68c6894fdf3454d050434d38a519b27731fe8795",
         "index.ts": "sha256-eda26a8fac33c2fa86174845daec6e3c85bd41fc29c23cb1e2b97c4456d08aea",
         "resizable.module.css": "sha256-40a8a32bcfcb7794299bf966a0ac466cc2298613f00456046d88d861dea3a2ad"
       },
@@ -13899,7 +13899,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -14639,7 +14639,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/separator/separator.module.css"
       ],
       "fileHashes": {
-        "separator.tsx": "sha256-586b288fa4a30514b29d0d6019ee6d62366d0b5975d465a7e3ca763301db7eb0",
+        "separator.tsx": "sha256-628c69291cf24f57c97e18dd1561aaaf11091d4d7be5d90fae92bc3a6882a1df",
         "index.ts": "sha256-d8d2d5d13aa10c6e2b3dac0c7a33c25e530fb4b005a68aa80b18705a2dbfd44d",
         "separator.module.css": "sha256-d17fbd02899fe563a5e28fad65cad951e84d8bbbdafe30931fad3de8722d1ef4"
       },
@@ -14659,7 +14659,7 @@
         "props": [
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -14743,7 +14743,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/sheet/sheet.module.css"
       ],
       "fileHashes": {
-        "sheet.tsx": "sha256-255bdc52d94f4b082ab4f59f91e7bc6c7ad8f5698cd3b730035e56f0e46dc8a3",
+        "sheet.tsx": "sha256-31ec791059bc1a236b3b5a909ca0451858462726595f7f865760a963e78972a8",
         "index.ts": "sha256-e12119ec5b08534d729985a0f5454b6b0dfafd1a7e0615fa8ab9a8efb3f10604",
         "sheet.module.css": "sha256-c61931317af5a3c08d8af91223f8e05f358295258143b92ca18326d644fde4c2"
       },
@@ -14783,7 +14783,7 @@
           },
           {
             "name": "side",
-            "description": "Edge the component is anchored to.",
+            "description": "Edge the sheet slides in from: `end` (the inline end — right in LTR), `start`, `top` or `bottom`.",
             "type": "'start' | 'end' | 'top' | 'bottom'",
             "required": false,
             "default": "end"
@@ -15354,7 +15354,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/skeleton/skeleton.module.css"
       ],
       "fileHashes": {
-        "skeleton.tsx": "sha256-a5e850a02a5a730eb19e1e71d78c9ebde7aa1fd3f3965fc55a3b15b6cfa07f80",
+        "skeleton.tsx": "sha256-fb14cba86024951a1c0f964e19e634c56ed4ca994f37c02726810db97889382a",
         "index.ts": "sha256-3cd143d51d5ab40488226dc7ff2e562643f869b469171fcd7fdb8a36d7e02951",
         "skeleton.module.css": "sha256-f66948cbe0383dace12f9d82650fbe061e5edf7227b049e9f817e54179d3ab44"
       },
@@ -15375,7 +15375,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).",
             "type": "'text' | 'circle' | 'rect'",
             "required": false,
             "default": "text"
@@ -16336,7 +16336,7 @@
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "'horizontal'",
-            "description": "Layout direction of the steps"
+            "description": "Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page."
           },
           {
             "name": "className",
@@ -17143,7 +17143,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tag/tag.module.css"
       ],
       "fileHashes": {
-        "tag.tsx": "sha256-9269c753d98ed8269377c05ed01f8c2a19462c59fb2e8bbb748c08e3bae48505",
+        "tag.tsx": "sha256-d5181e4992515c8db248ac404fe4d52c0d1e6a9db8571955e302f0e62bc157bb",
         "index.ts": "sha256-ea279eb14cb03c2a5e50f0ce5ece93f82b2f0a64ec522aebdfd908b10aabfcfe",
         "tag.module.css": "sha256-b675515cee8562e789a8943932f256280fe06abb235bf9cdfa68e0bf3447cb4b"
       },
@@ -17165,7 +17165,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger).",
             "type": "'default' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "default"
@@ -17432,7 +17432,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/text/text.module.css"
       ],
       "fileHashes": {
-        "text.tsx": "sha256-8ce548eefd342639d9a2fa34fcaf8547e45d26fd91c220ee6e17e26da41b2cff",
+        "text.tsx": "sha256-efd00d23f509cf7152cd5ce71a5638abd34341a2f8363428016fdbb4752a0ed5",
         "index.ts": "sha256-f95252720c83969d779056af603457df6ee0ebf5aaf9707cede576035ddcf3e4",
         "text.module.css": "sha256-5d7d11e88320100b61c66160ec1bb43006a1c5e995280e47aa4a73dd8788c24e"
       },
@@ -17452,7 +17452,7 @@
         "props": [
           {
             "name": "as",
-            "description": "The HTML element to render as.",
+            "description": "`p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.",
             "type": "'p' | 'span' | 'div'",
             "required": false,
             "default": "p"
@@ -18077,7 +18077,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/timeline/timeline.module.css"
       ],
       "fileHashes": {
-        "timeline.tsx": "sha256-62d6402ea2eae272080792e05759179c5fa2df4ab34e69de798c567da921aa2a",
+        "timeline.tsx": "sha256-bb56033fb22e5be821a87121581fa501958e0f386f3aeb965c8648276884dccc",
         "index.ts": "sha256-c1dbeba0b3d5eca2bb8dc0d1da7f38131fcadc5ed4fdad997215203a22910086",
         "timeline.module.css": "sha256-e25b0e5a351adbca5eefa99c8328407006497c51cf44d0f020294b4e9cbda34a"
       },
@@ -18103,7 +18103,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -18196,7 +18196,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toast/toast.module.css"
       ],
       "fileHashes": {
-        "toast.tsx": "sha256-619641a54c0428883d83ff8c898b18994eaccfe7752dc2376de391cb0fe75b0d",
+        "toast.tsx": "sha256-5373ba6f1538c5342a8d949a2caf65a5c0e104c1821ec51e45775f69d3ac09de",
         "index.ts": "sha256-f319e929c6cb58790531af9d33494a66a659eceb9c44c44e0d4c41ded593293b",
         "toast.module.css": "sha256-8cc1a7d641bfa6f572dd2592df41743520cf557d0380c9ab16770b421115b369"
       },
@@ -18231,7 +18231,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "type": "'default' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
@@ -18631,7 +18631,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle-group/toggle-group.module.css"
       ],
       "fileHashes": {
-        "toggle-group.tsx": "sha256-e4ffd50f2cb2a411adca1ec97b90f63d01861b1f4aa46a653478ea7e754d7d55",
+        "toggle-group.tsx": "sha256-0c589c5d0c8c9e88814569e1bd84ffccd645113fcd7fb8b08839205f82f1e9b0",
         "index.ts": "sha256-98315b7e46fe461822997e67c9f4ec6589987640a7552098f1781e0afec01b36",
         "toggle-group.module.css": "sha256-971ab0ac7fc68a484b1871621339784f48f372fe78b57db1b57c370721ac50b3"
       },
@@ -18682,7 +18682,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the options flow along: `horizontal` for a segmented row, `vertical` for a stacked column.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -18975,7 +18975,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tooltip/tooltip.module.css"
       ],
       "fileHashes": {
-        "tooltip.tsx": "sha256-cf7d10e0d38eae2d8dfeb170b43bc944efa7ef4f2b5e357e3a6be091a77da801",
+        "tooltip.tsx": "sha256-989e3c7608d70ef63dca33b6f20375c10947785cb7a3a57b49ae9df519fedcf3",
         "index.ts": "sha256-7a22da0b386ca62ce49c66c79a2c13d3ca95e0f922482d8d4805533c7ab1adad",
         "tooltip.module.css": "sha256-10303a9b8948c9464efe2b1a56943377824089a52f2931ccb9ba789e84db6d02"
       },
@@ -19001,7 +19001,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`.",
             "type": "'top' | 'right' | 'bottom' | 'left'",
             "required": false,
             "default": "top"
@@ -22392,7 +22392,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Direction the bars grow. `vertical` puts the categories on the x-axis and grows bars upward (columns); `horizontal` puts them on the y-axis and grows bars rightward — the better choice for long category names.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -24906,7 +24906,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`bar` draws a straight horizontal track; `gauge` draws a half-donut dial.",
             "type": "'bar' | 'gauge'",
             "required": false,
             "default": "bar"
@@ -28410,7 +28410,7 @@
         "props": [
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas corner the control cluster is pinned to: `bottom-left`, `bottom-right`, `top-left` or `top-right`.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-left"
@@ -28876,7 +28876,7 @@
           },
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas corner the minimap is pinned to: `bottom-right`, `bottom-left`, `top-left` or `top-right`.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-right"
@@ -29229,7 +29229,7 @@
         "props": [
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas edge slot the panel occupies: `top-right`, `top-center`, `top-left`, `bottom-left`, `bottom-center` or `bottom-right`.",
             "type": "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
             "required": false,
             "default": "top-right"

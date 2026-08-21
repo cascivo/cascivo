@@ -22,11 +22,16 @@ the ESLint plugin, and the sparkline budget (kept at 6 kB gzip; the subpath meas
   dropped with it, and would have been wrong anyway: WCAG 2.5.3 supports a short visible
   label with a longer accessible name (`label="Qty"`, `aria-label="Quantity in units"`), so
   the warning would have fired on a correct pattern.
-- **WS-6's two-value-enum guard was written, run, and removed.** It flagged 19 boilerplate
-  descriptions on first run ("Layout orientation of the component.", "Selects the visual
-  style variant."). A guard needing 19 allowlist entries before it is green has been
-  allowlisted into uselessness — the failure mode `dead-props.test.ts`'s own header warns
-  about. Those descriptions are worth fixing; they are not this report's scope.
+- **WS-6's two-value-enum guard was written, run, removed, and then restored** once the
+  descriptions it flagged were actually fixed. On first run it named 19 boilerplate
+  descriptions ("Layout orientation of the component.", "Selects the visual style variant.")
+  — a guard needing 19 allowlist entries before it is green has been allowlisted into
+  uselessness. Rather than ship it that way, the descriptions were rewritten in a follow-up
+  pass: 38 props shared six boilerplate sentences, all of them replaced with text that names
+  what each value does. The guard now runs with an **empty** allowlist, and the six sentences
+  joined `tsdoc-parity.test.ts`'s `PLACEHOLDERS` list so they cannot return anywhere in the
+  catalog. Both guards were verified to fail on a deliberately reintroduced boilerplate
+  string.
 - **WS-9's `apps/examples/deploy` router step could not be done as specced**: no example app
   in the repo uses a router at all, so there was nothing to add a lazy index route to. The
   doc claim that depended on it was removed rather than left unbacked; the `claims.test.ts`

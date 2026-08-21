@@ -33,7 +33,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        '`ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface.',
       type: "'ghost' | 'outline' | 'filled'",
       required: false,
       default: 'ghost',

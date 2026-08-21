@@ -36,10 +36,10 @@ import { Badge } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                                                               | Required | Default   | Description                                           |
-| --------- | ---------------------------------------------------------------------------------- | -------- | --------- | ----------------------------------------------------- |
-| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no       | `default` | Selects the visual style variant.                     |
-| `size`    | `'sm' \| 'md'`                                                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| Prop      | Type                                                                               | Required | Default   | Description                                                                                                                                                                                                                                                                                            |
+| --------- | ---------------------------------------------------------------------------------- | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no       | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only). |
+| `size`    | `'sm' \| 'md'`                                                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                                                                                                                  |
 
 ## Examples
 

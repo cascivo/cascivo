@@ -96,7 +96,9 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   title: string
   description?: string
   /**
-   * Layout orientation of the component.
+   * Direction the bars grow. `vertical` puts the categories on the x-axis and grows bars
+   * upward (columns); `horizontal` puts them on the y-axis and grows bars rightward — the
+   * better choice for long category names.
    *
    * @defaultValue `vertical`
    * @see the component manifest

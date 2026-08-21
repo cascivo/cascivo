@@ -6,7 +6,9 @@ import styles from './alert.module.css'
 
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   /**
-   * Selects the visual style variant.
+   * Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets
+   * the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union,
+   * not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.
    *
    * @defaultValue `default`
    * @see the component manifest

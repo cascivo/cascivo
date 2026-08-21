@@ -22,9 +22,12 @@ export interface NotificationProps extends Omit<HTMLAttributes<HTMLDivElement>, 
   title: ReactNode
   description?: ReactNode
   /**
-   * Severity tone. Accepts the catalog-wide `Tone` vocabulary
-   * (`neutral | info | success | warning | danger`) plus Notification's historical
-   * spellings (`error`, `destructive`).
+   * Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success |
+   * warning | danger`) plus Notification's historical spellings (`error`, `destructive` →
+   * danger).
+   *
+   * @defaultValue `info`
+   * @see the component manifest
    */
   variant?: ToneInput
   /**

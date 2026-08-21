@@ -21,7 +21,8 @@ export interface ComparisonProps extends Omit<HTMLAttributes<HTMLDivElement>, 'o
   defaultPosition?: number
   onPositionChange?: (position: number) => void
   /**
-   * Layout orientation of the component.
+   * Axis you drag along. `horizontal` splits the two images left and right with a vertical
+   * divider; `vertical` splits them top and bottom with a horizontal one.
    *
    * @defaultValue `horizontal`
    * @see the component manifest

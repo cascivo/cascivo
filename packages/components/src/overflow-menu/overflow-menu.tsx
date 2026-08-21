@@ -49,7 +49,8 @@ export interface OverflowMenuProps {
   items: OverflowMenuItem[]
   onSelect?: (value: string) => void
   /**
-   * Placement relative to the trigger.
+   * Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge
+   * (right in LTR), `bottom-start` from its start edge.
    *
    * @defaultValue `bottom-end`
    * @see the component manifest

@@ -32,7 +32,8 @@ interface FabBaseProps {
   /** Speed-dial actions revealed above the button when opened. */
   actions?: FabAction[]
   /**
-   * Position of the component.
+   * Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets
+   * are honoured either way.
    *
    * @defaultValue `bottom-end`
    * @see the component manifest

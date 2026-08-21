@@ -48,7 +48,7 @@ import { Progress } from '@cascivo/react'
 | `aria-label`       | `string`                                                   | no       | —         | Accessible label when no visible label is present.                                                                                                                     |
 | `aria-describedby` | `string`                                                   | no       | —         | Id of an element describing the progress bar.                                                                                                                          |
 | `value`            | `number`                                                   | no       | —         | 0–100. Omit for indeterminate state.                                                                                                                                   |
-| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `primary` | Selects the visual style variant.                                                                                                                                      |
+| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `primary` | Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.                                                                 |
 | `size`             | `'sm' \| 'md' \| 'lg'`                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                  |
 
 ## Examples

@@ -33,10 +33,10 @@ import { Timeline } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                                                                                                                                                                             | Required | Default    | Description                          |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | ------------------------------------ |
-| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming"; tone?: "neutral" \| "info" \| "success" \| "warning" \| "danger" }[]` | yes      | —          | The items to render.                 |
-| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                                                                                     | no       | `vertical` | Layout orientation of the component. |
+| Prop          | Type                                                                                                                                                                                                             | Required | Default    | Description                                                                                                                 |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming"; tone?: "neutral" \| "info" \| "success" \| "warning" \| "danger" }[]` | yes      | —          | The items to render.                                                                                                        |
+| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                                                                                     | no       | `vertical` | Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across. |
 
 ## Examples
 

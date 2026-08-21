@@ -12,7 +12,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        'Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.',
       type: "'default' | 'info' | 'success' | 'warning' | 'destructive'",
       required: false,
       default: 'default',

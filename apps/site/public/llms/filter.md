@@ -45,7 +45,7 @@ import { Filter } from '@cascivo/react'
 | `onValueChange` | `(selected: string[]) => void` | no       | —       | Called with the selected values whenever the selection changes.                                                                                                        |
 | `onChange`      | `(selected: string[]) => void` | no       | —       | Deprecated: use onValueChange (same string[]).                                                                                                                         |
 | `multi`         | `boolean`                      | no       | `false` | Allow multiple items to be selected simultaneously                                                                                                                     |
-| `variant`       | `'pill' \| 'outline'`          | no       | `pill`  | Selects the visual style variant.                                                                                                                                      |
+| `variant`       | `'pill' \| 'outline'`          | no       | `pill`  | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.                        |
 
 ## Examples
 

@@ -5,8 +5,12 @@ import styles from './link.module.css'
 
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /**
-   * `standalone` (default) owns its own typography and underlines on hover;
-   * `inline` inherits the surrounding prose font and is always underlined.
+   * `standalone` uses the system's own type and underlines on hover — for a link that stands
+   * on its own. `inline` inherits the surrounding prose font and stays underlined — for a
+   * link inside a paragraph.
+   *
+   * @defaultValue `standalone`
+   * @see the component manifest
    */
   variant?: 'standalone' | 'inline'
   size?: 'sm' | 'md' | 'lg'

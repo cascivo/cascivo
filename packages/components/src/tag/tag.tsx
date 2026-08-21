@@ -16,9 +16,12 @@ const TONE_CLASS: Record<string, string> = {
 
 export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   /**
-   * Severity tone. Accepts the catalog-wide `Tone` vocabulary
-   * (`neutral | info | success | warning | danger`) plus Tag's historical spellings
-   * (`default`, `error`, `destructive`).
+   * Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success |
+   * warning | danger`) plus Tag's historical spellings (`default` → neutral,
+   * `error`/`destructive` → danger).
+   *
+   * @defaultValue `default`
+   * @see the component manifest
    */
   variant?: ToneInput
   size?: 'sm' | 'md'

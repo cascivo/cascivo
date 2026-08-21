@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
       type: "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
       required: false,
       default: 'default',

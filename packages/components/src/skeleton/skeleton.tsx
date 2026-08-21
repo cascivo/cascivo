@@ -4,7 +4,8 @@ import styles from './skeleton.module.css'
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Selects the visual style variant.
+   * Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a
+   * block).
    *
    * @defaultValue `text`
    * @see the component manifest

@@ -32,10 +32,10 @@ Renders native <ul>/<ol> with <li> children so assistive tech announces the list
 
 ## Props
 
-| Name     | Type                            | Required | Default                               | Description                                        |
-| -------- | ------------------------------- | -------- | ------------------------------------- | -------------------------------------------------- |
-| `as`     | `'ul' \| 'ol'`                  | No       | ul                                    | The HTML element to render as.                     |
-| `marker` | `'disc' \| 'decimal' \| 'none'` | No       | derived from as (ul→disc, ol→decimal) | List marker style ('disc' \| 'decimal' \| 'none'). |
+| Name     | Type                            | Required | Default                               | Description                                                                                               |
+| -------- | ------------------------------- | -------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `as`     | `'ul' \| 'ol'`                  | No       | ul                                    | `ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling. |
+| `marker` | `'disc' \| 'decimal' \| 'none'` | No       | derived from as (ul→disc, ol→decimal) | List marker style ('disc' \| 'decimal' \| 'none').                                                        |
 
 ## Tokens
 

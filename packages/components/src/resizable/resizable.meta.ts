@@ -29,7 +29,8 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true, description: 'Exactly two panes' },
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',

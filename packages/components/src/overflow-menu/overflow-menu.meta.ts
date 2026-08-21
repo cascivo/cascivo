@@ -24,7 +24,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'placement',
-      description: 'Placement relative to the trigger.',
+      description:
+        "Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.",
       type: "'bottom-start' | 'bottom-end'",
       required: false,
       default: 'bottom-end',

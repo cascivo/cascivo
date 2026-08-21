@@ -7,7 +7,8 @@ export interface ProgressProps {
   /** 0–100. Omit for indeterminate state. */
   value?: number
   /**
-   * Selects the visual style variant.
+   * Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`,
+   * `warning`, `error`.
    *
    * @defaultValue `primary`
    * @see the component manifest

@@ -44,7 +44,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',

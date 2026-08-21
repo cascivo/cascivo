@@ -4,7 +4,8 @@ import styles from './text.module.css'
 
 export interface TextProps extends HTMLAttributes<HTMLElement> {
   /**
-   * The HTML element to render as.
+   * `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics
+   * of its own.
    *
    * @defaultValue `p`
    * @see the component manifest

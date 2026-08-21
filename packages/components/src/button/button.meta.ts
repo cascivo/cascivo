@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        '`primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes.',
       type: "'primary' | 'secondary' | 'ghost' | 'destructive'",
       required: false,
       default: 'primary',

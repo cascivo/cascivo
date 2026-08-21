@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'as',
-      description: 'The HTML element to render as.',
+      description:
+        '`p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.',
       type: "'p' | 'span' | 'div'",
       required: false,
       default: 'p',

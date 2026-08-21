@@ -18,7 +18,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        '`default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.',
       type: "'default' | 'outlined' | 'elevated'",
       required: false,
       default: 'default',

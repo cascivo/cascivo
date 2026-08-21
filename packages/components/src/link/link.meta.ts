@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        "`standalone` uses the system's own type and underlines on hover — for a link that stands on its own. `inline` inherits the surrounding prose font and stays underlined — for a link inside a paragraph.",
       type: "'standalone' | 'inline'",
       required: false,
       default: 'standalone',

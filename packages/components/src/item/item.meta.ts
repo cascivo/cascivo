@@ -19,7 +19,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        '`muted` gives the row a subtle background — for a selected or highlighted item; `default` leaves it transparent.',
       type: "'default' | 'muted'",
       required: false,
       default: 'default',

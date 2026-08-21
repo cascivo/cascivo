@@ -45,7 +45,8 @@ export const meta: ComponentMeta = {
       type: "'horizontal' | 'vertical'",
       required: false,
       default: "'horizontal'",
-      description: 'Layout direction of the steps',
+      description:
+        'Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page.',
     },
     {
       name: 'className',

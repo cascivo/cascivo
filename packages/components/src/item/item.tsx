@@ -12,7 +12,8 @@ export interface ItemProps extends HTMLAttributes<HTMLDivElement> {
    */
   asChild?: boolean
   /**
-   * Selects the visual style variant.
+   * `muted` gives the row a subtle background — for a selected or highlighted item;
+   * `default` leaves it transparent.
    *
    * @defaultValue `default`
    * @see the component manifest

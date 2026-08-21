@@ -17,7 +17,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'placement',
-      description: 'Placement relative to the trigger.',
+      description: 'Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`.',
       type: "'top' | 'right' | 'bottom' | 'left'",
       required: false,
       default: 'top',

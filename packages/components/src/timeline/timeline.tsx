@@ -54,7 +54,8 @@ export interface TimelineItem {
 export interface TimelineProps extends HTMLAttributes<HTMLOListElement> {
   items: TimelineItem[]
   /**
-   * Layout orientation of the component.
+   * Axis the entries flow along: `vertical` stacks them down the page (the usual reading
+   * order), `horizontal` runs them across.
    *
    * @defaultValue `vertical`
    * @see the component manifest

@@ -1060,7 +1060,7 @@ import { Alert } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | no | `default` | Selects the visual style variant. |
+| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | no | `default` | Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here. |
 | `title` | `string` | no | — | Title text for the component. |
 | `icon` | `ReactNode` | no | — | Icon element rendered in the component. |
 | `dismissible` | `boolean` | no | `false` | When true, shows a control to dismiss the component. |
@@ -1162,7 +1162,7 @@ import { AlertDialog } from '@cascivo/react'
 | `onConfirm` | `() => void` | yes | — | Called when the confirm button is activated. |
 | `onCancel` | `() => void` | yes | — | Called when the cancel button is activated. |
 | `labels` | `AlertDialogLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
-| `variant` | `'destructive' \| 'default'` | no | `default` | Selects the visual style variant. |
+| `variant` | `'destructive' \| 'default'` | no | `default` | `destructive` styles the confirm button as a danger action; `default` styles it as the primary action. Use `destructive` for anything that deletes. |
 
 ## Examples
 
@@ -1631,7 +1631,7 @@ import { Badge } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no | `default` | Selects the visual style variant. |
+| `variant` | `'default' \| 'secondary' \| 'success' \| 'warning' \| 'destructive' \| 'outline'` | no | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only). |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
@@ -3022,7 +3022,7 @@ import { Button } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | no | `primary` | Selects the visual style variant. |
+| `variant` | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | no | `primary` | `primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `loading` | `boolean` | no | `false` | When true, shows a loading state. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
@@ -3130,7 +3130,7 @@ import { ButtonGroup } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Axis the buttons flow along: `horizontal` puts them in a row, `vertical` stacks them in a column. The seams between them are collapsed either way. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `roving` | `boolean` | no | `false` | When true, uses roving tabindex so arrow keys move focus between buttons. |
 | `loop` | `boolean` | no | `false` | When true, navigation wraps around from end to start. |
@@ -3331,7 +3331,7 @@ import { Card } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `actions` | `ReactNode` | no | — | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card. |
-| `variant` | `'default' \| 'outlined' \| 'elevated'` | no | `default` | Selects the visual style variant. |
+| `variant` | `'default' \| 'outlined' \| 'elevated'` | no | `default` | `default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow. |
 | `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | no | `md` | Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child. |
 
 ## Examples
@@ -3652,7 +3652,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | `y` | `(d: Datum) => number` | yes | — | Accessor returning the numeric value for a datum, applied to every series unless a series sets its own `y`. One category (x) domain per chart; give each series a `y` to plot different fields from one shared data row. |
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Layout orientation of the component. |
+| `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Direction the bars grow. `vertical` puts the categories on the x-axis and grows bars upward (columns); `horizontal` puts them on the y-axis and grows bars rightward — the better choice for long category names. |
 | `mode` | `'grouped' \| 'stacked' \| 'percent'` | no | `grouped` | 'percent' stacks each category and normalizes it to 100%. |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
@@ -5007,7 +5007,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | `label` | `string` | yes | — | Text label for the control. Rendered on screen. |
 | `min` | `number` | no | `0` | Minimum allowed value. |
 | `max` | `number` | no | `100` | Maximum allowed value. |
-| `variant` | `'bar' \| 'gauge'` | no | `bar` | Selects the visual style variant. |
+| `variant` | `'bar' \| 'gauge'` | no | `bar` | `bar` draws a straight horizontal track; `gauge` draws a half-donut dial. |
 | `thresholds` | `MeterThresholds` | no | — | Color breakpoints |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | — | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
@@ -6144,7 +6144,7 @@ import { ChatBubble } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
-| `side` | `'start' \| 'end'` | no | `start` | Edge the component is anchored to. |
+| `side` | `'start' \| 'end'` | no | `start` | Which side of the thread the bubble sits on: `start` for an incoming message (avatar first), `end` for an outgoing one (right-aligned, avatar last). |
 | `avatar` | `React.ReactNode` | no | — | Avatar element shown beside the message. |
 | `name` | `string` | no | — | Display name of the message sender. |
 | `time` | `string` | no | — | Timestamp text shown with the message. |
@@ -7051,7 +7051,7 @@ import { Comparison } from '@cascivo/react'
 | `position` | `number` | no | — | Divider position 0–100 (controlled) |
 | `defaultPosition` | `number` | no | `50` | The initial divider position (0–100) when uncontrolled. |
 | `onPositionChange` | `(position: number) => void` | no | — | Called with the new divider position when it changes. |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one. |
 | `keyboardStep` | `number` | no | `5` | How far the divider moves per arrow-key press. |
 | `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible name for the divider slider. Not rendered — screen readers only. |
@@ -8164,7 +8164,7 @@ import { Dropdown } from '@cascivo/react'
 | `trigger` | `ReactElement` | yes | — | The element that opens the dropdown when activated. |
 | `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | yes | — | The items to render. |
 | `onSelect` | `(value: string) => void` | no | — | Called with the selected value. |
-| `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-start` | Placement relative to the trigger. |
+| `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-start` | Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport. |
 | `open` | `boolean` | no | — | Whether the component is open (controlled). |
 | `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
 
@@ -8644,7 +8644,7 @@ import { Fab } from '@cascivo/react'
 | `label` | `string` | no | — | Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it. |
 | `onClick` | `() => void` | no | — | Called when the element is clicked. |
 | `actions` | `FabAction[]` | no | — | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
-| `position` | `'bottom-end' \| 'bottom-start'` | no | `bottom-end` | Position of the component. |
+| `position` | `'bottom-end' \| 'bottom-start'` | no | `bottom-end` | Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way. |
 | `open` | `boolean` | no | — | Whether the component is open (controlled). |
 | `defaultOpen` | `boolean` | no | — | Whether the component is open on first render (uncontrolled). |
 | `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
@@ -8966,7 +8966,7 @@ import { Filter } from '@cascivo/react'
 | `onValueChange` | `(selected: string[]) => void` | no | — | Called with the selected values whenever the selection changes. |
 | `onChange` | `(selected: string[]) => void` | no | — | Deprecated: use onValueChange (same string[]). |
 | `multi` | `boolean` | no | `false` | Allow multiple items to be selected simultaneously |
-| `variant` | `'pill' \| 'outline'` | no | `pill` | Selects the visual style variant. |
+| `variant` | `'pill' \| 'outline'` | no | `pill` | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent. |
 
 ## Examples
 
@@ -9445,7 +9445,7 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no | `bottom-left` | Position of the component. |
+| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no | `bottom-left` | Canvas corner the control cluster is pinned to: `bottom-left`, `bottom-right`, `top-left` or `top-right`. |
 | `showZoom` | `boolean` | no | `true` | When true, shows the zoom-in/zoom-out buttons. |
 | `showFitView` | `boolean` | no | `true` | When true, shows the fit-to-view button. |
 | `onZoomIn` | `() => void` | no | — | Called when the zoom-in control is activated. |
@@ -9729,7 +9729,7 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 | `containerHeight` | `number` | no | — | Height of the flow container, used to scale the minimap. |
 | `width` | `number` | no | `200` | Width in px. |
 | `height` | `number` | no | `150` | Height in px. |
-| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no | `bottom-right` | Position of the component. |
+| `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no | `bottom-right` | Canvas corner the minimap is pinned to: `bottom-right`, `bottom-left`, `top-left` or `top-right`. |
 | `onViewportChange` | `(viewport: Viewport) => void` | no | — | Called with the new viewport when the minimap is dragged. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
@@ -9935,7 +9935,7 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | no | `top-right` | Position of the component. |
+| `position` | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | no | `top-right` | Canvas edge slot the panel occupies: `top-right`, `top-center`, `top-left`, `bottom-left`, `bottom-center` or `bottom-right`. |
 | `children` | `ReactNode` | no | — | Content rendered inside the component. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
@@ -10651,7 +10651,7 @@ import { IconButton } from '@cascivo/react'
 | `label` | `string` | no | — | Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. Not rendered — screen readers only. |
 | `icon` | `React.ReactNode` | no | — | Icon element rendered in the component. |
-| `variant` | `'ghost' \| 'outline' \| 'filled'` | no | `ghost` | Selects the visual style variant. |
+| `variant` | `'ghost' \| 'outline' \| 'filled'` | no | `ghost` | `ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
@@ -10845,7 +10845,7 @@ import { Indicator } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
 | `overlay` | `React.ReactNode` | yes | — | The element to display at the corner (badge, dot, count) |
-| `placement` | `'top-start' \| 'top-end' \| 'bottom-start' \| 'bottom-end'` | no | `top-end` | Placement relative to the trigger. |
+| `placement` | `'top-start' \| 'top-end' \| 'bottom-start' \| 'bottom-end'` | no | `top-end` | Corner of the wrapped element the dot or count sits on: `top-end`, `top-start`, `bottom-start` or `bottom-end`. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -11298,7 +11298,7 @@ import { Item } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `variant` | `'default' \| 'muted'` | no | `default` | Selects the visual style variant. |
+| `variant` | `'default' \| 'muted'` | no | `default` | `muted` gives the row a subtle background — for a selected or highlighted item; `default` leaves it transparent. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
@@ -11384,7 +11384,7 @@ import { Join } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Axis the joined children flow along: `horizontal` for a row, `vertical` for a column. Inner corners are squared off either way. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -12733,7 +12733,7 @@ import { Link } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `variant` | `'standalone' \| 'inline'` | no | `standalone` | Selects the visual style variant. |
+| `variant` | `'standalone' \| 'inline'` | no | `standalone` | `standalone` uses the system's own type and underlines on hover — for a link that stands on its own. `inline` inherits the surrounding prose font and stays underlined — for a link inside a paragraph. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `external` | `boolean` | no | `false` | When true, treats the link as external (opens in a new tab with rel safety). |
 | `href` | `string` | no | — | The destination URL. |
@@ -12828,7 +12828,7 @@ import { List } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `as` | `'ul' \| 'ol'` | no | `ul` | The HTML element to render as. |
+| `as` | `'ul' \| 'ol'` | no | `ul` | `ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling. |
 | `marker` | `'disc' \| 'decimal' \| 'none'` | no | `derived from as (ul→disc, ol→decimal)` | List marker style ('disc' \| 'decimal' \| 'none'). |
 
 ## Examples
@@ -13605,7 +13605,7 @@ import { NavigationMenu } from '@cascivo/react'
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
-| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | `horizontal` | Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four). |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -13685,7 +13685,7 @@ import { Notification } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `title` | `ReactNode` | yes | — | Title text for the component. |
 | `description` | `ReactNode` | no | — | Supporting description text. |
-| `variant` | `'info' \| 'success' \| 'warning' \| 'error'` | no | `info` | Selects the visual style variant. |
+| `variant` | `'info' \| 'success' \| 'warning' \| 'error'` | no | `info` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Notification's historical spellings (`error`, `destructive` → danger). |
 | `dismissible` | `boolean` | no | `false` | When true, shows a control to dismiss the component. |
 | `onDismiss` | `() => void` | no | — | Called when the component is dismissed. |
 | `actions` | `ReactNode` | no | — | Action elements shown in the notification. |
@@ -13984,7 +13984,7 @@ import { OverflowMenu } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes | — | The items to render. |
 | `onSelect` | `(value: string) => void` | no | — | Called with the selected value. |
-| `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-end` | Placement relative to the trigger. |
+| `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-end` | Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge. |
 | `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | `More actions` | Accessible label for the component. Not rendered — screen readers only. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -14263,7 +14263,7 @@ import { Popover } from '@cascivo/react'
 | `children` | `React.ReactNode` | yes | — | A PopoverTrigger and PopoverContent pair. |
 | `open` | `boolean` | no | — | Whether the component is open (controlled). |
 | `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
-| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | no | `bottom` | Placement relative to the trigger. |
+| `placement` | `'top' \| 'bottom' \| 'left' \| 'right'` | no | `bottom` | Side of the trigger the panel opens on: `bottom`, `top`, `left` or `right`. |
 | `offset` | `number` | no | `4` | Distance (px) between the trigger and the panel. |
 
 ## Examples
@@ -14371,7 +14371,7 @@ import { Progress } from '@cascivo/react'
 | `aria-label` | `string` | no | — | Accessible label when no visible label is present. |
 | `aria-describedby` | `string` | no | — | Id of an element describing the progress bar. |
 | `value` | `number` | no | — | 0–100. Omit for indeterminate state. |
-| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
+| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
@@ -15022,7 +15022,7 @@ import { RadialProgress } from '@cascivo/react'
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `value` | `number` | yes | — | The controlled value. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
+| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`. |
 | `children` | `React.ReactNode` | no | — | Content rendered inside the component. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -15559,7 +15559,7 @@ import { Resizable } from '@cascivo/react'
 | `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible label for the resize handle. Not rendered — screen readers only. |
 | `children` | `ReactNode` | yes | — | Exactly two panes |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down. |
 | `defaultRatio` | `number` | no | `0.5` | The initial split ratio when uncontrolled. |
 | `ratio` | `number` | no | — | Controlled ratio (0–1) |
 | `minRatio` | `number` | no | `0.1` | Minimum allowed split ratio. |
@@ -16482,7 +16482,7 @@ import { Separator } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row. |
 | `decorative` | `boolean` | no | `false` | When true, the separator is purely visual and hidden from assistive tech |
 
 ## Examples
@@ -16560,7 +16560,7 @@ import { Sheet } from '@cascivo/react'
 | `open` | `boolean` | yes | — | Whether the component is open (controlled). |
 | `onClose` | `() => void` | yes | — | Called when the component is closed. |
 | `title` | `React.ReactNode` | no | — | Title text for the component. |
-| `side` | `'start' \| 'end' \| 'top' \| 'bottom'` | no | `end` | Edge the component is anchored to. |
+| `side` | `'start' \| 'end' \| 'top' \| 'bottom'` | no | `end` | Edge the sheet slides in from: `end` (the inline end — right in LTR), `start`, `top` or `bottom`. |
 
 ## Examples
 
@@ -16916,7 +16916,7 @@ import { Skeleton } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `variant` | `'text' \| 'circle' \| 'rect'` | no | `text` | Selects the visual style variant. |
+| `variant` | `'text' \| 'circle' \| 'rect'` | no | `text` | Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block). |
 | `width` | `string` | no | — | CSS length applied as an inline custom property |
 | `height` | `string` | no | — | CSS length applied as an inline custom property |
 | `lines` | `number` | no | `1` | Number of bars for the text variant; the last bar renders shorter |
@@ -17499,7 +17499,7 @@ import { Steps } from '@cascivo/react'
 | `ariaLabel` | `string` | no | — | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
 | `steps` | `Step[]` | yes | — | Array of step objects with label and optional explicit state |
 | `activeStep` | `number` | no | `0` | Index of the currently active step (0-based) |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `'horizontal'` | Layout direction of the steps |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `'horizontal'` | Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -18078,7 +18078,7 @@ import { Tag } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `default` | Selects the visual style variant. |
+| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger). |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `onDismiss` | `() => void` | no | — | When provided, renders a trailing remove button inside the chip |
 | `dismissLabel` | `string` | no | `Remove` | Accessible label for the dismiss button. |
@@ -18266,7 +18266,7 @@ import { Text } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `as` | `'p' \| 'span' \| 'div'` | no | `p` | The HTML element to render as. |
+| `as` | `'p' \| 'span' \| 'div'` | no | `p` | `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `weight` | `'normal' \| 'medium' \| 'semibold'` | no | `normal` | Font weight ('normal' \| 'medium' \| 'semibold'). |
 | `muted` | `boolean` | no | `false` | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
@@ -18666,7 +18666,7 @@ import { Timeline } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `items` | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming"; tone?: "neutral" \| "info" \| "success" \| "warning" \| "danger" }[]` | yes | — | The items to render. |
-| `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Layout orientation of the component. |
+| `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across. |
 
 ## Examples
 
@@ -18773,7 +18773,7 @@ import { ToastProvider, useToast } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `title` | `string` | yes | — | Title text for the component. |
 | `description` | `string` | no | — | Supporting description text. |
-| `variant` | `'default' \| 'success' \| 'warning' \| 'destructive'` | no | `default` | Selects the visual style variant. |
+| `variant` | `'default' \| 'success' \| 'warning' \| 'destructive'` | no | `default` | Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here. |
 | `duration` | `number` | no | `5000` | How long (ms) the toast stays visible before auto-dismiss. |
 
 ## Examples
@@ -19038,7 +19038,7 @@ import { ToggleGroup } from '@cascivo/react'
 | `defaultValue` | `string \| string[]` | no | — | The initial value when uncontrolled. |
 | `onValueChange` | `(value: string \| string[]) => void` | no | — | Called with the new value when it changes. |
 | `items` | `{ value: string; label?: string; icon?: React.ReactNode; disabled?: boolean }[]` | yes | — | The items to render. |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Axis the options flow along: `horizontal` for a segmented row, `vertical` for a stacked column. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
@@ -19229,7 +19229,7 @@ import { Tooltip } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `content` | `ReactNode` | yes | — | The tooltip content shown on hover/focus. |
-| `placement` | `'top' \| 'right' \| 'bottom' \| 'left'` | no | `top` | Placement relative to the trigger. |
+| `placement` | `'top' \| 'right' \| 'bottom' \| 'left'` | no | `top` | Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`. |
 | `children` | `ReactElement` | yes | — | Content rendered inside the component. |
 | `delay` | `number` | no | `200` | Milliseconds to wait before showing |
 

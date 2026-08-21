@@ -8,7 +8,8 @@ import styles from './resizable.module.css'
 export interface ResizableProps {
   children: ReactNode
   /**
-   * Layout orientation of the component.
+   * Axis the panes are split along. `horizontal` puts them side by side with a handle you
+   * drag left and right; `vertical` stacks them with a handle you drag up and down.
    *
    * @defaultValue `horizontal`
    * @see the component manifest

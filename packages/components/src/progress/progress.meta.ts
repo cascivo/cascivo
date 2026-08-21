@@ -45,7 +45,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        'Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.',
       type: "'primary' | 'info' | 'success' | 'warning' | 'error'",
       required: false,
       default: 'primary',

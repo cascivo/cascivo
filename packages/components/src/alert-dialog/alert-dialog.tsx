@@ -18,7 +18,8 @@ export interface AlertDialogProps {
   onCancel: () => void
   labels?: AlertDialogLabels
   /**
-   * Selects the visual style variant.
+   * `destructive` styles the confirm button as a danger action; `default` styles it as the
+   * primary action. Use `destructive` for anything that deletes.
    *
    * @defaultValue `default`
    * @see the component manifest
