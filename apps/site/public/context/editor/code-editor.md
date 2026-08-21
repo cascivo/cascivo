@@ -49,7 +49,7 @@ The native <textarea> is the editing surface, so caret, selection, IME, undo, an
 | `readOnly`        | `boolean`                                           | No       | false     | When true, the value is shown but cannot be edited.                                            |
 | `disabled`        | `boolean`                                           | No       | false     | When true, disables the control and removes it from the tab order.                             |
 | `placeholder`     | `string`                                            | No       | —         | Placeholder text shown when the field is empty.                                                |
-| `label`           | `string`                                            | No       | —         | Accessible label (defaults to the i18n "Code editor")                                          |
+| `label`           | `string`                                            | No       | —         | Accessible label (defaults to the i18n "Code editor"). Not rendered — screen readers only.     |
 | `onSave`          | `(value: string) => void`                           | No       | —         | Called on Mod-S; the browser save dialog is suppressed                                         |
 | `bracketMatching` | `boolean`                                           | No       | false     | Highlight the bracket matching the one adjacent to the caret                                   |
 | `theme`           | `EditorTheme`                                       | No       | —         | Per-instance --cascivo-editor-\* overrides; swapping it re-themes live                         |

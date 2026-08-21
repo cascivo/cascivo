@@ -44,7 +44,7 @@ import { Combobox } from '@cascivo/react'
 | `onChange`      | `(value: string \| undefined) => void` | no       | —       | Deprecated: use onValueChange (same string \| undefined).                       |
 | `clearable`     | `boolean`                              | no       | `false` | When true, shows a control to clear the selected value.                         |
 | `searchable`    | `boolean`                              | no       | `true`  | When true, shows a search/filter input.                                         |
-| `label`         | `string`                               | no       | —       | Text label for the control.                                                     |
+| `label`         | `string`                               | no       | —       | Text label for the control. Rendered on screen.                                 |
 | `hint`          | `string`                               | no       | —       | Supplementary hint text shown with the control.                                 |
 | `error`         | `string`                               | no       | —       | Error message shown when the value is invalid.                                  |
 | `size`          | `'sm' \| 'md' \| 'lg'`                 | no       | `'md'`  | Visual size of the component (e.g. 'sm', 'md', 'lg').                           |

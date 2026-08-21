@@ -1,4 +1,5 @@
 import type { PropMeta } from '../../data'
+import { describeWithVisibility } from '../../../../../scripts/lib/name-visibility-note'
 
 export function PropsTable({ props }: { props: PropMeta[] }) {
   if (props.length === 0) {
@@ -28,7 +29,13 @@ export function PropsTable({ props }: { props: PropMeta[] }) {
               </td>
               <td>{prop.default ? <code>{prop.default}</code> : <span class="muted">—</span>}</td>
               <td>{prop.required ? 'Yes' : <span class="muted">No</span>}</td>
-              <td>{prop.description ?? <span class="muted">—</span>}</td>
+              <td>
+                {prop.description || prop.nameVisibility ? (
+                  describeWithVisibility(prop)
+                ) : (
+                  <span class="muted">—</span>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

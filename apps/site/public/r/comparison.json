@@ -74,7 +74,8 @@
       },
       {
         "name": "label",
-        "description": "Text label for the control.",
+        "nameVisibility": "invisible",
+        "description": "Accessible name for the divider slider. Not rendered — screen readers only.",
         "type": "string",
         "required": false
       }

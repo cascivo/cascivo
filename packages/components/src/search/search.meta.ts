@@ -58,6 +58,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'visible',
       description:
         'Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS).',
       type: 'string',

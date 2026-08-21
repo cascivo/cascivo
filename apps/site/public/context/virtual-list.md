@@ -54,7 +54,7 @@ The viewport is a role="list" and each rendered row is a role="listitem" carryin
 | `height`     | `number`                                         | Yes      | —       | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
 | `renderItem` | `(item: Item, index: number) => React.ReactNode` | Yes      | —       | Renders one row                                                                                               |
 | `overscan`   | `number`                                         | No       | 3       | Extra rows rendered above and below the visible window, to cover fast scrolling.                              |
-| `ariaLabel`  | `string`                                         | No       | —       | Accessible label for the list; label it when the list stands alone                                            |
+| `ariaLabel`  | `string`                                         | No       | —       | Accessible label for the list; label it when the list stands alone. Not rendered — screen readers only.       |
 | `className`  | `string`                                         | No       | —       | Additional CSS class names merged onto the root element.                                                      |
 
 ## Tokens

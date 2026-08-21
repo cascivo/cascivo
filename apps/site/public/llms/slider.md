@@ -24,7 +24,7 @@ import { Slider } from '@cascivo/react'
 
 | Prop           | Type      | Required | Default | Description                                                        |
 | -------------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`        | `string`  | no       | —       | Text label for the control.                                        |
+| `label`        | `string`  | no       | —       | Text label for the control. Rendered on screen.                    |
 | `min`          | `number`  | no       | `0`     | Minimum allowed value.                                             |
 | `max`          | `number`  | no       | `100`   | Maximum allowed value.                                             |
 | `step`         | `number`  | no       | `1`     | Increment between allowed values.                                  |

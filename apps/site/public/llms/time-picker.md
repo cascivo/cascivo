@@ -43,7 +43,7 @@ import { TimePicker } from '@cascivo/react'
 | `min`           | `string`                  | no       | —       | Minimum allowed value.                                             |
 | `max`           | `string`                  | no       | —       | Maximum allowed value.                                             |
 | `step`          | `number`                  | no       | —       | Increment between allowed values.                                  |
-| `label`         | `string`                  | no       | —       | Text label for the control.                                        |
+| `label`         | `string`                  | no       | —       | Text label for the control. Rendered on screen.                    |
 | `hint`          | `string`                  | no       | —       | Supplementary hint text shown with the control.                    |
 | `error`         | `string`                  | no       | —       | Error message shown when the value is invalid.                     |
 | `size`          | `'sm' \| 'md' \| 'lg'`    | no       | `'md'`  | Visual size of the component (e.g. 'sm', 'md', 'lg').              |

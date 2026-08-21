@@ -38,7 +38,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `readOnly`        | `boolean`                                           | no       | `false`     | When true, the value is shown but cannot be edited.                                            |
 | `disabled`        | `boolean`                                           | no       | `false`     | When true, disables the control and removes it from the tab order.                             |
 | `placeholder`     | `string`                                            | no       | —           | Placeholder text shown when the field is empty.                                                |
-| `label`           | `string`                                            | no       | —           | Accessible label (defaults to the i18n "Code editor")                                          |
+| `label`           | `string`                                            | no       | —           | Accessible label (defaults to the i18n "Code editor"). Not rendered — screen readers only.     |
 | `onSave`          | `(value: string) => void`                           | no       | —           | Called on Mod-S; the browser save dialog is suppressed                                         |
 | `bracketMatching` | `boolean`                                           | no       | `false`     | Highlight the bracket matching the one adjacent to the caret                                   |
 | `theme`           | `EditorTheme`                                       | no       | —           | Per-instance --cascivo-editor-\* overrides; swapping it re-themes live                         |

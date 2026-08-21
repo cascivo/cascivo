@@ -150,6 +150,8 @@ export interface SideNavProps {
   showCollapseToggle?: boolean
   /** Content rendered above the items, inside the item padding context. */
   header?: ReactNode
+  /** Content rendered above the collapse toggle, inside the item padding context —
+   * it lines up with the nav items above it, exactly as `header` does. */
   footer?: ReactNode
   className?: string
 }

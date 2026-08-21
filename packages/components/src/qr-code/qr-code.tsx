@@ -34,7 +34,8 @@ export interface QrCodeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'child
    * @see the component manifest
    */
   background?: string
-  /** Accessible label. Defaults to the i18n built-in "QR code". */
+  /** Accessible name for the QR image — **not rendered**. Defaults to the i18n built-in
+   * "QR code". */
   label?: string
 }
 

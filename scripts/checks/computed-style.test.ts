@@ -58,6 +58,7 @@ let Field: any
 let Grid: any
 let GridItem: any
 let Input: any
+let SideNav: any
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url))
 const STYLES = readFileSync(join(ROOT, 'packages/react/dist/styles.css'), 'utf8')
@@ -111,6 +112,7 @@ before(async () => {
     GridItem,
     Input,
     Link,
+    SideNav,
     Stat,
   } = await import(new URL('../../packages/react/dist/node/index.js', import.meta.url).href))
   // Playwright pins an exact Chromium build and refuses to launch anything else, so a dev
@@ -302,6 +304,46 @@ describe('AppShell insets its content', () => {
   it('padding="none" opts out for full-bleed layouts', async () => {
     await mount(h(AppShell, { header: h('div', null, 'Header'), padding: 'none' } as never, 'Body'))
     assert.equal(await computed('#cascade-main', 'padding-top'), '0px')
+  })
+})
+
+describe('SideNav slots share one padding context', () => {
+  const items = [
+    { id: 'projects', label: 'Projects', href: '/projects' },
+    { id: 'deployments', label: 'Deployments', href: '/deployments' },
+  ]
+
+  /*
+   * `.footer` shipped `padding-block` and no `padding-inline` while `.header` and
+   * `.customItem` carried both, so a footer rendered flush against the rail's edge while
+   * every nav item above it was inset (2026-08-21 report item 6). Invisible to jsdom and to
+   * any grep of the stylesheet — the declaration was not wrong, it was absent.
+   *
+   * Asserted as equality with `header`, never against a literal: a future token change must
+   * be free to move both, and must not be able to move only one.
+   */
+  it('footer is inset exactly like header', async () => {
+    await mount(h(SideNav, { items, header: 'Acme Inc', footer: 'Hobby plan · fra1' } as never))
+    const [header, footer] = await page.evaluate(() => {
+      const read = (selector: string) => {
+        const el = document.querySelector(selector)
+        if (!el) throw new Error(`SideNav rendered no ${selector}`)
+        return getComputedStyle(el).paddingInlineStart
+      }
+      return [read('[class*="header"]'), read('[class*="footer"]')]
+    })
+    assert.notEqual(
+      header,
+      '0px',
+      'SideNav header lost its inline padding — the fixture no longer proves anything.',
+    )
+    assert.equal(
+      footer,
+      header,
+      `SideNav footer is inset ${footer} against the header's ${header}. The footer must sit ` +
+        'in the same padding context as the header and the items, or stock content ("Hobby ' +
+        'plan · fra1") renders flush against the rail edge in every theme.',
+    )
   })
 })
 

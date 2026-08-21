@@ -41,15 +41,15 @@ The column is a role="listbox" with role="option" rows, is focusable, and points
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description                                                                   |
-| --------------- | ------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
-| `options`       | `WheelPickerOption[]`     | Yes      | —       | The rows of the wheel, in order                                               |
-| `value`         | `string`                  | Yes      | —       | The selected option value; the component is controlled                        |
-| `onValueChange` | `(value: string) => void` | Yes      | —       | Called with the new value when the wheel settles or a key moves the selection |
-| `visibleCount`  | `number`                  | No       | 5       | How many rows are visible. Odd numbers keep the selection centred.            |
-| `itemHeight`    | `number`                  | No       | 36      | Row height in px.                                                             |
-| `ariaLabel`     | `string`                  | No       | —       | Accessible label for the wheel — required when it has no visible label        |
-| `className`     | `string`                  | No       | —       | Additional CSS class names merged onto the root element.                      |
+| Name            | Type                      | Required | Default | Description                                                                                                 |
+| --------------- | ------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------- |
+| `options`       | `WheelPickerOption[]`     | Yes      | —       | The rows of the wheel, in order                                                                             |
+| `value`         | `string`                  | Yes      | —       | The selected option value; the component is controlled                                                      |
+| `onValueChange` | `(value: string) => void` | Yes      | —       | Called with the new value when the wheel settles or a key moves the selection                               |
+| `visibleCount`  | `number`                  | No       | 5       | How many rows are visible. Odd numbers keep the selection centred.                                          |
+| `itemHeight`    | `number`                  | No       | 36      | Row height in px.                                                                                           |
+| `ariaLabel`     | `string`                  | No       | —       | Accessible label for the wheel — required when it has no visible label. Not rendered — screen readers only. |
+| `className`     | `string`                  | No       | —       | Additional CSS class names merged onto the root element.                                                    |
 
 ## Object types
 

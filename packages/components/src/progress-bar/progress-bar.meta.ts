@@ -24,6 +24,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'visible',
       type: 'string',
       required: false,
       description: 'Visible label above the track, wired via aria-labelledby',

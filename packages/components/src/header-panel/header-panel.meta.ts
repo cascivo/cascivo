@@ -19,6 +19,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'visible',
       type: 'string',
       required: true,
       description: 'Accessible label for the region (shown as header title)',

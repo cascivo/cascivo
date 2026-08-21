@@ -175,7 +175,15 @@ describe('prop-name vocabulary', () => {
   const registry = JSON.parse(readFileSync(join(ROOT, 'registry.json'), 'utf8')) as {
     components: Array<{
       name: string
-      meta: { name: string; props?: Array<{ name: string; type: string; description?: string }> }
+      meta: {
+        name: string
+        props?: Array<{
+          name: string
+          type: string
+          description?: string
+          nameVisibility?: 'visible' | 'invisible'
+        }>
+      }
     }>
   }
 
@@ -194,31 +202,52 @@ describe('prop-name vocabulary', () => {
     )
   })
 
-  it('every `label` prop says whether it renders visibly', () => {
-    // `label` is visible on 25 components and an invisible accessible name on ~8. An adopter
-    // who learned it from `Sparkline` (invisible, and explicit about it) reasonably assumed
-    // `Toggle.label` was the same and got a string rendered next to the switch, duplicating
-    // the settings row's own title (2026-08-14 §5). The catalog rule is "visible unless the
-    // description says otherwise" — so the minority MUST say otherwise, and the majority is
-    // still better off saying so, because the reader cannot tell silence from either case.
-    const VISIBLE = /visible|beside|shown|displayed|rendered|text label|caption|above the/i
-    const INVISIBLE = /accessible (?:name|label)|screen[- ]reader|invisible|not rendered|aria/i
-    const silent = registry.components
-      .filter((c) => {
-        const label = (c.meta.props ?? []).find((p) => p.name === 'label')
-        if (!label) return false
-        const description = label.description ?? ''
-        return !VISIBLE.test(description) && !INVISIBLE.test(description)
-      })
-      .map((c) => c.name)
+  /*
+   * `label` is visible on ~25 components and an invisible accessible name on ~8. An adopter
+   * who learned it from `Sparkline` (invisible, and explicit about it) reasonably assumed
+   * `Toggle.label` was the same and got a string rendered next to the switch, duplicating the
+   * settings row's own title (2026-08-14 §5).
+   *
+   * This used to be asserted by regex-matching the manifest description for words like
+   * "visible" or "accessible name". That guard had a hole big enough to drive the reported
+   * defect through: its VISIBLE pattern contained `text label`, and `Switcher` and
+   * `CommandMenu` both describe their INVISIBLE names as "Text label for the control." — so
+   * the guard passed while asserting the opposite of the truth on the exact two components a
+   * 2026-08-21 adopter tripped over.
+   *
+   * The predicate is now the structured `nameVisibility` field. Prose cannot spoof it, and
+   * `name-visibility-parity.test.ts` checks the declared value against the component's own
+   * JSX, so it cannot drift from behaviour either.
+   */
+  it('every `label` and `ariaLabel` prop declares nameVisibility', () => {
+    const undeclared = registry.components.flatMap((c) =>
+      (c.meta.props ?? [])
+        .filter((p) => (p.name === 'label' || p.name === 'ariaLabel') && !p.nameVisibility)
+        .map((p) => `${c.name}.${p.name}`),
+    )
     assert.deepEqual(
-      silent,
+      undeclared,
       [],
-      'These components take a `label` prop whose manifest description does not say whether ' +
-        'it RENDERS or is only an accessible name. Both exist in the catalog, so silence ' +
-        'makes it a coin flip — and guessing wrong puts duplicate text on screen.\n' +
-        'Say which in the .meta.ts description (and the TSDoc), then `pnpm regen`:\n  ' +
-        silent.join('\n  '),
+      'These `label`/`ariaLabel` props do not declare `nameVisibility`. Both meanings exist ' +
+        'in the catalog, so silence makes it a coin flip — and guessing wrong puts duplicate ' +
+        "text on screen. Add `nameVisibility: 'visible' | 'invisible'` to the .meta.ts prop, " +
+        'then `pnpm regen`:\n  ' +
+        undeclared.join('\n  '),
+    )
+  })
+
+  it('no `ariaLabel` prop claims to be visible', () => {
+    const wrong = registry.components.flatMap((c) =>
+      (c.meta.props ?? [])
+        .filter((p) => p.name === 'ariaLabel' && p.nameVisibility !== 'invisible')
+        .map((p) => `${c.name}.${p.name} = ${String(p.nameVisibility)}`),
+    )
+    assert.deepEqual(
+      wrong,
+      [],
+      '`ariaLabel` is the catalog word for a name that is NEVER painted. A component that ' +
+        'renders the string must call the prop `label`:\n  ' +
+        wrong.join('\n  '),
     )
   })
 

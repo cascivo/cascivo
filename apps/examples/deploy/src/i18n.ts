@@ -41,6 +41,7 @@ export const deployMsg = defineMessages('deploy', {
   navStorage: 'Storage',
   navUsage: 'Usage',
   navSettings: 'Settings',
+  navPlanFooter: 'Hobby plan · fra1',
 
   // Flags nav
   navFlags: 'Flags',

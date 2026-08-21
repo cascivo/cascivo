@@ -30,7 +30,7 @@ import { Field } from '@cascivo/react'
 
 | Prop          | Type           | Required | Default | Description                                                        |
 | ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `ReactNode`    | no       | —       | Text label for the control.                                        |
+| `label`       | `ReactNode`    | no       | —       | Text label for the control. Rendered on screen.                    |
 | `description` | `ReactNode`    | no       | —       | Supporting description text.                                       |
 | `error`       | `ReactNode`    | no       | —       | Error message shown when the value is invalid.                     |
 | `required`    | `boolean`      | no       | `false` | When true, marks the field as required.                            |

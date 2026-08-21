@@ -34,7 +34,7 @@ export interface ComparisonProps extends Omit<HTMLAttributes<HTMLDivElement>, 'o
    * @see the component manifest
    */
   keyboardStep?: number
-  /** Accessible label for the divider slider. */
+  /** Accessible name for the divider slider — **not rendered**. */
   label?: string
 }
 

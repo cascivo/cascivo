@@ -51,6 +51,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'visible',
       type: 'string',
       required: false,
       description: 'Visible field label rendered above the input; it also names the control.',

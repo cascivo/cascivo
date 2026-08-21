@@ -13,6 +13,7 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'React.ReactNode', required: true, description: 'The main icon' },
     {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: true,
       description: 'Accessible name for the button',

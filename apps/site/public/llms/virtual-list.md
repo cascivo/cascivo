@@ -33,7 +33,7 @@ import { VirtualList } from '@cascivo/react'
 | `height`     | `number`                                         | yes      | —       | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
 | `renderItem` | `(item: Item, index: number) => React.ReactNode` | yes      | —       | Renders one row                                                                                               |
 | `overscan`   | `number`                                         | no       | `3`     | Extra rows rendered above and below the visible window, to cover fast scrolling.                              |
-| `ariaLabel`  | `string`                                         | no       | —       | Accessible label for the list; label it when the list stands alone                                            |
+| `ariaLabel`  | `string`                                         | no       | —       | Accessible label for the list; label it when the list stands alone. Not rendered — screen readers only.       |
 | `className`  | `string`                                         | no       | —       | Additional CSS class names merged onto the root element.                                                      |
 
 ## Examples

@@ -214,3 +214,69 @@ describe('claims:check — the SSR requirement is stated consistently', () => {
     )
   })
 })
+
+/*
+ * Measured-figure hygiene in the guides.
+ *
+ * `RECIPE-DASHBOARD.md` shipped a boxed warning ending "There is no third option today",
+ * telling adopters to accept a ~525 kB entry chunk or drop charts from their landing page.
+ * A third option existed the whole time — split the index route like every other route —
+ * and a 2026-08-21 adopter measured 413.07 kB with sparklines still on the landing page.
+ * They had already set `build.chunkSizeWarningLimit: 700` on the strength of the box, then
+ * deleted it.
+ *
+ * A wrong doc is worse than a missing one, because it is trusted. Two rules follow, and this
+ * guard is what makes them stick:
+ *
+ *  1. A bundle figure must be attributed to the measurement it came from, so a reader can
+ *     tell a measured number from a remembered one and knows how stale it is.
+ *  2. A guide may not close off the option space with an absolute. "There is no third
+ *     option" was true of nobody's app and false of the reader's.
+ */
+describe('measured claims in the guides stay honest', () => {
+  const MEASURED_DOCS = ['docs/RECIPE-DASHBOARD.md']
+  // A kB/KB figure with a decimal point is a measurement someone took, not a round
+  // rule-of-thumb like "roughly 540 KB" — those are prose and need no citation.
+  const MEASURED_FIGURE = /\b\d+\.\d+\s*[kK]B\b/g
+  const CITATION = /\b20\d\d-\d\d-\d\d report\b/
+
+  for (const rel of MEASURED_DOCS) {
+    it(`${rel} attributes every measured bundle figure to a dated report`, () => {
+      const content = readFileSync(join(REPO_ROOT, rel), 'utf8')
+      const failures: string[] = []
+      for (const m of content.matchAll(MEASURED_FIGURE)) {
+        // Scope to the enclosing paragraph, matching the ssr.noExternal guard above: the
+        // citation must sit with the number a reader is looking at.
+        const start = content.lastIndexOf('\n\n', m.index)
+        const end = content.indexOf('\n\n', m.index)
+        const paragraph = content.slice(start === -1 ? 0 : start, end === -1 ? content.length : end)
+        if (CITATION.test(paragraph)) continue
+        failures.push(`${rel}: "${m[0]}" has no dated report citation in its paragraph`)
+      }
+      assert.deepEqual(
+        failures,
+        [],
+        'Every measured bundle figure must name the report it was measured in, so a reader ' +
+          'can tell how old it is and reproduce it:\n  ' +
+          failures.join('\n  '),
+      )
+    })
+
+    it(`${rel} does not close off the option space with an absolute`, () => {
+      const content = readFileSync(join(REPO_ROOT, rel), 'utf8')
+      const ABSOLUTES = [
+        /there is no (?:third|other|second) option/i,
+        /there are only two options/i,
+        /(?:this|that) is impossible today/i,
+      ]
+      const hits = ABSOLUTES.flatMap((p) => (p.exec(content) ? [p.exec(content)![0]] : []))
+      assert.deepEqual(
+        hits,
+        [],
+        `${rel} states an absolute about what is possible: "${hits.join('", "')}". The last ` +
+          'one of these was false when it shipped and cost an adopter a config flag and a ' +
+          '110 kB entry chunk. Describe what you measured, not what cannot exist.',
+      )
+    })
+  }
+})

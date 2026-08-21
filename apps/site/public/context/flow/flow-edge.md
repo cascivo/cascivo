@@ -39,7 +39,7 @@ Decorative SVG (aria-hidden); animation is disabled under prefers-reduced-motion
 | `targetY`        | `number`                                 | Yes      | —         | Y coordinate of the edge’s target point.                                              |
 | `type`           | `'bezier' \| 'straight' \| 'smoothstep'` | No       | bezier    | Edge path style ('bezier' \| 'straight' \| 'smoothstep').                             |
 | `animated`       | `boolean`                                | No       | false     | When true, animates the edge path (dashed flow).                                      |
-| `label`          | `ReactNode`                              | No       | —         | Text label for the control.                                                           |
+| `label`          | `ReactNode`                              | No       | —         | Text label for the control. Rendered on screen.                                       |
 | `selected`       | `boolean`                                | No       | false     | Whether the edge is rendered as selected.                                             |
 | `markerStart`    | `boolean`                                | No       | false     | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
 | `markerEnd`      | `boolean`                                | No       | true      | Arrowhead at the target. Set false for an undirected line.                            |

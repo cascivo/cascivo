@@ -21,6 +21,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       default: 'Loading',

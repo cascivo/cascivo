@@ -42,7 +42,7 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 | `min`           | `string`                  | No       | —       | Minimum allowed value.                                             |
 | `max`           | `string`                  | No       | —       | Maximum allowed value.                                             |
 | `step`          | `number`                  | No       | —       | Increment between allowed values.                                  |
-| `label`         | `string`                  | No       | —       | Text label for the control.                                        |
+| `label`         | `string`                  | No       | —       | Text label for the control. Rendered on screen.                    |
 | `hint`          | `string`                  | No       | —       | Supplementary hint text shown with the control.                    |
 | `error`         | `string`                  | No       | —       | Error message shown when the value is invalid.                     |
 | `size`          | `'sm' \| 'md' \| 'lg'`    | No       | 'md'    | Visual size of the component (e.g. 'sm', 'md', 'lg').              |

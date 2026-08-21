@@ -50,7 +50,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
-      description: 'Text label for the control.',
+      nameVisibility: 'invisible',
+      description: 'Accessible name for the command dialog. Not rendered — screen readers only.',
       type: 'string',
       required: false,
       default: 'Command menu',

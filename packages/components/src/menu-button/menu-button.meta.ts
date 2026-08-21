@@ -11,6 +11,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'label',
+      nameVisibility: 'visible',
       type: 'ReactNode',
       required: true,
       description: 'Visible content rendered inside the trigger button.',

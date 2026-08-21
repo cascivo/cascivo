@@ -1630,6 +1630,7 @@
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
@@ -2672,6 +2673,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -3441,6 +3443,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -3616,6 +3619,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -3762,7 +3766,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "fileHashes": {
-        "command-menu.tsx": "sha256-3119b0cf1b1fb2864b5d04347d74a609d413d74503d011b8d12269d9a588bf37",
+        "command-menu.tsx": "sha256-df6a4f83aaf0e0012b83acf39cf0cd82a4fc3c534d35370d98069a4b5cdd0adb",
         "index.ts": "sha256-d08d121a4ef16627e1f176642cad93e731582c02ee31e7a6f0a8a1babc717715",
         "command-menu.module.css": "sha256-00c3aca20cd16fa9aa0b42959541f46120480085841c6ecaf895940886d33efb"
       },
@@ -3822,7 +3826,8 @@
           },
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the command dialog. Not rendered — screen readers only.",
             "type": "string",
             "required": false,
             "default": "Command menu"
@@ -3992,7 +3997,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.module.css"
       ],
       "fileHashes": {
-        "comparison.tsx": "sha256-58f5d1e1e2b662f14edf89dc90300c9aaf7ca5b0a12aeb9b293abcb6674fb1b3",
+        "comparison.tsx": "sha256-28c381f7c0ba832b617854f309c16b2348cbaf6689858216333041a857a48b67",
         "index.ts": "sha256-ba53e6c6743020216aa95767b7b4242cf208f5172df936118948f5afac94a4da",
         "comparison.module.css": "sha256-aca33593240a1f285f5b2b96e077e9c78d592e67582938b093a65418a44ea34c"
       },
@@ -4058,7 +4063,8 @@
           },
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the divider slider. Not rendered — screen readers only.",
             "type": "string",
             "required": false
           }
@@ -4182,6 +4188,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": true
@@ -5066,6 +5073,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": false,
             "description": "Visible field label rendered above the input; it also names the control."
@@ -5429,6 +5437,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the dock navigation; defaults to the built-in i18n string."
@@ -6175,6 +6184,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": true,
             "description": "Accessible name for the button"
@@ -6342,6 +6352,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
@@ -6554,6 +6565,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": false,
             "description": "Visible field label rendered above the drop zone; it also names the control."
@@ -6703,6 +6715,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
             "type": "string",
             "required": false
@@ -7156,6 +7169,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "Accessible label for the region (shown as header title)"
@@ -7538,12 +7552,14 @@
         "props": [
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name.",
             "type": "string",
             "required": false
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one."
@@ -8157,6 +8173,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
@@ -8283,6 +8300,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
@@ -9796,6 +9814,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "ReactNode",
             "required": true,
             "description": "Visible content rendered inside the trigger button."
@@ -9979,6 +9998,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it."
@@ -10601,6 +10621,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -10962,6 +10983,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -11284,6 +11306,7 @@
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
@@ -11882,6 +11905,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
             "type": "string",
             "required": false
@@ -12046,6 +12070,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": false,
             "description": "Visible label above the track, wired via aria-labelledby"
@@ -12208,6 +12233,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible name announced by screen readers"
@@ -12693,7 +12719,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
       ],
       "fileHashes": {
-        "qr-code.tsx": "sha256-4b6d5a4acc8a43add8c0bca3997db26b12931d9673c558f121b92c021dbe18c9",
+        "qr-code.tsx": "sha256-e5dfaf667425595aac9f17f18b93899c12bc9eb8bde8e98de55c517272c3e97a",
         "encode.ts": "sha256-0b3c1ed5123bb178b9a580917b8bbe5cc01b5f00856a3b50f2e3c2ac7795fc86",
         "index.ts": "sha256-0ec0e504aca967fbf931224a7cb3e87e5976b73302561dd54ddacc3043c3c941",
         "qr-code.module.css": "sha256-8805c704330aebfc339530698a01899025c42998d1fcb428fb222c7a1bcf4ec3"
@@ -12755,7 +12781,8 @@
           },
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the QR image. Not rendered — screen readers only.",
             "type": "string",
             "required": false
           }
@@ -12852,6 +12879,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -13014,6 +13042,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -13731,6 +13760,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the resize handle."
@@ -14063,6 +14093,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS).",
             "type": "string",
             "required": false,
@@ -14346,6 +14377,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -14980,9 +15012,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-fd571942c32c59dc8602c07c75c422f5755b4a1590d33385c14fd8f2f3e6ca61",
+        "side-nav.tsx": "sha256-327c0fcd33f9469c8e7f34419f0ea2b1325ff303ad0435240cf8b3582f3bb465",
         "index.ts": "sha256-2c4c28ca1ec620b0e05a118ce458eed465026fa548102eebd4f450c260d7e157",
-        "side-nav.module.css": "sha256-39fa0bc38c58b57f28fb04464ad5b0384f584721b0f69084ad9415f608ba5e23"
+        "side-nav.module.css": "sha256-b698991a8263e94af5f57db5514dcc32430fd4c7bed3adbaa8caaf184053bc5b"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -15039,6 +15071,7 @@
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
@@ -15075,7 +15108,7 @@
             "name": "footer",
             "type": "ReactNode",
             "required": false,
-            "description": "Content rendered above the collapse toggle (e.g. version string, user info)"
+            "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info)"
           },
           {
             "name": "className",
@@ -15465,6 +15498,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -15622,6 +15656,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "default": "Loading",
@@ -15845,6 +15880,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "What the metric measures — rendered visibly above the value."
@@ -16125,6 +16161,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the steps navigation; defaults to the built-in i18n string."
@@ -16274,6 +16311,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
             "type": "string",
             "required": false
@@ -16428,6 +16466,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -16697,7 +16736,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-ebcc012a2d9eccb4787a3a031d1f648fe817e259a9c89281bb29d676bc8e6878",
+        "switcher.tsx": "sha256-c5de2f856f4b0fb2993e8f1ad09646fbe1a78223228cde4c020b992237fc897c",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
         "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
@@ -16724,7 +16763,8 @@
           },
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the switcher landmark. Not rendered — screen readers only.",
             "type": "string",
             "required": false,
             "default": "Switch application"
@@ -17380,6 +17420,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
@@ -17740,6 +17781,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -18301,6 +18343,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text.",
             "type": "string",
             "required": false
@@ -18909,6 +18952,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -19245,6 +19289,7 @@
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the list; label it when the list stands alone"
@@ -19504,6 +19549,7 @@
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the wheel — required when it has no visible label"
@@ -20933,6 +20979,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -22780,6 +22827,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": true
@@ -24069,6 +24117,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "X-axis label — rendered visibly beneath the axis."
@@ -24185,6 +24234,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "Metric label — rendered visibly at the top of the tile."
@@ -24628,6 +24678,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": true
@@ -26003,12 +26054,14 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible name for the chart (invisible — rendered as the SVG `<title>`)."
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one."
@@ -26673,6 +26726,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label (defaults to the i18n \"Code editor\")"
@@ -26937,6 +26991,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the code block"
@@ -27600,6 +27655,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -28290,6 +28346,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
@@ -28610,6 +28667,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string | undefined",
             "required": false,
             "description": "Accessible name for the minimap region."

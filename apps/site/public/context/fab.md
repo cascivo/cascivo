@@ -37,7 +37,7 @@ The main button is icon-only and requires a `label` that becomes its aria-label.
 | Name           | Type                             | Required | Default    | Description                                                                 |
 | -------------- | -------------------------------- | -------- | ---------- | --------------------------------------------------------------------------- |
 | `children`     | `React.ReactNode`                | Yes      | —          | The main icon                                                               |
-| `label`        | `string`                         | Yes      | —          | Accessible name for the button                                              |
+| `label`        | `string`                         | Yes      | —          | Accessible name for the button. Not rendered — screen readers only.         |
 | `onClick`      | `() => void`                     | No       | —          | Called when the element is clicked.                                         |
 | `actions`      | `FabAction[]`                    | No       | —          | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
 | `position`     | `'bottom-end' \| 'bottom-start'` | No       | bottom-end | Position of the component.                                                  |

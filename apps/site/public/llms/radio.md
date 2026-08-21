@@ -29,7 +29,7 @@ import { Radio } from '@cascivo/react'
 
 | Prop       | Type      | Required | Default | Description                                                        |
 | ---------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`    | `string`  | no       | —       | Text label for the control.                                        |
+| `label`    | `string`  | no       | —       | Text label for the control. Rendered on screen.                    |
 | `value`    | `string`  | yes      | —       | The controlled value.                                              |
 | `disabled` | `boolean` | no       | `false` | When true, disables the control and removes it from the tab order. |
 | `name`     | `string`  | no       | —       | Form field name shared by the radio group.                         |

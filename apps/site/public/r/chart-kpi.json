@@ -27,6 +27,7 @@
       },
       {
         "name": "label",
+        "nameVisibility": "visible",
         "type": "string",
         "required": true,
         "description": "Metric label — rendered visibly at the top of the tile."

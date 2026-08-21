@@ -19,6 +19,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'visible',
       type: 'string',
       required: true,
       description: 'What the metric measures — rendered visibly above the value.',

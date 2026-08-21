@@ -10,7 +10,13 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     { name: 'value', type: 'number', required: true, description: 'Current value' },
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: true },
+    {
+      name: 'label',
+      nameVisibility: 'visible',
+      description: 'Text label for the control.',
+      type: 'string',
+      required: true,
+    },
     {
       name: 'min',
       description: 'Minimum allowed value.',

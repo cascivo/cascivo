@@ -26,7 +26,7 @@ export type SwitcherEntry = SwitcherLink | { divider: true }
 export interface SwitcherProps {
   items: SwitcherEntry[]
   /**
-   * Text label for the control.
+   * Accessible name for the switcher landmark. Not rendered — screen readers only.
    *
    * @defaultValue `Switch application`
    * @see the component manifest

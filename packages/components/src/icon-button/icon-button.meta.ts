@@ -9,9 +9,17 @@ export const meta: ComponentMeta = {
   variants: ['ghost', 'outline', 'filled'],
   sizes: ['sm', 'md', 'lg'],
   props: [
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description:

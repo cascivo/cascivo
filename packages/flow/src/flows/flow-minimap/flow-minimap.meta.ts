@@ -64,6 +64,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string | undefined',
       required: false,
       description: 'Accessible name for the minimap region.',

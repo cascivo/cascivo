@@ -80,6 +80,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible label (defaults to the i18n "Code editor")',

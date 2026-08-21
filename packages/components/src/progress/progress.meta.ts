@@ -11,6 +11,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       description:
         'Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.',
       type: 'string',

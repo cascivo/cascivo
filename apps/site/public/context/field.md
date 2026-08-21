@@ -46,7 +46,7 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 
 | Name          | Type           | Required | Default | Description                                                        |
 | ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `ReactNode`    | No       | —       | Text label for the control.                                        |
+| `label`       | `ReactNode`    | No       | —       | Text label for the control. Rendered on screen.                    |
 | `description` | `ReactNode`    | No       | —       | Supporting description text.                                       |
 | `error`       | `ReactNode`    | No       | —       | Error message shown when the value is invalid.                     |
 | `required`    | `boolean`      | No       | false   | When true, marks the field as required.                            |

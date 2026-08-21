@@ -27,7 +27,7 @@ import { Breadcrumb } from '@cascivo/react'
 | `items`      | `{ label: string; href?: string }[]` | yes      | —            | The items to render.                                                                          |
 | `maxVisible` | `number`                             | no       | —            | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
 | `className`  | `string`                             | no       | —            | Additional CSS class names merged onto the root element.                                      |
-| `ariaLabel`  | `string`                             | no       | `Breadcrumb` | Accessible label for the component.                                                           |
+| `ariaLabel`  | `string`                             | no       | `Breadcrumb` | Accessible label for the component. Not rendered — screen readers only.                       |
 
 ## Examples
 

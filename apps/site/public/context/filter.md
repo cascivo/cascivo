@@ -34,17 +34,17 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 
 ## Props
 
-| Name            | Type                           | Required | Default | Description                                                                                                                        |
-| --------------- | ------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `ariaLabel`     | `string`                       | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
-| `aria-label`    | `string`                       | No       | —       | Accessible label for the filter group.                                                                                             |
-| `options`       | `FilterOption[]`               | Yes      | —       | Array of { label, value } objects to render as filter buttons                                                                      |
-| `value`         | `string[]`                     | No       | —       | Controlled selected values                                                                                                         |
-| `defaultValue`  | `string[]`                     | No       | []      | Initial selected values for uncontrolled use                                                                                       |
-| `onValueChange` | `(selected: string[]) => void` | No       | —       | Called with the selected values whenever the selection changes.                                                                    |
-| `onChange`      | `(selected: string[]) => void` | No       | —       | Deprecated: use onValueChange (same string[]).                                                                                     |
-| `multi`         | `boolean`                      | No       | false   | Allow multiple items to be selected simultaneously                                                                                 |
-| `variant`       | `'pill' \| 'outline'`          | No       | pill    | Selects the visual style variant.                                                                                                  |
+| Name            | Type                           | Required | Default | Description                                                                                                                                                            |
+| --------------- | ------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ariaLabel`     | `string`                       | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
+| `aria-label`    | `string`                       | No       | —       | Accessible label for the filter group.                                                                                                                                 |
+| `options`       | `FilterOption[]`               | Yes      | —       | Array of { label, value } objects to render as filter buttons                                                                                                          |
+| `value`         | `string[]`                     | No       | —       | Controlled selected values                                                                                                                                             |
+| `defaultValue`  | `string[]`                     | No       | []      | Initial selected values for uncontrolled use                                                                                                                           |
+| `onValueChange` | `(selected: string[]) => void` | No       | —       | Called with the selected values whenever the selection changes.                                                                                                        |
+| `onChange`      | `(selected: string[]) => void` | No       | —       | Deprecated: use onValueChange (same string[]).                                                                                                                         |
+| `multi`         | `boolean`                      | No       | false   | Allow multiple items to be selected simultaneously                                                                                                                     |
+| `variant`       | `'pill' \| 'outline'`          | No       | pill    | Selects the visual style variant.                                                                                                                                      |
 
 ## Tokens
 

@@ -29,6 +29,7 @@
     "props": [
       {
         "name": "ariaLabel",
+        "nameVisibility": "invisible",
         "type": "string",
         "required": false,
         "description": "Accessible label for the dock navigation; defaults to the built-in i18n string."

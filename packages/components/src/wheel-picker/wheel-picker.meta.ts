@@ -43,6 +43,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible label for the wheel — required when it has no visible label',

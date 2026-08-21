@@ -37,7 +37,7 @@ Renders a native <select> so options, type-ahead, and arrow-key navigation come 
 
 | Name          | Type                                                     | Required | Default | Description                                                        |
 | ------------- | -------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `string`                                                 | No       | —       | Text label for the control.                                        |
+| `label`       | `string`                                                 | No       | —       | Text label for the control. Rendered on screen.                    |
 | `hint`        | `string`                                                 | No       | —       | Supplementary hint text shown with the control.                    |
 | `error`       | `string`                                                 | No       | —       | Error message shown when the value is invalid.                     |
 | `placeholder` | `string`                                                 | No       | —       | Placeholder text shown when the field is empty.                    |

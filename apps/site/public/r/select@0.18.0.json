@@ -29,6 +29,7 @@
     "props": [
       {
         "name": "label",
+        "nameVisibility": "visible",
         "description": "Text label for the control.",
         "type": "string",
         "required": false

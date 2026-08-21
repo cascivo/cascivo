@@ -31,6 +31,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       description: 'Accessible label for the component.',
       type: 'string',
       required: false,

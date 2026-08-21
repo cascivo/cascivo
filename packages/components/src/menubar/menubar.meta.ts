@@ -11,6 +11,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description:

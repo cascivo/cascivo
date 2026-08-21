@@ -35,6 +35,7 @@
       },
       {
         "name": "label",
+        "nameVisibility": "invisible",
         "type": "string",
         "required": true,
         "description": "Accessible name for the button"

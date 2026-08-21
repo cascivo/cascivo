@@ -30,7 +30,7 @@ Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an op
 | `lineNumbers` | `boolean`             | No       | false     | Show the line-number gutter                                                |
 | `wrap`        | `boolean`             | No       | false     | Soft-wrap long lines                                                       |
 | `tabSize`     | `number`              | No       | 2         | Spaces per tab stop                                                        |
-| `label`       | `string`              | No       | —         | Accessible label for the code block                                        |
+| `label`       | `string`              | No       | —         | Accessible label for the code block. Not rendered — screen readers only.   |
 | `className`   | `string`              | No       | —         | Additional CSS class names merged onto the root element.                   |
 | `gutterRef`   | `Ref<HTMLDivElement>` | No       | —         | Ref to the gutter column (used by `CodeEditor` for scroll-sync).           |
 | `preRef`      | `Ref<HTMLPreElement>` | No       | —         | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).      |

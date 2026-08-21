@@ -39,19 +39,19 @@ The drop zone is a real <button> so it is keyboard-operable (Enter/Space open th
 
 ## Props
 
-| Name           | Type                                                | Required | Default | Description                                                                  |
-| -------------- | --------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------- |
-| `files`        | `UploaderFile[]`                                    | No       | []      | Controlled file list                                                         |
-| `onFilesAdded` | `(files: File[]) => void`                           | No       | —       | Called with accepted files                                                   |
-| `onRemove`     | `(id: string) => void`                              | No       | —       | Called when a file is removed                                                |
-| `multiple`     | `boolean`                                           | No       | false   | Allow multiple files                                                         |
-| `accept`       | `string`                                            | No       | —       | Accepted file types (MIME or extension)                                      |
-| `maxSize`      | `number`                                            | No       | —       | Maximum file size in bytes                                                   |
-| `onRejected`   | `(files: File[], reason: 'size' \| 'type') => void` | No       | —       | Called with rejected files                                                   |
-| `label`        | `string`                                            | No       | —       | Visible field label rendered above the drop zone; it also names the control. |
-| `hint`         | `string`                                            | No       | —       | Hint text below the drop zone                                                |
-| `labels`       | `FileUploaderLabels`                                | No       | —       | i18n label overrides                                                         |
-| `disabled`     | `boolean`                                           | No       | false   | Disables the upload zone                                                     |
+| Name           | Type                                                | Required | Default | Description                                                                                      |
+| -------------- | --------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------ |
+| `files`        | `UploaderFile[]`                                    | No       | []      | Controlled file list                                                                             |
+| `onFilesAdded` | `(files: File[]) => void`                           | No       | —       | Called with accepted files                                                                       |
+| `onRemove`     | `(id: string) => void`                              | No       | —       | Called when a file is removed                                                                    |
+| `multiple`     | `boolean`                                           | No       | false   | Allow multiple files                                                                             |
+| `accept`       | `string`                                            | No       | —       | Accepted file types (MIME or extension)                                                          |
+| `maxSize`      | `number`                                            | No       | —       | Maximum file size in bytes                                                                       |
+| `onRejected`   | `(files: File[], reason: 'size' \| 'type') => void` | No       | —       | Called with rejected files                                                                       |
+| `label`        | `string`                                            | No       | —       | Visible field label rendered above the drop zone; it also names the control. Rendered on screen. |
+| `hint`         | `string`                                            | No       | —       | Hint text below the drop zone                                                                    |
+| `labels`       | `FileUploaderLabels`                                | No       | —       | i18n label overrides                                                                             |
+| `disabled`     | `boolean`                                           | No       | false   | Disables the upload zone                                                                         |
 
 ## Tokens
 

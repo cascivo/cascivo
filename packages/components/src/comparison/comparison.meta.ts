@@ -56,7 +56,13 @@ export const meta: ComponentMeta = {
       required: false,
       default: '5',
     },
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description: 'Accessible name for the divider slider. Not rendered — screen readers only.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-radius-md',

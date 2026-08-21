@@ -31,7 +31,7 @@ import { Fab } from '@cascivo/react'
 | Prop           | Type                             | Required | Default      | Description                                                                 |
 | -------------- | -------------------------------- | -------- | ------------ | --------------------------------------------------------------------------- |
 | `children`     | `React.ReactNode`                | yes      | —            | The main icon                                                               |
-| `label`        | `string`                         | yes      | —            | Accessible name for the button                                              |
+| `label`        | `string`                         | yes      | —            | Accessible name for the button. Not rendered — screen readers only.         |
 | `onClick`      | `() => void`                     | no       | —            | Called when the element is clicked.                                         |
 | `actions`      | `FabAction[]`                    | no       | —            | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
 | `position`     | `'bottom-end' \| 'bottom-start'` | no       | `bottom-end` | Position of the component.                                                  |

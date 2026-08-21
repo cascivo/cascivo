@@ -97,7 +97,7 @@ export interface CommandMenuProps {
    */
   hotkey?: boolean
   /**
-   * Text label for the control.
+   * Accessible name for the command dialog. Not rendered — screen readers only.
    *
    * @defaultValue `Command menu`
    * @see the component manifest

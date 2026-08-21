@@ -8,6 +8,7 @@ import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { reactExportedModules, reactExportedNames } from '../registry/react-exports.ts'
+import { describeWithVisibility } from '../lib/name-visibility-note.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -150,7 +151,7 @@ function propsTable(props: PropMeta[]): string {
   const rows = props.map((p) => {
     const type = esc(p.type)
     const def = p.default !== undefined ? `\`${esc(p.default)}\`` : '—'
-    const desc = esc(p.description ?? '—')
+    const desc = esc(describeWithVisibility(p))
     return `| \`${p.name}\` | \`${type}\` | ${p.required ? 'yes' : 'no'} | ${def} | ${desc} |`
   })
   return [header, sep, ...rows].join('\n') + '\n'

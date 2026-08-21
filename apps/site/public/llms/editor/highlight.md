@@ -28,7 +28,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `lineNumbers` | `boolean`             | no       | `false`     | Show the line-number gutter                                                |
 | `wrap`        | `boolean`             | no       | `false`     | Soft-wrap long lines                                                       |
 | `tabSize`     | `number`              | no       | `2`         | Spaces per tab stop                                                        |
-| `label`       | `string`              | no       | —           | Accessible label for the code block                                        |
+| `label`       | `string`              | no       | —           | Accessible label for the code block. Not rendered — screen readers only.   |
 | `className`   | `string`              | no       | —           | Additional CSS class names merged onto the root element.                   |
 | `gutterRef`   | `Ref<HTMLDivElement>` | no       | —           | Ref to the gutter column (used by `CodeEditor` for scroll-sync).           |
 | `preRef`      | `Ref<HTMLPreElement>` | no       | —           | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).      |

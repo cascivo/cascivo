@@ -13,6 +13,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible label for the resize handle.',

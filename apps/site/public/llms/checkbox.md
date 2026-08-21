@@ -30,7 +30,7 @@ import { Checkbox } from '@cascivo/react'
 
 | Prop            | Type                                         | Required | Default | Description                                                        |
 | --------------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`         | `string`                                     | no       | —       | Text label for the control.                                        |
+| `label`         | `string`                                     | no       | —       | Text label for the control. Rendered on screen.                    |
 | `checked`       | `boolean`                                    | no       | —       | Whether the control is checked (controlled).                       |
 | `indeterminate` | `boolean`                                    | no       | `false` | When true, renders the mixed/indeterminate state.                  |
 | `disabled`      | `boolean`                                    | no       | `false` | When true, disables the control and removes it from the tab order. |

@@ -36,7 +36,7 @@ import { Select } from '@cascivo/react'
 
 | Prop          | Type                                                     | Required | Default | Description                                                        |
 | ------------- | -------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `string`                                                 | no       | —       | Text label for the control.                                        |
+| `label`       | `string`                                                 | no       | —       | Text label for the control. Rendered on screen.                    |
 | `hint`        | `string`                                                 | no       | —       | Supplementary hint text shown with the control.                    |
 | `error`       | `string`                                                 | no       | —       | Error message shown when the value is invalid.                     |
 | `placeholder` | `string`                                                 | no       | —       | Placeholder text shown when the field is empty.                    |

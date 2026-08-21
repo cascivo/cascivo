@@ -53,6 +53,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       description: 'Accessible label for the component.',
       type: 'string',
       required: false,
@@ -91,7 +92,8 @@ export const meta: ComponentMeta = {
       name: 'footer',
       type: 'ReactNode',
       required: false,
-      description: 'Content rendered above the collapse toggle (e.g. version string, user info)',
+      description:
+        'Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info)',
     },
     {
       name: 'className',

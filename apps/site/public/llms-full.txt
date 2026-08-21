@@ -2919,7 +2919,7 @@ import { Breadcrumb } from '@cascivo/react'
 | `items` | `{ label: string; href?: string }[]` | yes | — | The items to render. |
 | `maxVisible` | `number` | no | — | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `ariaLabel` | `string` | no | `Breadcrumb` | Accessible label for the component. |
+| `ariaLabel` | `string` | no | `Breadcrumb` | Accessible label for the component. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -4009,7 +4009,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | `value` | `number` | yes | — | Current measure value |
 | `target` | `number` | yes | — | Target marker value |
 | `ranges` | `number[]` | yes | — | Qualitative range breakpoints (sorted ascending) |
-| `label` | `string` | yes | — | Text label for the control. |
+| `label` | `string` | yes | — | Text label for the control. Rendered on screen. |
 | `min` | `number` | no | `0` | Minimum allowed value. |
 | `max` | `number` | no | — | Domain maximum (defaults to last range) |
 | `width` | `number` | no | `300` | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 300px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
@@ -4717,7 +4717,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | `data` | `number[]` | yes | — | Array of numeric values to bin |
 | `bins` | `number` | no | — | Explicit bin count (defaults to Freedman–Diaconis) |
 | `title` | `string` | yes | — | Title text for the component. |
-| `label` | `string` | yes | — | X-axis label — rendered visibly beneath the axis. |
+| `label` | `string` | yes | — | X-axis label — rendered visibly beneath the axis. Rendered on screen. |
 | `description` | `string` | no | — | Supporting description text. |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
 | `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
@@ -4789,7 +4789,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `value` | `string \| number` | yes | — | Primary metric value |
-| `label` | `string` | yes | — | Metric label — rendered visibly at the top of the tile. |
+| `label` | `string` | yes | — | Metric label — rendered visibly at the top of the tile. Rendered on screen. |
 | `delta` | `number` | no | — | Change value (positive = up, negative = down) |
 | `deltaFormat` | `'number' \| 'percent' \| ((delta: number) => string)` | no | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included. |
 | `goodDirection` | `'up' \| 'down' \| 'neutral'` | no | `up` | Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
@@ -4996,7 +4996,7 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `value` | `number` | yes | — | Current value |
-| `label` | `string` | yes | — | Text label for the control. |
+| `label` | `string` | yes | — | Text label for the control. Rendered on screen. |
 | `min` | `number` | no | `0` | Minimum allowed value. |
 | `max` | `number` | no | `100` | Maximum allowed value. |
 | `variant` | `'bar' \| 'gauge'` | no | `bar` | Selects the visual style variant. |
@@ -5761,8 +5761,8 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `data` | `number[]` | yes | — | Array of numeric values |
-| `label` | `string` | no | — | Accessible name for the chart (invisible — rendered as the SVG `<title>`). |
-| `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
+| `label` | `string` | no | — | Accessible name for the chart (invisible — rendered as the SVG `<title>`). Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. Not rendered — screen readers only. |
 | `width` | `number` | no | `120` | SVG width in px. **This chart is fixed-width by default** — it is a compact, inline chart meant to sit in a table cell or beside a label, so omitting `width` gives you 120px rather than a container-filling chart. Pass a number to change it. The catalogue-wide "omit for a responsive chart" note does not apply to this chart. |
 | `height` | `number` | no | `32` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
 | `color` | `string` | no | `'var(--cascivo-chart-1)'` | Stroke color (CSS value) |
@@ -6230,7 +6230,7 @@ import { Checkbox } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `checked` | `boolean` | no | — | Whether the control is checked (controlled). |
 | `indeterminate` | `boolean` | no | `false` | When true, renders the mixed/indeterminate state. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
@@ -6696,7 +6696,7 @@ import { ColorPicker } from '@cascivo/react'
 | `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
 | `presets` | `string[]` | no | — | Preset swatch colors |
 | `alpha` | `boolean` | no | `true` | When true, enables alpha (opacity) selection. |
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
@@ -6795,7 +6795,7 @@ import { Combobox } from '@cascivo/react'
 | `onChange` | `(value: string \| undefined) => void` | no | — | Deprecated: use onValueChange (same string \| undefined). |
 | `clearable` | `boolean` | no | `false` | When true, shows a control to clear the selected value. |
 | `searchable` | `boolean` | no | `true` | When true, shows a search/filter input. |
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `'md'` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -6900,7 +6900,7 @@ import { CommandMenu } from '@cascivo/react'
 | `placeholder` | `string` | no | `Type a command or search…` | Placeholder text shown when the field is empty. |
 | `emptyLabel` | `string` | no | `No results found` | Text shown when no commands match the query. |
 | `hotkey` | `boolean` | no | `true` | Global Cmd/Ctrl+K toggles the menu via onOpenChange |
-| `label` | `string` | no | `Command menu` | Text label for the control. |
+| `label` | `string` | no | `Command menu` | Accessible name for the command dialog. Not rendered — screen readers only. |
 | `loading` | `boolean` | no | `false` | Shows a loading spinner in place of the empty state (for async items) |
 | `onQueryChange` | `(query: string) => void` | no | — | Fires on every query keystroke — use to fetch async items |
 | `scopes` | `CommandScope[]` | no | `[]` | Selectable filter scopes. Renders a scope bar + chip; a scope activates by clicking its pill, typing its prefix (c:/c ), or cycling with Tab, and filters to groups tagged with a matching scope (plus untagged groups). |
@@ -7044,7 +7044,7 @@ import { Comparison } from '@cascivo/react'
 | `onPositionChange` | `(position: number) => void` | no | — | Called with the new divider position when it changes. |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
 | `keyboardStep` | `number` | no | `5` | How far the divider moves per arrow-key press. |
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Accessible name for the divider slider. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -7132,7 +7132,7 @@ import { ContainedList } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `ReactNode` | yes | — | Text label for the control. |
+| `label` | `ReactNode` | yes | — | Text label for the control. Rendered on screen. |
 | `kind` | `'on-page' \| 'disclosed'` | no | `on-page` | Visual treatment — 'on-page' or 'disclosed'. |
 | `action` | `ReactNode` | no | — | Primary action shown in the component. |
 
@@ -7720,7 +7720,7 @@ import { DatePicker } from '@cascivo/react'
 | `min` | `string` | no | — | Minimum ISO date |
 | `max` | `string` | no | — | Maximum ISO date |
 | `clearable` | `boolean` | no | `false` | Shows a clear button |
-| `label` | `string` | no | — | Visible field label rendered above the input; it also names the control. |
+| `label` | `string` | no | — | Visible field label rendered above the input; it also names the control. Rendered on screen. |
 | `hint` | `string` | no | — | Hint text |
 | `error` | `string` | no | — | Error message |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Field size |
@@ -7931,7 +7931,7 @@ import { Dock } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Accessible label for the dock navigation; defaults to the built-in i18n string. |
+| `ariaLabel` | `string` | no | — | Accessible label for the dock navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
 | `items` | `DockItem[]` | yes | — | Navigation items, each with a label, icon, and optional href or onClick |
 | `activeIndex` | `number` | no | — | Index of the currently active item (0-based) |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -8310,7 +8310,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `readOnly` | `boolean` | no | `false` | When true, the value is shown but cannot be edited. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
-| `label` | `string` | no | — | Accessible label (defaults to the i18n "Code editor") |
+| `label` | `string` | no | — | Accessible label (defaults to the i18n "Code editor"). Not rendered — screen readers only. |
 | `onSave` | `(value: string) => void` | no | — | Called on Mod-S; the browser save dialog is suppressed |
 | `bracketMatching` | `boolean` | no | `false` | Highlight the bracket matching the one adjacent to the caret |
 | `theme` | `EditorTheme` | no | — | Per-instance --cascivo-editor-* overrides; swapping it re-themes live |
@@ -8448,7 +8448,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `lineNumbers` | `boolean` | no | `false` | Show the line-number gutter |
 | `wrap` | `boolean` | no | `false` | Soft-wrap long lines |
 | `tabSize` | `number` | no | `2` | Spaces per tab stop |
-| `label` | `string` | no | — | Accessible label for the code block |
+| `label` | `string` | no | — | Accessible label for the code block. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `gutterRef` | `Ref<HTMLDivElement>` | no | — | Ref to the gutter column (used by `CodeEditor` for scroll-sync). |
 | `preRef` | `Ref<HTMLPreElement>` | no | — | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync). |
@@ -8612,7 +8612,7 @@ import { Fab } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `children` | `React.ReactNode` | yes | — | The main icon |
-| `label` | `string` | yes | — | Accessible name for the button |
+| `label` | `string` | yes | — | Accessible name for the button. Not rendered — screen readers only. |
 | `onClick` | `() => void` | no | — | Called when the element is clicked. |
 | `actions` | `FabAction[]` | no | — | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
 | `position` | `'bottom-end' \| 'bottom-start'` | no | `bottom-end` | Position of the component. |
@@ -8721,7 +8721,7 @@ import { Field } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `ReactNode` | no | — | Text label for the control. |
+| `label` | `ReactNode` | no | — | Text label for the control. Rendered on screen. |
 | `description` | `ReactNode` | no | — | Supporting description text. |
 | `error` | `ReactNode` | no | — | Error message shown when the value is invalid. |
 | `required` | `boolean` | no | `false` | When true, marks the field as required. |
@@ -8825,7 +8825,7 @@ import { FileUploader } from '@cascivo/react'
 | `accept` | `string` | no | — | Accepted file types (MIME or extension) |
 | `maxSize` | `number` | no | — | Maximum file size in bytes |
 | `onRejected` | `(files: File[], reason: 'size' \| 'type') => void` | no | — | Called with rejected files |
-| `label` | `string` | no | — | Visible field label rendered above the drop zone; it also names the control. |
+| `label` | `string` | no | — | Visible field label rendered above the drop zone; it also names the control. Rendered on screen. |
 | `hint` | `string` | no | — | Hint text below the drop zone |
 | `labels` | `FileUploaderLabels` | no | — | i18n label overrides |
 | `disabled` | `boolean` | no | `false` | Disables the upload zone |
@@ -8927,7 +8927,7 @@ import { Filter } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label for the filter group. |
 | `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
 | `value` | `string[]` | no | — | Controlled selected values |
@@ -9508,7 +9508,7 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 | `targetY` | `number` | yes | — | Y coordinate of the edge’s target point. |
 | `type` | `'bezier' \| 'straight' \| 'smoothstep'` | no | `bezier` | Edge path style ('bezier' \| 'straight' \| 'smoothstep'). |
 | `animated` | `boolean` | no | `false` | When true, animates the edge path (dashed flow). |
-| `label` | `ReactNode` | no | — | Text label for the control. |
+| `label` | `ReactNode` | no | — | Text label for the control. Rendered on screen. |
 | `selected` | `boolean` | no | `false` | Whether the edge is rendered as selected. |
 | `markerStart` | `boolean` | no | `false` | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
 | `markerEnd` | `boolean` | no | `true` | Arrowhead at the target. Set false for an undirected line. |
@@ -9701,7 +9701,7 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 | `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no | `bottom-right` | Position of the component. |
 | `onViewportChange` | `(viewport: Viewport) => void` | no | — | Called with the new viewport when the minimap is dragged. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `label` | `string \| undefined` | no | — | Accessible name for the minimap region. |
+| `label` | `string \| undefined` | no | — | Accessible name for the minimap region. Not rendered — screen readers only. |
 | `nodeColor` | `string \| undefined` | no | — | Fill colour for node rectangles in the minimap. |
 
 ## Object types
@@ -10337,7 +10337,7 @@ import { HeaderPanel } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `open` | `boolean` | yes | — | Controlled open state |
 | `onClose` | `() => void` | yes | — | Called on close button click or light-dismiss |
-| `label` | `string` | yes | — | Accessible label for the region (shown as header title) |
+| `label` | `string` | yes | — | Accessible label for the region (shown as header title). Rendered on screen. |
 | `children` | `ReactNode` | yes | — | Content rendered inside the component. |
 | `labels` | `HeaderPanelLabels` | no | — | i18n overrides |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -10616,8 +10616,8 @@ import { IconButton } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
-| `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. |
+| `label` | `string` | no | — | Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. Not rendered — screen readers only. |
 | `icon` | `React.ReactNode` | no | — | Icon element rendered in the component. |
 | `variant` | `'ghost' \| 'outline' \| 'filled'` | no | `ghost` | Selects the visual style variant. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -10996,7 +10996,7 @@ import { InlineLoading } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `status` | `'inactive' \| 'active' \| 'finished' \| 'error'` | yes | — | Status state. |
-| `label` | `ReactNode` | no | — | Text label for the control. |
+| `label` | `ReactNode` | no | — | Text label for the control. Rendered on screen. |
 | `labels` | `{ active?: string; finished?: string; error?: string }` | no | — | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples
@@ -11089,7 +11089,7 @@ import { Input } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control. |
+| `label` | `string` | no | — | Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -12615,7 +12615,7 @@ _Copy-paste only — `SplitView` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `start` | `ReactNode` | yes | — | Left pane content |
 | `end` | `ReactNode` | yes | — | Right pane content |
 | `defaultRatio` | `number` | no | `0.3` | Initial split ratio (0–1) |
@@ -13091,7 +13091,7 @@ import { MenuButton } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `ReactNode` | yes | — | Visible content rendered inside the trigger button. |
+| `label` | `ReactNode` | yes | — | Visible content rendered inside the trigger button. Rendered on screen. |
 | `items` | `MenuButtonItem[]` | yes | — | Action items: { id, label, onSelect?, disabled? } |
 | `variant` | `'primary' \| 'secondary' \| 'ghost'` | no | `'secondary'` | Trigger visual variant |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `'md'` | Trigger size |
@@ -13204,7 +13204,7 @@ import { Menubar } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it. Not rendered — screen readers only. |
 | `menus` | `MenubarMenu[]` | yes | — | The top-level menus to render. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -13568,7 +13568,7 @@ import { NavigationMenu } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `orientation` | `'horizontal' \| 'vertical' \| 'both'` | no | `horizontal` | Layout orientation of the component. |
@@ -13761,7 +13761,7 @@ import { NumberInput } from '@cascivo/react'
 | `step` | `number` | no | `1` | Increment between allowed values. |
 | `precision` | `number` | no | — | Decimal places applied on commit |
 | `formatOptions` | `Intl.NumberFormatOptions` | no | — | Display formatting applied on blur; raw editable string while focused |
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -13951,7 +13951,7 @@ import { OverflowMenu } from '@cascivo/react'
 | `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes | — | The items to render. |
 | `onSelect` | `(value: string) => void` | no | — | Called with the selected value. |
 | `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-end` | Placement relative to the trigger. |
-| `ariaLabel` | `string` | no | `More actions` | Accessible label for the component. |
+| `ariaLabel` | `string` | no | `More actions` | Accessible label for the component. Not rendered — screen readers only. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -14331,7 +14331,7 @@ import { Progress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label when no visible label is present. |
 | `aria-describedby` | `string` | no | — | Id of an element describing the progress bar. |
 | `value` | `number` | no | — | 0–100. Omit for indeterminate state. |
@@ -14439,7 +14439,7 @@ import { ProgressBar } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `value` | `number` | no | — | Current value from 0 to max; omit for an indeterminate bar |
 | `max` | `number` | no | `100` | Maximum allowed value. |
-| `label` | `string` | no | — | Visible label above the track, wired via aria-labelledby |
+| `label` | `string` | no | — | Visible label above the track, wired via aria-labelledby. Rendered on screen. |
 | `helperText` | `string` | no | — | Supplementary text shown with the progress bar. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `status` | `'active' \| 'success' \| 'error'` | no | `active` | success/error tint the fill and show a glyph next to the label |
@@ -14534,7 +14534,7 @@ import { ProgressCircle } from '@cascivo/react'
 | `max` | `number` | no | `100` | Maximum allowed value. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `showValue` | `boolean` | no | `false` | Renders the rounded percentage in the center — pairs best with md and lg |
-| `label` | `string` | no | — | Accessible name announced by screen readers |
+| `label` | `string` | no | — | Accessible name announced by screen readers. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -14890,7 +14890,7 @@ import { QrCode } from '@cascivo/react'
 | `radius` | `string` | no | — | CSS length rounding the corners |
 | `fill` | `string` | no | `currentColor` | Foreground color of the QR modules. |
 | `background` | `string` | no | `transparent` | Background color behind the QR code. |
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Accessible name for the QR image. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -14980,7 +14980,7 @@ import { RadialProgress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `value` | `number` | yes | — | The controlled value. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Selects the visual style variant. |
@@ -15076,7 +15076,7 @@ import { Radio } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `value` | `string` | yes | — | The controlled value. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `name` | `string` | no | — | Form field name shared by the radio group. |
@@ -15517,7 +15517,7 @@ import { Resizable } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Accessible label for the resize handle. |
+| `label` | `string` | no | — | Accessible label for the resize handle. Not rendered — screen readers only. |
 | `children` | `ReactNode` | yes | — | Exactly two panes |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
 | `defaultRatio` | `number` | no | `0.5` | The initial split ratio when uncontrolled. |
@@ -15707,7 +15707,7 @@ import { Search } from '@cascivo/react'
 | `debounceMs` | `number` | no | `300` | Debounce delay (ms) before onSearch fires. |
 | `placeholder` | `string` | no | `Search` | Placeholder text shown when the field is empty. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `label` | `string` | no | `Search` | Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS). |
+| `label` | `string` | no | `Search` | Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS). Rendered on screen. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `clearLabel` | `string` | no | `Clear search` | Accessible label for the clear button. |
 | `id` | `string` | no | — | Id for the input, wired to the label. Auto-generated with useId when omitted — SSR-safe and stable across hydration. |
@@ -16179,7 +16179,7 @@ _Copy-paste only — `StatsBand` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `stats` | `StatItem[]` | yes | — | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
 | `aria-label` | `string` | no | `"Key metrics"` | Accessible label for the stats region |
 
@@ -16360,7 +16360,7 @@ import { Select } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
@@ -16757,12 +16757,12 @@ import { SideNav } from '@cascivo/react'
 | `collapsed` | `boolean` | no | — | Controlled collapsed state (rail mode) |
 | `defaultCollapsed` | `boolean` | no | `false` | Whether the rail is collapsed on first render (uncontrolled). |
 | `onCollapsedChange` | `(collapsed: boolean) => void` | no | — | Called with the new collapsed state when it changes. |
-| `ariaLabel` | `string` | no | `Side navigation` | Accessible label for the component. |
+| `ariaLabel` | `string` | no | `Side navigation` | Accessible label for the component. Not rendered — screen readers only. |
 | `collapseLabel` | `string` | no | `Collapse navigation` | Accessible label for the collapse control. |
 | `expandLabel` | `string` | no | `Expand navigation` | Accessible label for the expand control. |
 | `expandOnHover` | `boolean` | no | `false` | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts |
 | `header` | `ReactNode` | no | — | Content rendered above the items, inside the item padding context (e.g. app-context pickers) |
-| `footer` | `ReactNode` | no | — | Content rendered above the collapse toggle (e.g. version string, user info) |
+| `footer` | `ReactNode` | no | — | Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info) |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -17035,7 +17035,7 @@ import { Slider } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `min` | `number` | no | `0` | Minimum allowed value. |
 | `max` | `number` | no | `100` | Maximum allowed value. |
 | `step` | `number` | no | `1` | Increment between allowed values. |
@@ -17122,7 +17122,7 @@ import { Spinner } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `label` | `string` | no | `Loading` | Accessible label announced by screen readers |
+| `label` | `string` | no | `Loading` | Accessible label announced by screen readers. Not rendered — screen readers only. |
 
 ## Examples
 
@@ -17260,7 +17260,7 @@ import { Stat } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `card` | `boolean` | no | `false` | Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control. |
-| `label` | `string` | yes | — | What the metric measures — rendered visibly above the value. |
+| `label` | `string` | yes | — | What the metric measures — rendered visibly above the value. Rendered on screen. |
 | `value` | `string \| number` | yes | — | The metric value |
 | `delta` | `string` | no | — | Change indicator rendered next to the trend arrow |
 | `trend` | `'up' \| 'down' \| 'flat'` | no | `flat` | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
@@ -17452,7 +17452,7 @@ import { Steps } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Accessible label for the steps navigation; defaults to the built-in i18n string. |
+| `ariaLabel` | `string` | no | — | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
 | `steps` | `Step[]` | yes | — | Array of step objects with label and optional explicit state |
 | `activeStep` | `number` | no | `0` | Index of the currently active step (0-based) |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `'horizontal'` | Layout direction of the steps |
@@ -17583,7 +17583,7 @@ import { StructuredList } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label for the list table. |
 | `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes | — | The items to render. |
 | `headers` | `ReactNode[]` | no | — | The column header cells. |
@@ -17676,7 +17676,7 @@ import { Swap } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `on` | `React.ReactNode` | yes | — | Content shown in the active (on) state. |
 | `off` | `React.ReactNode` | yes | — | Content shown in the inactive (off) state. |
 | `checked` | `boolean` | no | `false` | Whether the control is checked (controlled). |
@@ -17863,7 +17863,7 @@ import { Switcher } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `items` | `SwitcherEntry[]` | yes | — | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label` | `string` | no | `Switch application` | Text label for the control. |
+| `label` | `string` | no | `Switch application` | Accessible name for the switcher landmark. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -18325,7 +18325,7 @@ import { Textarea } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control. |
+| `label` | `string` | no | — | Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `rows` | `number` | no | `4` | Number of visible text rows. |
@@ -18529,7 +18529,7 @@ import { TimePicker } from '@cascivo/react'
 | `min` | `string` | no | — | Minimum allowed value. |
 | `max` | `string` | no | — | Maximum allowed value. |
 | `step` | `number` | no | — | Increment between allowed values. |
-| `label` | `string` | no | — | Text label for the control. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `hint` | `string` | no | — | Supplementary hint text shown with the control. |
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `'md'` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -18894,7 +18894,7 @@ import { Toggle } from '@cascivo/react'
 | `defaultChecked` | `boolean` | no | `false` | Whether the control is checked on first render (uncontrolled). |
 | `onValueChange` | `(checked: boolean) => void` | no | — | Called with the new checked state when the switch is toggled. |
 | `onChange` | `(checked: boolean) => void` | no | — | Deprecated: use onValueChange (same checked boolean). |
-| `label` | `string` | no | — | Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text. |
+| `label` | `string` | no | — | Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text. Rendered on screen. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 
@@ -19263,7 +19263,7 @@ import { TreeView } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label for the tree. |
 | `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes | — | The items to render. |
 | `selectionMode` | `'single' \| 'multi'` | no | `single` | Whether one or multiple nodes can be selected ('single' \| 'multi'). |
@@ -19439,7 +19439,7 @@ import { VirtualList } from '@cascivo/react'
 | `height` | `number` | yes | — | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
 | `renderItem` | `(item: Item, index: number) => React.ReactNode` | yes | — | Renders one row |
 | `overscan` | `number` | no | `3` | Extra rows rendered above and below the visible window, to cover fast scrolling. |
-| `ariaLabel` | `string` | no | — | Accessible label for the list; label it when the list stands alone |
+| `ariaLabel` | `string` | no | — | Accessible label for the list; label it when the list stands alone. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -19598,7 +19598,7 @@ import { WheelPicker } from '@cascivo/react'
 | `onValueChange` | `(value: string) => void` | yes | — | Called with the new value when the wheel settles or a key moves the selection |
 | `visibleCount` | `number` | no | `5` | How many rows are visible. Odd numbers keep the selection centred. |
 | `itemHeight` | `number` | no | `36` | Row height in px. |
-| `ariaLabel` | `string` | no | — | Accessible label for the wheel — required when it has no visible label |
+| `ariaLabel` | `string` | no | — | Accessible label for the wheel — required when it has no visible label. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Object types

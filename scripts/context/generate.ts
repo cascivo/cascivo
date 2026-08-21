@@ -13,6 +13,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseEnum } from '../../packages/mcp/src/grammar.ts'
+import { describeWithVisibility } from '../lib/name-visibility-note.ts'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -347,7 +348,7 @@ export function buildComponentMarkdown(entry: RegistryEntry): string {
     const esc = (s: string) => s.replace(/\|/g, '\\|')
     for (const p of meta.props) {
       const def = p.default !== undefined ? esc(String(p.default)) : '—'
-      const desc = esc(p.description ?? '—')
+      const desc = esc(describeWithVisibility(p))
       lines.push(
         `| \`${p.name}\` | \`${esc(p.type)}\` | ${p.required ? 'Yes' : 'No'} | ${def} | ${desc} |`,
       )

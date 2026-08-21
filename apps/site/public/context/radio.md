@@ -36,7 +36,7 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 
 | Name       | Type      | Required | Default | Description                                                        |
 | ---------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`    | `string`  | No       | —       | Text label for the control.                                        |
+| `label`    | `string`  | No       | —       | Text label for the control. Rendered on screen.                    |
 | `value`    | `string`  | Yes      | —       | The controlled value.                                              |
 | `disabled` | `boolean` | No       | false   | When true, disables the control and removes it from the tab order. |
 | `name`     | `string`  | No       | —       | Form field name shared by the radio group.                         |

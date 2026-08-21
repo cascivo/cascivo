@@ -76,11 +76,14 @@ default `chunk-size-limit` warning at 500 KB, so **a stock cascivo dashboard tri
 warning on the first build**. That is alarming and worth explaining: it is one eagerly-loaded
 chunk containing every route, not a signal that something is wrong.
 
-The fix is ordinary route-level code splitting, which every router supports:
+The fix is ordinary route-level code splitting, which every router supports — **including
+the index route.** That last clause is the whole trick, and omitting it is what has cost two
+adopters a build cycle each:
 
 ```tsx
-// React Router — lazy route modules
-{ path: 'analytics', lazy: () => import('./routes/analytics') }
+// React Router — lazy route modules. Note `/` is lazy too, not just the "big" routes.
+{ index: true, lazy: () => import('./routes/overview') },
+{ path: 'analytics', lazy: () => import('./routes/analytics') },
 
 // TanStack Router — the same idea
 createFileRoute('/analytics')({ component: lazyRouteComponent(() => import('./analytics')) })
@@ -90,10 +93,11 @@ Charts are the single biggest win: `@cascivo/charts` is a real charting engine, 
 console typically renders charts on one or two routes out of six. Splitting those routes
 keeps the engine out of the initial chunk entirely.
 
-> ### ⚠ …but only if your landing page has no chart on it, and this recipe tells you to put one there
+> ### ⚠ Split the index route too, or the chart engine lands in your entry chunk anyway
 >
-> These two pieces of advice work against each other, and an adopter hit it head-on
-> (2026-08-08 report B). They split `/analytics` exactly as above and measured:
+> "Split the chart routes" reads as _not_ including the landing page, and an adopter took it
+> that way (2026-08-08 report B). They split `/analytics` exactly as above, left `/` eager,
+> and measured:
 >
 > ```
 > dist/assets/index-*.js     524.70 kB   ← still over the limit
@@ -103,20 +107,30 @@ keeps the engine out of the initial chunk entirely.
 > The analytics chunk was 2.9 kB because `@cascivo/charts` was _already_ in the entry chunk:
 > the Overview page uses `Sparkline` in its KPI tiles and project cards — which is what
 > ["Composing a KPI tile with a sparkline"](#composing-a-kpi-tile-with-a-sparkline) below
-> recommends. One `Sparkline` on the landing route pulls the engine in and route-splitting the
-> chart pages buys almost nothing.
+> recommends. One `Sparkline` on an **eagerly-loaded** route pulls the engine into the entry
+> chunk, and route-splitting the chart pages then buys almost nothing.
 >
-> Pick one, deliberately:
+> Making `/` lazy like every other route fixes it, at no cost. A later adopter did exactly
+> that on the same shape of app and measured (2026-08-21 report):
 >
-> - **Sparklines on the landing page** (the better-looking dashboard). Accept one eager chunk
->   around 525 kB / 172 kB gzip and silence Vite's warning with
->   `build.chunkSizeWarningLimit`. This is the option most consoles should take: the engine is
->   loaded once and every later chart route is then nearly free.
-> - **A genuinely small initial load.** Keep the landing route chart-free — use `Stat` without
->   `visual`, or a plain delta — and split every route that draws anything.
+> ```
+> dist/assets/index-*.js     413.07 kB / 133.25 kB gzip   ← no warning
+> dist/assets/dist-*.js       44.87 kB /  14.84 kB gzip   ← the chart engine, shared
+> ```
 >
-> There is no third option today: `@cascivo/charts` has no sparkline-only subpath, so
-> importing `Sparkline` imports the engine.
+> Sparklines on the landing page **and** an entry chunk under the limit. The engine moves to
+> a shared chunk that every chart route reuses; the landing page fetches it in parallel with
+> its own chunk rather than serialised behind the entry.
+>
+> Two footnotes:
+>
+> - **Do not pre-emptively raise `build.chunkSizeWarningLimit`.** The 2026-08-21 adopter set
+>   it to 700 on the strength of an earlier version of this box, measured, and deleted it
+>   again — it was never needed. Raise it only after you have measured and decided the number
+>   is fine.
+> - **Verify rather than assume.** `grep` the built bundles for a chart-engine symbol to
+>   confirm which chunk it landed in. Chunking is a property of your import graph, not of
+>   cascivo.
 
 The CSS number behaves differently and needs no action — per-component tree-shaking already
 dropped ~40% of the aggregate sheet (166 KB of 273 KB) — **except under SSR**, where the

@@ -9,7 +9,13 @@ export const meta: ComponentMeta = {
   variants: [],
   sizes: [],
   props: [
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'label',
+      nameVisibility: 'visible',
+      description: 'Text label for the control.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'min',
       description: 'Minimum allowed value.',

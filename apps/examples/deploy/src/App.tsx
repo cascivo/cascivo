@@ -113,7 +113,7 @@ export default function App() {
 
   return (
     <ToastProvider>
-      <AppShell navGroups={navGroups} mockBanner>
+      <AppShell navGroups={navGroups} navFooter={t(deployMsg.navPlanFooter)} mockBanner>
         {loadError.value && (
           <div
             role="alert"

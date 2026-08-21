@@ -72,7 +72,8 @@
       },
       {
         "name": "label",
-        "description": "Text label for the control.",
+        "nameVisibility": "invisible",
+        "description": "Accessible name for the QR image. Not rendered — screen readers only.",
         "type": "string",
         "required": false
       }
