@@ -34,8 +34,17 @@ export interface QrCodeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'child
    * @see the component manifest
    */
   background?: string
-  /** Accessible label. Defaults to the i18n built-in "QR code". */
+  /** Accessible name for the QR image — **not rendered**. Defaults to the i18n built-in
+   * "QR code". */
   label?: string
+  /**
+   * Alias of `label` — the same invisible accessible name under the catalog's own spelling.
+   *
+   * `ariaLabel` is what the catalog calls a name nothing paints, so it is the guess an agent
+   * makes after reading one other component (2026-08-21 report item 1). This component
+   * predates the convention and shipped `label`; both work and neither is deprecated.
+   */
+  ariaLabel?: string
 }
 
 const QUIET_ZONE = 4
@@ -48,6 +57,7 @@ export function QrCode({
   fill = 'currentColor',
   background = 'transparent',
   label,
+  ariaLabel,
   className,
   style,
   ...props
@@ -74,7 +84,7 @@ export function QrCode({
       <svg
         className={styles['svg']}
         role="img"
-        aria-label={label ?? t(builtin.qrCode.label)}
+        aria-label={ariaLabel ?? label ?? t(builtin.qrCode.label)}
         viewBox={`0 0 ${dim} ${dim}`}
         shapeRendering="crispEdges"
       >

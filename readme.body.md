@@ -49,6 +49,12 @@ export function App() {
 
 Prefer a prebuilt dependency? `pnpm add @cascivo/react @cascivo/themes @preact/signals-react` and import from `@cascivo/react`. See the [`@cascivo/react`](packages/react) README for the full setup.
 
+### Versioning and stability
+
+Every package is `0.x` and they version **independently** via [changesets](https://github.com/changesets/changesets), so your install list will mix numbers — `@cascivo/react@0.18.x` next to `@cascivo/platform@0.0.x`. A low number means **fewer releases, not less finished**: `@cascivo/platform` is new, not immature. Compatibility is per-entry `peerVersions` in `registry.json`, not version equality, so nothing has to move in lockstep.
+
+Pin exact versions (no `^`). Before any upgrade run **`cascivo doctor --drift`** — it reads [`breaking-changes.json`](https://cascivo.com/breaking-changes.json), published per package and machine-readable, and reports what changed under you. Details in [UPGRADING.md](docs/UPGRADING.md).
+
 ## AI / Context layer
 
 cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent, boundaries, anti-patterns) so agents select from closed sets and their output is checkable:

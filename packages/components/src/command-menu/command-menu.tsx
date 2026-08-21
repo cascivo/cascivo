@@ -97,12 +97,20 @@ export interface CommandMenuProps {
    */
   hotkey?: boolean
   /**
-   * Text label for the control.
+   * Accessible name for the command dialog. Not rendered — screen readers only.
    *
    * @defaultValue `Command menu`
    * @see the component manifest
    */
   label?: string
+  /**
+   * Alias of `label` — the same invisible accessible name under the catalog's own spelling.
+   *
+   * `ariaLabel` is what the catalog calls a name nothing paints, so it is the guess an agent
+   * makes after reading one other component (2026-08-21 report item 1). This component
+   * predates the convention and shipped `label`; both work and neither is deprecated.
+   */
+  ariaLabel?: string
   /**
    * Shows a loading spinner in place of the empty state (for async items)
    *
@@ -231,13 +239,14 @@ export function CommandMenu({
   emptyLabel,
   hotkey = true,
   label,
+  ariaLabel,
   loading = false,
   onQueryChange,
   scopes = [],
   className,
 }: CommandMenuProps) {
   useSignals()
-  const resolvedLabel = label ?? t(builtin.commandMenu.label)
+  const resolvedLabel = ariaLabel ?? label ?? t(builtin.commandMenu.label)
   const resolvedEmptyLabel = emptyLabel ?? t(builtin.commandMenu.empty)
   const baseId = useId()
   const listboxId = `${baseId}-listbox`

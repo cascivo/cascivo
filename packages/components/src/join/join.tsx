@@ -5,7 +5,8 @@ export type JoinOrientation = 'horizontal' | 'vertical'
 export interface JoinProps {
   children: React.ReactNode
   /**
-   * Layout orientation of the component.
+   * Axis the joined children flow along: `horizontal` for a row, `vertical` for a column.
+   * Inner corners are squared off either way.
    *
    * @defaultValue `horizontal`
    * @see the component manifest

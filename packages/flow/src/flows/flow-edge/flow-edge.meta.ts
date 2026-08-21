@@ -51,6 +51,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'visible',
       description: 'Text label for the control.',
       type: 'ReactNode',
       required: false,

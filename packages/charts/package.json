@@ -38,6 +38,12 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./sparkline": {
+      "types": "./dist/sparkline.d.ts",
+      "node": "./dist/node/sparkline.js",
+      "import": "./dist/sparkline.js",
+      "default": "./dist/sparkline.js"
+    },
     "./styles.css": "./dist/charts.css"
   },
   "publishConfig": {

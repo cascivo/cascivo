@@ -33,6 +33,14 @@ export interface SplitViewProps {
    * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
    */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   'aria-label'?: string
   className?: string
 }
@@ -45,6 +53,7 @@ export function SplitView({
   max = 0.8,
   'aria-label': ariaLabelDom,
   ariaLabel,
+  label,
   className,
 }: SplitViewProps) {
   useSignals()
@@ -88,7 +97,7 @@ export function SplitView({
       <div className={styles['pane-start']}>{start}</div>
       <div
         role="separator"
-        aria-label={ariaLabel ?? ariaLabelDom ?? 'Split view'}
+        aria-label={ariaLabel ?? ariaLabelDom ?? label ?? 'Split view'}
         aria-orientation="vertical"
         aria-valuenow={Math.round(ratio.value * 100)}
         aria-valuemin={Math.round(min * 100)}

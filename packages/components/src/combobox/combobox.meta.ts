@@ -56,7 +56,13 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'true',
     },
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'label',
+      nameVisibility: 'visible',
+      description: 'Text label for the control.',
+      type: 'string',
+      required: false,
+    },
     {
       name: 'hint',
       description: 'Supplementary hint text shown with the control.',

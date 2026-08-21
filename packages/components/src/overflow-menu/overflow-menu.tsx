@@ -49,7 +49,8 @@ export interface OverflowMenuProps {
   items: OverflowMenuItem[]
   onSelect?: (value: string) => void
   /**
-   * Placement relative to the trigger.
+   * Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge
+   * (right in LTR), `bottom-start` from its start edge.
    *
    * @defaultValue `bottom-end`
    * @see the component manifest
@@ -62,6 +63,14 @@ export interface OverflowMenuProps {
    * @see the component manifest
    */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   size?: 'sm' | 'md'
   disabled?: boolean
   className?: string
@@ -82,12 +91,13 @@ export function OverflowMenu({
   onSelect,
   placement = 'bottom-end',
   ariaLabel,
+  label,
   size = 'md',
   disabled = false,
   className,
 }: OverflowMenuProps) {
   useSignals()
-  const resolvedAriaLabel = ariaLabel ?? t(builtin.overflowMenu.trigger)
+  const resolvedAriaLabel = ariaLabel ?? label ?? t(builtin.overflowMenu.trigger)
   // Map to Dropdown's item shape. Destructive items carry a hidden marker span
   // inside the icon slot so CSS can target them via :has().
   const dropdownItems: DropdownItem[] = items.map((item) => {

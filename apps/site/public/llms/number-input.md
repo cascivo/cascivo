@@ -45,7 +45,7 @@ import { NumberInput } from '@cascivo/react'
 | `step`           | `number`                          | no       | `1`         | Increment between allowed values.                                       |
 | `precision`      | `number`                          | no       | —           | Decimal places applied on commit                                        |
 | `formatOptions`  | `Intl.NumberFormatOptions`        | no       | —           | Display formatting applied on blur; raw editable string while focused   |
-| `label`          | `string`                          | no       | —           | Text label for the control.                                             |
+| `label`          | `string`                          | no       | —           | Text label for the control. Rendered on screen.                         |
 | `hint`           | `string`                          | no       | —           | Supplementary hint text shown with the control.                         |
 | `error`          | `string`                          | no       | —           | Error message shown when the value is invalid.                          |
 | `size`           | `'sm' \| 'md' \| 'lg'`            | no       | `md`        | Visual size of the component (e.g. 'sm', 'md', 'lg').                   |

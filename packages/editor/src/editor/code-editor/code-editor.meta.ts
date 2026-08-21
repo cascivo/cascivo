@@ -79,7 +79,16 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible label (defaults to the i18n "Code editor")',

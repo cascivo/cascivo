@@ -47,7 +47,21 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'transparent',
     },
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description: 'Accessible name for the QR image. Not rendered — screen readers only.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: ['--cascivo-color-text'],
   accessibility: {

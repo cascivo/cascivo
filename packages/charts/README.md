@@ -81,6 +81,20 @@ The charts are signal-driven. In a plain React app (no Babel signals transform),
 from `@cascivo/core` as the first statement of any component that reads a signal during render. The
 docs app (Preact) does not need this.
 
+## One sparkline, without the engine
+
+`import { Sparkline } from '@cascivo/charts'` pulls in the whole charting engine — tooltips, voronoi hit-testing, a canvas layer, zoom/pan, a toolbox, PNG/SVG export — because `Sparkline` is built on the same frame as every other chart. An adopter measured 44.87 kB / 14.84 kB gzip for a single trend line on a landing page.
+
+For a page that wants a sparkline and draws no other charts, there is a subpath that does not:
+
+```tsx
+import { Sparkline } from '@cascivo/charts/sparkline' // ~3.5 kB gzip, no engine
+```
+
+Identical props, identical markup, identical styling — asserted by a DOM-parity test, and the size is held by a budget in CI. **One difference: no hover tooltip**, because the tooltip is what requires the engine.
+
+Use the main entry when the page draws other charts anyway: the engine is already paid for and the subpath saves nothing.
+
 ## Coloring
 
 By default every slice/series/layer is colored from the positional palette

@@ -12,7 +12,16 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description:
@@ -33,7 +42,8 @@ export const meta: ComponentMeta = {
     {
       name: 'orientation',
       default: 'horizontal',
-      description: 'Layout orientation of the component.',
+      description:
+        'Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).',
       type: "'horizontal' | 'vertical' | 'both'",
       required: false,
     },

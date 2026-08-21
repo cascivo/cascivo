@@ -4,7 +4,8 @@ import styles from './list.module.css'
 
 export interface ListProps extends HTMLAttributes<HTMLElement> {
   /**
-   * The HTML element to render as.
+   * `ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker,
+   * not the styling.
    *
    * @defaultValue `ul`
    * @see the component manifest

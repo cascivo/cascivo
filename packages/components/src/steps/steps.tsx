@@ -30,6 +30,14 @@ export interface StepsProps {
   className?: string
   /** Accessible label for the steps list */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
 }
 
 export function Steps({
@@ -38,11 +46,12 @@ export function Steps({
   orientation = 'horizontal',
   className,
   ariaLabel,
+  label,
 }: StepsProps) {
   useSignals()
   const active = useSignal(controlledActiveStep ?? 0)
   active.value = controlledActiveStep ?? active.value
-  const resolvedAriaLabel = ariaLabel ?? t(builtin.steps.label)
+  const resolvedAriaLabel = ariaLabel ?? label ?? t(builtin.steps.label)
 
   return (
     <ol

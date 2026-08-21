@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'position',
-      description: 'Position of the component.',
+      description:
+        'Canvas edge slot the panel occupies: `top-right`, `top-center`, `top-left`, `bottom-left`, `bottom-center` or `bottom-right`.',
       type: "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
       required: false,
       default: 'top-right',

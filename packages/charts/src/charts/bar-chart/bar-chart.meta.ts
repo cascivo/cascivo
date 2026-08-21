@@ -42,7 +42,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Direction the bars grow. `vertical` puts the categories on the x-axis and grows bars upward (columns); `horizontal` puts them on the y-axis and grows bars rightward — the better choice for long category names.',
       type: "'vertical' | 'horizontal'",
       required: false,
       default: 'vertical',

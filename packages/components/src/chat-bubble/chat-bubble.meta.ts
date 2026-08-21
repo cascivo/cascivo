@@ -17,7 +17,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'side',
-      description: 'Edge the component is anchored to.',
+      description:
+        'Which side of the thread the bubble sits on: `start` for an incoming message (avatar first), `end` for an outgoing one (right-aligned, avatar last).',
       type: "'start' | 'end'",
       required: false,
       default: 'start',

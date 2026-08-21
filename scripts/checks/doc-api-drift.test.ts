@@ -98,3 +98,56 @@ describe('doc/API drift — adopter-facing guides carry no stale API phrasings',
     )
   })
 })
+
+/**
+ * The near-miss prop table in AI-RULES.md — every row must stay true.
+ *
+ * The table lists real wrong guesses from adopter reports next to the prop that actually
+ * exists. A table like that is only worth reading if it cannot rot: a row naming a prop that
+ * was since renamed teaches the wrong thing with the authority of a fix list, which is worse
+ * than saying nothing. So both halves of each row are checked against `registry.json`: the
+ * "is" prop must exist on the named component, and the "wrote" prop must not.
+ */
+describe('near-miss prop table stays true', () => {
+  interface Prop {
+    name: string
+  }
+  const registry = JSON.parse(readFileSync(join(REPO_ROOT, 'registry.json'), 'utf8')) as {
+    components: { name: string; meta: { props?: Prop[] } }[]
+  }
+
+  const propsOf = (component: string): Set<string> => {
+    const entry = registry.components.find(
+      (c) => c.name === component || c.name.endsWith(`/${component}`),
+    )
+    return new Set((entry?.meta.props ?? []).map((p) => p.name))
+  }
+
+  /** [component, prop that exists, prop an adopter guessed and which must NOT exist]. */
+  const ROWS: [string, string, string | null][] = [
+    ['text', 'muted', 'tone'],
+    ['data-list', 'orientation', null],
+    ['field', 'hint', null],
+    ['field', 'description', null],
+    ['overflow-menu', 'ariaLabel', null],
+    ['overflow-menu', 'label', null],
+  ]
+
+  for (const [component, present, absent] of ROWS) {
+    it(`${component}.${present} exists${absent ? ` and .${absent} does not` : ''}`, () => {
+      const props = propsOf(component)
+      assert.ok(
+        props.has(present),
+        `AI-RULES.md's near-miss table says ${component} takes \`${present}\`, and it does ` +
+          'not. Fix the table (or the component) — a stale fix list is worse than none.',
+      )
+      if (absent) {
+        assert.ok(
+          !props.has(absent),
+          `AI-RULES.md's near-miss table says ${component} has no \`${absent}\`, but it now ` +
+            'does. If that was deliberate, delete the row: it is no longer a near-miss.',
+        )
+      }
+    })
+  }
+})

@@ -126,7 +126,16 @@ export interface DataTableProps<Row> {
    */
   loading?: boolean
   emptyState?: ReactNode
+  /** Visible caption above the table; it also becomes the table's accessible name. */
   title?: string
+  /**
+   * Invisible accessible name for the `<table>`, used when there is no visible `title`.
+   *
+   * A table with neither is an unnamed landmark for a screen reader — a real WCAG 1.3.1 /
+   * 4.1.2 gap, and until 0.19 there was no way to fix it without rendering a caption you did
+   * not want. Dev-warns when both are absent.
+   */
+  ariaLabel?: string
   description?: string
   labels?: DataTableLabels
   className?: string
@@ -165,6 +174,33 @@ interface Entry<Row> {
   id: string
 }
 
+const warnedUnnamedTable = new Set<string>()
+
+/** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so the
+ * browser-facing source needs no `@types/node`, and it's safe where `process` is
+ * absent (bundlers replace `process.env.NODE_ENV` in app builds). */
+function isDev(): boolean {
+  const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
+  return env?.NODE_ENV !== 'production'
+}
+
+/**
+ * Dev-only, deduped warning: a `<table>` with neither a visible `title` nor an `ariaLabel`
+ * is an unnamed landmark. Screen-reader users land on it with no idea what it lists, and
+ * nothing in a passing test suite says so. Keyed by column set, so a page of similar tables
+ * warns once per shape rather than once per render.
+ */
+function warnIfUnnamed(title: string | undefined, ariaLabel: string | undefined, key: string) {
+  if (!isDev()) return
+  if (title !== undefined || ariaLabel !== undefined) return
+  if (warnedUnnamedTable.has(key)) return
+  warnedUnnamedTable.add(key)
+  console.warn(
+    `cascivo DataTable: this table has no accessible name (columns: ${key}). Pass \`title\` ` +
+      'for a visible caption, or `ariaLabel` for a name only screen readers hear.',
+  )
+}
+
 function cellValue<Row>(row: Row, key: string): unknown {
   return (row as Record<string, unknown>)[key]
 }
@@ -193,6 +229,7 @@ export function DataTable<Row>({
   loading = false,
   emptyState,
   title,
+  ariaLabel,
   description,
   labels,
   className,
@@ -411,6 +448,7 @@ export function DataTable<Row>({
     pagination && !virtualized && renderedEntries.length > 0
       ? Math.max(0, pageSizeSignal.value - renderedEntries.length)
       : 0
+  warnIfUnnamed(title, ariaLabel, columns.map((c) => c.key).join(','))
   const titleId = `${baseId}-title`
   const descriptionId = `${baseId}-description`
   const totalRows = filtered.value.length
@@ -490,6 +528,7 @@ export function DataTable<Row>({
         <table
           className={styles['table']}
           aria-labelledby={title !== undefined ? titleId : undefined}
+          aria-label={title === undefined ? ariaLabel : undefined}
           aria-describedby={description !== undefined ? descriptionId : undefined}
           aria-busy={loading || undefined}
           aria-rowcount={virtualized ? pageEntries.length : undefined}

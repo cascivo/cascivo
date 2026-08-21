@@ -43,6 +43,12 @@ export interface RegistryComponent {
   fileHashes?: Record<string, string>
   /** Present when the component is deprecated — surfaced by `list_components`/`get_component`. */
   deprecated?: { since: string; replacement: string; note?: string }
+  /**
+   * Foreign names for this component in peer systems — `toggle` carries `Switch`, `modal`
+   * carries `Dialog`. `getComponent` and `searchComponents` resolve through these, so an
+   * agent that asks for the name it knows is answered instead of told it does not exist.
+   */
+  aliases?: string[]
   dependencies: string[]
   tags: string[]
   meta: ComponentManifest
@@ -97,11 +103,18 @@ export function listComponents(
 }
 
 /** Find one component manifest by name (matches registry name or meta name). */
+/** Registry-name, display-name, or foreign-name match. See `RegistryComponent.aliases`. */
+function matchesName(c: RegistryComponent, target: string): boolean {
+  return (
+    c.name.toLowerCase() === target ||
+    c.meta.name.toLowerCase() === target ||
+    (c.aliases ?? []).some((a) => a.toLowerCase() === target)
+  )
+}
+
 export function getComponent(registry: Registry, name: string): ComponentManifest | undefined {
   const target = name.toLowerCase()
-  return registry.components.find(
-    (c) => c.name.toLowerCase() === target || c.meta.name.toLowerCase() === target,
-  )?.meta
+  return registry.components.find((c) => matchesName(c, target))?.meta
 }
 
 /**
@@ -116,9 +129,7 @@ export function getComponentWithVersion(
   | (ComponentManifest & { version: string; files: string[]; fileHashes?: Record<string, string> })
   | undefined {
   const target = name.toLowerCase()
-  const entry = registry.components.find(
-    (c) => c.name.toLowerCase() === target || c.meta.name.toLowerCase() === target,
-  )
+  const entry = registry.components.find((c) => matchesName(c, target))
   if (!entry) return undefined
   return {
     ...entry.meta,
@@ -229,7 +240,10 @@ export function searchComponents(registry: Registry, query: string): ComponentMa
       (c) =>
         c.name.toLowerCase().includes(q) ||
         c.description.toLowerCase().includes(q) ||
-        c.tags.some((t) => t.toLowerCase().includes(q)),
+        c.tags.some((t) => t.toLowerCase().includes(q)) ||
+        // A foreign name is an exact-match concept, not a substring one: `Switch` must find
+        // `toggle`, but a search for "s" must not rank every aliased component first.
+        (c.aliases ?? []).some((a) => a.toLowerCase() === q),
     )
     .map((c) => c.meta)
 }

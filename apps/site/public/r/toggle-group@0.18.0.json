@@ -59,7 +59,7 @@
       },
       {
         "name": "orientation",
-        "description": "Layout orientation of the component.",
+        "description": "Axis the options flow along: `horizontal` for a segmented row, `vertical` for a stacked column.",
         "type": "'horizontal' | 'vertical'",
         "required": false,
         "default": "horizontal"

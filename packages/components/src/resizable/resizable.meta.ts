@@ -12,7 +12,16 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible label for the resize handle.',
@@ -20,7 +29,8 @@ export const meta: ComponentMeta = {
     { name: 'children', type: 'ReactNode', required: true, description: 'Exactly two panes' },
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',

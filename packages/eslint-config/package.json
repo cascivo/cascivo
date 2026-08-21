@@ -41,5 +41,8 @@
   "scripts": {
     "build": "echo 'eslint-config: plain ESM, no build'",
     "test": "node --test src/index.test.js"
+  },
+  "dependencies": {
+    "@cascivo/eslint-plugin": "workspace:*"
   }
 }

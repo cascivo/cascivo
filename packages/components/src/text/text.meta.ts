@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'as',
-      description: 'The HTML element to render as.',
+      description:
+        '`p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.',
       type: "'p' | 'span' | 'div'",
       required: false,
       default: 'p',
@@ -32,7 +33,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'muted',
-      description: 'When true, renders in a muted/subtle color.',
+      description:
+        'When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`.',
       type: 'boolean',
       required: false,
       default: 'false',

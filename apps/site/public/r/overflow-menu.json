@@ -42,13 +42,21 @@
       },
       {
         "name": "placement",
-        "description": "Placement relative to the trigger.",
+        "description": "Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.",
         "type": "'bottom-start' | 'bottom-end'",
         "required": false,
         "default": "bottom-end"
       },
       {
+        "name": "label",
+        "nameVisibility": "invisible",
+        "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+        "type": "string",
+        "required": false
+      },
+      {
         "name": "ariaLabel",
+        "nameVisibility": "invisible",
         "description": "Accessible label for the component.",
         "type": "string",
         "required": false,

@@ -29,13 +29,14 @@ import { Steps } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                         | Required | Default        | Description                                                                      |
-| ------------- | ---------------------------- | -------- | -------------- | -------------------------------------------------------------------------------- |
-| `ariaLabel`   | `string`                     | no       | —              | Accessible label for the steps navigation; defaults to the built-in i18n string. |
-| `steps`       | `Step[]`                     | yes      | —              | Array of step objects with label and optional explicit state                     |
-| `activeStep`  | `number`                     | no       | `0`            | Index of the currently active step (0-based)                                     |
-| `orientation` | `'horizontal' \| 'vertical'` | no       | `'horizontal'` | Layout direction of the steps                                                    |
-| `className`   | `string`                     | no       | —              | Additional CSS class names merged onto the root element.                         |
+| Prop          | Type                         | Required | Default        | Description                                                                                                                                    |
+| ------------- | ---------------------------- | -------- | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`       | `string`                     | no       | —              | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel`   | `string`                     | no       | —              | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only.                           |
+| `steps`       | `Step[]`                     | yes      | —              | Array of step objects with label and optional explicit state                                                                                   |
+| `activeStep`  | `number`                     | no       | `0`            | Index of the currently active step (0-based)                                                                                                   |
+| `orientation` | `'horizontal' \| 'vertical'` | no       | `'horizontal'` | Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page.                        |
+| `className`   | `string`                     | no       | —              | Additional CSS class names merged onto the root element.                                                                                       |
 
 ## Examples
 

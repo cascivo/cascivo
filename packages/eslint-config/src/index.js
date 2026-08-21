@@ -47,10 +47,11 @@
  * Prefer the pieces individually when you only vendor source, or only use the package:
  *
  * ```js
- * import { cascivoSignals, cascivoVendoredSource } from '@cascivo/eslint-config'
- * export default [...yourConfig, cascivoSignals, cascivoVendoredSource()]
+ * import { cascivoSignals, cascivoPropVocabulary, cascivoVendoredSource } from '@cascivo/eslint-config'
+ * export default [...yourConfig, cascivoSignals, cascivoPropVocabulary, cascivoVendoredSource()]
  * ```
  */
+import cascivoPlugin from '@cascivo/eslint-plugin'
 
 /**
  * Reconciles `eslint-plugin-react-hooks@7` with cascivo's signal-based reactivity.
@@ -147,7 +148,27 @@ export function cascivoVendoredSource(glob = 'src/components/ui/**') {
   }
 }
 
-/** Both fragments, in the order flat config wants them. Spread last. */
-const cascivo = [cascivoSignals, cascivoVendoredSource()]
+/**
+ * The near-miss prop messages, at `warn`.
+ *
+ * `<Text tone="subtle">` is a correct TypeScript error whose text — "Property 'tone' does not
+ * exist on type 'TextProps'" — names the mistake and teaches nothing, so the adopter goes
+ * looking for the docs. That is the dependency the 2026-08-21 report named: "the docs are
+ * doing work the API should eventually do itself." Most of that work moved into the types;
+ * this rule carries the part TypeScript structurally cannot say. See
+ * `@cascivo/eslint-plugin`'s `prop-vocabulary.js` for the full rationale.
+ *
+ * **`warn`, never `error`.** A lint rule that fails somebody's build over a naming opinion
+ * gets the whole config deleted — and that takes `react-hooks/immutability` with it, which is
+ * the thing this package exists for. Raise it yourself if you want it enforced.
+ */
+export const cascivoPropVocabulary = {
+  name: 'cascivo/prop-vocabulary',
+  plugins: { cascivo: cascivoPlugin },
+  rules: { 'cascivo/prop-vocabulary': 'warn' },
+}
+
+/** All three fragments, in the order flat config wants them. Spread last. */
+const cascivo = [cascivoSignals, cascivoPropVocabulary, cascivoVendoredSource()]
 
 export default cascivo

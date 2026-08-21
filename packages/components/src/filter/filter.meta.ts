@@ -11,7 +11,16 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       description:
         'Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.',
       type: 'string',
@@ -63,7 +72,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        '`pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.',
       type: "'pill' | 'outline'",
       required: false,
       default: 'pill',

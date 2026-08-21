@@ -9,7 +9,8 @@ interface IconButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode
   size?: 'sm' | 'md' | 'lg'
   /**
-   * Selects the visual style variant.
+   * `ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a
+   * solid surface.
    *
    * @defaultValue `ghost`
    * @see the component manifest

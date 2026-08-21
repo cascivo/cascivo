@@ -44,7 +44,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',
@@ -56,7 +57,21 @@ export const meta: ComponentMeta = {
       required: false,
       default: '5',
     },
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: false },
+    {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description: 'Accessible name for the divider slider. Not rendered — screen readers only.',
+      type: 'string',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-radius-md',

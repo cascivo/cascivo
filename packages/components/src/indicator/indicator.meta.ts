@@ -23,7 +23,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'placement',
-      description: 'Placement relative to the trigger.',
+      description:
+        'Corner of the wrapped element the dot or count sits on: `top-end`, `top-start`, `bottom-start` or `bottom-end`.',
       type: "'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
       required: false,
       default: 'top-end',

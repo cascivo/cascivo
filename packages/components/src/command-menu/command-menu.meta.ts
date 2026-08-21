@@ -49,8 +49,17 @@ export const meta: ComponentMeta = {
       description: 'Global Cmd/Ctrl+K toggles the menu via onOpenChange',
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
-      description: 'Text label for the control.',
+      nameVisibility: 'invisible',
+      description: 'Accessible name for the command dialog. Not rendered — screen readers only.',
       type: 'string',
       required: false,
       default: 'Command menu',

@@ -35,7 +35,7 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 | Name           | Type      | Required | Default | Description                                                        |
 | -------------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`        | `string`  | No       | —       | Text label for the control.                                        |
+| `label`        | `string`  | No       | —       | Text label for the control. Rendered on screen.                    |
 | `min`          | `number`  | No       | 0       | Minimum allowed value.                                             |
 | `max`          | `number`  | No       | 100     | Maximum allowed value.                                             |
 | `step`         | `number`  | No       | 1       | Increment between allowed values.                                  |

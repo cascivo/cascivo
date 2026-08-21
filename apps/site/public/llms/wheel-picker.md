@@ -28,15 +28,16 @@ import { WheelPicker } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default | Description                                                                   |
-| --------------- | ------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
-| `options`       | `WheelPickerOption[]`     | yes      | —       | The rows of the wheel, in order                                               |
-| `value`         | `string`                  | yes      | —       | The selected option value; the component is controlled                        |
-| `onValueChange` | `(value: string) => void` | yes      | —       | Called with the new value when the wheel settles or a key moves the selection |
-| `visibleCount`  | `number`                  | no       | `5`     | How many rows are visible. Odd numbers keep the selection centred.            |
-| `itemHeight`    | `number`                  | no       | `36`    | Row height in px.                                                             |
-| `ariaLabel`     | `string`                  | no       | —       | Accessible label for the wheel — required when it has no visible label        |
-| `className`     | `string`                  | no       | —       | Additional CSS class names merged onto the root element.                      |
+| Prop            | Type                      | Required | Default | Description                                                                                                                                    |
+| --------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `options`       | `WheelPickerOption[]`     | yes      | —       | The rows of the wheel, in order                                                                                                                |
+| `value`         | `string`                  | yes      | —       | The selected option value; the component is controlled                                                                                         |
+| `onValueChange` | `(value: string) => void` | yes      | —       | Called with the new value when the wheel settles or a key moves the selection                                                                  |
+| `visibleCount`  | `number`                  | no       | `5`     | How many rows are visible. Odd numbers keep the selection centred.                                                                             |
+| `itemHeight`    | `number`                  | no       | `36`    | Row height in px.                                                                                                                              |
+| `label`         | `string`                  | no       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel`     | `string`                  | no       | —       | Accessible label for the wheel — required when it has no visible label. Not rendered — screen readers only.                                    |
+| `className`     | `string`                  | no       | —       | Additional CSS class names merged onto the root element.                                                                                       |
 
 ## Object types
 

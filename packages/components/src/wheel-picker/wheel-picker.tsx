@@ -29,6 +29,14 @@ export interface WheelPickerProps {
    */
   itemHeight?: number
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   className?: string
 }
 
@@ -53,6 +61,7 @@ export function WheelPicker({
   visibleCount = 5,
   itemHeight = 36,
   ariaLabel,
+  label,
   className,
 }: WheelPickerProps) {
   const columnRef = useRef<HTMLDivElement>(null)
@@ -155,7 +164,7 @@ export function WheelPicker({
         ref={columnRef}
         role="listbox"
         tabIndex={0}
-        aria-label={ariaLabel}
+        aria-label={ariaLabel ?? label}
         aria-activedescendant={`${baseId}-${selectedIndex}`}
         className={styles['column']}
         onKeyDown={onKeyDown}

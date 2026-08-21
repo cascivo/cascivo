@@ -80,3 +80,58 @@ describe('manifest completeness — agents get real machine-readable guidance', 
     assert.deepEqual(stale, [], `Stale PROPLESS entries: ${stale.join(', ')}`)
   })
 })
+
+/**
+ * A two-value enum whose description names neither value.
+ *
+ * `DataList.orientation` was documented as "Layout orientation of the component." — true of
+ * the words and useless about the fact, because the ambiguity is exactly *what* is being
+ * oriented. `'vertical'` moves the value under its label; the items stack vertically either
+ * way. An adopter read it the other way round and got a very tall summary card (2026-08-21
+ * report item 9).
+ *
+ * A description that names neither member of a two-member union is almost always that
+ * failure: it restates the prop name. Naming even one member forces the sentence to say what
+ * the axis actually is — "`horizontal` puts them side by side" cannot be written without
+ * committing to what moves.
+ *
+ * This is the narrow, checkable half of the same rule `PLACEHOLDERS` in
+ * `tsdoc-parity.test.ts` enforces by exact string. That list catches a known boilerplate
+ * sentence anywhere; this catches a new one on the props where the ambiguity bites hardest.
+ *
+ * When it first ran it flagged 19 props — every one of them genuinely uninformative. They
+ * were rewritten rather than allowlisted, which is why `OBVIOUS` is empty and should stay
+ * that way: an allowlist here is a description someone decided not to write.
+ */
+describe('two-value enums say what their values mean', () => {
+  const registry = JSON.parse(readFileSync(join(REPO_ROOT, 'registry.json'), 'utf8')) as {
+    components: Entry[]
+  }
+  const UNION_OF_TWO = /^'([a-z-]+)' \| '([a-z-]+)'$/
+
+  /** Props whose two values genuinely need no gloss, with the reason. Empty on purpose. */
+  const OBVIOUS: Record<string, string> = {}
+
+  it('names at least one of its two values', () => {
+    const offenders: string[] = []
+    for (const c of registry.components) {
+      for (const p of c.meta?.props ?? []) {
+        const m = UNION_OF_TWO.exec(p.type ?? '')
+        if (!m) continue
+        const key = `${c.name}.${p.name}`
+        if (key in OBVIOUS) continue
+        const description = (p.description ?? '').toLowerCase()
+        if (description.includes(m[1]!) || description.includes(m[2]!)) continue
+        offenders.push(`${key}: "${p.description ?? ''}"`)
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      'These props are a choice between two named values, and the description names neither — ' +
+        'so it restates the prop name instead of saying what changes. Say what each value ' +
+        'does; a reader cannot tell which way the axis runs from the word "orientation":\n  ' +
+        offenders.join('\n  '),
+    )
+  })
+})

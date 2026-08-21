@@ -1,6 +1,6 @@
 # Switcher
 
-App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 
 ## Install
 
@@ -26,11 +26,12 @@ import { Switcher } from '@cascivo/react'
 
 ## Props
 
-| Prop        | Type              | Required | Default              | Description                                                                   |
-| ----------- | ----------------- | -------- | -------------------- | ----------------------------------------------------------------------------- |
-| `items`     | `SwitcherEntry[]` | yes      | —                    | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label`     | `string`          | no       | `Switch application` | Text label for the control.                                                   |
-| `className` | `string`          | no       | —                    | Additional CSS class names merged onto the root element.                      |
+| Prop        | Type              | Required | Default              | Description                                                                                                                                  |
+| ----------- | ----------------- | -------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`     | `SwitcherEntry[]` | yes      | —                    | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })                                                                |
+| `ariaLabel` | `string`          | no       | —                    | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`     | `string`          | no       | `Switch application` | Accessible name for the switcher list. Not rendered — screen readers only.                                                                   |
+| `className` | `string`          | no       | —                    | Additional CSS class names merged onto the root element.                                                                                     |
 
 ## Examples
 

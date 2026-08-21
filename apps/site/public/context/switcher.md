@@ -1,7 +1,7 @@
 # Switcher
 
 **Category:** navigation  
-**Description:** App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+**Description:** Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 
 ## When to use
 
@@ -13,6 +13,7 @@
 
 - Primary in-app navigation — use SideNav
 - A small action menu attached to a control — use Dropdown
+- A COLLAPSED workspace/team switcher with one visible row and a menu on click — use Dropdown. Switcher renders every entry, permanently: it is an always-visible list, not a collapsing control, and the name misleads (2026-08-21 report item 5)
 
 ## Anti-patterns
 
@@ -32,11 +33,12 @@ role="list" structures the entries; each switch target is a real link with the a
 
 ## Props
 
-| Name        | Type              | Required | Default            | Description                                                                   |
-| ----------- | ----------------- | -------- | ------------------ | ----------------------------------------------------------------------------- |
-| `items`     | `SwitcherEntry[]` | Yes      | —                  | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label`     | `string`          | No       | Switch application | Text label for the control.                                                   |
-| `className` | `string`          | No       | —                  | Additional CSS class names merged onto the root element.                      |
+| Name        | Type              | Required | Default            | Description                                                                                                                                  |
+| ----------- | ----------------- | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`     | `SwitcherEntry[]` | Yes      | —                  | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })                                                                |
+| `ariaLabel` | `string`          | No       | —                  | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`     | `string`          | No       | Switch application | Accessible name for the switcher list. Not rendered — screen readers only.                                                                   |
+| `className` | `string`          | No       | —                  | Additional CSS class names merged onto the root element.                                                                                     |
 
 ## Tokens
 
@@ -76,7 +78,7 @@ Place inside a HeaderPanel opened by a Grid action in ShellHeader
 Copy this into an LLM context bar before editing this component:
 
 ```text
-I am modifying the cascivo Switcher component (navigation). App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers
+I am modifying the cascivo Switcher component (navigation). Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.
 
 Architecture constraints — follow exactly:
 - Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.

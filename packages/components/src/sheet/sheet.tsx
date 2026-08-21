@@ -13,7 +13,8 @@ export interface SheetProps {
   title?: ReactNode
   children: ReactNode
   /**
-   * Edge the component is anchored to.
+   * Edge the sheet slides in from: `end` (the inline end — right in LTR), `start`, `top` or
+   * `bottom`.
    *
    * @defaultValue `end`
    * @see the component manifest

@@ -27,6 +27,14 @@ export interface TreeViewProps {
    * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
    */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   'aria-label'?: string
 }
 
@@ -70,6 +78,7 @@ export function TreeView({
   className,
   'aria-label': ariaLabelDom,
   ariaLabel,
+  label,
 }: TreeViewProps) {
   useSignals()
 
@@ -254,7 +263,7 @@ export function TreeView({
   return (
     <ul
       role="tree"
-      aria-label={ariaLabel ?? ariaLabelDom}
+      aria-label={ariaLabel ?? ariaLabelDom ?? label}
       className={cn(styles['tree'], className)}
     >
       {items.map((node, i) => renderNode(node, 1, i + 1, items.length))}

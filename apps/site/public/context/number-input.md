@@ -45,7 +45,7 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 | `step`           | `number`                          | No       | 1         | Increment between allowed values.                                       |
 | `precision`      | `number`                          | No       | —         | Decimal places applied on commit                                        |
 | `formatOptions`  | `Intl.NumberFormatOptions`        | No       | —         | Display formatting applied on blur; raw editable string while focused   |
-| `label`          | `string`                          | No       | —         | Text label for the control.                                             |
+| `label`          | `string`                          | No       | —         | Text label for the control. Rendered on screen.                         |
 | `hint`           | `string`                          | No       | —         | Supplementary hint text shown with the control.                         |
 | `error`          | `string`                          | No       | —         | Error message shown when the value is invalid.                          |
 | `size`           | `'sm' \| 'md' \| 'lg'`            | No       | md        | Visual size of the component (e.g. 'sm', 'md', 'lg').                   |

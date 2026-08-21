@@ -73,6 +73,12 @@ export function App() {
 
 Prefer a prebuilt dependency? `pnpm add @cascivo/react @cascivo/themes @preact/signals-react` and import from `@cascivo/react`. See the [`@cascivo/react`](packages/react) README for the full setup.
 
+### Versioning and stability
+
+Every package is `0.x` and they version **independently** via [changesets](https://github.com/changesets/changesets), so your install list will mix numbers — `@cascivo/react@0.18.x` next to `@cascivo/platform@0.0.x`. A low number means **fewer releases, not less finished**: `@cascivo/platform` is new, not immature. Compatibility is per-entry `peerVersions` in `registry.json`, not version equality, so nothing has to move in lockstep.
+
+Pin exact versions (no `^`). Before any upgrade run **`cascivo doctor --drift`** — it reads [`breaking-changes.json`](https://cascivo.com/breaking-changes.json), published per package and machine-readable, and reports what changed under you. Details in [UPGRADING.md](docs/UPGRADING.md).
+
 ## AI / Context layer
 
 cascivo ships both the **WHAT** (manifests, tokens, MCP) and the **WHY** (intent, boundaries, anti-patterns) so agents select from closed sets and their output is checkable:
@@ -244,6 +250,7 @@ Published packages install from npm. Components themselves are copy-pasted into 
 | [`@cascivo/docs`](packages/docs)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocs?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docs)                   | The complete cascivo documentation as an npm package — read it offline with `npx @cascivo/docs`, no website needed. Components: @cascivo/react                    |
 | [`@cascivo/docspack`](packages/docspack)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fdocspack?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/docspack)           | cascivo's documentation as a docspack package — `docspack sync` once, then `docspack ask` answers offline from the version you installed                          |
 | [`@cascivo/eslint-config`](packages/eslint-config) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-config?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-config) | Flat ESLint config for apps using cascivo — reconciles the signal-based reactivity contract with eslint-plugin-react-hooks 7                                      |
+| [`@cascivo/eslint-plugin`](packages/eslint-plugin) | [![npm](https://img.shields.io/npm/v/%40cascivo%2Feslint-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/eslint-plugin) | ESLint rule that turns cascivo's near-miss prop names into an actionable message — the wrong guess, the prop that exists, and why                                 |
 | [`@cascivo/flow`](packages/flow)                   | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fflow?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/flow)                   | Flow & diagram components — CSS-native, signal-driven node/edge graphs with pan/zoom, draggable nodes, animated edges, and scripted storylines, zero dependencies |
 | [`@cascivo/platform`](packages/platform)           | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fplatform?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/platform)           | Platform-idiomatic geometry and motion for cascivo, selected with data-platform. Orthogonal to @cascivo/themes, which owns colour.                                |
 | [`@cascivo/vite-plugin`](packages/vite-plugin)     | [![npm](https://img.shields.io/npm/v/%40cascivo%2Fvite-plugin?style=flat-square&color=0079bf)](https://www.npmjs.com/package/@cascivo/vite-plugin)     | Vite plugin — wrap JS-imported third-party stylesheets into a low-priority CSS @layer                                                                             |

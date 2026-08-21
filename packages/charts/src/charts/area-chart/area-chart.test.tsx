@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { AreaChart } from './area-chart'
+import { __resetChartWarnings } from '../../core/dev-warn'
 
 const series = [
   {
@@ -194,5 +195,103 @@ describe('AreaChart per-series type', () => {
     const areaFill = paths(container, 'requests')[0]!
     expect(areaFill.getAttribute('style') ?? '').toContain('--cascivo-chart-fill-opacity')
     expect(areaFill.getAttribute('style') ?? '').not.toContain('overlap')
+  })
+})
+
+/**
+ * The two area-fill defects from the 2026-08-21 report.
+ *
+ * Item 7: `warnScaleMismatch` correctly steers a mismatched pair onto two axes, and then
+ * two area fills composite into a muddy third colour where they cross — a problem the
+ * existing warning solves halfway and stops.
+ *
+ * Item 8: a lone area renders as a solid block from the curve to the baseline, heavier than
+ * the rest of the system. `fill: 'gradient'` already existed; only the default was wrong.
+ */
+describe('area fill defaults and the dual-axis warning', () => {
+  const data = [
+    { x: 0, y: 10 },
+    { x: 1, y: 20 },
+  ]
+  const xy = { x: (d: { x: number }) => d.x, y: (d: { y: number }) => d.y }
+
+  function twoAxisSeries(secondaryType?: 'line') {
+    return [
+      { id: 'requests', label: 'Requests', data },
+      {
+        id: 'errors',
+        label: 'Errors',
+        data,
+        axis: 'right' as const,
+        ...(secondaryType ? { type: secondaryType } : {}),
+      },
+    ]
+  }
+
+  it('warns when two series on separate axes both paint a fill', () => {
+    __resetChartWarnings()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <AreaChart
+        title="Requests vs errors"
+        series={twoAxisSeries()}
+        secondAxis={{ label: 'Errors' }}
+        {...xy}
+      />,
+    )
+    const message = warn.mock.calls.flat().join(' ')
+    expect(message).toContain('composite to a third colour')
+    // The fix has to be actionable: name the series to change and the prop that does it.
+    expect(message).toContain('Errors')
+    expect(message).toContain("type: 'line'")
+    warn.mockRestore()
+  })
+
+  it('stays quiet once the secondary series is a line', () => {
+    __resetChartWarnings()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <AreaChart
+        title="Requests vs errors"
+        series={twoAxisSeries('line')}
+        secondAxis={{ label: 'Errors' }}
+        {...xy}
+      />,
+    )
+    expect(warn.mock.calls.flat().join(' ')).not.toContain('composite to a third colour')
+    warn.mockRestore()
+  })
+
+  it('a single non-stacked series defaults to a gradient fill', () => {
+    const { container } = render(
+      <AreaChart title="Requests" series={[{ id: 'requests', label: 'Requests', data }]} {...xy} />,
+    )
+    expect(container.querySelector('linearGradient')).not.toBeNull()
+  })
+
+  it('two overlapping series keep the solid fill, so the bands stay readable', () => {
+    const { container } = render(
+      <AreaChart
+        title="Two"
+        series={[
+          { id: 'a', label: 'A', data },
+          { id: 'b', label: 'B', data },
+        ]}
+        {...xy}
+      />,
+    )
+    expect(container.querySelector('linearGradient')).toBeNull()
+  })
+
+  it('an explicit `fill` still wins over the single-series default', () => {
+    const { container } = render(
+      <AreaChart
+        title="Requests"
+        fill="solid"
+        series={[{ id: 'requests', label: 'Requests', data }]}
+        {...xy}
+      />,
+    )
+    expect(container.querySelector('linearGradient')).toBeNull()
   })
 })

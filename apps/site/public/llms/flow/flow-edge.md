@@ -41,7 +41,7 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 | `targetY`        | `number`                                 | yes      | —           | Y coordinate of the edge’s target point.                                              |
 | `type`           | `'bezier' \| 'straight' \| 'smoothstep'` | no       | `bezier`    | Edge path style ('bezier' \| 'straight' \| 'smoothstep').                             |
 | `animated`       | `boolean`                                | no       | `false`     | When true, animates the edge path (dashed flow).                                      |
-| `label`          | `ReactNode`                              | no       | —           | Text label for the control.                                                           |
+| `label`          | `ReactNode`                              | no       | —           | Text label for the control. Rendered on screen.                                       |
 | `selected`       | `boolean`                                | no       | `false`     | Whether the edge is rendered as selected.                                             |
 | `markerStart`    | `boolean`                                | no       | `false`     | Arrowhead at the source (points back toward the source) — set both for bidirectional. |
 | `markerEnd`      | `boolean`                                | no       | `true`      | Arrowhead at the target. Set false for an undirected line.                            |

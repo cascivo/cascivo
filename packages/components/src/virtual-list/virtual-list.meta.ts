@@ -43,7 +43,16 @@ export const meta: ComponentMeta = {
         'Extra rows rendered above and below the visible window, to cover fast scrolling.',
     },
     {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible label for the list; label it when the list stands alone',

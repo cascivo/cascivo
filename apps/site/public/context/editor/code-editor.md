@@ -36,29 +36,30 @@ The native <textarea> is the editing surface, so caret, selection, IME, undo, an
 
 ## Props
 
-| Name              | Type                                                | Required | Default   | Description                                                                                    |
-| ----------------- | --------------------------------------------------- | -------- | --------- | ---------------------------------------------------------------------------------------------- |
-| `value`           | `string`                                            | No       | —         | Controlled value                                                                               |
-| `defaultValue`    | `string`                                            | No       | —         | Initial value for uncontrolled use                                                             |
-| `onValueChange`   | `(value: string) => void`                           | No       | —         | Called with the new text on every edit                                                         |
-| `language`        | `string`                                            | No       | plaintext | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash)                     |
-| `lineNumbers`     | `boolean`                                           | No       | true      | Show the line-number gutter                                                                    |
-| `tabSize`         | `number`                                            | No       | 2         | Spaces per tab stop                                                                            |
-| `insertSpaces`    | `boolean`                                           | No       | true      | Insert spaces vs a literal tab on Tab                                                          |
-| `wrap`            | `boolean`                                           | No       | false     | Soft-wrap long lines instead of scrolling horizontally                                         |
-| `readOnly`        | `boolean`                                           | No       | false     | When true, the value is shown but cannot be edited.                                            |
-| `disabled`        | `boolean`                                           | No       | false     | When true, disables the control and removes it from the tab order.                             |
-| `placeholder`     | `string`                                            | No       | —         | Placeholder text shown when the field is empty.                                                |
-| `label`           | `string`                                            | No       | —         | Accessible label (defaults to the i18n "Code editor")                                          |
-| `onSave`          | `(value: string) => void`                           | No       | —         | Called on Mod-S; the browser save dialog is suppressed                                         |
-| `bracketMatching` | `boolean`                                           | No       | false     | Highlight the bracket matching the one adjacent to the caret                                   |
-| `theme`           | `EditorTheme`                                       | No       | —         | Per-instance --cascivo-editor-\* overrides; swapping it re-themes live                         |
-| `keymap`          | `KeyMap`                                            | No       | —         | Extra key bindings merged over the built-ins (user wins on a chord)                            |
-| `decorations`     | `Decoration[] \| ((value: string) => Decoration[])` | No       | —         | Extra offset-range → CSS class decorations                                                     |
-| `commands`        | `SlashCommand[]`                                    | No       | —         | Slash-command entries; typing "/" opens a filtered menu. Omit to disable.                      |
-| `ref`             | `Ref<CodeEditorHandle>`                             | No       | —         | Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu |
-| `className`       | `string`                                            | No       | —         | Additional CSS class names merged onto the root element.                                       |
-| `virtualize`      | `boolean`                                           | No       | —         | Render only the visible lines for large documents.                                             |
+| Name              | Type                                                | Required | Default   | Description                                                                                                                                  |
+| ----------------- | --------------------------------------------------- | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`           | `string`                                            | No       | —         | Controlled value                                                                                                                             |
+| `defaultValue`    | `string`                                            | No       | —         | Initial value for uncontrolled use                                                                                                           |
+| `onValueChange`   | `(value: string) => void`                           | No       | —         | Called with the new text on every edit                                                                                                       |
+| `language`        | `string`                                            | No       | plaintext | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash)                                                                   |
+| `lineNumbers`     | `boolean`                                           | No       | true      | Show the line-number gutter                                                                                                                  |
+| `tabSize`         | `number`                                            | No       | 2         | Spaces per tab stop                                                                                                                          |
+| `insertSpaces`    | `boolean`                                           | No       | true      | Insert spaces vs a literal tab on Tab                                                                                                        |
+| `wrap`            | `boolean`                                           | No       | false     | Soft-wrap long lines instead of scrolling horizontally                                                                                       |
+| `readOnly`        | `boolean`                                           | No       | false     | When true, the value is shown but cannot be edited.                                                                                          |
+| `disabled`        | `boolean`                                           | No       | false     | When true, disables the control and removes it from the tab order.                                                                           |
+| `placeholder`     | `string`                                            | No       | —         | Placeholder text shown when the field is empty.                                                                                              |
+| `ariaLabel`       | `string`                                            | No       | —         | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`           | `string`                                            | No       | —         | Accessible label (defaults to the i18n "Code editor"). Not rendered — screen readers only.                                                   |
+| `onSave`          | `(value: string) => void`                           | No       | —         | Called on Mod-S; the browser save dialog is suppressed                                                                                       |
+| `bracketMatching` | `boolean`                                           | No       | false     | Highlight the bracket matching the one adjacent to the caret                                                                                 |
+| `theme`           | `EditorTheme`                                       | No       | —         | Per-instance --cascivo-editor-\* overrides; swapping it re-themes live                                                                       |
+| `keymap`          | `KeyMap`                                            | No       | —         | Extra key bindings merged over the built-ins (user wins on a chord)                                                                          |
+| `decorations`     | `Decoration[] \| ((value: string) => Decoration[])` | No       | —         | Extra offset-range → CSS class decorations                                                                                                   |
+| `commands`        | `SlashCommand[]`                                    | No       | —         | Slash-command entries; typing "/" opens a filtered menu. Omit to disable.                                                                    |
+| `ref`             | `Ref<CodeEditorHandle>`                             | No       | —         | Imperative handle: applyEdit / getSelection / focus / undo / redo / openFind / openCommandMenu                                               |
+| `className`       | `string`                                            | No       | —         | Additional CSS class names merged onto the root element.                                                                                     |
+| `virtualize`      | `boolean`                                           | No       | —         | Render only the visible lines for large documents.                                                                                           |
 
 ## Object types
 

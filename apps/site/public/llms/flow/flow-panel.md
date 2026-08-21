@@ -21,11 +21,11 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 
 ## Props
 
-| Prop        | Type                                                                                              | Required | Default     | Description                                              |
-| ----------- | ------------------------------------------------------------------------------------------------- | -------- | ----------- | -------------------------------------------------------- |
-| `position`  | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | no       | `top-right` | Position of the component.                               |
-| `children`  | `ReactNode`                                                                                       | no       | —           | Content rendered inside the component.                   |
-| `className` | `string`                                                                                          | no       | —           | Additional CSS class names merged onto the root element. |
+| Prop        | Type                                                                                              | Required | Default     | Description                                                                                                                   |
+| ----------- | ------------------------------------------------------------------------------------------------- | -------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `position`  | `'top-left' \| 'top-center' \| 'top-right' \| 'bottom-left' \| 'bottom-center' \| 'bottom-right'` | no       | `top-right` | Canvas edge slot the panel occupies: `top-right`, `top-center`, `top-left`, `bottom-left`, `bottom-center` or `bottom-right`. |
+| `children`  | `ReactNode`                                                                                       | no       | —           | Content rendered inside the component.                                                                                        |
+| `className` | `string`                                                                                          | no       | —           | Additional CSS class names merged onto the root element.                                                                      |
 
 ## Examples
 

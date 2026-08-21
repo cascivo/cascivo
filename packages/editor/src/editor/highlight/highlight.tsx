@@ -21,6 +21,14 @@ export interface HighlightProps extends Omit<HTMLAttributes<HTMLDivElement>, 'ch
   tabSize?: number
   /** Accessible label for the read-only code block. */
   label?: string
+  /**
+   * Alias of `label` — the same invisible accessible name under the catalog's own spelling.
+   *
+   * `ariaLabel` is what the catalog calls a name nothing paints, so it is the guess an agent
+   * makes after reading one other component (2026-08-21 report item 1). This component
+   * predates the convention and shipped `label`; both work and neither is deprecated.
+   */
+  ariaLabel?: string
   /** Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync). */
   preRef?: Ref<HTMLPreElement>
   /** Ref to the gutter column (used by `CodeEditor` for scroll-sync). */
@@ -39,6 +47,7 @@ export function Highlight({
   wrap = false,
   tabSize = 2,
   label,
+  ariaLabel,
   className,
   preRef,
   gutterRef,
@@ -60,7 +69,7 @@ export function Highlight({
       data-wrap={wrap}
       data-line-numbers={lineNumbers}
       style={tabStyle}
-      aria-label={label}
+      aria-label={ariaLabel ?? label}
       {...rest}
     >
       {lineNumbers && (

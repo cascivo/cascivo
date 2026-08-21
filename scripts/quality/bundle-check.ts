@@ -49,6 +49,9 @@ const BUDGETS: Record<string, number> = {
   '@cascivo/storage': 5, // measured 1.1
   '@cascivo/vite-plugin': 5, // measured 1.8
   '@cascivo/eslint-config': 5, // measured 2.0 — plain config data, but still worth a ceiling
+  // Lints, never ships to a browser. The ceiling is for the generated data file: a
+  // near-misses list that grew to hundreds of rows would be a design problem, not a size one.
+  '@cascivo/eslint-plugin': 8,
   // The CLI runs in Node, so its size is not an adopter's browser cost. It gets a budget
   // anyway: a measured number beats an exemption, and a runaway CLI bundle is still a
   // regression worth catching. Measured 30.8 KB.

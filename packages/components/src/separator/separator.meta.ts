@@ -11,7 +11,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'orientation',
-      description: 'Layout orientation of the component.',
+      description:
+        'Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row.',
       type: "'horizontal' | 'vertical'",
       required: false,
       default: 'horizontal',

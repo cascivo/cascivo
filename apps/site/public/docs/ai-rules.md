@@ -173,9 +173,20 @@ The sibling of the handler rule: name a prop by **what it is**, not by the compo
 | The identity of an item that is **handed to a callback**                                           | **`value`**                                       | `OverflowMenu`, `Dropdown`, `Select`, `Combobox`                       |
 | A **React key** for an item — never passed anywhere                                                | **`id`** (rows/items) / **`key`** (table columns) | `CommandMenu`, `StructuredList`, `Timeline`, `DataTable.columns[].key` |
 
-Two components predate the rule and take `label` for an **invisible** name: `IconButton`
-and `Sparkline`. Both now also accept `ariaLabel` as an alias, so guessing either way works;
-`label` keeps working and is not deprecated.
+**`ariaLabel` and `label` are two spellings of one idea, and every component that accepts one
+accepts the other.** That is the whole rule, and it is mechanically true rather than merely
+documented: `scripts/checks/aria-label-universality.test.ts` fails the build if a component
+takes an invisible name under only one spelling. `ariaLabel` stays the preferred name in new
+code — it says "invisible" out loud — but `label` is the guess an adopter makes before they
+have read this page, and a guess that compiles costs nobody anything. `<OverflowMenu
+label=…>` was a type error until 0.19 and is not any more (2026-08-21 report item 1).
+
+Two components predate the rule and **require** the name, so they type it as an XOR union:
+`IconButton` and `Fab` accept exactly one of `label` / `ariaLabel`, because a control with no
+accessible name is a bug the compiler should catch. `Sparkline` does the same.
+
+Two components are exempt, with reasons recorded in the guard: `DataTable`'s visible name is
+`title` (a caption), and `Menubar`'s required name is an XOR of `ariaLabel` / `aria-label`.
 
 Every component that took only the DOM spelling `aria-label` now accepts **both**
 `ariaLabel` and `aria-label` — two spellings of one idea inside one package was a coin flip
@@ -202,17 +213,18 @@ The two tables above cover _handlers_ and _names_. This one covers the props tha
 **data and the look**, which is where a 2026-08-08 adopter lost nine compile cycles in one
 small dashboard — the single largest friction in that report.
 
-| The prop carries                          | Prop name                   | Never                                 | Why                                                                                                                                                      |
-| ----------------------------------------- | --------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A config-driven **collection**            | **`items`**                 | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                                             |
-| The rows of a **table**                   | **`rows`**                  | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                                      |
-| A **visual style** enum                   | **`variant`**               | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                                                |
-| The **tag of a discriminated union**      | **`kind`**                  | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys)                   |
-| A **space-scale step**                    | numeric **`gap={4}`**       | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                                        |
-| A **rich, replaceable slot**              | **`actions`** (`ReactNode`) | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy                    |
-| The **body text** of a feedback component | **`description`**           | children                              | `Notification`, `Alert`, `EmptyState`, `Field` — passing children renders nothing                                                                        |
-| A **visible** text label                  | **`label`**                 | `title`, `text`, `caption`            | The default — most components that take `label` render it on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below |
-| An **invisible** accessible name          | **`ariaLabel`**             | `label`                               | `Sparkline`, `Spinner`, `Fab`, `ProgressCircle`, `Resizable`. Always accepted alongside the raw `aria-label`                                             |
+| The prop carries                          | Prop name                                                                  | Never                                 | Why                                                                                                                                                                                                               |
+| ----------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A config-driven **collection**            | **`items`**                                                                | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                                                                                                      |
+| The rows of a **table**                   | **`rows`**                                                                 | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                                                                                               |
+| A **visual style** enum                   | **`variant`**                                                              | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                                                                                                         |
+| The **tag of a discriminated union**      | **`kind`**                                                                 | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys)                                                                            |
+| A **space-scale step**                    | numeric **`gap={4}`**                                                      | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                                                                                                 |
+| A **rich, replaceable slot**              | **`actions`** (`ReactNode`)                                                | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy                                                                             |
+| The **body text** of a feedback component | **`description`**                                                          | children                              | `Notification`, `Alert`, `EmptyState` — passing children renders nothing                                                                                                                                          |
+| **Supporting text under a form control**  | **`hint`**                                                                 | `description`                         | `Input`, `Textarea`, `Select`, `NumberInput`, `Combobox`, `DatePicker`, `TimePicker`, `FileUploader`. `Field` predates the split and takes `description`; it accepts `hint` as an alias, so either guess compiles |
+| A **visible** text label                  | **`label`**                                                                | `title`, `text`, `caption`            | The default — most components that take `label` render it on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below                                                          |
+| An **invisible** accessible name          | **`ariaLabel`** — and `label` is accepted as an alias everywhere it exists | —                                     | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Steps`, `Switcher`, `CommandMenu`, `Spinner`, `ProgressCircle`, `Resizable`, `Sparkline`. Always accepted alongside the raw `aria-label`                                |
 
 > ### ⚠ `label` renders on screen — check the prop docs before assuming it is a11y-only
 >
@@ -227,6 +239,25 @@ small dashboard — the single largest friction in that report.
 >
 > Enforced by `vocabulary.test.ts`: a `label` prop whose manifest description states neither
 > fails `pnpm meta:check`. Silence is the bug — the reader cannot tell it from either case.
+
+### ⚠ Near-miss prop names — what you probably wrote, and what the prop is
+
+Every row here is a real wrong guess from an adopter report, not a hypothetical. They are
+near-misses rather than blunders: each one is the name the rest of the system, or the rest of
+the ecosystem, would lead you to. Where the fix was to accept both spellings we did; where
+accepting both would have made something else worse, the reason is in the last column.
+
+| You probably wrote                                 | The prop is                                         | On                                               | Why not just accept yours                                                                                                                                                             |
+| -------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tone="subtle"`                                    | **`muted`** (boolean)                               | `Text`                                           | `tone` is the catalog's _severity_ vocabulary (`Status`, `Badge`, `Timeline`, `SideNav`). Text emphasis is a different idea; a third meaning for `tone` would cost more than it saves |
+| `gap="4"`                                          | **`gap={4}`** (numeric `SpaceStep`)                 | every layout                                     | A string union would let `gap="7"` type-check into a token that does not exist                                                                                                        |
+| `<Flex justify="between">` with no `direction`     | it is already **vertical**                          | `Flex`                                           | `direction="vertical"` is the default, unlike CSS and unlike Chakra/MUI/Radix. Pass `direction="horizontal"` for a row                                                                |
+| `const { theme } = useTheme()`                     | a **tuple**: `const [theme, setTheme] = useTheme()` | `@cascivo/core`                                  | The object shape is next-themes'; the tuple is `useState`'s                                                                                                                           |
+| `orientation="vertical"` meaning "stack the items" | it stacks the **value under its label**             | `DataList`                                       | Items stack vertically in both modes; `orientation` moves the value relative to its label                                                                                             |
+| `<DataListItem>` as a component                    | `DataList` takes **`items`**                        | `DataList`                                       | `DataListItem` is the _interface_ describing an item, not a component                                                                                                                 |
+| `import { Switch }`                                | **`Toggle`** — and `Switch` now works too           | `@cascivo/react`                                 | Fixed: `Switch` is exported as an alias, and `cascivo add switch` resolves                                                                                                            |
+| `<OverflowMenu label=…>`                           | **`ariaLabel`** — and `label` now works too         | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Steps` | Fixed: both spellings are accepted everywhere either was                                                                                                                              |
+| `<Field hint=…>`                                   | **`description`** — and `hint` now works too        | `Field`                                          | Fixed: `hint` is the form-control word, `description` the feedback word; `Field` takes both                                                                                           |
 
 ### Importing the shared types
 

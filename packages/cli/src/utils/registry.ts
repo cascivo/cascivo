@@ -15,6 +15,12 @@ export interface RegistryComponent {
   styles?: string
   /** Present when the component is deprecated — rendered by `list`, `search` and `add`. */
   deprecated?: { since: string; replacement: string; note?: string }
+  /**
+   * Foreign names for this component in peer systems — `toggle` carries `Switch`, `modal`
+   * carries `Dialog`. `cascivo add switch` resolves through these and prints the mapping, so
+   * the answer to a name every other system uses is the component rather than "not found".
+   */
+  aliases?: string[]
   dependencies: string[]
   /**
    * Minimum published version required for each `@cascivo/*` dependency, e.g.
@@ -104,6 +110,10 @@ export function parseRegistry(raw: unknown): Registry {
     }
     if (type !== undefined) result.type = type
     if (typeof c.install === 'string') result.install = c.install
+    if (Array.isArray(c.aliases)) {
+      const names = asStringArray(c.aliases)
+      if (names.length > 0) result.aliases = names
+    }
     if (typeof c.styles === 'string') result.styles = c.styles
     if (Array.isArray(c.registryDependencies)) {
       const deps = asStringArray(c.registryDependencies)
@@ -213,7 +223,21 @@ export function findComponent(registry: Registry, name: string): RegistryCompone
   const matches = registry.components.filter((c) => c.name.toLowerCase().endsWith(suffix))
   if (matches.length === 1) return matches[0]
 
-  return undefined
+  // 3. Foreign name: `switch` → `toggle`, `dialog` → `modal`. Last, so a real component name
+  // always wins over somebody else's word for a different component.
+  return registry.components.find((c) => (c.aliases ?? []).some((a) => a.toLowerCase() === target))
+}
+
+/**
+ * The foreign name `input` resolved through, when it was not the component's own name — so a
+ * caller can say "Switch → toggle" rather than silently installing something else.
+ */
+export function resolvedAlias(entry: RegistryComponent, requested: string): string | undefined {
+  const target = requested.toLowerCase()
+  if (entry.name.toLowerCase() === target || entry.name.toLowerCase().endsWith(`/${target}`)) {
+    return undefined
+  }
+  return (entry.aliases ?? []).find((a) => a.toLowerCase() === target)
 }
 
 /** Fuzzy-ish search over name, tags and description. */
@@ -223,7 +247,9 @@ export function searchComponents(registry: Registry, query: string): RegistryCom
     (c) =>
       c.name.toLowerCase().includes(q) ||
       c.description.toLowerCase().includes(q) ||
-      c.tags.some((t) => t.toLowerCase().includes(q)),
+      c.tags.some((t) => t.toLowerCase().includes(q)) ||
+      // Exact match only: a foreign name is a whole concept, not a substring to rank on.
+      (c.aliases ?? []).some((a) => a.toLowerCase() === q),
   )
 }
 

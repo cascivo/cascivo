@@ -16,7 +16,8 @@ import styles from './button.module.css'
  */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
-   * Selects the visual style variant.
+   * `primary` for the main action, `secondary` for a supporting one, `ghost` for a
+   * borderless action in dense UI, `destructive` for anything that deletes.
    *
    * @defaultValue `primary`
    * @see the component manifest

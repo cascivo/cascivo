@@ -47,7 +47,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        '`destructive` styles the confirm button as a danger action; `default` styles it as the primary action. Use `destructive` for anything that deletes.',
       type: "'destructive' | 'default'",
       required: false,
       default: 'default',

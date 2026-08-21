@@ -6,7 +6,8 @@ export interface IndicatorProps {
   children: React.ReactNode
   overlay: React.ReactNode
   /**
-   * Placement relative to the trigger.
+   * Corner of the wrapped element the dot or count sits on: `top-end`, `top-start`,
+   * `bottom-start` or `bottom-end`.
    *
    * @defaultValue `top-end`
    * @see the component manifest

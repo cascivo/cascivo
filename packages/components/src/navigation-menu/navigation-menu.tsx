@@ -30,9 +30,18 @@ export interface NavigationMenuProps {
    * `docs/AI-RULES.md`); `aria-label` is accepted as an alias for the DOM spelling.
    */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   'aria-label'?: string
   /**
-   * Layout orientation of the component.
+   * Which arrow keys move focus, and the axis the items lay out on: `horizontal`
+   * (Left/Right), `vertical` (Up/Down), or `both` (all four).
    *
    * @defaultValue `horizontal`
    * @see the component manifest
@@ -45,6 +54,7 @@ export function NavigationMenu({
   items,
   'aria-label': ariaLabelDom,
   ariaLabel,
+  label,
   orientation = 'horizontal',
   className,
 }: NavigationMenuProps) {
@@ -55,7 +65,7 @@ export function NavigationMenu({
 
   return (
     <nav
-      aria-label={ariaLabel ?? ariaLabelDom}
+      aria-label={ariaLabel ?? ariaLabelDom ?? label}
       className={cn(styles['nav'], className)}
       data-orientation={orientation}
     >

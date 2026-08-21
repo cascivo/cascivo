@@ -30,14 +30,14 @@ import { Alert } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                             | Required | Default   | Description                                          |
-| ------------- | ---------------------------------------------------------------- | -------- | --------- | ---------------------------------------------------- |
-| `variant`     | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | no       | `default` | Selects the visual style variant.                    |
-| `title`       | `string`                                                         | no       | —         | Title text for the component.                        |
-| `icon`        | `ReactNode`                                                      | no       | —         | Icon element rendered in the component.              |
-| `dismissible` | `boolean`                                                        | no       | `false`   | When true, shows a control to dismiss the component. |
-| `onDismiss`   | `() => void`                                                     | no       | —         | Called when the component is dismissed.              |
-| `action`      | `{ label: string; onClick: () => void }`                         | no       | —         | Primary action shown in the component.               |
+| Prop          | Type                                                             | Required | Default   | Description                                                                                                                                                                                                                                                        |
+| ------------- | ---------------------------------------------------------------- | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `variant`     | `'default' \| 'info' \| 'success' \| 'warning' \| 'destructive'` | no       | `default` | Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here. |
+| `title`       | `string`                                                         | no       | —         | Title text for the component.                                                                                                                                                                                                                                      |
+| `icon`        | `ReactNode`                                                      | no       | —         | Icon element rendered in the component.                                                                                                                                                                                                                            |
+| `dismissible` | `boolean`                                                        | no       | `false`   | When true, shows a control to dismiss the component.                                                                                                                                                                                                               |
+| `onDismiss`   | `() => void`                                                     | no       | —         | Called when the component is dismissed.                                                                                                                                                                                                                            |
+| `action`      | `{ label: string; onClick: () => void }`                         | no       | —         | Primary action shown in the component.                                                                                                                                                                                                                             |
 
 ## Examples
 

@@ -40,6 +40,8 @@ export function getAppTheme(): AppShellTheme {
 export interface AppShellProps {
   navItems?: SideNavItem[]
   navGroups?: SideNavGroup[]
+  /** Content rendered at the bottom of the sidebar, above the collapse toggle. */
+  navFooter?: ReactNode | undefined
   /** Nav rendered in the header instead of a sidebar. When set (and no side-nav
    * items are given) the sidebar and its hamburger are omitted entirely. */
   headerNav?: ShellHeaderNavItem[] | undefined
@@ -55,6 +57,7 @@ export interface AppShellProps {
 export function AppShell({
   navItems,
   navGroups,
+  navFooter,
   headerNav,
   headerClassName,
   commandGroups = [],
@@ -109,6 +112,7 @@ export function AppShell({
             <SideNav
               {...(navGroups ? { groups: navGroups } : {})}
               {...(navItems ? { items: navItems } : {})}
+              {...(navFooter ? { footer: navFooter } : {})}
               collapsed={shellState.sideNavCollapsed.value}
               onCollapsedChange={(c) => {
                 shellState.sideNavCollapsed.value = c

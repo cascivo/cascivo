@@ -305,7 +305,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone: `default` (neutral), `info`, `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "type": "'default' | 'info' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
@@ -476,7 +476,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`destructive` styles the confirm button as a danger action; `default` styles it as the primary action. Use `destructive` for anything that deletes.",
             "type": "'destructive' | 'default'",
             "required": false,
             "default": "default"
@@ -1067,7 +1067,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Badge's historical spellings (`default` → neutral, `error`/`destructive` → danger), and two values that carry no tone at all: `secondary` (muted fill) and `outline` (border only).",
             "type": "'default' | 'secondary' | 'success' | 'warning' | 'destructive' | 'outline'",
             "required": false,
             "default": "default"
@@ -2351,7 +2351,15 @@
             "required": false
           },
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
@@ -2449,7 +2457,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`primary` for the main action, `secondary` for a supporting one, `ghost` for a borderless action in dense UI, `destructive` for anything that deletes.",
             "type": "'primary' | 'secondary' | 'ghost' | 'destructive'",
             "required": false,
             "default": "primary"
@@ -2592,7 +2600,7 @@
         "props": [
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the buttons flow along: `horizontal` puts them in a row, `vertical` stacks them in a column. The seams between them are collapsed either way.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -2937,7 +2945,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.",
             "type": "'default' | 'outlined' | 'elevated'",
             "required": false,
             "default": "default"
@@ -3205,8 +3213,8 @@
             "name": "fill",
             "type": "'solid' | 'gradient' | 'pattern'",
             "required": false,
-            "default": "solid",
-            "description": "Area fill style — solid, a top→bottom gradient, or a pattern."
+            "default": "gradient for one non-stacked series, solid otherwise",
+            "description": "Area fill style — solid, a top→bottom gradient, or a pattern. A single non-stacked series defaults to `gradient` (a lone solid area reads as a heavy block); stacked and overlapping series default to `solid`."
           },
           {
             "name": "patternKind",
@@ -3487,7 +3495,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Direction the bars grow. `vertical` puts the categories on the x-axis and grows bars upward (columns); `horizontal` puts them on the y-axis and grows bars rightward — the better choice for long category names.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -4096,6 +4104,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": true
@@ -5325,6 +5334,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "X-axis label — rendered visibly beneath the axis."
@@ -5433,6 +5443,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "Metric label — rendered visibly at the top of the tile."
@@ -5856,6 +5867,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": true
@@ -5876,7 +5888,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`bar` draws a straight horizontal track; `gauge` draws a half-donut dial.",
             "type": "'bar' | 'gauge'",
             "required": false,
             "default": "bar"
@@ -7167,12 +7179,14 @@
           },
           {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible name for the chart (invisible — rendered as the SVG `<title>`)."
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one."
@@ -7745,7 +7759,7 @@
           },
           {
             "name": "side",
-            "description": "Edge the component is anchored to.",
+            "description": "Which side of the thread the bubble sits on: `start` for an incoming message (avatar first), `end` for an outgoing one (right-aligned, avatar last).",
             "type": "'start' | 'end'",
             "required": false,
             "default": "start"
@@ -7869,6 +7883,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -8575,6 +8590,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -8738,6 +8754,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -8936,8 +8953,16 @@
             "description": "Global Cmd/Ctrl+K toggles the menu via onOpenChange"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the command dialog. Not rendered — screen readers only.",
             "type": "string",
             "required": false,
             "default": "Command menu"
@@ -9145,7 +9170,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -9158,8 +9183,16 @@
             "default": "5"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the divider slider. Not rendered — screen readers only.",
             "type": "string",
             "required": false
           }
@@ -9268,6 +9301,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": true
@@ -9597,7 +9631,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -9839,8 +9873,15 @@
             "required": false
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Invisible accessible name for the table, used when there is no visible `title`. A table with neither is an unnamed landmark; dev-warns.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "title",
-            "description": "Title text for the component.",
+            "description": "Visible caption above the table; it also becomes the table's accessible name.",
             "type": "string",
             "required": false
           },
@@ -10084,6 +10125,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": false,
             "description": "Visible field label rendered above the input; it also names the control."
@@ -10408,7 +10450,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the dock navigation; defaults to the built-in i18n string."
@@ -10712,7 +10762,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-start"
@@ -11033,7 +11083,15 @@
             "required": false
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label (defaults to the i18n \"Code editor\")"
@@ -11275,7 +11333,15 @@
             "description": "Spaces per tab stop"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the code block"
@@ -11497,10 +11563,18 @@
             "description": "The main icon"
           },
           {
-            "name": "label",
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
             "type": "string",
-            "required": true,
-            "description": "Accessible name for the button"
+            "required": false
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "type": "string",
+            "required": false,
+            "description": "Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it."
           },
           {
             "name": "onClick",
@@ -11516,7 +11590,7 @@
           },
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way.",
             "type": "'bottom-end' | 'bottom-start'",
             "required": false,
             "default": "bottom-end"
@@ -11650,13 +11724,20 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
           },
           {
+            "name": "hint",
+            "description": "Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
             "name": "description",
-            "description": "Supporting description text.",
+            "description": "Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias.",
             "type": "ReactNode",
             "required": false
           },
@@ -11845,6 +11926,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": false,
             "description": "Visible field label rendered above the drop zone; it also names the control."
@@ -11974,7 +12056,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
             "type": "string",
             "required": false
@@ -12025,7 +12115,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.",
             "type": "'pill' | 'outline'",
             "required": false,
             "default": "pill"
@@ -12793,7 +12883,7 @@
         "props": [
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas corner the control cluster is pinned to: `bottom-left`, `bottom-right`, `top-left` or `top-right`.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-left"
@@ -12949,6 +13039,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
@@ -13228,7 +13319,7 @@
           },
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas corner the minimap is pinned to: `bottom-right`, `bottom-left`, `top-left` or `top-right`.",
             "type": "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
             "required": false,
             "default": "bottom-right"
@@ -13246,7 +13337,15 @@
             "required": false
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string | undefined",
             "required": false,
             "description": "Accessible name for the minimap region."
@@ -13557,7 +13656,7 @@
         "props": [
           {
             "name": "position",
-            "description": "Position of the component.",
+            "description": "Canvas edge slot the panel occupies: `top-right`, `top-center`, `top-left`, `bottom-left`, `bottom-center` or `bottom-right`.",
             "type": "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
             "required": false,
             "default": "top-right"
@@ -14203,6 +14302,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "Accessible label for the region (shown as header title)"
@@ -14550,12 +14650,14 @@
         "props": [
           {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name.",
             "type": "string",
             "required": false
           },
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one."
@@ -14568,7 +14670,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface.",
             "type": "'ghost' | 'outline' | 'filled'",
             "required": false,
             "default": "ghost"
@@ -14868,7 +14970,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Corner of the wrapped element the dot or count sits on: `top-end`, `top-start`, `bottom-start` or `bottom-end`.",
             "type": "'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "top-end"
@@ -15101,6 +15203,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "ReactNode",
             "required": false
@@ -15211,6 +15314,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
@@ -15476,7 +15580,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`muted` gives the row a subtle background — for a selected or highlighted item; `default` leaves it transparent.",
             "type": "'default' | 'muted'",
             "required": false,
             "default": "default"
@@ -15586,7 +15690,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the joined children flow along: `horizontal` for a row, `vertical` for a column. Inner corners are squared off either way.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -17214,7 +17318,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -17321,7 +17433,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "`standalone` uses the system's own type and underlines on hover — for a link that stands on its own. `inline` inherits the surrounding prose font and stays underlined — for a link inside a paragraph.",
             "type": "'standalone' | 'inline'",
             "required": false,
             "default": "standalone"
@@ -17445,7 +17557,7 @@
         "props": [
           {
             "name": "as",
-            "description": "The HTML element to render as.",
+            "description": "`ul` for an unordered list, `ol` for a numbered one. Changes the element and its marker, not the styling.",
             "type": "'ul' | 'ol'",
             "required": false,
             "default": "ul"
@@ -17817,6 +17929,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "ReactNode",
             "required": true,
             "description": "Visible content rendered inside the trigger button."
@@ -17987,6 +18100,7 @@
         "props": [
           {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name for the menubar landmark. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Exactly one of the two is required — a menubar with no accessible name is a bug, so the type enforces it."
@@ -18570,7 +18684,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -18590,7 +18712,7 @@
           {
             "name": "orientation",
             "default": "horizontal",
-            "description": "Layout orientation of the component.",
+            "description": "Which arrow keys move focus, and the axis the items lay out on: `horizontal` (Left/Right), `vertical` (Up/Down), or `both` (all four).",
             "type": "'horizontal' | 'vertical' | 'both'",
             "required": false
           },
@@ -18709,7 +18831,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Notification's historical spellings (`error`, `destructive` → danger).",
             "type": "'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "info"
@@ -18908,6 +19030,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -19191,13 +19314,21 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.",
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-end"
           },
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
@@ -19639,7 +19770,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Side of the trigger the panel opens on: `bottom`, `top`, `left` or `right`.",
             "type": "'top' | 'bottom' | 'left' | 'right'",
             "required": false,
             "default": "bottom"
@@ -19748,7 +19879,15 @@
         "sizes": ["sm", "md", "lg"],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
             "type": "string",
             "required": false
@@ -19773,7 +19912,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
@@ -19894,6 +20033,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": false,
             "description": "Visible label above the track, wired via aria-labelledby"
@@ -20040,7 +20180,15 @@
             "description": "Renders the rounded percentage in the center — pairs best with md and lg"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible name announced by screen readers"
@@ -20535,8 +20683,16 @@
             "default": "transparent"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the QR image. Not rendered — screen readers only.",
             "type": "string",
             "required": false
           }
@@ -20620,7 +20776,15 @@
         "sizes": ["sm", "md", "lg"],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -20640,7 +20804,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.",
             "type": "'primary' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "primary"
@@ -20765,6 +20929,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -21419,7 +21584,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the resize handle."
@@ -21432,7 +21605,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the panes are split along. `horizontal` puts them side by side with a handle you drag left and right; `vertical` stacks them with a handle you drag up and down.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -21729,6 +21902,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Accessible name for the control. Rendered as a real `<label>` that is **visually hidden** by design — it changes the accessible name, not the visible UI. If you can see it, the component stylesheet did not load (import `@cascivo/react/styles.css` or the per-component CSS).",
             "type": "string",
             "required": false,
@@ -22372,7 +22546,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -22597,6 +22779,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -22740,7 +22923,7 @@
         "props": [
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Direction the rule runs: `horizontal` draws a full-width line, `vertical` a full-height one that stretches to its flex row.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -22851,7 +23034,7 @@
           },
           {
             "name": "side",
-            "description": "Edge the component is anchored to.",
+            "description": "Edge the sheet slides in from: `end` (the inline end — right in LTR), `start`, `top` or `bottom`.",
             "type": "'start' | 'end' | 'top' | 'bottom'",
             "required": false,
             "default": "end"
@@ -23241,7 +23424,15 @@
             "required": false
           },
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Accessible label for the component.",
             "type": "string",
             "required": false,
@@ -23278,7 +23469,7 @@
             "name": "footer",
             "type": "ReactNode",
             "required": false,
-            "description": "Content rendered above the collapse toggle (e.g. version string, user info)"
+            "description": "Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info)"
           },
           {
             "name": "className",
@@ -23386,7 +23577,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Shape of the placeholder: `text` (stacked lines), `circle` (an avatar), `rect` (a block).",
             "type": "'text' | 'circle' | 'rect'",
             "required": false,
             "default": "text"
@@ -23612,6 +23803,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -23756,7 +23948,15 @@
             "default": "md"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "default": "Loading",
@@ -23959,6 +24159,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "type": "string",
             "required": true,
             "description": "What the metric measures — rendered visibly above the value."
@@ -24201,7 +24402,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the steps navigation; defaults to the built-in i18n string."
@@ -24224,7 +24433,7 @@
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "'horizontal'",
-            "description": "Layout direction of the steps"
+            "description": "Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page."
           },
           {
             "name": "className",
@@ -24332,7 +24541,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
             "type": "string",
             "required": false
@@ -24475,7 +24692,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -24714,7 +24939,7 @@
       "schemaVersion": 2,
       "name": "switcher",
       "type": "component",
-      "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+      "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
       "version": "0.18.0",
       "files": [
         {
@@ -24732,7 +24957,7 @@
       "category": "navigation",
       "meta": {
         "name": "Switcher",
-        "description": "App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers",
+        "description": "Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.",
         "category": "navigation",
         "clientJs": "enhancement",
         "states": ["default"],
@@ -24746,8 +24971,16 @@
             "description": "SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
-            "description": "Text label for the control.",
+            "nameVisibility": "invisible",
+            "description": "Accessible name for the switcher list. Not rendered — screen readers only.",
             "type": "string",
             "required": false,
             "default": "Switch application"
@@ -24783,7 +25016,8 @@
           ],
           "whenNotToUse": [
             "Primary in-app navigation — use SideNav",
-            "A small action menu attached to a control — use Dropdown"
+            "A small action menu attached to a control — use Dropdown",
+            "A COLLAPSED workspace/team switcher with one visible row and a menu on click — use Dropdown. Switcher renders every entry, permanently: it is an always-visible list, not a collapsing control, and the name misleads (2026-08-21 report item 5)"
           ],
           "antiPatterns": [
             {
@@ -24957,7 +25191,7 @@
         "props": [
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger).",
             "type": "'default' | 'info' | 'success' | 'warning' | 'error'",
             "required": false,
             "default": "default"
@@ -25219,7 +25453,7 @@
         "props": [
           {
             "name": "as",
-            "description": "The HTML element to render as.",
+            "description": "`p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.",
             "type": "'p' | 'span' | 'div'",
             "required": false,
             "default": "p"
@@ -25240,7 +25474,7 @@
           },
           {
             "name": "muted",
-            "description": "When true, renders in a muted/subtle color.",
+            "description": "When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`.",
             "type": "boolean",
             "required": false,
             "default": "false"
@@ -25342,6 +25576,7 @@
         "props": [
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control.",
             "type": "string",
             "required": false
@@ -25679,6 +25914,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Text label for the control.",
             "type": "string",
             "required": false
@@ -25817,7 +26053,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across.",
             "type": "'vertical' | 'horizontal'",
             "required": false,
             "default": "vertical"
@@ -25931,7 +26167,7 @@
           },
           {
             "name": "variant",
-            "description": "Selects the visual style variant.",
+            "description": "Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here.",
             "type": "'default' | 'success' | 'warning' | 'destructive'",
             "required": false,
             "default": "default"
@@ -26194,6 +26430,7 @@
           },
           {
             "name": "label",
+            "nameVisibility": "visible",
             "description": "Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text.",
             "type": "string",
             "required": false
@@ -26342,7 +26579,7 @@
           },
           {
             "name": "orientation",
-            "description": "Layout orientation of the component.",
+            "description": "Axis the options flow along: `horizontal` for a segmented row, `vertical` for a stacked column.",
             "type": "'horizontal' | 'vertical'",
             "required": false,
             "default": "horizontal"
@@ -26636,7 +26873,7 @@
           },
           {
             "name": "placement",
-            "description": "Placement relative to the trigger.",
+            "description": "Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`.",
             "type": "'top' | 'right' | 'bottom' | 'left'",
             "required": false,
             "default": "top"
@@ -26757,7 +26994,15 @@
         "sizes": [],
         "props": [
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling."
@@ -27071,7 +27316,15 @@
             "description": "Extra rows rendered above and below the visible window, to cover fast scrolling."
           },
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the list; label it when the list stands alone"
@@ -27305,7 +27558,15 @@
             "description": "Row height in px."
           },
           {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "ariaLabel",
+            "nameVisibility": "invisible",
             "type": "string",
             "required": false,
             "description": "Accessible label for the wheel — required when it has no visible label"

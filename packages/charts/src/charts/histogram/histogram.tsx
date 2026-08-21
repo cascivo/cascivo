@@ -48,7 +48,7 @@ export function Histogram({
   data,
   bins,
   title,
-  label: _label,
+  label,
   description,
   width: fixedWidth,
   height,
@@ -57,7 +57,14 @@ export function Histogram({
   format,
 }: HistogramProps) {
   useSignals()
-  const margins = plain ? PLAIN_MARGINS : DEFAULT_MARGINS
+  // The x-axis title is drawn `titleOffset` (36px) below the axis line, so the default
+  // 24px bottom margin would clip it. `label` is required, but an empty string is a legal
+  // way to opt out of the caption, and then the extra room would just be dead space.
+  const margins = plain
+    ? PLAIN_MARGINS
+    : label === ''
+      ? DEFAULT_MARGINS
+      : { ...DEFAULT_MARGINS, bottom: 48 }
   const resolvedHeight = height ?? (plain ? 48 : 300)
 
   const binnedData = binValues(data, bins)
@@ -164,6 +171,7 @@ export function Histogram({
                   orientation="x"
                   length={inner.width}
                   transform={`translate(0,${inner.height})`}
+                  title={label}
                   {...(format ? { format } : {})}
                 />
                 <Axis scale={yScale} orientation="y" length={inner.height} />

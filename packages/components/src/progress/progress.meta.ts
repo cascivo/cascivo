@@ -10,7 +10,16 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md', 'lg'],
   props: [
     {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       description:
         'Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.',
       type: 'string',
@@ -36,7 +45,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        'Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.',
       type: "'primary' | 'info' | 'success' | 'warning' | 'error'",
       required: false,
       default: 'primary',

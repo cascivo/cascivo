@@ -42,7 +42,7 @@ Renders a native <input type="checkbox"> wrapped in a <label>, so role, checked/
 
 | Name            | Type                                         | Required | Default | Description                                                        |
 | --------------- | -------------------------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`         | `string`                                     | No       | —       | Text label for the control.                                        |
+| `label`         | `string`                                     | No       | —       | Text label for the control. Rendered on screen.                    |
 | `checked`       | `boolean`                                    | No       | —       | Whether the control is checked (controlled).                       |
 | `indeterminate` | `boolean`                                    | No       | false   | When true, renders the mixed/indeterminate state.                  |
 | `disabled`      | `boolean`                                    | No       | false   | When true, disables the control and removes it from the tab order. |

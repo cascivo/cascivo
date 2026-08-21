@@ -29,7 +29,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'placement',
-      description: 'Placement relative to the trigger.',
+      description: 'Side of the trigger the panel opens on: `bottom`, `top`, `left` or `right`.',
       type: "'top' | 'bottom' | 'left' | 'right'",
       required: false,
       default: 'bottom',

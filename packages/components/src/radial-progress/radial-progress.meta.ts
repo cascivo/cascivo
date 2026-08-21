@@ -11,7 +11,16 @@ export const meta: ComponentMeta = {
   sizes: ['sm', 'md', 'lg'],
   props: [
     {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description:
@@ -27,7 +36,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        'Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.',
       type: "'primary' | 'info' | 'success' | 'warning' | 'error'",
       required: false,
       default: 'primary',

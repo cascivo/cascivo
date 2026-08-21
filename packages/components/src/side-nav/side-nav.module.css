@@ -288,6 +288,7 @@
 
   .footer {
     padding-block: var(--cascivo-space-2);
+    padding-inline: var(--cascivo-space-2);
     font-size: var(--cascivo-text-sm);
     color: var(--cascivo-color-text-subtle);
   }

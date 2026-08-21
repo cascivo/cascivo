@@ -32,14 +32,15 @@ Uses the native <progress> element which maps to role="progressbar" automaticall
 
 ## Props
 
-| Name               | Type                                                       | Required | Default | Description                                                                                                                        |
-| ------------------ | ---------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `ariaLabel`        | `string`                                                   | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. |
-| `aria-label`       | `string`                                                   | No       | —       | Accessible label when no visible label is present.                                                                                 |
-| `aria-describedby` | `string`                                                   | No       | —       | Id of an element describing the progress bar.                                                                                      |
-| `value`            | `number`                                                   | No       | —       | 0–100. Omit for indeterminate state.                                                                                               |
-| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Selects the visual style variant.                                                                                                  |
-| `size`             | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                              |
+| Name               | Type                                                       | Required | Default | Description                                                                                                                                                            |
+| ------------------ | ---------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`            | `string`                                                   | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                         |
+| `ariaLabel`        | `string`                                                   | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
+| `aria-label`       | `string`                                                   | No       | —       | Accessible label when no visible label is present.                                                                                                                     |
+| `aria-describedby` | `string`                                                   | No       | —       | Id of an element describing the progress bar.                                                                                                                          |
+| `value`            | `number`                                                   | No       | —       | 0–100. Omit for indeterminate state.                                                                                                                                   |
+| `variant`          | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | No       | primary | Colour of the fill: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.                                                                 |
+| `size`             | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                  |
 
 ## Tokens
 

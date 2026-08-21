@@ -55,3 +55,17 @@ describe('@cascivo/react', () => {
     setLinkComponent('a')
   })
 })
+
+/**
+ * Radix, MUI, Chakra, shadcn and HeadlessUI all call the toggle switch `Switch`. cascivo
+ * calls it `Toggle`, and `ToggleGroup` is a different component (a segmented button group).
+ * An adopter imported `Switch`, got "not exported", and had to go looking (2026-08-21 report
+ * item 3). `packages/components/aliases.json` answers that for `cascivo add` and the MCP
+ * tools; this is the answer for the import statement.
+ */
+describe('foreign-name aliases', () => {
+  it('exports `Switch` as the same component as `Toggle`', async () => {
+    const mod = await import('./index')
+    expect(mod.Switch).toBe(mod.Toggle)
+  })
+})

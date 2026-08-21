@@ -6,6 +6,8 @@ export interface PropMeta {
   required: boolean
   default?: string
   description?: string
+  /** See `PropMeta.nameVisibility` in @cascivo/core — required on `label`/`ariaLabel`. */
+  nameVisibility?: 'visible' | 'invisible'
 }
 
 export interface IntentAntiPattern {

@@ -35,7 +35,7 @@
       },
       {
         "name": "orientation",
-        "description": "Layout orientation of the component.",
+        "description": "Axis the joined children flow along: `horizontal` for a row, `vertical` for a column. Inner corners are squared off either way.",
         "type": "'horizontal' | 'vertical'",
         "required": false,
         "default": "horizontal"

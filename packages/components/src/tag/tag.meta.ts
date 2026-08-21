@@ -12,7 +12,8 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'variant',
-      description: 'Selects the visual style variant.',
+      description:
+        "Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral | info | success | warning | danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger).",
       type: "'default' | 'info' | 'success' | 'warning' | 'error'",
       required: false,
       default: 'default',

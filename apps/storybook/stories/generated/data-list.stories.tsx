@@ -20,6 +20,19 @@ export const HorizontalDataList: Story = {
   ),
 }
 
+export const VerticalValueUnderItsLabelNotItemsStackedVertically: Story = {
+  name: 'Vertical — value under its label, not "items stacked vertically"',
+  render: () => (
+    <DataList
+      orientation="vertical"
+      items={[
+        { label: 'Region', value: 'fra1' },
+        { label: 'Branch', value: 'main' },
+      ]}
+    />
+  ),
+}
+
 export const VerticalWithDividers: Story = {
   name: 'Vertical with dividers',
   render: () => (

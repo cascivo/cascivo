@@ -12,12 +12,14 @@ export const meta: ComponentMeta = {
     { name: 'data', type: 'number[]', required: true, description: 'Array of numeric values' },
     {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible name for the chart (invisible — rendered as the SVG `<title>`).',
     },
     {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description:

@@ -29,12 +29,14 @@
     "props": [
       {
         "name": "label",
-        "description": "Text label for the control.",
+        "nameVisibility": "invisible",
+        "description": "Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name.",
         "type": "string",
         "required": false
       },
       {
         "name": "ariaLabel",
+        "nameVisibility": "invisible",
         "type": "string",
         "required": false,
         "description": "Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one."
@@ -47,7 +49,7 @@
       },
       {
         "name": "variant",
-        "description": "Selects the visual style variant.",
+        "description": "`ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface.",
         "type": "'ghost' | 'outline' | 'filled'",
         "required": false,
         "default": "ghost"

@@ -50,7 +50,7 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 | `onChange`      | `(value: string \| undefined) => void` | No       | —       | Deprecated: use onValueChange (same string \| undefined).                       |
 | `clearable`     | `boolean`                              | No       | false   | When true, shows a control to clear the selected value.                         |
 | `searchable`    | `boolean`                              | No       | true    | When true, shows a search/filter input.                                         |
-| `label`         | `string`                               | No       | —       | Text label for the control.                                                     |
+| `label`         | `string`                               | No       | —       | Text label for the control. Rendered on screen.                                 |
 | `hint`          | `string`                               | No       | —       | Supplementary hint text shown with the control.                                 |
 | `error`         | `string`                               | No       | —       | Error message shown when the value is invalid.                                  |
 | `size`          | `'sm' \| 'md' \| 'lg'`                 | No       | 'md'    | Visual size of the component (e.g. 'sm', 'md', 'lg').                           |

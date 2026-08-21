@@ -45,7 +45,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'position',
-      description: 'Position of the component.',
+      description:
+        'Canvas corner the minimap is pinned to: `bottom-right`, `bottom-left`, `top-left` or `top-right`.',
       type: "'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'",
       required: false,
       default: 'bottom-right',
@@ -63,7 +64,16 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string | undefined',
       required: false,
       description: 'Accessible name for the minimap region.',

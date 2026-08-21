@@ -12,10 +12,20 @@ export const meta: ComponentMeta = {
   props: [
     { name: 'children', type: 'React.ReactNode', required: true, description: 'The main icon' },
     {
-      name: 'label',
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
       type: 'string',
-      required: true,
-      description: 'Accessible name for the button',
+      required: false,
+    },
+    {
+      name: 'label',
+      nameVisibility: 'invisible',
+      type: 'string',
+      required: false,
+      description:
+        'Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it.',
     },
     {
       name: 'onClick',
@@ -31,7 +41,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'position',
-      description: 'Position of the component.',
+      description:
+        'Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way.',
       type: "'bottom-end' | 'bottom-start'",
       required: false,
       default: 'bottom-end',

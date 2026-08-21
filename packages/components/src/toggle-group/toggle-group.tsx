@@ -27,7 +27,8 @@ export interface ToggleGroupProps extends Omit<
   onValueChange?: (value: string | string[]) => void
   items: ToggleGroupItem[]
   /**
-   * Layout orientation of the component.
+   * Axis the options flow along: `horizontal` for a segmented row, `vertical` for a stacked
+   * column.
    *
    * @defaultValue `horizontal`
    * @see the component manifest

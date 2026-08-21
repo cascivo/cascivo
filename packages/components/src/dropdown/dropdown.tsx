@@ -34,7 +34,9 @@ export interface DropdownProps {
   items: DropdownItem[]
   onSelect?: (value: string) => void
   /**
-   * Placement relative to the trigger.
+   * Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start
+   * edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of
+   * the viewport.
    *
    * @defaultValue `bottom-start`
    * @see the component manifest

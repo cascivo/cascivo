@@ -32,9 +32,12 @@ export default defineConfig({
   plugins: [cssImportEdge('charts.css')],
   build: {
     lib: {
-      entry: './src/index.ts',
+      // Two entries. `./sparkline` exists so a page that wants one inline trend line does
+      // not pay for the chart engine — see src/sparkline.ts. Keeping it a real entry (not a
+      // deep import into dist) is what lets Rolldown split the shared code correctly and
+      // what `scripts/checks/sparkline-subpath-size.test.ts` measures.
+      entry: { index: './src/index.ts', sparkline: './src/sparkline.ts' },
       formats: ['es'],
-      fileName: 'index',
       cssFileName: 'charts',
     },
     rollupOptions: {

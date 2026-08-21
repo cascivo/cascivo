@@ -13,6 +13,7 @@ export const meta: ComponentMeta = {
     { name: 'value', type: 'string | number', required: true, description: 'Primary metric value' },
     {
       name: 'label',
+      nameVisibility: 'visible',
       type: 'string',
       required: true,
       description: 'Metric label — rendered visibly at the top of the tile.',

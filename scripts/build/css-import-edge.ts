@@ -22,9 +22,15 @@
  *
  * Enforced by `scripts/checks/css-contract.test.ts` (`pnpm css-contract:check`).
  *
- * Only correct for a **single-file** lib build: the twin is emitted as a flat copy of the
- * entry chunk, so a package that code-splits would need `@cascivo/react`'s fuller
- * whole-graph treatment instead.
+ * Multi-entry is supported, and the shape of the support matters: `@cascivo/charts` gained a
+ * second entry (`./sparkline`) and Rolldown then hoisted the code both entries share into its
+ * own chunk. Copying only the ENTRY chunks into `node/` would leave `node/index.js` importing
+ * `./chunk-abc.js` — a path that resolves inside `node/`, where nothing was written. So every
+ * chunk is copied, entry or not, preserving the relative layout; only entry chunks get the
+ * CSS edge injected, which is also why the copies are taken before injection.
+ *
+ * Still not a substitute for `@cascivo/react`'s whole-graph treatment: this assumes the CSS
+ * is one stylesheet imported by every entry, not per-component side-effect imports.
  */
 
 /** Matches a directive prologue line (`'use client';`) — these must stay at the top. */
@@ -45,10 +51,13 @@ export function cssImportEdge(cssFileName: string) {
       bundle: Record<string, Chunk>,
     ) {
       for (const [fileName, chunk] of Object.entries(bundle)) {
-        if (chunk.type !== 'chunk' || !chunk.isEntry || typeof chunk.code !== 'string') continue
+        if (chunk.type !== 'chunk' || typeof chunk.code !== 'string') continue
 
-        // The CSS-free twin, captured before the import is injected.
+        // The CSS-free twin, captured before the import is injected. Emitted for shared
+        // chunks too, or an entry twin's relative import would dangle — see the note above.
         this.emitFile({ type: 'asset', fileName: `node/${fileName}`, source: chunk.code })
+
+        if (!chunk.isEntry) continue
 
         const lines = chunk.code.split('\n')
         let i = 0

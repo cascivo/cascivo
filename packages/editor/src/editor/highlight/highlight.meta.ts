@@ -42,7 +42,16 @@ export const meta: ComponentMeta = {
       description: 'Spaces per tab stop',
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description: 'Accessible label for the code block',

@@ -11,6 +11,7 @@ export const meta: ComponentMeta = {
   props: [
     {
       name: 'label',
+      nameVisibility: 'visible',
       description:
         'Text label for the control (standalone use). Omit it when wrapping the Input in a Field — the Field owns the label, and setting both double-labels the control.',
       type: 'string',

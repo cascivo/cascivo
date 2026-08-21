@@ -132,6 +132,14 @@ export interface CodeEditorProps extends Omit<
   virtualize?: boolean
   /** Accessible label for the editor (defaults to the i18n "Code editor"). */
   label?: string
+  /**
+   * Alias of `label` — the same invisible accessible name under the catalog's own spelling.
+   *
+   * `ariaLabel` is what the catalog calls a name nothing paints, so it is the guess an agent
+   * makes after reading one other component (2026-08-21 report item 1). This component
+   * predates the convention and shipped `label`; both work and neither is deprecated.
+   */
+  ariaLabel?: string
   /** Called with the current value on `Mod-S` (the browser save dialog is suppressed). */
   onSave?: (value: string) => void
   /** Extra key bindings, merged over the built-ins (user wins on the same chord). */
@@ -170,6 +178,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
     disabled = false,
     spellCheck = false,
     label,
+    ariaLabel,
     onSave,
     keymap,
     decorations,
@@ -887,7 +896,7 @@ export const CodeEditor = forwardRef<CodeEditorHandle, CodeEditorProps>(function
           // combobox (not the plain textbox role) is the role that permits
           // aria-expanded / aria-controls / aria-activedescendant for the slash menu.
           role="combobox"
-          aria-label={label ?? t(builtin.editor.label)}
+          aria-label={ariaLabel ?? label ?? t(builtin.editor.label)}
           aria-expanded={slashOpen.value}
           aria-controls={slashOpen.value ? menuId : undefined}
           aria-activedescendant={slashOpen.value ? `${menuId}-opt-${slashIndex.value}` : undefined}

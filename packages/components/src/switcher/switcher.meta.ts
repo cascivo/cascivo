@@ -3,7 +3,7 @@ import type { ComponentMeta } from '@cascivo/core'
 export const meta: ComponentMeta = {
   name: 'Switcher',
   description:
-    'App/product switcher list — lives inside HeaderPanel, renders links with active indicator and optional dividers',
+    'Always-visible app/product switcher LIST — every entry is rendered at once, it does not collapse. Lives inside HeaderPanel; renders links with an active indicator and optional dividers. For a collapsed trigger with a menu, use Dropdown.',
   category: 'navigation',
   // Markup is fully server-rendered; the only client-side work is re-resolving the
   // default label when the i18n locale or catalog changes, which is why the source
@@ -20,8 +20,17 @@ export const meta: ComponentMeta = {
       description: 'SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })',
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
-      description: 'Text label for the control.',
+      nameVisibility: 'invisible',
+      description: 'Accessible name for the switcher list. Not rendered — screen readers only.',
       type: 'string',
       required: false,
       default: 'Switch application',
@@ -71,6 +80,7 @@ export const meta: ComponentMeta = {
     whenNotToUse: [
       'Primary in-app navigation — use SideNav',
       'A small action menu attached to a control — use Dropdown',
+      'A COLLAPSED workspace/team switcher with one visible row and a menu on click — use Dropdown. Switcher renders every entry, permanently: it is an always-visible list, not a collapsing control, and the name misleads (2026-08-21 report item 5)',
     ],
     antiPatterns: [
       {

@@ -8,7 +8,7 @@
  */
 import { spawnSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { readFile, readdir, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -26,6 +26,19 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..')
 const reactExports = reactExportedNames(REPO_ROOT)
 const REGISTRY_PATH = join(REPO_ROOT, 'registry.json')
+
+/**
+ * Foreign component names → the registry entry they resolve to. `_comment` documents the
+ * file itself and is not an entry. See `RegistryComponent.aliases`.
+ */
+const COMPONENT_ALIASES: Record<string, string[]> = Object.fromEntries(
+  Object.entries(
+    JSON.parse(readFileSync(join(REPO_ROOT, 'packages/components/aliases.json'), 'utf8')) as Record<
+      string,
+      string[] | string
+    >,
+  ).filter((pair): pair is [string, string[]] => pair[0] !== '_comment'),
+)
 
 const BASE_URL = (
   process.env.REGISTRY_BASE_URL ?? 'https://raw.githubusercontent.com/cascivo/cascivo/main'
@@ -138,6 +151,18 @@ interface RegistryComponent {
   peerVersions?: Record<string, string>
   /** Other registry components this entry needs (shared hooks/utils, siblings). */
   registryDependencies?: string[]
+  /**
+   * Foreign/common names for this component in peer systems (Radix, MUI, Chakra, shadcn,
+   * HeadlessUI, Carbon) — e.g. `toggle` carries `["Switch", "switch", "ToggleSwitch"]`.
+   *
+   * Sourced from `packages/components/aliases.json`. The icon catalog has carried the same
+   * field for a while and it works: an agent that guesses `LayoutDashboard` still finds
+   * `Dashboard`. Components had no equivalent, so an adopter who imported `Switch` — which
+   * every peer system calls it — got "not exported" and had to go looking (2026-08-21 report
+   * item 3). `cascivo add`/`search` and the MCP `search_components`/`get_component` tools
+   * resolve through this, and `llms.txt` lists the high-traffic ones.
+   */
+  aliases?: string[]
   tags: string[]
   /** Full component manifest — consumed by the MCP server and docs. */
   meta: ComponentMeta
@@ -292,8 +317,10 @@ async function buildEntry(
   }
 
   const peerVersions = await resolvePeerVersions(meta.dependencies)
+  const entryName = `${root.prefix}${localName}`
+  const aliases = COMPONENT_ALIASES[entryName]
   const entry: RegistryComponent = {
-    name: `${root.prefix}${localName}`,
+    name: entryName,
     type: root.type,
     description: meta.description,
     category: meta.category,
@@ -303,6 +330,7 @@ async function buildEntry(
     dependencies: meta.dependencies,
     ...(peerVersions ? { peerVersions } : {}),
     ...(meta.deprecated ? { deprecated: meta.deprecated } : {}),
+    ...(aliases ? { aliases } : {}),
     tags: meta.tags,
     meta,
   }

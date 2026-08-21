@@ -32,7 +32,7 @@ import { InlineLoading } from '@cascivo/react'
 | Prop     | Type                                                     | Required | Default | Description                                                |
 | -------- | -------------------------------------------------------- | -------- | ------- | ---------------------------------------------------------- |
 | `status` | `'inactive' \| 'active' \| 'finished' \| 'error'`        | yes      | —       | Status state.                                              |
-| `label`  | `ReactNode`                                              | no       | —       | Text label for the control.                                |
+| `label`  | `ReactNode`                                              | no       | —       | Text label for the control. Rendered on screen.            |
 | `labels` | `{ active?: string; finished?: string; error?: string }` | no       | —       | Overrides for the component’s user-visible strings (i18n). |
 
 ## Examples

@@ -41,7 +41,7 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 | `onValueChange` | `(value: string) => void` | No       | —       | Called with the new value when it changes.                         |
 | `presets`       | `string[]`                | No       | —       | Preset swatch colors                                               |
 | `alpha`         | `boolean`                 | No       | true    | When true, enables alpha (opacity) selection.                      |
-| `label`         | `string`                  | No       | —       | Text label for the control.                                        |
+| `label`         | `string`                  | No       | —       | Text label for the control. Rendered on screen.                    |
 | `disabled`      | `boolean`                 | No       | false   | When true, disables the control and removes it from the tab order. |
 | `size`          | `'sm' \| 'md' \| 'lg'`    | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
 

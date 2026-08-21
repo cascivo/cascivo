@@ -39,6 +39,7 @@
       },
       {
         "name": "label",
+        "nameVisibility": "visible",
         "type": "string",
         "required": true,
         "description": "X-axis label — rendered visibly beneath the axis."

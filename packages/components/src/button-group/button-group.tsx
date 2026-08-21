@@ -6,7 +6,8 @@ import styles from './button-group.module.css'
 
 export interface ButtonGroupProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Layout orientation of the component.
+   * Axis the buttons flow along: `horizontal` puts them in a row, `vertical` stacks them in
+   * a column. The seams between them are collapsed either way.
    *
    * @defaultValue `horizontal`
    * @see the component manifest

@@ -149,8 +149,16 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Invisible accessible name for the table, used when there is no visible `title`. A table with neither is an unnamed landmark; dev-warns.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'title',
-      description: 'Title text for the component.',
+      description: "Visible caption above the table; it also becomes the table's accessible name.",
       type: 'string',
       required: false,
     },

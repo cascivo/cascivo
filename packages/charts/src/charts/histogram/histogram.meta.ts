@@ -26,6 +26,7 @@ export const meta: ComponentMeta = {
     { name: 'title', description: 'Title text for the component.', type: 'string', required: true },
     {
       name: 'label',
+      nameVisibility: 'visible',
       type: 'string',
       required: true,
       description: 'X-axis label — rendered visibly beneath the axis.',

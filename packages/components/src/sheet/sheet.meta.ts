@@ -29,7 +29,8 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'side',
-      description: 'Edge the component is anchored to.',
+      description:
+        'Edge the sheet slides in from: `end` (the inline end — right in LTR), `start`, `top` or `bottom`.',
       type: "'start' | 'end' | 'top' | 'bottom'",
       required: false,
       default: 'end',

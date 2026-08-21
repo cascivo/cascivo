@@ -121,6 +121,14 @@ export interface SideNavProps {
    */
   ariaLabel?: string
   /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
+  /**
    * Accessible label for the collapse control.
    *
    * @defaultValue `Collapse navigation`
@@ -150,6 +158,8 @@ export interface SideNavProps {
   showCollapseToggle?: boolean
   /** Content rendered above the items, inside the item padding context. */
   header?: ReactNode
+  /** Content rendered above the collapse toggle, inside the item padding context —
+   * it lines up with the nav items above it, exactly as `header` does. */
   footer?: ReactNode
   className?: string
 }
@@ -367,6 +377,7 @@ export function SideNav({
   defaultCollapsed = false,
   onCollapsedChange,
   ariaLabel,
+  label,
   collapseLabel,
   expandLabel,
   expandOnHover = false,
@@ -376,7 +387,7 @@ export function SideNav({
   className,
 }: SideNavProps) {
   useSignals()
-  const resolvedAriaLabel = ariaLabel ?? t(builtin.sideNav.nav)
+  const resolvedAriaLabel = ariaLabel ?? label ?? t(builtin.sideNav.nav)
   const resolvedCollapseLabel = collapseLabel ?? t(builtin.sideNav.collapse)
   const resolvedExpandLabel = expandLabel ?? t(builtin.sideNav.expand)
   const baseId = useId()

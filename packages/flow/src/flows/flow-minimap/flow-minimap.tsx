@@ -20,6 +20,14 @@ export interface FlowMiniMapProps {
   nodeColor?: string | undefined
   onViewportChange?: ((viewport: Viewport) => void) | undefined
   label?: string | undefined
+  /**
+   * Alias of `label` — the same invisible accessible name under the catalog's own spelling.
+   *
+   * `ariaLabel` is what the catalog calls a name nothing paints, so it is the guess an agent
+   * makes after reading one other component (2026-08-21 report item 1). This component
+   * predates the convention and shipped `label`; both work and neither is deprecated.
+   */
+  ariaLabel?: string | undefined
   className?: string | undefined
 }
 
@@ -38,6 +46,7 @@ export function FlowMiniMap({
   nodeColor,
   onViewportChange,
   label,
+  ariaLabel,
   className,
 }: FlowMiniMapProps) {
   useSignals()
@@ -102,7 +111,7 @@ export function FlowMiniMap({
       width={width}
       height={height}
       role="img"
-      aria-label={label ?? t(builtin.flow.minimap)}
+      aria-label={ariaLabel ?? label ?? t(builtin.flow.minimap)}
     >
       {nodes.map((node) => {
         const b = nodeBounds(node)

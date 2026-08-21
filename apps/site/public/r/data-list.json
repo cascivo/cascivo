@@ -35,7 +35,7 @@
       },
       {
         "name": "orientation",
-        "description": "Layout orientation of the component.",
+        "description": "Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis.",
         "type": "'horizontal' | 'vertical'",
         "required": false,
         "default": "horizontal"
@@ -71,6 +71,11 @@
       {
         "title": "Horizontal data list",
         "code": "<DataList\n  items={[\n    { label: 'Name', value: 'Ada Lovelace' },\n    { label: 'Role', value: 'Mathematician' },\n  ]}\n/>"
+      },
+      {
+        "title": "Vertical — value under its label, not \"items stacked vertically\"",
+        "description": "Both modes stack the items vertically. `orientation` moves the VALUE: beside its label (horizontal) or under it (vertical).",
+        "code": "<DataList\n  orientation=\"vertical\"\n  items={[\n    { label: 'Region', value: 'fra1' },\n    { label: 'Branch', value: 'main' },\n  ]}\n/>"
       },
       {
         "title": "Vertical with dividers",

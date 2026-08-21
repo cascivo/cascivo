@@ -700,6 +700,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -1289,6 +1294,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'label',
       required: false,
       primitives: ['string'],
@@ -1648,6 +1658,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['boolean'],
     },
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'label',
       required: false,
       primitives: ['string'],
@@ -1703,6 +1718,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'keyboardStep',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
     {
       name: 'label',
@@ -1904,6 +1924,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'title',
       required: false,
       primitives: ['string'],
@@ -2042,6 +2067,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Dock: [
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'ariaLabel',
       required: false,
@@ -2209,8 +2239,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: true,
     },
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'label',
-      required: true,
+      required: false,
       primitives: ['string'],
     },
     {
@@ -2272,6 +2307,10 @@ export const propSchemas: Record<string, PropSchema[]> = {
   Field: [
     {
       name: 'label',
+      required: false,
+    },
+    {
+      name: 'hint',
       required: false,
     },
     {
@@ -2355,6 +2394,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Filter: [
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'ariaLabel',
       required: false,
@@ -2768,6 +2812,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'ariaLabel',
       required: false,
       primitives: ['string'],
     },
@@ -3255,6 +3304,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'tabSize',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
     {
       name: 'label',
@@ -4177,6 +4231,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   NavigationMenu: [
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -4365,6 +4424,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'placement',
       required: false,
       enum: ['bottom-start', 'bottom-end'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
     },
     {
       name: 'ariaLabel',
@@ -4678,6 +4742,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Progress: [
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -4760,6 +4829,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'showValue',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
     {
       name: 'label',
@@ -4860,6 +4934,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'background',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'ariaLabel',
       required: false,
       primitives: ['string'],
     },
@@ -4990,6 +5069,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   RadialProgress: [
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'ariaLabel',
       required: false,
@@ -5152,6 +5236,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Resizable: [
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'label',
       required: false,
@@ -5604,6 +5693,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -5762,12 +5856,22 @@ export const propSchemas: Record<string, PropSchema[]> = {
       enum: ['sm', 'md', 'lg'],
     },
     {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'label',
       required: false,
       primitives: ['string'],
     },
   ],
   SplitView: [
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'ariaLabel',
       required: false,
@@ -5861,6 +5965,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   StatsBand: [
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -5894,6 +6003,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
   ],
   Steps: [
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
     {
       name: 'ariaLabel',
       required: false,
@@ -5984,6 +6098,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   StructuredList: [
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -6069,6 +6188,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   Swap: [
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -6133,6 +6257,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'items',
       required: true,
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
     {
       name: 'label',
@@ -6573,6 +6702,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
   ],
   TreeView: [
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -6701,6 +6835,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
+    {
       name: 'ariaLabel',
       required: false,
       primitives: ['string'],
@@ -6740,6 +6879,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'itemHeight',
       required: false,
       primitives: ['number'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
     },
     {
       name: 'ariaLabel',

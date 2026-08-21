@@ -18,6 +18,27 @@ export interface PropMeta {
   required: boolean
   default?: string
   description?: string
+  /**
+   * For a prop that carries a label or an accessible name: whether the string is painted
+   * on screen. **Required on every prop named `label` or `ariaLabel`** — enforced by
+   * `scripts/checks/vocabulary.test.ts`, and checked against the component's own JSX by
+   * `scripts/checks/name-visibility-parity.test.ts`, which fails in both directions.
+   *
+   * - `'visible'` — rendered as text the user sees (and which becomes the accessible name).
+   * - `'invisible'` — reaches `aria-label` only; screen readers get it, nobody sees it.
+   *
+   * This is a **structured** field rather than a sentence because the sentence was tried and
+   * did not hold: the guard used to decide visibility by regex-matching this prop's
+   * `description`, its VISIBLE pattern included the substring "text label", and both
+   * `Switcher` and `CommandMenu` describe their invisible names as "Text label for the
+   * control." So the guard certified as visible the exact two props a 2026-08-21 adopter
+   * tripped over. A guard whose predicate is a keyword regex over prose will eventually
+   * assert a lie; this field is what it asserts instead.
+   *
+   * `pnpm regen` appends the matching sentence to the rendered description on every
+   * generated surface, so an author cannot write prose that contradicts the behaviour.
+   */
+  nameVisibility?: 'visible' | 'invisible'
 }
 
 export interface TypeFieldMeta {

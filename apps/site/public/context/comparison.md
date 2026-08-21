@@ -34,16 +34,17 @@ The divider is a role="slider" with aria-valuemin/max/now and full keyboard supp
 
 ## Props
 
-| Name               | Type                         | Required | Default    | Description                                             |
-| ------------------ | ---------------------------- | -------- | ---------- | ------------------------------------------------------- |
-| `after`            | `ReactNode`                  | Yes      | —          | Base layer shown underneath                             |
-| `before`           | `ReactNode`                  | Yes      | —          | Top layer revealed up to the divider                    |
-| `position`         | `number`                     | No       | —          | Divider position 0–100 (controlled)                     |
-| `defaultPosition`  | `number`                     | No       | 50         | The initial divider position (0–100) when uncontrolled. |
-| `onPositionChange` | `(position: number) => void` | No       | —          | Called with the new divider position when it changes.   |
-| `orientation`      | `'horizontal' \| 'vertical'` | No       | horizontal | Layout orientation of the component.                    |
-| `keyboardStep`     | `number`                     | No       | 5          | How far the divider moves per arrow-key press.          |
-| `label`            | `string`                     | No       | —          | Text label for the control.                             |
+| Name               | Type                         | Required | Default    | Description                                                                                                                                                  |
+| ------------------ | ---------------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `after`            | `ReactNode`                  | Yes      | —          | Base layer shown underneath                                                                                                                                  |
+| `before`           | `ReactNode`                  | Yes      | —          | Top layer revealed up to the divider                                                                                                                         |
+| `position`         | `number`                     | No       | —          | Divider position 0–100 (controlled)                                                                                                                          |
+| `defaultPosition`  | `number`                     | No       | 50         | The initial divider position (0–100) when uncontrolled.                                                                                                      |
+| `onPositionChange` | `(position: number) => void` | No       | —          | Called with the new divider position when it changes.                                                                                                        |
+| `orientation`      | `'horizontal' \| 'vertical'` | No       | horizontal | Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one. |
+| `keyboardStep`     | `number`                     | No       | 5          | How far the divider moves per arrow-key press.                                                                                                               |
+| `ariaLabel`        | `string`                     | No       | —          | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only.                 |
+| `label`            | `string`                     | No       | —          | Accessible name for the divider slider. Not rendered — screen readers only.                                                                                  |
 
 ## Tokens
 

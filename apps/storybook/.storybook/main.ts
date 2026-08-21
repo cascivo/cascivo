@@ -16,6 +16,7 @@ const config: StorybookConfig = {
       ...cfg.resolve,
       alias: {
         ...(cfg.resolve?.alias as Record<string, string> | undefined),
+        '@cascivo/charts/sparkline': resolve(root, 'packages/charts/src/sparkline.ts'),
         '@cascivo/charts': resolve(root, 'packages/charts/src/index.ts'),
         '@cascivo/editor': resolve(root, 'packages/editor/src/index.ts'),
         '@cascivo/flow': resolve(root, 'packages/flow/src/index.ts'),

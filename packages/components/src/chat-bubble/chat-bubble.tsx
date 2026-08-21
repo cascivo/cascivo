@@ -5,7 +5,8 @@ export type ChatBubbleSide = 'start' | 'end'
 export interface ChatBubbleProps {
   children: React.ReactNode
   /**
-   * Edge the component is anchored to.
+   * Which side of the thread the bubble sits on: `start` for an incoming message (avatar
+   * first), `end` for an outgoing one (right-aligned, avatar last).
    *
    * @defaultValue `start`
    * @see the component manifest

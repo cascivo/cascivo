@@ -36,6 +36,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'label',
+      nameVisibility: 'visible',
       description:
         'Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text.',
       type: 'string',

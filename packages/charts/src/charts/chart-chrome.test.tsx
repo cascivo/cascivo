@@ -344,8 +344,18 @@ describe('overlapping area fills stay distinguishable', () => {
   ]
 
   it('drops the fill opacity when more than one solid area shares the plot', () => {
+    // `fill="solid"` is explicit on the single-series render: a lone series now DEFAULTS to
+    // a gradient (2026-08-21 report item 8), and a gradient carries no inline fill-opacity
+    // at all. The rule under test is about solid fills, so it asks for one.
     const one = render(
-      <AreaChart title="T" series={[two[0]!]} x={(d) => d.x} y={(d) => d.y} width={600} />,
+      <AreaChart
+        title="T"
+        fill="solid"
+        series={[two[0]!]}
+        x={(d) => d.x}
+        y={(d) => d.y}
+        width={600}
+      />,
     )
     const both = render(
       <AreaChart title="T" series={two} x={(d) => d.x} y={(d) => d.y} width={600} />,

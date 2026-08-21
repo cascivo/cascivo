@@ -12,7 +12,16 @@ export const meta: ComponentMeta = {
   sizes: [],
   props: [
     {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
+      nameVisibility: 'invisible',
       type: 'string',
       required: false,
       description:
@@ -36,7 +45,8 @@ export const meta: ComponentMeta = {
       type: "'horizontal' | 'vertical'",
       required: false,
       default: "'horizontal'",
-      description: 'Layout direction of the steps',
+      description:
+        'Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page.',
     },
     {
       name: 'className',

@@ -22,7 +22,7 @@ const machine = createMachine({
 export interface TooltipProps {
   content: ReactNode
   /**
-   * Placement relative to the trigger.
+   * Side of the trigger the tip opens on: `top`, `right`, `bottom` or `left`.
    *
    * @defaultValue `top`
    * @see the component manifest

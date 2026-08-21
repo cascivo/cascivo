@@ -37,11 +37,35 @@ const SOURCE_DIRS = [
  * `width` on all 23 charts — the prop an adopter must understand to get a responsive chart,
  * and the reason one invented four pixel widths and wrapped every card in a scroller.
  */
+/**
+ * Descriptions that restate the prop name and say nothing else.
+ *
+ * `'Width of the component.'` was the entire published documentation for the single most
+ * misunderstood chart prop. The six below were the same defect at scale: 38 props across the
+ * catalog shared these strings, and each is a sentence a reader could have written from the
+ * prop name alone — which means the manifest, `registry.json`, `llms.txt`, the docs site and
+ * the shipped `.d.ts` all carried a row that answered nothing.
+ *
+ * `'Layout orientation of the component.'` is the one that cost real time: it is true of the
+ * words and useless about the fact, because the ambiguity is *what* is being oriented.
+ * `DataList.orientation` moves the value relative to its label while the items stack
+ * vertically either way, and an adopter read it the other way round and got a very tall
+ * summary card (2026-08-21 report item 9).
+ *
+ * A description that names at least one of the prop's values cannot be one of these, which is
+ * what the two-value-enum rule in `manifest-completeness.test.ts` checks from the other side.
+ */
 const PLACEHOLDERS = [
   'Width of the component.',
   'Height of the component.',
   'The component.',
   'TODO',
+  'Layout orientation of the component.',
+  'Selects the visual style variant.',
+  'Placement relative to the trigger.',
+  'Position of the component.',
+  'The HTML element to render as.',
+  'Edge the component is anchored to.',
 ]
 
 /** Current TSDoc coverage floor. Raise it when you add docs; never lower it. */

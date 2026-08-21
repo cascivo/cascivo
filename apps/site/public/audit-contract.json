@@ -577,6 +577,7 @@
         { "name": "items", "type": "{ label: string; href?: string }[]", "required": true },
         { "name": "maxVisible", "type": "number", "required": false },
         { "name": "className", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
@@ -766,6 +767,7 @@
         { "name": "placeholder", "type": "string", "required": false },
         { "name": "emptyLabel", "type": "string", "required": false },
         { "name": "hotkey", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "loading", "type": "boolean", "required": false },
         { "name": "onQueryChange", "type": "(query: string) => void", "required": false },
@@ -783,6 +785,7 @@
         { "name": "onPositionChange", "type": "(position: number) => void", "required": false },
         { "name": "orientation", "type": "'horizontal' | 'vertical'", "required": false },
         { "name": "keyboardStep", "type": "number", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false }
       ]
     },
@@ -859,6 +862,7 @@
         { "name": "stickyHeader", "type": "boolean", "required": false },
         { "name": "loading", "type": "boolean", "required": false },
         { "name": "emptyState", "type": "ReactNode", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "title", "type": "string", "required": false },
         { "name": "description", "type": "string", "required": false },
         { "name": "labels", "type": "DataTableLabels", "required": false },
@@ -915,6 +919,7 @@
     {
       "name": "Dock",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "items", "type": "DockItem[]", "required": true },
         { "name": "activeIndex", "type": "number", "required": false },
@@ -977,7 +982,8 @@
       "name": "Fab",
       "props": [
         { "name": "children", "type": "React.ReactNode", "required": true },
-        { "name": "label", "type": "string", "required": true },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false },
         { "name": "onClick", "type": "() => void", "required": false },
         { "name": "actions", "type": "FabAction[]", "required": false },
         { "name": "position", "type": "'bottom-end' | 'bottom-start'", "required": false },
@@ -991,6 +997,7 @@
       "name": "Field",
       "props": [
         { "name": "label", "type": "ReactNode", "required": false },
+        { "name": "hint", "type": "ReactNode", "required": false },
         { "name": "description", "type": "ReactNode", "required": false },
         { "name": "error", "type": "ReactNode", "required": false },
         { "name": "required", "type": "boolean", "required": false },
@@ -1022,6 +1029,7 @@
     {
       "name": "Filter",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         { "name": "options", "type": "FilterOption[]", "required": true },
@@ -1317,6 +1325,7 @@
     {
       "name": "NavigationMenu",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "items", "type": "NavigationMenuItem[]", "required": true },
         { "name": "aria-label", "type": "string", "required": false },
@@ -1382,6 +1391,7 @@
         },
         { "name": "onSelect", "type": "(value: string) => void", "required": false },
         { "name": "placement", "type": "'bottom-start' | 'bottom-end'", "required": false },
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
@@ -1430,6 +1440,7 @@
     {
       "name": "Progress",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         { "name": "aria-describedby", "type": "string", "required": false },
@@ -1460,6 +1471,7 @@
         { "name": "max", "type": "number", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "showValue", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false }
       ]
     },
@@ -1504,12 +1516,14 @@
         { "name": "radius", "type": "string", "required": false },
         { "name": "fill", "type": "string", "required": false },
         { "name": "background", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false }
       ]
     },
     {
       "name": "RadialProgress",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "value", "type": "number", "required": true },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
@@ -1580,6 +1594,7 @@
     {
       "name": "Resizable",
       "props": [
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "children", "type": "ReactNode", "required": true },
         { "name": "orientation", "type": "'horizontal' | 'vertical'", "required": false },
@@ -1683,6 +1698,7 @@
         { "name": "collapsed", "type": "boolean", "required": false },
         { "name": "defaultCollapsed", "type": "boolean", "required": false },
         { "name": "onCollapsedChange", "type": "(collapsed: boolean) => void", "required": false },
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "collapseLabel", "type": "string", "required": false },
         { "name": "expandLabel", "type": "string", "required": false },
@@ -1725,6 +1741,7 @@
       "name": "Spinner",
       "props": [
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false }
       ]
     },
@@ -1763,6 +1780,7 @@
     {
       "name": "Steps",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "steps", "type": "Step[]", "required": true },
         { "name": "activeStep", "type": "number", "required": false },
@@ -1773,6 +1791,7 @@
     {
       "name": "StructuredList",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         {
@@ -1790,6 +1809,7 @@
     {
       "name": "Swap",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "on", "type": "React.ReactNode", "required": true },
         { "name": "off", "type": "React.ReactNode", "required": true },
@@ -1814,6 +1834,7 @@
       "name": "Switcher",
       "props": [
         { "name": "items", "type": "SwitcherEntry[]", "required": true },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "className", "type": "string", "required": false }
       ]
@@ -2002,6 +2023,7 @@
     {
       "name": "TreeView",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         {
@@ -2042,6 +2064,7 @@
           "required": true
         },
         { "name": "overscan", "type": "number", "required": false },
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "className", "type": "string", "required": false }
       ]
@@ -2058,6 +2081,7 @@
         { "name": "onValueChange", "type": "(value: string) => void", "required": true },
         { "name": "visibleCount", "type": "number", "required": false },
         { "name": "itemHeight", "type": "number", "required": false },
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "className", "type": "string", "required": false }
       ]
@@ -2171,6 +2195,7 @@
     {
       "name": "SplitView",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "start", "type": "ReactNode", "required": true },
         { "name": "end", "type": "ReactNode", "required": true },
@@ -2786,6 +2811,7 @@
         { "name": "readOnly", "type": "boolean", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "placeholder", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "onSave", "type": "(value: string) => void", "required": false },
         { "name": "bracketMatching", "type": "boolean", "required": false },
@@ -2810,6 +2836,7 @@
         { "name": "lineNumbers", "type": "boolean", "required": false },
         { "name": "wrap", "type": "boolean", "required": false },
         { "name": "tabSize", "type": "number", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "className", "type": "string", "required": false },
         { "name": "gutterRef", "type": "Ref<HTMLDivElement>", "required": false },
@@ -2869,6 +2896,7 @@
     {
       "name": "StatsBand",
       "props": [
+        { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "stats", "type": "StatItem[]", "required": true },
         { "name": "aria-label", "type": "string", "required": false }
@@ -2978,6 +3006,7 @@
         },
         { "name": "onViewportChange", "type": "(viewport: Viewport) => void", "required": false },
         { "name": "className", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "label", "type": "string | undefined", "required": false },
         { "name": "nodeColor", "type": "string | undefined", "required": false }
       ]

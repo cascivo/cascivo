@@ -19,7 +19,13 @@ export const meta: ComponentMeta = {
       required: true,
       description: 'Qualitative range breakpoints (sorted ascending)',
     },
-    { name: 'label', description: 'Text label for the control.', type: 'string', required: true },
+    {
+      name: 'label',
+      nameVisibility: 'visible',
+      description: 'Text label for the control.',
+      type: 'string',
+      required: true,
+    },
     {
       name: 'min',
       description: 'Minimum allowed value.',
