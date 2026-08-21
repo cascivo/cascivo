@@ -17,7 +17,11 @@
 // host-lint:snippet-start
 import { tanstackConfig } from '@tanstack/eslint-config'
 import reactHooks from 'eslint-plugin-react-hooks'
-import { cascivoSignals, cascivoVendoredSource } from '@cascivo/eslint-config'
+import {
+  cascivoPropVocabulary,
+  cascivoSignals,
+  cascivoVendoredSource,
+} from '@cascivo/eslint-config'
 
 export default [
   ...tanstackConfig,
@@ -26,6 +30,9 @@ export default [
   reactHooks.configs.flat['recommended-latest'],
   // Spread LAST — flat config is last-wins.
   cascivoSignals,
+  // Reports the prop names adopters guess wrong, with the prop that exists. `warn`, so it
+  // never fails a build; the fixture prints warnings and gates only on errors.
+  cascivoPropVocabulary,
   // Pass YOUR `outputDir` from cascivo.config.ts. The no-argument default is
   // 'src/components/ui/**'; if your outputDir differs and you rely on the default,
   // every rule this fragment scopes off silently stays on.

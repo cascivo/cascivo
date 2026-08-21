@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
-import cascivo, { cascivoSignals, cascivoVendoredSource } from './index.js'
+import cascivo, { cascivoPropVocabulary, cascivoSignals, cascivoVendoredSource } from './index.js'
 
 describe('@cascivo/eslint-config', () => {
   it('turns off react-hooks/immutability', () => {
@@ -21,12 +21,22 @@ describe('@cascivo/eslint-config', () => {
     assert.deepEqual(cascivoVendoredSource('app/ui/**').files, ['app/ui/**'])
   })
 
-  it('default export is a spreadable array containing both fragments', () => {
+  it('default export is a spreadable array containing every fragment', () => {
     assert.ok(Array.isArray(cascivo))
     assert.deepEqual(
       cascivo.map((c) => c.name),
-      ['cascivo/signals', 'cascivo/vendored-source'],
+      ['cascivo/signals', 'cascivo/prop-vocabulary', 'cascivo/vendored-source'],
     )
+  })
+
+  /*
+   * The rule ships at `warn` and must stay there. A lint rule that fails somebody's build
+   * over a naming opinion gets the whole config deleted — which also takes
+   * `react-hooks/immutability` with it, the thing this package exists for.
+   */
+  it('prop-vocabulary is enabled at warn, with the plugin it needs', () => {
+    assert.equal(cascivoPropVocabulary.rules['cascivo/prop-vocabulary'], 'warn')
+    assert.ok(cascivoPropVocabulary.plugins?.cascivo?.rules?.['prop-vocabulary'])
   })
 
   it('every fragment is a plain object ESLint can consume', () => {

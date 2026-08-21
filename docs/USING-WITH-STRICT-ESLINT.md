@@ -47,7 +47,11 @@ config with `@cascivo/eslint-config` added:
 ```js
 import { tanstackConfig } from '@tanstack/eslint-config'
 import reactHooks from 'eslint-plugin-react-hooks'
-import { cascivoSignals, cascivoVendoredSource } from '@cascivo/eslint-config'
+import {
+  cascivoPropVocabulary,
+  cascivoSignals,
+  cascivoVendoredSource,
+} from '@cascivo/eslint-config'
 
 export default [
   ...tanstackConfig,
@@ -56,6 +60,9 @@ export default [
   reactHooks.configs.flat['recommended-latest'],
   // Spread LAST — flat config is last-wins.
   cascivoSignals,
+  // Reports the prop names adopters guess wrong, with the prop that exists. `warn`, so it
+  // never fails a build; the fixture prints warnings and gates only on errors.
+  cascivoPropVocabulary,
   // Pass YOUR `outputDir` from cascivo.config.ts. The no-argument default is
   // 'src/components/ui/**'; if your outputDir differs and you rely on the default,
   // every rule this fragment scopes off silently stays on.
@@ -66,6 +73,26 @@ export default [
 ⚠ **`reactHooks.configs.flat['recommended-latest']`, not
 `reactHooks.configs['recommended-latest']`.** The plugin exports both; the second is the
 legacy eslintrc shape and applies nothing in a flat config, with no error to tell you.
+
+### What `cascivoPropVocabulary` adds
+
+It enables one rule, `cascivo/prop-vocabulary`, at **`warn`**. The rule answers a wrong prop
+guess with the prop that exists:
+
+```
+`Text` has no `tone` prop — it is `muted`. `tone` is the catalog's SEVERITY vocabulary
+(Status, Badge, Timeline, SideNav). Text emphasis is the boolean `muted`.
+```
+
+TypeScript already rejects `<Text tone="subtle">`; its message ("Property 'tone' does not
+exist on type 'TextProps'") names the mistake and does not say what to write instead, so you
+go looking for the docs. The rule also autofixes `gap="4"` → `gap={4}` and flags
+`const { theme } = useTheme()` (it returns a tuple) and `<Flex justify=…>` with no
+`direction` (`Flex` is vertical by default).
+
+It is `warn` on purpose — a lint error over a naming opinion is a reason to delete the whole
+config, which would take `react-hooks/immutability` with it. Raise it yourself if you want it
+enforced. Full list: [`@cascivo/eslint-plugin`](../packages/eslint-plugin/README.md).
 
 ### Formatting: exclude vendored source from your formatter
 

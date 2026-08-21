@@ -23,12 +23,20 @@ export interface CascadeFlatConfig {
 export declare const cascivoSignals: CascadeFlatConfig
 
 /**
+ * Enables `cascivo/prop-vocabulary` at **warn** — the rule that answers a wrong prop guess
+ * with the prop that exists (`<Text tone=…>` → `muted`, `gap="4"` → `gap={4}`,
+ * `const { theme } = useTheme()` → the tuple). Kept at `warn` deliberately: an error over a
+ * naming opinion gets this whole config deleted.
+ */
+export declare const cascivoPropVocabulary: CascadeFlatConfig
+
+/**
  * Scopes host stylistic rules off source vendored by `cascivo add`. Copy-paste path only.
  *
  * @param glob Your `outputDir` from `cascivo.config.ts`. Defaults to `src/components/ui/**`.
  */
 export declare function cascivoVendoredSource(glob?: string): CascadeFlatConfig
 
-/** Both fragments. Spread last in your flat config — last-wins. */
+/** Every fragment. Spread last in your flat config — last-wins. */
 declare const cascivo: CascadeFlatConfig[]
 export default cascivo

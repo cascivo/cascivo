@@ -1,28 +1,27 @@
 {
-  "name": "@cascivo/eslint-config",
-  "version": "0.2.4",
+  "name": "@cascivo/eslint-plugin",
+  "version": "0.1.0",
   "private": false,
-  "description": "Flat ESLint config for apps using cascivo — reconciles the signal-based reactivity contract with eslint-plugin-react-hooks 7",
+  "description": "ESLint rule that turns cascivo's near-miss prop names into an actionable message — the wrong guess, the prop that exists, and why",
   "keywords": [
     "cascivo",
     "design-system",
     "eslint",
-    "eslint-config",
-    "react",
-    "react-hooks",
-    "signals"
+    "eslint-plugin",
+    "react"
   ],
-  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/eslint-config#readme",
+  "homepage": "https://github.com/cascivo/cascivo/tree/main/packages/eslint-plugin#readme",
   "bugs": "https://github.com/cascivo/cascivo/issues",
   "license": "MIT",
   "author": "urbanisierung",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cascivo/cascivo.git",
-    "directory": "packages/eslint-config"
+    "directory": "packages/eslint-plugin"
   },
   "files": [
     "src/**/*.js",
+    "src/**/*.json",
     "src/**/*.d.ts",
     "!src/**/*.test.js"
   ],
@@ -39,10 +38,13 @@
     "provenance": true
   },
   "scripts": {
-    "build": "echo 'eslint-config: plain ESM, no build'",
-    "test": "node --test src/index.test.js"
+    "build": "echo 'eslint-plugin: plain ESM, no build'",
+    "test": "node --test src/*.test.js"
   },
-  "dependencies": {
-    "@cascivo/eslint-plugin": "workspace:*"
+  "devDependencies": {
+    "eslint": "10.8.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
   }
 }
