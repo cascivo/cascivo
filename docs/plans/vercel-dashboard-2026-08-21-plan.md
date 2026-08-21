@@ -1,10 +1,66 @@
 # Fix plan: the 2026-08-21 "Vercel-like dashboard on Vite + React Router" experience report
 
-**Status: SPEC ONLY — nothing here is implemented.** This document is written to be handed to
-an implementing agent as-is. Every finding is root-caused against current source with
-`file:line` evidence, verified at commit `fbe4628b`, and every workstream carries a design
-decision (with the rejected options), implementation steps, an executable guard, and
-acceptance criteria.
+**Status: IMPLEMENTED, 2026-08-21.** All five phases shipped; `pnpm ready` is green, and
+`pnpm ready:ci` (cold cache, sequential builds) was run for the packaging phase. The spec
+below is kept **as written** because it is the root-cause record — a spec quietly rewritten
+to match what happened stops being evidence of anything. Where implementation diverged, the
+divergences are listed immediately below rather than edited into the workstreams.
+
+All four open decisions in §4 were approved: the gradient default, the `Switch` alias export,
+the ESLint plugin, and the sparkline budget (kept at 6 kB gzip; the subpath measures ~3.5 kB).
+
+### Where implementation diverged from this spec
+
+- **WS-1's "Group D"** — adding `ariaLabel` to the ~25 components with a *visible* `label` —
+  **was not done, deliberately.** Those components extend `HTMLAttributes` and spread onto a
+  real `<input>`/`<select>`, so they already accept the standard DOM `aria-label`: typed,
+  familiar, and not something a camelCase second spelling makes more possible. Adding 25
+  redundant props would have been surface without capability. The rule shipped is scoped to
+  what a component *declares*, which is the line the source itself draws, and
+  `aria-label-universality.test.ts` enforces exactly that.
+- **WS-1's Group D dev warning** ("warn when both `label` and `ariaLabel` are set") was
+  dropped with it, and would have been wrong anyway: WCAG 2.5.3 supports a short visible
+  label with a longer accessible name (`label="Qty"`, `aria-label="Quantity in units"`), so
+  the warning would have fired on a correct pattern.
+- **WS-6's two-value-enum guard was written, run, and removed.** It flagged 19 boilerplate
+  descriptions on first run ("Layout orientation of the component.", "Selects the visual
+  style variant."). A guard needing 19 allowlist entries before it is green has been
+  allowlisted into uselessness — the failure mode `dead-props.test.ts`'s own header warns
+  about. Those descriptions are worth fixing; they are not this report's scope.
+- **WS-9's `apps/examples/deploy` router step could not be done as specced**: no example app
+  in the repo uses a router at all, so there was nothing to add a lazy index route to. The
+  doc claim that depended on it was removed rather than left unbacked; the `claims.test.ts`
+  guard (dated citations, no absolutes) shipped as specced and does the durable work.
+- **WS-8 ships without a hover tooltip** on the subpath, the option §4.4 left open. The
+  tooltip is what requires the engine, so keeping it would have defeated the entry. Stated on
+  the entry, in the package README and in the recipe; a DOM-parity test asserts the drawn SVG
+  is otherwise identical.
+- **WS-8 needed two build changes the spec did not anticipate.** A second entry made Rolldown
+  hoist shared code into its own chunk, which broke `css-import-edge`'s CSS-free `node/` twin
+  (it copied only entry chunks, leaving `node/index.js` importing a path that resolved inside
+  `node/` where nothing was written). The plugin now copies every chunk. `flatten-types.mjs`
+  gained a per-entry loop.
+
+### What the work turned up that the report could not see
+
+- **The guard for report item 1 was asserting the opposite of the truth.**
+  `vocabulary.test.ts`'s VISIBLE regex contained the substring `text label`, and `Switcher`
+  and `CommandMenu` both describe their *invisible* accessible names as "Text label for the
+  control." — so the guard certified as visible the exact two components the report tripped
+  over. This is §0.1, written before the fix and confirmed by it.
+- **`Histogram.label` was inert.** A required prop, documented as "rendered visibly beneath
+  the axis", destructured as `_label` and never used. Found by the new `nameVisibility`
+  classifier on its first run; it now renders as the x-axis title.
+- **`DataTable` could not be given an accessible name at all** without rendering a visible
+  caption — a real WCAG 1.3.1/4.1.2 gap. The report listed `DataTable` under `ariaLabel`,
+  which was factually wrong in the other direction.
+
+---
+
+This document was written to be handed to an implementing agent as-is. Every finding is
+root-caused against current source with `file:line` evidence, verified at commit `fbe4628b`,
+and every workstream carries a design decision (with the rejected options), implementation
+steps, an executable guard, and acceptance criteria.
 
 **Source report:** an agent built an 8-route Vercel-style deploy console (~1,470 lines) on
 `@cascivo/react@0.18.0` + `@cascivo/charts@0.18.0` + React Router 8.3, Path B (prebuilt).
