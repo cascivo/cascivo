@@ -703,6 +703,9 @@
                   "className": {
                     "type": "string"
                   },
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   }
@@ -1244,6 +1247,9 @@
                   "hotkey": {
                     "type": "boolean"
                   },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   },
@@ -1293,6 +1299,9 @@
                   },
                   "keyboardStep": {
                     "type": "number"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   },
                   "label": {
                     "type": "string"
@@ -1470,6 +1479,9 @@
                     "type": "string",
                     "enum": ["ReactNode"]
                   },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "title": {
                     "type": "string"
                   },
@@ -1601,6 +1613,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -1769,6 +1784,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   },
@@ -1786,7 +1804,7 @@
                     "type": "string"
                   }
                 },
-                "required": ["children", "label"]
+                "required": ["children"]
               }
             }
           }
@@ -1806,6 +1824,10 @@
                 "type": "object",
                 "properties": {
                   "label": {
+                    "type": "string",
+                    "enum": ["ReactNode"]
+                  },
+                  "hint": {
                     "type": "string",
                     "enum": ["ReactNode"]
                   },
@@ -1891,6 +1913,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -2755,6 +2780,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -2928,6 +2956,9 @@
                     "type": "string",
                     "enum": ["bottom-start", "bottom-end"]
                   },
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -3066,6 +3097,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -3156,6 +3190,9 @@
                   },
                   "showValue": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   },
                   "label": {
                     "type": "string"
@@ -3279,6 +3316,9 @@
                   "background": {
                     "type": "string"
                   },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   }
@@ -3302,6 +3342,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -3507,6 +3550,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   },
@@ -3810,6 +3856,9 @@
                   "defaultCollapsed": {
                     "type": "boolean"
                   },
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -3953,6 +4002,9 @@
                     "type": "string",
                     "enum": ["sm", "md", "lg"]
                   },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   }
@@ -4071,6 +4123,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -4104,6 +4159,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -4139,6 +4197,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -4198,6 +4259,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   },
@@ -4710,6 +4774,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -4781,6 +4848,9 @@
                   "overscan": {
                     "type": "number"
                   },
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -4839,6 +4909,9 @@
                   },
                   "itemHeight": {
                     "type": "number"
+                  },
+                  "label": {
+                    "type": "string"
                   },
                   "ariaLabel": {
                     "type": "string"
@@ -5231,6 +5304,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -6832,6 +6908,9 @@
                   "placeholder": {
                     "type": "string"
                   },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
                   "label": {
                     "type": "string"
                   },
@@ -6885,6 +6964,9 @@
                   },
                   "tabSize": {
                     "type": "number"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   },
                   "label": {
                     "type": "string"
@@ -7082,6 +7164,9 @@
               "props": {
                 "type": "object",
                 "properties": {
+                  "label": {
+                    "type": "string"
+                  },
                   "ariaLabel": {
                     "type": "string"
                   },
@@ -7364,6 +7449,9 @@
                     "enum": ["top-left", "top-right", "bottom-left", "bottom-right"]
                   },
                   "className": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
                     "type": "string"
                   },
                   "label": {

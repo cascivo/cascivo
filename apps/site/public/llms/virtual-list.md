@@ -26,15 +26,16 @@ import { VirtualList } from '@cascivo/react'
 
 ## Props
 
-| Prop         | Type                                             | Required | Default | Description                                                                                                   |
-| ------------ | ------------------------------------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `items`      | `Item[]`                                         | yes      | —       | The full collection; only the visible window is rendered                                                      |
-| `itemHeight` | `number`                                         | yes      | —       | Fixed row height in px — every row must be this tall                                                          |
-| `height`     | `number`                                         | yes      | —       | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
-| `renderItem` | `(item: Item, index: number) => React.ReactNode` | yes      | —       | Renders one row                                                                                               |
-| `overscan`   | `number`                                         | no       | `3`     | Extra rows rendered above and below the visible window, to cover fast scrolling.                              |
-| `ariaLabel`  | `string`                                         | no       | —       | Accessible label for the list; label it when the list stands alone. Not rendered — screen readers only.       |
-| `className`  | `string`                                         | no       | —       | Additional CSS class names merged onto the root element.                                                      |
+| Prop         | Type                                             | Required | Default | Description                                                                                                                                    |
+| ------------ | ------------------------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`      | `Item[]`                                         | yes      | —       | The full collection; only the visible window is rendered                                                                                       |
+| `itemHeight` | `number`                                         | yes      | —       | Fixed row height in px — every row must be this tall                                                                                           |
+| `height`     | `number`                                         | yes      | —       | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it                                  |
+| `renderItem` | `(item: Item, index: number) => React.ReactNode` | yes      | —       | Renders one row                                                                                                                                |
+| `overscan`   | `number`                                         | no       | `3`     | Extra rows rendered above and below the visible window, to cover fast scrolling.                                                               |
+| `label`      | `string`                                         | no       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel`  | `string`                                         | no       | —       | Accessible label for the list; label it when the list stands alone. Not rendered — screen readers only.                                        |
+| `className`  | `string`                                         | no       | —       | Additional CSS class names merged onto the root element.                                                                                       |
 
 ## Examples
 

@@ -20,6 +20,14 @@ export const meta: ComponentMeta = {
       default: 'md',
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
       nameVisibility: 'invisible',
       type: 'string',

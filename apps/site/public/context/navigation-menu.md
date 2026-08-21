@@ -35,6 +35,7 @@ Wrapped in a navigation landmark with a roving-tabindex row of links and disclos
 
 | Name          | Type                                   | Required | Default    | Description                                                                                                                                       |
 | ------------- | -------------------------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`       | `string`                               | No       | —          | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
 | `ariaLabel`   | `string`                               | No       | —          | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `items`       | `NavigationMenuItem[]`                 | Yes      | —          | The items to render.                                                                                                                              |
 | `aria-label`  | `string`                               | No       | —          | Accessible label used when no visible label is present.                                                                                           |

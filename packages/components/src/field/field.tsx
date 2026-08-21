@@ -34,11 +34,45 @@ function warnIfDoubleLabel(fieldLabel: ReactNode, child: ReactElement): void {
   )
 }
 
+const warnedDoubleHint = new Set<string>()
+
+/**
+ * Dev-only, deduped warning: a `Field` supplying supporting text while its child control also
+ * supplies a `hint` renders two paragraphs under one control, and only the Field's is wired
+ * into `aria-describedby` — so the second is invisible to a screen reader and visible to
+ * everyone else. Sibling of `warnIfDoubleLabel`; the split between `description` and `hint`
+ * is exactly what makes this easy to do by accident (2026-08-21 report item 4).
+ */
+function warnIfDoubleHint(supporting: ReactNode, child: ReactElement): void {
+  if (!isDev()) return
+  if (supporting == null) return
+  const childHint = (child.props as { hint?: unknown }).hint
+  if (childHint == null) return
+  const key = String(supporting)
+  if (warnedDoubleHint.has(key)) return
+  warnedDoubleHint.add(key)
+  console.warn(
+    `cascivo Field: both the Field and its child control define supporting text ` +
+      `(${key}). Omit the child's \`hint\` inside a Field — the Field owns it, and only the ` +
+      "Field's is wired into aria-describedby.",
+  )
+}
+
 export interface FieldProps {
   /** Label text for the control. */
   label?: ReactNode
-  /** Helper text describing the control, wired via aria-describedby. */
+  /**
+   * Helper text under the control, wired via `aria-describedby`.
+   *
+   * `hint` is the same thing under the name the eight form controls use (`Input.hint`,
+   * `Select.hint`, …); `Field` predates that split and shipped `description`, which is the
+   * catalog's word for the body text of a *feedback* component (`Alert`, `Notification`).
+   * Both work here and neither is deprecated (2026-08-21 report item 4). When both are
+   * passed, `description` wins.
+   */
   description?: ReactNode
+  /** Alias of `description` — the name the form controls use for the same text. */
+  hint?: ReactNode
   /** Error message; sets aria-invalid on the control and is announced via role="alert". */
   error?: ReactNode
   /**
@@ -70,6 +104,7 @@ export interface FieldProps {
 export function Field({
   label,
   description,
+  hint,
   error,
   required = false,
   disabled = false,
@@ -77,13 +112,14 @@ export function Field({
   children,
   className,
 }: FieldProps) {
+  const supporting = description ?? hint
   const generatedId = useId('cascade-field')
   const controlId = id ?? generatedId
   const descriptionId = `${controlId}-description`
   const errorId = `${controlId}-error`
 
   const describedBy =
-    [description ? descriptionId : null, error ? errorId : null].filter(Boolean).join(' ') ||
+    [supporting ? descriptionId : null, error ? errorId : null].filter(Boolean).join(' ') ||
     undefined
 
   const controlProps: {
@@ -96,7 +132,10 @@ export function Field({
   if (error) controlProps['aria-invalid'] = true
   if (disabled || children.props.disabled) controlProps.disabled = true
 
-  if (isValidElement(children)) warnIfDoubleLabel(label, children)
+  if (isValidElement(children)) {
+    warnIfDoubleLabel(label, children)
+    warnIfDoubleHint(supporting, children)
+  }
 
   const control = isValidElement(children)
     ? cloneElement(Children.only(children) as ReactElement<typeof controlProps>, controlProps)
@@ -110,9 +149,9 @@ export function Field({
         </Label>
       )}
       {control}
-      {description && (
+      {supporting && (
         <p id={descriptionId} className={styles['description']}>
-          {description}
+          {supporting}
         </p>
       )}
       {error && (

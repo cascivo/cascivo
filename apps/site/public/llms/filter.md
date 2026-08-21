@@ -36,6 +36,7 @@ import { Filter } from '@cascivo/react'
 
 | Prop            | Type                           | Required | Default | Description                                                                                                                                                            |
 | --------------- | ------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`         | `string`                       | no       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                         |
 | `ariaLabel`     | `string`                       | no       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label`    | `string`                       | no       | —       | Accessible label for the filter group.                                                                                                                                 |
 | `options`       | `FilterOption[]`               | yes      | —       | Array of { label, value } objects to render as filter buttons                                                                                                          |

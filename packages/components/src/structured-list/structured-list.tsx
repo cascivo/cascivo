@@ -41,6 +41,14 @@ export interface StructuredListProps {
    * flip on every component.
    */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   /** DOM-spelled alias of {@link ariaLabel}. */
   'aria-label'?: string
 }
@@ -52,9 +60,10 @@ export function StructuredList(props: StructuredListProps) {
     selectable = false,
     className,
     ariaLabel: ariaLabelProp,
+    label,
     'aria-label': ariaLabelAttr,
   } = props
-  const ariaLabel = ariaLabelAttr ?? ariaLabelProp
+  const ariaLabel = ariaLabelAttr ?? ariaLabelProp ?? label
 
   if (selectable) {
     return <SelectableStructuredList {...props} />
@@ -95,8 +104,9 @@ function SelectableStructuredList({
   className,
   ariaLabel: ariaLabelProp,
   'aria-label': ariaLabelAttr,
+  label,
 }: StructuredListProps) {
-  const ariaLabel = ariaLabelAttr ?? ariaLabelProp
+  const ariaLabel = ariaLabelAttr ?? ariaLabelProp ?? label
   useSignals()
   const groupId = useId()
   const [selected, setSelected] = useControllableSignal<string>({

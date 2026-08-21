@@ -36,6 +36,7 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 
 | Name            | Type                           | Required | Default | Description                                                                                                                                                            |
 | --------------- | ------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`         | `string`                       | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                         |
 | `ariaLabel`     | `string`                       | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label`    | `string`                       | No       | —       | Accessible label for the filter group.                                                                                                                                 |
 | `options`       | `FilterOption[]`               | Yes      | —       | Array of { label, value } objects to render as filter buttons                                                                                                          |

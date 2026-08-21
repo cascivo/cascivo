@@ -171,6 +171,23 @@ describe('the accessible-name prop is one name, everywhere', () => {
  * judgement call made at review time against the table in docs/AI-RULES.md; "does a type
  * named `<X>Shape` correspond to a `shape` prop?" is not.
  */
+/**
+ * Components that wrap a form control and render supporting text beneath it. Kept explicit
+ * rather than derived from `category`, because `category: 'inputs'` also holds things like
+ * `Button` that have no supporting text at all.
+ */
+const FORM_CONTROLS = new Set([
+  'input',
+  'textarea',
+  'select',
+  'number-input',
+  'combobox',
+  'date-picker',
+  'time-picker',
+  'file-uploader',
+  'field',
+])
+
 describe('prop-name vocabulary', () => {
   const registry = JSON.parse(readFileSync(join(ROOT, 'registry.json'), 'utf8')) as {
     components: Array<{
@@ -248,6 +265,34 @@ describe('prop-name vocabulary', () => {
       '`ariaLabel` is the catalog word for a name that is NEVER painted. A component that ' +
         'renders the string must call the prop `label`:\n  ' +
         wrong.join('\n  '),
+    )
+  })
+
+  /*
+   * `Input.hint` and `Field.description` render the same paragraph in the same place under
+   * the same kind of control, with different names — an adopter wrote `<Field hint=…>` first
+   * and had to look it up (2026-08-21 report item 4). The catalog word for supporting text
+   * under a *form control* is `hint`; `description` is the body text of a *feedback*
+   * component (`Alert`, `Notification`, `EmptyState`). `Field` straddles both and accepts
+   * either.
+   */
+  it('supporting text under a form control is spelled `hint`', () => {
+    const offenders = registry.components
+      .filter((c) => {
+        const props = c.meta.props ?? []
+        return (
+          props.some((p) => p.name === 'description') &&
+          !props.some((p) => p.name === 'hint') &&
+          FORM_CONTROLS.has(c.name)
+        )
+      })
+      .map((c) => c.name)
+    assert.deepEqual(
+      offenders,
+      [],
+      'These form controls take `description` but not `hint`. `hint` is the catalog word for ' +
+        'supporting text under a control; add it as an alias:\n  ' +
+        offenders.join('\n  '),
     )
   })
 

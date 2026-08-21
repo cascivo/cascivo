@@ -44,6 +44,14 @@ export interface FilterProps {
    * flip on every component.
    */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   /** DOM-spelled alias of {@link ariaLabel}. */
   'aria-label'?: string
   className?: string
@@ -59,6 +67,7 @@ export function Filter({
   variant = 'pill',
   className,
   ariaLabel,
+  label,
   ...aria
 }: FilterProps) {
   useSignals()
@@ -84,7 +93,7 @@ export function Filter({
       role="group"
       className={[styles['filter'], className].filter(Boolean).join(' ')}
       data-variant={variant}
-      aria-label={aria['aria-label'] ?? ariaLabel}
+      aria-label={aria['aria-label'] ?? ariaLabel ?? label}
       {...aria}
     >
       {options.map((opt) => (

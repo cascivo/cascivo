@@ -24,11 +24,9 @@ export interface FabAction {
   disabled?: boolean
 }
 
-export interface FabProps {
+interface FabBaseProps {
   /** The main button icon. */
   children: ReactNode
-  /** Accessible name for the main button (it is icon-only). */
-  label: string
   /** Called on press when there is no speed-dial. Ignored when `actions` is set. */
   onClick?: () => void
   /** Speed-dial actions revealed above the button when opened. */
@@ -50,6 +48,16 @@ export interface FabProps {
 }
 
 /**
+ * Exactly one of `label` / `ariaLabel` is required — the main button is icon-only, so a
+ * missing accessible name is a bug and stays enforced by the type rather than a dev warning.
+ * `ariaLabel` is the catalog's name for a string nothing paints; `Fab` predates the
+ * convention and shipped `label`, so both work and neither is deprecated. Same shape as
+ * `IconButton`.
+ */
+export type FabProps = FabBaseProps &
+  ({ label: string; ariaLabel?: never } | { ariaLabel: string; label?: never })
+
+/**
  * Floating action button anchored to a screen corner. On its own it is a single
  * fixed button; given `actions` it becomes a speed-dial whose main button toggles a
  * role="menu" of secondary actions (vertical roving focus, Escape / outside press to
@@ -58,6 +66,7 @@ export interface FabProps {
  */
 export function Fab({
   children,
+  ariaLabel,
   label,
   onClick,
   actions,
@@ -104,7 +113,7 @@ export function Fab({
     <button
       ref={fabRef}
       type="button"
-      aria-label={label}
+      aria-label={label ?? ariaLabel}
       className={styles['fab']}
       {...(hasDial
         ? {
@@ -142,7 +151,7 @@ export function Fab({
             ref={dialRef as React.Ref<HTMLMenuElement>}
             id={menuId}
             role="menu"
-            aria-label={label}
+            aria-label={label ?? ariaLabel}
             className={styles['dial']}
           >
             {actions.map((action, index) => {

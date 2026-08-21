@@ -34,15 +34,16 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Props
 
-| Name        | Type                                                                                              | Required | Default      | Description                                                             |
-| ----------- | ------------------------------------------------------------------------------------------------- | -------- | ------------ | ----------------------------------------------------------------------- |
-| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes      | —            | The items to render.                                                    |
-| `onSelect`  | `(value: string) => void`                                                                         | No       | —            | Called with the selected value.                                         |
-| `placement` | `'bottom-start' \| 'bottom-end'`                                                                  | No       | bottom-end   | Placement relative to the trigger.                                      |
-| `ariaLabel` | `string`                                                                                          | No       | More actions | Accessible label for the component. Not rendered — screen readers only. |
-| `size`      | `'sm' \| 'md'`                                                                                    | No       | md           | Visual size of the component (e.g. 'sm', 'md', 'lg').                   |
-| `disabled`  | `boolean`                                                                                         | No       | false        | When true, disables the control and removes it from the tab order.      |
-| `className` | `string`                                                                                          | No       | —            | Additional CSS class names merged onto the root element.                |
+| Name        | Type                                                                                              | Required | Default      | Description                                                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes      | —            | The items to render.                                                                                                                           |
+| `onSelect`  | `(value: string) => void`                                                                         | No       | —            | Called with the selected value.                                                                                                                |
+| `placement` | `'bottom-start' \| 'bottom-end'`                                                                  | No       | bottom-end   | Placement relative to the trigger.                                                                                                             |
+| `label`     | `string`                                                                                          | No       | —            | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel` | `string`                                                                                          | No       | More actions | Accessible label for the component. Not rendered — screen readers only.                                                                        |
+| `size`      | `'sm' \| 'md'`                                                                                    | No       | md           | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                          |
+| `disabled`  | `boolean`                                                                                         | No       | false        | When true, disables the control and removes it from the tab order.                                                                             |
+| `className` | `string`                                                                                          | No       | —            | Additional CSS class names merged onto the root element.                                                                                       |
 
 ## Tokens
 

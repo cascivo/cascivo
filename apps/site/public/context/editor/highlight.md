@@ -23,17 +23,18 @@ Renders a read-only <pre><code>; the line-number gutter is aria-hidden and an op
 
 ## Props
 
-| Name          | Type                  | Required | Default   | Description                                                                |
-| ------------- | --------------------- | -------- | --------- | -------------------------------------------------------------------------- |
-| `value`       | `string`              | Yes      | —         | Code to render                                                             |
-| `language`    | `string`              | No       | plaintext | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash) |
-| `lineNumbers` | `boolean`             | No       | false     | Show the line-number gutter                                                |
-| `wrap`        | `boolean`             | No       | false     | Soft-wrap long lines                                                       |
-| `tabSize`     | `number`              | No       | 2         | Spaces per tab stop                                                        |
-| `label`       | `string`              | No       | —         | Accessible label for the code block. Not rendered — screen readers only.   |
-| `className`   | `string`              | No       | —         | Additional CSS class names merged onto the root element.                   |
-| `gutterRef`   | `Ref<HTMLDivElement>` | No       | —         | Ref to the gutter column (used by `CodeEditor` for scroll-sync).           |
-| `preRef`      | `Ref<HTMLPreElement>` | No       | —         | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).      |
+| Name          | Type                  | Required | Default   | Description                                                                                                                                  |
+| ------------- | --------------------- | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`       | `string`              | Yes      | —         | Code to render                                                                                                                               |
+| `language`    | `string`              | No       | plaintext | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash)                                                                   |
+| `lineNumbers` | `boolean`             | No       | false     | Show the line-number gutter                                                                                                                  |
+| `wrap`        | `boolean`             | No       | false     | Soft-wrap long lines                                                                                                                         |
+| `tabSize`     | `number`              | No       | 2         | Spaces per tab stop                                                                                                                          |
+| `ariaLabel`   | `string`              | No       | —         | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`       | `string`              | No       | —         | Accessible label for the code block. Not rendered — screen readers only.                                                                     |
+| `className`   | `string`              | No       | —         | Additional CSS class names merged onto the root element.                                                                                     |
+| `gutterRef`   | `Ref<HTMLDivElement>` | No       | —         | Ref to the gutter column (used by `CodeEditor` for scroll-sync).                                                                             |
+| `preRef`      | `Ref<HTMLPreElement>` | No       | —         | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).                                                                        |
 
 ## Tokens
 

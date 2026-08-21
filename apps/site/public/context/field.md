@@ -44,15 +44,16 @@ Generates stable ids with useId and links them through htmlFor and aria-describe
 
 ## Props
 
-| Name          | Type           | Required | Default | Description                                                        |
-| ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`       | `ReactNode`    | No       | —       | Text label for the control. Rendered on screen.                    |
-| `description` | `ReactNode`    | No       | —       | Supporting description text.                                       |
-| `error`       | `ReactNode`    | No       | —       | Error message shown when the value is invalid.                     |
-| `required`    | `boolean`      | No       | false   | When true, marks the field as required.                            |
-| `disabled`    | `boolean`      | No       | false   | When true, disables the control and removes it from the tab order. |
-| `id`          | `string`       | No       | —       | Id applied to the root element (auto-generated when omitted).      |
-| `children`    | `ReactElement` | Yes      | —       | Content rendered inside the component.                             |
+| Name          | Type           | Required | Default | Description                                                                                                        |
+| ------------- | -------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `label`       | `ReactNode`    | No       | —       | Text label for the control. Rendered on screen.                                                                    |
+| `hint`        | `ReactNode`    | No       | —       | Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated. |
+| `description` | `ReactNode`    | No       | —       | Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias.                     |
+| `error`       | `ReactNode`    | No       | —       | Error message shown when the value is invalid.                                                                     |
+| `required`    | `boolean`      | No       | false   | When true, marks the field as required.                                                                            |
+| `disabled`    | `boolean`      | No       | false   | When true, disables the control and removes it from the tab order.                                                 |
+| `id`          | `string`       | No       | —       | Id applied to the root element (auto-generated when omitted).                                                      |
+| `children`    | `ReactElement` | Yes      | —       | Content rendered inside the component.                                                                             |
 
 ## Tokens
 

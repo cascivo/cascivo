@@ -64,6 +64,12 @@ rather than guessing an export name (a wrong guess is a wasted compile).
 Common mappings: LayoutDashboard→Dashboard, Rocket→Spaceship, Settings2→Settings, Trash2→Trash, Bolt→Zap, Branch→GitBranch. Version-control icons exist:
 `GitBranch`, `GitCommit`, `GitMerge`, `GitPullRequest`.
 
+Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS
+`Modal`. Every mapping below resolves for real — `cascivo add switch` installs
+`toggle`, the MCP `get_component("Dialog")` returns `modal`, and
+`import { Switch } from '@cascivo/react'` compiles.
+Mappings: AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, ToggleButtonGroup→ToggleGroup.
+
 Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
 `clip-path: shape()` and no SVG — color via `currentColor`, size via
 `--cascivo-glyph-size`, plus zero-JS state morphs via `transition: clip-path`.

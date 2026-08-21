@@ -37,6 +37,14 @@ export const meta: ComponentMeta = {
       description: 'Renders the rounded percentage in the center — pairs best with md and lg',
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
       nameVisibility: 'invisible',
       type: 'string',

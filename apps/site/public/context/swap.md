@@ -36,6 +36,7 @@ Renders a <button role="switch"> with aria-checked reflecting state. Both on/off
 
 | Name            | Type                         | Required | Default | Description                                                                                                                                       |
 | --------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`         | `string`                     | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
 | `ariaLabel`     | `string`                     | No       | —       | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `on`            | `React.ReactNode`            | Yes      | —       | Content shown in the active (on) state.                                                                                                           |
 | `off`           | `React.ReactNode`            | Yes      | —       | Content shown in the inactive (off) state.                                                                                                        |

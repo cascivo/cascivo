@@ -465,6 +465,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["ConfirmDialog", "Confirm", "confirm-dialog"],
       "tags": ["overlay", "dialog", "confirm", "destructive"],
       "meta": {
         "name": "AlertDialog",
@@ -629,6 +630,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["Layout", "Shell", "AppLayout"],
       "tags": ["shell", "layout", "sidebar", "navigation", "drawer", "responsive", "sticky"],
       "meta": {
         "name": "AppShell",
@@ -1024,6 +1026,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["AvatarStack", "AvatarPile"],
       "tags": ["avatar", "group", "stack", "overflow", "display"],
       "meta": {
         "name": "AvatarGroup",
@@ -1591,7 +1594,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/breadcrumb/breadcrumb.module.css"
       ],
       "fileHashes": {
-        "breadcrumb.tsx": "sha256-f2f810763a67c0ece4767826214084951a6ba5dccd152874519a38ab969fbac4",
+        "breadcrumb.tsx": "sha256-a2609ca47476e5e6ef9d4d48bfe3e891c11408e3c3980c28283ae4898be7b0a0",
         "index.ts": "sha256-9dd930cf8c9cc0b75ccb7c17d47ea90d02ef39b84235ac5b9364093b88d46524",
         "breadcrumb.module.css": "sha256-f75bb68385f2664591666d0cfa8017ce32440ffb9bef2e9d42ef5f512d46637d"
       },
@@ -1625,6 +1628,13 @@
           {
             "name": "className",
             "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
             "type": "string",
             "required": false
           },
@@ -3251,6 +3261,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["Disclosure", "disclosure", "AccordionItem"],
       "tags": ["disclosure", "collapse", "expand", "toggle", "show-hide"],
       "meta": {
         "name": "Collapsible",
@@ -3766,7 +3777,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/command-menu/command-menu.module.css"
       ],
       "fileHashes": {
-        "command-menu.tsx": "sha256-df6a4f83aaf0e0012b83acf39cf0cd82a4fc3c534d35370d98069a4b5cdd0adb",
+        "command-menu.tsx": "sha256-be1a7163f01e583fdf9698a882e2713cbcde053370fcebcd60891e95fb565918",
         "index.ts": "sha256-d08d121a4ef16627e1f176642cad93e731582c02ee31e7a6f0a8a1babc717715",
         "command-menu.module.css": "sha256-00c3aca20cd16fa9aa0b42959541f46120480085841c6ecaf895940886d33efb"
       },
@@ -3775,6 +3786,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["CommandPalette", "Cmdk", "cmdk", "Spotlight"],
       "tags": ["overlay", "command", "palette", "search", "cmdk", "keyboard", "scope", "fuzzy"],
       "meta": {
         "name": "CommandMenu",
@@ -3823,6 +3835,13 @@
             "required": false,
             "default": "true",
             "description": "Global Cmd/Ctrl+K toggles the menu via onOpenChange"
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "label",
@@ -3997,7 +4016,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/comparison/comparison.module.css"
       ],
       "fileHashes": {
-        "comparison.tsx": "sha256-28c381f7c0ba832b617854f309c16b2348cbaf6689858216333041a857a48b67",
+        "comparison.tsx": "sha256-abf391b72197102426db33d75262a396bb382ecdd41a1a617b8374f9e939ba0a",
         "index.ts": "sha256-ba53e6c6743020216aa95767b7b4242cf208f5172df936118948f5afac94a4da",
         "comparison.module.css": "sha256-aca33593240a1f285f5b2b96e077e9c78d592e67582938b093a65418a44ea34c"
       },
@@ -4060,6 +4079,13 @@
             "type": "number",
             "required": false,
             "default": "5"
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "label",
@@ -4654,7 +4680,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-3ebbab55210f33cb9b66f1e524db9f695c403dc63ad44be91b1fc9ee61317478",
+        "data-table.tsx": "sha256-902858082132b090205b55e2a4f2b5f56fdccb93dbb48282cb9a452d8c40a352",
         "index.ts": "sha256-c80f45d421cd7701697b4d4df9641a323a710143f2e78c9596f3c1e63b0e316f",
         "data-table.module.css": "sha256-9c509caa1e2d07a2d1d49c152d924d3a4919e7ea4b9e194a4c356769f0d394c2"
       },
@@ -4663,6 +4689,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["Table", "DataGrid", "data-grid"],
       "tags": ["table", "data", "grid", "sort", "filter", "pagination", "selection"],
       "meta": {
         "name": "DataTable",
@@ -4810,8 +4837,15 @@
             "required": false
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Invisible accessible name for the table, used when there is no visible `title`. A table with neither is an unnamed landmark; dev-warns.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "title",
-            "description": "Title text for the component.",
+            "description": "Visible caption above the table; it also becomes the table's accessible name.",
             "type": "string",
             "required": false
           },
@@ -5416,7 +5450,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dock/dock.module.css"
       ],
       "fileHashes": {
-        "dock.tsx": "sha256-6ffc2568b2df198fdf99c194fa26a1c0f0339cf22822339012a0f1d9ec17d746",
+        "dock.tsx": "sha256-6607d8363113fb21b9104a84696aa37c74acf731459e34567b266a9297304e4a",
         "index.ts": "sha256-b32d5f7a69013069a0a1c471de4cfc5be05a34926f756c1eb776d74f6a3ffaee",
         "dock.module.css": "sha256-181c821754d69a349531b945047e28daf17e981d6a20addfdd19c97122574503"
       },
@@ -5435,6 +5469,13 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -5558,6 +5599,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["NavigationDrawer"],
       "tags": ["overlay", "drawer", "panel", "slide", "dialog"],
       "meta": {
         "name": "Drawer",
@@ -5737,6 +5779,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["DropdownMenu", "dropdown-menu", "MenuButton"],
       "tags": ["overlay", "menu", "actions"],
       "meta": {
         "name": "Dropdown",
@@ -6030,6 +6073,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["EmptyView", "NoData", "ZeroState"],
       "tags": ["empty", "placeholder", "zero-state", "no-data"],
       "meta": {
         "name": "EmptyState",
@@ -6158,7 +6202,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/fab/fab.module.css"
       ],
       "fileHashes": {
-        "fab.tsx": "sha256-427223398cea02d9cbe40367d645ddd20227a58ca31996132dfb97ffd08e3623",
+        "fab.tsx": "sha256-01365860c7f5475439facbb7d1ba96e8fa6dd05bfe19ce3494b94cbf30c3ce47",
         "index.ts": "sha256-2cc152f990c3ce5c8aa631cb71a0d63475b70be88afd522fbe7ad37774b905fd",
         "fab.module.css": "sha256-829a972d999ba2199e07711e7c51683bf92fe268214fd20cb3d8ae8bc83511e8"
       },
@@ -6183,11 +6227,18 @@
             "description": "The main icon"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
             "nameVisibility": "invisible",
             "type": "string",
-            "required": true,
-            "description": "Accessible name for the button"
+            "required": false,
+            "description": "Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it."
           },
           {
             "name": "onClick",
@@ -6332,7 +6383,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
       ],
       "fileHashes": {
-        "field.tsx": "sha256-ca7d2211925e35431487ed420fa77d3abddd6b9df024facfb8616cc8e71b49c1",
+        "field.tsx": "sha256-6283299cb635af3aef3c6597ce2d73d5012806f61ddcce333f9d09cb84b6002e",
         "index.ts": "sha256-af9db7b6453ad1385895c6cb7a00e21f34729a76014d4be1cbde318800c44ebc",
         "field.module.css": "sha256-306fd830d6ebc013654c1149ddfdcc8dea64b9897fd32d8e6822336250df0e81"
       },
@@ -6358,8 +6409,14 @@
             "required": false
           },
           {
+            "name": "hint",
+            "description": "Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated.",
+            "type": "ReactNode",
+            "required": false
+          },
+          {
             "name": "description",
-            "description": "Supporting description text.",
+            "description": "Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias.",
             "type": "ReactNode",
             "required": false
           },
@@ -6695,7 +6752,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
       ],
       "fileHashes": {
-        "filter.tsx": "sha256-ebd88f3f0a509d6496c424c6e2862210c3ce90727edd31964c1faf93ea37b397",
+        "filter.tsx": "sha256-338dbaddb26d24b2f2c4bc99d5c1b7cf0e1b384eddff73e307be407867aaa4e3",
         "index.ts": "sha256-24fb4e877d4acbafec2b2e3de672486b429a97b973e27e5543905abf34bdb696",
         "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
       },
@@ -6713,6 +6770,13 @@
         "variants": ["pill", "outline"],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -8155,6 +8219,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["LinearProgress", "LoadingIndicator"],
       "tags": ["loading", "status", "progress", "feedback", "spinner"],
       "meta": {
         "name": "InlineLoading",
@@ -10123,6 +10188,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["Dialog", "dialog", "DialogRoot"],
       "tags": ["overlay", "dialog", "popup"],
       "meta": {
         "name": "Modal",
@@ -10440,6 +10506,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["NativeSelect", "SelectNative"],
       "tags": ["inputs", "select", "native", "form", "dropdown"],
       "meta": {
         "name": "NativeSelect",
@@ -10601,7 +10668,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/navigation-menu/navigation-menu.module.css"
       ],
       "fileHashes": {
-        "navigation-menu.tsx": "sha256-c6b921bfbeefd1ccd07a14a2c03067910f1f1b8fd8face0d4b82ba6c51383e18",
+        "navigation-menu.tsx": "sha256-baeff3f813c75e5df7c97a94add73b2885388df9ce12cfb4d635dcaa297097c6",
         "index.ts": "sha256-b6a075ea16b94e7a27b95bc268e44abdabf46f4d3d25a224eb3c9e1f6dada9c9",
         "navigation-menu.module.css": "sha256-27871a11da58d30b376d8194b52813d9c6b608b7bbd4b2fd053496d38a102f04"
       },
@@ -10619,6 +10686,13 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -10916,6 +10990,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["NumberField", "SpinButton", "Stepper"],
       "tags": ["form", "number", "input", "spinbutton", "stepper"],
       "meta": {
         "name": "NumberInput",
@@ -11133,6 +11208,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["PinInput", "pin-input", "VerificationCode"],
       "tags": ["form", "otp", "code", "input", "verification"],
       "meta": {
         "name": "OtpInput",
@@ -11261,7 +11337,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
       "fileHashes": {
-        "overflow-menu.tsx": "sha256-6d83c61d478833b77768af85cfdd9845c1678caf17d4126723ebef73646c8f72",
+        "overflow-menu.tsx": "sha256-d5d067cef88dc583b08fe6c16353df34a1fc6868a419155987e1c2958ede19ea",
         "index.ts": "sha256-7070c62d17b5995930ae65e66e40a55dc3532334befe4f899aab9692957447e5",
         "overflow-menu.module.css": "sha256-21f4c4a11b7f8dc0d8bf6ac885e922bf145a1d2ea68dc75ae3b77186112a89a9"
       },
@@ -11275,6 +11351,7 @@
         "replacement": "menu",
         "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
       },
+      "aliases": ["MoreMenu", "KebabMenu", "ActionMenu"],
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
       "meta": {
         "name": "OverflowMenu",
@@ -11303,6 +11380,13 @@
             "type": "'bottom-start' | 'bottom-end'",
             "required": false,
             "default": "bottom-end"
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -11757,6 +11841,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["Popper", "popper"],
       "tags": ["overlay", "floating", "anchor", "popover"],
       "meta": {
         "name": "Popover",
@@ -11888,7 +11973,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress/progress.module.css"
       ],
       "fileHashes": {
-        "progress.tsx": "sha256-f040b25c27d4ec495a31775b8e137cdadbb4abce727b297e7dc263ead5c0e973",
+        "progress.tsx": "sha256-fc3e2d4fdea2f3dd62d94503afd976fe15d7a3f44a8ee5076461741d4658303a",
         "index.ts": "sha256-996541f1ccb91118a11a1d6aee31abf7c382d6fa21e3008d94f58ad2e6473b95",
         "progress.module.css": "sha256-b096cd775fd5682dce7112a207cea6072d9af8e513ef11a8065354446fbd449a"
       },
@@ -11903,6 +11988,13 @@
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -12186,7 +12278,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/progress-circle/progress-circle.module.css"
       ],
       "fileHashes": {
-        "progress-circle.tsx": "sha256-9bd4bf3aa2661eb273abbc21c5f0c2eb9905e1da7ac5cc46516926957b63c5c9",
+        "progress-circle.tsx": "sha256-426ccbdc6408008614855ea29b371734b0903d40ab01c8c2c4b0523468820e49",
         "index.ts": "sha256-c41b61dea3e5c3aee1a3c70df4bd0753d5a9216a1f51051b85d200a17fa0ca4d",
         "progress-circle.module.css": "sha256-1d91d42681c703f98e6cc8e775a102c362bb899529a48e9646ba3d6721167c55"
       },
@@ -12230,6 +12322,13 @@
             "required": false,
             "default": "false",
             "description": "Renders the rounded percentage in the center — pairs best with md and lg"
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "label",
@@ -12719,7 +12818,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/qr-code/qr-code.module.css"
       ],
       "fileHashes": {
-        "qr-code.tsx": "sha256-e5dfaf667425595aac9f17f18b93899c12bc9eb8bde8e98de55c517272c3e97a",
+        "qr-code.tsx": "sha256-5f374e1391799cd2f37ad5f0d1e2c14febb5cf3fcea890adf86cfc015a8ae3d1",
         "encode.ts": "sha256-0b3c1ed5123bb178b9a580917b8bbe5cc01b5f00856a3b50f2e3c2ac7795fc86",
         "index.ts": "sha256-0ec0e504aca967fbf931224a7cb3e87e5976b73302561dd54ddacc3043c3c941",
         "qr-code.module.css": "sha256-8805c704330aebfc339530698a01899025c42998d1fcb428fb222c7a1bcf4ec3"
@@ -12778,6 +12877,13 @@
             "type": "string",
             "required": false,
             "default": "transparent"
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "label",
@@ -12862,7 +12968,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radial-progress/radial-progress.module.css"
       ],
       "fileHashes": {
-        "radial-progress.tsx": "sha256-14a881e8373ac96c661f47570ad59f4c4ad421c11bc30fcd390f72ae9a4845d9",
+        "radial-progress.tsx": "sha256-0b2d27595546565637e24a91bb4fb653ee12cfe225554d95bf1fdb5093dde5dc",
         "index.ts": "sha256-72ec18fe41ebd9fd292d92da7fa3010ce4dd7404cc5de6d91898e4198c253137",
         "radial-progress.module.css": "sha256-14b34c799619dbe66ace841bb48cd9bdbb90b8976601b3ab45aa89c8b1f5fdc4"
       },
@@ -12877,6 +12983,13 @@
         "variants": ["primary", "info", "success", "warning", "error"],
         "sizes": ["sm", "md", "lg"],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -13294,6 +13407,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["Rating", "StarRating"],
       "tags": ["form", "rating", "stars", "input", "feedback"],
       "meta": {
         "name": "RatingGroup",
@@ -13739,7 +13853,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/resizable/resizable.module.css"
       ],
       "fileHashes": {
-        "resizable.tsx": "sha256-4799d949fe7866698eca8a8ee76b0c212fc15ee3a83820781b2daedf5d10f553",
+        "resizable.tsx": "sha256-d9d286a20e36870e4ae21f023b959c5eb7b7afda8ea5940395224270c4bec90a",
         "index.ts": "sha256-eda26a8fac33c2fa86174845daec6e3c85bd41fc29c23cb1e2b97c4456d08aea",
         "resizable.module.css": "sha256-40a8a32bcfcb7794299bf966a0ac466cc2298613f00456046d88d861dea3a2ad"
       },
@@ -13758,6 +13872,13 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "label",
             "nameVisibility": "invisible",
@@ -14229,6 +14350,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["SegmentedButton"],
       "tags": ["form", "toggle", "group", "segmented", "input"],
       "meta": {
         "name": "SegmentedControl",
@@ -14625,6 +14747,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["SideSheet", "SlideOver", "slide-over"],
       "tags": ["overlay", "drawer", "panel", "slide"],
       "meta": {
         "name": "Sheet",
@@ -15012,7 +15135,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/side-nav/side-nav.module.css"
       ],
       "fileHashes": {
-        "side-nav.tsx": "sha256-327c0fcd33f9469c8e7f34419f0ea2b1325ff303ad0435240cf8b3582f3bb465",
+        "side-nav.tsx": "sha256-f9b588932d8e50ea94ab8079469c5c7a951d0665d7cbe0c188c37e9ab7152882",
         "index.ts": "sha256-2c4c28ca1ec620b0e05a118ce458eed465026fa548102eebd4f450c260d7e157",
         "side-nav.module.css": "sha256-b698991a8263e94af5f57db5514dcc32430fd4c7bed3adbaa8caaf184053bc5b"
       },
@@ -15021,6 +15144,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["Sidebar", "NavigationRail", "SideBar"],
       "tags": ["navigation", "sidebar", "app-shell", "collapsible"],
       "meta": {
         "name": "SideNav",
@@ -15067,6 +15191,13 @@
             "name": "onCollapsedChange",
             "description": "Called with the new collapsed state when it changes.",
             "type": "(collapsed: boolean) => void",
+            "required": false
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
             "required": false
           },
           {
@@ -15226,6 +15357,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["Placeholder", "Shimmer"],
       "tags": ["loading", "placeholder", "shimmer"],
       "meta": {
         "name": "Skeleton",
@@ -15628,7 +15760,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/spinner/spinner.module.css"
       ],
       "fileHashes": {
-        "spinner.tsx": "sha256-54eaa03c8c5a29fbcaa2844215fb5f7480af8ced37b106e004445965bfbe2536",
+        "spinner.tsx": "sha256-b8181467e642cb7dd358502beb02782783eca4a2442921e3b28536e8a612475b",
         "index.ts": "sha256-289926314e31ebc055e6646d2c4f3734b89b35e64f64029a52229f0de0b016e5",
         "spinner.module.css": "sha256-3494ac97d644c317847fa59c04667b3decba483e40c1ab81168c8e0890d0cb2c"
       },
@@ -15637,6 +15769,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["CircularProgress", "Loader", "loading-spinner"],
       "tags": ["loading", "progress", "feedback"],
       "meta": {
         "name": "Spinner",
@@ -15653,6 +15786,13 @@
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "label",
@@ -16140,7 +16280,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/steps/steps.module.css"
       ],
       "fileHashes": {
-        "steps.tsx": "sha256-ae8b1cfe818e9ecd94831a275189b38da4105cc2b65fcd98bdb1323879597e05",
+        "steps.tsx": "sha256-33bb860d286a0d38d6e7ea63265893028a38f2516d409c0fd7207be4a861ebf7",
         "index.ts": "sha256-de99ebe3956fa14cba66f2bdc5fb0b72587f5c5be170769d426f8df1e63a499a",
         "steps.module.css": "sha256-eb38a365985624e1c7ae566bc6293c5fd14a71bf9819e466102a0bc5f4044c73"
       },
@@ -16159,6 +16299,13 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -16291,7 +16438,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/structured-list/structured-list.module.css"
       ],
       "fileHashes": {
-        "structured-list.tsx": "sha256-61edac65ed45c2fa7a15a8ea0f16ab7a75ebafb08c46cebac26d6b2333d85f24",
+        "structured-list.tsx": "sha256-5e41094a53b296d0f1026fd0fcf2353001350abb08c4b425f919d2cec6f97680",
         "index.ts": "sha256-f1b4da0f483c2389c17ba7d01c4c2bcd7764ad284bc18b01faeeaf4a907d206b",
         "structured-list.module.css": "sha256-6d70d2d5b53f472098236450775c8847cfe86e4b380f5f40ecee475955cc1d90"
       },
@@ -16309,6 +16456,13 @@
         "variants": ["static", "selectable"],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -16446,7 +16600,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
       ],
       "fileHashes": {
-        "swap.tsx": "sha256-ea3b8bcc5328e4670603926373d1981dab214b62c98d95be7191c6c87c70a958",
+        "swap.tsx": "sha256-f571705e354f664d3465903163e19a969ee95577f7bc7da2c966535084704797",
         "index.ts": "sha256-95c7a8c5b037db337aec24ba3316cf77dc780a37d95a73ed36d1a3f757a53b71",
         "swap.module.css": "sha256-69738c9cf9a9f3da5d4da1d17ab6229af3f45772739251bfa39dcc447e3984b1"
       },
@@ -16464,6 +16618,13 @@
         "variants": ["rotate", "flip"],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -16736,7 +16897,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/switcher/switcher.module.css"
       ],
       "fileHashes": {
-        "switcher.tsx": "sha256-c5de2f856f4b0fb2993e8f1ad09646fbe1a78223228cde4c020b992237fc897c",
+        "switcher.tsx": "sha256-e7dbc9b817115cc888f3abcebcf8b46291d4cf6c7b7fbc37524aa0740a552673",
         "index.ts": "sha256-bf2d6126c51803c98f31369be62b1331b931450062b79c313e0c937ad8f313f1",
         "switcher.module.css": "sha256-adea723dafdd4ac47541a428dd11720141bc897bb9c3758d8382bfc282d98b26"
       },
@@ -16762,9 +16923,16 @@
             "description": "SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })"
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
             "nameVisibility": "invisible",
-            "description": "Accessible name for the switcher landmark. Not rendered — screen readers only.",
+            "description": "Accessible name for the switcher list. Not rendered — screen readers only.",
             "type": "string",
             "required": false,
             "default": "Switch application"
@@ -16978,6 +17146,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["Chip", "chip", "Pill"],
       "tags": ["chip", "label", "filter", "category"],
       "meta": {
         "name": "Tag",
@@ -17123,6 +17292,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["ChipInput", "TokenInput"],
       "tags": ["form", "tags", "chips", "multi", "input"],
       "meta": {
         "name": "TagsInput",
@@ -18029,6 +18199,7 @@
         "@cascivo/core": ">=0.18.0",
         "@cascivo/i18n": ">=0.18.0"
       },
+      "aliases": ["Snackbar", "snackbar", "ToastMessage", "Notistack"],
       "tags": ["overlay", "notification", "feedback"],
       "meta": {
         "name": "Toast",
@@ -18306,6 +18477,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["Switch", "switch", "ToggleSwitch"],
       "tags": ["switch", "form", "boolean"],
       "meta": {
         "name": "Toggle",
@@ -18461,6 +18633,7 @@
       "peerVersions": {
         "@cascivo/core": ">=0.18.0"
       },
+      "aliases": ["ToggleButtonGroup", "ButtonToggleGroup"],
       "tags": ["selection", "segmented", "toolbar", "choice"],
       "meta": {
         "name": "ToggleGroup",
@@ -18931,7 +19104,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tree-view/tree-view.module.css"
       ],
       "fileHashes": {
-        "tree-view.tsx": "sha256-bbe96e05e8551e1af2f2679037dd32ce5b9d7eed8c68cfe629473b42bf10029f",
+        "tree-view.tsx": "sha256-e0dcca1ce7d4b9f0427ee58db60b6fe566ecb54bee35380765477fbdfffb7896",
         "index.ts": "sha256-a8f9ad6089ec199ec174465a1867f5731056f5ce6ba4dda2e41e2c75370b3951",
         "tree-view.module.css": "sha256-88580b0ad4ee242e5a32187b3f1565425b6dd42356ba0369f529cc40ea50a193"
       },
@@ -18950,6 +19123,13 @@
         "variants": ["single", "multi"],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -19238,7 +19418,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/virtual-list/virtual-list.module.css"
       ],
       "fileHashes": {
-        "virtual-list.tsx": "sha256-aa6706e94ea55da38296ebe1fef1cd4eaf5b65edf6a68aebfc08911c478e2b13",
+        "virtual-list.tsx": "sha256-fefe24ef409572160d54bb48ce7f7c085ecc168230c664bb28fbc53887fdd7b0",
         "index.ts": "sha256-c4dcaa8f1a8e89c18ec095cef12791e4820aeaa9008f48c97ad24f7c081170ed",
         "virtual-list.module.css": "sha256-0fac8d394a090c81e595e35b324dda87405f18bcfe335a4825fae481a4013549"
       },
@@ -19286,6 +19466,13 @@
             "required": false,
             "default": "3",
             "description": "Extra rows rendered above and below the visible window, to cover fast scrolling."
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -19497,7 +19684,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/wheel-picker/wheel-picker.module.css"
       ],
       "fileHashes": {
-        "wheel-picker.tsx": "sha256-e87370c2c424096be89aa916dd97b41d8a29f63aaa5ee2351d094f07d8b312e4",
+        "wheel-picker.tsx": "sha256-52d8e4b68c4a3a40c7967727b045732ab181b80dcb93e4b6f7fb90188d79ebe5",
         "index.ts": "sha256-492329d0d11a80376d18a739410cdd07392f949bce3840e6050fc812e91383f2",
         "wheel-picker.module.css": "sha256-de0aa94cde8a3c89a9731966a703ac64de3c9789d9dbf5f257b569e6ddfaa23b"
       },
@@ -19546,6 +19733,13 @@
             "required": false,
             "default": "36",
             "description": "Row height in px."
+          },
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "ariaLabel",
@@ -20959,7 +21153,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/split-view/split-view.module.css"
       ],
       "fileHashes": {
-        "split-view.tsx": "sha256-a510942fddb0383d52b13ac9f6714c7f64a92ab6189e9872329795842a830c22",
+        "split-view.tsx": "sha256-22be3e5d3d72c53b6253d41b434ba999a65e073d2095286396687235eb7555d1",
         "index.ts": "sha256-7f4c4c9c676f1b8c7875f7f91a3343af12b245bf851bb2ae7692059ea50a5bcb",
         "split-view.module.css": "sha256-6abe3492b40fa6bfe00e0f5d4d65829f269c3f6565b9e929af7b2705e178f6e9"
       },
@@ -20977,6 +21171,13 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -26725,6 +26926,13 @@
             "required": false
           },
           {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
+          {
             "name": "label",
             "nameVisibility": "invisible",
             "type": "string",
@@ -26988,6 +27196,13 @@
             "required": false,
             "default": "2",
             "description": "Spaces per tab stop"
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
           },
           {
             "name": "label",
@@ -27635,7 +27850,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/sections/stats-band/stats-band.module.css"
       ],
       "fileHashes": {
-        "stats-band.tsx": "sha256-eefab715b3f63bf007f53721a5520e809cb58a5b98872c69fa6c169e8163932c",
+        "stats-band.tsx": "sha256-da8753d44392e1ae5941f55a21028cd946599b07cc93f76aaf8732c1018de4d3",
         "stats-band.module.css": "sha256-c222d28794d4940d4d80fbcdcd10c55a883ef0c7fb1a2694398e37fe98ddd445"
       },
       "dependencies": ["@cascivo/core", "@cascivo/charts"],
@@ -27653,6 +27868,13 @@
         "variants": [],
         "sizes": [],
         "props": [
+          {
+            "name": "label",
+            "nameVisibility": "invisible",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+            "type": "string",
+            "required": false
+          },
           {
             "name": "ariaLabel",
             "nameVisibility": "invisible",
@@ -28662,6 +28884,13 @@
           {
             "name": "className",
             "description": "Additional CSS class names merged onto the root element.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "nameVisibility": "invisible",
+            "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
             "type": "string",
             "required": false
           },

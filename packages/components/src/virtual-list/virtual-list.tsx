@@ -26,6 +26,14 @@ export interface VirtualListProps<Item> {
   overscan?: number
   /** Accessible label for the list; defaults to none, so label it when standalone. */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
   className?: string
 }
 
@@ -45,6 +53,7 @@ export function VirtualList<Item>({
   renderItem,
   overscan = 3,
   ariaLabel,
+  label,
   className,
 }: VirtualListProps<Item>) {
   useSignals()
@@ -70,7 +79,7 @@ export function VirtualList<Item>({
       style={viewportStyle}
       onScroll={onScroll}
       role="list"
-      aria-label={ariaLabel}
+      aria-label={ariaLabel ?? label}
       // Rows carry no focusable content of their own, so without this the scroll
       // container is unreachable by keyboard (axe scrollable-region-focusable).
       // Focused, it takes the browser's native arrow/PageUp/PageDown scrolling.

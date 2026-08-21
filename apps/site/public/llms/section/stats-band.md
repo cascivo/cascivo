@@ -20,6 +20,7 @@ _Copy-paste only — `StatsBand` is not exported from `@cascivo/react`. Run the 
 
 | Prop         | Type         | Required | Default         | Description                                                                                                                                       |
 | ------------ | ------------ | -------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`      | `string`     | no       | —               | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
 | `ariaLabel`  | `string`     | no       | —               | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `stats`      | `StatItem[]` | yes      | —               | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline                                            |
 | `aria-label` | `string`     | no       | `"Key metrics"` | Accessible label for the stats region                                                                                                             |

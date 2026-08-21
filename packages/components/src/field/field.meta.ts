@@ -17,8 +17,16 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
+      name: 'hint',
+      description:
+        'Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated.',
+      type: 'ReactNode',
+      required: false,
+    },
+    {
       name: 'description',
-      description: 'Supporting description text.',
+      description:
+        'Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias.',
       type: 'ReactNode',
       required: false,
     },

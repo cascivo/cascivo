@@ -89,6 +89,8 @@ interface RegistryEntry {
    * scripts/registry/generate.ts from the real export list.
    */
   importableSymbols?: string[]
+  /** Foreign names for this component in peer systems — see RegistryComponent.aliases. */
+  aliases?: string[]
   dependencies?: string[]
   tags?: string[]
   meta?: ComponentMeta & { intent?: ComponentIntent }
@@ -696,6 +698,27 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   if (iconLegend.length > 0) {
     lines.push(`Common mappings: ${iconLegend.join(', ')}. Version-control icons exist:`)
     lines.push('`GitBranch`, `GitCommit`, `GitMerge`, `GitPullRequest`.')
+  }
+  // The same legend, for COMPONENT names. An adopter imported `Switch` (what Radix, MUI,
+  // Chakra, shadcn and HeadlessUI all call it), got "not exported", and had to look it up
+  // (2026-08-21 report item 3). The icon legend above had solved this for icons for months.
+  const componentLegend = entries
+    .flatMap((e) => {
+      const display = displayNameOf(e)
+      // Skip an alias that IS the display name (`NativeSelect` aliases `native-select`): it
+      // is there so `cascivo add NativeSelect` resolves, and as a legend row it teaches
+      // nothing.
+      const foreign = (e.aliases ?? []).find((a) => a.toLowerCase() !== display.toLowerCase())
+      return foreign ? [`${foreign}→${display}`] : []
+    })
+    .sort()
+  if (componentLegend.length > 0) {
+    lines.push('')
+    lines.push('Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS')
+    lines.push('`Modal`. Every mapping below resolves for real — `cascivo add switch` installs')
+    lines.push('`toggle`, the MCP `get_component("Dialog")` returns `modal`, and')
+    lines.push("`import { Switch } from '@cascivo/react'` compiles.")
+    lines.push(`Mappings: ${componentLegend.join(', ')}.`)
   }
   lines.push('')
   lines.push('Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with')

@@ -34,13 +34,14 @@ Rendered as an ordered list (<ol>) with aria-label; the active item carries aria
 
 ## Props
 
-| Name          | Type                         | Required | Default      | Description                                                                                                          |
-| ------------- | ---------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `ariaLabel`   | `string`                     | No       | —            | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
-| `steps`       | `Step[]`                     | Yes      | —            | Array of step objects with label and optional explicit state                                                         |
-| `activeStep`  | `number`                     | No       | 0            | Index of the currently active step (0-based)                                                                         |
-| `orientation` | `'horizontal' \| 'vertical'` | No       | 'horizontal' | Layout direction of the steps                                                                                        |
-| `className`   | `string`                     | No       | —            | Additional CSS class names merged onto the root element.                                                             |
+| Name          | Type                         | Required | Default      | Description                                                                                                                                    |
+| ------------- | ---------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`       | `string`                     | No       | —            | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel`   | `string`                     | No       | —            | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only.                           |
+| `steps`       | `Step[]`                     | Yes      | —            | Array of step objects with label and optional explicit state                                                                                   |
+| `activeStep`  | `number`                     | No       | 0            | Index of the currently active step (0-based)                                                                                                   |
+| `orientation` | `'horizontal' \| 'vertical'` | No       | 'horizontal' | Layout direction of the steps                                                                                                                  |
+| `className`   | `string`                     | No       | —            | Additional CSS class names merged onto the root element.                                                                                       |
 
 ## Tokens
 

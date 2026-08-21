@@ -39,6 +39,14 @@ export interface ResizableProps {
   onRatioChange?: (ratio: number) => void
   className?: string
   label?: string
+  /**
+   * Alias of `label` — the same invisible accessible name under the catalog's own spelling.
+   *
+   * `ariaLabel` is what the catalog calls a name nothing paints, so it is the guess an agent
+   * makes after reading one other component (2026-08-21 report item 1). This component
+   * predates the convention and shipped `label`; both work and neither is deprecated.
+   */
+  ariaLabel?: string
 }
 
 function clamp(n: number, min: number, max: number): number {
@@ -55,6 +63,7 @@ export function Resizable({
   onRatioChange,
   className,
   label,
+  ariaLabel,
 }: ResizableProps) {
   useSignals()
   const panes = Children.toArray(children)
@@ -108,7 +117,7 @@ export function Resizable({
     e.preventDefault()
   }
 
-  const handleLabel = label ?? t(builtin.resizable.handle)
+  const handleLabel = ariaLabel ?? label ?? t(builtin.resizable.handle)
   const pct = Math.round(value.value * 100)
 
   return (

@@ -30,12 +30,20 @@ export interface BreadcrumbProps {
    * @see the component manifest
    */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
 }
 
-export function Breadcrumb({ items, maxVisible, className, ariaLabel }: BreadcrumbProps) {
+export function Breadcrumb({ items, maxVisible, className, ariaLabel, label }: BreadcrumbProps) {
   useSignals()
   const LinkComponent = getLinkComponent()
-  const resolvedAriaLabel = ariaLabel ?? t(builtin.breadcrumb.nav)
+  const resolvedAriaLabel = ariaLabel ?? label ?? t(builtin.breadcrumb.nav)
   let visible = items
   const first = items[0]
   if (first !== undefined && maxVisible !== undefined && items.length > maxVisible) {

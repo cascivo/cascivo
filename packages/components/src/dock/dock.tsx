@@ -26,11 +26,19 @@ export interface DockProps {
   className?: string
   /** Accessible label for the nav landmark */
   ariaLabel?: string
+  /**
+   * Alias of `ariaLabel` — same invisible accessible name, the other spelling. Not rendered.
+   *
+   * `ariaLabel` is the catalog convention and stays preferred, but `label` is the guess an
+   * adopter makes when they have not read the convention, and an unaccepted guess costs a
+   * compile cycle for nothing (2026-08-21 report item 1). Pass either.
+   */
+  label?: string
 }
 
-export function Dock({ items, activeIndex, className, ariaLabel }: DockProps) {
+export function Dock({ items, activeIndex, className, ariaLabel, label }: DockProps) {
   useSignals()
-  const resolvedAriaLabel = ariaLabel ?? t(builtin.dock.nav)
+  const resolvedAriaLabel = ariaLabel ?? label ?? t(builtin.dock.nav)
   return (
     <nav
       aria-label={resolvedAriaLabel}

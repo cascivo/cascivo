@@ -34,11 +34,18 @@
         "description": "The main icon"
       },
       {
+        "name": "ariaLabel",
+        "nameVisibility": "invisible",
+        "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+        "type": "string",
+        "required": false
+      },
+      {
         "name": "label",
         "nameVisibility": "invisible",
         "type": "string",
-        "required": true,
-        "description": "Accessible name for the button"
+        "required": false,
+        "description": "Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it."
       },
       {
         "name": "onClick",

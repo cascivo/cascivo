@@ -57,6 +57,14 @@ export const meta: ComponentMeta = {
       default: '5',
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
       nameVisibility: 'invisible',
       description: 'Accessible name for the divider slider. Not rendered — screen readers only.',

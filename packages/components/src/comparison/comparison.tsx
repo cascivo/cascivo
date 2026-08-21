@@ -36,6 +36,14 @@ export interface ComparisonProps extends Omit<HTMLAttributes<HTMLDivElement>, 'o
   keyboardStep?: number
   /** Accessible name for the divider slider — **not rendered**. */
   label?: string
+  /**
+   * Alias of `label` — the same invisible accessible name under the catalog's own spelling.
+   *
+   * `ariaLabel` is what the catalog calls a name nothing paints, so it is the guess an agent
+   * makes after reading one other component (2026-08-21 report item 1). This component
+   * predates the convention and shipped `label`; both work and neither is deprecated.
+   */
+  ariaLabel?: string
 }
 
 const clamp = (n: number): number => Math.min(100, Math.max(0, n))
@@ -49,6 +57,7 @@ export function Comparison({
   orientation = 'horizontal',
   keyboardStep = 5,
   label,
+  ariaLabel,
   className,
   ...props
 }: ComparisonProps) {
@@ -119,7 +128,7 @@ export function Comparison({
         <div
           role="slider"
           tabIndex={0}
-          aria-label={label ?? t(builtin.comparison.label)}
+          aria-label={ariaLabel ?? label ?? t(builtin.comparison.label)}
           aria-orientation={orientation}
           aria-valuemin={0}
           aria-valuemax={100}

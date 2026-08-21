@@ -28,17 +28,18 @@ import { Fab } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                             | Required | Default      | Description                                                                 |
-| -------------- | -------------------------------- | -------- | ------------ | --------------------------------------------------------------------------- |
-| `children`     | `React.ReactNode`                | yes      | —            | The main icon                                                               |
-| `label`        | `string`                         | yes      | —            | Accessible name for the button. Not rendered — screen readers only.         |
-| `onClick`      | `() => void`                     | no       | —            | Called when the element is clicked.                                         |
-| `actions`      | `FabAction[]`                    | no       | —            | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
-| `position`     | `'bottom-end' \| 'bottom-start'` | no       | `bottom-end` | Position of the component.                                                  |
-| `open`         | `boolean`                        | no       | —            | Whether the component is open (controlled).                                 |
-| `defaultOpen`  | `boolean`                        | no       | —            | Whether the component is open on first render (uncontrolled).               |
-| `onOpenChange` | `(open: boolean) => void`        | no       | —            | Called with the next open state when it changes.                            |
-| `className`    | `string`                         | no       | —            | Additional CSS class names merged onto the root element.                    |
+| Prop           | Type                             | Required | Default      | Description                                                                                                                                                        |
+| -------------- | -------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `children`     | `React.ReactNode`                | yes      | —            | The main icon                                                                                                                                                      |
+| `ariaLabel`    | `string`                         | no       | —            | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only.                       |
+| `label`        | `string`                         | no       | —            | Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it. |
+| `onClick`      | `() => void`                     | no       | —            | Called when the element is clicked.                                                                                                                                |
+| `actions`      | `FabAction[]`                    | no       | —            | Speed-dial actions; each has a label, icon, onSelect, and optional disabled                                                                                        |
+| `position`     | `'bottom-end' \| 'bottom-start'` | no       | `bottom-end` | Position of the component.                                                                                                                                         |
+| `open`         | `boolean`                        | no       | —            | Whether the component is open (controlled).                                                                                                                        |
+| `defaultOpen`  | `boolean`                        | no       | —            | Whether the component is open on first render (uncontrolled).                                                                                                      |
+| `onOpenChange` | `(open: boolean) => void`        | no       | —            | Called with the next open state when it changes.                                                                                                                   |
+| `className`    | `string`                         | no       | —            | Additional CSS class names merged onto the root element.                                                                                                           |
 
 ## Examples
 

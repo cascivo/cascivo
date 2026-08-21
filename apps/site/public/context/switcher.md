@@ -32,11 +32,12 @@ role="list" structures the entries; each switch target is a real link with the a
 
 ## Props
 
-| Name        | Type              | Required | Default            | Description                                                                    |
-| ----------- | ----------------- | -------- | ------------------ | ------------------------------------------------------------------------------ |
-| `items`     | `SwitcherEntry[]` | Yes      | —                  | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })  |
-| `label`     | `string`          | No       | Switch application | Accessible name for the switcher landmark. Not rendered — screen readers only. |
-| `className` | `string`          | No       | —                  | Additional CSS class names merged onto the root element.                       |
+| Name        | Type              | Required | Default            | Description                                                                                                                                  |
+| ----------- | ----------------- | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `items`     | `SwitcherEntry[]` | Yes      | —                  | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })                                                                |
+| `ariaLabel` | `string`          | No       | —                  | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`     | `string`          | No       | Switch application | Accessible name for the switcher list. Not rendered — screen readers only.                                                                   |
+| `className` | `string`          | No       | —                  | Additional CSS class names merged onto the root element.                                                                                     |
 
 ## Tokens
 

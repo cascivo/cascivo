@@ -13,6 +13,7 @@ import {
   fetchRegistry,
   fileName,
   findComponent,
+  resolvedAlias,
   type Registry,
   type RegistryComponent,
 } from '../utils/registry.js'
@@ -64,6 +65,11 @@ export interface ResolvedBareEntry {
   entry: RegistryComponent
   /** True if reached via an original `cascivo add` argument; false if pulled as a transitive dependency. */
   requested: boolean
+  /**
+   * The foreign name the caller typed, when it differed from the component's own — `Switch`
+   * for `toggle`. Reported before the copy so nobody wonders why a different file appeared.
+   */
+  viaAlias?: string
 }
 
 /**
@@ -119,7 +125,8 @@ export function resolveBareClosure(
     }
     if (installed.has(entry.name)) continue
     installed.add(entry.name)
-    resolved.push({ entry, requested })
+    const alias = resolvedAlias(entry, name)
+    resolved.push({ entry, requested, ...(alias ? { viaAlias: alias } : {}) })
     for (const dep of entry.registryDependencies ?? []) {
       queue.push({ name: dep, requested: false })
     }
@@ -274,6 +281,13 @@ export async function add(
   // every other add — same syntax, same "you own the code" framing — but copies no source:
   // it installs an npm package. That was only stated inside the install log, which scrolls
   // past. Say it first, once per package, for what the caller actually asked for.
+  // A foreign name resolved to a different file name: say so, or the copy looks like a
+  // mistake. `Switch` is the highest-traffic case — every peer system calls it that.
+  for (const { entry, requested, viaAlias } of resolved) {
+    if (!requested || !viaAlias) continue
+    console.log(`\n"${viaAlias}" is cascivo's "${entry.name}" — installing that.`)
+  }
+
   const announced = new Set<string>()
   for (const { entry, requested } of resolved) {
     if (!requested || !entry.install || announced.has(entry.install)) continue

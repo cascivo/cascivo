@@ -64,6 +64,12 @@ rather than guessing an export name (a wrong guess is a wasted compile).
 Common mappings: LayoutDashboard→Dashboard, Rocket→Spaceship, Settings2→Settings, Trash2→Trash, Bolt→Zap, Branch→GitBranch. Version-control icons exist:
 `GitBranch`, `GitCommit`, `GitMerge`, `GitPullRequest`.
 
+Component names differ from peer systems too. `Switch` IS `Toggle`; `Dialog` IS
+`Modal`. Every mapping below resolves for real — `cascivo add switch` installs
+`toggle`, the MCP `get_component("Dialog")` returns `modal`, and
+`import { Switch } from '@cascivo/react'` compiles.
+Mappings: AvatarStack→AvatarGroup, ChipInput→TagsInput, Chip→Tag, CircularProgress→Spinner, CommandPalette→CommandMenu, ConfirmDialog→AlertDialog, Dialog→Modal, Disclosure→Collapsible, DropdownMenu→Dropdown, EmptyView→EmptyState, Layout→AppShell, LinearProgress→InlineLoading, MoreMenu→OverflowMenu, NavigationDrawer→Drawer, NumberField→NumberInput, PinInput→OtpInput, Placeholder→Skeleton, Popper→Popover, Rating→RatingGroup, SegmentedButton→SegmentedControl, SelectNative→NativeSelect, SideSheet→Sheet, Sidebar→SideNav, Snackbar→Toast, Switch→Toggle, Table→DataTable, ToggleButtonGroup→ToggleGroup.
+
 Pure-CSS glyphs (experimental): a small opt-in set of UI glyphs, rendered with
 `clip-path: shape()` and no SVG — color via `currentColor`, size via
 `--cascivo-glyph-size`, plus zero-JS state morphs via `transition: clip-path`.
@@ -2919,6 +2925,7 @@ import { Breadcrumb } from '@cascivo/react'
 | `items` | `{ label: string; href?: string }[]` | yes | — | The items to render. |
 | `maxVisible` | `number` | no | — | When items exceed this count, collapse to the first item, an ellipsis, and the trailing items |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | `Breadcrumb` | Accessible label for the component. Not rendered — screen readers only. |
 
 ## Examples
@@ -6900,6 +6907,7 @@ import { CommandMenu } from '@cascivo/react'
 | `placeholder` | `string` | no | `Type a command or search…` | Placeholder text shown when the field is empty. |
 | `emptyLabel` | `string` | no | `No results found` | Text shown when no commands match the query. |
 | `hotkey` | `boolean` | no | `true` | Global Cmd/Ctrl+K toggles the menu via onOpenChange |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | `Command menu` | Accessible name for the command dialog. Not rendered — screen readers only. |
 | `loading` | `boolean` | no | `false` | Shows a loading spinner in place of the empty state (for async items) |
 | `onQueryChange` | `(query: string) => void` | no | — | Fires on every query keystroke — use to fetch async items |
@@ -7044,6 +7052,7 @@ import { Comparison } from '@cascivo/react'
 | `onPositionChange` | `(position: number) => void` | no | — | Called with the new divider position when it changes. |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
 | `keyboardStep` | `number` | no | `5` | How far the divider moves per arrow-key press. |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible name for the divider slider. Not rendered — screen readers only. |
 
 ## Examples
@@ -7532,7 +7541,8 @@ import { DataTable } from '@cascivo/react'
 | `stickyHeader` | `boolean` | no | `false` | When true, the header stays fixed while the body scrolls. |
 | `loading` | `boolean` | no | `false` | When true, shows a loading state. |
 | `emptyState` | `ReactNode` | no | — | Content shown when there are no rows. |
-| `title` | `string` | no | — | Title text for the component. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name for the table, used when there is no visible `title`. A table with neither is an unnamed landmark; dev-warns. Not rendered — screen readers only. |
+| `title` | `string` | no | — | Visible caption above the table; it also becomes the table's accessible name. |
 | `description` | `string` | no | — | Supporting description text. |
 | `labels` | `DataTableLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -7931,6 +7941,7 @@ import { Dock } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Accessible label for the dock navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
 | `items` | `DockItem[]` | yes | — | Navigation items, each with a label, icon, and optional href or onClick |
 | `activeIndex` | `number` | no | — | Index of the currently active item (0-based) |
@@ -8310,6 +8321,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `readOnly` | `boolean` | no | `false` | When true, the value is shown but cannot be edited. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `placeholder` | `string` | no | — | Placeholder text shown when the field is empty. |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible label (defaults to the i18n "Code editor"). Not rendered — screen readers only. |
 | `onSave` | `(value: string) => void` | no | — | Called on Mod-S; the browser save dialog is suppressed |
 | `bracketMatching` | `boolean` | no | `false` | Highlight the bracket matching the one adjacent to the caret |
@@ -8448,6 +8460,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 | `lineNumbers` | `boolean` | no | `false` | Show the line-number gutter |
 | `wrap` | `boolean` | no | `false` | Soft-wrap long lines |
 | `tabSize` | `number` | no | `2` | Spaces per tab stop |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible label for the code block. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `gutterRef` | `Ref<HTMLDivElement>` | no | — | Ref to the gutter column (used by `CodeEditor` for scroll-sync). |
@@ -8612,7 +8625,8 @@ import { Fab } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `children` | `React.ReactNode` | yes | — | The main icon |
-| `label` | `string` | yes | — | Accessible name for the button. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it. |
 | `onClick` | `() => void` | no | — | Called when the element is clicked. |
 | `actions` | `FabAction[]` | no | — | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
 | `position` | `'bottom-end' \| 'bottom-start'` | no | `bottom-end` | Position of the component. |
@@ -8722,7 +8736,8 @@ import { Field } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `label` | `ReactNode` | no | — | Text label for the control. Rendered on screen. |
-| `description` | `ReactNode` | no | — | Supporting description text. |
+| `hint` | `ReactNode` | no | — | Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated. |
+| `description` | `ReactNode` | no | — | Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias. |
 | `error` | `ReactNode` | no | — | Error message shown when the value is invalid. |
 | `required` | `boolean` | no | `false` | When true, marks the field as required. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
@@ -8927,6 +8942,7 @@ import { Filter } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label for the filter group. |
 | `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
@@ -9701,6 +9717,7 @@ import '@cascivo/flow/styles.css' // bundler: automatic. Needed only for no-bund
 | `position` | `'top-left' \| 'top-right' \| 'bottom-left' \| 'bottom-right'` | no | `bottom-right` | Position of the component. |
 | `onViewportChange` | `(viewport: Viewport) => void` | no | — | Called with the new viewport when the minimap is dragged. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string \| undefined` | no | — | Accessible name for the minimap region. Not rendered — screen readers only. |
 | `nodeColor` | `string \| undefined` | no | — | Fill colour for node rectangles in the minimap. |
 
@@ -12615,6 +12632,7 @@ _Copy-paste only — `SplitView` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `start` | `ReactNode` | yes | — | Left pane content |
 | `end` | `ReactNode` | yes | — | Right pane content |
@@ -13568,6 +13586,7 @@ import { NavigationMenu } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `items` | `NavigationMenuItem[]` | yes | — | The items to render. |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
@@ -13951,6 +13970,7 @@ import { OverflowMenu } from '@cascivo/react'
 | `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | yes | — | The items to render. |
 | `onSelect` | `(value: string) => void` | no | — | Called with the selected value. |
 | `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-end` | Placement relative to the trigger. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | `More actions` | Accessible label for the component. Not rendered — screen readers only. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
@@ -14331,6 +14351,7 @@ import { Progress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label when no visible label is present. |
 | `aria-describedby` | `string` | no | — | Id of an element describing the progress bar. |
@@ -14534,6 +14555,7 @@ import { ProgressCircle } from '@cascivo/react'
 | `max` | `number` | no | `100` | Maximum allowed value. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `showValue` | `boolean` | no | `false` | Renders the rounded percentage in the center — pairs best with md and lg |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible name announced by screen readers. Not rendered — screen readers only. |
 
 ## Examples
@@ -14890,6 +14912,7 @@ import { QrCode } from '@cascivo/react'
 | `radius` | `string` | no | — | CSS length rounding the corners |
 | `fill` | `string` | no | `currentColor` | Foreground color of the QR modules. |
 | `background` | `string` | no | `transparent` | Background color behind the QR code. |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible name for the QR image. Not rendered — screen readers only. |
 
 ## Examples
@@ -14980,6 +15003,7 @@ import { RadialProgress } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `value` | `number` | yes | — | The controlled value. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
@@ -15517,6 +15541,7 @@ import { Resizable } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | — | Accessible label for the resize handle. Not rendered — screen readers only. |
 | `children` | `ReactNode` | yes | — | Exactly two panes |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Layout orientation of the component. |
@@ -16179,6 +16204,7 @@ _Copy-paste only — `StatsBand` is not exported from `@cascivo/react`. Run the 
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `stats` | `StatItem[]` | yes | — | Array of stat items: label, value, optional delta (e.g. "+3.2%"), optional trend numbers for sparkline |
 | `aria-label` | `string` | no | `"Key metrics"` | Accessible label for the stats region |
@@ -16757,6 +16783,7 @@ import { SideNav } from '@cascivo/react'
 | `collapsed` | `boolean` | no | — | Controlled collapsed state (rail mode) |
 | `defaultCollapsed` | `boolean` | no | `false` | Whether the rail is collapsed on first render (uncontrolled). |
 | `onCollapsedChange` | `(collapsed: boolean) => void` | no | — | Called with the new collapsed state when it changes. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | `Side navigation` | Accessible label for the component. Not rendered — screen readers only. |
 | `collapseLabel` | `string` | no | `Collapse navigation` | Accessible label for the collapse control. |
 | `expandLabel` | `string` | no | `Expand navigation` | Accessible label for the expand control. |
@@ -17122,6 +17149,7 @@ import { Spinner } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `label` | `string` | no | `Loading` | Accessible label announced by screen readers. Not rendered — screen readers only. |
 
 ## Examples
@@ -17452,6 +17480,7 @@ import { Steps } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
 | `steps` | `Step[]` | yes | — | Array of step objects with label and optional explicit state |
 | `activeStep` | `number` | no | `0` | Index of the currently active step (0-based) |
@@ -17583,6 +17612,7 @@ import { StructuredList } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label for the list table. |
 | `items` | `{ id: string; cells: ReactNode[]; selected?: boolean }[]` | yes | — | The items to render. |
@@ -17676,6 +17706,7 @@ import { Swap } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `on` | `React.ReactNode` | yes | — | Content shown in the active (on) state. |
 | `off` | `React.ReactNode` | yes | — | Content shown in the inactive (off) state. |
@@ -17863,7 +17894,8 @@ import { Switcher } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `items` | `SwitcherEntry[]` | yes | — | SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true }) |
-| `label` | `string` | no | `Switch application` | Accessible name for the switcher landmark. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label` | `string` | no | `Switch application` | Accessible name for the switcher list. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
@@ -19263,6 +19295,7 @@ import { TreeView } from '@cascivo/react'
 
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `aria-label` | `string` | no | — | Accessible label for the tree. |
 | `items` | `{ id: string; label: ReactNode; icon?: ReactNode; children?: TreeNode[] }[]` | yes | — | The items to render. |
@@ -19439,6 +19472,7 @@ import { VirtualList } from '@cascivo/react'
 | `height` | `number` | yes | — | Height of the scrolling viewport, in px — not a CSS length, because the visible row count is computed from it |
 | `renderItem` | `(item: Item, index: number) => React.ReactNode` | yes | — | Renders one row |
 | `overscan` | `number` | no | `3` | Extra rows rendered above and below the visible window, to cover fast scrolling. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Accessible label for the list; label it when the list stands alone. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
@@ -19598,6 +19632,7 @@ import { WheelPicker } from '@cascivo/react'
 | `onValueChange` | `(value: string) => void` | yes | — | Called with the new value when the wheel settles or a key moves the selection |
 | `visibleCount` | `number` | no | `5` | How many rows are visible. Odd numbers keep the selection centred. |
 | `itemHeight` | `number` | no | `36` | Row height in px. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Accessible label for the wheel — required when it has no visible label. Not rendered — screen readers only. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 

@@ -42,6 +42,14 @@ export const meta: ComponentMeta = {
       description: 'Row height in px.',
     },
     {
+      name: 'label',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'ariaLabel',
       nameVisibility: 'invisible',
       type: 'string',

@@ -1,6 +1,7 @@
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Field } from './field'
+import { Input } from '../input/input'
 
 afterEach(cleanup)
 
@@ -103,5 +104,44 @@ describe('Field', () => {
     )
     expect(screen.getByTestId('control')).toBeDisabled()
     expect(screen.getByText('Email')).toHaveAttribute('data-disabled', '')
+  })
+})
+
+/**
+ * `Input.hint` and `Field.description` render the same paragraph in the same place under the
+ * same kind of control, with different names — an adopter wrote `<Field hint=…>` first and
+ * had to look it up (2026-08-21 report item 4). `hint` now works here too.
+ */
+describe('Field supporting text — `hint` alias', () => {
+  it('renders `hint` exactly as `description`, wired into aria-describedby', () => {
+    render(
+      <Field label="Domain" hint="Lowercase letters and dashes.">
+        <input />
+      </Field>,
+    )
+    const control = screen.getByLabelText('Domain')
+    const hint = screen.getByText('Lowercase letters and dashes.')
+    expect(control.getAttribute('aria-describedby')).toBe(hint.id)
+  })
+
+  it('`description` wins when both are passed', () => {
+    render(
+      <Field label="Domain" description="from description" hint="from hint">
+        <input />
+      </Field>,
+    )
+    expect(screen.getByText('from description')).toBeInTheDocument()
+    expect(screen.queryByText('from hint')).not.toBeInTheDocument()
+  })
+
+  it('warns when the Field and its control both supply supporting text', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <Field label="Domain" description="owned by the field">
+        <Input hint="owned by the input" />
+      </Field>,
+    )
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('both the Field and its child'))
+    warn.mockRestore()
   })
 })

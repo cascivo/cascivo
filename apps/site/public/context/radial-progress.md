@@ -37,6 +37,7 @@ Renders a div with role="progressbar", aria-valuenow (clamped 0–100), aria-val
 
 | Name         | Type                                                       | Required | Default | Description                                                                                                                                       |
 | ------------ | ---------------------------------------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`      | `string`                                                   | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
 | `ariaLabel`  | `string`                                                   | No       | —       | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
 | `value`      | `number`                                                   | Yes      | —       | The controlled value.                                                                                                                             |
 | `size`       | `'sm' \| 'md' \| 'lg'`                                     | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                             |

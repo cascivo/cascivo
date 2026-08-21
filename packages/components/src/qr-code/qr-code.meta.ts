@@ -48,6 +48,14 @@ export const meta: ComponentMeta = {
       default: 'transparent',
     },
     {
+      name: 'ariaLabel',
+      nameVisibility: 'invisible',
+      description:
+        'Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.',
+      type: 'string',
+      required: false,
+    },
+    {
       name: 'label',
       nameVisibility: 'invisible',
       description: 'Accessible name for the QR image. Not rendered — screen readers only.',

@@ -34,9 +34,16 @@
         "description": "SwitcherLink ({ label, href, active?, icon? }) or divider ({ divider: true })"
       },
       {
+        "name": "ariaLabel",
+        "nameVisibility": "invisible",
+        "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+        "type": "string",
+        "required": false
+      },
+      {
         "name": "label",
         "nameVisibility": "invisible",
-        "description": "Accessible name for the switcher landmark. Not rendered — screen readers only.",
+        "description": "Accessible name for the switcher list. Not rendered — screen readers only.",
         "type": "string",
         "required": false,
         "default": "Switch application"

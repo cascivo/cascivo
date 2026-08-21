@@ -300,3 +300,22 @@ export {
   themePreloadScript,
   type ThemeProviderProps,
 } from '@cascivo/core'
+
+/*
+ * Foreign-name aliases — the names every peer system uses for a component cascivo calls
+ * something else.
+ *
+ * `Switch` is the one that costs people time: Radix, MUI, Chakra, shadcn and HeadlessUI all
+ * call the toggle switch `Switch`, cascivo calls it `Toggle`, and `ToggleGroup` is a
+ * different thing entirely (a segmented button group). An adopter imported `Switch`, got
+ * "not exported", and had to go looking (2026-08-21 report item 3). `packages/components/
+ * aliases.json` answers the same question for `cascivo add`, the MCP tools and `llms.txt` —
+ * this answers it for the import statement, which is where it is actually written.
+ *
+ * These are the same components under a second name, not wrappers: no behaviour differs, and
+ * neither name is deprecated.
+ */
+export {
+  Toggle as Switch,
+  type ToggleProps as SwitchProps,
+} from '../../components/src/toggle/toggle'

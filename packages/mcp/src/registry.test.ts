@@ -65,6 +65,56 @@ describe('listComponents', () => {
   })
 })
 
+/**
+ * A component the caller knows by the name every other system uses. An agent asking for
+ * `Switch` should be answered with `Toggle`, not told it does not exist (2026-08-21 report
+ * item 3).
+ */
+const aliased = {
+  ...registry,
+  components: [
+    ...registry.components,
+    {
+      name: 'toggle',
+      description: 'A control that flips between two states',
+      category: 'inputs',
+      version: '0.0.0',
+      files: [],
+      aliases: ['Switch', 'switch'],
+      dependencies: [],
+      tags: ['form'],
+      meta: {
+        name: 'Toggle',
+        description: 'A control that flips between two states',
+        category: 'inputs',
+        states: [],
+        variants: [],
+        sizes: [],
+        props: [],
+        tokens: [],
+        accessibility: { role: 'switch', wcag: '2.2-AA', keyboard: [] },
+        examples: [],
+        dependencies: [],
+        tags: ['form'],
+      },
+    },
+  ],
+}
+
+describe('foreign-name resolution', () => {
+  it('getComponent answers a peer system name', () => {
+    expect(getComponent(aliased, 'Switch')?.name).toBe('Toggle')
+    expect(getComponent(aliased, 'switch')?.name).toBe('Toggle')
+  })
+
+  it('searchComponents matches a foreign name exactly, not as a substring', () => {
+    expect(searchComponents(aliased, 'Switch').map((m) => m.name)).toEqual(['Toggle'])
+    // A prefix of the alias must NOT match — a foreign name is a whole concept, not a
+    // substring to rank on, or one letter would drag in every aliased component.
+    expect(searchComponents(aliased, 'swi').map((m) => m.name)).not.toContain('Toggle')
+  })
+})
+
 describe('getComponent', () => {
   it('finds by registry name (case-insensitive)', () => {
     expect(getComponent(registry, 'Button')?.name).toBe('Button')

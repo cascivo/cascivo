@@ -34,13 +34,14 @@ role="progressbar" with value/max conveys completion to assistive tech; the labe
 
 ## Props
 
-| Name        | Type                   | Required | Default | Description                                                                      |
-| ----------- | ---------------------- | -------- | ------- | -------------------------------------------------------------------------------- |
-| `value`     | `number`               | Yes      | —       | Current value from 0 to max — clamped                                            |
-| `max`       | `number`               | No       | 100     | Maximum allowed value.                                                           |
-| `size`      | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                            |
-| `showValue` | `boolean`              | No       | false   | Renders the rounded percentage in the center — pairs best with md and lg         |
-| `label`     | `string`               | No       | —       | Accessible name announced by screen readers. Not rendered — screen readers only. |
+| Name        | Type                   | Required | Default | Description                                                                                                                                  |
+| ----------- | ---------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`     | `number`               | Yes      | —       | Current value from 0 to max — clamped                                                                                                        |
+| `max`       | `number`               | No       | 100     | Maximum allowed value.                                                                                                                       |
+| `size`      | `'sm' \| 'md' \| 'lg'` | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                        |
+| `showValue` | `boolean`              | No       | false   | Renders the rounded percentage in the center — pairs best with md and lg                                                                     |
+| `ariaLabel` | `string`               | No       | —       | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`     | `string`               | No       | —       | Accessible name announced by screen readers. Not rendered — screen readers only.                                                             |
 
 ## Tokens
 

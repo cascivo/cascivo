@@ -3515,6 +3515,16 @@
           }
         },
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "description": "Accessible label for the component.",
@@ -9261,6 +9271,16 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "label",
           "nameVisibility": "invisible",
           "description": "Accessible name for the command dialog. Not rendered — screen readers only.",
@@ -9427,6 +9447,16 @@
           "default": "5",
           "schema": {
             "kind": "number"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
           }
         },
         {
@@ -10007,8 +10037,18 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Invisible accessible name for the table, used when there is no visible `title`. A table with neither is an unnamed landmark; dev-warns.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "title",
-          "description": "Title text for the component.",
+          "description": "Visible caption above the table; it also becomes the table's accessible name.",
           "type": "string",
           "required": false,
           "schema": {
@@ -10443,6 +10483,16 @@
         ]
       },
       "props": [
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
@@ -11032,6 +11082,16 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "label",
           "nameVisibility": "invisible",
           "type": "string",
@@ -11199,6 +11259,16 @@
           "description": "Spaces per tab stop",
           "schema": {
             "kind": "number"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
           }
         },
         {
@@ -11409,11 +11479,21 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "label",
           "nameVisibility": "invisible",
           "type": "string",
-          "required": true,
-          "description": "Accessible name for the button",
+          "required": false,
+          "description": "Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it.",
           "schema": {
             "kind": "string"
           }
@@ -11559,8 +11639,17 @@
           }
         },
         {
+          "name": "hint",
+          "description": "Alias of `description` — the name the eight form controls use for the same supporting text. Neither is deprecated.",
+          "type": "ReactNode",
+          "required": false,
+          "schema": {
+            "kind": "node"
+          }
+        },
+        {
           "name": "description",
-          "description": "Supporting description text.",
+          "description": "Supporting text under the control, wired via aria-describedby. `hint` is accepted as an alias.",
           "type": "ReactNode",
           "required": false,
           "schema": {
@@ -11840,6 +11929,16 @@
         ]
       },
       "props": [
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
@@ -12910,6 +13009,16 @@
         {
           "name": "className",
           "description": "Additional CSS class names merged onto the root element.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
           "type": "string",
           "required": false,
           "schema": {
@@ -15917,6 +16026,16 @@
       },
       "props": [
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "type": "string",
@@ -17056,6 +17175,16 @@
       },
       "props": [
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "type": "string",
@@ -17642,6 +17771,16 @@
           }
         },
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "description": "Accessible label for the component.",
@@ -18086,6 +18225,16 @@
       },
       "props": [
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "description": "Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles.",
@@ -18348,6 +18497,16 @@
           "description": "Renders the rounded percentage in the center — pairs best with md and lg",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
           }
         },
         {
@@ -18743,6 +18902,16 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "label",
           "nameVisibility": "invisible",
           "description": "Accessible name for the QR image. Not rendered — screen readers only.",
@@ -18810,6 +18979,16 @@
         ]
       },
       "props": [
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
@@ -19440,6 +19619,16 @@
         ]
       },
       "props": [
+        {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "label",
           "nameVisibility": "invisible",
@@ -20225,6 +20414,16 @@
       },
       "props": [
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "type": "string",
@@ -20884,6 +21083,16 @@
           }
         },
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "description": "Accessible label for the component.",
@@ -21306,6 +21515,16 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "label",
           "nameVisibility": "invisible",
           "type": "string",
@@ -21656,6 +21875,16 @@
       },
       "props": [
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "type": "string",
@@ -21756,6 +21985,16 @@
         ]
       },
       "props": [
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
@@ -21883,6 +22122,16 @@
         ]
       },
       "props": [
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
         {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
@@ -22116,9 +22365,19 @@
           }
         },
         {
+          "name": "ariaLabel",
+          "nameVisibility": "invisible",
+          "description": "Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "label",
           "nameVisibility": "invisible",
-          "description": "Accessible name for the switcher landmark. Not rendered — screen readers only.",
+          "description": "Accessible name for the switcher list. Not rendered — screen readers only.",
           "type": "string",
           "required": false,
           "default": "Switch application",
@@ -23781,6 +24040,16 @@
       },
       "props": [
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "type": "string",
@@ -24067,6 +24336,16 @@
           }
         },
         {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
           "name": "ariaLabel",
           "nameVisibility": "invisible",
           "type": "string",
@@ -24259,6 +24538,16 @@
           "description": "Row height in px.",
           "schema": {
             "kind": "number"
+          }
+        },
+        {
+          "name": "label",
+          "nameVisibility": "invisible",
+          "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated.",
+          "type": "string",
+          "required": false,
+          "schema": {
+            "kind": "string"
           }
         },
         {

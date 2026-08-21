@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   fileName,
   findComponent,
+  resolvedAlias,
   parseRegistry,
   searchComponents,
   type Registry,
@@ -54,13 +55,25 @@ const RAW = {
       dependencies: [],
       tags: ['table', 'users'],
     },
+    // Appended last on purpose: assertions above index into this array by position.
+    {
+      name: 'toggle',
+      type: 'component',
+      description: 'A switch that flips between two states',
+      category: 'inputs',
+      version: '0.0.0',
+      files: ['https://example.com/toggle/toggle.tsx'],
+      aliases: ['Switch', 'switch', 'ToggleSwitch'],
+      dependencies: [],
+      tags: ['form'],
+    },
   ],
 }
 
 describe('parseRegistry', () => {
   it('parses a valid registry', () => {
     const registry = parseRegistry(RAW)
-    expect(registry.components).toHaveLength(4)
+    expect(registry.components).toHaveLength(5)
     expect(registry.components[0]?.name).toBe('button')
   })
 
@@ -120,6 +133,21 @@ describe('findComponent', () => {
 
   it('resolves unambiguous suffix case-insensitively', () => {
     expect(findComponent(registry, 'App-Shell')?.name).toBe('layout/app-shell')
+  })
+
+  /*
+   * Every peer system calls the toggle switch `Switch`. An adopter who types the name they
+   * know should get the component, not "not found" (2026-08-21 report item 3).
+   */
+  it('resolves a foreign name to the component it names', () => {
+    expect(findComponent(registry, 'Switch')?.name).toBe('toggle')
+    expect(findComponent(registry, 'switch')?.name).toBe('toggle')
+  })
+
+  it('reports which foreign name was resolved, and stays quiet for a direct hit', () => {
+    const entry = findComponent(registry, 'Switch')!
+    expect(resolvedAlias(entry, 'Switch')).toBe('Switch')
+    expect(resolvedAlias(entry, 'toggle')).toBeUndefined()
   })
 
   it('returns undefined when suffix is ambiguous', () => {
