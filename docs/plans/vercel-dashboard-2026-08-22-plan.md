@@ -1125,25 +1125,114 @@ of rule an isolated agent can follow.
 
 ---
 
-## §2 — Open decisions (need a human answer before implementing)
+## §2 — Decisions (recommended, with the evidence; need sign-off)
 
-1. **WS-5(a) scope — revive Group D for all ~25 visible-`label` components, or `Toggle` only?**
-   Recommend **all**, per §0.2: the value is the side-by-side contrast in the props table, which
-   only exists if it is universal. Doing `Toggle` alone leaves the next adopter on the next
-   component. Cost: ~25 one-line props and 25 manifest entries, mechanically applied.
-   *This reverses an explicit 08-21 decision and should be signed off, not assumed.*
-2. **WS-3 `maxCellSize` default — 14 px (proposed) or 11 px (GitHub)?** 14 keeps a year-view
-   close to today's rendering; 11 is the familiar look. Affects visual baselines either way.
-3. **WS-9 deprecation window — remove the `Text` alias in the next minor, or the one after?**
-   The guard's `KNOWN` map stays non-empty until removal.
-4. **WS-7 — ship the overflow warning alone, or also commit to a `sizing="fit"` mode?** Recommend
-   warning-only now and revisit with evidence; `fit` is underspecified (§WS-7).
-5. **WS-2 §5 — should the generated vocabulary block list all 35+ component names, or the
-   families plus a pointer to the registry?** Full lists are exact but long, and `llms.txt` is a
-   budgeted artifact. Recommend families + counts + the exceptions named in full, since the
-   exceptions are where the guesses go wrong.
+All five were re-derived from measurement rather than judgement. **Two of the recommendations
+carried in the first draft of this plan were wrong and are corrected here** — noted inline.
 
----
+### D1. WS-5(a) scope — which components gain `ariaLabel`?
+
+**Recommendation: the 14 `category: 'inputs'` components, not all 26, and not `Toggle` alone.**
+
+Measured: **26** components declare a visible `label`, and **zero** of them declare `ariaLabel`
+— a clean slate, no partial state to reconcile. They split:
+
+| Category | Count | Components |
+| --- | --- | --- |
+| `inputs` | 15 | Checkbox, ColorPicker, Combobox, DatePicker, **Field**, FileUploader, Input, NumberInput, Radio, Search, Select, Slider, Textarea, TimePicker, Toggle |
+| `chart` | 4 | Bullet, Histogram, Kpi, Meter |
+| `display` | 3 | ContainedList, FlowEdge, Stat |
+| `feedback` | 2 | InlineLoading, ProgressBar |
+| `navigation` | 2 | HeaderPanel, MenuButton |
+
+**The 08-21 "surface without capability" objection is correct for 12 of the 26** — you would
+never render a `Stat`, `Kpi`, `Meter` or `InlineLoading` with no visible label, so an
+invisible-name alias there is dead surface and the original objection stands. It is wrong only
+where a visible label may legitimately be replaced by an external one, which is exactly the
+form controls. That gives a predicate that is mechanically checkable rather than taste-based:
+
+> **a component that renders an interactive control the adopter may label from outside** —
+> `category: 'inputs'`, excluding `Field`, which *is* the labelling mechanism.
+
+= **14 components.** `Toggle` (the reported case) is in the set.
+
+**Handle the 4 chart widgets separately, not in this sweep.** Bullet/Histogram/Kpi/Meter have
+the same heading-duplication pattern, but charts already use a *different* convention — `title`
+is the accessible name and is explicitly **not** rendered (`area-chart.tsx:100-106`). Adding
+`ariaLabel` beside an existing `title` risks two invisible-name props on one component, which is
+the collision this workstream exists to remove. Check each for a `title` prop first and decide
+then; do not blanket them.
+
+### D2. WS-3 `maxCellSize` default — 14 px or 11 px?
+
+**Recommendation: neither. Derive the cap from the height budget and default `maxCellSize` to
+`undefined`.** *(This corrects the first draft, which proposed a default of 14.)*
+
+`gap = 2` (`calendar.tsx:119,144`) and the default height is 160, so:
+
+```
+fitCell = (height - 6 * gap) / 7 = (160 - 12) / 7 = 21.1 px
+```
+
+This cap is provably exactly right, because `rawCell > fitCell` ⟺ 7 rows do not fit in the
+box ⟺ **the chart is clipping today.** So the clamp changes rendering *if and only if* the
+rendering is currently broken. Verified across real cases:
+
+| Days | Container width | Weeks | `rawCell` today | Clamped | Effect |
+| --- | --- | --- | --- | --- | --- |
+| 119 | 1054 | 17 | 60.1 | 21.1 | **the reported bug — fixed** |
+| 90 | 600 | 13 | 44.3 | 21.1 | also clipping today — fixed |
+| 365 | 1054 | 53 | 17.9 | 17.9 | unchanged |
+| 365 | 700 | 53 | 11.2 | 11.2 | unchanged |
+
+**A fixed 14 px cap would have regressed the full-year view (17.9 → 14)** — the exact workaround
+the reporting adopter fell back to and described as working. That is why the first draft's
+proposal was wrong: it would have broken a currently-correct case to fix a broken one.
+
+Ship `maxCellSize?: number` as an opt-in aesthetic ceiling with **no default**. Visual-baseline
+churn is then limited to the cases that were already rendering wrong.
+
+### D3. WS-9 — how long does the `Text` alias live?
+
+**Recommendation: until 1.0, not one minor.** *(This corrects the first draft, which proposed
+one minor.)*
+
+Measured cadence from `packages/react/CHANGELOG.md`: releases on 2026-07-29, 07-31, 08-04,
+08-05, 08-10, 08-11, 08-14, 08-17 — **8 minors in 19 days.** A one-minor deprecation window is
+therefore about five days, which is not a deprecation; it is a break with extra steps. Pre-1.0
+at this cadence, a minor is not a unit adopters track. 1.0 is the only boundary they will
+notice.
+
+Keep the `export-collisions` `KNOWN` entry for `Text` in place until removal, with its reason
+string updated to name 1.0 as the milestone — the entry is the thing that keeps the debt visible
+rather than forgotten.
+
+### D4. WS-7 — overflow warning only, or also a `sizing="fit"` mode?
+
+**Recommendation: warning only now.** Unchanged from the first draft, and the reasoning holds:
+`fit` has at least three defensible meanings (shrink text / ellipsise / horizontal-scroll), each
+correct for different data, so shipping it forces the adopter to discover its behaviour
+empirically — recreating the problem one level up.
+
+**Record it as an explicit deferred decision, not a silent drop**, with the three meanings named,
+and revisit if the warning proves insufficient in a later report. The difference between a
+deferral and a drop is whether the next reader can see the reasoning.
+
+### D5. WS-2 — full component lists in the generated vocabulary block, or families plus a pointer?
+
+**Recommendation: list every name, in full, for all three families.** *(The first draft hedged
+toward families-plus-counts on a budget argument; the numbers do not support it.)*
+
+Measured: the full three-family block is **440 bytes** against an `llms.txt` of **101,284 bytes**
+— **0.43%**, for what the report series identifies as the single highest-frequency friction class
+(nine wrong prop guesses on 2026-08-08; two more here).
+
+The decisive argument is not size, though. **Full lists are what make the guard bidirectional.**
+WS-2's rewritten check asserts both directions — every cited component has the prop, *and* every
+component with the prop is cited. The second direction is the one that would have caught
+`CommandMenu`, and it is only expressible if the block enumerates completely. A families-plus-
+pointer block can only ever be checked in one direction, which is the weaker guarantee that
+failed here already.
 
 ## §3 — Sequencing
 
