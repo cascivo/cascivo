@@ -78,6 +78,27 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'i18n label overrides',
     },
+    {
+      name: 'aria-labelledby',
+      description:
+        "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'aria-describedby',
+      description:
+        'Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'aria-invalid',
+      description:
+        'Wired automatically by a wrapping `Field` when it is in an error state.',
+      type: 'boolean',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

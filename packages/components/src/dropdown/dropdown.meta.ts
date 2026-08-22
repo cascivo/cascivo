@@ -17,8 +17,9 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'items',
-      description: 'The items to render.',
-      type: '{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]',
+      description:
+        "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev.",
+      type: "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
       required: true,
     },
     {

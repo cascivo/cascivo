@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { TagsInput } from './tags-input'
+import { Field } from '../field/field'
 
 describe('TagsInput', () => {
   it('renders existing tags', () => {
@@ -84,5 +85,53 @@ describe('TagsInput', () => {
   it('is disabled when disabled prop set', () => {
     render(<TagsInput value={[]} onValueChange={() => {}} disabled />)
     expect(screen.getByRole('textbox')).toBeDisabled()
+  })
+})
+
+/**
+ * The accessible name must come from the composition the library prescribes.
+ *
+ * The inner `<input>` carried a hardcoded `aria-label="Tags"`, and because `aria-label`
+ * outranks a `<label for>` association it won even inside a `Field` — so a field labelled
+ * "Production domains" produced a control named "Tags", with the Field's hint unannounced.
+ * A WCAG 1.3.1/4.1.2 failure in a system advertising 2.2 AA (2026-08-22 report item 16).
+ */
+describe('TagsInput accessible name', () => {
+  it('takes its name from a wrapping Field, not the built-in', () => {
+    render(
+      <Field label="Production domains" hint="One per line">
+        <TagsInput value={['acme.com']} onValueChange={() => {}} />
+      </Field>,
+    )
+    expect(screen.getByRole('textbox', { name: 'Production domains' })).toBeTruthy()
+    expect(screen.queryByRole('textbox', { name: 'Tags' })).toBeNull()
+  })
+
+  it('wires the Field hint into aria-describedby on the focusable control', () => {
+    render(
+      <Field label="Production domains" hint="One per line">
+        <TagsInput value={[]} onValueChange={() => {}} />
+      </Field>,
+    )
+    const input = screen.getByRole('textbox', { name: 'Production domains' })
+    const describedBy = input.getAttribute('aria-describedby')
+    expect(describedBy).toBeTruthy()
+    expect(document.getElementById(describedBy!)?.textContent).toContain('One per line')
+  })
+
+  it('still has the built-in name when nothing else names it', () => {
+    render(<TagsInput value={[]} onValueChange={() => {}} />)
+    expect(screen.getByRole('textbox')).toHaveProperty('ariaLabel')
+    expect(screen.getByRole('textbox').getAttribute('aria-label')).toBeTruthy()
+  })
+
+  it('accepts ariaLabel and the `label` alias, both beating the built-in', () => {
+    const { unmount } = render(
+      <TagsInput value={[]} onValueChange={() => {}} ariaLabel="Domains" />,
+    )
+    expect(screen.getByRole('textbox', { name: 'Domains' })).toBeTruthy()
+    unmount()
+    render(<TagsInput value={[]} onValueChange={() => {}} label="Aliases" />)
+    expect(screen.getByRole('textbox', { name: 'Aliases' })).toBeTruthy()
   })
 })

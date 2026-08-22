@@ -13,6 +13,18 @@ import type { ChangeEvent, KeyboardEvent } from 'react'
 import styles from './search.module.css'
 
 export interface SearchProps {
+  /**
+   * Wired automatically by a wrapping `Field` — its label id. When present the control is
+   * already named from outside, so the built-in fallback name is not applied.
+   */
+  'aria-labelledby'?: string
+  /**
+   * Wired automatically by a wrapping `Field` — the ids of its hint/error text. Forwarded to
+   * the focusable control so the supporting text is announced, not just displayed.
+   */
+  'aria-describedby'?: string
+  /** Wired automatically by a wrapping `Field` when it is in an error state. */
+  'aria-invalid'?: boolean
   value?: string
   defaultValue?: string
   /** Called with the current text on every keystroke. */
@@ -94,11 +106,17 @@ export function Search({
   disabled = false,
   clearLabel,
   id,
+  'aria-labelledby': ariaLabelledBy,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
   className,
 }: SearchProps) {
   useSignals()
   const resolvedPlaceholder = placeholder ?? t(builtin.search.placeholder)
-  const resolvedLabel = label ?? t(builtin.search.label)
+  // A wrapping Field already names the control; rendering the built-in label too would
+  // concatenate into the accessible name ("Production domains Search").
+  const externallyLabelled = ariaLabelledBy !== undefined
+  const resolvedLabel = label ?? (externallyLabelled ? undefined : t(builtin.search.label))
   const resolvedClearLabel = clearLabel ?? t(builtin.search.clear)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -159,9 +177,11 @@ export function Search({
       data-size={size}
       data-state={filled ? 'filled' : 'empty'}
     >
-      <label className={styles['label']} htmlFor={inputId}>
-        {resolvedLabel}
-      </label>
+      {resolvedLabel !== undefined && (
+        <label className={styles['label']} htmlFor={inputId}>
+          {resolvedLabel}
+        </label>
+      )}
       <span className={styles['icon']}>
         <MagnifierIcon />
       </span>
@@ -169,6 +189,9 @@ export function Search({
         ref={inputRef}
         id={inputId}
         type="search"
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid}
         className={styles['input']}
         value={current.value}
         placeholder={resolvedPlaceholder}

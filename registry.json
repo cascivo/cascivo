@@ -3395,7 +3395,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
       ],
       "fileHashes": {
-        "color-picker.tsx": "sha256-8dba581bdbd2e1615d927c727c9619ea6acf4e92ec014d24106beb66a984b704",
+        "color-picker.tsx": "sha256-25408d635b59691b0b60901c19a6136fad87fe5f0bb03c2487d9b17e8fe3e9bb",
         "index.ts": "sha256-584a3bdd04fd3e25e5c0c28be9d07fda4bc3411cff307517dfd54816f2bec3d7",
         "color-picker.module.css": "sha256-77b085a0afb2e106ecdb4dc6e2c6ec80fb202e6c545120b41dfddcb59733188f"
       },
@@ -3472,6 +3472,30 @@
             "type": "'sm' | 'md' | 'lg'",
             "required": false,
             "default": "md"
+          },
+          {
+            "name": "aria-labelledby",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-describedby",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-invalid",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
+            "type": "boolean",
+            "required": false
+          },
+          {
+            "name": "id",
+            "description": "Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically.",
+            "type": "string",
+            "required": false
           }
         ],
         "tokens": [
@@ -3559,7 +3583,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
       ],
       "fileHashes": {
-        "combobox.tsx": "sha256-4fdd7e42d4594eb18adadf8ef1c01b0c40637c782e9b8fbef075db72b10a04e8",
+        "combobox.tsx": "sha256-b353be83899863735630d9097146f27e3814c17b23e6ce4e9b391dab16db5706",
         "index.ts": "sha256-f653ac077476020e84fec2daaa5c3ff850b2c3340b4e38002798c3f2c249034b",
         "combobox.module.css": "sha256-cc7cd8b4087667c0df3b737f588c92bbdb03e7a1c94e52ef9d8f321ea74575f5"
       },
@@ -3671,6 +3695,24 @@
             "name": "className",
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-labelledby",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-describedby",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-invalid",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
+            "type": "boolean",
             "required": false
           }
         ],
@@ -5042,7 +5084,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "fileHashes": {
-        "date-picker.tsx": "sha256-442b388b9266bfd98456b0348d4d023c08a924c628fe407aa6210f1b5d0074b8",
+        "date-picker.tsx": "sha256-867d87556dcfc396a484d42bc7f473412ec0f1930c19e562c17f9731ec1e16e2",
         "index.ts": "sha256-6cb1709f7c2b98a82a3951dd8facba6bdefe2f491efd6f4808661b6d6ff5da4d",
         "date-picker.module.css": "sha256-e816d0d00db6d3d3dc52f49c8671c11eaa1710e2aa8a4d6ef8f3356207dee47e"
       },
@@ -5148,6 +5190,24 @@
             "type": "DatePickerLabels",
             "required": false,
             "description": "i18n label overrides"
+          },
+          {
+            "name": "aria-labelledby",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-describedby",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-invalid",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
+            "type": "boolean",
+            "required": false
           }
         ],
         "tokens": [
@@ -5776,7 +5836,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
       ],
       "fileHashes": {
-        "dropdown.tsx": "sha256-9bbf35120647043f4ac082dc755c4862b8cbea8321e0a5d5beda46690771a933",
+        "dropdown.tsx": "sha256-2091b8d444e5dbc10f710a1ae0850da930325315e60fc4901270f1f2a38b6da1",
         "index.ts": "sha256-eadb4744bbbc90705110af4f638d0bbf19cf334f548adea9ac0e6296dd83e6ff",
         "dropdown.module.css": "sha256-ec2a02c41f49dd3f859b26e4eefe651c26c3d0ff9b58baa68a086072c8683c5c"
       },
@@ -5803,8 +5863,8 @@
           },
           {
             "name": "items",
-            "description": "The items to render.",
-            "type": "{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]",
+            "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev.",
+            "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
             "required": true
           },
           {
@@ -5923,7 +5983,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/editable/editable.module.css"
       ],
       "fileHashes": {
-        "editable.tsx": "sha256-ad4120697977c58b81527a51e5851d4d40457f3fcd7efa06547a058b0fd9b45a",
+        "editable.tsx": "sha256-c1261a8243062eb39171589d20f0d320c714696aa780c1b026705c49a894aab4",
         "index.ts": "sha256-ac3241562959e3384601dcc4cab49f2c869a240600b6335a327ed21c11effd15",
         "editable.module.css": "sha256-ec9d9b7bc1172ca2ef57938563cf6eaa95ba55dcb64b3148c29d475159674341"
       },
@@ -5977,6 +6037,30 @@
             "name": "onCancel",
             "description": "Called when the edit is cancelled.",
             "type": "() => void",
+            "required": false
+          },
+          {
+            "name": "id",
+            "description": "Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-labelledby",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-describedby",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-invalid",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
+            "type": "boolean",
             "required": false
           }
         ],
@@ -6388,7 +6472,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/field/field.module.css"
       ],
       "fileHashes": {
-        "field.tsx": "sha256-6283299cb635af3aef3c6597ce2d73d5012806f61ddcce333f9d09cb84b6002e",
+        "field.tsx": "sha256-e6f154455f27b055a59d38cc307ec89c098917513e3acbfb8c160d07999d95f7",
         "index.ts": "sha256-af9db7b6453ad1385895c6cb7a00e21f34729a76014d4be1cbde318800c44ebc",
         "field.module.css": "sha256-306fd830d6ebc013654c1149ddfdcc8dea64b9897fd32d8e6822336250df0e81"
       },
@@ -14146,7 +14230,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-ddd9c41ebe7907acdfb96c4e49505701a729529361714120dec1dec5debb2dc0",
+        "search.tsx": "sha256-86f9c8fe8eda8ff3ade732daf1c10194cc07f91ba635bb24c12e56df5d84033c",
         "index.ts": "sha256-47249a52c6a441ee459d54591b48acc65feafdc50ecb7e6ab3eb3a05e292b8a7",
         "search.module.css": "sha256-bb8b8f5650d1f3623aed5b21b05f5bc6894a82c8399ed8ab7ce53cd213b7c709"
       },
@@ -14249,6 +14333,24 @@
             "name": "className",
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-labelledby",
+            "description": "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-describedby",
+            "description": "Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "aria-invalid",
+            "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
+            "type": "boolean",
             "required": false
           }
         ],
@@ -17289,7 +17391,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/tags-input/tags-input.module.css"
       ],
       "fileHashes": {
-        "tags-input.tsx": "sha256-f27e28596a97b934c6fac5d8894590357ce4c82bfbe27594485aab3c9fc5dd39",
+        "tags-input.tsx": "sha256-4afe6a0d4369018919dfb152428288904951df9ac84b69ff9a9ce4ae2697c266",
         "index.ts": "sha256-59dc7fabc3ea98e7182a3a3c6a5096105900c4f0db4a5d26b75e9806f5d8786c",
         "tags-input.module.css": "sha256-3d8a0a5e33fbe066e7e4855d7a7d9260c98b08f0e16b65c8ccf85f837a1866df"
       },
@@ -17345,6 +17447,26 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "id",
+            "description": "Id for the **inner text input** — the focusable control, so a `<label for>` names the thing that actually takes focus. `Field` supplies this automatically.",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name for the tag entry field. Use when no visible label names it; inside a `Field` it is not needed, as the Field label is wired through automatically.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
+          },
+          {
+            "name": "label",
+            "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Not rendered.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -23181,10 +23303,16 @@
           },
           {
             "name": "height",
-            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+            "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. It is a **cap on the drawn grid, never a crop**: cell size is clamped so all seven weekday rows fit inside it.",
             "type": "number",
             "required": false,
             "default": "160"
+          },
+          {
+            "name": "maxCellSize",
+            "description": "Optional ceiling on a cell's edge, in px. Cells are already clamped to fit `height`; set this only to keep them small in a short, wide range (GitHub's calendar uses ~11). Omitted by default so the height budget alone decides.",
+            "type": "number",
+            "required": false
           },
           {
             "name": "tooltip",

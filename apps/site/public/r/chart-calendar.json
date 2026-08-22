@@ -57,10 +57,16 @@
       },
       {
         "name": "height",
-        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.",
+        "description": "SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. It is a **cap on the drawn grid, never a crop**: cell size is clamped so all seven weekday rows fit inside it.",
         "type": "number",
         "required": false,
         "default": "160"
+      },
+      {
+        "name": "maxCellSize",
+        "description": "Optional ceiling on a cell's edge, in px. Cells are already clamped to fit `height`; set this only to keep them small in a short, wide range (GitHub's calendar uses ~11). Omitted by default so the height budget alone decides.",
+        "type": "number",
+        "required": false
       },
       {
         "name": "tooltip",

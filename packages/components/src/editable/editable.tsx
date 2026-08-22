@@ -23,6 +23,18 @@ export interface EditableProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onC
    */
   submitOnBlur?: boolean
   onCancel?: () => void
+  /**
+   * Id for the **focusable control** — the preview button when idle, the text input while
+   * editing — rather than the wrapper, so a `<label for>` names what actually takes focus.
+   * `Field` supplies this automatically.
+   */
+  id?: string
+  /** Wired automatically by a wrapping `Field` — its label id. */
+  'aria-labelledby'?: string
+  /** Wired automatically by a wrapping `Field` — the ids of its hint/error text. */
+  'aria-describedby'?: string
+  /** Wired automatically by a wrapping `Field` when it is in an error state. */
+  'aria-invalid'?: boolean
 }
 
 export function Editable({
@@ -33,6 +45,10 @@ export function Editable({
   submitOnBlur = true,
   onCancel,
   className,
+  id,
+  'aria-labelledby': ariaLabelledBy,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
   ...props
 }: EditableProps) {
   useSignals()
@@ -43,6 +59,19 @@ export function Editable({
   onCancelRef.current = onCancel
   const onValueChangeRef = useRef(onValueChange)
   onValueChangeRef.current = onValueChange
+
+  /**
+   * Identity belongs on whichever element takes focus, not on the wrapper. `Editable` swaps
+   * between a preview button and a text input, so both carry it — otherwise a `Field`'s
+   * label and hint would address a `<div>` and name nothing (2026-08-22 report item 16 swept
+   * the catalog for this shape).
+   */
+  const controlAria = {
+    id,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
+  }
 
   // Sync value into editValue when not editing
   if (!isEditing.value) {
@@ -78,6 +107,7 @@ export function Editable({
         <input
           ref={inputRef}
           className={styles['input']}
+          {...controlAria}
           value={editValue.value}
           onChange={(e) => {
             editValue.value = e.currentTarget.value
@@ -112,6 +142,7 @@ export function Editable({
       <button
         type="button"
         className={styles['preview']}
+        {...controlAria}
         disabled={disabled}
         onClick={() => {
           if (!disabled) isEditing.value = true

@@ -41,7 +41,25 @@ export interface ComboboxLabels {
   search?: string
 }
 
+/** Join own + inherited `aria-describedby` ids; `undefined` when there are none. */
+function mergeDescribedBy(...ids: (string | undefined)[]): string | undefined {
+  return ids.filter(Boolean).join(' ') || undefined
+}
+
 export interface ComboboxProps {
+  /**
+   * Wired automatically by a wrapping `Field` — its label id. Forwarded to the focusable
+   * control so the Field's label names it.
+   */
+  'aria-labelledby'?: string
+  /**
+   * Wired automatically by a wrapping `Field` — the ids of its hint/error text. **Merged**
+   * with this component's own `hint`/`error` ids rather than replacing them, so both are
+   * announced.
+   */
+  'aria-describedby'?: string
+  /** Wired automatically by a wrapping `Field` when it is in an error state. */
+  'aria-invalid'?: boolean
   options: ComboboxOption[]
   value?: string
   defaultValue?: string
@@ -89,6 +107,9 @@ export function Combobox({
   labels,
   className,
   id,
+  'aria-labelledby': ariaLabelledBy,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
 }: ComboboxProps) {
   useSignals()
   const [state, send] = useMachine(machine)
@@ -223,11 +244,15 @@ export function Combobox({
           aria-expanded={isOpen}
           aria-controls={listboxId}
           aria-haspopup="listbox"
+          aria-labelledby={ariaLabelledBy}
           aria-activedescendant={
             isOpen && activeIndex.value >= 0 ? optionId(activeIndex.value) : undefined
           }
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined}
+          aria-invalid={error ? true : ariaInvalid}
+          aria-describedby={mergeDescribedBy(
+            error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined,
+            ariaDescribedBy,
+          )}
           className={styles['trigger']}
           disabled={disabled}
           onKeyDown={handleTriggerKeyDown}

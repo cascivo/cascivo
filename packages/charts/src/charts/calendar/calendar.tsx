@@ -25,7 +25,22 @@ export interface CalendarHeatmapProps {
    * @see the component manifest
    */
   width?: number
+  /**
+   * SVG height in px. A **cap on the drawn grid, never a crop** — cells shrink so all seven
+   * weekday rows fit inside it.
+   *
+   * @defaultValue `160` (`48` when `plain`)
+   * @see the component manifest
+   */
   height?: number
+  /**
+   * Optional ceiling on a cell's edge, in px. Cells are already clamped to fit `height`; use
+   * this only to keep them small in a short, wide range (GitHub's calendar uses ~11).
+   *
+   * Omitted by default so the height budget alone decides — a fixed default would shrink
+   * year-length ranges that render correctly today.
+   */
+  maxCellSize?: number
   tooltip?: boolean
   className?: string
   /**
@@ -40,6 +55,39 @@ export interface CalendarHeatmapProps {
 }
 
 const MS_DAY = 86_400_000
+
+/** Gap between cells, px. */
+const GAP = 2
+/** Weekday rows in a calendar heatmap. Always seven. */
+const ROWS = 7
+
+/**
+ * Cell edge for a container, in px.
+ *
+ * ## Why the height term exists
+ *
+ * The shipped formula was `(width - (weeks - 1) * GAP) / weeks` — width only. Height was a
+ * constant (160) that never consulted it, so the two were unrelated numbers and the grid
+ * overflowed whenever `width / weeks` exceeded the row budget. 119 days in a 1054px card
+ * produced 59px cells: 434px of grid inside a 160px viewBox, with rows 3-7 simply cut off and
+ * nothing logged. The output reads as "this heatmap has three rows of data", which is
+ * plausible enough to ship (2026-08-22 report item 11).
+ *
+ * Clamping to the height budget makes clipping unrepresentable, and it is exactly the right
+ * cap rather than a conservative one: `byWidth > byHeight` is equivalent to "seven rows do not
+ * fit", so this changes the rendering **if and only if** that rendering is currently clipped.
+ * A year-length range (17.9px cells at 1054px) is untouched.
+ *
+ * The `+ 1` in the height term is not slack: rects are drawn `cell - 1` tall, so the deepest
+ * drawn edge is `ROWS * cell + (ROWS - 1) * GAP - 1`. Dropping it makes the cap one pixel
+ * conservative, which shrinks a 180-day range at 600px that fits correctly today.
+ */
+function cellSize(width: number, height: number, weeks: number, maxCellSize?: number): number {
+  const byWidth = (width - (weeks - 1) * GAP) / weeks
+  const byHeight = (height - (ROWS - 1) * GAP + 1) / ROWS
+  const cap = maxCellSize === undefined ? byHeight : Math.min(byHeight, maxCellSize)
+  return Math.max(2, Math.min(byWidth, cap))
+}
 const toDate = (d: string | Date) => (d instanceof Date ? d : new Date(d))
 const iso = (d: Date) => d.toISOString().slice(0, 10)
 /** Sunday-based start of the week containing d (UTC). */
@@ -58,6 +106,7 @@ export function CalendarHeatmap({
   to,
   width: fixedWidth,
   height,
+  maxCellSize,
   tooltip,
   className,
   plain,
@@ -111,13 +160,14 @@ export function CalendarHeatmap({
 
   const buildTooltip = ({
     width: w,
+    height: h,
   }: {
     width: number
     height: number
   }): TooltipModel | undefined => {
     if (!tooltip || !hasData) return undefined
-    const gap = 2
-    const cell = Math.max(2, (w - (weeks - 1) * gap) / weeks)
+    const gap = GAP
+    const cell = cellSize(w, h, weeks, maxCellSize)
     const points: ChartPoint[] = cells.map((c, i) => ({
       id: `${iso(c.date)}-${i}`,
       cx: c.col * (cell + gap) + cell / 2,
@@ -140,9 +190,9 @@ export function CalendarHeatmap({
       plain={plain}
       tooltip={tooltip && hasData ? buildTooltip : undefined}
     >
-      {({ width }) => {
-        const gap = 2
-        const cell = Math.max(2, (width - (weeks - 1) * gap) / weeks)
+      {({ width, height: innerHeight }) => {
+        const gap = GAP
+        const cell = cellSize(width, innerHeight, weeks, maxCellSize)
         return (
           <g>
             {cells.map((c, i) => {
