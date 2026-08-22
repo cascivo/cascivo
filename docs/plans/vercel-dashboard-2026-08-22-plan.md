@@ -1,6 +1,59 @@
 # Fix plan: the 2026-08-22 "Vercel-style dashboard, Vite + React Router" experience report
 
-**Status: SPEC — not implemented.** Written to be handed to an implementing agent as-is.
+**Status: IMPLEMENTED, 2026-08-22.** All twelve workstreams shipped across five phases.
+`pnpm regen` is deterministic (clean `git diff` on a second run), `meta:check` is 384/384, and
+the workspace build, type check and test suite are green, plus `ssr` / `css-contract` / `rsc` /
+`dts-tsdoc` / `type-exports` / `computed` / `scaffold` / `visual-baselines` / `lint:host-strict`.
+
+The spec below is kept **as written** because it is the root-cause record — a spec quietly
+rewritten to match what happened stops being evidence of anything. Where implementation
+diverged, the divergences are listed immediately below rather than edited into the workstreams.
+
+### Where implementation diverged from this spec
+
+- **WS-8's "inline the core types into the flat `.d.ts`" was not done, and should not be.**
+  The spec rejected "correct the claim instead" as giving up a property worth having. That was
+  wrong on the facts: `flatten-types.mjs:84-92` records that the component sources already
+  import those names from `@cascivo/core`, so a re-export makes the dts bundler emit
+  `ToneInput as ToneInput$1` and **every prop switches to the aliased name** — measured, and
+  rejected by `check-styles-complete`'s `$N` rule. That is why `@cascivo/react/types` exists.
+  Shipped instead: the adopter's actual pain (greppability) is fixed by exploding specifier
+  lists one name per line — longest line 7190 → 259 chars, `grep ThemeProviderProps` now finds
+  it — and the published claim is corrected to state precisely what is true.
+- **WS-5's scope decision (§2 D1) was validated by a staleness test, and 12 of its
+  exclusions were wrong.** `NO_VISIBLE_LABEL_ALIAS` was seeded with 24 components; a staleness
+  assertion added in the same commit proved 12 of them do not declare a visible `label` at all,
+  so they were speculative. They were removed. The map ships with 12 real entries.
+- **WS-2's guard was tautological on the first attempt and had to be rewritten.** It compared
+  the *generated* vocabulary sentence against `registry.json` — both sides read the same
+  source, so it could never fail. Caught by testing it against deliberate drift. It now reads
+  the **published** `apps/site/public/llms.txt` and checks that against the registry in both
+  directions, which fails on a hand-edit, on a missing `regen`, and on a component that
+  declares the prop but is not named.
+- **WS-3's clamp was one pixel conservative and its own guard caught it.** `(height - 6·GAP)/7`
+  ignores that rects are drawn `cell - 1` tall; the exact budget is
+  `(height - 6·GAP + 1)/7`. Without the `+1` a 180-day range at 600px — which renders correctly
+  today — would have been shrunk. The guard's second assertion ("changes the rendering only
+  where it was already clipping") is what surfaced it.
+- **WS-4's Field signal changed from "an `id` was supplied" to an explicit `aria-labelledby`.**
+  The `id` heuristic would have left a standalone `<Search id="q"/>` with no accessible name at
+  all. `Field` now gives its `<Label>` an id and passes `aria-labelledby`, which is unambiguous
+  and regression-free.
+- **WS-4's sweep found four more components with the same defect, not just `TagsInput`.** The
+  new `field-composition` guard failed on `Search`, `Combobox`, `DatePicker`, `ColorPicker` and
+  `Editable`; all are fixed in the same commit. §WS-4.4 asked for the sweep; this is its result.
+- **WS-2 also cleared two pieces of unrelated sweep debt.** Adding `typeDefs` for `Step` and
+  the `Dropdown` union members made `typedefs-parity`'s `dropdown.items` and `steps.steps`
+  allowlist entries stale, and they were removed rather than re-seeded.
+- **WS-12's `apps/YYYY-MM-DD-<name>` convention is in the report author's own harness repo,
+  not this one.** The generalisable rule — a package name derived from its directory cannot
+  collide — is what shipped. All 20 apps already satisfied it, unwritten and unenforced.
+- **`claims.test.ts` rejected the component counts** written into `AI-RULES.md`'s new
+  vocabulary rows ("16 components", "7 components"). Correctly: a hardcoded count rots. The
+  counts were removed; the generated `llms.txt` carries the current lists.
+
+---
+
 Every finding below is root-caused against current source with `file:line` evidence, verified
 at `3139d5e3` (2026-08-22). Every workstream carries a design decision (with the rejected
 options), implementation steps, an executable guard, and acceptance criteria.
