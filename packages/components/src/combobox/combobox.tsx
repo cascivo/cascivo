@@ -82,6 +82,16 @@ export interface ComboboxProps {
    */
   searchable?: boolean
   label?: string
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it and `label` would render that text a second time.
+   *
+   * `label` on this component is **visible**. `IconButton.label` and `Sparkline.label` are
+   * invisible names, so an adopter arriving with that prior writes `label` here and gets the
+   * text twice (2026-08-22 report item 13). Both props are listed side by side, each saying
+   * which it is.
+   */
+  ariaLabel?: string
   hint?: string
   error?: string
   size?: 'sm' | 'md' | 'lg'
@@ -100,6 +110,7 @@ export function Combobox({
   clearable = false,
   searchable = true,
   label,
+  ariaLabel,
   hint,
   error,
   size = 'md',
@@ -245,6 +256,7 @@ export function Combobox({
           aria-controls={listboxId}
           aria-haspopup="listbox"
           aria-labelledby={ariaLabelledBy}
+          aria-label={ariaLabel}
           aria-activedescendant={
             isOpen && activeIndex.value >= 0 ? optionId(activeIndex.value) : undefined
           }

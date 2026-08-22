@@ -1558,6 +1558,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       "name": "onChange",
       "required": false
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "CheckboxCard": [
@@ -1933,6 +1940,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "string"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "Columns": [
@@ -2162,6 +2176,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "required": false,
       "primitives": [
         "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
       ]
     }
   ],
@@ -2675,6 +2696,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "boolean"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "DateRangePicker": [
@@ -3163,6 +3191,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "boolean"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "Filter": [
@@ -3220,6 +3255,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "enum": [
         "pill",
         "outline"
+      ]
+    },
+    {
+      "name": "multiple",
+      "required": false,
+      "primitives": [
+        "boolean"
       ]
     }
   ],
@@ -4706,6 +4748,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "boolean"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "InputGroup": [
@@ -5745,6 +5794,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "string"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "OtpInput": [
@@ -6747,6 +6803,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "string"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "RadioCard": [
@@ -7254,6 +7317,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "boolean"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "Section": [
@@ -7351,6 +7421,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "required": false,
       "primitives": [
         "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
       ]
     }
   ],
@@ -7645,6 +7722,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "required": false,
       "primitives": [
         "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
       ]
     }
   ],
@@ -8455,6 +8539,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "boolean"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "Tile": [
@@ -8608,6 +8699,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "primitives": [
         "string"
       ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
+      ]
     }
   ],
   "Timeline": [
@@ -8728,6 +8826,13 @@ export const propSchemas: Record<string, PropSchema[]> = {
       "required": false,
       "primitives": [
         "boolean"
+      ]
+    },
+    {
+      "name": "ariaLabel",
+      "required": false,
+      "primitives": [
+        "string"
       ]
     }
   ],

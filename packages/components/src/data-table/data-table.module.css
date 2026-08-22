@@ -106,6 +106,32 @@
        it reads as "the table dropped my columns" — one adopter measured clientWidth 1052
        against scrollWidth 1360 before working out the rows were scrollable at all. */
     scrollbar-gutter: stable;
+
+    /* Scrolling shadows: a soft edge appears only on the side there is more table to reach.
+       `scrollbar-gutter` above says "this scrolls"; this says WHICH WAY and that content is
+       cut off right now — the missing affordance behind a reported "the Created column was
+       cut off at the right edge with no visible scrollbar" (2026-08-22 report item 17).
+
+       Pure CSS, no JS and no scroll listener: the cover gradients scroll WITH the content
+       (`local`) and hide the shadows when the table is flush against an edge, while the
+       shadows are fixed to the box (`scroll`). A table that fits shows neither. */
+    background-image:
+      linear-gradient(to right, var(--cascivo-color-surface) 30%, transparent),
+      linear-gradient(to left, var(--cascivo-color-surface) 30%, transparent),
+      radial-gradient(farthest-side at 0 50%, var(--cascivo-color-border), transparent),
+      radial-gradient(farthest-side at 100% 50%, var(--cascivo-color-border), transparent);
+    background-position:
+      0 0,
+      100% 0,
+      0 0,
+      100% 0;
+    background-repeat: no-repeat;
+    background-size:
+      2.5rem 100%,
+      2.5rem 100%,
+      0.875rem 100%,
+      0.875rem 100%;
+    background-attachment: local, local, scroll, scroll;
   }
 
   .scrollerVirtualized {

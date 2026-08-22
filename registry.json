@@ -2663,7 +2663,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/checkbox/checkbox.module.css"
       ],
       "fileHashes": {
-        "checkbox.tsx": "sha256-a441a23078ff9884e0f9775169690102be9951844456ab675237aa804e477bc7",
+        "checkbox.tsx": "sha256-bc72ae387239b76d7636213c6cdddd091b314fdb19aa3a297266338d1488bd7c",
         "index.ts": "sha256-cb76713df13a750d36ce3458f7b9b829986de64e69802681e0e66ea302612b84",
         "checkbox.module.css": "sha256-40acb3223bd3d3f176aba0803625cc7d2df7a461ef339194e8816d26d4c36ec8"
       },
@@ -2713,6 +2713,13 @@
             "description": "Called when the value changes.",
             "type": "React.ChangeEventHandler<HTMLInputElement>",
             "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -3395,7 +3402,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/color-picker/color-picker.module.css"
       ],
       "fileHashes": {
-        "color-picker.tsx": "sha256-25408d635b59691b0b60901c19a6136fad87fe5f0bb03c2487d9b17e8fe3e9bb",
+        "color-picker.tsx": "sha256-5c33f3f252c26c4b6bf2711f9c58f49d4cfa26621df0fc0fbd0b998d58e402ac",
         "index.ts": "sha256-584a3bdd04fd3e25e5c0c28be9d07fda4bc3411cff307517dfd54816f2bec3d7",
         "color-picker.module.css": "sha256-77b085a0afb2e106ecdb4dc6e2c6ec80fb202e6c545120b41dfddcb59733188f"
       },
@@ -3496,6 +3503,13 @@
             "description": "Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -3583,7 +3597,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
       ],
       "fileHashes": {
-        "combobox.tsx": "sha256-b353be83899863735630d9097146f27e3814c17b23e6ce4e9b391dab16db5706",
+        "combobox.tsx": "sha256-48b882dd4b4a36260280be74a5cc3ed760b5e9474d1c04a8e2595247866c2278",
         "index.ts": "sha256-f653ac077476020e84fec2daaa5c3ff850b2c3340b4e38002798c3f2c249034b",
         "combobox.module.css": "sha256-cc7cd8b4087667c0df3b737f588c92bbdb03e7a1c94e52ef9d8f321ea74575f5"
       },
@@ -3714,6 +3728,13 @@
             "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
             "type": "boolean",
             "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -4727,9 +4748,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/data-table/data-table.module.css"
       ],
       "fileHashes": {
-        "data-table.tsx": "sha256-902858082132b090205b55e2a4f2b5f56fdccb93dbb48282cb9a452d8c40a352",
+        "data-table.tsx": "sha256-b01f1796baeb48af568d8e4208f1dc508bed4b008380e1ee0b3bbf102dcd1598",
         "index.ts": "sha256-c80f45d421cd7701697b4d4df9641a323a710143f2e78c9596f3c1e63b0e316f",
-        "data-table.module.css": "sha256-9c509caa1e2d07a2d1d49c152d924d3a4919e7ea4b9e194a4c356769f0d394c2"
+        "data-table.module.css": "sha256-e6a5b4d00d79ad000c8dce96121cec3dd360a94b48a7cec0887f2136d6b52a9f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -5084,7 +5105,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "fileHashes": {
-        "date-picker.tsx": "sha256-867d87556dcfc396a484d42bc7f473412ec0f1930c19e562c17f9731ec1e16e2",
+        "date-picker.tsx": "sha256-c14cb4559346af0ff06e59708624e2082da482cf004e205dc85e216e9d4eebd4",
         "index.ts": "sha256-6cb1709f7c2b98a82a3951dd8facba6bdefe2f491efd6f4808661b6d6ff5da4d",
         "date-picker.module.css": "sha256-e816d0d00db6d3d3dc52f49c8671c11eaa1710e2aa8a4d6ef8f3356207dee47e"
       },
@@ -5208,6 +5229,13 @@
             "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
             "type": "boolean",
             "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -6696,7 +6724,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/file-uploader/file-uploader.module.css"
       ],
       "fileHashes": {
-        "file-uploader.tsx": "sha256-7db7c20433938067b79e5aebbdc26479dc8bd8c01e2e6a1300ff8946abbc6df1",
+        "file-uploader.tsx": "sha256-e2f3be3ddaab70c689059a1987f4ae559168d46fbedfda4e56bd0446b9d66ff8",
         "index.ts": "sha256-d06d12dc06b4a333c7971a58c8d0df4a3231cfa7c5f37b9887e0058310534f06",
         "file-uploader.module.css": "sha256-ecb8fd3d4bd32b9661a0e9e90394801056c19ba1b693ddefa4969db78aac5719"
       },
@@ -6784,6 +6812,13 @@
             "type": "boolean",
             "required": false,
             "description": "Disables the upload zone"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -6891,7 +6926,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
       ],
       "fileHashes": {
-        "filter.tsx": "sha256-a4533503c2c64c6509e618601eef5383e0a75fc5039cfdd95ef0517f063c5cf0",
+        "filter.tsx": "sha256-1a5717f9dac2a61f7f21d17a472f56b8e88f287840b649cdb7018e5fa913713c",
         "index.ts": "sha256-24fb4e877d4acbafec2b2e3de672486b429a97b973e27e5543905abf34bdb696",
         "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
       },
@@ -6973,6 +7008,12 @@
             "type": "'pill' | 'outline'",
             "required": false,
             "default": "pill"
+          },
+          {
+            "name": "multiple",
+            "description": "Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical.",
+            "type": "boolean",
+            "required": false
           }
         ],
         "tokens": [
@@ -8484,7 +8525,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/input/input.module.css"
       ],
       "fileHashes": {
-        "input.tsx": "sha256-44d597aefc3c2e17e188dee0245ebd720472fa17badc641d1dab0ec05d3e3668",
+        "input.tsx": "sha256-2eb1fa73bcdadbd58ae55b7140a94e9764eb05288292215cd929643e3e319ece",
         "index.ts": "sha256-0b253c54e1bd068a63c392ef39758a06cceba48aa5aa357034faaa6e926cd001",
         "input.module.css": "sha256-6126b5e4be1f319a191b98d5f1ea523670acad79ac62f3ecd077b2760cbb53d0"
       },
@@ -8540,6 +8581,13 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -11120,7 +11168,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.module.css"
       ],
       "fileHashes": {
-        "number-input.tsx": "sha256-a1dd0fa7236572c9fbad91c21145295aabf7d4e1613c71517b8bf143789513d3",
+        "number-input.tsx": "sha256-2bc014da70bfb9f6fdad28b801fba4c0a7f311402c2bf91b99a64500730342db",
         "index.ts": "sha256-e1bfb7f0d680c0d3353e29e96ad022f322e67560fcea6e5772d1e88fff732c51",
         "number-input.module.css": "sha256-052b1ea4e35ba484767d3b30b590e742a7069125857dc7c0a3bb2b8ceacbb39a"
       },
@@ -11241,6 +11289,13 @@
             "type": "string",
             "required": false,
             "default": "Decrement"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -13274,7 +13329,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/radio/radio.module.css"
       ],
       "fileHashes": {
-        "radio.tsx": "sha256-b73fa54a55278a5e524eb8adcbcc5e588d698b6e1f259b48112848bf09aee984",
+        "radio.tsx": "sha256-c543888383fb470d694be74b7fbd199eae1ac5e774e84ce081b1a0519d943f71",
         "index.ts": "sha256-74ae77781c111fa60b4e604790bf463fec60c4a91b03d48965aa3c054eb91e79",
         "radio.module.css": "sha256-505ca3d7c8e242dcb0f3a7149db2857f09e5dff3d712fb8dcf9badb21ca009ab"
       },
@@ -13317,6 +13372,13 @@
             "description": "Form field name shared by the radio group.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -14280,7 +14342,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-86f9c8fe8eda8ff3ade732daf1c10194cc07f91ba635bb24c12e56df5d84033c",
+        "search.tsx": "sha256-ece1041026036a11214ae48ed7cc8418003cb083cbfed09713dc528ce847bb7c",
         "index.ts": "sha256-47249a52c6a441ee459d54591b48acc65feafdc50ecb7e6ab3eb3a05e292b8a7",
         "search.module.css": "sha256-bb8b8f5650d1f3623aed5b21b05f5bc6894a82c8399ed8ab7ce53cd213b7c709"
       },
@@ -14402,6 +14464,13 @@
             "description": "Wired automatically by a wrapping `Field` when it is in an error state.",
             "type": "boolean",
             "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -14636,7 +14705,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/select/select.module.css"
       ],
       "fileHashes": {
-        "select.tsx": "sha256-6dfa0efa997bd25eeeed64a074fbfb47a1fc7e71b71803571f10015c4c438ee0",
+        "select.tsx": "sha256-adadade2900bcd1442ec0654a386561d6fac8938634273da9022f5f18ebd40c5",
         "index.ts": "sha256-235ea0185749f2cb4189ae1b24a38d86a81db4eb78c313421322a99dd6f6fb56",
         "select.module.css": "sha256-8ca4c52fb34be14d6c8fbe1d6e7f7eb5732117eabffef18f0967b942f0eac7f8"
       },
@@ -14698,6 +14767,13 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -15767,7 +15843,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/slider/slider.module.css"
       ],
       "fileHashes": {
-        "slider.tsx": "sha256-8ca009de0ae576a6d91420fa20e568d46edec7d4fca8efc6182aade93a4b94b5",
+        "slider.tsx": "sha256-c49476378ead6c842e27d4ae0078cc8900de23b4f66f7239fe88fb17a38a3e72",
         "index.ts": "sha256-8dc2b339ea4246a3740ab8294c12e2b5405113ee0bae262e794ffb0771157b6f",
         "slider.module.css": "sha256-4bff460e358e21d6595f9e3d4472642bcd9f9ee2826b810c76387c712d5c8632"
       },
@@ -15831,6 +15907,13 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -17780,7 +17863,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.module.css"
       ],
       "fileHashes": {
-        "textarea.tsx": "sha256-bcf43a357b1807b7510bd58f818829852fdaeac7333ca8de7d630a044831b73b",
+        "textarea.tsx": "sha256-d48a14624905f821fb40a3f7348433d4c757315a07e083a61af32f395a40a7d3",
         "index.ts": "sha256-faa6e1544725eaeb285606e523d371b45b46d79cf0ab71ab9d5fe4e09ef244b7",
         "textarea.module.css": "sha256-2c8ed910ccd40ae57317955d706f49d8e19012da7a3d18509654b567ca94dfd0"
       },
@@ -17837,6 +17920,13 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -18099,7 +18189,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
       ],
       "fileHashes": {
-        "time-picker.tsx": "sha256-f3a1ada2c187376d3c215310748c381f31d73f2ac4e5338185064876d3299817",
+        "time-picker.tsx": "sha256-6825c12f0e83e0bde82e4b99dbee39654d94de08bc81207d48564182882882f0",
         "index.ts": "sha256-d5e5a07b40ae6720075ed633b7cc1b9de694807b7dc9f594dc5673f1555ea603",
         "time-picker.module.css": "sha256-84aacb74f566e0c5082a48a3b73194981ab1bc9c17bafc5c7d43bd27bfc6f480"
       },
@@ -18196,6 +18286,13 @@
             "description": "Additional CSS class names merged onto the root element.",
             "type": "string",
             "required": false
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [
@@ -18679,7 +18776,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.module.css"
       ],
       "fileHashes": {
-        "toggle.tsx": "sha256-8a1ff49a11ff2b07a544ef62bf9a3524a15a2a722f434f41f7cf2cf157a05a4d",
+        "toggle.tsx": "sha256-c139caeda1ad9cc9a15b502875d599ed4813c849d79d59d0b9c86855bce698e5",
         "index.ts": "sha256-8463627930eb060c1e8f834f86d9ff94171978a893046b6f9c28fe7b76ba25fe",
         "toggle.module.css": "sha256-9c452a066e05bdcf11ffe10f5245ec08d99a4eb36d00bada9fa53de0460572bf"
       },
@@ -18743,6 +18840,13 @@
             "type": "boolean",
             "required": false,
             "default": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+            "type": "string",
+            "required": false,
+            "nameVisibility": "invisible"
           }
         ],
         "tokens": [

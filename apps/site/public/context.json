@@ -8494,6 +8494,16 @@
           "schema": {
             "kind": "other"
           }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/checkbox.md",
@@ -9104,6 +9114,16 @@
           "schema": {
             "kind": "string"
           }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/color-picker.md",
@@ -9341,6 +9361,16 @@
           "required": false,
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
           }
         }
       ],
@@ -10535,6 +10565,16 @@
           "required": false,
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
           }
         }
       ],
@@ -12188,6 +12228,16 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/file-uploader.md",
@@ -12343,6 +12393,15 @@
               "pill",
               "outline"
             ]
+          }
+        },
+        {
+          "name": "multiple",
+          "description": "Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical.",
+          "type": "boolean",
+          "required": false,
+          "schema": {
+            "kind": "boolean"
           }
         }
       ],
@@ -15012,6 +15071,16 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
           }
         }
       ],
@@ -18062,6 +18131,16 @@
           "schema": {
             "kind": "string"
           }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/number-input.md",
@@ -19690,6 +19769,16 @@
           "schema": {
             "kind": "string"
           }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/radio.md",
@@ -20569,6 +20658,16 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/search.md",
@@ -21276,6 +21375,16 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
           }
         }
       ],
@@ -22057,6 +22166,16 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
           }
         }
       ],
@@ -23586,6 +23705,16 @@
           "schema": {
             "kind": "boolean"
           }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
+          }
         }
       ],
       "contextUrl": "/context/textarea.md",
@@ -23911,6 +24040,16 @@
           "description": "Additional CSS class names merged onto the root element.",
           "type": "string",
           "required": false,
+          "schema": {
+            "kind": "string"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
           "schema": {
             "kind": "string"
           }
@@ -24316,6 +24455,16 @@
           "default": "false",
           "schema": {
             "kind": "boolean"
+          }
+        },
+        {
+          "name": "ariaLabel",
+          "description": "Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.",
+          "type": "string",
+          "required": false,
+          "nameVisibility": "invisible",
+          "schema": {
+            "kind": "string"
           }
         }
       ],

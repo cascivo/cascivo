@@ -1143,6 +1143,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -1382,6 +1385,9 @@
                   },
                   "id": {
                     "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -1456,6 +1462,9 @@
                   },
                   "aria-invalid": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -1883,6 +1892,9 @@
                   },
                   "aria-invalid": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -2310,6 +2322,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -2350,6 +2365,9 @@
                       "pill",
                       "outline"
                     ]
+                  },
+                  "multiple": {
+                    "type": "boolean"
                   }
                 },
                 "required": [
@@ -2795,6 +2813,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -3560,6 +3581,9 @@
                   },
                   "decrementLabel": {
                     "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -4167,6 +4191,9 @@
                   },
                   "name": {
                     "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4504,6 +4531,9 @@
                   },
                   "aria-invalid": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -4588,6 +4618,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 },
                 "required": [
@@ -4882,6 +4915,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -5433,6 +5469,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -5540,6 +5579,9 @@
                     "type": "boolean"
                   },
                   "className": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
                     "type": "string"
                   }
                 }
@@ -5684,6 +5726,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }

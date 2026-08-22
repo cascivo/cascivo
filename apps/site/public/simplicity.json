@@ -4,7 +4,7 @@
       "name": "radio",
       "label": "Radio",
       "primitive": "Native <input type=\"radio\">",
-      "loc": 173,
+      "loc": 188,
       "files": 3,
       "deps": 0
     },
@@ -12,7 +12,7 @@
       "name": "checkbox",
       "label": "Checkbox",
       "primitive": "Native <input type=\"checkbox\">",
-      "loc": 142,
+      "loc": 157,
       "files": 3,
       "deps": 0
     },
@@ -20,7 +20,7 @@
       "name": "toggle",
       "label": "Switch",
       "primitive": "Accessible <button> + :has()",
-      "loc": 165,
+      "loc": 181,
       "files": 3,
       "deps": 0
     },

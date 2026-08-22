@@ -48,6 +48,7 @@ The saturation/lightness area is a focusable role="slider" with arrow-key nudgin
 | `aria-describedby` | `string` | No | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
 | `aria-invalid` | `boolean` | No | — | Wired automatically by a wrapping `Field` when it is in an error state. |
 | `id` | `string` | No | — | Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically. |
+| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 

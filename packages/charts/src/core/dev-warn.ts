@@ -104,6 +104,42 @@ export function warnDualAxisAreas(chart: string, filled: readonly string[]): voi
   )
 }
 
+/**
+ * Warn when the x accessor returns epoch-millisecond numbers rather than `Date`s.
+ *
+ * `x` is typed `(d) => number | Date`, and the scale is picked from the runtime type: a `Date`
+ * gets a time scale, a `number` gets a linear one. Returning `Date.now()`-shaped numbers — the
+ * obvious choice for timestamped data — therefore produces an axis labelled `1,787,250,000,000`.
+ * That is a chart that looks broken rather than misconfigured, and the only place the opt-in was
+ * stated was the prop's own doc comment, which an adopter with no reason to suspect never opens
+ * (2026-08-22 report item 12).
+ *
+ * Warn rather than infer the scale from magnitude: silently reinterpreting large numbers as
+ * dates would break a genuinely numeric series (bytes, revenue in cents, nanoseconds) with no
+ * way out, trading a visible wrong output for an invisible one.
+ *
+ * `hasFormat` suppresses it — a caller who supplied `format` has taken over the tick text and
+ * is not surprised by it.
+ */
+export function warnEpochMilliseconds(
+  chart: string,
+  firstX: number | Date | undefined,
+  hasFormat: boolean,
+): void {
+  if (isProd()) return
+  if (hasFormat) return
+  if (typeof firstX !== 'number' || !Number.isFinite(firstX)) return
+  // 1e11 ms ≈ 1973 — below this, a plain number is far likelier to be real numeric data.
+  if (Math.abs(firstX) < 1e11) return
+  warnOnce(
+    `${chart}:epoch-ms`,
+    `${chart}: \`x\` returned ${firstX}, which looks like epoch milliseconds but is typed ` +
+      '`number`, so the axis uses a LINEAR scale and labels it with the raw value. Return a ' +
+      'Date for a time axis: `x={(d) => new Date(d.t)}`. Pass `format` to control tick text ' +
+      '(and to silence this if the values really are numeric).',
+  )
+}
+
 /** Test-only: clear the dedupe set so a warning can be asserted more than once. */
 export function __resetChartWarnings(): void {
   warned.clear()

@@ -41,6 +41,7 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 | `rows` | `number` | No | 4 | Number of visible text rows. |
 | `resize` | `'none' \| 'vertical' \| 'both'` | No | vertical | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both'). |
 | `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 

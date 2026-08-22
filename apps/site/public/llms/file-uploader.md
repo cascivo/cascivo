@@ -44,6 +44,7 @@ import { FileUploader } from '@cascivo/react'
 | `hint` | `string` | no | — | Hint text below the drop zone |
 | `labels` | `FileUploaderLabels` | no | — | i18n label overrides |
 | `disabled` | `boolean` | no | `false` | Disables the upload zone |
+| `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Examples
 

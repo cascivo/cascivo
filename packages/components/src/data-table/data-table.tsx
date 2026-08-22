@@ -37,6 +37,11 @@ export interface Column<Row> {
    * dropped. Leave at least one free-form column unsized unless you specifically want
    * page-stable widths.
    *
+   * You do not have to get this right by arithmetic: the table **measures** its own overflow
+   * and warns in dev with the real `scrollWidth`/`clientWidth` and the sized columns to
+   * change. In production a scrolling shadow marks the cut edge. The rules of thumb below are
+   * a starting point, not something to compute against a container width you cannot see.
+   *
    * ⚠ **"Leave one unsized" is necessary, not sufficient.** The leftover width is split
    * between the unsized columns by `table-layout: auto`, which weighs them by content — so
    * if the sized columns nearly fill the table, what remains can be narrower than the
@@ -184,6 +189,39 @@ function isDev(): boolean {
   return env?.NODE_ENV !== 'production'
 }
 
+const warnedOverflow = new Set<string>()
+
+/**
+ * Dev-only, deduped warning: the table is wider than its container.
+ *
+ * `Column.width`'s doc comment is two ⚠ blocks and a paragraph of rules of thumb ("keep the
+ * sized columns to roughly two thirds"), and an adopter who read all of it still needed three
+ * passes — because the arithmetic depends on the container width, which the component knows
+ * and they do not. Their second attempt grew the table past its card and cut the last column
+ * off with no visible scroll affordance, which reads as a styling choice rather than a bug
+ * (2026-08-22 report item 17).
+ *
+ * Overflow is measured, not predicted, so this fires only on the real failure and stays silent
+ * on a configuration that fits — a warning that fires on the correct answer is worse than none.
+ */
+function warnIfOverflowing(el: HTMLElement, sized: string[], key: string): void {
+  if (!isDev()) return
+  const overflowBy = el.scrollWidth - el.clientWidth
+  // 1px of slop: sub-pixel layout rounding routinely reports a scrollWidth one larger.
+  if (overflowBy <= 1) return
+  const dedupeKey = `${key}:${el.clientWidth}`
+  if (warnedOverflow.has(dedupeKey)) return
+  warnedOverflow.add(dedupeKey)
+  console.warn(
+    `cascivo DataTable: the table overflows its container (scrollWidth ${el.scrollWidth}px > ` +
+      `clientWidth ${el.clientWidth}px, by ${overflowBy}px), so the last column is cut off. ` +
+      (sized.length > 0
+        ? `Drop a \`width\` from one of the sized columns (${sized.join(', ')}), or lower the ` +
+          '`minWidth` on the free-form one.'
+        : 'Lower the `minWidth` on the widest column.'),
+  )
+}
+
 /**
  * Dev-only, deduped warning: a `<table>` with neither a visible `title` nor an `ariaLabel`
  * is an unnamed landmark. Screen-reader users land on it with no idea what it lists, and
@@ -298,6 +336,28 @@ export function DataTable<Row>({
   // Virtualization
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const scrollTop = useSignal(0)
+
+  /**
+   * Measure overflow whenever the container resizes. A trailing rAF keeps a mid-resize
+   * transient (a sidebar animating open) from logging; the observer is the only way to catch
+   * the case at all, since the table fits at some widths and not others.
+   */
+  useSignalEffect(() => {
+    const el = scrollContainerRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const sized = columns.filter((c) => c.width !== undefined).map((c) => c.key)
+    const key = columns.map((c) => c.key).join(',')
+    let frame = 0
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => warnIfOverflowing(el, sized, key))
+    })
+    observer.observe(el)
+    return () => {
+      cancelAnimationFrame(frame)
+      observer.disconnect()
+    }
+  })
 
   useSignalEffect(() => {
     if (!virtualized) return
@@ -522,7 +582,7 @@ export function DataTable<Row>({
         </div>
       )}
       <div
-        ref={virtualized ? scrollContainerRef : undefined}
+        ref={scrollContainerRef}
         className={cn(styles['scroller'], virtualized && styles['scrollerVirtualized'])}
       >
         <table

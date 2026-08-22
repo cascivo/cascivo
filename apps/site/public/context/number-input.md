@@ -52,6 +52,7 @@ Exposes role="spinbutton" with aria-valuenow/min/max so assistive tech announces
 | `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
 | `incrementLabel` | `string` | No | Increment | Accessible label for the increment button. |
 | `decrementLabel` | `string` | No | Decrement | Accessible label for the decrement button. |
+| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 

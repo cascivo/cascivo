@@ -78,6 +78,13 @@ export const meta: ComponentMeta = {
       required: false,
       default: 'pill',
     },
+    {
+      name: 'multiple',
+      description:
+        'Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical.',
+      type: 'boolean',
+      required: false,
+    },
   ],
   tokens: [
     '--cascivo-radius-full',

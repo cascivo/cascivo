@@ -48,6 +48,7 @@ Renders a native <input type="time"> so segmented HH/mm entry, format enforcemen
 | `size` | `'sm' \| 'md' \| 'lg'` | No | 'md' | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | No | — | When true, disables the control and removes it from the tab order. |
 | `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 

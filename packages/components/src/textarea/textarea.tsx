@@ -13,6 +13,20 @@ const machine = createMachine({
 })
 
 export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it (a heading in a settings row, a table column header) and `label` would render
+   * that text a second time.
+   *
+   * `label` on this component is **visible** — it is painted next to the control. The catalog
+   * splits that way deliberately, but `IconButton.label` and `Sparkline.label` are invisible
+   * names, so an adopter arriving with that prior writes `label` here and gets the text twice
+   * (2026-08-22 report item 13). Both props are now listed side by side, each saying which it
+   * is, which is the only thing that interrupts a confident wrong guess.
+   *
+   * The raw DOM `aria-label` is still accepted and wins over this.
+   */
+  ariaLabel?: string
   label?: string
   hint?: string
   error?: string
@@ -34,7 +48,19 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
  * matches `IconButton`, which already used it.
  */
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
-  { label, hint, error, resize = 'vertical', rows = 4, className, id, onFocus, onBlur, ...props },
+  {
+    label,
+    hint,
+    error,
+    resize = 'vertical',
+    rows = 4,
+    ariaLabel,
+    className,
+    id,
+    onFocus,
+    onBlur,
+    ...props
+  },
   ref,
 ) {
   const [state, send] = useMachine(machine)
@@ -69,6 +95,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
           onBlur?.(e)
         }}
         {...props}
+        aria-label={props['aria-label'] ?? ariaLabel}
       />
       {error && (
         <span id={`${textareaId}-error`} className={styles['error']} role="alert">

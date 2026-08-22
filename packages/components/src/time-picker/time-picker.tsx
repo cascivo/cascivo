@@ -16,6 +16,20 @@ export interface TimePickerProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'
 > {
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it (a heading in a settings row, a table column header) and `label` would render
+   * that text a second time.
+   *
+   * `label` on this component is **visible** — it is painted next to the control. The catalog
+   * splits that way deliberately, but `IconButton.label` and `Sparkline.label` are invisible
+   * names, so an adopter arriving with that prior writes `label` here and gets the text twice
+   * (2026-08-22 report item 13). Both props are now listed side by side, each saying which it
+   * is, which is the only thing that interrupts a confident wrong guess.
+   *
+   * The raw DOM `aria-label` is still accepted and wins over this.
+   */
+  ariaLabel?: string
   value?: string
   defaultValue?: string
   /** Called with the new `HH:MM` time string when the value changes. */
@@ -54,6 +68,7 @@ export const TimePicker = forwardRef<HTMLInputElement, TimePickerProps>(function
     id,
     onFocus,
     onBlur,
+    ariaLabel,
     ...props
   },
   ref,
@@ -96,6 +111,7 @@ export const TimePicker = forwardRef<HTMLInputElement, TimePickerProps>(function
         }}
         ref={ref as never}
         {...props}
+        aria-label={props['aria-label'] ?? ariaLabel}
       />
       {error && (
         <span id={`${inputId}-error`} className={styles['error']} role="alert">

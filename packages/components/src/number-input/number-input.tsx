@@ -17,6 +17,20 @@ export interface NumberInputProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'size' | 'type' | 'value' | 'defaultValue' | 'onChange' | 'min' | 'max' | 'step'
 > {
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it (a heading in a settings row, a table column header) and `label` would render
+   * that text a second time.
+   *
+   * `label` on this component is **visible** — it is painted next to the control. The catalog
+   * splits that way deliberately, but `IconButton.label` and `Sparkline.label` are invisible
+   * names, so an adopter arriving with that prior writes `label` here and gets the text twice
+   * (2026-08-22 report item 13). Both props are now listed side by side, each saying which it
+   * is, which is the only thing that interrupts a confident wrong guess.
+   *
+   * The raw DOM `aria-label` is still accepted and wins over this.
+   */
+  ariaLabel?: string
   value?: number | null
   defaultValue?: number
   /** Called with the new numeric value (or null when cleared). */
@@ -108,6 +122,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(functi
     onFocus,
     onBlur,
     onKeyDown,
+    ariaLabel,
     ...props
   },
   ref,
@@ -211,6 +226,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(functi
           onKeyDown={handleKeyDown}
           ref={ref as never}
           {...props}
+          aria-label={props['aria-label'] ?? ariaLabel}
         />
         <div className={styles['steppers']}>
           <button

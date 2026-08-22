@@ -80,3 +80,33 @@ describe('Filter', () => {
     expect(screen.getByRole('button', { name: 'All' })).toHaveAttribute('aria-pressed', 'false')
   })
 })
+
+/**
+ * `multiple` is the HTML spelling and therefore the guess. An adopter reached for it, got a
+ * type error, and only then found `multi` — whose doc comment they could not have read,
+ * because you cannot look up a prop you do not know exists (2026-08-22 report item 14).
+ */
+describe('Filter multiple alias', () => {
+  const options = [
+    { value: 'a', label: 'A' },
+    { value: 'b', label: 'B' },
+  ]
+
+  it('accepts `multiple` as an alias of `multi`', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<Filter options={options} multiple onValueChange={onValueChange} ariaLabel="F" />)
+    await user.click(screen.getByRole('button', { name: 'A' }))
+    await user.click(screen.getByRole('button', { name: 'B' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['a', 'b'])
+  })
+
+  it('still selects one at a time when neither is set', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(<Filter options={options} onValueChange={onValueChange} ariaLabel="F" />)
+    await user.click(screen.getByRole('button', { name: 'A' }))
+    await user.click(screen.getByRole('button', { name: 'B' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['b'])
+  })
+})
