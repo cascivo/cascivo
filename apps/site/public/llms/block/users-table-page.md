@@ -18,10 +18,10 @@ _Copy-paste only — `UsersTablePage` is not exported from `@cascivo/react`. Run
 
 ## Props
 
-| Prop       | Type         | Required | Default     | Description           |
-| ---------- | ------------ | -------- | ----------- | --------------------- |
-| `users`    | `User[]`     | no       | `demoUsers` | User data             |
-| `onInvite` | `() => void` | no       | —           | Invite button handler |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `users` | `User[]` | no | `demoUsers` | User data |
+| `onInvite` | `() => void` | no | — | Invite button handler |
 
 ## Examples
 

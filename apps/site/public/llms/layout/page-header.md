@@ -22,13 +22,13 @@ import { PageHeader } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type        | Required | Default | Description                                                                                                                                                                                                         |
-| ------------- | ----------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`       | `ReactNode` | yes      | —       | Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`. |
-| `description` | `ReactNode` | no       | —       | Supporting line under the title, rendered as a `<p>`. Accepts nodes.                                                                                                                                                |
-| `breadcrumb`  | `ReactNode` | no       | —       | Breadcrumb slot                                                                                                                                                                                                     |
-| `actions`     | `ReactNode` | no       | —       | Action buttons slot                                                                                                                                                                                                 |
-| `className`   | `string`    | no       | —       | Additional CSS class                                                                                                                                                                                                |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `ReactNode` | yes | — | Page title, rendered as the `<h1>`. Accepts nodes, not just a string, so you can put a status Badge or a linked domain beside the name — the canonical project-header shape. Keep it inline-level: it is an `<h1>`. |
+| `description` | `ReactNode` | no | — | Supporting line under the title, rendered as a `<p>`. Accepts nodes. |
+| `breadcrumb` | `ReactNode` | no | — | Breadcrumb slot |
+| `actions` | `ReactNode` | no | — | Action buttons slot |
+| `className` | `string` | no | — | Additional CSS class |
 
 ## Examples
 

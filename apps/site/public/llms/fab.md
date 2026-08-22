@@ -28,27 +28,25 @@ import { Fab } from '@cascivo/react'
 
 ## Props
 
-| Prop           | Type                             | Required | Default      | Description                                                                                                                                                        |
-| -------------- | -------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `children`     | `React.ReactNode`                | yes      | —            | The main icon                                                                                                                                                      |
-| `ariaLabel`    | `string`                         | no       | —            | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only.                       |
-| `label`        | `string`                         | no       | —            | Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it. |
-| `onClick`      | `() => void`                     | no       | —            | Called when the element is clicked.                                                                                                                                |
-| `actions`      | `FabAction[]`                    | no       | —            | Speed-dial actions; each has a label, icon, onSelect, and optional disabled                                                                                        |
-| `position`     | `'bottom-end' \| 'bottom-start'` | no       | `bottom-end` | Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way.                                                   |
-| `open`         | `boolean`                        | no       | —            | Whether the component is open (controlled).                                                                                                                        |
-| `defaultOpen`  | `boolean`                        | no       | —            | Whether the component is open on first render (uncontrolled).                                                                                                      |
-| `onOpenChange` | `(open: boolean) => void`        | no       | —            | Called with the next open state when it changes.                                                                                                                   |
-| `className`    | `string`                         | no       | —            | Additional CSS class names merged onto the root element.                                                                                                           |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `children` | `React.ReactNode` | yes | — | The main icon |
+| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Accessible name for the main button (it is icon-only). Not rendered — screen readers only. Exactly one of `label` / `ariaLabel` is required; the type enforces it. |
+| `onClick` | `() => void` | no | — | Called when the element is clicked. |
+| `actions` | `FabAction[]` | no | — | Speed-dial actions; each has a label, icon, onSelect, and optional disabled |
+| `position` | `'bottom-end' \| 'bottom-start'` | no | `bottom-end` | Screen corner the button is pinned to: `bottom-end` or `bottom-start`. Safe-area insets are honoured either way. |
+| `open` | `boolean` | no | — | Whether the component is open (controlled). |
+| `defaultOpen` | `boolean` | no | — | Whether the component is open on first render (uncontrolled). |
+| `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
 ### Single action
 
 ```tsx
-<Fab label="Compose" onClick={compose}>
-  <PlusIcon />
-</Fab>
+<Fab label="Compose" onClick={compose}><PlusIcon /></Fab>
 ```
 
 ### Speed dial
@@ -70,9 +68,7 @@ The main button toggles a menu of secondary actions.
 ### Start corner
 
 ```tsx
-<Fab label="Help" position="bottom-start" onClick={openHelp}>
-  <HelpIcon />
-</Fab>
+<Fab label="Help" position="bottom-start" onClick={openHelp}><HelpIcon /></Fab>
 ```
 
 ## Client JavaScript

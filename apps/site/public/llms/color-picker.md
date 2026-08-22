@@ -28,17 +28,21 @@ import { ColorPicker } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                      | Required | Default   | Description                                                        |
-| --------------- | ------------------------- | -------- | --------- | ------------------------------------------------------------------ |
-| `labels`        | `ColorPickerLabels`       | no       | —         | Overrides for the component’s user-visible strings (i18n).         |
-| `value`         | `string`                  | no       | —         | Controlled hex color value                                         |
-| `defaultValue`  | `string`                  | no       | `#3b82f6` | The initial value when uncontrolled.                               |
-| `onValueChange` | `(value: string) => void` | no       | —         | Called with the new value when it changes.                         |
-| `presets`       | `string[]`                | no       | —         | Preset swatch colors                                               |
-| `alpha`         | `boolean`                 | no       | `true`    | When true, enables alpha (opacity) selection.                      |
-| `label`         | `string`                  | no       | —         | Text label for the control. Rendered on screen.                    |
-| `disabled`      | `boolean`                 | no       | `false`   | When true, disables the control and removes it from the tab order. |
-| `size`          | `'sm' \| 'md' \| 'lg'`    | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `labels` | `ColorPickerLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
+| `value` | `string` | no | — | Controlled hex color value |
+| `defaultValue` | `string` | no | `#3b82f6` | The initial value when uncontrolled. |
+| `onValueChange` | `(value: string) => void` | no | — | Called with the new value when it changes. |
+| `presets` | `string[]` | no | — | Preset swatch colors |
+| `alpha` | `boolean` | no | `true` | When true, enables alpha (opacity) selection. |
+| `label` | `string` | no | — | Text label for the control. Rendered on screen. |
+| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
+| `id` | `string` | no | — | Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically. |
 
 ## Examples
 
@@ -51,7 +55,7 @@ import { ColorPicker } from '@cascivo/react'
 ### With presets
 
 ```tsx
-<ColorPicker presets={['#ef4444', '#3b82f6', '#10b981']} alpha={false} />
+<ColorPicker presets={["#ef4444", "#3b82f6", "#10b981"]} alpha={false} />
 ```
 
 ## Client JavaScript

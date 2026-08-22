@@ -23,21 +23,21 @@ Renders role="img" with a title and a fallback data table.
 
 ## Props
 
-| Name          | Type                                          | Required | Default    | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------- | --------------------------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `series`      | `StreamSeries[]`                              | Yes      | —          | Series, each with values[] aligned to categories.                                                                                                                                                                                                                                                                                                                                             |
-| `categories`  | `(string \| number)[]`                        | Yes      | —          | X-axis labels aligned with each series values.                                                                                                                                                                                                                                                                                                                                                |
-| `title`       | `string`                                      | Yes      | —          | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
-| `description` | `string`                                      | No       | —          | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
-| `offset`      | `'silhouette' \| 'zero'`                      | No       | silhouette | silhouette centers the stack (streamgraph); zero is a baseline stack.                                                                                                                                                                                                                                                                                                                         |
-| `curve`       | `Curve`                                       | No       | basis      | Interpolation curve.                                                                                                                                                                                                                                                                                                                                                                          |
-| `width`       | `number`                                      | No       | —          | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height`      | `number`                                      | No       | 300        | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
-| `legend`      | `boolean`                                     | No       | —          | Whether to show the legend.                                                                                                                                                                                                                                                                                                                                                                   |
-| `tooltip`     | `boolean`                                     | No       | —          | Whether to show tooltips on hover.                                                                                                                                                                                                                                                                                                                                                            |
-| `className`   | `string`                                      | No       | —          | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
-| `plain`       | `boolean`                                     | No       | false      | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
-| `format`      | `(value: number \| string \| Date) => string` | No       | —          | Format each category/x-axis tick label.                                                                                                                                                                                                                                                                                                                                                       |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `series` | `StreamSeries[]` | Yes | — | Series, each with values[] aligned to categories. |
+| `categories` | `(string \| number)[]` | Yes | — | X-axis labels aligned with each series values. |
+| `title` | `string` | Yes | — | Title text for the component. |
+| `description` | `string` | No | — | Supporting description text. |
+| `offset` | `'silhouette' \| 'zero'` | No | silhouette | silhouette centers the stack (streamgraph); zero is a baseline stack. |
+| `curve` | `Curve` | No | basis | Interpolation curve. |
+| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | No | 300 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
+| `legend` | `boolean` | No | — | Whether to show the legend. |
+| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
+| `format` | `(value: number \| string \| Date) => string` | No | — | Format each category/x-axis tick label. |
 
 ## Object types
 
@@ -45,12 +45,12 @@ Renders role="img" with a title and a fallback data table.
 
 Shape of the `series` prop.
 
-| Field    | Type       | Required | Description                                        |
-| -------- | ---------- | -------- | -------------------------------------------------- |
-| `id`     | `string`   | Yes      | —                                                  |
-| `label`  | `string`   | Yes      | —                                                  |
-| `values` | `number[]` | Yes      | One value per category, aligned with `categories`. |
-| `color`  | `string`   | No       | —                                                  |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | Yes | — |
+| `label` | `string` | Yes | — |
+| `values` | `number[]` | Yes | One value per category, aligned with `categories`. |
+| `color` | `string` | No | — |
 
 ## Tokens
 
@@ -69,9 +69,10 @@ Shape of the `series` prop.
 
 ```jsx
 import { Stream } from '@cascivo/charts'
-;<Stream
+
+<Stream
   title="Topics over time"
-  categories={['Jan', 'Feb', 'Mar', 'Apr']}
+  categories={['Jan','Feb','Mar','Apr']}
   series={[
     { id: 'a', label: 'A', values: [4, 6, 5, 8] },
     { id: 'b', label: 'B', values: [2, 3, 7, 4] },

@@ -36,16 +36,16 @@ import { RadialProgress } from '@cascivo/react'
 
 ## Props
 
-| Prop         | Type                                                       | Required | Default   | Description                                                                                                                                       |
-| ------------ | ---------------------------------------------------------- | -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`      | `string`                                                   | no       | —         | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
-| `ariaLabel`  | `string`                                                   | no       | —         | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
-| `value`      | `number`                                                   | yes      | —         | The controlled value.                                                                                                                             |
-| `size`       | `'sm' \| 'md' \| 'lg'`                                     | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                             |
-| `variant`    | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `primary` | Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`.                                            |
-| `children`   | `React.ReactNode`                                          | no       | —         | Content rendered inside the component.                                                                                                            |
-| `aria-label` | `string`                                                   | no       | —         | Accessible label used when no visible label is present.                                                                                           |
-| `className`  | `string`                                                   | no       | —         | Additional CSS class names merged onto the root element.                                                                                          |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
+| `value` | `number` | yes | — | The controlled value. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `variant` | `'primary' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `primary` | Colour of the ring: `primary` (the accent) or a severity tone — `info`, `success`, `warning`, `error`. |
+| `children` | `React.ReactNode` | no | — | Content rendered inside the component. |
+| `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -70,9 +70,7 @@ Completed state with success color at large size
 Override the default percentage label with custom content
 
 ```tsx
-<RadialProgress value={45} variant="warning">
-  45 GB
-</RadialProgress>
+<RadialProgress value={45} variant="warning">45 GB</RadialProgress>
 ```
 
 ## Client JavaScript

@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-with-strict-eslint.md
   registry v0.18.0 · generated 2026-08-17
 -->
-
 # Using cascivo with a strict host ESLint config
 
 **Short version:**
@@ -162,7 +161,7 @@ signal writes live in your own page and component code, and on the prebuilt path
 The React Compiler ecosystem is tightening around mutation analysis, and
 `react-hooks/immutability` is the leading edge of it. cascivo's position: signals
 are a deliberate escape from the compiler's memoization model — a signal cell is
-_meant_ to be mutated, and its reads are tracked at runtime rather than inferred
+*meant* to be mutated, and its reads are tracked at runtime rather than inferred
 at compile time. We expect to keep this rule off for the foreseeable future
 rather than reshape the reactivity contract around it. If you enable the React
 Compiler itself, cascivo components are unaffected (they ship `'use client'` and
@@ -226,6 +225,7 @@ cascivo enforces the objective classes below in its own linter (oxlint) via
 config for every rule outside the scope-off list above.
 
 ### `.eslintrc` (legacy) equivalent
+
 
 ```json
 {

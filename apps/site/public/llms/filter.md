@@ -34,18 +34,18 @@ import { Filter } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                           | Required | Default | Description                                                                                                                                                            |
-| --------------- | ------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`         | `string`                       | no       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                         |
-| `ariaLabel`     | `string`                       | no       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
-| `aria-label`    | `string`                       | no       | —       | Accessible label for the filter group.                                                                                                                                 |
-| `options`       | `FilterOption[]`               | yes      | —       | Array of { label, value } objects to render as filter buttons                                                                                                          |
-| `value`         | `string[]`                     | no       | —       | Controlled selected values                                                                                                                                             |
-| `defaultValue`  | `string[]`                     | no       | `[]`    | Initial selected values for uncontrolled use                                                                                                                           |
-| `onValueChange` | `(selected: string[]) => void` | no       | —       | Called with the selected values whenever the selection changes.                                                                                                        |
-| `onChange`      | `(selected: string[]) => void` | no       | —       | Deprecated: use onValueChange (same string[]).                                                                                                                         |
-| `multi`         | `boolean`                      | no       | `false` | Allow multiple items to be selected simultaneously                                                                                                                     |
-| `variant`       | `'pill' \| 'outline'`          | no       | `pill`  | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.                        |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
+| `aria-label` | `string` | no | — | Accessible label for the filter group. |
+| `options` | `FilterOption[]` | yes | — | Array of { label, value } objects to render as filter buttons |
+| `value` | `string[]` | no | — | Controlled selected values |
+| `defaultValue` | `string[]` | no | `[]` | Initial selected values for uncontrolled use |
+| `onValueChange` | `(selected: string[]) => void` | no | — | Called with the selected values whenever the selection changes. |
+| `onChange` | `(selected: string[]) => void` | no | — | Deprecated: use onValueChange (same string[]). |
+| `multi` | `boolean` | no | `false` | Allow multiple items to be selected simultaneously |
+| `variant` | `'pill' \| 'outline'` | no | `pill` | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent. |
 
 ## Examples
 
@@ -81,10 +81,7 @@ import { Filter } from '@cascivo/react'
 ```tsx
 <Filter
   variant="outline"
-  options={[
-    { label: 'React', value: 'react' },
-    { label: 'Vue', value: 'vue' },
-  ]}
+  options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}
   aria-label="Filter by framework"
 />
 ```

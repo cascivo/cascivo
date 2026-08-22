@@ -21,23 +21,23 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 ## Props
 
-| Prop          | Type               | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------- | ------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`        | `RadialBarDatum[]` | yes      | —       | One ring per datum: { id, label, value, color? }.                                                                                                                                                                                                                                                                                                                                             |
-| `title`       | `string`           | yes      | —       | Chart title (also used as aria-label).                                                                                                                                                                                                                                                                                                                                                        |
-| `description` | `string`           | no       | —       | Subtitle below the title.                                                                                                                                                                                                                                                                                                                                                                     |
-| `size`        | `number`           | no       | —       | Square shorthand (width === height). Explicit width/height win.                                                                                                                                                                                                                                                                                                                               |
-| `width`       | `number`           | no       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height`      | `number`           | no       | `300`   | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
-| `max`         | `number`           | no       | —       | Domain top — the value a full sweep represents. Defaults to the largest datum.                                                                                                                                                                                                                                                                                                                |
-| `sweep`       | `number`           | no       | `270`   | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring).                                                                                                                                                                                                                                                                                                                                |
-| `centerValue` | `string`           | no       | —       | Text in the hole.                                                                                                                                                                                                                                                                                                                                                                             |
-| `centerLabel` | `string`           | no       | —       | Caption below centerValue.                                                                                                                                                                                                                                                                                                                                                                    |
-| `centerSlot`  | `ReactNode`        | no       | —       | Arbitrary hole content; wins over centerValue/centerLabel.                                                                                                                                                                                                                                                                                                                                    |
-| `tooltip`     | `boolean`          | no       | —       | Enable hover tooltip.                                                                                                                                                                                                                                                                                                                                                                         |
-| `legend`      | `boolean`          | no       | —       | Show ring legend.                                                                                                                                                                                                                                                                                                                                                                             |
-| `className`   | `string`           | no       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
-| `plain`       | `boolean`          | no       | `false` | Marks only — no legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                                              |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `RadialBarDatum[]` | yes | — | One ring per datum: { id, label, value, color? }. |
+| `title` | `string` | yes | — | Chart title (also used as aria-label). |
+| `description` | `string` | no | — | Subtitle below the title. |
+| `size` | `number` | no | — | Square shorthand (width === height). Explicit width/height win. |
+| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | no | `300` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
+| `max` | `number` | no | — | Domain top — the value a full sweep represents. Defaults to the largest datum. |
+| `sweep` | `number` | no | `270` | Sweep angle in degrees (270 = a gauge arc; 360 = a full ring). |
+| `centerValue` | `string` | no | — | Text in the hole. |
+| `centerLabel` | `string` | no | — | Caption below centerValue. |
+| `centerSlot` | `ReactNode` | no | — | Arbitrary hole content; wins over centerValue/centerLabel. |
+| `tooltip` | `boolean` | no | — | Enable hover tooltip. |
+| `legend` | `boolean` | no | — | Show ring legend. |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | no | `false` | Marks only — no legend. For micro/inline charts. |
 
 ## Object types
 
@@ -45,12 +45,12 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 Shape of the `data` prop.
 
-| Field   | Type     | Required | Description                                                |
-| ------- | -------- | -------- | ---------------------------------------------------------- |
-| `id`    | `string` | yes      | —                                                          |
-| `label` | `string` | yes      | —                                                          |
-| `value` | `number` | yes      | —                                                          |
-| `color` | `string` | no       | CSS color overriding the positional palette for this ring. |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | `string` | yes | — |
+| `label` | `string` | yes | — |
+| `value` | `number` | yes | — |
+| `color` | `string` | no | CSS color overriding the positional palette for this ring. |
 
 ## Examples
 
@@ -58,7 +58,8 @@ Shape of the `data` prop.
 
 ```tsx
 import { RadialBar } from '@cascivo/charts'
-;<RadialBar
+
+<RadialBar
   title="Quarterly goals"
   max={100}
   centerValue="72%"

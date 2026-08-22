@@ -88,20 +88,51 @@ interface Discovered {
 
 /**
  * Every exported interface in `packages/components` shaped like one entry of a config-driven
- * link list: it carries a `label` and an optional `href`.
+ * list the adopter supplies: it carries a `label`, and is either link-shaped (`href?`) or is
+ * the element type of an array prop on an exported `…Props` interface.
+ *
+ * ## Why the second clause exists
+ *
+ * The first version required `label` **and** `href?`. That is the shape of a *nav* item, not
+ * of a config item in general — so `Step` (a `label` and a `state`, rendered from
+ * `steps: Step[]`) fell outside the sweep and never got an `id`, while every sibling type did.
+ * An adopter listed it among "three guesses wrong on one component" (2026-08-22 report item
+ * 10).
+ *
+ * That is this guard's own documented failure mode arriving one level down: the predicate,
+ * rather than a hand-written list, was what limited it to instances its author had in mind.
+ * Keying on "is rendered from an adopter-supplied array" is the property that actually implies
+ * "needs a stable React key", which is what the guard is about.
  */
 function discoverLinkItemTypes(): Discovered[] {
+  const sources = tsxFiles(COMPONENTS).map((path) => ({ path, source: readFileSync(path, 'utf8') }))
+
+  // Element types of array-typed props on exported `…Props` interfaces, e.g. `steps: Step[]`.
+  const arrayPropElementTypes = new Set<string>()
+  for (const { source } of sources) {
+    for (const m of source.matchAll(/^\s*\w+\??:\s*(?:readonly\s+)?(\w+)\[\]/gm)) {
+      arrayPropElementTypes.add(m[1]!)
+    }
+  }
+
   const found: Discovered[] = []
-  for (const path of tsxFiles(COMPONENTS)) {
-    const source = readFileSync(path, 'utf8')
+  for (const { path, source } of sources) {
     for (const match of source.matchAll(/export interface (\w+)\b[^{]*\{/g)) {
       const type = match[1]!
       const body = interfaceBody(source, type)
       if (!body) continue
-      // The shape: a human-readable label plus an optional destination. `href?` (not `href`)
-      // because a trail's current crumb and a disabled nav row both omit it.
+      // A human-readable label is what makes it a config item rather than a plain options bag.
       if (!/^\s*label\??:/m.test(body)) continue
-      if (!/^\s*href\??:/m.test(body)) continue
+      // …and it must actually be rendered from an array the adopter passes: either it is
+      // link-shaped (`href?` — a trail's current crumb and a disabled nav row both omit it),
+      // or it is the element type of some array prop.
+      const isLinkShaped = /^\s*href\??:/m.test(body)
+      if (!isLinkShaped && !arrayPropElementTypes.has(type)) continue
+      // A REQUIRED `value` already is the stable identity: a `<select>` with two options
+      // sharing a value is broken on its own terms, so the whole `…Option` family keys on it
+      // and needs no second identifier. `href` is different — repeated hrefs are legitimate
+      // (three teams all linking to `/`), which is the case that started this guard.
+      if (!isLinkShaped && /^\s*value:\s/m.test(body)) continue
       found.push({ type, file: relative(COMPONENTS, path), body })
     }
   }

@@ -34,12 +34,12 @@ import { Text } from '@cascivo/react'
 
 ## Props
 
-| Prop     | Type                                 | Required | Default  | Description                                                                                                                                                            |
-| -------- | ------------------------------------ | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `as`     | `'p' \| 'span' \| 'div'`             | no       | `p`      | `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.                                                                   |
-| `size`   | `'sm' \| 'md' \| 'lg'`               | no       | `md`     | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                  |
-| `weight` | `'normal' \| 'medium' \| 'semibold'` | no       | `normal` | Font weight ('normal' \| 'medium' \| 'semibold').                                                                                                                      |
-| `muted`  | `boolean`                            | no       | `false`  | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `as` | `'p' \| 'span' \| 'div'` | no | `p` | `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own. |
+| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `weight` | `'normal' \| 'medium' \| 'semibold'` | no | `normal` | Font weight ('normal' \| 'medium' \| 'semibold'). |
+| `muted` | `boolean` | no | `false` | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
 
 ## Examples
 
@@ -52,9 +52,7 @@ import { Text } from '@cascivo/react'
 ### Muted helper
 
 ```tsx
-<Text size="sm" muted>
-  Secondary information
-</Text>
+<Text size="sm" muted>Secondary information</Text>
 ```
 
 ### Inline span
@@ -62,9 +60,7 @@ import { Text } from '@cascivo/react'
 Use as="span" inside other flow content
 
 ```tsx
-<Text as="span" weight="semibold">
-  emphasis
-</Text>
+<Text as="span" weight="semibold">emphasis</Text>
 ```
 
 ### Icon beside text
@@ -74,9 +70,7 @@ Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside
 ```tsx
 <Text>
   <CheckIcon aria-hidden />
-  <Text as="span" weight="semibold">
-    Deployed
-  </Text>
+  <Text as="span" weight="semibold">Deployed</Text>
 </Text>
 ```
 

@@ -49,6 +49,37 @@ export const meta: ComponentMeta = {
       required: false,
     },
   ],
+  typeDefs: [
+    {
+      name: 'DropdownMenuItem',
+      description: 'A selectable row in the menu.',
+      fields: [
+        { name: 'label', type: 'string', required: true, description: 'Visible item text.' },
+        { name: 'value', type: 'string', required: true, description: 'Passed to `onSelect`.' },
+        { name: 'icon', type: 'ReactNode', required: false, description: 'Leading icon.' },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          required: false,
+          description: 'Skips the item in keyboard navigation and selection.',
+        },
+        {
+          name: 'separator',
+          type: 'boolean',
+          required: false,
+          description:
+            "⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry.",
+        },
+      ],
+    },
+    {
+      name: 'DropdownSeparatorItem',
+      description: 'A rule between groups. Carries no data and is skipped by keyboard navigation.',
+      fields: [
+        { name: 'kind', type: "'separator'", required: true, description: 'Discriminant.' },
+      ],
+    },
+  ],
   tokens: [
     '--cascivo-color-surface-overlay',
     '--cascivo-color-border',

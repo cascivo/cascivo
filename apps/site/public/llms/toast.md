@@ -35,12 +35,12 @@ import { ToastProvider, useToast } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                   | Required | Default   | Description                                                                                                                                                                                                                                                |
-| ------------- | ------------------------------------------------------ | -------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `title`       | `string`                                               | yes      | —         | Title text for the component.                                                                                                                                                                                                                              |
-| `description` | `string`                                               | no       | —         | Supporting description text.                                                                                                                                                                                                                               |
-| `variant`     | `'default' \| 'success' \| 'warning' \| 'destructive'` | no       | `default` | Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here. |
-| `duration`    | `number`                                               | no       | `5000`    | How long (ms) the toast stays visible before auto-dismiss.                                                                                                                                                                                                 |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `string` | yes | — | Title text for the component. |
+| `description` | `string` | no | — | Supporting description text. |
+| `variant` | `'default' \| 'success' \| 'warning' \| 'destructive'` | no | `default` | Severity tone: `default` (neutral), `success`, `warning` or `destructive`. Sets the icon and the accent colour. Unlike Badge/Tag/Notification this is a private union, not `ToneInput` — the canonical `danger`/`neutral` spellings are not accepted here. |
+| `duration` | `number` | no | `5000` | How long (ms) the toast stays visible before auto-dismiss. |
 
 ## Examples
 
@@ -48,7 +48,7 @@ import { ToastProvider, useToast } from '@cascivo/react'
 
 ```tsx
 const { toast } = useToast()
-toast({ title: 'Saved', variant: 'success' })
+toast({ title: "Saved", variant: "success" })
 ```
 
 ## Client JavaScript

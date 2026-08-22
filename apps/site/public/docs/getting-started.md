@@ -3,16 +3,15 @@
   Canonical: https://cascivo.com/docs/getting-started.md
   registry v0.18.0 · generated 2026-08-17
 -->
-
 # Getting started with cascivo
 
 There are two ways to adopt cascivo. Both consume the same tokens and themes,
 and they can coexist in one project.
 
-| Path                               | You get                                            | Choose it when                                            |
-| ---------------------------------- | -------------------------------------------------- | --------------------------------------------------------- |
-| **A. Copy-paste (CLI)**            | Component source (TSX + CSS) copied into your repo | You want to own and edit the code — the shadcn model      |
-| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 197 components        | You just want to _use_ the system; upgrades via `pnpm up` |
+| Path                            | You get                                            | Choose it when                                                        |
+| ------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
+| **A. Copy-paste (CLI)**         | Component source (TSX + CSS) copied into your repo | You want to own and edit the code — the shadcn model                   |
+| **B. Prebuilt (`@cascivo/react`)** | A normal npm dependency, all 197 components      | You just want to *use* the system; upgrades via `pnpm up`             |
 
 Either way, one piece of wiring is **not optional**: importing the themes CSS
 and setting `data-theme`. Skip it and components render as correctly-structured
@@ -34,12 +33,12 @@ Four surfaces, and each is authoritative for something different. Two hands-on
 reports independently reached a working model only after reading all four, so it
 is worth 30 seconds to know which to open.
 
-| Surface                            | Authoritative for                                                                                                                                                                                                                                                                                                                                     | Reach it                                                                               |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| **The shipped `.d.ts`**            | **Props — always check here first.** Every prop carries its type, `@defaultValue`, the rationale, and ⚠ warnings for the mistakes previous adopters made (`Flex` defaults to `vertical`; a chart's `title` renders nothing visible; `useToast()` returns `{ toast }`, not a callable). Both reports rated it the single best artefact in the project. | Ctrl-click any import in your editor, or `node_modules/@cascivo/react/dist/index.d.ts` |
-| **`llms.txt` + `/llms/<name>.md`** | Agent-facing reference: the component index with distribution channel, per-component pages (props → object types → examples → tokens → a11y), and the machine-readable catalogs (`registry.json`, `tokens.catalog.json`, `icons.catalog.json`).                                                                                                       | <https://cascivo.com/llms.txt>, or offline via `npx @cascivo/docs`                     |
-| **The guides (`docs/*.md`)**       | Cross-cutting concerns no single component owns: install paths, SSR, routers, theming, layers, lint config, the dashboard recipe.                                                                                                                                                                                                                     | This directory, <https://cascivo.com/docs>, or `npx @cascivo/docs guide <name>`        |
-| **The docs site**                  | The same content, rendered, plus live examples you can interact with.                                                                                                                                                                                                                                                                                 | <https://cascivo.com>                                                                  |
+| Surface | Authoritative for | Reach it |
+| --- | --- | --- |
+| **The shipped `.d.ts`** | **Props — always check here first.** Every prop carries its type, `@defaultValue`, the rationale, and ⚠ warnings for the mistakes previous adopters made (`Flex` defaults to `vertical`; a chart's `title` renders nothing visible; `useToast()` returns `{ toast }`, not a callable). Both reports rated it the single best artefact in the project. | Ctrl-click any import in your editor, or `node_modules/@cascivo/react/dist/index.d.ts` |
+| **`llms.txt` + `/llms/<name>.md`** | Agent-facing reference: the component index with distribution channel, per-component pages (props → object types → examples → tokens → a11y), and the machine-readable catalogs (`registry.json`, `tokens.catalog.json`, `icons.catalog.json`). | <https://cascivo.com/llms.txt>, or offline via `npx @cascivo/docs` |
+| **The guides (`docs/*.md`)** | Cross-cutting concerns no single component owns: install paths, SSR, routers, theming, layers, lint config, the dashboard recipe. | This directory, <https://cascivo.com/docs>, or `npx @cascivo/docs guide <name>` |
+| **The docs site** | The same content, rendered, plus live examples you can interact with. | <https://cascivo.com> |
 
 **If two disagree, the `.d.ts` wins** — it is generated from the same source the
 components compile from, and the parity guards in `scripts/checks/` fail the build
@@ -85,7 +84,7 @@ dependencies. It answers from the installed versions.
 
 For clients that prefer a declared tool, `npx docspack mcp` serves the same index over
 MCP. That is complementary to [`@cascivo/mcp`](https://github.com/cascivo/cascivo/tree/main/packages/mcp),
-which serves the component _registry_ — use `@cascivo/mcp` to pick and install a
+which serves the component *registry* — use `@cascivo/mcp` to pick and install a
 component, and docspack to answer a "how do I…" question about one.
 
 **This is not layout-only.** Alongside the CSS-native layout system, cascivo ships:
@@ -172,7 +171,7 @@ export default config
 
 **`cascivo.lock`** — written by `cascivo add`. Records, per installed component,
 the registry it came from, the version, and a sha256 hash of every copied file.
-Commit it: it is what lets the CLI later tell _your_ edits apart from upstream
+Commit it: it is what lets the CLI later tell *your* edits apart from upstream
 changes.
 
 ### Tracking upstream changes
@@ -184,7 +183,7 @@ npx cascivo update --check   # lists outdated components, exits 1 if any
 npx cascivo update button    # three-way merge of upstream changes into your copy
 ```
 
-`update` merges upstream changes _around_ your local edits using the lockfile's
+`update` merges upstream changes *around* your local edits using the lockfile's
 recorded base version; genuine collisions get standard conflict markers to
 resolve by hand. See [UPGRADING.md](https://github.com/cascivo/cascivo/blob/main/docs/UPGRADING.md) for the full story.
 
@@ -339,20 +338,20 @@ measured 137 KB / 19 KB gzip of the 273 KB).
 **The export name _is_ the attribute value:** import `@cascivo/themes/<name>` and
 set `data-theme="<name>"`. The twelve first-party themes:
 
-| Import                      | `data-theme` value | Base scheme |
-| --------------------------- | ------------------ | ----------- |
-| `@cascivo/themes/light`     | `light`            | light       |
-| `@cascivo/themes/dark`      | `dark`             | dark        |
-| `@cascivo/themes/warm`      | `warm`             | light       |
-| `@cascivo/themes/flat`      | `flat`             | light       |
-| `@cascivo/themes/minimal`   | `minimal`          | light       |
-| `@cascivo/themes/midnight`  | `midnight`         | dark        |
-| `@cascivo/themes/pastel`    | `pastel`           | light       |
-| `@cascivo/themes/brutalist` | `brutalist`        | light       |
-| `@cascivo/themes/corporate` | `corporate`        | light       |
-| `@cascivo/themes/terminal`  | `terminal`         | dark        |
-| `@cascivo/themes/cyberpunk` | `cyberpunk`        | dark        |
-| `@cascivo/themes/arcade`    | `arcade`           | light       |
+| Import                        | `data-theme` value | Base scheme |
+| ----------------------------- | ------------------ | ----------- |
+| `@cascivo/themes/light`       | `light`            | light       |
+| `@cascivo/themes/dark`        | `dark`             | dark        |
+| `@cascivo/themes/warm`        | `warm`             | light       |
+| `@cascivo/themes/flat`        | `flat`             | light       |
+| `@cascivo/themes/minimal`     | `minimal`          | light       |
+| `@cascivo/themes/midnight`    | `midnight`         | dark        |
+| `@cascivo/themes/pastel`      | `pastel`           | light       |
+| `@cascivo/themes/brutalist`   | `brutalist`        | light       |
+| `@cascivo/themes/corporate`   | `corporate`        | light       |
+| `@cascivo/themes/terminal`    | `terminal`         | dark        |
+| `@cascivo/themes/cyberpunk`   | `cyberpunk`        | dark        |
+| `@cascivo/themes/arcade`      | `arcade`           | light       |
 
 `@cascivo/themes/base` is required scaffolding (tokens + typography), **not** a
 theme — always load it (directly, or transitively via a bundle). `@cascivo/themes/tailwind`
@@ -365,12 +364,12 @@ Setting `data-theme="cyberpunk"` while only light and dark are loaded leaves eve
 `--cascivo-color-*` unresolved, so components render **greyscale**. Pick the bundle that
 contains the themes you actually set:
 
-| Import                           | Contains                                 | Use when                                             |
-| -------------------------------- | ---------------------------------------- | ---------------------------------------------------- |
-| `@cascivo/themes/light-dark.css` | light + dark                             | the common case — a light/dark toggle                |
-| `@cascivo/themes/all.css`        | **all twelve**                           | you offer a theme picker                             |
-| `@cascivo/themes/<name>.css`     | that one theme                           | you ship a single fixed theme (pair with `base.css`) |
-| `@cascivo/react/styles.css`      | light + dark, plus every component's CSS | no bundler / one-file setup                          |
+| Import | Contains | Use when |
+| --- | --- | --- |
+| `@cascivo/themes/light-dark.css` | light + dark | the common case — a light/dark toggle |
+| `@cascivo/themes/all.css` | **all twelve** | you offer a theme picker |
+| `@cascivo/themes/<name>.css` | that one theme | you ship a single fixed theme (pair with `base.css`) |
+| `@cascivo/react/styles.css` | light + dark, plus every component's CSS | no bundler / one-file setup |
 
 > **Changed in 0.14.0.** `all.css` used to contain light and dark only, despite the name —
 > a trap that cost adopters real time. It now contains all twelve. If you imported it for a
@@ -392,21 +391,21 @@ CSS from the same module graph, so you import a theme and nothing else.
 The exception is the `node` export condition. Vite-SSR frameworks externalise dependencies
 on the server, and a bare `.css` side-effect import is unloadable by a plain Node ESM loader
 (`ERR_UNKNOWN_FILE_EXTENSION`) — so cascivo ships a CSS-free `node/` twin for those packages.
-That twin is only ever the _server_ half of the build: the client (and, via the
+That twin is only ever the *server* half of the build: the client (and, via the
 `react-server` condition, the RSC) graph still carries the CSS edges, which is what styles
 the server-rendered HTML. You import the aggregate yourself only when **no** bundler walks
 the graph at all — a CDN `<link>`, or an island runtime that strips the edges (Astro).
 
-| Package           | Bundler (Vite/Next/webpack), SPA or SSR            | No bundler / CDN             |
-| ----------------- | -------------------------------------------------- | ---------------------------- |
-| `@cascivo/themes` | **always import a bundle**                         | same                         |
-| `@cascivo/react`  | automatic per component                            | `@cascivo/react/styles.css`  |
+| Package | Bundler (Vite/Next/webpack), SPA or SSR | No bundler / CDN |
+| --- | --- | --- |
+| `@cascivo/themes` | **always import a bundle** | same |
+| `@cascivo/react` | automatic per component | `@cascivo/react/styles.css` |
 | `@cascivo/charts` | automatic (`dist/index.js` imports `./charts.css`) | `@cascivo/charts/styles.css` |
 
 > **`@cascivo/charts/styles.css` is redundant on a bundler build, not required.** It used to
 > be required — until 0.14 the charts entry never imported its own sheet and charts rendered
 > unstyled — and several docs still said so after the fix. Importing it anyway is harmless
-> (the bundler dedupes it), so if you are unsure, import it. What you must not do is _skip_
+> (the bundler dedupes it), so if you are unsure, import it. What you must not do is *skip*
 > it on an SSR/externalised setup: the chart's screen-reader data-table fallback is hidden by
 > that stylesheet, so without it the fallback renders visibly as a table of numbers under
 > every chart.
@@ -432,7 +431,11 @@ function ThemeToggle() {
   // useSignals() for you, so this re-renders on theme changes. For signal-native
   // code (computed()/effect()/Preact) use themeSignal() instead.
   const [theme, setTheme] = useTheme()
-  return <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme}</button>
+  return (
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      {theme}
+    </button>
+  )
 }
 ```
 
@@ -460,7 +463,7 @@ correct options, by how the theme is decided:
 Never write a `useEffect` that toggles a `.dark` class — that is the pattern
 `ThemeProvider` + `themePreloadScript()` exists to replace.
 
-**If you forget the theme import entirely:** components render _unstyled_ — correct
+**If you forget the theme import entirely:** components render *unstyled* — correct
 structure, no colors, wrong fonts, missing padding rhythm. Component CSS only
 references `var(--cascivo-*)` custom properties; those properties do not exist until
 the tokens + a theme are loaded. Unstyled-looking components are almost always this,
@@ -560,7 +563,7 @@ The rule: **`useSignals()` is the first statement in any component of yours that
 `signal.value` during render.** It is a no-op where a transform is already active (Preact
 apps, or React with the Babel plugin), so adding it is always safe.
 
-You do _not_ need it to pass signals into a cascivo component, or in an event handler, or
+You do *not* need it to pass signals into a cascivo component, or in an event handler, or
 inside `useSignalEffect` — only for a read that happens during render.
 
 Full reactivity model, including which React hooks map to which cascivo primitive:

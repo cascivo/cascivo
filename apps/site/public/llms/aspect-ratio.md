@@ -22,10 +22,10 @@ import { AspectRatio } from '@cascivo/react'
 
 ## Props
 
-| Prop       | Type        | Required | Default  | Description                                                          |
-| ---------- | ----------- | -------- | -------- | -------------------------------------------------------------------- |
-| `ratio`    | `number`    | no       | `16 / 9` | Width-to-height ratio applied via the CSS aspect-ratio property      |
-| `children` | `ReactNode` | no       | —        | Content to fill the ratio box (typically an image, video, or iframe) |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `ratio` | `number` | no | `16 / 9` | Width-to-height ratio applied via the CSS aspect-ratio property |
+| `children` | `ReactNode` | no | — | Content to fill the ratio box (typically an image, video, or iframe) |
 
 ## Examples
 

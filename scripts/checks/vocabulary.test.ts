@@ -17,6 +17,12 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { strict as assert } from 'node:assert'
 import { describe, it } from 'node:test'
+import {
+  EXCEPTIONS,
+  FAMILIES,
+  collectionVocabularySentence,
+  componentsWithProp,
+} from '../lib/collection-vocabulary.ts'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const COMPONENTS = join(ROOT, 'packages', 'components', 'src')
@@ -349,34 +355,92 @@ describe('prop-name vocabulary', () => {
     )
   })
 
-  it('every row of the published vocabulary table names a real prop', () => {
-    // Keeps the docs from rotting: the table in AI-RULES.md is the contract, so each
-    // component it names must actually carry the prop it is cited for.
-    const claims: Array<[string, string]> = [
-      ['data-list', 'items'],
-      ['structured-list', 'items'],
-      ['timeline', 'items'],
-      ['data-table', 'rows'],
-      ['badge', 'variant'],
-      ['notification', 'actions'],
-      ['notification', 'description'],
-      ['app-shell', 'padding'],
-    ]
-    const missing: string[] = []
-    for (const [comp, prop] of claims) {
-      const c = registry.components.find((x) => x.name === comp)
-      if (!c) {
-        missing.push(`${comp} (no registry entry)`)
+  /**
+   * The **published** vocabulary block must match the catalog in both directions.
+   *
+   * The previous version of this test was a hardcoded `claims` array of eight pairs. It could
+   * only ever catch a component its author had already listed — so it passed while `llms.txt`
+   * said `Steps` and `CommandMenu` take `items` (they take `steps` and `groups`), which is the
+   * exact failure `link-item-id-parity.test.ts` documents one level up.
+   *
+   * ## Why this reads the shipped file, not the generator
+   *
+   * The block is now generated from `registry.json`. Asserting the generator's output against
+   * `registry.json` would be tautological — both sides read the same source, so the test could
+   * never fail, which is a guard that asserts nothing dressed up as one that asserts
+   * everything.
+   *
+   * So this reads `apps/site/public/llms.txt` **as committed** — the bytes an adopter actually
+   * fetches — and checks them against the registry:
+   *
+   *   forward  — every component named under a family really declares that prop;
+   *   backward — every component that declares the prop is named, or is a listed exception.
+   *
+   * That fails on a hand-edit of the published file, on a `pnpm regen` that was not run before
+   * committing, and on a new or renamed component that the committed artifact predates. The
+   * backward direction is the one that would have caught `CommandMenu`.
+   */
+  it('the published vocabulary block matches the registry in both directions', () => {
+    const published = readFileSync(join(ROOT, 'apps/site/public/llms.txt'), 'utf8')
+    const problems: string[] = []
+
+    for (const { prop } of FAMILIES) {
+      const declared = new Set(
+        componentsWithProp(join(ROOT, 'registry.json'), prop).filter((n) => !(n in EXCEPTIONS)),
+      )
+      const m = new RegExp(`\\*\\*\`${prop}\`\\*\\* \\(\\d+: ([^)]+)\\)`).exec(published)
+      if (!m) {
+        problems.push(
+          `family \`${prop}\` is missing from the published llms.txt — run \`pnpm regen\` and commit`,
+        )
         continue
       }
-      if (!(c.meta.props ?? []).some((p) => p.name === prop)) missing.push(`${comp}.${prop}`)
+      const named = new Set(m[1]!.split(', ').map((x) => x.trim()))
+      for (const n of named) {
+        if (!declared.has(n)) {
+          problems.push(`llms.txt names ${n} under \`${prop}\`, but ${n} does not declare it`)
+        }
+      }
+      for (const n of declared) {
+        if (!named.has(n)) {
+          problems.push(`${n} declares \`${prop}\` but llms.txt does not name it`)
+        }
+      }
     }
+
     assert.deepEqual(
-      missing,
+      problems,
       [],
-      'docs/AI-RULES.md "Data and shape props" cites props that do not exist:\n  ' +
-        missing.join('\n  '),
+      'The published data-prop vocabulary has drifted from the catalog. Run `pnpm regen` and ' +
+        'commit the result; if a component genuinely takes a different collection prop, add it ' +
+        'to EXCEPTIONS in scripts/lib/collection-vocabulary.ts with the reason.\n  ' +
+        problems.join('\n  '),
     )
+  })
+
+  it('every declared exception is real and still exceptional', () => {
+    const stale: string[] = []
+    for (const [name, { prop }] of Object.entries(EXCEPTIONS)) {
+      const entry = registry.components.find((c) => c.meta.name === name)
+      if (!entry) {
+        stale.push(`${name} (no registry entry — remove the exception)`)
+        continue
+      }
+      const props = (entry.meta.props ?? []).map((p) => p.name)
+      if (!props.includes(prop)) {
+        stale.push(`${name}.${prop} (no longer declared — the exception is stale)`)
+      }
+    }
+    assert.deepEqual(stale, [], `Stale vocabulary exceptions:\n  ${stale.join('\n  ')}`)
+  })
+
+  it('finds enough components to be a real sweep', () => {
+    // A regex slip that makes every family empty must fail loudly, not pass vacuously.
+    const total = FAMILIES.reduce(
+      (n, { prop }) => n + componentsWithProp(join(ROOT, 'registry.json'), prop).length,
+      0,
+    )
+    assert.ok(total >= 30, `only ${total} collection-taking components found — discovery is broken`)
   })
 })
 

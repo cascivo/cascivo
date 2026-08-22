@@ -647,8 +647,13 @@ The sibling of the handler rule, and the highest-frequency friction an adopter r
 wrong prop-name guesses in one small dashboard (2026-08-08), one of which (`gap="4"`) cost 20
 type errors in a single run. Predictability IS the product for an AI-first system.
 
-- A config-driven **collection**: **`items`**. Never `rows`/`data`/`entries`. `DataTable.rows`
-  is the sole exception — it renders a `<table>`, where "rows" is the domain word.
+- A config-driven **collection**: **`items`** (nav/list/menu). A form control's choices are
+  **`options`**; a chart's points are **`data`**. Never `entries`. Exceptions, all real:
+  `DataTable.rows` (it renders a `<table>`), `Textarea.rows` (the HTML attribute),
+  `Steps.steps` / `ProgressIndicator.steps` (the stepper domain word; `Steps` also accepts
+  `items`), `CommandMenu.groups` (its items nest inside labelled groups). The published
+  list is generated from the registry by `scripts/lib/collection-vocabulary.ts` — never
+  hand-write a component list for this rule.
 - A **visual style** enum: **`variant`**. Never `shape`/`kind`/`type`/`appearance`. **Name the
   TYPE after the prop too** — `type BadgeShape` sitting above `BadgeProps` in the `.d.ts` read
   as the type of a `shape` prop that does not exist and cost an adopter four files.

@@ -29,7 +29,8 @@ First-party themes for cascivo — 12 of them, applied with a single `data-theme
 **Everything (recommended starting point):**
 
 ```ts
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
+// swap for '@cascivo/themes/all.css' only if you ship a theme picker (all twelve, ~2x)
 ```
 
 **À la carte** — each theme sheet self-imports `@cascivo/tokens` (deduped by URL, so multiple themes load tokens once). Import only what you ship:

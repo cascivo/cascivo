@@ -97,6 +97,13 @@ export interface SideNavItem {
 }
 
 export interface SideNavGroup {
+  /**
+   * Stable identity, used as the React key. Without it the array index (or a repeatable
+   * `label`) is the key, so inserting or reordering entries re-uses the wrong DOM node — the
+   * defect `link-item-id-parity` exists to prevent, extended past link-shaped items on
+   * 2026-08-22.
+   */
+  id?: string
   label?: string
   items: SideNavItem[]
 }
@@ -434,7 +441,7 @@ export function SideNav({
       {header && <div className={styles['header']}>{header}</div>}
       <ul className={styles['list']}>
         {effectiveGroups.map((group, gi) => (
-          <li key={gi} className={styles['group']}>
+          <li key={group.id ?? gi} className={styles['group']}>
             {group.label && <h3 className={styles['groupLabel']}>{group.label}</h3>}
             <ul className={styles['groupItems']}>
               {group.items.map((item, index) => {

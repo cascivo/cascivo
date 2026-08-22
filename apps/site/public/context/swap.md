@@ -34,18 +34,18 @@ Renders a <button role="switch"> with aria-checked reflecting state. Both on/off
 
 ## Props
 
-| Name            | Type                         | Required | Default | Description                                                                                                                                       |
-| --------------- | ---------------------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`         | `string`                     | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.    |
-| `ariaLabel`     | `string`                     | No       | —       | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
-| `on`            | `React.ReactNode`            | Yes      | —       | Content shown in the active (on) state.                                                                                                           |
-| `off`           | `React.ReactNode`            | Yes      | —       | Content shown in the inactive (off) state.                                                                                                        |
-| `checked`       | `boolean`                    | No       | false   | Whether the control is checked (controlled).                                                                                                      |
-| `onValueChange` | `(checked: boolean) => void` | No       | —       | Called with the new checked state when the swap is toggled.                                                                                       |
-| `onChange`      | `(checked: boolean) => void` | No       | —       | Deprecated: use onValueChange (same checked boolean).                                                                                             |
-| `mode`          | `'rotate' \| 'flip'`         | No       | rotate  | Transition between states ('rotate' \| 'flip').                                                                                                   |
-| `aria-label`    | `string`                     | No       | —       | Accessible label used when no visible label is present.                                                                                           |
-| `className`     | `string`                     | No       | —       | Additional CSS class names merged onto the root element.                                                                                          |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | No | — | Invisible accessible name. The catalog convention; `aria-label` is accepted as an alias for the DOM spelling. Not rendered — screen readers only. |
+| `on` | `React.ReactNode` | Yes | — | Content shown in the active (on) state. |
+| `off` | `React.ReactNode` | Yes | — | Content shown in the inactive (off) state. |
+| `checked` | `boolean` | No | false | Whether the control is checked (controlled). |
+| `onValueChange` | `(checked: boolean) => void` | No | — | Called with the new checked state when the swap is toggled. |
+| `onChange` | `(checked: boolean) => void` | No | — | Deprecated: use onValueChange (same checked boolean). |
+| `mode` | `'rotate' \| 'flip'` | No | rotate | Transition between states ('rotate' \| 'flip'). |
+| `aria-label` | `string` | No | — | Accessible label used when no visible label is present. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -74,9 +74,9 @@ Heart icon that flips to filled on activation
 
 ## Boundaries
 
-| Area           | Level    | Note                                                                        |
-| -------------- | -------- | --------------------------------------------------------------------------- |
-| content        | flexible | on/off slots accept any ReactNode — icons, text, images                     |
+| Area | Level | Note |
+|------|-------|------|
+| content | flexible | on/off slots accept any ReactNode — icons, text, images |
 | animation mode | flexible | rotate (default) or flip — choose based on the visual metaphor of the icons |
 
 ## AI context prompt

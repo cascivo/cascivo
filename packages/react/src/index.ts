@@ -10,7 +10,8 @@
  * ```
  * ```tsx
  * // @cascivo/themes is installed with @cascivo/react. Once, in your entry file:
- * import '@cascivo/themes/all.css'   // tokens + base + light & dark — REQUIRED for color
+ * import '@cascivo/themes/light-dark.css'  // tokens + base + light & dark — REQUIRED for color
+ * // all.css is all TWELVE themes (~2x); use it only if you ship a theme picker
  * // No-bundler / single-file alternative (themes already bundled in):
  * //   import '@cascivo/react/styles.css'
  * import { Button, Card } from '@cascivo/react'

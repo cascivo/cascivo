@@ -34,14 +34,27 @@ Rendered as an ordered list (<ol>) with aria-label; the active item carries aria
 
 ## Props
 
-| Name          | Type                         | Required | Default      | Description                                                                                                                                    |
-| ------------- | ---------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `label`       | `string`                     | No       | —            | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `ariaLabel`   | `string`                     | No       | —            | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only.                           |
-| `steps`       | `Step[]`                     | Yes      | —            | Array of step objects with label and optional explicit state                                                                                   |
-| `activeStep`  | `number`                     | No       | 0            | Index of the currently active step (0-based)                                                                                                   |
-| `orientation` | `'horizontal' \| 'vertical'` | No       | 'horizontal' | Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page.                        |
-| `className`   | `string`                     | No       | —            | Additional CSS class names merged onto the root element.                                                                                       |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | No | — | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
+| `items` | `Step[]` | No | — | Alias of `steps` — the catalog-wide name for a config-driven collection. Exactly one of the two is required. |
+| `steps` | `Step[]` | No | — | Array of step objects with label and optional explicit state |
+| `activeStep` | `number` | No | 0 | Index of the currently active step (0-based) |
+| `orientation` | `'horizontal' \| 'vertical'` | No | 'horizontal' | Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+
+## Object types
+
+### `Step`
+
+Shape of an entry in `steps` / `items`.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `label` | `string` | Yes | Visible step label. |
+| `id` | `string` | No | Stable identity, used as the React key so reordering keeps DOM nodes. |
+| `state` | `StepState \| ProgressInput` | No | Step status. `StepState` ('pending' \| 'active' \| 'complete' \| 'error') is canonical; `ProgressInput` also accepts Timeline's `current` / `upcoming` aliases. |
 
 ## Tokens
 
@@ -67,7 +80,12 @@ Standard checkout or onboarding progress tracker
 
 ```jsx
 <Steps
-  steps={[{ label: 'Cart' }, { label: 'Shipping' }, { label: 'Payment' }, { label: 'Confirm' }]}
+  steps={[
+    { label: 'Cart' },
+    { label: 'Shipping' },
+    { label: 'Payment' },
+    { label: 'Confirm' },
+  ]}
   activeStep={1}
 />
 ```
@@ -79,7 +97,11 @@ Sidebar-style progress for tall forms
 ```jsx
 <Steps
   orientation="vertical"
-  steps={[{ label: 'Account info' }, { label: 'Profile details' }, { label: 'Preferences' }]}
+  steps={[
+    { label: 'Account info' },
+    { label: 'Profile details' },
+    { label: 'Preferences' },
+  ]}
   activeStep={0}
 />
 ```
@@ -90,17 +112,21 @@ Override derived state on a specific step
 
 ```jsx
 <Steps
-  steps={[{ label: 'Upload' }, { label: 'Validate', state: 'error' }, { label: 'Process' }]}
+  steps={[
+    { label: 'Upload' },
+    { label: 'Validate', state: 'error' },
+    { label: 'Process' },
+  ]}
   activeStep={1}
 />
 ```
 
 ## Boundaries
 
-| Area        | Level    | Note                                                                        |
-| ----------- | -------- | --------------------------------------------------------------------------- |
-| step state  | flexible | Each step can override derived pending/active/complete state via step.state |
-| orientation | flexible | Horizontal for top progress bars, vertical for sidebar wizards              |
+| Area | Level | Note |
+|------|-------|------|
+| step state | flexible | Each step can override derived pending/active/complete state via step.state |
+| orientation | flexible | Horizontal for top progress bars, vertical for sidebar wizards |
 
 ## AI context prompt
 

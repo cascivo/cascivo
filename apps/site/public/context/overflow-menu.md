@@ -34,16 +34,16 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Props
 
-| Name        | Type                                                                                              | Required | Default      | Description                                                                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`     | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes      | —            | The items to render.                                                                                                                           |
-| `onSelect`  | `(value: string) => void`                                                                         | No       | —            | Called with the selected value.                                                                                                                |
-| `placement` | `'bottom-start' \| 'bottom-end'`                                                                  | No       | bottom-end   | Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge.   |
-| `label`     | `string`                                                                                          | No       | —            | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `ariaLabel` | `string`                                                                                          | No       | More actions | Accessible label for the component. Not rendered — screen readers only.                                                                        |
-| `size`      | `'sm' \| 'md'`                                                                                    | No       | md           | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                          |
-| `disabled`  | `boolean`                                                                                         | No       | false        | When true, disables the control and removes it from the tab order.                                                                             |
-| `className` | `string`                                                                                          | No       | —            | Additional CSS class names merged onto the root element.                                                                                       |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; destructive?: boolean }[]` | Yes | — | The items to render. |
+| `onSelect` | `(value: string) => void` | No | — | Called with the selected value. |
+| `placement` | `'bottom-start' \| 'bottom-end'` | No | bottom-end | Which trigger edge the menu aligns to. `bottom-end` hangs it from the trigger's end edge (right in LTR), `bottom-start` from its start edge. |
+| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | No | More actions | Accessible label for the component. Not rendered — screen readers only. |
+| `size` | `'sm' \| 'md'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Tokens
 
@@ -60,13 +60,7 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 ### Row actions
 
 ```jsx
-<OverflowMenu
-  items={[
-    { label: 'Edit', value: 'edit' },
-    { label: 'Delete', value: 'delete', destructive: true },
-  ]}
-  onSelect={handle}
-/>
+<OverflowMenu items={[{ label: "Edit", value: "edit" }, { label: "Delete", value: "delete", destructive: true }]} onSelect={handle} />
 ```
 
 ### Small, start-aligned
@@ -77,10 +71,10 @@ The kebab trigger carries a localized aria-label since it has no visible text, a
 
 ## Boundaries
 
-| Area                | Level    | Note                                                                    |
-| ------------------- | -------- | ----------------------------------------------------------------------- |
-| token names         | strict   | Trigger and item styling must resolve to the listed --cascivo-\* tokens |
-| item set and labels | flexible | items, ariaLabel, and placement are free to suit the context            |
+| Area | Level | Note |
+|------|-------|------|
+| token names | strict | Trigger and item styling must resolve to the listed --cascivo-* tokens |
+| item set and labels | flexible | items, ariaLabel, and placement are free to suit the context |
 
 ## AI context prompt
 

@@ -42,7 +42,7 @@ grayscale (`ThemeProvider` warns in dev when that happens).
 In a Server Component file (e.g. `app/layout.tsx`), import the themes once:
 
 ```tsx
-import '@cascivo/themes/all.css'
+import '@cascivo/themes/light-dark.css'
 ```
 
 Component CSS ships **per component** and is pulled in automatically when you
@@ -85,7 +85,8 @@ RSC without any extra wrapper.
 
 ```tsx
 // once, in your entry file — themes are the only global import
-import '@cascivo/themes/all.css' // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css'  // tokens (once) + base typography + light & dark
+// swap for '@cascivo/themes/all.css' only if you ship a theme picker (all twelve, ~2x)
 
 // anywhere — each component brings its own CSS along
 import { Button, Card, CardContent, Toggle } from '@cascivo/react'

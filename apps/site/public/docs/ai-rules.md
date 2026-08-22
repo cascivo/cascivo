@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/ai-rules.md
   registry v0.18.0 · generated 2026-08-17
 -->
-
 # AI rules for building with cascivo
 
 Drop this into your AI agent's system prompt, Cursor rules (`.cursor/rules`), or
@@ -115,7 +114,7 @@ there, and everything is re-exported from `@cascivo/react`.
    `<ThemeProvider value=…>` is SSR-safe by itself (emits an inline attribute setter). Never a
    `useEffect` that adds a `.dark` class.
 8. Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from
-'@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
+   '@cascivo/tokens/tokens'` (generated union — no CSS-file lookup).
 9. `useSignals()` is needed ONLY for a signal you did not get from a cascivo hook: a
    module-level `signal()`, a signal passed in as a prop, or `currentLocale()`. Call it as
    the component's first statement. Signals returned by `useSignal`, `useComputed`,
@@ -135,12 +134,12 @@ Full catalogs: docs/HEADLESS.md (primitives) and docs/ENTERPRISE-READINESS.md (f
 cascivo names change/activation callbacks by **what the handler receives**, so you can
 predict the prop without checking the types:
 
-| Handler receives                                                                       | Prop name                  | Examples                                                                                               |
-| -------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Handler receives | Prop name | Examples |
+| --- | --- | --- |
 | The component's **value** (string / number / array / boolean / Date — not a DOM event) | **`onValueChange(value)`** | `Tabs`, `SegmentedControl`, `Combobox`, `MultiSelect`, `Toggle`, `Search`, `NumberInput`, `DatePicker` |
-| A raw **DOM `ChangeEvent`** from a real underlying element                             | **`onChange(event)`**      | `Checkbox`, `NativeSelect`, `PasswordInput`, `Select`, `Slider`                                        |
-| **Activation / selection** of a discrete item                                          | **`onSelect(value)`**      | `Dropdown`, `OverflowMenu`, `MenuItem`, `ContextMenuItem`, chart point clicks                          |
-| A raw DOM click passthrough                                                            | **`onClick(event)`**       | nav items, buttons                                                                                     |
+| A raw **DOM `ChangeEvent`** from a real underlying element | **`onChange(event)`** | `Checkbox`, `NativeSelect`, `PasswordInput`, `Select`, `Slider` |
+| **Activation / selection** of a discrete item | **`onSelect(value)`** | `Dropdown`, `OverflowMenu`, `MenuItem`, `ContextMenuItem`, chart point clicks |
+| A raw DOM click passthrough | **`onClick(event)`** | nav items, buttons |
 
 Rule of thumb when authoring or generating: **if your handler's first argument is a value,
 name it `onValueChange`; if it's a DOM event, name it `onChange`.** A few components still
@@ -166,12 +165,12 @@ accept a deprecated value-carrying `onChange` alias for backward compatibility �
 
 The sibling of the handler rule: name a prop by **what it is**, not by the component.
 
-| The value is                                                                                       | Prop name                                         | Examples                                                               |
-| -------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
-| Text the component **renders**                                                                     | **`label`**                                       | `Field`, `Checkbox`, `Radio`, `Toggle`, `Slider`                       |
-| An **invisible** accessible name for an icon-only control or a nav landmark (goes to `aria-label`) | **`ariaLabel`**                                   | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Dock`, `Steps`               |
-| The identity of an item that is **handed to a callback**                                           | **`value`**                                       | `OverflowMenu`, `Dropdown`, `Select`, `Combobox`                       |
-| A **React key** for an item — never passed anywhere                                                | **`id`** (rows/items) / **`key`** (table columns) | `CommandMenu`, `StructuredList`, `Timeline`, `DataTable.columns[].key` |
+| The value is | Prop name | Examples |
+| --- | --- | --- |
+| Text the component **renders** | **`label`** | `Field`, `Checkbox`, `Radio`, `Toggle`, `Slider` |
+| An **invisible** accessible name for an icon-only control or a nav landmark (goes to `aria-label`) | **`ariaLabel`** | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Dock`, `Steps` |
+| The identity of an item that is **handed to a callback** | **`value`** | `OverflowMenu`, `Dropdown`, `Select`, `Combobox` |
+| A **React key** for an item — never passed anywhere | **`id`** (rows/items) / **`key`** (table columns) | `CommandMenu`, `StructuredList`, `Timeline`, `DataTable.columns[].key` |
 
 **`ariaLabel` and `label` are two spellings of one idea, and every component that accepts one
 accepts the other.** That is the whole rule, and it is mechanically true rather than merely
@@ -196,7 +195,7 @@ the name is **required** (`Menubar`, `IconButton`), an XOR union enforces that e
 is present, so the a11y guarantee survives the alias.
 
 **`value` vs `id` is a real distinction, not an inconsistency.** `value` is the identity the
-component _hands back to you_ — `onSelect(value)`. `id` is a React key the component uses
+component *hands back to you* — `onSelect(value)`. `id` is a React key the component uses
 internally and never passes anywhere: `CommandMenu`'s items take `onSelect: () => void`, so
 their `id` could not be delivered even in principle. Reach for `value` when a callback
 receives it, `id` when it is only identity. `OverflowMenu` items additionally accept **`id`**
@@ -209,22 +208,24 @@ per-component pages were correct; the cost was that the convention was never sta
 
 ## Data and shape props — the vocabulary an agent has to guess
 
-The two tables above cover _handlers_ and _names_. This one covers the props that carry the
+The two tables above cover *handlers* and *names*. This one covers the props that carry the
 **data and the look**, which is where a 2026-08-08 adopter lost nine compile cycles in one
 small dashboard — the single largest friction in that report.
 
-| The prop carries                          | Prop name                                                                  | Never                                 | Why                                                                                                                                                                                                               |
-| ----------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A config-driven **collection**            | **`items`**                                                                | `rows`, `data`, `entries`             | `DataList`, `StructuredList`, `Timeline`, `Steps`, `CommandMenu`, `OverflowMenu`, `Switcher`                                                                                                                      |
-| The rows of a **table**                   | **`rows`**                                                                 | `items`                               | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items                                                                                                               |
-| A **visual style** enum                   | **`variant`**                                                              | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification`                                                                                                                                                         |
-| The **tag of a discriminated union**      | **`kind`**                                                                 | `type`                                | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys)                                                                            |
-| A **space-scale step**                    | numeric **`gap={4}`**                                                      | `gap="4"`                             | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern                                                                                                 |
-| A **rich, replaceable slot**              | **`actions`** (`ReactNode`)                                                | `action={{ label, onClick }}`         | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy                                                                             |
-| The **body text** of a feedback component | **`description`**                                                          | children                              | `Notification`, `Alert`, `EmptyState` — passing children renders nothing                                                                                                                                          |
-| **Supporting text under a form control**  | **`hint`**                                                                 | `description`                         | `Input`, `Textarea`, `Select`, `NumberInput`, `Combobox`, `DatePicker`, `TimePicker`, `FileUploader`. `Field` predates the split and takes `description`; it accepts `hint` as an alias, so either guess compiles |
-| A **visible** text label                  | **`label`**                                                                | `title`, `text`, `caption`            | The default — most components that take `label` render it on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below                                                          |
-| An **invisible** accessible name          | **`ariaLabel`** — and `label` is accepted as an alias everywhere it exists | —                                     | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Steps`, `Switcher`, `CommandMenu`, `Spinner`, `ProgressCircle`, `Resizable`, `Sparkline`. Always accepted alongside the raw `aria-label`                                |
+| The prop carries | Prop name | Never | Why |
+| --- | --- | --- | --- |
+| A config-driven **collection** (nav, list, menu) | **`items`** | `rows`, `entries` | 16 components. The full list is generated into [`llms.txt`](https://cascivo.com/llms.txt) from the registry — it is not repeated here, because the hand-written version of this row named `Steps` and `CommandMenu` under `items` when they take `steps` and `groups` (2026-08-22 report item 10) |
+| The **choices** on a form control | **`options`** | `items`, `choices` | 7 components — `Select`, `NativeSelect`, `Combobox`, `MultiSelect`, `Filter`, `SegmentedControl`, `WheelPicker`. A choice control takes `options`, not `items` |
+| A **chart's** data points | **`data`** | `items`, `series` | Every chart — `PieChart`, `Sparkline`, `Heatmap`, `CalendarHeatmap`, … (`series` is the *grouping* prop on multi-series charts, not the data) |
+| The rows of a **table** | **`rows`** | `items` | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items. (`Textarea.rows` is the HTML attribute, not a collection.) Steppers keep the domain word too: `Steps.steps` and `ProgressIndicator.steps` — `Steps` also accepts `items` |
+| A **visual style** enum | **`variant`** | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification` |
+| The **tag of a discriminated union** | **`kind`** | `type` | `AreaChart.annotations[].kind`, and every new union — `type` is reserved for HTML-ish meanings (`input type`, edge/node renderer keys) |
+| A **space-scale step** | numeric **`gap={4}`** | `gap="4"` | `Flex`, `Grid`, `AutoGrid`, `AppShell.padding`. ⚠ See the warning below — this is the one that breaks the pattern |
+| A **rich, replaceable slot** | **`actions`** (`ReactNode`) | `action={{ label, onClick }}` | `Notification`, `CardHeader`, `PageHeader`. `Alert.action` is the one `{label,onClick}` shorthand left; it is not the pattern to copy |
+| The **body text** of a feedback component | **`description`** | children | `Notification`, `Alert`, `EmptyState` — passing children renders nothing |
+| **Supporting text under a form control** | **`hint`** | `description` | `Input`, `Textarea`, `Select`, `NumberInput`, `Combobox`, `DatePicker`, `TimePicker`, `FileUploader`. `Field` predates the split and takes `description`; it accepts `hint` as an alias, so either guess compiles |
+| A **visible** text label | **`label`** | `title`, `text`, `caption` | The default — most components that take `label` render it on screen (`Toggle`, `Checkbox`, `Input`, `Slider`, `Stat`, `Kpi`, …). ⚠ See the warning below |
+| An **invisible** accessible name | **`ariaLabel`** — and `label` is accepted as an alias everywhere it exists | — | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Steps`, `Switcher`, `CommandMenu`, `Spinner`, `ProgressCircle`, `Resizable`, `Sparkline`. Always accepted alongside the raw `aria-label` |
 
 > ### ⚠ `label` renders on screen — check the prop docs before assuming it is a11y-only
 >
@@ -247,21 +248,21 @@ near-misses rather than blunders: each one is the name the rest of the system, o
 the ecosystem, would lead you to. Where the fix was to accept both spellings we did; where
 accepting both would have made something else worse, the reason is in the last column.
 
-| You probably wrote                                 | The prop is                                         | On                                               | Why not just accept yours                                                                                                                                                             |
-| -------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tone="subtle"`                                    | **`muted`** (boolean)                               | `Text`                                           | `tone` is the catalog's _severity_ vocabulary (`Status`, `Badge`, `Timeline`, `SideNav`). Text emphasis is a different idea; a third meaning for `tone` would cost more than it saves |
-| `gap="4"`                                          | **`gap={4}`** (numeric `SpaceStep`)                 | every layout                                     | A string union would let `gap="7"` type-check into a token that does not exist                                                                                                        |
-| `<Flex justify="between">` with no `direction`     | it is already **vertical**                          | `Flex`                                           | `direction="vertical"` is the default, unlike CSS and unlike Chakra/MUI/Radix. Pass `direction="horizontal"` for a row                                                                |
-| `const { theme } = useTheme()`                     | a **tuple**: `const [theme, setTheme] = useTheme()` | `@cascivo/core`                                  | The object shape is next-themes'; the tuple is `useState`'s                                                                                                                           |
-| `orientation="vertical"` meaning "stack the items" | it stacks the **value under its label**             | `DataList`                                       | Items stack vertically in both modes; `orientation` moves the value relative to its label                                                                                             |
-| `<DataListItem>` as a component                    | `DataList` takes **`items`**                        | `DataList`                                       | `DataListItem` is the _interface_ describing an item, not a component                                                                                                                 |
-| `import { Switch }`                                | **`Toggle`** — and `Switch` now works too           | `@cascivo/react`                                 | Fixed: `Switch` is exported as an alias, and `cascivo add switch` resolves                                                                                                            |
-| `<OverflowMenu label=…>`                           | **`ariaLabel`** — and `label` now works too         | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Steps` | Fixed: both spellings are accepted everywhere either was                                                                                                                              |
-| `<Field hint=…>`                                   | **`description`** — and `hint` now works too        | `Field`                                          | Fixed: `hint` is the form-control word, `description` the feedback word; `Field` takes both                                                                                           |
+| You probably wrote | The prop is | On | Why not just accept yours |
+| --- | --- | --- | --- |
+| `tone="subtle"` | **`muted`** (boolean) | `Text` | `tone` is the catalog's *severity* vocabulary (`Status`, `Badge`, `Timeline`, `SideNav`). Text emphasis is a different idea; a third meaning for `tone` would cost more than it saves |
+| `gap="4"` | **`gap={4}`** (numeric `SpaceStep`) | every layout | A string union would let `gap="7"` type-check into a token that does not exist |
+| `<Flex justify="between">` with no `direction` | it is already **vertical** | `Flex` | `direction="vertical"` is the default, unlike CSS and unlike Chakra/MUI/Radix. Pass `direction="horizontal"` for a row |
+| `const { theme } = useTheme()` | a **tuple**: `const [theme, setTheme] = useTheme()` | `@cascivo/core` | The object shape is next-themes'; the tuple is `useState`'s |
+| `orientation="vertical"` meaning "stack the items" | it stacks the **value under its label** | `DataList` | Items stack vertically in both modes; `orientation` moves the value relative to its label |
+| `<DataListItem>` as a component | `DataList` takes **`items`** | `DataList` | `DataListItem` is the *interface* describing an item, not a component |
+| `import { Switch }` | **`Toggle`** — and `Switch` now works too | `@cascivo/react` | Fixed: `Switch` is exported as an alias, and `cascivo add switch` resolves |
+| `<OverflowMenu label=…>` | **`ariaLabel`** — and `label` now works too | `OverflowMenu`, `SideNav`, `Breadcrumb`, `Steps` | Fixed: both spellings are accepted everywhere either was |
+| `<Field hint=…>` | **`description`** — and `hint` now works too | `Field` | Fixed: `hint` is the form-control word, `description` the feedback word; `Field` takes both |
 
 ### Importing the shared types
 
-`Tone`, `Progress` and `SpaceStep` are the _types of published props_ — `Status.status` and
+`Tone`, `Progress` and `SpaceStep` are the *types of published props* — `Status.status` and
 `Badge.variant` are `ToneInput`, every layout `gap` is a `SpaceStep` — so the first thing a
 typed dashboard writes needs them:
 
@@ -330,18 +331,18 @@ accepted as an alias — so one domain enum drives the whole catalog with no loo
 
 **Severity — `Tone`** (`@cascivo/core`): `neutral | info | success | warning | danger`
 
-| Component      | Prop      | Also accepts (aliases)                                                                         |
-| -------------- | --------- | ---------------------------------------------------------------------------------------------- |
-| `Badge`        | `variant` | `default`→neutral, `destructive`/`error`→danger, plus `secondary`/`outline` (looks, not tones) |
-| `Tag`          | `variant` | `default`→neutral, `error`/`destructive`→danger                                                |
-| `Status`       | `status`  | `error`/`destructive`→danger, `default`→neutral                                                |
-| `Notification` | `variant` | `error`/`destructive`→danger                                                                   |
+| Component | Prop | Also accepts (aliases) |
+| --- | --- | --- |
+| `Badge` | `variant` | `default`→neutral, `destructive`/`error`→danger, plus `secondary`/`outline` (looks, not tones) |
+| `Tag` | `variant` | `default`→neutral, `error`/`destructive`→danger |
+| `Status` | `status` | `error`/`destructive`→danger, `default`→neutral |
+| `Notification` | `variant` | `error`/`destructive`→danger |
 
 **Position in a sequence — `Progress`** (`@cascivo/core`): `pending | active | complete | error`
 
-| Component  | Prop                  | Also accepts (aliases)               |
-| ---------- | --------------------- | ------------------------------------ |
-| `Steps`    | `Step.state`          | `current`→active, `upcoming`→pending |
+| Component | Prop | Also accepts (aliases) |
+| --- | --- | --- |
+| `Steps` | `Step.state` | `current`→active, `upcoming`→pending |
 | `Timeline` | `TimelineItem.status` | `current`→active, `upcoming`→pending |
 
 Write the canonical value in new code. `scripts/checks/vocabulary.test.ts` fails a component
@@ -352,11 +353,11 @@ that models either idea with a private union.
 Two kinds of link, wired two different ways. Getting this wrong costs either a full page
 reload or a hand-rolled copy of cascivo's link CSS — both were reported by adopters.
 
-| The link is                                                                                                                  | Do this                                                      |
-| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Rendered **by cascivo** from config (`SideNav`, `ShellHeader`, `Header`, `Breadcrumb`, `Switcher`, `Dock`, `NavigationMenu`) | `setLinkComponent(...)` **once** at app startup              |
-| Written **by you** in page content (a project name, a branch in a table cell)                                                | `<Link asChild><RouterLink to="…">…</RouterLink></Link>`     |
-| A call-to-action that navigates                                                                                              | `<Button asChild><RouterLink to="…">…</RouterLink></Button>` |
+| The link is | Do this |
+| --- | --- |
+| Rendered **by cascivo** from config (`SideNav`, `ShellHeader`, `Header`, `Breadcrumb`, `Switcher`, `Dock`, `NavigationMenu`) | `setLinkComponent(...)` **once** at app startup |
+| Written **by you** in page content (a project name, a branch in a table cell) | `<Link asChild><RouterLink to="…">…</RouterLink></Link>` |
+| A call-to-action that navigates | `<Button asChild><RouterLink to="…">…</RouterLink></Button>` |
 
 **Never write a bare `<Link href="/x">` in a routed app** — cascivo's `Link` renders a real
 `<a>`, so it is a full page reload. `setLinkComponent` does **not** apply to it: `Link` is a
@@ -435,18 +436,18 @@ gap-based layout use `Flex`, not `Stack`.
 cascivo has no utility classes. You express the same intent with plain CSS properties
 reading `--cascivo-*` tokens, inside a layer. The mapping is mechanical:
 
-| Tailwind utility          | cascivo CSS (inside `@layer …`)                                    |
-| ------------------------- | ------------------------------------------------------------------ |
-| `p-4`                     | `padding: var(--cascivo-space-4);`                                 |
-| `px-2`                    | `padding-inline: var(--cascivo-space-2);`                          |
-| `gap-2`                   | `gap: var(--cascivo-space-2);`                                     |
-| `flex items-center`       | `display: flex; align-items: center;`                              |
+| Tailwind utility | cascivo CSS (inside `@layer …`) |
+| ---------------- | ------------------------------- |
+| `p-4` | `padding: var(--cascivo-space-4);` |
+| `px-2` | `padding-inline: var(--cascivo-space-2);` |
+| `gap-2` | `gap: var(--cascivo-space-2);` |
+| `flex items-center` | `display: flex; align-items: center;` |
 | `flex items-center gap-2` | `display: flex; align-items: center; gap: var(--cascivo-space-2);` |
-| `text-sm`                 | `font-size: var(--cascivo-text-sm);`                               |
-| `text-muted-foreground`   | `color: var(--cascivo-color-text-subtle);`                         |
-| `font-semibold`           | `font-weight: var(--cascivo-font-semibold);`                       |
-| `rounded-md`              | `border-radius: var(--cascivo-radius-md);`                         |
-| `bg-card`                 | `background: var(--cascivo-color-surface);`                        |
+| `text-sm` | `font-size: var(--cascivo-text-sm);` |
+| `text-muted-foreground` | `color: var(--cascivo-color-text-subtle);` |
+| `font-semibold` | `font-weight: var(--cascivo-font-semibold);` |
+| `rounded-md` | `border-radius: var(--cascivo-radius-md);` |
+| `bg-card` | `background: var(--cascivo-color-surface);` |
 
 Two habit changes:
 
@@ -476,7 +477,7 @@ client-only rendering:
 No `<ClientOnly>` wrappers are needed — components ship `'use client'` and render
 their server HTML normally. **Next.js App Router needs none of this** (the
 `react-server` export condition handles it), and plain **Vite CSR/SPA** needs none
-of it either — only Vite _SSR_ runtimes do. Full recipe:
+of it either — only Vite *SSR* runtimes do. Full recipe:
 [USING-WITH-VITE-SSR.md](/docs/using-with-vite-ssr.md).
 
 **TypeScript + CSS imports.** The `import '@cascivo/themes/light-dark.css'` (and

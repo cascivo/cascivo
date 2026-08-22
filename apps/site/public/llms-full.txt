@@ -92,7 +92,8 @@ pnpm add @cascivo/react @cascivo/themes @preact/signals-react
 
 ```tsx
 import '@cascivo/react/styles.css' // component styles (structure only)
-import '@cascivo/themes/all.css'       // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css'  // tokens (once) + base typography + light & dark
+                                       // swap for all.css only if you ship a theme picker (all twelve, ~2x)
 import { Button, Card } from '@cascivo/react'
 ```
 
@@ -257,7 +258,7 @@ statement, or it never re-renders. When you do own reactive state, use these:
 - Token names in TypeScript -> `import type { CascivoToken, CascivoColorToken } from '@cascivo/tokens/tokens'` (generated union of every `--cascivo-*` property — no CSS-file lookup).
 - Router links in config-driven navs (SideNav/ShellHeader/Breadcrumb/Dock/…) -> `setLinkComponent(YourLink)` once at startup. Import it (and the `LinkComponentProps` contract type) from `@cascivo/react` (re-exported there, so prebuilt-package users need NOT add `@cascivo/core`); copied source can import from `@cascivo/core`. Adapter: `setLinkComponent(({ href, ...rest }: LinkComponentProps) => <Link to={href} {...rest} />)` — spread the bag; the link stays a real `<a>` so middle-click/new-tab work.
 - Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.
-- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard): a config-driven collection -> **`items`** (DataList, StructuredList, Timeline, Steps, CommandMenu, OverflowMenu, Switcher); table rows -> **`rows`** (DataTable ONLY, because it renders a <table>); a visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
+- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard, two more on 2026-08-22): a config-driven collection (nav, list, menu) -> **`items`** (16: Breadcrumb, DataList, Dock, Dropdown, MenuButton, NavigationMenu, OverflowMenu, SideNav, StructuredList, Switcher, Timeline, Toc, ToggleGroup, TreeView, VirtualList, FeatureGrid); the choices on a form control -> **`options`** (7: Combobox, Filter, MultiSelect, NativeSelect, SegmentedControl, Select, WheelPicker); a chart's data points -> **`data`** (11: CalendarHeatmap, Candlestick, Funnel, Heatmap, Histogram, PieChart, Polar, RadialBar, Sparkline, Sunburst, Treemap). Exceptions, named in full because they are where the guesses go wrong: `DataTable.rows` (it renders a real <table>, where "rows" is the domain word); `Textarea.rows` (the HTML `rows` attribute, not a collection); `CommandMenu.groups` (its items are nested inside labelled groups); `ProgressIndicator.steps` (the domain word for a stepper); `Steps.steps` (the domain word for a stepper; also accepts `items`). A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only `Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> **`description`**, NOT children (Notification renders nothing for children).
 - Near-miss prop names (each one a real adopter's wrong guess): `<Text tone=…>` -> **`muted`** (a boolean; `tone` is the SEVERITY vocabulary on Status/Badge/Timeline/SideNav, not text emphasis); `gap="4"` -> **`gap={4}`** (numeric SpaceStep); `<Flex justify=…>` with no `direction` is already VERTICAL (the default, unlike CSS/Chakra/MUI/Radix); `const { theme } = useTheme()` -> a TUPLE `const [theme, setTheme]`; `DataList orientation="vertical"` moves the VALUE under its label, it does not stack the items (they stack either way); `<DataListItem>` is an INTERFACE, not a component (`DataList` takes `items`). Three former near-misses are now accepted both ways and cost nothing: `import { Switch }` (= `Toggle`), `<OverflowMenu label=…>` (= `ariaLabel`), `<Field hint=…>` (= `description`).
 - ⚠ `gap` takes a NUMBER: `gap={4}`, not `gap="4"`. Every other size-ish prop is a string union (`size="sm"`, `padding="md"`), but the space scale is a numeric `SpaceStep` (1|2|3|4|5|6|8|10|12) — this applies to Flex/Grid/AutoGrid `gap` and `AppShell.padding`. One adopter wrote `gap="4"` and got 20 type errors in a single run.
 - Items-prop-driven vs children-driven: `DataList`/`StructuredList`/`Timeline`/`Steps` take an `items` ARRAY; `ListItem`/`ContainedListItem`/`MenuItem`/`TabsTrigger` are composed as children. `DataListItem` is an INTERFACE, not a component — write <DataList items={[{ label, value }]} />, not <DataList><DataListItem/></DataList>. DataList items are { label, value } (NOT { term, description }, despite rendering a <dl>).
@@ -4095,7 +4096,8 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | `from` | `string \| Date` | no | — | Range start (defaults to min day). |
 | `to` | `string \| Date` | no | — | Range end (defaults to max day). |
 | `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | no | `160` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
+| `height` | `number` | no | `160` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. It is a **cap on the drawn grid, never a crop**: cell size is clamped so all seven weekday rows fit inside it. |
+| `maxCellSize` | `number` | no | — | Optional ceiling on a cell's edge, in px. Cells are already clamped to fit `height`; set this only to keep them small in a short, wide range (GitHub's calendar uses ~11). Omitted by default so the height budget alone decides. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 | `plain` | `boolean` | no | `false` | When true, renders a minimal variant without chart chrome. |
@@ -6707,6 +6709,10 @@ import { ColorPicker } from '@cascivo/react'
 | `label` | `string` | no | — | Text label for the control. Rendered on screen. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
+| `id` | `string` | no | — | Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically. |
 
 ## Examples
 
@@ -6810,6 +6816,9 @@ import { Combobox } from '@cascivo/react'
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `labels` | `ComboboxLabels` | no | — | Overrides for the component’s user-visible strings (i18n). |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
 
 ## Examples
 
@@ -7751,6 +7760,9 @@ import { DatePicker } from '@cascivo/react'
 | `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Field size |
 | `disabled` | `boolean` | no | `false` | Disables the picker |
 | `labels` | `DatePickerLabels` | no | — | i18n label overrides |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
 
 ## Examples
 
@@ -8162,11 +8174,33 @@ import { Dropdown } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `trigger` | `ReactElement` | yes | — | The element that opens the dropdown when activated. |
-| `items` | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | yes | — | The items to render. |
+| `items` | `({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } \| { kind: 'separator' })[]` | yes | — | Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev. |
 | `onSelect` | `(value: string) => void` | no | — | Called with the selected value. |
 | `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-start` | Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport. |
 | `open` | `boolean` | no | — | Whether the component is open (controlled). |
 | `onOpenChange` | `(open: boolean) => void` | no | — | Called with the next open state when it changes. |
+
+## Object types
+
+### `DropdownMenuItem`
+
+A selectable row in the menu.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `label` | `string` | yes | Visible item text. |
+| `value` | `string` | yes | Passed to `onSelect`. |
+| `icon` | `ReactNode` | no | Leading icon. |
+| `disabled` | `boolean` | no | Skips the item in keyboard navigation and selection. |
+| `separator` | `boolean` | no | ⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry. |
+
+### `DropdownSeparatorItem`
+
+A rule between groups. Carries no data and is skipped by keyboard navigation.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `kind` | `'separator'` | yes | Discriminant. |
 
 ## Examples
 
@@ -8246,6 +8280,10 @@ import { Editable } from '@cascivo/react'
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `submitOnBlur` | `boolean` | no | `true` | When true, commits the edit when the field loses focus. |
 | `onCancel` | `() => void` | no | — | Called when the edit is cancelled. |
+| `id` | `string` | no | — | Id for the **focusable control** (not the wrapper), so a `<label for>` names what actually takes focus. `Field` supplies this automatically. |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
 
 ## Examples
 
@@ -15752,6 +15790,9 @@ import { Search } from '@cascivo/react'
 | `clearLabel` | `string` | no | `Clear search` | Accessible label for the clear button. |
 | `id` | `string` | no | — | Id for the input, wired to the label. Auto-generated with useId when omitted — SSR-safe and stable across hydration. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| `aria-labelledby` | `string` | no | — | Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it. |
+| `aria-describedby` | `string` | no | — | Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced. |
+| `aria-invalid` | `boolean` | no | — | Wired automatically by a wrapping `Field` when it is in an error state. |
 
 ## Examples
 
@@ -17497,10 +17538,23 @@ import { Steps } from '@cascivo/react'
 |------|------|----------|---------|-------------|
 | `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel` | `string` | no | — | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only. |
-| `steps` | `Step[]` | yes | — | Array of step objects with label and optional explicit state |
+| `items` | `Step[]` | no | — | Alias of `steps` — the catalog-wide name for a config-driven collection. Exactly one of the two is required. |
+| `steps` | `Step[]` | no | — | Array of step objects with label and optional explicit state |
 | `activeStep` | `number` | no | `0` | Index of the currently active step (0-based) |
 | `orientation` | `'horizontal' \| 'vertical'` | no | `'horizontal'` | Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+
+## Object types
+
+### `Step`
+
+Shape of an entry in `steps` / `items`.
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `label` | `string` | yes | Visible step label. |
+| `id` | `string` | no | Stable identity, used as the React key so reordering keeps DOM nodes. |
+| `state` | `StepState \| ProgressInput` | no | Step status. `StepState` ('pending' \| 'active' \| 'complete' \| 'error') is canonical; `ProgressInput` also accepts Timeline's `current` / `upcoming` aliases. |
 
 ## Examples
 
@@ -18183,6 +18237,9 @@ import { TagsInput } from '@cascivo/react'
 | `validate` | `(tag: string) => boolean` | no | — | Returns whether a candidate tag is allowed. |
 | `max` | `number` | no | — | Maximum allowed value. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
+| `id` | `string` | no | — | Id for the **inner text input** — the focusable control, so a `<label for>` names the thing that actually takes focus. `Field` supplies this automatically. |
+| `ariaLabel` | `string` | no | — | Invisible accessible name for the tag entry field. Use when no visible label names it; inside a `Field` it is not needed, as the Field label is wired through automatically. Not rendered — screen readers only. |
+| `label` | `string` | no | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Not rendered. Not rendered — screen readers only. |
 
 ## Examples
 

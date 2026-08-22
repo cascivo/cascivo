@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/css-layers-pitfall.md
   registry v0.18.0 · generated 2026-08-17
 -->
-
 # CSS `@layer` Pitfall in Example Apps
 
 > **Renamed from `cascade.*` in v37.** All shipped layers are now under the
@@ -39,7 +38,7 @@ cascivo.reset < cascivo.base < cascivo.tokens < cascivo.component < cascivo.them
 
 **Unlayered** author CSS beats **all** cascivo layers regardless of specificity,
 so a consumer's plain (unlayered) stylesheet always wins. To override cascivo
-from _within_ a layer, use `cascivo.override`.
+from *within* a layer, use `cascivo.override`.
 
 ### `cascivo.override` — the escape hatch
 

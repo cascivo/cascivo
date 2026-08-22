@@ -21,17 +21,17 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 ## Props
 
-| Prop            | Type                                                   | Required | Default  | Description                                                                                                                                                                                                                                                                            |
-| --------------- | ------------------------------------------------------ | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`         | `string \| number`                                     | yes      | —        | Primary metric value                                                                                                                                                                                                                                                                   |
-| `label`         | `string`                                               | yes      | —        | Metric label — rendered visibly at the top of the tile. Rendered on screen.                                                                                                                                                                                                            |
-| `delta`         | `number`                                               | no       | —        | Change value (positive = up, negative = down)                                                                                                                                                                                                                                          |
-| `deltaFormat`   | `'number' \| 'percent' \| ((delta: number) => string)` | no       | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included.                                                                                                      |
-| `goodDirection` | `'up' \| 'down' \| 'neutral'`                          | no       | `up`     | Which direction is _good_ for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
-| `deltaLabel`    | `string`                                               | no       | —        | Delta context label (e.g. "vs last week")                                                                                                                                                                                                                                              |
-| `icon`          | `ReactNode`                                            | no       | —        | Icon element rendered in the component.                                                                                                                                                                                                                                                |
-| `sparkline`     | `number[]`                                             | no       | —        | Trend data for embedded sparkline                                                                                                                                                                                                                                                      |
-| `className`     | `string`                                               | no       | —        | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                               |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `value` | `string \| number` | yes | — | Primary metric value |
+| `label` | `string` | yes | — | Metric label — rendered visibly at the top of the tile. Rendered on screen. |
+| `delta` | `number` | no | — | Change value (positive = up, negative = down) |
+| `deltaFormat` | `'number' \| 'percent' \| ((delta: number) => string)` | no | `number` | How to render `delta`. `'percent'` treats it as percentage points and appends `%` (25.6 → +25.6%) — it does not multiply by 100. A function owns the whole string, sign included. |
+| `goodDirection` | `'up' \| 'down' \| 'neutral'` | no | `up` | Which direction is *good* for this metric — the colour, independent of the arrow (which follows the sign of `delta`). 'up' (default) suits revenue; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
+| `deltaLabel` | `string` | no | — | Delta context label (e.g. "vs last week") |
+| `icon` | `ReactNode` | no | — | Icon element rendered in the component. |
+| `sparkline` | `number[]` | no | — | Trend data for embedded sparkline |
+| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
 
 ## Examples
 
@@ -39,7 +39,8 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 ```tsx
 import { Kpi } from '@cascivo/charts'
-;<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
+
+<Kpi value="$12,400" label="Monthly revenue" delta={8.2} deltaLabel="vs last month" />
 ```
 
 ## Client JavaScript

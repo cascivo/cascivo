@@ -3,7 +3,6 @@
   Canonical: https://cascivo.com/docs/using-with-nextjs.md
   registry v0.18.0 · generated 2026-08-17
 -->
-
 # Using cascivo with Next.js (App Router / RSC)
 
 cascivo works in Next.js App Router projects out of the box: components ship
@@ -84,7 +83,7 @@ CSS-bearing build; the CSS-free `node/` twin stays reserved for bare-Node SSR lo
 that cannot `import` a `.css` file at all.
 
 > **Fixed in 0.18.0.** Before that release there was no `react-server` condition, so
-> RSC fell through to `node` and every component _without_ a `'use client'` directive
+> RSC fell through to `node` and every component *without* a `'use client'` directive
 > — exactly the `clientJs: 'none'` ones — rendered on the server from a build with no
 > CSS edges. Their stylesheets were never collected and they painted unstyled. The
 > documented workaround was to import the 328 KB aggregate

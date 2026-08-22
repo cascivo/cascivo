@@ -23,19 +23,20 @@ Renders role="img" with a title and a fallback day/value table.
 
 ## Props
 
-| Name          | Type                     | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
-| ------------- | ------------------------ | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`        | `CalendarHeatmapDatum[]` | Yes      | —       | Days: { day: string \| Date, value }.                                                                                                                                                                                                                                                                                                                                                         |
-| `title`       | `string`                 | Yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
-| `description` | `string`                 | No       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
-| `from`        | `string \| Date`         | No       | —       | Range start (defaults to min day).                                                                                                                                                                                                                                                                                                                                                            |
-| `to`          | `string \| Date`         | No       | —       | Range end (defaults to max day).                                                                                                                                                                                                                                                                                                                                                              |
-| `width`       | `number`                 | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height`      | `number`                 | No       | 160     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
-| `tooltip`     | `boolean`                | No       | —       | Whether to show tooltips on hover.                                                                                                                                                                                                                                                                                                                                                            |
-| `className`   | `string`                 | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
-| `plain`       | `boolean`                | No       | false   | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
-| `visualMap`   | `VisualMapOptions`       | No       | —       | Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range.                                                                                                                                                                                                                                                                      |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `data` | `CalendarHeatmapDatum[]` | Yes | — | Days: { day: string \| Date, value }. |
+| `title` | `string` | Yes | — | Title text for the component. |
+| `description` | `string` | No | — | Supporting description text. |
+| `from` | `string \| Date` | No | — | Range start (defaults to min day). |
+| `to` | `string \| Date` | No | — | Range end (defaults to max day). |
+| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height` | `number` | No | 160 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. It is a **cap on the drawn grid, never a crop**: cell size is clamped so all seven weekday rows fit inside it. |
+| `maxCellSize` | `number` | No | — | Optional ceiling on a cell's edge, in px. Cells are already clamped to fit `height`; set this only to keep them small in a short, wide range (GitHub's calendar uses ~11). Omitted by default so the height budget alone decides. |
+| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
+| `visualMap` | `VisualMapOptions` | No | — | Map day value → CVD-safe colour (continuous or piecewise) via a keyboard-operable legend that filters the visible range. |
 
 ## Object types
 
@@ -43,24 +44,24 @@ Renders role="img" with a title and a fallback day/value table.
 
 Shape of the `data` prop.
 
-| Field   | Type             | Required | Description |
-| ------- | ---------------- | -------- | ----------- |
-| `day`   | `string \| Date` | Yes      | —           |
-| `value` | `number`         | Yes      | —           |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `day` | `string \| Date` | Yes | — |
+| `value` | `number` | Yes | — |
 
 ### `VisualMapOptions`
 
 Shape of the `visualMap` prop.
 
-| Field       | Type               | Required | Description                                                            |
-| ----------- | ------------------ | -------- | ---------------------------------------------------------------------- |
-| `min`       | `number`           | Yes      | Domain minimum (value mapped to ramp t=0).                             |
-| `max`       | `number`           | Yes      | Domain maximum (value mapped to ramp t=1).                             |
-| `mode`      | `VisualMode`       | No       | `continuous` ramp (default) or `piecewise` buckets.                    |
-| `channel`   | `VisualChannel`    | No       | Which visual channel(s) the value drives.                              |
-| `ramp`      | `RampKind`         | No       | Ramp family — CVD-safe `sequential` (default) or `diverging`.          |
-| `pieces`    | `number`           | No       | Bucket count for `piecewise` (default 5).                              |
-| `sizeRange` | `[number, number]` | No       | [min, max] mark radius in px for the `size` channel (default [3, 14]). |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `min` | `number` | Yes | Domain minimum (value mapped to ramp t=0). |
+| `max` | `number` | Yes | Domain maximum (value mapped to ramp t=1). |
+| `mode` | `VisualMode` | No | `continuous` ramp (default) or `piecewise` buckets. |
+| `channel` | `VisualChannel` | No | Which visual channel(s) the value drives. |
+| `ramp` | `RampKind` | No | Ramp family — CVD-safe `sequential` (default) or `diverging`. |
+| `pieces` | `number` | No | Bucket count for `piecewise` (default 5). |
+| `sizeRange` | `[number, number]` | No | [min, max] mark radius in px for the `size` channel (default [3, 14]). |
 
 ## Tokens
 
@@ -72,12 +73,10 @@ Shape of the `visualMap` prop.
 
 ```jsx
 import { CalendarHeatmap } from '@cascivo/charts'
-;<CalendarHeatmap
+
+<CalendarHeatmap
   title="Activity"
-  data={[
-    { day: '2026-01-01', value: 3 },
-    { day: '2026-01-02', value: 7 },
-  ]}
+  data={[{ day: '2026-01-01', value: 3 }, { day: '2026-01-02', value: 7 }]}
 />
 ```
 

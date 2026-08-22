@@ -9,12 +9,16 @@
         {
           "version": "0.18.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["AI-layer delivery (audit wave 3):"]
+          "notes": [
+            "AI-layer delivery (audit wave 3):"
+          ]
         }
       ]
     },
@@ -25,7 +29,9 @@
         {
           "version": "0.18.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.17.0",
@@ -87,7 +93,9 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["Publish `@cascivo/charts` to npm. The package was previously private and"]
+          "notes": [
+            "Publish `@cascivo/charts` to npm. The package was previously private and"
+          ]
         }
       ]
     },
@@ -98,7 +106,9 @@
         {
           "version": "0.9.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.8.0",
@@ -125,7 +135,9 @@
         {
           "version": "0.5.0",
           "level": "minor",
-          "notes": ["CLI adopter-friction fixes from the TanStack Start experience report:"]
+          "notes": [
+            "CLI adopter-friction fixes from the TanStack Start experience report:"
+          ]
         },
         {
           "version": "0.4.0",
@@ -138,7 +150,9 @@
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):"
+          ]
         },
         {
           "version": "0.2.0",
@@ -150,7 +164,9 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -161,7 +177,9 @@
         {
           "version": "0.18.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.17.0",
@@ -203,7 +221,9 @@
         {
           "version": "0.5.0",
           "level": "minor",
-          "notes": ["Expose the router-link contract as a named, documented type."]
+          "notes": [
+            "Expose the router-link contract as a named, documented type."
+          ]
         },
         {
           "version": "0.4.0",
@@ -215,7 +235,9 @@
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Add `useTypeahead` and fix duplicate-aria-id bugs in overlay components."]
+          "notes": [
+            "Add `useTypeahead` and fix duplicate-aria-id bugs in overlay components."
+          ]
         },
         {
           "version": "0.2.0",
@@ -227,7 +249,9 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -264,7 +288,9 @@
         {
           "version": "0.18.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.17.0",
@@ -309,7 +335,9 @@
         {
           "version": "0.18.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.17.0",
@@ -334,17 +362,23 @@
         {
           "version": "0.18.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):"
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -355,17 +389,23 @@
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+          "notes": [
+            "Adopter-friction fixes (TanStack Start / Vite SSR report):"
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons"]
+          "notes": [
+            "Expand the icon catalog from 60 to ~440 icons by adopting the full chromicons"
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -383,7 +423,9 @@
         {
           "version": "0.5.0",
           "level": "minor",
-          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+          "notes": [
+            "Adopter-friction fixes (TanStack Start / Vite SSR report):"
+          ]
         },
         {
           "version": "0.4.0",
@@ -395,7 +437,10 @@
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):", "AI-layer delivery (audit wave 3):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):",
+            "AI-layer delivery (audit wave 3):"
+          ]
         },
         {
           "version": "0.2.0",
@@ -407,7 +452,9 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -454,7 +501,9 @@
         {
           "version": "0.14.0",
           "level": "minor",
-          "notes": ["Two additive props from the 2026-07-31 incident-console adopter report."]
+          "notes": [
+            "Two additive props from the 2026-07-31 incident-console adopter report."
+          ]
         },
         {
           "version": "0.13.0",
@@ -512,32 +561,44 @@
         {
           "version": "0.6.0",
           "level": "minor",
-          "notes": ["Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`"]
+          "notes": [
+            "Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`"
+          ]
         },
         {
           "version": "0.5.0",
           "level": "minor",
-          "notes": ["Ship one canonical CSS `@layer` order and a real override escape hatch."]
+          "notes": [
+            "Ship one canonical CSS `@layer` order and a real override escape hatch."
+          ]
         },
         {
           "version": "0.4.0",
           "level": "minor",
-          "notes": ["Adoption-audit fixes (waves 1–2):"]
+          "notes": [
+            "Adoption-audit fixes (waves 1–2):"
+          ]
         },
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
+          "notes": [
+            "Integration-feedback fixes (from the bpmn-kit and pagome migrations):"
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+          "notes": [
+            "v37 migration hardening — fixes from the boringtools migration feedback."
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -548,12 +609,16 @@
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+          "notes": [
+            "Adopter-friction fixes (TanStack Start / Vite SSR report):"
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -564,12 +629,16 @@
         {
           "version": "0.18.0",
           "level": "minor",
-          "notes": ["Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"]
+          "notes": [
+            "Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +"
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -580,22 +649,30 @@
         {
           "version": "0.4.0",
           "level": "minor",
-          "notes": ["Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`"]
+          "notes": [
+            "Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`"
+          ]
         },
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Ship one canonical CSS `@layer` order and a real override escape hatch."]
+          "notes": [
+            "Ship one canonical CSS `@layer` order and a real override escape hatch."
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+          "notes": [
+            "v37 migration hardening — fixes from the boringtools migration feedback."
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -606,27 +683,37 @@
         {
           "version": "0.5.0",
           "level": "minor",
-          "notes": ["Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`"]
+          "notes": [
+            "Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`"
+          ]
         },
         {
           "version": "0.4.0",
           "level": "minor",
-          "notes": ["Ship one canonical CSS `@layer` order and a real override escape hatch."]
+          "notes": [
+            "Ship one canonical CSS `@layer` order and a real override escape hatch."
+          ]
         },
         {
           "version": "0.3.0",
           "level": "minor",
-          "notes": ["Integration-feedback fixes (from the bpmn-kit and pagome migrations):"]
+          "notes": [
+            "Integration-feedback fixes (from the bpmn-kit and pagome migrations):"
+          ]
         },
         {
           "version": "0.2.0",
           "level": "minor",
-          "notes": ["v37 migration hardening — fixes from the boringtools migration feedback."]
+          "notes": [
+            "v37 migration hardening — fixes from the boringtools migration feedback."
+          ]
         },
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Initial public release of the cascivo design system. Includes:"]
+          "notes": [
+            "Initial public release of the cascivo design system. Includes:"
+          ]
         }
       ]
     },
@@ -637,7 +724,9 @@
         {
           "version": "0.1.0",
           "level": "minor",
-          "notes": ["Adopter-friction fixes (TanStack Start / Vite SSR report):"]
+          "notes": [
+            "Adopter-friction fixes (TanStack Start / Vite SSR report):"
+          ]
         }
       ]
     }

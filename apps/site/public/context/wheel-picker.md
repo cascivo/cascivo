@@ -20,8 +20,8 @@
 ### The component is controlled; without a `value` it cannot scroll to the current selection or reflect an external change
 
 **Bad:** `Rendering it uncontrolled and reading the value from the DOM`  
-**Good:** `Pass `value`and`onValueChange`` 
-**Why:** The component is controlled; without a`value` it cannot scroll to the current selection or reflect an external change
+**Good:** `Pass `value` and `onValueChange``  
+**Why:** The component is controlled; without a `value` it cannot scroll to the current selection or reflect an external change
 
 ### A listbox with no accessible name is announced only as a list, so the user cannot tell which field they are in
 
@@ -41,25 +41,25 @@ The column is a role="listbox" with role="option" rows, is focusable, and points
 
 ## Props
 
-| Name            | Type                      | Required | Default | Description                                                                                                                                    |
-| --------------- | ------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `options`       | `WheelPickerOption[]`     | Yes      | —       | The rows of the wheel, in order                                                                                                                |
-| `value`         | `string`                  | Yes      | —       | The selected option value; the component is controlled                                                                                         |
-| `onValueChange` | `(value: string) => void` | Yes      | —       | Called with the new value when the wheel settles or a key moves the selection                                                                  |
-| `visibleCount`  | `number`                  | No       | 5       | How many rows are visible. Odd numbers keep the selection centred.                                                                             |
-| `itemHeight`    | `number`                  | No       | 36      | Row height in px.                                                                                                                              |
-| `label`         | `string`                  | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `ariaLabel`     | `string`                  | No       | —       | Accessible label for the wheel — required when it has no visible label. Not rendered — screen readers only.                                    |
-| `className`     | `string`                  | No       | —       | Additional CSS class names merged onto the root element.                                                                                       |
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `options` | `WheelPickerOption[]` | Yes | — | The rows of the wheel, in order |
+| `value` | `string` | Yes | — | The selected option value; the component is controlled |
+| `onValueChange` | `(value: string) => void` | Yes | — | Called with the new value when the wheel settles or a key moves the selection |
+| `visibleCount` | `number` | No | 5 | How many rows are visible. Odd numbers keep the selection centred. |
+| `itemHeight` | `number` | No | 36 | Row height in px. |
+| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `ariaLabel` | `string` | No | — | Accessible label for the wheel — required when it has no visible label. Not rendered — screen readers only. |
+| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
 
 ## Object types
 
 ### `WheelPickerOption`
 
-| Field   | Type     | Required | Description              |
-| ------- | -------- | -------- | ------------------------ |
-| `value` | `string` | Yes      | Value reported on change |
-| `label` | `string` | Yes      | Visible row text         |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `value` | `string` | Yes | Value reported on change |
+| `label` | `string` | Yes | Visible row text |
 
 ## Tokens
 
@@ -96,13 +96,7 @@ Controlled — the caller owns the value.
 Shows more rows around the selection.
 
 ```jsx
-<WheelPicker
-  ariaLabel="Minute"
-  value={minute}
-  onValueChange={setMinute}
-  options={minutes}
-  visibleCount={7}
-/>
+<WheelPicker ariaLabel="Minute" value={minute} onValueChange={setMinute} options={minutes} visibleCount={7} />
 ```
 
 ### Several columns
@@ -118,11 +112,11 @@ Compose one wheel per field; each column is independently operable.
 
 ## Boundaries
 
-| Area                      | Level    | Note                                                                 |
-| ------------------------- | -------- | -------------------------------------------------------------------- |
-| visibleCount / itemHeight | flexible | Wheel geometry is caller-controlled (defaults 5 rows of 36px)        |
-| value / onValueChange     | strict   | Always controlled — the component never holds the value itself       |
-| wheel mechanism           | strict   | Always CSS scroll-snap; there is no JavaScript-driven transform mode |
+| Area | Level | Note |
+|------|-------|------|
+| visibleCount / itemHeight | flexible | Wheel geometry is caller-controlled (defaults 5 rows of 36px) |
+| value / onValueChange | strict | Always controlled — the component never holds the value itself |
+| wheel mechanism | strict | Always CSS scroll-snap; there is no JavaScript-driven transform mode |
 
 ## AI context prompt
 

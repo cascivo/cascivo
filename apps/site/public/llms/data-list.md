@@ -32,12 +32,12 @@ import { DataList } from '@cascivo/react'
 
 ## Props
 
-| Prop          | Type                                                    | Required | Default      | Description                                                                                                                                                                            |
-| ------------- | ------------------------------------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `items`       | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes      | —            | The items to render.                                                                                                                                                                   |
-| `orientation` | `'horizontal' \| 'vertical'`                            | no       | `horizontal` | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
-| `dividers`    | `boolean`                                               | no       | `false`      | When true, shows dividers between items.                                                                                                                                               |
-| `size`        | `'sm' \| 'md'`                                          | no       | `md`         | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                  |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `items` | `{ id?: string; label: ReactNode; value: ReactNode }[]` | yes | — | The items to render. |
+| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Where each value sits relative to its own label: 'horizontal' beside it, 'vertical' underneath. Items are stacked vertically in both modes — this does not change the list's own axis. |
+| `dividers` | `boolean` | no | `false` | When true, shows dividers between items. |
+| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 
 ## Examples
 
@@ -69,7 +69,11 @@ Both modes stack the items vertically. `orientation` moves the VALUE: beside its
 ### Vertical with dividers
 
 ```tsx
-<DataList orientation="vertical" dividers items={[{ label: 'Email', value: 'ada@example.com' }]} />
+<DataList
+  orientation="vertical"
+  dividers
+  items={[{ label: 'Email', value: 'ada@example.com' }]}
+/>
 ```
 
 ## Client JavaScript
