@@ -33,16 +33,16 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Text label for the control. Rendered on screen. |
-| `min` | `number` | No | 0 | Minimum allowed value. |
-| `max` | `number` | No | 100 | Maximum allowed value. |
-| `step` | `number` | No | 1 | Increment between allowed values. |
-| `value` | `number` | No | — | The controlled value. |
-| `defaultValue` | `number` | No | — | The initial value when uncontrolled. |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| Name           | Type      | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                          |
+| -------------- | --------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`        | `string`  | No       | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
+| `min`          | `number`  | No       | 0       | Minimum allowed value.                                                                                                                                                                                                                                                                                                                                                                               |
+| `max`          | `number`  | No       | 100     | Maximum allowed value.                                                                                                                                                                                                                                                                                                                                                                               |
+| `step`         | `number`  | No       | 1       | Increment between allowed values.                                                                                                                                                                                                                                                                                                                                                                    |
+| `value`        | `number`  | No       | —       | The controlled value.                                                                                                                                                                                                                                                                                                                                                                                |
+| `defaultValue` | `number`  | No       | —       | The initial value when uncontrolled.                                                                                                                                                                                                                                                                                                                                                                 |
+| `disabled`     | `boolean` | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
+| `ariaLabel`    | `string`  | No       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 
@@ -68,10 +68,10 @@ Renders a native <input type="range"> so the slider role, value announcements, a
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Track and thumb colors must resolve to --cascivo-color-* / radius / focus-ring tokens |
-| min/max/step | flexible | Consumer-defined bounds and increment |
+| Area         | Level    | Note                                                                                   |
+| ------------ | -------- | -------------------------------------------------------------------------------------- |
+| token names  | strict   | Track and thumb colors must resolve to --cascivo-color-\* / radius / focus-ring tokens |
+| min/max/step | flexible | Consumer-defined bounds and increment                                                  |
 
 ## AI context prompt
 

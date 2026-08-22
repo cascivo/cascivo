@@ -34,17 +34,17 @@ Renders role="menu" with role="menuitem" buttons under vertical roving focus (Ar
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `open` | `boolean` | No | — | Whether the component is open (controlled). |
-| `defaultOpen` | `boolean` | No | — | Whether the component is open on first render (uncontrolled). |
-| `onOpenChange` | `(open: boolean) => void` | No | — | Called with the next open state when it changes. |
-| `actions` | `ActionSheetAction[]` | Yes | — | Choices, each with a label, onSelect, and optional destructive/disabled flags |
-| `title` | `React.ReactNode` | No | — | Title text for the component. |
-| `description` | `React.ReactNode` | No | — | Supporting description text. |
-| `showCancel` | `boolean` | No | true | When true, shows a cancel button below the actions. |
-| `labels` | `{ cancel?: string; label?: string }` | No | — | Overrides for the component’s user-visible strings (i18n). |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name           | Type                                  | Required | Default | Description                                                                   |
+| -------------- | ------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------- |
+| `open`         | `boolean`                             | No       | —       | Whether the component is open (controlled).                                   |
+| `defaultOpen`  | `boolean`                             | No       | —       | Whether the component is open on first render (uncontrolled).                 |
+| `onOpenChange` | `(open: boolean) => void`             | No       | —       | Called with the next open state when it changes.                              |
+| `actions`      | `ActionSheetAction[]`                 | Yes      | —       | Choices, each with a label, onSelect, and optional destructive/disabled flags |
+| `title`        | `React.ReactNode`                     | No       | —       | Title text for the component.                                                 |
+| `description`  | `React.ReactNode`                     | No       | —       | Supporting description text.                                                  |
+| `showCancel`   | `boolean`                             | No       | true    | When true, shows a cancel button below the actions.                           |
+| `labels`       | `{ cancel?: string; label?: string }` | No       | —       | Overrides for the component’s user-visible strings (i18n).                    |
+| `className`    | `string`                              | No       | —       | Additional CSS class names merged onto the root element.                      |
 
 ## Tokens
 
@@ -82,16 +82,16 @@ Renders role="menu" with role="menuitem" buttons under vertical roving focus (Ar
 Escape and outside press still dismiss the sheet.
 
 ```jsx
-<ActionSheet defaultOpen showCancel={false} actions={[{ label: "Archive", onSelect: archive }]} />
+<ActionSheet defaultOpen showCancel={false} actions={[{ label: 'Archive', onSelect: archive }]} />
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| actions | flexible | Any number of actions; each may be destructive or disabled |
-| open state | flexible | Controlled (open/onOpenChange) or uncontrolled (defaultOpen) |
-| cancel | flexible | showCancel toggles the separate Cancel button (Escape/outside press still dismiss) |
+| Area       | Level    | Note                                                                               |
+| ---------- | -------- | ---------------------------------------------------------------------------------- |
+| actions    | flexible | Any number of actions; each may be destructive or disabled                         |
+| open state | flexible | Controlled (open/onOpenChange) or uncontrolled (defaultOpen)                       |
+| cancel     | flexible | showCancel toggles the separate Cancel button (Escape/outside press still dismiss) |
 
 ## AI context prompt
 

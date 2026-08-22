@@ -27,15 +27,15 @@ import { LargeTitleHeader } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `title` | `string` | yes | — | The page title, rendered as the large heading and mirrored in the compact bar |
-| `children` | `React.ReactNode` | yes | — | Content rendered inside the component. |
-| `leading` | `React.ReactNode` | no | — | Leading slot of the compact bar — typically a back control |
-| `actions` | `React.ReactNode` | no | — | Trailing slot of the compact bar — typically icon buttons |
-| `level` | `1 \| 2 \| 3` | no | `1` | Heading level for the title, mapping to h1–h3. |
-| `collapseDistance` | `number` | no | `48` | Scroll distance (px) over which the large title collapses into the bar. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
+| Prop               | Type              | Required | Default | Description                                                                   |
+| ------------------ | ----------------- | -------- | ------- | ----------------------------------------------------------------------------- |
+| `title`            | `string`          | yes      | —       | The page title, rendered as the large heading and mirrored in the compact bar |
+| `children`         | `React.ReactNode` | yes      | —       | Content rendered inside the component.                                        |
+| `leading`          | `React.ReactNode` | no       | —       | Leading slot of the compact bar — typically a back control                    |
+| `actions`          | `React.ReactNode` | no       | —       | Trailing slot of the compact bar — typically icon buttons                     |
+| `level`            | `1 \| 2 \| 3`     | no       | `1`     | Heading level for the title, mapping to h1–h3.                                |
+| `collapseDistance` | `number`          | no       | `48`    | Scroll distance (px) over which the large title collapses into the bar.       |
+| `className`        | `string`          | no       | —       | Additional CSS class names merged onto the root element.                      |
 
 ## Examples
 
@@ -60,7 +60,11 @@ Both slots stay in the compact bar and never scroll away.
 ```tsx
 <LargeTitleHeader
   title="Downloads"
-  leading={<IconButton label="Back" onClick={goBack}>←</IconButton>}
+  leading={
+    <IconButton label="Back" onClick={goBack}>
+      ←
+    </IconButton>
+  }
   actions={<IconButton label="Sort">⇅</IconButton>}
 >
   <FileList files={files} />

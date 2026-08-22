@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/using-with-astro.md
   registry v0.18.0 · generated 2026-08-17
 -->
+
 # Using cascivo with Astro
 
 **Status: partial.** cascivo works in an Astro island, but **which client directive you use
@@ -29,10 +30,10 @@ Every bundler that honors `sideEffects` pulls that CSS in for the components you
 import, and tree-shakes the rest. Astro's island build does it for one directive and not the
 others:
 
-| Directive | Component CSS emitted | Result |
-| --- | --- | --- |
-| `client:load` / `client:visible` (SSR'd island) | **none** | renders unstyled |
-| `client:only` | only what is used (~58 KB measured) | renders correctly |
+| Directive                                       | Component CSS emitted               | Result            |
+| ----------------------------------------------- | ----------------------------------- | ----------------- |
+| `client:load` / `client:visible` (SSR'd island) | **none**                            | renders unstyled  |
+| `client:only`                                   | only what is used (~58 KB measured) | renders correctly |
 
 Under `client:load` the hashed class names survive into the HTML — `class="_button_131qn_2"` —
 with no matching rule anywhere in the output. `sideEffects: ["**/*.css"]` is declared
@@ -131,6 +132,7 @@ Honest scope, so this page does not repeat the mistake it documents:
   `client:only` emits the component CSS and the SSR'd islands on the same page then appear
   covered by it. The first version of that fixture did exactly this and reported "does not
   reproduce".
+
 - Whether the `client:load` CSS drop is fixable from cascivo's side (a build change) or is
   purely an Astro island-build behaviour is **not yet determined**. Until it is, the
   compatibility matrix grades Astro ⚠️ Partial rather than ✅.

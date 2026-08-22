@@ -209,8 +209,8 @@ small dashboard — the single largest friction in that report.
 
 | The prop carries | Prop name | Never | Why |
 | --- | --- | --- | --- |
-| A config-driven **collection** (nav, list, menu) | **`items`** | `rows`, `entries` | 16 components. The full list is generated into [`llms.txt`](https://cascivo.com/llms.txt) from the registry — it is not repeated here, because the hand-written version of this row named `Steps` and `CommandMenu` under `items` when they take `steps` and `groups` (2026-08-22 report item 10) |
-| The **choices** on a form control | **`options`** | `items`, `choices` | 7 components — `Select`, `NativeSelect`, `Combobox`, `MultiSelect`, `Filter`, `SegmentedControl`, `WheelPicker`. A choice control takes `options`, not `items` |
+| A config-driven **collection** (nav, list, menu) | **`items`** | `rows`, `entries` | Nav, list and menu components. The full, current list is generated into [`llms.txt`](https://cascivo.com/llms.txt) from the registry — it is not repeated here, because the hand-written version of this row named `Steps` and `CommandMenu` under `items` when they take `steps` and `groups` (2026-08-22 report item 10) |
+| The **choices** on a form control | **`options`** | `items`, `choices` | `Select`, `NativeSelect`, `Combobox`, `MultiSelect`, `Filter`, `SegmentedControl`, `WheelPicker`. A choice control takes `options`, not `items` |
 | A **chart's** data points | **`data`** | `items`, `series` | Every chart — `PieChart`, `Sparkline`, `Heatmap`, `CalendarHeatmap`, … (`series` is the *grouping* prop on multi-series charts, not the data) |
 | The rows of a **table** | **`rows`** | `items` | `DataTable` only — it renders a `<table>`, where "rows" is the domain word, not a synonym for items. (`Textarea.rows` is the HTML attribute, not a collection.) Steppers keep the domain word too: `Steps.steps` and `ProgressIndicator.steps` — `Steps` also accepts `items` |
 | A **visual style** enum | **`variant`** | `shape`, `kind`, `type`, `appearance` | `Badge`, `Tag`, `Button`, `Alert`, `Card`, `Notification` |

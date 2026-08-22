@@ -651,11 +651,24 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
   lines.push(`- Page-block AI docs are namespaced: ${DOCS}/llms/block/<name>.md`)
   lines.push(
-    '- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a self-contained, flat',
+    '- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a flat rollup — every',
   )
   lines.push(
-    '  rollup — every component `…Props` interface is real, documentation-grade API reference.',
+    '  component `…Props` interface is declared there in full, documentation-grade API reference,',
   )
+  lines.push(
+    '  and it is grep-friendly (one import/export name per line). The shared VOCABULARY types',
+  )
+  lines.push(
+    '  (`Tone`, `SpaceStep`, `ThemeProviderProps`, `LinkComponentProps`, …) are imported from',
+  )
+  lines.push(
+    '  `@cascivo/core` at the top of that file rather than redeclared — inlining them makes the',
+  )
+  lines.push(
+    '  dts bundler alias every prop to `ToneInput$1`. Import them from `@cascivo/react/types`,',
+  )
+  lines.push("  which needs no extra install: `import type { Tone } from '@cascivo/react/types'`.")
   lines.push(
     `- Component index (every entry + channel + doc URL, plain markdown): ${SITE}/docs/components.md`,
   )
@@ -748,7 +761,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push("import '@cascivo/react/styles.css' // component styles (structure only)")
   lines.push(
     "import '@cascivo/themes/light-dark.css'  // tokens (once) + base typography + light & dark",
-    "                                       // swap for all.css only if you ship a theme picker (all twelve, ~2x)",
+    '                                       // swap for all.css only if you ship a theme picker (all twelve, ~2x)',
   )
   lines.push("import { Button, Card } from '@cascivo/react'")
   lines.push('```')
@@ -1050,9 +1063,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     '- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.',
   )
-  lines.push(
-    `- ${collectionVocabularySentence(REGISTRY_PATH)}`,
-  )
+  lines.push(`- ${collectionVocabularySentence(REGISTRY_PATH)}`)
   // The near-miss table from docs/AI-RULES.md, compressed. Every row is a real wrong guess
   // from a dated adopter report; `doc-api-drift.test.ts` fails if a row stops being true.
   lines.push(

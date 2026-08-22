@@ -35,12 +35,12 @@ import { Tag } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | no | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger). |
-| `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `onDismiss` | `() => void` | no | — | When provided, renders a trailing remove button inside the chip |
-| `dismissLabel` | `string` | no | `Remove` | Accessible label for the dismiss button. |
+| Prop           | Type                                                       | Required | Default   | Description                                                                                                                                                                                          |
+| -------------- | ---------------------------------------------------------- | -------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `variant`      | `'default' \| 'info' \| 'success' \| 'warning' \| 'error'` | no       | `default` | Severity tone. Accepts the catalog-wide `Tone` vocabulary (`neutral \| info \| success \| warning \| danger`) plus Tag's historical spellings (`default` → neutral, `error`/`destructive` → danger). |
+| `size`         | `'sm' \| 'md'`                                             | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                                                |
+| `onDismiss`    | `() => void`                                               | no       | —         | When provided, renders a trailing remove button inside the chip                                                                                                                                      |
+| `dismissLabel` | `string`                                                   | no       | `Remove`  | Accessible label for the dismiss button.                                                                                                                                                             |
 
 ## Examples
 

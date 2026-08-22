@@ -25,7 +25,10 @@ const ROOT = fileURLToPath(new URL('../..', import.meta.url))
  * not here fails the build.
  */
 const KNOWN: Record<string, string> = {
-  Text: 'charts ships an SVG <text> primitive; @cascivo/react ships the typography component',
+  Text:
+    'renamed to `ChartText` in charts (2026-08-22 report item 20); `Text` remains as a ' +
+    'deprecated alias and is removed at 1.0 — at ~8 minors in 19 days a one-minor window ' +
+    'would be about five days, which is a break with extra steps rather than a deprecation',
 }
 
 /**

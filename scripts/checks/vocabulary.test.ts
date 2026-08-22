@@ -17,12 +17,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { strict as assert } from 'node:assert'
 import { describe, it } from 'node:test'
-import {
-  EXCEPTIONS,
-  FAMILIES,
-  collectionVocabularySentence,
-  componentsWithProp,
-} from '../lib/collection-vocabulary.ts'
+import { EXCEPTIONS, FAMILIES, componentsWithProp } from '../lib/collection-vocabulary.ts'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const COMPONENTS = join(ROOT, 'packages', 'components', 'src')

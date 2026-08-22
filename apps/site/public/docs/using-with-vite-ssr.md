@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/using-with-vite-ssr.md
   registry v0.18.0 · generated 2026-08-17
 -->
+
 # Using cascivo with Vite SSR (TanStack Start, vite-ssr, Remix, workerd)
 
 **As of `@cascivo/react` 0.10, SSR works with zero Vite config.** The package
@@ -129,7 +130,7 @@ stays under budget.
 > renders on the server. The aggregate hid it. Fixed in 0.18.0 — see
 > [docs/plans/ssr-css-and-client-js-plan.md](https://github.com/cascivo/cascivo/blob/main/docs/plans/ssr-css-and-client-js-plan.md).
 
-### When the aggregate *is* right
+### When the aggregate _is_ right
 
 `@cascivo/react/styles.css` remains supported and correct for setups where no bundler
 walks the module graph:
@@ -170,7 +171,7 @@ hydrate cleanly — no client-only boundary required.
 >
 > - **The router module must export `getRouter`.** Newer TanStack Start expects your
 >   `src/router.tsx` to export a `getRouter` function; an older `export function
->   createRouter()` name fails the build. See the
+createRouter()` name fails the build. See the
 >   [TanStack Start docs](https://tanstack.com/start/latest).
 > - **`vite build` emits an SSR _handler_, not a server.** The default build output
 >   (`dist/server/server.js`) is a request handler, not a self-listening process;
@@ -235,15 +236,15 @@ hooks, and the behavior primitives alike. Your `package.json` needs exactly:
 }
 ```
 
-| You need | Import from | Notes |
-| --- | --- | --- |
-| Components (`Button`, `DataTable`, `AppShell`, …) | `@cascivo/react` | |
-| Reactivity (`useSignal`, `useComputed`, `useSignalEffect`, `useSignals`, `signal`, `computed`, `effect`, `batch`) | `@cascivo/react` | Re-exported; identical module instance, not a copy |
-| Controlled-prop bridges (`useControllableSignal`, `useEffectPropSignal`, `useDisclosure`, `useMachine`) | `@cascivo/react` | |
-| Behavior primitives (`useId`, `useMediaQuery`, `useRovingFocus`, `useTypeahead`, `useAnchorPosition`, `DismissableLayer`, `FocusScope`, `Portal`, `Slot`, …) | `@cascivo/react` | |
-| Router wiring (`setLinkComponent`, `LinkComponentProps`) | `@cascivo/react` | |
-| The `Signal` / `ReadonlySignal` **types** | `@preact/signals-react` | It is a declared peer, so you already list it — a legal, non-phantom import |
-| Charts, icons, themes | `@cascivo/charts`, `@cascivo/icons`, `@cascivo/themes` | Separate installs |
+| You need                                                                                                                                                     | Import from                                            | Notes                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------ | --------------------------------------------------------------------------- |
+| Components (`Button`, `DataTable`, `AppShell`, …)                                                                                                            | `@cascivo/react`                                       |                                                                             |
+| Reactivity (`useSignal`, `useComputed`, `useSignalEffect`, `useSignals`, `signal`, `computed`, `effect`, `batch`)                                            | `@cascivo/react`                                       | Re-exported; identical module instance, not a copy                          |
+| Controlled-prop bridges (`useControllableSignal`, `useEffectPropSignal`, `useDisclosure`, `useMachine`)                                                      | `@cascivo/react`                                       |                                                                             |
+| Behavior primitives (`useId`, `useMediaQuery`, `useRovingFocus`, `useTypeahead`, `useAnchorPosition`, `DismissableLayer`, `FocusScope`, `Portal`, `Slot`, …) | `@cascivo/react`                                       |                                                                             |
+| Router wiring (`setLinkComponent`, `LinkComponentProps`)                                                                                                     | `@cascivo/react`                                       |                                                                             |
+| The `Signal` / `ReadonlySignal` **types**                                                                                                                    | `@preact/signals-react`                                | It is a declared peer, so you already list it — a legal, non-phantom import |
+| Charts, icons, themes                                                                                                                                        | `@cascivo/charts`, `@cascivo/icons`, `@cascivo/themes` | Separate installs                                                           |
 
 **Do not add `@cascivo/core` to a Path B app.** Under pnpm's strict layout it is only a
 transitive dependency, so importing it directly is a phantom-dependency error — and you
@@ -322,7 +323,7 @@ server-rendered `<html>` — it never mismatches. Full API in
 - **Components render but are unstyled on the server** — you skipped the theme
   import, so every `var(--cascivo-*)` is unresolved and components paint greyscale.
   Import `@cascivo/themes/light-dark.css` (or a single theme) once, at the top of your
-  root entry, before any brand overrides. If the markup has no styling *at all* rather
+  root entry, before any brand overrides. If the markup has no styling _at all_ rather
   than missing colors, your resolver is picking the CSS-free `node` build for modules
   that render on the server — confirm nothing in your config forces the `node`
   condition for the client/RSC graphs, and see

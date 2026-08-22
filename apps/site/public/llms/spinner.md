@@ -28,11 +28,11 @@ import { Spinner } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `label` | `string` | no | `Loading` | Accessible label announced by screen readers. Not rendered — screen readers only. |
+| Prop        | Type                   | Required | Default   | Description                                                                                                                                  |
+| ----------- | ---------------------- | -------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `size`      | `'sm' \| 'md' \| 'lg'` | no       | `md`      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                        |
+| `ariaLabel` | `string`               | no       | —         | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`     | `string`               | no       | `Loading` | Accessible label announced by screen readers. Not rendered — screen readers only.                                                            |
 
 ## Examples
 

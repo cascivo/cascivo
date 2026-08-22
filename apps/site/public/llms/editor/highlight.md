@@ -21,18 +21,18 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | yes | — | Code to render |
-| `language` | `string` | no | `plaintext` | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash) |
-| `lineNumbers` | `boolean` | no | `false` | Show the line-number gutter |
-| `wrap` | `boolean` | no | `false` | Soft-wrap long lines |
-| `tabSize` | `number` | no | `2` | Spaces per tab stop |
-| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `label` | `string` | no | — | Accessible label for the code block. Not rendered — screen readers only. |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `gutterRef` | `Ref<HTMLDivElement>` | no | — | Ref to the gutter column (used by `CodeEditor` for scroll-sync). |
-| `preRef` | `Ref<HTMLPreElement>` | no | — | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync). |
+| Prop          | Type                  | Required | Default     | Description                                                                                                                                  |
+| ------------- | --------------------- | -------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`       | `string`              | yes      | —           | Code to render                                                                                                                               |
+| `language`    | `string`              | no       | `plaintext` | Grammar name (plaintext/json/javascript/typescript/css/html/markdown/bash)                                                                   |
+| `lineNumbers` | `boolean`             | no       | `false`     | Show the line-number gutter                                                                                                                  |
+| `wrap`        | `boolean`             | no       | `false`     | Soft-wrap long lines                                                                                                                         |
+| `tabSize`     | `number`              | no       | `2`         | Spaces per tab stop                                                                                                                          |
+| `ariaLabel`   | `string`              | no       | —           | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`       | `string`              | no       | —           | Accessible label for the code block. Not rendered — screen readers only.                                                                     |
+| `className`   | `string`              | no       | —           | Additional CSS class names merged onto the root element.                                                                                     |
+| `gutterRef`   | `Ref<HTMLDivElement>` | no       | —           | Ref to the gutter column (used by `CodeEditor` for scroll-sync).                                                                             |
+| `preRef`      | `Ref<HTMLPreElement>` | no       | —           | Ref to the scrollable `<pre>` (used by `CodeEditor` for scroll-sync).                                                                        |
 
 ## Examples
 
@@ -41,8 +41,7 @@ import '@cascivo/editor/styles.css' // bundler: automatic. Needed only for no-bu
 ```tsx
 import { Highlight } from '@cascivo/editor'
 import '@cascivo/editor/styles.css'
-
-<Highlight language="json" value={'{ "ok": true }'} />
+;<Highlight language="json" value={'{ "ok": true }'} />
 ```
 
 ## Client JavaScript

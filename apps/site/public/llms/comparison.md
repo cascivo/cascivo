@@ -26,24 +26,28 @@ import { Comparison } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `after` | `ReactNode` | yes | — | Base layer shown underneath |
-| `before` | `ReactNode` | yes | — | Top layer revealed up to the divider |
-| `position` | `number` | no | — | Divider position 0–100 (controlled) |
-| `defaultPosition` | `number` | no | `50` | The initial divider position (0–100) when uncontrolled. |
-| `onPositionChange` | `(position: number) => void` | no | — | Called with the new divider position when it changes. |
-| `orientation` | `'horizontal' \| 'vertical'` | no | `horizontal` | Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one. |
-| `keyboardStep` | `number` | no | `5` | How far the divider moves per arrow-key press. |
-| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `label` | `string` | no | — | Accessible name for the divider slider. Not rendered — screen readers only. |
+| Prop               | Type                         | Required | Default      | Description                                                                                                                                                  |
+| ------------------ | ---------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `after`            | `ReactNode`                  | yes      | —            | Base layer shown underneath                                                                                                                                  |
+| `before`           | `ReactNode`                  | yes      | —            | Top layer revealed up to the divider                                                                                                                         |
+| `position`         | `number`                     | no       | —            | Divider position 0–100 (controlled)                                                                                                                          |
+| `defaultPosition`  | `number`                     | no       | `50`         | The initial divider position (0–100) when uncontrolled.                                                                                                      |
+| `onPositionChange` | `(position: number) => void` | no       | —            | Called with the new divider position when it changes.                                                                                                        |
+| `orientation`      | `'horizontal' \| 'vertical'` | no       | `horizontal` | Axis you drag along. `horizontal` splits the two images left and right with a vertical divider; `vertical` splits them top and bottom with a horizontal one. |
+| `keyboardStep`     | `number`                     | no       | `5`          | How far the divider moves per arrow-key press.                                                                                                               |
+| `ariaLabel`        | `string`                     | no       | —            | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only.                 |
+| `label`            | `string`                     | no       | —            | Accessible name for the divider slider. Not rendered — screen readers only.                                                                                  |
 
 ## Examples
 
 ### Image before/after
 
 ```tsx
-<Comparison before={<img src="/edited.jpg" alt="" />} after={<img src="/original.jpg" alt="Original" />} label="Reveal edited image" />
+<Comparison
+  before={<img src="/edited.jpg" alt="" />}
+  after={<img src="/original.jpg" alt="Original" />}
+  label="Reveal edited image"
+/>
 ```
 
 ### Vertical
@@ -55,7 +59,12 @@ import { Comparison } from '@cascivo/react'
 ### Controlled
 
 ```tsx
-<Comparison position={position} onPositionChange={setPosition} before={<Before />} after={<After />} />
+<Comparison
+  position={position}
+  onPositionChange={setPosition}
+  before={<Before />}
+  after={<After />}
+/>
 ```
 
 ## Client JavaScript

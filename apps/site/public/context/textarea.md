@@ -33,15 +33,15 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control. Rendered on screen. |
-| `hint` | `string` | No | — | Supplementary hint text shown with the control. |
-| `error` | `string` | No | — | Error message shown when the value is invalid. |
-| `rows` | `number` | No | 4 | Number of visible text rows. |
-| `resize` | `'none' \| 'vertical' \| 'both'` | No | vertical | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both'). |
-| `disabled` | `boolean` | No | false | When true, disables the control and removes it from the tab order. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
+| Name        | Type                             | Required | Default  | Description                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------- | -------------------------------- | -------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`     | `string`                         | No       | —        | Text label for the control (standalone use). Omit it when wrapping the Textarea in a Field — the Field owns the label, and setting both double-labels the control. Rendered on screen.                                                                                                                                                                                                               |
+| `hint`      | `string`                         | No       | —        | Supplementary hint text shown with the control.                                                                                                                                                                                                                                                                                                                                                      |
+| `error`     | `string`                         | No       | —        | Error message shown when the value is invalid.                                                                                                                                                                                                                                                                                                                                                       |
+| `rows`      | `number`                         | No       | 4        | Number of visible text rows.                                                                                                                                                                                                                                                                                                                                                                         |
+| `resize`    | `'none' \| 'vertical' \| 'both'` | No       | vertical | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both').                                                                                                                                                                                                                                                                                                                       |
+| `disabled`  | `boolean`                        | No       | false    | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
+| `ariaLabel` | `string`                         | No       | —        | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 
@@ -68,10 +68,10 @@ Renders a native <textarea> with aria-multiline; hint and error text are associa
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| token names | strict | Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens |
-| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize |
+| Area            | Level    | Note                                                                             |
+| --------------- | -------- | -------------------------------------------------------------------------------- |
+| token names     | strict   | Border/focus/error colors must resolve to --cascivo-color-\* / focus-ring tokens |
+| resize and rows | flexible | Consumer chooses initial rows and whether the field can resize                   |
 
 ## AI context prompt
 

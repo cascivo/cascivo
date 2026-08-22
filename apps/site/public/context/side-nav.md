@@ -32,22 +32,22 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `groups` | `SideNavGroup[]` | No | — | Grouped navigation items rendered under optional group labels. |
-| `showCollapseToggle` | `boolean` | No | true | Show the collapse/expand toggle control. |
-| `items` | `SideNavItem[]` | No | — | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
-| `collapsed` | `boolean` | No | — | Controlled collapsed state (rail mode) |
-| `defaultCollapsed` | `boolean` | No | false | Whether the rail is collapsed on first render (uncontrolled). |
-| `onCollapsedChange` | `(collapsed: boolean) => void` | No | — | Called with the new collapsed state when it changes. |
-| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `ariaLabel` | `string` | No | Side navigation | Accessible label for the component. Not rendered — screen readers only. |
-| `collapseLabel` | `string` | No | Collapse navigation | Accessible label for the collapse control. |
-| `expandLabel` | `string` | No | Expand navigation | Accessible label for the expand control. |
-| `expandOnHover` | `boolean` | No | false | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts |
-| `header` | `ReactNode` | No | — | Content rendered above the items, inside the item padding context (e.g. app-context pickers) |
-| `footer` | `ReactNode` | No | — | Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info) |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
+| Name                 | Type                           | Required | Default             | Description                                                                                                                                                                                                                                                                                               |
+| -------------------- | ------------------------------ | -------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `groups`             | `SideNavGroup[]`               | No       | —                   | Grouped navigation items rendered under optional group labels.                                                                                                                                                                                                                                            |
+| `showCollapseToggle` | `boolean`                      | No       | true                | Show the collapse/expand toggle control.                                                                                                                                                                                                                                                                  |
+| `items`              | `SideNavItem[]`                | No       | —                   | { label, href?, icon?, active?, items?, onClick?, disabled?, tone?, trailing?, render? } — an onClick-only item renders a focusable <button>; nested items render expandable menus (links, action sub-items with onSelect/selected, separators, labels); render() is an alignment-preserving escape hatch |
+| `collapsed`          | `boolean`                      | No       | —                   | Controlled collapsed state (rail mode)                                                                                                                                                                                                                                                                    |
+| `defaultCollapsed`   | `boolean`                      | No       | false               | Whether the rail is collapsed on first render (uncontrolled).                                                                                                                                                                                                                                             |
+| `onCollapsedChange`  | `(collapsed: boolean) => void` | No       | —                   | Called with the new collapsed state when it changes.                                                                                                                                                                                                                                                      |
+| `label`              | `string`                       | No       | —                   | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                                                                                                                                                            |
+| `ariaLabel`          | `string`                       | No       | Side navigation     | Accessible label for the component. Not rendered — screen readers only.                                                                                                                                                                                                                                   |
+| `collapseLabel`      | `string`                       | No       | Collapse navigation | Accessible label for the collapse control.                                                                                                                                                                                                                                                                |
+| `expandLabel`        | `string`                       | No       | Expand navigation   | Accessible label for the expand control.                                                                                                                                                                                                                                                                  |
+| `expandOnHover`      | `boolean`                      | No       | false               | Widens the rail as an overlay on hover/focus-within; suppresses tooltips/flyouts                                                                                                                                                                                                                          |
+| `header`             | `ReactNode`                    | No       | —                   | Content rendered above the items, inside the item padding context (e.g. app-context pickers)                                                                                                                                                                                                              |
+| `footer`             | `ReactNode`                    | No       | —                   | Content rendered above the collapse toggle, inside the item padding context so it lines up with the nav items (e.g. version string, user info)                                                                                                                                                            |
+| `className`          | `string`                       | No       | —                   | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                  |
 
 ## Tokens
 
@@ -74,7 +74,12 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 ### Basic
 
 ```jsx
-<SideNav items={[{ label: 'Home', href: '/', active: true }, { label: 'Reports', href: '/reports' }]} />
+<SideNav
+  items={[
+    { label: 'Home', href: '/', active: true },
+    { label: 'Reports', href: '/reports' },
+  ]}
+/>
 ```
 
 ### With a group
@@ -89,8 +94,7 @@ Collapsed rail: icons-only with tooltips, grapheme fallback for icon-less items,
 
 ```jsx
 import { Home } from '@cascivo/icons'
-
-<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
+;<SideNav collapsed items={[{ label: 'Home', href: '/', icon: <Home size={16} /> }]} />
 ```
 
 ### Expand on hover
@@ -103,10 +107,10 @@ Rail widens as CSS overlay on hover without reflowing adjacent content
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| collapsed / expandOnHover | flexible | Rail behavior is configurable for density needs |
-| token names | strict | Sizing, surfaces, and motion must resolve to --cascivo-* tokens |
+| Area                      | Level    | Note                                                             |
+| ------------------------- | -------- | ---------------------------------------------------------------- |
+| collapsed / expandOnHover | flexible | Rail behavior is configurable for density needs                  |
+| token names               | strict   | Sizing, surfaces, and motion must resolve to --cascivo-\* tokens |
 
 ## AI context prompt
 

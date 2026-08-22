@@ -32,24 +32,24 @@ The caption is an aria-live region announced each step; play/pause/prev/next mak
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `nodes` | `FlowNode[]` | Yes | — | The nodes to render. |
-| `edges` | `FlowEdge[]` | Yes | — | The edges to render at each step. |
-| `script` | `StoryStep[]` | Yes | — | Ordered steps: { from, to, label? } or { edge, reverse? }. |
-| `loop` | `boolean` | No | true | When true, navigation wraps around from end to start. |
-| `stepDuration` | `number` | No | 1500 | How long (ms) each step is shown during playback. |
-| `stepGap` | `number` | No | 0 | Extra pause after each step before advancing (ms) — makes the story easier to follow. |
-| `playing` | `boolean` | No | — | Whether the story is currently playing (controlled). |
-| `currentStep` | `number` | No | — | The controlled current step index. |
-| `onStepChange` | `(step: number) => void` | No | — | Called with the new step index when it changes. |
-| `controls` | `boolean` | No | true | Whether to show the controls. |
-| `autoPlay` | `boolean` | No | true | When true, starts playback automatically on mount. |
-| `interactive` | `boolean` | No | false | A storyline is a view by default — set true to allow selecting/dragging/connecting. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `background` | `boolean` | No | true | Render the dotted background pane behind the flow. |
-| `clock` | `StoryClock` | No | — | Injectable clock for deterministic tests. |
-| `labels` | `FlowStoryLabels` | No | — | Label overrides for the story playback controls. |
+| Name           | Type                     | Required | Default | Description                                                                           |
+| -------------- | ------------------------ | -------- | ------- | ------------------------------------------------------------------------------------- |
+| `nodes`        | `FlowNode[]`             | Yes      | —       | The nodes to render.                                                                  |
+| `edges`        | `FlowEdge[]`             | Yes      | —       | The edges to render at each step.                                                     |
+| `script`       | `StoryStep[]`            | Yes      | —       | Ordered steps: { from, to, label? } or { edge, reverse? }.                            |
+| `loop`         | `boolean`                | No       | true    | When true, navigation wraps around from end to start.                                 |
+| `stepDuration` | `number`                 | No       | 1500    | How long (ms) each step is shown during playback.                                     |
+| `stepGap`      | `number`                 | No       | 0       | Extra pause after each step before advancing (ms) — makes the story easier to follow. |
+| `playing`      | `boolean`                | No       | —       | Whether the story is currently playing (controlled).                                  |
+| `currentStep`  | `number`                 | No       | —       | The controlled current step index.                                                    |
+| `onStepChange` | `(step: number) => void` | No       | —       | Called with the new step index when it changes.                                       |
+| `controls`     | `boolean`                | No       | true    | Whether to show the controls.                                                         |
+| `autoPlay`     | `boolean`                | No       | true    | When true, starts playback automatically on mount.                                    |
+| `interactive`  | `boolean`                | No       | false   | A storyline is a view by default — set true to allow selecting/dragging/connecting.   |
+| `className`    | `string`                 | No       | —       | Additional CSS class names merged onto the root element.                              |
+| `background`   | `boolean`                | No       | true    | Render the dotted background pane behind the flow.                                    |
+| `clock`        | `StoryClock`             | No       | —       | Injectable clock for deterministic tests.                                             |
+| `labels`       | `FlowStoryLabels`        | No       | —       | Label overrides for the story playback controls.                                      |
 
 ## Object types
 
@@ -57,42 +57,42 @@ The caption is an aria-live region announced each step; play/pause/prev/next mak
 
 Shape of the `clock` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `setTimeout` | `(callback: () => void, ms: number) => unknown` | Yes | — |
-| `clearTimeout` | `(handle: unknown) => void` | Yes | — |
+| Field          | Type                                            | Required | Description |
+| -------------- | ----------------------------------------------- | -------- | ----------- |
+| `setTimeout`   | `(callback: () => void, ms: number) => unknown` | Yes      | —           |
+| `clearTimeout` | `(handle: unknown) => void`                     | Yes      | —           |
 
 ### `FlowNode`
 
 A graph node.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | — |
-| `position` | `XYPosition` | Yes | — |
-| `data` | `Data` | No | — |
-| `type` | `string` | No | Custom renderer key resolved via `nodeTypes`. |
-| `selected` | `boolean` | No | — |
-| `width` | `number` | No | Explicit/measured size used for handle anchors + bounding boxes. |
-| `height` | `number` | No | — |
+| Field      | Type         | Required | Description                                                      |
+| ---------- | ------------ | -------- | ---------------------------------------------------------------- |
+| `id`       | `string`     | Yes      | —                                                                |
+| `position` | `XYPosition` | Yes      | —                                                                |
+| `data`     | `Data`       | No       | —                                                                |
+| `type`     | `string`     | No       | Custom renderer key resolved via `nodeTypes`.                    |
+| `selected` | `boolean`    | No       | —                                                                |
+| `width`    | `number`     | No       | Explicit/measured size used for handle anchors + bounding boxes. |
+| `height`   | `number`     | No       | —                                                                |
 
 ### `FlowEdge`
 
 A directed connection between two nodes' handles.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | Yes | — |
-| `source` | `string` | Yes | — |
-| `target` | `string` | Yes | — |
-| `sourceHandle` | `string` | No | — |
-| `targetHandle` | `string` | No | — |
-| `type` | `EdgePathType \| string` | No | Custom renderer key resolved via `edgeTypes`. |
-| `animated` | `boolean` | No | — |
-| `label` | `string` | No | — |
-| `selected` | `boolean` | No | — |
-| `markerStart` | `boolean` | No | Arrowhead at the source end (points back toward the source). Default false. |
-| `markerEnd` | `boolean` | No | Arrowhead at the target end (points at the target). Default true. |
+| Field          | Type                     | Required | Description                                                                 |
+| -------------- | ------------------------ | -------- | --------------------------------------------------------------------------- |
+| `id`           | `string`                 | Yes      | —                                                                           |
+| `source`       | `string`                 | Yes      | —                                                                           |
+| `target`       | `string`                 | Yes      | —                                                                           |
+| `sourceHandle` | `string`                 | No       | —                                                                           |
+| `targetHandle` | `string`                 | No       | —                                                                           |
+| `type`         | `EdgePathType \| string` | No       | Custom renderer key resolved via `edgeTypes`.                               |
+| `animated`     | `boolean`                | No       | —                                                                           |
+| `label`        | `string`                 | No       | —                                                                           |
+| `selected`     | `boolean`                | No       | —                                                                           |
+| `markerStart`  | `boolean`                | No       | Arrowhead at the source end (points back toward the source). Default false. |
+| `markerEnd`    | `boolean`                | No       | Arrowhead at the target end (points at the target). Default true.           |
 
 ## Tokens
 
@@ -107,7 +107,7 @@ A directed connection between two nodes' handles.
 A<->B-->C: animate A→B, B→A, A→B, B→C, looping — each step fades in its caption.
 
 ```jsx
-() => (
+;() => (
   <FlowStory
     style={{ height: 340 }}
     nodes={[
@@ -135,7 +135,7 @@ A<->B-->C: animate A→B, B→A, A→B, B→C, looping — each step fades in it
 Each stage animates and is captioned in turn.
 
 ```jsx
-() => (
+;() => (
   <FlowStory
     style={{ height: 320 }}
     nodes={[
@@ -148,7 +148,12 @@ Each stage animates and is captioned in turn.
       { id: 'tl', source: 'transform', target: 'load' },
     ]}
     script={[
-      { from: 'ingest', to: 'transform', label: 'Records ingested', description: 'Raw events read from the source' },
+      {
+        from: 'ingest',
+        to: 'transform',
+        label: 'Records ingested',
+        description: 'Raw events read from the source',
+      },
       { from: 'transform', to: 'load', label: 'Transformed', description: 'Cleaned and enriched' },
     ]}
   />
@@ -157,9 +162,9 @@ Each stage animates and is captioned in turn.
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| script | flexible | Serializable steps — { from, to } or { edge, reverse }. |
+| Area     | Level    | Note                                                        |
+| -------- | -------- | ----------------------------------------------------------- |
+| script   | flexible | Serializable steps — { from, to } or { edge, reverse }.     |
 | playback | flexible | Controllable playing/currentStep; loop + per-step duration. |
 
 ## AI context prompt

@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/testing.md
   registry v0.18.0 · generated 2026-08-17
 -->
+
 # Testing cascivo components
 
 How to test UIs built with cascivo using Vitest + Testing Library. cascivo's
@@ -56,7 +57,7 @@ stable contract to test against, not class names.
 ## The `useSignals` gotcha
 
 cascivo components call `useSignals()` internally, so **testing the components
-themselves just works**. The trap is in *your* components: any React component
+themselves just works**. The trap is in _your_ components: any React component
 that reads a signal's `.value` during render must call `useSignals()` (from
 `@cascivo/core`) as its first statement. Without it the component never
 subscribes — in tests the symptom is that handlers fire (spies are called) but
@@ -136,8 +137,11 @@ that is visually hidden, with a styled `<span>` painted on top. The span carries
 `pointer-events: none`, so a normal click passes through to the input:
 
 ```ts
-await page.getByRole('checkbox', { name: 'Select row' }).check()          // ✓
-await page.getByRole('row', { name: /storefront/ }).getByRole('checkbox').check()
+await page.getByRole('checkbox', { name: 'Select row' }).check() // ✓
+await page
+  .getByRole('row', { name: /storefront/ })
+  .getByRole('checkbox')
+  .check()
 ```
 
 If you are on a version before this was fixed, that call fails with

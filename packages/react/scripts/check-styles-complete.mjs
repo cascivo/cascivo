@@ -49,10 +49,25 @@ if (!/box-sizing:\s*border-box/.test(css))
 
 // ── 2. quickstart banner in the published .d.ts ─────────────────────────────
 const dts = readFileSync(join(DIST, 'index.d.ts'), 'utf8')
-for (const needle of ['@cascivo/themes/all.css', '@cascivo/icons', '@cascivo/docs']) {
+// `light-dark.css`, not `all.css`: the banner used to recommend the twelve-theme bundle and
+// describe it as "light & dark", which had been wrong since 0.14.0 and handed every adopter
+// roughly twice the CSS they needed (2026-08-22 report #21). This assertion is what kept the
+// wrong line in place, so it now pins the corrected one.
+for (const needle of ['@cascivo/themes/light-dark.css', '@cascivo/icons', '@cascivo/docs']) {
   if (!dts.includes(needle))
     fail(`index.d.ts quickstart banner is missing "${needle}" (WS-B) — did flatten-types drop it?`)
 }
+
+// The published surface must stay greppable: an agent reads this file with grep, and two
+// bundler-emitted lines (a ~940-char core import, a ~7.2 kB export list naming all 197
+// components) defeated it — every search matched the export line and dumped the whole thing
+// (2026-08-22 report item 19). `flatten-types.mjs` explodes specifier lists one name per line.
+const longest = dts.split('\n').reduce((n, l) => Math.max(n, l.length), 0)
+if (longest > 500)
+  fail(
+    `index.d.ts has a ${longest}-char line — grep output becomes unreadable. ` +
+      'flatten-types.mjs should be exploding specifier lists one name per line.',
+  )
 
 // ── 3. no $N alias leak ─────────────────────────────────────────────────────
 const alias = dts.match(/\b[A-Za-z_]\w*\$\d+\b/)

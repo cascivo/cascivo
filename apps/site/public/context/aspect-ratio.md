@@ -32,10 +32,10 @@ Purely presentational wrapper with no role; the inner media element carries its 
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `ratio` | `number` | No | 16 / 9 | Width-to-height ratio applied via the CSS aspect-ratio property |
-| `children` | `ReactNode` | No | — | Content to fill the ratio box (typically an image, video, or iframe) |
+| Name       | Type        | Required | Default | Description                                                          |
+| ---------- | ----------- | -------- | ------- | -------------------------------------------------------------------- |
+| `ratio`    | `number`    | No       | 16 / 9  | Width-to-height ratio applied via the CSS aspect-ratio property      |
+| `children` | `ReactNode` | No       | —       | Content to fill the ratio box (typically an image, video, or iframe) |
 
 ## Tokens
 
@@ -61,10 +61,10 @@ Purely presentational wrapper with no role; the inner media element carries its 
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| ratio | flexible | Any positive number; common values are 16/9, 4/3, 1, 3/2 |
-| child sizing | strict | The single child is stretched to fill; provide one media element |
+| Area         | Level    | Note                                                             |
+| ------------ | -------- | ---------------------------------------------------------------- |
+| ratio        | flexible | Any positive number; common values are 16/9, 4/3, 1, 3/2         |
+| child sizing | strict   | The single child is stretched to fill; provide one media element |
 
 ## AI context prompt
 

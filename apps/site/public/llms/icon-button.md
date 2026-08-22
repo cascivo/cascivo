@@ -38,23 +38,25 @@ import { IconButton } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | no | — | Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name. Not rendered — screen readers only. |
-| `ariaLabel` | `string` | no | — | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. Not rendered — screen readers only. |
-| `icon` | `React.ReactNode` | no | — | Icon element rendered in the component. |
-| `variant` | `'ghost' \| 'outline' \| 'filled'` | no | `ghost` | `ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface. |
-| `size` | `'sm' \| 'md' \| 'lg'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `asChild` | `boolean` | no | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering). |
-| `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
-| `onClick` | `React.MouseEventHandler<HTMLButtonElement>` | no | — | Called when the element is clicked. |
+| Prop        | Type                                         | Required | Default | Description                                                                                                                                                             |
+| ----------- | -------------------------------------------- | -------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`     | `string`                                     | no       | —       | Accessible name for the icon-only button. Not rendered — screen readers only; `ariaLabel` is the same thing under the catalog name. Not rendered — screen readers only. |
+| `ariaLabel` | `string`                                     | no       | —       | Alias for `label` (the catalog convention for an invisible accessible name). Both work; pass exactly one. Not rendered — screen readers only.                           |
+| `icon`      | `React.ReactNode`                            | no       | —       | Icon element rendered in the component.                                                                                                                                 |
+| `variant`   | `'ghost' \| 'outline' \| 'filled'`           | no       | `ghost` | `ghost` is transparent until hover, `outline` adds a border, `filled` gives the button a solid surface.                                                                 |
+| `size`      | `'sm' \| 'md' \| 'lg'`                       | no       | `md`    | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                   |
+| `asChild`   | `boolean`                                    | no       | `false` | When true, renders the child element as the root via Slot, merging props (polymorphic rendering).                                                                       |
+| `disabled`  | `boolean`                                    | no       | `false` | When true, disables the control and removes it from the tab order.                                                                                                      |
+| `onClick`   | `React.MouseEventHandler<HTMLButtonElement>` | no       | —       | Called when the element is clicked.                                                                                                                                     |
 
 ## Examples
 
 ### Ghost
 
 ```tsx
-<IconButton label="Settings"><GearIcon /></IconButton>
+<IconButton label="Settings">
+  <GearIcon />
+</IconButton>
 ```
 
 ### Filled
@@ -66,7 +68,11 @@ import { IconButton } from '@cascivo/react'
 ### As link
 
 ```tsx
-<IconButton label="Home" asChild><a href="/"><HomeIcon /></a></IconButton>
+<IconButton label="Home" asChild>
+  <a href="/">
+    <HomeIcon />
+  </a>
+</IconButton>
 ```
 
 ## Client JavaScript

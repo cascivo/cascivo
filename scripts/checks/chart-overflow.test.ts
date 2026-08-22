@@ -72,7 +72,8 @@ describe('CalendarHeatmap never draws outside its viewBox', () => {
       overflows,
       [],
       'Cells must be clamped to the height budget ((height - 6*GAP)/7), not sized from width ' +
-        'alone. Overflowing cases:\n  ' + overflows.join('\n  '),
+        'alone. Overflowing cases:\n  ' +
+        overflows.join('\n  '),
     )
   })
 

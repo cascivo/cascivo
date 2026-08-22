@@ -3,13 +3,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Dock } from '@cascivo/react'
 
 const meta: Meta = {
-  title: "Navigation/Dock",
+  title: 'Navigation/Dock',
 }
 export default meta
 type Story = StoryObj
 
 export const WithHrefs: Story = {
-  name: "With hrefs",
+  name: 'With hrefs',
   render: () => (
     <Dock
       activeIndex={1}
@@ -22,4 +22,3 @@ export const WithHrefs: Story = {
     />
   ),
 }
-

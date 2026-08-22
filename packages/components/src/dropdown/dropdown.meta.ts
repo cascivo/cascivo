@@ -75,9 +75,7 @@ export const meta: ComponentMeta = {
     {
       name: 'DropdownSeparatorItem',
       description: 'A rule between groups. Carries no data and is skipped by keyboard navigation.',
-      fields: [
-        { name: 'kind', type: "'separator'", required: true, description: 'Discriminant.' },
-      ],
+      fields: [{ name: 'kind', type: "'separator'", required: true, description: 'Discriminant.' }],
     },
   ],
   tokens: [

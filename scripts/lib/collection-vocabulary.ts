@@ -86,7 +86,7 @@ export function collectionVocabularySentence(registryPath: string): string {
     'Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one ' +
     `2026-08-08 dashboard, two more on 2026-08-22): ${parts.join('; ')}. ` +
     `Exceptions, named in full because they are where the guesses go wrong: ${exceptions}. ` +
-    "A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union " +
+    'A visual style enum -> **`variant`**, never `shape`/`kind`/`type`; a discriminated-union ' +
     "tag -> **`kind`**, never `type` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable " +
     'slot -> **`actions`** as ReactNode (Notification, CardHeader, PageHeader — only ' +
     '`Alert.action` is the {label,onClick} shorthand); body text on a feedback component -> ' +

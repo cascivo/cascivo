@@ -85,7 +85,7 @@ RSC without any extra wrapper.
 
 ```tsx
 // once, in your entry file — themes are the only global import
-import '@cascivo/themes/light-dark.css'  // tokens (once) + base typography + light & dark
+import '@cascivo/themes/light-dark.css' // tokens (once) + base typography + light & dark
 // swap for '@cascivo/themes/all.css' only if you ship a theme picker (all twelve, ~2x)
 
 // anywhere — each component brings its own CSS along

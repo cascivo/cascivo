@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/third-party-css.md
   registry v0.18.0 · generated 2026-08-17
 -->
+
 # Taming third-party CSS
 
 You want to drop a legacy library into a cascivo app — a heavy charting widget, a

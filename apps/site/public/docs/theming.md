@@ -3,6 +3,7 @@
   Canonical: https://cascivo.com/docs/theming.md
   registry v0.18.0 · generated 2026-08-17
 -->
+
 # Theming & branding cascivo
 
 cascivo is a token-driven design system: every component reads CSS custom
@@ -62,11 +63,11 @@ Apply a theme by setting the attribute on any container:
 Both are correct, and which one applies is decided by whether you switch themes at runtime.
 This is the one place that answers it:
 
-| You are… | Put `data-theme` on | Who sets it |
-| --- | --- | --- |
-| Shipping one fixed theme | any container — `<main>`, `#root`, a `<section>` | you, in JSX |
-| Switching themes at runtime (`ThemeProvider` / `useTheme`) | **`<html>`** | `ThemeProvider` — do **not** also set it in JSX |
-| Theming one subtree differently (a docs preview, an embedded widget, a dark toolbar in a light app) | that subtree's wrapper | you, in JSX |
+| You are…                                                                                            | Put `data-theme` on                              | Who sets it                                     |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------ | ----------------------------------------------- |
+| Shipping one fixed theme                                                                            | any container — `<main>`, `#root`, a `<section>` | you, in JSX                                     |
+| Switching themes at runtime (`ThemeProvider` / `useTheme`)                                          | **`<html>`**                                     | `ThemeProvider` — do **not** also set it in JSX |
+| Theming one subtree differently (a docs preview, an embedded widget, a dark toolbar in a light app) | that subtree's wrapper                           | you, in JSX                                     |
 
 `ThemeProvider` writes the attribute on `document.documentElement` so the whole document —
 including portalled overlays that render outside your React tree — switches together. A
@@ -99,7 +100,7 @@ path and already import from `@cascivo/react`, keep doing that — it is the sam
 > install 197 components to get a theme signal, so one hand-wrote the provider, the
 > persistence, the preload script and the `data-theme` wiring instead.
 
-`data-theme` is the *what*; `ThemeProvider` is the *how* — it
+`data-theme` is the _what_; `ThemeProvider` is the _how_ — it
 persists the choice, drives the attribute, and is SSR-safe, so you never hand-wire a theme
 toggle (and never write a `useEffect` that toggles a `.dark` class):
 
@@ -116,9 +117,7 @@ function App() {
 
 function ThemeToggle() {
   const [theme, setTheme] = useTheme() // [themeName: string, setter]; calls useSignals() for you
-  return (
-    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme}</button>
-  )
+  return <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme}</button>
 }
 ```
 
@@ -143,14 +142,14 @@ function ThemeToggle() {
   instead.)
 - **No flash on reload / SSR:** inline `themePreloadScript()` in your document `<head>`, before
   the app bundle, so the theme paints on the first byte. It follows the same precedence, and it
-  sets `data-theme` *before* React hydrates — so add `suppressHydrationWarning` to the element
+  sets `data-theme` _before_ React hydrates — so add `suppressHydrationWarning` to the element
   carrying the attribute (usually `<html>`), or React 19 logs a hydration mismatch:
 
 ```tsx
 import { themePreloadScript } from '@cascivo/core'
 
 // server-rendered document
-<html suppressHydrationWarning>
+;<html suppressHydrationWarning>
   <head>
     {/* defaultTheme:'dark' keeps a light-OS visitor dark; omit it to follow the OS */}
     <script dangerouslySetInnerHTML={{ __html: themePreloadScript({ defaultTheme: 'dark' }) }} />
@@ -371,7 +370,7 @@ computed `color-scheme`. cascivo ships **twelve** themes
 terminal, cyberpunk, arcade`) and scopes them to **any container** via the
 `[data-theme]` attribute. `light-dark()` cannot express `warm` vs `brutalist`,
 and keying on `color-scheme` would collapse container-scoped multi-theming to a
-binary — so cascivo keeps `[data-theme]`. `light-dark()` *could* be used narrowly
+binary — so cascivo keeps `[data-theme]`. `light-dark()` _could_ be used narrowly
 inside the light/dark pair, but it buys little over the attribute system already
 in place, so the first-party themes do not use it.
 
@@ -389,5 +388,5 @@ build on.
 
 Every cascivo color — primitive and semantic — is already OKLCH (see
 `packages/tokens/src/index.css`). The common "use OKLCH so machines can derive
-in-system shades" advice is therefore already satisfied; the *derivation* layer
+in-system shades" advice is therefore already satisfied; the _derivation_ layer
 (relative color, `contrast-color()`) is built on top of it.

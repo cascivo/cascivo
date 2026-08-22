@@ -114,9 +114,9 @@ const NOT_FIELD_WRAPPED: Record<string, string> = {
   CodeEditor: 'ships from @cascivo/editor, not a Field-wrapped control',
 }
 
-const registry = JSON.parse(
-  readFileSync(join(process.cwd(), '../../registry.json'), 'utf8'),
-) as { components: { meta: { name: string; category?: string } }[] }
+const registry = JSON.parse(readFileSync(join(process.cwd(), '../../registry.json'), 'utf8')) as {
+  components: { meta: { name: string; category?: string } }[]
+}
 
 describe('Field composition', () => {
   it('covers every inputs-category control with a fixture or a documented exclusion', () => {
@@ -128,15 +128,18 @@ describe('Field composition', () => {
     expect(
       uncovered,
       'A new inputs-category control must either get a Field fixture here or an entry in ' +
-        'NOT_FIELD_WRAPPED saying why a Field does not wrap it. Uncovered: ' + uncovered.join(', '),
+        'NOT_FIELD_WRAPPED saying why a Field does not wrap it. Uncovered: ' +
+        uncovered.join(', '),
     ).toEqual([])
   })
 
   it('has no stale exclusions', () => {
     const known = new Set(registry.components.map((c) => c.meta.name))
     const stale = Object.keys(NOT_FIELD_WRAPPED).filter((n) => !known.has(n))
-    expect(stale, `NOT_FIELD_WRAPPED names components that no longer exist: ${stale.join(', ')}`)
-      .toEqual([])
+    expect(
+      stale,
+      `NOT_FIELD_WRAPPED names components that no longer exist: ${stale.join(', ')}`,
+    ).toEqual([])
   })
 
   for (const [name, fixture] of Object.entries(FIXTURES)) {

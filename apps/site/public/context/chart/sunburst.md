@@ -23,17 +23,17 @@ Renders role="img" with a title and a fallback path/value table.
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `data` | `HierNode` | Yes | — | Root of the tree; leaves carry value, parents sum their children. |
-| `title` | `string` | Yes | — | Title text for the component. |
-| `description` | `string` | No | — | Supporting description text. |
-| `size` | `number` | No | — | Square shorthand (width === height). |
-| `width` | `number` | No | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | No | 300 | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `tooltip` | `boolean` | No | — | Whether to show tooltips on hover. |
-| `className` | `string` | No | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | No | false | When true, renders a minimal variant without chart chrome. |
+| Name          | Type       | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | ---------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`        | `HierNode` | Yes      | —       | Root of the tree; leaves carry value, parents sum their children.                                                                                                                                                                                                                                                                                                                             |
+| `title`       | `string`   | Yes      | —       | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
+| `description` | `string`   | No       | —       | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `size`        | `number`   | No       | —       | Square shorthand (width === height).                                                                                                                                                                                                                                                                                                                                                          |
+| `width`       | `number`   | No       | —       | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`   | No       | 300     | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `tooltip`     | `boolean`  | No       | —       | Whether to show tooltips on hover.                                                                                                                                                                                                                                                                                                                                                            |
+| `className`   | `string`   | No       | —       | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`  | No       | false   | When true, renders a minimal variant without chart chrome.                                                                                                                                                                                                                                                                                                                                    |
 
 ## Object types
 
@@ -41,13 +41,13 @@ Renders role="img" with a title and a fallback path/value table.
 
 Shape of the `data` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | No | — |
-| `label` | `string` | Yes | — |
-| `value` | `number` | No | — |
-| `color` | `string` | No | — |
-| `children` | `HierNode[]` | No | — |
+| Field      | Type         | Required | Description |
+| ---------- | ------------ | -------- | ----------- |
+| `id`       | `string`     | No       | —           |
+| `label`    | `string`     | Yes      | —           |
+| `value`    | `number`     | No       | —           |
+| `color`    | `string`     | No       | —           |
+| `children` | `HierNode[]` | No       | —           |
 
 ## Tokens
 
@@ -66,13 +66,21 @@ Shape of the `data` prop.
 
 ```jsx
 import { Sunburst } from '@cascivo/charts'
-
-<Sunburst
+;<Sunburst
   title="Disk usage"
-  data={{ label: 'root', children: [
-    { label: 'src', children: [{ label: 'app', value: 40 }, { label: 'lib', value: 25 }] },
-    { label: 'docs', value: 15 },
-  ] }}
+  data={{
+    label: 'root',
+    children: [
+      {
+        label: 'src',
+        children: [
+          { label: 'app', value: 40 },
+          { label: 'lib', value: 25 },
+        ],
+      },
+      { label: 'docs', value: 15 },
+    ],
+  }}
 />
 ```
 

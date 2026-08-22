@@ -33,10 +33,10 @@ import { Timeline } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `items` | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming"; tone?: "neutral" \| "info" \| "success" \| "warning" \| "danger" }[]` | yes | — | The items to render. |
-| `orientation` | `'vertical' \| 'horizontal'` | no | `vertical` | Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across. |
+| Prop          | Type                                                                                                                                                                                                             | Required | Default    | Description                                                                                                                 |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `items`       | `{ id: string; title: ReactNode; description?: ReactNode; time?: string; icon?: ReactNode; status?: "complete" \| "current" \| "upcoming"; tone?: "neutral" \| "info" \| "success" \| "warning" \| "danger" }[]` | yes      | —          | The items to render.                                                                                                        |
+| `orientation` | `'vertical' \| 'horizontal'`                                                                                                                                                                                     | no       | `vertical` | Axis the entries flow along: `vertical` stacks them down the page (the usual reading order), `horizontal` runs them across. |
 
 ## Examples
 
@@ -59,10 +59,34 @@ In a feed every entry is equally done, so `tone` — not `status` — is what se
 ```tsx
 <Timeline
   items={[
-    { id: '1', title: 'p99 latency 4.2s', description: 'ALERT · monitor', time: '14:28', tone: 'danger' },
-    { id: '2', title: 'Rolling back deploy 4821', description: 'NOTE · bo', time: '14:49', tone: 'neutral' },
-    { id: '3', title: 'Status changed to monitoring', description: 'STATUS · ana', time: '15:12', tone: 'info' },
-    { id: '4', title: 'Merged 2 edits from kim', description: 'MERGE · sync', time: '15:14', tone: 'success' },
+    {
+      id: '1',
+      title: 'p99 latency 4.2s',
+      description: 'ALERT · monitor',
+      time: '14:28',
+      tone: 'danger',
+    },
+    {
+      id: '2',
+      title: 'Rolling back deploy 4821',
+      description: 'NOTE · bo',
+      time: '14:49',
+      tone: 'neutral',
+    },
+    {
+      id: '3',
+      title: 'Status changed to monitoring',
+      description: 'STATUS · ana',
+      time: '15:12',
+      tone: 'info',
+    },
+    {
+      id: '4',
+      title: 'Merged 2 edits from kim',
+      description: 'MERGE · sync',
+      time: '15:14',
+      tone: 'success',
+    },
   ]}
 />
 ```

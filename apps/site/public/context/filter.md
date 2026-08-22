@@ -34,19 +34,19 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `label` | `string` | No | — | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `ariaLabel` | `string` | No | — | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
-| `aria-label` | `string` | No | — | Accessible label for the filter group. |
-| `options` | `FilterOption[]` | Yes | — | Array of { label, value } objects to render as filter buttons |
-| `value` | `string[]` | No | — | Controlled selected values |
-| `defaultValue` | `string[]` | No | [] | Initial selected values for uncontrolled use |
-| `onValueChange` | `(selected: string[]) => void` | No | — | Called with the selected values whenever the selection changes. |
-| `onChange` | `(selected: string[]) => void` | No | — | Deprecated: use onValueChange (same string[]). |
-| `multi` | `boolean` | No | false | Allow multiple items to be selected simultaneously |
-| `variant` | `'pill' \| 'outline'` | No | pill | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent. |
-| `multiple` | `boolean` | No | — | Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical. |
+| Name            | Type                           | Required | Default | Description                                                                                                                                                            |
+| --------------- | ------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`         | `string`                       | No       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only.                         |
+| `ariaLabel`     | `string`                       | No       | —       | Invisible accessible name. The catalog convention; the DOM spelling `aria-label` is accepted as an alias so either guess compiles. Not rendered — screen readers only. |
+| `aria-label`    | `string`                       | No       | —       | Accessible label for the filter group.                                                                                                                                 |
+| `options`       | `FilterOption[]`               | Yes      | —       | Array of { label, value } objects to render as filter buttons                                                                                                          |
+| `value`         | `string[]`                     | No       | —       | Controlled selected values                                                                                                                                             |
+| `defaultValue`  | `string[]`                     | No       | []      | Initial selected values for uncontrolled use                                                                                                                           |
+| `onValueChange` | `(selected: string[]) => void` | No       | —       | Called with the selected values whenever the selection changes.                                                                                                        |
+| `onChange`      | `(selected: string[]) => void` | No       | —       | Deprecated: use onValueChange (same string[]).                                                                                                                         |
+| `multi`         | `boolean`                      | No       | false   | Allow multiple items to be selected simultaneously                                                                                                                     |
+| `variant`       | `'pill' \| 'outline'`          | No       | pill    | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.                        |
+| `multiple`      | `boolean`                      | No       | —       | Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical.                          |
 
 ## Tokens
 
@@ -95,17 +95,20 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 ```jsx
 <Filter
   variant="outline"
-  options={[{ label: 'React', value: 'react' }, { label: 'Vue', value: 'vue' }]}
+  options={[
+    { label: 'React', value: 'react' },
+    { label: 'Vue', value: 'vue' },
+  ]}
   aria-label="Filter by framework"
 />
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
+| Area    | Level    | Note                                                                                            |
+| ------- | -------- | ----------------------------------------------------------------------------------------------- |
 | variant | flexible | pill suits floating filter bars; outline suits embedded filter rows within a bordered container |
-| multi | flexible | single-select for mutually exclusive categories; multi for additive facets |
+| multi   | flexible | single-select for mutually exclusive categories; multi for additive facets                      |
 
 ## AI context prompt
 

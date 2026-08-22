@@ -36,7 +36,7 @@ export function wrapText(text: string, maxWidth: number, fontSize: number): stri
   return lines.length ? lines : [text]
 }
 
-export interface TextProps {
+export interface ChartTextProps {
   x: number
   y: number
   children: string
@@ -50,11 +50,17 @@ export interface TextProps {
 }
 
 /**
- * An SVG text primitive that wraps to a max width (canvas-measured, with a char
- * fallback). The `@visx/text` analogue — used by `Axis` for long category labels
- * and available to custom charts.
+ * An SVG `<text>` primitive that wraps to a max width (canvas-measured, with a char
+ * fallback). The `@visx/text` analogue — used by `Axis` for long category labels and
+ * available to custom charts.
+ *
+ * Named `ChartText`, not `Text`: `@cascivo/react` also exports a `Text` (the typography
+ * component), and a dashboard file importing from both packages is the normal case. The
+ * collision resolved silently — the wrong `Text` renders an SVG node where a paragraph was
+ * meant, with no error — and it was the last one in the catalog after `Calendar` became
+ * `CalendarHeatmap` (2026-08-22 report item 20).
  */
-export function Text({
+export function ChartText({
   x,
   y,
   children,
@@ -64,7 +70,7 @@ export function Text({
   fill,
   lineHeight = 1.2,
   className,
-}: TextProps): ReactNode {
+}: ChartTextProps): ReactNode {
   const lines = width ? wrapText(children, width, fontSize) : [children]
   return (
     <text
@@ -83,3 +89,14 @@ export function Text({
     </text>
   )
 }
+
+/**
+ * @deprecated Use `ChartText`. This name collides with `@cascivo/react`'s typography
+ * component, and the wrong resolution is silent. Removed at 1.0 — the release cadence is
+ * roughly weekly, so a one-minor window would be about five days, which is a break with extra
+ * steps rather than a deprecation.
+ */
+export const Text = ChartText
+
+/** @deprecated Use `ChartTextProps`. */
+export type TextProps = ChartTextProps

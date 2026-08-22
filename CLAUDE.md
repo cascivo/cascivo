@@ -295,6 +295,14 @@ Packages that export source directly (components, layouts, charts, themes, token
 
 ### Monorepo Structure
 
+**An app's `package.json` `name` must end with its directory name.** `apps/examples/pulse` is
+`@cascivo/example-pulse`; `apps/bench/runner` is `bench-runner`. Two apps cannot share a
+directory, so a name derived from the directory cannot collide either — and an agent working in
+one app can follow the rule without reading the others, which project isolation may not even
+allow. A duplicate name is not a scoped failure: the task runner refuses to run **any** task in
+the monorepo, and the cause is invisible from inside the app that triggered it (2026-08-22
+report, repo-level note). Enforced by `scripts/checks/app-package-names.test.ts`.
+
 ```
 cascade/
 ├── packages/

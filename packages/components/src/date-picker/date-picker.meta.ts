@@ -94,8 +94,7 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'aria-invalid',
-      description:
-        'Wired automatically by a wrapping `Field` when it is in an error state.',
+      description: 'Wired automatically by a wrapping `Field` when it is in an error state.',
       type: 'boolean',
       required: false,
     },

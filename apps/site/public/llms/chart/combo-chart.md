@@ -21,24 +21,24 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `bars` | `{ label: string; value: number }[]` | yes | — | Bar series data |
-| `line` | `{ x: number; y: number }[]` | yes | — | Line series data points |
-| `title` | `string` | yes | — | Title text for the component. |
-| `description` | `string` | no | — | Supporting description text. |
-| `secondAxis` | `boolean` | no | `false` | Render line on a secondary right y-axis |
-| `width` | `number` | no | — | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
-| `height` | `number` | no | `320` | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect. |
-| `tooltip` | `boolean` | no | — | Enable hover/keyboard tooltip |
-| `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
-| `plain` | `boolean` | no | `false` | Marks only — no axes, grid lines, or legend. For micro/inline charts. |
-| `annotations` | `Annotation[]` | no | — | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line). |
-| `barsLabel` | `string` | no | `'Bars'` | Legend label for the bar series. |
-| `format` | `(value: number \| string \| Date) => string` | no | — | Format each X-axis tick label. |
-| `legend` | `boolean` | no | — | Show the legend. |
-| `lineLabel` | `string` | no | `'Line'` | Legend label for the line series. |
-| `xLabelEvery` | `number` | no | — | Render every Nth category label. |
+| Prop          | Type                                          | Required | Default  | Description                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------- | --------------------------------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `bars`        | `{ label: string; value: number }[]`          | yes      | —        | Bar series data                                                                                                                                                                                                                                                                                                                                                                               |
+| `line`        | `{ x: number; y: number }[]`                  | yes      | —        | Line series data points                                                                                                                                                                                                                                                                                                                                                                       |
+| `title`       | `string`                                      | yes      | —        | Title text for the component.                                                                                                                                                                                                                                                                                                                                                                 |
+| `description` | `string`                                      | no       | —        | Supporting description text.                                                                                                                                                                                                                                                                                                                                                                  |
+| `secondAxis`  | `boolean`                                     | no       | `false`  | Render line on a secondary right y-axis                                                                                                                                                                                                                                                                                                                                                       |
+| `width`       | `number`                                      | no       | —        | Fixed SVG width in px. ⚠ **Omit for a responsive chart** — the chart fills and tracks its container via a ResizeObserver; there is no correct pixel number in a responsive grid. A fixed width is clamped to the container (max-inline-size: 100%) so it can never overflow its card, but it also stops the chart growing. `useChartSize` is NOT needed for this — charts call it internally. |
+| `height`      | `number`                                      | no       | `320`    | SVG height in px. Unlike `width`, height does NOT track the container — this is the knob you set to change the chart's aspect.                                                                                                                                                                                                                                                                |
+| `tooltip`     | `boolean`                                     | no       | —        | Enable hover/keyboard tooltip                                                                                                                                                                                                                                                                                                                                                                 |
+| `className`   | `string`                                      | no       | —        | Additional CSS class names merged onto the root element.                                                                                                                                                                                                                                                                                                                                      |
+| `plain`       | `boolean`                                     | no       | `false`  | Marks only — no axes, grid lines, or legend. For micro/inline charts.                                                                                                                                                                                                                                                                                                                         |
+| `annotations` | `Annotation[]`                                | no       | —        | Reference lines, shaded bands, and markers drawn over the plot (e.g. a target/threshold line).                                                                                                                                                                                                                                                                                                |
+| `barsLabel`   | `string`                                      | no       | `'Bars'` | Legend label for the bar series.                                                                                                                                                                                                                                                                                                                                                              |
+| `format`      | `(value: number \| string \| Date) => string` | no       | —        | Format each X-axis tick label.                                                                                                                                                                                                                                                                                                                                                                |
+| `legend`      | `boolean`                                     | no       | —        | Show the legend.                                                                                                                                                                                                                                                                                                                                                                              |
+| `lineLabel`   | `string`                                      | no       | `'Line'` | Legend label for the line series.                                                                                                                                                                                                                                                                                                                                                             |
+| `xLabelEvery` | `number`                                      | no       | —        | Render every Nth category label.                                                                                                                                                                                                                                                                                                                                                              |
 
 ## Object types
 
@@ -46,19 +46,19 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 
 Shape of the `bars` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `label` | `string` | yes | — |
-| `value` | `number` | yes | — |
+| Field   | Type     | Required | Description |
+| ------- | -------- | -------- | ----------- |
+| `label` | `string` | yes      | —           |
+| `value` | `number` | yes      | —           |
 
 ### `ComboChartPoint`
 
 Shape of the `line` prop.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `x` | `number` | yes | Index into `bars` — point `i` is drawn at the centre of bar `i`. |
-| `y` | `number` | yes | — |
+| Field | Type     | Required | Description                                                      |
+| ----- | -------- | -------- | ---------------------------------------------------------------- |
+| `x`   | `number` | yes      | Index into `bars` — point `i` is drawn at the centre of bar `i`. |
+| `y`   | `number` | yes      | —                                                                |
 
 ## Examples
 

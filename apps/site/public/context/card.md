@@ -32,11 +32,11 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `actions` | `ReactNode` | No | — | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card. |
-| `variant` | `'default' \| 'outlined' \| 'elevated'` | No | default | `default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow. |
-| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'` | No | md | Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child. |
+| Name      | Type                                    | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| --------- | --------------------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `actions` | `ReactNode`                             | No       | —       | CardHeader only — trailing content pinned to the inline-end (overflow menu, badge, link). The header is a column by default, so `justify-content: space-between` alone does nothing; this is how you get the title-left / action-right dashboard card.                                                                                                                                                                                                           |
+| `variant` | `'default' \| 'outlined' \| 'elevated'` | No       | default | `default` draws a 1px border, `outlined` a heavier one, `elevated` drops the border for a shadow.                                                                                                                                                                                                                                                                                                                                                                |
+| `padding` | `'none' \| 'sm' \| 'md' \| 'lg'`        | No       | md      | Inner padding of the CARD BOX. ⚠ `padding="none"` deliberately does NOT strip the padding from CardHeader/CardContent/CardFooter — those keep their own. It means "let a flush child (a LogViewer, an image, an edge-to-edge table) reach the card's edge"; zeroing both put the title flush against the border and made the mode unusable with the composition it exists for. For an edge-to-edge table, skip CardContent and pass the table as a direct child. |
 
 ## Tokens
 
@@ -51,17 +51,19 @@ role="region" is appropriate only when the card is a meaningful landmark; otherw
 
 ```jsx
 <Card>
-  <CardHeader><CardTitle>Title</CardTitle></CardHeader>
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+  </CardHeader>
   <CardContent>Content here</CardContent>
 </Card>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| variant and padding | flexible | Choose elevation and density to fit the surrounding layout |
-| token names | strict | Surface, border, radius, and shadow must resolve to --cascivo-* tokens |
+| Area                | Level    | Note                                                                    |
+| ------------------- | -------- | ----------------------------------------------------------------------- |
+| variant and padding | flexible | Choose elevation and density to fit the surrounding layout              |
+| token names         | strict   | Surface, border, radius, and shadow must resolve to --cascivo-\* tokens |
 
 ## AI context prompt
 

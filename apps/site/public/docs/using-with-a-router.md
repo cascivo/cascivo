@@ -3,16 +3,17 @@
   Canonical: https://cascivo.com/docs/using-with-a-router.md
   registry v0.18.0 · generated 2026-08-17
 -->
+
 # Using cascivo with a router (TanStack Router, React Router, Next.js)
 
 Every dashboard has a router, and cascivo links come in **two kinds** that are wired
 differently. Getting one of them wrong is the single most-reported friction in adopter
 reports, so this page is the one owner of the answer.
 
-| Kind of link | How you wire it | Why |
-| ------------ | --------------- | --- |
+| Kind of link                                                                                                                           | How you wire it                                 | Why                                                                                                          |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | Links cascivo renders **for you** from config — `SideNav`, `ShellHeader`, `Header`, `Breadcrumb`, `Switcher`, `Dock`, `NavigationMenu` | `setLinkComponent(...)` **once at app startup** | You never write the `<a>`; cascivo does, from your `items`/`groups` arrays. It needs to know what to render. |
-| Links **you** write in page content — a project name in a card title, a branch name in a table cell | `<Link asChild>` wrapping your router's link | You own the element; cascivo only lends it the styling. |
+| Links **you** write in page content — a project name in a card title, a branch name in a table cell                                    | `<Link asChild>` wrapping your router's link    | You own the element; cascivo only lends it the styling.                                                      |
 
 **`setLinkComponent` does not affect `<Link>`.** That is deliberate — `Link` is a component
 you place yourself, so it takes the child you give it rather than reaching for a global. If you
@@ -28,11 +29,15 @@ import { setLinkComponent, type LinkComponentProps } from '@cascivo/react'
 
 // TanStack Router — its Link takes `to`, so map href → to and spread the rest:
 import { Link as RouterLink } from '@tanstack/react-router'
-setLinkComponent(({ href, ...rest }: LinkComponentProps) => <RouterLink to={href ?? '.'} {...rest} />)
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => (
+  <RouterLink to={href ?? '.'} {...rest} />
+))
 
 // React Router — same shape:
 import { Link as RouterLink } from 'react-router'
-setLinkComponent(({ href, ...rest }: LinkComponentProps) => <RouterLink to={href ?? '.'} {...rest} />)
+setLinkComponent(({ href, ...rest }: LinkComponentProps) => (
+  <RouterLink to={href ?? '.'} {...rest} />
+))
 
 // Next.js — its Link already takes `href`:
 import Link from 'next/link'
@@ -129,17 +134,17 @@ copy silently wins over the parts you did not copy.
 
 <!-- generated: asChild-support -->
 
-| Component | Typical child |
-| --------- | ------------- |
-| `Button` | `<a>` / router `Link` — a call-to-action that navigates |
-| `IconButton` | `<a>` / router `Link` — an icon-only navigation control |
-| `Link` | router `Link` — an in-content link |
-| `Item` | `<a>` / router `Link` — a list row that navigates |
-| `Tile` | `<a>` / router `Link` — a selectable card that navigates |
+| Component           | Typical child                                               |
+| ------------------- | ----------------------------------------------------------- |
+| `Button`            | `<a>` / router `Link` — a call-to-action that navigates     |
+| `IconButton`        | `<a>` / router `Link` — an icon-only navigation control     |
+| `Link`              | router `Link` — an in-content link                          |
+| `Item`              | `<a>` / router `Link` — a list row that navigates           |
+| `Tile`              | `<a>` / router `Link` — a selectable card that navigates    |
 | `ContainedListItem` | `<a>` / router `Link` — a list row inside a `ContainedList` |
-| `PopoverTrigger` | your own trigger element |
-| `TabsTrigger` | router `Link` — one route per tab (see below) |
-| `Label` | a custom label element |
+| `PopoverTrigger`    | your own trigger element                                    |
+| `TabsTrigger`       | router `Link` — one route per tab (see below)               |
+| `Label`             | a custom label element                                      |
 
 <!-- /generated: asChild-support -->
 
@@ -167,10 +172,14 @@ function ProjectTabs({ id }: { id: string }) {
     <Tabs value={active}>
       <TabsList>
         <TabsTrigger value="overview" asChild>
-          <Link to="/projects/$id/overview" params={{ id }}>Overview</Link>
+          <Link to="/projects/$id/overview" params={{ id }}>
+            Overview
+          </Link>
         </TabsTrigger>
         <TabsTrigger value="settings" asChild>
-          <Link to="/projects/$id/settings" params={{ id }}>Settings</Link>
+          <Link to="/projects/$id/settings" params={{ id }}>
+            Settings
+          </Link>
         </TabsTrigger>
       </TabsList>
       {/* The router owns the panel, so there is no TabsContent — render the Outlet. */}
@@ -218,7 +227,7 @@ properties, and the cascade stays on your side. See
 [RECIPE-DASHBOARD.md](/docs/recipe-dashboard.md) tells you to route-split a console, and it is
 right, but the consequences land here — in the router — so they are documented here.
 
-**Split every route, including the index one.** "Split the chart routes" reads as *not*
+**Split every route, including the index one.** "Split the chart routes" reads as _not_
 including the landing page, and an adopter took it that way: their entry chunk stayed at
 524.70 kB because one `Sparkline` on an eagerly-loaded `/` pulled the whole chart engine into
 it. A later adopter made `/` lazy like everything else and measured 413.07 kB with the

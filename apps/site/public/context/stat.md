@@ -32,16 +32,16 @@ Presentational by role; the label-value pairing is real text so the metric and i
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `card` | `boolean` | No | false | Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control. |
-| `label` | `string` | Yes | — | What the metric measures — rendered visibly above the value. Rendered on screen. |
-| `value` | `string \| number` | Yes | — | The metric value |
-| `delta` | `string` | No | — | Change indicator rendered next to the trend arrow |
-| `trend` | `'up' \| 'down' \| 'flat'` | No | flat | Direction of the trend indicator ('up' \| 'down' \| 'flat'). |
-| `goodDirection` | `'up' \| 'down' \| 'neutral'` | No | up | Which direction is *good* for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
-| `helpText` | `string` | No | — | Fine print below the value (methodology, time range) |
-| `visual` | `React.ReactNode` | No | — | Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText |
+| Name            | Type                          | Required | Default | Description                                                                                                                                                                                                                                                      |
+| --------------- | ----------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `card`          | `boolean`                     | No       | false   | Wrap the tile in the same card chrome `@cascivo/charts`' `Kpi` ships (surface, border, radius, padding), so a `Stat` row and a `Kpi` row in one dashboard read as one system. Off by default: `Stat` is layout-only so it can sit inside a `Card` you control.   |
+| `label`         | `string`                      | Yes      | —       | What the metric measures — rendered visibly above the value. Rendered on screen.                                                                                                                                                                                 |
+| `value`         | `string \| number`            | Yes      | —       | The metric value                                                                                                                                                                                                                                                 |
+| `delta`         | `string`                      | No       | —       | Change indicator rendered next to the trend arrow                                                                                                                                                                                                                |
+| `trend`         | `'up' \| 'down' \| 'flat'`    | No       | flat    | Direction of the trend indicator ('up' \| 'down' \| 'flat').                                                                                                                                                                                                     |
+| `goodDirection` | `'up' \| 'down' \| 'neutral'` | No       | up      | Which direction is _good_ for this metric — the colour, independent of the arrow. 'up' (default) is the classic revenue tile; use 'down' for errors, latency, cost or churn, where a rise is bad news; 'neutral' keeps the arrow and drops the sentiment colour. |
+| `helpText`      | `string`                      | No       | —       | Fine print below the value (methodology, time range)                                                                                                                                                                                                             |
+| `visual`        | `React.ReactNode`             | No       | —       | Trailing decorative visual, e.g. a Sparkline from the separate @cascivo/charts package (not exported from @cascivo/react), rendered below the value/delta/helpText                                                                                               |
 
 ## Tokens
 
@@ -76,15 +76,21 @@ Presentational by role; the label-value pairing is real text so the metric and i
 Sparkline is from @cascivo/charts
 
 ```jsx
-<Stat label="Requests / min" value="1.2k" delta="+4.3%" trend="up" visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />} />
+<Stat
+  label="Requests / min"
+  value="1.2k"
+  delta="+4.3%"
+  trend="up"
+  visual={<Sparkline data={requestsPerMinute} label="Requests per minute trend" />}
+/>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| delta and trend | flexible | Optional — include only when change is meaningful |
-| token names | strict | Trend colors must resolve to --cascivo-color-success/destructive |
+| Area            | Level    | Note                                                             |
+| --------------- | -------- | ---------------------------------------------------------------- |
+| delta and trend | flexible | Optional — include only when change is meaningful                |
+| token names     | strict   | Trend colors must resolve to --cascivo-color-success/destructive |
 
 ## AI context prompt
 

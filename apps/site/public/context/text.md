@@ -32,12 +32,12 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 
 ## Props
 
-| Name | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `as` | `'p' \| 'span' \| 'div'` | No | p | `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own. |
-| `size` | `'sm' \| 'md' \| 'lg'` | No | md | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `weight` | `'normal' \| 'medium' \| 'semibold'` | No | normal | Font weight ('normal' \| 'medium' \| 'semibold'). |
-| `muted` | `boolean` | No | false | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
+| Name     | Type                                 | Required | Default | Description                                                                                                                                                            |
+| -------- | ------------------------------------ | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `as`     | `'p' \| 'span' \| 'div'`             | No       | p       | `p` for a paragraph, `span` for inline text, `div` for a block that imposes no semantics of its own.                                                                   |
+| `size`   | `'sm' \| 'md' \| 'lg'`               | No       | md      | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                                                  |
+| `weight` | `'normal' \| 'medium' \| 'semibold'` | No       | normal  | Font weight ('normal' \| 'medium' \| 'semibold').                                                                                                                      |
+| `muted`  | `boolean`                            | No       | false   | When true, renders in a muted/subtle color. `Text` has no `tone` prop: `tone` is the severity vocabulary (Status, Badge, Timeline, SideNav); text emphasis is `muted`. |
 
 ## Tokens
 
@@ -63,7 +63,9 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 ### Muted helper
 
 ```jsx
-<Text size="sm" muted>Secondary information</Text>
+<Text size="sm" muted>
+  Secondary information
+</Text>
 ```
 
 ### Inline span
@@ -71,7 +73,9 @@ Renders the chosen native element (p/span/div) without imposing roles; muted sty
 Use as="span" inside other flow content
 
 ```jsx
-<Text as="span" weight="semibold">emphasis</Text>
+<Text as="span" weight="semibold">
+  emphasis
+</Text>
 ```
 
 ### Icon beside text
@@ -81,16 +85,18 @@ Text renders a <p> by default, so a nested Text needs as="span" — a <p> inside
 ```jsx
 <Text>
   <CheckIcon aria-hidden />
-  <Text as="span" weight="semibold">Deployed</Text>
+  <Text as="span" weight="semibold">
+    Deployed
+  </Text>
 </Text>
 ```
 
 ## Boundaries
 
-| Area | Level | Note |
-|------|-------|------|
-| as / size / weight | flexible | Choose element and treatment to fit context |
-| token names | strict | Font, leading, and color must resolve to --cascivo-* tokens |
+| Area               | Level    | Note                                                         |
+| ------------------ | -------- | ------------------------------------------------------------ |
+| as / size / weight | flexible | Choose element and treatment to fit context                  |
+| token names        | strict   | Font, leading, and color must resolve to --cascivo-\* tokens |
 
 ## AI context prompt
 

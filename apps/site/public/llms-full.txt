@@ -39,8 +39,13 @@ see `select_component`/`list_components` below before generating custom SVG or A
 - shadcn/v0-compatible registry (install with the shadcn CLI or "Open in v0"): https://cascivo.com/r/shadcn/registry.json
 - Per-component AI docs (props, examples, a11y, tokens): https://cascivo.com/llms/<name>.md
 - Page-block AI docs are namespaced: https://cascivo.com/llms/block/<name>.md
-- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a self-contained, flat
-  rollup — every component `…Props` interface is real, documentation-grade API reference.
+- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a flat rollup — every
+  component `…Props` interface is declared there in full, documentation-grade API reference,
+  and it is grep-friendly (one import/export name per line). The shared VOCABULARY types
+  (`Tone`, `SpaceStep`, `ThemeProviderProps`, `LinkComponentProps`, …) are imported from
+  `@cascivo/core` at the top of that file rather than redeclared — inlining them makes the
+  dts bundler alias every prop to `ToneInput$1`. Import them from `@cascivo/react/types`,
+  which needs no extra install: `import type { Tone } from '@cascivo/react/types'`.
 - Component index (every entry + channel + doc URL, plain markdown): https://cascivo.com/docs/components.md
 - A wrong/guessed name under /llms/*, /context/*, or /r/* returns HTTP 404 with a short hint
   body (not the HTML SPA) — trust the 404, then look up the real name in the index below.

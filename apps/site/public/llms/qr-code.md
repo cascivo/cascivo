@@ -26,16 +26,16 @@ import { QrCode } from '@cascivo/react'
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `value` | `string` | yes | — | Text or URL to encode |
-| `size` | `number` | no | `128` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
-| `errorCorrection` | `'L' \| 'M' \| 'Q' \| 'H'` | no | `M` | Higher levels tolerate more damage but hold less data |
-| `radius` | `string` | no | — | CSS length rounding the corners |
-| `fill` | `string` | no | `currentColor` | Foreground color of the QR modules. |
-| `background` | `string` | no | `transparent` | Background color behind the QR code. |
-| `ariaLabel` | `string` | no | — | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
-| `label` | `string` | no | — | Accessible name for the QR image. Not rendered — screen readers only. |
+| Prop              | Type                       | Required | Default        | Description                                                                                                                                  |
+| ----------------- | -------------------------- | -------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`           | `string`                   | yes      | —              | Text or URL to encode                                                                                                                        |
+| `size`            | `number`                   | no       | `128`          | Visual size of the component (e.g. 'sm', 'md', 'lg').                                                                                        |
+| `errorCorrection` | `'L' \| 'M' \| 'Q' \| 'H'` | no       | `M`            | Higher levels tolerate more damage but hold less data                                                                                        |
+| `radius`          | `string`                   | no       | —              | CSS length rounding the corners                                                                                                              |
+| `fill`            | `string`                   | no       | `currentColor` | Foreground color of the QR modules.                                                                                                          |
+| `background`      | `string`                   | no       | `transparent`  | Background color behind the QR code.                                                                                                         |
+| `ariaLabel`       | `string`                   | no       | —              | Alias of `label` — the same invisible accessible name under the catalog spelling. Neither is deprecated. Not rendered — screen readers only. |
+| `label`           | `string`                   | no       | —              | Accessible name for the QR image. Not rendered — screen readers only.                                                                        |
 
 ## Examples
 
@@ -54,7 +54,11 @@ import { QrCode } from '@cascivo/react'
 ### Custom colors
 
 ```tsx
-<QrCode value="cascivo" fill="var(--cascivo-color-accent)" background="var(--cascivo-color-surface)" />
+<QrCode
+  value="cascivo"
+  fill="var(--cascivo-color-accent)"
+  background="var(--cascivo-color-surface)"
+/>
 ```
 
 ## Client JavaScript
