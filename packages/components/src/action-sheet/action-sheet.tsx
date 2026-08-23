@@ -16,6 +16,13 @@ import type { ReactNode } from 'react'
 import styles from './action-sheet.module.css'
 
 export interface ActionSheetAction {
+  /**
+   * Stable identity, used as the React key. Without it the array index (or a repeatable
+   * `label`) is the key, so inserting or reordering entries re-uses the wrong DOM node — the
+   * defect `link-item-id-parity` exists to prevent, extended past link-shaped items on
+   * 2026-08-22.
+   */
+  id?: string
   label: ReactNode
   onSelect: () => void
   /** Render in the destructive (danger) style. */
@@ -120,7 +127,7 @@ export function ActionSheet({
                     const itemProps = roving.getItemProps(index)
                     return (
                       <button
-                        key={index}
+                        key={action.id ?? index}
                         ref={itemProps.ref as React.Ref<HTMLButtonElement>}
                         type="button"
                         role="menuitem"

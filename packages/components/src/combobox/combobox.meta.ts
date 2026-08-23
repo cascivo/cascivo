@@ -101,6 +101,34 @@ export const meta: ComponentMeta = {
       type: 'string',
       required: false,
     },
+    {
+      name: 'aria-labelledby',
+      description:
+        "Wired automatically by a wrapping `Field` — its label id, forwarded to the focusable control so the Field's label names it.",
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'aria-describedby',
+      description:
+        'Wired automatically by a wrapping `Field` — the ids of its hint/error text, forwarded to the focusable control so the supporting text is announced.',
+      type: 'string',
+      required: false,
+    },
+    {
+      name: 'aria-invalid',
+      description: 'Wired automatically by a wrapping `Field` when it is in an error state.',
+      type: 'boolean',
+      required: false,
+    },
+    {
+      name: 'ariaLabel',
+      description:
+        'Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this.',
+      type: 'string',
+      required: false,
+      nameVisibility: 'invisible',
+    },
   ],
   tokens: [
     '--cascivo-color-surface',

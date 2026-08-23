@@ -13,12 +13,24 @@ export type StepState = 'pending' | 'active' | 'complete' | 'error'
 
 export interface Step {
   label: string
-  /** Accepts `StepState` plus Timeline's `current` / `upcoming` aliases. */
-  state?: ProgressInput
+  /**
+   * Stable identity for the step, used as its React key.
+   *
+   * Every other config-item type in the catalog (`TimelineItem`, `SideNavItem`,
+   * `DataListItem`, `BreadcrumbItem`) carries one; `Step` was missed because the sweep that
+   * added them looked for a `label` **and an `href`** (2026-08-22 report item 10). Without it
+   * the index is the key, so reordering or inserting a step re-uses the wrong DOM node.
+   */
+  id?: string
+  /**
+   * Step status. `StepState` is the canonical enum; `ProgressInput` additionally accepts
+   * Timeline's `current` / `upcoming` aliases so one status value drives both components.
+   */
+  state?: StepState | ProgressInput
 }
 
-export interface StepsProps {
-  steps: Step[]
+/** Props shared by both spellings of the collection. */
+interface StepsBaseProps {
   /**
    * Index of the currently active step (0-based)
    *
@@ -40,8 +52,22 @@ export interface StepsProps {
   label?: string
 }
 
+/**
+ * The collection, under either spelling — exactly one is required.
+ *
+ * `steps` is the domain word and stays canonical. `items` is accepted because the catalog's
+ * published data-prop vocabulary says a config-driven collection is `items`, and an adopter
+ * who followed that rule hit a type error on the one component the rule named wrongly
+ * (2026-08-22 report item 10). The XOR keeps "pass neither" and "pass both" compile errors
+ * rather than silent no-ops, the same shape `Menubar` uses for its name props.
+ */
+type StepsCollection = { steps: Step[]; items?: never } | { items: Step[]; steps?: never }
+
+export type StepsProps = StepsBaseProps & StepsCollection
+
 export function Steps({
   steps,
+  items,
   activeStep: controlledActiveStep,
   orientation = 'horizontal',
   className,
@@ -49,6 +75,7 @@ export function Steps({
   label,
 }: StepsProps) {
   useSignals()
+  const resolvedSteps = items ?? steps ?? []
   const active = useSignal(controlledActiveStep ?? 0)
   active.value = controlledActiveStep ?? active.value
   const resolvedAriaLabel = ariaLabel ?? label ?? t(builtin.steps.label)
@@ -59,7 +86,7 @@ export function Steps({
       data-orientation={orientation}
       aria-label={resolvedAriaLabel}
     >
-      {steps.map((step, i) => {
+      {resolvedSteps.map((step, i) => {
         const state: StepState = step.state
           ? normalizeProgress(step.state)
           : i < active.value
@@ -69,7 +96,7 @@ export function Steps({
               : 'pending'
         return (
           <li
-            key={i}
+            key={step.id ?? i}
             className={styles.step}
             data-state={state}
             aria-current={state === 'active' ? 'step' : undefined}

@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { createLocale } from '@cascivo/i18n'
 import { createRenderProbe } from '../test-utils/render-count'
 import { readFileSync } from 'node:fs'
@@ -337,5 +337,94 @@ describe('DataTable column gutter (CSS source)', () => {
   it('body cells wrap long unbroken content instead of overflowing', () => {
     const tdBlock = css.slice(css.indexOf('.table td {'))
     expect(tdBlock).toMatch(/overflow-wrap: anywhere/)
+  })
+})
+
+/**
+ * Column sizing failure is a silent overflow, so the component measures it.
+ *
+ * `Column.width`'s doc comment is thorough and an adopter who read all of it still needed
+ * three passes, because the arithmetic depends on the container width — which the component
+ * knows and they do not. Their failing attempt grew the table past its card and cut the last
+ * column off with no visible affordance (2026-08-22 report item 17).
+ */
+describe('DataTable overflow warning', () => {
+  const cols = [
+    { key: 'a', header: 'A', width: '20rem' },
+    { key: 'b', header: 'B', width: '20rem' },
+    { key: 'c', header: 'C' },
+  ]
+  const rows = [{ a: '1', b: '2', c: '3' }]
+
+  /**
+   * jsdom ships no `ResizeObserver`, and the production guard bails when it is absent — so
+   * without this stub the test would assert nothing while appearing to pass. It fires once on
+   * observe, which is what a real observer does on first attach.
+   */
+  function stubResizeObserver() {
+    const original = (globalThis as { ResizeObserver?: unknown }).ResizeObserver
+    ;(globalThis as { ResizeObserver?: unknown }).ResizeObserver = class {
+      constructor(private cb: () => void) {}
+      observe() {
+        this.cb()
+      }
+      unobserve() {}
+      disconnect() {}
+    }
+    return () => {
+      ;(globalThis as { ResizeObserver?: unknown }).ResizeObserver = original
+    }
+  }
+
+  function mockScroller(scrollWidth: number, clientWidth: number) {
+    Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+      configurable: true,
+      get() {
+        return this.className?.includes?.('scroller') ? scrollWidth : 0
+      },
+    })
+    Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+      configurable: true,
+      get() {
+        return this.className?.includes?.('scroller') ? clientWidth : 0
+      },
+    })
+  }
+
+  afterEach(() => {
+    // @ts-expect-error restoring the prototype descriptors
+    delete HTMLElement.prototype.scrollWidth
+    // @ts-expect-error restoring the prototype descriptors
+    delete HTMLElement.prototype.clientWidth
+  })
+
+  it('names the measured widths and the sized columns when the table overflows', async () => {
+    mockScroller(1180, 1037)
+    const restoreRO = stubResizeObserver()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<DataTable columns={cols} rows={rows} title="T" />)
+    await waitFor(() => {
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('overflows its container'))
+    })
+    const message = warn.mock.calls.flat().join(' ')
+    expect(message).toContain('1180')
+    expect(message).toContain('1037')
+    expect(message).toContain('a, b')
+    warn.mockRestore()
+    restoreRO()
+  })
+
+  it('stays silent when the table fits', async () => {
+    mockScroller(1037, 1037)
+    const restoreRO = stubResizeObserver()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(<DataTable columns={cols} rows={rows} title="T" />)
+    await new Promise((r) => setTimeout(r, 30))
+    expect(
+      warn.mock.calls.flat().join(' '),
+      'a warning that fires on a correct configuration is worse than none',
+    ).not.toContain('overflows its container')
+    warn.mockRestore()
+    restoreRO()
   })
 })

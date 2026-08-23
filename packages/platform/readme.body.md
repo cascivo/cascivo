@@ -34,7 +34,7 @@ import '@cascivo/platform/web.css'
 Pair it with a theme — this package deliberately ships no colour:
 
 ```ts
-import '@cascivo/themes/all.css'
+import '@cascivo/themes/light-dark.css'
 import '@cascivo/platform/all.css'
 ```
 

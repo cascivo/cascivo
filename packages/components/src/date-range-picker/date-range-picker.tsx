@@ -19,6 +19,13 @@ export interface DateRange {
 }
 
 export interface DateRangePreset {
+  /**
+   * Stable identity, used as the React key. Without it the array index (or a repeatable
+   * `label`) is the key, so inserting or reordering entries re-uses the wrong DOM node — the
+   * defect `link-item-id-parity` exists to prevent, extended past link-shaped items on
+   * 2026-08-22.
+   */
+  id?: string
   label: string
   range: DateRange
 }
@@ -255,7 +262,7 @@ export function DateRangePicker({
           <div className={styles['presets']}>
             {presets.map((preset) => (
               <button
-                key={preset.label}
+                key={preset.id ?? preset.label}
                 type="button"
                 className={styles['preset']}
                 onClick={() => applyPreset(preset)}

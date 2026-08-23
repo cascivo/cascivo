@@ -977,6 +977,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
+      name: 'maxCellSize',
+      required: false,
+      primitives: ['number'],
+    },
+    {
       name: 'tooltip',
       required: false,
       primitives: ['boolean'],
@@ -1200,6 +1205,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'onChange',
       required: false,
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
   ],
   CheckboxCard: [
@@ -1466,6 +1476,31 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       enum: ['sm', 'md', 'lg'],
     },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-invalid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   Columns: [
     {
@@ -1624,6 +1659,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'className',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-invalid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
       required: false,
       primitives: ['string'],
     },
@@ -2016,6 +2071,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'labels',
       required: false,
     },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-invalid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   DateRangePicker: [
     {
@@ -2200,6 +2275,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
     {
       name: 'onCancel',
       required: false,
+    },
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-invalid',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   EmptyDashboard: [
@@ -2392,6 +2487,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   Filter: [
     {
@@ -2438,6 +2538,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'variant',
       required: false,
       enum: ['pill', 'outline'],
+    },
+    {
+      name: 'multiple',
+      required: false,
+      primitives: ['boolean'],
     },
   ],
   Flex: [
@@ -3573,6 +3678,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   InputGroup: [
     {
@@ -4384,6 +4494,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   OtpInput: [
     {
@@ -5130,6 +5245,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   RadioCard: [
     {
@@ -5503,6 +5623,26 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'aria-labelledby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-describedby',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'aria-invalid',
+      required: false,
+      primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   Section: [
     {
@@ -5574,6 +5714,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
   ],
   Separator: [
@@ -5806,6 +5951,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   Spacer: [
     {
@@ -6014,8 +6164,12 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['string'],
     },
     {
+      name: 'items',
+      required: false,
+    },
+    {
       name: 'steps',
-      required: true,
+      required: false,
     },
     {
       name: 'activeStep',
@@ -6339,6 +6493,21 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['boolean'],
     },
+    {
+      name: 'id',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
+    {
+      name: 'label',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   Text: [
     {
@@ -6392,6 +6561,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
   ],
   Tile: [
@@ -6507,6 +6681,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
       primitives: ['string'],
     },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
+    },
   ],
   Timeline: [
     {
@@ -6598,6 +6777,11 @@ export const propSchemas: Record<string, PropSchema[]> = {
       name: 'disabled',
       required: false,
       primitives: ['boolean'],
+    },
+    {
+      name: 'ariaLabel',
+      required: false,
+      primitives: ['string'],
     },
   ],
   ToggleGroup: [

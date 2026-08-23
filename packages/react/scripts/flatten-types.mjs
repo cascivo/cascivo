@@ -16,6 +16,29 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+/**
+ * Put each named import/export specifier on its own line.
+ *
+ * The dts bundler emits two enormous single lines: the `import { ... } from "@cascivo/core"`
+ * (~65 names, ~940 chars) and a trailing `export { ... }` naming all 197 components (~7.2 kB).
+ * Both defeat grep, which is how an agent reads this file - every search for a component name
+ * matched the export line and dumped the whole thing, and `grep ThemeProviderProps` found
+ * nothing at all even though the name is right there in the import. An adopter reported that
+ * `grep -v` on that line "became a reflex within ten minutes" (2026-08-22 report item 19).
+ *
+ * Formatting only: the declarations are unchanged, so this cannot affect type resolution.
+ */
+function explodeSpecifierList(line) {
+  const m = /^(import type |import |export type |export )\{ (.+) \}( from ".+";|;)$/.exec(line)
+  if (!m) return line
+  const [, head, body, tail] = m
+  // Bail on anything with braces or generics - those are not plain specifier lists.
+  if (/[{}<>]/.test(body)) return line
+  const names = body.split(', ')
+  if (names.length < 4) return line
+  return head + '{\n' + names.map((n) => '  ' + n + ',').join('\n') + '\n}' + tail
+}
+
 const isWin = process.platform === 'win32'
 const pkgRoot = fileURLToPath(new URL('..', import.meta.url))
 const outDir = mkdtempSync(join(tmpdir(), 'cascivo-react-dts-'))
@@ -48,6 +71,7 @@ try {
   const cleaned = bundled
     .split('\n')
     .filter((line) => !/^\s*\/\/#(region|endregion)\b/.test(line))
+    .map(explodeSpecifierList)
     .join('\n')
 
   // Prepend the quickstart banner (WS-B). The dts bundler drops the module-leading
@@ -61,7 +85,8 @@ try {
  * Quickstart:
  *   pnpm add @cascivo/react @preact/signals-react
  *   // @cascivo/themes is installed with @cascivo/react. Once, in your entry file:
- *   import '@cascivo/themes/all.css'   // tokens + base + light & dark — REQUIRED for color
+ *   import '@cascivo/themes/light-dark.css'   // tokens + base + light & dark — REQUIRED for color
+ *   // all.css is all TWELVE themes (~2x the CSS) — use it only if you ship a theme picker
  *   // No-bundler / single-file alternative (themes bundled in): '@cascivo/react/styles.css'
  *   import { Button, Card } from '@cascivo/react'
  *

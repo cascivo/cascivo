@@ -28,9 +28,16 @@ export const meta: ComponentMeta = {
         'Accessible label for the steps navigation; defaults to the built-in i18n string.',
     },
     {
+      name: 'items',
+      description:
+        'Alias of `steps` — the catalog-wide name for a config-driven collection. Exactly one of the two is required.',
+      type: 'Step[]',
+      required: false,
+    },
+    {
       name: 'steps',
       type: 'Step[]',
-      required: true,
+      required: false,
       description: 'Array of step objects with label and optional explicit state',
     },
     {
@@ -53,6 +60,28 @@ export const meta: ComponentMeta = {
       description: 'Additional CSS class names merged onto the root element.',
       type: 'string',
       required: false,
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'Step',
+      description: 'Shape of an entry in `steps` / `items`.',
+      fields: [
+        { name: 'label', type: 'string', required: true, description: 'Visible step label.' },
+        {
+          name: 'id',
+          type: 'string',
+          required: false,
+          description: 'Stable identity, used as the React key so reordering keeps DOM nodes.',
+        },
+        {
+          name: 'state',
+          type: 'StepState | ProgressInput',
+          required: false,
+          description:
+            "Step status. `StepState` ('pending' | 'active' | 'complete' | 'error') is canonical; `ProgressInput` also accepts Timeline's `current` / `upcoming` aliases.",
+        },
+      ],
     },
   ],
   tokens: [

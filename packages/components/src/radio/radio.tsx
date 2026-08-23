@@ -4,6 +4,20 @@ import type { InputHTMLAttributes, ReactElement, ReactNode } from 'react'
 import styles from './radio.module.css'
 
 export interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it (a heading in a settings row, a table column header) and `label` would render
+   * that text a second time.
+   *
+   * `label` on this component is **visible** — it is painted next to the control. The catalog
+   * splits that way deliberately, but `IconButton.label` and `Sparkline.label` are invisible
+   * names, so an adopter arriving with that prior writes `label` here and gets the text twice
+   * (2026-08-22 report item 13). Both props are now listed side by side, each saying which it
+   * is, which is the only thing that interrupts a confident wrong guess.
+   *
+   * The raw DOM `aria-label` is still accepted and wins over this.
+   */
+  ariaLabel?: string
   label?: string
   value: string
 }
@@ -17,7 +31,7 @@ export interface RadioProps extends InputHTMLAttributes<HTMLInputElement> {
  * Only `Radio` is wrapped; `RadioGroup` below is a layout container with no single host.
  */
 export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
-  { label, className, id, disabled, value, ...props },
+  { label, ariaLabel, className, id, disabled, value, ...props },
   ref,
 ) {
   const radioId = id ?? (label ? `cascade-radio-${value}` : undefined)
@@ -32,6 +46,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(
         disabled={disabled}
         ref={ref as never}
         {...props}
+        aria-label={props['aria-label'] ?? ariaLabel}
       />
       <span className={styles['control']} aria-hidden="true" />
       {label && <span className={styles['label']}>{label}</span>}

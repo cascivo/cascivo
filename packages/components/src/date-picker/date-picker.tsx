@@ -65,7 +65,25 @@ export interface DatePickerLabels {
   clear?: string
 }
 
+/** Join own + inherited `aria-describedby` ids; `undefined` when there are none. */
+function mergeDescribedBy(...ids: (string | undefined)[]): string | undefined {
+  return ids.filter(Boolean).join(' ') || undefined
+}
+
 export interface DatePickerProps {
+  /**
+   * Wired automatically by a wrapping `Field` — its label id. Forwarded to the focusable
+   * control so the Field's label names it.
+   */
+  'aria-labelledby'?: string
+  /**
+   * Wired automatically by a wrapping `Field` — the ids of its hint/error text. **Merged**
+   * with this component's own `hint`/`error` ids rather than replacing them, so both are
+   * announced.
+   */
+  'aria-describedby'?: string
+  /** Wired automatically by a wrapping `Field` when it is in an error state. */
+  'aria-invalid'?: boolean
   value?: string
   defaultValue?: string
   /** Called with the selected ISO date string (or undefined when cleared). */
@@ -82,6 +100,16 @@ export interface DatePickerProps {
    */
   clearable?: boolean
   label?: string
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it and `label` would render that text a second time.
+   *
+   * `label` on this component is **visible**. `IconButton.label` and `Sparkline.label` are
+   * invisible names, so an adopter arriving with that prior writes `label` here and gets the
+   * text twice (2026-08-22 report item 13). Both props are listed side by side, each saying
+   * which it is.
+   */
+  ariaLabel?: string
   hint?: string
   error?: string
   /**
@@ -112,6 +140,7 @@ export function DatePicker({
   max,
   clearable = false,
   label,
+  ariaLabel,
   hint,
   error,
   size = 'md',
@@ -119,6 +148,9 @@ export function DatePicker({
   labels,
   className,
   id,
+  'aria-labelledby': ariaLabelledBy,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
 }: DatePickerProps) {
   useSignals()
   const [state, send] = useMachine(machine)
@@ -274,8 +306,13 @@ export function DatePicker({
           aria-expanded={state.value === 'open'}
           aria-controls={gridId}
           aria-haspopup="dialog"
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined}
+          aria-labelledby={ariaLabelledBy}
+          aria-label={ariaLabel}
+          aria-invalid={error ? true : ariaInvalid}
+          aria-describedby={mergeDescribedBy(
+            error ? `${baseId}-error` : hint ? `${baseId}-hint` : undefined,
+            ariaDescribedBy,
+          )}
           className={styles['trigger']}
           disabled={disabled}
           onClick={state.value === 'open' ? close : open}

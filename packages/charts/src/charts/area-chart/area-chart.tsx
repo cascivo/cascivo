@@ -1,7 +1,12 @@
 'use client'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ChartFrame } from '../../core/chart-frame'
-import { warnDualAxisAreas, warnNonFinite, warnScaleMismatch } from '../../core/dev-warn'
+import {
+  warnDualAxisAreas,
+  warnEpochMilliseconds,
+  warnNonFinite,
+  warnScaleMismatch,
+} from '../../core/dev-warn'
 import {
   DEFAULT_MARGINS,
   leftMarginForLabels,
@@ -361,6 +366,7 @@ export function AreaChart<Datum = { x: number; y: number }>({
   // Time axis when the x accessor returns Dates (parity with LineChart). Domain is
   // computed on epoch ms either way; the scale factory picks time vs linear.
   const usesDate = hasData && allX[0] instanceof Date
+  warnEpochMilliseconds('AreaChart', allX[0], xFormat !== undefined)
   const xNums = allX.map((v) => (v instanceof Date ? v.getTime() : v))
   const xMin = hasData ? Math.min(...xNums) : 0
   const xMax = hasData ? Math.max(...xNums) : 1

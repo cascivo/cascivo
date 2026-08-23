@@ -46,6 +46,7 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 | `onChange`      | `(selected: string[]) => void` | No       | —       | Deprecated: use onValueChange (same string[]).                                                                                                                         |
 | `multi`         | `boolean`                      | No       | false   | Allow multiple items to be selected simultaneously                                                                                                                     |
 | `variant`       | `'pill' \| 'outline'`          | No       | pill    | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.                        |
+| `multiple`      | `boolean`                      | No       | —       | Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical.                          |
 
 ## Tokens
 

@@ -28,14 +28,17 @@ import { TagsInput } from '@cascivo/react'
 
 ## Props
 
-| Prop            | Type                       | Required | Default | Description                                                        |
-| --------------- | -------------------------- | -------- | ------- | ------------------------------------------------------------------ |
-| `value`         | `string[]`                 | yes      | —       | The controlled value.                                              |
-| `onValueChange` | `(v: string[]) => void`    | yes      | —       | Called with the new value when it changes.                         |
-| `placeholder`   | `string`                   | no       | —       | Placeholder text shown when the field is empty.                    |
-| `validate`      | `(tag: string) => boolean` | no       | —       | Returns whether a candidate tag is allowed.                        |
-| `max`           | `number`                   | no       | —       | Maximum allowed value.                                             |
-| `disabled`      | `boolean`                  | no       | `false` | When true, disables the control and removes it from the tab order. |
+| Prop            | Type                       | Required | Default | Description                                                                                                                                                                                                      |
+| --------------- | -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`         | `string[]`                 | yes      | —       | The controlled value.                                                                                                                                                                                            |
+| `onValueChange` | `(v: string[]) => void`    | yes      | —       | Called with the new value when it changes.                                                                                                                                                                       |
+| `placeholder`   | `string`                   | no       | —       | Placeholder text shown when the field is empty.                                                                                                                                                                  |
+| `validate`      | `(tag: string) => boolean` | no       | —       | Returns whether a candidate tag is allowed.                                                                                                                                                                      |
+| `max`           | `number`                   | no       | —       | Maximum allowed value.                                                                                                                                                                                           |
+| `disabled`      | `boolean`                  | no       | `false` | When true, disables the control and removes it from the tab order.                                                                                                                                               |
+| `id`            | `string`                   | no       | —       | Id for the **inner text input** — the focusable control, so a `<label for>` names the thing that actually takes focus. `Field` supplies this automatically.                                                      |
+| `ariaLabel`     | `string`                   | no       | —       | Invisible accessible name for the tag entry field. Use when no visible label names it; inside a `Field` it is not needed, as the Field label is wired through automatically. Not rendered — screen readers only. |
+| `label`         | `string`                   | no       | —       | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Not rendered. Not rendered — screen readers only.                                                                            |
 
 ## Examples
 

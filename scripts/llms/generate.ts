@@ -9,6 +9,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { reactExportedModules, reactExportedNames } from '../registry/react-exports.ts'
 import { describeWithVisibility } from '../lib/name-visibility-note.ts'
+import { collectionVocabularySentence } from '../lib/collection-vocabulary.ts'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -650,11 +651,24 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(`- Per-component AI docs (props, examples, a11y, tokens): ${DOCS}/llms/<name>.md`)
   lines.push(`- Page-block AI docs are namespaced: ${DOCS}/llms/block/<name>.md`)
   lines.push(
-    '- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a self-contained, flat',
+    '- No web access? The shipped `@cascivo/react` `dist/index.d.ts` is a flat rollup — every',
   )
   lines.push(
-    '  rollup — every component `…Props` interface is real, documentation-grade API reference.',
+    '  component `…Props` interface is declared there in full, documentation-grade API reference,',
   )
+  lines.push(
+    '  and it is grep-friendly (one import/export name per line). The shared VOCABULARY types',
+  )
+  lines.push(
+    '  (`Tone`, `SpaceStep`, `ThemeProviderProps`, `LinkComponentProps`, …) are imported from',
+  )
+  lines.push(
+    '  `@cascivo/core` at the top of that file rather than redeclared — inlining them makes the',
+  )
+  lines.push(
+    '  dts bundler alias every prop to `ToneInput$1`. Import them from `@cascivo/react/types`,',
+  )
+  lines.push("  which needs no extra install: `import type { Tone } from '@cascivo/react/types'`.")
   lines.push(
     `- Component index (every entry + channel + doc URL, plain markdown): ${SITE}/docs/components.md`,
   )
@@ -746,7 +760,8 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push('```tsx')
   lines.push("import '@cascivo/react/styles.css' // component styles (structure only)")
   lines.push(
-    "import '@cascivo/themes/all.css'       // tokens (once) + base typography + light & dark",
+    "import '@cascivo/themes/light-dark.css'  // tokens (once) + base typography + light & dark",
+    '                                       // swap for all.css only if you ship a theme picker (all twelve, ~2x)',
   )
   lines.push("import { Button, Card } from '@cascivo/react'")
   lines.push('```')
@@ -1048,9 +1063,7 @@ function generateLlmsTxt(registry: Registry, entries: RegistryEntry[]): string {
   lines.push(
     '- Event-handler naming (predict the prop from what it receives): a **value** -> `onValueChange(value)` (Tabs, SegmentedControl, Combobox, MultiSelect, Toggle, Search, NumberInput, DatePicker, …); a raw DOM `ChangeEvent` -> `onChange(event)` (Checkbox, NativeSelect, PasswordInput, **Select**, **Slider** — these two wrap a real element and have NO `onValueChange`); activating an item -> `onSelect(value)` (Dropdown, OverflowMenu, chart points; on `Menu`/`ContextMenu` the `onSelect` lives on the *Item*, not the root). A few components keep a deprecated value-carrying `onChange` alias — prefer `onValueChange`.',
   )
-  lines.push(
-    `- Data/shape prop vocabulary (the other half of handler naming — nine wrong guesses in one 2026-08-08 dashboard): a config-driven collection -> **\`items\`** (DataList, StructuredList, Timeline, Steps, CommandMenu, OverflowMenu, Switcher); table rows -> **\`rows\`** (DataTable ONLY, because it renders a <table>); a visual style enum -> **\`variant\`**, never \`shape\`/\`kind\`/\`type\`; a discriminated-union tag -> **\`kind\`**, never \`type\` (e.g. annotations: [{ kind: 'line' }]); a rich replaceable slot -> **\`actions\`** as ReactNode (Notification, CardHeader, PageHeader — only \`Alert.action\` is the {label,onClick} shorthand); body text on a feedback component -> **\`description\`**, NOT children (Notification renders nothing for children).`,
-  )
+  lines.push(`- ${collectionVocabularySentence(REGISTRY_PATH)}`)
   // The near-miss table from docs/AI-RULES.md, compressed. Every row is a real wrong guess
   // from a dated adopter report; `doc-api-drift.test.ts` fails if a row stops being true.
   lines.push(

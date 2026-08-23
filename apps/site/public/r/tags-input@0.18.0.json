@@ -63,6 +63,26 @@
         "type": "boolean",
         "required": false,
         "default": "false"
+      },
+      {
+        "name": "id",
+        "description": "Id for the **inner text input** — the focusable control, so a `<label for>` names the thing that actually takes focus. `Field` supplies this automatically.",
+        "type": "string",
+        "required": false
+      },
+      {
+        "name": "ariaLabel",
+        "description": "Invisible accessible name for the tag entry field. Use when no visible label names it; inside a `Field` it is not needed, as the Field label is wired through automatically.",
+        "type": "string",
+        "required": false,
+        "nameVisibility": "invisible"
+      },
+      {
+        "name": "label",
+        "description": "Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Not rendered.",
+        "type": "string",
+        "required": false,
+        "nameVisibility": "invisible"
       }
     ],
     "tokens": [

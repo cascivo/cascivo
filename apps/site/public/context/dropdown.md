@@ -33,14 +33,36 @@ The menu is role="menu" with role="menuitem" buttons and roving tabindex; the tr
 
 ## Props
 
-| Name           | Type                                                                                            | Required | Default      | Description                                                                                                                                                                                 |
-| -------------- | ----------------------------------------------------------------------------------------------- | -------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `trigger`      | `ReactElement`                                                                                  | Yes      | —            | The element that opens the dropdown when activated.                                                                                                                                         |
-| `items`        | `{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]` | Yes      | —            | The items to render.                                                                                                                                                                        |
-| `onSelect`     | `(value: string) => void`                                                                       | No       | —            | Called with the selected value.                                                                                                                                                             |
-| `placement`    | `'bottom-start' \| 'bottom-end'`                                                                | No       | bottom-start | Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport. |
-| `open`         | `boolean`                                                                                       | No       | —            | Whether the component is open (controlled).                                                                                                                                                 |
-| `onOpenChange` | `(open: boolean) => void`                                                                       | No       | —            | Called with the next open state when it changes.                                                                                                                                            |
+| Name           | Type                                                                                                                       | Required | Default      | Description                                                                                                                                                                                                                                                                                                                                  |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trigger`      | `ReactElement`                                                                                                             | Yes      | —            | The element that opens the dropdown when activated.                                                                                                                                                                                                                                                                                          |
+| `items`        | `({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } \| { kind: 'separator' })[]` | Yes      | —            | Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev. |
+| `onSelect`     | `(value: string) => void`                                                                                                  | No       | —            | Called with the selected value.                                                                                                                                                                                                                                                                                                              |
+| `placement`    | `'bottom-start' \| 'bottom-end'`                                                                                           | No       | bottom-start | Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport.                                                                                                                                                  |
+| `open`         | `boolean`                                                                                                                  | No       | —            | Whether the component is open (controlled).                                                                                                                                                                                                                                                                                                  |
+| `onOpenChange` | `(open: boolean) => void`                                                                                                  | No       | —            | Called with the next open state when it changes.                                                                                                                                                                                                                                                                                             |
+
+## Object types
+
+### `DropdownMenuItem`
+
+A selectable row in the menu.
+
+| Field       | Type        | Required | Description                                                                                                                           |
+| ----------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`     | `string`    | Yes      | Visible item text.                                                                                                                    |
+| `value`     | `string`    | Yes      | Passed to `onSelect`.                                                                                                                 |
+| `icon`      | `ReactNode` | No       | Leading icon.                                                                                                                         |
+| `disabled`  | `boolean`   | No       | Skips the item in keyboard navigation and selection.                                                                                  |
+| `separator` | `boolean`   | No       | ⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry. |
+
+### `DropdownSeparatorItem`
+
+A rule between groups. Carries no data and is skipped by keyboard navigation.
+
+| Field  | Type          | Required | Description   |
+| ------ | ------------- | -------- | ------------- |
+| `kind` | `'separator'` | Yes      | Discriminant. |
 
 ## Tokens
 

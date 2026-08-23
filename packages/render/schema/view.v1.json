@@ -970,6 +970,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -1157,6 +1160,21 @@
                   "size": {
                     "type": "string",
                     "enum": ["sm", "md", "lg"]
+                  },
+                  "aria-labelledby": {
+                    "type": "string"
+                  },
+                  "aria-describedby": {
+                    "type": "string"
+                  },
+                  "aria-invalid": {
+                    "type": "boolean"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -1213,6 +1231,18 @@
                     "enum": ["ComboboxLabels"]
                   },
                   "className": {
+                    "type": "string"
+                  },
+                  "aria-labelledby": {
+                    "type": "string"
+                  },
+                  "aria-describedby": {
+                    "type": "string"
+                  },
+                  "aria-invalid": {
+                    "type": "boolean"
+                  },
+                  "ariaLabel": {
                     "type": "string"
                   }
                 },
@@ -1552,6 +1582,18 @@
                   "labels": {
                     "type": "string",
                     "enum": ["DatePickerLabels"]
+                  },
+                  "aria-labelledby": {
+                    "type": "string"
+                  },
+                  "aria-describedby": {
+                    "type": "string"
+                  },
+                  "aria-invalid": {
+                    "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -1725,6 +1767,18 @@
                   },
                   "submitOnBlur": {
                     "type": "boolean"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "aria-labelledby": {
+                    "type": "string"
+                  },
+                  "aria-describedby": {
+                    "type": "string"
+                  },
+                  "aria-invalid": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["value", "onValueChange"]
@@ -1893,6 +1947,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -1928,6 +1985,9 @@
                   "variant": {
                     "type": "string",
                     "enum": ["pill", "outline"]
+                  },
+                  "multiple": {
+                    "type": "boolean"
                   }
                 },
                 "required": ["options"]
@@ -2281,6 +2341,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -2899,6 +2962,9 @@
                   },
                   "decrementLabel": {
                     "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -3396,6 +3462,9 @@
                   },
                   "name": {
                     "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 },
                 "required": ["value"]
@@ -3663,6 +3732,18 @@
                   },
                   "className": {
                     "type": "string"
+                  },
+                  "aria-labelledby": {
+                    "type": "string"
+                  },
+                  "aria-describedby": {
+                    "type": "string"
+                  },
+                  "aria-invalid": {
+                    "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -3731,6 +3812,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 },
                 "required": ["options"]
@@ -3978,6 +4062,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -4139,8 +4226,7 @@
                   "className": {
                     "type": "string"
                   }
-                },
-                "required": ["steps"]
+                }
               }
             }
           }
@@ -4351,6 +4437,15 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
                   }
                 },
                 "required": ["value", "onValueChange"]
@@ -4424,6 +4519,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -4518,6 +4616,9 @@
                     "type": "boolean"
                   },
                   "className": {
+                    "type": "string"
+                  },
+                  "ariaLabel": {
                     "type": "string"
                   }
                 }
@@ -4637,6 +4738,9 @@
                   },
                   "disabled": {
                     "type": "boolean"
+                  },
+                  "ariaLabel": {
+                    "type": "string"
                   }
                 }
               }
@@ -5848,6 +5952,9 @@
                     "type": "number"
                   },
                   "height": {
+                    "type": "number"
+                  },
+                  "maxCellSize": {
                     "type": "number"
                   },
                   "tooltip": {

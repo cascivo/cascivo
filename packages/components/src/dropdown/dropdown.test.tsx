@@ -61,3 +61,71 @@ describe('Dropdown', () => {
     await waitFor(() => expect(screen.getByRole('menu')).toHaveAttribute('data-state', 'closed'))
   })
 })
+
+/**
+ * A separator must never consume a selectable row.
+ *
+ * `separator: true` on a data-carrying entry renders ONLY a rule and drops the entry's
+ * label, value and icon. An adopter lost a "Log out" item to it with no type error and no
+ * warning, and found it only because a smoke test counted rows (2026-08-22 report item 9).
+ * The `{ kind: 'separator' }` member makes the intent unambiguous and cannot carry data.
+ */
+describe('Dropdown separators', () => {
+  it('renders every item alongside a standalone { kind: "separator" }', async () => {
+    const user = userEvent.setup()
+    render(
+      <Dropdown
+        trigger={<button>Open</button>}
+        items={[
+          { label: 'Account settings', value: 'settings' },
+          { label: 'Command menu', value: 'palette' },
+          { kind: 'separator' },
+          { label: 'Log out', value: 'logout' },
+        ]}
+      />,
+    )
+    await user.click(screen.getByText('Open'))
+    expect(screen.getAllByRole('menuitem')).toHaveLength(3)
+    expect(screen.getByRole('separator')).toBeTruthy()
+    expect(screen.getByRole('menuitem', { name: 'Log out' })).toBeTruthy()
+  })
+
+  it('skips a standalone separator in keyboard navigation and selection', async () => {
+    const user = userEvent.setup()
+    const onSelect = vi.fn()
+    render(
+      <Dropdown
+        trigger={<button>Open</button>}
+        items={[
+          { label: 'First', value: 'first' },
+          { kind: 'separator' },
+          { label: 'Last', value: 'last' },
+        ]}
+        onSelect={onSelect}
+      />,
+    )
+    await user.click(screen.getByText('Open'))
+    await user.keyboard('{ArrowDown}')
+    await user.keyboard('{Enter}')
+    expect(onSelect).toHaveBeenCalledWith('last')
+  })
+
+  it('keeps the legacy `separator: true` rendering unchanged, and warns about the data loss', async () => {
+    const user = userEvent.setup()
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    render(
+      <Dropdown
+        trigger={<button>Open</button>}
+        items={[
+          { label: 'Account settings', value: 'settings' },
+          { label: 'Log out', value: 'logout', separator: true },
+        ]}
+      />,
+    )
+    await user.click(screen.getByText('Open'))
+    // Unchanged behaviour: the flagged entry still renders only a rule.
+    expect(screen.getAllByRole('menuitem')).toHaveLength(1)
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('renders ONLY a rule'))
+    warn.mockRestore()
+  })
+})

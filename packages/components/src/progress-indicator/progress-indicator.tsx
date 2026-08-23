@@ -2,6 +2,13 @@ import { cn } from '@cascivo/core/pure'
 import styles from './progress-indicator.module.css'
 
 export interface ProgressStep {
+  /**
+   * Stable identity, used as the React key. Without it the array index (or a repeatable
+   * `label`) is the key, so inserting or reordering entries re-uses the wrong DOM node — the
+   * defect `link-item-id-parity` exists to prevent, extended past link-shaped items on
+   * 2026-08-22.
+   */
+  id?: string
   label: string
   description?: string
 }
@@ -37,7 +44,7 @@ export function ProgressIndicator({
           index < currentIndex ? 'complete' : index === currentIndex ? 'current' : 'incomplete'
         return (
           <li
-            key={index}
+            key={step.id ?? index}
             className={styles['step']}
             data-status={status}
             aria-current={status === 'current' ? 'step' : undefined}

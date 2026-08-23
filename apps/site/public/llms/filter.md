@@ -46,6 +46,7 @@ import { Filter } from '@cascivo/react'
 | `onChange`      | `(selected: string[]) => void` | no       | —       | Deprecated: use onValueChange (same string[]).                                                                                                                         |
 | `multi`         | `boolean`                      | no       | `false` | Allow multiple items to be selected simultaneously                                                                                                                     |
 | `variant`       | `'pill' \| 'outline'`          | no       | `pill`  | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.                        |
+| `multiple`      | `boolean`                      | no       | —       | Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical.                          |
 
 ## Examples
 

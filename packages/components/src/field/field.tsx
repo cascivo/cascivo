@@ -94,6 +94,7 @@ export interface FieldProps {
   /** The single form control element. */
   children: ReactElement<{
     id?: string
+    'aria-labelledby'?: string
     'aria-describedby'?: string
     'aria-invalid'?: boolean
     disabled?: boolean
@@ -117,6 +118,7 @@ export function Field({
   const controlId = id ?? generatedId
   const descriptionId = `${controlId}-description`
   const errorId = `${controlId}-error`
+  const labelId = `${controlId}-label`
 
   const describedBy =
     [supporting ? descriptionId : null, error ? errorId : null].filter(Boolean).join(' ') ||
@@ -124,10 +126,25 @@ export function Field({
 
   const controlProps: {
     id: string
+    'aria-labelledby'?: string
     'aria-describedby'?: string
     'aria-invalid'?: boolean
     disabled?: boolean
   } = { id: controlId }
+  /**
+   * Point the control at this Field's `<Label>` explicitly, in addition to the `<label for>`
+   * association.
+   *
+   * For a native control the two say the same thing, so nothing changes. For a composite one
+   * it is the unambiguous signal that something outside is naming it — which is what lets
+   * `TagsInput`, `Search`, `ColorPicker` and friends drop their built-in fallback name only
+   * when a Field really is labelling them, instead of guessing from the presence of an `id`
+   * (which would leave a standalone `<Search id="q"/>` with no name at all).
+   *
+   * `aria-labelledby` outranks `aria-label`, so this also fixes the case where a control's
+   * hardcoded `aria-label` was silently beating its Field's label (2026-08-22 report item 16).
+   */
+  if (label != null) controlProps['aria-labelledby'] = labelId
   if (describedBy) controlProps['aria-describedby'] = describedBy
   if (error) controlProps['aria-invalid'] = true
   if (disabled || children.props.disabled) controlProps.disabled = true
@@ -144,7 +161,7 @@ export function Field({
   return (
     <div className={cn(styles['field'], className)} data-disabled={disabled ? '' : undefined}>
       {label && (
-        <Label htmlFor={controlId} required={required} disabled={disabled}>
+        <Label id={labelId} htmlFor={controlId} required={required} disabled={disabled}>
           {label}
         </Label>
       )}

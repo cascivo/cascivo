@@ -11,6 +11,20 @@ import styles from './slider.module.css'
  * while this one inherits the underlying element's event.
  */
 export interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it (a heading in a settings row, a table column header) and `label` would render
+   * that text a second time.
+   *
+   * `label` on this component is **visible** — it is painted next to the control. The catalog
+   * splits that way deliberately, but `IconButton.label` and `Sparkline.label` are invisible
+   * names, so an adopter arriving with that prior writes `label` here and gets the text twice
+   * (2026-08-22 report item 13). Both props are now listed side by side, each saying which it
+   * is, which is the only thing that interrupts a confident wrong guess.
+   *
+   * The raw DOM `aria-label` is still accepted and wins over this.
+   */
+  ariaLabel?: string
   label?: string
 }
 
@@ -21,7 +35,7 @@ export interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
  * not work there.
  */
 export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
-  { label, className, id, min = 0, max = 100, step = 1, disabled, ...props },
+  { label, ariaLabel, className, id, min = 0, max = 100, step = 1, disabled, ...props },
   ref,
 ) {
   const sliderId =
@@ -44,6 +58,7 @@ export const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
         className={styles['slider']}
         ref={ref as never}
         {...props}
+        aria-label={props['aria-label'] ?? ariaLabel}
       />
     </div>
   )

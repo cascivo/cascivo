@@ -17,8 +17,9 @@ export const meta: ComponentMeta = {
     },
     {
       name: 'items',
-      description: 'The items to render.',
-      type: '{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]',
+      description:
+        "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev.",
+      type: "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
       required: true,
     },
     {
@@ -46,6 +47,35 @@ export const meta: ComponentMeta = {
       description: 'Called with the next open state when it changes.',
       type: '(open: boolean) => void',
       required: false,
+    },
+  ],
+  typeDefs: [
+    {
+      name: 'DropdownMenuItem',
+      description: 'A selectable row in the menu.',
+      fields: [
+        { name: 'label', type: 'string', required: true, description: 'Visible item text.' },
+        { name: 'value', type: 'string', required: true, description: 'Passed to `onSelect`.' },
+        { name: 'icon', type: 'ReactNode', required: false, description: 'Leading icon.' },
+        {
+          name: 'disabled',
+          type: 'boolean',
+          required: false,
+          description: 'Skips the item in keyboard navigation and selection.',
+        },
+        {
+          name: 'separator',
+          type: 'boolean',
+          required: false,
+          description:
+            "⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry.",
+        },
+      ],
+    },
+    {
+      name: 'DropdownSeparatorItem',
+      description: 'A rule between groups. Carries no data and is skipped by keyboard navigation.',
+      fields: [{ name: 'kind', type: "'separator'", required: true, description: 'Discriminant.' }],
     },
   ],
   tokens: [

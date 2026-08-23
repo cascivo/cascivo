@@ -2,7 +2,7 @@
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { useRef } from 'react'
 import { ChartFrame } from '../../core/chart-frame'
-import { warnNonFinite } from '../../core/dev-warn'
+import { warnEpochMilliseconds, warnNonFinite } from '../../core/dev-warn'
 import {
   DEFAULT_MARGINS,
   leftMarginForLabels,
@@ -302,6 +302,7 @@ export function LineChart<Datum = { x: number; y: number }>({
     .ticks(yTicks)
     .map((v) => v.toLocaleString())
   const usesDate = hasData && allX[0] instanceof Date
+  warnEpochMilliseconds('LineChart', allX[0], xFormat !== undefined)
 
   // A right axis renders its labels OUTSIDE the plot, and the final bottom label is
   // centred on the plot's right edge so half of it overhangs ("7/26/2026" → "7/26/202").

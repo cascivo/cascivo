@@ -295,6 +295,14 @@ Packages that export source directly (components, layouts, charts, themes, token
 
 ### Monorepo Structure
 
+**An app's `package.json` `name` must end with its directory name.** `apps/examples/pulse` is
+`@cascivo/example-pulse`; `apps/bench/runner` is `bench-runner`. Two apps cannot share a
+directory, so a name derived from the directory cannot collide either — and an agent working in
+one app can follow the rule without reading the others, which project isolation may not even
+allow. A duplicate name is not a scoped failure: the task runner refuses to run **any** task in
+the monorepo, and the cause is invisible from inside the app that triggered it (2026-08-22
+report, repo-level note). Enforced by `scripts/checks/app-package-names.test.ts`.
+
 ```
 cascade/
 ├── packages/
@@ -647,8 +655,13 @@ The sibling of the handler rule, and the highest-frequency friction an adopter r
 wrong prop-name guesses in one small dashboard (2026-08-08), one of which (`gap="4"`) cost 20
 type errors in a single run. Predictability IS the product for an AI-first system.
 
-- A config-driven **collection**: **`items`**. Never `rows`/`data`/`entries`. `DataTable.rows`
-  is the sole exception — it renders a `<table>`, where "rows" is the domain word.
+- A config-driven **collection**: **`items`** (nav/list/menu). A form control's choices are
+  **`options`**; a chart's points are **`data`**. Never `entries`. Exceptions, all real:
+  `DataTable.rows` (it renders a `<table>`), `Textarea.rows` (the HTML attribute),
+  `Steps.steps` / `ProgressIndicator.steps` (the stepper domain word; `Steps` also accepts
+  `items`), `CommandMenu.groups` (its items nest inside labelled groups). The published
+  list is generated from the registry by `scripts/lib/collection-vocabulary.ts` — never
+  hand-write a component list for this rule.
 - A **visual style** enum: **`variant`**. Never `shape`/`kind`/`type`/`appearance`. **Name the
   TYPE after the prop too** — `type BadgeShape` sitting above `BadgeProps` in the `.d.ts` read
   as the type of a `shape` prop that does not exist and cost an adopter four files.

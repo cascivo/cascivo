@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render } from '@testing-library/react'
-import { Text, wrapText } from './text'
+import { ChartText as Text, wrapText } from './text'
 
 describe('wrapText', () => {
   it('returns a single line when no width is given', () => {

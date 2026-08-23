@@ -679,7 +679,8 @@
           "name": "onChange",
           "type": "React.ChangeEventHandler<HTMLInputElement>",
           "required": false
-        }
+        },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -731,7 +732,12 @@
         { "name": "alpha", "type": "boolean", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false }
+        { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
+        { "name": "aria-labelledby", "type": "string", "required": false },
+        { "name": "aria-describedby", "type": "string", "required": false },
+        { "name": "aria-invalid", "type": "boolean", "required": false },
+        { "name": "id", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -755,7 +761,11 @@
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "labels", "type": "ComboboxLabels", "required": false },
-        { "name": "className", "type": "string", "required": false }
+        { "name": "className", "type": "string", "required": false },
+        { "name": "aria-labelledby", "type": "string", "required": false },
+        { "name": "aria-describedby", "type": "string", "required": false },
+        { "name": "aria-invalid", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -889,7 +899,11 @@
         { "name": "error", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "labels", "type": "DatePickerLabels", "required": false }
+        { "name": "labels", "type": "DatePickerLabels", "required": false },
+        { "name": "aria-labelledby", "type": "string", "required": false },
+        { "name": "aria-describedby", "type": "string", "required": false },
+        { "name": "aria-invalid", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -948,7 +962,7 @@
         { "name": "trigger", "type": "ReactElement", "required": true },
         {
           "name": "items",
-          "type": "{ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean }[]",
+          "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
           "required": true
         },
         { "name": "onSelect", "type": "(value: string) => void", "required": false },
@@ -965,7 +979,11 @@
         { "name": "placeholder", "type": "string", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "submitOnBlur", "type": "boolean", "required": false },
-        { "name": "onCancel", "type": "() => void", "required": false }
+        { "name": "onCancel", "type": "() => void", "required": false },
+        { "name": "id", "type": "string", "required": false },
+        { "name": "aria-labelledby", "type": "string", "required": false },
+        { "name": "aria-describedby", "type": "string", "required": false },
+        { "name": "aria-invalid", "type": "boolean", "required": false }
       ]
     },
     {
@@ -1023,7 +1041,8 @@
         { "name": "label", "type": "string", "required": false },
         { "name": "hint", "type": "string", "required": false },
         { "name": "labels", "type": "FileUploaderLabels", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1038,7 +1057,8 @@
         { "name": "onValueChange", "type": "(selected: string[]) => void", "required": false },
         { "name": "onChange", "type": "(selected: string[]) => void", "required": false },
         { "name": "multi", "type": "boolean", "required": false },
-        { "name": "variant", "type": "'pill' | 'outline'", "required": false }
+        { "name": "variant", "type": "'pill' | 'outline'", "required": false },
+        { "name": "multiple", "type": "boolean", "required": false }
       ]
     },
     {
@@ -1169,7 +1189,8 @@
         { "name": "error", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "placeholder", "type": "string", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1368,7 +1389,8 @@
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "incrementLabel", "type": "string", "required": false },
-        { "name": "decrementLabel", "type": "string", "required": false }
+        { "name": "decrementLabel", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1543,7 +1565,8 @@
         { "name": "label", "type": "string", "required": false },
         { "name": "value", "type": "string", "required": true },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "name", "type": "string", "required": false }
+        { "name": "name", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1630,7 +1653,11 @@
         { "name": "disabled", "type": "boolean", "required": false },
         { "name": "clearLabel", "type": "string", "required": false },
         { "name": "id", "type": "string", "required": false },
-        { "name": "className", "type": "string", "required": false }
+        { "name": "className", "type": "string", "required": false },
+        { "name": "aria-labelledby", "type": "string", "required": false },
+        { "name": "aria-describedby", "type": "string", "required": false },
+        { "name": "aria-invalid", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1656,7 +1683,8 @@
           "required": true
         },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1734,7 +1762,8 @@
         { "name": "step", "type": "number", "required": false },
         { "name": "value", "type": "number", "required": false },
         { "name": "defaultValue", "type": "number", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1782,7 +1811,8 @@
       "props": [
         { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
-        { "name": "steps", "type": "Step[]", "required": true },
+        { "name": "items", "type": "Step[]", "required": false },
+        { "name": "steps", "type": "Step[]", "required": false },
         { "name": "activeStep", "type": "number", "required": false },
         { "name": "orientation", "type": "'horizontal' | 'vertical'", "required": false },
         { "name": "className", "type": "string", "required": false }
@@ -1868,7 +1898,10 @@
         { "name": "placeholder", "type": "string", "required": false },
         { "name": "validate", "type": "(tag: string) => boolean", "required": false },
         { "name": "max", "type": "number", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "id", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false },
+        { "name": "label", "type": "string", "required": false }
       ]
     },
     {
@@ -1888,7 +1921,8 @@
         { "name": "error", "type": "string", "required": false },
         { "name": "rows", "type": "number", "required": false },
         { "name": "resize", "type": "'none' | 'vertical' | 'both'", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1921,7 +1955,8 @@
         { "name": "error", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md' | 'lg'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
-        { "name": "className", "type": "string", "required": false }
+        { "name": "className", "type": "string", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -1971,7 +2006,8 @@
         { "name": "onChange", "type": "(checked: boolean) => void", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md'", "required": false },
-        { "name": "disabled", "type": "boolean", "required": false }
+        { "name": "disabled", "type": "boolean", "required": false },
+        { "name": "ariaLabel", "type": "string", "required": false }
       ]
     },
     {
@@ -2392,6 +2428,7 @@
         { "name": "to", "type": "string | Date", "required": false },
         { "name": "width", "type": "number", "required": false },
         { "name": "height", "type": "number", "required": false },
+        { "name": "maxCellSize", "type": "number", "required": false },
         { "name": "tooltip", "type": "boolean", "required": false },
         { "name": "className", "type": "string", "required": false },
         { "name": "plain", "type": "boolean", "required": false },
@@ -3191,6 +3228,7 @@
     "itemRef",
     "itemScope",
     "itemType",
+    "items",
     "label",
     "lang",
     "list",
@@ -3404,6 +3442,7 @@
     "src",
     "srcSet",
     "step",
+    "steps",
     "style",
     "suppressContentEditableWarning",
     "suppressHydrationWarning",

@@ -19,6 +19,20 @@ export interface ColorPickerLabels {
 }
 
 export interface ColorPickerProps {
+  /**
+   * Wired automatically by a wrapping `Field` — its label id. Forwarded to the text input so
+   * the Field's label names it; the built-in fallback name is then not applied.
+   */
+  'aria-labelledby'?: string
+  /**
+   * Wired automatically by a wrapping `Field` — the ids of its hint/error text. Forwarded to
+   * the text input so the supporting text is announced, not just displayed.
+   */
+  'aria-describedby'?: string
+  /** Wired automatically by a wrapping `Field` when it is in an error state. */
+  'aria-invalid'?: boolean
+  /** Id for the focusable text input. `Field` supplies this automatically. */
+  id?: string
   value?: string
   /**
    * The initial value when uncontrolled.
@@ -31,6 +45,16 @@ export interface ColorPickerProps {
   presets?: string[]
   alpha?: boolean
   label?: string
+  /**
+   * Invisible accessible name, for when a visible element outside this component already
+   * labels it and `label` would render that text a second time.
+   *
+   * `label` on this component is **visible**. `IconButton.label` and `Sparkline.label` are
+   * invisible names, so an adopter arriving with that prior writes `label` here and gets the
+   * text twice (2026-08-22 report item 13). Both props are listed side by side, each saying
+   * which it is.
+   */
+  ariaLabel?: string
   /**
    * When true, disables the control and removes it from the tab order.
    *
@@ -137,10 +161,15 @@ export function ColorPicker({
   presets,
   alpha = true,
   label,
+  ariaLabel,
   disabled,
   size = 'md',
   className,
   labels,
+  id,
+  'aria-labelledby': ariaLabelledBy,
+  'aria-describedby': ariaDescribedBy,
+  'aria-invalid': ariaInvalid,
 }: ColorPickerProps) {
   useSignals()
   const baseId = useId()
@@ -349,7 +378,16 @@ export function ColorPicker({
           type="text"
           value={color.value}
           disabled={disabled}
-          aria-label={label ?? resolved.colorArea}
+          id={id}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
+          aria-invalid={ariaInvalid}
+          // A wrapping Field names this input via `aria-labelledby`, which outranks
+          // `aria-label` — so applying the built-in fallback here would be inert at best and
+          // is dropped instead of competing with it.
+          aria-label={
+            ariaLabelledBy !== undefined ? undefined : (ariaLabel ?? label ?? resolved.colorArea)
+          }
           onChange={(e) => setColor((e.target as HTMLInputElement).value)}
         />
         {eyeDropper && (

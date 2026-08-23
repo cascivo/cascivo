@@ -92,6 +92,66 @@ function read(path: string): string {
   return readFileSync(join(REPO_ROOT, path), 'utf8')
 }
 
+/**
+ * Surfaces that show a copy-pasteable theme import. Wider than SURFACES: a package README is
+ * the first thing an npm visitor sees, and it is where the wrong bundle was recommended.
+ */
+const THEME_IMPORT_SURFACES = [
+  'docs/GETTING-STARTED.md',
+  'scripts/llms/generate.ts',
+  'packages/react/readme.body.md',
+  'packages/themes/readme.body.md',
+  'packages/platform/readme.body.md',
+  'packages/react/src/index.ts',
+]
+
+describe('the theme bundle a quick-start recommends is the small one, described truthfully', () => {
+  /**
+   * `llms.txt` §"How to use it" showed `import '@cascivo/themes/all.css'` with the trailing
+   * comment "tokens (once) + base typography + light & dark". That comment had been wrong since
+   * 0.14.0 — `all.css` is all TWELVE themes — and the same file's theming section said
+   * `light-dark.css` was "the common case". So the primary quick-start handed every new adopter
+   * roughly twice the CSS they needed, labelled as the bundle it is not (2026-08-22 report #21).
+   *
+   * The failure is a hand-written description of a generated artifact's contents, so the guard
+   * is about the description: wherever `all.css` is imported, it must be named as the
+   * twelve-theme bundle, never as "light & dark".
+   */
+  it('never describes all.css as light & dark', () => {
+    const offenders: string[] = []
+    for (const path of THEME_IMPORT_SURFACES) {
+      const source = read(path)
+      for (const line of source.split('\n')) {
+        if (!/@cascivo\/themes\/all\.css/.test(line)) continue
+        if (/light\s*(&|and)\s*dark/i.test(line)) {
+          offenders.push(`${path}: ${line.trim().slice(0, 120)}`)
+        }
+      }
+    }
+    assert.deepEqual(
+      offenders,
+      [],
+      '`all.css` is all TWELVE themes, not light + dark. Recommend `light-dark.css` in a ' +
+        'quick-start and describe `all.css` by what it actually contains.\n  ' +
+        offenders.join('\n  '),
+    )
+  })
+
+  it('every quick-start theme import names light-dark.css', () => {
+    // A fix that lands on one surface and not the others is the recurrence mechanism this
+    // whole file exists to break, so every surface that shows a theme import must show this one.
+    const missing = THEME_IMPORT_SURFACES.filter(
+      (path) => !/@cascivo\/themes\/light-dark\.css/.test(read(path)),
+    )
+    assert.deepEqual(
+      missing,
+      [],
+      'These surfaces show a theme import but never name `light-dark.css`, the common case:\n  ' +
+        missing.join('\n  '),
+    )
+  })
+})
+
 describe('getting-started-contract — first-day facts reach every first-day surface', () => {
   for (const fact of FACTS) {
     it(`every surface states: ${fact.name}`, () => {

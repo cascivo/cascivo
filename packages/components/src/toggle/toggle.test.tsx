@@ -58,3 +58,31 @@ describe('Toggle', () => {
     expect(toggle).toHaveAttribute('aria-checked', 'false')
   })
 })
+
+/**
+ * `label` is visible here; `IconButton.label` and `Sparkline.label` are invisible names.
+ *
+ * The catalog documented that correctly on every surface — the source TSDoc, the manifest's
+ * `nameVisibility`, `registry.json`, `llms/toggle.md` and the site props table — and an
+ * adopter still wrote the canonical settings row (heading on the left, switch on the right)
+ * with `label` and got the text printed twice (2026-08-22 report item 13). A doc only reaches
+ * someone who suspects they need it, so the fix is a declared `ariaLabel` sitting beside
+ * `label` rather than more prose.
+ */
+describe('Toggle accessible name', () => {
+  it('renders `label` as visible text', () => {
+    render(<Toggle label="Enable previews" />)
+    expect(screen.getByText('Enable previews')).toBeTruthy()
+  })
+
+  it('takes an invisible name from `ariaLabel`, painting nothing', () => {
+    render(<Toggle ariaLabel="Enable previews" />)
+    expect(screen.getByRole('switch', { name: 'Enable previews' })).toBeTruthy()
+    expect(screen.queryByText('Enable previews')).toBeNull()
+  })
+
+  it('lets the raw DOM `aria-label` win over `ariaLabel`', () => {
+    render(<Toggle ariaLabel="From prop" aria-label="From DOM attribute" />)
+    expect(screen.getByRole('switch', { name: 'From DOM attribute' })).toBeTruthy()
+  })
+})

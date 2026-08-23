@@ -38,10 +38,23 @@ Rendered as an ordered list (<ol>) with aria-label; the active item carries aria
 | ------------- | ---------------------------- | -------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | `label`       | `string`                     | No       | —            | Alias of `ariaLabel` — the same invisible accessible name under the other spelling. Neither is deprecated. Not rendered — screen readers only. |
 | `ariaLabel`   | `string`                     | No       | —            | Accessible label for the steps navigation; defaults to the built-in i18n string. Not rendered — screen readers only.                           |
-| `steps`       | `Step[]`                     | Yes      | —            | Array of step objects with label and optional explicit state                                                                                   |
+| `items`       | `Step[]`                     | No       | —            | Alias of `steps` — the catalog-wide name for a config-driven collection. Exactly one of the two is required.                                   |
+| `steps`       | `Step[]`                     | No       | —            | Array of step objects with label and optional explicit state                                                                                   |
 | `activeStep`  | `number`                     | No       | 0            | Index of the currently active step (0-based)                                                                                                   |
 | `orientation` | `'horizontal' \| 'vertical'` | No       | 'horizontal' | Axis the steps flow along: `horizontal` runs them across with connectors between, `vertical` stacks them down the page.                        |
 | `className`   | `string`                     | No       | —            | Additional CSS class names merged onto the root element.                                                                                       |
+
+## Object types
+
+### `Step`
+
+Shape of an entry in `steps` / `items`.
+
+| Field   | Type                         | Required | Description                                                                                                                                                     |
+| ------- | ---------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label` | `string`                     | Yes      | Visible step label.                                                                                                                                             |
+| `id`    | `string`                     | No       | Stable identity, used as the React key so reordering keeps DOM nodes.                                                                                           |
+| `state` | `StepState \| ProgressInput` | No       | Step status. `StepState` ('pending' \| 'active' \| 'complete' \| 'error') is canonical; `ProgressInput` also accepts Timeline's `current` / `upcoming` aliases. |
 
 ## Tokens
 

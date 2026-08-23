@@ -31,6 +31,15 @@ export interface FilterProps {
    */
   multi?: boolean
   /**
+   * Alias of `multi` — the HTML spelling, accepted because it is the guess.
+   *
+   * `multiple` is what `<select multiple>` and `<input multiple>` are called, so an adopter
+   * reaches for it first and pays a compile cycle on a prop whose doc comment they never see:
+   * you cannot read the documentation of a prop you do not know exists (2026-08-22 report
+   * item 14). `multi` stays canonical.
+   */
+  multiple?: boolean
+  /**
    * `pill` fills the selected chip with the accent colour; `outline` marks it with an accent
    * border and text instead, leaving the fill transparent.
    *
@@ -65,6 +74,7 @@ export function Filter({
   onValueChange,
   onChange,
   multi = false,
+  multiple,
   variant = 'pill',
   className,
   ariaLabel,
@@ -72,6 +82,7 @@ export function Filter({
   ...aria
 }: FilterProps) {
   useSignals()
+  const allowsMultiple = multiple ?? multi
   const [selected, setSelected] = useControllableSignal<string[]>({
     value,
     defaultValue,
@@ -81,7 +92,7 @@ export function Filter({
   function toggle(val: string) {
     const current = selected.value
     let next: string[]
-    if (multi) {
+    if (allowsMultiple) {
       next = current.includes(val) ? current.filter((v) => v !== val) : [...current, val]
     } else {
       next = current.includes(val) ? [] : [val]

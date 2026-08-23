@@ -34,12 +34,13 @@ Each Radio is a native <input type="radio"> wrapped in a <label>, and RadioGroup
 
 ## Props
 
-| Name       | Type      | Required | Default | Description                                                        |
-| ---------- | --------- | -------- | ------- | ------------------------------------------------------------------ |
-| `label`    | `string`  | No       | —       | Text label for the control. Rendered on screen.                    |
-| `value`    | `string`  | Yes      | —       | The controlled value.                                              |
-| `disabled` | `boolean` | No       | false   | When true, disables the control and removes it from the tab order. |
-| `name`     | `string`  | No       | —       | Form field name shared by the radio group.                         |
+| Name        | Type      | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                          |
+| ----------- | --------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `label`     | `string`  | No       | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
+| `value`     | `string`  | Yes      | —       | The controlled value.                                                                                                                                                                                                                                                                                                                                                                                |
+| `disabled`  | `boolean` | No       | false   | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
+| `name`      | `string`  | No       | —       | Form field name shared by the radio group.                                                                                                                                                                                                                                                                                                                                                           |
+| `ariaLabel` | `string`  | No       | —       | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
 ## Tokens
 
