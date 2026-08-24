@@ -154,6 +154,12 @@ jobs:
       - name: API-surface snapshot (the 1.x surface matches api-surface.json)
         run: pnpm run api:check
 
+      # Also after the build: the site's type shims are one-line re-exports of the built
+      # declarations, so regenerating them needs dist. Hand-written, they drifted at 1.0 and
+      # the site compiled clean against props that no longer existed.
+      - name: Site type-shims are current (regenerated from the built declarations)
+        run: pnpm run shims:check
+
       # A missing VALUE export fails loudly at runtime; a missing TYPE export is invisible —
       # everything compiles, the adopter just cannot name the type of a prop they must pass.
       - name: Type-exports parity (core types naming published props are importable)

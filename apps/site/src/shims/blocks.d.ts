@@ -4,7 +4,11 @@
 // tsc from typechecking component source (same pattern as the per-component shims).
 declare module '@cascivo/blocks/*/component' {
   import type { VNode } from 'preact'
-  type BlockComponent = (props: Record<string, unknown>) => VNode
+  // Every block is a prop-less page composition — verified against all twelve sources,
+  // each of which is `export function <Name>()`. Declared with no parameter rather than a
+  // `Record<string, unknown>` bag: passing a prop is then a compile error, and a nullary
+  // function still satisfies Preact's `ComponentType` for the `lazy()` call sites.
+  type BlockComponent = () => VNode
   // Each block module exports exactly one of these named components; declared
   // loosely here so the dynamic `import().then(m => m.<Name>)` calls typecheck.
   export const AppShell: BlockComponent
