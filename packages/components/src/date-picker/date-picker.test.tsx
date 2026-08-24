@@ -38,30 +38,30 @@ describe('DatePicker', () => {
     expect(screen.getByRole('combobox')).not.toHaveTextContent('Select a date')
   })
 
-  it('calls onChange on day selection', () => {
-    const onChange = vi.fn()
-    render(<DatePicker defaultValue="2024-06-01" onChange={onChange} />)
+  it('calls onValueChange on day selection', () => {
+    const onValueChange = vi.fn()
+    render(<DatePicker defaultValue="2024-06-01" onValueChange={onValueChange} />)
     fireEvent.click(screen.getByRole('combobox'))
     const dayButtons = screen.getAllByRole('button').filter((b) => b.closest('td') !== null)
     fireEvent.click(dayButtons[0]!)
-    expect(onChange).toHaveBeenCalledWith(expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/))
+    expect(onValueChange).toHaveBeenCalledWith(expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/))
   })
 
   it('renders clear button when clearable and value set', () => {
-    render(<DatePicker value="2024-06-15" clearable onChange={() => {}} />)
+    render(<DatePicker value="2024-06-15" clearable onValueChange={() => {}} />)
     expect(screen.getByRole('button', { name: /clear date/i })).toBeInTheDocument()
   })
 
   it('does not render clear button when not clearable', () => {
-    render(<DatePicker value="2024-06-15" onChange={() => {}} />)
+    render(<DatePicker value="2024-06-15" onValueChange={() => {}} />)
     expect(screen.queryByRole('button', { name: /clear date/i })).not.toBeInTheDocument()
   })
 
-  it('calls onChange with undefined on clear', () => {
-    const onChange = vi.fn()
-    render(<DatePicker value="2024-06-15" clearable onChange={onChange} />)
+  it('calls onValueChange with undefined on clear', () => {
+    const onValueChange = vi.fn()
+    render(<DatePicker value="2024-06-15" clearable onValueChange={onValueChange} />)
     fireEvent.click(screen.getByRole('button', { name: /clear date/i }))
-    expect(onChange).toHaveBeenCalledWith(undefined)
+    expect(onValueChange).toHaveBeenCalledWith(undefined)
   })
 
   it('disables trigger when disabled', () => {

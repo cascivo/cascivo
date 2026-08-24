@@ -153,7 +153,7 @@ export function IssueForm({ open, issueId, onClose }: IssueFormProps) {
           label={t(msg.formFieldAssignee)}
           options={assigneeOptions}
           value={assigneeField.value}
-          onChange={(v) => assigneeField.onChange(v ?? '')}
+          onValueChange={(v) => assigneeField.onChange(v ?? '')}
           clearable
           searchable={false}
           labels={{ placeholder: t(msg.formFieldAssigneePlaceholder) }}

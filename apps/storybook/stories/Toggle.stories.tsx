@@ -23,7 +23,7 @@ function ControlledDemo() {
     <Toggle
       label={checked ? 'Dark mode on' : 'Dark mode off'}
       checked={checked}
-      onChange={setChecked}
+      onValueChange={setChecked}
     />
   )
 }

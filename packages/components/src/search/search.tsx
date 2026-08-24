@@ -29,8 +29,6 @@ export interface SearchProps {
   defaultValue?: string
   /** Called with the current text on every keystroke. */
   onValueChange?: (value: string) => void
-  /** @deprecated Use `onValueChange` — it receives the same string. */
-  onChange?: (value: string) => void
   onSearch?: (value: string) => void
   /**
    * Debounce delay (ms) before onSearch fires.
@@ -107,7 +105,6 @@ export function Search({
   value,
   defaultValue = '',
   onValueChange,
-  onChange,
   onSearch,
   debounceMs = 300,
   placeholder,
@@ -157,7 +154,7 @@ export function Search({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const next = event.target.value
     if (!isControlled) current.value = next
-    ;(onValueChange ?? onChange)?.(next)
+    onValueChange?.(next)
     clearTimer()
     timerRef.current = setTimeout(() => {
       timerRef.current = null
@@ -175,7 +172,7 @@ export function Search({
   const handleClear = () => {
     clearTimer()
     if (!isControlled) current.value = ''
-    ;(onValueChange ?? onChange)?.('')
+    onValueChange?.('')
     onSearch?.('')
     focusElement(inputRef.current)
   }

@@ -89,14 +89,3 @@ export function ChartText({
     </text>
   )
 }
-
-/**
- * @deprecated Use `ChartText`. This name collides with `@cascivo/react`'s typography
- * component, and the wrong resolution is silent. Removed at 1.0 — the release cadence is
- * roughly weekly, so a one-minor window would be about five days, which is a break with extra
- * steps rather than a deprecation.
- */
-export const Text = ChartText
-
-/** @deprecated Use `ChartTextProps`. */
-export type TextProps = ChartTextProps

@@ -517,16 +517,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       primitives: ['number'],
     },
     {
-      name: 'xTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
-      name: 'yTicks',
-      required: false,
-      primitives: ['number'],
-    },
-    {
       name: 'xLabelEvery',
       required: false,
       primitives: ['number'],
@@ -1615,10 +1605,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
-      name: 'onChange',
-      required: false,
-    },
-    {
       name: 'clearable',
       required: false,
       primitives: ['boolean'],
@@ -2021,10 +2007,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'onChange',
       required: false,
     },
     {
@@ -2523,10 +2505,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'onChange',
       required: false,
     },
     {
@@ -4432,10 +4410,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
-      name: 'onChange',
-      required: false,
-    },
-    {
       name: 'min',
       required: false,
       primitives: ['number'],
@@ -5576,10 +5550,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
-      name: 'onChange',
-      required: false,
-    },
-    {
       name: 'onSearch',
       required: false,
     },
@@ -6369,10 +6339,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
-      name: 'onChange',
-      required: false,
-    },
-    {
       name: 'mode',
       required: false,
       enum: ['rotate', 'flip'],
@@ -6633,10 +6599,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
     {
-      name: 'onChange',
-      required: false,
-    },
-    {
       name: 'min',
       required: false,
       primitives: ['string'],
@@ -6757,10 +6719,6 @@ export const propSchemas: Record<string, PropSchema[]> = {
     },
     {
       name: 'onValueChange',
-      required: false,
-    },
-    {
-      name: 'onChange',
       required: false,
     },
     {

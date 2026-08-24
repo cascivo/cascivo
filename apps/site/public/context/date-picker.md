@@ -15,11 +15,11 @@
 
 ## Anti-patterns
 
-### The component parses and compares ISO dates; non-ISO values break selection, constraints, and onChange
+### The component parses and compares ISO dates; non-ISO values break selection, constraints, and onValueChange
 
 **Bad:** `Passing a localized display string as value`  
 **Good:** `value/defaultValue/min/max are ISO YYYY-MM-DD; display formatting is handled internally`  
-**Why:** The component parses and compares ISO dates; non-ISO values break selection, constraints, and onChange
+**Why:** The component parses and compares ISO dates; non-ISO values break selection, constraints, and onValueChange
 
 ## Related components
 
@@ -39,7 +39,6 @@ The trigger is role="combobox" with aria-haspopup="dialog"/aria-expanded; the ca
 | `value`            | `string`                               | No       | —       | Controlled ISO date value (YYYY-MM-DD)                                                                                                                                                                                                                                                                                                                                                               |
 | `defaultValue`     | `string`                               | No       | —       | Uncontrolled default value                                                                                                                                                                                                                                                                                                                                                                           |
 | `onValueChange`    | `(value: string \| undefined) => void` | No       | —       | Called with the selected ISO date string (or undefined when cleared)                                                                                                                                                                                                                                                                                                                                 |
-| `onChange`         | `(value: string \| undefined) => void` | No       | —       | Deprecated: use onValueChange (same ISO string \| undefined)                                                                                                                                                                                                                                                                                                                                         |
 | `min`              | `string`                               | No       | —       | Minimum ISO date                                                                                                                                                                                                                                                                                                                                                                                     |
 | `max`              | `string`                               | No       | —       | Maximum ISO date                                                                                                                                                                                                                                                                                                                                                                                     |
 | `clearable`        | `boolean`                              | No       | false   | Shows a clear button                                                                                                                                                                                                                                                                                                                                                                                 |

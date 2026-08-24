@@ -27,17 +27,6 @@ export interface DropdownMenuItem {
   value: string
   icon?: ReactNode
   disabled?: boolean
-  /**
-   * ⚠ **Deprecated, and it discards this entry's data.** `separator` marks the entry AS a
-   * rule — it does not draw one above the item — so `label`, `value` and `icon` are dropped
-   * and the row never renders. An adopter lost a "Log out" item to this and found it only
-   * because a smoke test counted rows (2026-08-22 report item 9).
-   *
-   * Behaviour is unchanged for existing code; dev logs a warning naming the fix.
-   *
-   * @deprecated Use a separate `{ kind: 'separator' }` entry, which needs no `label`/`value`.
-   */
-  separator?: boolean
 }
 
 /**
@@ -57,44 +46,11 @@ export interface DropdownSeparatorItem {
 export type DropdownItem = DropdownMenuItem | DropdownSeparatorItem
 
 /**
- * Narrows to the selectable rows, excluding **both** separator spellings. One predicate for
- * every call site — nav, selection and render — so the three cannot disagree about what
- * counts as a separator.
+ * Narrows to the selectable rows. One predicate for every call site — nav, selection and
+ * render — so the three cannot disagree about what counts as a separator.
  */
 function isMenuItem(item: DropdownItem): item is DropdownMenuItem {
-  return !('kind' in item) && item.separator !== true
-}
-
-const warnedSeparatorDataLoss = new Set<string>()
-
-/** True unless the build's NODE_ENV is 'production'. Read via `globalThis` so the
- * browser-facing source needs no `@types/node`, and it's safe where `process` is
- * absent (bundlers replace `process.env.NODE_ENV` in app builds). */
-function isDev(): boolean {
-  const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env
-  return env?.NODE_ENV !== 'production'
-}
-
-/**
- * Dev-only, deduped warning for the one unambiguous mistake: `separator: true` combined with a
- * non-empty `label`. Nobody writes a label for a rule on purpose, so this fires exactly when
- * the adopter meant "draw a rule above this item" and lost the item instead.
- */
-function warnIfSeparatorDiscardsData(items: DropdownItem[]): void {
-  if (!isDev()) return
-  for (const item of items) {
-    if ('kind' in item) continue
-    if (item.separator !== true) continue
-    if (!item.label) continue
-    if (warnedSeparatorDataLoss.has(item.label)) continue
-    warnedSeparatorDataLoss.add(item.label)
-    console.warn(
-      `cascivo Dropdown: item { label: ${JSON.stringify(item.label)}, separator: true } ` +
-        `renders ONLY a rule — its label, value and icon are discarded. \`separator\` marks ` +
-        `the entry AS a separator, it does not add a rule above it. Use two entries: ` +
-        `{ label: ${JSON.stringify(item.label)}, value: … }, { kind: 'separator' }`,
-    )
-  }
+  return !('kind' in item)
 }
 
 export interface DropdownProps {
@@ -123,7 +79,6 @@ export function Dropdown({
   onOpenChange,
 }: DropdownProps) {
   useSignals()
-  warnIfSeparatorDiscardsData(items)
   const [state, send] = useMachine(machine)
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLElement>(null)

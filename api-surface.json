@@ -836,7 +836,7 @@
             "count?": "2 | 3 | 4",
             "gap?": "SpaceStep"
           },
-          "Combobox": "declare function Combobox({ options, value, defaultValue, onValueChange, onChange, clearable, searchable, label, ariaLabel, hint, error, size, disabled, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: ComboboxProps): import(\"react\").JSX.Element",
+          "Combobox": "declare function Combobox({ options, value, defaultValue, onValueChange, clearable, searchable, label, ariaLabel, hint, error, size, disabled, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: ComboboxProps): import(\"react\").JSX.Element",
           "ComboboxLabels": {
             "placeholder?": "string",
             "empty?": "string",
@@ -856,7 +856,6 @@
             "value?": "string",
             "defaultValue?": "string",
             "onValueChange?": "(value: string | undefined) => void",
-            "onChange?": "(value: string | undefined) => void",
             "clearable?": "boolean",
             "searchable?": "boolean",
             "label?": "string",
@@ -1023,7 +1022,7 @@
             "windowSize?": "number",
             "overscan?": "number"
           },
-          "DatePicker": "declare function DatePicker({ value, defaultValue, onValueChange, onChange, min, max, clearable, label, ariaLabel, hint, error, size, disabled, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: DatePickerProps): import(\"react\").JSX.Element",
+          "DatePicker": "declare function DatePicker({ value, defaultValue, onValueChange, min, max, clearable, label, ariaLabel, hint, error, size, disabled, labels, className, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid }: DatePickerProps): import(\"react\").JSX.Element",
           "DatePickerLabels": {
             "placeholder?": "string",
             "previousMonth?": "string",
@@ -1037,7 +1036,6 @@
             "value?": "string",
             "defaultValue?": "string",
             "onValueChange?": "(value: string | undefined) => void",
-            "onChange?": "(value: string | undefined) => void",
             "min?": "string",
             "max?": "string",
             "clearable?": "boolean",
@@ -1123,8 +1121,7 @@
             "label": "string",
             "value": "string",
             "icon?": "ReactNode",
-            "disabled?": "boolean",
-            "separator?": "boolean"
+            "disabled?": "boolean"
           },
           "DropdownProps": {
             "trigger": "ReactElement",
@@ -1207,7 +1204,7 @@
             "disabled?": "boolean",
             "className?": "string"
           },
-          "Filter": "declare function Filter({ options, value, defaultValue, onValueChange, onChange, multi, multiple, variant, className, ariaLabel, label, ...aria }: FilterProps): import(\"react\").JSX.Element",
+          "Filter": "declare function Filter({ options, value, defaultValue, onValueChange, multi, multiple, variant, className, ariaLabel, label, ...aria }: FilterProps): import(\"react\").JSX.Element",
           "FilterOption": {
             "label": "string",
             "value": "string"
@@ -1217,7 +1214,6 @@
             "value?": "string[]",
             "defaultValue?": "string[]",
             "onValueChange?": "(selected: string[]) => void",
-            "onChange?": "(selected: string[]) => void",
             "multi?": "boolean",
             "multiple?": "boolean",
             "variant?": "FilterVariant",
@@ -1639,7 +1635,6 @@
             "value?": "number | null",
             "defaultValue?": "number",
             "onValueChange?": "(value: number | null) => void",
-            "onChange?": "(value: number | null) => void",
             "min?": "number",
             "max?": "number",
             "step?": "number",
@@ -1911,7 +1906,7 @@
             "edges?": "'shadow' | 'mask' | 'none'",
             "children?": "ReactNode"
           },
-          "Search": "declare function Search({ value, defaultValue, onValueChange, onChange, onSearch, debounceMs, placeholder, size, label, ariaLabel, disabled, clearLabel, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid, className }: SearchProps): import(\"react\").JSX.Element",
+          "Search": "declare function Search({ value, defaultValue, onValueChange, onSearch, debounceMs, placeholder, size, label, ariaLabel, disabled, clearLabel, id, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, 'aria-invalid': ariaInvalid, className }: SearchProps): import(\"react\").JSX.Element",
           "SearchProps": {
             "'aria-labelledby'?": "string",
             "'aria-describedby'?": "string",
@@ -1919,7 +1914,6 @@
             "value?": "string",
             "defaultValue?": "string",
             "onValueChange?": "(value: string) => void",
-            "onChange?": "(value: string) => void",
             "onSearch?": "(value: string) => void",
             "debounceMs?": "number",
             "placeholder?": "string",
@@ -2185,14 +2179,13 @@
             "'aria-label'?": "string"
           },
           "SuspenseBoundary": "re-export SuspenseBoundary from \"@cascivo/core\"",
-          "Swap": "declare function Swap({ on, off, checked, onValueChange, onChange, mode, className, ariaLabel, label, ...aria }: SwapProps): import(\"react\").JSX.Element",
+          "Swap": "declare function Swap({ on, off, checked, onValueChange, mode, className, ariaLabel, label, ...aria }: SwapProps): import(\"react\").JSX.Element",
           "SwapMode": "type = 'rotate' | 'flip'",
           "SwapProps": {
             "on": "React.ReactNode",
             "off": "React.ReactNode",
             "checked?": "boolean",
             "onValueChange?": "(checked: boolean) => void",
-            "onChange?": "(checked: boolean) => void",
             "mode?": "SwapMode",
             "ariaLabel?": "string",
             "label?": "string",
@@ -2235,7 +2228,6 @@
             "checked?": "boolean",
             "defaultChecked?": "boolean",
             "onValueChange?": "(checked: boolean) => void",
-            "onChange?": "(checked: boolean) => void",
             "label?": "string",
             "size?": "'sm' | 'md'"
           },
@@ -2337,7 +2329,6 @@
             "value?": "string",
             "defaultValue?": "string",
             "onValueChange?": "(value: string) => void",
-            "onChange?": "(value: string) => void",
             "min?": "string",
             "max?": "string",
             "step?": "number",
@@ -2392,7 +2383,6 @@
             "checked?": "boolean",
             "defaultChecked?": "boolean",
             "onValueChange?": "(checked: boolean) => void",
-            "onChange?": "(checked: boolean) => void",
             "label?": "string",
             "size?": "'sm' | 'md'"
           },
@@ -3180,7 +3170,6 @@
           "Sparkline",
           "Stream",
           "Sunburst",
-          "Text",
           "Toolbox",
           "Treemap",
           "VisualMap",
@@ -3371,7 +3360,6 @@
           "StreamSource",
           "SunburstProps",
           "SyncGroup",
-          "TextProps",
           "TimeScale",
           "ToolboxOptions",
           "ToolboxProps",
@@ -3460,7 +3448,7 @@
             "bandwidth": "number",
             "map": "(value: T): number | undefined"
           },
-          "BarChart": "declare function BarChart<Datum = { x: string; y: number; }>({ series, x, y, title, description, orientation, mode, width: fixedWidth, height, xTicks, yTicks, valueAxisTicks, categoryAxisTicks, xLabelEvery, categoryLabelEvery, legend, tooltip, tooltipFormat, className, plain, annotations, labels, onSelect, fill, patternKind, format: xFormat }: BarChartProps<Datum>): import(\"react\").JSX.Element",
+          "BarChart": "declare function BarChart<Datum = { x: string; y: number; }>({ series, x, y, title, description, orientation, mode, width: fixedWidth, height, valueAxisTicks, categoryAxisTicks, xLabelEvery, categoryLabelEvery, legend, tooltip, tooltipFormat, className, plain, annotations, labels, onSelect, fill, patternKind, format: xFormat }: BarChartProps<Datum>): import(\"react\").JSX.Element",
           "BarChartProps": {
             "(extends)": "<Datum =",
             "x": "string",
@@ -4224,8 +4212,6 @@
             "window": "Signal<[number, number] | null>",
             "hoverX": "Signal<number | null>"
           },
-          "Text": "declare const Text: typeof ChartText",
-          "TextProps": "type = ChartTextProps",
           "timeScale": "declare function timeScale(domain: [Date, Date], range: [number, number]): TimeScale",
           "TimeScale": {
             "domain": "[Date, Date]",

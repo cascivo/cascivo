@@ -10,6 +10,7 @@
  * The fix is the manifest field; this is what keeps every surface reading it.
  */
 import { readFile } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import test from 'node:test'
@@ -21,6 +22,7 @@ const ROOT = join(HERE, '..', '..')
 interface Deprecation {
   since: string
   replacement: string
+  removeIn: string
   note?: string
 }
 interface Entry {
@@ -51,6 +53,45 @@ test('every deprecation names a replacement that exists in the registry', () => 
     dangling,
     [],
     `a deprecation must point at something installable: ${dangling.join(', ')}`,
+  )
+})
+
+/**
+ * An expiry that can slip is not a policy.
+ *
+ * `docs/UPGRADING.md` promises every deprecation names the major that removes it, at
+ * announcement time. Before `removeIn` existed, `overflow-menu` carried "removed in v4" as
+ * free prose in a `note` — a version that does not exist on any cascivo package — so nothing
+ * could tell whether it was overdue. These two tests make the promise mechanical: every
+ * deprecation names a real major, and the build fails once that major arrives with the
+ * deprecation still shipping.
+ */
+test('every deprecation names the major that removes it', () => {
+  const missing = deprecated
+    .filter((c) => !/^\d+\.0\.0$/.test(c.deprecated!.removeIn ?? ''))
+    .map((c) => `${c.name} (removeIn: ${JSON.stringify(c.deprecated!.removeIn)})`)
+  assert.deepEqual(
+    missing,
+    [],
+    'A deprecation must name its expiry as a major version like "2.0.0" — removals happen ' +
+      `only in a major (docs/UPGRADING.md). Offenders: ${missing.join(', ')}`,
+  )
+})
+
+test('no deprecation has outlived its own removeIn', () => {
+  const currentMajor = Number.parseInt(
+    JSON.parse(readFileSync(join(ROOT, 'packages/react/package.json'), 'utf8')).version,
+    10,
+  )
+  const overdue = deprecated
+    .filter((c) => Number.parseInt(c.deprecated!.removeIn, 10) <= currentMajor)
+    .map((c) => `${c.name} (removeIn ${c.deprecated!.removeIn}, current major ${currentMajor})`)
+  assert.deepEqual(
+    overdue,
+    [],
+    'These deprecations promised removal in a major that has now shipped. Remove the entry ' +
+      'and its files, or move removeIn out — but moving it is a promise broken in public, ' +
+      `so prefer removing. Overdue: ${overdue.join(', ')}`,
   )
 })
 

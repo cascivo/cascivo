@@ -65,8 +65,6 @@ export interface ComboboxProps {
   defaultValue?: string
   /** Called with the selected option value (or undefined when cleared). */
   onValueChange?: (value: string | undefined) => void
-  /** @deprecated Use `onValueChange` — it receives the same `string | undefined`. */
-  onChange?: (value: string | undefined) => void
   /**
    * When true, shows a control to clear the selected value.
    *
@@ -106,7 +104,6 @@ export function Combobox({
   value,
   defaultValue,
   onValueChange,
-  onChange,
   clearable = false,
   searchable = true,
   label,
@@ -178,7 +175,7 @@ export function Combobox({
     query.value = ''
   }
 
-  const emitValue = onValueChange ?? onChange
+  const emitValue = onValueChange
 
   const select = (optValue: string) => {
     if (value === undefined) selectedSignal.value = optValue

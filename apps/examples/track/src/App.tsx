@@ -157,7 +157,7 @@ export default function App() {
       <Combobox
         options={assigneeOptions}
         value={assigneeFilter.value ?? '__all__'}
-        onChange={(v) => {
+        onValueChange={(v) => {
           assigneeFilter.value = v === '__all__' ? undefined : v
         }}
         searchable={false}

@@ -109,23 +109,4 @@ describe('Dropdown separators', () => {
     await user.keyboard('{Enter}')
     expect(onSelect).toHaveBeenCalledWith('last')
   })
-
-  it('keeps the legacy `separator: true` rendering unchanged, and warns about the data loss', async () => {
-    const user = userEvent.setup()
-    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-    render(
-      <Dropdown
-        trigger={<button>Open</button>}
-        items={[
-          { label: 'Account settings', value: 'settings' },
-          { label: 'Log out', value: 'logout', separator: true },
-        ]}
-      />,
-    )
-    await user.click(screen.getByText('Open'))
-    // Unchanged behaviour: the flagged entry still renders only a rule.
-    expect(screen.getAllByRole('menuitem')).toHaveLength(1)
-    expect(warn).toHaveBeenCalledWith(expect.stringContaining('renders ONLY a rule'))
-    warn.mockRestore()
-  })
 })

@@ -88,8 +88,6 @@ export interface DatePickerProps {
   defaultValue?: string
   /** Called with the selected ISO date string (or undefined when cleared). */
   onValueChange?: (value: string | undefined) => void
-  /** @deprecated Use `onValueChange` — it receives the same ISO `string | undefined`. */
-  onChange?: (value: string | undefined) => void
   min?: string
   max?: string
   /**
@@ -135,7 +133,6 @@ export function DatePicker({
   value,
   defaultValue,
   onValueChange,
-  onChange,
   min,
   max,
   clearable = false,
@@ -202,7 +199,7 @@ export function DatePicker({
 
   const close = () => send('CLOSE')
 
-  const emitValue = onValueChange ?? onChange
+  const emitValue = onValueChange
 
   const select = (iso: string) => {
     if (min && iso < min) return

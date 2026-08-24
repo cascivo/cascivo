@@ -137,13 +137,15 @@ predict the prop without checking the types:
 | A raw DOM click passthrough | **`onClick(event)`** | nav items, buttons |
 
 Rule of thumb when authoring or generating: **if your handler's first argument is a value,
-name it `onValueChange`; if it's a DOM event, name it `onChange`.** A few components still
-accept a deprecated value-carrying `onChange` alias for backward compatibility — prefer
-`onValueChange`; the alias will be removed in a future major.
+name it `onValueChange`; if it's a DOM event, name it `onChange`.** The rule now holds with
+no exceptions — the value-carrying `onChange` aliases that eight components once accepted
+(`Combobox`, `DatePicker`, `Filter`, `NumberInput`, `Search`, `Swap`, `TimePicker`, `Toggle`)
+were removed at 1.0.
 
-> **`Toggle` is the exception to note:** it `Omit`s the DOM `onChange` and redefines it to
-> receive a `boolean`. Use **`onValueChange`** — the same boolean, the correct name. The
-> value-carrying `onChange` is deprecated and kept only for compatibility; do not add another.
+> **These eight `Omit` the DOM `onChange` from their prop types and do not add it back.**
+> That is deliberate: without the `Omit`, `onChange` would silently become React's
+> `ChangeEventHandler`, so code passing a value-carrying handler would compile and then be
+> called with an event. With it, `onChange` is a compile error naming `onValueChange`.
 
 > **`Select` and `Slider` are native-element wrappers**, not composite components: they
 > spread onto a real `<select>` / `<input type="range">` and carry only the DOM

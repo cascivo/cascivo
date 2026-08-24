@@ -53,8 +53,10 @@ const DECORATION_FLAGS = /^(separator|divider|spacer|rule|heading|groupLabel)$/
  * being parked: it must name the replacement.
  */
 const GRANDFATHERED: Record<string, string> = {
-  'DropdownMenuItem.separator':
-    "superseded by the `{ kind: 'separator' }` member of `DropdownItem`; deprecated, warns in dev, removed at 1.0",
+  // Empty on purpose, and it should stay that way. `DropdownMenuItem.separator` was the
+  // entry this guard was written for; it was removed at 1.0, so the rule now holds across
+  // the whole catalog with no exceptions. An addition here is a flag that discards its own
+  // row — prefer a `{ kind: … }` union member, which cannot carry data to lose.
 }
 
 /** Every non-test `.tsx`/`.ts` source file under a directory. */

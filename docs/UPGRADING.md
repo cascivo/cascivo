@@ -241,6 +241,30 @@ the printed diff).
 
 Release-specific upgrade guides, newest first:
 
+- **Upgrading `0.x` → `1.0.0`** — eleven deprecated surfaces are removed. Every one has a
+  replacement that takes the identical argument, so each fix is a rename, and every removal
+  is a *compile error* rather than a silent behaviour change.
+
+  | Removed | Replace with | Affects |
+  | --- | --- | --- |
+  | `onChange` (value-carrying) | `onValueChange` | `Combobox`, `DatePicker`, `Filter`, `NumberInput`, `Search`, `Swap`, `TimePicker`, `Toggle` |
+  | `Text`, `TextProps` | `ChartText`, `ChartTextProps` | `@cascivo/charts` |
+  | `BarChart` `xTicks` / `yTicks` | `valueAxisTicks` / `categoryAxisTicks` | `@cascivo/charts` |
+  | `Dropdown` item `separator: true` | a separate `{ kind: 'separator' }` entry | `@cascivo/react` |
+
+  Two notes on the shape of these:
+
+  - The eight components keep `Omit<…, 'onChange'>` on their prop types. Without it the
+    native `ChangeEventHandler` would take the name back, and a value-carrying handler would
+    compile and then be called with a DOM event — a silent break instead of a loud one.
+  - `BarChart`'s removed pair followed *screen* position, so its meaning swapped with
+    `orientation`: `yTicks={1}` did nothing on a horizontal chart while `xTicks={1}` worked.
+    The replacements are named by role and mean the same thing either way. `ScatterChart`
+    keeps `xTicks`/`yTicks` — both its axes are value axes, so screen naming is correct there.
+
+  **`OverflowMenu` is not removed.** It is deprecated in favour of `Menu` and keeps working
+  for the whole `1.x` line; its manifest carries `removeIn: '2.0.0'`.
+
 - **`<Badge>` with no `variant` is no longer the brand colour** (`@cascivo/react` minor) —
   `neutral` (and its alias `default`, which is what you get when you pass nothing) now
   renders the subtle look instead of `--cascivo-color-accent`.

@@ -16,11 +16,11 @@ describe('Swap', () => {
     expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true')
   })
 
-  it('clicking calls onChange with the toggled boolean', () => {
-    const onChange = vi.fn()
-    render(<Swap on="ON" off="OFF" checked={false} onChange={onChange} />)
+  it('clicking calls onValueChange with the toggled boolean', () => {
+    const onValueChange = vi.fn()
+    render(<Swap on="ON" off="OFF" checked={false} onValueChange={onValueChange} />)
     fireEvent.click(screen.getByRole('switch'))
-    expect(onChange).toHaveBeenCalledWith(true)
+    expect(onValueChange).toHaveBeenCalledWith(true)
   })
 
   it('data-checked is present when checked, absent when not', () => {

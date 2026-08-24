@@ -25,27 +25,18 @@ describe('Search', () => {
     expect(root).toHaveAttribute('data-state', 'filled')
   })
 
-  it('fires onChange on every keystroke', async () => {
-    const onChange = vi.fn()
-    render(<Search onChange={onChange} />)
-    await userEvent.type(screen.getByRole('searchbox'), 'abc')
-    expect(onChange).toHaveBeenCalledTimes(3)
-    expect(onChange).toHaveBeenLastCalledWith('abc')
-  })
-
-  it('fires onValueChange on every keystroke, taking precedence over onChange', async () => {
+  it('fires onValueChange on every keystroke', async () => {
     const onValueChange = vi.fn()
-    const onChange = vi.fn()
-    render(<Search onValueChange={onValueChange} onChange={onChange} />)
+    render(<Search onValueChange={onValueChange} />)
     await userEvent.type(screen.getByRole('searchbox'), 'abc')
+    expect(onValueChange).toHaveBeenCalledTimes(3)
     expect(onValueChange).toHaveBeenLastCalledWith('abc')
-    expect(onChange).not.toHaveBeenCalled()
   })
 
   it('reflects a controlled value', () => {
-    const { rerender } = render(<Search value="foo" onChange={() => {}} />)
+    const { rerender } = render(<Search value="foo" onValueChange={() => {}} />)
     expect(screen.getByRole('searchbox')).toHaveValue('foo')
-    rerender(<Search value="bar" onChange={() => {}} />)
+    rerender(<Search value="bar" onValueChange={() => {}} />)
     expect(screen.getByRole('searchbox')).toHaveValue('bar')
   })
 
@@ -63,13 +54,13 @@ describe('Search', () => {
     })
 
     it('clears the value, fires callbacks and refocuses the input', async () => {
-      const onChange = vi.fn()
+      const onValueChange = vi.fn()
       const onSearch = vi.fn()
-      render(<Search defaultValue="hello" onChange={onChange} onSearch={onSearch} />)
+      render(<Search defaultValue="hello" onValueChange={onValueChange} onSearch={onSearch} />)
       await userEvent.click(screen.getByRole('button', { name: 'Clear search' }))
       const input = screen.getByRole('searchbox')
       expect(input).toHaveValue('')
-      expect(onChange).toHaveBeenCalledWith('')
+      expect(onValueChange).toHaveBeenCalledWith('')
       expect(onSearch).toHaveBeenCalledWith('')
       expect(input).toHaveFocus()
       expect(screen.queryByRole('button', { name: 'Clear search' })).not.toBeInTheDocument()

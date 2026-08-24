@@ -94,22 +94,6 @@ export const meta: ComponentMeta = {
         'Show every Nth category label (always the last) to thin a crowded axis. Role-named twin of xLabelEvery; always strides the category axis on both orientations.',
     },
     {
-      name: 'xTicks',
-      description:
-        'DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the x-axis — follows SCREEN position, so it controls the category axis when vertical and the VALUE axis when horizontal.',
-      type: 'number',
-      required: false,
-      default: '5',
-    },
-    {
-      name: 'yTicks',
-      description:
-        'DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the y-axis — follows SCREEN position, so it controls the value axis when vertical and the CATEGORY axis when horizontal.',
-      type: 'number',
-      required: false,
-      default: '5',
-    },
-    {
       name: 'xLabelEvery',
       type: 'number',
       required: false,

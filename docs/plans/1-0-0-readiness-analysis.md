@@ -3,6 +3,14 @@
 **Date:** 2026-08-24
 **Method:** every claim below is measured against this checkout (`cd655d2a`), the published
 tarballs on npm, the live docs host, and the repo's own CI history. Nothing is estimated.
+**Status: IMPLEMENTED except B4 — 2026-08-24.** Every blocker and every should-fix below is
+on `main` apart from the stabilization window (B4), which is calendar time rather than work,
+and the release itself. The remaining sequence is
+[`../internal/RELEASING-1.0.md`](../internal/RELEASING-1.0.md). Two findings were refined once
+the code was in hand, and both refinements are recorded inline: `OverflowMenu` is **retained**
+with `removeIn: '2.0.0'` rather than removed (B2), and only two `docs/plans` files lacked a
+status header rather than three (B6).
+
 **Verdict:** the *engineering* is 1.0-grade. What is missing is almost entirely a **stability
 contract** — a definition of what 1.0 promises, the deprecation removals that definition
 implies, and a guard that can hold the promise. Two accessibility verification loops are open,
@@ -67,11 +75,18 @@ promise is in shipped documentation. The full removal list is 12 surfaces:
 | `@cascivo/charts` `Text` / `TextProps` | `ChartText` / `ChartTextProps` |
 | `BarChart.ticks` | `valueAxisTicks` / `categoryAxisTicks` |
 | `Dropdown` separator-via-`label` item | `{ kind: 'separator' }` |
-| `OverflowMenu` (registry-level deprecation, `since: 0.17.0`) | `Menu` |
+| ~~`OverflowMenu`~~ — **retained**, see below | `Menu` |
 
 Removing a value-carrying `onChange` is exactly the CLAUDE.md handler-naming rule
 (*"Never give a new component a value-carrying `onChange`"*) applied to the components that
 predate it. 1.0 is the only cheap moment to do it.
+
+> **Refined during implementation — `OverflowMenu` is retained.** Its manifest promised
+> removal *"in v4"*, not at 1.0. Removing it now would break a published commitment early,
+> which is the same defect as letting one slip — so it carries `removeIn: '2.0.0'`, keeps
+> working for the whole `1.x` line, and the count of removals is **11, not 12**. The charts
+> `Text` alias is the opposite case: shipped docs said "removed at 1.0", so removing it
+> *honours* a published promise.
 
 **Also add `removeIn` to the `deprecated` manifest field** and let
 `scripts/checks/deprecation-surfaces.test.ts` fail on a deprecation that has outlived it. Without
@@ -148,10 +163,11 @@ live on npm right now:
 | `fix-plan-adopter-pair-2026-07-26.md` | shipped (charts changelog) |
 | `fix-plan-vercel-tanstack-start-adopter-2026-07-25.md` | shipped (charts changelog) |
 
-Three `docs/plans/*.md` files also carry no status header at all
-(`ci-a11y-fix-plan.md`, `css-layering-architecture-review.md`, `ssr-css-and-client-js-plan.md`)
-— and `ci-a11y-fix-plan.md` in particular describes an axe backlog that §1 shows is fully burned
-down, so it reads as open work that is actually finished.
+Two `docs/plans/*.md` files also carry no status header at all
+(`ci-a11y-fix-plan.md`, `ssr-css-and-client-js-plan.md`) — and `ci-a11y-fix-plan.md` in
+particular describes an axe backlog that §1 shows is fully burned down, so it reads as open
+work that is actually finished. (`css-layering-architecture-review.md` was counted here in an
+earlier draft; it does carry a status, in its italic preamble rather than a bold header.)
 
 This is precisely the drift the rule exists to prevent, and the README names its consequence: it
 is why adopters re-report defects that were already fixed. It costs an hour to correct and it is a

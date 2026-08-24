@@ -29,12 +29,6 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
-      name: 'onChange',
-      description: 'Deprecated: use onValueChange (same checked boolean).',
-      type: '(checked: boolean) => void',
-      required: false,
-    },
-    {
       name: 'label',
       nameVisibility: 'visible',
       description:

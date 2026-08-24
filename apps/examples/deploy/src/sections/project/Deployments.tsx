@@ -116,7 +116,7 @@ export function Deployments() {
         <Search
           placeholder={t(deployMsg.deplFilterBranchPlaceholder)}
           value={branchSearch.value}
-          onChange={(v) => {
+          onValueChange={(v) => {
             branchSearch.value = v
           }}
         />

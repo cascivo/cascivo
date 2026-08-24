@@ -1,6 +1,24 @@
 # Rebuild Accordion and Collapsible on `<details>`/`<summary>`
 
-**Status:** proposed — ready for implementation, with one gate that can veto Phase 3 (§3.3).
+**Status: DEFERRED to 2.0 — decided 2026-08-24 during 1.0 readiness (B7).**
+The plan is sound and stays as written; the decision is about *when*, not *whether*.
+
+Rebuilding `Accordion` and `Collapsible` on `<details>`/`<summary>` changes their rendered
+DOM, rewrites both test suites (§1.1: `getByRole('button')` and `aria-expanded` both
+disappear), and moves both components from `clientJs: 'required'` to `'enhancement'`. Under
+the stability contract in [`../UPGRADING.md`](../UPGRADING.md#the-stability-contract) the DOM
+itself is *not* covered — only roles, style hooks and the keyboard map are — so this is
+technically shippable in a `1.x` minor. It is deferred anyway, for two reasons:
+
+1. **It is a behaviour change, not a refactor.** Panels become reachable with JS disabled and
+   gain find-in-page expansion. That is worth doing deliberately, with its own report, rather
+   than folding into a release whose whole purpose is to stop things moving.
+2. **§3.3 carries a gate that can veto Phase 3.** Tagging 1.0 on top of an unresolved veto
+   would mean either shipping half the plan or reverting inside the stable line.
+
+The `clientJs: 'required'` labels for both components are therefore correct as shipped and
+should not be re-litigated before 2.0. Nothing here is blocked; this is a queued major.
+
 **Motivation:** no component in the catalog uses `<details>`. `Accordion` and `Collapsible` are
 hand-rolled signal FSMs whose panels are unreachable with JS disabled, which contradicts the
 native-first substrate rule in `CLAUDE.md` and puts both at `clientJs: 'required'`

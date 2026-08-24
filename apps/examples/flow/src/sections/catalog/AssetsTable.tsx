@@ -119,7 +119,7 @@ export function AssetsTable({ onSelect }: Props) {
         <Search
           placeholder={t(msg.searchAssetsPlaceholder)}
           value={searchSignal.value}
-          onChange={(v) => {
+          onValueChange={(v) => {
             searchSignal.value = v
           }}
         />

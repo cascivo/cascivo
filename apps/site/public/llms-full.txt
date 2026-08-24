@@ -3665,8 +3665,6 @@ import '@cascivo/charts/styles.css' // bundler: automatic. Needed only for no-bu
 | `valueAxisTicks` | `number` | no | `5` | Approximate number of ticks on the VALUE axis, on both orientations. Prefer this over xTicks/yTicks, which are named for where the axis is drawn and therefore swap meaning when orientation="horizontal". |
 | `categoryAxisTicks` | `number` | no | `5` | Approximate number of ticks on the CATEGORY axis, on both orientations. Role-named twin of valueAxisTicks. |
 | `categoryLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded axis. Role-named twin of xLabelEvery; always strides the category axis on both orientations. |
-| `xTicks` | `number` | no | `5` | DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the x-axis — follows SCREEN position, so it controls the category axis when vertical and the VALUE axis when horizontal. |
-| `yTicks` | `number` | no | `5` | DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the y-axis — follows SCREEN position, so it controls the value axis when vertical and the CATEGORY axis when horizontal. |
 | `xLabelEvery` | `number` | no | — | Show every Nth category label (always the last) to thin a crowded axis. Unlike xTicks/yTicks this does NOT swap with orientation — it always strides the category axis. categoryLabelEvery is the unambiguous name. |
 | `legend` | `boolean` | no | — | Whether to show the legend. |
 | `tooltip` | `boolean` | no | — | Whether to show tooltips on hover. |
@@ -6813,7 +6811,6 @@ import { Combobox } from '@cascivo/react'
 | `value` | `string` | no | — | The controlled value. |
 | `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
 | `onValueChange` | `(value: string \| undefined) => void` | no | — | Called with the selected option value (or undefined when cleared). |
-| `onChange` | `(value: string \| undefined) => void` | no | — | Deprecated: use onValueChange (same string \| undefined). |
 | `clearable` | `boolean` | no | `false` | When true, shows a control to clear the selected value. |
 | `searchable` | `boolean` | no | `true` | When true, shows a search/filter input. |
 | `label` | `string` | no | — | Text label for the control. Rendered on screen. |
@@ -6840,7 +6837,7 @@ import { Combobox } from '@cascivo/react'
     { value: 'de', label: 'Germany' },
     { value: 'fr', label: 'France' },
   ]}
-  onChange={(value) => console.log(value)}
+  onValueChange={(value) => console.log(value)}
 />
 ```
 
@@ -7758,7 +7755,6 @@ import { DatePicker } from '@cascivo/react'
 | `value` | `string` | no | — | Controlled ISO date value (YYYY-MM-DD) |
 | `defaultValue` | `string` | no | — | Uncontrolled default value |
 | `onValueChange` | `(value: string \| undefined) => void` | no | — | Called with the selected ISO date string (or undefined when cleared) |
-| `onChange` | `(value: string \| undefined) => void` | no | — | Deprecated: use onValueChange (same ISO string \| undefined) |
 | `min` | `string` | no | — | Minimum ISO date |
 | `max` | `string` | no | — | Maximum ISO date |
 | `clearable` | `boolean` | no | `false` | Shows a clear button |
@@ -8183,7 +8179,7 @@ import { Dropdown } from '@cascivo/react'
 | Prop | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
 | `trigger` | `ReactElement` | yes | — | The element that opens the dropdown when activated. |
-| `items` | `({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } \| { kind: 'separator' })[]` | yes | — | Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev. |
+| `items` | `({ label: string; value: string; icon?: ReactNode; disabled?: boolean } \| { kind: 'separator' })[]` | yes | — | Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. The union is tagged on `kind`, so a separator cannot carry data that would be silently discarded. |
 | `onSelect` | `(value: string) => void` | no | — | Called with the selected value. |
 | `placement` | `'bottom-start' \| 'bottom-end'` | no | `bottom-start` | Which trigger edge the menu aligns to. `bottom-start` hangs it from the trigger's start edge, `bottom-end` from its end edge — use `bottom-end` for a trigger near the end of the viewport. |
 | `open` | `boolean` | no | — | Whether the component is open (controlled). |
@@ -8201,7 +8197,6 @@ A selectable row in the menu.
 | `value` | `string` | yes | Passed to `onSelect`. |
 | `icon` | `ReactNode` | no | Leading icon. |
 | `disabled` | `boolean` | no | Skips the item in keyboard navigation and selection. |
-| `separator` | `boolean` | no | ⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry. |
 
 ### `DropdownSeparatorItem`
 
@@ -9012,7 +9007,6 @@ import { Filter } from '@cascivo/react'
 | `value` | `string[]` | no | — | Controlled selected values |
 | `defaultValue` | `string[]` | no | `[]` | Initial selected values for uncontrolled use |
 | `onValueChange` | `(selected: string[]) => void` | no | — | Called with the selected values whenever the selection changes. |
-| `onChange` | `(selected: string[]) => void` | no | — | Deprecated: use onValueChange (same string[]). |
 | `multi` | `boolean` | no | `false` | Allow multiple items to be selected simultaneously |
 | `variant` | `'pill' \| 'outline'` | no | `pill` | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent. |
 | `multiple` | `boolean` | no | — | Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical. |
@@ -13839,7 +13833,6 @@ import { NumberInput } from '@cascivo/react'
 | `value` | `number \| null` | no | — | The controlled value. |
 | `defaultValue` | `number` | no | — | The initial value when uncontrolled. |
 | `onValueChange` | `(value: number \| null) => void` | no | — | Fired on commit (blur, Enter, stepping); null when empty or unparseable |
-| `onChange` | `(value: number \| null) => void` | no | — | Deprecated: use onValueChange (same number \| null) |
 | `min` | `number` | no | — | Minimum allowed value. |
 | `max` | `number` | no | — | Maximum allowed value. |
 | `step` | `number` | no | `1` | Increment between allowed values. |
@@ -15794,7 +15787,6 @@ import { Search } from '@cascivo/react'
 | `value` | `string` | no | — | The controlled value. |
 | `defaultValue` | `string` | no | `''` | The initial value when uncontrolled. |
 | `onValueChange` | `(value: string) => void` | no | — | Called with the current text on every keystroke. |
-| `onChange` | `(value: string) => void` | no | — | Deprecated: use onValueChange (same string). |
 | `onSearch` | `(value: string) => void` | no | — | Called with the query, debounced, as the user types. |
 | `debounceMs` | `number` | no | `300` | Debounce delay (ms) before onSearch fires. |
 | `placeholder` | `string` | no | `Search` | Placeholder text shown when the field is empty. |
@@ -15820,7 +15812,7 @@ import { Search } from '@cascivo/react'
 ### Controlled
 
 ```tsx
-<Search value={query} onChange={setQuery} onSearch={runQuery} debounceMs={500} />
+<Search value={query} onValueChange={setQuery} onSearch={runQuery} debounceMs={500} />
 ```
 
 ### Large
@@ -17798,7 +17790,6 @@ import { Swap } from '@cascivo/react'
 | `off` | `React.ReactNode` | yes | — | Content shown in the inactive (off) state. |
 | `checked` | `boolean` | no | `false` | Whether the control is checked (controlled). |
 | `onValueChange` | `(checked: boolean) => void` | no | — | Called with the new checked state when the swap is toggled. |
-| `onChange` | `(checked: boolean) => void` | no | — | Deprecated: use onValueChange (same checked boolean). |
 | `mode` | `'rotate' \| 'flip'` | no | `rotate` | Transition between states ('rotate' \| 'flip'). |
 | `aria-label` | `string` | no | — | Accessible label used when no visible label is present. |
 | `className` | `string` | no | — | Additional CSS class names merged onto the root element. |
@@ -18647,7 +18638,6 @@ import { TimePicker } from '@cascivo/react'
 | `value` | `string` | no | — | Controlled value (HH:mm) |
 | `defaultValue` | `string` | no | — | The initial value when uncontrolled. |
 | `onValueChange` | `(value: string) => void` | no | — | Called with the new HH:MM time string when the value changes. |
-| `onChange` | `(value: string) => void` | no | — | Deprecated: use onValueChange (same time string). |
 | `min` | `string` | no | — | Minimum allowed value. |
 | `max` | `string` | no | — | Maximum allowed value. |
 | `step` | `number` | no | — | Increment between allowed values. |
@@ -18664,7 +18654,7 @@ import { TimePicker } from '@cascivo/react'
 ### Basic time picker
 
 ```tsx
-<TimePicker label="Meeting time" onChange={(v) => console.log(v)} />
+<TimePicker label="Meeting time" onValueChange={(v) => console.log(v)} />
 ```
 
 ## Client JavaScript
@@ -19016,7 +19006,6 @@ import { Toggle } from '@cascivo/react'
 | `checked` | `boolean` | no | — | Whether the control is checked (controlled). |
 | `defaultChecked` | `boolean` | no | `false` | Whether the control is checked on first render (uncontrolled). |
 | `onValueChange` | `(checked: boolean) => void` | no | — | Called with the new checked state when the switch is toggled. |
-| `onChange` | `(checked: boolean) => void` | no | — | Deprecated: use onValueChange (same checked boolean). |
 | `label` | `string` | no | — | Visible text label beside the switch; it also becomes the accessible name. When a heading already labels the control, omit this and pass aria-label instead to avoid duplicated text. Rendered on screen. |
 | `size` | `'sm' \| 'md'` | no | `md` | Visual size of the component (e.g. 'sm', 'md', 'lg'). |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |

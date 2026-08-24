@@ -239,10 +239,11 @@ import { Text } from '@cascivo/react' // typography
 import { ChartText } from '@cascivo/charts' // SVG <text> primitive
 ```
 
-`@cascivo/charts` still exports `Text` as a **deprecated** alias of `ChartText` so existing
-code keeps working; it is removed at 1.0. Do not use it in new code — that is the name whose
-wrong resolution was silent (the SVG primitive renders where a paragraph was meant, and
-nothing errors).
+`@cascivo/charts` **no longer exports `Text`** — the deprecated alias of `ChartText` was
+removed at 1.0, as this page said it would be. It was the name whose wrong resolution was
+silent: the SVG primitive rendered where a paragraph was meant and nothing errored. If you
+are upgrading from `0.x`, `import { Text } from '@cascivo/charts'` is now a compile error;
+rename it to `ChartText` (and `TextProps` to `ChartTextProps`).
 
 `Calendar` used to clash the same way. The charts heatmap is now **`CalendarHeatmap`**, so
 `Calendar` unambiguously means `@cascivo/react`'s date picker and no alias is needed:

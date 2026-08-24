@@ -25,10 +25,10 @@ const ROOT = fileURLToPath(new URL('../..', import.meta.url))
  * not here fails the build.
  */
 const KNOWN: Record<string, string> = {
-  Text:
-    'renamed to `ChartText` in charts (2026-08-22 report item 20); `Text` remains as a ' +
-    'deprecated alias and is removed at 1.0 — at ~8 minors in 19 days a one-minor window ' +
-    'would be about five days, which is a break with extra steps rather than a deprecation',
+  // Empty on purpose. `Text` lived here while charts kept it as a deprecated alias of
+  // `ChartText`; the alias was removed at 1.0 and the collision went with it. A new entry
+  // here should be rare — renaming one side is almost always the better answer, because a
+  // wrong resolution across two packages is silent rather than a compile error.
 }
 
 /**

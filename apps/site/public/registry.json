@@ -3597,7 +3597,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/combobox/combobox.module.css"
       ],
       "fileHashes": {
-        "combobox.tsx": "sha256-48b882dd4b4a36260280be74a5cc3ed760b5e9474d1c04a8e2595247866c2278",
+        "combobox.tsx": "sha256-6019b049d0e73ae00ca553b3e1639eb5625daa0bd589cf7d8e713cacc1a459f5",
         "index.ts": "sha256-f653ac077476020e84fec2daaa5c3ff850b2c3340b4e38002798c3f2c249034b",
         "combobox.module.css": "sha256-cc7cd8b4087667c0df3b737f588c92bbdb03e7a1c94e52ef9d8f321ea74575f5"
       },
@@ -3643,12 +3643,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the selected option value (or undefined when cleared).",
-            "type": "(value: string | undefined) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same string | undefined).",
             "type": "(value: string | undefined) => void",
             "required": false
           },
@@ -3763,7 +3757,7 @@
         "examples": [
           {
             "title": "Basic combobox",
-            "code": "<Combobox\n  label=\"Country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n    { value: 'fr', label: 'France' },\n  ]}\n  onChange={(value) => console.log(value)}\n/>"
+            "code": "<Combobox\n  label=\"Country\"\n  options={[\n    { value: 'us', label: 'United States' },\n    { value: 'de', label: 'Germany' },\n    { value: 'fr', label: 'France' },\n  ]}\n  onValueChange={(value) => console.log(value)}\n/>"
           }
         ],
         "dependencies": ["@cascivo/core", "@cascivo/i18n"],
@@ -3782,7 +3776,7 @@
             {
               "bad": "Using Combobox to fire actions like \"Delete\" or \"Export\"",
               "good": "Use Dropdown for actions; Combobox is for picking a value",
-              "why": "Combobox has role=\"combobox\" with a listbox of selectable values and onChange semantics — actions belong in a menu"
+              "why": "Combobox has role=\"combobox\" with a listbox of selectable values and onValueChange semantics — actions belong in a menu"
             },
             {
               "bad": "Setting searchable={false} on a 200-item list",
@@ -3816,7 +3810,7 @@
             {
               "area": "controlled vs uncontrolled",
               "level": "flexible",
-              "note": "Supports value + onChange or defaultValue"
+              "note": "Supports value + onValueChange or defaultValue"
             },
             {
               "area": "token names",
@@ -5105,7 +5099,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/date-picker/date-picker.module.css"
       ],
       "fileHashes": {
-        "date-picker.tsx": "sha256-c14cb4559346af0ff06e59708624e2082da482cf004e205dc85e216e9d4eebd4",
+        "date-picker.tsx": "sha256-9155f042953dbfc86ec9ecfa38157cb735223b822c419b5a9ada3fc1490fdd8d",
         "index.ts": "sha256-6cb1709f7c2b98a82a3951dd8facba6bdefe2f491efd6f4808661b6d6ff5da4d",
         "date-picker.module.css": "sha256-e816d0d00db6d3d3dc52f49c8671c11eaa1710e2aa8a4d6ef8f3356207dee47e"
       },
@@ -5147,12 +5141,6 @@
             "type": "(value: string | undefined) => void",
             "required": false,
             "description": "Called with the selected ISO date string (or undefined when cleared)"
-          },
-          {
-            "name": "onChange",
-            "type": "(value: string | undefined) => void",
-            "required": false,
-            "description": "Deprecated: use onValueChange (same ISO string | undefined)"
           },
           {
             "name": "min",
@@ -5296,7 +5284,7 @@
             {
               "bad": "Passing a localized display string as value",
               "good": "value/defaultValue/min/max are ISO YYYY-MM-DD; display formatting is handled internally",
-              "why": "The component parses and compares ISO dates; non-ISO values break selection, constraints, and onChange"
+              "why": "The component parses and compares ISO dates; non-ISO values break selection, constraints, and onValueChange"
             }
           ],
           "related": [
@@ -5864,7 +5852,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/dropdown/dropdown.module.css"
       ],
       "fileHashes": {
-        "dropdown.tsx": "sha256-2091b8d444e5dbc10f710a1ae0850da930325315e60fc4901270f1f2a38b6da1",
+        "dropdown.tsx": "sha256-383b99c3677abd770c47f2d23d9a781d805940d6c6352ec7570738d1539befa5",
         "index.ts": "sha256-eadb4744bbbc90705110af4f638d0bbf19cf334f548adea9ac0e6296dd83e6ff",
         "dropdown.module.css": "sha256-ec2a02c41f49dd3f859b26e4eefe651c26c3d0ff9b58baa68a086072c8683c5c"
       },
@@ -5891,8 +5879,8 @@
           },
           {
             "name": "items",
-            "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev.",
-            "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
+            "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. The union is tagged on `kind`, so a separator cannot carry data that would be silently discarded.",
+            "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean } | { kind: 'separator' })[]",
             "required": true
           },
           {
@@ -5949,12 +5937,6 @@
                 "type": "boolean",
                 "required": false,
                 "description": "Skips the item in keyboard navigation and selection."
-              },
-              {
-                "name": "separator",
-                "type": "boolean",
-                "required": false,
-                "description": "⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry."
               }
             ]
           },
@@ -6926,7 +6908,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/filter/filter.module.css"
       ],
       "fileHashes": {
-        "filter.tsx": "sha256-b0d6b156f0877ba166de6dfa95c93d11d532612921e96d78d872d6f421bbc7e1",
+        "filter.tsx": "sha256-77143c2f8a48ffecce35dfe4cdc403a5cb2e5d4fd1eda0c7a879e2112c005592",
         "index.ts": "sha256-24fb4e877d4acbafec2b2e3de672486b429a97b973e27e5543905abf34bdb696",
         "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
       },
@@ -6986,12 +6968,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the selected values whenever the selection changes.",
-            "type": "(selected: string[]) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same string[]).",
             "type": "(selected: string[]) => void",
             "required": false
           },
@@ -7061,7 +7037,7 @@
           ],
           "antiPatterns": [
             {
-              "bad": "<Filter options={statusOptions} onChange={navigate} />",
+              "bad": "<Filter options={statusOptions} onValueChange={navigate} />",
               "good": "<Tabs items={statusTabs} />",
               "why": "Filter is for narrowing visible content, not routing between views"
             }
@@ -11168,7 +11144,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/number-input/number-input.module.css"
       ],
       "fileHashes": {
-        "number-input.tsx": "sha256-2bc014da70bfb9f6fdad28b801fba4c0a7f311402c2bf91b99a64500730342db",
+        "number-input.tsx": "sha256-c89a10e18c2f1b6cc5377f45ff5dd2b07dd28d0ba1bb597d885e468163dd62a0",
         "index.ts": "sha256-e1bfb7f0d680c0d3353e29e96ad022f322e67560fcea6e5772d1e88fff732c51",
         "number-input.module.css": "sha256-052b1ea4e35ba484767d3b30b590e742a7069125857dc7c0a3bb2b8ceacbb39a"
       },
@@ -11205,12 +11181,6 @@
             "type": "(value: number | null) => void",
             "required": false,
             "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable"
-          },
-          {
-            "name": "onChange",
-            "type": "(value: number | null) => void",
-            "required": false,
-            "description": "Deprecated: use onValueChange (same number | null)"
           },
           {
             "name": "min",
@@ -11343,7 +11313,7 @@
           "antiPatterns": [
             {
               "bad": "<Input type=\"number\" onChange={...} />",
-              "good": "<NumberInput min={0} max={99} step={1} onChange={...} />",
+              "good": "<NumberInput min={0} max={99} step={1} onValueChange={...} />",
               "why": "NumberInput adds stepper buttons, clamping, precision rounding, and Intl formatting that a raw number input does not, and reports a parsed number | null rather than a string"
             }
           ],
@@ -11531,7 +11501,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/overflow-menu/overflow-menu.module.css"
       ],
       "fileHashes": {
-        "overflow-menu.tsx": "sha256-9b9e3a36e0ab72610e965a6c3e042a8041d65195e4fcdd0af8f6a77bb7d5df8f",
+        "overflow-menu.tsx": "sha256-49d6d4a8f8f30ce87444d7dd012ebe66c086fd39df96d7965049da3cb6047b4f",
         "index.ts": "sha256-7070c62d17b5995930ae65e66e40a55dc3532334befe4f899aab9692957447e5",
         "overflow-menu.module.css": "sha256-21f4c4a11b7f8dc0d8bf6ac885e922bf145a1d2ea68dc75ae3b77186112a89a9"
       },
@@ -11543,7 +11513,8 @@
       "deprecated": {
         "since": "0.17.0",
         "replacement": "menu",
-        "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+        "removeIn": "2.0.0",
+        "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu keeps working for the whole 1.x line and is removed in 2.0.0."
       },
       "aliases": ["MoreMenu", "KebabMenu", "ActionMenu"],
       "tags": ["overlay", "menu", "actions", "kebab", "table"],
@@ -11641,7 +11612,8 @@
         "deprecated": {
           "since": "0.17.0",
           "replacement": "menu",
-          "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+          "removeIn": "2.0.0",
+          "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu keeps working for the whole 1.x line and is removed in 2.0.0."
         },
         "intent": {
           "whenToUse": [
@@ -14342,7 +14314,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/search/search.module.css"
       ],
       "fileHashes": {
-        "search.tsx": "sha256-ece1041026036a11214ae48ed7cc8418003cb083cbfed09713dc528ce847bb7c",
+        "search.tsx": "sha256-29d35bb73aa2b77049d243ed813c597345244ea59dc904b116ad9ec15cf2d488",
         "index.ts": "sha256-47249a52c6a441ee459d54591b48acc65feafdc50ecb7e6ab3eb3a05e292b8a7",
         "search.module.css": "sha256-bb8b8f5650d1f3623aed5b21b05f5bc6894a82c8399ed8ab7ce53cd213b7c709"
       },
@@ -14377,12 +14349,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the current text on every keystroke.",
-            "type": "(value: string) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same string).",
             "type": "(value: string) => void",
             "required": false
           },
@@ -14497,7 +14463,7 @@
           },
           {
             "title": "Controlled",
-            "code": "<Search value={query} onChange={setQuery} onSearch={runQuery} debounceMs={500} />"
+            "code": "<Search value={query} onValueChange={setQuery} onSearch={runQuery} debounceMs={500} />"
           },
           {
             "title": "Large",
@@ -16872,7 +16838,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/swap/swap.module.css"
       ],
       "fileHashes": {
-        "swap.tsx": "sha256-f571705e354f664d3465903163e19a969ee95577f7bc7da2c966535084704797",
+        "swap.tsx": "sha256-b13e19f86c777e6bb0d65119af816894f90eceb89039d1b739ae016ed0333c95",
         "index.ts": "sha256-95c7a8c5b037db337aec24ba3316cf77dc780a37d95a73ed36d1a3f757a53b71",
         "swap.module.css": "sha256-69738c9cf9a9f3da5d4da1d17ab6229af3f45772739251bfa39dcc447e3984b1"
       },
@@ -16926,12 +16892,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the new checked state when the swap is toggled.",
-            "type": "(checked: boolean) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same checked boolean).",
             "type": "(checked: boolean) => void",
             "required": false
           },
@@ -18189,7 +18149,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/time-picker/time-picker.module.css"
       ],
       "fileHashes": {
-        "time-picker.tsx": "sha256-6825c12f0e83e0bde82e4b99dbee39654d94de08bc81207d48564182882882f0",
+        "time-picker.tsx": "sha256-bf6412370e876f9c4dc67e8a3eda093e07fa239852e97bc2f1118af5286050eb",
         "index.ts": "sha256-d5e5a07b40ae6720075ed633b7cc1b9de694807b7dc9f594dc5673f1555ea603",
         "time-picker.module.css": "sha256-84aacb74f566e0c5082a48a3b73194981ab1bc9c17bafc5c7d43bd27bfc6f480"
       },
@@ -18222,12 +18182,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the new HH:MM time string when the value changes.",
-            "type": "(value: string) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same time string).",
             "type": "(value: string) => void",
             "required": false
           },
@@ -18315,7 +18269,7 @@
         "examples": [
           {
             "title": "Basic time picker",
-            "code": "<TimePicker label=\"Meeting time\" onChange={(v) => console.log(v)} />"
+            "code": "<TimePicker label=\"Meeting time\" onValueChange={(v) => console.log(v)} />"
           }
         ],
         "dependencies": ["@cascivo/core"],
@@ -18776,7 +18730,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/toggle/toggle.module.css"
       ],
       "fileHashes": {
-        "toggle.tsx": "sha256-c139caeda1ad9cc9a15b502875d599ed4813c849d79d59d0b9c86855bce698e5",
+        "toggle.tsx": "sha256-bd245f7bca569b26f79f65ae6b9215cf2d2d3cf65ebe1c0f2cdae40680782c13",
         "index.ts": "sha256-8463627930eb060c1e8f834f86d9ff94171978a893046b6f9c28fe7b76ba25fe",
         "toggle.module.css": "sha256-9c452a066e05bdcf11ffe10f5245ec08d99a4eb36d00bada9fa53de0460572bf"
       },
@@ -18811,12 +18765,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the new checked state when the switch is toggled.",
-            "type": "(checked: boolean) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same checked boolean).",
             "type": "(checked: boolean) => void",
             "required": false
           },
@@ -22041,7 +21989,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/blocks/settings-form-page/settings-form-page.tsx"
       ],
       "fileHashes": {
-        "settings-form-page.tsx": "sha256-0edab442c248ad2eb9f052913175059ae081cba732a3164beba94dfe09453c6f"
+        "settings-form-page.tsx": "sha256-1cae9975686581076eae9b7ef3a60dbe6b4e511fe5216c5704fd7d1b7c5a8414"
       },
       "dependencies": ["@cascivo/react"],
       "peerVersions": {
@@ -22744,20 +22692,6 @@
             "type": "number",
             "required": false,
             "description": "Show every Nth category label (always the last) to thin a crowded axis. Role-named twin of xLabelEvery; always strides the category axis on both orientations."
-          },
-          {
-            "name": "xTicks",
-            "description": "DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the x-axis — follows SCREEN position, so it controls the category axis when vertical and the VALUE axis when horizontal.",
-            "type": "number",
-            "required": false,
-            "default": "5"
-          },
-          {
-            "name": "yTicks",
-            "description": "DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the y-axis — follows SCREEN position, so it controls the value axis when vertical and the CATEGORY axis when horizontal.",
-            "type": "number",
-            "required": false,
-            "default": "5"
           },
           {
             "name": "xLabelEvery",

@@ -646,8 +646,8 @@ change/activation callback by its **argument**, not the component:
 
 Never give a new component a value-carrying `onChange` — that name is reserved for the DOM
 event. The `docs/AI-RULES.md` "Event-handler naming" table is the published contract; keep
-it in sync. (A handful of pre-existing components still accept a deprecated value-carrying
-`onChange` alias alongside `onValueChange`; do not add more.)
+it in sync. (The last value-carrying `onChange` aliases were removed at 1.0; the rule now
+holds with no exceptions.)
 
 #### Prop-name vocabulary — name the prop by what it carries
 

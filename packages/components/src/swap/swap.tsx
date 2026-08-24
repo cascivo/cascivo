@@ -16,8 +16,6 @@ export interface SwapProps {
   checked?: boolean
   /** Called with the new checked state when the swap is toggled. */
   onValueChange?: (checked: boolean) => void
-  /** @deprecated Use `onValueChange` — it receives the same `checked` boolean. */
-  onChange?: (checked: boolean) => void
   mode?: SwapMode
   /**
    * Invisible accessible name. The catalog convention (see the item-identity table in
@@ -41,7 +39,6 @@ export function Swap({
   off,
   checked = false,
   onValueChange,
-  onChange,
   mode = 'rotate',
   className,
   ariaLabel,
@@ -56,7 +53,7 @@ export function Swap({
 
   function handleClick() {
     const next = !isChecked.value
-    ;(onValueChange ?? onChange)?.(next)
+    onValueChange?.(next)
   }
 
   return (

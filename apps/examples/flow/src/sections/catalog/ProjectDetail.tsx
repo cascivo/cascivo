@@ -65,7 +65,7 @@ export function ProjectDetail({ asset, detail, onBack }: Props) {
         </div>
 
         <div className={styles['toolbar']}>
-          <Search placeholder={t(msg.detailSearchFiles)} onChange={() => {}} />
+          <Search placeholder={t(msg.detailSearchFiles)} onValueChange={() => {}} />
           <Button variant="secondary" size="sm">
             {t(msg.detailCreateBtn)}
           </Button>
