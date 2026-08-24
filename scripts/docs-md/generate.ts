@@ -29,6 +29,7 @@ const REPO_TREE = 'https://github.com/cascivo/cascivo/tree/main'
 /** Curated adopter-facing guides. `src` is the docs/ filename, `slug` the served name. */
 const GUIDES: { src: string; slug: string }[] = [
   { src: 'GETTING-STARTED.md', slug: 'getting-started' },
+  { src: 'UPGRADING.md', slug: 'upgrading' },
   { src: 'THEMING.md', slug: 'theming' },
   { src: 'HEADLESS.md', slug: 'headless' },
   { src: 'COMPATIBILITY.md', slug: 'compatibility' },

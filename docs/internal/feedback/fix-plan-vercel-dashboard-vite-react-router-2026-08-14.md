@@ -1,6 +1,6 @@
 # Fix plan — the 2026-08-14 Vercel-style dashboard (Vite + React Router)
 
-**Status: implemented on `claude/ui-library-analysis-plan-eu3gzy`; NOT YET PUBLISHED.**
+**Status: implemented on `claude/ui-library-analysis-plan-eu3gzy` and **published** — `@cascivo/react` 0.18.0 and the matching train (2026-08-17).**
 All nine workstreams have landed. Per [`README.md`](README.md), the PR that publishes to npm
 sets `shippedIn` on each [`RECURRENCE.md`](RECURRENCE.md) row and flips this header — until
 then every fix below is Mechanism G.

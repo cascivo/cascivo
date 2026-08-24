@@ -1,3 +1,9 @@
+<!--
+  Generated from docs/ — do not edit here; run `pnpm regen`.
+  Canonical: https://cascivo.com/docs/upgrading.md
+  registry v0.18.0 · generated 2026-08-17
+-->
+
 # Upgrading cascivo
 
 cascivo has two consumption paths, so it has two upgrade stories: **npm
@@ -15,11 +21,11 @@ and for how long.
 
 ### What a version bump means
 
-| Bump      | From 1.0.0 onward                                                        | Before 1.0 (historical)                |
-| --------- | ------------------------------------------------------------------------ | -------------------------------------- |
-| **major** | may remove or change covered API; every removal was deprecated first     | n/a                                    |
-| **minor** | adds API; never removes or changes covered API                           | may include breaking changes           |
-| **patch** | fixes only                                                               | fixes and improvements, safe to take   |
+| Bump      | From 1.0.0 onward                                                    | Before 1.0 (historical)              |
+| --------- | -------------------------------------------------------------------- | ------------------------------------ |
+| **major** | may remove or change covered API; every removal was deprecated first | n/a                                  |
+| **minor** | adds API; never removes or changes covered API                       | may include breaking changes         |
+| **patch** | fixes only                                                           | fixes and improvements, safe to take |
 
 From 1.0.0, `"^1.2.0"` is safe to widen across the whole `1.x` line. Below 1.0, npm's `^`
 range does not cross a minor while the major is `0` — `"^0.18.0"` means
@@ -36,7 +42,7 @@ These are public API. Changing or removing one requires a major:
 - **Design tokens** — the `--cascivo-*` custom properties, at all three levels
   (primitive, semantic, component).
 - **Style hooks** — the `data-cascivo-*` attributes documented in
-  [`STYLING-INTERNALS.md`](./STYLING-INTERNALS.md) and listed in each component's manifest.
+  [`STYLING-INTERNALS.md`](/docs/styling-internals.md) and listed in each component's manifest.
 - **The canonical `@layer` names and their order** (`cascivo.reset` → `base` → `tokens` →
   `component` → `theme` → `blocks` → `override`).
 - **The accessibility contract** — each component's ARIA role, its accessible-name
@@ -65,7 +71,7 @@ These may change in any release, including a patch:
 
 - The **current major** receives fixes on its latest minor.
 - The **previous major** receives security fixes for **six months** after the next major
-  ships. Report security issues per [`SECURITY.md`](../SECURITY.md).
+  ships. Report security issues per [`SECURITY.md`](https://github.com/cascivo/cascivo/blob/main/SECURITY.md).
 - Older majors are unsupported. `cascivo doctor --drift` compares your installed versions
   against [`breaking-changes.json`](#breaking-changesjson--for-machines) and tells you where
   you stand.
@@ -75,10 +81,10 @@ These may change in any release, including a patch:
 The `1.x` line covers the packages an application depends on directly or transitively at
 runtime. Tooling packages stay on `0.x` until their own surfaces settle, and say so on npm.
 
-| Line  | Packages                                                                                                                            |
-| ----- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Line  | Packages                                                                                                                                                                                                                                                    |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `1.x` | `@cascivo/react`, `@cascivo/core`, `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`, `@cascivo/ai` (the lockstep family below), plus `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and the `cascivo` CLI |
-| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`                                                                                 |
+| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`                                                                                  |
 
 `@cascivo/platform` in particular is an early experiment in platform-idiomatic geometry and
 motion; treat its API as unsettled.
@@ -86,8 +92,8 @@ motion; treat its API as unsettled.
 ## Where changes are recorded
 
 - **Per-package `CHANGELOG.md`** — changesets-generated, the source of truth
-  (e.g. [`packages/react/CHANGELOG.md`](../packages/react/CHANGELOG.md)).
-- **Root [`CHANGELOG.md`](../CHANGELOG.md)** — a generated index: every
+  (e.g. [`packages/react/CHANGELOG.md`](https://github.com/cascivo/cascivo/blob/main/packages/react/CHANGELOG.md)).
+- **Root [`CHANGELOG.md`](https://github.com/cascivo/cascivo/blob/main/CHANGELOG.md)** — a generated index: every
   published package, its current version, latest feature release, and a link
   to its changelog.
 - **[`breaking-changes.json`](https://cascivo.com/breaking-changes.json)** —
@@ -107,11 +113,9 @@ versions to detect API drift:
     {
       "name": "@cascivo/charts",
       "version": "0.3.4",
-      "releases": [
-        { "version": "0.3.0", "level": "minor", "notes": ["PieChart: donut …"] }
-      ]
-    }
-  ]
+      "releases": [{ "version": "0.3.0", "level": "minor", "notes": ["PieChart: donut …"] }],
+    },
+  ],
 }
 ```
 
@@ -172,7 +176,7 @@ long you have.
 **Removals only happen in a major.** A deprecation introduced during `1.x` is removed in
 `2.0.0` at the earliest, so the alias is guaranteed to outlive the whole `1.x` line.
 
-Aliases that only *add* a name (`ariaLabel` alongside `aria-label`, `value` alongside `id`)
+Aliases that only _add_ a name (`ariaLabel` alongside `aria-label`, `value` alongside `id`)
 are not deprecations — both spellings are supported indefinitely, and neither is
 struck through. They exist because guessing the wrong one cost adopters a compile
 round-trip.
@@ -207,7 +211,7 @@ exits `0` with "All components up to date." otherwise.
 npx cascivo update button
 ```
 
-Runs a **three-way merge**: the CLI fetches the *base* version recorded in the
+Runs a **three-way merge**: the CLI fetches the _base_ version recorded in the
 lockfile (from the registry's versioned snapshots, `r/<name>@<version>.json`),
 your local copy, and the current upstream, then merges upstream changes around
 your local edits. Three outcomes per file:
@@ -288,9 +292,10 @@ Release-specific upgrade guides, newest first:
   TypeScript flags every site (`.value` on a `string` is an error). If you passed
   the signal itself into `computed()`/`effect()` or a Preact component, get it from
   the new `themeSignal()` export instead. The setter is unchanged.
+
 - **`@cascivo/themes` now installs with `@cascivo/react`** (`@cascivo/react` minor)
   — it moved from a peer/optional install to a real dependency, so `pnpm add
-  @cascivo/react` brings it along. You still import a theme CSS file once (or import
+@cascivo/react` brings it along. You still import a theme CSS file once (or import
   the now-self-contained `@cascivo/react/styles.css`, which bundles tokens + light +
   dark); skipping the import renders components grayscale, and `ThemeProvider` now
   warns about exactly that in dev. No action needed unless you were installing
@@ -302,14 +307,14 @@ Release-specific upgrade guides, newest first:
   now sit **below** `cascivo.override` instead of silently above it. If you relied
   on a block's CSS beating your `@layer cascivo.override { … }` rules, that was a
   bug — your override now wins as documented. See
-  [CSS-LAYERS-PITFALL.md](./CSS-LAYERS-PITFALL.md#canonical-layer-ordering).
-- [v37 — Consumer Upgrade Guide](./v37-CONSUMER-CHANGES.md) — migration
+  [CSS-LAYERS-PITFALL.md](/docs/css-layers-pitfall.md#canonical-layer-ordering).
+- [v37 — Consumer Upgrade Guide](https://github.com/cascivo/cascivo/blob/main/docs/v37-CONSUMER-CHANGES.md) — migration
   hardening: the `cascade.*` → `cascivo.*` `@layer` rename (the one breaking
   change), `styles.css` export fix, app-shell adoption, token-name stability.
 
 ## See also
 
-- [GETTING-STARTED.md](./GETTING-STARTED.md) — the two install paths.
-- [TROUBLESHOOTING.md](./TROUBLESHOOTING.md) — "a component looks different
+- [GETTING-STARTED.md](/docs/getting-started.md) — the two install paths.
+- [TROUBLESHOOTING.md](/docs/troubleshooting.md) — "a component looks different
   than the docs" is usually version drift.
-- [RELEASING.md](./RELEASING.md) — how releases are cut (maintainers).
+- [RELEASING.md](https://github.com/cascivo/cascivo/blob/main/docs/RELEASING.md) — how releases are cut (maintainers).

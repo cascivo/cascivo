@@ -1,6 +1,6 @@
 # Fix plan — the 2026-08-06 Vercel-dashboard adopter (TanStack Start, registry `0.16.0`, CLI `0.7.1`)
 
-**Status: implemented on `claude/ui-library-analysis-plan-dxg5tw`; not yet published.**
+**Status: implemented on `claude/ui-library-analysis-plan-dxg5tw` and **published** — `@cascivo/react` 0.16.1 and the matching train (2026-08-10).**
 All nine workstreams have landed. Per [`README.md`](README.md), the PR that publishes to npm
 flips this to `published vX.Y.Z` — until then an adopter cannot `pnpm add` any of it.
 

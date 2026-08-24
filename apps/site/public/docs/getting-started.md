@@ -186,7 +186,7 @@ npx cascivo update button    # three-way merge of upstream changes into your cop
 
 `update` merges upstream changes _around_ your local edits using the lockfile's
 recorded base version; genuine collisions get standard conflict markers to
-resolve by hand. See [UPGRADING.md](https://github.com/cascivo/cascivo/blob/main/docs/UPGRADING.md) for the full story.
+resolve by hand. See [UPGRADING.md](/docs/upgrading.md) for the full story.
 
 ---
 
@@ -375,7 +375,7 @@ contains the themes you actually set:
 > **Changed in 0.14.0.** `all.css` used to contain light and dark only, despite the name —
 > a trap that cost adopters real time. It now contains all twelve. If you imported it for a
 > light/dark app, switch to `light-dark.css` to keep the smaller sheet. See
-> [UPGRADING.md](https://github.com/cascivo/cascivo/blob/main/docs/UPGRADING.md).
+> [UPGRADING.md](/docs/upgrading.md).
 
 `ThemeProvider` warns in dev when you set a `data-theme` whose CSS is not loaded, naming
 the import to add.

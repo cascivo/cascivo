@@ -8,7 +8,7 @@
 > Per `README.md` WS-K rule 3, edit statuses here only to record what shipped from this
 > plan — new work goes in the live tracker.
 
-**Status: implemented on `claude/ui-library-report-analysis-3j9eht`; not yet published.**
+**Status: implemented on `claude/ui-library-report-analysis-3j9eht` and **published** — `@cascivo/react` 0.12.0 and the matching train (2026-07-25).**
 Per-workstream: **WS-A** ✅ (complete `styles.css`, `@cascivo/themes` dependency,
 `ThemeProvider` dev warning) · **WS-B** ✅ (`dist/index.d.ts` quickstart banner + package
 descriptions + guard) · **WS-C** ✅ (sizing JSDoc + overflow clamp) · **WS-D** ✅ (AreaChart

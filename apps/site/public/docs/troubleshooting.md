@@ -329,7 +329,7 @@ npx cascivo update <name>    # three-way merge of upstream changes
 
 For the prebuilt packages, compare your installed versions against
 `breaking-changes.json` (every major/minor release per package with notes) —
-see [UPGRADING.md](https://github.com/cascivo/cascivo/blob/main/docs/UPGRADING.md).
+see [UPGRADING.md](/docs/upgrading.md).
 
 ---
 
