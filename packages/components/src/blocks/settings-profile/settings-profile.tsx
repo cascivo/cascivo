@@ -81,7 +81,7 @@ export function SettingsProfile() {
             </div>
             <Toggle
               checked={emailNotifs.value}
-              onChange={(checked) => {
+              onValueChange={(checked) => {
                 emailNotifs.value = checked
               }}
               aria-label="Email notifications"
@@ -95,7 +95,7 @@ export function SettingsProfile() {
             </div>
             <Toggle
               checked={pushNotifs.value}
-              onChange={(checked) => {
+              onValueChange={(checked) => {
                 pushNotifs.value = checked
               }}
               aria-label="Push notifications"
@@ -109,7 +109,7 @@ export function SettingsProfile() {
             </div>
             <Toggle
               checked={weeklyDigest.value}
-              onChange={(checked) => {
+              onValueChange={(checked) => {
                 weeklyDigest.value = checked
               }}
               aria-label="Weekly digest"

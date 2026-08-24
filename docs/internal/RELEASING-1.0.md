@@ -2,8 +2,14 @@
 
 **Status:** prepared, not published. Everything in
 [`../plans/1-0-0-readiness-analysis.md`](../plans/1-0-0-readiness-analysis.md) except the
-stabilization window (B4) and the release itself is on `main`. This is the remaining
-sequence.
+stabilization window (B4) and the release itself is on
+`claude/ui-library-1-0-0-readiness-h7mait`. This is the remaining sequence.
+
+One thing this branch could **not** do: produce real screen-reader results. Driving NVDA and
+VoiceOver needs Windows and macOS runners, so B5's second half is closed by automating the
+merge (the nightly now opens a PR with the columns) and by correcting the published wording
+in the meantime — not by shipping results. The first green run after this merges will open
+that PR; review the logged phrases before merging it.
 
 Nothing here is urgent. The point of 1.0 is to stop things moving, so the one irreversible
 step — publishing — comes last and comes after a quiet period, not before one.
@@ -22,7 +28,7 @@ step — publishing — comes last and comes after a quiet period, not before on
 | **B6** plan-status drift | ✅ 7 statuses corrected, 2 headers added |
 | **B7** DOM-breaking work | ✅ deferred to 2.0, recorded in each plan and in the guard allowlist |
 | **S1** RTL | ✅ `pnpm rtl:check`, documented in `COMPATIBILITY.md` |
-| **S2** pending changesets | ✅ 7 in `.changeset/` — see the two-release note below |
+| **S2** pending changesets | ✅ 8 in `.changeset/` — see the two-release note below |
 | **S3** version alignment | ✅ decided and recorded |
 | **S4** issue #163 | ✅ closed |
 
@@ -49,23 +55,26 @@ major-worthy change lands — that is the signal working, not the plan failing.
 
 ## The two-release shape
 
-The tree currently holds **seven changesets**: five that predate this work (one of which,
-`field-composition-and-silent-data-loss`, is a correctness fix) and two written for it, one of
-which is `major`.
+The tree currently holds **eight changesets**: five that predate this work (one of which,
+`field-composition-and-silent-data-loss`, is a correctness fix) and three written for it, two
+of which are `major`.
 
 Cut them as **two releases**, not one:
 
 1. **`0.19.0` — the last 0.x.** Ship the five pre-existing changesets plus
-   `api-surface-and-rtl-guards`. Move `remove-deprecated-surfaces-for-1-0.md` out of
-   `.changeset/` first (keep it somewhere — you are putting it straight back), so nothing
+   `api-surface-and-rtl-guards`. Move **both** major changesets —
+   `remove-deprecated-surfaces-for-1-0.md` and `one-x-line-alignment.md` — out of
+   `.changeset/` first (keep them somewhere; you are putting them straight back), so nothing
    computes a major.
 
    This gets the correctness fix and the new guards to adopters while they can still take
    them on a `^0.18` range, and it starts the stabilization window on a clean surface.
 
-2. **`1.0.0` — the stability event.** After the window, restore
-   `remove-deprecated-surfaces-for-1-0.md` and release. It carries `major` for the whole
-   lockstep family, so `changesets` takes all eight from `0.19.x` to `1.0.0` together.
+2. **`1.0.0` — the stability event.** After the window, restore both majors and release.
+   `remove-deprecated-surfaces-for-1-0` carries `major` for the whole lockstep family, so
+   `changesets` takes those eight from `0.19.x` to `1.0.0` together; `one-x-line-alignment`
+   brings `tokens`, `themes`, `icons` and the `cascivo` CLI to `1.0.0` alongside them. Those
+   four carry no breaking change — the major is the alignment decision itself.
 
 A 1.0 that also carries feature work is two events in one tag. A 1.0 that carries only the
 removals and the contract is reviewable in one sitting, and that is the point.
