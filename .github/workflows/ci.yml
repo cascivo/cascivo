@@ -147,6 +147,13 @@ jobs:
       - name: dts-TSDoc guard (the build does not strip prop documentation)
         run: pnpm run dts-tsdoc:check
 
+      # From 1.0.0 the public API is covered by semver (docs/UPGRADING.md). Every other
+      # invariant here has a guard; the surface itself had none, so a dropped export or a
+      # prop that quietly became required could reach main with everything else green. A
+      # diff is a semver decision, not a defect — classify it, then `pnpm api:snapshot`.
+      - name: API-surface snapshot (the 1.x surface matches api-surface.json)
+        run: pnpm run api:check
+
       # A missing VALUE export fails loudly at runtime; a missing TYPE export is invisible —
       # everything compiles, the adopter just cannot name the type of a prop they must pass.
       - name: Type-exports parity (core types naming published props are importable)
