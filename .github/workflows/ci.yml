@@ -176,6 +176,13 @@ jobs:
       - name: Computed-style canary (real browser, shipped dist)
         run: pnpm run computed:check
 
+      # RTL is a shipping target (CLAUDE.md, "CSS logical properties throughout") and was the
+      # one such claim with no evidence: the whole repo held a single dir="rtl" reference and
+      # no test. Two legs — no physical inline property in shipped CSS, and real Chromium
+      # proving every asymmetric inline box mirrors under dir="rtl".
+      - name: RTL canary (logical properties actually mirror)
+        run: pnpm run rtl:check
+
       # The bare-page leg: shipped styles.css and NOTHING else, full viewport, several
       # components stacked so hit-testing is meaningful. computed:check mounts one
       # component at a time in a styled 640px box, so it structurally cannot see a

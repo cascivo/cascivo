@@ -1,16 +1,41 @@
 name: Axe sweep (all stories)
 
-# Nightly + manual: runs axe-core (WCAG 2.x A/AA tags) over every built
-# Storybook story. Not PR-blocking until the finding backlog is triaged —
-# promote to pull_request once it runs clean.
+# PR-blocking + nightly + manual: runs axe-core (WCAG 2.x A/AA tags) over every
+# built Storybook story.
+#
+# This was nightly-only and non-blocking while the 2026-07-02 backlog was open —
+# 107 of 561 stories, 131 instances (docs/internal/axe-baseline-2026-07.md) — with
+# the stated condition "promote to pull_request once it runs clean". It runs clean:
+# green on every nightly since 2026-08-07, and re-verified locally on 2026-08-24
+# with zero violations across 660 stories. So it gates PRs now, which is what makes
+# the README's WCAG 2.2 AA badge a claim about the current commit rather than about
+# last night's.
+#
+# Sharded three ways to keep PR latency near the build itself; the nightly runs the
+# same matrix. Each shard rebuilds because the sweep reads storybook-static.
 on:
+  pull_request:
+    paths:
+      - 'apps/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+  push:
+    branches: [main]
   schedule:
     - cron: '43 3 * * *'
   workflow_dispatch:
 
+concurrency:
+  group: axe-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   axe:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     steps:
       - uses: actions/checkout@v4
 
@@ -31,5 +56,7 @@ jobs:
         run: |
           pnpm exec vp run -r build
 
-      - name: Axe sweep
+      - name: Axe sweep (shard ${{ matrix.shard }}/3)
+        env:
+          AXE_SHARD: ${{ matrix.shard }}/3
         run: pnpm --filter @cascivo/storybook run test:axe

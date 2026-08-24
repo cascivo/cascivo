@@ -6,10 +6,15 @@ name: AT sweep (screen readers)
 # stays a manual spot-check (docs/specs/at-matrix.md).
 #
 # Each OS job writes its own stack column into at-results.json and uploads it as
-# an artifact. A maintainer reviews the runs, merges the two columns, stamps the
-# date, and commits the file — the accessibility page then renders real results
-# instead of "pending". Not PR-blocking; announcement grading is a first pass a
-# human confirms from the logged phrases.
+# an artifact. The `publish` job then merges the columns, stamps the date, and
+# opens a PR — the accessibility page renders real results instead of "pending"
+# once that PR merges. Not PR-blocking; announcement grading is a first pass a
+# human confirms from the logged phrases, which is what the PR is for.
+#
+# The merge used to be a manual step, and across ~20 green runs between
+# 2026-08-03 and 2026-08-24 nobody performed it: the sweep passed nightly while
+# `generatedAt` stayed null and the published page kept saying "pending". A
+# verification loop whose last step depends on someone remembering is not a loop.
 on:
   schedule:
     - cron: '17 4 * * *'
@@ -107,3 +112,45 @@ jobs:
         with:
           name: at-results-nvda
           path: apps/site/src/marketing/pages/accessibility/at-results.json
+
+  publish:
+    name: Merge columns and open a PR
+    needs: [voiceover, nvda]
+    # `always()` so a merge still happens when NVDA fails — it is continue-on-error
+    # and best-effort, and a VoiceOver-only column is a real result worth publishing.
+    # at-merge.mjs refuses to stamp a date when no artifact carries results, so this
+    # cannot publish "verified" over a run that produced nothing.
+    if: always() && needs.voiceover.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: at-artifacts
+          pattern: at-results-*
+      - name: Merge stack columns
+        run: |
+          node apps/storybook/scripts/at-merge.mjs \
+            "$(date -u +%Y-%m-%d)" \
+            at-artifacts/*/at-results.json
+      - name: Open or update the results PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/at-results
+          base: main
+          title: 'chore(a11y): screen-reader sweep results'
+          commit-message: 'chore(a11y): merge AT sweep results'
+          body: |
+            Automated from the nightly AT sweep (`.github/workflows/a11y-at.yml`).
+
+            Grading is a first pass. Before merging, confirm the announcements
+            against the phrases logged in the sweep step of each OS job — that
+            judgement is the reason this is a PR and not a direct push.
+
+            Merging publishes these on the accessibility page in place of
+            "pending".
+          add-paths: apps/site/src/marketing/pages/accessibility/at-results.json
+          delete-branch: true
