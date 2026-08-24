@@ -1,7 +1,7 @@
 export interface NumberInputProps {
   value?: number | null
   defaultValue?: number
-  onChange?: (value: number | null) => void
+  onValueChange?: (value: number | null) => void
   min?: number
   max?: number
   step?: number

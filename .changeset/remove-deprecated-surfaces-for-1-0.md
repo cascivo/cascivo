@@ -21,10 +21,12 @@ charts alias was "removed at 1.0".
   This is the catalog's handler-naming rule (`onValueChange` carries a value, `onChange`
   carries a DOM `ChangeEvent`) applied to the components that predate it.
 
-  These components keep `Omit<…, 'onChange'>` on their prop types deliberately. Dropping the
-  Omit as well would let the native `ChangeEventHandler` take the name back, so an adopter
-  passing a value-carrying handler would compile and then be called with an event — a silent
-  break. Keeping it makes `onChange` a compile error that names the fix.
+  `Toggle`, `NumberInput` and `TimePicker` extend an HTML element's attributes, and they keep
+  `Omit<…, 'onChange'>` deliberately: dropping the Omit as well would let the native
+  `ChangeEventHandler` take the name back, so an adopter passing a value-carrying handler
+  would compile and then be called with an event — a silent break. The other five are plain
+  interfaces with no HTML base, so `onChange` is simply not a prop. Either way, passing it is
+  a compile error that names the fix.
 
 - **`@cascivo/charts` no longer exports `Text` / `TextProps`** — use `ChartText` /
   `ChartTextProps`. This alias collided with `@cascivo/react`'s typography component and the

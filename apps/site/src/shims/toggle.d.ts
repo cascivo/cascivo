@@ -1,7 +1,7 @@
 export interface ToggleProps {
   checked?: boolean
   defaultChecked?: boolean
-  onChange?: (checked: boolean) => void
+  onValueChange?: (checked: boolean) => void
   label?: string
   size?: 'sm' | 'md'
   disabled?: boolean

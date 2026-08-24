@@ -1,7 +1,7 @@
 export interface SearchProps {
   value?: string
   defaultValue?: string
-  onChange?: (value: string) => void
+  onValueChange?: (value: string) => void
   onSearch?: (value: string) => void
   debounceMs?: number
   placeholder?: string

@@ -284,6 +284,45 @@ function importOrigins(source: string): Map<string, string> {
   return origins
 }
 
+/**
+ * Scan from `start` to the `;` that ends a declaration, ignoring any `;` nested inside braces,
+ * parens, brackets or generics.
+ *
+ * Stopping at the first `;` followed by a newline is NOT enough. A multi-line type alias whose
+ * branches are object literals ends every member with `;` in the middle of the declaration, so
+ * that rule truncated `SideNavSubItem` after its first branch and dropped the rest of the union
+ * from the snapshot — meaning deleting a branch produced no diff, the exact failure this guard
+ * exists to catch. Sixteen of ninety-five aliases were recorded short.
+ */
+function declarationEnd(source: string, start: number): number {
+  let depth = 0
+  let quote: string | null = null
+  for (let i = start; i < source.length; i += 1) {
+    const c = source[i]!
+    if (quote !== null) {
+      if (c === '\\') {
+        i += 1
+        continue
+      }
+      if (c === quote) quote = null
+      continue
+    }
+    if (c === '"' || c === "'" || c === '`') {
+      quote = c
+      continue
+    }
+    // `=>` is not a generic close — the same correction splitMembers needs.
+    if (c === '=' && source[i + 1] === '>') {
+      i += 1
+      continue
+    }
+    if (c === '{' || c === '(' || c === '[' || c === '<') depth += 1
+    else if (c === '}' || c === ')' || c === ']' || c === '>') depth -= 1
+    else if (c === ';' && depth <= 0) return i
+  }
+  return -1
+}
+
 interface Declaration {
   /** 'type' for interfaces and aliases, 'value' for runtime bindings. */
   kind: 'type' | 'value'
@@ -317,10 +356,13 @@ function declarationOf(source: string, name: string): Declaration | null {
     }
   }
 
-  const alias = new RegExp(
-    `(?:^|\\n)(?:declare\\s+)?type\\s+${escaped}\\b([^=]*)=([\\s\\S]*?);\\s*(?=\\n|$)`,
-  ).exec(source)
-  if (alias !== null) return { kind: 'type', text: normalize(`type${alias[1]} = ${alias[2]}`) }
+  const alias = new RegExp(`(?:^|\\n)(?:declare\\s+)?type\\s+${escaped}\\b([^=]*)=`).exec(source)
+  if (alias !== null) {
+    const bodyStart = alias.index + alias[0].length
+    const end = declarationEnd(source, bodyStart)
+    const body = source.slice(bodyStart, end === -1 ? source.length : end)
+    return { kind: 'type', text: normalize(`type${alias[1]} = ${body}`) }
+  }
 
   const decl = new RegExp(
     `(?:^|\\n)declare\\s+(const|let|var|function|class|enum|namespace)\\s+${escaped}\\b`,
@@ -342,17 +384,8 @@ function declarationOf(source: string, name: string): Declaration | null {
       }
     }
     // const / function: take through the terminating semicolon at depth 0.
-    let depth = 0
-    for (let i = start; i < source.length; i += 1) {
-      const c = source[i]!
-      if (c === '=' && source[i + 1] === '>') {
-        i += 1
-        continue
-      }
-      if (c === '{' || c === '(' || c === '[' || c === '<') depth += 1
-      if (c === '}' || c === ')' || c === ']' || c === '>') depth -= 1
-      if (c === ';' && depth <= 0) return { kind: 'value', text: normalize(source.slice(start, i)) }
-    }
+    const end = declarationEnd(source, start)
+    if (end !== -1) return { kind: 'value', text: normalize(source.slice(start, end)) }
   }
   return null
 }

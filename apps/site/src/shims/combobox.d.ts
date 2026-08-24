@@ -12,7 +12,7 @@ export interface ComboboxProps {
   options: ComboboxOption[]
   value?: string
   defaultValue?: string
-  onChange?: (value: string | undefined) => void
+  onValueChange?: (value: string | undefined) => void
   clearable?: boolean
   searchable?: boolean
   label?: string

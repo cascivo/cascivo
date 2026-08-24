@@ -7,7 +7,7 @@ export interface DatePickerLabels {
 export interface DatePickerProps {
   value?: string
   defaultValue?: string
-  onChange?: (value: string | undefined) => void
+  onValueChange?: (value: string | undefined) => void
   min?: string
   max?: string
   clearable?: boolean

@@ -1,7 +1,7 @@
 export interface TimePickerProps {
   value?: string
   defaultValue?: string
-  onChange?: (value: string) => void
+  onValueChange?: (value: string) => void
   min?: string
   max?: string
   step?: number

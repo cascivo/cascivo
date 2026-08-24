@@ -254,9 +254,12 @@ Release-specific upgrade guides, newest first:
 
   Two notes on the shape of these:
 
-  - The eight components keep `Omit<…, 'onChange'>` on their prop types. Without it the
-    native `ChangeEventHandler` would take the name back, and a value-carrying handler would
-    compile and then be called with a DOM event — a silent break instead of a loud one.
+  - Three of the eight — `Toggle`, `NumberInput`, `TimePicker` — extend an HTML element's
+    attributes, and they keep `Omit<…, 'onChange'>` deliberately. Without it the native
+    `ChangeEventHandler` would take the name back, and a value-carrying handler would compile
+    and then be called with a DOM event — a silent break instead of a loud one. The other five
+    are plain interfaces with no HTML base, so `onChange` is simply not a prop. Either way,
+    passing it is a compile error that names the replacement.
   - `BarChart`'s removed pair followed *screen* position, so its meaning swapped with
     `orientation`: `yTicks={1}` did nothing on a horizontal chart while `xTicks={1}` worked.
     The replacements are named by role and mean the same thing either way. `ScatterChart`

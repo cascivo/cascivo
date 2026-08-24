@@ -37,12 +37,21 @@ const DIST = join(ROOT, 'packages/react/dist')
 
 /* ------------------------------------------------------------------ static leg */
 
+/**
+ * Every published package that ships CSS. `flow`, `editor` and `platform` were missing from
+ * an earlier revision while `docs/COMPATIBILITY.md` claimed the guarantee held for "every
+ * shipped rule" — they were clean, so the gap cost nothing yet, but a scope narrower than the
+ * published claim is how a claim quietly stops being true.
+ */
 const CSS_ROOTS = [
   'packages/components/src',
   'packages/layouts/src',
   'packages/charts/src',
   'packages/themes/src',
   'packages/tokens/src',
+  'packages/flow/src',
+  'packages/editor/src',
+  'packages/platform/src',
 ]
 
 /**

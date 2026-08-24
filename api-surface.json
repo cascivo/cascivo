@@ -1167,7 +1167,7 @@
             "onSelect": "() => void",
             "disabled?": "boolean"
           },
-          "FabProps": "type = FabBaseProps & ({ label: string",
+          "FabProps": "type = FabBaseProps & ({ label: string; ariaLabel?: never; } | { ariaLabel: string; label?: never; })",
           "Field": "declare function Field({ label, description, hint, error, required, disabled, id, children, className }: FieldProps): import(\"react\").JSX.Element",
           "FieldProps": {
             "label?": "ReactNode",
@@ -1333,7 +1333,7 @@
             "children": "ReactNode"
           },
           "IconButton": "declare const IconButton: import(\"react\").ForwardRefExoticComponent<IconButtonProps & import(\"react\").RefAttributes<HTMLButtonElement>>",
-          "IconButtonProps": "type = IconButtonBaseProps & ({ label: string",
+          "IconButtonProps": "type = IconButtonBaseProps & ({ label: string; ariaLabel?: never; } | { ariaLabel: string; label?: never; })",
           "Image": "declare function Image({ src, alt, fallbackSrc, width, height, radius, zoom, removeWrapper, isBlurred, className, style, ...rest }: ImageProps): import(\"react\").JSX.Element",
           "ImageProps": {
             "(extends)": "extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'placeholder'>",
@@ -1517,7 +1517,7 @@
             "label": "ReactNode",
             "items": "MenubarItem[]"
           },
-          "MenubarProps": "type = MenubarBaseProps & ({ ariaLabel: string",
+          "MenubarProps": "type = MenubarBaseProps & ({ ariaLabel: string; 'aria-label'?: never; } | { 'aria-label': string; ariaLabel?: never; })",
           "MenuButton": "declare function MenuButton({ label, items, variant, size, disabled, align, labels, className }: MenuButtonProps): import(\"react\").JSX.Element",
           "MenuButtonItem": {
             "id": "string",
@@ -2077,7 +2077,7 @@
             "footer?": "ReactNode",
             "className?": "string"
           },
-          "SideNavSubItem": "type = SideNavLinkSubItem | { type: 'separator'",
+          "SideNavSubItem": "type = SideNavLinkSubItem | { type: 'separator'; } | { type: 'label'; label: string; }",
           "SideNavTone": "type = 'default' | 'danger' | 'warning' | 'success'",
           "signal": "re-export signal from \"@cascivo/core\"",
           "Skeleton": "declare function Skeleton({ variant, width, height, lines, className, style, ...props }: SkeletonProps): import(\"react\").JSX.Element",
@@ -2208,7 +2208,7 @@
           },
           "Switch": "declare const Toggle: import(\"react\").ForwardRefExoticComponent<ToggleProps & import(\"react\").RefAttributes<HTMLButtonElement>>",
           "Switcher": "declare function Switcher({ items, label, ariaLabel, className }: SwitcherProps): import(\"react\").JSX.Element",
-          "SwitcherEntry": "type = SwitcherLink | { divider: true",
+          "SwitcherEntry": "type = SwitcherLink | { divider: true; }",
           "SwitcherLink": {
             "id?": "string",
             "label": "string",
@@ -2823,7 +2823,7 @@
           "normalizeProgress": "declare function normalizeProgress(value: ProgressInput): Progress",
           "normalizeTone": "declare function normalizeTone<T extends string>(value: T): T | Tone",
           "persistedSignal": "declare function persistedSignal<T>(key: string, initial: T, options?: PersistedSignalOptions<T>): PersistedSignal<T>",
-          "PersistedSignal": "type<T> = Signal<T> & { ready: ReadonlySignal<boolean>",
+          "PersistedSignal": "type<T> = Signal<T> & { ready: ReadonlySignal<boolean>; }",
           "PersistedSignalOptions": {
             "(extends)": "<T>",
             "driver?": "StorageDriver",
@@ -3391,7 +3391,7 @@
             "bandwidth": "number",
             "step": "number"
           },
-          "Annotation": "type = { kind: 'line'",
+          "Annotation": "type = { kind: 'line'; axis: 'x' | 'y'; value: number | string | Date; label?: string; color?: string; dash?: boolean; } | { kind: 'area'; axis: 'x' | 'y'; from: number | string | Date; to: number | string | Date; label?: string; color?: string; } | { kind: 'dot'; x: number | string | Date; y: number; label?: string; color?: string; } | { kind: 'note'; x: number | string | Date; y: number; label: string; dx?: number; dy?: number; color?: string; } | { kind: 'threshold'; value: number; side: 'above' | 'below'; label?: string; color?: string; }",
           "AnnotationContext": {
             "xScale": "AnnotationScale",
             "yScale": "AnnotationScale",
@@ -3853,7 +3853,7 @@
             "sparkline?": "readonly number[]",
             "className?": "string"
           },
-          "LabelOptions": "type = boolean | { format?: (value: number) => string",
+          "LabelOptions": "type = boolean | { format?: (value: number) => string; position?: 'auto' | 'above' | 'inside' | 'outside'; }",
           "LaidLink": {
             "source": "LaidNode",
             "target": "LaidNode",
@@ -4060,7 +4060,7 @@
             "r2": "number",
             "coefficients": "number[]"
           },
-          "RegressionType": "type = 'linear' | 'exponential' | { type: 'polynomial'",
+          "RegressionType": "type = 'linear' | 'exponential' | { type: 'polynomial'; order: number; }",
           "releaseSyncGroup": "declare function releaseSyncGroup(id: string): void",
           "renderAnnotation": "declare function renderAnnotation(annotation: Annotation, ctx: AnnotationContext, key: number): ReactNode",
           "renderAnnotations": "declare function renderAnnotations(annotations: readonly Annotation[] | undefined, ctx: AnnotationContext): ReactNode",
@@ -4142,7 +4142,7 @@
           "serializeSvg": "declare function serializeSvg(svg: SVGSVGElement): string",
           "sort": "declare function sort<T>(rows: readonly T[], key: SortKey<T>, dir?: 'asc' | 'desc'): T[]",
           "Sparkline": "declare function Sparkline({ data, width, height, label, ariaLabel, color, endDot }: SparklineProps): import(\"react\").JSX.Element",
-          "SparklineProps": "type = SparklineBaseProps & ({ label: string",
+          "SparklineProps": "type = SparklineBaseProps & ({ label: string; ariaLabel?: never; } | { ariaLabel: string; label?: never; })",
           "splitDefined": "declare function splitDefined(points: readonly (Point | null)[], connectNulls?: boolean): Point[][]",
           "sqrtScale": "declare function sqrtScale(domain: [number, number], range: [number, number]): (value: number) => number",
           "squarify": "declare function squarify(nodes: TreemapNode[], width: number, height: number): TreemapRect[]",
@@ -4306,7 +4306,7 @@
         "types": ["SparklineProps"],
         "declarations": {
           "Sparkline": "declare function Sparkline({ data, width, height, label, ariaLabel, color, endDot, className }: SparklineLiteProps): import(\"react\").JSX.Element",
-          "SparklineProps": "type = SparklineLiteBaseProps & ({ label: string"
+          "SparklineProps": "type = SparklineLiteBaseProps & ({ label: string; ariaLabel?: never; } | { ariaLabel: string; label?: never; })"
         }
       }
     },
@@ -4829,7 +4829,7 @@
           },
           "LayoutStrategy": "type = 'grid' | 'layered' | ((nodes: FlowNode$1[], edges: FlowEdge$1[]) => FlowNode$1[])",
           "nodeBounds": "declare function nodeBounds(node: FlowNode$1): Rect",
-          "NodeRenderer": "type = (args: { node: FlowNode$1",
+          "NodeRenderer": "type = (args: { node: FlowNode$1; }) => ReactNode",
           "nodeSize": "declare function nodeSize(node: FlowNode$1): NodeSize",
           "NodeSize": {
             "width": "number",
