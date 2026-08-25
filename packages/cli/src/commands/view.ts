@@ -1,7 +1,7 @@
 import type { CascadeConfig } from '../utils/config.js'
 import { parseAddress, resolveItemUrl } from '../utils/resolve.js'
 import { fetchJson } from '../utils/http.js'
-import { asTemplateMeta, isTemplateItem, type RegistryItem } from '@cascivo/registry'
+import { asTemplateMeta, isTemplateItem, parseItem, type RegistryItem } from '@cascivo/registry'
 
 /** Render an item's details as text. Pure, so it can be unit-tested. */
 export function formatItem(item: RegistryItem): string {
@@ -67,7 +67,7 @@ export async function view(args: string[], config: CascadeConfig): Promise<void>
   const fetchOpts: Parameters<typeof fetchJson>[1] = {}
   if (headers) fetchOpts.headers = headers
   if (params) fetchOpts.params = params
-  const item = (await fetchJson(url, fetchOpts)) as RegistryItem
+  const item = parseItem(await fetchJson(url, fetchOpts), url)
 
   console.log(formatItem(item))
 }

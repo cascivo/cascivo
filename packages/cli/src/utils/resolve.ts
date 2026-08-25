@@ -1,5 +1,6 @@
 import { CASCIVO_HOST, type CascadeConfig, type RegistryNamespaceConfig } from './config.js'
 import { fetchJson } from './http.js'
+import { parseItem } from '@cascivo/registry'
 import type { RegistryItem } from '@cascivo/registry'
 
 export type AddressKind = 'bare' | 'namespace' | 'url' | 'github'
@@ -176,8 +177,7 @@ export async function resolveClosure(
     const fetchOpts: Parameters<typeof fetchJson>[1] = {}
     if (headers) fetchOpts.headers = headers
     if (params) fetchOpts.params = params
-    const raw = await fetchJson(url, fetchOpts)
-    const item = raw as RegistryItem
+    const item = parseItem(await fetchJson(url, fetchOpts), url)
 
     const base = url.replace(/\/[^/]+\.json$/, '')
 

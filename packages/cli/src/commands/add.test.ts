@@ -119,4 +119,13 @@ describe('resolveTemplateTarget', () => {
   it('normalizes nested relative segments', () => {
     expect(resolveTemplateTarget('/proj', './src/../src/app.tsx')).toBe('/proj/src/app.tsx')
   })
+
+  // A template item's `target` comes from a registry over the network. Before
+  // this check, each of these resolved cleanly and was handed to writeFileSafe.
+  it.each(['../../.zshrc', '/etc/cron.d/pwn', 'src/../../escape.txt'])(
+    'refuses to write outside the project for %j',
+    (target) => {
+      expect(() => resolveTemplateTarget('/proj', target)).toThrow(/Refusing to write outside/)
+    },
+  )
 })

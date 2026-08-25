@@ -38,11 +38,29 @@ const CONTRACT_URL = 'https://cascivo.com/audit-contract.json'
  * Download the contract, caching it by version so a second run is offline-fast. Returns
  * null on any failure — the audit must never hard-depend on the network.
  */
+/**
+ * Shape-check a contract payload, returning null when it does not hold.
+ *
+ * The contract arrives from the network, from an explicit `--contract` path, or
+ * from the copy bundled in this package. `fromBundled` indexes into `tokens`
+ * and `components` directly, so a payload missing either produced a TypeError
+ * deep in the audit instead of a message naming the bad file.
+ */
+function asBundledContract(raw: unknown): BundledContract | null {
+  if (typeof raw !== 'object' || raw === null) return null
+  const o = raw as Record<string, unknown>
+  if (typeof o['version'] !== 'string') return null
+  if (!Array.isArray(o['tokens']) || !Array.isArray(o['components'])) return null
+  if (!Array.isArray(o['content'])) return null
+  return raw as BundledContract
+}
+
 async function fetchContract(report: (source: string) => void): Promise<Contract | null> {
   try {
     const response = await fetch(CONTRACT_URL, { signal: AbortSignal.timeout(5000) })
     if (!response.ok) return null
-    const bundled = (await response.json()) as BundledContract
+    const bundled = asBundledContract(await response.json())
+    if (!bundled) return null
     try {
       const target = cachePath(bundled.version)
       mkdirSync(dirname(target), { recursive: true })
@@ -116,7 +134,9 @@ export async function loadContract(options?: {
       throw new Error(`contract file not found: ${options.contractPath}`)
     }
     report(`explicit: ${options.contractPath}`)
-    return fromBundled(JSON.parse(readFileSync(options.contractPath, 'utf8')) as BundledContract)
+    const explicit = asBundledContract(JSON.parse(readFileSync(options.contractPath, 'utf8')))
+    if (!explicit) throw new Error(`not a valid audit contract: ${options.contractPath}`)
+    return fromBundled(explicit)
   }
 
   // 2. Dev monorepo — unchanged, so in-repo behavior and its tests are untouched.
@@ -140,7 +160,9 @@ export async function loadContract(options?: {
     for (const candidate of [bundled, bundledDist]) {
       if (existsSync(candidate)) {
         report(`bundled: ${candidate}`)
-        return fromBundled(JSON.parse(readFileSync(candidate, 'utf8')) as BundledContract)
+        const shipped = asBundledContract(JSON.parse(readFileSync(candidate, 'utf8')))
+        if (!shipped) throw new Error(`not a valid audit contract: ${candidate}`)
+        return fromBundled(shipped)
       }
     }
 

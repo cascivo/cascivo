@@ -9,6 +9,7 @@ import { fetchRegistry, fileName, findComponent } from '../utils/registry.js'
 import { readLock, writeLock, updateLockEntry } from '../utils/lock.js'
 import { fetchJson, fetchTextRetry } from '../utils/http.js'
 import { merge } from '../utils/merge.js'
+import { parseItem } from '@cascivo/registry'
 import type { RegistryItem } from '@cascivo/registry'
 
 async function confirm(question: string): Promise<boolean> {
@@ -53,7 +54,7 @@ export async function update(
 
     let baseItem: RegistryItem | null = null
     try {
-      baseItem = (await fetchJson(baseItemUrl)) as RegistryItem
+      baseItem = parseItem(await fetchJson(baseItemUrl), baseItemUrl)
     } catch {
       console.warn(
         `Warning: could not fetch base version ${lockedVersion} from ${baseItemUrl}. Falling back to two-way diff.`,

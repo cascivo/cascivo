@@ -7,7 +7,7 @@ import {
   type PackageManager,
 } from '../utils/config.js'
 import { installPackages } from '../utils/exec.js'
-import { resolveOutputPath, writeFileSafe } from '../utils/fs.js'
+import { assertInside, resolveOutputPath, writeFileSafe } from '../utils/fs.js'
 import { fetchTextRetry } from '../utils/http.js'
 import {
   fetchRegistry,
@@ -58,7 +58,7 @@ function hintThemesIfMissing(cwd: string, pm: PackageManager): void {
 
 /** Resolve where a template's own file is written — relative to the project root. */
 export function resolveTemplateTarget(cwd: string, target: string): string {
-  return resolvePath(cwd, target)
+  return assertInside(cwd, resolvePath(cwd, target))
 }
 
 export interface ResolvedBareEntry {

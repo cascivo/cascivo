@@ -1,6 +1,7 @@
 import type { CascadeConfig } from '../utils/config.js'
 import { fetchRegistry } from '../utils/registry.js'
 import { fetchJson } from '../utils/http.js'
+import { validateItem } from '@cascivo/registry'
 import type { RegistryItem } from '@cascivo/registry'
 
 interface SearchResult {
@@ -50,8 +51,16 @@ export async function search(args: string[], config: CascadeConfig): Promise<voi
     try {
       const template = typeof nsCfg === 'string' ? nsCfg : nsCfg.url
       const indexUrl = template.replace(/{name}[^$]*$/, '').replace(/\/$/, '') + '/registry.json'
-      const raw = (await fetchJson(indexUrl)) as { items?: RegistryItem[] }
-      for (const item of raw.items ?? []) {
+      const raw: unknown = await fetchJson(indexUrl)
+      const entries =
+        typeof raw === 'object' && raw !== null && Array.isArray((raw as { items?: unknown }).items)
+          ? ((raw as { items: unknown[] }).items ?? [])
+          : []
+      // Search is read-only and lists many registries at once, so one malformed
+      // entry skips rather than failing the whole query.
+      for (const entry of entries) {
+        if (!validateItem(entry).ok) continue
+        const item = entry as RegistryItem
         if (matchesQuery(item, query)) {
           results.push({
             name: `${ns}/${item.name}`,
