@@ -53,9 +53,31 @@ export function translateKey(key: string, params?: Record<string, string | numbe
   const locale = currentLocale()
   const value = catalogs.get(locale)?.get(key) ?? defaults.get(key)
   if (value === undefined) return key
-  // Reuse t's resolution by constructing a transient Message; untyped by design
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (t as (...a: any[]) => string)({ key, value }, params)
+  return resolve(locale, value, params)
+}
+
+/**
+ * Resolve one catalog value against a locale — the whole of `t`'s behaviour below the
+ * type layer.
+ *
+ * `t` is generic so a message's placeholders are known at the call site; `translateKey`
+ * takes a runtime string, where they cannot be. Sharing this function is what lets both
+ * reach the same logic: `translateKey` used to cast `t` to `(...a: any[]) => string`,
+ * which was the only `any` in the package.
+ */
+function resolve(
+  locale: string,
+  value: MessageValue,
+  params: Record<string, string | number> | undefined,
+): string {
+  if (typeof value === 'string') return interpolate(value, params)
+  let rules = pluralRules.get(locale)
+  if (!rules) {
+    rules = new Intl.PluralRules(locale)
+    pluralRules.set(locale, rules)
+  }
+  const branch = value[rules.select(Number(params?.['count'] ?? 0))] ?? value.other
+  return interpolate(branch, params)
 }
 
 export function t<V extends MessageValue>(message: Message<V>, ...args: TArgs<V>): string {
@@ -66,13 +88,5 @@ export function t<V extends MessageValue>(message: Message<V>, ...args: TArgs<V>
   if (message == null || typeof message.key !== 'string') return ''
   const locale = currentLocale()
   const value = catalogs.get(locale)?.get(message.key) ?? message.value
-  const params = args[0] as Record<string, string | number> | undefined
-  if (typeof value === 'string') return interpolate(value, params)
-  let rules = pluralRules.get(locale)
-  if (!rules) {
-    rules = new Intl.PluralRules(locale)
-    pluralRules.set(locale, rules)
-  }
-  const branch = value[rules.select(Number(params?.['count'] ?? 0))] ?? value.other
-  return interpolate(branch, params)
+  return resolve(locale, value, args[0])
 }

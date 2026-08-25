@@ -61,9 +61,11 @@ async function runSchema<T extends Record<string, unknown>>(
   const errs: Errors<T> = {}
   for (const issue of result.issues) {
     const key = issue.path && issue.path.length > 0 ? pathHead(issue.path) : ''
+    // `issue.path` is a runtime string from the schema, so it is not statically known to be
+    // a `keyof T`. Narrow rather than reaching for `any`: everything the loop writes is a
+    // `string`, which is what `Errors<T>` holds for every key.
     if (key && !(key in errs)) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ;(errs as any)[key] = issue.message
+      errs[key as keyof T] = issue.message
     }
   }
   return errs

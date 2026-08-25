@@ -160,6 +160,12 @@ jobs:
       - name: Site type-shims are current (regenerated from the built declarations)
         run: pnpm run shims:check
 
+      # @cascivo/docspack's payload is a gitignored build artifact rebuilt from
+      # apps/site/public, so it can never lag `pnpm regen` — but nothing checked that the
+      # payload it produces is actually well-formed. `docspack doctor --strict` does.
+      - name: docspack payload is valid (schema + chunk integrity)
+        run: pnpm run docspack:check
+
       # A missing VALUE export fails loudly at runtime; a missing TYPE export is invisible —
       # everything compiles, the adopter just cannot name the type of a prop they must pass.
       - name: Type-exports parity (core types naming published props are importable)

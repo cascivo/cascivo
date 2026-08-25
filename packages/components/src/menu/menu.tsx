@@ -79,7 +79,6 @@ function MenuPanelInner({ ctx, children }: { ctx: UsePopoverReturn; children: Re
     <div
       ref={popoverRef as React.RefObject<HTMLDivElement>}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore — popover is a valid HTML attribute not yet in React types
       popover="auto"
       role="menu"
       data-state={isOpen.value ? 'open' : 'closed'}
