@@ -2835,7 +2835,7 @@
             "children": "ReactNode",
             "container?": "Element | DocumentFragment"
           },
-          "Presence": "declare function Presence({ present, children }: PresenceProps): ReactElement<Record<string, unknown>, string | import(\"react\").JSXElementConstructor<any>> | null",
+          "Presence": "declare function Presence({ present, children }: PresenceProps): ReactNode",
           "PresenceProps": {
             "present": "boolean | Signal<boolean>",
             "children": "ReactElement"
@@ -4302,8 +4302,12 @@
         }
       },
       "./sparkline": {
-        "values": ["Sparkline"],
-        "types": ["SparklineProps"],
+        "values": [
+          "Sparkline"
+        ],
+        "types": [
+          "SparklineProps"
+        ],
         "declarations": {
           "Sparkline": "declare function Sparkline({ data, width, height, label, ariaLabel, color, endDot, className }: SparklineLiteProps): import(\"react\").JSX.Element",
           "SparklineProps": "type = SparklineLiteBaseProps & ({ label: string; ariaLabel?: never; } | { ariaLabel: string; label?: never; })"
@@ -4972,7 +4976,13 @@
           "t",
           "translateKey"
         ],
-        "types": ["FormatBytesOptions", "LocaleStore", "Message", "MessageValue", "PluralForms"],
+        "types": [
+          "FormatBytesOptions",
+          "LocaleStore",
+          "Message",
+          "MessageValue",
+          "PluralForms"
+        ],
         "declarations": {
           "builtin": "declare const builtin: { pagination: { readonly itemsPerPage: Message<\"Items per page\">; readonly pageOf: Message<\"Page {page} of {total}\">; readonly range: Message<\"{start}–{end} of {total} items\">; readonly previous: Message<\"Previous page\">; readonly next: Message<\"Next page\">; readonly nav: Message<\"Pagination\">; }; toast: { readonly dismiss: Message<\"Dismiss notification\">; readonly region: Message<\"Notifications\">; }; modal: { readonly close: Message<\"Close modal\">; }; alert: { readonly dismiss: Message<\"Dismiss\">; }; header: { readonly nav: Message<\"Main\">; }; search: { readonly label: Message<\"Search\">; readonly placeholder: Message<\"Search\">; readonly clear: Message<\"Clear search\">; }; commandMenu: { readonly label: Message<\"Command menu\">; readonly placeholder: Message<\"Type a command or search…\">; readonly empty: Message<\"No results found\">; readonly back: Message<\"Back\">; readonly loading: Message<\"Loading…\">; readonly matches: Message<\"{count} matches\">; readonly scopeLabel: Message<\"Scope\">; readonly clearScope: Message<\"Clear scope\">; }; breadcrumb: { readonly nav: Message<\"Breadcrumb\">; }; toc: { readonly nav: Message<\"On this page\">; }; datePicker: { readonly placeholder: Message<\"Select a date\">; readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly clear: Message<\"Clear date\">; }; combobox: { readonly placeholder: Message<\"Select an option\">; readonly empty: Message<\"No options found\">; readonly clear: Message<\"Clear selection\">; readonly search: Message<\"Search options\">; }; dataTable: { readonly search: Message<\"Search\">; readonly empty: Message<\"No data\">; readonly selectAll: Message<\"Select all rows\">; readonly selectRow: Message<\"Select row\">; readonly itemsSelected: Message<\"{count} selected\">; readonly expandRow: Message<\"Expand row\">; readonly previousPage: Message<\"Previous page\">; readonly nextPage: Message<\"Next page\">; }; dock: { readonly nav: Message<\"Main navigation\">; }; steps: { readonly label: Message<\"Steps\">; }; overflowMenu: { readonly trigger: Message<\"More actions\">; }; sideNav: { readonly nav: Message<\"Side navigation\">; readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; }; spinner: { readonly label: Message<\"Loading\">; }; numberInput: { readonly increment: Message<\"Increment\">; readonly decrement: Message<\"Decrement\">; }; tag: { readonly dismiss: Message<\"Remove\">; }; appShell: { readonly collapse: Message<\"Collapse navigation\">; readonly expand: Message<\"Expand navigation\">; readonly dismissError: Message<\"Dismiss error\">; }; charts: { readonly legendToggle: Message<\"Toggle series {name}\">; readonly noData: Message<\"No data\">; readonly resetZoom: Message<\"Reset zoom\">; readonly exportPng: Message<\"Export PNG\">; readonly exportSvg: Message<\"Export SVG\">; readonly dataView: Message<\"Data view\">; readonly restore: Message<\"Restore\">; }; alertDialog: { readonly confirm: Message<\"Confirm\">; readonly cancel: Message<\"Cancel\">; }; sheet: { readonly close: Message<\"Close panel\">; }; bottomSheet: { readonly close: Message<\"Close\">; readonly handle: Message<\"Drag to resize\">; }; actionSheet: { readonly label: Message<\"Actions\">; readonly cancel: Message<\"Cancel\">; }; reorderList: { readonly handle: Message<\"Reorder {name}\">; readonly grabbed: Message<\"Picked up {name}. Position {position} of {total}.\">; readonly moved: Message<\"Moved {name} to position {position} of {total}.\">; readonly dropped: Message<\"Dropped {name} at position {position} of {total}.\">; readonly cancelled: Message<\"Reordering cancelled. {name} returned to its original position.\">; }; infiniteScroll: { readonly loadMore: Message<\"Load more\">; readonly loading: Message<\"Loading more\">; }; pullToRefresh: { readonly pull: Message<\"Pull to refresh\">; readonly release: Message<\"Release to refresh\">; readonly refreshing: Message<\"Refreshing\">; }; fileUploader: { readonly label: Message<\"Upload files\">; readonly drop: Message<\"Drag and drop files here or click to upload\">; readonly remove: Message<\"Remove {name}\">; readonly uploading: Message<\"Uploading\">; readonly complete: Message<\"Upload complete\">; readonly error: Message<\"Upload failed\">; }; passwordInput: { readonly reveal: Message<\"Show password\">; readonly hide: Message<\"Hide password\">; readonly strengthWeak: Message<\"weak\">; readonly strengthFair: Message<\"fair\">; readonly strengthGood: Message<\"good\">; readonly strengthStrong: Message<\"strong\">; readonly strengthLabel: Message<\"Password strength: {level}\">; }; multiSelect: { readonly label: Message<\"Options\">; readonly placeholder: Message<\"Select options\">; readonly selected: Message<\"{count} selected\">; readonly search: Message<\"Search options\">; readonly noResults: Message<\"No options found\">; }; tagsInput: { readonly label: Message<\"Tags\">; readonly remove: Message<\"Remove {tag}\">; readonly placeholder: Message<\"Add tag…\">; }; otpInput: { readonly label: Message<\"One-time code\">; readonly digit: Message<\"Digit {n}\">; }; ai: { readonly generating: Message<\"Generating…\">; readonly done: Message<\"Done\">; readonly error: Message<\"Error\">; readonly send: Message<\"Send\">; readonly placeholder: Message<\"Type a message…\">; readonly you: Message<\"You\">; readonly assistant: Message<\"Assistant\">; }; shellHeader: { readonly skipToContent: Message<\"Skip to main content\">; readonly nav: Message<\"Main\">; readonly openMenu: Message<\"Open navigation\">; readonly closeMenu: Message<\"Close navigation\">; }; headerPanel: { readonly close: Message<\"Close panel\">; }; switcher: { readonly label: Message<\"Switch application\">; }; copyButton: { readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; }; skipNav: { readonly label: Message<\"Skip to content\">; }; form: { readonly required: Message<\"Required\">; readonly invalid: Message<\"Invalid value\">; }; label: { readonly required: Message<\"Required\">; }; inlineLoading: { readonly active: Message<\"Loading\">; readonly finished: Message<\"Loaded\">; readonly error: Message<\"Error\">; }; notification: { readonly dismiss: Message<\"Dismiss\">; }; treeView: { readonly loading: Message<\"Loading…\">; readonly expand: Message<\"Expand\">; readonly collapse: Message<\"Collapse\">; }; carousel: { readonly region: Message<\"Carousel\">; readonly previous: Message<\"Previous slide\">; readonly next: Message<\"Next slide\">; readonly slide: Message<\"{n} of {total}\">; readonly goTo: Message<\"Go to slide {n}\">; }; calendar: { readonly previousMonth: Message<\"Previous month\">; readonly nextMonth: Message<\"Next month\">; readonly today: Message<\"Today\">; }; colorPicker: { readonly hue: Message<\"Hue\">; readonly alpha: Message<\"Alpha\">; readonly colorArea: Message<\"Saturation and lightness\">; readonly eyedropper: Message<\"Pick a color from the screen\">; }; drawer: { readonly close: Message<\"Close\">; }; menuButton: { readonly open: Message<\"Open menu\">; }; resizable: { readonly handle: Message<\"Resize panels\">; }; codeSnippet: { readonly copy: Message<\"Copy code\">; readonly copied: Message<\"Copied\">; }; dateRangePicker: { readonly label: Message<\"Date range\">; readonly placeholder: Message<\"Select a date range\">; readonly start: Message<\"Start date\">; readonly end: Message<\"End date\">; readonly apply: Message<\"Apply\">; readonly clear: Message<\"Clear\">; }; toggletip: { readonly label: Message<\"More information\">; }; avatarGroup: { readonly more: Message<\"{count} more\">; }; comparison: { readonly label: Message<\"Comparison slider\">; }; qrCode: { readonly label: Message<\"QR code\">; }; flow: { readonly zoomIn: Message<\"Zoom in\">; readonly zoomOut: Message<\"Zoom out\">; readonly fitView: Message<\"Fit view\">; readonly minimap: Message<\"Minimap\">; readonly play: Message<\"Play\">; readonly pause: Message<\"Pause\">; readonly next: Message<\"Next step\">; readonly previous: Message<\"Previous step\">; readonly restart: Message<\"Restart\">; readonly step: Message<\"Step {current} of {total}\">; }; logViewer: { readonly label: Message<\"Log output\">; readonly search: Message<\"Search log\">; readonly follow: Message<\"Following\">; readonly paused: Message<\"Jump to latest\">; readonly copy: Message<\"Copy\">; readonly copied: Message<\"Copied\">; readonly empty: Message<\"No log output\">; readonly matches: Message<\"{count} matches\">; readonly lines: Message<\"{count} lines\">; }; editor: { readonly label: Message<\"Code editor\">; readonly code: Message<\"Code\">; readonly find: Message<\"Find\">; readonly replace: Message<\"Replace\">; readonly findPlaceholder: Message<\"Find\">; readonly replacePlaceholder: Message<\"Replace with\">; readonly next: Message<\"Next match\">; readonly previous: Message<\"Previous match\">; readonly replaceOne: Message<\"Replace\">; readonly replaceAll: Message<\"Replace all\">; readonly close: Message<\"Close\">; readonly matchCase: Message<\"Match case\">; readonly toggleReplace: Message<\"Toggle replace\">; readonly noMatches: Message<\"No results\">; readonly findCount: Message<\"{current} of {total}\">; readonly commandMenu: Message<\"Command menu\">; readonly commandMenuEmpty: Message<\"No commands\">; }; }",
           "createLocale": "declare function createLocale<const L extends string>(options: { default: L; supported: readonly L[]; }): LocaleStore<L>",
@@ -5016,8 +5026,17 @@
     },
     "@cascivo/storage": {
       ".": {
-        "values": ["indexedDBDriver", "localStorageDriver", "memoryDriver", "persistedSignal"],
-        "types": ["PersistedSignal", "PersistedSignalOptions", "StorageDriver"],
+        "values": [
+          "indexedDBDriver",
+          "localStorageDriver",
+          "memoryDriver",
+          "persistedSignal"
+        ],
+        "types": [
+          "PersistedSignal",
+          "PersistedSignalOptions",
+          "StorageDriver"
+        ],
         "declarations": {
           "indexedDBDriver": "declare function indexedDBDriver(dbName?: string, storeName?: string): StorageDriver$1",
           "localStorageDriver": "re-export localStorageDriver from \"@cascivo/core\"",
@@ -5031,7 +5050,12 @@
     },
     "@cascivo/ai": {
       ".": {
-        "values": ["AiChat", "AiLabel", "StreamingText", "Terminal"],
+        "values": [
+          "AiChat",
+          "AiLabel",
+          "StreamingText",
+          "Terminal"
+        ],
         "types": [
           "AiChatProps",
           "AiLabelProps",
@@ -5536,7 +5560,12 @@
           "ZoomOut",
           "createIcon"
         ],
-        "types": ["GlyphName", "GlyphProps", "IconProps", "MorphName"],
+        "types": [
+          "GlyphName",
+          "GlyphProps",
+          "IconProps",
+          "MorphName"
+        ],
         "declarations": {
           "AccessPolicy": "declare const AccessPolicy: { ({ size, color, ...props }: IconProps): import(\"react\").JSX.Element; displayName: string; }",
           "Activity": "declare const Activity: { ({ size, color, ...props }: IconProps): import(\"react\").JSX.Element; displayName: string; }",

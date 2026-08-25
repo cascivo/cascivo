@@ -30,7 +30,7 @@
  * rule 1.
  */
 import assert from 'node:assert/strict'
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -63,6 +63,31 @@ describe('site shims', () => {
         'compile against props that do not exist — which is exactly how the removed ' +
         '`Dropdown.separator` flag stayed in the published docs demo through a full green ' +
         `CI run.\n${offenders.join('\n')}`,
+    )
+  })
+
+  /**
+   * The same rule, for the other place component types could be declared by hand.
+   *
+   * `apps/site/src/cascade-shims.d.ts` carried ambient `declare module
+   * '@cascivo/components/…'` blocks for Button, Input, Card, Badge and Modal, each ending in
+   * `[key: string]: unknown`. They were dead — a `paths` entry beats an ambient declaration —
+   * but a future `paths` edit would have silently fallen back to five stale prop bags with no
+   * excess-property checking. A root `.d.ts` is auto-included by tsc, so nothing had to
+   * import it for that to happen.
+   */
+  it('no ambient declaration re-declares a cascivo module', () => {
+    const ambient = join(ROOT, 'apps/site/src/cascade-shims.d.ts')
+    if (!existsSync(ambient)) return
+    const offenders = [
+      ...readFileSync(ambient, 'utf8').matchAll(/declare module '(@cascivo\/[^']+)'/g),
+    ].map((m) => `  declare module '${m[1]}'`)
+    assert.deepEqual(
+      offenders,
+      [],
+      'Component types belong in the generated shims under src/shims/, not in an ambient ' +
+        'declaration that shadows them if tsconfig `paths` ever changes. Delete the block; ' +
+        `\`pnpm shims:generate\` already covers the module.\n${offenders.join('\n')}`,
     )
   })
 

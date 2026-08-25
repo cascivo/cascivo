@@ -46,6 +46,13 @@ charts alias was "removed at 1.0".
   and only noticed because a smoke test counted rows (2026-08-22 report item 9). The dev-only
   warning that existed to catch that goes with it.
 
+**`Presence`'s return type is now declared, not inferred.** It was inferred as
+`ReactElement<…, JSXElementConstructor<any>> | null`, which leaked React's internal `any`
+into cascivo's published `.d.ts` — the only such leak the surface had that was cascivo's own
+to fix. It is now `ReactNode`. Rendering `<Presence>` is unaffected; the only code this can
+break is a direct call whose result is assigned to a `ReactElement`, which is why it rides
+this major rather than a minor.
+
 **`OverflowMenu` is NOT removed.** Its manifest promised removal "in v4", not at 1.0, and
 breaking a published promise early is the same defect as letting one slip. It now carries
 `removeIn: '2.0.0'`, keeps working for the whole `1.x` line, and `Menu` remains the

@@ -59,8 +59,8 @@ interface PackageJson {
   exports?: Record<string, unknown>
 }
 
-/** Strip block and line comments without touching string literals. */
-function stripComments(source: string): string {
+/** Strip block and line comments without touching string literals. Shared with the `any` scan. */
+export function stripComments(source: string): string {
   let out = ''
   let i = 0
   let quote: string | null = null

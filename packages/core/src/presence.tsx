@@ -1,5 +1,12 @@
 'use client'
-import { cloneElement, isValidElement, useRef, type ReactElement, type Ref } from 'react'
+import {
+  cloneElement,
+  isValidElement,
+  useRef,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
+} from 'react'
 import { useEffectPropSignal } from './effect-prop.ts'
 import { useSignal, useSignalEffect, useSignals, type Signal } from './signals.ts'
 import { composeRefs } from './utils.ts'
@@ -20,7 +27,13 @@ type ElementWithRef = ReactElement<Record<string, unknown>> & { ref?: Ref<unknow
  * no animation). CSS drives the visuals via `data-state`; this only manages mount timing. No
  * `useEffect` — the present prop is mirrored into a signal and watched with `useSignalEffect`.
  */
-export function Presence({ present, children }: PresenceProps) {
+/**
+ * The return type is declared rather than inferred. Inferred, it widened to
+ * `ReactElement<…, string | JSXElementConstructor<any>>`, which leaked React's internal
+ * `any` into cascivo's published `.d.ts` — the only such leak the surface had that was
+ * cascivo's own to fix.
+ */
+export function Presence({ present, children }: PresenceProps): ReactNode {
   useSignals()
   const presentVal = typeof present === 'boolean' ? present : present.value
 

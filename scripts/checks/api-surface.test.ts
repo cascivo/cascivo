@@ -32,11 +32,11 @@
  * is `dts-tsdoc-parity`'s job, and declaration order is not part of the contract.
  */
 import assert from 'node:assert/strict'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { buildSnapshot } from '../api-surface/extract.ts'
+import { COVERED_PACKAGES, buildSnapshot, stripComments } from '../api-surface/extract.ts'
 import type { EntrySurface, Snapshot } from '../api-surface/extract.ts'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
@@ -90,6 +90,46 @@ describe('public API surface', () => {
       typeof storage?.declarations['persistedSignal'] === 'string' &&
         storage.declarations['persistedSignal'].startsWith('re-export'),
       'persistedSignal should be recorded as a re-export from @cascivo/core',
+    )
+  })
+
+  /**
+   * `any` in a published `.d.ts` is an untyped hole in the API an adopter is told is typed,
+   * and it does not show up in the snapshot diff above — the snapshot records the text, and
+   * `any` reads as text like anything else.
+   *
+   * Two survive, both upstream and neither cascivo's to fix: the dts bundler inlines
+   * `@preact/signals-core`'s `Signal` class, whose type parameter defaults to `any`. The
+   * third was cascivo's own — `Presence`'s return type was inferred, which widened to
+   * `ReactElement<…, JSXElementConstructor<any>>` and leaked React's internal `any` into the
+   * surface. Declaring the return type fixed it. That is the shape this catches: a new `any`
+   * arriving because someone let an inferred type escape.
+   */
+  it('the published surface introduces no new `any`', () => {
+    const UPSTREAM = ['declare class Signal$2<T = any>', 'interface SignalOptions<T = any>']
+    const found: string[] = []
+    for (const dir of COVERED_PACKAGES) {
+      const distDir = join(REPO_ROOT, 'packages', dir, 'dist')
+      if (!existsSync(distDir)) continue
+      for (const file of readdirSync(distDir).filter((f) => f.endsWith('.d.ts'))) {
+        const path = join(distDir, file)
+        // Strip comments first: the word "any" is everywhere in the TSDoc, and the shipped
+        // `.d.ts` is cascivo's primary prop reference, so there is a lot of it.
+        for (const [i, line] of stripComments(readFileSync(path, 'utf8')).split('\n').entries()) {
+          if (!/(?<![A-Za-z0-9_$])any(?![A-Za-z0-9_$])/.test(line)) continue
+          const text = line.trim()
+          if (UPSTREAM.some((u) => text.includes(u))) continue
+          found.push(`  packages/${dir}/dist/${file}:${i + 1}  ${text.slice(0, 110)}`)
+        }
+      }
+    }
+    assert.deepEqual(
+      found,
+      [],
+      'These published declarations contain `any`. Usually the cause is an inferred return ' +
+        "type picking up a dependency's internals — declare the type explicitly. If it is " +
+        'genuinely upstream and unavoidable, add the exact line to UPSTREAM with a reason.\n' +
+        found.join('\n'),
     )
   })
 
