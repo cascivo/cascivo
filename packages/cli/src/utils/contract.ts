@@ -1,5 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -35,10 +34,6 @@ function findRegistry(startDir: string): string | null {
 const CONTRACT_URL = 'https://cascivo.com/audit-contract.json'
 
 /**
- * Download the contract, caching it by version so a second run is offline-fast. Returns
- * null on any failure — the audit must never hard-depend on the network.
- */
-/**
  * Shape-check a contract payload, returning null when it does not hold.
  *
  * The contract arrives from the network, from an explicit `--contract` path, or
@@ -55,19 +50,16 @@ function asBundledContract(raw: unknown): BundledContract | null {
   return raw as BundledContract
 }
 
+/**
+ * Download the contract. Returns null on any failure — the audit must never
+ * hard-depend on the network.
+ */
 async function fetchContract(report: (source: string) => void): Promise<Contract | null> {
   try {
     const response = await fetch(CONTRACT_URL, { signal: AbortSignal.timeout(5000) })
     if (!response.ok) return null
     const bundled = asBundledContract(await response.json())
     if (!bundled) return null
-    try {
-      const target = cachePath(bundled.version)
-      mkdirSync(dirname(target), { recursive: true })
-      writeFileSync(target, JSON.stringify(bundled))
-    } catch {
-      // A read-only cache dir is not a reason to fail the audit.
-    }
     report(`network: ${CONTRACT_URL}`)
     return fromBundled(bundled)
   } catch {
@@ -98,19 +90,13 @@ function fromBundled(bundled: BundledContract): Contract {
   })
 }
 
-/** Where the network fallback caches a downloaded contract. */
-function cachePath(version: string): string {
-  const base = process.env['XDG_CACHE_HOME'] ?? join(process.env['HOME'] ?? tmpdir(), '.cache')
-  return join(base, 'cascivo', `audit-contract-${version}.json`)
-}
-
 /**
  * Load the cascade contract. Resolution order, first hit wins:
  *
  *   1. an explicit path (`--contract <file>` / `options.contractPath`)
  *   2. the dev-monorepo artifacts (`apps/site/public/…` + `registry.json`)
  *   3. the contract bundled in this package  ← what makes `audit` work in a real project
- *   4. `https://cascivo.com/audit-contract.json`, cached under `~/.cache/cascivo/`
+ *   4. `https://cascivo.com/audit-contract.json`
  *
  * (3) is why this exists: the walk-up in (2) only ever finds anything inside this monorepo,
  * so `cascivo audit --ai` died with "token catalog not found" in every consumer project —
