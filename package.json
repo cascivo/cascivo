@@ -53,7 +53,7 @@
     "css-contract:check": "node --experimental-strip-types --test scripts/checks/css-contract.test.ts",
     "sparkline:size:check": "node --experimental-strip-types --test scripts/checks/sparkline-subpath-size.test.ts",
     "rsc:check": "node --experimental-strip-types --test scripts/checks/rsc-boundary.test.ts",
-    "api:snapshot": "node scripts/api-surface/generate.ts",
+    "api:snapshot": "node scripts/api-surface/generate.ts && vp fmt api-surface.json",
     "api:check": "node --experimental-strip-types --test scripts/checks/api-surface.test.ts",
     "dts-tsdoc:check": "node --experimental-strip-types --test scripts/checks/dts-tsdoc-parity.test.ts",
     "type-exports:check": "node --experimental-strip-types --test scripts/checks/type-exports-parity.test.ts",
