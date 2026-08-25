@@ -70,6 +70,23 @@ For multi-step tasks, state a brief plan:
 - All existing tests must pass after your changes.
 - If you change behavior, update or add tests to cover it.
 
+#### Our source compiles in two type worlds — check both before removing an assertion
+
+`@preact/signals-react` ships a JSX augmentation that widens every DOM attribute to
+`Signalish<T>`. The library's own tsconfig never loads it; every adopter that installs the
+signals runtime does. So `className as string | undefined` is genuinely unnecessary under our
+config and genuinely **load-bearing** under theirs.
+
+A type-aware lint run from inside this repo sees only our half. A
+`no-unnecessary-type-assertion` sweep flagged 125 assertions; autofixing them broke the
+consumer-shaped compilation with 44 errors, 39 of them exactly this. Treat "unnecessary
+assertion" on a JSX attribute as unproven, and never bulk-autofix that rule here. The full
+account, and where such a guard would have to live instead, is in
+`scripts/checks/host-lint/eslint/README.md`.
+
+`pnpm isolated:check` is the gate that compiles the other world — packed tarballs, non-hoisted,
+`skipLibCheck` off. Run it whenever you change a published package's types.
+
 ### Formatting & Linting
 
 - Run the project's formatter and linter before considering any task complete.
@@ -95,6 +112,34 @@ For multi-step tasks, state a brief plan:
 - Validate and sanitize all external input.
 - Use parameterized queries for database access.
 - Prefer established security libraries over hand-rolled solutions.
+
+#### Never `as` a payload you did not produce
+
+A type assertion on fetched or parsed data is not validation — it is the compiler agreeing to
+stop asking. `JSON.parse`, `res.json()`, and `readFileSync` all hand back `any`, so
+`as SomeShape` type-checks perfectly and proves nothing.
+
+This is not hypothetical here. `cascivo add` fetched a registry item, reached it with a bare
+`as RegistryItem`, and passed `files[].target` to `resolve(cwd, target)` and then
+`writeFileSafe`. `resolve` walks out of the project without complaint, so a registry returning
+`{ "target": "../../.zshrc" }` got an arbitrary file write on the adopter's machine. A thorough
+`validateItem` already existed — it was simply never called on the install path, and never
+inspected `files[]`.
+
+The rules that came out of it:
+
+- **Parse at the boundary, once.** Bind the payload as `unknown`, run a `(raw: unknown) => T`
+  parser, and let everything downstream have the real type.
+  `packages/cli/src/utils/registry.ts`'s `parseRegistry` is the house pattern: throw on
+  structural failure, coerce-with-default on soft fields. `parseItem(raw, source)` names the
+  URL in its error so a bad third-party registry is identifiable.
+- **A validator nothing calls is not a guard.** Before adding one, grep for callers of the
+  validator that already exists — and check it covers the fields that actually matter.
+- **Any registry-supplied path is untrusted.** `isSafeRelativePath` rejects absolute,
+  drive-relative, UNC, and `..`-bearing paths; `assertInside` re-checks containment at the
+  write itself, so a future call site that skips the parser still cannot escape.
+- **Narrow, then cast — never the reverse.** `const x = raw as Record<string, unknown>` followed
+  by `typeof x === 'object'` checks nothing: the cast already told the compiler it passed.
 
 ### Performance
 
@@ -127,11 +172,22 @@ Run the single command that covers everything:
 pnpm ready
 ```
 
-This runs: `pnpm regen` → `vp check --fix` → `lint:host-strict` → the guard suite (claims, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → `ssr:check` → `css-contract:check` → `computed:check` → type check → tests.
+This runs: `pnpm regen` → `vp check --fix` → both host-lint gates (`lint:host-strict`, `lint:host-eslint`, `lint:host-eslint:test`) → the pre-build guard suite (brand, claims, recurrence, release, regen, meta, i18n, docs-routes, llms, layers, unlayered, reset, popover, dead-props, doc-urls, primitives, apg, visual-baselines) → build → the post-build guard suite (scaffold, audit:bundle, ssr, css-contract, sparkline:size, rsc, dts-tsdoc, api, shims, docspack, type-exports, computed, rtl) → type check → tests.
 
-`lint:host-strict` is in there because CI runs it and `ready` did not: component source is _copied into adopter projects_, so it must also pass the objective host-lint rules (e.g. no inline `type` specifiers — write a separate `import type` line). It is fast and offline; skipping it locally just moves the failure to CI.
+The post-build half needs `dist/`, which is why it sits after the build: `api:check` diffs the
+published `.d.ts` surface against `api-surface.json`, `shims:check` regenerates
+`apps/site/src/shims` from the built types and fails on a diff, and `css-contract:check`
+inspects packed CSS.
 
-**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:bundle`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`, `isolated:check`. Run them directly if you touched what they cover. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
+Both host-lint gates are in there because component source is _copied into adopter projects_, so
+it must pass a strict host config, not just ours. `lint:host-strict` is the fast offline subset
+(oxlint — e.g. no inline `type` specifiers, write a separate `import type` line).
+`lint:host-eslint` is **the authority**: it runs real ESLint with the plugins an adopter
+installs, and covers React-Compiler-backed rules oxlint cannot express. Do not read the fast
+one as coverage for the real one — that mistake shipped 117 real errors
+(`scripts/checks/host-lint/eslint/README.md`).
+
+**`ready` is not yet a strict superset of CI.** These CI steps are still absent from it, mostly because they need a build, the network, or minutes rather than seconds: `audit:animation`, `audit:signals`, `audit:stories`, `demos:storage:check`, `deps:check`, `deps:smoke`, `docs:coverage`, `links:check`, `isolated:check`, `pack:check`, `bare-page:check`, `no-js:check`. Run them directly if you touched what they cover — `isolated:check` and `pack:check` in particular whenever you change a **published** package, since they are the only gates that compile and lint the packed tarballs the way an adopter receives them. Build runs before type check because some apps (the `apps/examples/*` demos) type-check against built `dist/` types. Commit any files that `regen` or `--fix` modified alongside your changes.
 
 To simulate the exact CI environment (cold cache, sequential builds — catches build-ordering bugs that only surface when no dist files exist):
 
@@ -188,6 +244,21 @@ pnpm exec node --experimental-strip-types --test scripts/checks/client-js-parity
 
 # Every shipped cascivo.com URL resolves to a real route or public file
 pnpm doc-urls:check
+
+# The published .d.ts surface still matches api-surface.json, and introduces no new `any`.
+# Regenerate the snapshot with `pnpm api:snapshot` when a surface change is intended.
+pnpm api:check
+
+# RTL: no physical `left`/`right` in shipped CSS (use logical properties), plus a browser
+# leg that mounts components under dir="ltr"/dir="rtl" and requires them to actually mirror
+pnpm rtl:check
+
+# apps/site's type shims still regenerate byte-identically from the built types
+# (`pnpm shims:generate` rewrites them; the check fails on any diff)
+pnpm shims:check
+
+# @cascivo/docspack's generated payload is current
+pnpm docspack:check
 
 # CSS-shipping packages import their own CSS + ship a CSS-free node twin (needs a build)
 pnpm css-contract:check
