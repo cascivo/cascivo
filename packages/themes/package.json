@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/themes",
-  "version": "0.4.13",
+  "version": "1.0.0",
   "private": false,
   "description": "First-party cascivo themes: light, dark, warm, flat, minimal, midnight, pastel, brutalist, corporate, terminal, cyberpunk, arcade. Components: @cascivo/react. Docs offline: npx @cascivo/docs",
   "keywords": [

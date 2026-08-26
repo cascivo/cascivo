@@ -9,24 +9,25 @@ history: [breaking-changes.json](https://cascivo.com/breaking-changes.json).
 
 | Package                  | Version | Latest feature release                                                                   | Changelog                                        |
 | ------------------------ | ------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| `@cascivo/ai`            | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/ai/CHANGELOG.md)            |
-| `@cascivo/charts`        | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/charts/CHANGELOG.md)        |
-| `cascivo`                | 0.9.0   | 0.9.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +      | [CHANGELOG](packages/cli/CHANGELOG.md)           |
-| `@cascivo/core`          | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/core/CHANGELOG.md)          |
-| `@cascivo/docs`          | 0.2.6   | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website | [CHANGELOG](packages/docs/CHANGELOG.md)          |
-| `@cascivo/docspack`      | 0.2.0   | 0.2.0 — New package: `@cascivo/docspack` — cascivo's documentation in the [docspack](htt | [CHANGELOG](packages/docspack/CHANGELOG.md)      |
-| `@cascivo/editor`        | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/editor/CHANGELOG.md)        |
-| `@cascivo/eslint-config` | 0.2.4   | 0.2.0 — Add `@cascivo/eslint-config`, and fix the scaffolder + doctor to obey cascivo's  | [CHANGELOG](packages/eslint-config/CHANGELOG.md) |
-| `@cascivo/flow`          | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/flow/CHANGELOG.md)          |
-| `@cascivo/i18n`          | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/i18n/CHANGELOG.md)          |
-| `@cascivo/icons`         | 0.3.10  | 0.3.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/icons/CHANGELOG.md)         |
-| `@cascivo/mcp`           | 0.6.6   | 0.6.0 — Ship the entire docs surface as an npm package so it's reachable with no website | [CHANGELOG](packages/mcp/CHANGELOG.md)           |
-| `@cascivo/platform`      | 0.0.4   | —                                                                                        | [CHANGELOG](packages/platform/CHANGELOG.md)      |
-| `@cascivo/react`         | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/react/CHANGELOG.md)         |
-| `@cascivo/registry`      | 0.2.8   | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/registry/CHANGELOG.md)      |
-| `@cascivo/storage`       | 0.18.0  | 0.18.0 — Fixes for the 2026-08-14 adopter report (a Vercel-style dashboard on Vite +     | [CHANGELOG](packages/storage/CHANGELOG.md)       |
-| `@cascivo/themes`        | 0.4.13  | 0.4.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/themes/CHANGELOG.md)        |
-| `@cascivo/tokens`        | 0.5.11  | 0.5.0 — Layer order: add a declared `cascivo.blocks` slot to the canonical `@layer`      | [CHANGELOG](packages/tokens/CHANGELOG.md)        |
-| `@cascivo/vite-plugin`   | 0.1.8   | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)   |
+| `@cascivo/ai`            | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/ai/CHANGELOG.md)            |
+| `@cascivo/charts`        | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/charts/CHANGELOG.md)        |
+| `cascivo`                | 1.0.0   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/cli/CHANGELOG.md)           |
+| `@cascivo/core`          | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/core/CHANGELOG.md)          |
+| `@cascivo/docs`          | 0.2.7   | 0.2.0 — Ship the entire docs surface as an npm package so it's reachable with no website | [CHANGELOG](packages/docs/CHANGELOG.md)          |
+| `@cascivo/docspack`      | 0.2.1   | 0.2.0 — New package: `@cascivo/docspack` — cascivo's documentation in the [docspack](htt | [CHANGELOG](packages/docspack/CHANGELOG.md)      |
+| `@cascivo/editor`        | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/editor/CHANGELOG.md)        |
+| `@cascivo/eslint-config` | 0.3.0   | 0.3.0 — Enables `cascivo/prop-vocabulary` at `warn`, via the new `@cascivo/eslint-plugin | [CHANGELOG](packages/eslint-config/CHANGELOG.md) |
+| `@cascivo/eslint-plugin` | 0.1.1   | —                                                                                        | [CHANGELOG](packages/eslint-plugin/CHANGELOG.md) |
+| `@cascivo/flow`          | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/flow/CHANGELOG.md)          |
+| `@cascivo/i18n`          | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/i18n/CHANGELOG.md)          |
+| `@cascivo/icons`         | 1.0.0   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/icons/CHANGELOG.md)         |
+| `@cascivo/mcp`           | 0.7.0   | 0.7.0 — One accessible-name spelling that always works, plus foreign component names tha | [CHANGELOG](packages/mcp/CHANGELOG.md)           |
+| `@cascivo/platform`      | 0.0.5   | —                                                                                        | [CHANGELOG](packages/platform/CHANGELOG.md)      |
+| `@cascivo/react`         | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/react/CHANGELOG.md)         |
+| `@cascivo/registry`      | 0.2.9   | 0.2.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/registry/CHANGELOG.md)      |
+| `@cascivo/storage`       | 1.0.0   | 1.0.0 — Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an  | [CHANGELOG](packages/storage/CHANGELOG.md)       |
+| `@cascivo/themes`        | 1.0.0   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/themes/CHANGELOG.md)        |
+| `@cascivo/tokens`        | 1.0.0   | 1.0.0 — Join the `1.x` line.                                                             | [CHANGELOG](packages/tokens/CHANGELOG.md)        |
+| `@cascivo/vite-plugin`   | 0.1.9   | 0.1.0 — Adopter-friction fixes (TanStack Start / Vite SSR report):                       | [CHANGELOG](packages/vite-plugin/CHANGELOG.md)   |
 
 See [docs/UPGRADING.md](docs/UPGRADING.md) for upgrade guidance.

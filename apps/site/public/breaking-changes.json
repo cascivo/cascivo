@@ -1,11 +1,18 @@
 {
-  "generatedAt": "2026-08-17",
+  "generatedAt": "2026-08-26",
   "description": "Major and minor releases per published package, parsed from changesets CHANGELOGs. Compare against your installed versions to detect API drift; patch releases are excluded.",
   "packages": [
     {
       "name": "@cascivo/ai",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -20,8 +27,23 @@
     },
     {
       "name": "@cascivo/charts",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
+        {
+          "version": "1.0.0",
+          "level": "minor",
+          "notes": [
+            "Four silent-output defects fixed, and the guards that let them ship.",
+            "An engine-free `Sparkline`, and area fills that read like the rest of the system."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -93,8 +115,20 @@
     },
     {
       "name": "cascivo",
-      "version": "0.9.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": ["Join the `1.x` line."]
+        },
+        {
+          "version": "1.0.0",
+          "level": "minor",
+          "notes": [
+            "One accessible-name spelling that always works, plus foreign component names that resolve."
+          ]
+        },
         {
           "version": "0.9.0",
           "level": "minor",
@@ -156,8 +190,22 @@
     },
     {
       "name": "@cascivo/core",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
+        {
+          "version": "1.0.0",
+          "level": "minor",
+          "notes": [
+            "One accessible-name spelling that always works, plus foreign component names that resolve."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -233,7 +281,7 @@
     },
     {
       "name": "@cascivo/docs",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "releases": [
         {
           "version": "0.2.0",
@@ -246,7 +294,7 @@
     },
     {
       "name": "@cascivo/docspack",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "releases": [
         {
           "version": "0.2.0",
@@ -259,8 +307,15 @@
     },
     {
       "name": "@cascivo/editor",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -291,8 +346,15 @@
     },
     {
       "name": "@cascivo/eslint-config",
-      "version": "0.2.4",
+      "version": "0.3.0",
       "releases": [
+        {
+          "version": "0.3.0",
+          "level": "minor",
+          "notes": [
+            "Enables `cascivo/prop-vocabulary` at `warn`, via the new `@cascivo/eslint-plugin`."
+          ]
+        },
         {
           "version": "0.2.0",
           "level": "minor",
@@ -303,9 +365,21 @@
       ]
     },
     {
+      "name": "@cascivo/eslint-plugin",
+      "version": "0.1.1",
+      "releases": []
+    },
+    {
       "name": "@cascivo/flow",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -329,8 +403,15 @@
     },
     {
       "name": "@cascivo/i18n",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -350,8 +431,13 @@
     },
     {
       "name": "@cascivo/icons",
-      "version": "0.3.10",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": ["Join the `1.x` line."]
+        },
         {
           "version": "0.3.0",
           "level": "minor",
@@ -371,8 +457,15 @@
     },
     {
       "name": "@cascivo/mcp",
-      "version": "0.6.6",
+      "version": "0.7.0",
       "releases": [
+        {
+          "version": "0.7.0",
+          "level": "minor",
+          "notes": [
+            "One accessible-name spelling that always works, plus foreign component names that resolve."
+          ]
+        },
         {
           "version": "0.6.0",
           "level": "minor",
@@ -413,13 +506,28 @@
     },
     {
       "name": "@cascivo/platform",
-      "version": "0.0.4",
+      "version": "0.0.5",
       "releases": []
     },
     {
       "name": "@cascivo/react",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
+        {
+          "version": "1.0.0",
+          "level": "minor",
+          "notes": [
+            "One accessible-name spelling that always works, plus foreign component names that resolve.",
+            "Four silent-output defects fixed, and the guards that let them ship."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -543,7 +651,7 @@
     },
     {
       "name": "@cascivo/registry",
-      "version": "0.2.8",
+      "version": "0.2.9",
       "releases": [
         {
           "version": "0.2.0",
@@ -559,8 +667,15 @@
     },
     {
       "name": "@cascivo/storage",
-      "version": "0.18.0",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": [
+            "Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry."
+          ]
+        },
         {
           "version": "0.18.0",
           "level": "minor",
@@ -575,8 +690,13 @@
     },
     {
       "name": "@cascivo/themes",
-      "version": "0.4.13",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": ["Join the `1.x` line."]
+        },
         {
           "version": "0.4.0",
           "level": "minor",
@@ -601,8 +721,13 @@
     },
     {
       "name": "@cascivo/tokens",
-      "version": "0.5.11",
+      "version": "1.0.0",
       "releases": [
+        {
+          "version": "1.0.0",
+          "level": "major",
+          "notes": ["Join the `1.x` line."]
+        },
         {
           "version": "0.5.0",
           "level": "minor",
@@ -632,7 +757,7 @@
     },
     {
       "name": "@cascivo/vite-plugin",
-      "version": "0.1.8",
+      "version": "0.1.9",
       "releases": [
         {
           "version": "0.1.0",

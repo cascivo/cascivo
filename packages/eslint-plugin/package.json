@@ -1,6 +1,6 @@
 {
   "name": "@cascivo/eslint-plugin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "ESLint rule that turns cascivo's near-miss prop names into an actionable message — the wrong guess, the prop that exists, and why",
   "keywords": [
