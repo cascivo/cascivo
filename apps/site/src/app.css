@@ -20,9 +20,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Layered into `cascivo.base` — NOT unlayered. Unlayered author CSS beats every
+   cascivo layer regardless of specificity, so an unlayered `a { color: inherit }`
+   silently defeats the `color` a component sets in `cascivo.component`. That is
+   what broke the /guides hero: `<Button asChild><a>` renders the button's own
+   styling onto the anchor, so the primary CTA kept its primary background but
+   took the page text colour — near-white on near-white in dark, near-black on
+   near-black in light. `cascivo.base` sits below `component` and `theme`, which
+   is exactly the precedence this reset wants: it still styles plain anchors, and
+   it no longer overrides Button, Prose, Toc or Breadcrumb link colours. */
+@layer cascivo.base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 /* ── Page content wrapper ─────────────────────────────── */

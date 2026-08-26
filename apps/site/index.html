@@ -9,6 +9,19 @@
       content="cascivo is the CSS-native, signal-driven, AI-first React design system: owned-code React components, 12 themes, an MCP server, and WCAG 2.2 AA — plus six functional example dashboards you can open and play with today."
     />
     <link rel="canonical" href="https://cascivo.com/" />
+    <!-- cascivo's canonical @layer order, declared before ANY stylesheet loads.
+         Layer priority is fixed by first declaration, and the bundler emits a
+         component CSS chunk (spinner) ahead of the entry chunk that carries
+         @cascivo/tokens/layers.css. That made `cascivo.component` the FIRST layer
+         registered and therefore the WEAKEST on the whole site — themes, blocks and
+         app CSS all outranked component styles. An @layer statement is inert (it
+         declares order and nothing else) and identical statements are idempotent,
+         so restating it here costs nothing and makes the order chunk-order-proof.
+         Keep in sync with packages/tokens/src/layers.css. -->
+    <style>
+      @layer cascivo.reset, cascivo.base, cascivo.tokens, cascivo.component,
+        cascivo.platform, cascivo.theme, cascivo.blocks, cascivo.override;
+    </style>
     <meta name="robots" content="index, follow" />
     <!-- Agents: this is a client-rendered SPA. For install steps and the full
          component reference without a browser, fetch the plain-text docs below. -->
