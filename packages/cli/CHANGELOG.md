@@ -1,5 +1,168 @@
 # cascivo
 
+## 1.0.0
+
+### Major Changes
+
+- f1c8292: Join the `1.x` line.
+
+  These four carry **no breaking change**. The major is the version-alignment decision recorded
+  in [`docs/UPGRADING.md`](../docs/UPGRADING.md#which-packages-are-covered): the packages an
+  application depends on at runtime move to `1.x` together, so `@cascivo/*` reads as one system
+  in a lockfile instead of the `0.0.4`–`0.18.0` spread an adopter called out in the 2026-07 pair
+  report ("everything is pre-1.0 and versions don't align").
+
+  The lockstep family — `core`, `react`, `charts`, `editor`, `flow`, `i18n`, `storage`, `ai` —
+  reaches `1.0.0` through the changeset that removes the deprecated surfaces, and the
+  `fixed` group in `.changeset/config.json` keeps them on one version.
+
+  Tooling packages stay on `0.x` and say so: `@cascivo/mcp`, `@cascivo/registry`,
+  `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`,
+  `@cascivo/vite-plugin` and `@cascivo/platform`. `@cascivo/platform` in particular is an early
+  experiment in platform-idiomatic geometry and motion; a 1.0 promise would be wrong for it.
+
+  Upgrading from the last `0.x` of any of these four is a no-op beyond the version number.
+
+### Minor Changes
+
+- 82423c6: One accessible-name spelling that always works, plus foreign component names that resolve.
+
+  `ariaLabel` and `label` are now two spellings of one idea: every component that takes an
+  invisible accessible name takes both, enforced by a new guard rather than documented and
+  hoped for. `<OverflowMenu label=…>`, `<SideNav label=…>`, `<Switcher ariaLabel=…>` and
+  `<CommandMenu ariaLabel=…>` all compile. `Fab` joins `IconButton` in typing its required
+  name as an XOR of the two.
+
+  `DataTable` gains `ariaLabel`, so a table without a visible `title` can be named at all; it
+  dev-warns when it has neither. `Field` accepts `hint` as an alias of `description` — the name
+  the eight form controls already use for the same text — and warns when a Field and its child
+  control both supply it.
+
+  `packages/components/aliases.json` maps the names peer systems use onto cascivo components:
+  `cascivo add switch` installs `toggle` and says so, the MCP `get_component("Dialog")` returns
+  `modal`, `llms.txt` lists the mappings, and `import { Switch } from '@cascivo/react'`
+  compiles.
+
+  `PropMeta` gains `nameVisibility`, which every `label`/`ariaLabel` prop must declare — the
+  generated prop tables derive "Rendered on screen." / "Not rendered — screen readers only."
+  from it, so a description can no longer contradict the behaviour.
+
+### Patch Changes
+
+- 5c89efa: Four silent-output defects fixed, and the guards that let them ship.
+
+  **`Dropdown` separators no longer eat the item.** `{ label, value, separator: true }` renders
+  only a rule — the label, value and icon are discarded, with no type error and no warning. An
+  adopter lost a "Log out" entry to it and found out only because a smoke test counted rows.
+  There is now a `{ kind: 'separator' }` union member that cannot carry data. The legacy flag
+  renders exactly as before (no silent behaviour change on a minor) and dev-warns when it is
+  combined with a non-empty label, which is the one unambiguous case.
+
+  **`CalendarHeatmap` no longer crops its own grid.** Cell size came from the container width
+  while height was a constant that never consulted it, so 119 days in a 1054px card drew 434px
+  of grid inside a 160px viewBox and cut off rows 3–7 — output that reads as "this heatmap has
+  three rows of data". Cells are clamped to the height budget, which changes the rendering _if
+  and only if_ it was already clipping: a year-length range is untouched. New `maxCellSize` caps
+  cells further and is opt-in with no default, because a fixed default would have shrunk ranges
+  that render correctly today.
+
+  **`Field` now names the control it wraps.** `TagsInput` hardcoded `aria-label="Tags"` on its
+  inner input, and `aria-label` outranks a `<label for>` association — so `<Field
+label="Production domains">` produced a control named "Tags" with its hint never announced, a
+  WCAG 1.3.1/4.1.2 failure in the composition the guides prescribe. `Field` now also passes
+  `aria-labelledby` pointing at its own `<Label>`, so a control drops its built-in fallback name
+  only when something really is naming it, and a standalone control keeps its name. A new guard
+  sweeps every form control through a `Field` and found four more with the same defect:
+  `Search` (built-in label concatenated with the Field's), `Combobox` and `DatePicker` (own
+  hint/error ids replaced the Field's instead of merging), `ColorPicker` and `Editable` (never
+  took the wiring at all — `Editable` put it on a wrapper `div`, not the focusable element).
+
+  **`DataTable` measures its own overflow** and dev-warns with the real `scrollWidth` /
+  `clientWidth` and the sized columns to change. The sizing arithmetic depends on a container
+  width the adopter cannot see, so a paragraph of rules of thumb could never be enough; three
+  passes were reported. In production, where the warning is stripped, pure-CSS scrolling shadows
+  mark the cut edge.
+
+  **Line/AreaChart warn on epoch-millisecond x values.** `x` is typed `number | Date` and the
+  scale is picked from the runtime type, so returning `Date.now()`-shaped numbers labels the axis
+  `1,787,250,000,000`. The warning names the `Date` fix. The scale is deliberately _not_ inferred
+  from magnitude: that would break genuinely numeric series with no opt-out, trading a visible
+  wrong output for an invisible one.
+
+  **One name, one meaning.** The 14 form controls with a visible `label` now also declare
+  `ariaLabel`, so the invisible name is discoverable beside the visible one instead of arriving
+  only through an undocumented spread `aria-label`. `Toggle.label` was already documented as
+  visible on every surface — source TSDoc, manifest, `registry.json`, `llms.txt`, the site props
+  table — and an adopter still got the text twice, because a doc only reaches someone who
+  suspects they need it. `Filter` accepts `multiple` alongside `multi`, and `Steps` accepts
+  `items` alongside `steps`: you cannot read the doc comment of a prop you do not know exists.
+
+  **`ChartText` replaces `Text` in `@cascivo/charts`** — the last cross-package name collision,
+  and the one whose wrong resolution was silent (the SVG primitive renders where a paragraph was
+  meant). `Text` remains as a deprecated alias until 1.0.
+
+  **The published `.d.ts` is greppable.** Import and export specifier lists are one name per
+  line: the longest line drops from 7190 to 259 characters, `grep ThemeProviderProps` finds it
+  (it previously matched nothing despite the name being present), and a component-name grep no
+  longer dumps a 7.2 kB export list. `llms.txt`'s "self-contained" claim is corrected to state
+  what is actually true — the vocabulary types come from `@cascivo/react/types`, because
+  inlining them makes the dts bundler alias every prop to `ToneInput$1`.
+
+  **Quick-starts recommend `@cascivo/themes/light-dark.css`.** They recommended `all.css` while
+  describing it as "light & dark", which had been wrong since 0.14.0 — it is all twelve themes —
+  so every new adopter was handed roughly twice the CSS they needed.
+
+  `Step`, `ActionSheetAction`, `DateRangePreset`, `ProgressStep` and `SideNavGroup` gain `id`
+  and are keyed on it, so reordering or inserting entries no longer re-uses the wrong DOM node.
+
+- a0bb1cf: Release every published package.
+
+  This changeset names all twenty published packages so the next release cuts a version for each
+  of them, including the four that no other pending changeset touches (`@cascivo/docs`,
+  `@cascivo/docspack`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`).
+
+  The bump is `patch` everywhere; where another pending changeset asks for a `minor` or `major`,
+  that higher bump still wins.
+
+- f1c8292: Validate registry payloads at the network boundary, and refuse writes outside the project.
+
+  `cascivo add` fetched a registry item and reached it with a bare `as RegistryItem`.
+  Nothing between the socket and `writeFileSafe` checked a single field, and two of
+  those unchecked fields decide where files land on disk:
+
+  - **`files[].target`** is resolved with `resolve(cwd, target)` for template items.
+    `resolve` walks out of the project without complaint, so a registry returning
+    `{ "type": "template", "files": [{ "target": "../../.zshrc" }] }` wrote an
+    arbitrary file on the machine running `cascivo add`. An absolute target
+    (`/etc/cron.d/…`) worked the same way.
+  - **`name`** feeds the output directory. `..` survived the `split('/').pop()`
+    that was meant to flatten it, escaping the configured components directory.
+
+  Both are reachable from any registry an adopter has configured, including a
+  third-party namespace resolved through the cascivo.com directory.
+
+  `validateItem` already existed and was thorough, but it was only ever reached from
+  the `cascivo registry validate` authoring command — never on the install path — and
+  it did not inspect `files[]` at all. It now checks each file entry and rejects a
+  `name` or `target` that is absolute, drive-relative, UNC, or contains a `..`
+  segment. The new `parseItem(raw, source)` is the throwing form the install path
+  uses, and it names the registry URL in the error.
+
+  Defense in depth: `resolveOutputPath` and `resolveTemplateTarget` now assert the
+  resolved destination is inside the directory they are supposed to write into, so a
+  future call site that bypasses the parser still cannot escape.
+
+  The other network-JSON boundaries were unchecked the same way and are now parsed
+  rather than asserted: the registry directory (a non-http `registryUrl` is dropped
+  instead of becoming a fetch base), the audit contract, `eject`'s registry and token
+  catalog, `search`'s namespace index, and the HTTP error-body message. Malformed
+  input at each now produces an error naming the source instead of a `TypeError`
+  somewhere downstream.
+
+- Updated dependencies [a0bb1cf]
+- Updated dependencies [f1c8292]
+  - @cascivo/registry@0.2.9
+
 ## 0.9.0
 
 ### Minor Changes

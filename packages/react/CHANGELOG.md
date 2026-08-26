@@ -1,5 +1,212 @@
 # @cascivo/react
 
+## 1.0.0
+
+### Major Changes
+
+- f1c8292: Remove the deprecated surfaces the 1.0 contract clears, and give deprecation an expiry.
+
+  **Eleven removals.** Each has had a replacement shipping for at least one minor, each was
+  struck through in your editor, and `docs/RECIPE-DASHBOARD.md` already told adopters the
+  charts alias was "removed at 1.0".
+
+  - **A value-carrying `onChange` is gone from eight components** — `Combobox`, `DatePicker`,
+    `Filter`, `NumberInput`, `Search`, `Swap`, `TimePicker`, `Toggle`. Use `onValueChange`; it
+    receives exactly the same argument, and both have been accepted since the alias was added.
+    This is the catalog's handler-naming rule (`onValueChange` carries a value, `onChange`
+    carries a DOM `ChangeEvent`) applied to the components that predate it.
+
+    `Toggle`, `NumberInput` and `TimePicker` extend an HTML element's attributes, and they keep
+    `Omit<…, 'onChange'>` deliberately: dropping the Omit as well would let the native
+    `ChangeEventHandler` take the name back, so an adopter passing a value-carrying handler
+    would compile and then be called with an event — a silent break. The other five are plain
+    interfaces with no HTML base, so `onChange` is simply not a prop. Either way, passing it is
+    a compile error that names the fix.
+
+  - **`@cascivo/charts` no longer exports `Text` / `TextProps`** — use `ChartText` /
+    `ChartTextProps`. This alias collided with `@cascivo/react`'s typography component and the
+    wrong resolution was silent: the SVG primitive rendered where a paragraph was meant and
+    nothing errored.
+
+  - **`BarChart` drops `xTicks` / `yTicks`** — use `valueAxisTicks` / `categoryAxisTicks`. The
+    removed pair was named for where an axis is _drawn_, so its meaning swapped with
+    `orientation`: `yTicks={1}` silently did nothing on a horizontal chart while `xTicks={1}`
+    worked, and `xLabelEvery` did not swap at all (2026-07-28 report C17b). The role-named
+    props mean the same thing on both orientations. `ScatterChart` keeps `xTicks`/`yTicks` —
+    both of its axes are value axes, so screen-position naming is correct there.
+
+  - **`Dropdown` drops the `separator: true` flag on a row** — use a separate
+    `{ kind: 'separator' }` entry. The flag marked the row _as_ a rule rather than drawing one
+    above it, discarding its `label`, `value` and `icon`; an adopter lost a "Log out" item to it
+    and only noticed because a smoke test counted rows (2026-08-22 report item 9). The dev-only
+    warning that existed to catch that goes with it.
+
+  **`Presence`'s return type is now declared, not inferred.** It was inferred as
+  `ReactElement<…, JSXElementConstructor<any>> | null`, which leaked React's internal `any`
+  into cascivo's published `.d.ts` — the only such leak the surface had that was cascivo's own
+  to fix. It is now `ReactNode`. Rendering `<Presence>` is unaffected; the only code this can
+  break is a direct call whose result is assigned to a `ReactElement`, which is why it rides
+  this major rather than a minor.
+
+  **`OverflowMenu` is NOT removed.** Its manifest promised removal "in v4", not at 1.0, and
+  breaking a published promise early is the same defect as letting one slip. It now carries
+  `removeIn: '2.0.0'`, keeps working for the whole `1.x` line, and `Menu` remains the
+  replacement.
+
+  **Deprecation gains an expiry.** `ComponentDeprecation` requires `removeIn` — the major that
+  removes the old name — alongside `since`. It renders on every surface the manifest feeds, so
+  the expiry is discoverable before you adopt the old name rather than after it disappears, and
+  `deprecation-surfaces` fails the build if a deprecation names no major or is still shipping in
+  the major it promised to leave. Both failure modes were verified by mutation. Before this,
+  `overflow-menu` carried "removed in v4" as free prose in a `note` — a version that exists on
+  no cascivo package — and nothing could tell whether it was overdue.
+
+### Minor Changes
+
+- 82423c6: One accessible-name spelling that always works, plus foreign component names that resolve.
+
+  `ariaLabel` and `label` are now two spellings of one idea: every component that takes an
+  invisible accessible name takes both, enforced by a new guard rather than documented and
+  hoped for. `<OverflowMenu label=…>`, `<SideNav label=…>`, `<Switcher ariaLabel=…>` and
+  `<CommandMenu ariaLabel=…>` all compile. `Fab` joins `IconButton` in typing its required
+  name as an XOR of the two.
+
+  `DataTable` gains `ariaLabel`, so a table without a visible `title` can be named at all; it
+  dev-warns when it has neither. `Field` accepts `hint` as an alias of `description` — the name
+  the eight form controls already use for the same text — and warns when a Field and its child
+  control both supply it.
+
+  `packages/components/aliases.json` maps the names peer systems use onto cascivo components:
+  `cascivo add switch` installs `toggle` and says so, the MCP `get_component("Dialog")` returns
+  `modal`, `llms.txt` lists the mappings, and `import { Switch } from '@cascivo/react'`
+  compiles.
+
+  `PropMeta` gains `nameVisibility`, which every `label`/`ariaLabel` prop must declare — the
+  generated prop tables derive "Rendered on screen." / "Not rendered — screen readers only."
+  from it, so a description can no longer contradict the behaviour.
+
+- 5c89efa: Four silent-output defects fixed, and the guards that let them ship.
+
+  **`Dropdown` separators no longer eat the item.** `{ label, value, separator: true }` renders
+  only a rule — the label, value and icon are discarded, with no type error and no warning. An
+  adopter lost a "Log out" entry to it and found out only because a smoke test counted rows.
+  There is now a `{ kind: 'separator' }` union member that cannot carry data. The legacy flag
+  renders exactly as before (no silent behaviour change on a minor) and dev-warns when it is
+  combined with a non-empty label, which is the one unambiguous case.
+
+  **`CalendarHeatmap` no longer crops its own grid.** Cell size came from the container width
+  while height was a constant that never consulted it, so 119 days in a 1054px card drew 434px
+  of grid inside a 160px viewBox and cut off rows 3–7 — output that reads as "this heatmap has
+  three rows of data". Cells are clamped to the height budget, which changes the rendering _if
+  and only if_ it was already clipping: a year-length range is untouched. New `maxCellSize` caps
+  cells further and is opt-in with no default, because a fixed default would have shrunk ranges
+  that render correctly today.
+
+  **`Field` now names the control it wraps.** `TagsInput` hardcoded `aria-label="Tags"` on its
+  inner input, and `aria-label` outranks a `<label for>` association — so `<Field
+label="Production domains">` produced a control named "Tags" with its hint never announced, a
+  WCAG 1.3.1/4.1.2 failure in the composition the guides prescribe. `Field` now also passes
+  `aria-labelledby` pointing at its own `<Label>`, so a control drops its built-in fallback name
+  only when something really is naming it, and a standalone control keeps its name. A new guard
+  sweeps every form control through a `Field` and found four more with the same defect:
+  `Search` (built-in label concatenated with the Field's), `Combobox` and `DatePicker` (own
+  hint/error ids replaced the Field's instead of merging), `ColorPicker` and `Editable` (never
+  took the wiring at all — `Editable` put it on a wrapper `div`, not the focusable element).
+
+  **`DataTable` measures its own overflow** and dev-warns with the real `scrollWidth` /
+  `clientWidth` and the sized columns to change. The sizing arithmetic depends on a container
+  width the adopter cannot see, so a paragraph of rules of thumb could never be enough; three
+  passes were reported. In production, where the warning is stripped, pure-CSS scrolling shadows
+  mark the cut edge.
+
+  **Line/AreaChart warn on epoch-millisecond x values.** `x` is typed `number | Date` and the
+  scale is picked from the runtime type, so returning `Date.now()`-shaped numbers labels the axis
+  `1,787,250,000,000`. The warning names the `Date` fix. The scale is deliberately _not_ inferred
+  from magnitude: that would break genuinely numeric series with no opt-out, trading a visible
+  wrong output for an invisible one.
+
+  **One name, one meaning.** The 14 form controls with a visible `label` now also declare
+  `ariaLabel`, so the invisible name is discoverable beside the visible one instead of arriving
+  only through an undocumented spread `aria-label`. `Toggle.label` was already documented as
+  visible on every surface — source TSDoc, manifest, `registry.json`, `llms.txt`, the site props
+  table — and an adopter still got the text twice, because a doc only reaches someone who
+  suspects they need it. `Filter` accepts `multiple` alongside `multi`, and `Steps` accepts
+  `items` alongside `steps`: you cannot read the doc comment of a prop you do not know exists.
+
+  **`ChartText` replaces `Text` in `@cascivo/charts`** — the last cross-package name collision,
+  and the one whose wrong resolution was silent (the SVG primitive renders where a paragraph was
+  meant). `Text` remains as a deprecated alias until 1.0.
+
+  **The published `.d.ts` is greppable.** Import and export specifier lists are one name per
+  line: the longest line drops from 7190 to 259 characters, `grep ThemeProviderProps` finds it
+  (it previously matched nothing despite the name being present), and a component-name grep no
+  longer dumps a 7.2 kB export list. `llms.txt`'s "self-contained" claim is corrected to state
+  what is actually true — the vocabulary types come from `@cascivo/react/types`, because
+  inlining them makes the dts bundler alias every prop to `ToneInput$1`.
+
+  **Quick-starts recommend `@cascivo/themes/light-dark.css`.** They recommended `all.css` while
+  describing it as "light & dark", which had been wrong since 0.14.0 — it is all twelve themes —
+  so every new adopter was handed roughly twice the CSS they needed.
+
+  `Step`, `ActionSheetAction`, `DateRangePreset`, `ProgressStep` and `SideNavGroup` gain `id`
+  and are keyed on it, so reordering or inserting entries no longer re-uses the wrong DOM node.
+
+### Patch Changes
+
+- f1c8292: Two invariants that were documented and not enforced are now guarded.
+
+  **The public API surface is snapshotted.** `api-surface.json` records every exported name,
+  its kind, and its normalized type text across the nine packages on the `1.x` line, extracted
+  from the built `.d.ts` an adopter installs. `pnpm api:check` compares built against committed
+  on every CI run. A diff is a semver decision rather than a defect — name added, optional prop
+  added or type widened is a minor; a removal, a prop made required or a narrowed type is a
+  major — and the failure message says so. This closes the gap where a dropped export or a
+  quietly-required prop could reach `main` with every other check green.
+
+  **RTL is verified rather than asserted.** `pnpm rtl:check` fails on any physical inline
+  property in shipped CSS (one allowlisted case: `ContextMenu` positions from the pointer's
+  viewport x), and separately mounts components in real Chromium under `dir="ltr"` and
+  `dir="rtl"`, requiring every asymmetric inline box to swap. `docs/COMPATIBILITY.md` documents
+  the guarantee and its two exclusions.
+
+  No runtime behaviour changes.
+
+- 82423c6: Rewrote 44 prop descriptions that restated the prop name and said nothing else.
+
+  Six boilerplate sentences — "Layout orientation of the component.", "Selects the visual style
+  variant.", "Placement relative to the trigger.", "Position of the component.", "The HTML
+  element to render as.", "Edge the component is anchored to." — were the entire published
+  documentation for 38 props, and each is a sentence a reader could have written from the prop
+  name alone. They shipped in the manifests, `registry.json`, `llms.txt`, the docs site and the
+  `.d.ts`.
+
+  `Separator.orientation` now says a `horizontal` separator draws a full-width line;
+  `BarChart.orientation` says `vertical` grows bars upward from categories on the x-axis and
+  `horizontal` grows them rightward (the better choice for long labels); `Resizable` says which
+  way you drag. `Badge`, `Tag` and `Notification` keep — and now spell out — their alias
+  mapping onto the canonical `Tone` vocabulary; `Alert` and `Toast` say plainly that theirs is
+  a private union and the canonical `danger`/`neutral` spellings are not accepted.
+
+  No API change; documentation only.
+
+- a0bb1cf: Release every published package.
+
+  This changeset names all twenty published packages so the next release cuts a version for each
+  of them, including the four that no other pending changeset touches (`@cascivo/docs`,
+  `@cascivo/docspack`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`).
+
+  The bump is `patch` everywhere; where another pending changeset asks for a `minor` or `major`,
+  that higher bump still wins.
+
+- Updated dependencies [82423c6]
+- Updated dependencies [5c89efa]
+- Updated dependencies [f1c8292]
+- Updated dependencies [a0bb1cf]
+- Updated dependencies [f1c8292]
+  - @cascivo/core@1.0.0
+  - @cascivo/themes@1.0.0
+  - @cascivo/i18n@1.0.0
+
 ## 0.18.0
 
 ### Minor Changes
