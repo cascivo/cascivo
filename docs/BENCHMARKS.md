@@ -18,7 +18,7 @@
 
 | App     |       JS |     CSS |        Total |
 | ------- | -------: | ------: | -----------: |
-| cascade |  69.75KB |   2.2KB |  **71.95KB** |
+| cascade |  71.61KB |     7KB |  **78.61KB** |
 | shadcn  |  93.07KB |  3.43KB |  **96.51KB** |
 | carbon  | 108.72KB | 81.02KB | **189.74KB** |
 
@@ -26,20 +26,20 @@
 
 | Component | cascade |  shadcn |  carbon |
 | --------- | ------: | ------: | ------: |
-| button    |  1.99KB |  9.87KB | 16.73KB |
-| input     |  2.02KB |  8.71KB | 20.65KB |
-| checkbox  |  1.88KB | 12.85KB | 19.99KB |
-| select    |  2.18KB |  0.01KB | 20.58KB |
-| dialog    |  2.23KB | 19.77KB | 28.09KB |
-| table     |  5.42KB |    21KB | 40.77KB |
-| badge     |  1.67KB |  8.67KB | 19.44KB |
-| tabs      |  2.21KB | 13.46KB | 21.78KB |
+| button    |  8.02KB |  9.87KB | 16.73KB |
+| input     |  3.62KB |  8.71KB | 20.65KB |
+| checkbox  |  3.67KB | 12.85KB | 19.99KB |
+| select    |  4.06KB |  0.01KB | 20.58KB |
+| dialog    |  9.15KB | 19.77KB | 28.08KB |
+| table     | 14.46KB |    21KB | 40.77KB |
+| badge     |  0.83KB |  8.67KB | 19.44KB |
+| tabs      |  3.97KB | 13.46KB | 21.78KB |
 
 ### Treeshake (@cascivo/react)
 
 - Bare import: 20B gz
-- Button only: 4.93KB gz
-- Full bundle: 44.97KB gz
+- Button only: 0.89KB gz
+- Full bundle: 70.18KB gz
 
 ### `@cascivo/charts` entry points (gzip, whole transitive closure of the built entry)
 

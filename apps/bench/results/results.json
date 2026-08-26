@@ -14,11 +14,11 @@
   "bundle": {
     "apps": {
       "cascade": {
-        "jsGzKb": 69.75,
-        "cssGzKb": 2.2,
-        "totalGzKb": 71.95,
-        "jsRawKb": 221.69,
-        "cssRawKb": 10.44
+        "jsGzKb": 71.61,
+        "cssGzKb": 7,
+        "totalGzKb": 78.61,
+        "jsRawKb": 227.12,
+        "cssRawKb": 37.65
       },
       "shadcn": {
         "jsGzKb": 93.07,
@@ -38,52 +38,52 @@
     "matrix": {
       "cascade": {
         "button": {
-          "totalGzKb": 67.18,
-          "incrementalGzKb": 1.99,
-          "standaloneGzKb": 67.18,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 68.87,
+          "incrementalGzKb": 8.02,
+          "standaloneGzKb": 68.87,
+          "amortizedGzKb": 5.97
         },
         "input": {
-          "totalGzKb": 67.21,
-          "incrementalGzKb": 2.02,
-          "standaloneGzKb": 67.21,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 64.47,
+          "incrementalGzKb": 3.62,
+          "standaloneGzKb": 64.47,
+          "amortizedGzKb": 5.97
         },
         "checkbox": {
-          "totalGzKb": 67.07,
-          "incrementalGzKb": 1.88,
-          "standaloneGzKb": 67.07,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 64.52,
+          "incrementalGzKb": 3.67,
+          "standaloneGzKb": 64.52,
+          "amortizedGzKb": 5.97
         },
         "select": {
-          "totalGzKb": 67.37,
-          "incrementalGzKb": 2.18,
-          "standaloneGzKb": 67.37,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 64.91,
+          "incrementalGzKb": 4.06,
+          "standaloneGzKb": 64.91,
+          "amortizedGzKb": 5.97
         },
         "dialog": {
-          "totalGzKb": 67.42,
-          "incrementalGzKb": 2.23,
-          "standaloneGzKb": 67.42,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 70,
+          "incrementalGzKb": 9.15,
+          "standaloneGzKb": 70,
+          "amortizedGzKb": 5.97
         },
         "table": {
-          "totalGzKb": 70.61,
-          "incrementalGzKb": 5.42,
-          "standaloneGzKb": 70.61,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 75.31,
+          "incrementalGzKb": 14.46,
+          "standaloneGzKb": 75.31,
+          "amortizedGzKb": 5.97
         },
         "badge": {
-          "totalGzKb": 66.86,
-          "incrementalGzKb": 1.67,
-          "standaloneGzKb": 66.86,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 61.68,
+          "incrementalGzKb": 0.83,
+          "standaloneGzKb": 61.68,
+          "amortizedGzKb": 5.97
         },
         "tabs": {
-          "totalGzKb": 67.4,
-          "incrementalGzKb": 2.21,
-          "standaloneGzKb": 67.4,
-          "amortizedGzKb": 2.45
+          "totalGzKb": 64.82,
+          "incrementalGzKb": 3.97,
+          "standaloneGzKb": 64.82,
+          "amortizedGzKb": 5.97
         }
       },
       "shadcn": {
@@ -163,9 +163,9 @@
           "amortizedGzKb": 23.5
         },
         "dialog": {
-          "totalGzKb": 166.98,
-          "incrementalGzKb": 28.09,
-          "standaloneGzKb": 166.98,
+          "totalGzKb": 166.97,
+          "incrementalGzKb": 28.08,
+          "standaloneGzKb": 166.97,
           "amortizedGzKb": 23.5
         },
         "table": {
@@ -190,8 +190,8 @@
     },
     "treeshake": {
       "bareImportGzBytes": 20,
-      "buttonOnlyGzKb": 4.93359375,
-      "fullGzKb": 44.9697265625
+      "buttonOnlyGzKb": 0.8916015625,
+      "fullGzKb": 70.1767578125
     }
   },
   "runtime": {

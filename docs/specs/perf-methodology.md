@@ -158,3 +158,33 @@ T3-T2 will correct both defects:
 | carbon  | `index.scss` (Carbon styles via `@use '@carbon/react'`)                                            | Unchanged — already correct                                                               |
 
 The shadcn tabs matrix entry now imports from a real shadcn-style `Tabs` component backed by `@radix-ui/react-tabs` (added as an explicit dep in `apps/bench/app-shadcn/package.json`). The vendored component lives at `apps/bench/app-shadcn/src/components/ui/tabs.tsx`.
+
+## 2026-08-26 correction — the cascade preload is removed again
+
+The T3-T2 fix above did not do what it claims, and the version of it that shipped produced
+numbers that cannot be published.
+
+**What actually happened.** Rolldown elides a `void`-ed named import, so
+`import { useSignals } from '@cascivo/core'; void useSignals` put **nothing** of
+`@cascivo/core` in the baseline. `currentLocale` survived only because `@cascivo/i18n`
+creates its store at module scope — a side effect the bundler must keep. The baseline
+therefore carried 6.45KB gz of i18n and no core at all. Every cascade incremental was
+understated by that 6.45KB, and `badge`, `input`, `checkbox`, `select` and `tabs` — which
+import no i18n — came out **negative**: the table said adding Badge to your app makes the
+bundle 5.62KB smaller.
+
+**Why the answer is not "preload harder".** Retaining core as well only enlarges the
+baseline, and Badge (0.83KB gz over an empty app, CSS and markup, no runtime) drops further
+below it. A baseline is a valid anchor only when it is a subset of every entry measured
+against it, and no non-trivial runtime is a subset of every component in this catalog.
+
+**What the baseline is now.** App shell plus the library's own stylesheet — the same shape
+shadcn and carbon have always had, and the one this document's own definition asks for
+("how many bytes does importing this one component add to an otherwise empty app?"). The
+multi-component question the preload was reaching for is what `amortizedGzKb` answers, and
+that column needs no baseline surgery to be correct.
+
+**Effect on the published table.** Every cascade incremental rose by exactly 6.45KB
+(button 1.99 → 8.02, table 5.42 → 14.46, badge 1.67 → 0.83 — badge falls because it was
+never paying for i18n in the first place). The comparison is now like for like: cascade
+amortizes to 5.97KB per component against shadcn's 11.79KB and carbon's 23.50KB.
