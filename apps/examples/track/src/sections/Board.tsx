@@ -71,7 +71,7 @@ function IssueCard({ issue }: CardProps) {
 
   const menuItems = [
     ...moveItems,
-    { label: '', value: '__sep__', separator: true as const },
+    { kind: 'separator' as const },
     { label: t(msg.boardEditIssue), value: 'edit' },
     { label: t(msg.boardDeleteIssue), value: 'delete' },
   ]

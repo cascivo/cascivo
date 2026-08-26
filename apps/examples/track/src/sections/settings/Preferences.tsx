@@ -86,7 +86,7 @@ export function Preferences() {
           </div>
           <Toggle
             checked={notificationsEnabled.value}
-            onChange={(v) => {
+            onValueChange={(v) => {
               notificationsEnabled.value = v
             }}
             aria-label={t(msg.prefNotifications)}
@@ -100,7 +100,7 @@ export function Preferences() {
           </div>
           <Toggle
             checked={ctrlEnter.value}
-            onChange={(v) => {
+            onValueChange={(v) => {
               ctrlEnter.value = v
             }}
             aria-label={t(msg.prefCtrlEnter)}
@@ -131,7 +131,7 @@ export function Preferences() {
           </div>
           <Toggle
             checked={pointerCursors.value}
-            onChange={(v) => {
+            onValueChange={(v) => {
               pointerCursors.value = v
             }}
             aria-label={t(msg.prefPointerCursors)}
@@ -167,7 +167,7 @@ export function Preferences() {
           </div>
           <Toggle
             checked={desktopNotif.value}
-            onChange={(v) => {
+            onValueChange={(v) => {
               desktopNotif.value = v
             }}
             aria-label={t(msg.prefDesktopNotif)}
@@ -185,7 +185,7 @@ export function Preferences() {
           </div>
           <Toggle
             checked={autoAssign.value}
-            onChange={(v) => {
+            onValueChange={(v) => {
               autoAssign.value = v
             }}
             aria-label={t(msg.prefAutoAssign)}

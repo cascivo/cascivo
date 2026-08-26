@@ -102,7 +102,7 @@ export function OrderTicket() {
         <NumberInput
           label={t(msg.limitPrice)}
           value={limitPrice.value}
-          onChange={(v) => {
+          onValueChange={(v) => {
             limitPrice.value = v
           }}
           min={0}
@@ -125,7 +125,7 @@ export function OrderTicket() {
       <NumberInput
         label={t(msg.shares)}
         value={shares.value}
-        onChange={(v) => {
+        onValueChange={(v) => {
           shares.value = v
         }}
         min={0}

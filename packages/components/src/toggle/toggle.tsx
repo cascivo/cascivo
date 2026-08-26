@@ -29,8 +29,6 @@ export interface ToggleProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   defaultChecked?: boolean
   /** Called with the new checked state when the switch is toggled. */
   onValueChange?: (checked: boolean) => void
-  /** @deprecated Use `onValueChange` — it receives the same `checked` boolean. */
-  onChange?: (checked: boolean) => void
   /**
    * Renders a **visible** text label beside the switch that also becomes its
    * accessible name. When a visible heading already labels the control, omit
@@ -52,7 +50,6 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
     checked,
     defaultChecked = false,
     onValueChange,
-    onChange,
     label,
     size = 'md',
     className,
@@ -77,7 +74,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle
 
   const handleClick = () => {
     if (!isControlled) send('TOGGLE')
-    ;(onValueChange ?? onChange)?.(!isOn)
+    onValueChange?.(!isOn)
   }
 
   return (

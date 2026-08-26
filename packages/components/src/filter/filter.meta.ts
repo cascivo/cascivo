@@ -58,12 +58,6 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
-      name: 'onChange',
-      description: 'Deprecated: use onValueChange (same string[]).',
-      type: '(selected: string[]) => void',
-      required: false,
-    },
-    {
       name: 'multi',
       type: 'boolean',
       required: false,
@@ -150,7 +144,7 @@ export const meta: ComponentMeta = {
     ],
     antiPatterns: [
       {
-        bad: '<Filter options={statusOptions} onChange={navigate} />',
+        bad: '<Filter options={statusOptions} onValueChange={navigate} />',
         good: '<Tabs items={statusTabs} />',
         why: 'Filter is for narrowing visible content, not routing between views',
       },

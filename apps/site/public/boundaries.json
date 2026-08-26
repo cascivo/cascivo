@@ -352,7 +352,7 @@
       {
         "area": "controlled vs uncontrolled",
         "level": "flexible",
-        "note": "Supports value + onChange or defaultValue"
+        "note": "Supports value + onValueChange or defaultValue"
       },
       {
         "area": "token names",

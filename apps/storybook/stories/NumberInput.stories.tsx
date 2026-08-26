@@ -7,7 +7,7 @@ const meta: Meta<typeof NumberInput> = {
   args: {
     label: 'Quantity',
     defaultValue: 5,
-    onChange: () => {},
+    onValueChange: () => {},
   },
 }
 export default meta

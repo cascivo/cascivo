@@ -24,12 +24,6 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
-      name: 'onChange',
-      description: 'Deprecated: use onValueChange (same string).',
-      type: '(value: string) => void',
-      required: false,
-    },
-    {
       name: 'onSearch',
       description: 'Called with the query, debounced, as the user types.',
       type: '(value: string) => void',
@@ -142,7 +136,7 @@ export const meta: ComponentMeta = {
     { title: 'Basic', code: '<Search onSearch={(q) => runQuery(q)} />' },
     {
       title: 'Controlled',
-      code: '<Search value={query} onChange={setQuery} onSearch={runQuery} debounceMs={500} />',
+      code: '<Search value={query} onValueChange={setQuery} onSearch={runQuery} debounceMs={500} />',
     },
     { title: 'Large', code: '<Search size="lg" placeholder="Search products…" />' },
   ],

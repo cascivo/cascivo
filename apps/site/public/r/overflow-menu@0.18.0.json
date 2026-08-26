@@ -113,7 +113,8 @@
     "deprecated": {
       "since": "0.17.0",
       "replacement": "menu",
-      "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+      "removeIn": "2.0.0",
+      "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu keeps working for the whole 1.x line and is removed in 2.0.0."
     },
     "intent": {
       "whenToUse": [

@@ -1,5 +1,15 @@
 # Fix plan: failing nightly a11y CI runs
 
+**Status: implemented — closed 2026-08-24.** Both workflows are green. The AT sweep has
+run clean since 2026-08-03 (Phases 1–2), and the axe sweep since 2026-08-07 — 18
+consecutive nightly successes, re-verified locally on 2026-08-24 with **zero violations
+across 660 stories**, so Phases 3–7 are done and the 107/561-story backlog recorded in
+[`../internal/axe-baseline-2026-07.md`](../internal/axe-baseline-2026-07.md) is burned
+down. The one item this plan left open — promoting the axe sweep from nightly to a PR
+gate, which its own workflow comment made conditional on a clean run — shipped with the
+1.0 readiness work; see
+[`1-0-0-readiness-analysis.md`](./1-0-0-readiness-analysis.md) B5.
+
 Scope: the two scheduled workflows that have **never passed** since they were added.
 
 | Run | Workflow | History |

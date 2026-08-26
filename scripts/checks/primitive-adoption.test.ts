@@ -37,18 +37,31 @@ const SCAN_ROOTS = ['packages/components/src', 'packages/layouts/src']
 // Files with a sanctioned outside-click listener not yet migrated to DismissableLayer.
 // Migrating these wraps markup in DismissableLayer's element, which needs a visual
 // layout check — tracked as follow-up rather than done blind.
+// Deferred to 2.0, decided 2026-08-24 during 1.0 readiness (see
+// docs/plans/1-0-0-readiness-analysis.md, B7). DismissableLayer wraps its children in its own
+// element, so migrating these three changes the rendered DOM and needs a visual layout review
+// plus regenerated visual baselines. The stability contract does not cover exact DOM nesting
+// (docs/UPGRADING.md), so this is not blocked by 1.0 — it is queued behind it deliberately,
+// because a release whose purpose is to stop things moving is the wrong place to move markup.
+//
+// These are NOT unguarded: each hand-rolls the same outside-click contract the primitive
+// provides, and each has its own dismissal tests. What the allowlist records is that they do
+// not yet consume the shared primitive.
 const OUTSIDE_CLICK_ALLOWLIST: { file: string; reason: string }[] = [
   {
     file: 'packages/components/src/combobox/combobox.tsx',
-    reason: 'follow-up: migrate outside-click to DismissableLayer (wrapper-div layout review)',
+    reason:
+      'deferred to 2.0: DismissableLayer migration changes markup; needs a visual layout review',
   },
   {
     file: 'packages/components/src/date-picker/date-picker.tsx',
-    reason: 'follow-up: migrate outside-click to DismissableLayer (wrapper-div layout review)',
+    reason:
+      'deferred to 2.0: DismissableLayer migration changes markup; needs a visual layout review',
   },
   {
     file: 'packages/components/src/date-range-picker/date-range-picker.tsx',
-    reason: 'follow-up: migrate outside-click to DismissableLayer (wrapper-div layout review)',
+    reason:
+      'deferred to 2.0: DismissableLayer migration changes markup; needs a visual layout review',
   },
 ]
 

@@ -3541,20 +3541,6 @@
             "description": "Show every Nth category label (always the last) to thin a crowded axis. Role-named twin of xLabelEvery; always strides the category axis on both orientations."
           },
           {
-            "name": "xTicks",
-            "description": "DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the x-axis — follows SCREEN position, so it controls the category axis when vertical and the VALUE axis when horizontal.",
-            "type": "number",
-            "required": false,
-            "default": "5"
-          },
-          {
-            "name": "yTicks",
-            "description": "DEPRECATED (use valueAxisTicks/categoryAxisTicks). Ticks on the y-axis — follows SCREEN position, so it controls the value axis when vertical and the CATEGORY axis when horizontal.",
-            "type": "number",
-            "required": false,
-            "default": "5"
-          },
-          {
             "name": "xLabelEvery",
             "type": "number",
             "required": false,
@@ -8777,12 +8763,6 @@
             "required": false
           },
           {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same string | undefined).",
-            "type": "(value: string | undefined) => void",
-            "required": false
-          },
-          {
             "name": "clearable",
             "description": "When true, shows a control to clear the selected value.",
             "type": "boolean",
@@ -8907,7 +8887,7 @@
             {
               "bad": "Using Combobox to fire actions like \"Delete\" or \"Export\"",
               "good": "Use Dropdown for actions; Combobox is for picking a value",
-              "why": "Combobox has role=\"combobox\" with a listbox of selectable values and onChange semantics — actions belong in a menu"
+              "why": "Combobox has role=\"combobox\" with a listbox of selectable values and onValueChange semantics — actions belong in a menu"
             },
             {
               "bad": "Setting searchable={false} on a 200-item list",
@@ -8941,7 +8921,7 @@
             {
               "area": "controlled vs uncontrolled",
               "level": "flexible",
-              "note": "Supports value + onChange or defaultValue"
+              "note": "Supports value + onValueChange or defaultValue"
             },
             {
               "area": "token names",
@@ -10168,12 +10148,6 @@
             "description": "Called with the selected ISO date string (or undefined when cleared)"
           },
           {
-            "name": "onChange",
-            "type": "(value: string | undefined) => void",
-            "required": false,
-            "description": "Deprecated: use onValueChange (same ISO string | undefined)"
-          },
-          {
             "name": "min",
             "type": "string",
             "required": false,
@@ -10299,7 +10273,7 @@
             {
               "bad": "Passing a localized display string as value",
               "good": "value/defaultValue/min/max are ISO YYYY-MM-DD; display formatting is handled internally",
-              "why": "The component parses and compares ISO dates; non-ISO values break selection, constraints, and onChange"
+              "why": "The component parses and compares ISO dates; non-ISO values break selection, constraints, and onValueChange"
             }
           ],
           "related": [
@@ -10844,8 +10818,8 @@
           },
           {
             "name": "items",
-            "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev.",
-            "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
+            "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. The union is tagged on `kind`, so a separator cannot carry data that would be silently discarded.",
+            "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean } | { kind: 'separator' })[]",
             "required": true
           },
           {
@@ -10902,12 +10876,6 @@
                 "type": "boolean",
                 "required": false,
                 "description": "Skips the item in keyboard navigation and selection."
-              },
-              {
-                "name": "separator",
-                "type": "boolean",
-                "required": false,
-                "description": "⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry."
               }
             ]
           },
@@ -12276,12 +12244,6 @@
             "required": false
           },
           {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same string[]).",
-            "type": "(selected: string[]) => void",
-            "required": false
-          },
-          {
             "name": "multi",
             "type": "boolean",
             "required": false,
@@ -12334,7 +12296,7 @@
           ],
           "antiPatterns": [
             {
-              "bad": "<Filter options={statusOptions} onChange={navigate} />",
+              "bad": "<Filter options={statusOptions} onValueChange={navigate} />",
               "good": "<Tabs items={statusTabs} />",
               "why": "Filter is for narrowing visible content, not routing between views"
             }
@@ -19180,12 +19142,6 @@
             "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable"
           },
           {
-            "name": "onChange",
-            "type": "(value: number | null) => void",
-            "required": false,
-            "description": "Deprecated: use onValueChange (same number | null)"
-          },
-          {
             "name": "min",
             "description": "Minimum allowed value.",
             "type": "number",
@@ -19303,7 +19259,7 @@
           "antiPatterns": [
             {
               "bad": "<Input type=\"number\" onChange={...} />",
-              "good": "<NumberInput min={0} max={99} step={1} onChange={...} />",
+              "good": "<NumberInput min={0} max={99} step={1} onValueChange={...} />",
               "why": "NumberInput adds stepper buttons, clamping, precision rounding, and Intl formatting that a raw number input does not, and reports a parsed number | null rather than a string"
             }
           ],
@@ -19571,7 +19527,8 @@
         "deprecated": {
           "since": "0.17.0",
           "replacement": "menu",
-          "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu stays for registry compatibility and is removed in v4."
+          "removeIn": "2.0.0",
+          "note": "Menu covers the same trigger-plus-items shape with roving focus, typeahead and submenu support. OverflowMenu keeps working for the whole 1.x line and is removed in 2.0.0."
         },
         "intent": {
           "whenToUse": [
@@ -22066,12 +22023,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the current text on every keystroke.",
-            "type": "(value: string) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same string).",
             "type": "(value: string) => void",
             "required": false
           },
@@ -25004,12 +24955,6 @@
             "required": false
           },
           {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same checked boolean).",
-            "type": "(checked: boolean) => void",
-            "required": false
-          },
-          {
             "name": "mode",
             "description": "Transition between states ('rotate' | 'flip').",
             "type": "'rotate' | 'flip'",
@@ -26189,12 +26134,6 @@
             "required": false
           },
           {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same time string).",
-            "type": "(value: string) => void",
-            "required": false
-          },
-          {
             "name": "min",
             "description": "Minimum allowed value.",
             "type": "string",
@@ -26726,12 +26665,6 @@
           {
             "name": "onValueChange",
             "description": "Called with the new checked state when the switch is toggled.",
-            "type": "(checked: boolean) => void",
-            "required": false
-          },
-          {
-            "name": "onChange",
-            "description": "Deprecated: use onValueChange (same checked boolean).",
             "type": "(checked: boolean) => void",
             "required": false
           },

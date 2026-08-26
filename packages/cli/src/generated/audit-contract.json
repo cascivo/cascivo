@@ -752,7 +752,6 @@
           "type": "(value: string | undefined) => void",
           "required": false
         },
-        { "name": "onChange", "type": "(value: string | undefined) => void", "required": false },
         { "name": "clearable", "type": "boolean", "required": false },
         { "name": "searchable", "type": "boolean", "required": false },
         { "name": "label", "type": "string", "required": false },
@@ -890,7 +889,6 @@
           "type": "(value: string | undefined) => void",
           "required": false
         },
-        { "name": "onChange", "type": "(value: string | undefined) => void", "required": false },
         { "name": "min", "type": "string", "required": false },
         { "name": "max", "type": "string", "required": false },
         { "name": "clearable", "type": "boolean", "required": false },
@@ -962,7 +960,7 @@
         { "name": "trigger", "type": "ReactElement", "required": true },
         {
           "name": "items",
-          "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
+          "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean } | { kind: 'separator' })[]",
           "required": true
         },
         { "name": "onSelect", "type": "(value: string) => void", "required": false },
@@ -1055,7 +1053,6 @@
         { "name": "value", "type": "string[]", "required": false },
         { "name": "defaultValue", "type": "string[]", "required": false },
         { "name": "onValueChange", "type": "(selected: string[]) => void", "required": false },
-        { "name": "onChange", "type": "(selected: string[]) => void", "required": false },
         { "name": "multi", "type": "boolean", "required": false },
         { "name": "variant", "type": "'pill' | 'outline'", "required": false },
         { "name": "multiple", "type": "boolean", "required": false }
@@ -1377,7 +1374,6 @@
         { "name": "value", "type": "number | null", "required": false },
         { "name": "defaultValue", "type": "number", "required": false },
         { "name": "onValueChange", "type": "(value: number | null) => void", "required": false },
-        { "name": "onChange", "type": "(value: number | null) => void", "required": false },
         { "name": "min", "type": "number", "required": false },
         { "name": "max", "type": "number", "required": false },
         { "name": "step", "type": "number", "required": false },
@@ -1644,7 +1640,6 @@
         { "name": "value", "type": "string", "required": false },
         { "name": "defaultValue", "type": "string", "required": false },
         { "name": "onValueChange", "type": "(value: string) => void", "required": false },
-        { "name": "onChange", "type": "(value: string) => void", "required": false },
         { "name": "onSearch", "type": "(value: string) => void", "required": false },
         { "name": "debounceMs", "type": "number", "required": false },
         { "name": "placeholder", "type": "string", "required": false },
@@ -1845,7 +1840,6 @@
         { "name": "off", "type": "React.ReactNode", "required": true },
         { "name": "checked", "type": "boolean", "required": false },
         { "name": "onValueChange", "type": "(checked: boolean) => void", "required": false },
-        { "name": "onChange", "type": "(checked: boolean) => void", "required": false },
         { "name": "mode", "type": "'rotate' | 'flip'", "required": false },
         { "name": "aria-label", "type": "string", "required": false },
         { "name": "className", "type": "string", "required": false }
@@ -1946,7 +1940,6 @@
         { "name": "value", "type": "string", "required": false },
         { "name": "defaultValue", "type": "string", "required": false },
         { "name": "onValueChange", "type": "(value: string) => void", "required": false },
-        { "name": "onChange", "type": "(value: string) => void", "required": false },
         { "name": "min", "type": "string", "required": false },
         { "name": "max", "type": "string", "required": false },
         { "name": "step", "type": "number", "required": false },
@@ -2003,7 +1996,6 @@
         { "name": "checked", "type": "boolean", "required": false },
         { "name": "defaultChecked", "type": "boolean", "required": false },
         { "name": "onValueChange", "type": "(checked: boolean) => void", "required": false },
-        { "name": "onChange", "type": "(checked: boolean) => void", "required": false },
         { "name": "label", "type": "string", "required": false },
         { "name": "size", "type": "'sm' | 'md'", "required": false },
         { "name": "disabled", "type": "boolean", "required": false },
@@ -2344,8 +2336,6 @@
         { "name": "valueAxisTicks", "type": "number", "required": false },
         { "name": "categoryAxisTicks", "type": "number", "required": false },
         { "name": "categoryLabelEvery", "type": "number", "required": false },
-        { "name": "xTicks", "type": "number", "required": false },
-        { "name": "yTicks", "type": "number", "required": false },
         { "name": "xLabelEvery", "type": "number", "required": false },
         { "name": "legend", "type": "boolean", "required": false },
         { "name": "tooltip", "type": "boolean", "required": false },

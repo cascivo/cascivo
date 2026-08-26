@@ -1,5 +1,11 @@
 # SSR CSS weight + client-JS cost — investigation and fix plan
 
+**Status: implemented and published** — shipped in `@cascivo/react` 0.18.0 and the
+matching train (2026-08-17), via #205. The `react-server` export condition, the
+`clientJs` declaration across all 209 manifests, and the guards named in Part 5 are all on
+`main`. Astro is closed rather than deferred: `ssr.noExternal` does not fix the island CSS
+gap, so the ⚠️ Partial grade in [`../COMPATIBILITY.md`](../COMPATIBILITY.md) stands.
+
 **Date:** 2026-08-14
 **Trigger:** "In an SSR setup the CSS bundle is huge, and there is a client.js that is
 potentially unused."

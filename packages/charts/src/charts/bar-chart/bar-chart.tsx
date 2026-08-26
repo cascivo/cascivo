@@ -116,36 +116,13 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
   width?: number
   height?: number
   /**
-   * Approximate number of ticks on the x-axis.
-   *
-   * ⚠ **Follows SCREEN position, so its meaning swaps with `orientation`.** On a vertical
-   * chart the x-axis is the category axis; on a horizontal one it is the VALUE axis. Prefer
-   * {@link BarChartProps.valueAxisTicks} / {@link BarChartProps.categoryAxisTicks}, which
-   * name the axis by role and never swap.
-   *
-   * @defaultValue `5`
-   * @deprecated Use `valueAxisTicks` / `categoryAxisTicks`.
-   */
-  xTicks?: number
-  /**
-   * Approximate number of ticks on the y-axis.
-   *
-   * ⚠ **Follows SCREEN position, so its meaning swaps with `orientation`** — see
-   * {@link BarChartProps.xTicks}.
-   *
-   * @defaultValue `5`
-   * @deprecated Use `valueAxisTicks` / `categoryAxisTicks`.
-   */
-  yTicks?: number
-  /**
    * Approximate number of ticks on the **value** axis, whichever way the chart is turned.
    *
-   * This is the prop you want. `xTicks`/`yTicks` are named for where the axis is *drawn*,
-   * so on `orientation="horizontal"` the value axis moves from screen-y to screen-x and the
-   * controlling prop moves with it — `yTicks={1}` silently does nothing while `xTicks={1}`
-   * works. Meanwhile `xLabelEvery` does NOT swap: it always strides the category axis. Two
-   * conventions in one component, with nothing in the types to say so (2026-07-28 report
-   * C17b). Wins over `xTicks`/`yTicks` when both are given.
+   * Named by ROLE, so it means the same thing on both orientations. The screen-position
+   * pair it replaced (`xTicks`/`yTicks`, removed at 1.0) swapped meaning with `orientation`:
+   * `yTicks={1}` silently did nothing on a horizontal chart while `xTicks={1}` worked, and
+   * `xLabelEvery` did not swap at all — two conventions in one component with nothing in the
+   * types to say so (2026-07-28 report C17b).
    *
    * @defaultValue `5`
    */
@@ -162,7 +139,7 @@ export interface BarChartProps<Datum = { x: string; y: number }> {
    * Show every Nth category label (and always the last) to thin a crowded axis.
    *
    * Always strides the **category** axis (the `x` field of each datum), on both
-   * orientations — unlike `xTicks`/`yTicks`, which follow screen position.
+   * orientations.
    * {@link BarChartProps.categoryLabelEvery} is the unambiguous name; this is kept for
    * compatibility.
    */
@@ -233,8 +210,6 @@ export function BarChart<Datum = { x: string; y: number }>({
   mode = 'grouped',
   width: fixedWidth,
   height,
-  xTicks = 5,
-  yTicks = 5,
   valueAxisTicks,
   categoryAxisTicks,
   xLabelEvery,
@@ -298,10 +273,10 @@ export function BarChart<Datum = { x: string; y: number }>({
 
   // Resolve the role-named axis props onto the screen-named ones the render path uses.
   // This is the single place the swap happens, so `valueAxisTicks` means the value axis on
-  // BOTH orientations while `xTicks`/`yTicks` keep their existing screen-position meaning
-  // for anyone already passing them (2026-07-28 report C17b).
-  const resolvedYTicks = (isVerticalChart ? valueAxisTicks : categoryAxisTicks) ?? yTicks
-  const resolvedXTicks = (isVerticalChart ? categoryAxisTicks : valueAxisTicks) ?? xTicks
+  // BOTH orientations. The screen-named `xTicks`/`yTicks` pair this replaced was removed at
+  // 1.0 (2026-07-28 report C17b); 5 is the default both props always carried.
+  const resolvedYTicks = (isVerticalChart ? valueAxisTicks : categoryAxisTicks) ?? 5
+  const resolvedXTicks = (isVerticalChart ? categoryAxisTicks : valueAxisTicks) ?? 5
   // `xLabelEvery` never swapped — it always strides the category axis — so its role-named
   // twin is a plain alias rather than an orientation-dependent pick.
   const resolvedLabelEvery = categoryLabelEvery ?? xLabelEvery

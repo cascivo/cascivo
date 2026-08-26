@@ -147,6 +147,25 @@ jobs:
       - name: dts-TSDoc guard (the build does not strip prop documentation)
         run: pnpm run dts-tsdoc:check
 
+      # From 1.0.0 the public API is covered by semver (docs/UPGRADING.md). Every other
+      # invariant here has a guard; the surface itself had none, so a dropped export or a
+      # prop that quietly became required could reach main with everything else green. A
+      # diff is a semver decision, not a defect — classify it, then `pnpm api:snapshot`.
+      - name: API-surface snapshot (the 1.x surface matches api-surface.json)
+        run: pnpm run api:check
+
+      # Also after the build: the site's type shims are one-line re-exports of the built
+      # declarations, so regenerating them needs dist. Hand-written, they drifted at 1.0 and
+      # the site compiled clean against props that no longer existed.
+      - name: Site type-shims are current (regenerated from the built declarations)
+        run: pnpm run shims:check
+
+      # @cascivo/docspack's payload is a gitignored build artifact rebuilt from
+      # apps/site/public, so it can never lag `pnpm regen` — but nothing checked that the
+      # payload it produces is actually well-formed. `docspack doctor --strict` does.
+      - name: docspack payload is valid (schema + chunk integrity)
+        run: pnpm run docspack:check
+
       # A missing VALUE export fails loudly at runtime; a missing TYPE export is invisible —
       # everything compiles, the adopter just cannot name the type of a prop they must pass.
       - name: Type-exports parity (core types naming published props are importable)
@@ -168,6 +187,13 @@ jobs:
       # cannot see and a stylesheet grep cannot prove.
       - name: Computed-style canary (real browser, shipped dist)
         run: pnpm run computed:check
+
+      # RTL is a shipping target (CLAUDE.md, "CSS logical properties throughout") and was the
+      # one such claim with no evidence: the whole repo held a single dir="rtl" reference and
+      # no test. Two legs — no physical inline property in shipped CSS, and real Chromium
+      # proving every asymmetric inline box mirrors under dir="rtl".
+      - name: RTL canary (logical properties actually mirror)
+        run: pnpm run rtl:check
 
       # The bare-page leg: shipped styles.css and NOTHING else, full viewport, several
       # components stacked so hit-testing is meaningful. computed:check mounts one

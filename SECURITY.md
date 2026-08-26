@@ -22,6 +22,13 @@ to address the issue before any public disclosure.
 
 ## Supported versions
 
-cascivo is pre-1.0 and ships from `main`. Security fixes target the latest
-published version of each `@cascivo/*` package. Pin to the latest release to
-stay current.
+Security fixes target the **latest minor of the current major** for every
+`@cascivo/*` package on a `1.x` line. When a new major ships, the previous
+major continues to receive security fixes for **six months**; older majors are
+unsupported.
+
+Packages still on `0.x` — the tooling packages listed in
+[`docs/UPGRADING.md`](docs/UPGRADING.md#which-packages-are-covered) — ship from
+`main`, and fixes target their latest published version only.
+
+Run `cascivo doctor --drift` to see where your installed versions sit.

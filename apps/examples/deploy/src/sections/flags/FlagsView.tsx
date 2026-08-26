@@ -64,7 +64,7 @@ export function FlagsView() {
         <Search
           placeholder={t(deployMsg.flagsSearchPlaceholder)}
           value={flagSearch.value}
-          onChange={(v) => {
+          onValueChange={(v) => {
             flagSearch.value = v
           }}
         />

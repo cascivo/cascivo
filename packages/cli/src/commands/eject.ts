@@ -82,19 +82,61 @@ function findUp(startDir: string, rel: string): string | null {
   return null
 }
 
-function loadRegistry(config: CascadeConfig): Promise<RegistryFile> | RegistryFile {
-  const local = findUp(HERE, 'registry.json') ?? findUp(process.cwd(), 'registry.json')
-  if (local) return JSON.parse(readFileSync(local, 'utf8')) as RegistryFile
-  return fetchJson(config.registry) as Promise<RegistryFile>
+/**
+ * `eject` reads two payloads to build a token-override stylesheet. Both may come
+ * over the network, and both are indexed straight afterwards — a missing array
+ * used to surface as "cannot read properties of undefined" with no clue which
+ * of the two files was wrong.
+ */
+function asArrayOf(raw: unknown, key: string, source: string): Record<string, unknown>[] {
+  if (typeof raw !== 'object' || raw === null) {
+    throw new Error(`Invalid response from ${source}: expected an object`)
+  }
+  const list = (raw as Record<string, unknown>)[key]
+  if (!Array.isArray(list)) {
+    throw new Error(`Invalid response from ${source}: "${key}" must be an array`)
+  }
+  return list.filter((e): e is Record<string, unknown> => typeof e === 'object' && e !== null)
 }
 
-function loadCatalog(config: CascadeConfig): Promise<CatalogFile> | CatalogFile {
+async function loadRegistry(config: CascadeConfig): Promise<RegistryFile> {
+  const local = findUp(HERE, 'registry.json') ?? findUp(process.cwd(), 'registry.json')
+  const source = local ?? config.registry
+  const raw: unknown = local ? JSON.parse(readFileSync(local, 'utf8')) : await fetchJson(source)
+  const components = asArrayOf(raw, 'components', source).flatMap<RegistryEntry>((c) => {
+    if (typeof c['name'] !== 'string') return []
+    const entry: RegistryEntry = { name: c['name'] }
+    if (typeof c['type'] === 'string') entry.type = c['type']
+    const meta = c['meta']
+    if (typeof meta === 'object' && meta !== null) {
+      const m = meta as Record<string, unknown>
+      const name = typeof m['name'] === 'string' ? m['name'] : c['name']
+      const tokens = Array.isArray(m['tokens'])
+        ? m['tokens'].filter((t): t is string => typeof t === 'string')
+        : undefined
+      entry.meta = tokens ? { name, tokens } : { name }
+    }
+    return [entry]
+  })
+  return { components }
+}
+
+async function loadCatalog(config: CascadeConfig): Promise<CatalogFile> {
   const local =
     findUp(HERE, join('apps', 'site', 'public', 'tokens.catalog.json')) ??
     findUp(process.cwd(), join('apps', 'site', 'public', 'tokens.catalog.json'))
-  if (local) return JSON.parse(readFileSync(local, 'utf8')) as CatalogFile
-  const catalogUrl = config.registry.replace(/registry\.json$/, 'tokens.catalog.json')
-  return fetchJson(catalogUrl) as Promise<CatalogFile>
+  const source = local ?? config.registry.replace(/registry\.json$/, 'tokens.catalog.json')
+  const raw: unknown = local ? JSON.parse(readFileSync(local, 'utf8')) : await fetchJson(source)
+  const tokens = asArrayOf(raw, 'tokens', source).flatMap<CatalogEntry>((t) => {
+    if (typeof t['name'] !== 'string') return []
+    const entry: CatalogEntry = { name: t['name'] }
+    if (typeof t['value'] === 'string') entry.value = t['value']
+    if (typeof t['resolvedDefault'] === 'string' || t['resolvedDefault'] === null) {
+      entry.resolvedDefault = t['resolvedDefault']
+    }
+    return [entry]
+  })
+  return { tokens }
 }
 
 interface EjectOptions {

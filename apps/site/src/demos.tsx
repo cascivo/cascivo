@@ -509,7 +509,7 @@ function NumberInputDemo() {
   const [val, setVal] = useState<number | null>(42)
   return (
     <Col>
-      <NumberInput label="Quantity" value={val} onChange={setVal} min={0} max={100} />
+      <NumberInput label="Quantity" value={val} onValueChange={setVal} min={0} max={100} />
       <NumberInput label="Price" defaultValue={9.99} step={0.01} precision={2} hint="USD" />
       <NumberInput label="Disabled" defaultValue={5} disabled />
     </Col>
@@ -583,7 +583,7 @@ function ToggleDemo() {
   const [on, setOn] = useState(true)
   return (
     <Row>
-      <Toggle label="Dark mode" checked={on} onChange={setOn} />
+      <Toggle label="Dark mode" checked={on} onValueChange={setOn} />
       <Toggle label="Compact" size="sm" defaultChecked />
     </Row>
   )
@@ -718,7 +718,7 @@ function SwapDemo() {
   const [checked, setChecked] = useState(false)
   return (
     <Row>
-      <Swap checked={checked} onChange={setChecked} on="Light" off="Dark" mode="rotate" />
+      <Swap checked={checked} onValueChange={setChecked} on="Light" off="Dark" mode="rotate" />
       <span
         style={{ fontSize: 'var(--cascivo-text-sm)', color: 'var(--cascivo-color-text-subtle)' }}
       >
@@ -1077,7 +1077,7 @@ export const demos: Record<string, () => JSX.Element> = {
       items={[
         { label: 'Edit', value: 'edit' },
         { label: 'Duplicate', value: 'duplicate' },
-        { separator: true, label: '', value: 'sep' },
+        { kind: 'separator' as const },
         { label: 'Delete', value: 'delete' },
       ]}
     />

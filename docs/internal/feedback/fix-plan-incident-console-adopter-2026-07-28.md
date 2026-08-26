@@ -1,6 +1,6 @@
 # Fix plan — the 2026-07-28 incident-console adopter (tested published `0.13.0`)
 
-**Status: implemented on `claude/ui-library-analysis-plan-iyopig`; not yet published.**
+**Status: implemented on `claude/ui-library-analysis-plan-iyopig` and **published** — `@cascivo/react` 0.14.0 and the matching train (2026-07-31).**
 The PR that publishes flips each workstream to `published vX.Y.Z` — and per
 [`README.md`](README.md), run `pnpm npm:parity` before writing any sentence about what is or
 is not published.

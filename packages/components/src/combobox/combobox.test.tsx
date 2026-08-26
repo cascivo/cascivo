@@ -28,30 +28,12 @@ describe('Combobox', () => {
 
   it('selects an option and closes the listbox', async () => {
     const user = userEvent.setup()
-    const onChange = vi.fn()
-    render(<Combobox label="Country" options={options} onChange={onChange} />)
-    await user.click(screen.getByRole('combobox'))
-    await user.click(screen.getByRole('option', { name: 'Germany' }))
-    expect(onChange).toHaveBeenCalledWith('de')
-    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
-  })
-
-  it('calls onValueChange on selection, taking precedence over onChange', async () => {
-    const user = userEvent.setup()
     const onValueChange = vi.fn()
-    const onChange = vi.fn()
-    render(
-      <Combobox
-        label="Country"
-        options={options}
-        onValueChange={onValueChange}
-        onChange={onChange}
-      />,
-    )
+    render(<Combobox label="Country" options={options} onValueChange={onValueChange} />)
     await user.click(screen.getByRole('combobox'))
     await user.click(screen.getByRole('option', { name: 'Germany' }))
     expect(onValueChange).toHaveBeenCalledWith('de')
-    expect(onChange).not.toHaveBeenCalled()
+    expect(screen.getByRole('listbox', { hidden: true })).toHaveAttribute('data-state', 'closed')
   })
 
   it('filters options when typing in the search field', async () => {
@@ -65,12 +47,12 @@ describe('Combobox', () => {
 
   it('keyboard: ArrowDown/Enter selects active option', async () => {
     const user = userEvent.setup()
-    const onChange = vi.fn()
-    render(<Combobox label="Country" options={options} onChange={onChange} />)
+    const onValueChange = vi.fn()
+    render(<Combobox label="Country" options={options} onValueChange={onValueChange} />)
     await user.click(screen.getByRole('combobox'))
     await user.keyboard('{ArrowDown}')
     await user.keyboard('{Enter}')
-    expect(onChange).toHaveBeenCalledWith(expect.any(String))
+    expect(onValueChange).toHaveBeenCalledWith(expect.any(String))
   })
 
   it('Escape closes the listbox', async () => {
@@ -92,11 +74,19 @@ describe('Combobox', () => {
 
   it('clearable: shows clear button and clears selection', async () => {
     const user = userEvent.setup()
-    const onChange = vi.fn()
-    render(<Combobox label="Country" options={options} value="de" clearable onChange={onChange} />)
+    const onValueChange = vi.fn()
+    render(
+      <Combobox
+        label="Country"
+        options={options}
+        value="de"
+        clearable
+        onValueChange={onValueChange}
+      />,
+    )
     const clearBtn = screen.getByRole('button', { name: 'Clear selection' })
     await user.click(clearBtn)
-    expect(onChange).toHaveBeenCalledWith(undefined)
+    expect(onValueChange).toHaveBeenCalledWith(undefined)
   })
 
   it('disabled prop prevents opening', async () => {

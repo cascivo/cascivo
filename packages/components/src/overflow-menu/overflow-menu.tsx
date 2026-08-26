@@ -1,7 +1,7 @@
 /**
  * @deprecated Use `Menu` instead — `cascivo add menu` on the copy-paste path, or
  * `import { Menu } from '@cascivo/react'` on the prebuilt path. Deprecated since 0.17.0;
- * kept for registry compatibility and removed in v4.
+ * keeps working for the whole 1.x line and is removed in 2.0.0.
  */
 'use client'
 import { cn, useSignals } from '@cascivo/core'

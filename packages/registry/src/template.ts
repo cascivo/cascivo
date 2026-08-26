@@ -41,11 +41,12 @@ function validateTemplateMeta(meta: unknown): string[] {
     errors.push('meta.screenshots is required and must have at least one entry')
   } else {
     for (let i = 0; i < m['screenshots'].length; i++) {
-      const shot = m['screenshots'][i] as Record<string, unknown>
-      if (!shot || typeof shot !== 'object') {
+      const entry: unknown = m['screenshots'][i]
+      if (typeof entry !== 'object' || entry === null) {
         errors.push(`meta.screenshots[${i}] must be an object`)
         continue
       }
+      const shot = entry as Record<string, unknown>
       if (typeof shot['light'] !== 'string' || !shot['light'])
         errors.push(`meta.screenshots[${i}].light is required`)
       if (typeof shot['alt'] !== 'string' || !shot['alt'])
@@ -72,11 +73,12 @@ function validateTemplateMeta(meta: unknown): string[] {
       errors.push('meta.pages must be an array when present')
     } else {
       for (let i = 0; i < m['pages'].length; i++) {
-        const page = m['pages'][i] as Record<string, unknown>
-        if (!page || typeof page !== 'object') {
+        const entry: unknown = m['pages'][i]
+        if (typeof entry !== 'object' || entry === null) {
           errors.push(`meta.pages[${i}] must be an object`)
           continue
         }
+        const page = entry as Record<string, unknown>
         if (typeof page['name'] !== 'string') errors.push(`meta.pages[${i}].name is required`)
         if (typeof page['target'] !== 'string') errors.push(`meta.pages[${i}].target is required`)
       }

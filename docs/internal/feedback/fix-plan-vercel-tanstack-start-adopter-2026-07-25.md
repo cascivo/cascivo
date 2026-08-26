@@ -6,7 +6,7 @@
 > prop-defaults sweep) did not reach the 07-26 TanStack adopter: it landed on the manifests,
 > and that adopter read the shipped `.d.ts` — the new **Mechanism D** in `README.md`.
 
-**Status: implemented on `claude/intelligent-faraday-i5volc`; not yet published.**
+**Status: implemented on `claude/intelligent-faraday-i5volc` and **published** — `@cascivo/react` 0.12.0 and the matching train (2026-07-25).**
 Per-workstream: **WS-1** ✅ (`useSignal`/`useComputed` wrap `useSignals()`; negative +
 tracking-window tests lock the boundary) · **WS-2** ✅ (every reactivity primitive re-exported
 from `@cascivo/react`; SSR guide's prohibition replaced by a "where do imports come from?"

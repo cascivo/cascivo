@@ -7,21 +7,81 @@ This page covers both, plus where changes are recorded.
 
 ---
 
-## What a version bump means (pre-1.0)
+## The stability contract
 
-Packages are versioned independently with
-[Changesets](https://github.com/changesets/changesets). Everything is `0.x`,
-and the convention is:
+cascivo's public API is **covered by semver from 1.0.0 onward**. Below 1.0 it was not:
+a minor could break you. This section is the contract — what is promised, what is not,
+and for how long.
 
-| Bump      | Pre-1.0 meaning                                        |
-| --------- | ------------------------------------------------------ |
-| **minor** | may include breaking changes — read the notes          |
-| **patch** | fixes and improvements, safe to take                   |
+### What a version bump means
 
-npm's `^` range does not cross a minor while the major is `0` —
-`"^0.3.8"` means `>=0.3.8 <0.4.0` — so the default save prefix already
-protects you from breaking bumps. `pnpm up '@cascivo/*'` stays within your
-ranges; review the notes below before widening them.
+| Bump      | From 1.0.0 onward                                                        | Before 1.0 (historical)                |
+| --------- | ------------------------------------------------------------------------ | -------------------------------------- |
+| **major** | may remove or change covered API; every removal was deprecated first     | n/a                                    |
+| **minor** | adds API; never removes or changes covered API                           | may include breaking changes           |
+| **patch** | fixes only                                                               | fixes and improvements, safe to take   |
+
+From 1.0.0, `"^1.2.0"` is safe to widen across the whole `1.x` line. Below 1.0, npm's `^`
+range does not cross a minor while the major is `0` — `"^0.18.0"` means
+`>=0.18.0 <0.19.0` — so the default save prefix already protected you from breaking bumps.
+
+### What the promise covers
+
+These are public API. Changing or removing one requires a major:
+
+- **Exported values and types** from every `1.x` package, on both the `@cascivo/react`
+  prebuilt path and the copy-paste path.
+- **Prop contracts** — a prop's name, its type, and whether it is required. Widening a type
+  is a minor; narrowing it is a major.
+- **Design tokens** — the `--cascivo-*` custom properties, at all three levels
+  (primitive, semantic, component).
+- **Style hooks** — the `data-cascivo-*` attributes documented in
+  [`STYLING-INTERNALS.md`](./STYLING-INTERNALS.md) and listed in each component's manifest.
+- **The canonical `@layer` names and their order** (`cascivo.reset` → `base` → `tokens` →
+  `component` → `theme` → `blocks` → `override`).
+- **The accessibility contract** — each component's ARIA role, its accessible-name
+  requirement, and its documented keyboard map, as published in the manifest and enforced by
+  `apg:check`.
+- **The CLI's command surface** — `cascivo init | add | list | update | audit | doctor`
+  and their documented flags.
+- **`registry.json`'s shape**, which the CLI, the MCP server and agent tooling all read.
+
+### What the promise does not cover
+
+These may change in any release, including a patch:
+
+- **Exact DOM nesting and element choice**, beyond the roles and style hooks above.
+  Components ship CSS Modules with **hashed** class names — `_navWrapper_1r5fv_83` is not a
+  selector you can target, and structural selectors like
+  `div:has(> div > nav[aria-label='Main'])` will silently stop matching. Use a style hook;
+  that is what they exist for.
+- **Rendered visual output** — spacing, colour and motion may be tuned. Tokens are the
+  stable surface, not the pixels they produce.
+- **Anything not exported** from a package's entry points, including `@cascivo/core`
+  internals.
+- **Packages still on `0.x`** — see the table below.
+
+### Supported versions
+
+- The **current major** receives fixes on its latest minor.
+- The **previous major** receives security fixes for **six months** after the next major
+  ships. Report security issues per [`SECURITY.md`](../SECURITY.md).
+- Older majors are unsupported. `cascivo doctor --drift` compares your installed versions
+  against [`breaking-changes.json`](#breaking-changesjson--for-machines) and tells you where
+  you stand.
+
+### Which packages are covered
+
+The `1.x` line covers the packages an application depends on directly or transitively at
+runtime. Tooling packages stay on `0.x` until their own surfaces settle, and say so on npm.
+
+| Line  | Packages                                                                                                                            |
+| ----- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `1.x` | `@cascivo/react`, `@cascivo/core`, `@cascivo/charts`, `@cascivo/editor`, `@cascivo/flow`, `@cascivo/i18n`, `@cascivo/storage`, `@cascivo/ai` (the lockstep family below), plus `@cascivo/tokens`, `@cascivo/themes`, `@cascivo/icons` and the `cascivo` CLI |
+| `0.x` | `@cascivo/mcp`, `@cascivo/registry`, `@cascivo/docs`, `@cascivo/docspack`, `@cascivo/eslint-config`, `@cascivo/eslint-plugin`, `@cascivo/vite-plugin`, `@cascivo/platform`                                                                                 |
+
+`@cascivo/platform` in particular is an early experiment in platform-idiomatic geometry and
+motion; treat its API as unsettled.
 
 ## Where changes are recorded
 
@@ -95,12 +155,22 @@ long you have.
    keeps compiling and behaving identically.
 2. **The old name carries `@deprecated`** in its TSDoc, naming the replacement. Your editor
    strikes it through; `tsc` stays silent.
-3. **A changeset records it**, so it appears in the CHANGELOG and in
+3. **The deprecation names when it expires.** Every deprecation records `since` — the
+   version that introduced the replacement — and **`removeIn`**, the major that removes the
+   old name. Both appear in the manifest, and therefore in `registry.json`, the `llms/*.md`
+   files and the docs site, so the expiry is discoverable before you adopt the old name
+   rather than after it disappears.
+4. **A changeset records it**, so it appears in the CHANGELOG and in
    [`breaking-changes.json`](#breaking-changesjson--for-machines) — the file
    `cascivo doctor --drift` reads.
-4. **A guard keeps the pair honest.** The alias and its tracking entry are removed
+5. **A guard keeps the pair honest.** The alias and its tracking entry are removed
    together; a check fails if one outlives the other, so an alias cannot quietly become
-   permanent and a tracking note cannot go stale.
+   permanent and a tracking note cannot go stale. The same guard fails the build if a
+   deprecation is still shipping in the major named by its own `removeIn` — an expiry that
+   can slip is not a policy.
+
+**Removals only happen in a major.** A deprecation introduced during `1.x` is removed in
+`2.0.0` at the earliest, so the alias is guaranteed to outlive the whole `1.x` line.
 
 Aliases that only *add* a name (`ariaLabel` alongside `aria-label`, `value` alongside `id`)
 are not deprecations — both spellings are supported indefinitely, and neither is
@@ -170,6 +240,33 @@ the printed diff).
 ## Version notes
 
 Release-specific upgrade guides, newest first:
+
+- **Upgrading `0.x` → `1.0.0`** — eleven deprecated surfaces are removed. Every one has a
+  replacement that takes the identical argument, so each fix is a rename, and every removal
+  is a *compile error* rather than a silent behaviour change.
+
+  | Removed | Replace with | Affects |
+  | --- | --- | --- |
+  | `onChange` (value-carrying) | `onValueChange` | `Combobox`, `DatePicker`, `Filter`, `NumberInput`, `Search`, `Swap`, `TimePicker`, `Toggle` |
+  | `Text`, `TextProps` | `ChartText`, `ChartTextProps` | `@cascivo/charts` |
+  | `BarChart` `xTicks` / `yTicks` | `valueAxisTicks` / `categoryAxisTicks` | `@cascivo/charts` |
+  | `Dropdown` item `separator: true` | a separate `{ kind: 'separator' }` entry | `@cascivo/react` |
+
+  Two notes on the shape of these:
+
+  - Three of the eight — `Toggle`, `NumberInput`, `TimePicker` — extend an HTML element's
+    attributes, and they keep `Omit<…, 'onChange'>` deliberately. Without it the native
+    `ChangeEventHandler` would take the name back, and a value-carrying handler would compile
+    and then be called with a DOM event — a silent break instead of a loud one. The other five
+    are plain interfaces with no HTML base, so `onChange` is simply not a prop. Either way,
+    passing it is a compile error that names the replacement.
+  - `BarChart`'s removed pair followed *screen* position, so its meaning swapped with
+    `orientation`: `yTicks={1}` did nothing on a horizontal chart while `xTicks={1}` worked.
+    The replacements are named by role and mean the same thing either way. `ScatterChart`
+    keeps `xTicks`/`yTicks` — both its axes are value axes, so screen naming is correct there.
+
+  **`OverflowMenu` is not removed.** It is deprecated in favour of `Menu` and keeps working
+  for the whole `1.x` line; its manifest carries `removeIn: '2.0.0'`.
 
 - **`<Badge>` with no `variant` is no longer the brand colour** (`@cascivo/react` minor) —
   `neutral` (and its alias `default`, which is what you get when you pass nothing) now

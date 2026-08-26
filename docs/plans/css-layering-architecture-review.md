@@ -11,9 +11,9 @@ _Status: implemented (see Implementation status below). Scope: `@cascivo/tokens`
 | **Issue 1** — canonical `@layer` order (`layers.css`), `cascivo.override` escape hatch, all entry paths + scaffold + examples + docs aligned, `layers:check` drift guard | ✅ done |
 | **Issue 2 Phase A** — Modal + Tooltip id bugs (also AlertDialog, found during the work) | ✅ done |
 | **Issue 2 Phase B** — `useTypeahead` primitive in `@cascivo/core` | ✅ done |
-| Composed `useMenu` / `useListbox` + submenu engine | ⏸ deferred — API should be driven by a concrete migration, not designed speculatively |
+| Composed `useMenu` / `useListbox` + submenu engine | ⏸ **deferred to 2.0** (confirmed 2026-08-24, 1.0 readiness B7) — the original reason still holds: the API should be driven by a concrete migration, not designed speculatively. Recorded here so it is a decision rather than an omission across the 1.0 tag; it is additive when it lands, so it needs no major. |
 | **Issue 2 Phase C** — Menu migrated to shared roving/typeahead; AlertDialog to `useId` | ✅ done |
-| Combobox / date-picker / date-range-picker outside-click → `DismissableLayer` | ⏸ deferred — wraps markup in DismissableLayer's element; needs a visual layout review. Tracked in the `primitive-adoption` allowlist. |
+| Combobox / date-picker / date-range-picker outside-click → `DismissableLayer` | ⏸ **deferred to 2.0** (confirmed 2026-08-24, 1.0 readiness B7) — wraps markup in DismissableLayer's element; needs a visual layout review and regenerated baselines. Tracked in the `primitive-adoption` allowlist, which now carries the same decision. |
 | **Issue 2 Phase D** — `primitives:check` guard, CLAUDE.md rule, `docs/HEADLESS.md` | ✅ done |
 
 ---

@@ -11,7 +11,13 @@ export type {
   TemplateFileRole,
 } from './types.ts'
 
-export { validateItem, validateIndex, parseLegacyRegistry } from './validate.ts'
+export {
+  validateItem,
+  validateIndex,
+  parseLegacyRegistry,
+  parseItem,
+  isSafeRelativePath,
+} from './validate.ts'
 export type { ValidationResult } from './validate.ts'
 
 export { isTemplateItem, asTemplateMeta, validateTemplate } from './template.ts'

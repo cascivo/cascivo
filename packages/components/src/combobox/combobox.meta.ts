@@ -37,12 +37,6 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
-      name: 'onChange',
-      description: 'Deprecated: use onValueChange (same string | undefined).',
-      type: '(value: string | undefined) => void',
-      required: false,
-    },
-    {
       name: 'clearable',
       description: 'When true, shows a control to clear the selected value.',
       type: 'boolean',
@@ -163,7 +157,7 @@ export const meta: ComponentMeta = {
     { value: 'de', label: 'Germany' },
     { value: 'fr', label: 'France' },
   ]}
-  onChange={(value) => console.log(value)}
+  onValueChange={(value) => console.log(value)}
 />`,
     },
   ],
@@ -183,7 +177,7 @@ export const meta: ComponentMeta = {
       {
         bad: 'Using Combobox to fire actions like "Delete" or "Export"',
         good: 'Use Dropdown for actions; Combobox is for picking a value',
-        why: 'Combobox has role="combobox" with a listbox of selectable values and onChange semantics — actions belong in a menu',
+        why: 'Combobox has role="combobox" with a listbox of selectable values and onValueChange semantics — actions belong in a menu',
       },
       {
         bad: 'Setting searchable={false} on a 200-item list',
@@ -218,7 +212,7 @@ export const meta: ComponentMeta = {
       {
         area: 'controlled vs uncontrolled',
         level: 'flexible',
-        note: 'Supports value + onChange or defaultValue',
+        note: 'Supports value + onValueChange or defaultValue',
       },
       {
         area: 'token names',

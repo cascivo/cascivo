@@ -8,6 +8,10 @@ interface Envelope {
   value: unknown
 }
 
+function isEnvelope(value: unknown): value is Envelope {
+  return typeof value === 'object' && value !== null && typeof (value as Envelope).v === 'number'
+}
+
 export interface PersistedSignalOptions<T> {
   driver?: StorageDriver
   /** Bump together with `migrate` when the stored shape changes. */
@@ -32,10 +36,8 @@ export function persistedSignal<T>(
   function decode(raw: string | null): T | undefined {
     if (raw === null) return undefined
     try {
-      const envelope = JSON.parse(raw) as Envelope
-      if (typeof envelope !== 'object' || envelope === null || typeof envelope.v !== 'number') {
-        return undefined
-      }
+      const envelope: unknown = JSON.parse(raw)
+      if (!isEnvelope(envelope)) return undefined
       if (envelope.v !== version) {
         if (!options.migrate) return undefined
         const migrated = options.migrate(envelope.value, envelope.v)

@@ -9,7 +9,7 @@
 > done. §10c below told the implementer to update the directory's tracker pointer and the
 > 07-23 plan's header; that was not done at the time and is done as of the 07-25 plan.
 
-**Status: implemented on `claude/ui-library-report-analysis-nsjclj`; not yet published.**
+**Status: implemented on `claude/ui-library-report-analysis-nsjclj` and **published** — `@cascivo/react` 0.12.0 and the matching train (2026-07-25).**
 Per-workstream: **WS-1** ✅ (useTheme string contract across AI-RULES/GETTING-STARTED/THEMING/
 MIGRATING/ENTERPRISE/CSS-LAYERS) · **WS-2** ✅ (`context/generate.ts` renders typeDefs; DataTable
 `Column<Row>`+render example & ShellHeader action/brand/nav typeDefs; `typedefs-parity` guard,

@@ -46,6 +46,34 @@ toolchain installs with everything else. The versions are pinned exactly on purp
 floating range turns a correctness gate into a flake generator, and a plugin minor can change
 which rules fire.
 
+## Type-aware rules need BOTH type worlds — don't add one here that reads only ours
+
+A type-aware rule run from this directory sees **the library's** tsconfig. That is one of the
+two compilations our source has to satisfy, and for anything touching JSX attributes it is the
+wrong one.
+
+On 2026-08-25 a `@typescript-eslint/no-unnecessary-type-assertion` sweep over 13 packages
+flagged 125 assertions across 82 files. Autofixing them produced **44 type errors, 39 of the
+same shape**:
+
+```
+error TS2345: Argument of type 'Signalish<string | undefined>' is not assignable to
+parameter of type 'string | false | 0 | null | undefined'.
+```
+
+`@preact/signals-react` ships a JSX augmentation that widens every DOM attribute to
+`Signalish<T>`. The library's own tsconfig never loads it; every adopter that installs the
+signals runtime does (`apps/examples/{pulse,trade,flow,pay}` are the in-repo proof). So
+`className as string | undefined` is genuinely unnecessary under our config and genuinely
+load-bearing under theirs — and the rule, seeing only ours, reports a clean "unnecessary".
+
+The rule is not wrong; the input is half the picture. A finding is only actionable if it holds
+under **both** compilations: ours, and a consumer-shaped one with `@preact/signals-react`
+installed, `jsxImportSource: 'react'`, and `skipLibCheck` off. `pnpm isolated:check` already
+builds exactly that; a guard for this class belongs there, over the packed tarballs, not as a
+lint pass with only our tsconfig behind it. Until one exists, treat "unnecessary assertion" on
+a JSX attribute as unproven and leave the assertion alone.
+
 ## When a new error class appears
 
 Do not reach for a scope-off first. Triage it:

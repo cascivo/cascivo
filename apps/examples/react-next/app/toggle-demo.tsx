@@ -13,7 +13,7 @@ export function ToggleDemo() {
       <Toggle
         label="Notifications"
         checked={enabled.value}
-        onChange={(next) => {
+        onValueChange={(next) => {
           enabled.value = next
         }}
       />

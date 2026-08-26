@@ -23,12 +23,6 @@ export const meta: ComponentMeta = {
       type: '(value: string) => void',
       required: false,
     },
-    {
-      name: 'onChange',
-      description: 'Deprecated: use onValueChange (same time string).',
-      type: '(value: string) => void',
-      required: false,
-    },
     { name: 'min', description: 'Minimum allowed value.', type: 'string', required: false },
     { name: 'max', description: 'Maximum allowed value.', type: 'string', required: false },
     {
@@ -104,7 +98,7 @@ export const meta: ComponentMeta = {
   examples: [
     {
       title: 'Basic time picker',
-      code: `<TimePicker label="Meeting time" onChange={(v) => console.log(v)} />`,
+      code: `<TimePicker label="Meeting time" onValueChange={(v) => console.log(v)} />`,
     },
   ],
   dependencies: ['@cascivo/core'],

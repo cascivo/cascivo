@@ -34,8 +34,9 @@ export function AtMatrix() {
 
       {!AT_HAS_RESULTS && (
         <p className="at-pending-note">
-          <strong>Pending first automated run.</strong> The harness and the 12-component plan are in
-          place; cells fill in once the workflow has run on Windows and macOS runners.
+          <strong>Results not yet published.</strong> The harness and the 12-component plan are in
+          place and the nightly workflow is passing; cells fill in when its merged results land.
+          Until then, treat the screen-reader row as untested rather than as passing.
         </p>
       )}
 

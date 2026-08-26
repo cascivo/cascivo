@@ -35,8 +35,6 @@ export interface NumberInputProps extends Omit<
   defaultValue?: number
   /** Called with the new numeric value (or null when cleared). */
   onValueChange?: (value: number | null) => void
-  /** @deprecated Use `onValueChange` — it receives the same `number | null`. */
-  onChange?: (value: number | null) => void
   min?: number
   max?: number
   /**
@@ -104,7 +102,6 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(functi
     value,
     defaultValue,
     onValueChange,
-    onChange,
     min,
     max,
     step = 1,
@@ -142,7 +139,7 @@ export const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(functi
   const setValue = (next: number | null) => {
     if (!isControlled) committed.value = next
     text.value = next == null ? '' : String(next)
-    if (next !== current) (onValueChange ?? onChange)?.(next)
+    if (next !== current) onValueChange?.(next)
   }
 
   const commitText = () => {

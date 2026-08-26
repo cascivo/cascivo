@@ -24,7 +24,7 @@ export default function App() {
           <Toggle
             label="Notifications"
             checked={notifications.value}
-            onChange={(checked) => {
+            onValueChange={(checked) => {
               notifications.value = checked
             }}
           />

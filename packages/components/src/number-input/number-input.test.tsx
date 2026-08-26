@@ -19,7 +19,7 @@ describe('NumberInput', () => {
 
   it('commits parsed value on blur', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Quantity" onChange={handler} />)
+    render(<NumberInput label="Quantity" onValueChange={handler} />)
     const input = screen.getByLabelText('Quantity')
     await userEvent.click(input)
     await userEvent.keyboard('42')
@@ -30,15 +30,15 @@ describe('NumberInput', () => {
 
   it('commits on Enter', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Quantity" onChange={handler} />)
+    render(<NumberInput label="Quantity" onValueChange={handler} />)
     await userEvent.click(screen.getByLabelText('Quantity'))
     await userEvent.keyboard('7{Enter}')
     expect(handler).toHaveBeenCalledWith(7)
   })
 
-  it('fires onChange with null when cleared', async () => {
+  it('fires onValueChange with null when cleared', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Quantity" defaultValue={5} onChange={handler} />)
+    render(<NumberInput label="Quantity" defaultValue={5} onValueChange={handler} />)
     const input = screen.getByLabelText('Quantity')
     await userEvent.clear(input)
     await userEvent.tab()
@@ -46,9 +46,9 @@ describe('NumberInput', () => {
     expect(input).toHaveValue('')
   })
 
-  it('fires onChange with null for unparseable input', async () => {
+  it('fires onValueChange with null for unparseable input', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Quantity" defaultValue={5} onChange={handler} />)
+    render(<NumberInput label="Quantity" defaultValue={5} onValueChange={handler} />)
     const input = screen.getByLabelText('Quantity')
     await userEvent.clear(input)
     await userEvent.keyboard('abc')
@@ -58,7 +58,7 @@ describe('NumberInput', () => {
 
   it('clamps to min and max on commit', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Quantity" min={0} max={10} onChange={handler} />)
+    render(<NumberInput label="Quantity" min={0} max={10} onValueChange={handler} />)
     const input = screen.getByLabelText('Quantity')
     await userEvent.click(input)
     await userEvent.keyboard('99')
@@ -69,7 +69,7 @@ describe('NumberInput', () => {
 
   it('rounds to precision on commit', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Price" precision={2} onChange={handler} />)
+    render(<NumberInput label="Price" precision={2} onValueChange={handler} />)
     const input = screen.getByLabelText('Price')
     await userEvent.click(input)
     await userEvent.keyboard('3.14159')
@@ -79,7 +79,7 @@ describe('NumberInput', () => {
 
   it('steps with ArrowUp and ArrowDown', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Quantity" defaultValue={5} onChange={handler} />)
+    render(<NumberInput label="Quantity" defaultValue={5} onValueChange={handler} />)
     const input = screen.getByLabelText('Quantity')
     await userEvent.click(input)
     await userEvent.keyboard('{ArrowUp}')
@@ -90,7 +90,7 @@ describe('NumberInput', () => {
 
   it('steps via the stepper buttons', async () => {
     const handler = vi.fn()
-    render(<NumberInput label="Quantity" defaultValue={5} step={2} onChange={handler} />)
+    render(<NumberInput label="Quantity" defaultValue={5} step={2} onValueChange={handler} />)
     await userEvent.click(screen.getByRole('button', { name: 'Increment' }))
     expect(handler).toHaveBeenLastCalledWith(7)
     await userEvent.click(screen.getByRole('button', { name: 'Decrement' }))
@@ -123,9 +123,9 @@ describe('NumberInput', () => {
   })
 
   it('supports controlled value', () => {
-    const { rerender } = render(<NumberInput label="Quantity" value={5} onChange={() => {}} />)
+    const { rerender } = render(<NumberInput label="Quantity" value={5} onValueChange={() => {}} />)
     expect(screen.getByLabelText('Quantity')).toHaveValue('5')
-    rerender(<NumberInput label="Quantity" value={9} onChange={() => {}} />)
+    rerender(<NumberInput label="Quantity" value={9} onValueChange={() => {}} />)
     expect(screen.getByLabelText('Quantity')).toHaveValue('9')
   })
 

@@ -77,7 +77,7 @@ export function SettingsFormPage({ onSave }: SettingsFormPageProps) {
         <Toggle
           label="Email notifications"
           checked={Boolean(notifField.value)}
-          onChange={(checked) => notifField.onChange(checked)}
+          onValueChange={(checked) => notifField.onChange(checked)}
         />
         <Button type="submit">Save changes</Button>
       </Form>

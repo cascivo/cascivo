@@ -111,17 +111,31 @@ const boxplotSeries = [
   { id: 'c', label: 'Worker', values: [21, 25, 19, 28, 17, 24, 31, 15, 22, 26, 20, 18] },
 ]
 
-const bubbleSeries = [
+// ScatterChart and BubbleChart take different series shapes — `{ id, label }` with
+// `ScatterDatum { x, y, r? }` versus `{ name }` with `BubbleDatum { x, y, size }` — so they
+// get their own data. One array served both while the shim typed series as `unknown[]`:
+// BubbleChart was missing `name` entirely, and ScatterChart was handed a `size` it has no
+// prop for, so every point rendered at the default radius.
+const POINTS = [
+  { x: 12, y: 38, magnitude: 18 },
+  { x: 28, y: 64, magnitude: 42 },
+  { x: 45, y: 52, magnitude: 30 },
+  { x: 63, y: 81, magnitude: 56 },
+  { x: 78, y: 47, magnitude: 24 },
+]
+
+const scatterSeries = [
   {
     id: 'plans',
     label: 'Plans',
-    data: [
-      { x: 12, y: 38, size: 18 },
-      { x: 28, y: 64, size: 42 },
-      { x: 45, y: 52, size: 30 },
-      { x: 63, y: 81, size: 56 },
-      { x: 78, y: 47, size: 24 },
-    ],
+    data: POINTS.map(({ x, y, magnitude }) => ({ x, y, r: magnitude })),
+  },
+]
+
+const bubbleSeries = [
+  {
+    name: 'Plans',
+    data: POINTS.map(({ x, y, magnitude }) => ({ x, y, size: magnitude })),
   },
 ]
 
@@ -383,7 +397,7 @@ export function ChartsPage() {
               </article>
               <article className="cx-card">
                 <h3>ScatterChart</h3>
-                <ScatterChart series={bubbleSeries} title="Observations" height={180} tooltip />
+                <ScatterChart series={scatterSeries} title="Observations" height={180} tooltip />
               </article>
               <article className="cx-card">
                 <h3>BubbleChart</h3>

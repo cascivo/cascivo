@@ -15,14 +15,14 @@ describe('TimePicker', () => {
     expect(document.querySelector('[data-size="lg"]')).toBeInTheDocument()
   })
 
-  it('fires onChange with the string value', async () => {
+  it('fires onValueChange with the string value', async () => {
     const user = userEvent.setup()
-    const onChange = vi.fn()
-    render(<TimePicker label="Time" onChange={onChange} />)
+    const onValueChange = vi.fn()
+    render(<TimePicker label="Time" onValueChange={onValueChange} />)
     const input = screen.getByLabelText('Time')
     await user.type(input, '14:30')
-    expect(onChange).toHaveBeenCalled()
-    expect(onChange.mock.calls.at(-1)?.[0]).toBeTruthy()
+    expect(onValueChange).toHaveBeenCalled()
+    expect(onValueChange.mock.calls.at(-1)?.[0]).toBeTruthy()
   })
 
   it('renders error message with role="alert"', () => {

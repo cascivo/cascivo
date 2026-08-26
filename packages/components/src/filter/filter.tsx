@@ -21,8 +21,6 @@ export interface FilterProps {
   defaultValue?: string[]
   /** Called with the selected values whenever the selection changes. */
   onValueChange?: (selected: string[]) => void
-  /** @deprecated Use `onValueChange` — it receives the same `string[]`. */
-  onChange?: (selected: string[]) => void
   /**
    * Allow multiple items to be selected simultaneously
    *
@@ -72,7 +70,6 @@ export function Filter({
   value,
   defaultValue = [],
   onValueChange,
-  onChange,
   multi = false,
   multiple,
   variant = 'pill',
@@ -86,7 +83,7 @@ export function Filter({
   const [selected, setSelected] = useControllableSignal<string[]>({
     value,
     defaultValue,
-    onChange: onValueChange ?? onChange,
+    onChange: onValueChange,
   })
 
   function toggle(val: string) {

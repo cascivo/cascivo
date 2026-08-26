@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { describe, it, expect } from 'vitest'
-import { validateItem, validateIndex, parseLegacyRegistry } from './validate.ts'
+import { validateItem, validateIndex, parseLegacyRegistry, parseItem } from './validate.ts'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const REPO_ROOT = join(HERE, '..', '..', '..')
@@ -161,5 +161,70 @@ describe('parseLegacyRegistry', () => {
     }
     const index = parseLegacyRegistry(raw)
     expect(index.items.map((i) => i.name)).toEqual(['block/console-app'])
+  })
+})
+
+describe('path safety at the install boundary', () => {
+  // `files[].target` and `name` both reach `resolve(cwd, …)` and then
+  // `writeFileSafe` in the CLI's add path. Before these checks existed, a
+  // registry could hand back any of the payloads below and get an arbitrary
+  // file write on the machine running `cascivo add`.
+  const ESCAPES = [
+    '../../.zshrc',
+    '../.bashrc',
+    '/etc/cron.d/pwn',
+    '/tmp/pwn',
+    'a/../../b',
+    '..',
+    'C:\\Windows\\System32\\drivers\\etc\\hosts',
+    '\\\\unc\\share\\pwn',
+  ]
+
+  it.each(ESCAPES)('rejects a files[].target of %j', (target) => {
+    const result = validateItem({
+      ...VALID_ITEM,
+      type: 'template',
+      files: [{ url: 'https://e/x', target }],
+    })
+    expect(result.ok).toBe(false)
+    expect(result.errors.join('\n')).toContain('files[0].target')
+  })
+
+  it.each(ESCAPES)('rejects an item name of %j', (name) => {
+    const result = validateItem({ ...VALID_ITEM, name })
+    expect(result.ok).toBe(false)
+    expect(result.errors.join('\n')).toContain('name must be a relative path')
+  })
+
+  it('still accepts ordinary in-project targets', () => {
+    const result = validateItem({
+      ...VALID_ITEM,
+      type: 'template',
+      files: [{ url: 'https://e/x', target: 'src/routes/index.tsx' }],
+    })
+    expect(result.ok).toBe(true)
+  })
+
+  it('rejects a files entry that is not an object, or has no url', () => {
+    expect(validateItem({ ...VALID_ITEM, files: ['nope'] }).errors.join()).toContain(
+      'files[0] must be an object',
+    )
+    expect(validateItem({ ...VALID_ITEM, files: [{}] }).errors.join()).toContain('files[0].url')
+  })
+})
+
+describe('parseItem', () => {
+  it('returns the item when valid', () => {
+    expect(parseItem(VALID_ITEM, 'https://e/r.json').name).toBe('button')
+  })
+
+  it('throws naming the source when invalid', () => {
+    expect(() => parseItem({ ...VALID_ITEM, name: '../../x' }, 'https://evil/r.json')).toThrow(
+      /Invalid registry item from https:\/\/evil\/r\.json/,
+    )
+  })
+
+  it('throws on a non-object payload rather than returning it', () => {
+    expect(() => parseItem('not json', 'https://e/r.json')).toThrow(/must be an object/)
   })
 })

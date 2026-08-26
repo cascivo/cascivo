@@ -120,6 +120,7 @@ export function AccessibilityStatement() {
         <li>
           AT testing is planned as representative (12 components × 4 stacks), not exhaustive —
           manual sessions are pending, and every matrix cell currently reads &quot;not tested&quot;.
+          Automated axe coverage is separate and is enforced on every pull request.
         </li>
         <li>No third-party VPAT has been issued for cascivo.</li>
         <li>

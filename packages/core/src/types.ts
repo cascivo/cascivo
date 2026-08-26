@@ -198,6 +198,16 @@ export interface ComponentDeprecation {
    * point at something an adopter cannot install.
    */
   replacement: string
+  /**
+   * The major that removes the old name, e.g. `'2.0.0'`.
+   *
+   * Required so a deprecation cannot quietly become permanent: `docs/UPGRADING.md` promises
+   * every deprecation names its expiry at announcement time, and
+   * `scripts/checks/deprecation-surfaces.test.ts` fails the build once the package's own
+   * version reaches this major with the deprecation still shipping. Removals happen only in
+   * a major, so a deprecation announced during `1.x` carries `'2.0.0'` at the earliest.
+   */
+  removeIn: string
   /** One sentence on what changes for the caller. */
   note?: string
 }

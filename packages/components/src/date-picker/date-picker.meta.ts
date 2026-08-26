@@ -34,12 +34,6 @@ export const meta: ComponentMeta = {
       required: false,
       description: 'Called with the selected ISO date string (or undefined when cleared)',
     },
-    {
-      name: 'onChange',
-      type: '(value: string | undefined) => void',
-      required: false,
-      description: 'Deprecated: use onValueChange (same ISO string | undefined)',
-    },
     { name: 'min', type: 'string', required: false, description: 'Minimum ISO date' },
     { name: 'max', type: 'string', required: false, description: 'Maximum ISO date' },
     {
@@ -157,7 +151,7 @@ export const meta: ComponentMeta = {
       {
         bad: 'Passing a localized display string as value',
         good: 'value/defaultValue/min/max are ISO YYYY-MM-DD; display formatting is handled internally',
-        why: 'The component parses and compares ISO dates; non-ISO values break selection, constraints, and onChange',
+        why: 'The component parses and compares ISO dates; non-ISO values break selection, constraints, and onValueChange',
       },
     ],
     related: [

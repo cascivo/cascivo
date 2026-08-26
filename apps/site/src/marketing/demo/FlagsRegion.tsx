@@ -23,7 +23,7 @@ export function FlagsRegion() {
             <Toggle
               checked={states.value[i] ?? false}
               aria-label={flag.name}
-              onChange={(checked) => {
+              onValueChange={(checked) => {
                 const next = [...states.value]
                 next[i] = checked
                 states.value = next

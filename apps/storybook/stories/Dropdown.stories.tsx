@@ -5,7 +5,7 @@ import { Dropdown } from '@cascivo/components/dropdown'
 const items = [
   { label: 'Edit', value: 'edit' },
   { label: 'Duplicate', value: 'duplicate' },
-  { separator: true, label: '', value: 'sep' },
+  { kind: 'separator' as const },
   { label: 'Delete', value: 'delete' },
 ]
 

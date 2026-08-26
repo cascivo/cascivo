@@ -29,6 +29,28 @@ function fail(errors: string[], warnings: string[] = []): ValidationResult {
   return { ok: false, errors, warnings }
 }
 
+/**
+ * A registry-supplied path names a location *inside* the adopter's project and
+ * nothing else. Everything below reaches `resolve(cwd, target)` on the install
+ * path, and `resolve` walks out of the project without complaint for all of
+ * them: an absolute POSIX path, a Windows drive letter or UNC prefix, and any
+ * `..` segment. The result is handed straight to `writeFileSafe`, so a registry
+ * that returns `{ target: "../../.zshrc" }` gets an arbitrary file write on the
+ * machine running `cascivo add`.
+ *
+ * Deliberately string-only (no `node:path`): the check must give the same
+ * answer for a Windows-shaped path when it runs on POSIX, which `isAbsolute`
+ * does not.
+ */
+export function isSafeRelativePath(p: unknown): p is string {
+  if (typeof p !== 'string' || p === '') return false
+  if (p.includes('\0')) return false
+  // Absolute POSIX, absolute/UNC Windows, or a drive-relative path.
+  if (p.startsWith('/') || p.startsWith('\\')) return false
+  if (/^[A-Za-z]:/.test(p)) return false
+  return !p.split(/[/\\]/).includes('..')
+}
+
 export function validateItem(raw: unknown): ValidationResult {
   if (!raw || typeof raw !== 'object') {
     return fail(['Item must be an object'])
@@ -42,6 +64,12 @@ export function validateItem(raw: unknown): ValidationResult {
   }
   if (typeof obj['name'] !== 'string' || !obj['name']) {
     errors.push('name is required and must be a non-empty string')
+  } else if (!isSafeRelativePath(obj['name'])) {
+    // `add` derives the output directory from the item name, so a `..` here
+    // escapes the configured components directory.
+    errors.push(
+      `name must be a relative path inside the project, got ${JSON.stringify(obj['name'])}`,
+    )
   }
   if (!VALID_TYPES.has(obj['type'] as string)) {
     errors.push(
@@ -56,6 +84,25 @@ export function validateItem(raw: unknown): ValidationResult {
   }
   if (!Array.isArray(obj['files'])) {
     errors.push('files is required and must be an array')
+  } else {
+    for (let i = 0; i < obj['files'].length; i++) {
+      const entry: unknown = obj['files'][i]
+      if (typeof entry !== 'object' || entry === null) {
+        errors.push(`files[${i}] must be an object`)
+        continue
+      }
+      const file = entry as Record<string, unknown>
+      if (typeof file['url'] !== 'string' || !file['url']) {
+        errors.push(`files[${i}].url is required and must be a non-empty string`)
+      }
+      // `target` is where the file lands on the adopter's disk. Unvalidated it
+      // is an arbitrary-write primitive — see isSafeRelativePath.
+      if (file['target'] !== undefined && !isSafeRelativePath(file['target'])) {
+        errors.push(
+          `files[${i}].target must be a relative path inside the project, got ${JSON.stringify(file['target'])}`,
+        )
+      }
+    }
   }
   if (!Array.isArray(obj['dependencies'])) {
     errors.push('dependencies is required and must be an array')
@@ -114,6 +161,24 @@ export function validateItem(raw: unknown): ValidationResult {
   }
 
   return errors.length > 0 ? fail(errors, warnings) : ok(warnings)
+}
+
+/**
+ * Validate a fetched registry item and return it typed, or throw.
+ *
+ * `validateItem` reports; this throws. The install path (`cascivo add`, `view`,
+ * `update`, `search`) fetches items over the network from a registry URL the
+ * adopter configured — including third-party namespaces resolved through the
+ * cascivo.com directory — and every one of those call sites used to reach the
+ * payload with a bare `as RegistryItem`. Nothing between the socket and
+ * `writeFileSafe` checked a single field.
+ */
+export function parseItem(raw: unknown, source: string): RegistryItem {
+  const result = validateItem(raw)
+  if (!result.ok) {
+    throw new Error(`Invalid registry item from ${source}:\n  ${result.errors.join('\n  ')}`)
+  }
+  return raw as RegistryItem
 }
 
 export function validateIndex(raw: unknown): ValidationResult {

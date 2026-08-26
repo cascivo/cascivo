@@ -46,12 +46,6 @@
         "description": "Fired on commit (blur, Enter, stepping); null when empty or unparseable"
       },
       {
-        "name": "onChange",
-        "type": "(value: number | null) => void",
-        "required": false,
-        "description": "Deprecated: use onValueChange (same number | null)"
-      },
-      {
         "name": "min",
         "description": "Minimum allowed value.",
         "type": "number",
@@ -182,7 +176,7 @@
       "antiPatterns": [
         {
           "bad": "<Input type=\"number\" onChange={...} />",
-          "good": "<NumberInput min={0} max={99} step={1} onChange={...} />",
+          "good": "<NumberInput min={0} max={99} step={1} onValueChange={...} />",
           "why": "NumberInput adds stepper buttons, clamping, precision rounding, and Intl formatting that a raw number input does not, and reports a parsed number | null rather than a string"
         }
       ],

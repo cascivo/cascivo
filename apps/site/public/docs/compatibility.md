@@ -133,3 +133,27 @@ no-bundler path adds `@cascivo/react/styles.css` **first**; it defines component
 structure only — it references `var(--cascivo-*)` values that don't exist until a
 theme + tokens are loaded, so importing it alone yields correctly-structured but
 uncolored components. See [`THEMING.md`](/docs/theming.md).
+
+## Right-to-left
+
+RTL works out of the box: set `dir="rtl"` (or `dir="auto"`) on any ancestor — `<html>`, a
+route wrapper, a single panel — and the catalog mirrors. No import, no prop, no theme
+variant.
+
+```html
+<html dir="rtl" lang="ar">
+  <!-- every cascivo component now mirrors -->
+</html>
+```
+
+This holds because every shipped rule uses CSS logical properties (`margin-inline-start`,
+`padding-block`, `inset-inline-start`, `text-align: start`) rather than physical ones, and
+both halves of that are enforced rather than asserted. `pnpm rtl:check` fails on any physical
+inline property in shipped CSS, and separately mounts components in real Chromium under both
+directions and requires every asymmetric inline box to swap. The one deliberate exception is
+`ContextMenu`, which positions from the pointer's viewport x — a physical coordinate by
+nature.
+
+What is **not** covered: bidirectional _text_ handling inside your own content (that is the
+browser's job, and `dir="auto"` is usually the right answer), and RTL-specific iconography —
+a directional icon you pass as a prop is yours to mirror.

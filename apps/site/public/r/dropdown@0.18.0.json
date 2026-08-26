@@ -35,8 +35,8 @@
       },
       {
         "name": "items",
-        "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. ⚠ The legacy `separator: true` flag on a row marks that row AS a rule and DISCARDS its label, value and icon — it does not draw a rule above it. It is deprecated and warns in dev.",
-        "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean; separator?: boolean } | { kind: 'separator' })[]",
+        "description": "Menu entries. A selectable row is `{ label, value, icon?, disabled? }`; a rule between groups is `{ kind: 'separator' }`, which takes no label or value. The union is tagged on `kind`, so a separator cannot carry data that would be silently discarded.",
+        "type": "({ label: string; value: string; icon?: ReactNode; disabled?: boolean } | { kind: 'separator' })[]",
         "required": true
       },
       {
@@ -93,12 +93,6 @@
             "type": "boolean",
             "required": false,
             "description": "Skips the item in keyboard navigation and selection."
-          },
-          {
-            "name": "separator",
-            "type": "boolean",
-            "required": false,
-            "description": "⚠ Deprecated and lossy: marks this row AS a rule, discarding its label, value and icon. Use a separate `{ kind: 'separator' }` entry."
           }
         ]
       },

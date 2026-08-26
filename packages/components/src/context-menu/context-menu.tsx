@@ -126,7 +126,6 @@ export function ContextMenu({ children }: ContextMenuProps) {
       <div
         ref={menuRef}
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore — popover is a valid HTML attribute not yet in React types
         popover="auto"
         role="menu"
         data-state={isOpen.value ? 'open' : 'closed'}

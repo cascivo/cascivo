@@ -18,7 +18,7 @@
 
 ### Filter is for narrowing visible content, not routing between views
 
-**Bad:** `<Filter options={statusOptions} onChange={navigate} />`  
+**Bad:** `<Filter options={statusOptions} onValueChange={navigate} />`  
 **Good:** `<Tabs items={statusTabs} />`  
 **Why:** Filter is for narrowing visible content, not routing between views
 
@@ -43,7 +43,6 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 | `value`         | `string[]`                     | No       | —       | Controlled selected values                                                                                                                                             |
 | `defaultValue`  | `string[]`                     | No       | []      | Initial selected values for uncontrolled use                                                                                                                           |
 | `onValueChange` | `(selected: string[]) => void` | No       | —       | Called with the selected values whenever the selection changes.                                                                                                        |
-| `onChange`      | `(selected: string[]) => void` | No       | —       | Deprecated: use onValueChange (same string[]).                                                                                                                         |
 | `multi`         | `boolean`                      | No       | false   | Allow multiple items to be selected simultaneously                                                                                                                     |
 | `variant`       | `'pill' \| 'outline'`          | No       | pill    | `pill` fills the selected chip with the accent colour; `outline` marks it with an accent border and text instead, leaving the fill transparent.                        |
 | `multiple`      | `boolean`                      | No       | —       | Alias of `multi` — the HTML spelling (`<select multiple>`), accepted because it is the guess an adopter makes first. `multi` stays canonical.                          |

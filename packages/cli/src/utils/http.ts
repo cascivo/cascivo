@@ -82,8 +82,11 @@ export async function fetchJson(
       if (res.status === 401 || res.status === 403 || res.status === 429) {
         let msg = `HTTP ${res.status}`
         try {
-          const body = (await res.json()) as Record<string, unknown>
-          if (typeof body['message'] === 'string') msg += `: ${body['message']}`
+          const body: unknown = await res.json()
+          if (typeof body === 'object' && body !== null) {
+            const detail = (body as Record<string, unknown>)['message']
+            if (typeof detail === 'string') msg += `: ${detail}`
+          }
         } catch {
           // ignore parse failure
         }

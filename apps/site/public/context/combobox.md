@@ -16,11 +16,11 @@
 
 ## Anti-patterns
 
-### Combobox has role="combobox" with a listbox of selectable values and onChange semantics — actions belong in a menu
+### Combobox has role="combobox" with a listbox of selectable values and onValueChange semantics — actions belong in a menu
 
 **Bad:** `Using Combobox to fire actions like "Delete" or "Export"`  
 **Good:** `Use Dropdown for actions; Combobox is for picking a value`  
-**Why:** Combobox has role="combobox" with a listbox of selectable values and onChange semantics — actions belong in a menu
+**Why:** Combobox has role="combobox" with a listbox of selectable values and onValueChange semantics — actions belong in a menu
 
 ### Without filtering the list becomes an unusable scroll; either keep search on or switch to a different selection pattern
 
@@ -47,7 +47,6 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 | `value`            | `string`                               | No       | —       | The controlled value.                                                                                                                                                                                                                                                                                                                                                                                |
 | `defaultValue`     | `string`                               | No       | —       | The initial value when uncontrolled.                                                                                                                                                                                                                                                                                                                                                                 |
 | `onValueChange`    | `(value: string \| undefined) => void` | No       | —       | Called with the selected option value (or undefined when cleared).                                                                                                                                                                                                                                                                                                                                   |
-| `onChange`         | `(value: string \| undefined) => void` | No       | —       | Deprecated: use onValueChange (same string \| undefined).                                                                                                                                                                                                                                                                                                                                            |
 | `clearable`        | `boolean`                              | No       | false   | When true, shows a control to clear the selected value.                                                                                                                                                                                                                                                                                                                                              |
 | `searchable`       | `boolean`                              | No       | true    | When true, shows a search/filter input.                                                                                                                                                                                                                                                                                                                                                              |
 | `label`            | `string`                               | No       | —       | Text label for the control. Rendered on screen.                                                                                                                                                                                                                                                                                                                                                      |
@@ -93,7 +92,7 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
     { value: 'de', label: 'Germany' },
     { value: 'fr', label: 'France' },
   ]}
-  onChange={(value) => console.log(value)}
+  onValueChange={(value) => console.log(value)}
 />
 ```
 
@@ -102,7 +101,7 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 | Area                       | Level    | Note                                                                                     |
 | -------------------------- | -------- | ---------------------------------------------------------------------------------------- |
 | searchable                 | flexible | Filtering can be toggled off for short lists via searchable={false}                      |
-| controlled vs uncontrolled | flexible | Supports value + onChange or defaultValue                                                |
+| controlled vs uncontrolled | flexible | Supports value + onValueChange or defaultValue                                           |
 | token names                | strict   | Listbox/field styling resolves to semantic --cascivo-color-_ / --cascivo-radius-_ tokens |
 
 ## AI context prompt

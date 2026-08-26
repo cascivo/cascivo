@@ -53,12 +53,6 @@ export const meta: ComponentMeta = {
       required: false,
     },
     {
-      name: 'onChange',
-      description: 'Deprecated: use onValueChange (same checked boolean).',
-      type: '(checked: boolean) => void',
-      required: false,
-    },
-    {
       name: 'mode',
       description: "Transition between states ('rotate' | 'flip').",
       type: "'rotate' | 'flip'",

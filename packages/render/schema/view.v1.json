@@ -5762,12 +5762,6 @@
                   "categoryLabelEvery": {
                     "type": "number"
                   },
-                  "xTicks": {
-                    "type": "number"
-                  },
-                  "yTicks": {
-                    "type": "number"
-                  },
                   "xLabelEvery": {
                     "type": "number"
                   },
