@@ -51,10 +51,28 @@ jobs:
       # @guidepup/guidepup, resolved from the working directory, so it has to run
       # where that package was added. A bare `install` picks the one screen
       # reader the manifest marks default for this platform (voiceover).
+      #
+      # `setup --ci` drives real macOS UI to turn on Do Not Disturb — it opens
+      # Control Center over System Events and clicks a checkbox by position. That
+      # loses its race often enough to have killed 3 of the 12 nightly runs to
+      # 2026-08-26, always as `Failed to enable "Do not disturb" mode` (the
+      # `TypeError: Error.isError is not a function` that follows is guidepup's
+      # own error handler crashing on Node 22 — it hides the cause, it is not it).
+      # guidepup retries the AppleScript 5x internally; a fresh process is a
+      # further retry from a clean Control Center, which is all this loop is.
       - name: Enable VoiceOver automation
         working-directory: apps/storybook
         run: |
-          npx --yes @guidepup/setup setup --ci
+          attempt=1
+          until npx --yes @guidepup/setup setup --ci; do
+            if [ "$attempt" -ge 3 ]; then
+              echo "::error::guidepup setup failed on all $attempt attempts"
+              exit 1
+            fi
+            echo "guidepup setup failed (attempt $attempt) — retrying"
+            attempt=$((attempt + 1))
+            sleep 15
+          done
           npx --yes @guidepup/setup install
       - name: Sweep
         env:
@@ -98,7 +116,16 @@ jobs:
       - name: Enable NVDA automation
         working-directory: apps/storybook
         run: |
-          npx --yes @guidepup/setup setup --ci
+          attempt=1
+          until npx --yes @guidepup/setup setup --ci; do
+            if [ "$attempt" -ge 3 ]; then
+              echo "::error::guidepup setup failed on all $attempt attempts"
+              exit 1
+            fi
+            echo "guidepup setup failed (attempt $attempt) — retrying"
+            attempt=$((attempt + 1))
+            sleep 15
+          done
           npx --yes @guidepup/setup install
       - name: Sweep
         env:

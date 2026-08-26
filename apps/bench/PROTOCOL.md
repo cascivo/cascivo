@@ -9,7 +9,9 @@ contract exactly. The conformance spec (`runner/test/protocol.spec.ts`) enforces
   port (cascade 4181, shadcn 4182, carbon 4183, `strictPort`).
 - No `<StrictMode>` (double-render would corrupt commit counts).
 - Root wrapped in the shared Profiler harness: `window.__commits` increments on every root
-  commit.
+  commit. React compiles `<Profiler>` out of production builds, so the counter only moves on
+  the dev server — the render suite (`runner/src/renders.ts`, which serves each app with
+  `vp dev`) is what enforces this line, not the conformance spec.
 - After first mount, a double-`requestAnimationFrame` sets `document.body.dataset.benchReady = '1'`.
 - All data from the seeded generator (`data.ts`, mulberry32 seed 42). No randomness, no dates.
 - Idiomatic state management for the library under test: cascade = signals; shadcn/carbon =

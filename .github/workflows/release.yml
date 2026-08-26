@@ -58,6 +58,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # A brand-new package NAME cannot be created over OIDC: npm only attaches a
+      # trusted publisher to a package that already exists. `changeset publish`
+      # then fails the whole publish with `E404 … PUT …/<name>`, which also skips
+      # the version step below, so one un-bootstrapped name strands every release
+      # until someone reads the log. @cascivo/eslint-plugin did exactly that from
+      # 2026-08-21. Check it in seconds, up front, with a message that names the
+      # one-time manual publish it is asking for.
+      - name: Preflight — every publishable name exists on npm
+        run: node scripts/checks/npm-bootstrap.mjs
+
       # Defense in depth: the PR `drift` job already keeps `main` in sync, but a
       # publish must never ship stale generated docs (READMEs, registry.json,
       # llms.txt, context, schema). Regenerate and fail the release if anything

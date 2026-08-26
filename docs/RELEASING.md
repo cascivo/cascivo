@@ -96,6 +96,37 @@ From the second release onward the workflow publishes tokenlessly via OIDC — n
 > (where you can attach a publisher before a package exists), you can skip the bootstrap
 > entirely. Check the npmjs.com UI before starting.
 
+### Adding a package to the release after the bootstrap
+
+Every **new** package name needs the same one-time manual publish before the workflow
+can ever ship it. Until it happens, `changeset publish` fails the whole publish step with
+`E404 … PUT https://registry.npmjs.org/<name>` — and because that also skips the version
+step, one un-bootstrapped name strands every subsequent release, not just its own package.
+`@cascivo/eslint-plugin` landed on `main` on 2026-08-21 and blocked the next three releases
+that way.
+
+The release workflow now checks this first, in seconds:
+
+```sh
+pnpm npm-bootstrap:check   # every non-private packages/* name exists on npm
+```
+
+When it reports a missing name, publish it once by hand from a clean checkout of `main`:
+
+```sh
+pnpm build
+npm login
+# Provenance off: it is generated from CI's OIDC token and cannot be produced locally,
+# and publishConfig turns it on for every package. `changeset publish` ships only the
+# versions npm does not already have, so this publishes the missing name and nothing else.
+NPM_CONFIG_PROVENANCE=false pnpm changeset publish
+```
+
+Then attach the trusted publisher (`npmjs.com/package/<name>` → Settings → Trusted
+Publisher; org `cascivo`, repo `cascivo`, workflow `release.yml`, no environment) and
+re-run the Release workflow via **workflow_dispatch** on `main`. The provenance badge
+appears from the next CI publish onward.
+
 ## Steady-state release flow
 
 1. **Develop** — PRs land on `main` carrying `.changeset/*.md` entries

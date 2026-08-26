@@ -9,6 +9,12 @@ jobs:
   deterministic:
     name: Deterministic gates (conformance, bundle, treeshake, a11y, renders)
     runs-on: ubuntu-latest
+    # Both jobs drive browsers against servers they spawn themselves. When a
+    # server outlived its suite, the runner process stayed alive with it and the
+    # job sat idle until GitHub's 6-hour ceiling — twice, on 2026-08-17 and
+    # 2026-08-24. `server.ts` now kills the whole process group; this is the
+    # backstop, so the next such bug costs minutes instead of six hours.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -55,6 +61,7 @@ jobs:
   timing-informational:
     name: Timing smoke (informational — hosted-runner noise, never gated)
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 

@@ -1,11 +1,5 @@
 import { expect, test } from '@playwright/test'
 
-declare global {
-  interface Window {
-    __commits: number
-  }
-}
-
 // A table with no rows still renders one <tr>: DataTable's empty state, which marks
 // itself `data-empty-row`. Counting bare `tbody tr` therefore reads 1 after `clear`,
 // not 0. Exclude it so the count means "data rows".
@@ -63,13 +57,10 @@ test.describe('bench protocol conformance', () => {
     await expect(page.getByRole('dialog')).toBeHidden()
   })
 
-  test('commit counter is wired', async ({ page }) => {
-    await page.goto('/table')
-    await page.waitForSelector('body[data-bench-ready="1"]')
-    const before = await page.evaluate(() => window.__commits)
-    await page.click('[data-bench="create-1k"]')
-    await page.waitForTimeout(100)
-    const after = await page.evaluate(() => window.__commits)
-    expect(after).toBeGreaterThan(before)
-  })
+  // The Profiler harness that feeds `window.__commits` is NOT asserted here.
+  // This suite drives the production preview, where React compiles `<Profiler>`
+  // to a no-op, so the counter reads 0 no matter how correctly it is wired — the
+  // assertion could only ever fail (it did, in every bench run from 2026-08-17
+  // on). The render suite serves the same apps in dev mode, which is where the
+  // counter is read and where `runRenderSuite` now asserts it is live.
 })
