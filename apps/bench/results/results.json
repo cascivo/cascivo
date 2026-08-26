@@ -509,44 +509,44 @@
   },
   "renders": {
     "create-1k": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 2,
+      "shadcn": 2,
+      "carbon": 2
     },
     "create-10k": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 2,
+      "shadcn": 2,
+      "carbon": 2
     },
     "update-every-10th": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 2,
+      "shadcn": 2,
+      "carbon": 2
     },
     "select-row": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 1,
+      "shadcn": 1,
+      "carbon": 2
     },
     "clear": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 2,
+      "shadcn": 2,
+      "carbon": 2
     },
     "open-dialog": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 1,
+      "shadcn": 6,
+      "carbon": 3
     },
     "type-20-chars": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 21,
+      "shadcn": 20,
+      "carbon": 33
     },
     "toggle-50-checkboxes": {
-      "cascade": 0,
-      "shadcn": 0,
-      "carbon": 0
+      "cascade": 1,
+      "shadcn": 3,
+      "carbon": 2
     }
   },
   "lighthouse": {

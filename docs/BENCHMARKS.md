@@ -75,14 +75,14 @@ Timings above are NOT from these builds.
 
 | Scenario             | cascade | shadcn | carbon |
 | -------------------- | ------: | -----: | -----: |
-| create-1k            |       0 |      0 |      0 |
-| create-10k           |       0 |      0 |      0 |
-| update-every-10th    |       0 |      0 |      0 |
-| select-row           |       0 |      0 |      0 |
-| clear                |       0 |      0 |      0 |
-| open-dialog          |       0 |      0 |      0 |
-| type-20-chars        |       0 |      0 |      0 |
-| toggle-50-checkboxes |       0 |      0 |      0 |
+| create-1k            |       2 |      2 |      2 |
+| create-10k           |       2 |      2 |      2 |
+| update-every-10th    |       2 |      2 |      2 |
+| select-row           |       1 |      1 |      2 |
+| clear                |       2 |      2 |      2 |
+| open-dialog          |       1 |      6 |      3 |
+| type-20-chars        |      21 |     20 |     33 |
+| toggle-50-checkboxes |       1 |      3 |      2 |
 
 ## Lighthouse (median of 5 runs, desktop preset)
 
