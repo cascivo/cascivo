@@ -28,7 +28,8 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0079bf" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f9f4e4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0c10" />
     <link rel="dns-prefetch" href="https://github.com" />
     <meta property="og:site_name" content="cascivo" />
     <meta property="og:title" content="cascivo" />
@@ -90,16 +91,18 @@
     </script>
     <script>
       // Apply the persisted theme before paint to avoid a flash of the wrong theme.
-      // Storage holds a versioned envelope ({"v":1,"value":"dark"}); older builds
-      // stored the bare string. Only light/dark/warm are render-blocking, so any
-      // other (deferred) theme paints as `dark` here and the app swaps it in once
-      // its CSS loads. With nothing stored, default from the OS color-scheme
-      // preference (light/dark) — matches preferredTheme() in src/theme.ts.
+      // Storage holds a versioned envelope ({"v":1,"value":"poster"}); older builds
+      // stored the bare string. Only the poster pair (the default) and light/dark/
+      // warm are render-blocking, so any other (deferred) theme paints as the
+      // matching poster half here and the app swaps it in once its CSS loads. With
+      // nothing stored, default from the OS color-scheme preference — matches
+      // preferredTheme() in src/theme.ts.
       ;(function () {
         try {
           var prefersLight =
             typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: light)').matches
-          var v = prefersLight ? 'light' : 'dark'
+          var fallback = prefersLight ? 'poster' : 'poster-dark'
+          var v = fallback
           var raw = localStorage.getItem('cascade-theme')
           if (raw) {
             v = raw
@@ -108,9 +111,10 @@
               if (env && typeof env === 'object' && 'value' in env) v = env.value
             } catch (e) {}
           }
+          var blocking = ['poster', 'poster-dark', 'light', 'dark', 'warm']
           document.documentElement.setAttribute(
             'data-theme',
-            v === 'light' || v === 'dark' || v === 'warm' ? v : 'dark',
+            blocking.indexOf(v) >= 0 ? v : fallback,
           )
         } catch (e) {}
       })()

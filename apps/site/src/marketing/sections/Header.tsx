@@ -2,13 +2,19 @@
 import { useRef, type ReactElement } from 'react'
 import { useMediaQuery, useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { ShellHeader, type ShellHeaderNavItem } from '@cascivo/components/shell-header'
-import { Tooltip } from '@cascivo/components/tooltip'
 import { Dropdown, type DropdownItem } from '@cascivo/components/dropdown'
-import { setTheme, theme, THEMES, type ThemeName } from '../../theme'
+import {
+  isDarkTheme,
+  nextScheme,
+  setTheme,
+  theme,
+  THEMES,
+  toggleScheme,
+  type ThemeName,
+} from '../../theme'
 import { currentPath, navigate } from '../../router'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
-import { peek } from '../peek'
 
 const GITHUB_HREF = 'https://github.com/cascivo/cascivo'
 
@@ -156,26 +162,6 @@ const THEME_ICONS: Record<string, () => ReactElement> = {
   warm: WarmIcon,
 }
 
-function EyeIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      focusable="false"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  )
-}
-
 function GitHubIcon() {
   return (
     <svg
@@ -308,16 +294,28 @@ export function Header() {
   )
 
   const renderGitHubLink = () => (
-    <a
-      href={GITHUB_HREF}
-      className="header-icon-link"
-      aria-label="GitHub"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a href={GITHUB_HREF} className="header-github-link" target="_blank" rel="noopener noreferrer">
       <GitHubIcon />
+      <span className="header-github-label">GitHub&nbsp;↗</span>
     </a>
   )
+
+  // The fast path between the two halves of one theme; the dropdown beside it
+  // still offers every look. Labelled by its destination, not its current state.
+  const renderSchemeToggle = () => {
+    const target = nextScheme()
+    const toDark = isDarkTheme(target)
+    return (
+      <button
+        type="button"
+        className="header-scheme-toggle"
+        aria-label={`Switch to the ${toDark ? 'dark' : 'light'} theme`}
+        onClick={toggleScheme}
+      >
+        {toDark ? <MoonIcon /> : <SunIcon />}
+      </button>
+    )
+  }
 
   return (
     <>
@@ -342,28 +340,7 @@ export function Header() {
           : {})}
         end={
           <>
-            {currentPath.value === '/' && (
-              <Tooltip
-                content={peek.value ? 'Back to the page' : 'Peek at the components'}
-                placement="bottom"
-              >
-                <button
-                  type="button"
-                  className="header-peek-toggle"
-                  aria-pressed={peek.value}
-                  aria-label={
-                    peek.value
-                      ? 'Hide the components and show the page'
-                      : 'Peek at the components behind the page'
-                  }
-                  onClick={() => {
-                    peek.value = !peek.value
-                  }}
-                >
-                  <EyeIcon />
-                </button>
-              </Tooltip>
-            )}
+            {renderSchemeToggle()}
             {!isMobileNav && renderThemeDropdown()}
             <SearchButton
               onClick={() => {

@@ -2,6 +2,9 @@ import { render } from 'preact'
 import { App } from './App'
 import './app.css'
 import './marketing/landing.css'
+// The poster grid re-tunes the shared chrome landing.css declares, so it loads last.
+import './marketing/poster.css'
+import './marketing/poster-sections.css'
 
 const root = document.getElementById('app')
 if (root) {

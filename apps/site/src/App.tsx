@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react'
 import { useSignal, useSignalEffect, useSignals } from '@cascivo/core'
 import { currentPath, initRouter, navigate, scrollToHash } from './router'
 import { initReveal } from './marketing/reveal'
-import { peek } from './marketing/peek'
 import { searchOpen } from './marketing/search/state'
 import { MarketingApp } from './marketing/App'
 import { theme } from './theme'
@@ -57,13 +56,6 @@ export function App() {
   useSignalEffect(() => initReveal())
   useSignalEffect(() => {
     initRouter()
-  })
-
-  // Home "peek" gimmick — gate on the home route so it can't strand another page.
-  useSignalEffect(() => {
-    const home = currentPath.value === '/'
-    if (!home && peek.value) peek.value = false
-    document.documentElement.toggleAttribute('data-peek', home && peek.value)
   })
 
   // Cmd+K / Ctrl+K opens the unified search dialog (components + pages).
