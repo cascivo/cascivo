@@ -598,25 +598,6 @@
   color: var(--cascivo-color-warning-foreground);
 }
 
-/*
- * app.css's unlayered `a { color: inherit }` outranks every layered component
- * rule, so a Button rendered `asChild` as an anchor drops the foreground its
- * variant paints on. The light half inherited an ink that happened to match;
- * the dark half inherits cream and puts it on acid. Restate the three filled
- * variants — `ghost` already wants the inherited colour.
- */
-a[data-variant='primary'] {
-  color: var(--cascivo-color-primary-fg);
-}
-
-a[data-variant='secondary'] {
-  color: var(--cascivo-color-secondary-content);
-}
-
-a[data-variant='destructive'] {
-  color: var(--cascivo-color-text-on-destructive);
-}
-
 /* The CTA band is acid, so its copy chip cannot keep landing.css's surface
    fill — that is a near-black block under ink type in the dark half. On acid
    the chip is an outline, like every other box in the grid, and everything
