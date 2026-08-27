@@ -1,0 +1,842 @@
+/*
+ * cascivo.com — the poster grid.
+ *
+ * A hard-edged editorial grid: zero radius, 3px rules, hard offset shadows,
+ * acid accent, black-and-cream inversions, display type. Every colour, radius
+ * and shadow below comes from a token, so the whole page repaints from
+ * `data-theme` — the poster look is the `poster` theme (src/poster.css), and
+ * picking any other theme from the header keeps the grid and swaps the palette.
+ * That is the theme system demonstrating itself at page scale.
+ *
+ * Loaded after landing.css, which still carries the per-section detail of the
+ * secondary pages; the last block here re-tunes that shared chrome so no page
+ * is left on the pre-redesign visual language.
+ *
+ * Mobile-first: base styles target 320px; min-width queries enhance upward on
+ * the canonical scale (sm 30rem · md 40rem · lg 64rem · xl 80rem).
+ */
+
+@layer cascivo.theme {
+  /*
+   * Defaults for the four --cascivo-landing-* tokens, so the poster grid also
+   * holds under the twelve first-party themes (which know nothing about it).
+   * `poster`/`poster-dark` restate them; this block must stay ahead of every
+   * [data-theme] rule in the layer, which app.css's import order guarantees.
+   */
+  :root {
+    --cascivo-landing-invert-bg: var(--cascivo-color-foreground);
+    --cascivo-landing-invert-fg: var(--cascivo-color-background);
+    --cascivo-landing-rule-weight: 3px;
+    --cascivo-landing-hatch: var(--cascivo-color-border);
+  }
+}
+
+/* ── Grid vocabulary ───────────────────────────────────────────────────── */
+
+.pg {
+  --pg-rule: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+  --pg-hair: 1px solid var(--cascivo-landing-hatch);
+  --pg-pad-inline: 1.25rem;
+  --pg-pad-block: 2rem;
+
+  background: var(--cascivo-color-bg);
+  color: var(--cascivo-color-text);
+}
+
+@media (min-width: 40rem) {
+  .pg {
+    --pg-pad-inline: 2.5rem;
+    --pg-pad-block: 2.125rem;
+  }
+}
+
+/* A section is a full-bleed band closed by a rule. No max-width container and
+   no centred column — the grid runs edge to edge. */
+.pg-section {
+  border-block-end: var(--pg-rule);
+  scroll-margin-block-start: 3.75rem;
+}
+
+.pg-pad {
+  padding: var(--pg-pad-block) var(--pg-pad-inline);
+}
+
+/* Cells of a band.
+   The rules between cells are the grid GAP, painted by the container's own
+   background, and every cell paints over it. That survives column spans and
+   wrapping without any nth-child arithmetic, and it never leaves a dangling
+   rule at an edge — the band's own border closes those. */
+.pg-cols,
+.pg-tiles {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--cascivo-landing-rule-weight);
+  background: var(--cascivo-color-border);
+}
+
+:where(.pg-cols, .pg-tiles) > :where(*) {
+  background: var(--cascivo-color-bg);
+  min-inline-size: 0;
+}
+
+.pg-tiles {
+  border-block-start: var(--pg-rule);
+}
+
+@media (min-width: 40rem) {
+  .pg-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .pg-cols {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
+
+  /* Asymmetric splits — the hero (8/4), reactivity (5/7), themes (4/8). */
+  .pg-cols--8-4 {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  }
+
+  .pg-cols--5-7 {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+
+  .pg-cols--4-8 {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  }
+
+  .pg-tiles--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pg-tiles--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .pg-tiles--5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+/* ── Type ──────────────────────────────────────────────────────────────── */
+
+.pg-eyebrow {
+  margin: 0;
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.pg-display {
+  margin: 0;
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+/* The floor is set by the longest word ("stylesheet.") inside 320px minus the
+   band's padding — the brief's 56px floor overflows a small phone. */
+.pg-display--hero {
+  font-size: clamp(2.5rem, 7.2vw, 7rem);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  overflow-wrap: break-word;
+}
+
+.pg-display--section {
+  font-size: clamp(1.875rem, 3.4vw, 2.875rem);
+}
+
+.pg-display--cta {
+  font-size: clamp(2.75rem, 6.4vw, 6rem);
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+}
+
+.pg-display--tile {
+  font-size: 1.25rem;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.pg-display--sub {
+  font-size: 1.1875rem;
+  letter-spacing: -0.025em;
+}
+
+.pg-lede {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.45;
+  font-weight: 500;
+  max-inline-size: 46ch;
+}
+
+.pg-body {
+  margin: 0;
+  font-size: 0.96875rem;
+  line-height: 1.55;
+  font-weight: 500;
+  color: var(--cascivo-color-text-subtle);
+}
+
+.pg-note {
+  margin: 0;
+  font-size: 0.84375rem;
+  line-height: 1.55;
+  font-weight: 500;
+  color: var(--cascivo-color-text-subtle);
+}
+
+.pg-mono {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Acid highlight behind a run of display text; `clone` keeps every wrapped line
+   painted, which a hero headline needs. */
+.pg-mark {
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+  padding-inline: 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ── Bands ─────────────────────────────────────────────────────────────── */
+
+.pg-invert {
+  background: var(--cascivo-landing-invert-bg);
+  color: var(--cascivo-landing-invert-fg);
+}
+
+/* Inverting a band inverts both halves of every pair inside it, so contrast is
+   preserved rather than inherited from the page. */
+.pg-invert .pg-body,
+.pg-invert .pg-note {
+  color: inherit;
+  opacity: 0.78;
+}
+
+.pg-invert a {
+  color: inherit;
+}
+
+.pg-acid {
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+}
+
+.pg-acid .pg-body,
+.pg-acid .pg-note {
+  color: inherit;
+}
+
+.pg-surface {
+  background: var(--cascivo-color-surface);
+}
+
+/* ── Section header row: title left, `NN / label` right ────────────────── */
+
+.pg-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.pg-head .pg-eyebrow {
+  order: -1;
+  inline-size: 100%;
+}
+
+@media (min-width: 40rem) {
+  .pg-head .pg-eyebrow {
+    order: 0;
+    inline-size: auto;
+    text-align: end;
+  }
+}
+
+/* ── Controls ──────────────────────────────────────────────────────────── */
+
+/* The poster button: 3px rule, hard offset shadow, and a press that travels
+   into its own shadow. */
+.pg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  min-block-size: 2.75rem;
+  padding-inline: 1.625rem;
+  border: var(--pg-rule);
+  background: var(--cascivo-color-surface);
+  color: var(--cascivo-color-text);
+  font-family: var(--cascivo-font-sans);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: var(--cascivo-shadow-md);
+  transition:
+    translate 90ms var(--cascivo-ease-out, ease-out),
+    box-shadow 90ms var(--cascivo-ease-out, ease-out);
+}
+
+.pg-btn--primary {
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+}
+
+.pg-btn--ink {
+  background: var(--cascivo-landing-invert-bg);
+  color: var(--cascivo-landing-invert-fg);
+}
+
+.pg-btn--quiet {
+  background: transparent;
+  color: inherit;
+}
+
+.pg-btn--mono {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding-inline: 1rem;
+}
+
+.pg-btn:active {
+  translate: 4px 4px;
+  box-shadow: 0 0 0 var(--cascivo-color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pg-btn {
+    transition: none;
+  }
+}
+
+/* Bordered mono chip — ticker facts, AI tags, a11y labels. */
+.pg-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid currentcolor;
+  padding: 0.3125rem 0.5625rem;
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pg-chip--acid {
+  border-color: var(--cascivo-color-border);
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+}
+
+/* ── Figures ───────────────────────────────────────────────────────────── */
+
+.pg-stat-value {
+  display: block;
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  font-size: clamp(2.125rem, 3.4vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.pg-stat-label {
+  display: block;
+  margin-block-start: 0.5rem;
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.71875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.78;
+}
+
+/* Code sits in a ruled slab, never a rounded card. */
+.pg-pre {
+  margin: 0;
+  overflow-x: auto;
+  border: var(--pg-rule);
+  background: var(--cascivo-color-surface);
+  padding: 1.125rem 1.25rem;
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--cascivo-color-text);
+}
+
+@media (min-width: 40rem) {
+  .pg-pre {
+    font-size: 0.875rem;
+  }
+}
+
+.pg-invert .pg-pre {
+  border-color: var(--cascivo-landing-invert-fg);
+  background: transparent;
+  color: inherit;
+}
+
+.pg-pre--tight {
+  border-width: 2px;
+  padding: 0.75rem 0.875rem;
+  font-size: 0.78125rem;
+}
+
+/* Underlined destructive-red link — the poster page's only link decoration. */
+.pg-link {
+  display: inline-block;
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cascivo-color-destructive);
+  border-block-end: 2px solid currentcolor;
+  text-decoration: none;
+}
+
+.pg-invert .pg-link {
+  color: var(--cascivo-color-accent);
+}
+
+/* Wide content — tables, code, the comparison grid — scrolls inside its own
+   box so the page body never scrolls sideways at 320px. */
+.pg-scroll {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+/* ── Focus ─────────────────────────────────────────────────────────────── */
+
+/* One ring for the whole page, from the theme: 3px solid, 2px offset — legible
+   on cream, on ink and on acid alike. */
+.pg :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--cascivo-ring-width) solid var(--cascivo-ring-color);
+  outline-offset: var(--cascivo-ring-offset);
+}
+
+.pg-invert :where(a, button, [tabindex]):focus-visible,
+.pg-acid :where(a, button, [tabindex]):focus-visible {
+  outline-color: currentcolor;
+}
+
+/* ── Shared page chrome, re-tuned ──────────────────────────────────────── */
+/*
+ * Everything below carries the poster language onto the routes that keep their
+ * existing markup (accessibility, performance, guides, blog, examples, charts,
+ * showcase, ai, create, blocks, 404 and the docs surface). They share one
+ * vocabulary — .section / .proof-hero / .guides-* / .btn / .cta-band — so
+ * re-tuning it here reaches all of them without touching each page.
+ */
+
+.section,
+.guides-section {
+  max-width: none;
+  padding: var(--cascivo-space-10) 1.25rem;
+  border-block-end: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+@media (min-width: 40rem) {
+  .section,
+  .guides-section {
+    padding-inline: 2.5rem;
+  }
+}
+
+.section h2,
+.guides-section h2,
+.cta-band h2 {
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.section h3,
+.guides-section h3 {
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.section-sub,
+.guides-section-sub,
+.proof-hero-sub {
+  max-width: 68ch;
+  font-size: 0.96875rem;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+/* Eyebrows are mono caps everywhere. */
+.guides-eyebrow {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cascivo-color-text);
+}
+
+/* Page heroes across the secondary routes get the poster hero treatment. */
+.proof-hero {
+  max-width: none;
+  padding: var(--cascivo-space-10) 1.25rem;
+  border-block-end: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+@media (min-width: 40rem) {
+  .proof-hero {
+    padding-inline: 2.5rem;
+  }
+}
+
+.proof-hero h1 {
+  max-width: 18ch;
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  font-size: clamp(2.25rem, 5.4vw, 4rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.proof-hero-accent {
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+  padding-inline: 0.06em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* The CTA band is a full-bleed acid field, not a floating rounded card. */
+.cta-band {
+  max-inline-size: none;
+  margin: 0;
+  border: 0;
+  border-block-end: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+  border-radius: 0;
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+  padding: var(--cascivo-space-12) 1.25rem;
+  padding-block-end: max(var(--cascivo-space-12), env(safe-area-inset-bottom));
+  text-align: start;
+}
+
+@media (min-width: 40rem) {
+  .cta-band {
+    padding-inline: 2.5rem;
+  }
+}
+
+.cta-band h2 {
+  font-size: clamp(2.75rem, 6.4vw, 6rem);
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+}
+
+.cta-band p {
+  max-inline-size: 44ch;
+  color: inherit;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.cta-band-actions {
+  justify-content: flex-start;
+}
+
+/* Buttons: 3px rule, hard shadow, uppercase weight — everywhere, not just the
+   landing page. */
+.btn {
+  min-block-size: 2.75rem;
+  height: auto;
+  border-width: var(--cascivo-landing-rule-weight);
+  border-color: var(--cascivo-color-border);
+  border-radius: 0;
+  font-weight: 700;
+  box-shadow: var(--cascivo-shadow-sm);
+  transition:
+    translate 90ms var(--cascivo-ease-out, ease-out),
+    box-shadow 90ms var(--cascivo-ease-out, ease-out);
+}
+
+.btn:active {
+  translate: 2px 2px;
+  box-shadow: 0 0 0 var(--cascivo-color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}
+
+.btn-primary {
+  background-color: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+}
+
+.btn-primary:hover {
+  background-color: var(--cascivo-color-accent-hover);
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+/*
+ * Sticky and inverted: ink band, cream type, one 3px rule under it. It is the
+ * shipped `ShellHeader`, re-tuned from tokens — the nav, drawer, search trigger
+ * and theme menu are all still its own.
+ */
+
+.landing-shell-header {
+  background: var(--cascivo-landing-invert-bg);
+  color: var(--cascivo-landing-invert-fg);
+  border-block-end: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+.landing-shell-header a,
+.landing-shell-header button {
+  color: inherit;
+}
+
+/* Brand in display caps; nav in mono caps. */
+.landing-shell-header :where([class*='brand']) {
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  font-size: 1.125rem;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.landing-shell-header :where(nav) a,
+.landing-shell-header :where(nav) button {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.71875rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.header-scheme-toggle,
+.header-theme-cycle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.header-scheme-toggle:hover,
+.header-theme-cycle:hover {
+  background: color-mix(in oklch, var(--cascivo-landing-invert-fg) 16%, transparent);
+  color: inherit;
+}
+
+.header-search-btn {
+  border-radius: 0;
+  border-color: color-mix(in oklch, var(--cascivo-landing-invert-fg) 45%, transparent);
+  color: inherit;
+}
+
+/* GitHub is the one acid element in the band — the header's single call out. */
+.header-github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-block-size: 2.25rem;
+  padding-inline: 0.8125rem;
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.landing-shell-header .header-github-link {
+  color: var(--cascivo-color-accent-content);
+}
+
+.header-github-label {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .header-github-label {
+    display: inline;
+  }
+}
+
+.mobile-nav-drawer {
+  background: var(--cascivo-landing-invert-bg);
+  color: var(--cascivo-landing-invert-fg);
+  border-inline-start: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+}
+
+.mobile-nav-link {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+
+.footer {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-inner {
+  padding: 2.125rem 1.25rem 2.5rem;
+  gap: 2.5rem;
+}
+
+@media (min-width: 40rem) {
+  .footer-inner {
+    padding-inline: 2.5rem;
+  }
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.footer-brand-name {
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  font-size: 1.25rem;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.footer-brand-facts {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.71875rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.footer-columns {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+
+.footer-column-title {
+  font-size: 0.65625rem;
+  letter-spacing: 0.12em;
+  color: inherit;
+  opacity: 0.5;
+}
+
+.footer-column-links a,
+.footer-note {
+  color: inherit;
+}
+
+.footer-column-links a {
+  opacity: 0.82;
+}
+
+.footer-column-links a:hover,
+.footer-column-links a:focus-visible {
+  color: inherit;
+  opacity: 1;
+}
+
+.footer-note {
+  font-size: 0.84375rem;
+  opacity: 0.65;
+}
+
+/* ── Docs surface ──────────────────────────────────────────────────────── */
+/*
+ * The docs are a reference surface, so only the page head takes the poster
+ * voice — display caps on 197 component pages' worth of body headings would
+ * cost more in scannability than it buys in consistency. Everything else there
+ * repaints from the theme's tokens on its own.
+ */
+
+.doc-eyebrow {
+  font-family: var(--cascivo-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--cascivo-color-text);
+}
+
+.doc-head h1 {
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  font-size: clamp(1.75rem, 3.4vw, 2.75rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.doc-section > h2 {
+  border-block-end-width: 2px;
+}
+
+/* ── Touch targets ─────────────────────────────────────────────────────── */
+/*
+ * On a coarse pointer every standalone control the poster styles reaches the
+ * 44px minimum. Desktop density (pointer: fine) is untouched, and links inside
+ * a sentence are left alone — WCAG's inline exception covers those, and padding
+ * them would break the line box they sit in.
+ */
+
+@media (pointer: coarse) {
+  .pg-link,
+  .pg-diff-tag,
+  .pg-showcase-host,
+  .header-scheme-toggle,
+  .header-theme-cycle,
+  .header-github-link,
+  .footer-column-links a,
+  .pg-table tbody th a {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--cascivo-target-min-coarse, 2.75rem);
+  }
+
+  .pg-diff-tag {
+    align-items: flex-end;
+  }
+}

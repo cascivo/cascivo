@@ -2,53 +2,52 @@ import { type ComponentType, Suspense, lazy } from 'react'
 import { useSignals } from '@cascivo/core'
 import { SkipNavLink, SkipNavTarget } from '@cascivo/components/skip-nav'
 import { Header } from './sections/Header'
-import { Hero } from './sections/Hero'
-import { SocialProof } from './sections/SocialProof'
-import { SectionNav } from './sections/SectionNav'
+import { PosterHero } from './poster/PosterHero'
+import { PosterTicker } from './poster/PosterTicker'
 import { currentPath } from '../router'
 import { applyNotFoundSeo, applyRouteSeo } from './seo'
 import { ROUTE_HEAD } from './route-head'
 import { DEMOS } from './pages/examples/data'
 
-// Heavy below-the-fold home sections — split into their own chunks so the
-// initial home JS shrinks. Hero/above-the-fold stay eager (protect LCP).
-// The component backdrop is decorative; lazy so its ~two-dozen demos never
-// weigh on the initial paint.
-const ComponentField = lazy(() =>
-  import('./sections/ComponentField').then((m) => ({ default: m.ComponentField })),
+// Below-the-fold poster sections — split into their own chunks so the initial
+// home JS shrinks. The hero and the ticker stay eager (they are the LCP band).
+const PosterWedge = lazy(() =>
+  import('./poster/PosterWedge').then((m) => ({ default: m.PosterWedge })),
 )
-// Below-the-fold and the only eager home component that pulled in `@cascivo/icons`.
-// Keeping it eager anchored the whole icon barrel (~every icon used app-wide) into
-// the home entry chunk; lazy-loading it lets the icons land in on-demand chunks.
-const AdvantageCarousel = lazy(() =>
-  import('./sections/AdvantageCarousel').then((m) => ({ default: m.AdvantageCarousel })),
+const PosterDifferences = lazy(() =>
+  import('./poster/PosterDifferences').then((m) => ({ default: m.PosterDifferences })),
 )
-const QuickStart = lazy(() =>
-  import('./sections/QuickStart').then((m) => ({ default: m.QuickStart })),
+const PosterReactivity = lazy(() =>
+  import('./poster/PosterReactivity').then((m) => ({ default: m.PosterReactivity })),
 )
-const Templates = lazy(() => import('./sections/Templates').then((m) => ({ default: m.Templates })))
-const CtaBand = lazy(() => import('./sections/CtaBand').then((m) => ({ default: m.CtaBand })))
+const PosterProof = lazy(() =>
+  import('./poster/PosterProof').then((m) => ({ default: m.PosterProof })),
+)
+const PosterComparison = lazy(() =>
+  import('./poster/PosterComparison').then((m) => ({ default: m.PosterComparison })),
+)
+// The gallery mounts two dozen live components and a chart; the themes section
+// pulls in the nine deferred theme sheets. Both are far below the fold.
+const PosterGallery = lazy(() =>
+  import('./poster/PosterGallery').then((m) => ({ default: m.PosterGallery })),
+)
+const PosterThemes = lazy(() =>
+  import('./poster/PosterThemes').then((m) => ({ default: m.PosterThemes })),
+)
+const PosterAiLayer = lazy(() =>
+  import('./poster/PosterAiLayer').then((m) => ({ default: m.PosterAiLayer })),
+)
+const PosterQuickStart = lazy(() =>
+  import('./poster/PosterQuickStart').then((m) => ({ default: m.PosterQuickStart })),
+)
+const PosterTemplates = lazy(() =>
+  import('./poster/PosterTemplates').then((m) => ({ default: m.PosterTemplates })),
+)
+const PosterShowcase = lazy(() =>
+  import('./poster/PosterShowcase').then((m) => ({ default: m.PosterShowcase })),
+)
+const PosterCta = lazy(() => import('./poster/PosterCta').then((m) => ({ default: m.PosterCta })))
 const Footer = lazy(() => import('./sections/Footer').then((m) => ({ default: m.Footer })))
-const ProofTeasers = lazy(() =>
-  import('./sections/ProofTeasers').then((m) => ({ default: m.ProofTeasers })),
-)
-const Comparison = lazy(() =>
-  import('./sections/Comparison').then((m) => ({ default: m.Comparison })),
-)
-const PrimitivesLayer = lazy(() =>
-  import('./sections/PrimitivesLayer').then((m) => ({ default: m.PrimitivesLayer })),
-)
-const ShowcaseStrip = lazy(() =>
-  import('./sections/ShowcaseStrip').then((m) => ({ default: m.ShowcaseStrip })),
-)
-const FrameworkBand = lazy(() =>
-  import('./sections/FrameworkBand').then((m) => ({ default: m.FrameworkBand })),
-)
-// Interactive above-the-fold theme preview. Lazy so its component cluster +
-// extra-theme CSS never weigh on the hero's LCP text paint.
-const HeroThemePreview = lazy(() =>
-  import('./sections/HeroThemePreview').then((m) => ({ default: m.HeroThemePreview })),
-)
 
 // Non-home routes — loaded on demand, never in the home bundle.
 const AccessibilityPage = lazy(() =>
@@ -129,61 +128,53 @@ function SectionFallback({ tall = false, height }: { tall?: boolean; height?: nu
 function HomePage() {
   return (
     <>
-      <Suspense fallback={null}>
-        <ComponentField />
-      </Suspense>
       <SkipNavLink />
       <Header />
-      <SectionNav />
-      <div className="home-sheet">
-        <SkipNavTarget>
-          <main>
-            <Hero />
-            <Suspense fallback={<SectionFallback height={360} />}>
-              <HeroThemePreview />
-            </Suspense>
-            <SocialProof />
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={520} />}>
-              <AdvantageCarousel />
-            </Suspense>
-            <Suspense fallback={<SectionFallback height={360} />}>
-              <ProofTeasers withLeadingDivider />
-            </Suspense>
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={480} />}>
-              <Comparison />
-            </Suspense>
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={420} />}>
-              <ShowcaseStrip />
-            </Suspense>
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={360} />}>
-              <PrimitivesLayer />
-            </Suspense>
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={420} />}>
-              <QuickStart />
-            </Suspense>
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={300} />}>
-              <FrameworkBand />
-            </Suspense>
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={420} />}>
-              <Templates />
-            </Suspense>
-            <hr className="flow-divider" />
-            <Suspense fallback={<SectionFallback height={180} />}>
-              <CtaBand />
-            </Suspense>
-          </main>
-        </SkipNavTarget>
-        <Suspense fallback={<SectionFallback height={260} />}>
-          <Footer />
-        </Suspense>
-      </div>
+      <SkipNavTarget>
+        <main className="pg">
+          <PosterHero />
+          <PosterTicker />
+          <Suspense fallback={<SectionFallback height={420} />}>
+            <PosterWedge />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={360} />}>
+            <PosterDifferences />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={480} />}>
+            <PosterReactivity />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={520} />}>
+            <PosterProof />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={560} />}>
+            <PosterComparison />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={640} />}>
+            <PosterGallery />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={480} />}>
+            <PosterThemes />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={520} />}>
+            <PosterAiLayer />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={480} />}>
+            <PosterQuickStart />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={360} />}>
+            <PosterTemplates />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={520} />}>
+            <PosterShowcase />
+          </Suspense>
+          <Suspense fallback={<SectionFallback height={320} />}>
+            <PosterCta />
+          </Suspense>
+        </main>
+      </SkipNavTarget>
+      <Suspense fallback={<SectionFallback height={260} />}>
+        <Footer />
+      </Suspense>
     </>
   )
 }

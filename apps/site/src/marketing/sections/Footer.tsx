@@ -1,5 +1,3 @@
-import { Separator } from '@cascivo/components/separator'
-
 const REPO = 'https://github.com/cascivo/cascivo'
 
 // Internal targets resolve to OTHER apps/assets on the deployed cascivo.com
@@ -81,10 +79,14 @@ const COLUMNS: { label: string; links: NavLink[] }[] = [
 
 export function Footer() {
   return (
-    <footer className="footer">
-      <Separator />
+    <footer className="footer pg-invert">
       <div className="footer-inner">
-        <div className="footer-brand">cascivo</div>
+        <div className="footer-brand">
+          <span className="footer-brand-name">cascivo</span>
+          <span className="footer-brand-facts">
+            MIT · {__CASCIVO_COMPONENT_COUNT__} components · {__CASCIVO_THEME_COUNT__} themes
+          </span>
+        </div>
         <div className="footer-columns">
           {COLUMNS.map((col) => (
             <nav key={col.label} className="footer-column" aria-label={`Footer: ${col.label}`}>
@@ -107,9 +109,7 @@ export function Footer() {
             </nav>
           ))}
         </div>
-        <div className="footer-note">
-          MIT licensed. Built with cascivo — view source, it&apos;s all tokens.
-        </div>
+        <div className="footer-note">Built with cascivo — view source, it&apos;s all tokens.</div>
       </div>
     </footer>
   )

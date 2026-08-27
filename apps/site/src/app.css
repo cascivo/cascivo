@@ -1,7 +1,8 @@
-/* Render-blocking: tokens + the three first-party themes (covers the default
-   `dark` plus light/warm). The other nine themes load on demand via a JS
-   dynamic import (see theme.ts → themes-extra.css), keeping them off the
-   critical path. */
+/* Render-blocking: tokens, the site's own `poster`/`poster-dark` theme (the
+   default — see src/poster.css), and the three first-party themes it sits
+   alongside. The other nine themes load on demand via a JS dynamic import
+   (see theme.ts → themes-extra.css), keeping them off the critical path. */
+@import './poster.css';
 @import '@cascivo/themes/light.css';
 @import '@cascivo/themes/dark.css';
 @import '@cascivo/themes/warm.css';

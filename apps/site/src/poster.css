@@ -1,0 +1,305 @@
+/* cascivo.com — poster theme (site-local)
+ *
+ * The landing redesign is not a bespoke visual language: `poster` is the shipped
+ * `brutalist` theme (packages/themes/src/brutalist.css) applied at page scale, and
+ * `poster-dark` is the dark half that theme does not have — dark.css surfaces with
+ * cream rules, keeping the acid accent and the zero-radius/hard-shadow structure.
+ *
+ * Scope: apps/site only. Promote to @cascivo/themes if it earns it (design-brief
+ * open item 3). Because a site-local theme cannot re-scope the published
+ * `[data-theme='brutalist']` block, the light half restates brutalist's tokens
+ * rather than importing them — keep the two in sync if brutalist changes.
+ *
+ * Four new tokens, all namespaced --cascivo-landing-*: the inverted band pair,
+ * the poster rule weight, and the hatch used by placeholder tiles.
+ */
+
+@import '@cascivo/tokens';
+
+@layer cascivo.theme {
+  /* ── Poster (light) — brutalist at page scale ─────────────────────── */
+  [data-theme='poster'] {
+    color-scheme: light;
+
+    /* ── Interaction state ── */
+    --cascivo-disabled-opacity: 0.6;
+    --cascivo-hover-opacity: 0.85;
+
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-landing-display-stack);
+
+    /* ── Surface ──────────────────────────────────────── */
+    --cascivo-color-background: oklch(0.97 0.02 95);
+    --cascivo-color-surface: oklch(1 0 0);
+    --cascivo-color-surface-2: oklch(0.96 0.015 95);
+    --cascivo-color-bg: var(--cascivo-color-background);
+    --cascivo-color-bg-subtle: var(--cascivo-color-surface);
+    --cascivo-color-surface-raised: var(--cascivo-color-surface);
+    --cascivo-color-surface-overlay: oklch(1 0 0);
+    --cascivo-color-border: oklch(0.1 0 0);
+    --cascivo-color-border-strong: oklch(0.05 0 0);
+    --cascivo-border-subtle: oklch(0.3 0 0);
+    --cascivo-border-default: oklch(0.1 0 0);
+    --cascivo-border-strong: oklch(0.05 0 0);
+
+    /* ── Text ─────────────────────────────────────────── */
+    --cascivo-color-foreground: oklch(0.1 0 0);
+    --cascivo-color-foreground-muted: oklch(0.35 0 0);
+    --cascivo-color-text: var(--cascivo-color-foreground);
+    --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
+    --cascivo-color-text-muted: oklch(0.5 0 0);
+    --cascivo-color-text-on-accent: oklch(0.1 0 0); /* static fallback */
+    --cascivo-color-text-on-destructive: oklch(1 0 0); /* static fallback */
+    @supports (color: contrast-color(red)) {
+      & {
+        --cascivo-color-text-on-accent: contrast-color(var(--cascivo-color-accent));
+        --cascivo-color-text-on-destructive: contrast-color(var(--cascivo-color-destructive));
+      }
+    }
+
+    /* ── Accent — acid yellow ─────────────────────────── */
+    --cascivo-color-accent: oklch(0.88 0.19 105);
+    --cascivo-color-accent-foreground: oklch(0.1 0 0);
+    --cascivo-color-accent-hover: oklch(0.82 0.2 100);
+    --cascivo-color-accent-active: oklch(0.76 0.2 98);
+    --cascivo-color-accent-subtle: oklch(0.96 0.07 105);
+    --cascivo-color-accent-muted: oklch(0.93 0.12 105);
+
+    /* ── Primary — accent-mapped ─────────────────────── */
+    --cascivo-color-primary: var(--cascivo-color-accent);
+    --cascivo-color-primary-fg: oklch(0.1 0 0);
+    --cascivo-color-primary-hover: var(--cascivo-color-accent-hover);
+    --cascivo-color-primary-active: var(--cascivo-color-accent-active);
+    --cascivo-color-active-bg: oklch(0.1 0 0 / 8%);
+
+    /* ── Destructive ──────────────────────────────────── */
+    --cascivo-color-destructive: oklch(0.52 0.22 22);
+    --cascivo-color-destructive-hover: oklch(0.46 0.23 22);
+    --cascivo-color-destructive-subtle: oklch(0.95 0.05 22);
+
+    /* ── Semantic status colors ───────────────────────── */
+    --cascivo-color-error: oklch(0.52 0.22 22);
+    --cascivo-color-warning: oklch(0.65 0.17 75);
+    --cascivo-color-success: oklch(0.52 0.18 145);
+    --cascivo-color-success-subtle: oklch(0.95 0.05 145);
+    --cascivo-color-warning-subtle: oklch(0.96 0.06 75);
+    --cascivo-color-info: oklch(0.48 0.2 250);
+    --cascivo-color-info-subtle: oklch(0.95 0.05 250);
+    --cascivo-color-success-foreground: oklch(0.52 0.18 145);
+    --cascivo-color-warning-foreground: oklch(0.5 0.15 75);
+    --cascivo-color-destructive-foreground: oklch(0.4 0.2 22);
+    --cascivo-color-info-foreground: oklch(0.45 0.2 250);
+
+    /* ── Radius — zero ───────────────────────────────── */
+    --cascivo-radius-base: 0;
+    --cascivo-radius-control: 0;
+    --cascivo-radius-surface: 0;
+    --cascivo-radius-indicator: 0;
+    --cascivo-radius-full: 0;
+    --cascivo-radius-component: 0;
+    --cascivo-radius-button: 0;
+    --cascivo-radius-input: 0;
+    --cascivo-radius-card: 0;
+    --cascivo-radius-badge: 0;
+    --cascivo-radius-modal: 0;
+
+    /* ── Shadows — hard offset, no blur ─────────────── */
+    --cascivo-shadow-xs: 1px 1px 0 oklch(0.1 0 0);
+    --cascivo-shadow-sm: 2px 2px 0 oklch(0.1 0 0);
+    --cascivo-shadow-md: 4px 4px 0 oklch(0.1 0 0);
+    --cascivo-shadow-overlay: 6px 6px 0 oklch(0.1 0 0);
+    --cascivo-shadow-lg: var(--cascivo-shadow-overlay);
+
+    /* ── Focus ring — solid black, visible on cream, ink and acid ── */
+    --cascivo-ring-width: 3px;
+    --cascivo-ring-offset: 2px;
+    --cascivo-ring-color: oklch(0.1 0 0);
+    --cascivo-color-focus-ring: oklch(0.1 0 0);
+    --cascivo-focus-ring: 0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color);
+
+    /* ── Chart overrides ─────────────────────────────── */
+    --cascivo-chart-1: oklch(0.64 0.18 70);
+    --cascivo-chart-2: oklch(0.62 0.16 240);
+    --cascivo-chart-3: oklch(0.6 0.18 135);
+    --cascivo-chart-4: oklch(0.6 0.2 55);
+    --cascivo-chart-5: oklch(0.45 0.18 250);
+    --cascivo-chart-6: oklch(0.55 0.22 40);
+    --cascivo-chart-7: oklch(0.6 0.17 350);
+    --cascivo-chart-8: oklch(0.48 0.1 200);
+    --cascivo-chart-grid: oklch(0.7 0 0);
+    --cascivo-chart-axis: oklch(0.3 0 0);
+    --cascivo-chart-fill-opacity: 0.25;
+    --cascivo-chart-fill-opacity-overlap: 0.125;
+
+    /* ── -content tokens ── */
+    --cascivo-color-primary-content: var(--cascivo-color-primary-fg);
+    --cascivo-color-accent-content: var(--cascivo-color-text-on-accent);
+    --cascivo-color-destructive-content: var(--cascivo-color-text-on-destructive);
+    --cascivo-color-info-content: oklch(1 0 0);
+    --cascivo-color-success-content: oklch(1 0 0);
+    --cascivo-color-warning-content: oklch(0.145 0 0);
+    --cascivo-color-error-content: oklch(1 0 0);
+
+    /* ── Secondary color role ────────────────────────── */
+    --cascivo-color-secondary: oklch(0.88 0.19 105);
+    --cascivo-color-secondary-content: oklch(0.1 0 0);
+    --cascivo-color-secondary-hover: oklch(0.82 0.2 100);
+    --cascivo-color-secondary-subtle: oklch(0.96 0.07 105);
+
+    /* ── Landing-page additions — the poster grid's own four tokens ── */
+    --cascivo-landing-invert-bg: oklch(0.1 0 0);
+    --cascivo-landing-invert-fg: oklch(0.97 0.02 95);
+    --cascivo-landing-rule-weight: 3px;
+    --cascivo-landing-hatch: oklch(0.72 0 0);
+  }
+
+  /* ── Poster (dark) — dark.css surfaces, cream rules, same acid ────── */
+  [data-theme='poster-dark'] {
+    color-scheme: dark;
+
+    /* ── Interaction state ── */
+    --cascivo-disabled-opacity: 0.5;
+    --cascivo-hover-opacity: 0.8;
+
+    /* ── Typography ───────────── */
+    --cascivo-font-display: var(--cascivo-landing-display-stack);
+
+    /* ── Surface ──────────────────────────────────────── */
+    --cascivo-color-background: oklch(0.145 0.005 250);
+    --cascivo-color-surface: oklch(0.185 0.007 250);
+    --cascivo-color-surface-2: oklch(0.22 0.008 250);
+    --cascivo-color-bg: var(--cascivo-color-background);
+    --cascivo-color-bg-subtle: var(--cascivo-color-surface);
+    --cascivo-color-surface-raised: var(--cascivo-color-surface-2);
+    --cascivo-color-surface-overlay: var(--cascivo-color-surface);
+    /* Cream rules, opaque — the poster grid is drawn in rules, so they must not
+       thin out over a surface the way dark.css's translucent borders do. */
+    --cascivo-color-border: oklch(0.985 0.002 264);
+    --cascivo-color-border-strong: oklch(0.985 0.002 264);
+    --cascivo-border-subtle: oklch(0.45 0.01 264);
+    --cascivo-border-default: oklch(0.985 0.002 264);
+    --cascivo-border-strong: oklch(0.985 0.002 264);
+
+    /* ── Text ─────────────────────────────────────────── */
+    --cascivo-color-foreground: oklch(0.985 0.002 264);
+    --cascivo-color-foreground-muted: oklch(0.707 0.015 264);
+    --cascivo-color-text: var(--cascivo-color-foreground);
+    --cascivo-color-text-subtle: var(--cascivo-color-foreground-muted);
+    --cascivo-color-text-muted: oklch(0.62 0.015 264);
+    --cascivo-color-text-on-accent: oklch(0.1 0 0); /* static fallback */
+    --cascivo-color-text-on-destructive: oklch(0.145 0.005 250); /* static fallback */
+    @supports (color: contrast-color(red)) {
+      & {
+        --cascivo-color-text-on-accent: contrast-color(var(--cascivo-color-accent));
+        --cascivo-color-text-on-destructive: contrast-color(var(--cascivo-color-destructive));
+      }
+    }
+
+    /* ── Accent — the same acid; >12:1 for black-on-acid chips ───────── */
+    --cascivo-color-accent: oklch(0.88 0.19 105);
+    --cascivo-color-accent-foreground: oklch(0.1 0 0);
+    --cascivo-color-accent-hover: oklch(0.82 0.2 100);
+    --cascivo-color-accent-active: oklch(0.76 0.2 98);
+    --cascivo-color-accent-subtle: oklch(0.88 0.19 105 / 0.16);
+    --cascivo-color-accent-muted: oklch(0.88 0.19 105 / 0.28);
+
+    /* ── Primary — accent-mapped ─────────────────────── */
+    --cascivo-color-primary: var(--cascivo-color-accent);
+    --cascivo-color-primary-fg: oklch(0.1 0 0);
+    --cascivo-color-primary-hover: var(--cascivo-color-accent-hover);
+    --cascivo-color-primary-active: var(--cascivo-color-accent-active);
+    --cascivo-color-active-bg: oklch(1 0 0 / 8%);
+
+    /* ── Destructive ──────────────────────────────────── */
+    --cascivo-color-destructive: oklch(0.72 0.16 22);
+    --cascivo-color-destructive-hover: oklch(0.66 0.18 22);
+    --cascivo-color-destructive-subtle: oklch(0.72 0.16 22 / 0.14);
+
+    /* ── Semantic status colors ───────────────────────── */
+    --cascivo-color-error: oklch(0.72 0.16 22);
+    --cascivo-color-warning: oklch(0.82 0.13 75);
+    --cascivo-color-success: oklch(0.72 0.13 145);
+    --cascivo-color-success-subtle: oklch(0.72 0.13 145 / 0.1);
+    --cascivo-color-warning-subtle: oklch(0.82 0.13 75 / 0.1);
+    --cascivo-color-info: oklch(0.65 0.2 250);
+    --cascivo-color-info-subtle: oklch(0.65 0.2 250 / 0.1);
+    --cascivo-color-success-foreground: oklch(0.72 0.13 145);
+    --cascivo-color-warning-foreground: oklch(0.82 0.13 75);
+    --cascivo-color-destructive-foreground: oklch(0.85 0.12 22);
+    --cascivo-color-info-foreground: oklch(0.75 0.16 250);
+
+    /* ── Radius — zero ───────────────────────────────── */
+    --cascivo-radius-base: 0;
+    --cascivo-radius-control: 0;
+    --cascivo-radius-surface: 0;
+    --cascivo-radius-indicator: 0;
+    --cascivo-radius-full: 0;
+    --cascivo-radius-component: 0;
+    --cascivo-radius-button: 0;
+    --cascivo-radius-input: 0;
+    --cascivo-radius-card: 0;
+    --cascivo-radius-badge: 0;
+    --cascivo-radius-modal: 0;
+
+    /* ── Shadows — hard offset in cream ─────────────── */
+    --cascivo-shadow-xs: 1px 1px 0 oklch(0.985 0.002 264);
+    --cascivo-shadow-sm: 2px 2px 0 oklch(0.985 0.002 264);
+    --cascivo-shadow-md: 4px 4px 0 oklch(0.985 0.002 264);
+    --cascivo-shadow-overlay: 6px 6px 0 oklch(0.985 0.002 264);
+    --cascivo-shadow-lg: var(--cascivo-shadow-overlay);
+
+    /* ── Focus ring — solid cream ─────────────────────── */
+    --cascivo-ring-width: 3px;
+    --cascivo-ring-offset: 2px;
+    --cascivo-ring-color: oklch(0.985 0.002 264);
+    --cascivo-color-focus-ring: oklch(0.985 0.002 264);
+    --cascivo-focus-ring: 0 0 0 var(--cascivo-ring-width) var(--cascivo-ring-color);
+
+    /* ── Chart overrides ─────────────────────────────── */
+    --cascivo-chart-1: oklch(0.8 0.13 70);
+    --cascivo-chart-2: oklch(0.8 0.11 240);
+    --cascivo-chart-3: oklch(0.73 0.13 165);
+    --cascivo-chart-4: oklch(0.95 0.15 100);
+    --cascivo-chart-5: oklch(0.63 0.12 250);
+    --cascivo-chart-6: oklch(0.68 0.15 40);
+    --cascivo-chart-7: oklch(0.73 0.11 350);
+    --cascivo-chart-8: oklch(0.72 0.08 200);
+    --cascivo-chart-grid: oklch(1 0 0 / 0.1);
+    --cascivo-chart-axis: oklch(0.707 0.015 264);
+    --cascivo-chart-fill-opacity: 0.4;
+    --cascivo-chart-fill-opacity-overlap: 0.2;
+
+    /* ── -content tokens ── */
+    --cascivo-color-primary-content: var(--cascivo-color-primary-fg);
+    --cascivo-color-accent-content: var(--cascivo-color-text-on-accent);
+    --cascivo-color-destructive-content: var(--cascivo-color-text-on-destructive);
+    --cascivo-color-info-content: oklch(0.145 0.005 250);
+    --cascivo-color-success-content: oklch(0.145 0 0);
+    --cascivo-color-warning-content: oklch(0.145 0 0);
+    --cascivo-color-error-content: oklch(0.145 0 0);
+
+    /* ── Secondary color role ────────────────────────── */
+    --cascivo-color-secondary: oklch(0.88 0.19 105);
+    --cascivo-color-secondary-content: oklch(0.1 0 0);
+    --cascivo-color-secondary-hover: oklch(0.82 0.2 100);
+    --cascivo-color-secondary-subtle: oklch(0.88 0.19 105 / 0.16);
+
+    /* ── Landing-page additions ── */
+    --cascivo-landing-invert-bg: oklch(0.985 0.002 264);
+    --cascivo-landing-invert-fg: oklch(0.145 0.005 250);
+    --cascivo-landing-rule-weight: 3px;
+    --cascivo-landing-hatch: oklch(0.45 0.01 264);
+  }
+
+  /* Display stack, shared by both halves.
+     'Arial Black' is absent on the Linux CI runners that take the visual
+     baselines, so the stack names a metrically-similar Linux face before the
+     generic fallbacks — otherwise every baseline re-renders in the UA default
+     and the poster headings lose their weight (design-brief open item 4). */
+  [data-theme='poster'],
+  [data-theme='poster-dark'] {
+    --cascivo-landing-display-stack:
+      'Arial Black', 'Helvetica Neue Black', 'Archivo Black', 'Liberation Sans Narrow',
+      'DejaVu Sans Condensed', 'Helvetica Neue', ui-sans-serif, sans-serif;
+  }
+}
