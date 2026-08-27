@@ -341,7 +341,7 @@ export function ContextExplorerPage() {
                             background: 'none',
                             border: 'none',
                             padding: 0,
-                            color: 'var(--cascivo-color-accent)',
+                            color: 'var(--cascivo-landing-link)',
                             cursor: 'pointer',
                             font: 'inherit',
                           }}

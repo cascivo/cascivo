@@ -407,7 +407,7 @@
 }
 
 .pg-table thead .pg-table-us {
-  color: var(--cascivo-color-accent);
+  color: var(--cascivo-landing-link-invert);
   font-weight: 600;
 }
 
@@ -830,6 +830,25 @@
   color: inherit;
   border-color: var(--cascivo-landing-invert-fg);
   border-width: var(--cascivo-landing-rule-weight);
+}
+
+/*
+ * Inverting the box is not enough: the --cs-* syntax hooks still resolve to
+ * colours tuned for the PAGE surface, and this band is the opposite one. The
+ * green string reads 3.6:1 on the light half's ink and 2.3:1 on the dark half's
+ * cream. The grid's own <pre> carries no highlighting at all, so the inverted
+ * snippet follows it — one ink, with dimming rather than hue for the quiet
+ * tokens. (The three snippets that sit on a normal surface keep their palette.)
+ */
+.pg-invert .pg-ai-code {
+  --cs-string: currentcolor;
+  --cs-keyword: currentcolor;
+  --cs-fn: currentcolor;
+  --cs-number: currentcolor;
+  --cs-variable: currentcolor;
+  --cs-comment: color-mix(in oklch, currentcolor 62%, transparent);
+  --cs-punct: color-mix(in oklch, currentcolor 74%, transparent);
+  --cs-prompt: color-mix(in oklch, currentcolor 74%, transparent);
 }
 
 .pg-invert .pg-ai-code button {

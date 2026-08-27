@@ -91,6 +91,23 @@
     --cascivo-color-destructive-foreground: oklch(0.4 0.2 22);
     --cascivo-color-info-foreground: oklch(0.45 0.2 250);
 
+    /*
+     * CodeSnippet's syntax hooks. Their defaults reach for the accent, and this
+     * half's accent is acid on a white code surface — 1.4:1 for a keyword. The
+     * `-foreground` variants are the same hues built to be read as type.
+     * (poster-dark keeps the defaults: its palette is already tuned for the
+     * dark surface a snippet sits on there.)
+     */
+    --cs-keyword: var(--cascivo-color-destructive-foreground);
+    --cs-variable: var(--cascivo-color-info-foreground);
+    --cs-number: oklch(0.44 0.13 75);
+
+    /* @cascivo/editor's syntax palette, same story: keyword and tag default to
+       the accent, which is a fill here. The rest of its light-surface literals
+       are already text-safe. */
+    --cascivo-editor-syntax-keyword: var(--cascivo-color-destructive-foreground);
+    --cascivo-editor-syntax-tag: var(--cascivo-color-destructive-foreground);
+
     /* ── Radius — zero ───────────────────────────────── */
     /* The full scale, not just the eleven names brutalist restates: the
        secondary pages' own CSS reaches for sm/md/lg/xl, so leaving those
@@ -165,6 +182,8 @@
     --cascivo-landing-rule-weight: 3px;
     --cascivo-landing-hatch: oklch(0.72 0 0);
     --cascivo-landing-link: var(--cascivo-color-destructive);
+    /* The inverted band here is ink, so the acid reads on it at >12:1. */
+    --cascivo-landing-link-invert: var(--cascivo-color-accent);
   }
 
   /* ── Poster (dark) — dark.css surfaces, cream rules, same acid ────── */
@@ -312,6 +331,25 @@
     --cascivo-landing-rule-weight: 3px;
     --cascivo-landing-hatch: oklch(0.45 0.01 264);
     --cascivo-landing-link: var(--cascivo-color-destructive);
+    /* The inversion is cream here, not ink — acid on it is ~1.4:1. This is the
+       light half's link red, restated: the band it sits on is that half's
+       surface, so it takes that half's ink, not this theme's lighter red. */
+    --cascivo-landing-link-invert: oklch(0.52 0.22 22);
+
+    /*
+     * @cascivo/editor's syntax palette. packages/tokens pins string/number/
+     * type/property to darkened literals for a light editor surface, and
+     * restores the brighter chart hues for its own dark themes through a
+     * hard-coded [data-theme] list — which a site-local theme cannot join. The
+     * editor surface here IS dark, so restate the same seven.
+     */
+    --cascivo-editor-syntax-string: var(--cascivo-chart-3);
+    --cascivo-editor-syntax-regexp: var(--cascivo-chart-3);
+    --cascivo-editor-syntax-number: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-attr: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-boolean: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-type: var(--cascivo-chart-7);
+    --cascivo-editor-syntax-property: var(--cascivo-chart-2);
   }
 
   /* Display stack, shared by both halves.

@@ -217,7 +217,7 @@ function RegistryCard({ entry }: { entry: RegistryEntry }) {
               display: 'inline-block',
               marginBlockStart: 'var(--cascivo-space-3)',
               fontSize: 'var(--cascivo-text-sm)',
-              color: 'var(--cascivo-color-accent)',
+              color: 'var(--cascivo-landing-link)',
             }}
           >
             Visit homepage →

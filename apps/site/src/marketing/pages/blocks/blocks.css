@@ -207,6 +207,11 @@
   .block-detail__preview-inner {
     overflow: auto;
     min-block-size: 24rem;
+    /* data-theme swaps the custom properties; it does not repaint anything by
+       itself. Without these the preview keeps the page's text colour — cream on
+       the light preview's white once the page is on the dark half. */
+    background: var(--cascivo-color-background);
+    color: var(--cascivo-color-text);
   }
 
   .block-detail__code-section {

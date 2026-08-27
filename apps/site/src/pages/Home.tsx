@@ -146,7 +146,7 @@ export function Home() {
         <a
           href="/docs/marketplace"
           class="home-card-label"
-          style={{ color: 'var(--cascivo-color-accent)' }}
+          style={{ color: 'var(--cascivo-landing-link)' }}
         >
           Browse the templates marketplace →
         </a>
@@ -175,7 +175,7 @@ export function Home() {
         <a
           href="/docs/icons"
           class="home-card-label"
-          style={{ color: 'var(--cascivo-color-accent)' }}
+          style={{ color: 'var(--cascivo-landing-link)' }}
         >
           Browse all ~440 icons →
         </a>
@@ -193,7 +193,7 @@ export function Home() {
               key={s.name}
               href={s.href}
               class="home-card-label"
-              style={{ color: 'var(--cascivo-color-accent)' }}
+              style={{ color: 'var(--cascivo-landing-link)' }}
             >
               <strong style={{ fontFamily: 'var(--cascivo-font-mono)' }}>{s.name}</strong>
               <span style={{ color: 'var(--cascivo-color-text-subtle)' }}> — {s.blurb} →</span>

@@ -34,6 +34,10 @@
     /* The twelve first-party themes have an accent that reads as type; the
        poster halves override this because acid yellow does not. */
     --cascivo-landing-link: var(--cascivo-color-accent);
+    /* Its counterpart for type ON an inverted band. Acid works there only while
+       the inversion is dark, which is the light half; poster-dark flips the
+       band to cream and needs the opposite ink. */
+    --cascivo-landing-link-invert: var(--cascivo-color-accent);
   }
 }
 
@@ -426,7 +430,7 @@
 }
 
 .pg-invert .pg-link {
-  color: var(--cascivo-color-accent);
+  color: var(--cascivo-landing-link-invert);
 }
 
 /* Wide content — tables, code, the comparison grid — scrolls inside its own
@@ -572,7 +576,9 @@
 .showcase-cat,
 .showcase-visit,
 .block-card__link,
-.block-detail__open-link {
+.block-detail__open-link,
+.storybook-link,
+.props-table code.type {
   color: var(--cascivo-landing-link);
 }
 
@@ -590,6 +596,45 @@
 
 .tech-pre .tok-number {
   color: var(--cascivo-color-warning-foreground);
+}
+
+/*
+ * app.css's unlayered `a { color: inherit }` outranks every layered component
+ * rule, so a Button rendered `asChild` as an anchor drops the foreground its
+ * variant paints on. The light half inherited an ink that happened to match;
+ * the dark half inherits cream and puts it on acid. Restate the three filled
+ * variants — `ghost` already wants the inherited colour.
+ */
+a[data-variant='primary'] {
+  color: var(--cascivo-color-primary-fg);
+}
+
+a[data-variant='secondary'] {
+  color: var(--cascivo-color-secondary-content);
+}
+
+a[data-variant='destructive'] {
+  color: var(--cascivo-color-text-on-destructive);
+}
+
+/* The CTA band is acid, so its copy chip cannot keep landing.css's surface
+   fill — that is a near-black block under ink type in the dark half. On acid
+   the chip is an outline, like every other box in the grid, and everything
+   inside it (the ghost Button included, which paints its own --…-color-text)
+   follows the band rather than the page. */
+.cta-band .copy-command,
+.cta-band .copy-command :where(button, code, span) {
+  color: inherit;
+}
+
+.cta-band .copy-command {
+  border-width: var(--cascivo-landing-rule-weight);
+  border-color: currentcolor;
+  background: transparent;
+}
+
+.cta-band .copy-command button:hover {
+  background: color-mix(in oklch, currentcolor 16%, transparent);
 }
 
 /* The receipts row under a hero is a ruled slab, not a rounded card. */
