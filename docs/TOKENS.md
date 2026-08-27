@@ -90,6 +90,8 @@ remains canonical.
 | **`--cascivo-color-accent-hover`** | `oklch(0.45 0.2 250)` |  |
 | **`--cascivo-color-accent-muted`** | `var(--cascivo-blue-100)` |  |
 | **`--cascivo-color-accent-subtle`** | `var(--cascivo-blue-50)` |  |
+| **`--cascivo-color-accent-text`** | `var(--cascivo-color-accent)` |  |
+| **`--cascivo-color-accent-text-hover`** | `var(--cascivo-color-accent-hover)` |  |
 | **`--cascivo-color-active-bg`** | `oklch(0.145 0.005 264 / 6%)` |  |
 | **`--cascivo-color-background`** | `oklch(1 0 0)` |  |
 | `--cascivo-color-bg` | `var(--cascivo-color-background)` | alias of `--cascivo-color-background` |
@@ -373,5 +375,5 @@ remains canonical.
 | **`--cascivo-editor-syntax-type`** | `oklch(0.54 0.12 350)` |  |
 | **`--cascivo-editor-syntax-variable`** | `var(--cascivo-editor-fg)` |  |
 | **`--cascivo-hover-opacity`** | `0.8` |  |
-| **`--cascivo-link-color`** | `var(--cascivo-color-accent)` |  |
+| **`--cascivo-link-color`** | `var(--cascivo-color-accent-text)` |  |
 | **`--cascivo-search-width`** | `100%` |  |

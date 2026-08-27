@@ -220,6 +220,8 @@
     { "name": "--cascivo-chart-grid", "resolvedDefault": "oklch(0.928 0.006 264)" },
     { "name": "--cascivo-chart-axis", "resolvedDefault": "oklch(0.5 0.016 264)" },
     { "name": "--cascivo-chart-fill-opacity", "resolvedDefault": "0.25" },
+    { "name": "--cascivo-color-accent-text", "resolvedDefault": "oklch(0.52 0.2 250)" },
+    { "name": "--cascivo-color-accent-text-hover", "resolvedDefault": "oklch(0.45 0.2 250)" },
     {
       "name": "--cascivo-editor-bg",
       "resolvedDefault": "var(--cascivo-color-surface, oklch(0.985 0.002 264))"
@@ -394,7 +396,7 @@
     },
     {
       "name": "--cascivo-calendar-day-today-color",
-      "resolvedDefault": "var(--cascivo-color-accent)"
+      "resolvedDefault": "var(--cascivo-color-accent-text)"
     },
     { "name": "--cascivo-calendar-radius", "resolvedDefault": "var(--cascivo-radius-overlay)" },
     {
@@ -412,6 +414,10 @@
     { "name": "--cascivo-data-table-cell-gap", "resolvedDefault": "var(--cascivo-space-4)" },
     { "name": "--cascivo-data-table-height", "resolvedDefault": "400px" },
     { "name": "--cascivo-data-table-max-height", "resolvedDefault": "none" },
+    {
+      "name": "--cascivo-date-picker-day-today-color",
+      "resolvedDefault": "var(--cascivo-color-accent-text)"
+    },
     {
       "name": "--cascivo-dialog-body-gap",
       "resolvedDefault": "0 for full-bleed content. */\n    display: flex"

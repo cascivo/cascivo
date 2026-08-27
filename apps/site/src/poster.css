@@ -86,7 +86,10 @@
     --cascivo-color-warning-subtle: oklch(0.96 0.06 75);
     --cascivo-color-info: oklch(0.48 0.2 250);
     --cascivo-color-info-subtle: oklch(0.95 0.05 250);
-    --cascivo-color-success-foreground: oklch(0.52 0.18 145);
+    /* The other three -foreground variants were darkened for type; this one was
+       left equal to --cascivo-color-success, so Alert's title, Badge and Tag all
+       landed at 4.34-4.45 on their own subtle fills. Canonical light.css value. */
+    --cascivo-color-success-foreground: oklch(0.45 0.14 145);
     --cascivo-color-warning-foreground: oklch(0.5 0.15 75);
     --cascivo-color-destructive-foreground: oklch(0.4 0.2 22);
     --cascivo-color-info-foreground: oklch(0.45 0.2 250);
@@ -184,6 +187,10 @@
     --cascivo-landing-link: var(--cascivo-color-destructive);
     /* The inverted band here is ink, so the acid reads on it at >12:1. */
     --cascivo-landing-link-invert: var(--cascivo-color-accent);
+    /* Same substitution for the catalogue's accent-coloured type — see
+       packages/tokens' --cascivo-color-accent-text. */
+    --cascivo-color-accent-text: var(--cascivo-landing-link);
+    --cascivo-color-accent-text-hover: oklch(0.45 0.2 22);
   }
 
   /* ── Poster (dark) — dark.css surfaces, cream rules, same acid ────── */
@@ -335,6 +342,8 @@
        light half's link red, restated: the band it sits on is that half's
        surface, so it takes that half's ink, not this theme's lighter red. */
     --cascivo-landing-link-invert: oklch(0.52 0.22 22);
+    /* The page surfaces are dark here, so the acid reads as type at 13:1 —
+       --cascivo-color-accent-text keeps its default. */
 
     /*
      * @cascivo/editor's syntax palette. packages/tokens pins string/number/

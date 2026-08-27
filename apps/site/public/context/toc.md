@@ -42,6 +42,7 @@ Rendered as a <nav> landmark with a label; entries are real anchor links and the
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-font-sans`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
@@ -100,7 +101,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Toc is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-font-sans, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-focus-ring, --cascivo-target-min-coarse
+  --cascivo-color-accent-text, --cascivo-font-sans, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-focus-ring, --cascivo-target-min-coarse
 
 Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.
 

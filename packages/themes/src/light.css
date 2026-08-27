@@ -63,6 +63,10 @@
     --cascivo-color-accent-subtle: var(--cascivo-blue-50);
     --cascivo-color-accent-muted: var(--cascivo-blue-100);
 
+    /* The accent used as TYPE. This theme's accent reads on its own
+       surface, so both stay pointed at it — see packages/tokens. */
+    --cascivo-color-accent-text: var(--cascivo-color-accent);
+    --cascivo-color-accent-text-hover: var(--cascivo-color-accent-hover);
     /* ── Primary (filled actions — monochrome, shadcn/Linear style) ── */
     --cascivo-color-primary: oklch(0.205 0 0);
     --cascivo-color-primary-fg: oklch(0.985 0 0);

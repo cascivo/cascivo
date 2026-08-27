@@ -41,6 +41,6 @@
   .filter[data-variant='outline'] .item[data-selected] {
     background-color: transparent;
     border-color: var(--cascivo-color-accent);
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
   }
 }

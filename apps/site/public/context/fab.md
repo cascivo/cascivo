@@ -49,6 +49,7 @@ The main button is icon-only and requires a `label` that becomes its aria-label.
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-content`
 - `--cascivo-color-accent-hover`
@@ -119,7 +120,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Fab is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-full, --cascivo-shadow-overlay, --cascivo-target-min-coarse, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-dropdown
+  --cascivo-color-accent-text, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-full, --cascivo-shadow-overlay, --cascivo-target-min-coarse, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-dropdown
 
 Accessibility: role "button", WCAG 2.2-AA, keyboard: Enter/Space/ArrowUp/ArrowDown/Home/End/Escape. Keep it AA.
 

@@ -51,6 +51,7 @@ role="navigation" with an aria-label names the region; the collapse toggle has a
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-sidenav-inline-size`
 - `--cascivo-sidenav-rail-inline-size`
 - `--cascivo-sidenav-bg`
@@ -128,7 +129,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 SideNav is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-sidenav-inline-size, --cascivo-sidenav-rail-inline-size, --cascivo-sidenav-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-destructive, --cascivo-color-warning, --cascivo-color-success, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-motion-emphasis
+  --cascivo-color-accent-text, --cascivo-sidenav-inline-size, --cascivo-sidenav-rail-inline-size, --cascivo-sidenav-bg, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-bg-subtle, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-destructive, --cascivo-color-warning, --cascivo-color-success, --cascivo-focus-ring, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-motion-emphasis
 
 Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter/Space/ArrowDown/ArrowUp/Escape. Keep it AA.
 

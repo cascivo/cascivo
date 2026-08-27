@@ -151,7 +151,9 @@ main {
 
 .tech-code-label--after {
   background: var(--cascivo-color-success-subtle);
-  color: var(--cascivo-color-success);
+  /* -foreground is the text-safe sibling; the raw hue is a 3:1 fill and lands
+     at 4.45 on its own subtle background. */
+  color: var(--cascivo-color-success-foreground, var(--cascivo-color-success));
 }
 
 .tech-pre {
@@ -347,7 +349,7 @@ kbd {
   display: flex;
   flex-wrap: wrap;
   gap: var(--cascivo-space-5) var(--cascivo-space-8);
-  margin-block-start: var(--cascivo-space-7);
+  margin-block-start: var(--cascivo-space-6);
 }
 
 .cx-stat {
@@ -1314,7 +1316,10 @@ kbd {
   block-size: 1.75rem;
   border-radius: 50%;
   background-color: var(--cascivo-color-accent);
-  color: var(--cascivo-color-accent-fg);
+  /* --cascivo-color-accent-fg does not exist; the bare read resolved to nothing
+     and the number inherited the page's ink — right by accident on the light
+     half, cream-on-acid on the dark one. */
+  color: var(--cascivo-color-accent-content);
   font-size: var(--cascivo-text-sm);
   font-weight: var(--cascivo-font-bold);
   flex-shrink: 0;

@@ -41,6 +41,7 @@ role="list" structures the steps in order; the current step is conveyed as text/
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
 - `--cascivo-color-text`
@@ -95,7 +96,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 ProgressIndicator is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-text-on-accent, --cascivo-color-border, --cascivo-color-surface, --cascivo-radius-full
+  --cascivo-color-accent-text, --cascivo-color-accent, --cascivo-color-accent-subtle, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-text-on-accent, --cascivo-color-border, --cascivo-color-surface, --cascivo-radius-full
 
 Accessibility: role "list", WCAG 2.2-AA. Keep it AA.
 

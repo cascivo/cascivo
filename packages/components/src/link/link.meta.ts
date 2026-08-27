@@ -42,10 +42,9 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-color-accent-text',
+    '--cascivo-color-accent-text-hover',
     '--cascivo-link-color',
-    '--cascivo-color-accent',
-    '--cascivo-color-accent-hover',
-    '--cascivo-color-accent-active',
     '--cascivo-radius-sm',
     '--cascivo-focus-ring',
   ],

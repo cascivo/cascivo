@@ -75,6 +75,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-font-mono`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`

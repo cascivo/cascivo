@@ -87,6 +87,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-calendar-bg`
 - `--cascivo-calendar-radius`
 - `--cascivo-calendar-cell-size`

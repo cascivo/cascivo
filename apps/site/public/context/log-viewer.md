@@ -48,6 +48,7 @@ The scroll region is role="log" with aria-live="polite" so assistive tech announ
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-font-mono`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
@@ -114,7 +115,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 LogViewer is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-font-mono, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-surface, --cascivo-color-surface-raised, --cascivo-color-border, --cascivo-color-error, --cascivo-color-warning, --cascivo-color-success, --cascivo-color-info, --cascivo-color-accent, --cascivo-target-min-coarse
+  --cascivo-color-accent-text, --cascivo-font-mono, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-surface, --cascivo-color-surface-raised, --cascivo-color-border, --cascivo-color-error, --cascivo-color-warning, --cascivo-color-success, --cascivo-color-info, --cascivo-color-accent, --cascivo-target-min-coarse
 
 Accessibility: role "log", WCAG 2.2-AA, keyboard: Tab/ArrowUp/ArrowDown/PageUp/PageDown. Keep it AA.
 

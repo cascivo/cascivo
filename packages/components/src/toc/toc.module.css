@@ -38,7 +38,7 @@
     }
 
     & a[aria-current='location'] {
-      color: var(--cascivo-color-accent);
+      color: var(--cascivo-color-accent-text);
       border-inline-start-color: var(--cascivo-color-accent);
       font-weight: var(--cascivo-font-medium);
     }

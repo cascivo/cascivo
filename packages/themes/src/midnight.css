@@ -58,6 +58,10 @@
     --cascivo-color-accent-subtle: oklch(0.7 0.22 290 / 0.12);
     --cascivo-color-accent-muted: oklch(0.7 0.22 290 / 0.22);
 
+    /* The accent used as TYPE. This theme's accent reads on its own
+       surface, so both stay pointed at it — see packages/tokens. */
+    --cascivo-color-accent-text: var(--cascivo-color-accent);
+    --cascivo-color-accent-text-hover: var(--cascivo-color-accent-hover);
     /* ── Primary — light fill for dark bg ─────────────── */
     --cascivo-color-primary: oklch(0.88 0 0);
     --cascivo-color-primary-fg: oklch(0.16 0.02 280);

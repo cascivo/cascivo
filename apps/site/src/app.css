@@ -554,7 +554,7 @@ a {
 }
 
 .home-card-label {
-  font-size: var(--cascivo-font-sm);
+  font-size: var(--cascivo-text-sm);
   font-weight: var(--cascivo-font-medium);
   color: var(--cascivo-color-text-subtle);
   margin-block-start: auto;

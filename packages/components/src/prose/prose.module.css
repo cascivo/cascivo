@@ -95,12 +95,12 @@
     }
 
     & a {
-      color: var(--cascivo-color-accent);
+      color: var(--cascivo-color-accent-text);
       text-decoration: underline;
       text-underline-offset: 0.15em;
 
       &:hover {
-        color: var(--cascivo-color-accent-hover);
+        color: var(--cascivo-color-accent-text-hover);
       }
     }
 

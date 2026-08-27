@@ -74,8 +74,8 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-surface`
-- `--cascivo-color-accent`
 - `--cascivo-color-text-muted`
 - `--cascivo-border-subtle`
 - `--cascivo-ring-width`

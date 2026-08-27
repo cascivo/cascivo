@@ -140,7 +140,7 @@
   .block-detail__back {
     display: inline-flex;
     align-items: center;
-    gap: var(--cascivo-space-1-5);
+    gap: var(--cascivo-space-2);
     font-family: var(--cascivo-font-mono);
     font-size: 0.6875rem;
     font-weight: 600;

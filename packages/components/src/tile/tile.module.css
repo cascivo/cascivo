@@ -45,7 +45,7 @@
   }
 
   .tile[data-selected] .icon {
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
   }
 
   .body {

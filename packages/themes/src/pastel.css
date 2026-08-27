@@ -54,6 +54,10 @@
     --cascivo-color-accent-active: oklch(0.56 0.2 350); /* static fallback */
     --cascivo-color-accent-active: oklch(from var(--cascivo-color-accent) 0.56 0.2 h); /* derived */
     --cascivo-color-accent-subtle: oklch(0.96 0.04 350);
+    /* The candy pink is a fill: 3.0:1 as type on this theme's background. Same
+       hue, darkened to clear AA for labels, links and active states. */
+    --cascivo-color-accent-text: oklch(0.52 0.2 350);
+    --cascivo-color-accent-text-hover: oklch(0.46 0.2 350);
     --cascivo-color-accent-muted: oklch(0.93 0.07 350);
 
     /* ── Primary — accent-mapped ─────────────────────── */

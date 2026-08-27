@@ -79,10 +79,9 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
+- `--cascivo-color-accent-text-hover`
 - `--cascivo-link-color`
-- `--cascivo-color-accent`
-- `--cascivo-color-accent-hover`
-- `--cascivo-color-accent-active`
 - `--cascivo-radius-sm`
 - `--cascivo-focus-ring`
 

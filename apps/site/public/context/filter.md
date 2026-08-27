@@ -49,6 +49,7 @@ Wraps buttons in a role="group" so screen readers announce the group label; each
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-radius-full`
 - `--cascivo-border-default`
 - `--cascivo-color-text-subtle`
@@ -125,7 +126,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Filter is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-radius-full, --cascivo-border-default, --cascivo-color-text-subtle, --cascivo-color-text, --cascivo-color-active-bg, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out
+  --cascivo-color-accent-text, --cascivo-radius-full, --cascivo-border-default, --cascivo-color-text-subtle, --cascivo-color-text, --cascivo-color-active-bg, --cascivo-color-accent, --cascivo-color-accent-content, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out
 
 Accessibility: role "group", WCAG 2.2-AA, keyboard: Tab/Enter/Space. Keep it AA.
 Flexible: variant, multi.

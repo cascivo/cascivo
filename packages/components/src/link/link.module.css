@@ -1,17 +1,19 @@
 @layer cascivo.component {
   .link {
-    color: var(--cascivo-link-color, var(--cascivo-color-accent));
+    color: var(--cascivo-link-color, var(--cascivo-color-accent-text));
     cursor: pointer;
     border-radius: var(--cascivo-radius-item);
     text-underline-offset: 0.2em;
     transition: color var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     &:hover {
-      color: var(--cascivo-color-accent-hover);
+      color: var(--cascivo-color-accent-text-hover);
     }
 
     &:active {
-      color: var(--cascivo-color-accent-active);
+      /* No -text-active token: the press is momentary, and the hover ink is
+         already the darker step of the same hue. */
+      color: var(--cascivo-color-accent-text-hover);
     }
 
     &:focus-visible {

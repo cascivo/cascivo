@@ -31,7 +31,17 @@ export function CodeBlock({ code, lang = 'tsx' }: CodeBlockProps) {
     let active = true
     getHighlighter()
       .then((hl) => {
-        if (active) setHtml(hl.codeToHtml(code, { lang, theme: 'github-dark' }))
+        if (active)
+          setHtml(
+            hl.codeToHtml(code, {
+              lang,
+              theme: 'github-dark',
+              // github-dark's comment grey is 3.05:1 on its own background —
+              // GitHub's own shortfall, inherited wholesale. Shiki remaps a
+              // theme colour at highlight time; this is the one that misses AA.
+              colorReplacements: { '#6a737d': '#9aa5b1' },
+            }),
+          )
       })
       .catch(() => {
         if (active) setHtml(null)

@@ -81,6 +81,7 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-content`
 - `--cascivo-color-accent-hover`

@@ -43,8 +43,8 @@ Wrapped in <nav> with aria-label; active item carries aria-current="page"; rende
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-surface`
-- `--cascivo-color-accent`
 - `--cascivo-color-text-muted`
 - `--cascivo-border-subtle`
 - `--cascivo-ring-width`
@@ -109,7 +109,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Dock is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-accent, --cascivo-color-text-muted, --cascivo-border-subtle, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out, --cascivo-target-min-coarse, --cascivo-z-dock
+  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-text-muted, --cascivo-border-subtle, --cascivo-ring-width, --cascivo-ring-color, --cascivo-ease-out, --cascivo-target-min-coarse, --cascivo-z-dock
 
 Accessibility: role "navigation", WCAG 2.2-AA, keyboard: Tab/Enter. Keep it AA.
 

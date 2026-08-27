@@ -51,7 +51,7 @@
     }
 
     &[aria-pressed='true'] {
-      color: var(--cascivo-color-accent);
+      color: var(--cascivo-color-accent-text);
       cursor: grabbing;
     }
 

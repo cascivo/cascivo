@@ -55,6 +55,8 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
+- `--cascivo-color-accent-text-hover`
 - `--cascivo-font-sans`
 - `--cascivo-font-mono`
 - `--cascivo-font-semibold`
@@ -63,8 +65,6 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - `--cascivo-tracking-tight`
 - `--cascivo-color-text`
 - `--cascivo-color-text-subtle`
-- `--cascivo-color-accent`
-- `--cascivo-color-accent-hover`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-color-border-strong`

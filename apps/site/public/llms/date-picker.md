@@ -87,12 +87,14 @@ Required. The component's primary job needs client JavaScript, so do not render 
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-surface`
 - `--cascivo-color-surface-overlay`
 - `--cascivo-color-border`
 - `--cascivo-color-border-strong`
 - `--cascivo-color-accent`
 - `--cascivo-color-text-on-accent`
+- `--cascivo-date-picker-day-today-color`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`
 - `--cascivo-color-text-subtle`
