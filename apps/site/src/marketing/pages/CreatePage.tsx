@@ -31,19 +31,32 @@ export function CreatePage() {
       <SkipNavLink />
       <Header />
       <SkipNavTarget>
-        <main className="create-page">
-          <div className="create-layout">
-            <div className="create-panel create-panel--controls">
-              <p className="create-panel__heading">Controls</p>
-              <ControlPanel />
-            </div>
-            <div className="create-panel create-panel--preview">
-              <p className="create-panel__heading">Preview — updates live</p>
-              <PreviewPanel />
-            </div>
-            <div className="create-panel create-panel--code">
-              <p className="create-panel__heading">Your theme</p>
-              <CodePanel />
+        <main>
+          <section className="proof-hero" aria-labelledby="create-title">
+            <p className="guides-eyebrow">Theme builder</p>
+            <h1 id="create-title">
+              Build a <span className="proof-hero-accent">theme</span>, copy the CSS.
+            </h1>
+            <p className="proof-hero-sub">
+              Pick a preset, set an accent, a radius and a font — the preview repaints live and the
+              output is plain custom properties you paste into your own stylesheet. No account, no
+              export step.
+            </p>
+          </section>
+          <div className="create-page">
+            <div className="create-layout">
+              <div className="create-panel create-panel--controls">
+                <p className="create-panel__heading">Controls</p>
+                <ControlPanel />
+              </div>
+              <div className="create-panel create-panel--preview">
+                <p className="create-panel__heading">Preview — updates live</p>
+                <PreviewPanel />
+              </div>
+              <div className="create-panel create-panel--code">
+                <p className="create-panel__heading">Your theme</p>
+                <CodePanel />
+              </div>
             </div>
           </div>
         </main>

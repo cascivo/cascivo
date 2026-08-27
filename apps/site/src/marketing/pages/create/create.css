@@ -35,7 +35,11 @@
 }
 
 .create-panel {
-  border: 1px solid var(--cascivo-color-border);
+  /* A grid item's automatic minimum is its content's min-content width, and the
+     control panel's is ~540px — without this the single-column mobile layout
+     could not shrink and the page scrolled sideways from 320 to 414. */
+  min-inline-size: 0;
+  border: var(--cascivo-landing-rule-weight, 1px) solid var(--cascivo-color-border);
   border-radius: var(--cascivo-radius-card);
   background: var(--cascivo-color-surface);
   padding: var(--cascivo-space-6);
@@ -389,7 +393,9 @@
   font-style: italic;
 }
 .css-prop {
-  color: var(--cascivo-color-accent);
+  /* A property name is type, so it takes the accent's readable sibling — the
+     poster accent is a fill and lands at ~1.4:1 on the code surface. */
+  color: var(--cascivo-color-info-foreground, oklch(0.45 0.2 250));
 }
 .css-value {
   color: var(--cascivo-color-success-foreground, oklch(0.45 0.14 145));

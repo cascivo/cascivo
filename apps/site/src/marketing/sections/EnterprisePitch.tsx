@@ -1,4 +1,3 @@
-import { Badge } from '@cascivo/components/badge'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascivo/components/card'
 import { CopyCommand } from './CopyCommand'
 import { LinkButton } from './LinkButton'
@@ -94,18 +93,18 @@ function ArgumentGrid({ items }: { items: Argument[] }) {
 export function EnterprisePitch() {
   return (
     <>
-      <section className="section" id="enterprise-hero" data-reveal="">
-        <Badge variant="outline">For engineering leaders</Badge>
-        <h1 className="hero-title">
-          Enterprise-ready. AI-native. <span className="hero-title-accent">No trade-off.</span>
+      <section className="proof-hero" id="enterprise-hero" data-reveal="">
+        <p className="guides-eyebrow">For engineering leaders</p>
+        <h1>
+          Enterprise-ready. AI-native. <span className="proof-hero-accent">No trade-off.</span>
         </h1>
-        <p className="section-sub">
+        <p className="proof-hero-sub">
           Most design systems make you choose: own your code or move fast; ship accessible or ship
           on time; adopt AI tooling or keep quality high. cascivo is built so you don&rsquo;t. Here
           is the case for betting your product on it — and why being AI-first makes it a safer bet,
           not a riskier one.
         </p>
-        <div className="hero-ctas">
+        <div className="guides-hero-ctas">
           <LinkButton href="/guides">Get started</LinkButton>
           <LinkButton href={`${REPO}/docs/ENTERPRISE-READINESS.md`} variant="secondary">
             Read the technical brief

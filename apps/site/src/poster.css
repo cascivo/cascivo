@@ -10,8 +10,9 @@
  * `[data-theme='brutalist']` block, the light half restates brutalist's tokens
  * rather than importing them — keep the two in sync if brutalist changes.
  *
- * Four new tokens, all namespaced --cascivo-landing-*: the inverted band pair,
- * the poster rule weight, and the hatch used by placeholder tiles.
+ * Five new tokens, all namespaced --cascivo-landing-*: the inverted band pair,
+ * the poster rule weight, the hatch used by placeholder tiles, and the ink an
+ * in-page link takes (the acid accent is a fill, never type on a light surface).
  */
 
 @import '@cascivo/tokens';
@@ -91,6 +92,10 @@
     --cascivo-color-info-foreground: oklch(0.45 0.2 250);
 
     /* ── Radius — zero ───────────────────────────────── */
+    /* The full scale, not just the eleven names brutalist restates: the
+       secondary pages' own CSS reaches for sm/md/lg/xl, so leaving those
+       rounded is what kept /guides, /examples and /showcase on softened cards
+       while the grid around them was hard-edged. */
     --cascivo-radius-base: 0;
     --cascivo-radius-control: 0;
     --cascivo-radius-surface: 0;
@@ -102,6 +107,14 @@
     --cascivo-radius-card: 0;
     --cascivo-radius-badge: 0;
     --cascivo-radius-modal: 0;
+    --cascivo-radius-sm: 0;
+    --cascivo-radius-md: 0;
+    --cascivo-radius-lg: 0;
+    --cascivo-radius-xl: 0;
+    --cascivo-radius-2xl: 0;
+    --cascivo-radius-item: 0;
+    --cascivo-radius-field: 0;
+    --cascivo-radius-overlay: 0;
 
     /* ── Shadows — hard offset, no blur ─────────────── */
     --cascivo-shadow-xs: 1px 1px 0 oklch(0.1 0 0);
@@ -146,11 +159,12 @@
     --cascivo-color-secondary-hover: oklch(0.82 0.2 100);
     --cascivo-color-secondary-subtle: oklch(0.96 0.07 105);
 
-    /* ── Landing-page additions — the poster grid's own four tokens ── */
+    /* ── Landing-page additions — the poster grid's own five tokens ── */
     --cascivo-landing-invert-bg: oklch(0.1 0 0);
     --cascivo-landing-invert-fg: oklch(0.97 0.02 95);
     --cascivo-landing-rule-weight: 3px;
     --cascivo-landing-hatch: oklch(0.72 0 0);
+    --cascivo-landing-link: var(--cascivo-color-destructive);
   }
 
   /* ── Poster (dark) — dark.css surfaces, cream rules, same acid ────── */
@@ -240,6 +254,14 @@
     --cascivo-radius-card: 0;
     --cascivo-radius-badge: 0;
     --cascivo-radius-modal: 0;
+    --cascivo-radius-sm: 0;
+    --cascivo-radius-md: 0;
+    --cascivo-radius-lg: 0;
+    --cascivo-radius-xl: 0;
+    --cascivo-radius-2xl: 0;
+    --cascivo-radius-item: 0;
+    --cascivo-radius-field: 0;
+    --cascivo-radius-overlay: 0;
 
     /* ── Shadows — hard offset in cream ─────────────── */
     --cascivo-shadow-xs: 1px 1px 0 oklch(0.985 0.002 264);
@@ -289,6 +311,7 @@
     --cascivo-landing-invert-fg: oklch(0.145 0.005 250);
     --cascivo-landing-rule-weight: 3px;
     --cascivo-landing-hatch: oklch(0.45 0.01 264);
+    --cascivo-landing-link: var(--cascivo-color-destructive);
   }
 
   /* Display stack, shared by both halves.

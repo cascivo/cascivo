@@ -181,14 +181,15 @@ export function ChartsPage() {
       <SkipNavLink />
       <Header />
       <SkipNavTarget>
-        <main className="charts-page">
+        <main>
           {/* ── Hero ─────────────────────────────────────────── */}
-          <section className="cx-hero section" aria-labelledby="charts-hero-title">
-            <p className="cx-eyebrow">@cascivo/charts</p>
+          <section className="proof-hero" aria-labelledby="charts-hero-title">
+            <p className="guides-eyebrow">@cascivo/charts</p>
             <h1 id="charts-hero-title">
-              A charting library that ships <em>with</em> the design system.
+              A charting library that ships <span className="proof-hero-accent">with</span> the
+              design system.
             </h1>
-            <p className="section-sub">
+            <p className="proof-hero-sub">
               18 chart types built from scratch — own scales, shapes, and signal-driven rendering,
               zero runtime dependencies. Every chart is keyboard-navigable, theme-aware, and
               CVD-safe across all 14 palettes. Hover, focus with <kbd>Tab</kbd>, and arrow between

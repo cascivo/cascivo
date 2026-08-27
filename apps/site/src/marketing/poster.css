@@ -18,16 +18,22 @@
 
 @layer cascivo.theme {
   /*
-   * Defaults for the four --cascivo-landing-* tokens, so the poster grid also
+   * Defaults for the five --cascivo-landing-* tokens, so the poster grid also
    * holds under the twelve first-party themes (which know nothing about it).
-   * `poster`/`poster-dark` restate them; this block must stay ahead of every
-   * [data-theme] rule in the layer, which app.css's import order guarantees.
+   * `poster`/`poster-dark` restate them, and must win — :where() drops this
+   * block to zero specificity so a [data-theme] restatement beats it whatever
+   * the import order. (Plain `:root` ties with `[data-theme]` on specificity,
+   * and app.css loads src/poster.css BEFORE this file, so the defaults were
+   * winning: the poster hatch never reached the page.)
    */
-  :root {
+  :where(:root) {
     --cascivo-landing-invert-bg: var(--cascivo-color-foreground);
     --cascivo-landing-invert-fg: var(--cascivo-color-background);
     --cascivo-landing-rule-weight: 3px;
     --cascivo-landing-hatch: var(--cascivo-color-border);
+    /* The twelve first-party themes have an accent that reads as type; the
+       poster halves override this because acid yellow does not. */
+    --cascivo-landing-link: var(--cascivo-color-accent);
   }
 }
 
@@ -536,6 +542,85 @@
   -webkit-box-decoration-break: clone;
 }
 
+/*
+ * Accent-as-type across the secondary pages. Those rules were written when the
+ * accent was a blue that read as a link; the poster accent is acid yellow, a
+ * FILL — as type on cream it lands at ~1.4:1. Every one of them takes the same
+ * link ink the poster grid's own .pg-link uses. (Rules restated elsewhere in
+ * this file — .proof-hero-accent, .guides-eyebrow, .mobile-nav-link and the
+ * footer brand — are not repeated here.)
+ */
+.tech-learn-more,
+.chart-showcase-cta,
+.cx-readout-value,
+.icon-showcase-cta,
+.ecosystem-pkg,
+.ecosystem-link,
+.proof-link,
+.a11y-stmt-stat,
+.blog-post a,
+.migrate-arrow,
+.migrate-step-num,
+.migrate-delta a,
+.migrate-cta-link,
+.customize-tier-name,
+.customize-escalate-card a,
+.scenario-receipt,
+.boundary-receipt,
+.faq-next,
+.examples-link,
+.showcase-cat,
+.showcase-visit,
+.block-card__link,
+.block-detail__open-link {
+  color: var(--cascivo-landing-link);
+}
+
+/* Same story inside the /modern-css code samples: the three token colours that
+   resolve to the accent are unreadable on the code surface. The -foreground
+   token variants exist for exactly this — coloured type, not a fill. */
+.tech-pre .tok-atrule,
+.tech-pre .tok-keyword {
+  color: var(--cascivo-color-destructive-foreground);
+}
+
+.tech-pre .tok-variable {
+  color: var(--cascivo-color-info-foreground);
+}
+
+.tech-pre .tok-number {
+  color: var(--cascivo-color-warning-foreground);
+}
+
+/* The receipts row under a hero is a ruled slab, not a rounded card. */
+.proof-hero-stats {
+  border-width: var(--cascivo-landing-rule-weight);
+  border-radius: 0;
+  background-color: transparent;
+}
+
+/* A post keeps its reading column — only the masthead takes the display face. */
+.blog-post-header {
+  border-block-end: var(--cascivo-landing-rule-weight) solid var(--cascivo-color-border);
+  padding-block-end: var(--cascivo-space-6);
+}
+
+.blog-post-header h1 {
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  font-size: clamp(2rem, 4.6vw, 3rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.blog-post h2 {
+  font-family: var(--cascivo-font-display);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
 /* The CTA band is a full-bleed acid field, not a floating rounded card. */
 .cta-band {
   max-inline-size: none;
@@ -641,6 +726,31 @@
   font-size: 0.71875rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
+  border-radius: 0;
+}
+
+/*
+ * ShellHeader and landing.css fill every control state from a page surface
+ * (--cascivo-color-bg-subtle, --cascivo-color-surface-raised) while the band
+ * keeps its type on `color: inherit` — cream on white, i.e. an unreadable
+ * control. Both halves have to be restated against the inversion: a tint of
+ * the band's own foreground for hover, a solid flip for the route you are on.
+ * :not([role='menuitem']) keeps the open Resources panel out of it — it is a
+ * header descendant, but it sits on its own surface.
+ */
+.landing-shell-header :where(a, button):not([role='menuitem'], .header-github-link):hover {
+  background: color-mix(in oklch, var(--cascivo-landing-invert-fg) 16%, transparent);
+  color: var(--cascivo-landing-invert-fg);
+}
+
+.landing-shell-header :where(nav) :where(a, button):not([role='menuitem'])[data-state='active'],
+.landing-shell-header :where(nav) button[aria-expanded='true'] {
+  background: var(--cascivo-landing-invert-fg);
+  color: var(--cascivo-landing-invert-bg);
+}
+
+.landing-shell-header [role='menuitem'] {
+  color: var(--cascivo-color-text);
 }
 
 .header-scheme-toggle,
@@ -657,15 +767,10 @@
   cursor: pointer;
 }
 
-.header-scheme-toggle:hover,
-.header-theme-cycle:hover {
-  background: color-mix(in oklch, var(--cascivo-landing-invert-fg) 16%, transparent);
-  color: inherit;
-}
-
 .header-search-btn {
   border-radius: 0;
   border-color: color-mix(in oklch, var(--cascivo-landing-invert-fg) 45%, transparent);
+  background: transparent;
   color: inherit;
 }
 
@@ -689,6 +794,11 @@
   color: var(--cascivo-color-accent-content);
 }
 
+/* The acid block keeps its own hover — the band's cream tint would mute it. */
+.landing-shell-header .header-github-link:hover {
+  background: var(--cascivo-color-accent-hover);
+}
+
 .header-github-label {
   display: none;
 }
@@ -710,6 +820,14 @@
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: inherit;
+}
+
+/* The drawer is the band inverted too, so landing.css's acid-on-hover lands on
+   cream in the dark half. Same tint as the header controls instead. */
+.mobile-nav-link:hover,
+.mobile-nav-link:focus-visible {
+  background: color-mix(in oklch, var(--cascivo-landing-invert-fg) 16%, transparent);
   color: inherit;
 }
 
@@ -738,20 +856,29 @@
   gap: 0.625rem;
 }
 
-.footer-brand-name {
+/* landing.css paints both of these with the accent. That reads on the ink
+   footer of the light half and vanishes on the cream footer of the dark one —
+   so the wordmark takes the acid as a FILL (legible on either band) and the
+   facts line follows the band's own foreground, like .pg-note does. */
+.footer-brand .footer-brand-name {
   font-family: var(--cascivo-font-display);
   font-weight: 900;
   font-size: 1.25rem;
   letter-spacing: -0.04em;
   text-transform: uppercase;
+  background: var(--cascivo-color-accent);
+  color: var(--cascivo-color-accent-content);
+  padding-inline: 0.2em;
+  align-self: flex-start;
 }
 
-.footer-brand-facts {
+.footer-brand .footer-brand-facts {
   font-family: var(--cascivo-font-mono);
   font-size: 0.71875rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  opacity: 0.65;
+  color: inherit;
+  opacity: 0.78;
 }
 
 .footer-columns {

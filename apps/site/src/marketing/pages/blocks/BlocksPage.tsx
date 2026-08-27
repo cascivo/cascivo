@@ -85,60 +85,74 @@ export function BlocksPage() {
       <SkipNavLink />
       <Header />
       <SkipNavTarget>
-        <main className="blocks-page">
-          <h1 className="blocks-page__heading">Blocks</h1>
-          <p className="blocks-page__subtitle">
-            Production-ready UI sections built with cascivo. Browse, preview, and copy in one click.
-          </p>
+        <main>
+          <section className="proof-hero" aria-labelledby="blocks-title">
+            <p className="guides-eyebrow">Blocks</p>
+            <h1 id="blocks-title">
+              Whole <span className="proof-hero-accent">sections</span>, not just parts.
+            </h1>
+            <p className="proof-hero-sub">
+              Production-ready UI sections built with cascivo. Browse, preview, and copy in one
+              click.
+            </p>
+          </section>
 
-          <div className="blocks-filter">
-            {CATEGORIES.map((c) => (
-              <Button
-                key={c.key}
-                variant={activeCategory.value === c.key ? 'primary' : 'ghost'}
-                size="sm"
-                onClick={() => {
-                  activeCategory.value = c.key
-                  query.value = ''
+          <section className="section" aria-label="Browse blocks">
+            <div className="blocks-filter">
+              {CATEGORIES.map((c) => (
+                <Button
+                  key={c.key}
+                  variant={activeCategory.value === c.key ? 'primary' : 'ghost'}
+                  size="sm"
+                  onClick={() => {
+                    activeCategory.value = c.key
+                    query.value = ''
+                  }}
+                >
+                  {c.label}
+                </Button>
+              ))}
+            </div>
+
+            <div className="blocks-search">
+              <Input
+                role="searchbox"
+                type="search"
+                placeholder="Search blocks…"
+                value={query.value}
+                onChange={(e) => {
+                  query.value = (e.currentTarget as HTMLInputElement).value
+                  activeCategory.value = 'all'
                 }}
-              >
-                {c.label}
-              </Button>
-            ))}
-          </div>
+              />
+            </div>
 
-          <div className="blocks-search">
-            <Input
-              role="searchbox"
-              type="search"
-              placeholder="Search blocks…"
-              value={query.value}
-              onChange={(e) => {
-                query.value = (e.currentTarget as HTMLInputElement).value
-                activeCategory.value = 'all'
-              }}
-            />
-          </div>
-
-          <div className="blocks-grid">
-            {displayed.value.length === 0 ? (
-              <p className="blocks-empty">No blocks match your search.</p>
-            ) : (
-              displayed.value.map((entry) => (
-                <a key={entry.meta.name} href={`/blocks/${entry.meta.name}`} className="block-card">
-                  <BlockThumbnail entry={entry} />
-                  <div className="block-card__body">
-                    <div className="block-card__header">
-                      <span className="block-card__name">{entry.meta.displayName}</span>
-                      <Badge variant="secondary">{entry.meta.category}</Badge>
-                    </div>
-                    <p className="block-card__description">{entry.meta.description}</p>
-                    <span className="block-card__link">View block →</span>
-                  </div>
-                </a>
-              ))
-            )}
-          </div>
+            <div className="blocks-grid-scope">
+              <div className="blocks-grid">
+                {displayed.value.length === 0 ? (
+                  <p className="blocks-empty">No blocks match your search.</p>
+                ) : (
+                  displayed.value.map((entry) => (
+                    <a
+                      key={entry.meta.name}
+                      href={`/blocks/${entry.meta.name}`}
+                      className="block-card"
+                    >
+                      <BlockThumbnail entry={entry} />
+                      <div className="block-card__body">
+                        <div className="block-card__header">
+                          <span className="block-card__name">{entry.meta.displayName}</span>
+                          <Badge variant="secondary">{entry.meta.category}</Badge>
+                        </div>
+                        <p className="block-card__description">{entry.meta.description}</p>
+                        <span className="block-card__link">View block →</span>
+                      </div>
+                    </a>
+                  ))
+                )}
+              </div>
+            </div>
+          </section>
         </main>
       </SkipNavTarget>
       <Footer />
