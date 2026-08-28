@@ -11,7 +11,9 @@ import { partial } from './figures'
  * every 10th cell gets a new number. The left panel gives each cell its own
  * signal, so a tick re-renders exactly the three cells whose value changed. The
  * right panel is the usual `useState` wiring — one array in the parent, so a
- * tick re-renders all thirty.
+ * tick re-renders all thirty. Both grids flash the same three cells, because
+ * `blip` only flips on a cell whose value changed — the visible difference is
+ * the render counter, not the animation.
  *
  * The counters are instrumented, not written down: each cell tallies its own
  * renders past the first and publishes the running total. `useState` here is the
@@ -28,11 +30,16 @@ const CELLS = 30
 const STRIDE = 10
 const TICK_MS = 700
 
-/** One signal per cell. `blip` flips on every touch so the CSS flash restarts. */
+/** A cell's value plus a `blip` that flips on every touch, so the CSS flash restarts. */
 type Cell = { v: number; blip: boolean }
+
+/** One signal per cell — the left panel's wiring. */
 const cellSignals: Signal<Cell>[] = Array.from({ length: CELLS }, (_, i) =>
   signal<Cell>({ v: i + 1, blip: false }),
 )
+
+const initialCells = (): Cell[] =>
+  Array.from({ length: CELLS }, (_, i) => ({ v: i + 1, blip: false }))
 
 /** Drives the `useState` panel: the tick index the whole grid is rendered from. */
 const tick = signal(0)
@@ -75,9 +82,13 @@ function SignalCell({ cell }: { cell: Signal<Cell> }) {
   )
 }
 
-function StateCell({ value }: { value: number }) {
+function StateCell({ cell }: { cell: Cell }) {
   useRenderTally('state')
-  return <span className="pg-cell">{value}</span>
+  return (
+    <span className="pg-cell" data-blip={cell.blip ? 'a' : 'b'}>
+      {cell.v}
+    </span>
+  )
 }
 
 /** Subscribes to nothing, so it renders once and never re-renders its cells. */
@@ -95,18 +106,20 @@ function SignalGrid() {
 function StateGrid() {
   useSignals()
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [values, setValues] = useState(() => Array.from({ length: CELLS }, (_, i) => i + 1))
+  const [values, setValues] = useState(initialCells)
 
   useSignalEffect(() => {
     const t = tick.value
     if (t === 0) return
-    setValues((prev) => prev.map((v, i) => (i % STRIDE === (t - 1) % STRIDE ? v + 1 : v)))
+    setValues((prev) =>
+      prev.map((c, i) => (i % STRIDE === (t - 1) % STRIDE ? { v: c.v + 1, blip: !c.blip } : c)),
+    )
   })
 
   return (
     <div className="pg-cell-grid">
-      {values.map((v, i) => (
-        <StateCell key={i} value={v} />
+      {values.map((c, i) => (
+        <StateCell key={i} cell={c} />
       ))}
     </div>
   )
