@@ -297,6 +297,23 @@
           "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
         }
       ],
+      "Logo": [
+        {
+          "area": "size",
+          "level": "flexible",
+          "note": "Any size at or above the 16px floor; the wordmark and gap scale from it"
+        },
+        {
+          "area": "variant",
+          "level": "strict",
+          "note": "A closed set of five. Do not invent a lockup — clear space, gaps and ratios are specified at https://cascivo.com/docs/brand"
+        },
+        {
+          "area": "colour",
+          "level": "strict",
+          "note": "Ink is currentColor and the notch is --cascivo-color-accent. Never recolour the ink off-token or fill the notch with anything else"
+        }
+      ],
       "Breadcrumb": [
         {
           "area": "maxVisible",
@@ -3439,6 +3456,90 @@
       ],
       "contextUrl": "/context/bottom-sheet.md",
       "aiPrompt": "I am modifying the cascivo BottomSheet component (overlay). Mobile bottom sheet with drag-to-resize detents, velocity-projected snapping, and drag-to-dismiss\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nBottomSheet is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-target-min-coarse, --cascivo-z-overlay\n\nAccessibility: role \"dialog\", WCAG 2.2-AA, keyboard: Escape/Tab/Shift+Tab. Keep it AA.\nFlexible: snapPoints, open state, active detent.\n\nDo not invent props, tokens, or global viewport media queries."
+    },
+    {
+      "name": "Logo",
+      "category": "display",
+      "description": "The cascivo mark and its sanctioned lockups, as inline SVG",
+      "intent": {
+        "whenToUse": [
+          "Placing the cascivo logo in a header, footer, auth screen or splash",
+          "Needing the mark to repaint with the surrounding data-theme instead of shipping a per-theme image",
+          "Any spot that would otherwise hand-roll the logo SVG or point an <img> at logo.svg"
+        ],
+        "whenNotToUse": [
+          "Rendering an adopter's own brand — this is the cascivo mark, not a generic logo slot; pass your own node to AuthLayout's `logo` or ShellHeader's `brand` instead",
+          "Below 16px — the notch closes optically; use the wordmark alone",
+          "Favicons and app icons, which are static files with their own optical centring (see https://cascivo.com/docs/brand)"
+        ],
+        "antiPatterns": [
+          {
+            "bad": "<img src=\"/logo.svg\" alt=\"cascivo\" />",
+            "good": "<Logo variant=\"horizontal\" />",
+            "why": "currentColor and --cascivo-color-accent only resolve when the SVG is inline, so an <img> cannot follow the theme"
+          },
+          {
+            "bad": "<Logo variant=\"mark\" style={{ transform: \"scaleX(1.4)\" }} />",
+            "good": "<Logo variant=\"mark\" size={48} />",
+            "why": "The mark is always 1:1 and never scales on one axis"
+          },
+          {
+            "bad": "Wrapping the logo in chrome that sets text-transform: uppercase",
+            "good": "Leave the wordmark lowercase — the component pins text-transform: none",
+            "why": "The wordmark is lowercase cascivo; uppercasing it is a misuse of the mark"
+          }
+        ],
+        "related": [
+          {
+            "name": "ShellHeader",
+            "relationship": "contained-by",
+            "reason": "The nav lockup is what the header brand slot takes"
+          }
+        ],
+        "a11yRationale": "The bare mark carries role=\"img\" and a <title> so it is announced as \"cascivo\"; in a lockup the wordmark is real text, so the mark goes aria-hidden rather than announcing the name twice",
+        "flexibility": [
+          {
+            "area": "size",
+            "level": "flexible",
+            "note": "Any size at or above the 16px floor; the wordmark and gap scale from it"
+          },
+          {
+            "area": "variant",
+            "level": "strict",
+            "note": "A closed set of five. Do not invent a lockup — clear space, gaps and ratios are specified at https://cascivo.com/docs/brand"
+          },
+          {
+            "area": "colour",
+            "level": "strict",
+            "note": "Ink is currentColor and the notch is --cascivo-color-accent. Never recolour the ink off-token or fill the notch with anything else"
+          }
+        ]
+      },
+      "props": [
+        {
+          "name": "variant",
+          "description": "`mark` and `mark-accent` render the square alone; `horizontal`, `stacked` and `nav` add the wordmark. `nav` is the only lockup permitted below 24px.",
+          "type": "'mark' | 'mark-accent' | 'horizontal' | 'stacked' | 'nav'",
+          "required": false,
+          "default": "mark",
+          "schema": {
+            "kind": "enum",
+            "values": ["mark", "mark-accent", "horizontal", "stacked", "nav"]
+          }
+        },
+        {
+          "name": "size",
+          "description": "Mark height in px. Clamped to a 16px floor — below that the notch closes optically.",
+          "type": "number",
+          "required": false,
+          "default": "18 for `nav`, 32 otherwise",
+          "schema": {
+            "kind": "number"
+          }
+        }
+      ],
+      "contextUrl": "/context/brand/logo.md",
+      "aiPrompt": "I am modifying the cascivo Logo component (display). The cascivo mark and its sanctioned lockups, as inline SVG\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nLogo is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-accent, --cascivo-font-display\n\nAccessibility: role \"img\", WCAG 2.2-AA. Keep it AA.\n\nDo not change (strict): variant — A closed set of five. Do not invent a lockup — clear space, gaps and ratios are specified at https://cascivo.com/docs/brand; colour — Ink is currentColor and the notch is --cascivo-color-accent. Never recolour the ink off-token or fill the notch with anything else\nFlexible: size.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Breadcrumb",

@@ -4,6 +4,7 @@ import { Button } from '@cascivo/components/button'
 import { Input } from '@cascivo/components/input'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@cascivo/components/card'
 import { Badge } from '@cascivo/components/badge'
+import { Logo } from '@cascivo/components/brand/logo'
 import { Modal } from '@cascivo/components/modal'
 import { Spinner } from '@cascivo/components/spinner'
 import { Separator } from '@cascivo/components/separator'
@@ -774,6 +775,17 @@ function TreeViewDemo() {
 }
 
 export const demos: Record<string, () => JSX.Element> = {
+  'brand/logo': () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+        <Logo variant="mark" />
+        <Logo variant="mark-accent" />
+        <Logo variant="nav" />
+      </div>
+      <Logo variant="horizontal" />
+      <Logo variant="stacked" size={48} />
+    </div>
+  ),
   'avatar-group': () => (
     <AvatarGroup max={3} total={5}>
       <Avatar fallback="AC" />

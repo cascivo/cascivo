@@ -6,7 +6,10 @@ import { chromium } from '@playwright/test'
 
 const URL = process.env.OG_URL ?? 'http://localhost:4180/og'
 
-const browser = await chromium.launch()
+// Override for environments whose bundled Playwright browser doesn't match the
+// pinned @playwright/test version (mirrors gen-og-components.mjs).
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH
+const browser = await chromium.launch(executablePath ? { executablePath } : undefined)
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } })
 await page.goto(URL, { waitUntil: 'networkidle' })
 await page.waitForTimeout(500)

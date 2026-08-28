@@ -47,7 +47,7 @@ import '@cascivo/charts/styles.css' // only if you use @cascivo/charts
 
 Do **not** add `@cascivo/react/styles.css` here. It is the full-catalog aggregate for
 setups with no bundler (CDN, plain `<link>`); importing it in a bundled app replaces
-the handful of KB your page uses with all 197 components' worth. Measured on
+the handful of KB your page uses with all 198 components' worth. Measured on
 [`apps/examples/react-vite-ssr`](../apps/examples/react-vite-ssr/): **357 KB → 29 KB**
 of CSS when the aggregate import was dropped.
 

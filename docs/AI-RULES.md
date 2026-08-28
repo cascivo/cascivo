@@ -469,7 +469,7 @@ client-only rendering:
 2. Import a theme (`@cascivo/themes/light-dark.css`) once in the root route/entry.
    Do **not** import `@cascivo/react/styles.css`: per-component CSS rides the client
    module graph and tree-shakes, and the aggregate replaces the few KB you use with
-   all 197 components' worth.
+   all 198 components' worth.
 
 No `<ClientOnly>` wrappers are needed — components ship `'use client'` and render
 their server HTML normally. **Next.js App Router needs none of this** (the

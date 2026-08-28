@@ -194,6 +194,7 @@
             "List",
             "LogViewer",
             "LoginPage",
+            "Logo",
             "Masonry",
             "MediaMasonry",
             "Menu",
@@ -5025,6 +5026,32 @@
                   }
                 },
                 "required": ["options", "value", "onValueChange"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "component": {
+                "const": "Logo"
+              }
+            },
+            "required": ["component"]
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "type": "object",
+                "properties": {
+                  "variant": {
+                    "type": "string",
+                    "enum": ["mark", "mark-accent", "horizontal", "stacked", "nav"]
+                  },
+                  "size": {
+                    "type": "number"
+                  }
+                }
               }
             }
           }

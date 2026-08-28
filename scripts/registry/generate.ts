@@ -62,6 +62,15 @@ const ROOTS: SourceRoot[] = [
     prefix: '',
   },
   {
+    // The brand assets (the logo and its lockups) are components in every
+    // mechanical sense, but they are cascivo's own identity rather than neutral
+    // UI — the `brand/` prefix keeps them out of the general catalogue so an
+    // agent scaffolding a page does not reach for them by accident.
+    dir: join(REPO_ROOT, 'packages', 'components', 'src', 'brand'),
+    type: 'component',
+    prefix: 'brand/',
+  },
+  {
     dir: join(REPO_ROOT, 'packages', 'layouts', 'src'),
     type: 'layout',
     prefix: 'layout/',

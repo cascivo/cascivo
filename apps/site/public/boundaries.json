@@ -182,6 +182,23 @@
         "note": "Controlled (activeSnap/onSnapChange) or uncontrolled (defaultSnap)"
       }
     ],
+    "Logo": [
+      {
+        "area": "size",
+        "level": "flexible",
+        "note": "Any size at or above the 16px floor; the wordmark and gap scale from it"
+      },
+      {
+        "area": "variant",
+        "level": "strict",
+        "note": "A closed set of five. Do not invent a lockup — clear space, gaps and ratios are specified at https://cascivo.com/docs/brand"
+      },
+      {
+        "area": "colour",
+        "level": "strict",
+        "note": "Ink is currentColor and the notch is --cascivo-color-accent. Never recolour the ink off-token or fill the notch with anything else"
+      }
+    ],
     "Breadcrumb": [
       {
         "area": "maxVisible",

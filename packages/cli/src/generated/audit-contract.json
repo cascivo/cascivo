@@ -434,6 +434,7 @@
     { "name": "--cascivo-editor-tab-size", "resolvedDefault": "2" },
     { "name": "--cascivo-header-bg", "resolvedDefault": "var(--cascivo-color-surface)" },
     { "name": "--cascivo-kpi-padding", "resolvedDefault": "var(--cascivo-space-4)" },
+    { "name": "--cascivo-logo-size", "resolvedDefault": "2rem" },
     { "name": "--cascivo-popover-anchor", "resolvedDefault": "inherit" },
     { "name": "--cascivo-progress-color", "resolvedDefault": "var(--cascivo-color-primary)" },
     { "name": "--cascivo-progress-value", "resolvedDefault": "0%" },
@@ -2118,6 +2119,17 @@
         { "name": "label", "type": "string", "required": false },
         { "name": "ariaLabel", "type": "string", "required": false },
         { "name": "className", "type": "string", "required": false }
+      ]
+    },
+    {
+      "name": "Logo",
+      "props": [
+        {
+          "name": "variant",
+          "type": "'mark' | 'mark-accent' | 'horizontal' | 'stacked' | 'nav'",
+          "required": false
+        },
+        { "name": "size", "type": "number", "required": false }
       ]
     },
     {

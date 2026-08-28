@@ -49,6 +49,7 @@ keeps your intent explicit and survives later refactors of your own stylesheet.
 | `data-cascivo-modal-footer` | `Modal` | the right-aligned action row (rendered only when `footer` is passed) |
 | `data-cascivo-drawer-body` | `Drawer` | the scrollable content region |
 | `data-cascivo-sheet-body` | `Sheet` | the scrollable content region |
+| `data-cascivo-logo` | `Logo` | the lockup wrapper, valued with the active variant (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`) |
 
 ## Prefer a token, then a prop, then a hook
 

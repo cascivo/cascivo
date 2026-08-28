@@ -49,7 +49,8 @@ describe('meta-coverage — every manifest on disk is registered', () => {
     )
     assert.ok(metas.length > 150, `implausibly few metas found (${metas.length}) — scan broken?`)
 
-    const prefixes = ['', 'layout/', 'block/', 'chart/', 'editor/', 'section/', 'flow/']
+    // Mirrors the `prefix` of every SourceRoot in scripts/registry/generate.ts.
+    const prefixes = ['', 'brand/', 'layout/', 'block/', 'chart/', 'editor/', 'section/', 'flow/']
     const unregistered: string[] = []
     for (const metaPath of metas) {
       const rel = relative(REPO_ROOT, metaPath)

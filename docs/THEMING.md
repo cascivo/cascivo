@@ -91,7 +91,7 @@ path and already import from `@cascivo/react`, keep doing that — it is the sam
 
 > Until 0.17.0 these shipped only from `@cascivo/react`, which is the prebuilt distribution
 > of every component. A copy-paste adopter reading "from `@cascivo/react`" was being told to
-> install 197 components to get a theme signal, so one hand-wrote the provider, the
+> install 198 components to get a theme signal, so one hand-wrote the provider, the
 > persistence, the preload script and the `data-theme` wiring instead.
 
 `data-theme` is the *what*; `ThemeProvider` is the *how* — it

@@ -13,7 +13,7 @@ import {
   type ThemeName,
 } from '../../theme'
 import { currentPath, navigate } from '../../router'
-import { Logo } from '../Logo'
+import { Logo } from '@cascivo/components/brand/logo'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
 

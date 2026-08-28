@@ -79,7 +79,23 @@ Never introduce a colour that is not a theme token. Where a raster pipeline cann
 
 Lowercase `cascivo` in `--cascivo-font-display` ('Arial Black'), `letter-spacing: -0.045em` to `-0.055em`.
 
-**Convert the wordmark to outlines in any exported asset.** 'Arial Black' substitutes badly on Linux and Android, which silently changes the lockup in CI screenshots and on user machines. `apps/site/public/logo.svg` and `apps/storybook/public/brand.svg` still carry live `<text>` and need re-exporting with outlines before they are used as press assets.
+**The wordmark is outlines in every exported asset.** 'Arial Black' substitutes badly on Linux and Android, which would silently change the lockup in CI screenshots and on user machines, so no shipped SVG contains a `<text>` element. Live DOM is the exception and stays live text: the `Logo` component reads `--cascivo-font-display`, which is the point of the token.
+
+#### Regenerating the outlined wordmark
+
+Only needed if the size (28), the tracking (-0.05em) or the word itself changes. Arial Black is not redistributable, so it is not vendored — fetch it, then emit glyph outlines with [opentype.js](https://github.com/opentypejs/opentype.js):
+
+```sh
+curl -LO https://downloads.sourceforge.net/corefonts/arialb32.exe
+cabextract arialb32.exe          # yields AriBlk.TTF
+```
+
+Lay the glyphs out by advance width with the tracking applied *between* glyphs only, at
+`font-size: 28` on the 32-unit grid, with the baseline at `16 + xHeight / 2` (x-height
+measured off the `x` glyph — this 1998 font predates OS/2 v2, so `sxHeight` is absent).
+That puts the mark's vertical centre on the wordmark's x-height centre, which is the
+horizontal lockup's alignment rule. Paste the resulting path into the lockup SVGs; never
+retype it as `<text>`.
 
 ### Clear space and minimum size
 
@@ -112,11 +128,12 @@ The mark sits at **62.5% of the icon box**, optically centred: the notch pulls v
 - `apps/site/public/icon.svg` — 512x512 raster source for the 180/192/512 PNGs (two colour)
 - `apps/site/public/icon-mono.svg` — 512x512 raster source for `favicon.ico` (one colour)
 - `apps/storybook/public/brand.svg`, `apps/storybook/public/favicon.svg` — Storybook manager chrome
-- `apps/site/src/marketing/Logo.tsx` — the inline React lockup (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`)
+- `apps/site/public/logo-accent.svg` — two-colour horizontal lockup
+- `packages/components/src/brand/logo/` — the `brand/logo` registry component, which is how the logo is rendered in an app (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`)
 
 ### Usage
 
-Ship the mark **inline, not as an `<img>`** — `currentColor` and the accent token only resolve when the SVG is part of the document. The SVG carries `role="img"` and a `<title>`; in a lockup where the wordmark is already present the mark is `aria-hidden` instead, so screen readers do not announce the name twice.
+Use the `Logo` component — `import { Logo } from '@cascivo/react'` (or `npx cascivo add brand/logo`). It renders **inline SVG, not an `<img>`**: `currentColor` and the accent token only resolve when the SVG is part of the document. The SVG carries `role="img"` and a `<title>`; in a lockup where the wordmark is already present the mark is `aria-hidden` instead, so screen readers do not announce the name twice.
 
 ---
 

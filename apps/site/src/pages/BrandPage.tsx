@@ -1,4 +1,4 @@
-import { Logo } from '../marketing/Logo'
+import { Logo } from '@cascivo/components/brand/logo'
 
 // Brand page: name story, logo lockups, palette swatches, receipts for claim 25
 export function BrandPage() {
