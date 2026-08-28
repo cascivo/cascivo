@@ -739,6 +739,11 @@
 
 /* Brand in display caps; nav in mono caps. */
 .landing-shell-header :where([class*='brand']) {
+  /* ShellHeader's own .brand paints var(--cascivo-color-text), which is the PAGE
+     foreground — on this inverted band that is dark ink on a dark bar. The sibling
+     rule above only reaches `a`/`button`, so the wrapper needs its own inherit or
+     the brand lockup disappears. */
+  color: inherit;
   font-family: var(--cascivo-font-display);
   font-weight: 900;
   font-size: 1.125rem;

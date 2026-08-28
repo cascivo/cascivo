@@ -2,42 +2,44 @@ import { color } from '../theme'
 
 interface MarkProps {
   size?: number
-  /** 0→1 build progress for the cascading layers. */
+  /** 0→1 build progress: the square wipes in, then the accent drops into the notch. */
   progress?: number
 }
 
+/** The mark on its native 32-unit grid: a filled square with a bite out of the right edge. */
+const MARK_PATH = 'M0 0H32V11H11V21H32V32H0Z'
+
 /**
- * The cascivo mark: three offset rounded bars cascading down — a nod to the CSS
- * cascade and `@layer` that the system is built on.
+ * The cascivo mark ("the Notch"): one closed path, maximum ink, no interior detail.
+ * Reversed variant — the stage is near-black, so the ink is the light text colour and
+ * the notch takes the brand accent.
+ *
+ * The build wipes the square in from the stem outward and only then fills the bite, so
+ * the shape reads as solid before it reads as two-colour.
  */
 export const Mark: React.FC<MarkProps> = ({ size = 120, progress = 1 }) => {
-  const layers = [
-    { w: 0.92, x: 0, tint: color.accentBright },
-    { w: 0.72, x: 0.16, tint: color.accent },
-    { w: 0.52, x: 0.32, tint: color.ai },
-  ]
-  const bar = size * 0.2
-  const gap = size * 0.12
+  const clamp = (n: number) => Math.max(0, Math.min(1, n))
+  // The square lands over the first half of the build; the accent fills over the second.
+  const body = clamp(progress * 2)
+  const accent = clamp(progress * 2 - 1)
+  // Spring overshoot would otherwise make the id collide across concurrent instances.
+  const clipId = `cascivo-mark-wipe-${size}`
 
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none" aria-hidden>
-      {layers.map((layer, i) => {
-        const reveal = Math.max(0, Math.min(1, progress * layers.length - i))
-        const y = i * (bar + gap) + size * 0.1
-        return (
-          <rect
-            key={layer.tint}
-            x={layer.x * size}
-            y={y}
-            width={layer.w * size * reveal}
-            height={bar}
-            rx={bar / 2}
-            fill={layer.tint}
-            opacity={reveal}
-            style={{ filter: `drop-shadow(0 6px 22px ${layer.tint}66)` }}
-          />
-        )
-      })}
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden>
+      <defs>
+        <clipPath id={clipId}>
+          <rect x={0} y={0} width={32 * body} height={32} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#${clipId})`}>
+        <path
+          d={MARK_PATH}
+          fill={color.text}
+          style={{ filter: `drop-shadow(0 6px 22px ${color.accentBright}55)` }}
+        />
+        <rect x={11} y={11} width={21 * accent} height={10} fill={color.accentBright} />
+      </g>
     </svg>
   )
 }

@@ -610,6 +610,11 @@ body {
   padding: var(--cascivo-space-6);
   border-radius: var(--cascivo-radius-surface);
   border: 1px solid var(--cascivo-color-border);
+  /* The mark inks itself with currentColor, so a card carrying data-theme has to
+     paint that theme's surface too — otherwise a reversed mark lands invisibly on
+     the page background. Also gives the mark its 8-unit clear space via padding. */
+  background: var(--cascivo-color-surface);
+  color: var(--cascivo-color-text);
 }
 
 .brand-swatches {

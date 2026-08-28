@@ -4,6 +4,10 @@
 import { execFileSync } from 'node:child_process'
 
 const SRC = 'public/icon.svg'
+// The .ico tops out at 48px, where the accent notch is no longer legible, so it
+// rasterises from the one-colour mark instead (logo brief §7).
+const SRC_MONO = 'public/icon-mono.svg'
+
 const png = (size, out) =>
   execFileSync('magick', [
     '-background',
@@ -26,7 +30,7 @@ execFileSync('magick', [
   'none',
   '-density',
   '384',
-  SRC,
+  SRC_MONO,
   '-define',
   'icon:auto-resize=48,32,16',
   'public/favicon.ico',

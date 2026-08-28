@@ -1,3 +1,5 @@
+import { Logo } from '../marketing/Logo'
+
 // Brand page: name story, logo lockups, palette swatches, receipts for claim 25
 export function BrandPage() {
   return (
@@ -29,18 +31,63 @@ export function BrandPage() {
         <h2>Logo</h2>
         <div class="brand-logo-grid">
           <div class="brand-logo-card" data-theme="light">
-            <img src="/logo.svg" alt="cascivo logo on light" height="48" />
+            <Logo variant="horizontal" />
             <span>Light</span>
           </div>
           <div class="brand-logo-card" data-theme="dark">
-            <img src="/logo.svg" alt="cascivo logo on dark" height="48" />
+            <Logo variant="horizontal" />
             <span>Dark</span>
           </div>
         </div>
         <p>
-          Three descending, offset rounded bars — a cascade/waterfall whose outer contour reads as a
-          "C". Theme-aware: uses <code>currentColor</code> for the wordmark and{' '}
-          <code>--cascivo-brand-primary</code> for the mark fill.
+          <strong>The Notch.</strong> A filled square with a rectangular bite out of the right edge,
+          leaving a chunky "C" — one closed path on a 32-unit grid:{' '}
+          <code>M0 0H32V11H11V21H32V32H0Z</code>. Stem 11 units, bars 11, notch 21 × 10 flush to the
+          right edge. No curves, no strokes, no gradients: the shape is arithmetic, so anyone can
+          rebuild it from the numbers.
+        </p>
+        <p>
+          Ink is <code>currentColor</code> and the notch fill is <code>--cascivo-color-accent</code>
+          , so the mark repaints with whatever <code>data-theme</code> subtree it sits in — there
+          are no logo variants to maintain. The accent is decoration, not structure: nothing breaks
+          in one colour.
+        </p>
+        <h3>Lockups</h3>
+        <div class="brand-logo-grid">
+          <div class="brand-logo-card">
+            <Logo variant="mark-accent" />
+            <span>Mark · two colour</span>
+          </div>
+          <div class="brand-logo-card">
+            <Logo variant="mark" />
+            <span>Mark · one colour</span>
+          </div>
+          <div class="brand-logo-card">
+            <Logo variant="stacked" />
+            <span>Stacked</span>
+          </div>
+          <div class="brand-logo-card">
+            <Logo variant="nav" />
+            <span>Nav</span>
+          </div>
+        </div>
+        <ul>
+          <li>
+            <strong>Clear space:</strong> 8 units on all four sides — a quarter of the mark. Nothing
+            enters it.
+          </li>
+          <li>
+            <strong>Minimum size:</strong> 16px on screen, 6mm in print. Below that the notch closes
+            optically — use the wordmark alone.
+          </li>
+          <li>
+            <strong>Always 1:1.</strong> Never stretch, rotate, round the corners, add a shadow or
+            outline, or fill the notch with anything but the accent token.
+          </li>
+        </ul>
+        <p>
+          Full spec:{' '}
+          <a href="https://github.com/cascivo/cascivo/blob/main/docs/BRAND.md">BRAND.md</a>
         </p>
       </section>
 
