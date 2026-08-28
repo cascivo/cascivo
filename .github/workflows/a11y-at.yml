@@ -115,6 +115,12 @@ jobs:
       # to nvda.
       - name: Enable NVDA automation
         working-directory: apps/storybook
+        # `shell: bash` is load-bearing: a Windows runner defaults to pwsh, which
+        # parses `until … do … done` as a malformed do-loop and fails the step
+        # before guidepup is ever invoked. The step was a single `npx` line until
+        # the retry loop landed on 2026-08-26, which is why it only started
+        # failing that night.
+        shell: bash
         run: |
           attempt=1
           until npx --yes @guidepup/setup setup --ci; do
