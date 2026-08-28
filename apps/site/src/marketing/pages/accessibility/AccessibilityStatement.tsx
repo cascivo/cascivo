@@ -93,25 +93,27 @@ export function AccessibilityStatement() {
         (WCAG 2.1 AA minimum); US Section 508 via WCAG 2.0 AA. cascivo at 2.2 AA exceeds all three
         normative thresholds. Full mapping in <code>docs/specs/legal-mapping.md</code>.
       </p>
-      <table className="a11y-stmt-table">
-        <caption>Responsibility split — cascivo vs. integrator</caption>
-        <thead>
-          <tr>
-            <th scope="col">Responsibility</th>
-            <th scope="col">cascivo</th>
-            <th scope="col">Integrator</th>
-          </tr>
-        </thead>
-        <tbody>
-          {LEGAL_ROWS.map((row) => (
-            <tr key={row.responsibility}>
-              <td>{row.responsibility}</td>
-              <td>{row.cascivo ? '✓' : ''}</td>
-              <td>{row.integrator ? '✓' : ''}</td>
+      <div className="pg-scroll" role="region" aria-label="Responsibility split" tabIndex={0}>
+        <table className="a11y-stmt-table">
+          <caption>Responsibility split — cascivo vs. integrator</caption>
+          <thead>
+            <tr>
+              <th scope="col">Responsibility</th>
+              <th scope="col">cascivo</th>
+              <th scope="col">Integrator</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {LEGAL_ROWS.map((row) => (
+              <tr key={row.responsibility}>
+                <td>{row.responsibility}</td>
+                <td>{row.cascivo ? '✓' : ''}</td>
+                <td>{row.integrator ? '✓' : ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Scope + Limitations */}
       <h3 className="a11y-stmt-sub-heading">Scope and limitations</h3>

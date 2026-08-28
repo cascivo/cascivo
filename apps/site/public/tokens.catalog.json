@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-08-26",
-  "count": 325,
+  "count": 328,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -1552,6 +1552,24 @@
       "canonical": true
     },
     {
+      "name": "--cascivo-color-accent-text",
+      "value": "var(--cascivo-color-accent)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.52 0.2 250)",
+      "resolvesPerTheme": true,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-color-accent-text-hover",
+      "value": "var(--cascivo-color-accent-hover)",
+      "layer": "semantic",
+      "group": "color",
+      "resolvedDefault": "oklch(0.45 0.2 250)",
+      "resolvesPerTheme": true,
+      "canonical": true
+    },
+    {
       "name": "--cascivo-editor-bg",
       "value": "var(--cascivo-color-surface, oklch(0.985 0.002 264))",
       "layer": "semantic",
@@ -1886,7 +1904,7 @@
     },
     {
       "name": "--cascivo-link-color",
-      "value": "var(--cascivo-color-accent)",
+      "value": "var(--cascivo-color-accent-text)",
       "layer": "component",
       "group": "link",
       "resolvedDefault": "oklch(0.52 0.2 250)",
@@ -2543,10 +2561,10 @@
     },
     {
       "name": "--cascivo-calendar-day-today-color",
-      "value": "var(--cascivo-color-accent)",
+      "value": "var(--cascivo-color-accent-text)",
       "layer": "component",
       "group": "calendar",
-      "resolvedDefault": "var(--cascivo-color-accent)",
+      "resolvedDefault": "var(--cascivo-color-accent-text)",
       "resolvesPerTheme": false,
       "canonical": true
     },
@@ -2664,6 +2682,15 @@
       "layer": "component",
       "group": "data",
       "resolvedDefault": "none",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-date-picker-day-today-color",
+      "value": "var(--cascivo-color-accent-text)",
+      "layer": "component",
+      "group": "date",
+      "resolvedDefault": "var(--cascivo-color-accent-text)",
       "resolvesPerTheme": false,
       "canonical": true
     },

@@ -111,6 +111,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-color-accent-text',
     '--cascivo-sidenav-inline-size',
     '--cascivo-sidenav-rail-inline-size',
     '--cascivo-sidenav-bg',

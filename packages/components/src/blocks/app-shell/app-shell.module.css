@@ -79,7 +79,7 @@
 
   .navLink[aria-current='page'] {
     background: var(--cascivo-color-accent-subtle);
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
   }
 
   /* Overlay is JS-conditional (only renders when sidebarOpen) — no media query needed */

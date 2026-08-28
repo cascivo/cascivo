@@ -40,6 +40,8 @@ Adds no roles of its own — it styles descendant native elements, so the docume
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
+- `--cascivo-color-accent-text-hover`
 - `--cascivo-font-sans`
 - `--cascivo-font-mono`
 - `--cascivo-font-semibold`
@@ -48,8 +50,6 @@ Adds no roles of its own — it styles descendant native elements, so the docume
 - `--cascivo-tracking-tight`
 - `--cascivo-color-text`
 - `--cascivo-color-text-subtle`
-- `--cascivo-color-accent`
-- `--cascivo-color-accent-hover`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
 - `--cascivo-color-border-strong`
@@ -100,7 +100,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Prose is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-font-sans, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-leading-relaxed, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-indicator, --cascivo-radius-surface
+  --cascivo-color-accent-text, --cascivo-color-accent-text-hover, --cascivo-font-sans, --cascivo-font-mono, --cascivo-font-semibold, --cascivo-leading-tight, --cascivo-leading-relaxed, --cascivo-tracking-tight, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-radius-indicator, --cascivo-radius-surface
 
 Accessibility: role "generic", WCAG 2.2-AA. Keep it AA.
 

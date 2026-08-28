@@ -185,7 +185,7 @@
   .checkMark {
     flex-shrink: 0;
     margin-inline-start: auto;
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
   }
 
   .icon {

@@ -274,7 +274,7 @@ export function WhyCascadePage() {
                   href={claim.receipt.href}
                   style={{
                     fontSize: 'var(--cascivo-text-sm)',
-                    color: 'var(--cascivo-color-accent)',
+                    color: 'var(--cascivo-landing-link)',
                   }}
                 >
                   Receipt: {claim.receipt.label}

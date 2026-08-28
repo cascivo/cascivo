@@ -110,13 +110,13 @@ export function TechDeepDive({ teaser = false }: { teaser?: boolean }) {
   }
 
   return (
-    <section className="section tech-deep-dive" id="tech-deep-dive" data-reveal="">
-      <h2>Modern CSS changes the rules</h2>
-      <p className="section-sub">
-        Most UI libraries use JavaScript to manage state that CSS can already express. cascivo uses{' '}
-        <code>@layer</code>, <code>@container</code>, and <code>:has()</code> to eliminate runtime
-        overhead, specificity conflicts, and JS-driven visual state — everywhere they apply.
-      </p>
+    // The standalone page carries the title and lede in its poster page head.
+    <section
+      className="section tech-deep-dive"
+      id="tech-deep-dive"
+      aria-label="Modern CSS techniques"
+      data-reveal=""
+    >
       <div className="tech-blocks">
         {BLOCKS.map((block) => (
           <article key={block.id} className="tech-block" id={`tech-${block.id}`}>

@@ -27,6 +27,10 @@
       "muted": "--cascivo-color-accent-muted",
       "subtle": "--cascivo-color-accent-subtle"
     },
+    "accent-text": {
+      "base": "--cascivo-color-accent-text",
+      "hover": "--cascivo-color-accent-text-hover"
+    },
     "bg": {
       "base": "--cascivo-color-bg",
       "subtle": "--cascivo-color-bg-subtle"
@@ -531,6 +535,52 @@
       },
       "role": "accent",
       "slot": "subtle"
+    },
+    {
+      "name": "--cascivo-color-accent-text",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.55 0.22 27)",
+        "brutalist": "oklch(0.52 0.22 22)",
+        "corporate": "oklch(0.5 0.16 255)",
+        "cyberpunk": "oklch(0.7 0.25 330)",
+        "dark": "oklch(0.65 0.2 250)",
+        "flat": "oklch(0.5 0.2 145)",
+        "light-dark": null,
+        "light": "oklch(0.52 0.2 250)",
+        "midnight": "oklch(0.7 0.22 290)",
+        "minimal": "oklch(0.25 0.01 80)",
+        "pastel": "oklch(0.52 0.2 350)",
+        "tailwind": null,
+        "terminal": "oklch(0.82 0.2 145)",
+        "warm": "oklch(0.52 0.14 70)"
+      },
+      "role": "accent-text",
+      "slot": "base"
+    },
+    {
+      "name": "--cascivo-color-accent-text-hover",
+      "layer": "semantic",
+      "group": "color",
+      "byTheme": {
+        "arcade": "oklch(0.49 0.23 27)",
+        "brutalist": "oklch(0.45 0.2 22)",
+        "corporate": "oklch(0.44 0.17 255)",
+        "cyberpunk": "oklch(0.76 0.23 330)",
+        "dark": "oklch(0.707 0.18 250)",
+        "flat": "oklch(0.45 0.21 145)",
+        "light-dark": null,
+        "light": "oklch(0.45 0.2 250)",
+        "midnight": "oklch(0.76 0.2 290)",
+        "minimal": "oklch(0.2 0.01 80)",
+        "pastel": "oklch(0.46 0.2 350)",
+        "tailwind": null,
+        "terminal": "oklch(0.88 0.18 145)",
+        "warm": "oklch(0.46 0.13 70)"
+      },
+      "role": "accent-text",
+      "slot": "hover"
     },
     {
       "name": "--cascivo-color-active-bg",
@@ -2520,7 +2570,7 @@
       "group": "link",
       "byTheme": {
         "arcade": "oklch(0.55 0.22 27)",
-        "brutalist": "oklch(0.88 0.19 105)",
+        "brutalist": "oklch(0.52 0.22 22)",
         "corporate": "oklch(0.5 0.16 255)",
         "cyberpunk": "oklch(0.7 0.25 330)",
         "dark": "oklch(0.65 0.2 250)",
@@ -2529,10 +2579,10 @@
         "light": "oklch(0.52 0.2 250)",
         "midnight": "oklch(0.7 0.22 290)",
         "minimal": "oklch(0.25 0.01 80)",
-        "pastel": "oklch(0.68 0.18 350)",
+        "pastel": "oklch(0.52 0.2 350)",
         "tailwind": null,
         "terminal": "oklch(0.82 0.2 145)",
-        "warm": "oklch(0.768 0.145 75)"
+        "warm": "oklch(0.52 0.14 70)"
       }
     },
     {

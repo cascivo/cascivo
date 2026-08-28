@@ -10,8 +10,9 @@
  * `[data-theme='brutalist']` block, the light half restates brutalist's tokens
  * rather than importing them — keep the two in sync if brutalist changes.
  *
- * Four new tokens, all namespaced --cascivo-landing-*: the inverted band pair,
- * the poster rule weight, and the hatch used by placeholder tiles.
+ * Five new tokens, all namespaced --cascivo-landing-*: the inverted band pair,
+ * the poster rule weight, the hatch used by placeholder tiles, and the ink an
+ * in-page link takes (the acid accent is a fill, never type on a light surface).
  */
 
 @import '@cascivo/tokens';
@@ -85,12 +86,36 @@
     --cascivo-color-warning-subtle: oklch(0.96 0.06 75);
     --cascivo-color-info: oklch(0.48 0.2 250);
     --cascivo-color-info-subtle: oklch(0.95 0.05 250);
-    --cascivo-color-success-foreground: oklch(0.52 0.18 145);
+    /* The other three -foreground variants were darkened for type; this one was
+       left equal to --cascivo-color-success, so Alert's title, Badge and Tag all
+       landed at 4.34-4.45 on their own subtle fills. Canonical light.css value. */
+    --cascivo-color-success-foreground: oklch(0.45 0.14 145);
     --cascivo-color-warning-foreground: oklch(0.5 0.15 75);
     --cascivo-color-destructive-foreground: oklch(0.4 0.2 22);
     --cascivo-color-info-foreground: oklch(0.45 0.2 250);
 
+    /*
+     * CodeSnippet's syntax hooks. Their defaults reach for the accent, and this
+     * half's accent is acid on a white code surface — 1.4:1 for a keyword. The
+     * `-foreground` variants are the same hues built to be read as type.
+     * (poster-dark keeps the defaults: its palette is already tuned for the
+     * dark surface a snippet sits on there.)
+     */
+    --cs-keyword: var(--cascivo-color-destructive-foreground);
+    --cs-variable: var(--cascivo-color-info-foreground);
+    --cs-number: oklch(0.44 0.13 75);
+
+    /* @cascivo/editor's syntax palette, same story: keyword and tag default to
+       the accent, which is a fill here. The rest of its light-surface literals
+       are already text-safe. */
+    --cascivo-editor-syntax-keyword: var(--cascivo-color-destructive-foreground);
+    --cascivo-editor-syntax-tag: var(--cascivo-color-destructive-foreground);
+
     /* ── Radius — zero ───────────────────────────────── */
+    /* The full scale, not just the eleven names brutalist restates: the
+       secondary pages' own CSS reaches for sm/md/lg/xl, so leaving those
+       rounded is what kept /guides, /examples and /showcase on softened cards
+       while the grid around them was hard-edged. */
     --cascivo-radius-base: 0;
     --cascivo-radius-control: 0;
     --cascivo-radius-surface: 0;
@@ -102,6 +127,14 @@
     --cascivo-radius-card: 0;
     --cascivo-radius-badge: 0;
     --cascivo-radius-modal: 0;
+    --cascivo-radius-sm: 0;
+    --cascivo-radius-md: 0;
+    --cascivo-radius-lg: 0;
+    --cascivo-radius-xl: 0;
+    --cascivo-radius-2xl: 0;
+    --cascivo-radius-item: 0;
+    --cascivo-radius-field: 0;
+    --cascivo-radius-overlay: 0;
 
     /* ── Shadows — hard offset, no blur ─────────────── */
     --cascivo-shadow-xs: 1px 1px 0 oklch(0.1 0 0);
@@ -146,11 +179,18 @@
     --cascivo-color-secondary-hover: oklch(0.82 0.2 100);
     --cascivo-color-secondary-subtle: oklch(0.96 0.07 105);
 
-    /* ── Landing-page additions — the poster grid's own four tokens ── */
+    /* ── Landing-page additions — the poster grid's own five tokens ── */
     --cascivo-landing-invert-bg: oklch(0.1 0 0);
     --cascivo-landing-invert-fg: oklch(0.97 0.02 95);
     --cascivo-landing-rule-weight: 3px;
     --cascivo-landing-hatch: oklch(0.72 0 0);
+    --cascivo-landing-link: var(--cascivo-color-destructive);
+    /* The inverted band here is ink, so the acid reads on it at >12:1. */
+    --cascivo-landing-link-invert: var(--cascivo-color-accent);
+    /* Same substitution for the catalogue's accent-coloured type — see
+       packages/tokens' --cascivo-color-accent-text. */
+    --cascivo-color-accent-text: var(--cascivo-landing-link);
+    --cascivo-color-accent-text-hover: oklch(0.45 0.2 22);
   }
 
   /* ── Poster (dark) — dark.css surfaces, cream rules, same acid ────── */
@@ -240,6 +280,14 @@
     --cascivo-radius-card: 0;
     --cascivo-radius-badge: 0;
     --cascivo-radius-modal: 0;
+    --cascivo-radius-sm: 0;
+    --cascivo-radius-md: 0;
+    --cascivo-radius-lg: 0;
+    --cascivo-radius-xl: 0;
+    --cascivo-radius-2xl: 0;
+    --cascivo-radius-item: 0;
+    --cascivo-radius-field: 0;
+    --cascivo-radius-overlay: 0;
 
     /* ── Shadows — hard offset in cream ─────────────── */
     --cascivo-shadow-xs: 1px 1px 0 oklch(0.985 0.002 264);
@@ -289,6 +337,28 @@
     --cascivo-landing-invert-fg: oklch(0.145 0.005 250);
     --cascivo-landing-rule-weight: 3px;
     --cascivo-landing-hatch: oklch(0.45 0.01 264);
+    --cascivo-landing-link: var(--cascivo-color-destructive);
+    /* The inversion is cream here, not ink — acid on it is ~1.4:1. This is the
+       light half's link red, restated: the band it sits on is that half's
+       surface, so it takes that half's ink, not this theme's lighter red. */
+    --cascivo-landing-link-invert: oklch(0.52 0.22 22);
+    /* The page surfaces are dark here, so the acid reads as type at 13:1 —
+       --cascivo-color-accent-text keeps its default. */
+
+    /*
+     * @cascivo/editor's syntax palette. packages/tokens pins string/number/
+     * type/property to darkened literals for a light editor surface, and
+     * restores the brighter chart hues for its own dark themes through a
+     * hard-coded [data-theme] list — which a site-local theme cannot join. The
+     * editor surface here IS dark, so restate the same seven.
+     */
+    --cascivo-editor-syntax-string: var(--cascivo-chart-3);
+    --cascivo-editor-syntax-regexp: var(--cascivo-chart-3);
+    --cascivo-editor-syntax-number: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-attr: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-boolean: var(--cascivo-chart-6);
+    --cascivo-editor-syntax-type: var(--cascivo-chart-7);
+    --cascivo-editor-syntax-property: var(--cascivo-chart-2);
   }
 
   /* Display stack, shared by both halves.

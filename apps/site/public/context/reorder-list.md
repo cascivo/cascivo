@@ -61,11 +61,11 @@ Every row carries a real button as its drag handle, so the entire interaction is
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-surface`
 - `--cascivo-color-surface-2`
 - `--cascivo-color-foreground`
 - `--cascivo-color-text-muted`
-- `--cascivo-color-accent`
 - `--cascivo-border-subtle`
 - `--cascivo-radius-sm`
 - `--cascivo-ring-width`
@@ -115,7 +115,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 ReorderList is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-surface-2, --cascivo-color-foreground, --cascivo-color-text-muted, --cascivo-color-accent, --cascivo-border-subtle, --cascivo-radius-sm, --cascivo-ring-width, --cascivo-ring-color, --cascivo-disabled-opacity, --cascivo-target-min-coarse
+  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-2, --cascivo-color-foreground, --cascivo-color-text-muted, --cascivo-border-subtle, --cascivo-radius-sm, --cascivo-ring-width, --cascivo-ring-color, --cascivo-disabled-opacity, --cascivo-target-min-coarse
 
 Accessibility: role "list", WCAG 2.2-AA, keyboard: Space/Enter/ArrowUp/ArrowDown/Escape/Tab. Keep it AA.
 

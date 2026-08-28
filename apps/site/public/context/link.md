@@ -42,10 +42,9 @@ Renders a native <a> so role, Enter activation, and focus come from the platform
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
+- `--cascivo-color-accent-text-hover`
 - `--cascivo-link-color`
-- `--cascivo-color-accent`
-- `--cascivo-color-accent-hover`
-- `--cascivo-color-accent-active`
 - `--cascivo-radius-sm`
 - `--cascivo-focus-ring`
 
@@ -104,7 +103,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Link is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-link-color, --cascivo-color-accent, --cascivo-color-accent-hover, --cascivo-color-accent-active, --cascivo-radius-sm, --cascivo-focus-ring
+  --cascivo-color-accent-text, --cascivo-color-accent-text-hover, --cascivo-link-color, --cascivo-radius-sm, --cascivo-focus-ring
 
 Accessibility: role "link", WCAG 2.2-AA, keyboard: Enter. Keep it AA.
 

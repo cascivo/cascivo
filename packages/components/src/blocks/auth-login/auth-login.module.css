@@ -52,7 +52,7 @@
 
   .forgotLink {
     font-size: var(--cascivo-text-sm);
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
     text-decoration: none;
   }
 
@@ -75,7 +75,7 @@
   }
 
   .footerLink {
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
     text-decoration: none;
     font-weight: var(--cascivo-font-medium);
   }

@@ -46,6 +46,8 @@ const BASE_LIGHT = `
     --cascivo-color-info-subtle: oklch(0.97 0.025 250);
     --cascivo-color-success-foreground: oklch(0.45 0.14 145);
     --cascivo-color-warning-foreground: oklch(0.5 0.14 75);
+    --cascivo-color-destructive-foreground: oklch(0.448 0.17 22);
+    --cascivo-color-info-foreground: oklch(0.45 0.19 250);
     --cascivo-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
     --cascivo-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
     --cascivo-shadow-md: 0 2px 8px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.04);
@@ -95,6 +97,8 @@ const BASE_DARK = `
     --cascivo-color-info-subtle: oklch(0.65 0.2 250 / 0.1);
     --cascivo-color-success-foreground: oklch(0.72 0.13 145);
     --cascivo-color-warning-foreground: oklch(0.82 0.13 75);
+    --cascivo-color-destructive-foreground: oklch(0.85 0.12 22);
+    --cascivo-color-info-foreground: oklch(0.75 0.16 250);
     --cascivo-shadow-xs: none;
     --cascivo-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.4);
     --cascivo-shadow-md: 0 2px 8px oklch(0 0 0 / 0.45);

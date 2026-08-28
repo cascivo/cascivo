@@ -47,8 +47,8 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-color-accent-text',
     '--cascivo-color-surface',
-    '--cascivo-color-accent',
     '--cascivo-color-text-muted',
     '--cascivo-border-subtle',
     '--cascivo-ring-width',

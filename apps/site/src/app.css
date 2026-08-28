@@ -21,9 +21,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/*
+ * The site's anchor reset. It has to be LAYERED: unlayered author CSS beats
+ * every cascivo layer regardless of specificity, so an unlayered `a` rule here
+ * outranked the component styles of every anchor the site renders. Link, Prose's
+ * links and Breadcrumb all lost their own colour to the page ink, which is why
+ * the docs preview of Link did not show Link's colour, and why a Button
+ * rendered `asChild` as an anchor dropped the foreground its variant paints on.
+ * In `cascivo.base` the reset still catches a bare <a> and a component still
+ * wins, which is the whole point of the layer order.
+ */
+@layer cascivo.base {
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 /* ── Page content wrapper ─────────────────────────────── */
@@ -554,7 +566,7 @@ a {
 }
 
 .home-card-label {
-  font-size: var(--cascivo-font-sm);
+  font-size: var(--cascivo-text-sm);
   font-weight: var(--cascivo-font-medium);
   color: var(--cascivo-color-text-subtle);
   margin-block-start: auto;

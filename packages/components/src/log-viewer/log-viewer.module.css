@@ -139,7 +139,7 @@
     color: var(--cascivo-color-info);
   }
   .ansi[data-ansi='magenta'] {
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
   }
   .ansi[data-ansi='black'],
   .ansi[data-ansi='bright-black'] {

@@ -63,7 +63,7 @@
 
     .step[data-status='current'] & {
       border-color: var(--cascivo-color-accent);
-      color: var(--cascivo-color-accent);
+      color: var(--cascivo-color-accent-text);
       box-shadow: 0 0 0 4px var(--cascivo-color-accent-subtle);
     }
   }

@@ -63,6 +63,7 @@ Trigger exposes role="combobox" with aria-expanded, aria-controls, aria-haspopup
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-surface`
 - `--cascivo-color-surface-overlay`
 - `--cascivo-color-bg-subtle`
@@ -120,7 +121,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Combobox is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-lg, --cascivo-motion-enter, --cascivo-z-dropdown
+  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-surface-overlay, --cascivo-color-bg-subtle, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-text-subtle, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-radius-md, --cascivo-radius-sm, --cascivo-shadow-lg, --cascivo-motion-enter, --cascivo-z-dropdown
 
 Accessibility: role "combobox", WCAG 2.2-AA, keyboard: ArrowDown/ArrowUp/Enter/Escape/Tab. Keep it AA.
 

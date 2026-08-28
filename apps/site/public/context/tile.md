@@ -48,6 +48,7 @@ Exposes role="radio" (single) or role="checkbox" (multi) with aria-checked refle
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-bg`
 - `--cascivo-color-border`
 - `--cascivo-color-border-strong`
@@ -106,7 +107,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Tile is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-bg, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-radius-surface, --cascivo-focus-ring
+  --cascivo-color-accent-text, --cascivo-color-bg, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-radius-surface, --cascivo-focus-ring
 
 Accessibility: role "radio", WCAG 2.2-AA, keyboard: Enter/Space. Keep it AA.
 

@@ -54,6 +54,7 @@ Renders an APG-compliant role="grid" table with role="row"/role="gridcell"; a ro
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-calendar-bg`
 - `--cascivo-calendar-radius`
 - `--cascivo-calendar-cell-size`
@@ -112,7 +113,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 Calendar is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-calendar-bg, --cascivo-calendar-radius, --cascivo-calendar-cell-size, --cascivo-calendar-day-selected-bg, --cascivo-calendar-day-selected-fg, --cascivo-calendar-day-today-color, --cascivo-calendar-range-bg
+  --cascivo-color-accent-text, --cascivo-calendar-bg, --cascivo-calendar-radius, --cascivo-calendar-cell-size, --cascivo-calendar-day-selected-bg, --cascivo-calendar-day-selected-fg, --cascivo-calendar-day-today-color, --cascivo-calendar-range-bg
 
 Accessibility: role "grid", WCAG 2.2-AA, keyboard: ArrowLeft/ArrowRight/ArrowUp/ArrowDown/Home/End/PageUp/PageDown/Enter/Space. Keep it AA.
 

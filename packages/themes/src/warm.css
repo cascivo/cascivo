@@ -53,6 +53,10 @@
     --cascivo-color-accent-active: oklch(0.64 0.155 65);
     --cascivo-color-accent-subtle: oklch(0.768 0.145 75 / 0.1);
     --cascivo-color-accent-muted: oklch(0.768 0.145 75 / 0.2);
+    /* The amber is a fill: as type on this theme's background it reads 2.1:1.
+       Same hue, darkened to clear AA for labels, links and active states. */
+    --cascivo-color-accent-text: oklch(0.52 0.14 70);
+    --cascivo-color-accent-text-hover: oklch(0.46 0.13 70);
 
     /* ── Primary — warm keeps its warm fill ── */
     --cascivo-color-primary: var(--cascivo-color-accent);

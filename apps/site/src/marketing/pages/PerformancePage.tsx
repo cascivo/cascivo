@@ -280,39 +280,46 @@ function LatencySection() {
         title="Median interaction latency by scenario (ms, lower is better)"
         description={`Horizontal grouped bars compare cascade, shadcn/ui, and Carbon median click-to-paint latency for five representative scenarios at ${bench.meta.cpuThrottle}× CPU throttle.`}
       />
-      <table className="perf-table">
-        <caption>All scenarios — median (p25–p75), ms</caption>
-        <thead>
-          <tr>
-            <th scope="col">Scenario</th>
-            {LIBS.map((lib) => (
-              <th key={lib} scope="col">
-                {LIB_LABELS[lib]}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.scenario}>
-              <th scope="row">{SCENARIO_LABELS[row.scenario]}</th>
-              {LIBS.map((lib) => {
-                const s = row.stats[lib]
-                if (!s) return <td key={lib}>—</td>
-                return (
-                  <td key={lib}>
-                    {fmtMs(s.median)}{' '}
-                    <span className="perf-iqr">
-                      ({s.p25.toFixed(1)}–{s.p75.toFixed(1)})
-                    </span>
-                    {row.ties[lib] ? <sup>†</sup> : null}
-                  </td>
-                )
-              })}
+      <div
+        className="pg-scroll"
+        role="region"
+        aria-label="All scenarios by median latency"
+        tabIndex={0}
+      >
+        <table className="perf-table">
+          <caption>All scenarios — median (p25–p75), ms</caption>
+          <thead>
+            <tr>
+              <th scope="col">Scenario</th>
+              {LIBS.map((lib) => (
+                <th key={lib} scope="col">
+                  {LIB_LABELS[lib]}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.scenario}>
+                <th scope="row">{SCENARIO_LABELS[row.scenario]}</th>
+                {LIBS.map((lib) => {
+                  const s = row.stats[lib]
+                  if (!s) return <td key={lib}>—</td>
+                  return (
+                    <td key={lib}>
+                      {fmtMs(s.median)}{' '}
+                      <span className="perf-iqr">
+                        ({s.p25.toFixed(1)}–{s.p75.toFixed(1)})
+                      </span>
+                      {row.ties[lib] ? <sup>†</sup> : null}
+                    </td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <p className="perf-footnote">
         † Mann-Whitney U vs cascade, p ≥ 0.05 — statistically indistinguishable from cascade. Ties
         claim no winner.
@@ -386,33 +393,35 @@ function LighthouseSection() {
         <Stat label="Total Blocking Time" value={fmtMs(c.tbtMs)} />
         <Stat label="Transfer" value={fmtKb(c.transferKb)} />
       </div>
-      <table className="perf-table">
-        <caption>Lighthouse comparison — median of {c.runs} runs</caption>
-        <thead>
-          <tr>
-            <th scope="col">Library</th>
-            <th scope="col">FCP</th>
-            <th scope="col">LCP</th>
-            <th scope="col">TBT</th>
-            <th scope="col">Transfer</th>
-          </tr>
-        </thead>
-        <tbody>
-          {LIBS.map((lib) => {
-            const r = lh[lib]
-            if (!r) return null
-            return (
-              <tr key={lib}>
-                <th scope="row">{LIB_LABELS[lib]}</th>
-                <td>{fmtMs(r.fcpMs)}</td>
-                <td>{fmtMs(r.lcpMs)}</td>
-                <td>{fmtMs(r.tbtMs)}</td>
-                <td>{fmtKb(r.transferKb)}</td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+      <div className="pg-scroll" role="region" aria-label="Lighthouse comparison" tabIndex={0}>
+        <table className="perf-table">
+          <caption>Lighthouse comparison — median of {c.runs} runs</caption>
+          <thead>
+            <tr>
+              <th scope="col">Library</th>
+              <th scope="col">FCP</th>
+              <th scope="col">LCP</th>
+              <th scope="col">TBT</th>
+              <th scope="col">Transfer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {LIBS.map((lib) => {
+              const r = lh[lib]
+              if (!r) return null
+              return (
+                <tr key={lib}>
+                  <th scope="row">{LIB_LABELS[lib]}</th>
+                  <td>{fmtMs(r.fcpMs)}</td>
+                  <td>{fmtMs(r.lcpMs)}</td>
+                  <td>{fmtMs(r.tbtMs)}</td>
+                  <td>{fmtKb(r.transferKb)}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }

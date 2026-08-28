@@ -34,7 +34,7 @@ import { BlocksPage } from './BlocksPage'
 describe('BlocksPage', () => {
   it('renders heading', () => {
     render(<BlocksPage />)
-    expect(screen.getByRole('heading', { name: /blocks/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /whole sections/i })).toBeInTheDocument()
   })
 
   it('renders block cards', () => {

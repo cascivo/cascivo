@@ -136,7 +136,7 @@
       "fileHashes": {
         "action-sheet.tsx": "sha256-a3f57f302cdf4c56ae3c9783ac9f7e12722c4f2a8c1db611b3982523d47d0836",
         "index.ts": "sha256-d2a01e0adc30a54e7fc09598fae38dc929844ab4bded5805cc6c5f5014c5f215",
-        "action-sheet.module.css": "sha256-d1f0305ac1c08b0cd7e1656648d525d3b0c9b3c7cf9ff66057264b4eada60c2c"
+        "action-sheet.module.css": "sha256-10fea60ac1fd26beca66f2e21e53f76e63d745b3667b4ecfac48fd54c4621bb1"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -210,9 +210,9 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-border",
-          "--cascivo-color-accent",
           "--cascivo-color-destructive",
           "--cascivo-color-text",
           "--cascivo-color-text-subtle",
@@ -2034,7 +2034,7 @@
       "fileHashes": {
         "calendar.tsx": "sha256-5a65d71e1f9a90ede81cdea2b6cd9308fec1f188857c2dceabb7b54d166918c6",
         "index.ts": "sha256-ae3b2f525ef2bd6b9234b69a7823b7eafcc9dbef7fa351fadca8e2d7b7d6f016",
-        "calendar.module.css": "sha256-b963f6d9f94387973c7b2163f62fc89cfa1346b61e9ffa7131de2a44480433ee"
+        "calendar.module.css": "sha256-7aa886b60d982a5c71fec3625d4e6baa7a000079a21bc9a2cefefe69696a72db"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -2157,6 +2157,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-calendar-bg",
           "--cascivo-calendar-radius",
           "--cascivo-calendar-cell-size",
@@ -3599,7 +3600,7 @@
       "fileHashes": {
         "combobox.tsx": "sha256-6019b049d0e73ae00ca553b3e1639eb5625daa0bd589cf7d8e713cacc1a459f5",
         "index.ts": "sha256-f653ac077476020e84fec2daaa5c3ff850b2c3340b4e38002798c3f2c249034b",
-        "combobox.module.css": "sha256-cc7cd8b4087667c0df3b737f588c92bbdb03e7a1c94e52ef9d8f321ea74575f5"
+        "combobox.module.css": "sha256-df101f2b23a1f1e353cac546dc45b9a3b07e92786f3cf354b689f5609a9189cf"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -3732,6 +3733,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-surface-overlay",
           "--cascivo-color-bg-subtle",
@@ -5101,7 +5103,7 @@
       "fileHashes": {
         "date-picker.tsx": "sha256-9155f042953dbfc86ec9ecfa38157cb735223b822c419b5a9ada3fc1490fdd8d",
         "index.ts": "sha256-6cb1709f7c2b98a82a3951dd8facba6bdefe2f491efd6f4808661b6d6ff5da4d",
-        "date-picker.module.css": "sha256-e816d0d00db6d3d3dc52f49c8671c11eaa1710e2aa8a4d6ef8f3356207dee47e"
+        "date-picker.module.css": "sha256-a1921f62c1b17c68e3b2a980daef737e4994db167cc20bf8910d3edb19d2881f"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -5227,12 +5229,14 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-surface-overlay",
           "--cascivo-color-border",
           "--cascivo-color-border-strong",
           "--cascivo-color-accent",
           "--cascivo-color-text-on-accent",
+          "--cascivo-date-picker-day-today-color",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
           "--cascivo-color-text-subtle",
@@ -5533,7 +5537,7 @@
       "fileHashes": {
         "dock.tsx": "sha256-6607d8363113fb21b9104a84696aa37c74acf731459e34567b266a9297304e4a",
         "index.ts": "sha256-b32d5f7a69013069a0a1c471de4cfc5be05a34926f756c1eb776d74f6a3ffaee",
-        "dock.module.css": "sha256-181c821754d69a349531b945047e28daf17e981d6a20addfdd19c97122574503"
+        "dock.module.css": "sha256-bdfd212eca3fb54bf574037535d99a13a158884194671cbd8b25c492f658f6ef"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -5584,8 +5588,8 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
-          "--cascivo-color-accent",
           "--cascivo-color-text-muted",
           "--cascivo-border-subtle",
           "--cascivo-ring-width",
@@ -6353,7 +6357,7 @@
       "fileHashes": {
         "fab.tsx": "sha256-0379577f2339256cb16a3190b009168a0734ff96fba7dea9a44ecfd2f9f46a9e",
         "index.ts": "sha256-2cc152f990c3ce5c8aa631cb71a0d63475b70be88afd522fbe7ad37774b905fd",
-        "fab.module.css": "sha256-829a972d999ba2199e07711e7c51683bf92fe268214fd20cb3d8ae8bc83511e8"
+        "fab.module.css": "sha256-2082c37c4dcec158b40c71d4f902b1fa6ff01d6b083c7a23fb6c3ca90103e7d8"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -6434,6 +6438,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-accent",
           "--cascivo-color-accent-content",
           "--cascivo-color-accent-hover",
@@ -6910,7 +6915,7 @@
       "fileHashes": {
         "filter.tsx": "sha256-77143c2f8a48ffecce35dfe4cdc403a5cb2e5d4fd1eda0c7a879e2112c005592",
         "index.ts": "sha256-24fb4e877d4acbafec2b2e3de672486b429a97b973e27e5543905abf34bdb696",
-        "filter.module.css": "sha256-e6b3d14f1a331f2701902ac9fcc84cbde38223093a6feb2b307359b724349596"
+        "filter.module.css": "sha256-23ab8ee3f87160001292b78a6894ee67ed26e6a263d64960a955077dac0c31de"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -6993,6 +6998,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-radius-full",
           "--cascivo-border-default",
           "--cascivo-color-text-subtle",
@@ -9467,7 +9473,7 @@
       "fileHashes": {
         "link.tsx": "sha256-9deef687fc6b08e66d1ddf6229a3a37320d7d3a440a059bc7a13f58933930247",
         "index.ts": "sha256-b38bcec272a5dd95d54c6621068a03373bdbc5fbeb9a987638bcf011b8edc12f",
-        "link.module.css": "sha256-70b9c6a6b5fcbb4b9c3c7b3191fbf271de0deda543e176cf90b3f560e9e7b761"
+        "link.module.css": "sha256-e3e38b4be3a0b01c8808782768f50c9386f804984d5f315be06736e0c621c641"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -9519,10 +9525,9 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
+          "--cascivo-color-accent-text-hover",
           "--cascivo-link-color",
-          "--cascivo-color-accent",
-          "--cascivo-color-accent-hover",
-          "--cascivo-color-accent-active",
           "--cascivo-radius-sm",
           "--cascivo-focus-ring"
         ],
@@ -9724,7 +9729,7 @@
       "fileHashes": {
         "log-viewer.tsx": "sha256-e316a2de0e3af622d44faf830b558b28af86029c90d812955c15ccb3ec6f32b9",
         "index.ts": "sha256-08f1ea684b997cacab1d1500ec97465123a96d0d01fecd706861e556bf6852a7",
-        "log-viewer.module.css": "sha256-b467bdb2f433578d52ead2852e25449280fb840f0a8a599e364ba57f081453b2"
+        "log-viewer.module.css": "sha256-af6c608fe9f12943f0bfe77a8394b53b360a5f092d8db26ebd001967edd53db9"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -9801,6 +9806,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-font-mono",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
@@ -12587,7 +12593,7 @@
       "fileHashes": {
         "progress-indicator.tsx": "sha256-f0e0ee31ae2ba2d24df87274f61ef2b52d2ee3c230f185ed6d8dc2990585b02e",
         "index.ts": "sha256-6e63e10ef91c410f4652f5dcde1e1ba2a8d3e782134bd6b17f767ad33e441082",
-        "progress-indicator.module.css": "sha256-408dad3a0db11ac5fcd71a812fa322cd557ed8ac1685948e44116a03de247418"
+        "progress-indicator.module.css": "sha256-3c1cf905db1bef926236938c55ec6406794238bdb5439dd8049c01fe12bdb0f6"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -12630,6 +12636,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-accent",
           "--cascivo-color-accent-subtle",
           "--cascivo-color-text",
@@ -12716,7 +12723,7 @@
       "fileHashes": {
         "prose.tsx": "sha256-ef323751d8e379be4084e50490b69ad2a84adf47a8492be06cb84069e9f22cae",
         "index.ts": "sha256-899110db1ed6609ee8c1ee9ad8558969c75c1b0a71ecbfe3661b0d99e78df5e2",
-        "prose.module.css": "sha256-0d751b15fe871a32b78852a5443abfb0be90249a09e7164d4c358a92a2deebba"
+        "prose.module.css": "sha256-9c24ee67e3d05bf22d498c12ed55ae33de2146763e2381974a26208aebeabfb8"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -12752,6 +12759,8 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
+          "--cascivo-color-accent-text-hover",
           "--cascivo-font-sans",
           "--cascivo-font-mono",
           "--cascivo-font-semibold",
@@ -12760,8 +12769,6 @@
           "--cascivo-tracking-tight",
           "--cascivo-color-text",
           "--cascivo-color-text-subtle",
-          "--cascivo-color-accent",
-          "--cascivo-color-accent-hover",
           "--cascivo-color-surface",
           "--cascivo-color-border",
           "--cascivo-color-border-strong",
@@ -13846,7 +13853,7 @@
       "fileHashes": {
         "reorder-list.tsx": "sha256-909deae4c875f2e26af2bb65247a33b8174a36fdc3e98ab1261abdac7091a554",
         "index.ts": "sha256-a41b79cd7f59d665cae7fc1a2253384d1721731e763fcedd42de97c404497a70",
-        "reorder-list.module.css": "sha256-c28dc25188b99c1b8f516308c44eb6a7ab625e276979217a88bc9cb5791f13e9"
+        "reorder-list.module.css": "sha256-32dd557032e8204a00ba1b77f1efb5af87c6889d39173d5e7ead63516ff0e7c4"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -13921,11 +13928,11 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-surface-2",
           "--cascivo-color-foreground",
           "--cascivo-color-text-muted",
-          "--cascivo-color-accent",
           "--cascivo-border-subtle",
           "--cascivo-radius-sm",
           "--cascivo-ring-width",
@@ -15336,7 +15343,7 @@
       "fileHashes": {
         "side-nav.tsx": "sha256-edbd1bc1cc486971670f6c76696d66d63fb194fc19e72413e42fb32238789482",
         "index.ts": "sha256-2c4c28ca1ec620b0e05a118ce458eed465026fa548102eebd4f450c260d7e157",
-        "side-nav.module.css": "sha256-b698991a8263e94af5f57db5514dcc32430fd4c7bed3adbaa8caaf184053bc5b"
+        "side-nav.module.css": "sha256-a680fbee4f99265cea275f1f1ebf1fe06032e6a6052d430f36eaa331437a4860"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -15448,6 +15455,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-sidenav-inline-size",
           "--cascivo-sidenav-rail-inline-size",
           "--cascivo-sidenav-bg",
@@ -17980,7 +17988,7 @@
       "fileHashes": {
         "tile.tsx": "sha256-afe1b42722f4f9020a0bcb81b5c1cdf1e7a1d257d13244ad2a71927523195dee",
         "index.ts": "sha256-e31afc5f655e3356f62a383f13e5525b8bc94df1065afa4ce7b6f6c1117b5c7e",
-        "tile.module.css": "sha256-3cee01f06a4101f365bca4ed3d52ed9b4da9a75d01d91088eba7c97bbb4c36a1"
+        "tile.module.css": "sha256-9a9656e732b54478369a79e362cdbf09ed71099f06c117ed48f0a899a5093780"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -18059,6 +18067,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-bg",
           "--cascivo-color-border",
           "--cascivo-color-border-strong",
@@ -18595,7 +18604,7 @@
         "toc.tsx": "sha256-7e0ab136c0ae29ae4a988c3f994df31dd9bf80f41c34237e8d6c1d2991838747",
         "index.ts": "sha256-d56b23f5d0760540dd1cd9ec3c6f05d8ba7177103da1a7a76b3f02cac75a43a6",
         "use-toc-from-region.ts": "sha256-c5c7455a80e1e4584579ae548bd7447904f7ca6f4ac8ac577b805ce95bd42c56",
-        "toc.module.css": "sha256-52e93175cedcbe261dc2093c7f30d68dd294640599e0bb2a0e54ca505f5198d4"
+        "toc.module.css": "sha256-aef5206295497175017139527fb2285cc1c6daea5f3b3360e2abf6e02ccd9504"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -18644,6 +18653,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-font-sans",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",

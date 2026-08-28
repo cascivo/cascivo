@@ -48,9 +48,9 @@ Renders role="menu" with role="menuitem" buttons under vertical roving focus (Ar
 
 ## Tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-surface`
 - `--cascivo-color-border`
-- `--cascivo-color-accent`
 - `--cascivo-color-destructive`
 - `--cascivo-color-text`
 - `--cascivo-color-text-subtle`
@@ -109,7 +109,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 ActionSheet is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-overlay
+  --cascivo-color-accent-text, --cascivo-color-surface, --cascivo-color-border, --cascivo-color-destructive, --cascivo-color-text, --cascivo-color-text-subtle, --cascivo-color-text-muted, --cascivo-radius-overlay, --cascivo-shadow-overlay, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-z-overlay
 
 Accessibility: role "menu", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Home/End/Enter/Space/Escape. Keep it AA.
 Flexible: actions, open state, cancel.

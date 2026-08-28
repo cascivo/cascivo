@@ -64,6 +64,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-font-sans`
 - `--cascivo-color-text`
 - `--cascivo-color-text-muted`

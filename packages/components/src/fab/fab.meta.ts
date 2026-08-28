@@ -73,6 +73,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-color-accent-text',
     '--cascivo-color-accent',
     '--cascivo-color-accent-content',
     '--cascivo-color-accent-hover',

@@ -54,7 +54,7 @@
     block-size: 2.5rem;
     border-radius: var(--cascivo-radius-md);
     background: var(--cascivo-color-accent-subtle);
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
     margin-block-end: var(--cascivo-space-4);
   }
 

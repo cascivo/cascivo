@@ -84,7 +84,7 @@
     min-block-size: 3rem; /* 48px — already past the 44px coarse touch target */
     padding: var(--cascivo-space-3) var(--cascivo-space-6);
     font-size: var(--cascivo-text-base);
-    color: var(--cascivo-color-accent);
+    color: var(--cascivo-color-accent-text);
     background: transparent;
     border: none;
     cursor: pointer;

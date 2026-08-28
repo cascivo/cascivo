@@ -67,6 +67,7 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 
 ## Design tokens
 
+- `--cascivo-color-accent-text`
 - `--cascivo-color-accent`
 - `--cascivo-color-accent-subtle`
 - `--cascivo-color-text`

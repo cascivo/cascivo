@@ -102,6 +102,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-color-accent-text',
     '--cascivo-calendar-bg',
     '--cascivo-calendar-radius',
     '--cascivo-calendar-cell-size',

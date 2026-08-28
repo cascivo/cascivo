@@ -8,7 +8,7 @@
       --cascivo-color-accent-foreground,
       var(--cascivo-color-text-on-accent)
     );
-    --cascivo-calendar-day-today-color: var(--cascivo-color-accent);
+    --cascivo-calendar-day-today-color: var(--cascivo-color-accent-text);
     --cascivo-calendar-range-bg: color-mix(in srgb, var(--cascivo-color-accent) 16%, transparent);
 
     display: inline-flex;

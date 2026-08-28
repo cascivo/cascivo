@@ -125,6 +125,7 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-color-accent-text',
     '--cascivo-color-surface',
     '--cascivo-color-surface-overlay',
     '--cascivo-color-bg-subtle',

@@ -1,5 +1,10 @@
 @layer cascivo.component {
   .wrapper {
+    /* The ink the "today" cell takes — Calendar publishes the same knob as
+       --cascivo-calendar-day-today-color, and this one was missing, so it could
+       only be overridden per instance. */
+    --cascivo-date-picker-day-today-color: var(--cascivo-color-accent-text);
+
     /* A grid/flex item's default minimum is its content size, so a control with an
        intrinsic width (an <input> defaults to ~20ch) refuses to shrink and spills out of
        its track — reported as "Input overflows its grid cell" inside <Grid cols={{md:2}}>. */
@@ -230,7 +235,7 @@
     }
     &[data-today] {
       font-weight: var(--cascivo-font-semibold);
-      color: var(--cascivo-color-accent);
+      color: var(--cascivo-date-picker-day-today-color);
     }
     &[data-selected] {
       background-color: var(--cascivo-color-accent);

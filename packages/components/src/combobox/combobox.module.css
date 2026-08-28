@@ -193,7 +193,7 @@
 
     &[aria-selected='true'] {
       background-color: color-mix(in srgb, var(--cascivo-color-accent) 12%, transparent);
-      color: var(--cascivo-color-accent);
+      color: var(--cascivo-color-accent-text);
     }
 
     &[data-disabled] {

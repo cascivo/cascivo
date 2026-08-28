@@ -151,7 +151,9 @@ main {
 
 .tech-code-label--after {
   background: var(--cascivo-color-success-subtle);
-  color: var(--cascivo-color-success);
+  /* -foreground is the text-safe sibling; the raw hue is a 3:1 fill and lands
+     at 4.45 on its own subtle background. */
+  color: var(--cascivo-color-success-foreground, var(--cascivo-color-success));
 }
 
 .tech-pre {
@@ -343,50 +345,16 @@ kbd {
 }
 
 /* ── Charts page (/charts) ────────────────────────────── */
-.charts-page {
-  padding-block-start: var(--cascivo-shell-header-block-size, 3rem);
-}
-
-.cx-hero {
-  text-align: center;
-}
-
-.cx-eyebrow {
-  margin: 0 0 var(--cascivo-space-2);
-  font-family: var(--cascivo-font-mono);
-  font-size: var(--cascivo-text-sm);
-  letter-spacing: 0.04em;
-  color: var(--cascivo-color-accent);
-}
-
-.cx-hero h1 {
-  margin-inline: auto;
-  max-inline-size: 20ch;
-  font-size: clamp(2rem, 5vw, 3.25rem);
-  line-height: 1.08;
-}
-
-.cx-hero h1 em {
-  font-style: normal;
-  color: var(--cascivo-color-accent);
-}
-
-.cx-hero .section-sub {
-  margin-inline: auto;
-}
-
 .cx-hero-stats {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: var(--cascivo-space-5) var(--cascivo-space-8);
-  margin-block-start: var(--cascivo-space-7);
+  margin-block-start: var(--cascivo-space-6);
 }
 
 .cx-stat {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .cx-stat strong {
@@ -1348,7 +1316,10 @@ kbd {
   block-size: 1.75rem;
   border-radius: 50%;
   background-color: var(--cascivo-color-accent);
-  color: var(--cascivo-color-accent-fg);
+  /* --cascivo-color-accent-fg does not exist; the bare read resolved to nothing
+     and the number inherited the page's ink — right by accident on the light
+     half, cream-on-acid on the dark one. */
+  color: var(--cascivo-color-accent-content);
   font-size: var(--cascivo-text-sm);
   font-weight: var(--cascivo-font-bold);
   flex-shrink: 0;
@@ -3461,15 +3432,6 @@ kbd {
 .hero h1 em {
   font-style: normal;
   color: var(--cascivo-color-accent);
-}
-
-.hero-title {
-  margin: 0;
-  font-size: clamp(1.75rem, 5vw + 0.5rem, 3rem);
-  font-weight: var(--cascivo-font-bold);
-  letter-spacing: var(--cascivo-tracking-tight);
-  line-height: 1.15;
-  text-wrap: balance;
 }
 
 /* ── Lazy-section reserved space (avoid CLS while a split chunk loads) ── */

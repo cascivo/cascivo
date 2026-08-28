@@ -202,9 +202,9 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-border",
-          "--cascivo-color-accent",
           "--cascivo-color-destructive",
           "--cascivo-color-text",
           "--cascivo-color-text-subtle",
@@ -2832,6 +2832,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-calendar-bg",
           "--cascivo-calendar-radius",
           "--cascivo-calendar-cell-size",
@@ -8848,6 +8849,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-surface-overlay",
           "--cascivo-color-bg-subtle",
@@ -10232,12 +10234,14 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-surface-overlay",
           "--cascivo-color-border",
           "--cascivo-color-border-strong",
           "--cascivo-color-accent",
           "--cascivo-color-text-on-accent",
+          "--cascivo-date-picker-day-today-color",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
           "--cascivo-color-text-subtle",
@@ -10551,8 +10555,8 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
-          "--cascivo-color-accent",
           "--cascivo-color-text-muted",
           "--cascivo-border-subtle",
           "--cascivo-ring-width",
@@ -11757,6 +11761,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-accent",
           "--cascivo-color-accent-content",
           "--cascivo-color-accent-hover",
@@ -12265,6 +12270,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-radius-full",
           "--cascivo-border-default",
           "--cascivo-color-text-subtle",
@@ -17617,10 +17623,9 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
+          "--cascivo-color-accent-text-hover",
           "--cascivo-link-color",
-          "--cascivo-color-accent",
-          "--cascivo-color-accent-hover",
-          "--cascivo-color-accent-active",
           "--cascivo-radius-sm",
           "--cascivo-focus-ring"
         ],
@@ -17865,6 +17870,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-font-mono",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",
@@ -20457,6 +20463,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-accent",
           "--cascivo-color-accent-subtle",
           "--cascivo-color-text",
@@ -20568,6 +20575,8 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
+          "--cascivo-color-accent-text-hover",
           "--cascivo-font-sans",
           "--cascivo-font-mono",
           "--cascivo-font-semibold",
@@ -20576,8 +20585,6 @@
           "--cascivo-tracking-tight",
           "--cascivo-color-text",
           "--cascivo-color-text-subtle",
-          "--cascivo-color-accent",
-          "--cascivo-color-accent-hover",
           "--cascivo-color-surface",
           "--cascivo-color-border",
           "--cascivo-color-border-strong",
@@ -21632,11 +21639,11 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-surface",
           "--cascivo-color-surface-2",
           "--cascivo-color-foreground",
           "--cascivo-color-text-muted",
-          "--cascivo-color-accent",
           "--cascivo-border-subtle",
           "--cascivo-radius-sm",
           "--cascivo-ring-width",
@@ -23664,6 +23671,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-sidenav-inline-size",
           "--cascivo-sidenav-rail-inline-size",
           "--cascivo-sidenav-bg",
@@ -26019,6 +26027,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-color-bg",
           "--cascivo-color-border",
           "--cascivo-color-border-strong",
@@ -26557,6 +26566,7 @@
           }
         ],
         "tokens": [
+          "--cascivo-color-accent-text",
           "--cascivo-font-sans",
           "--cascivo-color-text",
           "--cascivo-color-text-muted",

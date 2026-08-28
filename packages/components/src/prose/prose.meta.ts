@@ -29,6 +29,8 @@ export const meta: ComponentMeta = {
     },
   ],
   tokens: [
+    '--cascivo-color-accent-text',
+    '--cascivo-color-accent-text-hover',
     '--cascivo-font-sans',
     '--cascivo-font-mono',
     '--cascivo-font-semibold',
@@ -37,8 +39,6 @@ export const meta: ComponentMeta = {
     '--cascivo-tracking-tight',
     '--cascivo-color-text',
     '--cascivo-color-text-subtle',
-    '--cascivo-color-accent',
-    '--cascivo-color-accent-hover',
     '--cascivo-color-surface',
     '--cascivo-color-border',
     '--cascivo-color-border-strong',
