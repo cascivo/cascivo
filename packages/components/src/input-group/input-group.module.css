@@ -59,8 +59,8 @@
     border-radius: var(--cascivo-radius-field, var(--cascivo-radius-control));
     background: var(--cascivo-color-bg);
     transition:
-      border-color 120ms ease,
-      box-shadow 120ms ease;
+      border-color var(--cascivo-duration-100) ease,
+      box-shadow var(--cascivo-duration-100) ease;
   }
 
   .input-group:has(.inline-addon):focus-within {

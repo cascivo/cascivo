@@ -247,6 +247,20 @@
     --cascivo-duration-300: 300ms;
     --cascivo-duration-500: 500ms;
 
+    /* Loop durations — for `animation-iteration-count: infinite` only.
+       These are deliberately EXCLUDED from the reduced-motion collapse below: zeroing a
+       looping animation does not stop it, it spins it infinitely fast. A loop is silenced
+       by not running at all, which is a different mechanism. See docs/MOTION.md:
+         · decorative loops (pulse, ping, blink, shimmer, wiggle) go inside
+           `@media (prefers-reduced-motion: no-preference)` — motion is opt-in, so a user
+           who expresses no preference gets none;
+         · indicator loops (spinner, indeterminate bar) keep running but are slowed by an
+           explicit `reduce` guard, because a frozen progress indicator reads as a hung app.
+       `reduced-motion:check` enforces that every literal duration takes one of those paths. */
+    --cascivo-duration-loop-fast: 1s; /* cursor blink, typing dots */
+    --cascivo-duration-loop: 1.4s; /* indeterminate sweep, shimmer */
+    --cascivo-duration-loop-slow: 2s; /* status pulse, radar ping */
+
     /* Semantic motion — components reference intent, themes tune character */
     --cascivo-motion-enter: var(--cascivo-duration-200) var(--cascivo-ease-out);
     --cascivo-motion-exit: var(--cascivo-duration-150) var(--cascivo-ease-in);
@@ -396,9 +410,12 @@
     --cascivo-editor-syntax-property: var(--cascivo-chart-2);
   }
 
-  /* All cascade motion derives from the duration tokens, so collapsing them
-     disables every transition/animation library-wide. Continuous progress
-     indicators (Spinner) use literal durations and opt out deliberately. */
+  /* All one-shot cascade motion derives from the duration tokens, so collapsing them
+     disables every transition and finite animation library-wide.
+
+     `--cascivo-duration-loop-*` is intentionally absent: collapsing a loop accelerates it
+     rather than stopping it. Loops opt out by construction instead (see the token block
+     above), and `reduced-motion:check` proves every one of them did. */
   @media (prefers-reduced-motion: reduce) {
     :root {
       --cascivo-duration-75: 0.01ms;

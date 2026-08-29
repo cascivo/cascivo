@@ -25,7 +25,13 @@
     width: 8px;
     height: 1em;
     background: oklch(0.9 0.02 145);
-    animation: cascade-cursor-blink 1s step-end infinite;
+  }
+
+  /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .cursor {
+      animation: cascade-cursor-blink var(--cascivo-duration-loop-fast) step-end infinite;
+    }
   }
   .line[data-type='command'] .text {
     color: oklch(0.9 0.1 250);

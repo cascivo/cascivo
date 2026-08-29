@@ -25,7 +25,7 @@
   .progress::-webkit-progress-value {
     background-color: var(--cascivo-progress-color, var(--cascivo-color-accent));
     border-radius: var(--cascivo-radius-full);
-    transition: inline-size 150ms var(--cascivo-ease-out);
+    transition: inline-size var(--cascivo-duration-150) var(--cascivo-ease-out);
   }
   .progress::-moz-progress-bar {
     background-color: var(--cascivo-progress-color, var(--cascivo-color-accent));
@@ -49,10 +49,22 @@
   }
 
   .progress:indeterminate::-webkit-progress-value {
-    animation: cascivo-progress-indeterminate 1.4s ease-in-out infinite;
+    animation: cascivo-progress-indeterminate var(--cascivo-duration-loop)
+      var(--cascivo-ease-in-out) infinite;
   }
   .progress:indeterminate::-moz-progress-bar {
-    animation: cascivo-progress-indeterminate 1.4s ease-in-out infinite;
+    animation: cascivo-progress-indeterminate var(--cascivo-duration-loop)
+      var(--cascivo-ease-in-out) infinite;
+  }
+
+  /* Indicator loop, not a decorative one: it reports that work is happening, so under
+     reduced motion it is slowed rather than stopped — a frozen progress bar reads as a
+     hung app. Same treatment as Spinner and ProgressBar. */
+  @media (prefers-reduced-motion: reduce) {
+    .progress:indeterminate::-webkit-progress-value,
+    .progress:indeterminate::-moz-progress-bar {
+      animation-duration: 4s;
+    }
   }
 
   @keyframes cascivo-progress-indeterminate {

@@ -9,7 +9,13 @@
     background: currentColor;
     margin-inline-start: 1px;
     vertical-align: text-bottom;
-    animation: cascade-cursor-blink 1s step-end infinite;
+  }
+
+  /* Decorative loop — opt-in, so a user who expresses no preference gets no motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .cursor {
+      animation: cascade-cursor-blink var(--cascivo-duration-loop-fast) step-end infinite;
+    }
   }
 }
 
