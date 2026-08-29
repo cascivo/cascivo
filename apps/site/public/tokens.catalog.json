@@ -10,7 +10,7 @@
   ],
   "resolutionTheme": "light",
   "generatedAt": "2026-08-26",
-  "count": 328,
+  "count": 329,
   "tokens": [
     {
       "name": "--cascivo-gray-0",
@@ -2781,6 +2781,15 @@
       "layer": "component",
       "group": "kpi",
       "resolvedDefault": "var(--cascivo-space-4)",
+      "resolvesPerTheme": false,
+      "canonical": true
+    },
+    {
+      "name": "--cascivo-logo-size",
+      "value": "2rem",
+      "layer": "component",
+      "group": "logo",
+      "resolvedDefault": "2rem",
       "resolvesPerTheme": false,
       "canonical": true
     },

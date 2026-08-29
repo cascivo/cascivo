@@ -94,6 +94,7 @@
           "List",
           "ListItem",
           "LogViewer",
+          "Logo",
           "Menu",
           "MenuButton",
           "MenuItem",
@@ -362,6 +363,8 @@
           "LogLine",
           "LogViewerLabels",
           "LogViewerProps",
+          "LogoProps",
+          "LogoVariant",
           "Machine",
           "MachineConfig",
           "MenuButtonItem",
@@ -1475,6 +1478,14 @@
             "text": "string",
             "level?": "LogLevel"
           },
+          "Logo": "declare function Logo({ variant, size, className, style, ...props }: LogoProps): import(\"react\").JSX.Element",
+          "LogoProps": {
+            "(extends)": "extends HTMLAttributes<HTMLSpanElement>",
+            "children?": "never",
+            "variant?": "LogoVariant",
+            "size?": "number"
+          },
+          "LogoVariant": "type = 'mark' | 'mark-accent' | 'horizontal' | 'stacked' | 'nav'",
           "LogViewer": "declare function LogViewer({ lines, rowHeight, overscan, follow, onFollowChange, ansi, search, maxHeight, labels, className, ...props }: LogViewerProps): import(\"react\").JSX.Element",
           "LogViewerLabels": {
             "searchPlaceholder?": "string",

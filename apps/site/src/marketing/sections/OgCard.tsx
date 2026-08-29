@@ -1,5 +1,6 @@
 import { Badge } from '@cascivo/components/badge'
 import { Card } from '@cascivo/components/card'
+import { Logo } from '@cascivo/components/brand/logo'
 import registry from '../../../../../registry.json'
 
 interface RegistryComponentEntry {
@@ -96,9 +97,16 @@ export function OgCard() {
         justifyContent: 'center',
         gap: 'var(--cascivo-space-6)',
         background: 'var(--cascivo-color-bg)',
+        // Every text node below sets its own colour, so nothing needed this until the
+        // logo arrived — the mark inks itself with currentColor, which without this
+        // inherits the document default and lands near-black on a near-black card.
+        color: 'var(--cascivo-color-text)',
         padding: 'var(--cascivo-space-16)',
       }}
     >
+      {/* The brand signature. Inline, so the mark inks itself from this card's
+          dark theme and the notch takes that theme's accent. */}
+      <Logo variant="horizontal" size={40} />
       {spec.eyebrow ? (
         <span
           style={{

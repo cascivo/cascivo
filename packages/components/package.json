@@ -13,6 +13,7 @@
     "./avatar-group": "./src/avatar-group/avatar-group.tsx",
     "./badge": "./src/badge/badge.tsx",
     "./blockquote": "./src/blockquote/blockquote.tsx",
+    "./brand/logo": "./src/brand/logo/logo.tsx",
     "./breadcrumb": "./src/breadcrumb/breadcrumb.tsx",
     "./button": "./src/button/button.tsx",
     "./button-group": "./src/button-group/button-group.tsx",

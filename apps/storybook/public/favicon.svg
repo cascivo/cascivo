@@ -1,6 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="cascivo">
+<svg id="cascivo-favicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="cascivo">
   <title>cascivo</title>
-  <rect x="2" y="3" width="22" height="6" rx="3" fill="var(--cascivo-brand-primary, #0079bf)"/>
-  <rect x="2" y="13" width="17" height="6" rx="3" fill="var(--cascivo-brand-primary, #0079bf)"/>
-  <rect x="2" y="23" width="22" height="6" rx="3" fill="var(--cascivo-brand-primary, #0079bf)"/>
+  <!-- Mark at 62.5% of the icon box (20 of 32 units), optically centred: the notch
+       pulls visual mass left, so the mark sits 1 unit right of true centre.
+       One-colour variant — the accent is not legible at 16/32.
+       currentColor + a prefers-color-scheme rule so the tab icon follows the
+       browser's dark mode; CSS custom properties do not resolve in a favicon. -->
+  <style>
+    #cascivo-favicon { color: #030303 }
+    @media (prefers-color-scheme: dark) { #cascivo-favicon { color: #f9f5e6 } }
+  </style>
+  <path transform="translate(7 6) scale(0.625)" d="M0 0H32V11H11V21H32V32H0Z"
+        fill="currentColor" shape-rendering="crispEdges"/>
 </svg>

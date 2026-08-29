@@ -824,6 +824,34 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "brand-logo",
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "brand-logo/logo.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "brand-logo/index.ts",
+          "type": "registry:component"
+        },
+        {
+          "path": "brand-logo/logo.module.css",
+          "type": "registry:component"
+        }
+      ],
+      "description": "The cascivo mark and its sanctioned lockups, as inline SVG",
+      "dependencies": ["@cascivo/core"],
+      "categories": ["display"],
+      "meta": {
+        "cascivo": {
+          "type": "component",
+          "version": "1.0.0"
+        }
+      }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "breadcrumb",
       "type": "registry:component",
       "files": [

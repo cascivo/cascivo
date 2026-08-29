@@ -45,6 +45,8 @@
 /context/testimonials.md  /context/block/testimonials.md  301
 /llms/users-table-page.md  /llms/block/users-table-page.md  301
 /context/users-table-page.md  /context/block/users-table-page.md  301
+/llms/logo.md  /llms/brand/logo.md  301
+/context/logo.md  /context/brand/logo.md  301
 /llms/area-chart.md  /llms/chart/area-chart.md  301
 /context/area-chart.md  /context/chart/area-chart.md  301
 /llms/bar-chart.md  /llms/chart/bar-chart.md  301

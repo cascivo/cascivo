@@ -40,28 +40,100 @@ All contrast-checked. Full spec: [docs/specs/brand-color.md](specs/brand-color.m
 
 ## Logo
 
+**Version 1.0 · 28 Aug 2026 · mark: Notch**
+
 ### Mark concept
 
-Three descending, offset rounded bars — a cascade/waterfall whose outer contour reads as a "C" (for cascivo). Echoes both the CSS cascade and the token cascade (primitive → semantic → component).
+A filled square with a rectangular bite taken out of the right edge, leaving a chunky "C". One closed path, drawn on a 32-unit grid:
+
+```
+viewBox="0 0 32 32"
+d="M0 0H32V11H11V21H32V32H0Z"
+```
+
+Stem 11 units. Top and bottom bars 11 units. Notch 21 x 10 units, flush to the right edge. No curves, no strokes, no type, no gradients, no optical corrections — the shape is arithmetic, so anyone can rebuild it from the numbers above.
+
+The brand argument is *own your stylesheet*: a loud, hard-edged, unmistakably non-generic library. Three properties earned the mark its pick:
+
+1. **One path in one colour.** Nothing breaks in mono, on the accent field, or punched out of a solid block. The accent is optional decoration, not structure.
+2. **Strongest at small sizes.** The notch is 10 of 32 units — 5px at 16px.
+3. **Most mass at nav size**, which is where the mark is seen ninety-nine times out of a hundred.
+
+The one thing it gives up: on dark grounds it sits as a heavy slab where a lighter mark would breathe. Accepted deliberately.
+
+### Colour
+
+Ink is `currentColor`. Accent is `var(--cascivo-color-accent)`. The mark therefore inherits any theme it is placed in — drop it inside a `data-theme` subtree and it repaints with the surface, with no logo variants to maintain.
+
+| Variant     | Ink                     | Accent                  | Use                                            |
+| ----------- | ----------------------- | ----------------------- | ---------------------------------------------- |
+| Two colour  | `oklch(0.1 0 0)`        | `oklch(0.88 0.19 105)`  | Default. Site header, CTA field, docs, README. |
+| One colour  | ink                     | none                    | Single-ink print, engraving, mono favicons.    |
+| Reversed    | `oklch(0.97 0.02 95)`   | acid                    | Dark surfaces, terminal, GitHub dark.          |
+| On accent   | ink                     | none                    | CTA band and stickers. Never accent on accent. |
+| Knockout    | surface colour          | none                    | Punched out of a solid block.                  |
+
+Never introduce a colour that is not a theme token. Where a raster pipeline cannot read `oklch()` (ImageMagick, see `apps/site/scripts/gen-icons.mjs`), the committed hex equivalents are `#030303` ink, `#ebdd00` accent, `#f9f5e6` reversed.
 
 ### Wordmark
 
-Lowercase `cascivo` in a geometric sans (system font stack, no external font dependency).
+Lowercase `cascivo` in `--cascivo-font-display` ('Arial Black'), `letter-spacing: -0.045em` to `-0.055em`.
+
+**The wordmark is outlines in every exported asset.** 'Arial Black' substitutes badly on Linux and Android, which would silently change the lockup in CI screenshots and on user machines, so no shipped SVG contains a `<text>` element. Live DOM is the exception and stays live text: the `Logo` component reads `--cascivo-font-display`, which is the point of the token.
+
+#### Regenerating the outlined wordmark
+
+Only needed if the size (28), the tracking (-0.05em) or the word itself changes. Arial Black is not redistributable, so it is not vendored — fetch it, then emit glyph outlines with [opentype.js](https://github.com/opentypejs/opentype.js):
+
+```sh
+curl -LO https://downloads.sourceforge.net/corefonts/arialb32.exe
+cabextract arialb32.exe          # yields AriBlk.TTF
+```
+
+Lay the glyphs out by advance width with the tracking applied *between* glyphs only, at
+`font-size: 28` on the 32-unit grid, with the baseline at `16 + xHeight / 2` (x-height
+measured off the `x` glyph — this 1998 font predates OS/2 v2, so `sxHeight` is absent).
+That puts the mark's vertical centre on the wordmark's x-height centre, which is the
+horizontal lockup's alignment rule. Paste the resulting path into the lockup SVGs; never
+retype it as `<text>`.
+
+### Clear space and minimum size
+
+- **Clear space:** 8 units on all four sides — one quarter of the mark. Nothing enters it: no type, no rule, no other logo.
+- **Minimum size:** 16px on screen, 6mm in print. Below 16px the notch closes optically — use the wordmark alone.
+- Always 1:1. The mark is square and never scales on one axis.
 
 ### Lockups
 
-- **Primary:** mark + wordmark (horizontal)
-- **Mark-only:** for favicon, app icon, and small contexts
+| Lockup     | Spec                                                                       | Use                              |
+| ---------- | -------------------------------------------------------------------------- | -------------------------------- |
+| Horizontal | Gap = 1/3 of mark height; mark optically centred on the wordmark's x-height | Primary. Header, docs, README.   |
+| Stacked    | Gap = 1/4 of mark height; left aligned, never centred                      | Merch, avatars, square crops.    |
+| Nav        | 18px mark, 16px wordmark, gap 10px                                         | Only lockup permitted below 24px |
+
+### Misuse
+
+Never stretch or squash. Never rotate. Never round the corners. Never recolour the ink off-token. Never add a shadow, glow or outline — the mark is flat even though the brand uses hard shadows elsewhere. Never fill the notch with anything but the accent token.
+
+### Favicon and app icons
+
+The mark sits at **62.5% of the icon box**, optically centred: the notch pulls visual mass to the left, so the mark shifts **1 unit right** of true centre. The one-colour variant is used at 16 and 32; the accent is legible from 48 up. `shape-rendering="crispEdges"` on the small rasterisations keeps the notch edge hard.
 
 ### Asset locations
 
-- `apps/landing/public/logo.svg` — full logo (mark + wordmark), theme-aware
-- `apps/landing/public/logo-mark.svg` — mark only (favicon source)
-- `apps/landing/public/favicon.svg` — 32×32 viewport
+- `apps/site/public/logo-mark.svg` — one-colour mark, ink is `currentColor`
+- `apps/site/public/logo-mark-accent.svg` — two-colour mark, accent reads `--cascivo-color-accent`
+- `apps/site/public/logo.svg` — horizontal lockup (mark + wordmark)
+- `apps/site/public/favicon.svg` — 32x32, one colour, follows the browser's dark mode
+- `apps/site/public/icon.svg` — 512x512 raster source for the 180/192/512 PNGs (two colour)
+- `apps/site/public/icon-mono.svg` — 512x512 raster source for `favicon.ico` (one colour)
+- `apps/storybook/public/brand.svg`, `apps/storybook/public/favicon.svg` — Storybook manager chrome
+- `apps/site/public/logo-accent.svg` — two-colour horizontal lockup
+- `packages/components/src/brand/logo/` — the `brand/logo` registry component, which is how the logo is rendered in an app (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`)
 
 ### Usage
 
-The logo uses `currentColor` for its monochrome variant and `--cascivo-brand-*` CSS variables for its gradient/color variant. It adapts to `data-theme` automatically.
+Use the `Logo` component — `import { Logo } from '@cascivo/react'` (or `npx cascivo add brand/logo`). It renders **inline SVG, not an `<img>`**: `currentColor` and the accent token only resolve when the SVG is part of the document. The SVG carries `role="img"` and a `<title>`; in a lockup where the wordmark is already present the mark is `aria-hidden` instead, so screen readers do not announce the name twice.
 
 ---
 

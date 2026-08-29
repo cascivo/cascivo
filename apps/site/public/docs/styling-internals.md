@@ -47,14 +47,15 @@ keeps your intent explicit and survives later refactors of your own stylesheet.
 
 ## The hooks
 
-| Attribute                    | Component  | Element                                                              |
-| ---------------------------- | ---------- | -------------------------------------------------------------------- |
-| `data-cascivo-appshell-nav`  | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width    |
-| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container                                        |
-| `data-cascivo-modal-body`    | `Modal`    | the scrollable content region between header and footer              |
-| `data-cascivo-modal-footer`  | `Modal`    | the right-aligned action row (rendered only when `footer` is passed) |
-| `data-cascivo-drawer-body`   | `Drawer`   | the scrollable content region                                        |
-| `data-cascivo-sheet-body`    | `Sheet`    | the scrollable content region                                        |
+| Attribute                    | Component  | Element                                                                                                    |
+| ---------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
+| `data-cascivo-appshell-nav`  | `AppShell` | the sidebar wrapper — the flex item that owns the sidebar's width                                          |
+| `data-cascivo-appshell-main` | `AppShell` | the `<main>` scroll container                                                                              |
+| `data-cascivo-modal-body`    | `Modal`    | the scrollable content region between header and footer                                                    |
+| `data-cascivo-modal-footer`  | `Modal`    | the right-aligned action row (rendered only when `footer` is passed)                                       |
+| `data-cascivo-drawer-body`   | `Drawer`   | the scrollable content region                                                                              |
+| `data-cascivo-sheet-body`    | `Sheet`    | the scrollable content region                                                                              |
+| `data-cascivo-logo`          | `Logo`     | the lockup wrapper, valued with the active variant (`mark`, `mark-accent`, `horizontal`, `stacked`, `nav`) |
 
 ## Prefer a token, then a prop, then a hook
 

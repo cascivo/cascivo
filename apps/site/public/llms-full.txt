@@ -380,7 +380,7 @@ see how components behave without adding tracking, read these machine-readable C
 - Benchmark results (runtime, bundle, render counts vs Carbon/shadcn): https://github.com/cascivo/cascivo/blob/main/apps/bench/results/results.json
 - Accessibility conformance (axe sweep, AT matrix): https://github.com/cascivo/cascivo/tree/main/docs/specs
 
-## Component index (209 entries — 197 components + 12 page blocks)
+## Component index (210 entries — 198 components + 12 page blocks)
 
 Not all ship in `@cascivo/react`: 25 in @cascivo/charts, 10 in @cascivo/flow, 2 in @cascivo/editor — those are separate installs (see Quick Setup). Blocks are copy-paste only. Each entry below is tagged with its channel.
 
@@ -441,6 +441,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [block/stats-cards](https://cascivo.com/llms/block/stats-cards.md) — Grid of KPI stat cards with trend badges. _(copy-paste)_
 - [block/users-table-page](https://cascivo.com/llms/block/users-table-page.md) — Full users management page with table, search, and invite action. _(copy-paste)_
 - [blockquote](https://cascivo.com/llms/blockquote.md) — Quoted passage with optional attribution footer _(npm @cascivo/react · or copy-paste)_
+- [brand/logo](https://cascivo.com/llms/brand/logo.md) — The cascivo mark and its sanctioned lockups, as inline SVG _(npm @cascivo/react · or copy-paste)_
 - [card](https://cascivo.com/llms/card.md) — Container for grouping related content _(npm @cascivo/react · or copy-paste)_
 - [carousel](https://cascivo.com/llms/carousel.md) — Scroll-snap slide deck with previous/next controls and dot indicators _(npm @cascivo/react · or copy-paste)_
 - [chat-bubble](https://cascivo.com/llms/chat-bubble.md) — Message bubble for chat and messaging UIs with avatar, name, and timestamp support _(npm @cascivo/react · or copy-paste)_
@@ -663,6 +664,7 @@ Naming note: `Stack` overlaps children into a card-pile (z-axis), NOT vertical s
 - [UsersTablePage](https://cascivo.com/context/block/users-table-page.md) — Use when: A full user-management page with table, search, and invite action
 - [Blockquote](https://cascivo.com/context/blockquote.md) — Use when: Setting off a quoted passage from another source with visual emphasis
 - [BottomSheet](https://cascivo.com/context/bottom-sheet.md) — Use when: A mobile surface that rises from the bottom and can be resized between detents by dragging
+- [Logo](https://cascivo.com/context/brand/logo.md) — Use when: Placing the cascivo logo in a header, footer, auth screen or splash
 - [Breadcrumb](https://cascivo.com/context/breadcrumb.md) — Use when: Showing the user where the current page sits in a navigation hierarchy
 - [Button](https://cascivo.com/context/button.md) — Use when: Triggering an action or navigation the user initiates by click/press
 - [ButtonGroup](https://cascivo.com/context/button-group.md) — Use when: Presenting several related, independent actions that read as one control (e.g. an editor toolbar)
@@ -2896,6 +2898,107 @@ Required. The component's primary job needs client JavaScript, so do not render 
 ## Tags
 
 overlay, sheet, bottom-sheet, mobile, drag, detent, gesture
+
+---
+
+_Generated from registry v1.0.0 on 2026-08-26. Docs track `main`; compare with https://cascivo.com/registry.json `.version`._
+
+---
+
+# Logo
+
+The cascivo mark and its sanctioned lockups, as inline SVG
+
+## Install
+
+Copy-paste the source (you own and can edit it):
+
+```bash
+npx cascivo add brand/logo
+```
+
+Or use it from the prebuilt package without copying:
+
+```tsx
+import { Logo } from '@cascivo/react'
+```
+
+## Category
+
+`display`
+
+## Variants
+
+- `mark`
+- `mark-accent`
+- `horizontal`
+- `stacked`
+- `nav`
+
+## Props
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `variant` | `'mark' \| 'mark-accent' \| 'horizontal' \| 'stacked' \| 'nav'` | no | `mark` | `mark` and `mark-accent` render the square alone; `horizontal`, `stacked` and `nav` add the wordmark. `nav` is the only lockup permitted below 24px. |
+| `size` | `number` | no | `18 for `nav`, 32 otherwise` | Mark height in px. Clamped to a 16px floor — below that the notch closes optically. |
+
+## Examples
+
+### Mark
+
+```tsx
+<Logo />
+```
+
+### Two colour
+
+The accent fills the notch. Decoration — the mark is complete without it.
+
+```tsx
+<Logo variant="mark-accent" />
+```
+
+### Horizontal lockup
+
+```tsx
+<Logo variant="horizontal" />
+```
+
+### Nav lockup
+
+18px mark, 16px wordmark, 10px gap — the only lockup allowed below 24px.
+
+```tsx
+<Logo variant="nav" />
+```
+
+### Stacked
+
+```tsx
+<Logo variant="stacked" size={48} />
+```
+
+## Client JavaScript
+
+None. Renders complete and correct with JavaScript disabled, and can be rendered directly from a React Server Component without hydrating.
+
+## Design tokens
+
+- `--cascivo-color-accent`
+- `--cascivo-font-display`
+
+## Accessibility
+
+- **WCAG level:** 2.2-AA
+- **ARIA role:** `img`
+
+## Dependencies
+
+- `@cascivo/core`
+
+## Tags
+
+logo, brand, mark, wordmark, lockup, identity
 
 ---
 

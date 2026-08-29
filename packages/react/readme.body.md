@@ -233,7 +233,7 @@ routing break after adding one of these, check that the import resolves to
 
 ## Component index
 
-197 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
+198 components, exported from `@cascivo/react`. Full props, examples, and live demos at [cascivo.com/docs](https://cascivo.com/docs).
 
 ### Inputs
 
@@ -318,6 +318,7 @@ routing break after adding one of these, check that the import resolves to
 - **Kbd** — Displays a keyboard key or shortcut
 - **List** — Styled unordered or ordered list with ListItem
 - **LoginPage** — Authentication login page with email and password form.
+- **Logo** — The cascivo mark and its sanctioned lockups, as inline SVG
 - **LogViewer** — Virtualized monospace console for high-frequency log and stream output
 - **NotificationCenter** — A list of notification alerts with a mark-all-read action.
 - **PageWithBreadcrumb** — A centered content page with a breadcrumb navigation and page header.

@@ -4065,6 +4065,18 @@ export const propSchemas: Record<string, PropSchema[]> = {
       required: false,
     },
   ],
+  Logo: [
+    {
+      name: 'variant',
+      required: false,
+      enum: ['mark', 'mark-accent', 'horizontal', 'stacked', 'nav'],
+    },
+    {
+      name: 'size',
+      required: false,
+      primitives: ['number'],
+    },
+  ],
   Masonry: [
     {
       name: 'cols',

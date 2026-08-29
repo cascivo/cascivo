@@ -43,6 +43,7 @@ import { meta as joinMeta } from './join/join.meta'
 import { meta as kbdMeta } from './kbd/kbd.meta'
 import { meta as largeTitleHeaderMeta } from './large-title-header/large-title-header.meta'
 import { meta as linkMeta } from './link/link.meta'
+import { meta as logoMeta } from './brand/logo/logo.meta'
 import { meta as listMeta } from './list/list.meta'
 import { meta as menuMeta } from './menu/menu.meta'
 import { meta as modalMeta } from './modal/modal.meta'
@@ -144,6 +145,7 @@ export const allMetas: ComponentMeta[] = [
   kbdMeta,
   largeTitleHeaderMeta,
   linkMeta,
+  logoMeta,
   listMeta,
   menuMeta,
   modalMeta,

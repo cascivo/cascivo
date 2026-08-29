@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="cascivo">
+  <title>cascivo</title>
+  <!-- Two-colour Notch. The accent fills the bite and is decoration, not
+       structure — the mark is complete without it. -->
+  <path d="M0 0H32V11H11V21H32V32H0Z" fill="currentColor"/>
+  <rect x="11" y="11" width="21" height="10" fill="var(--cascivo-color-accent, oklch(0.88 0.19 105))"/>
+</svg>

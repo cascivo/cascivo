@@ -1,0 +1,15 @@
+<svg id="cascivo-mark-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="cascivo">
+  <title>cascivo</title>
+  <!-- The mark for <img> contexts — READMEs, npm, anywhere the SVG is loaded as an
+       image and so cannot inherit `currentColor` from the page. Ink is baked and
+       follows the viewer's colour scheme instead.
+
+       Full-bleed on the 32-unit grid: NOT favicon.svg, whose 62.5% inset and 1-unit
+       optical offset are for an icon box and read as stray padding at README sizes.
+       One colour — below 48px the accent is not legible (logo brief §7). -->
+  <style>
+    #cascivo-mark-img { color: #030303 }
+    @media (prefers-color-scheme: dark) { #cascivo-mark-img { color: #f9f5e6 } }
+  </style>
+  <path d="M0 0H32V11H11V21H32V32H0Z" fill="currentColor"/>
+</svg>

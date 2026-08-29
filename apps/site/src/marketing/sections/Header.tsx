@@ -13,6 +13,7 @@ import {
   type ThemeName,
 } from '../../theme'
 import { currentPath, navigate } from '../../router'
+import { Logo } from '@cascivo/components/brand/logo'
 import { SearchButton } from '../search/SearchButton'
 import { searchOpen } from '../search/state'
 
@@ -321,7 +322,15 @@ export function Header() {
     <>
       <ShellHeader
         className="landing-shell-header"
-        brand={{ name: 'cascivo', href: '/' }}
+        // The nav lockup (18px mark, 16px wordmark, gap 10px) — the only lockup the
+        // brief permits below 24px. Passed as a node rather than `{ name, href }`
+        // because the mark has to be inline for `currentColor` and the accent token
+        // to resolve against the active theme.
+        brand={
+          <a href="/" style={{ display: 'inline-flex', color: 'inherit', textDecoration: 'none' }}>
+            <Logo variant="nav" />
+          </a>
+        }
         nav={navItems}
         // The landing supplies its own SkipNavLink/SkipNavTarget on every page;
         // disable ShellHeader's built-in skip link so its default #cascade-main
