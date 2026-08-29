@@ -1,0 +1,13 @@
+<svg id="cascivo-mark-img-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="cascivo">
+  <title>cascivo</title>
+  <!-- Two-colour mark for <img> contexts — the default treatment for a README
+       header (logo brief §3). Ink follows the viewer's colour scheme; the accent
+       stays acid in both, which is the brief's Reversed row.
+       Use at 48px and up; below that reach for logo-mark-img.svg. -->
+  <style>
+    #cascivo-mark-img-accent { color: #030303 }
+    @media (prefers-color-scheme: dark) { #cascivo-mark-img-accent { color: #f9f5e6 } }
+  </style>
+  <path d="M0 0H32V11H11V21H32V32H0Z" fill="currentColor"/>
+  <rect x="11" y="11" width="21" height="10" fill="#ebdd00"/>
+</svg>
