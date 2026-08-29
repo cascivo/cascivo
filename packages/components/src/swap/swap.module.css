@@ -23,7 +23,7 @@
     align-items: center;
     justify-content: center;
     transition-property: transform, opacity;
-    transition-duration: 200ms;
+    transition-duration: var(--cascivo-duration-200);
     transition-timing-function: var(--cascivo-ease-out);
   }
 

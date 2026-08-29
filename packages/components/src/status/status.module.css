@@ -38,18 +38,7 @@
 
   @media (prefers-reduced-motion: no-preference) {
     .status[data-pulse] .dot {
-      animation: cascade-status-pulse 2s var(--cascivo-ease-in-out) infinite;
-    }
-  }
-
-  @keyframes cascade-status-pulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-
-    50% {
-      opacity: 0.4;
+      animation: global(cascivo-pulse) 2s var(--cascivo-ease-in-out) infinite;
     }
   }
 }

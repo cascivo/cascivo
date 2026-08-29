@@ -36,8 +36,11 @@
     &[data-state='indeterminate'] .fill {
       inline-size: 40%;
       transition: none;
-      /* Continuous sweep — literal duration; reduced motion slows it below. */
-      animation: cascade-progress-sweep 1.4s var(--cascivo-ease-in-out) infinite;
+      /* Indicator loop — reduced motion slows it below rather than stopping it.
+         The shared sweep translates the bar instead of animating `inset-inline-start`,
+         which kept the whole loop on the layout path every frame. */
+      animation: global(cascivo-progress-sweep) var(--cascivo-duration-loop)
+        var(--cascivo-ease-in-out) infinite;
     }
   }
 
@@ -78,16 +81,6 @@
     font-size: var(--cascivo-text-xs);
     color: var(--cascivo-color-text-subtle);
     line-height: var(--cascivo-leading-tight);
-  }
-
-  @keyframes cascade-progress-sweep {
-    from {
-      inset-inline-start: -40%;
-    }
-
-    to {
-      inset-inline-start: 100%;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

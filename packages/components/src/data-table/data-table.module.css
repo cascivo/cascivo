@@ -375,14 +375,8 @@
       inset: 0;
       translate: -100% 0;
       background: linear-gradient(90deg, transparent, var(--cascivo-color-surface), transparent);
-      animation: shimmer var(--cascivo-duration-500, 500ms) var(--cascivo-ease-in-out, ease-in-out)
-        infinite;
-    }
-  }
-
-  @keyframes shimmer {
-    to {
-      translate: 100% 0;
+      animation: global(cascivo-shimmer) var(--cascivo-duration-500, 500ms)
+        var(--cascivo-ease-in-out, ease-in-out) infinite;
     }
   }
 

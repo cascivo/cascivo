@@ -16,7 +16,7 @@
     {
       "path": "spinner/spinner.module.css",
       "type": "registry:component",
-      "content": "@layer cascivo.component {\n  .spinner {\n    display: inline-block;\n    box-sizing: border-box;\n    border-style: solid;\n    border-color: currentColor;\n    border-block-start-color: transparent;\n    border-radius: var(--cascivo-radius-full);\n    animation: cascade-spin 0.6s linear infinite;\n\n    &[data-size='sm'] {\n      width: 1rem;\n      height: 1rem;\n      border-width: 2px;\n    }\n\n    &[data-size='md'] {\n      width: 1.5rem;\n      height: 1.5rem;\n      border-width: 2px;\n    }\n\n    &[data-size='lg'] {\n      width: 2rem;\n      height: 2rem;\n      border-width: 3px;\n    }\n  }\n\n  @keyframes cascade-spin {\n    to {\n      transform: rotate(360deg);\n    }\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    .spinner {\n      animation-duration: 1.5s;\n    }\n  }\n}\n"
+      "content": "@layer cascivo.component {\n  .spinner {\n    display: inline-block;\n    box-sizing: border-box;\n    border-style: solid;\n    border-color: currentColor;\n    border-block-start-color: transparent;\n    border-radius: var(--cascivo-radius-full);\n    animation: global(cascivo-spin) 0.6s linear infinite;\n\n    &[data-size='sm'] {\n      width: 1rem;\n      height: 1rem;\n      border-width: 2px;\n    }\n\n    &[data-size='md'] {\n      width: 1.5rem;\n      height: 1.5rem;\n      border-width: 2px;\n    }\n\n    &[data-size='lg'] {\n      width: 2rem;\n      height: 2rem;\n      border-width: 3px;\n    }\n  }\n\n  @media (prefers-reduced-motion: reduce) {\n    .spinner {\n      animation-duration: 1.5s;\n    }\n  }\n}\n"
     }
   ],
   "description": "Indeterminate loading indicator",

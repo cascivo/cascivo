@@ -33,6 +33,11 @@ const THEME_BUNDLE = [
   // vanish and this aggregate would ship without the reset (2026-07-28 report C12).
   readCss('../tokens/src/reset.css'), // reset floor (@layer cascivo.reset)
   readCss('../tokens/src/index.css'), // primitive tokens (@layer cascivo.tokens)
+  // The canonical keyframes. Listed EXPLICITLY for the same reason as the reset above:
+  // index.css imports it, and every @import is stripped below, so this aggregate would
+  // otherwise ship component CSS whose `animation: global(cascivo-…)` references resolve
+  // to nothing — silently, since an unresolved animation-name is not an error anywhere.
+  readCss('../tokens/src/motion.css'), // keyframe catalogue (unlayered by design)
   readCss('../tokens/src/properties.css'), // @property registrations
   readCss('../themes/src/base.css'), // base typography (@layer cascivo.base)
   readCss('../themes/src/light.css'), // light theme (@layer cascivo.theme)

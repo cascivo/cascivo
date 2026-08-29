@@ -33,6 +33,8 @@
     ".": "./src/index.css",
     "./layers": "./src/layers.css",
     "./layers.css": "./src/layers.css",
+    "./motion": "./src/motion.css",
+    "./motion.css": "./src/motion.css",
     "./reset": "./src/reset.css",
     "./reset.css": "./src/reset.css",
     "./properties": "./src/properties.css",
