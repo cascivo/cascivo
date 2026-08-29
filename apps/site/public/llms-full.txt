@@ -12405,6 +12405,7 @@ import { Grid } from '@cascivo/react'
 | `gap` | `1\|2\|3\|4\|5\|6\|8\|10\|12` | no | `4` | Spacing token step. Maps to the --cascivo-space-* scale, which intentionally skips 7/9/11 — use 6 or 8. |
 | `align` | `'start' \| 'center' \| 'end' \| 'stretch'` | no | — | Block-axis alignment of items within their cells (align-items); default stretch |
 | `justify` | `'start' \| 'center' \| 'end' \| 'stretch'` | no | — | Inline-axis alignment of items within their cells (justify-items); default stretch |
+| `alignRows` | `boolean` | no | `false` | Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop. |
 | `span` | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no | — | GridItem: column span — a number, or a per-breakpoint object |
 
 ## Examples
@@ -12415,6 +12416,14 @@ import { Grid } from '@cascivo/react'
 
 ```tsx
 <Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>
+```
+
+### Row-aligned card grid
+
+Both cards put their content band on the same row track, so the headers align even though one wraps
+
+```tsx
+<Grid cols={3} gap={4} alignRows><Card><CardHeader title="A" /><CardContent>Short</CardContent></Card><Card><CardHeader title="A much longer title that wraps" /><CardContent>Long</CardContent></Card></Grid>
 ```
 
 ### Responsive dashboard grid
@@ -13699,8 +13708,15 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - `--cascivo-color-border-strong`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
+- `--cascivo-color-text`
 - `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 - `--cascivo-focus-ring`
 
 ## Accessibility
@@ -18553,6 +18569,7 @@ import { Textarea } from '@cascivo/react'
 | `error` | `string` | no | — | Error message shown when the value is invalid. |
 | `rows` | `number` | no | `4` | Number of visible text rows. |
 | `resize` | `'none' \| 'vertical' \| 'both'` | no | `vertical` | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both'). |
+| `autosize` | `boolean` | no | `false` | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept. |
 | `disabled` | `boolean` | no | `false` | When true, disables the control and removes it from the tab order. |
 | `ariaLabel` | `string` | no | — | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
@@ -18582,6 +18599,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 - `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-focus-ring`
+- `--cascivo-textarea-max-block-size`
 
 ## Accessibility
 

@@ -34,6 +34,7 @@ export function Card({
 }: CardProps) {
   return (
     <div
+      data-cascivo-card=""
       data-variant={variant}
       data-padding={padding}
       className={cn(styles['card'], className)}

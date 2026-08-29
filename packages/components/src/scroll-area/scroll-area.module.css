@@ -80,4 +80,63 @@
       );
     }
   }
+
+  /*
+    Scroll-state container queries — the same two shadows, with no JavaScript.
+
+    Everything above is driven by `data-scroll-*` attributes that a `scroll` listener in
+    `scroll-area.tsx` toggles; the listener's entire job is to tell CSS something CSS can
+    now ask the scroller itself. `container-type: scroll-state` makes `.root` answer
+    `scrollable: top/bottom` directly.
+
+    A container query cannot style its own container, but it CAN style that container's
+    pseudo-elements (verified in Chromium 141: a `::before` on the scroller picks up its
+    own `scroll-state` query). So the shadows move to two zero-height sticky pseudos
+    pinned to the block edges. They are block boxes in a block container, so they add no
+    height and shift nothing.
+
+    Progressive enhancement (Chrome 133+). Elsewhere the attribute rules above still run,
+    unchanged, because `scroll-area.tsx` keeps registering the listener there.
+  */
+  @supports (container-type: scroll-state) {
+    .root[data-edges='shadow'] {
+      container-type: scroll-state;
+
+      &::before,
+      &::after {
+        content: '';
+        display: block;
+        position: sticky;
+        z-index: 1;
+        block-size: 0;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--cascivo-duration-150) var(--cascivo-ease-out);
+      }
+
+      &::before {
+        inset-block-start: 0;
+        box-shadow: 0 0.5rem 0.4rem -0.4rem
+          color-mix(in srgb, var(--cascivo-color-text) 12%, transparent);
+      }
+
+      &::after {
+        inset-block-end: 0;
+        box-shadow: 0 -0.5rem 0.4rem -0.4rem
+          color-mix(in srgb, var(--cascivo-color-text) 12%, transparent);
+      }
+    }
+
+    @container scroll-state(scrollable: top) {
+      .root[data-edges='shadow']::before {
+        opacity: 1;
+      }
+    }
+
+    @container scroll-state(scrollable: bottom) {
+      .root[data-edges='shadow']::after {
+        opacity: 1;
+      }
+    }
+  }
 }

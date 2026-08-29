@@ -54,6 +54,13 @@
         "description": "Inline-axis alignment of items within their cells (justify-items); default stretch"
       },
       {
+        "name": "alignRows",
+        "default": "false",
+        "type": "boolean",
+        "required": false,
+        "description": "Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop."
+      },
+      {
         "name": "span",
         "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
         "required": false,
@@ -71,6 +78,11 @@
         "title": "Basic grid",
         "code": "<Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>",
         "description": "3-column grid with spanning item"
+      },
+      {
+        "title": "Row-aligned card grid",
+        "code": "<Grid cols={3} gap={4} alignRows><Card><CardHeader title=\"A\" /><CardContent>Short</CardContent></Card><Card><CardHeader title=\"A much longer title that wraps\" /><CardContent>Long</CardContent></Card></Grid>",
+        "description": "Both cards put their content band on the same row track, so the headers align even though one wraps"
       },
       {
         "title": "Responsive dashboard grid",

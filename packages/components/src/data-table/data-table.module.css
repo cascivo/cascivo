@@ -222,6 +222,43 @@
     background-color: var(--cascivo-color-surface);
   }
 
+  /*
+    A stuck header needs to say it is stuck. Until `scroll-state` there was no way to know:
+    the header looks identical whether it is sitting in normal flow at the top of the table
+    or floating over rows that have scrolled under it, so the first row reads as a header
+    row. The horizontal affordance right below (`.scroller`'s local/scroll gradients) solved
+    the same problem on the other axis and is the model for this one — CSS only, no listener.
+
+    `container-type: scroll-state` on the scroller lets its descendants ask; `thead th` is a
+    descendant, so this needs no wrapper and no DOM change. Progressive enhancement
+    (Chrome 133+): elsewhere the header stays flat, exactly as it is today.
+  */
+  @supports (container-type: scroll-state) {
+    /* `stuck` is asked OF the sticky element, so the header cell is the container — and a
+       container cannot style itself, so the rule below paints the cell's own `::after`
+       (verified in Chromium 141 against a real sticky `<th>`). */
+    .root[data-sticky-header='true'] .table thead th {
+      container-type: scroll-state;
+    }
+
+    @container scroll-state(stuck: top) {
+      .root[data-sticky-header='true'] .table thead th::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        inset-block-end: 0;
+        block-size: 0.375rem;
+        translate: 0 100%;
+        pointer-events: none;
+        background: linear-gradient(
+          to bottom,
+          color-mix(in srgb, var(--cascivo-color-text) 12%, transparent),
+          transparent
+        );
+      }
+    }
+  }
+
   /* Zebra striping — `of .row` keeps expansion rows out of the count.
      
      NOT `--cascivo-color-bg-subtle`: every theme aliases that straight to

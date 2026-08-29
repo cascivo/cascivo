@@ -15967,6 +15967,16 @@
           }
         },
         {
+          "name": "alignRows",
+          "default": "false",
+          "type": "boolean",
+          "required": false,
+          "description": "Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop.",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
           "name": "span",
           "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
           "required": false,
@@ -17273,7 +17283,7 @@
             "reason": "Better for a small fixed set of mutually exclusive choices shown inline"
           }
         ],
-        "a11yRationale": "It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable.",
+        "a11yRationale": "It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable. Where `appearance: base-select` is supported the option list is themed from CSS instead of the OS, and the browser still owns open/close, keyboard interaction, typeahead and form submission — nothing is re-implemented, so the accessibility story is identical on both paths.",
         "flexibility": [
           {
             "area": "options",
@@ -17382,7 +17392,7 @@
         }
       ],
       "contextUrl": "/context/native-select.md",
-      "aiPrompt": "I am modifying the cascivo NativeSelect component (inputs). A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nNativeSelect is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text-muted, --cascivo-radius-field, --cascivo-focus-ring\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Enter/Space/Home/End. Keep it AA.\nFlexible: options, value.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo NativeSelect component (inputs). A styled native <select> that keeps platform form/keyboard behavior with a custom chevron and focus ring\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nNativeSelect is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-field, --cascivo-radius-overlay, --cascivo-radius-item, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-focus-ring\n\nAccessibility: role \"combobox\", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Enter/Space/Home/End. Keep it AA.\nFlexible: options, value.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "NavigationMenu",
@@ -23229,6 +23239,16 @@
           }
         },
         {
+          "name": "autosize",
+          "description": "Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "schema": {
+            "kind": "boolean"
+          }
+        },
+        {
           "name": "disabled",
           "description": "When true, disables the control and removes it from the tab order.",
           "type": "boolean",
@@ -23250,7 +23270,7 @@
         }
       ],
       "contextUrl": "/context/textarea.md",
-      "aiPrompt": "I am modifying the cascivo Textarea component (inputs). Multi-line text input with optional label, hint, and error state\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTextarea is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): token names — Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens\nFlexible: resize and rows.\n\nDo not invent props, tokens, or global viewport media queries."
+      "aiPrompt": "I am modifying the cascivo Textarea component (inputs). Multi-line text input with optional label, hint, and error state\n\nArchitecture constraints — follow exactly:\n- Signals only (useSignal/useComputed/useSignalEffect from @cascivo/core). Never useState/useEffect/useContext/useReducer.\n- Style only through --cascivo-* custom properties. No Tailwind, no inline styles, no CSS-in-JS.\n- Responsive via @container queries on the canonical scale (30rem/40rem/64rem/80rem). Do not use global viewport @media breakpoints.\n- @container queries need an ancestor that establishes containment (container-type: inline-size). An element can never be its own query container, so a component whose own rule restyles itself via @container must render an outer wrapper that establishes the container (see Grid/Columns). Section and other layout wrappers already establish one for their descendants.\n- Visual states (hover/focus/active/disabled) via CSS pseudo-classes, not JS.\n- CSS logical properties only (RTL-safe).\n\nTextarea is strictly bound to these tokens — use only these, do not invent token names:\n  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-radius-input, --cascivo-focus-ring, --cascivo-textarea-max-block-size\n\nAccessibility: role \"textbox\", WCAG 2.2-AA, keyboard: Tab/Shift+Tab. Keep it AA.\n\nDo not change (strict): token names — Border/focus/error colors must resolve to --cascivo-color-* / focus-ring tokens\nFlexible: resize and rows.\n\nDo not invent props, tokens, or global viewport media queries."
     },
     {
       "name": "Tile",

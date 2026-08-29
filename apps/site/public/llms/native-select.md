@@ -89,8 +89,15 @@ None. Renders complete and correct with JavaScript disabled, and can be rendered
 - `--cascivo-color-border-strong`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
+- `--cascivo-color-text`
 - `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 - `--cascivo-focus-ring`
 
 ## Accessibility

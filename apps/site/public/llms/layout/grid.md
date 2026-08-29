@@ -22,13 +22,14 @@ import { Grid } from '@cascivo/react'
 
 ## Props
 
-| Prop      | Type                                                                              | Required | Default | Description                                                                                              |
-| --------- | --------------------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| `cols`    | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no       | `12`    | Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns            |
-| `gap`     | `1\|2\|3\|4\|5\|6\|8\|10\|12`                                                     | no       | `4`     | Spacing token step. Maps to the --cascivo-space-\* scale, which intentionally skips 7/9/11 — use 6 or 8. |
-| `align`   | `'start' \| 'center' \| 'end' \| 'stretch'`                                       | no       | —       | Block-axis alignment of items within their cells (align-items); default stretch                          |
-| `justify` | `'start' \| 'center' \| 'end' \| 'stretch'`                                       | no       | —       | Inline-axis alignment of items within their cells (justify-items); default stretch                       |
-| `span`    | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no       | —       | GridItem: column span — a number, or a per-breakpoint object                                             |
+| Prop        | Type                                                                              | Required | Default | Description                                                                                                                                                                                                                                        |
+| ----------- | --------------------------------------------------------------------------------- | -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cols`      | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no       | `12`    | Column count — a number, or a per-breakpoint object (base/sm/md/lg/xl) for responsive columns                                                                                                                                                      |
+| `gap`       | `1\|2\|3\|4\|5\|6\|8\|10\|12`                                                     | no       | `4`     | Spacing token step. Maps to the --cascivo-space-\* scale, which intentionally skips 7/9/11 — use 6 or 8.                                                                                                                                           |
+| `align`     | `'start' \| 'center' \| 'end' \| 'stretch'`                                       | no       | —       | Block-axis alignment of items within their cells (align-items); default stretch                                                                                                                                                                    |
+| `justify`   | `'start' \| 'center' \| 'end' \| 'stretch'`                                       | no       | —       | Inline-axis alignment of items within their cells (justify-items); default stretch                                                                                                                                                                 |
+| `alignRows` | `boolean`                                                                         | no       | `false` | Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop. |
+| `span`      | `number \| { base?: number; sm?: number; md?: number; lg?: number; xl?: number }` | no       | —       | GridItem: column span — a number, or a per-breakpoint object                                                                                                                                                                                       |
 
 ## Examples
 
@@ -40,6 +41,23 @@ import { Grid } from '@cascivo/react'
 <Grid cols={3} gap={4}>
   <GridItem span={1}>A</GridItem>
   <GridItem span={2}>B</GridItem>
+</Grid>
+```
+
+### Row-aligned card grid
+
+Both cards put their content band on the same row track, so the headers align even though one wraps
+
+```tsx
+<Grid cols={3} gap={4} alignRows>
+  <Card>
+    <CardHeader title="A" />
+    <CardContent>Short</CardContent>
+  </Card>
+  <Card>
+    <CardHeader title="A much longer title that wraps" />
+    <CardContent>Long</CardContent>
+  </Card>
 </Grid>
 ```
 

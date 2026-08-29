@@ -97,6 +97,7 @@
     {
       "tag": "div",
       "attrs": {
+        "data-cascivo-card": "",
         "data-padding": "md",
         "data-variant": "default"
       }

@@ -29,7 +29,7 @@
 
 ## Accessibility rationale
 
-It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable.
+It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable. Where `appearance: base-select` is supported the option list is themed from CSS instead of the OS, and the browser still owns open/close, keyboard interaction, typeahead and form submission — nothing is re-implemented, so the accessibility story is identical on both paths.
 
 ## Props
 
@@ -53,8 +53,15 @@ It is a real <select>, so the browser provides the combobox role, keyboard inter
 - `--cascivo-color-border-strong`
 - `--cascivo-color-accent`
 - `--cascivo-color-destructive`
+- `--cascivo-color-text`
 - `--cascivo-color-text-muted`
+- `--cascivo-color-bg-subtle`
 - `--cascivo-radius-field`
+- `--cascivo-radius-overlay`
+- `--cascivo-radius-item`
+- `--cascivo-shadow-md`
+- `--cascivo-motion-enter`
+- `--cascivo-motion-exit`
 - `--cascivo-focus-ring`
 
 ## Examples
@@ -110,7 +117,7 @@ Architecture constraints — follow exactly:
 - CSS logical properties only (RTL-safe).
 
 NativeSelect is strictly bound to these tokens — use only these, do not invent token names:
-  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text-muted, --cascivo-radius-field, --cascivo-focus-ring
+  --cascivo-color-surface, --cascivo-color-border, --cascivo-color-border-strong, --cascivo-color-accent, --cascivo-color-destructive, --cascivo-color-text, --cascivo-color-text-muted, --cascivo-color-bg-subtle, --cascivo-radius-field, --cascivo-radius-overlay, --cascivo-radius-item, --cascivo-shadow-md, --cascivo-motion-enter, --cascivo-motion-exit, --cascivo-focus-ring
 
 Accessibility: role "combobox", WCAG 2.2-AA, keyboard: ArrowUp/ArrowDown/Enter/Space/Home/End. Keep it AA.
 Flexible: options, value.

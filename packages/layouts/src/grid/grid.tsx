@@ -51,6 +51,15 @@ export interface GridProps extends HTMLAttributes<HTMLDivElement> {
   align?: GridAlign
   /** Inline-axis alignment of items within their cells (`justify-items`). Defaults to `stretch`. */
   justify?: GridAlign
+  /**
+   * Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a
+   * row shares one row track, every CardContent the next, every CardFooter the last. Where
+   * subgrid is unsupported the grid renders as it does without this prop.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  alignRows?: boolean
 }
 
 export function Grid({
@@ -58,6 +67,7 @@ export function Grid({
   gap = 4,
   align,
   justify,
+  alignRows = false,
   className,
   style,
   children,
@@ -80,7 +90,11 @@ export function Grid({
       }}
       {...props}
     >
-      <div className={styles['grid']} data-responsive={isResponsive(cols) ? '' : undefined}>
+      <div
+        className={styles['grid']}
+        data-responsive={isResponsive(cols) ? '' : undefined}
+        data-align-rows={alignRows ? '' : undefined}
+      >
         {children}
       </div>
     </div>

@@ -2263,7 +2263,7 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/card/card.module.css"
       ],
       "fileHashes": {
-        "card.tsx": "sha256-38853515a032ce3158bbf51bf386ca649a13531d6392ae3515b67b970618d5a3",
+        "card.tsx": "sha256-b06ffbb564451ff81acbfeae850a875a8b45661ad6f761a632e79326431c8d36",
         "index.ts": "sha256-27d4f144329873a2f2124423ec77094366cc0854d2a9312796078391fb9eee34",
         "card.module.css": "sha256-f9fe20c39b2bb2dc0c5dfa99c1d6cad6f7402a19d6ac81fad709f3cffaac20b3"
       },
@@ -2320,6 +2320,7 @@
           }
         ],
         "dependencies": ["@cascivo/core"],
+        "styleHooks": ["data-cascivo-card"],
         "tags": ["container", "layout", "surface"],
         "intent": {
           "whenToUse": [
@@ -4746,7 +4747,7 @@
       "fileHashes": {
         "data-table.tsx": "sha256-b01f1796baeb48af568d8e4208f1dc508bed4b008380e1ee0b3bbf102dcd1598",
         "index.ts": "sha256-c80f45d421cd7701697b4d4df9641a323a710143f2e78c9596f3c1e63b0e316f",
-        "data-table.module.css": "sha256-e6a5b4d00d79ad000c8dce96121cec3dd360a94b48a7cec0887f2136d6b52a9f"
+        "data-table.module.css": "sha256-f3f517308b057891a115e84813aa529507a2a4f957e4e3e88dbc6dc5b1b79482"
       },
       "dependencies": ["@cascivo/core", "@cascivo/i18n"],
       "peerVersions": {
@@ -10667,9 +10668,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/native-select/native-select.module.css"
       ],
       "fileHashes": {
-        "native-select.tsx": "sha256-088333edf347cd38dceb8bc1e2125561fc334b8855170c9c983f1e2f6caf1988",
+        "native-select.tsx": "sha256-d6eddb83cd8e5cf4af6d6a0dce521d8304b3c8949c9cd026adbc4d4d4167f603",
         "index.ts": "sha256-6af5d7c13fc052ae77c40616cf2a4dda79af16cd78ba63d7cd254c2d24bf8800",
-        "native-select.module.css": "sha256-5db10e0e8b579e8400de5616832442a2e89825f2a2e2803b5e802fde2ac02138"
+        "native-select.module.css": "sha256-105112173293d8d9c6a9d1e6514aa99e989c72483d3df408d7ae96df3e3647f6"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -10754,8 +10755,15 @@
           "--cascivo-color-border-strong",
           "--cascivo-color-accent",
           "--cascivo-color-destructive",
+          "--cascivo-color-text",
           "--cascivo-color-text-muted",
+          "--cascivo-color-bg-subtle",
           "--cascivo-radius-field",
+          "--cascivo-radius-overlay",
+          "--cascivo-radius-item",
+          "--cascivo-shadow-md",
+          "--cascivo-motion-enter",
+          "--cascivo-motion-exit",
           "--cascivo-focus-ring"
         ],
         "accessibility": {
@@ -10808,7 +10816,7 @@
               "reason": "Better for a small fixed set of mutually exclusive choices shown inline"
             }
           ],
-          "a11yRationale": "It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable.",
+          "a11yRationale": "It is a real <select>, so the browser provides the combobox role, keyboard interaction, and announcement. aria-invalid is set when invalid; the placeholder is a disabled hidden first option so it shows but is not selectable. Where `appearance: base-select` is supported the option list is themed from CSS instead of the OS, and the browser still owns open/close, keyboard interaction, typeahead and form submission — nothing is re-implemented, so the accessibility story is identical on both paths.",
           "flexibility": [
             {
               "area": "options",
@@ -14191,9 +14199,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/scroll-area/scroll-area.module.css"
       ],
       "fileHashes": {
-        "scroll-area.tsx": "sha256-aa751b3764fe7ca0a777e8875433ac809a6df62c3c1cc985e3a724e027ee55d9",
+        "scroll-area.tsx": "sha256-36d03ef3f48cb6aad42186164fafd7e7a278fd0d67947d3daa734bccc187b24f",
         "index.ts": "sha256-cbd82b3816201dfafe7f11dacfb8758e7572b63dbafbf497ecbe37450093c5e1",
-        "scroll-area.module.css": "sha256-0c12fb5a58bc67accb5458b031961b1b164cfaef78997938fbf566301142e08c"
+        "scroll-area.module.css": "sha256-4f1145d981d3b79884bf1ab18c7007e1d02c5207c8fd72db5f78214b6aa07660"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -17831,9 +17839,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/components/src/textarea/textarea.module.css"
       ],
       "fileHashes": {
-        "textarea.tsx": "sha256-d48a14624905f821fb40a3f7348433d4c757315a07e083a61af32f395a40a7d3",
+        "textarea.tsx": "sha256-9d47e6c8af7caf6f2de358bea4602fbd70a67e9fe0f888f17e41d3c94ef6935a",
         "index.ts": "sha256-faa6e1544725eaeb285606e523d371b45b46d79cf0ab71ab9d5fe4e09ef244b7",
-        "textarea.module.css": "sha256-2c8ed910ccd40ae57317955d706f49d8e19012da7a3d18509654b567ca94dfd0"
+        "textarea.module.css": "sha256-9193bccfbc778d9ebd4c198c35650b9dc24948d590c16ab822b3c4d71948625f"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -17883,6 +17891,13 @@
             "default": "vertical"
           },
           {
+            "name": "autosize",
+            "description": "Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.",
+            "type": "boolean",
+            "required": false,
+            "default": "false"
+          },
+          {
             "name": "disabled",
             "description": "When true, disables the control and removes it from the tab order.",
             "type": "boolean",
@@ -17903,7 +17918,8 @@
           "--cascivo-color-accent",
           "--cascivo-color-destructive",
           "--cascivo-radius-input",
-          "--cascivo-focus-ring"
+          "--cascivo-focus-ring",
+          "--cascivo-textarea-max-block-size"
         ],
         "accessibility": {
           "role": "textbox",
@@ -20999,9 +21015,9 @@
         "https://raw.githubusercontent.com/cascivo/cascivo/main/packages/layouts/src/grid/grid.module.css"
       ],
       "fileHashes": {
-        "grid.tsx": "sha256-937196d1c470c009c7d7ef58ded8b592b560eb6000c425caa2076374144c0604",
+        "grid.tsx": "sha256-cdd0776fb04b28fcf6e7680669b0dca93b98ff95f5f6321a7a3f265abed66554",
         "index.ts": "sha256-21d70762c13307b349141181d6df3e8f53a4015d21a169fcb559c7b7ada19b99",
-        "grid.module.css": "sha256-ca25ef5472e81dc9e98d3890c0871769520285c8315c7633a3c8eae12fcbd59d"
+        "grid.module.css": "sha256-9ade6558652f06b75760f19832bac02eee37e255d0fe78de2665a987adba01e3"
       },
       "dependencies": ["@cascivo/core"],
       "peerVersions": {
@@ -21044,6 +21060,13 @@
             "description": "Inline-axis alignment of items within their cells (justify-items); default stretch"
           },
           {
+            "name": "alignRows",
+            "default": "false",
+            "type": "boolean",
+            "required": false,
+            "description": "Align the internal bands of adjacent children via CSS subgrid — every CardHeader in a row shares one row track, every CardContent the next, every CardFooter the last. Where subgrid is unsupported the grid renders as it does without this prop."
+          },
+          {
             "name": "span",
             "type": "number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number }",
             "required": false,
@@ -21061,6 +21084,11 @@
             "title": "Basic grid",
             "code": "<Grid cols={3} gap={4}><GridItem span={1}>A</GridItem><GridItem span={2}>B</GridItem></Grid>",
             "description": "3-column grid with spanning item"
+          },
+          {
+            "title": "Row-aligned card grid",
+            "code": "<Grid cols={3} gap={4} alignRows><Card><CardHeader title=\"A\" /><CardContent>Short</CardContent></Card><Card><CardHeader title=\"A much longer title that wraps\" /><CardContent>Long</CardContent></Card></Grid>",
+            "description": "Both cards put their content band on the same row track, so the headers align even though one wraps"
           },
           {
             "title": "Responsive dashboard grid",

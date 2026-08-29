@@ -35,6 +35,7 @@ import { Textarea } from '@cascivo/react'
 | `error`     | `string`                         | no       | —          | Error message shown when the value is invalid.                                                                                                                                                                                                                                                                                                                                                       |
 | `rows`      | `number`                         | no       | `4`        | Number of visible text rows.                                                                                                                                                                                                                                                                                                                                                                         |
 | `resize`    | `'none' \| 'vertical' \| 'both'` | no       | `vertical` | Which directions the textarea can be resized ('none' \| 'vertical' \| 'both').                                                                                                                                                                                                                                                                                                                       |
+| `autosize`  | `boolean`                        | no       | `false`    | Grow the control with its content instead of holding the fixed rows height. rows becomes the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS (field-sizing: content) — no measurement and no listener; where unsupported the fixed rows height is kept.                                                                                                           |
 | `disabled`  | `boolean`                        | no       | `false`    | When true, disables the control and removes it from the tab order.                                                                                                                                                                                                                                                                                                                                   |
 | `ariaLabel` | `string`                         | no       | —          | Invisible accessible name, for when a visible element outside this component already labels it and `label` would render that text a second time. ⚠ `label` on this component is **visible**; `IconButton.label`/`Sparkline.label` are invisible names, which is the prior that costs adopters a duplicated label. The raw DOM `aria-label` still wins over this. Not rendered — screen readers only. |
 
@@ -64,6 +65,7 @@ Enhancement only. The component still does its job with JavaScript disabled — 
 - `--cascivo-color-destructive`
 - `--cascivo-radius-input`
 - `--cascivo-focus-ring`
+- `--cascivo-textarea-max-block-size`
 
 ## Accessibility
 

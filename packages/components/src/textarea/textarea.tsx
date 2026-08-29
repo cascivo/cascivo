@@ -1,7 +1,7 @@
 'use client'
 import { createMachine, useMachine, cn } from '@cascivo/core'
 import { forwardRef } from 'react'
-import type { TextareaHTMLAttributes } from 'react'
+import type { CSSProperties, TextareaHTMLAttributes } from 'react'
 import styles from './textarea.module.css'
 
 const machine = createMachine({
@@ -31,6 +31,16 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
   hint?: string
   error?: string
   resize?: 'none' | 'vertical' | 'both'
+  /**
+   * Grow the control with its content instead of holding the fixed rows height. rows becomes
+   * the minimum and --cascivo-textarea-max-block-size (default 20lh) the ceiling. Pure CSS
+   * (field-sizing: content) — no measurement and no listener; where unsupported the fixed
+   * rows height is kept.
+   *
+   * @defaultValue `false`
+   * @see the component manifest
+   */
+  autosize?: boolean
 }
 
 /**
@@ -53,6 +63,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     hint,
     error,
     resize = 'vertical',
+    autosize = false,
     rows = 4,
     ariaLabel,
     className,
@@ -72,6 +83,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       className={cn(styles['wrapper'], className)}
       data-state={error ? 'error' : state.value}
       data-resize={resize}
+      data-autosize={autosize ? '' : undefined}
+      style={autosize ? ({ ['--_rows' as string]: String(rows) } as CSSProperties) : undefined}
     >
       {label && (
         <label className={styles['label']} htmlFor={textareaId}>
