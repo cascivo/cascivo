@@ -91,7 +91,7 @@ jobs:
       - name: Visual-baseline coverage (every component has a committed snapshot)
         run: pnpm run visual:baselines:check
 
-      - name: Animation audit
+      - name: Animation audit (keyframe naming, global() refs, layout properties)
         run: pnpm run audit:animation
 
       - name: Signals subscription gate
@@ -129,6 +129,13 @@ jobs:
 
       - name: CSS-contract guard (CSS-shipping packages import their own CSS + ship a node twin)
         run: pnpm run css-contract:check
+
+      # Must run AFTER the build for the same reason as ssr:check above. @cascivo/react
+      # ASSEMBLES styles.css from an explicit file list and strips every @import, so a
+      # keyframe file that tokens imports can vanish from the aggregate with every
+      # source-level check still green and every animation in the package dead.
+      - name: Motion parity (built aggregates resolve every keyframe they reference)
+        run: pnpm run motion:check
 
       # Measures the real built artifact, so it also has to run after the build. The
       # @cascivo/charts/sparkline subpath exists to be small; an import added to the lite

@@ -154,10 +154,10 @@
   }
 
   .chevron {
-    transition: transform var(--cascivo-duration-150) var(--cascivo-ease-out);
+    transition: rotate var(--cascivo-duration-150) var(--cascivo-ease-out);
 
     :is([aria-expanded='true']) & {
-      transform: rotate(180deg);
+      rotate: 180deg;
     }
   }
 
