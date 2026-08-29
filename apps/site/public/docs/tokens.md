@@ -301,20 +301,28 @@ remains canonical.
 
 ## motion
 
-| Token                           | Value                                                    | Notes |
-| ------------------------------- | -------------------------------------------------------- | ----- |
-| **`--cascivo-duration-100`**    | `100ms`                                                  |       |
-| **`--cascivo-duration-150`**    | `150ms`                                                  |       |
-| **`--cascivo-duration-200`**    | `200ms`                                                  |       |
-| **`--cascivo-duration-300`**    | `300ms`                                                  |       |
-| **`--cascivo-duration-500`**    | `500ms`                                                  |       |
-| **`--cascivo-duration-75`**     | `75ms`                                                   |       |
-| **`--cascivo-ease-in`**         | `cubic-bezier(0.4, 0, 1, 1)`                             |       |
-| **`--cascivo-ease-in-out`**     | `cubic-bezier(0.4, 0, 0.2, 1)`                           |       |
-| **`--cascivo-ease-out`**        | `cubic-bezier(0, 0, 0.2, 1)`                             |       |
-| **`--cascivo-motion-emphasis`** | `var(--cascivo-duration-300) var(--cascivo-ease-in-out)` |       |
-| **`--cascivo-motion-enter`**    | `var(--cascivo-duration-200) var(--cascivo-ease-out)`    |       |
-| **`--cascivo-motion-exit`**     | `var(--cascivo-duration-150) var(--cascivo-ease-in)`     |       |
+| Token                              | Value                                                                                                                                                                                                | Notes |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| **`--cascivo-duration-100`**       | `100ms`                                                                                                                                                                                              |       |
+| **`--cascivo-duration-150`**       | `150ms`                                                                                                                                                                                              |       |
+| **`--cascivo-duration-200`**       | `200ms`                                                                                                                                                                                              |       |
+| **`--cascivo-duration-300`**       | `300ms`                                                                                                                                                                                              |       |
+| **`--cascivo-duration-500`**       | `500ms`                                                                                                                                                                                              |       |
+| **`--cascivo-duration-75`**        | `75ms`                                                                                                                                                                                               |       |
+| **`--cascivo-duration-loop`**      | `1.4s`                                                                                                                                                                                               |       |
+| **`--cascivo-duration-loop-fast`** | `1s`                                                                                                                                                                                                 |       |
+| **`--cascivo-duration-loop-slow`** | `2s`                                                                                                                                                                                                 |       |
+| **`--cascivo-ease-decel`**         | `cubic-bezier(0.16, 1, 0.3, 1)`                                                                                                                                                                      |       |
+| **`--cascivo-ease-emphasized`**    | `cubic-bezier(0.2, 0, 0, 1)`                                                                                                                                                                         |       |
+| **`--cascivo-ease-in`**            | `cubic-bezier(0.4, 0, 1, 1)`                                                                                                                                                                         |       |
+| **`--cascivo-ease-in-out`**        | `cubic-bezier(0.4, 0, 0.2, 1)`                                                                                                                                                                       |       |
+| **`--cascivo-ease-out`**           | `cubic-bezier(0, 0, 0.2, 1)`                                                                                                                                                                         |       |
+| **`--cascivo-ease-spring`**        | `linear( 0, 0.006, 0.083 5.5%, 0.244, 0.564 16.5%, 0.727, 0.867, 0.962, 1.017 32%, 1.041, 1.05, 1.048, 1.039, 1.026, 1.014 50.5%, 0.997, 0.991, 0.989, 0.991, 0.996 71.5%, 1.003, 1.005, 1.003, 1 )` |       |
+| **`--cascivo-motion-attention`**   | `var(--cascivo-duration-500) var(--cascivo-ease-out)`                                                                                                                                                |       |
+| **`--cascivo-motion-drawer`**      | `var(--cascivo-duration-300) var(--cascivo-ease-decel)`                                                                                                                                              |       |
+| **`--cascivo-motion-emphasis`**    | `var(--cascivo-duration-300) var(--cascivo-ease-in-out)`                                                                                                                                             |       |
+| **`--cascivo-motion-enter`**       | `var(--cascivo-duration-200) var(--cascivo-ease-out)`                                                                                                                                                |       |
+| **`--cascivo-motion-exit`**        | `var(--cascivo-duration-150) var(--cascivo-ease-in)`                                                                                                                                                 |       |
 
 ## sizing
 
