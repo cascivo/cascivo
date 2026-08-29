@@ -16,6 +16,12 @@
    browsers warn. */
 @import './reset.css';
 
+/* Canonical keyframes. Same "rides along every consumer path" reasoning as the two imports
+   above: a component copied by `cascivo add` gets its animation definitions for free, with no
+   dependency it did not already have. Keyframes are not style rules, so this file is
+   deliberately unlayered — `@layer` governs the cascade, and a keyframe never enters it. */
+@import './motion.css';
+
 @layer cascivo.tokens {
   :root {
     /* ── Color Primitives ─────────────────────────────── */
@@ -240,6 +246,45 @@
     --cascivo-ease-in: cubic-bezier(0.4, 0, 1, 1);
     --cascivo-ease-out: cubic-bezier(0, 0, 0.2, 1);
     --cascivo-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Aggressive deceleration — enters fast, settles slowly. The curve that makes an
+       off-canvas surface feel driven rather than eased: drawers, sheets, side panels.
+       Drawer/Sheet/SideNav each reached for `--cascivo-ease-out` before this existed,
+       which is noticeably flatter at the tail. */
+    --cascivo-ease-decel: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Overshoot-and-settle, expressed with `linear()` so it needs no JS spring solver.
+       For a surface that snaps to a detent — bottom-sheet, wheel-picker, toggle thumb.
+       Baseline in all three target browsers since 2023. */
+    --cascivo-ease-spring: linear(
+      0,
+      0.006,
+      0.083 5.5%,
+      0.244,
+      0.564 16.5%,
+      0.727,
+      0.867,
+      0.962,
+      1.017 32%,
+      1.041,
+      1.05,
+      1.048,
+      1.039,
+      1.026,
+      1.014 50.5%,
+      0.997,
+      0.991,
+      0.989,
+      0.991,
+      0.996 71.5%,
+      1.003,
+      1.005,
+      1.003,
+      1
+    );
+
+    /* Emphasised — a long, flat tail for motion that should be noticed but not hurried. */
+    --cascivo-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
     --cascivo-duration-75: 75ms;
     --cascivo-duration-100: 100ms;
     --cascivo-duration-150: 150ms;
@@ -265,6 +310,14 @@
     --cascivo-motion-enter: var(--cascivo-duration-200) var(--cascivo-ease-out);
     --cascivo-motion-exit: var(--cascivo-duration-150) var(--cascivo-ease-in);
     --cascivo-motion-emphasis: var(--cascivo-duration-300) var(--cascivo-ease-in-out);
+
+    /* Off-canvas surfaces — drawer, sheet, side-nav. Longer than `enter` and on the
+       deceleration curve, because a surface crossing the whole viewport needs the distance. */
+    --cascivo-motion-drawer: var(--cascivo-duration-300) var(--cascivo-ease-decel);
+
+    /* Attention feedback — shake, flash, bounce. One-shot, so it collapses under the
+       reduced-motion rule below like any other token-timed motion. */
+    --cascivo-motion-attention: var(--cascivo-duration-500) var(--cascivo-ease-out);
 
     /* ── Chart Categorical Color Ramp ───────────────── */
     --cascivo-chart-1: oklch(0.74 0.13 70); /* Okabe-Ito orange #E69F00 */
