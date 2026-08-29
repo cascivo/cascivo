@@ -13,7 +13,20 @@
     text-decoration: none;
     transition:
       border-color var(--cascivo-duration-150) var(--cascivo-ease-out),
-      background-color var(--cascivo-duration-150) var(--cascivo-ease-out);
+      background-color var(--cascivo-duration-150) var(--cascivo-ease-out),
+      translate var(--cascivo-duration-150) var(--cascivo-ease-out),
+      box-shadow var(--cascivo-duration-150) var(--cascivo-ease-out);
+
+    /* Lift on hover: the card rises and its shadow deepens, which is what makes a clickable
+       surface read as clickable before the cursor lands. `translate` is composited, and the
+       shadow is the only painted half. Pointer-only — a lift has no meaning under touch,
+       where there is no hover state to leave. */
+    @media (hover: hover) {
+      &:hover:not([data-disabled]) {
+        translate: 0 -2px;
+        box-shadow: var(--cascivo-shadow-md);
+      }
+    }
 
     &:hover:not([data-disabled]) {
       border-color: var(--cascivo-color-border-strong);
