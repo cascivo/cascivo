@@ -1,4 +1,5 @@
 import bench from 'virtual:bench'
+import { LIB_COLOR } from '../lib-colors'
 
 export { bench }
 
@@ -60,7 +61,7 @@ export function competitorNote(format: (lib: 'shadcn' | 'carbon') => string | nu
 // ── Selectors — every one returns null when its bench slice is absent ──
 
 export type ChartDatum = { x: string; y: number }
-export type ChartSeries = { id: string; label: string; data: ChartDatum[] }
+export type ChartSeries = { id: string; label: string; data: ChartDatum[]; color: string }
 
 /** Cheapest competitor by total gzip — the hero's honest comparison anchor. */
 export function bestCompetitor(): { lib: Lib; totalGzKb: number } | null {
@@ -72,22 +73,19 @@ export function bestCompetitor(): { lib: Lib; totalGzKb: number } | null {
   return { lib: best, totalGzKb: apps[best].totalGzKb }
 }
 
-/** Grouped bundle chart: categories = libraries, series = JS gz / CSS gz. */
+/** Grouped bundle chart: categories = JS gz / CSS gz, series = libraries. */
 export function bundleChartSeries(): ChartSeries[] | null {
   const apps = bench.bundle?.apps
   if (!apps) return null
-  return [
-    {
-      id: 'js',
-      label: 'JS (gzip, KB)',
-      data: LIBS.map((lib) => ({ x: LIB_LABELS[lib], y: apps[lib].jsGzKb })),
-    },
-    {
-      id: 'css',
-      label: 'CSS (gzip, KB)',
-      data: LIBS.map((lib) => ({ x: LIB_LABELS[lib], y: apps[lib].cssGzKb })),
-    },
-  ]
+  return LIBS.map((lib) => ({
+    id: lib,
+    label: LIB_LABELS[lib],
+    color: LIB_COLOR[lib],
+    data: [
+      { x: 'JS', y: apps[lib].jsGzKb },
+      { x: 'CSS', y: apps[lib].cssGzKb },
+    ],
+  }))
 }
 
 export type Lens = 'incremental' | 'standalone' | 'amortized'
@@ -126,6 +124,7 @@ export function latencySpotlightSeries(): ChartSeries[] | null {
   return LIBS.map((lib) => ({
     id: lib,
     label: LIB_LABELS[lib],
+    color: LIB_COLOR[lib],
     data: complete.map((s) => {
       const entry = runtime[s]
       const stats = entry?.[lib]
@@ -170,6 +169,7 @@ export function rendersSeries(): ChartSeries[] | null {
   return LIBS.map((lib) => ({
     id: lib,
     label: LIB_LABELS[lib],
+    color: LIB_COLOR[lib],
     data: present.map((s) => {
       const scenarioData = renders[s]
       return {

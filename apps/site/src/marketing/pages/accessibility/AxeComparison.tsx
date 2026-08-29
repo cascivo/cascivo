@@ -1,6 +1,7 @@
 'use client'
 import { BarChart } from '@cascivo/charts'
 import { AXE } from './data'
+import { LIB_COLOR } from '../../lib-colors'
 
 const LIBS = ['cascade', 'shadcn', 'carbon'] as const
 const LIB_LABELS: Record<(typeof LIBS)[number], string> = {
@@ -12,7 +13,11 @@ const LIB_LABELS: Record<(typeof LIBS)[number], string> = {
 export function AxeComparison() {
   const axe = AXE
   if (!axe) return null
-  const data = LIBS.map((lib) => ({ x: LIB_LABELS[lib], y: axe[lib].violations }))
+  const data = LIBS.map((lib) => ({
+    x: LIB_LABELS[lib],
+    y: axe[lib].violations,
+    color: LIB_COLOR[lib],
+  }))
   return (
     <section className="section" id="axe" data-reveal="">
       <h2>Same app, same axe run, three libraries</h2>
@@ -22,7 +27,10 @@ export function AxeComparison() {
         populated table, form, and open dialog. Violations are summed across states.
       </p>
       <BarChart
-        series={[{ id: 'violations', label: 'axe violations', data }]}
+        series={[
+          // One bar per library, each in that library's site-wide colour.
+          { id: 'violations', label: 'axe violations', data, color: (d) => d.color },
+        ]}
         x={(d) => d.x}
         y={(d) => d.y}
         orientation="horizontal"

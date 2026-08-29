@@ -1,6 +1,7 @@
 import { BarChart } from '@cascivo/charts'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@cascivo/components/card'
 import bench from 'virtual:bench'
+import { LIB_COLOR } from '../lib-colors'
 
 const axe = bench.a11y
 const bundle = bench.bundle
@@ -10,10 +11,12 @@ const BUNDLE_SERIES = bundle
       {
         id: 'gzip',
         label: 'Total gzip (KB)',
+        // One bar per library, each in that library's site-wide colour.
+        color: (d: { color: string }) => d.color,
         data: [
-          { x: 'cascivo', y: bundle.apps.cascade.totalGzKb },
-          { x: 'shadcn', y: bundle.apps.shadcn.totalGzKb },
-          { x: 'carbon', y: bundle.apps.carbon.totalGzKb },
+          { x: 'cascivo', y: bundle.apps.cascade.totalGzKb, color: LIB_COLOR.cascade },
+          { x: 'shadcn', y: bundle.apps.shadcn.totalGzKb, color: LIB_COLOR.shadcn },
+          { x: 'carbon', y: bundle.apps.carbon.totalGzKb, color: LIB_COLOR.carbon },
         ],
       },
     ]
